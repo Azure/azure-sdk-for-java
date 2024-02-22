@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** A2A remove disk(s) input. */
+/**
+ * A2A remove disk(s) input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("A2A")
 @Fluent
@@ -27,13 +29,15 @@ public final class A2ARemoveDisksInput extends RemoveDisksProviderSpecificInput 
     @JsonProperty(value = "vmManagedDisksIds")
     private List<String> vmManagedDisksIds;
 
-    /** Creates an instance of A2ARemoveDisksInput class. */
+    /**
+     * Creates an instance of A2ARemoveDisksInput class.
+     */
     public A2ARemoveDisksInput() {
     }
 
     /**
      * Get the vmDisksUris property: The list of vm disk vhd URIs.
-     *
+     * 
      * @return the vmDisksUris value.
      */
     public List<String> vmDisksUris() {
@@ -42,7 +46,7 @@ public final class A2ARemoveDisksInput extends RemoveDisksProviderSpecificInput 
 
     /**
      * Set the vmDisksUris property: The list of vm disk vhd URIs.
-     *
+     * 
      * @param vmDisksUris the vmDisksUris value to set.
      * @return the A2ARemoveDisksInput object itself.
      */
@@ -53,7 +57,7 @@ public final class A2ARemoveDisksInput extends RemoveDisksProviderSpecificInput 
 
     /**
      * Get the vmManagedDisksIds property: The list of vm managed disk Ids.
-     *
+     * 
      * @return the vmManagedDisksIds value.
      */
     public List<String> vmManagedDisksIds() {
@@ -62,7 +66,7 @@ public final class A2ARemoveDisksInput extends RemoveDisksProviderSpecificInput 
 
     /**
      * Set the vmManagedDisksIds property: The list of vm managed disk Ids.
-     *
+     * 
      * @param vmManagedDisksIds the vmManagedDisksIds value to set.
      * @return the A2ARemoveDisksInput object itself.
      */
@@ -73,7 +77,7 @@ public final class A2ARemoveDisksInput extends RemoveDisksProviderSpecificInput 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

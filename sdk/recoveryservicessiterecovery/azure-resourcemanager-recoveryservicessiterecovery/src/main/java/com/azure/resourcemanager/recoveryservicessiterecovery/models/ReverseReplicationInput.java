@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Reverse replication input. */
+/**
+ * Reverse replication input.
+ */
 @Fluent
 public final class ReverseReplicationInput {
     /*
@@ -16,13 +18,15 @@ public final class ReverseReplicationInput {
     @JsonProperty(value = "properties")
     private ReverseReplicationInputProperties properties;
 
-    /** Creates an instance of ReverseReplicationInput class. */
+    /**
+     * Creates an instance of ReverseReplicationInput class.
+     */
     public ReverseReplicationInput() {
     }
 
     /**
      * Get the properties property: Reverse replication properties.
-     *
+     * 
      * @return the properties value.
      */
     public ReverseReplicationInputProperties properties() {
@@ -31,7 +35,7 @@ public final class ReverseReplicationInput {
 
     /**
      * Set the properties property: Reverse replication properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ReverseReplicationInput object itself.
      */
@@ -42,7 +46,7 @@ public final class ReverseReplicationInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

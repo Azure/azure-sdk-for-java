@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InMageAgentDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageAgentDetails model =
-            BinaryData
-                .fromString(
-                    "{\"agentVersion\":\"wyambhba\",\"agentUpdateStatus\":\"bz\",\"postUpdateRebootStatus\":\"k\",\"agentExpiryDate\":\"2021-01-13T18:27:32Z\"}")
-                .toObject(InMageAgentDetails.class);
+        InMageAgentDetails model = BinaryData.fromString(
+            "{\"agentVersion\":\"wyambhba\",\"agentUpdateStatus\":\"bz\",\"postUpdateRebootStatus\":\"k\",\"agentExpiryDate\":\"2021-01-13T18:27:32Z\"}")
+            .toObject(InMageAgentDetails.class);
         Assertions.assertEquals("wyambhba", model.agentVersion());
         Assertions.assertEquals("bz", model.agentUpdateStatus());
         Assertions.assertEquals("k", model.postUpdateRebootStatus());
@@ -25,12 +23,8 @@ public final class InMageAgentDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageAgentDetails model =
-            new InMageAgentDetails()
-                .withAgentVersion("wyambhba")
-                .withAgentUpdateStatus("bz")
-                .withPostUpdateRebootStatus("k")
-                .withAgentExpiryDate(OffsetDateTime.parse("2021-01-13T18:27:32Z"));
+        InMageAgentDetails model = new InMageAgentDetails().withAgentVersion("wyambhba").withAgentUpdateStatus("bz")
+            .withPostUpdateRebootStatus("k").withAgentExpiryDate(OffsetDateTime.parse("2021-01-13T18:27:32Z"));
         model = BinaryData.fromObject(model).toObject(InMageAgentDetails.class);
         Assertions.assertEquals("wyambhba", model.agentVersion());
         Assertions.assertEquals("bz", model.agentUpdateStatus());

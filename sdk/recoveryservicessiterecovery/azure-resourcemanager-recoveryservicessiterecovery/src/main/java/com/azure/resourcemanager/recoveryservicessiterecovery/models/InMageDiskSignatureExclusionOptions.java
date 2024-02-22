@@ -18,13 +18,15 @@ public final class InMageDiskSignatureExclusionOptions {
     @JsonProperty(value = "diskSignature")
     private String diskSignature;
 
-    /** Creates an instance of InMageDiskSignatureExclusionOptions class. */
+    /**
+     * Creates an instance of InMageDiskSignatureExclusionOptions class.
+     */
     public InMageDiskSignatureExclusionOptions() {
     }
 
     /**
      * Get the diskSignature property: The guest signature of disk to be excluded from replication.
-     *
+     * 
      * @return the diskSignature value.
      */
     public String diskSignature() {
@@ -33,7 +35,7 @@ public final class InMageDiskSignatureExclusionOptions {
 
     /**
      * Set the diskSignature property: The guest signature of disk to be excluded from replication.
-     *
+     * 
      * @param diskSignature the diskSignature value to set.
      * @return the InMageDiskSignatureExclusionOptions object itself.
      */
@@ -44,7 +46,7 @@ public final class InMageDiskSignatureExclusionOptions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

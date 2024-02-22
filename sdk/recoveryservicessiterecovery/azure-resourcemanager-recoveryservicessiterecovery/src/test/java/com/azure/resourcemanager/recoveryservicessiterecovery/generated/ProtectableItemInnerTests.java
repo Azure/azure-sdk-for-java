@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ProtectableItemInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProtectableItemInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"friendlyName\":\"ylpstdbhhxsrzdz\",\"protectionStatus\":\"erscdntne\",\"replicationProtectedItemId\":\"iwjmygtdssls\",\"recoveryServicesProviderId\":\"mweriofzpy\",\"protectionReadinessErrors\":[\"mwabnetshhszhedp\",\"vwiwubmwmbesld\"],\"supportedReplicationProviders\":[\"wtppjflcxogaoko\",\"z\"],\"customDetails\":{\"instanceType\":\"ConfigurationSettings\"}},\"location\":\"ikvmkqzeqqk\",\"id\":\"l\",\"name\":\"fzxmhhvhgureodkw\",\"type\":\"bdagxt\"}")
-                .toObject(ProtectableItemInner.class);
+        ProtectableItemInner model = BinaryData.fromString(
+            "{\"properties\":{\"friendlyName\":\"ylpstdbhhxsrzdz\",\"protectionStatus\":\"erscdntne\",\"replicationProtectedItemId\":\"iwjmygtdssls\",\"recoveryServicesProviderId\":\"mweriofzpy\",\"protectionReadinessErrors\":[\"mwabnetshhszhedp\",\"vwiwubmwmbesld\"],\"supportedReplicationProviders\":[\"wtppjflcxogaoko\",\"z\"],\"customDetails\":{\"instanceType\":\"ConfigurationSettings\"}},\"location\":\"ikvmkqzeqqk\",\"id\":\"l\",\"name\":\"fzxmhhvhgureodkw\",\"type\":\"bdagxt\"}")
+            .toObject(ProtectableItemInner.class);
         Assertions.assertEquals("ylpstdbhhxsrzdz", model.properties().friendlyName());
         Assertions.assertEquals("erscdntne", model.properties().protectionStatus());
         Assertions.assertEquals("iwjmygtdssls", model.properties().replicationProtectedItemId());
@@ -30,18 +28,13 @@ public final class ProtectableItemInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProtectableItemInner model =
-            new ProtectableItemInner()
-                .withProperties(
-                    new ProtectableItemProperties()
-                        .withFriendlyName("ylpstdbhhxsrzdz")
-                        .withProtectionStatus("erscdntne")
-                        .withReplicationProtectedItemId("iwjmygtdssls")
-                        .withRecoveryServicesProviderId("mweriofzpy")
-                        .withProtectionReadinessErrors(Arrays.asList("mwabnetshhszhedp", "vwiwubmwmbesld"))
-                        .withSupportedReplicationProviders(Arrays.asList("wtppjflcxogaoko", "z"))
-                        .withCustomDetails(new ConfigurationSettings()))
-                .withLocation("ikvmkqzeqqk");
+        ProtectableItemInner model = new ProtectableItemInner().withProperties(
+            new ProtectableItemProperties().withFriendlyName("ylpstdbhhxsrzdz").withProtectionStatus("erscdntne")
+                .withReplicationProtectedItemId("iwjmygtdssls").withRecoveryServicesProviderId("mweriofzpy")
+                .withProtectionReadinessErrors(Arrays.asList("mwabnetshhszhedp", "vwiwubmwmbesld"))
+                .withSupportedReplicationProviders(Arrays.asList("wtppjflcxogaoko", "z"))
+                .withCustomDetails(new ConfigurationSettings()))
+            .withLocation("ikvmkqzeqqk");
         model = BinaryData.fromObject(model).toObject(ProtectableItemInner.class);
         Assertions.assertEquals("ylpstdbhhxsrzdz", model.properties().friendlyName());
         Assertions.assertEquals("erscdntne", model.properties().protectionStatus());

@@ -41,40 +41,21 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 public class RestProxyXMLTests {
     private static final SerializerAdapter ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
 
-    private static final String GET_CONTAINERS_ACLS = String.join("\n",
-        "<?xml version=\"1.0\" encoding=\"utf-8\"?>",
-        "<!--",
-        "  ~ Copyright (c) Microsoft Corporation. All rights reserved.",
-        "  ~ Licensed under the MIT License.",
-        "  -->",
-        "<SignedIdentifiers>",
-        "   <SignedIdentifier>",
-        "       <Id>MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=</Id>",
-        "       <AccessPolicy>",
+    private static final String GET_CONTAINERS_ACLS = String.join("\n", "<?xml version=\"1.0\" encoding=\"utf-8\"?>",
+        "<!--", "  ~ Copyright (c) Microsoft Corporation. All rights reserved.", "  ~ Licensed under the MIT License.",
+        "  -->", "<SignedIdentifiers>", "   <SignedIdentifier>",
+        "       <Id>MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=</Id>", "       <AccessPolicy>",
         "           <Start>2009-09-28T08:49:37.0000000Z</Start>",
-        "           <Expiry>2009-09-29T08:49:37.0000000Z</Expiry>",
-        "           <Permission>rwd</Permission>",
-        "       </AccessPolicy>",
-        "   </SignedIdentifier>",
-        "</SignedIdentifiers>");
+        "           <Expiry>2009-09-29T08:49:37.0000000Z</Expiry>", "           <Permission>rwd</Permission>",
+        "       </AccessPolicy>", "   </SignedIdentifier>", "</SignedIdentifiers>");
 
     private static final String GET_XML_WITH_ATTRIBUTES = String.join("\n",
-        "<?xml version=\"1.0\" encoding=\"utf-8\"?>",
-        "<!--",
-        "  ~ Copyright (c) Microsoft Corporation. All rights reserved.",
-        "  ~ Licensed under the MIT License.",
-        "  -->",
+        "<?xml version=\"1.0\" encoding=\"utf-8\"?>", "<!--",
+        "  ~ Copyright (c) Microsoft Corporation. All rights reserved.", "  ~ Licensed under the MIT License.", "  -->",
         "<slideshow title=\"Sample Slide Show\" date=\"Date of publication\" author=\"Yours Truly\">",
-        "   <slide type=\"all\">",
-        "       <title>Wake up to WonderWidgets!</title>",
-        "   </slide>",
-        "   <slide type=\"all\">",
-        "       <title>Overview</title>",
-        "       <item>Why WonderWidgets are great</item>",
-        "       <item/>",
-        "       <item>Who buys WonderWidgets</item>",
-        "   </slide>",
-        "</slideshow>");
+        "   <slide type=\"all\">", "       <title>Wake up to WonderWidgets!</title>", "   </slide>",
+        "   <slide type=\"all\">", "       <title>Overview</title>", "       <item>Why WonderWidgets are great</item>",
+        "       <item/>", "       <item>Who buys WonderWidgets</item>", "   </slide>", "</slideshow>");
 
     static class MockXMLHTTPClient implements HttpClient {
         private HttpResponse response(HttpRequest request, String xml) {
@@ -107,9 +88,7 @@ public class RestProxyXMLTests {
     @Test
     public void canReadXMLResponse() {
         //
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new MockXMLHTTPClient())
-            .build();
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new MockXMLHTTPClient()).build();
 
         //
         MyXMLService myXMLService = RestProxy.create(MyXMLService.class, pipeline, ADAPTER);
@@ -124,11 +103,10 @@ public class RestProxyXMLTests {
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
             if (request.getUrl().toString().endsWith("SetContainerACLs")) {
-                return FluxUtil.collectBytesInByteBufferStream(request.getBody())
-                    .map(bytes -> {
-                        receivedBytes = bytes;
-                        return new MockHttpResponse(request, 200);
-                    });
+                return FluxUtil.collectBytesInByteBufferStream(request.getBody()).map(bytes -> {
+                    receivedBytes = bytes;
+                    return new MockHttpResponse(request, 200);
+                });
             } else {
                 return Mono.<HttpResponse>just(new MockHttpResponse(request, 404));
             }
@@ -150,22 +128,22 @@ public class RestProxyXMLTests {
 
         MockXMLReceiverClient httpClient = new MockXMLReceiverClient();
         //
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(httpClient)
-            .build();
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(httpClient).build();
         //
         MyXMLService myXMLService = RestProxy.create(MyXMLService.class, pipeline, ADAPTER);
         SignedIdentifiersWrapper wrapper = new SignedIdentifiersWrapper(expectedAcls);
         myXMLService.setContainerACLs(wrapper);
 
-        SignedIdentifiersWrapper actualAclsWrapped = ADAPTER.deserialize(
-            new String(httpClient.receivedBytes, StandardCharsets.UTF_8), SignedIdentifiersWrapper.class,
-            SerializerEncoding.XML);
+        SignedIdentifiersWrapper actualAclsWrapped
+            = ADAPTER.deserialize(new String(httpClient.receivedBytes, StandardCharsets.UTF_8),
+                SignedIdentifiersWrapper.class, SerializerEncoding.XML);
 
         List<SignedIdentifierInner> actualAcls = actualAclsWrapped.signedIdentifiers();
 
-        // Ideally we'd just check for "things that matter" about the XML-- e.g. the tag names, structure, and attributes needs to be the same,
-        // but it doesn't matter if one document has a trailing newline or has UTF-8 in the header instead of utf-8, or if comments are missing.
+        // Ideally we'd just check for "things that matter" about the XML-- e.g. the tag names, structure, and
+        // attributes needs to be the same,
+        // but it doesn't matter if one document has a trailing newline or has UTF-8 in the header instead of utf-8, or
+        // if comments are missing.
         assertEquals(expectedAcls.size(), actualAcls.size());
         assertEquals(expectedAcls.get(0).id(), actualAcls.get(0).id());
         assertEquals(expectedAcls.get(0).accessPolicy().expiry(), actualAcls.get(0).accessPolicy().expiry());

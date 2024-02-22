@@ -14,8 +14,7 @@ import java.util.concurrent.atomic.AtomicReferenceArray;
  * Rewritten in 2.10 to be thread-safe (see [jackson-core#479] for details),
  * to not rely on {@code ThreadLocal} access.
  */
-public class BufferRecycler
-{
+public class BufferRecycler {
     /**
      * Buffer used for reading byte-based input.
      */
@@ -84,9 +83,9 @@ public class BufferRecycler
     protected final AtomicReferenceArray<char[]> _charBuffers;
 
     /*
-    /**********************************************************
-    /* Construction
-    /**********************************************************
+     * /**********************************************************
+     * /* Construction
+     * /**********************************************************
      */
 
     /**
@@ -112,11 +111,11 @@ public class BufferRecycler
     }
 
     /*
-    /**********************************************************
-    /* Public API, byte buffers
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API, byte buffers
+     * /**********************************************************
      */
-    
+
     /**
      * @param ix One of <code>READ_IO_BUFFER</code> constants.
      *
@@ -143,11 +142,11 @@ public class BufferRecycler
     }
 
     /*
-    /**********************************************************
-    /* Public API, char buffers
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API, char buffers
+     * /**********************************************************
      */
-    
+
     public final char[] allocCharBuffer(int ix) {
         return allocCharBuffer(ix, 0);
     }
@@ -169,9 +168,9 @@ public class BufferRecycler
     }
 
     /*
-    /**********************************************************
-    /* Overridable helper methods
-    /**********************************************************
+     * /**********************************************************
+     * /* Overridable helper methods
+     * /**********************************************************
      */
 
     protected int byteBufferLength(int ix) {
@@ -183,11 +182,16 @@ public class BufferRecycler
     }
 
     /*
-    /**********************************************************
-    /* Actual allocations separated for easier debugging/profiling
-    /**********************************************************
+     * /**********************************************************
+     * /* Actual allocations separated for easier debugging/profiling
+     * /**********************************************************
      */
 
-    protected byte[] balloc(int size) { return new byte[size]; }
-    protected char[] calloc(int size) { return new char[size]; }
+    protected byte[] balloc(int size) {
+        return new byte[size];
+    }
+
+    protected char[] calloc(int size) {
+        return new char[size];
+    }
 }

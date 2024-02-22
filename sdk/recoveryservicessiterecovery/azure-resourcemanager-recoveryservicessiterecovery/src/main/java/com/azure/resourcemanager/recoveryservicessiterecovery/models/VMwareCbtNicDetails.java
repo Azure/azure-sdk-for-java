@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** VMwareCbt NIC details. */
+/**
+ * VMwareCbt NIC details.
+ */
 @Fluent
 public final class VMwareCbtNicDetails {
     /*
@@ -94,13 +96,15 @@ public final class VMwareCbtNicDetails {
     @JsonProperty(value = "isSelectedForMigration")
     private String isSelectedForMigration;
 
-    /** Creates an instance of VMwareCbtNicDetails class. */
+    /**
+     * Creates an instance of VMwareCbtNicDetails class.
+     */
     public VMwareCbtNicDetails() {
     }
 
     /**
      * Get the nicId property: The NIC Id.
-     *
+     * 
      * @return the nicId value.
      */
     public String nicId() {
@@ -109,7 +113,7 @@ public final class VMwareCbtNicDetails {
 
     /**
      * Get the isPrimaryNic property: A value indicating whether this is the primary NIC.
-     *
+     * 
      * @return the isPrimaryNic value.
      */
     public String isPrimaryNic() {
@@ -118,7 +122,7 @@ public final class VMwareCbtNicDetails {
 
     /**
      * Set the isPrimaryNic property: A value indicating whether this is the primary NIC.
-     *
+     * 
      * @param isPrimaryNic the isPrimaryNic value to set.
      * @return the VMwareCbtNicDetails object itself.
      */
@@ -129,7 +133,7 @@ public final class VMwareCbtNicDetails {
 
     /**
      * Get the sourceIpAddress property: The source IP address.
-     *
+     * 
      * @return the sourceIpAddress value.
      */
     public String sourceIpAddress() {
@@ -138,7 +142,7 @@ public final class VMwareCbtNicDetails {
 
     /**
      * Get the sourceIpAddressType property: The source IP address type.
-     *
+     * 
      * @return the sourceIpAddressType value.
      */
     public EthernetAddressType sourceIpAddressType() {
@@ -147,7 +151,7 @@ public final class VMwareCbtNicDetails {
 
     /**
      * Get the sourceNetworkId property: Source network Id.
-     *
+     * 
      * @return the sourceNetworkId value.
      */
     public String sourceNetworkId() {
@@ -156,7 +160,7 @@ public final class VMwareCbtNicDetails {
 
     /**
      * Get the targetIpAddress property: The target IP address.
-     *
+     * 
      * @return the targetIpAddress value.
      */
     public String targetIpAddress() {
@@ -165,7 +169,7 @@ public final class VMwareCbtNicDetails {
 
     /**
      * Set the targetIpAddress property: The target IP address.
-     *
+     * 
      * @param targetIpAddress the targetIpAddress value to set.
      * @return the VMwareCbtNicDetails object itself.
      */
@@ -176,7 +180,7 @@ public final class VMwareCbtNicDetails {
 
     /**
      * Get the targetIpAddressType property: The target IP address type.
-     *
+     * 
      * @return the targetIpAddressType value.
      */
     public EthernetAddressType targetIpAddressType() {
@@ -185,7 +189,7 @@ public final class VMwareCbtNicDetails {
 
     /**
      * Set the targetIpAddressType property: The target IP address type.
-     *
+     * 
      * @param targetIpAddressType the targetIpAddressType value to set.
      * @return the VMwareCbtNicDetails object itself.
      */
@@ -196,7 +200,7 @@ public final class VMwareCbtNicDetails {
 
     /**
      * Get the targetSubnetName property: Target subnet name.
-     *
+     * 
      * @return the targetSubnetName value.
      */
     public String targetSubnetName() {
@@ -205,7 +209,7 @@ public final class VMwareCbtNicDetails {
 
     /**
      * Set the targetSubnetName property: Target subnet name.
-     *
+     * 
      * @param targetSubnetName the targetSubnetName value to set.
      * @return the VMwareCbtNicDetails object itself.
      */
@@ -216,7 +220,7 @@ public final class VMwareCbtNicDetails {
 
     /**
      * Get the testNetworkId property: Source network Id.
-     *
+     * 
      * @return the testNetworkId value.
      */
     public String testNetworkId() {
@@ -225,7 +229,7 @@ public final class VMwareCbtNicDetails {
 
     /**
      * Set the testNetworkId property: Source network Id.
-     *
+     * 
      * @param testNetworkId the testNetworkId value to set.
      * @return the VMwareCbtNicDetails object itself.
      */
@@ -236,7 +240,7 @@ public final class VMwareCbtNicDetails {
 
     /**
      * Get the testSubnetName property: Test subnet name.
-     *
+     * 
      * @return the testSubnetName value.
      */
     public String testSubnetName() {
@@ -245,7 +249,7 @@ public final class VMwareCbtNicDetails {
 
     /**
      * Set the testSubnetName property: Test subnet name.
-     *
+     * 
      * @param testSubnetName the testSubnetName value to set.
      * @return the VMwareCbtNicDetails object itself.
      */
@@ -256,7 +260,7 @@ public final class VMwareCbtNicDetails {
 
     /**
      * Get the testIpAddress property: The test IP address.
-     *
+     * 
      * @return the testIpAddress value.
      */
     public String testIpAddress() {
@@ -265,7 +269,7 @@ public final class VMwareCbtNicDetails {
 
     /**
      * Set the testIpAddress property: The test IP address.
-     *
+     * 
      * @param testIpAddress the testIpAddress value to set.
      * @return the VMwareCbtNicDetails object itself.
      */
@@ -276,7 +280,7 @@ public final class VMwareCbtNicDetails {
 
     /**
      * Get the testIpAddressType property: The test IP address type.
-     *
+     * 
      * @return the testIpAddressType value.
      */
     public EthernetAddressType testIpAddressType() {
@@ -285,7 +289,7 @@ public final class VMwareCbtNicDetails {
 
     /**
      * Set the testIpAddressType property: The test IP address type.
-     *
+     * 
      * @param testIpAddressType the testIpAddressType value to set.
      * @return the VMwareCbtNicDetails object itself.
      */
@@ -296,7 +300,7 @@ public final class VMwareCbtNicDetails {
 
     /**
      * Get the targetNicName property: Target NIC name.
-     *
+     * 
      * @return the targetNicName value.
      */
     public String targetNicName() {
@@ -305,7 +309,7 @@ public final class VMwareCbtNicDetails {
 
     /**
      * Set the targetNicName property: Target NIC name.
-     *
+     * 
      * @param targetNicName the targetNicName value to set.
      * @return the VMwareCbtNicDetails object itself.
      */
@@ -316,7 +320,7 @@ public final class VMwareCbtNicDetails {
 
     /**
      * Get the isSelectedForMigration property: A value indicating whether this NIC is selected for migration.
-     *
+     * 
      * @return the isSelectedForMigration value.
      */
     public String isSelectedForMigration() {
@@ -325,7 +329,7 @@ public final class VMwareCbtNicDetails {
 
     /**
      * Set the isSelectedForMigration property: A value indicating whether this NIC is selected for migration.
-     *
+     * 
      * @param isSelectedForMigration the isSelectedForMigration value to set.
      * @return the VMwareCbtNicDetails object itself.
      */
@@ -336,7 +340,7 @@ public final class VMwareCbtNicDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

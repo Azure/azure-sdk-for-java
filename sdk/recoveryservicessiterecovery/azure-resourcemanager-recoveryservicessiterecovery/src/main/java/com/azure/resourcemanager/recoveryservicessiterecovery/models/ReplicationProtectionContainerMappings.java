@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ReplicationProtectionContainerMappings. */
+/**
+ * Resource collection API of ReplicationProtectionContainerMappings.
+ */
 public interface ReplicationProtectionContainerMappings {
     /**
      * Gets the list of protection container mappings for a protection container.
-     *
-     * <p>Lists the protection container mappings for a protection container.
-     *
+     * 
+     * Lists the protection container mappings for a protection container.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -24,14 +26,14 @@ public interface ReplicationProtectionContainerMappings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return protection container mapping collection class as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ProtectionContainerMapping> listByReplicationProtectionContainers(
-        String resourceName, String resourceGroupName, String fabricName, String protectionContainerName);
+    PagedIterable<ProtectionContainerMapping> listByReplicationProtectionContainers(String resourceName,
+        String resourceGroupName, String fabricName, String protectionContainerName);
 
     /**
      * Gets the list of protection container mappings for a protection container.
-     *
-     * <p>Lists the protection container mappings for a protection container.
-     *
+     * 
+     * Lists the protection container mappings for a protection container.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -42,18 +44,14 @@ public interface ReplicationProtectionContainerMappings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return protection container mapping collection class as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<ProtectionContainerMapping> listByReplicationProtectionContainers(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        Context context);
+    PagedIterable<ProtectionContainerMapping> listByReplicationProtectionContainers(String resourceName,
+        String resourceGroupName, String fabricName, String protectionContainerName, Context context);
 
     /**
      * Gets a protection container mapping.
-     *
-     * <p>Gets the details of a protection container mapping.
-     *
+     * 
+     * Gets the details of a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -65,19 +63,14 @@ public interface ReplicationProtectionContainerMappings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of a protection container mapping along with {@link Response}.
      */
-    Response<ProtectionContainerMapping> getWithResponse(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        Context context);
+    Response<ProtectionContainerMapping> getWithResponse(String resourceName, String resourceGroupName,
+        String fabricName, String protectionContainerName, String mappingName, Context context);
 
     /**
      * Gets a protection container mapping.
-     *
-     * <p>Gets the details of a protection container mapping.
-     *
+     * 
+     * Gets the details of a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -88,18 +81,14 @@ public interface ReplicationProtectionContainerMappings {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of a protection container mapping.
      */
-    ProtectionContainerMapping get(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName);
+    ProtectionContainerMapping get(String resourceName, String resourceGroupName, String fabricName,
+        String protectionContainerName, String mappingName);
 
     /**
      * Purge protection container mapping.
-     *
-     * <p>The operation to purge(force delete) a protection container mapping.
-     *
+     * 
+     * The operation to purge(force delete) a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -109,18 +98,14 @@ public interface ReplicationProtectionContainerMappings {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void purge(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
+    void purge(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
         String mappingName);
 
     /**
      * Purge protection container mapping.
-     *
-     * <p>The operation to purge(force delete) a protection container mapping.
-     *
+     * 
+     * The operation to purge(force delete) a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -131,19 +116,14 @@ public interface ReplicationProtectionContainerMappings {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void purge(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        Context context);
+    void purge(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String mappingName, Context context);
 
     /**
      * Remove protection container mapping.
-     *
-     * <p>The operation to delete or remove a protection container mapping.
-     *
+     * 
+     * The operation to delete or remove a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -154,19 +134,14 @@ public interface ReplicationProtectionContainerMappings {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        RemoveProtectionContainerMappingInput removalInput);
+    void delete(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String mappingName, RemoveProtectionContainerMappingInput removalInput);
 
     /**
      * Remove protection container mapping.
-     *
-     * <p>The operation to delete or remove a protection container mapping.
-     *
+     * 
+     * The operation to delete or remove a protection container mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -178,20 +153,14 @@ public interface ReplicationProtectionContainerMappings {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void delete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String protectionContainerName,
-        String mappingName,
-        RemoveProtectionContainerMappingInput removalInput,
-        Context context);
+    void delete(String resourceName, String resourceGroupName, String fabricName, String protectionContainerName,
+        String mappingName, RemoveProtectionContainerMappingInput removalInput, Context context);
 
     /**
      * Gets the list of all protection container mappings in a vault.
-     *
-     * <p>Lists the protection container mappings in the vault.
-     *
+     * 
+     * Lists the protection container mappings in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -203,9 +172,9 @@ public interface ReplicationProtectionContainerMappings {
 
     /**
      * Gets the list of all protection container mappings in a vault.
-     *
-     * <p>Lists the protection container mappings in the vault.
-     *
+     * 
+     * Lists the protection container mappings in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
@@ -218,9 +187,9 @@ public interface ReplicationProtectionContainerMappings {
 
     /**
      * Gets a protection container mapping.
-     *
-     * <p>Gets the details of a protection container mapping.
-     *
+     * 
+     * Gets the details of a protection container mapping.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -231,9 +200,9 @@ public interface ReplicationProtectionContainerMappings {
 
     /**
      * Gets a protection container mapping.
-     *
-     * <p>Gets the details of a protection container mapping.
-     *
+     * 
+     * Gets the details of a protection container mapping.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -245,7 +214,7 @@ public interface ReplicationProtectionContainerMappings {
 
     /**
      * Begins definition for a new ProtectionContainerMapping resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ProtectionContainerMapping definition.
      */

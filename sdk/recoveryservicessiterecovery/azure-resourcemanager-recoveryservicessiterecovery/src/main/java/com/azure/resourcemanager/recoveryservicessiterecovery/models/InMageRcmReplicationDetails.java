@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** InMageRcm provider specific details. */
+/**
+ * InMageRcm provider specific details.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMageRcm")
 @Fluent
@@ -332,13 +334,15 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
     @JsonProperty(value = "discoveredVmDetails")
     private InMageRcmDiscoveredProtectedVmDetails discoveredVmDetails;
 
-    /** Creates an instance of InMageRcmReplicationDetails class. */
+    /**
+     * Creates an instance of InMageRcmReplicationDetails class.
+     */
     public InMageRcmReplicationDetails() {
     }
 
     /**
      * Get the internalIdentifier property: The virtual machine internal identifier.
-     *
+     * 
      * @return the internalIdentifier value.
      */
     public String internalIdentifier() {
@@ -347,7 +351,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the fabricDiscoveryMachineId property: The ARM Id of the discovered VM.
-     *
+     * 
      * @return the fabricDiscoveryMachineId value.
      */
     public String fabricDiscoveryMachineId() {
@@ -356,7 +360,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the multiVmGroupName property: The multi VM group name.
-     *
+     * 
      * @return the multiVmGroupName value.
      */
     public String multiVmGroupName() {
@@ -365,7 +369,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the discoveryType property: The type of the discovered VM.
-     *
+     * 
      * @return the discoveryType value.
      */
     public String discoveryType() {
@@ -374,7 +378,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the processServerId property: The process server Id.
-     *
+     * 
      * @return the processServerId value.
      */
     public String processServerId() {
@@ -383,7 +387,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the processorCoreCount property: The processor core count.
-     *
+     * 
      * @return the processorCoreCount value.
      */
     public Integer processorCoreCount() {
@@ -392,7 +396,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the allocatedMemoryInMB property: The allocated memory in MB.
-     *
+     * 
      * @return the allocatedMemoryInMB value.
      */
     public Double allocatedMemoryInMB() {
@@ -401,7 +405,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the processServerName property: The process server name.
-     *
+     * 
      * @return the processServerName value.
      */
     public String processServerName() {
@@ -410,7 +414,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the runAsAccountId property: The run-as account Id.
-     *
+     * 
      * @return the runAsAccountId value.
      */
     public String runAsAccountId() {
@@ -419,7 +423,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the osType property: The type of the OS on the VM.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -428,7 +432,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the firmwareType property: The firmware type.
-     *
+     * 
      * @return the firmwareType value.
      */
     public String firmwareType() {
@@ -437,7 +441,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the primaryNicIpAddress property: The IP address of the primary network interface.
-     *
+     * 
      * @return the primaryNicIpAddress value.
      */
     public String primaryNicIpAddress() {
@@ -446,7 +450,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the targetGeneration property: The target generation.
-     *
+     * 
      * @return the targetGeneration value.
      */
     public String targetGeneration() {
@@ -455,7 +459,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the licenseType property: License Type of the VM to be used.
-     *
+     * 
      * @return the licenseType value.
      */
     public String licenseType() {
@@ -464,7 +468,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Set the licenseType property: License Type of the VM to be used.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the InMageRcmReplicationDetails object itself.
      */
@@ -476,7 +480,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
     /**
      * Get the storageAccountId property: The replication storage account ARM Id. This is applicable only for the blob
      * based replication test hook.
-     *
+     * 
      * @return the storageAccountId value.
      */
     public String storageAccountId() {
@@ -485,7 +489,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the targetVmName property: Target VM name.
-     *
+     * 
      * @return the targetVmName value.
      */
     public String targetVmName() {
@@ -494,7 +498,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Set the targetVmName property: Target VM name.
-     *
+     * 
      * @param targetVmName the targetVmName value to set.
      * @return the InMageRcmReplicationDetails object itself.
      */
@@ -505,7 +509,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the targetVmSize property: The target VM size.
-     *
+     * 
      * @return the targetVmSize value.
      */
     public String targetVmSize() {
@@ -514,7 +518,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Set the targetVmSize property: The target VM size.
-     *
+     * 
      * @param targetVmSize the targetVmSize value to set.
      * @return the InMageRcmReplicationDetails object itself.
      */
@@ -525,7 +529,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the targetResourceGroupId property: The target resource group Id.
-     *
+     * 
      * @return the targetResourceGroupId value.
      */
     public String targetResourceGroupId() {
@@ -534,7 +538,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Set the targetResourceGroupId property: The target resource group Id.
-     *
+     * 
      * @param targetResourceGroupId the targetResourceGroupId value to set.
      * @return the InMageRcmReplicationDetails object itself.
      */
@@ -545,7 +549,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the targetLocation property: The target location.
-     *
+     * 
      * @return the targetLocation value.
      */
     public String targetLocation() {
@@ -554,7 +558,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Set the targetLocation property: The target location.
-     *
+     * 
      * @param targetLocation the targetLocation value to set.
      * @return the InMageRcmReplicationDetails object itself.
      */
@@ -565,7 +569,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the targetAvailabilitySetId property: The target availability set Id.
-     *
+     * 
      * @return the targetAvailabilitySetId value.
      */
     public String targetAvailabilitySetId() {
@@ -574,7 +578,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Set the targetAvailabilitySetId property: The target availability set Id.
-     *
+     * 
      * @param targetAvailabilitySetId the targetAvailabilitySetId value to set.
      * @return the InMageRcmReplicationDetails object itself.
      */
@@ -585,7 +589,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the targetAvailabilityZone property: The target availability zone.
-     *
+     * 
      * @return the targetAvailabilityZone value.
      */
     public String targetAvailabilityZone() {
@@ -594,7 +598,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Set the targetAvailabilityZone property: The target availability zone.
-     *
+     * 
      * @param targetAvailabilityZone the targetAvailabilityZone value to set.
      * @return the InMageRcmReplicationDetails object itself.
      */
@@ -605,7 +609,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the targetProximityPlacementGroupId property: The target proximity placement group Id.
-     *
+     * 
      * @return the targetProximityPlacementGroupId value.
      */
     public String targetProximityPlacementGroupId() {
@@ -614,7 +618,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Set the targetProximityPlacementGroupId property: The target proximity placement group Id.
-     *
+     * 
      * @param targetProximityPlacementGroupId the targetProximityPlacementGroupId value to set.
      * @return the InMageRcmReplicationDetails object itself.
      */
@@ -625,7 +629,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the targetBootDiagnosticsStorageAccountId property: The target boot diagnostics storage account ARM Id.
-     *
+     * 
      * @return the targetBootDiagnosticsStorageAccountId value.
      */
     public String targetBootDiagnosticsStorageAccountId() {
@@ -634,19 +638,19 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Set the targetBootDiagnosticsStorageAccountId property: The target boot diagnostics storage account ARM Id.
-     *
+     * 
      * @param targetBootDiagnosticsStorageAccountId the targetBootDiagnosticsStorageAccountId value to set.
      * @return the InMageRcmReplicationDetails object itself.
      */
-    public InMageRcmReplicationDetails withTargetBootDiagnosticsStorageAccountId(
-        String targetBootDiagnosticsStorageAccountId) {
+    public InMageRcmReplicationDetails
+        withTargetBootDiagnosticsStorageAccountId(String targetBootDiagnosticsStorageAccountId) {
         this.targetBootDiagnosticsStorageAccountId = targetBootDiagnosticsStorageAccountId;
         return this;
     }
 
     /**
      * Get the targetNetworkId property: The target network Id.
-     *
+     * 
      * @return the targetNetworkId value.
      */
     public String targetNetworkId() {
@@ -655,7 +659,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Set the targetNetworkId property: The target network Id.
-     *
+     * 
      * @param targetNetworkId the targetNetworkId value to set.
      * @return the InMageRcmReplicationDetails object itself.
      */
@@ -666,7 +670,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the testNetworkId property: The test network Id.
-     *
+     * 
      * @return the testNetworkId value.
      */
     public String testNetworkId() {
@@ -675,7 +679,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Set the testNetworkId property: The test network Id.
-     *
+     * 
      * @param testNetworkId the testNetworkId value to set.
      * @return the InMageRcmReplicationDetails object itself.
      */
@@ -686,7 +690,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the failoverRecoveryPointId property: The recovery point Id to which the VM was failed over.
-     *
+     * 
      * @return the failoverRecoveryPointId value.
      */
     public String failoverRecoveryPointId() {
@@ -695,7 +699,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the lastRecoveryPointReceived property: The last recovery point received time.
-     *
+     * 
      * @return the lastRecoveryPointReceived value.
      */
     public OffsetDateTime lastRecoveryPointReceived() {
@@ -704,7 +708,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the lastRpoInSeconds property: The last recovery point objective value.
-     *
+     * 
      * @return the lastRpoInSeconds value.
      */
     public Long lastRpoInSeconds() {
@@ -713,7 +717,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the lastRpoCalculatedTime property: The last recovery point objective calculated time.
-     *
+     * 
      * @return the lastRpoCalculatedTime value.
      */
     public OffsetDateTime lastRpoCalculatedTime() {
@@ -722,7 +726,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the lastRecoveryPointId property: The last recovery point Id.
-     *
+     * 
      * @return the lastRecoveryPointId value.
      */
     public String lastRecoveryPointId() {
@@ -732,7 +736,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
     /**
      * Get the initialReplicationProgressPercentage property: The initial replication progress percentage. This is
      * calculated based on total bytes processed for all disks in the source VM.
-     *
+     * 
      * @return the initialReplicationProgressPercentage value.
      */
     public Integer initialReplicationProgressPercentage() {
@@ -742,7 +746,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
     /**
      * Get the initialReplicationProcessedBytes property: The initial replication processed bytes. This includes sum of
      * total bytes transferred and matched bytes on all selected disks in source VM.
-     *
+     * 
      * @return the initialReplicationProcessedBytes value.
      */
     public Long initialReplicationProcessedBytes() {
@@ -752,7 +756,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
     /**
      * Get the initialReplicationTransferredBytes property: The initial replication transferred bytes from source VM to
      * azure for all selected disks on source VM.
-     *
+     * 
      * @return the initialReplicationTransferredBytes value.
      */
     public Long initialReplicationTransferredBytes() {
@@ -761,7 +765,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the initialReplicationProgressHealth property: The initial replication progress health.
-     *
+     * 
      * @return the initialReplicationProgressHealth value.
      */
     public VmReplicationProgressHealth initialReplicationProgressHealth() {
@@ -771,7 +775,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
     /**
      * Get the resyncProgressPercentage property: The resync progress percentage. This is calculated based on total
      * bytes processed for all disks in the source VM.
-     *
+     * 
      * @return the resyncProgressPercentage value.
      */
     public Integer resyncProgressPercentage() {
@@ -781,7 +785,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
     /**
      * Get the resyncProcessedBytes property: The resync processed bytes. This includes sum of total bytes transferred
      * and matched bytes on all selected disks in source VM.
-     *
+     * 
      * @return the resyncProcessedBytes value.
      */
     public Long resyncProcessedBytes() {
@@ -791,7 +795,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
     /**
      * Get the resyncTransferredBytes property: The resync transferred bytes from source VM to azure for all selected
      * disks on source VM.
-     *
+     * 
      * @return the resyncTransferredBytes value.
      */
     public Long resyncTransferredBytes() {
@@ -800,7 +804,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the resyncProgressHealth property: The resync progress health.
-     *
+     * 
      * @return the resyncProgressHealth value.
      */
     public VmReplicationProgressHealth resyncProgressHealth() {
@@ -809,7 +813,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the resyncRequired property: A value indicating whether resync is required.
-     *
+     * 
      * @return the resyncRequired value.
      */
     public String resyncRequired() {
@@ -818,7 +822,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the resyncState property: The resync state.
-     *
+     * 
      * @return the resyncState value.
      */
     public ResyncState resyncState() {
@@ -827,7 +831,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the agentUpgradeState property: The agent auto upgrade state.
-     *
+     * 
      * @return the agentUpgradeState value.
      */
     public MobilityAgentUpgradeState agentUpgradeState() {
@@ -836,7 +840,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the lastAgentUpgradeType property: The last agent upgrade type.
-     *
+     * 
      * @return the lastAgentUpgradeType value.
      */
     public String lastAgentUpgradeType() {
@@ -845,7 +849,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the agentUpgradeJobId property: The agent upgrade job Id.
-     *
+     * 
      * @return the agentUpgradeJobId value.
      */
     public String agentUpgradeJobId() {
@@ -854,7 +858,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the agentUpgradeAttemptToVersion property: The agent version to which last agent upgrade was attempted.
-     *
+     * 
      * @return the agentUpgradeAttemptToVersion value.
      */
     public String agentUpgradeAttemptToVersion() {
@@ -863,7 +867,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the protectedDisks property: The list of protected disks.
-     *
+     * 
      * @return the protectedDisks value.
      */
     public List<InMageRcmProtectedDiskDetails> protectedDisks() {
@@ -872,7 +876,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Set the protectedDisks property: The list of protected disks.
-     *
+     * 
      * @param protectedDisks the protectedDisks value to set.
      * @return the InMageRcmReplicationDetails object itself.
      */
@@ -883,7 +887,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the isLastUpgradeSuccessful property: A value indicating whether last agent upgrade was successful or not.
-     *
+     * 
      * @return the isLastUpgradeSuccessful value.
      */
     public String isLastUpgradeSuccessful() {
@@ -893,7 +897,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
     /**
      * Get the isAgentRegistrationSuccessfulAfterFailover property: A value indicating whether agent registration was
      * successful after failover.
-     *
+     * 
      * @return the isAgentRegistrationSuccessfulAfterFailover value.
      */
     public Boolean isAgentRegistrationSuccessfulAfterFailover() {
@@ -902,7 +906,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the mobilityAgentDetails property: The mobility agent information.
-     *
+     * 
      * @return the mobilityAgentDetails value.
      */
     public InMageRcmMobilityAgentDetails mobilityAgentDetails() {
@@ -911,7 +915,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Set the mobilityAgentDetails property: The mobility agent information.
-     *
+     * 
      * @param mobilityAgentDetails the mobilityAgentDetails value to set.
      * @return the InMageRcmReplicationDetails object itself.
      */
@@ -922,7 +926,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the lastAgentUpgradeErrorDetails property: The last agent upgrade error information.
-     *
+     * 
      * @return the lastAgentUpgradeErrorDetails value.
      */
     public List<InMageRcmLastAgentUpgradeErrorDetails> lastAgentUpgradeErrorDetails() {
@@ -931,19 +935,19 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Set the lastAgentUpgradeErrorDetails property: The last agent upgrade error information.
-     *
+     * 
      * @param lastAgentUpgradeErrorDetails the lastAgentUpgradeErrorDetails value to set.
      * @return the InMageRcmReplicationDetails object itself.
      */
-    public InMageRcmReplicationDetails withLastAgentUpgradeErrorDetails(
-        List<InMageRcmLastAgentUpgradeErrorDetails> lastAgentUpgradeErrorDetails) {
+    public InMageRcmReplicationDetails
+        withLastAgentUpgradeErrorDetails(List<InMageRcmLastAgentUpgradeErrorDetails> lastAgentUpgradeErrorDetails) {
         this.lastAgentUpgradeErrorDetails = lastAgentUpgradeErrorDetails;
         return this;
     }
 
     /**
      * Get the agentUpgradeBlockingErrorDetails property: The agent upgrade blocking error information.
-     *
+     * 
      * @return the agentUpgradeBlockingErrorDetails value.
      */
     public List<InMageRcmAgentUpgradeBlockingErrorDetails> agentUpgradeBlockingErrorDetails() {
@@ -952,7 +956,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Set the agentUpgradeBlockingErrorDetails property: The agent upgrade blocking error information.
-     *
+     * 
      * @param agentUpgradeBlockingErrorDetails the agentUpgradeBlockingErrorDetails value to set.
      * @return the InMageRcmReplicationDetails object itself.
      */
@@ -964,7 +968,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the vmNics property: The network details.
-     *
+     * 
      * @return the vmNics value.
      */
     public List<InMageRcmNicDetails> vmNics() {
@@ -973,7 +977,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Set the vmNics property: The network details.
-     *
+     * 
      * @param vmNics the vmNics value to set.
      * @return the InMageRcmReplicationDetails object itself.
      */
@@ -984,7 +988,7 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Get the discoveredVmDetails property: The discovered VM details.
-     *
+     * 
      * @return the discoveredVmDetails value.
      */
     public InMageRcmDiscoveredProtectedVmDetails discoveredVmDetails() {
@@ -993,19 +997,19 @@ public final class InMageRcmReplicationDetails extends ReplicationProviderSpecif
 
     /**
      * Set the discoveredVmDetails property: The discovered VM details.
-     *
+     * 
      * @param discoveredVmDetails the discoveredVmDetails value to set.
      * @return the InMageRcmReplicationDetails object itself.
      */
-    public InMageRcmReplicationDetails withDiscoveredVmDetails(
-        InMageRcmDiscoveredProtectedVmDetails discoveredVmDetails) {
+    public InMageRcmReplicationDetails
+        withDiscoveredVmDetails(InMageRcmDiscoveredProtectedVmDetails discoveredVmDetails) {
         this.discoveredVmDetails = discoveredVmDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

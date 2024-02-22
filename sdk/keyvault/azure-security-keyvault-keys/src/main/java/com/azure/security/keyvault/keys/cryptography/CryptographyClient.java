@@ -10,7 +10,9 @@ import com.azure.core.exception.ResourceNotFoundException;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.core.util.logging.LogLevel;
 import com.azure.security.keyvault.keys.cryptography.implementation.CryptographyClientImpl;
 import com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils;
 import com.azure.security.keyvault.keys.cryptography.implementation.LocalKeyCryptographyClient;
@@ -28,14 +30,13 @@ import com.azure.security.keyvault.keys.cryptography.models.WrapResult;
 import com.azure.security.keyvault.keys.implementation.KeyClientImpl;
 import com.azure.security.keyvault.keys.implementation.SecretMinClientImpl;
 import com.azure.security.keyvault.keys.models.JsonWebKey;
-import com.azure.security.keyvault.keys.models.KeyOperation;
 import com.azure.security.keyvault.keys.models.KeyVaultKey;
 import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
-import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.checkKeyPermissions;
-import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.initializeCryptoClient;
+import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.initializeLocalClient;
+import static com.azure.security.keyvault.keys.cryptography.implementation.CryptographyUtils.isThrowableRetryable;
 
 /**
  * The {@link CryptographyClient} provides synchronous methods to perform cryptographic operations using asymmetric and
@@ -69,7 +70,6 @@ import static com.azure.security.keyvault.keys.cryptography.implementation.Crypt
  *     .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.instantiation -->
- *
  * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.withJsonWebKey.instantiation -->
  * <pre>
  * JsonWebKey jsonWebKey = new JsonWebKey&#40;&#41;.setId&#40;&quot;SampleJsonWebKey&quot;&#41;;
@@ -137,13 +137,11 @@ import static com.azure.security.keyvault.keys.cryptography.implementation.Crypt
 public class CryptographyClient {
     private static final ClientLogger LOGGER = new ClientLogger(CryptographyClient.class);
 
-    private volatile boolean localOperationNotSupported = false;
-    private LocalKeyCryptographyClient localKeyCryptographyClient;
+    private volatile boolean attemptedToInitializeLocalClient = false;
+    private volatile LocalKeyCryptographyClient localKeyCryptographyClient;
 
     final CryptographyClientImpl implClient;
     final String keyId;
-
-    volatile JsonWebKey key;
 
     /**
      * Creates a {@link CryptographyClient} that uses a given {@link HttpPipeline pipeline} to service requests.
@@ -154,9 +152,7 @@ public class CryptographyClient {
      */
     CryptographyClient(String keyId, HttpPipeline pipeline, CryptographyServiceVersion version) {
         this.implClient = new CryptographyClientImpl(keyId, pipeline, version);
-
         this.keyId = keyId;
-        this.key = null;
     }
 
     /**
@@ -180,10 +176,16 @@ public class CryptographyClient {
             throw new IllegalArgumentException("The JSON Web Key's key type property is not configured.");
         }
 
-        this.key = jsonWebKey;
-        this.keyId = jsonWebKey.getId();
         this.implClient = null;
-        this.localKeyCryptographyClient = initializeCryptoClient(key, null, LOGGER);
+        this.keyId = jsonWebKey.getId();
+
+        try {
+            this.localKeyCryptographyClient = initializeLocalClient(jsonWebKey, null);
+            this.attemptedToInitializeLocalClient = true;
+        } catch (RuntimeException e) {
+            throw LOGGER.logExceptionAsError(
+                new RuntimeException("Could not initialize local cryptography client.", e));
+        }
     }
 
     /**
@@ -234,6 +236,8 @@ public class CryptographyClient {
      * requested {@link KeyVaultKey key}.
      *
      * @throws ResourceNotFoundException When the configured key doesn't exist in the key vault.
+     * @throws UnsupportedOperationException When operating in local-only mode (using a client created using a
+     * JsonWebKey instance).
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<KeyVaultKey> getKeyWithResponse(Context context) {
@@ -241,15 +245,7 @@ public class CryptographyClient {
             return implClient.getKey(context);
         } else {
             throw LOGGER.logExceptionAsError(
-                new UnsupportedOperationException("Operation not supported when in operating local-only mode"));
-        }
-    }
-
-    JsonWebKey getSecretKey() {
-        try {
-            return implClient.getSecretKey();
-        } catch (RuntimeException e) {
-            throw LOGGER.logExceptionAsError(e);
+                new UnsupportedOperationException("Operation not supported when operating in local-only mode."));
         }
     }
 
@@ -277,8 +273,7 @@ public class CryptographyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Encrypts the content and prints out the encrypted content details when a response has been received.</p>
      *
-     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte
-     * -->
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte -->
      * <pre>
      * byte[] plaintext = new byte[100];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;plaintext&#41;;
@@ -329,8 +324,7 @@ public class CryptographyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Encrypts the content prints out the encrypted content details when a response has been received.</p>
      *
-     * <!-- src_embed
-     * com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte-Context -->
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte-Context -->
      * <pre>
      * byte[] plaintextToEncrypt = new byte[100];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;plaintextToEncrypt&#41;;
@@ -341,8 +335,7 @@ public class CryptographyClient {
      * System.out.printf&#40;&quot;Received encrypted content of length: %d, with algorithm: %s.%n&quot;,
      *     encryptionResult.getCipherText&#40;&#41;.length, encryptionResult.getAlgorithm&#40;&#41;&#41;;
      * </pre>
-     * <!-- end
-     * com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte-Context -->
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptionAlgorithm-byte-Context -->
      *
      * @param algorithm The algorithm to be used for encryption.
      * @param plaintext The content to be encrypted.
@@ -357,17 +350,15 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EncryptResult encrypt(EncryptionAlgorithm algorithm, byte[] plaintext, Context context) {
-        if (!isValidKeyLocallyAvailable()) {
+        if (isLocalClientAvailable()) {
+            try {
+                return localKeyCryptographyClient.encrypt(algorithm, plaintext, context);
+            } catch (RuntimeException e) {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        } else {
             return implClient.encrypt(algorithm, plaintext, context);
-
         }
-
-        if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.ENCRYPT)) {
-            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-                "Encrypt operation is missing permission/not supported for key with id: " + key.getId()));
-        }
-
-        return localKeyCryptographyClient.encrypt(algorithm, plaintext, key, context);
     }
 
     /**
@@ -394,9 +385,7 @@ public class CryptographyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Encrypts the content prints out the encrypted content details when a response has been received.</p>
      *
-     * <!-- src_embed
-     * com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptParameters-Context
-     * -->
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.encrypt#EncryptParameters-Context -->
      * <pre>
      * byte[] myPlaintext = new byte[100];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;myPlaintext&#41;;
@@ -425,16 +414,15 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public EncryptResult encrypt(EncryptParameters encryptParameters, Context context) {
-        if (!isValidKeyLocallyAvailable()) {
+        if (isLocalClientAvailable()) {
+            try {
+                return localKeyCryptographyClient.encrypt(encryptParameters, context);
+            } catch (RuntimeException e) {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        } else {
             return implClient.encrypt(encryptParameters, context);
         }
-
-        if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.ENCRYPT)) {
-            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-                "Encrypt operation is missing permission/not supported for key with id: " + key.getId()));
-        }
-
-        return localKeyCryptographyClient.encrypt(encryptParameters, key, context);
     }
 
     /**
@@ -461,8 +449,7 @@ public class CryptographyClient {
      * <p>Decrypts the encrypted content prints out the decrypted content details when a response has been
      * received.</p>
      *
-     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte
-     * -->
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte -->
      * <pre>
      * byte[] ciphertext = new byte[100];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;ciphertext&#41;;
@@ -515,8 +502,7 @@ public class CryptographyClient {
      * <p>Decrypts the encrypted content prints out the decrypted content details when a response has been
      * received.</p>
      *
-     * <!-- src_embed
-     * com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte-Context -->
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte-Context -->
      * <pre>
      * byte[] ciphertextToDecrypt = new byte[100];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;ciphertextToDecrypt&#41;;
@@ -526,8 +512,7 @@ public class CryptographyClient {
      *
      * System.out.printf&#40;&quot;Received decrypted content of length: %d.%n&quot;, decryptionResult.getPlainText&#40;&#41;.length&#41;;
      * </pre>
-     * <!-- end
-     * com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte-Context -->
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#EncryptionAlgorithm-byte-Context -->
      *
      * @param algorithm The algorithm to be used for decryption.
      * @param ciphertext The content to be decrypted. Microsoft recommends you not use CBC without first ensuring the
@@ -545,16 +530,15 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DecryptResult decrypt(EncryptionAlgorithm algorithm, byte[] ciphertext, Context context) {
-        if (!isValidKeyLocallyAvailable()) {
+        if (isLocalClientAvailable()) {
+            try {
+                return localKeyCryptographyClient.decrypt(algorithm, ciphertext, context);
+            } catch (RuntimeException e) {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        } else {
             return implClient.decrypt(algorithm, ciphertext, context);
         }
-
-        if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.DECRYPT)) {
-            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-                "Decrypt operation is not allowed for key with id: " + key.getId()));
-        }
-
-        return localKeyCryptographyClient.decrypt(algorithm, ciphertext, key, context);
     }
 
     /**
@@ -581,9 +565,7 @@ public class CryptographyClient {
      * <p>Decrypts the encrypted content prints out the decrypted content details when a response has been
      * received.</p>
      *
-     * <!-- src_embed
-     * com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#DecryptParameters-Context
-     * -->
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.decrypt#DecryptParameters-Context -->
      * <pre>
      * byte[] myCiphertext = new byte[100];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;myCiphertext&#41;;
@@ -614,16 +596,15 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public DecryptResult decrypt(DecryptParameters decryptParameters, Context context) {
-        if (!isValidKeyLocallyAvailable()) {
+        if (isLocalClientAvailable()) {
+            try {
+                return localKeyCryptographyClient.decrypt(decryptParameters, context);
+            } catch (RuntimeException e) {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        } else {
             return implClient.decrypt(decryptParameters, context);
         }
-
-        if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.DECRYPT)) {
-            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-                "Decrypt operation is not allowed for key with id: " + key.getId()));
-        }
-
-        return localKeyCryptographyClient.decrypt(decryptParameters, key, context);
     }
 
     /**
@@ -685,8 +666,7 @@ public class CryptographyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Sings the digest prints out the signature details when a response has been received.</p>
      *
-     * <!-- src_embed
-     * com.azure.security.keyvault.keys.cryptography.CryptographyClient.sign#SignatureAlgorithm-byte-Context -->
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.sign#SignatureAlgorithm-byte-Context -->
      * <pre>
      * byte[] dataToVerify = new byte[100];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;dataToVerify&#41;;
@@ -700,8 +680,7 @@ public class CryptographyClient {
      * System.out.printf&#40;&quot;Received signature of length: %d, with algorithm: %s.%n&quot;, signResponse.getSignature&#40;&#41;.length,
      *     signResponse.getAlgorithm&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.sign#SignatureAlgorithm-byte-Context
-     * -->
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.sign#SignatureAlgorithm-byte-Context -->
      *
      * @param algorithm The algorithm to use for signing.
      * @param digest The content from which signature is to be created.
@@ -715,16 +694,15 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SignResult sign(SignatureAlgorithm algorithm, byte[] digest, Context context) {
-        if (!isValidKeyLocallyAvailable()) {
+        if (isLocalClientAvailable()) {
+            try {
+                return localKeyCryptographyClient.sign(algorithm, digest, context);
+            } catch (RuntimeException e) {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        } else {
             return implClient.sign(algorithm, digest, context);
         }
-
-        if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.SIGN)) {
-            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-                "Sign operation is not allowed for key with id: " + key.getId()));
-        }
-
-        return localKeyCryptographyClient.sign(algorithm, digest, key, context);
     }
 
     /**
@@ -744,8 +722,7 @@ public class CryptographyClient {
      * <p>Verifies the signature against the specified digest prints out the verification details when a response has
      * been received.</p>
      *
-     * <!-- src_embed
-     * com.azure.security.keyvault.keys.cryptography.CryptographyClient.verify#SignatureAlgorithm-byte-byte -->
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.verify#SignatureAlgorithm-byte-byte -->
      * <pre>
      * byte[] myData = new byte[100];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;myData&#41;;
@@ -758,8 +735,7 @@ public class CryptographyClient {
      *
      * System.out.printf&#40;&quot;Verification status: %s.%n&quot;, verifyResult.isValid&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.verify#SignatureAlgorithm-byte-byte
-     * -->
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.verify#SignatureAlgorithm-byte-byte -->
      *
      * @param algorithm The algorithm to use for signing.
      * @param digest The content from which signature was created.
@@ -793,8 +769,7 @@ public class CryptographyClient {
      * <p>Verifies the signature against the specified digest prints out the verification details when a response has
      * been received.</p>
      *
-     * <!-- src_embed
-     * com.azure.security.keyvault.keys.cryptography.CryptographyClient.verify#SignatureAlgorithm-byte-byte-Context -->
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.verify#SignatureAlgorithm-byte-byte-Context -->
      * <pre>
      * byte[] dataBytes = new byte[100];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;dataBytes&#41;;
@@ -808,8 +783,7 @@ public class CryptographyClient {
      *
      * System.out.printf&#40;&quot;Verification status: %s.%n&quot;, verifyResponse.isValid&#40;&#41;&#41;;
      * </pre>
-     * <!-- end
-     * com.azure.security.keyvault.keys.cryptography.CryptographyClient.verify#SignatureAlgorithm-byte-byte-Context -->
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.verify#SignatureAlgorithm-byte-byte-Context -->
      *
      * @param algorithm The algorithm to use for signing.
      * @param digest The content from which signature was created.
@@ -824,16 +798,15 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VerifyResult verify(SignatureAlgorithm algorithm, byte[] digest, byte[] signature, Context context) {
-        if (!isValidKeyLocallyAvailable()) {
+        if (isLocalClientAvailable()) {
+            try {
+                return localKeyCryptographyClient.verify(algorithm, digest, signature, context);
+            } catch (RuntimeException e) {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        } else {
             return implClient.verify(algorithm, digest, signature, context);
         }
-
-        if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.VERIFY)) {
-            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-                "Verify operation is not allowed for key with id: " + key.getId()));
-        }
-
-        return localKeyCryptographyClient.verify(algorithm, digest, signature, key, context);
     }
 
     /**
@@ -895,8 +868,7 @@ public class CryptographyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Wraps the key content prints out the wrapped key details when a response has been received.</p>
      *
-     * <!-- src_embed
-     * com.azure.security.keyvault.keys.cryptography.CryptographyClient.wrapKey#KeyWrapAlgorithm-byte-Context -->
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.wrapKey#KeyWrapAlgorithm-byte-Context -->
      * <pre>
      * byte[] keyToWrap = new byte[100];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;keyToWrap&#41;;
@@ -907,8 +879,7 @@ public class CryptographyClient {
      * System.out.printf&#40;&quot;Received encrypted key of length: %d, with algorithm: %s.%n&quot;,
      *     keyWrapResult.getEncryptedKey&#40;&#41;.length, keyWrapResult.getAlgorithm&#40;&#41;&#41;;
      * </pre>
-     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.wrapKey#KeyWrapAlgorithm-byte-Context
-     * -->
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.wrapKey#KeyWrapAlgorithm-byte-Context -->
      *
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param key The key content to be wrapped.
@@ -923,16 +894,15 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public WrapResult wrapKey(KeyWrapAlgorithm algorithm, byte[] key, Context context) {
-        if (!isValidKeyLocallyAvailable()) {
+        if (isLocalClientAvailable()) {
+            try {
+                return localKeyCryptographyClient.wrapKey(algorithm, key, context);
+            } catch (RuntimeException e) {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        } else {
             return implClient.wrapKey(algorithm, key, context);
         }
-
-        if (!checkKeyPermissions(this.key.getKeyOps(), KeyOperation.WRAP_KEY)) {
-            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-                "Wrap key operation is not allowed for key with id: " + this.key.getId()));
-        }
-
-        return localKeyCryptographyClient.wrapKey(algorithm, key, this.key, context);
     }
 
     /**
@@ -952,8 +922,7 @@ public class CryptographyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Unwraps the key content prints out the unwrapped key details when a response has been received.</p>
      *
-     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.unwrapKey#KeyWrapAlgorithm-byte
-     * -->
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.unwrapKey#KeyWrapAlgorithm-byte -->
      * <pre>
      * byte[] keyContent = new byte[100];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;keyContent&#41;;
@@ -999,8 +968,7 @@ public class CryptographyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Unwraps the key content prints out the unwrapped key details when a response has been received.</p>
      *
-     * <!-- src_embed
-     * com.azure.security.keyvault.keys.cryptography.CryptographyClient.unwrapKey#KeyWrapAlgorithm-byte-Context -->
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.unwrapKey#KeyWrapAlgorithm-byte-Context -->
      * <pre>
      * byte[] keyContentToWrap = new byte[100];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;keyContentToWrap&#41;;
@@ -1013,9 +981,7 @@ public class CryptographyClient {
      *
      * System.out.printf&#40;&quot;Received key of length %d&quot;, unwrapKeyResponse.getKey&#40;&#41;.length&#41;;
      * </pre>
-     * <!-- end
-     * com.azure.security.keyvault.keys.cryptography.CryptographyClient.unwrapKey#KeyWrapAlgorithm-byte-Context
-     * -->
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.unwrapKey#KeyWrapAlgorithm-byte-Context -->
      *
      * @param algorithm The encryption algorithm to use for wrapping the key.
      * @param encryptedKey The encrypted key content to unwrap.
@@ -1030,16 +996,15 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public UnwrapResult unwrapKey(KeyWrapAlgorithm algorithm, byte[] encryptedKey, Context context) {
-        if (!isValidKeyLocallyAvailable()) {
+        if (isLocalClientAvailable()) {
+            try {
+                return localKeyCryptographyClient.unwrapKey(algorithm, encryptedKey, context);
+            } catch (RuntimeException e) {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        } else {
             return implClient.unwrapKey(algorithm, encryptedKey, context);
         }
-
-        if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.UNWRAP_KEY)) {
-            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-                "Unwrap key operation is not allowed for key with id: " + key.getId()));
-        }
-
-        return localKeyCryptographyClient.unwrapKey(algorithm, encryptedKey, key, context);
     }
 
     /**
@@ -1057,10 +1022,9 @@ public class CryptographyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Signs the raw data prints out the signature details when a response has been received.</p>
      *
-     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.signData#SignatureAlgorithm-byte
-     * -->
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.signData#SignatureAlgorithm-byte -->
      * <pre>
-     * byte[] data = new byte[100];
+     * byte[] data = new byte[32];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;data&#41;;
      *
      * SignResult signResult = cryptographyClient.sign&#40;SignatureAlgorithm.ES256, data&#41;;
@@ -1099,10 +1063,9 @@ public class CryptographyClient {
      * <p><strong>Code Samples</strong></p>
      * <p>Signs the raw data prints out the signature details when a response has been received.</p>
      *
-     * <!-- src_embed
-     * com.azure.security.keyvault.keys.cryptography.CryptographyClient.signData#SignatureAlgorithm-byte-Context -->
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.signData#SignatureAlgorithm-byte-Context -->
      * <pre>
-     * byte[] plainTextData = new byte[100];
+     * byte[] plainTextData = new byte[32];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;plainTextData&#41;;
      *
      * SignResult signingResult = cryptographyClient.sign&#40;SignatureAlgorithm.ES256, plainTextData&#41;;
@@ -1110,8 +1073,7 @@ public class CryptographyClient {
      * System.out.printf&#40;&quot;Received signature of length: %d, with algorithm: %s.%n&quot;,
      *     signingResult.getSignature&#40;&#41;.length, new Context&#40;&quot;key1&quot;, &quot;value1&quot;&#41;&#41;;
      * </pre>
-     * <!-- end
-     * com.azure.security.keyvault.keys.cryptography.CryptographyClient.signData#SignatureAlgorithm-byte-Context -->
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.signData#SignatureAlgorithm-byte-Context -->
      *
      * @param algorithm The algorithm to use for signing.
      * @param data The content from which signature is to be created.
@@ -1125,16 +1087,15 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SignResult signData(SignatureAlgorithm algorithm, byte[] data, Context context) {
-        if (!isValidKeyLocallyAvailable()) {
+        if (isLocalClientAvailable()) {
+            try {
+                return localKeyCryptographyClient.signData(algorithm, data, context);
+            } catch (RuntimeException e) {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        } else {
             return implClient.signData(algorithm, data, context);
         }
-
-        if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.SIGN)) {
-            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-                "Sign operation is not allowed for key with id: %s" + key.getId()));
-        }
-
-        return localKeyCryptographyClient.signData(algorithm, data, key, context);
     }
 
     /**
@@ -1154,10 +1115,9 @@ public class CryptographyClient {
      * <p>Verifies the signature against the raw data prints out the verification details when a response has been
      * received.</p>
      *
-     * <!-- src_embed
-     * com.azure.security.keyvault.keys.cryptography.CryptographyClient.verifyData#SignatureAlgorithm-byte-byte -->
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.verifyData#SignatureAlgorithm-byte-byte -->
      * <pre>
-     * byte[] myData = new byte[100];
+     * byte[] myData = new byte[32];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;myData&#41;;
      *
      * &#47;&#47; A signature can be obtained from the SignResult returned by the CryptographyClient.sign&#40;&#41; operation.
@@ -1165,9 +1125,7 @@ public class CryptographyClient {
      *
      * System.out.printf&#40;&quot;Verification status: %s.%n&quot;, verifyResult.isValid&#40;&#41;&#41;;
      * </pre>
-     * <!-- end
-     * com.azure.security.keyvault.keys.cryptography.CryptographyClient.verifyData#SignatureAlgorithm-byte-byte
-     * -->
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.verifyData#SignatureAlgorithm-byte-byte -->
      *
      * @param algorithm The algorithm to use for signing.
      * @param data The raw content against which signature is to be verified.
@@ -1201,11 +1159,9 @@ public class CryptographyClient {
      * <p>Verifies the signature against the raw data prints out the verification details when a response has been
      * received.</p>
      *
-     * <!-- src_embed
-     * com.azure.security.keyvault.keys.cryptography.CryptographyClient.verifyData#SignatureAlgorithm-byte-byte-Context
-     * -->
+     * <!-- src_embed com.azure.security.keyvault.keys.cryptography.CryptographyClient.verifyData#SignatureAlgorithm-byte-byte-Context -->
      * <pre>
-     * byte[] dataToVerify = new byte[100];
+     * byte[] dataToVerify = new byte[32];
      * new Random&#40;0x1234567L&#41;.nextBytes&#40;dataToVerify&#41;;
      *
      * &#47;&#47; A signature can be obtained from the SignResult returned by the CryptographyClient.sign&#40;&#41; operation.
@@ -1214,9 +1170,7 @@ public class CryptographyClient {
      *
      * System.out.printf&#40;&quot;Verification status: %s.%n&quot;, verificationResult.isValid&#40;&#41;&#41;;
      * </pre>
-     * <!-- end
-     * com.azure.security.keyvault.keys.cryptography.CryptographyClient.verifyData#SignatureAlgorithm-byte-byte-Context
-     * -->
+     * <!-- end com.azure.security.keyvault.keys.cryptography.CryptographyClient.verifyData#SignatureAlgorithm-byte-byte-Context -->
      *
      * @param algorithm The algorithm to use for signing.
      * @param data The raw content against which signature is to be verified.
@@ -1231,47 +1185,62 @@ public class CryptographyClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public VerifyResult verifyData(SignatureAlgorithm algorithm, byte[] data, byte[] signature, Context context) {
-        if (!isValidKeyLocallyAvailable()) {
+        if (isLocalClientAvailable()) {
+            try {
+                return localKeyCryptographyClient.verifyData(algorithm, data, signature, context);
+            } catch (RuntimeException e) {
+                throw LOGGER.logExceptionAsError(e);
+            }
+        } else {
             return implClient.verifyData(algorithm, data, signature, context);
         }
-
-        if (!checkKeyPermissions(key.getKeyOps(), KeyOperation.VERIFY)) {
-            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-                "Verify operation is not allowed for key with id: " + key.getId()));
-        }
-
-        return localKeyCryptographyClient.verifyData(algorithm, data, signature, key, context);
-    }
-
-    private boolean isValidKeyLocallyAvailable() {
-        if (localOperationNotSupported) {
-            return false;
-        }
-
-        if (key == null && implClient.getKeyCollection() != null) {
-            key = CryptographyUtils.SECRETS_COLLECTION.equals(implClient.getKeyCollection())
-                ? getSecretKey() : getKey().getKey();
-        }
-
-        if (key == null || !key.isValid()) {
-            return false;
-        }
-
-        if (localKeyCryptographyClient == null) {
-            try {
-                localKeyCryptographyClient = initializeCryptoClient(key, implClient, LOGGER);
-            } catch (RuntimeException e) {
-                localOperationNotSupported = true;
-                LOGGER.warning("Defaulting to service use for cryptographic operations.", e);
-
-                return false;
-            }
-        }
-
-        return true;
     }
 
     String getVaultUrl() {
         return implClient.getVaultUrl();
+    }
+
+    private boolean isLocalClientAvailable() {
+        if (!attemptedToInitializeLocalClient) {
+            try {
+                localKeyCryptographyClient = retrieveJwkAndInitializeLocalClient();
+                attemptedToInitializeLocalClient = true;
+            } catch (Throwable t) {
+                if (isThrowableRetryable(t)) {
+                    LOGGER.log(LogLevel.VERBOSE, () -> "Could not set up local cryptography for this operation. "
+                        + "Defaulting to service-side cryptography.", t);
+                } else {
+                    attemptedToInitializeLocalClient = true;
+
+                    LOGGER.log(LogLevel.VERBOSE, () -> "Could not set up local cryptography. Defaulting to "
+                        + "service-side cryptography for all operations.", t);
+                }
+            }
+        }
+
+        return localKeyCryptographyClient != null;
+    }
+
+    private LocalKeyCryptographyClient retrieveJwkAndInitializeLocalClient() {
+        // Technically the collection portion of a key identifier should never be null/empty, but we still check for it.
+        if (!CoreUtils.isNullOrEmpty(implClient.getKeyCollection())) {
+            // Get the JWK from the service and validate it. Then attempt to create a local cryptography client or
+            // default to using service-side cryptography.
+            JsonWebKey jsonWebKey = CryptographyUtils.SECRETS_COLLECTION.equals(implClient.getKeyCollection())
+                ? implClient.getSecretKey()
+                : implClient.getKey(Context.NONE).getValue().getKey();
+
+            if (jsonWebKey == null) {
+                throw new IllegalStateException(
+                    "Could not retrieve JSON Web Key to perform local cryptographic operations.");
+            } else if (!jsonWebKey.isValid()) {
+                throw new IllegalStateException("The retrieved JSON Web Key is not valid.");
+            } else {
+                return initializeLocalClient(jsonWebKey, implClient);
+            }
+        } else {
+            // Couldn't/didn't create a local cryptography client.
+            throw new IllegalStateException("Could not create a local cryptography client.");
+        }
     }
 }

@@ -33,13 +33,15 @@ public final class RuleWebhookAction extends RuleAction {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> properties;
 
-    /** Creates an instance of RuleWebhookAction class. */
+    /**
+     * Creates an instance of RuleWebhookAction class.
+     */
     public RuleWebhookAction() {
     }
 
     /**
      * Get the serviceUri property: the service uri to Post the notification when the alert activates or resolves.
-     *
+     * 
      * @return the serviceUri value.
      */
     public String serviceUri() {
@@ -48,7 +50,7 @@ public final class RuleWebhookAction extends RuleAction {
 
     /**
      * Set the serviceUri property: the service uri to Post the notification when the alert activates or resolves.
-     *
+     * 
      * @param serviceUri the serviceUri value to set.
      * @return the RuleWebhookAction object itself.
      */
@@ -60,7 +62,7 @@ public final class RuleWebhookAction extends RuleAction {
     /**
      * Get the properties property: the dictionary of custom properties to include with the post operation. These data
      * are appended to the webhook payload.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, String> properties() {
@@ -70,7 +72,7 @@ public final class RuleWebhookAction extends RuleAction {
     /**
      * Set the properties property: the dictionary of custom properties to include with the post operation. These data
      * are appended to the webhook payload.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the RuleWebhookAction object itself.
      */
@@ -81,7 +83,7 @@ public final class RuleWebhookAction extends RuleAction {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

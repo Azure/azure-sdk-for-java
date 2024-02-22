@@ -80,7 +80,6 @@ public class ByteBufferCollectorTests {
             Arguments.of(Arrays.asList(helloBuffer.duplicate(), worldBuffer.duplicate()), helloWorldBytes),
 
             // Many hello world buffers.
-            Arguments.of(manyHelloWorldsByteBuffers, manyHelloWorldsBytes)
-        );
+            Arguments.of(manyHelloWorldsByteBuffers, manyHelloWorldsBytes));
     }
 }

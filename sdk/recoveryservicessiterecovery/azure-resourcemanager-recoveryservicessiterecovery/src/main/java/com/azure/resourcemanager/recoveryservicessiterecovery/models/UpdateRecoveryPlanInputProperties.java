@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Recovery plan update properties. */
+/**
+ * Recovery plan update properties.
+ */
 @Fluent
 public final class UpdateRecoveryPlanInputProperties {
     /*
@@ -17,13 +19,15 @@ public final class UpdateRecoveryPlanInputProperties {
     @JsonProperty(value = "groups")
     private List<RecoveryPlanGroup> groups;
 
-    /** Creates an instance of UpdateRecoveryPlanInputProperties class. */
+    /**
+     * Creates an instance of UpdateRecoveryPlanInputProperties class.
+     */
     public UpdateRecoveryPlanInputProperties() {
     }
 
     /**
      * Get the groups property: The recovery plan groups.
-     *
+     * 
      * @return the groups value.
      */
     public List<RecoveryPlanGroup> groups() {
@@ -32,7 +36,7 @@ public final class UpdateRecoveryPlanInputProperties {
 
     /**
      * Set the groups property: The recovery plan groups.
-     *
+     * 
      * @param groups the groups value to set.
      * @return the UpdateRecoveryPlanInputProperties object itself.
      */
@@ -43,7 +47,7 @@ public final class UpdateRecoveryPlanInputProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

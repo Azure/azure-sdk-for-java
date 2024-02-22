@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class RunAsAccountTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RunAsAccount model =
-            BinaryData
-                .fromString("{\"accountId\":\"iploisjkzsoxznnt\",\"accountName\":\"kvyohpsap\"}")
-                .toObject(RunAsAccount.class);
+        RunAsAccount model = BinaryData.fromString("{\"accountId\":\"iploisjkzsoxznnt\",\"accountName\":\"kvyohpsap\"}")
+            .toObject(RunAsAccount.class);
         Assertions.assertEquals("iploisjkzsoxznnt", model.accountId());
         Assertions.assertEquals("kvyohpsap", model.accountName());
     }

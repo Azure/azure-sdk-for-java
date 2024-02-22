@@ -4,10 +4,12 @@
 
 package com.azure.communication.jobrouter;
 
+import com.azure.core.util.ServiceVersion;
+
 /**
  * Service version of JobRouterClient.
  */
-public enum JobRouterServiceVersion implements com.azure.core.util.ServiceVersion {
+public enum JobRouterServiceVersion implements ServiceVersion {
     /**
      * Enum value 2023-11-01.
      */

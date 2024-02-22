@@ -51,8 +51,8 @@ public class JacksonAdapter implements SerializerAdapter {
     private static boolean useAccessHelper;
 
     static {
-        useAccessHelper = Boolean.parseBoolean(Configuration.getGlobalConfiguration()
-            .get("AZURE_JACKSON_ADAPTER_USE_ACCESS_HELPER"));
+        useAccessHelper = Boolean
+            .parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_JACKSON_ADAPTER_USE_ACCESS_HELPER"));
     }
 
     // Enum Singleton Pattern
@@ -123,8 +123,8 @@ public class JacksonAdapter implements SerializerAdapter {
     public JacksonAdapter(BiConsumer<ObjectMapper, ObjectMapper> configureSerialization) {
         Objects.requireNonNull(configureSerialization, "'configureSerialization' cannot be null.");
         this.headerMapper = ObjectMapperShim.createHeaderMapper();
-        this.mapper = ObjectMapperShim.createJsonMapper(ObjectMapperShim.createSimpleMapper(),
-            (outerMapper, innerMapper) -> captureRawMappersAndConfigure(outerMapper, innerMapper, configureSerialization));
+        this.mapper = ObjectMapperShim.createJsonMapper(ObjectMapperShim.createSimpleMapper(), (outerMapper,
+            innerMapper) -> captureRawMappersAndConfigure(outerMapper, innerMapper, configureSerialization));
     }
 
     /**
@@ -355,8 +355,7 @@ public class JacksonAdapter implements SerializerAdapter {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T deserialize(InputStream inputStream, final Type type, SerializerEncoding encoding)
-        throws IOException {
+    public <T> T deserialize(InputStream inputStream, final Type type, SerializerEncoding encoding) throws IOException {
         if (inputStream == null) {
             return null;
         }
@@ -396,7 +395,7 @@ public class JacksonAdapter implements SerializerAdapter {
         return outputStream.toByteArray();
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private static Object deserializeText(String value, Type type) throws IOException {
         if (type == String.class || type == CharSequence.class) {
             return value;
@@ -467,8 +466,8 @@ public class JacksonAdapter implements SerializerAdapter {
     private static Object useAccessHelper(IOExceptionCallable serializationCall) throws IOException {
         if (useAccessHelper) {
             try {
-                return java.security.AccessController.doPrivileged((PrivilegedExceptionAction<Object>)
-                    serializationCall::call);
+                return java.security.AccessController
+                    .doPrivileged((PrivilegedExceptionAction<Object>) serializationCall::call);
             } catch (PrivilegedActionException ex) {
                 Throwable cause = ex.getCause();
                 // If the privileged call failed due to an IOException unwrap it.

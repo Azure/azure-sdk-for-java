@@ -41,8 +41,8 @@ public final class JsonProviders {
         // But this choice here provides additional flexibility in managed environments that control
         // classloading differently (OSGi, Spring and others) and don't depend on the
         // System classloader to load HttpClientProvider classes.
-        ServiceLoader<JsonProvider> serviceLoader = ServiceLoader.load(JsonProvider.class,
-            JsonProvider.class.getClassLoader());
+        ServiceLoader<JsonProvider> serviceLoader
+            = ServiceLoader.load(JsonProvider.class, JsonProvider.class.getClassLoader());
         // Use the first provider found in the service loader iterator.
         List<String> implementationNames = new ArrayList<>();
         Iterator<JsonProvider> it = serviceLoader.iterator();

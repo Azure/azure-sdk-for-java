@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.LogicalNetworkProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Logical network data model. */
+/**
+ * Logical network data model.
+ */
 @Fluent
 public final class LogicalNetworkInner extends ProxyResource {
     /*
@@ -24,13 +26,15 @@ public final class LogicalNetworkInner extends ProxyResource {
     @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of LogicalNetworkInner class. */
+    /**
+     * Creates an instance of LogicalNetworkInner class.
+     */
     public LogicalNetworkInner() {
     }
 
     /**
      * Get the properties property: The Logical Network Properties.
-     *
+     * 
      * @return the properties value.
      */
     public LogicalNetworkProperties properties() {
@@ -39,7 +43,7 @@ public final class LogicalNetworkInner extends ProxyResource {
 
     /**
      * Set the properties property: The Logical Network Properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the LogicalNetworkInner object itself.
      */
@@ -50,7 +54,7 @@ public final class LogicalNetworkInner extends ProxyResource {
 
     /**
      * Get the location property: Resource Location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -59,7 +63,7 @@ public final class LogicalNetworkInner extends ProxyResource {
 
     /**
      * Set the location property: Resource Location.
-     *
+     * 
      * @param location the location value to set.
      * @return the LogicalNetworkInner object itself.
      */
@@ -70,7 +74,7 @@ public final class LogicalNetworkInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

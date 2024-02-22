@@ -21,6 +21,8 @@ class PartitionMetadataSpec extends UnitSpec {
     None,
     UUID.randomUUID().toString,
     useGatewayMode = false,
+    proactiveConnectionInitialization = None,
+    proactiveConnectionInitializationDurationInSeconds = 120,
     httpConnectionPoolSize = 1000,
     useEventualConsistency = true,
     enableClientTelemetry = false,
@@ -30,7 +32,7 @@ class PartitionMetadataSpec extends UnitSpec {
     subscriptionId = None,
     tenantId = None,
     resourceGroupName = None,
-    azureEnvironment = AzureEnvironment.AZURE,
+    azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
     sparkEnvironmentInfo = ""
   )
 
@@ -62,6 +64,8 @@ class PartitionMetadataSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      proactiveConnectionInitialization = None,
+      proactiveConnectionInitializationDurationInSeconds = 120,
       httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
@@ -71,7 +75,7 @@ class PartitionMetadataSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE,
+      azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
       sparkEnvironmentInfo = ""
     )
 
@@ -142,6 +146,8 @@ class PartitionMetadataSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      proactiveConnectionInitialization = None,
+      proactiveConnectionInitializationDurationInSeconds = 120,
       httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
@@ -151,7 +157,7 @@ class PartitionMetadataSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE,
+      azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
       sparkEnvironmentInfo = ""
     )
 
@@ -222,6 +228,8 @@ class PartitionMetadataSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      proactiveConnectionInitialization = None,
+      proactiveConnectionInitializationDurationInSeconds = 120,
       httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
@@ -231,7 +239,7 @@ class PartitionMetadataSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE,
+      azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
       sparkEnvironmentInfo = ""
     )
 
@@ -284,6 +292,8 @@ class PartitionMetadataSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      proactiveConnectionInitialization = None,
+      proactiveConnectionInitializationDurationInSeconds = 120,
       httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
@@ -293,7 +303,7 @@ class PartitionMetadataSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE,
+      azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
       sparkEnvironmentInfo = ""
     )
 
@@ -341,6 +351,8 @@ class PartitionMetadataSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      proactiveConnectionInitialization = None,
+      proactiveConnectionInitializationDurationInSeconds = 120,
       httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
@@ -350,7 +362,7 @@ class PartitionMetadataSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE,
+      azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
       sparkEnvironmentInfo = ""
     )
 
@@ -392,6 +404,8 @@ class PartitionMetadataSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      proactiveConnectionInitialization = None,
+      proactiveConnectionInitializationDurationInSeconds = 120,
       httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
@@ -401,7 +415,7 @@ class PartitionMetadataSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE,
+      azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
       sparkEnvironmentInfo = ""
     )
 
@@ -443,6 +457,8 @@ class PartitionMetadataSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      proactiveConnectionInitialization = None,
+      proactiveConnectionInitializationDurationInSeconds = 120,
       httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
@@ -452,7 +468,7 @@ class PartitionMetadataSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE,
+      azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
       sparkEnvironmentInfo = ""
     )
 
@@ -494,6 +510,8 @@ class PartitionMetadataSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      proactiveConnectionInitialization = None,
+      proactiveConnectionInitializationDurationInSeconds = 120,
       httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
@@ -503,7 +521,7 @@ class PartitionMetadataSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE,
+      azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
       sparkEnvironmentInfo = ""
     )
 
@@ -545,6 +563,8 @@ class PartitionMetadataSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      proactiveConnectionInitialization = None,
+      proactiveConnectionInitializationDurationInSeconds = 120,
       httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
@@ -554,7 +574,7 @@ class PartitionMetadataSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE,
+      azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
       sparkEnvironmentInfo = ""
     )
 
@@ -596,6 +616,8 @@ class PartitionMetadataSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      proactiveConnectionInitialization = None,
+      proactiveConnectionInitializationDurationInSeconds = 120,
       httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
@@ -605,7 +627,7 @@ class PartitionMetadataSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE,
+      azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
       sparkEnvironmentInfo = ""
     )
 
@@ -664,6 +686,8 @@ class PartitionMetadataSpec extends UnitSpec {
       None,
       UUID.randomUUID().toString,
       useGatewayMode = false,
+      proactiveConnectionInitialization = None,
+      proactiveConnectionInitializationDurationInSeconds = 120,
       httpConnectionPoolSize = 1000,
       useEventualConsistency = true,
       enableClientTelemetry = false,
@@ -673,7 +697,7 @@ class PartitionMetadataSpec extends UnitSpec {
       subscriptionId = None,
       tenantId = None,
       resourceGroupName = None,
-      azureEnvironment = AzureEnvironment.AZURE,
+      azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
       sparkEnvironmentInfo = ""
     )
 

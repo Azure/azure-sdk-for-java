@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class HyperVReplicaBluePolicyInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HyperVReplicaBluePolicyInput model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"HyperVReplica2012R2\",\"replicationFrequencyInSeconds\":635322642,\"recoveryPoints\":1923596622,\"applicationConsistentSnapshotFrequencyInHours\":1537790283,\"compression\":\"nrholhujb\",\"initialReplicationMethod\":\"xiplkysolsyj\",\"onlineReplicationStartTime\":\"xslwhd\",\"offlineReplicationImportPath\":\"vhtbbzjhfvh\",\"offlineReplicationExportPath\":\"zb\",\"replicationPort\":1668972402,\"allowedAuthenticationType\":1931538005,\"replicaDeletion\":\"ihotjecohmxv\"}")
-                .toObject(HyperVReplicaBluePolicyInput.class);
+        HyperVReplicaBluePolicyInput model = BinaryData.fromString(
+            "{\"instanceType\":\"HyperVReplica2012R2\",\"replicationFrequencyInSeconds\":635322642,\"recoveryPoints\":1923596622,\"applicationConsistentSnapshotFrequencyInHours\":1537790283,\"compression\":\"nrholhujb\",\"initialReplicationMethod\":\"xiplkysolsyj\",\"onlineReplicationStartTime\":\"xslwhd\",\"offlineReplicationImportPath\":\"vhtbbzjhfvh\",\"offlineReplicationExportPath\":\"zb\",\"replicationPort\":1668972402,\"allowedAuthenticationType\":1931538005,\"replicaDeletion\":\"ihotjecohmxv\"}")
+            .toObject(HyperVReplicaBluePolicyInput.class);
         Assertions.assertEquals(1923596622, model.recoveryPoints());
         Assertions.assertEquals(1537790283, model.applicationConsistentSnapshotFrequencyInHours());
         Assertions.assertEquals("nrholhujb", model.compression());
@@ -31,19 +29,12 @@ public final class HyperVReplicaBluePolicyInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HyperVReplicaBluePolicyInput model =
-            new HyperVReplicaBluePolicyInput()
-                .withRecoveryPoints(1923596622)
-                .withApplicationConsistentSnapshotFrequencyInHours(1537790283)
-                .withCompression("nrholhujb")
-                .withInitialReplicationMethod("xiplkysolsyj")
-                .withOnlineReplicationStartTime("xslwhd")
-                .withOfflineReplicationImportPath("vhtbbzjhfvh")
-                .withOfflineReplicationExportPath("zb")
-                .withReplicationPort(1668972402)
-                .withAllowedAuthenticationType(1931538005)
-                .withReplicaDeletion("ihotjecohmxv")
-                .withReplicationFrequencyInSeconds(635322642);
+        HyperVReplicaBluePolicyInput model = new HyperVReplicaBluePolicyInput().withRecoveryPoints(1923596622)
+            .withApplicationConsistentSnapshotFrequencyInHours(1537790283).withCompression("nrholhujb")
+            .withInitialReplicationMethod("xiplkysolsyj").withOnlineReplicationStartTime("xslwhd")
+            .withOfflineReplicationImportPath("vhtbbzjhfvh").withOfflineReplicationExportPath("zb")
+            .withReplicationPort(1668972402).withAllowedAuthenticationType(1931538005)
+            .withReplicaDeletion("ihotjecohmxv").withReplicationFrequencyInSeconds(635322642);
         model = BinaryData.fromObject(model).toObject(HyperVReplicaBluePolicyInput.class);
         Assertions.assertEquals(1923596622, model.recoveryPoints());
         Assertions.assertEquals(1537790283, model.applicationConsistentSnapshotFrequencyInHours());

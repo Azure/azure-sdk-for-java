@@ -122,8 +122,10 @@ public final class GeoPosition implements JsonSerializable<GeoPosition> {
         switch (index) {
             case 0:
                 return longitude;
+
             case 1:
                 return latitude;
+
             case 2:
                 if (altitude == null) {
                     throw LOGGER.logExceptionAsError(new IndexOutOfBoundsException("Index out of range: " + index));
@@ -166,9 +168,7 @@ public final class GeoPosition implements JsonSerializable<GeoPosition> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartArray()
-            .writeDouble(longitude)
-            .writeDouble(latitude);
+        jsonWriter.writeStartArray().writeDouble(longitude).writeDouble(latitude);
 
         if (altitude != null) {
             jsonWriter.writeDouble(altitude);
