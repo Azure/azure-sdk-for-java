@@ -1338,10 +1338,10 @@ public final class OpenAIClient {
     public Response<BinaryData> generateSpeechFromTextWithResponse(String deploymentOrModelName,
         BinaryData speechGenerationOptions, RequestOptions requestOptions) {
         return openAIServiceClient != null
-                ? this.openAIServiceClient.generateSpeechFromTextWithResponse(deploymentOrModelName,
+            ? this.openAIServiceClient.generateSpeechFromTextWithResponse(deploymentOrModelName,
                 speechGenerationOptions, requestOptions)
-                : this.serviceClient.generateSpeechFromTextWithResponse(deploymentOrModelName,
-                speechGenerationOptions, requestOptions);
+            : this.serviceClient.generateSpeechFromTextWithResponse(deploymentOrModelName, speechGenerationOptions,
+                requestOptions);
     }
 
     /**
