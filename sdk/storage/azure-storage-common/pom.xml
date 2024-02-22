@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-common</artifactId>
-  <version>12.25.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+  <version>12.24.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
 
   <name>Microsoft Azure common module for Storage</name>
   <description>This module contains common code based for all Microsoft Azure Storage client libraries.</description>
@@ -46,19 +46,19 @@
       --add-reads com.azure.storage.common=ALL-UNNAMED
       --add-reads com.azure.storage.common=java.desktop
     </javaModulesSurefireArgLine>
-    <parallelizeLiveTests>concurrent</parallelizeLiveTests>
+    <parallelizeLiveTests>true</parallelizeLiveTests>
   </properties>
 
   <dependencies>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core</artifactId>
-      <version>1.46.0</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
+      <version>1.45.1</version> <!-- {x-version-update;com.azure:azure-core;dependency} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-netty</artifactId>
-      <version>1.14.0</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
+      <version>1.13.11</version> <!-- {x-version-update;com.azure:azure-core-http-netty;dependency} -->
     </dependency>
 
     <dependency>
@@ -80,13 +80,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-test</artifactId>
-      <version>1.23.0</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
+      <version>1.22.1</version> <!-- {x-version-update;com.azure:azure-core-test;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.11.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.11.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
@@ -116,20 +116,13 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
-      <version>1.11.18</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
+      <version>1.11.17</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.spockframework</groupId>
       <artifactId>spock-core</artifactId>
       <version>2.4-M1-groovy-4.0</version> <!-- {x-version-update;org.spockframework:spock-core;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <!--The Groovy version that Spock Core brings in (4.0.6) does not support Java 21, so we need to override it with a version that does.-->
-    <dependency>
-      <groupId>org.apache.groovy</groupId>
-      <artifactId>groovy</artifactId>
-      <version>4.0.15</version> <!-- {x-version-update;org.apache.groovy:groovy;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -205,7 +198,7 @@
       <plugin>
         <groupId>org.codehaus.gmavenplus</groupId>
         <artifactId>gmavenplus-plugin</artifactId>
-        <version>3.0.2</version> <!-- {x-version-update;org.codehaus.gmavenplus:gmavenplus-plugin;external_dependency} -->
+        <version>2.1.0</version> <!-- {x-version-update;org.codehaus.gmavenplus:gmavenplus-plugin;external_dependency} -->
         <executions>
           <execution>
             <goals>
