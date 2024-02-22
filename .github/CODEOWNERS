@@ -208,7 +208,7 @@
 # AzureSdkOwners: @alzimmermsft
 # ServiceLabel: %Azure.Core
 # PRLabel: %Azure.Core
-/sdk/serialization/                                  @alzimmermsft
+/sdk/serialization/                                  @alzimmermsft @srnagar
 
 # AzureSdkOwners: @anuchandy
 # ServiceLabel: %Service Bus

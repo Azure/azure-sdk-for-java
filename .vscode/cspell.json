@@ -127,12 +127,10 @@
     "sdk/core/azure-core-serializer-json-gson/**",
     "sdk/core/azure-core-serializer-json-jackson/**",
     "sdk/core/azure-core-management/**",
-    "sdk/core/azure-xml/**",
     "sdk/cosmos/azure-cosmos-dotnet-benchmark/**",
     "sdk/core/azure-core-tracing-opentelemetry/**",
     "sdk/core/azure-core-tracing-opentelemetry-samples/**",
     "sdk/cosmos/azure-cosmos-benchmark/**",
-    "sdk/core/azure-json-gson/**",
     "sdk/cosmos/azure-cosmos-spark_3-1_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-2_2-12/**",
     "sdk/cosmos/azure-cosmos-spark_3-3_2-12/**",
@@ -142,7 +140,6 @@
     "sdk/cosmos/azure-cosmos-spark_3_2-12/**",
     "sdk/spring/azure-spring-data-cosmos/**",
     "sdk/cosmos/azure-cosmos-kafka-connect/**",
-    "sdk/core/azure-json/**",
     "sdk/deviceupdate/azure-iot-deviceupdate/**",
     "sdk/e2e/src/**",
     "sdk/eventgrid/azure-messaging-eventgrid-cloudnative-cloudevents/**",
@@ -216,7 +213,10 @@
     "sdk/maps/azure-maps-timezone/**",
     "sdk/search/.idea/**",
     "sdk/devcenter/azure-developer-devcenter/**",
-    "sdk/loadtesting/azure-developer-loadtesting/**"
+    "sdk/loadtesting/azure-developer-loadtesting/**",
+    "sdk/serialization/azure-json-gson/**",
+    "sdk/serialization/azure-json/**",
+    "sdk/serialization/azure-xml/**"
   ],
   "words": [
     "adal",
