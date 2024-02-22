@@ -10,11 +10,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.ApplianceRe
 public final class ApplianceResourceDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplianceResourceDetails model =
-            BinaryData
-                .fromString(
-                    "{\"capacity\":7882439676090099182,\"processUtilization\":40.0101712180558,\"totalUtilization\":83.56402796641234,\"status\":\"efgybpmfbfununmp\"}")
-                .toObject(ApplianceResourceDetails.class);
+        ApplianceResourceDetails model = BinaryData.fromString(
+            "{\"capacity\":7882439676090099182,\"processUtilization\":40.0101712180558,\"totalUtilization\":83.56402796641234,\"status\":\"efgybpmfbfununmp\"}")
+            .toObject(ApplianceResourceDetails.class);
     }
 
     @org.junit.jupiter.api.Test

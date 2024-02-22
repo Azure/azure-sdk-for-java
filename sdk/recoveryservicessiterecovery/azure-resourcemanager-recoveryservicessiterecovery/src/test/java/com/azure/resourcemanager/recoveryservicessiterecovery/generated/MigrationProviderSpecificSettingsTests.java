@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.MigrationPr
 public final class MigrationProviderSpecificSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrationProviderSpecificSettings model =
-            BinaryData
-                .fromString("{\"instanceType\":\"MigrationProviderSpecificSettings\"}")
+        MigrationProviderSpecificSettings model
+            = BinaryData.fromString("{\"instanceType\":\"MigrationProviderSpecificSettings\"}")
                 .toObject(MigrationProviderSpecificSettings.class);
     }
 

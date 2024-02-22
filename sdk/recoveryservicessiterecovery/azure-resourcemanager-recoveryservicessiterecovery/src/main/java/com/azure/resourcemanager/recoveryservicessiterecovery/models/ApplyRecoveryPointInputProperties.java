@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Input properties to apply recovery point. */
+/**
+ * Input properties to apply recovery point.
+ */
 @Fluent
 public final class ApplyRecoveryPointInputProperties {
     /*
@@ -23,13 +25,15 @@ public final class ApplyRecoveryPointInputProperties {
     @JsonProperty(value = "providerSpecificDetails", required = true)
     private ApplyRecoveryPointProviderSpecificInput providerSpecificDetails;
 
-    /** Creates an instance of ApplyRecoveryPointInputProperties class. */
+    /**
+     * Creates an instance of ApplyRecoveryPointInputProperties class.
+     */
     public ApplyRecoveryPointInputProperties() {
     }
 
     /**
      * Get the recoveryPointId property: The recovery point Id.
-     *
+     * 
      * @return the recoveryPointId value.
      */
     public String recoveryPointId() {
@@ -38,7 +42,7 @@ public final class ApplyRecoveryPointInputProperties {
 
     /**
      * Set the recoveryPointId property: The recovery point Id.
-     *
+     * 
      * @param recoveryPointId the recoveryPointId value to set.
      * @return the ApplyRecoveryPointInputProperties object itself.
      */
@@ -49,7 +53,7 @@ public final class ApplyRecoveryPointInputProperties {
 
     /**
      * Get the providerSpecificDetails property: Provider specific input for applying recovery point.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public ApplyRecoveryPointProviderSpecificInput providerSpecificDetails() {
@@ -58,28 +62,25 @@ public final class ApplyRecoveryPointInputProperties {
 
     /**
      * Set the providerSpecificDetails property: Provider specific input for applying recovery point.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the ApplyRecoveryPointInputProperties object itself.
      */
-    public ApplyRecoveryPointInputProperties withProviderSpecificDetails(
-        ApplyRecoveryPointProviderSpecificInput providerSpecificDetails) {
+    public ApplyRecoveryPointInputProperties
+        withProviderSpecificDetails(ApplyRecoveryPointProviderSpecificInput providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (providerSpecificDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property providerSpecificDetails in model"
-                            + " ApplyRecoveryPointInputProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property providerSpecificDetails in model ApplyRecoveryPointInputProperties"));
         } else {
             providerSpecificDetails().validate();
         }

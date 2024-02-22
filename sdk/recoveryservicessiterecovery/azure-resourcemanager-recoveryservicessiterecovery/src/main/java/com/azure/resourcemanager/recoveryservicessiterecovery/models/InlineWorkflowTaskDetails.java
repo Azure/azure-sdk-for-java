@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** This class represents the inline workflow task details. */
+/**
+ * This class represents the inline workflow task details.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InlineWorkflowTaskDetails")
 @Fluent
@@ -21,13 +23,15 @@ public final class InlineWorkflowTaskDetails extends GroupTaskDetails {
     @JsonProperty(value = "workflowIds")
     private List<String> workflowIds;
 
-    /** Creates an instance of InlineWorkflowTaskDetails class. */
+    /**
+     * Creates an instance of InlineWorkflowTaskDetails class.
+     */
     public InlineWorkflowTaskDetails() {
     }
 
     /**
      * Get the workflowIds property: The list of child workflow ids.
-     *
+     * 
      * @return the workflowIds value.
      */
     public List<String> workflowIds() {
@@ -36,7 +40,7 @@ public final class InlineWorkflowTaskDetails extends GroupTaskDetails {
 
     /**
      * Set the workflowIds property: The list of child workflow ids.
-     *
+     * 
      * @param workflowIds the workflowIds value to set.
      * @return the InlineWorkflowTaskDetails object itself.
      */
@@ -45,7 +49,9 @@ public final class InlineWorkflowTaskDetails extends GroupTaskDetails {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InlineWorkflowTaskDetails withChildTasks(List<AsrTask> childTasks) {
         super.withChildTasks(childTasks);
@@ -54,7 +60,7 @@ public final class InlineWorkflowTaskDetails extends GroupTaskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

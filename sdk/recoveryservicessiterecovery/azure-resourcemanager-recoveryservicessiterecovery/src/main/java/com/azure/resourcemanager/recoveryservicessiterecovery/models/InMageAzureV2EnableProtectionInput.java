@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** VMware Azure specific enable protection input. */
+/**
+ * VMware Azure specific enable protection input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMageAzureV2")
 @Fluent
@@ -178,13 +180,15 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> targetNicTags;
 
-    /** Creates an instance of InMageAzureV2EnableProtectionInput class. */
+    /**
+     * Creates an instance of InMageAzureV2EnableProtectionInput class.
+     */
     public InMageAzureV2EnableProtectionInput() {
     }
 
     /**
      * Get the masterTargetId property: The Master target Id.
-     *
+     * 
      * @return the masterTargetId value.
      */
     public String masterTargetId() {
@@ -193,7 +197,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Set the masterTargetId property: The Master target Id.
-     *
+     * 
      * @param masterTargetId the masterTargetId value to set.
      * @return the InMageAzureV2EnableProtectionInput object itself.
      */
@@ -204,7 +208,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Get the processServerId property: The Process Server Id.
-     *
+     * 
      * @return the processServerId value.
      */
     public String processServerId() {
@@ -213,7 +217,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Set the processServerId property: The Process Server Id.
-     *
+     * 
      * @param processServerId the processServerId value to set.
      * @return the InMageAzureV2EnableProtectionInput object itself.
      */
@@ -224,7 +228,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Get the storageAccountId property: The storage account Id.
-     *
+     * 
      * @return the storageAccountId value.
      */
     public String storageAccountId() {
@@ -233,7 +237,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Set the storageAccountId property: The storage account Id.
-     *
+     * 
      * @param storageAccountId the storageAccountId value to set.
      * @return the InMageAzureV2EnableProtectionInput object itself.
      */
@@ -244,7 +248,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Get the runAsAccountId property: The CS account Id.
-     *
+     * 
      * @return the runAsAccountId value.
      */
     public String runAsAccountId() {
@@ -253,7 +257,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Set the runAsAccountId property: The CS account Id.
-     *
+     * 
      * @param runAsAccountId the runAsAccountId value to set.
      * @return the InMageAzureV2EnableProtectionInput object itself.
      */
@@ -264,7 +268,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Get the multiVmGroupId property: The multi VM group Id.
-     *
+     * 
      * @return the multiVmGroupId value.
      */
     public String multiVmGroupId() {
@@ -273,7 +277,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Set the multiVmGroupId property: The multi VM group Id.
-     *
+     * 
      * @param multiVmGroupId the multiVmGroupId value to set.
      * @return the InMageAzureV2EnableProtectionInput object itself.
      */
@@ -284,7 +288,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Get the multiVmGroupName property: The multi VM group name.
-     *
+     * 
      * @return the multiVmGroupName value.
      */
     public String multiVmGroupName() {
@@ -293,7 +297,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Set the multiVmGroupName property: The multi VM group name.
-     *
+     * 
      * @param multiVmGroupName the multiVmGroupName value to set.
      * @return the InMageAzureV2EnableProtectionInput object itself.
      */
@@ -304,7 +308,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Get the disksToInclude property: The disks to include list.
-     *
+     * 
      * @return the disksToInclude value.
      */
     public List<InMageAzureV2DiskInputDetails> disksToInclude() {
@@ -313,7 +317,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Set the disksToInclude property: The disks to include list.
-     *
+     * 
      * @param disksToInclude the disksToInclude value to set.
      * @return the InMageAzureV2EnableProtectionInput object itself.
      */
@@ -324,7 +328,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Get the targetAzureNetworkId property: The selected target Azure network Id.
-     *
+     * 
      * @return the targetAzureNetworkId value.
      */
     public String targetAzureNetworkId() {
@@ -333,7 +337,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Set the targetAzureNetworkId property: The selected target Azure network Id.
-     *
+     * 
      * @param targetAzureNetworkId the targetAzureNetworkId value to set.
      * @return the InMageAzureV2EnableProtectionInput object itself.
      */
@@ -344,7 +348,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Get the targetAzureSubnetId property: The selected target Azure subnet Id.
-     *
+     * 
      * @return the targetAzureSubnetId value.
      */
     public String targetAzureSubnetId() {
@@ -353,7 +357,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Set the targetAzureSubnetId property: The selected target Azure subnet Id.
-     *
+     * 
      * @param targetAzureSubnetId the targetAzureSubnetId value to set.
      * @return the InMageAzureV2EnableProtectionInput object itself.
      */
@@ -365,7 +369,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
     /**
      * Get the enableRdpOnTargetOption property: The selected option to enable RDP\SSH on target VM after failover.
      * String value of SrsDataContract.EnableRDPOnTargetOption enum.
-     *
+     * 
      * @return the enableRdpOnTargetOption value.
      */
     public String enableRdpOnTargetOption() {
@@ -375,7 +379,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
     /**
      * Set the enableRdpOnTargetOption property: The selected option to enable RDP\SSH on target VM after failover.
      * String value of SrsDataContract.EnableRDPOnTargetOption enum.
-     *
+     * 
      * @param enableRdpOnTargetOption the enableRdpOnTargetOption value to set.
      * @return the InMageAzureV2EnableProtectionInput object itself.
      */
@@ -386,7 +390,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Get the targetAzureVmName property: The target azure VM Name.
-     *
+     * 
      * @return the targetAzureVmName value.
      */
     public String targetAzureVmName() {
@@ -395,7 +399,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Set the targetAzureVmName property: The target azure VM Name.
-     *
+     * 
      * @param targetAzureVmName the targetAzureVmName value to set.
      * @return the InMageAzureV2EnableProtectionInput object itself.
      */
@@ -406,7 +410,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Get the logStorageAccountId property: The storage account to be used for logging during replication.
-     *
+     * 
      * @return the logStorageAccountId value.
      */
     public String logStorageAccountId() {
@@ -415,7 +419,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Set the logStorageAccountId property: The storage account to be used for logging during replication.
-     *
+     * 
      * @param logStorageAccountId the logStorageAccountId value to set.
      * @return the InMageAzureV2EnableProtectionInput object itself.
      */
@@ -427,7 +431,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
     /**
      * Get the targetAzureV1ResourceGroupId property: The Id of the target resource group (for classic deployment) in
      * which the failover VM is to be created.
-     *
+     * 
      * @return the targetAzureV1ResourceGroupId value.
      */
     public String targetAzureV1ResourceGroupId() {
@@ -437,7 +441,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
     /**
      * Set the targetAzureV1ResourceGroupId property: The Id of the target resource group (for classic deployment) in
      * which the failover VM is to be created.
-     *
+     * 
      * @param targetAzureV1ResourceGroupId the targetAzureV1ResourceGroupId value to set.
      * @return the InMageAzureV2EnableProtectionInput object itself.
      */
@@ -449,7 +453,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
     /**
      * Get the targetAzureV2ResourceGroupId property: The Id of the target resource group (for resource manager
      * deployment) in which the failover VM is to be created.
-     *
+     * 
      * @return the targetAzureV2ResourceGroupId value.
      */
     public String targetAzureV2ResourceGroupId() {
@@ -459,7 +463,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
     /**
      * Set the targetAzureV2ResourceGroupId property: The Id of the target resource group (for resource manager
      * deployment) in which the failover VM is to be created.
-     *
+     * 
      * @param targetAzureV2ResourceGroupId the targetAzureV2ResourceGroupId value to set.
      * @return the InMageAzureV2EnableProtectionInput object itself.
      */
@@ -470,7 +474,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Get the diskType property: The DiskType.
-     *
+     * 
      * @return the diskType value.
      */
     public DiskAccountType diskType() {
@@ -479,7 +483,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Set the diskType property: The DiskType.
-     *
+     * 
      * @param diskType the diskType value to set.
      * @return the InMageAzureV2EnableProtectionInput object itself.
      */
@@ -490,7 +494,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Get the targetAvailabilitySetId property: The target availability set ARM Id for resource manager deployment.
-     *
+     * 
      * @return the targetAvailabilitySetId value.
      */
     public String targetAvailabilitySetId() {
@@ -499,7 +503,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Set the targetAvailabilitySetId property: The target availability set ARM Id for resource manager deployment.
-     *
+     * 
      * @param targetAvailabilitySetId the targetAvailabilitySetId value to set.
      * @return the InMageAzureV2EnableProtectionInput object itself.
      */
@@ -510,7 +514,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Get the targetAvailabilityZone property: The target availability zone.
-     *
+     * 
      * @return the targetAvailabilityZone value.
      */
     public String targetAvailabilityZone() {
@@ -519,7 +523,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Set the targetAvailabilityZone property: The target availability zone.
-     *
+     * 
      * @param targetAvailabilityZone the targetAvailabilityZone value to set.
      * @return the InMageAzureV2EnableProtectionInput object itself.
      */
@@ -530,7 +534,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Get the targetProximityPlacementGroupId property: The proximity placement group ARM Id.
-     *
+     * 
      * @return the targetProximityPlacementGroupId value.
      */
     public String targetProximityPlacementGroupId() {
@@ -539,19 +543,19 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Set the targetProximityPlacementGroupId property: The proximity placement group ARM Id.
-     *
+     * 
      * @param targetProximityPlacementGroupId the targetProximityPlacementGroupId value to set.
      * @return the InMageAzureV2EnableProtectionInput object itself.
      */
-    public InMageAzureV2EnableProtectionInput withTargetProximityPlacementGroupId(
-        String targetProximityPlacementGroupId) {
+    public InMageAzureV2EnableProtectionInput
+        withTargetProximityPlacementGroupId(String targetProximityPlacementGroupId) {
         this.targetProximityPlacementGroupId = targetProximityPlacementGroupId;
         return this;
     }
 
     /**
      * Get the licenseType property: License type.
-     *
+     * 
      * @return the licenseType value.
      */
     public LicenseType licenseType() {
@@ -560,7 +564,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Set the licenseType property: License type.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the InMageAzureV2EnableProtectionInput object itself.
      */
@@ -571,7 +575,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Get the sqlServerLicenseType property: The SQL Server license type.
-     *
+     * 
      * @return the sqlServerLicenseType value.
      */
     public SqlServerLicenseType sqlServerLicenseType() {
@@ -580,7 +584,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Set the sqlServerLicenseType property: The SQL Server license type.
-     *
+     * 
      * @param sqlServerLicenseType the sqlServerLicenseType value to set.
      * @return the InMageAzureV2EnableProtectionInput object itself.
      */
@@ -591,7 +595,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Get the targetVmSize property: The target VM size.
-     *
+     * 
      * @return the targetVmSize value.
      */
     public String targetVmSize() {
@@ -600,7 +604,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Set the targetVmSize property: The target VM size.
-     *
+     * 
      * @param targetVmSize the targetVmSize value to set.
      * @return the InMageAzureV2EnableProtectionInput object itself.
      */
@@ -611,7 +615,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Get the diskEncryptionSetId property: The DiskEncryptionSet ARM Id.
-     *
+     * 
      * @return the diskEncryptionSetId value.
      */
     public String diskEncryptionSetId() {
@@ -620,7 +624,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Set the diskEncryptionSetId property: The DiskEncryptionSet ARM Id.
-     *
+     * 
      * @param diskEncryptionSetId the diskEncryptionSetId value to set.
      * @return the InMageAzureV2EnableProtectionInput object itself.
      */
@@ -631,7 +635,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Get the targetVmTags property: The target VM tags.
-     *
+     * 
      * @return the targetVmTags value.
      */
     public Map<String, String> targetVmTags() {
@@ -640,7 +644,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Set the targetVmTags property: The target VM tags.
-     *
+     * 
      * @param targetVmTags the targetVmTags value to set.
      * @return the InMageAzureV2EnableProtectionInput object itself.
      */
@@ -651,7 +655,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Get the seedManagedDiskTags property: The tags for the seed managed disks.
-     *
+     * 
      * @return the seedManagedDiskTags value.
      */
     public Map<String, String> seedManagedDiskTags() {
@@ -660,7 +664,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Set the seedManagedDiskTags property: The tags for the seed managed disks.
-     *
+     * 
      * @param seedManagedDiskTags the seedManagedDiskTags value to set.
      * @return the InMageAzureV2EnableProtectionInput object itself.
      */
@@ -671,7 +675,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Get the targetManagedDiskTags property: The tags for the target managed disks.
-     *
+     * 
      * @return the targetManagedDiskTags value.
      */
     public Map<String, String> targetManagedDiskTags() {
@@ -680,7 +684,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Set the targetManagedDiskTags property: The tags for the target managed disks.
-     *
+     * 
      * @param targetManagedDiskTags the targetManagedDiskTags value to set.
      * @return the InMageAzureV2EnableProtectionInput object itself.
      */
@@ -691,7 +695,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Get the targetNicTags property: The tags for the target NICs.
-     *
+     * 
      * @return the targetNicTags value.
      */
     public Map<String, String> targetNicTags() {
@@ -700,7 +704,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Set the targetNicTags property: The tags for the target NICs.
-     *
+     * 
      * @param targetNicTags the targetNicTags value to set.
      * @return the InMageAzureV2EnableProtectionInput object itself.
      */
@@ -711,7 +715,7 @@ public final class InMageAzureV2EnableProtectionInput extends EnableProtectionPr
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

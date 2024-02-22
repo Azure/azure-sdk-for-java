@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** InMageRcm provider specific input to update replication protected item. */
+/**
+ * InMageRcm provider specific input to update replication protected item.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMageRcm")
 @Fluent
@@ -81,13 +83,15 @@ public final class InMageRcmUpdateReplicationProtectedItemInput extends UpdateRe
     @JsonProperty(value = "licenseType")
     private LicenseType licenseType;
 
-    /** Creates an instance of InMageRcmUpdateReplicationProtectedItemInput class. */
+    /**
+     * Creates an instance of InMageRcmUpdateReplicationProtectedItemInput class.
+     */
     public InMageRcmUpdateReplicationProtectedItemInput() {
     }
 
     /**
      * Get the targetVmName property: The target VM name.
-     *
+     * 
      * @return the targetVmName value.
      */
     public String targetVmName() {
@@ -96,7 +100,7 @@ public final class InMageRcmUpdateReplicationProtectedItemInput extends UpdateRe
 
     /**
      * Set the targetVmName property: The target VM name.
-     *
+     * 
      * @param targetVmName the targetVmName value to set.
      * @return the InMageRcmUpdateReplicationProtectedItemInput object itself.
      */
@@ -107,7 +111,7 @@ public final class InMageRcmUpdateReplicationProtectedItemInput extends UpdateRe
 
     /**
      * Get the targetVmSize property: The target VM size.
-     *
+     * 
      * @return the targetVmSize value.
      */
     public String targetVmSize() {
@@ -116,7 +120,7 @@ public final class InMageRcmUpdateReplicationProtectedItemInput extends UpdateRe
 
     /**
      * Set the targetVmSize property: The target VM size.
-     *
+     * 
      * @param targetVmSize the targetVmSize value to set.
      * @return the InMageRcmUpdateReplicationProtectedItemInput object itself.
      */
@@ -127,7 +131,7 @@ public final class InMageRcmUpdateReplicationProtectedItemInput extends UpdateRe
 
     /**
      * Get the targetResourceGroupId property: The target resource group ARM Id.
-     *
+     * 
      * @return the targetResourceGroupId value.
      */
     public String targetResourceGroupId() {
@@ -136,7 +140,7 @@ public final class InMageRcmUpdateReplicationProtectedItemInput extends UpdateRe
 
     /**
      * Set the targetResourceGroupId property: The target resource group ARM Id.
-     *
+     * 
      * @param targetResourceGroupId the targetResourceGroupId value to set.
      * @return the InMageRcmUpdateReplicationProtectedItemInput object itself.
      */
@@ -147,7 +151,7 @@ public final class InMageRcmUpdateReplicationProtectedItemInput extends UpdateRe
 
     /**
      * Get the targetAvailabilitySetId property: The target availability set ARM Id.
-     *
+     * 
      * @return the targetAvailabilitySetId value.
      */
     public String targetAvailabilitySetId() {
@@ -156,7 +160,7 @@ public final class InMageRcmUpdateReplicationProtectedItemInput extends UpdateRe
 
     /**
      * Set the targetAvailabilitySetId property: The target availability set ARM Id.
-     *
+     * 
      * @param targetAvailabilitySetId the targetAvailabilitySetId value to set.
      * @return the InMageRcmUpdateReplicationProtectedItemInput object itself.
      */
@@ -167,7 +171,7 @@ public final class InMageRcmUpdateReplicationProtectedItemInput extends UpdateRe
 
     /**
      * Get the targetAvailabilityZone property: The target availability zone.
-     *
+     * 
      * @return the targetAvailabilityZone value.
      */
     public String targetAvailabilityZone() {
@@ -176,7 +180,7 @@ public final class InMageRcmUpdateReplicationProtectedItemInput extends UpdateRe
 
     /**
      * Set the targetAvailabilityZone property: The target availability zone.
-     *
+     * 
      * @param targetAvailabilityZone the targetAvailabilityZone value to set.
      * @return the InMageRcmUpdateReplicationProtectedItemInput object itself.
      */
@@ -187,7 +191,7 @@ public final class InMageRcmUpdateReplicationProtectedItemInput extends UpdateRe
 
     /**
      * Get the targetProximityPlacementGroupId property: The target proximity placement group Id.
-     *
+     * 
      * @return the targetProximityPlacementGroupId value.
      */
     public String targetProximityPlacementGroupId() {
@@ -196,19 +200,19 @@ public final class InMageRcmUpdateReplicationProtectedItemInput extends UpdateRe
 
     /**
      * Set the targetProximityPlacementGroupId property: The target proximity placement group Id.
-     *
+     * 
      * @param targetProximityPlacementGroupId the targetProximityPlacementGroupId value to set.
      * @return the InMageRcmUpdateReplicationProtectedItemInput object itself.
      */
-    public InMageRcmUpdateReplicationProtectedItemInput withTargetProximityPlacementGroupId(
-        String targetProximityPlacementGroupId) {
+    public InMageRcmUpdateReplicationProtectedItemInput
+        withTargetProximityPlacementGroupId(String targetProximityPlacementGroupId) {
         this.targetProximityPlacementGroupId = targetProximityPlacementGroupId;
         return this;
     }
 
     /**
      * Get the targetBootDiagnosticsStorageAccountId property: The target boot diagnostics storage account ARM Id.
-     *
+     * 
      * @return the targetBootDiagnosticsStorageAccountId value.
      */
     public String targetBootDiagnosticsStorageAccountId() {
@@ -217,19 +221,19 @@ public final class InMageRcmUpdateReplicationProtectedItemInput extends UpdateRe
 
     /**
      * Set the targetBootDiagnosticsStorageAccountId property: The target boot diagnostics storage account ARM Id.
-     *
+     * 
      * @param targetBootDiagnosticsStorageAccountId the targetBootDiagnosticsStorageAccountId value to set.
      * @return the InMageRcmUpdateReplicationProtectedItemInput object itself.
      */
-    public InMageRcmUpdateReplicationProtectedItemInput withTargetBootDiagnosticsStorageAccountId(
-        String targetBootDiagnosticsStorageAccountId) {
+    public InMageRcmUpdateReplicationProtectedItemInput
+        withTargetBootDiagnosticsStorageAccountId(String targetBootDiagnosticsStorageAccountId) {
         this.targetBootDiagnosticsStorageAccountId = targetBootDiagnosticsStorageAccountId;
         return this;
     }
 
     /**
      * Get the targetNetworkId property: The target network ARM Id.
-     *
+     * 
      * @return the targetNetworkId value.
      */
     public String targetNetworkId() {
@@ -238,7 +242,7 @@ public final class InMageRcmUpdateReplicationProtectedItemInput extends UpdateRe
 
     /**
      * Set the targetNetworkId property: The target network ARM Id.
-     *
+     * 
      * @param targetNetworkId the targetNetworkId value to set.
      * @return the InMageRcmUpdateReplicationProtectedItemInput object itself.
      */
@@ -249,7 +253,7 @@ public final class InMageRcmUpdateReplicationProtectedItemInput extends UpdateRe
 
     /**
      * Get the testNetworkId property: The test network ARM Id.
-     *
+     * 
      * @return the testNetworkId value.
      */
     public String testNetworkId() {
@@ -258,7 +262,7 @@ public final class InMageRcmUpdateReplicationProtectedItemInput extends UpdateRe
 
     /**
      * Set the testNetworkId property: The test network ARM Id.
-     *
+     * 
      * @param testNetworkId the testNetworkId value to set.
      * @return the InMageRcmUpdateReplicationProtectedItemInput object itself.
      */
@@ -269,7 +273,7 @@ public final class InMageRcmUpdateReplicationProtectedItemInput extends UpdateRe
 
     /**
      * Get the vmNics property: The list of NIC details.
-     *
+     * 
      * @return the vmNics value.
      */
     public List<InMageRcmNicInput> vmNics() {
@@ -278,7 +282,7 @@ public final class InMageRcmUpdateReplicationProtectedItemInput extends UpdateRe
 
     /**
      * Set the vmNics property: The list of NIC details.
-     *
+     * 
      * @param vmNics the vmNics value to set.
      * @return the InMageRcmUpdateReplicationProtectedItemInput object itself.
      */
@@ -289,7 +293,7 @@ public final class InMageRcmUpdateReplicationProtectedItemInput extends UpdateRe
 
     /**
      * Get the licenseType property: The license type.
-     *
+     * 
      * @return the licenseType value.
      */
     public LicenseType licenseType() {
@@ -298,7 +302,7 @@ public final class InMageRcmUpdateReplicationProtectedItemInput extends UpdateRe
 
     /**
      * Set the licenseType property: The license type.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the InMageRcmUpdateReplicationProtectedItemInput object itself.
      */
@@ -309,7 +313,7 @@ public final class InMageRcmUpdateReplicationProtectedItemInput extends UpdateRe
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

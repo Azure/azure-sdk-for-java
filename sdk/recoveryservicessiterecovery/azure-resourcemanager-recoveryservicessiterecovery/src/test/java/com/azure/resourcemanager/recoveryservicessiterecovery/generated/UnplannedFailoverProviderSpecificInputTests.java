@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.UnplannedFa
 public final class UnplannedFailoverProviderSpecificInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UnplannedFailoverProviderSpecificInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"UnplannedFailoverProviderSpecificInput\"}")
+        UnplannedFailoverProviderSpecificInput model
+            = BinaryData.fromString("{\"instanceType\":\"UnplannedFailoverProviderSpecificInput\"}")
                 .toObject(UnplannedFailoverProviderSpecificInput.class);
     }
 
