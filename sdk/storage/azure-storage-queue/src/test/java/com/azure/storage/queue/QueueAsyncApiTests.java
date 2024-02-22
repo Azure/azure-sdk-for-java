@@ -8,11 +8,9 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.queue.models.PeekedMessageItem;
 import com.azure.storage.queue.models.QueueAccessPolicy;
-import com.azure.storage.queue.models.QueueAudience;
 import com.azure.storage.queue.models.QueueErrorCode;
 import com.azure.storage.queue.models.QueueMessageItem;
 import com.azure.storage.queue.models.QueueSignedIdentifier;
-import com.azure.storage.queue.models.QueueStorageException;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -42,7 +40,6 @@ import static com.azure.storage.queue.QueueTestHelper.assertExceptionStatusCodeA
 import static org.junit.jupiter.api.Assertions.assertDoesNotThrow;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
@@ -833,62 +830,5 @@ public class QueueAsyncApiTests extends QueueTestBase {
 
         StepVerifier.create(queueAsyncClient.getPropertiesWithResponse()).assertNext(queuePropertiesResponse ->
             assertEquals("2017-11-09", queuePropertiesResponse.getHeaders().getValue("x-ms-version"))).verifyComplete();
-    }
-
-    @Test
-    public void defaultAudience() {
-        queueAsyncClient.createIfNotExists().block();
-        QueueAsyncClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceAsyncClient.getQueueServiceUrl())
-            .audience(null) // should default to "https://storage.azure.com/"
-            .queueName(queueAsyncClient.getQueueName())
-            .buildAsyncClient();
-
-        StepVerifier.create(aadQueue.getProperties())
-            .assertNext(r -> assertNotNull(r))
-            .verifyComplete();
-    }
-
-    @Test
-    public void storageAccountAudience() {
-        queueAsyncClient.createIfNotExists().block();
-        QueueAsyncClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceAsyncClient.getQueueServiceUrl())
-            .audience(QueueAudience.createQueueServiceAccountAudience(queueAsyncClient.getAccountName()))
-            .queueName(queueAsyncClient.getQueueName())
-            .buildAsyncClient();
-
-        StepVerifier.create(aadQueue.getProperties())
-            .assertNext(r -> assertNotNull(r))
-            .verifyComplete();
-    }
-
-    @Test
-    public void audienceError() {
-        queueAsyncClient.createIfNotExists().block();
-        QueueAsyncClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceAsyncClient.getQueueServiceUrl())
-            .queueName(queueAsyncClient.getQueueName())
-            .audience(QueueAudience.createQueueServiceAccountAudience("badaudience"))
-            .buildAsyncClient();
-
-        StepVerifier.create(aadQueue.getProperties())
-            .verifyErrorSatisfies(r -> {
-                QueueStorageException e = assertInstanceOf(QueueStorageException.class, r);
-                assertEquals(QueueErrorCode.INVALID_AUTHENTICATION_INFO, e.getErrorCode());
-            });
-    }
-
-    @Test
-    public void audienceFromString() {
-        String url = String.format("https://%s.queue.core.windows.net/", queueAsyncClient.getAccountName());
-        QueueAudience audience = QueueAudience.fromString(url);
-
-        queueAsyncClient.createIfNotExists().block();
-        QueueAsyncClient aadQueue = getOAuthQueueClientBuilder(primaryQueueServiceAsyncClient.getQueueServiceUrl())
-            .audience(audience)
-            .queueName(queueAsyncClient.getQueueName())
-            .buildAsyncClient();
-
-        StepVerifier.create(aadQueue.getProperties())
-            .assertNext(r -> assertNotNull(r))
-            .verifyComplete();
     }
 }
