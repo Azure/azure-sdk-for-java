@@ -18,9 +18,9 @@ public abstract class XmlWriter implements AutoCloseable {
     }
 
     /**
-     * Writes the XML document start ({@code <?xml version="1.0" encoding="utf-8?>}).
+     * Writes the XML document start ({@code <?xml version="1.0" encoding="UTF-8">}).
      * <p>
-     * This uses the default version and encoding which are {@code 1.0} and {@code utf-8} respectively. If a different
+     * This uses the default version and encoding which are {@code 1.0} and {@code UTF-8} respectively. If a different
      * version or encoding is required use {@link #writeStartDocument(String, String)} which allows for specifying
      * those values.
      *
@@ -28,14 +28,14 @@ public abstract class XmlWriter implements AutoCloseable {
      * @throws XMLStreamException If the XML start document cannot be written.
      */
     public final XmlWriter writeStartDocument() throws XMLStreamException {
-        return writeStartDocument("1.0", "utf-8");
+        return writeStartDocument("1.0", "UTF-8");
     }
 
     /**
-     * Writes the XML document start ({@code <?xml version="1.0" encoding="utf-8?>}).
+     * Writes the XML document start ({@code <?xml version="1.0" encoding="utf-8">}).
      * <p>
      * Both {@code version} and {@code encoding} are optional and if they aren't passed their default values will be
-     * used. For {@code version} the default is {@code 1.0} and for {@code encoding} the default is {@code utf-8}.
+     * used. For {@code version} the default is {@code 1.0} and for {@code encoding} the default is {@code UTF-8}.
      *
      * @param version XML document version.
      * @param encoding XML document encoding.
