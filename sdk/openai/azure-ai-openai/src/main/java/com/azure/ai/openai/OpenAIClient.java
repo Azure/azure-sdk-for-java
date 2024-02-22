@@ -7,6 +7,7 @@ import static com.azure.ai.openai.implementation.AudioTranscriptionValidator.val
 import static com.azure.ai.openai.implementation.AudioTranscriptionValidator.validateAudioResponseFormatForTranscriptionText;
 import static com.azure.ai.openai.implementation.AudioTranslationValidator.validateAudioResponseFormatForTranslation;
 import static com.azure.ai.openai.implementation.AudioTranslationValidator.validateAudioResponseFormatForTranslationText;
+import static com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl.addModelIdJson;
 
 import com.azure.ai.openai.implementation.CompletionsUtils;
 import com.azure.ai.openai.implementation.MultipartDataHelper;
@@ -43,6 +44,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
 import java.nio.ByteBuffer;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 import reactor.core.publisher.Flux;
 
 /**
@@ -1337,11 +1340,18 @@ public final class OpenAIClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> generateSpeechFromTextWithResponse(String deploymentOrModelName,
         BinaryData speechGenerationOptions, RequestOptions requestOptions) {
+        BinaryData speechGenerationOptionsWithModelId = null;
+        try {
+            speechGenerationOptionsWithModelId = addModelIdJson(speechGenerationOptions, deploymentOrModelName);
+        } catch (JsonProcessingException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
+        }
+
         return openAIServiceClient != null
-            ? this.openAIServiceClient.generateSpeechFromTextWithResponse(deploymentOrModelName,
-                speechGenerationOptions, requestOptions)
-            : this.serviceClient.generateSpeechFromTextWithResponse(deploymentOrModelName, speechGenerationOptions,
-                requestOptions);
+            ? this.openAIServiceClient.generateSpeechFromTextWithResponse(
+                speechGenerationOptionsWithModelId, requestOptions)
+            : this.serviceClient.generateSpeechFromTextWithResponse(deploymentOrModelName,
+                speechGenerationOptionsWithModelId, requestOptions);
     }
 
     /**

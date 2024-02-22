@@ -7,6 +7,7 @@ import static com.azure.ai.openai.implementation.AudioTranscriptionValidator.val
 import static com.azure.ai.openai.implementation.AudioTranscriptionValidator.validateAudioResponseFormatForTranscriptionText;
 import static com.azure.ai.openai.implementation.AudioTranslationValidator.validateAudioResponseFormatForTranslation;
 import static com.azure.ai.openai.implementation.AudioTranslationValidator.validateAudioResponseFormatForTranslationText;
+import static com.azure.ai.openai.implementation.NonAzureOpenAIClientImpl.addModelIdJson;
 import static com.azure.core.util.FluxUtil.monoError;
 
 import com.azure.ai.openai.implementation.CompletionsUtils;
@@ -44,6 +45,8 @@ import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import java.nio.ByteBuffer;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -1387,11 +1390,18 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> generateSpeechFromTextWithResponse(String deploymentOrModelName,
         BinaryData speechGenerationOptions, RequestOptions requestOptions) {
-        return this.openAIServiceClient != null
-            ? this.openAIServiceClient.generateSpeechFromTextWithResponseAsync(deploymentOrModelName,
-                speechGenerationOptions, requestOptions)
-            : this.serviceClient.generateSpeechFromTextWithResponseAsync(deploymentOrModelName, speechGenerationOptions,
-                requestOptions);
+
+        // modelId is part of the request body in nonAzure OpenAI
+        try {
+            BinaryData speechGenerationOptionsWithModelId = addModelIdJson(speechGenerationOptions, deploymentOrModelName);
+            return this.openAIServiceClient != null
+                    ? this.openAIServiceClient.generateSpeechFromTextWithResponseAsync(deploymentOrModelName,
+                    speechGenerationOptionsWithModelId, requestOptions)
+                    : this.serviceClient.generateSpeechFromTextWithResponseAsync(deploymentOrModelName, speechGenerationOptionsWithModelId,
+                    requestOptions);
+        } catch (JsonProcessingException e) {
+            return Mono.error(e);
+        }
     }
 
     /**
