@@ -116,7 +116,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
     public void upload2() throws NoSuchAlgorithmException {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#InputStream-long-BlobHttpHeaders-Map-AccessTier-byte-BlobRequestConditions-Duration-Context
         BlobHttpHeaders headers = new BlobHttpHeaders()
-            .setContentMd5(MessageDigest.getInstance("MD5").digest("data".getBytes(StandardCharsets.UTF_8)))
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
             .setContentLanguage("en-US")
             .setContentType("binary");
 
@@ -145,7 +145,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
     public void upload3() throws NoSuchAlgorithmException {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadWithResponse#BlockBlobSimpleUploadOptions-Duration-Context
         BlobHttpHeaders headers = new BlobHttpHeaders()
-            .setContentMd5(MessageDigest.getInstance("MD5").digest("data".getBytes(StandardCharsets.UTF_8)))
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
             .setContentLanguage("en-US")
             .setContentType("binary");
 
@@ -197,7 +197,7 @@ public class BlockBlobClientJavaDocCodeSnippets {
     public void uploadFromUrlWithResponse() throws NoSuchAlgorithmException {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromUrlWithResponse#BlobUploadFromUrlOptions-Duration-Context
         BlobHttpHeaders headers = new BlobHttpHeaders()
-            .setContentMd5(MessageDigest.getInstance("MD5").digest("data".getBytes(StandardCharsets.UTF_8)))
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
             .setContentLanguage("en-US")
             .setContentType("binary");
 
@@ -382,10 +382,10 @@ public class BlockBlobClientJavaDocCodeSnippets {
     /**
      * Code snippet for {@link BlockBlobClient#commitBlockListWithResponse(List, BlobHttpHeaders, Map, AccessTier, BlobRequestConditions, Duration, Context)}
      */
-    public void commitBlockList2() throws NoSuchAlgorithmException {
+    public void commitBlockList2() {
         // BEGIN: com.azure.storage.blob.specialized.BlockBlobClient.uploadFromFile#List-BlobHttpHeaders-Map-AccessTier-BlobRequestConditions-Duration-Context
         BlobHttpHeaders headers = new BlobHttpHeaders()
-            .setContentMd5(MessageDigest.getInstance("MD5").digest("data".getBytes(StandardCharsets.UTF_8)))
+            .setContentMd5("data".getBytes(StandardCharsets.UTF_8))
             .setContentLanguage("en-US")
             .setContentType("binary");
 

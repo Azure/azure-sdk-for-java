@@ -18,9 +18,9 @@ import com.azure.storage.blob.specialized.PageBlobClient;
 import com.azure.storage.blob.specialized.SpecializedBlobClientBuilder;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.extensions.LiveOnly;
-import com.azure.storage.common.test.shared.extensions.RequiredServiceVersion;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.condition.DisabledIf;
+import org.junit.jupiter.api.condition.EnabledIf;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -36,7 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
-@LiveOnly
+@EnabledIf("com.azure.storage.blob.BlobTestBase#isLiveMode")
 public class BlobOutputStreamTests extends BlobTestBase {
     private static final int FOUR_MB = 4 * Constants.MB;
 
@@ -201,7 +201,7 @@ public class BlobOutputStreamTests extends BlobTestBase {
         TestUtils.assertArraysEqual(convertInputStreamToByteArray(appendBlobClient.openInputStream()), data);
     }
 
-    @RequiredServiceVersion(clazz = BlobServiceVersion.class, min = "2022-11-02")
+    @DisabledIf("com.azure.storage.blob.BlobTestBase#olderThan20221102ServiceVersion")
     @Test
     public void appendBlobOutputStreamHighThroughput() throws IOException {
         // using data greater than 4MB and service versions above 2022_11_02 to test uploading up to 100MB per block
