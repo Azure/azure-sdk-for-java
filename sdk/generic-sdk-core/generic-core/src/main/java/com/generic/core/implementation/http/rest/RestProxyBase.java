@@ -28,6 +28,7 @@ import com.generic.core.util.serializer.ObjectSerializer;
 import com.generic.json.JsonSerializable;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.net.URL;
@@ -82,7 +83,7 @@ public abstract class RestProxyBase {
 
             return invoke(proxy, method, options, errorOptions, requestCallback, methodParser, request);
         } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new RuntimeException(e));
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
     }
 

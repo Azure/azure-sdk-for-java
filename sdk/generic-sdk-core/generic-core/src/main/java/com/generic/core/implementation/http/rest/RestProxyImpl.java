@@ -18,6 +18,7 @@ import com.generic.json.JsonSerializable;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -127,7 +128,7 @@ public class RestProxyImpl extends RestProxyBase {
                 try {
                     response.getSourceResponse().close();
                 } catch (IOException e) {
-                    LOGGER.logThrowableAsError(new RuntimeException(e));
+                    throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
                 }
 
                 return createResponse(response, entityType, null);
@@ -207,7 +208,7 @@ public class RestProxyImpl extends RestProxyBase {
             try {
                 expectedResponse.close();
             } catch (IOException e) {
-                LOGGER.logThrowableAsError(new RuntimeException(e));
+                throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
             }
 
             result = null;

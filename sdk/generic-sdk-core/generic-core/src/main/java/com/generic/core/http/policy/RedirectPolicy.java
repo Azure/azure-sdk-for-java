@@ -11,6 +11,7 @@ import com.generic.core.models.HeaderName;
 import com.generic.core.util.ClientLogger;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
@@ -72,7 +73,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
         try {
             redirectResponse.close();
         } catch (IOException e) {
-            LOGGER.logThrowableAsError(new RuntimeException(e));
+            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
 
         return redirectRequestCopy;
