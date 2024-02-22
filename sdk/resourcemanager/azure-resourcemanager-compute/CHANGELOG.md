@@ -2,13 +2,11 @@
 
 ## 2.36.0-beta.1 (Unreleased)
 
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
 ### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of GalleryRP to `2023-07-03`.
 
 ## 2.35.0 (2024-01-26)
 

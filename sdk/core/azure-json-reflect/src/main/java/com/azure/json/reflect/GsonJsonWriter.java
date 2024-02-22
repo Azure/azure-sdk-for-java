@@ -65,23 +65,50 @@ final class GsonJsonWriter extends JsonWriter {
         try {
             Class<?> gsonJsonWriterClass = Class.forName("com.google.gson.stream.JsonWriter");
 
-            MethodHandle gsonWriterConstructor = lookup.findConstructor(gsonJsonWriterClass, methodType(void.class, Writer.class));
-            jsonWriterConstructor = (JsonWriterConstructor) LambdaMetafactory.metafactory(lookup, "createJsonWriter", methodType(JsonWriterConstructor.class), methodType(Object.class, Writer.class), gsonWriterConstructor, gsonWriterConstructor.type()).getTarget().invoke();
+            MethodHandle gsonWriterConstructor
+                = lookup.findConstructor(gsonJsonWriterClass, methodType(void.class, Writer.class));
+            jsonWriterConstructor = (JsonWriterConstructor) LambdaMetafactory
+                .metafactory(lookup, "createJsonWriter", methodType(JsonWriterConstructor.class),
+                    methodType(Object.class, Writer.class), gsonWriterConstructor, gsonWriterConstructor.type())
+                .getTarget()
+                .invoke();
 
-            jsonWriterSetLenient = createMetaFactory("setLenient", gsonJsonWriterClass, methodType(void.class, boolean.class), JsonWriterSetLenient.class, methodType(void.class, Object.class, boolean.class), lookup);
-            jsonWriterClose = createMetaFactory("close", gsonJsonWriterClass, methodType(void.class), JsonWriterClose.class, methodType(void.class, Object.class), lookup);
-            jsonWriterFlush = createMetaFactory("flush", gsonJsonWriterClass, methodType(void.class), JsonWriterFlush.class, methodType(void.class, Object.class), lookup);
-            jsonWriterBeginObject = createMetaFactory("beginObject", gsonJsonWriterClass, methodType(gsonJsonWriterClass), JsonWriterBeginObject.class, methodType(Object.class, Object.class), lookup);
-            jsonWriterEndObject = createMetaFactory("endObject", gsonJsonWriterClass, methodType(gsonJsonWriterClass), JsonWriterEndObject.class, methodType(Object.class, Object.class), lookup);
-            jsonWriterBeginArray = createMetaFactory("beginArray", gsonJsonWriterClass, methodType(gsonJsonWriterClass), JsonWriterBeginArray.class, methodType(Object.class, Object.class), lookup);
-            jsonWriterEndArray = createMetaFactory("endArray", gsonJsonWriterClass, methodType(gsonJsonWriterClass), JsonWriterEndArray.class, methodType(Object.class, Object.class), lookup);
-            jsonWriterNullValue = createMetaFactory("nullValue", gsonJsonWriterClass, methodType(gsonJsonWriterClass), JsonWriterNullValue.class, methodType(Object.class, Object.class), lookup);
-            jsonWriterName = createMetaFactory("name", gsonJsonWriterClass, methodType(gsonJsonWriterClass, String.class), JsonWriterName.class, methodType(Object.class, Object.class, String.class), lookup);
-            jsonWriterStringValue = createMetaFactory("value", gsonJsonWriterClass, methodType(gsonJsonWriterClass, String.class), JsonWriterStringValue.class, methodType(Object.class, Object.class, String.class), lookup);
-            jsonWriterBooleanValue = createMetaFactory("value", gsonJsonWriterClass, methodType(gsonJsonWriterClass, boolean.class), JsonWriterBooleanValue.class, methodType(Object.class, Object.class, boolean.class), lookup);
-            jsonWriterLongValue = createMetaFactory("value", gsonJsonWriterClass, methodType(gsonJsonWriterClass, long.class), JsonWriterLongValue.class, methodType(Object.class, Object.class, long.class), lookup);
-            jsonWriterDoubleValue = createMetaFactory("value", gsonJsonWriterClass, methodType(gsonJsonWriterClass, double.class), JsonWriterDoubleValue.class, methodType(Object.class, Object.class, double.class), lookup);
-            jsonWriterRawValue = createMetaFactory("jsonValue", gsonJsonWriterClass, methodType(gsonJsonWriterClass, String.class), JsonWriterRawValue.class, methodType(Object.class, Object.class, String.class), lookup);
+            jsonWriterSetLenient
+                = createMetaFactory("setLenient", gsonJsonWriterClass, methodType(void.class, boolean.class),
+                    JsonWriterSetLenient.class, methodType(void.class, Object.class, boolean.class), lookup);
+            jsonWriterClose = createMetaFactory("close", gsonJsonWriterClass, methodType(void.class),
+                JsonWriterClose.class, methodType(void.class, Object.class), lookup);
+            jsonWriterFlush = createMetaFactory("flush", gsonJsonWriterClass, methodType(void.class),
+                JsonWriterFlush.class, methodType(void.class, Object.class), lookup);
+            jsonWriterBeginObject
+                = createMetaFactory("beginObject", gsonJsonWriterClass, methodType(gsonJsonWriterClass),
+                    JsonWriterBeginObject.class, methodType(Object.class, Object.class), lookup);
+            jsonWriterEndObject = createMetaFactory("endObject", gsonJsonWriterClass, methodType(gsonJsonWriterClass),
+                JsonWriterEndObject.class, methodType(Object.class, Object.class), lookup);
+            jsonWriterBeginArray = createMetaFactory("beginArray", gsonJsonWriterClass, methodType(gsonJsonWriterClass),
+                JsonWriterBeginArray.class, methodType(Object.class, Object.class), lookup);
+            jsonWriterEndArray = createMetaFactory("endArray", gsonJsonWriterClass, methodType(gsonJsonWriterClass),
+                JsonWriterEndArray.class, methodType(Object.class, Object.class), lookup);
+            jsonWriterNullValue = createMetaFactory("nullValue", gsonJsonWriterClass, methodType(gsonJsonWriterClass),
+                JsonWriterNullValue.class, methodType(Object.class, Object.class), lookup);
+            jsonWriterName
+                = createMetaFactory("name", gsonJsonWriterClass, methodType(gsonJsonWriterClass, String.class),
+                    JsonWriterName.class, methodType(Object.class, Object.class, String.class), lookup);
+            jsonWriterStringValue
+                = createMetaFactory("value", gsonJsonWriterClass, methodType(gsonJsonWriterClass, String.class),
+                    JsonWriterStringValue.class, methodType(Object.class, Object.class, String.class), lookup);
+            jsonWriterBooleanValue
+                = createMetaFactory("value", gsonJsonWriterClass, methodType(gsonJsonWriterClass, boolean.class),
+                    JsonWriterBooleanValue.class, methodType(Object.class, Object.class, boolean.class), lookup);
+            jsonWriterLongValue
+                = createMetaFactory("value", gsonJsonWriterClass, methodType(gsonJsonWriterClass, long.class),
+                    JsonWriterLongValue.class, methodType(Object.class, Object.class, long.class), lookup);
+            jsonWriterDoubleValue
+                = createMetaFactory("value", gsonJsonWriterClass, methodType(gsonJsonWriterClass, double.class),
+                    JsonWriterDoubleValue.class, methodType(Object.class, Object.class, double.class), lookup);
+            jsonWriterRawValue
+                = createMetaFactory("jsonValue", gsonJsonWriterClass, methodType(gsonJsonWriterClass, String.class),
+                    JsonWriterRawValue.class, methodType(Object.class, Object.class, String.class), lookup);
 
             initialized = true;
         } catch (Throwable e) {
