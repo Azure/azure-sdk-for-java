@@ -54,7 +54,6 @@ public class FeedRangeTaskUnit implements ITaskUnit {
         this.topic = topic;
     }
 
-
     public String getDatabaseName() {
         return databaseName;
     }
