@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class InMageAzureV2TestFailoverInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageAzureV2TestFailoverInput model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"InMageAzureV2\",\"recoveryPointId\":\"ehtd\",\"osUpgradeVersion\":\"mbnvynfaooeacted\"}")
-                .toObject(InMageAzureV2TestFailoverInput.class);
+        InMageAzureV2TestFailoverInput model = BinaryData.fromString(
+            "{\"instanceType\":\"InMageAzureV2\",\"recoveryPointId\":\"ehtd\",\"osUpgradeVersion\":\"mbnvynfaooeacted\"}")
+            .toObject(InMageAzureV2TestFailoverInput.class);
         Assertions.assertEquals("ehtd", model.recoveryPointId());
         Assertions.assertEquals("mbnvynfaooeacted", model.osUpgradeVersion());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageAzureV2TestFailoverInput model =
-            new InMageAzureV2TestFailoverInput().withRecoveryPointId("ehtd").withOsUpgradeVersion("mbnvynfaooeacted");
+        InMageAzureV2TestFailoverInput model
+            = new InMageAzureV2TestFailoverInput().withRecoveryPointId("ehtd").withOsUpgradeVersion("mbnvynfaooeacted");
         model = BinaryData.fromObject(model).toObject(InMageAzureV2TestFailoverInput.class);
         Assertions.assertEquals("ehtd", model.recoveryPointId());
         Assertions.assertEquals("mbnvynfaooeacted", model.osUpgradeVersion());

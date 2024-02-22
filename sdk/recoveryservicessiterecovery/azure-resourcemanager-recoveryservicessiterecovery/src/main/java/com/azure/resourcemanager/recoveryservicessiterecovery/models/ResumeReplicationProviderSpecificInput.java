@@ -9,23 +9,27 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Resume replication provider specific input. */
+/**
+ * Resume replication provider specific input.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "instanceType",
     defaultImpl = ResumeReplicationProviderSpecificInput.class)
 @JsonTypeName("ResumeReplicationProviderSpecificInput")
-@JsonSubTypes({@JsonSubTypes.Type(name = "VMwareCbt", value = VMwareCbtResumeReplicationInput.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "VMwareCbt", value = VMwareCbtResumeReplicationInput.class) })
 @Immutable
 public class ResumeReplicationProviderSpecificInput {
-    /** Creates an instance of ResumeReplicationProviderSpecificInput class. */
+    /**
+     * Creates an instance of ResumeReplicationProviderSpecificInput class.
+     */
     public ResumeReplicationProviderSpecificInput() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

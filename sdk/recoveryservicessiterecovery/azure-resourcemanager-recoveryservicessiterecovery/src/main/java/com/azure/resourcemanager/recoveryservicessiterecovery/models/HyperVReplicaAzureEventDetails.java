@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Model class for event details of a HyperVReplica E2A event. */
+/**
+ * Model class for event details of a HyperVReplica E2A event.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("HyperVReplicaAzure")
 @Fluent
@@ -32,13 +34,15 @@ public final class HyperVReplicaAzureEventDetails extends EventProviderSpecificD
     @JsonProperty(value = "remoteContainerName")
     private String remoteContainerName;
 
-    /** Creates an instance of HyperVReplicaAzureEventDetails class. */
+    /**
+     * Creates an instance of HyperVReplicaAzureEventDetails class.
+     */
     public HyperVReplicaAzureEventDetails() {
     }
 
     /**
      * Get the containerName property: The container friendly name.
-     *
+     * 
      * @return the containerName value.
      */
     public String containerName() {
@@ -47,7 +51,7 @@ public final class HyperVReplicaAzureEventDetails extends EventProviderSpecificD
 
     /**
      * Set the containerName property: The container friendly name.
-     *
+     * 
      * @param containerName the containerName value to set.
      * @return the HyperVReplicaAzureEventDetails object itself.
      */
@@ -58,7 +62,7 @@ public final class HyperVReplicaAzureEventDetails extends EventProviderSpecificD
 
     /**
      * Get the fabricName property: The fabric friendly name.
-     *
+     * 
      * @return the fabricName value.
      */
     public String fabricName() {
@@ -67,7 +71,7 @@ public final class HyperVReplicaAzureEventDetails extends EventProviderSpecificD
 
     /**
      * Set the fabricName property: The fabric friendly name.
-     *
+     * 
      * @param fabricName the fabricName value to set.
      * @return the HyperVReplicaAzureEventDetails object itself.
      */
@@ -78,7 +82,7 @@ public final class HyperVReplicaAzureEventDetails extends EventProviderSpecificD
 
     /**
      * Get the remoteContainerName property: The remote container name.
-     *
+     * 
      * @return the remoteContainerName value.
      */
     public String remoteContainerName() {
@@ -87,7 +91,7 @@ public final class HyperVReplicaAzureEventDetails extends EventProviderSpecificD
 
     /**
      * Set the remoteContainerName property: The remote container name.
-     *
+     * 
      * @param remoteContainerName the remoteContainerName value to set.
      * @return the HyperVReplicaAzureEventDetails object itself.
      */
@@ -98,7 +102,7 @@ public final class HyperVReplicaAzureEventDetails extends EventProviderSpecificD
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

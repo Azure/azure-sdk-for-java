@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Create protection intent input properties. */
+/**
+ * Create protection intent input properties.
+ */
 @Fluent
 public final class CreateProtectionIntentProperties {
     /*
@@ -16,14 +18,16 @@ public final class CreateProtectionIntentProperties {
     @JsonProperty(value = "providerSpecificDetails")
     private CreateProtectionIntentProviderSpecificDetails providerSpecificDetails;
 
-    /** Creates an instance of CreateProtectionIntentProperties class. */
+    /**
+     * Creates an instance of CreateProtectionIntentProperties class.
+     */
     public CreateProtectionIntentProperties() {
     }
 
     /**
      * Get the providerSpecificDetails property: The ReplicationProviderInput. For A2A provider, it will be
      * A2ACreateProtectionIntentInput object.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public CreateProtectionIntentProviderSpecificDetails providerSpecificDetails() {
@@ -33,19 +37,19 @@ public final class CreateProtectionIntentProperties {
     /**
      * Set the providerSpecificDetails property: The ReplicationProviderInput. For A2A provider, it will be
      * A2ACreateProtectionIntentInput object.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the CreateProtectionIntentProperties object itself.
      */
-    public CreateProtectionIntentProperties withProviderSpecificDetails(
-        CreateProtectionIntentProviderSpecificDetails providerSpecificDetails) {
+    public CreateProtectionIntentProperties
+        withProviderSpecificDetails(CreateProtectionIntentProviderSpecificDetails providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

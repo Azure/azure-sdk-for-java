@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Agent disk details. */
+/**
+ * Agent disk details.
+ */
 @Immutable
 public final class AgentDiskDetails {
     /*
@@ -40,13 +42,15 @@ public final class AgentDiskDetails {
     @JsonProperty(value = "lunId", access = JsonProperty.Access.WRITE_ONLY)
     private Integer lunId;
 
-    /** Creates an instance of AgentDiskDetails class. */
+    /**
+     * Creates an instance of AgentDiskDetails class.
+     */
     public AgentDiskDetails() {
     }
 
     /**
      * Get the diskId property: The disk Id.
-     *
+     * 
      * @return the diskId value.
      */
     public String diskId() {
@@ -55,7 +59,7 @@ public final class AgentDiskDetails {
 
     /**
      * Get the diskName property: The disk name.
-     *
+     * 
      * @return the diskName value.
      */
     public String diskName() {
@@ -64,7 +68,7 @@ public final class AgentDiskDetails {
 
     /**
      * Get the isOSDisk property: A value indicating whether the disk is the OS disk.
-     *
+     * 
      * @return the isOSDisk value.
      */
     public String isOSDisk() {
@@ -73,7 +77,7 @@ public final class AgentDiskDetails {
 
     /**
      * Get the capacityInBytes property: The disk capacity in bytes.
-     *
+     * 
      * @return the capacityInBytes value.
      */
     public Long capacityInBytes() {
@@ -82,7 +86,7 @@ public final class AgentDiskDetails {
 
     /**
      * Get the lunId property: The lun of disk.
-     *
+     * 
      * @return the lunId value.
      */
     public Integer lunId() {
@@ -91,7 +95,7 @@ public final class AgentDiskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

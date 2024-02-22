@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The recovery point type. */
+/**
+ * The recovery point type.
+ */
 public final class RecoveryPlanPointType extends ExpandableStringEnum<RecoveryPlanPointType> {
-    /** Static value Latest for RecoveryPlanPointType. */
+    /**
+     * Static value Latest for RecoveryPlanPointType.
+     */
     public static final RecoveryPlanPointType LATEST = fromString("Latest");
 
-    /** Static value LatestApplicationConsistent for RecoveryPlanPointType. */
+    /**
+     * Static value LatestApplicationConsistent for RecoveryPlanPointType.
+     */
     public static final RecoveryPlanPointType LATEST_APPLICATION_CONSISTENT = fromString("LatestApplicationConsistent");
 
-    /** Static value LatestCrashConsistent for RecoveryPlanPointType. */
+    /**
+     * Static value LatestCrashConsistent for RecoveryPlanPointType.
+     */
     public static final RecoveryPlanPointType LATEST_CRASH_CONSISTENT = fromString("LatestCrashConsistent");
 
-    /** Static value LatestProcessed for RecoveryPlanPointType. */
+    /**
+     * Static value LatestProcessed for RecoveryPlanPointType.
+     */
     public static final RecoveryPlanPointType LATEST_PROCESSED = fromString("LatestProcessed");
 
     /**
      * Creates a new instance of RecoveryPlanPointType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class RecoveryPlanPointType extends ExpandableStringEnum<RecoveryPl
 
     /**
      * Creates or finds a RecoveryPlanPointType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RecoveryPlanPointType.
      */
@@ -44,7 +54,7 @@ public final class RecoveryPlanPointType extends ExpandableStringEnum<RecoveryPl
 
     /**
      * Gets known RecoveryPlanPointType values.
-     *
+     * 
      * @return known RecoveryPlanPointType values.
      */
     public static Collection<RecoveryPlanPointType> values() {
