@@ -7,6 +7,7 @@ import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.test.StepVerifier;
 
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -40,25 +41,13 @@ public class ClientSecretCredentialTest extends IdentityTestBase {
         assertNotNull(actual.getExpiresAt());
     }
 
-//    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-//    @MethodSource("getHttpClients")
-//    public void getTokenWithResponse(HttpClient httpClient) {
-//        // arrange
-//        initializeClient(httpClient);
-//
-//        // act
-//        Response<AccessToken> actualResponse = this.client.getTokenWithResponse(Context.NONE);
-//
-//        // assert
-//        assertNotNull(actualResponse);
-//        assertEquals(200, actualResponse.getStatusCode());
-//
-//        // act
-//        AccessToken actual = actualResponse.getValue();
-//
-//        // assert
-//        assertNotNull(actual);
-//        assertNotNull(actual.getToken());
-//        assertNotNull(actual.getExpiresAt());
-//    }
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getHttpClients")
+    public void getTokenAsync(HttpClient httpClient) {
+        // arrange
+        initializeClient(httpClient);
+        StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("https://vault.azure.net/.default")))
+            .expectNextMatches(accessToken -> accessToken.getToken() != null && accessToken.getExpiresAt() != null)
+            .verifyComplete();
+    }
 }

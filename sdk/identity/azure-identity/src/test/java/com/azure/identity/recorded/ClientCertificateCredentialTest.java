@@ -10,6 +10,7 @@ import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
+import reactor.test.StepVerifier;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -26,7 +27,7 @@ public class ClientCertificateCredentialTest extends IdentityTestBase {
 
         credential = isPlaybackMode()
             ? builder.pemCertificate(getClass().getClassLoader().getResourceAsStream("pemCert.pem")).build()
-            : builder.pemCertificate(Configuration.getGlobalConfiguration().get("AZURE_CLIENT_CERTIFICATE")).build();
+            : builder.pemCertificate(Configuration.getGlobalConfiguration().get("AZURE_CLIENT_CERTIFICATE_PATH")).build();
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
@@ -42,5 +43,15 @@ public class ClientCertificateCredentialTest extends IdentityTestBase {
         assertNotNull(actual);
         assertNotNull(actual.getToken());
         assertNotNull(actual.getExpiresAt());
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("getHttpClients")
+    public void getTokenAsync(HttpClient httpClient) {
+        // arrange
+        initializeClient(httpClient);
+        StepVerifier.create(credential.getToken(new TokenRequestContext().addScopes("https://vault.azure.net/.default")))
+            .expectNextMatches(accessToken -> accessToken.getToken() != null && accessToken.getExpiresAt() != null)
+            .verifyComplete();
     }
 }
