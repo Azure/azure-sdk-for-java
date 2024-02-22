@@ -12,7 +12,7 @@ import com.azure.resourcemanager.network.models.PrepareNetworkPoliciesRequest;
 public final class SubnetsPrepareNetworkPoliciesSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/SubnetPrepareNetworkPolicies.
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/SubnetPrepareNetworkPolicies.
      * json
      */
     /**

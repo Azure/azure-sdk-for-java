@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The datastore details of the MT. */
+/**
+ * The datastore details of the MT.
+ */
 @Fluent
 public final class DataStore {
     /*
@@ -40,13 +42,15 @@ public final class DataStore {
     @JsonProperty(value = "type")
     private String type;
 
-    /** Creates an instance of DataStore class. */
+    /**
+     * Creates an instance of DataStore class.
+     */
     public DataStore() {
     }
 
     /**
      * Get the symbolicName property: The symbolic name of data store.
-     *
+     * 
      * @return the symbolicName value.
      */
     public String symbolicName() {
@@ -55,7 +59,7 @@ public final class DataStore {
 
     /**
      * Set the symbolicName property: The symbolic name of data store.
-     *
+     * 
      * @param symbolicName the symbolicName value to set.
      * @return the DataStore object itself.
      */
@@ -66,7 +70,7 @@ public final class DataStore {
 
     /**
      * Get the uuid property: The uuid of data store.
-     *
+     * 
      * @return the uuid value.
      */
     public String uuid() {
@@ -75,7 +79,7 @@ public final class DataStore {
 
     /**
      * Set the uuid property: The uuid of data store.
-     *
+     * 
      * @param uuid the uuid value to set.
      * @return the DataStore object itself.
      */
@@ -86,7 +90,7 @@ public final class DataStore {
 
     /**
      * Get the capacity property: The capacity of data store in GBs.
-     *
+     * 
      * @return the capacity value.
      */
     public String capacity() {
@@ -95,7 +99,7 @@ public final class DataStore {
 
     /**
      * Set the capacity property: The capacity of data store in GBs.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the DataStore object itself.
      */
@@ -106,7 +110,7 @@ public final class DataStore {
 
     /**
      * Get the freeSpace property: The free space of data store in GBs.
-     *
+     * 
      * @return the freeSpace value.
      */
     public String freeSpace() {
@@ -115,7 +119,7 @@ public final class DataStore {
 
     /**
      * Set the freeSpace property: The free space of data store in GBs.
-     *
+     * 
      * @param freeSpace the freeSpace value to set.
      * @return the DataStore object itself.
      */
@@ -126,7 +130,7 @@ public final class DataStore {
 
     /**
      * Get the type property: The type of data store.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -135,7 +139,7 @@ public final class DataStore {
 
     /**
      * Set the type property: The type of data store.
-     *
+     * 
      * @param type the type value to set.
      * @return the DataStore object itself.
      */
@@ -146,7 +150,7 @@ public final class DataStore {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

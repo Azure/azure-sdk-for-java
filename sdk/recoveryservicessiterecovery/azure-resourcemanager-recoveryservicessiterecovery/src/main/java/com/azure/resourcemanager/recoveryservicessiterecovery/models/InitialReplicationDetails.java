@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Initial replication details. */
+/**
+ * Initial replication details.
+ */
 @Fluent
 public final class InitialReplicationDetails {
     /*
@@ -22,13 +24,15 @@ public final class InitialReplicationDetails {
     @JsonProperty(value = "initialReplicationProgressPercentage")
     private String initialReplicationProgressPercentage;
 
-    /** Creates an instance of InitialReplicationDetails class. */
+    /**
+     * Creates an instance of InitialReplicationDetails class.
+     */
     public InitialReplicationDetails() {
     }
 
     /**
      * Get the initialReplicationType property: Initial replication type.
-     *
+     * 
      * @return the initialReplicationType value.
      */
     public String initialReplicationType() {
@@ -37,7 +41,7 @@ public final class InitialReplicationDetails {
 
     /**
      * Set the initialReplicationType property: Initial replication type.
-     *
+     * 
      * @param initialReplicationType the initialReplicationType value to set.
      * @return the InitialReplicationDetails object itself.
      */
@@ -48,7 +52,7 @@ public final class InitialReplicationDetails {
 
     /**
      * Get the initialReplicationProgressPercentage property: The initial replication progress percentage.
-     *
+     * 
      * @return the initialReplicationProgressPercentage value.
      */
     public String initialReplicationProgressPercentage() {
@@ -57,19 +61,19 @@ public final class InitialReplicationDetails {
 
     /**
      * Set the initialReplicationProgressPercentage property: The initial replication progress percentage.
-     *
+     * 
      * @param initialReplicationProgressPercentage the initialReplicationProgressPercentage value to set.
      * @return the InitialReplicationDetails object itself.
      */
-    public InitialReplicationDetails withInitialReplicationProgressPercentage(
-        String initialReplicationProgressPercentage) {
+    public InitialReplicationDetails
+        withInitialReplicationProgressPercentage(String initialReplicationProgressPercentage) {
         this.initialReplicationProgressPercentage = initialReplicationProgressPercentage;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

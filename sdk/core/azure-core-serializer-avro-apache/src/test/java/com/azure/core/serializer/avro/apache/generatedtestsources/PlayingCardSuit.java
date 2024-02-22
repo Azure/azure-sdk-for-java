@@ -4,10 +4,20 @@
  * DO NOT EDIT DIRECTLY
  */
 package com.azure.core.serializer.avro.apache.generatedtestsources;
+
 @org.apache.avro.specific.AvroGenerated
 public enum PlayingCardSuit implements org.apache.avro.generic.GenericEnumSymbol<PlayingCardSuit> {
-  SPADES, HEARTS, DIAMONDS, CLUBS  ;
-  public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse("{\"type\":\"enum\",\"name\":\"PlayingCardSuit\",\"namespace\":\"com.azure.core.serializer.avro.apache.generatedtestsources\",\"symbols\":[\"SPADES\",\"HEARTS\",\"DIAMONDS\",\"CLUBS\"]}");
-  public static org.apache.avro.Schema getClassSchema() { return SCHEMA$; }
-  public org.apache.avro.Schema getSchema() { return SCHEMA$; }
+    SPADES, HEARTS, DIAMONDS, CLUBS;
+
+    public static final org.apache.avro.Schema SCHEMA$ = new org.apache.avro.Schema.Parser().parse(
+        "{\"type\":\"enum\",\"name\":\"PlayingCardSuit\",\"namespace\":\"com.azure.core.serializer.avro.apache.generatedtestsources\",\"symbols\":[\"SPADES\",\"HEARTS\",\"DIAMONDS\",\"CLUBS\"]}");
+
+    public static org.apache.avro.Schema getClassSchema() {
+        return SCHEMA$;
+    }
+
+    @Override
+    public org.apache.avro.Schema getSchema() {
+        return SCHEMA$;
+    }
 }

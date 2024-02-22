@@ -3,13 +3,11 @@ package com.azure.json.implementation.jackson.core.io;
 
 import java.io.*;
 
-
 /**
  * Since JDK does not come with UTF-32/UCS-4, let's implement a simple
  * decoder to use.
  */
-public class UTF32Reader extends Reader
-{
+public class UTF32Reader extends Reader {
     /**
      * JSON actually limits available Unicode range in the high end
      * to the same as xml (to basically limit UTF-8 max byte sequence
@@ -50,9 +48,9 @@ public class UTF32Reader extends Reader
     protected final boolean _managedBuffers;
 
     /*
-    /**********************************************************
-    /* Life-cycle
-    /**********************************************************
+     * /**********************************************************
+     * /* Life-cycle
+     * /**********************************************************
      */
 
     public UTF32Reader(IOContext ctxt, InputStream in, byte[] buf, int ptr, int len, boolean isBigEndian) {
@@ -66,9 +64,9 @@ public class UTF32Reader extends Reader
     }
 
     /*
-    /**********************************************************
-    /* Public API
-    /**********************************************************
+     * /**********************************************************
+     * /* Public API
+     * /**********************************************************
      */
 
     @Override
@@ -99,20 +97,23 @@ public class UTF32Reader extends Reader
         }
         return _tmpBuf[0];
     }
-    
+
     @Override
-    public int read(char[] cbuf, int start, int len) throws IOException
-    {
+    public int read(char[] cbuf, int start, int len) throws IOException {
         // Already EOF?
-        if (_buffer == null) { return -1; }
-        if (len < 1) { return len; }
+        if (_buffer == null) {
+            return -1;
+        }
+        if (len < 1) {
+            return len;
+        }
         // Let's then ensure there's enough room...
-        if (start < 0 || (start+len) > cbuf.length) {
+        if (start < 0 || (start + len) > cbuf.length) {
             reportBounds(cbuf, start, len);
         }
 
         int outPtr = start;
-        final int outEnd = len+start;
+        final int outEnd = len + start;
 
         // Ok, first; do we have a surrogate from last round?
         if (_surrogate != NC) {
@@ -136,18 +137,17 @@ public class UTF32Reader extends Reader
 
         // 02-Jun-2017, tatu: Must ensure we don't try to read past buffer end:
         final int lastValidInputStart = (_length - 4);
-        
-        main_loop:
-        while ((outPtr < outEnd) && (_ptr <= lastValidInputStart)) {
+
+        main_loop: while ((outPtr < outEnd) && (_ptr <= lastValidInputStart)) {
             int ptr = _ptr;
             int hi, lo;
 
             if (_bigEndian) {
-                hi = (_buffer[ptr] << 8) | (_buffer[ptr+1] & 0xFF);
-                lo = ((_buffer[ptr+2] & 0xFF) << 8) | (_buffer[ptr+3] & 0xFF);
+                hi = (_buffer[ptr] << 8) | (_buffer[ptr + 1] & 0xFF);
+                lo = ((_buffer[ptr + 2] & 0xFF) << 8) | (_buffer[ptr + 3] & 0xFF);
             } else {
-                lo = (_buffer[ptr] & 0xFF) | ((_buffer[ptr+1] & 0xFF) << 8);
-                hi = (_buffer[ptr+2] & 0xFF)| (_buffer[ptr+3] << 8);
+                lo = (_buffer[ptr] & 0xFF) | ((_buffer[ptr + 1] & 0xFF) << 8);
+                hi = (_buffer[ptr + 2] & 0xFF) | (_buffer[ptr + 3] << 8);
             }
             _ptr += 4;
 
@@ -157,8 +157,7 @@ public class UTF32Reader extends Reader
                 hi &= 0xFFFF; // since it may be sign extended
                 int ch = ((hi - 1) << 16) | lo; // ch -= 0x10000; to normalize starting with 0x0
                 if (hi > 0x10) { // last valid is 0x10FFFF
-                    reportInvalid(ch, outPtr-start,
-                            String.format(" (above 0x%08x)", LAST_VALID_UNICODE_CHAR));
+                    reportInvalid(ch, outPtr - start, String.format(" (above 0x%08x)", LAST_VALID_UNICODE_CHAR));
                 }
                 cbuf[outPtr++] = (char) (0xD800 + (ch >> 10));
                 // hmmh. can this ever be 0? (not legal, at least?)
@@ -177,21 +176,23 @@ public class UTF32Reader extends Reader
     }
 
     /*
-    /**********************************************************
-    /* Internal methods
-    /**********************************************************
+     * /**********************************************************
+     * /* Internal methods
+     * /**********************************************************
      */
 
     private void reportUnexpectedEOF(int gotBytes, int needed) throws IOException {
         int bytePos = _byteCount + gotBytes, charPos = _charCount;
 
-        throw new CharConversionException("Unexpected EOF in the middle of a 4-byte UTF-32 char: got "+gotBytes+", needed "+needed+", at char #"+charPos+", byte #"+bytePos+")");
+        throw new CharConversionException("Unexpected EOF in the middle of a 4-byte UTF-32 char: got " + gotBytes
+            + ", needed " + needed + ", at char #" + charPos + ", byte #" + bytePos + ")");
     }
 
     private void reportInvalid(int value, int offset, String msg) throws IOException {
         int bytePos = _byteCount + _ptr - 1, charPos = _charCount + offset;
 
-        throw new CharConversionException("Invalid UTF-32 character 0x"+Integer.toHexString(value)+msg+" at char #"+charPos+", byte #"+bytePos+")");
+        throw new CharConversionException("Invalid UTF-32 character 0x" + Integer.toHexString(value) + msg
+            + " at char #" + charPos + ", byte #" + bytePos + ")");
     }
 
     /**
@@ -200,12 +201,11 @@ public class UTF32Reader extends Reader
      * @return True, if enough bytes were read to allow decoding of at least
      *   one full character; false if EOF was encountered instead.
      */
-    private boolean loadMore(int available) throws IOException
-    {
+    private boolean loadMore(int available) throws IOException {
         // 06-Apr-2021, tatu: If no InputStream (either due to closure or
-        //    input being passed direcly in buffer) let's NOT bother
-        //    trying to read (can't).
-        //    Similarly, without read buffer cannot really read...
+        // input being passed direcly in buffer) let's NOT bother
+        // trying to read (can't).
+        // Similarly, without read buffer cannot really read...
         if ((_in == null) || (_buffer == null)) {
             return false;
         }
@@ -272,9 +272,7 @@ public class UTF32Reader extends Reader
     }
 
     private void reportBounds(char[] cbuf, int start, int len) throws IOException {
-        throw new ArrayIndexOutOfBoundsException(String.format(
-                "read(buf,%d,%d), cbuf[%d]",
-                start, len, cbuf.length));
+        throw new ArrayIndexOutOfBoundsException(String.format("read(buf,%d,%d), cbuf[%d]", start, len, cbuf.length));
     }
 
     private void reportStrangeStream() throws IOException {

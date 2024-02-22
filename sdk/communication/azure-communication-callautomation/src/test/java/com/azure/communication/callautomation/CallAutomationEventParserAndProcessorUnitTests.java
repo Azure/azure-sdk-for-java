@@ -7,6 +7,7 @@ import com.azure.communication.callautomation.models.ChoiceResult;
 import com.azure.communication.callautomation.models.DtmfResult;
 import com.azure.communication.callautomation.models.RecognizeResult;
 import com.azure.communication.callautomation.models.RecordingState;
+import com.azure.communication.callautomation.models.events.AnswerFailed;
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
 import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.communication.callautomation.models.events.CallTransferAccepted;
@@ -15,6 +16,7 @@ import com.azure.communication.callautomation.models.events.CancelAddParticipant
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionStopped;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneFailed;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneReceived;
+import com.azure.communication.callautomation.models.events.CreateCallFailed;
 import com.azure.communication.callautomation.models.events.DialogCompleted;
 import com.azure.communication.callautomation.models.events.DialogConsent;
 import com.azure.communication.callautomation.models.events.DialogFailed;
@@ -1313,5 +1315,81 @@ public class CallAutomationEventParserAndProcessorUnitTests {
         assertNotNull(event.getTranscriptionUpdateResult());
         assertEquals(TranscriptionStatus.TRANSCRIPTION_LOCALE_UPDATED, event.getTranscriptionUpdateResult().getTranscriptionStatus());
         assertEquals(TranscriptionStatusDetails.SUBSCRIPTION_STARTED, event.getTranscriptionUpdateResult().getTranscriptionStatusDetails());
+    }
+
+    @Test
+    public void parseAnswerFailedEvent() {
+        String receivedEvent = "[{\n"
+                + "\"id\": \"c3220fa3-79bd-473e-96a2-3ecb5be7d71f\",\n"
+                + "\"source\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\",\n"
+                + "\"type\": \"Microsoft.Communication.AnswerFailed\",\n"
+                + "\"data\": {\n"
+                + "\"operationContext\": \"context\",\n"
+                + "\"callConnectionId\": \"callConnectionId\",\n"
+                + "\"serverCallId\": \"serverCallId\",\n"
+                + "\"correlationId\": \"b880bd5a-1916-470a-b43d-aabf3caff91c\"\n"
+                + "},\n"
+                + "\"time\": \"2023-03-22T16:57:09.287755+00:00\",\n"
+                + "\"specversion\": \"1.0\",\n"
+                + "\"datacontenttype\": \"application/json\",\n"
+                + "\"subject\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\"\n"
+                + "}]";
+
+        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+
+        assertNotNull(event);
+
+        AnswerFailed answerFailed = (AnswerFailed) event;
+
+        assertNotNull(answerFailed);
+        assertEquals("serverCallId", answerFailed.getServerCallId());
+        assertEquals("callConnectionId", answerFailed.getCallConnectionId());
+
+        CallAutomationEventProcessor callAutomationEventProcessor = new CallAutomationEventProcessor();
+        callAutomationEventProcessor.attachOngoingEventProcessor(answerFailed.getCallConnectionId(),
+            eventToHandle -> {
+                assertEquals("serverCallId", eventToHandle.getServerCallId());
+                assertEquals("callConnectionId", eventToHandle.getCallConnectionId());
+            }, AnswerFailed.class);
+        callAutomationEventProcessor.processEvents(receivedEvent);
+        callAutomationEventProcessor.detachOngoingEventProcessor(answerFailed.getCallConnectionId(), AnswerFailed.class);
+    }
+
+    @Test
+    public void parseCreateCallFailedEvent() {
+        String receivedEvent = "[{\n"
+                + "\"id\": \"c3220fa3-79bd-473e-96a2-3ecb5be7d71f\",\n"
+                + "\"source\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\",\n"
+                + "\"type\": \"Microsoft.Communication.CreateCallFailed\",\n"
+                + "\"data\": {\n"
+                + "\"operationContext\": \"context\",\n"
+                + "\"callConnectionId\": \"callConnectionId\",\n"
+                + "\"serverCallId\": \"serverCallId\",\n"
+                + "\"correlationId\": \"b880bd5a-1916-470a-b43d-aabf3caff91c\"\n"
+                + "},\n"
+                + "\"time\": \"2023-03-22T16:57:09.287755+00:00\",\n"
+                + "\"specversion\": \"1.0\",\n"
+                + "\"datacontenttype\": \"application/json\",\n"
+                + "\"subject\": \"calling/callConnections/421f3500-f5de-4c12-bf61-9e2641433687\"\n"
+                + "}]";
+
+        CallAutomationEventBase event = CallAutomationEventParser.parseEvents(receivedEvent).get(0);
+
+        assertNotNull(event);
+
+        CreateCallFailed createCallFailed = (CreateCallFailed) event;
+
+        assertNotNull(createCallFailed);
+        assertEquals("serverCallId", createCallFailed.getServerCallId());
+        assertEquals("callConnectionId", createCallFailed.getCallConnectionId());
+
+        CallAutomationEventProcessor callAutomationEventProcessor = new CallAutomationEventProcessor();
+        callAutomationEventProcessor.attachOngoingEventProcessor(createCallFailed.getCallConnectionId(),
+            eventToHandle -> {
+                assertEquals("serverCallId", eventToHandle.getServerCallId());
+                assertEquals("callConnectionId", eventToHandle.getCallConnectionId());
+            }, CreateCallFailed.class);
+        callAutomationEventProcessor.processEvents(receivedEvent);
+        callAutomationEventProcessor.detachOngoingEventProcessor(createCallFailed.getCallConnectionId(), CreateCallFailed.class);
     }
 }

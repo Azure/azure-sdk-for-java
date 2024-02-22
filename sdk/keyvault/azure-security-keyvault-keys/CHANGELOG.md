@@ -7,6 +7,8 @@ Changes when compared to the last stable release (`4.7.3`) include:
 - Added support for service version `7.5`.
 - Added `KeyProperties.getHsmPlatform()` to get the underlying HSM platform that a key was generated with.
 
+- Added fallback logic to use service-side cryptography if a key cannot be retrieved for local operations. ([#38334](https://github.com/Azure/azure-sdk-for-java/pull/38334))
+
 ### Other Changes
 
 #### Dependency Updates

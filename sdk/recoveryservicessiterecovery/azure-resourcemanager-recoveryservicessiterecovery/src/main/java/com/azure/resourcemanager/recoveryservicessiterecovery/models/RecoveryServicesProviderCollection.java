@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.Reco
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of providers. */
+/**
+ * Collection of providers.
+ */
 @Fluent
 public final class RecoveryServicesProviderCollection {
     /*
@@ -24,13 +26,15 @@ public final class RecoveryServicesProviderCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of RecoveryServicesProviderCollection class. */
+    /**
+     * Creates an instance of RecoveryServicesProviderCollection class.
+     */
     public RecoveryServicesProviderCollection() {
     }
 
     /**
      * Get the value property: The Servers details.
-     *
+     * 
      * @return the value value.
      */
     public List<RecoveryServicesProviderInner> value() {
@@ -39,7 +43,7 @@ public final class RecoveryServicesProviderCollection {
 
     /**
      * Set the value property: The Servers details.
-     *
+     * 
      * @param value the value value to set.
      * @return the RecoveryServicesProviderCollection object itself.
      */
@@ -50,7 +54,7 @@ public final class RecoveryServicesProviderCollection {
 
     /**
      * Get the nextLink property: The value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class RecoveryServicesProviderCollection {
 
     /**
      * Set the nextLink property: The value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the RecoveryServicesProviderCollection object itself.
      */
@@ -70,7 +74,7 @@ public final class RecoveryServicesProviderCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

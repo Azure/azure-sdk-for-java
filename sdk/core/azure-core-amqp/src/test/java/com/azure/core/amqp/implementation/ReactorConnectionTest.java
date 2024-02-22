@@ -88,17 +88,17 @@ class ReactorConnectionTest {
     private static final String CONNECTION_ID = "test-connection-id";
     private static final String SESSION_NAME = "test-session-name";
     private static final Duration TEST_DURATION = Duration.ofSeconds(3);
-    private static final ConnectionStringProperties CREDENTIAL_INFO = new ConnectionStringProperties("Endpoint=sb"
-        + "://test-event-hub.servicebus.windows.net/;SharedAccessKeyName=dummySharedKeyName;"
-        + "SharedAccessKey=dummySharedKeyValue;EntityPath=eventhub1;");
+    private static final ConnectionStringProperties CREDENTIAL_INFO = new ConnectionStringProperties(
+        "Endpoint=sb" + "://test-event-hub.servicebus.windows.net/;SharedAccessKeyName=dummySharedKeyName;"
+            + "SharedAccessKey=dummySharedKeyValue;EntityPath=eventhub1;");
     private static final String FULLY_QUALIFIED_NAMESPACE = CREDENTIAL_INFO.getEndpoint().getHost();
     private static final Scheduler SCHEDULER = Schedulers.boundedElastic();
     private static final String PRODUCT = "test";
     private static final String CLIENT_VERSION = "1.0.0-test";
     private static final SslDomain.VerifyMode VERIFY_MODE = SslDomain.VerifyMode.VERIFY_PEER_NAME;
 
-    private static final ClientOptions CLIENT_OPTIONS = new ClientOptions().setHeaders(
-        Arrays.asList(new Header("name", PRODUCT), new Header("version", CLIENT_VERSION)));
+    private static final ClientOptions CLIENT_OPTIONS = new ClientOptions()
+        .setHeaders(Arrays.asList(new Header("name", PRODUCT), new Header("version", CLIENT_VERSION)));
     private final SslPeerDetails peerDetails = Proton.sslPeerDetails(FULLY_QUALIFIED_NAMESPACE, 3128);
 
     private ReactorConnection connection;
@@ -139,17 +139,17 @@ class ReactorConnectionTest {
         mocksCloseable = MockitoAnnotations.openMocks(this);
 
         final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMaxRetries(0).setTryTimeout(TEST_DURATION);
-        connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
-            tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "scope",
-            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER, CLIENT_OPTIONS, VERIFY_MODE,
-            PRODUCT, CLIENT_VERSION);
+        connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(), tokenCredential,
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "scope", AmqpTransportType.AMQP, retryOptions,
+            ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION);
 
-        connectionHandler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, AmqpMetricsProvider.noop());
+        connectionHandler
+            = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, AmqpMetricsProvider.noop());
 
         when(reactor.selectable()).thenReturn(selectable);
-        when(reactor.connectionToHost(FULLY_QUALIFIED_NAMESPACE, connectionHandler.getProtocolPort(),
-            connectionHandler))
-            .thenReturn(connectionProtonJ);
+        when(
+            reactor.connectionToHost(FULLY_QUALIFIED_NAMESPACE, connectionHandler.getProtocolPort(), connectionHandler))
+                .thenReturn(connectionProtonJ);
         when(reactor.attachments()).thenReturn(mock(Record.class));
 
         final Pipe pipe = Pipe.open();
@@ -159,7 +159,7 @@ class ReactorConnectionTest {
         when(reactorProvider.createReactor(CONNECTION_ID, connectionHandler.getMaxFrameSize())).thenReturn(reactor);
         when(reactorProvider.createExecutor(any(Reactor.class), anyString(), anyString(),
             any(ReactorConnection.ReactorExceptionHandler.class), any(AmqpRetryOptions.class)))
-            .then(answerByCreatingExecutor());
+                .then(answerByCreatingExecutor());
 
         when(reactorHandlerProvider.createConnectionHandler(CONNECTION_ID, connectionOptions))
             .thenReturn(connectionHandler);
@@ -242,30 +242,23 @@ class ReactorConnectionTest {
         when(connectionProtonJ.getRemoteState()).thenReturn(EndpointState.ACTIVE);
         connectionHandler.onConnectionRemoteOpen(connectionEvent);
 
-
         sessionHandler.onSessionRemoteOpen(sessionEvent);
 
         // Act & Assert
-        StepVerifier.create(connection.createSession(SESSION_NAME))
-            .assertNext(s -> {
-                assertNotNull(s);
-                assertEquals(SESSION_NAME, s.getSessionName());
-                assertTrue(s instanceof ReactorSession);
-                assertSame(session, ((ReactorSession) s).session());
-            })
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(connection.createSession(SESSION_NAME)).assertNext(s -> {
+            assertNotNull(s);
+            assertEquals(SESSION_NAME, s.getSessionName());
+            assertTrue(s instanceof ReactorSession);
+            assertSame(session, ((ReactorSession) s).session());
+        }).expectComplete().verify(VERIFY_TIMEOUT);
 
         // Assert that the same instance is obtained and we don't get a new session with the same name.
-        StepVerifier.create(connection.createSession(SESSION_NAME))
-            .assertNext(s -> {
-                assertNotNull(s);
-                assertEquals(SESSION_NAME, s.getSessionName());
-                assertTrue(s instanceof ReactorSession);
-                assertSame(session, ((ReactorSession) s).session());
-            })
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(connection.createSession(SESSION_NAME)).assertNext(s -> {
+            assertNotNull(s);
+            assertEquals(SESSION_NAME, s.getSessionName());
+            assertTrue(s instanceof ReactorSession);
+            assertSame(session, ((ReactorSession) s).session());
+        }).expectComplete().verify(VERIFY_TIMEOUT);
 
         verify(record).set(Handler.class, Handler.class, sessionHandler);
     }
@@ -285,12 +278,10 @@ class ReactorConnectionTest {
         when(connectionProtonJ.getRemoteState()).thenReturn(EndpointState.UNINITIALIZED);
 
         // Act & Assert
-        StepVerifier.create(connection.createSession(SESSION_NAME))
-            .expectErrorSatisfies(error -> {
-                assertTrue(error instanceof AmqpException);
-                assertTrue(((AmqpException) error).isTransient());
-            })
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(connection.createSession(SESSION_NAME)).expectErrorSatisfies(error -> {
+            assertTrue(error instanceof AmqpException);
+            assertTrue(((AmqpException) error).isTransient());
+        }).verify(VERIFY_TIMEOUT);
     }
 
     @Test
@@ -331,33 +322,26 @@ class ReactorConnectionTest {
         final Event sessionEvent2 = mock(Event.class);
         when(sessionEvent2.getSession()).thenReturn(session2);
 
-
         // Act & Assert
 
         // Assert that the first session timed out while being created.
-        StepVerifier.create(connection.createSession(SESSION_NAME))
-            .expectErrorSatisfies(error -> {
-                assertTrue(error instanceof AmqpException);
+        StepVerifier.create(connection.createSession(SESSION_NAME)).expectErrorSatisfies(error -> {
+            assertTrue(error instanceof AmqpException);
 
-                final AmqpException exception = (AmqpException) error;
-                assertTrue(exception.isTransient());
-            })
-            .verify();
+            final AmqpException exception = (AmqpException) error;
+            assertTrue(exception.isTransient());
+        }).verify();
 
         // Assert that the second time, a new session is obtained.
-        StepVerifier.create(connection.createSession(SESSION_NAME))
-            .then(() -> {
-                System.out.println("Pushing new session open downstream.");
-                sessionHandler2.onSessionRemoteOpen(sessionEvent2);
-            })
-            .assertNext(s -> {
-                assertNotNull(s);
-                assertEquals(SESSION_NAME, s.getSessionName());
-                assertTrue(s instanceof ReactorSession);
-                assertSame(session2, ((ReactorSession) s).session());
-            })
-            .expectComplete()
-            .verify();
+        StepVerifier.create(connection.createSession(SESSION_NAME)).then(() -> {
+            System.out.println("Pushing new session open downstream.");
+            sessionHandler2.onSessionRemoteOpen(sessionEvent2);
+        }).assertNext(s -> {
+            assertNotNull(s);
+            assertEquals(SESSION_NAME, s.getSessionName());
+            assertTrue(s instanceof ReactorSession);
+            assertSame(session2, ((ReactorSession) s).session());
+        }).expectComplete().verify();
 
         verify(record).set(Handler.class, Handler.class, sessionHandler);
         verify(record2).set(Handler.class, Handler.class, sessionHandler2);
@@ -384,7 +368,8 @@ class ReactorConnectionTest {
         sessionHandler.onSessionRemoteOpen(sessionEvent);
 
         // Act & Assert
-        StepVerifier.create(connection.createSession(SESSION_NAME).map(s -> connection.removeSession(s.getSessionName())))
+        StepVerifier
+            .create(connection.createSession(SESSION_NAME).map(s -> connection.removeSession(s.getSessionName())))
             .expectNext(true)
             .expectComplete()
             .verify(VERIFY_TIMEOUT);
@@ -474,24 +459,24 @@ class ReactorConnectionTest {
      * Verifies that if the connection cannot be created within the timeout period, it errors.
      */
     @ParameterizedTest
-    @ValueSource(booleans = {true, false})
+    @ValueSource(booleans = { true, false })
     void createCBSNodeTimeoutException(boolean isV2) throws IOException {
         when(reactor.process()).then(invocation -> {
             TimeUnit.SECONDS.sleep(10);
             return true;
         });
         final Duration timeout = Duration.ofSeconds(2);
-        final AmqpRetryOptions retryOptions = new AmqpRetryOptions()
-            .setMaxRetries(1)
+        final AmqpRetryOptions retryOptions = new AmqpRetryOptions().setMaxRetries(1)
             .setDelay(Duration.ofMillis(200))
             .setMode(AmqpRetryMode.FIXED)
             .setTryTimeout(timeout);
         final ConnectionOptions connectionOptions = new ConnectionOptions(CREDENTIAL_INFO.getEndpoint().getHost(),
-            tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "scope",
-            AmqpTransportType.AMQP, retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(),
-            CLIENT_OPTIONS, VERIFY_MODE, PRODUCT, CLIENT_VERSION);
+            tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "scope", AmqpTransportType.AMQP,
+            retryOptions, ProxyOptions.SYSTEM_DEFAULTS, Schedulers.parallel(), CLIENT_OPTIONS, VERIFY_MODE, PRODUCT,
+            CLIENT_VERSION);
 
-        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, AmqpMetricsProvider.noop());
+        final ConnectionHandler handler
+            = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, AmqpMetricsProvider.noop());
         final ReactorHandlerProvider handlerProvider = mock(ReactorHandlerProvider.class);
         final ReactorProvider reactorProvider = mock(ReactorProvider.class);
         final ReactorDispatcher dispatcher = mock(ReactorDispatcher.class);
@@ -501,12 +486,11 @@ class ReactorConnectionTest {
         when(reactorProvider.getReactorDispatcher()).thenReturn(dispatcher);
         when(reactorProvider.createExecutor(any(Reactor.class), anyString(), anyString(),
             any(ReactorConnection.ReactorExceptionHandler.class), any(AmqpRetryOptions.class)))
-            .then(answerByCreatingExecutor());
+                .then(answerByCreatingExecutor());
 
         when(dispatcher.getShutdownSignal()).thenReturn(Mono.never());
 
-        when(handlerProvider.createConnectionHandler(CONNECTION_ID, connectionOptions))
-            .thenReturn(handler);
+        when(handlerProvider.createConnectionHandler(CONNECTION_ID, connectionOptions)).thenReturn(handler);
         when(handlerProvider.createSessionHandler(CONNECTION_ID, FULLY_QUALIFIED_NAMESPACE, SESSION_NAME, timeout))
             .thenReturn(sessionHandler);
 
@@ -514,32 +498,28 @@ class ReactorConnectionTest {
             .thenReturn(connectionProtonJ);
 
         // Act and Assert
-        final ReactorConnection connectionBad = new ReactorConnection(CONNECTION_ID, connectionOptions,
-            reactorProvider, handlerProvider, linkProvider, tokenManager, messageSerializer, SenderSettleMode.SETTLED,
-            ReceiverSettleMode.FIRST, isV2);
+        final ReactorConnection connectionBad
+            = new ReactorConnection(CONNECTION_ID, connectionOptions, reactorProvider, handlerProvider, linkProvider,
+                tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, isV2);
 
-        StepVerifier.create(connectionBad.getClaimsBasedSecurityNode())
-            .expectErrorSatisfies(error -> {
-                assertTrue(error instanceof AmqpException);
+        StepVerifier.create(connectionBad.getClaimsBasedSecurityNode()).expectErrorSatisfies(error -> {
+            assertTrue(error instanceof AmqpException);
 
-                final AmqpException amqpException = (AmqpException) error;
-                assertTrue(amqpException.isTransient());
-                assertEquals(TIMEOUT_ERROR, amqpException.getErrorCondition());
+            final AmqpException amqpException = (AmqpException) error;
+            assertTrue(amqpException.isTransient());
+            assertEquals(TIMEOUT_ERROR, amqpException.getErrorCondition());
 
-                assertNotNull(amqpException.getMessage());
+            assertNotNull(amqpException.getMessage());
 
-                assertNotNull(amqpException.getContext());
-                assertEquals(FULLY_QUALIFIED_NAMESPACE, amqpException.getContext().getNamespace());
-            })
-            .verify(VERIFY_TIMEOUT);
+            assertNotNull(amqpException.getContext());
+            assertEquals(FULLY_QUALIFIED_NAMESPACE, amqpException.getContext().getNamespace());
+        }).verify(VERIFY_TIMEOUT);
 
         if (!isV2) {
-            StepVerifier.create(handler.getEndpointStates().collectList())
-                .expectErrorSatisfies(error -> {
-                    assertTrue(error instanceof AmqpException);
-                    assertTrue(((AmqpException) error).isTransient());
-                })
-                .verify(VERIFY_TIMEOUT);
+            StepVerifier.create(handler.getEndpointStates().collectList()).expectErrorSatisfies(error -> {
+                assertTrue(error instanceof AmqpException);
+                assertTrue(((AmqpException) error).isTransient());
+            }).verify(VERIFY_TIMEOUT);
         }
     }
 
@@ -626,17 +606,13 @@ class ReactorConnectionTest {
         when(finalEvent.getConnection()).thenReturn(connectionProtonJ);
 
         // Act and Assert
-        StepVerifier.create(connection.getShutdownSignals())
-            .then(() -> {
-                connection.getReactorConnection().subscribe();
-                isOpen.set(false);
-            })
-            .assertNext(signal -> {
-                assertFalse(signal.isInitiatedByClient());
-                assertFalse(signal.isTransient());
-            })
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(connection.getShutdownSignals()).then(() -> {
+            connection.getReactorConnection().subscribe();
+            isOpen.set(false);
+        }).assertNext(signal -> {
+            assertFalse(signal.isInitiatedByClient());
+            assertFalse(signal.isTransient());
+        }).expectComplete().verify(VERIFY_TIMEOUT);
     }
 
     @Test
@@ -660,17 +636,13 @@ class ReactorConnectionTest {
         when(finalEvent.getConnection()).thenReturn(connectionProtonJ);
 
         // Act and Assert
-        StepVerifier.create(connection.getShutdownSignals())
-            .then(() -> {
-                connection.getReactorConnection().subscribe();
-                isOpen.set(false);
-            })
-            .assertNext(signal -> {
-                assertFalse(signal.isInitiatedByClient());
-                assertFalse(signal.isTransient());
-            })
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(connection.getShutdownSignals()).then(() -> {
+            connection.getReactorConnection().subscribe();
+            isOpen.set(false);
+        }).assertNext(signal -> {
+            assertFalse(signal.isInitiatedByClient());
+            assertFalse(signal.isTransient());
+        }).expectComplete().verify(VERIFY_TIMEOUT);
     }
 
     /**
@@ -685,8 +657,8 @@ class ReactorConnectionTest {
         final Event event = mock(Event.class);
         final Transport transport = mock(Transport.class);
         final AmqpErrorCondition condition = AmqpErrorCondition.LINK_STOLEN;
-        final ErrorCondition errorCondition = new ErrorCondition(Symbol.getSymbol(condition.getErrorCondition()),
-            "Not found");
+        final ErrorCondition errorCondition
+            = new ErrorCondition(Symbol.getSymbol(condition.getErrorCondition()), "Not found");
         final Consumer<Throwable> assertException = error -> {
             final AmqpException amqpException;
             if (error instanceof AmqpException) {
@@ -719,8 +691,7 @@ class ReactorConnectionTest {
             .expectErrorSatisfies(assertException)
             .verify(VERIFY_TIMEOUT);
 
-        StepVerifier.create(connection.createRequestResponseChannel(SESSION_NAME, "test-link-name",
-            "test-entity-path"))
+        StepVerifier.create(connection.createRequestResponseChannel(SESSION_NAME, "test-link-name", "test-entity-path"))
             .expectError(IllegalStateException.class)
             .verify(VERIFY_TIMEOUT);
 
@@ -744,8 +715,8 @@ class ReactorConnectionTest {
             new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, SCHEDULER, CLIENT_OPTIONS, VERIFY_MODE, PRODUCT,
             CLIENT_VERSION, hostname, port);
 
-        final ConnectionHandler connectionHandler = new ConnectionHandler(connectionId, connectionOptions,
-            peerDetails, AmqpMetricsProvider.noop());
+        final ConnectionHandler connectionHandler
+            = new ConnectionHandler(connectionId, connectionOptions, peerDetails, AmqpMetricsProvider.noop());
 
         when(reactor.connectionToHost(hostname, port, connectionHandler)).thenReturn(connectionProtonJ);
 
@@ -772,9 +743,9 @@ class ReactorConnectionTest {
         // Arrange
         final ReactorProvider provider = mock(ReactorProvider.class);
         final ReactorDispatcher dispatcher = mock(ReactorDispatcher.class);
-        final ReactorConnection connection2 = new ReactorConnection(CONNECTION_ID, connectionOptions, provider,
-            reactorHandlerProvider, linkProvider, tokenManager, messageSerializer, SenderSettleMode.SETTLED,
-            ReceiverSettleMode.FIRST, true);
+        final ReactorConnection connection2
+            = new ReactorConnection(CONNECTION_ID, connectionOptions, provider, reactorHandlerProvider, linkProvider,
+                tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, true);
         final AmqpShutdownSignal signal = new AmqpShutdownSignal(false, false, "Remove");
 
         when(provider.getReactorDispatcher()).thenReturn(dispatcher);
@@ -788,15 +759,11 @@ class ReactorConnectionTest {
         connection2.getReactorConnection().subscribe();
 
         // Act and Assert
-        StepVerifier.create(connection2.closeAsync(signal))
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(connection2.closeAsync(signal)).expectComplete().verify(VERIFY_TIMEOUT);
 
         assertTrue(connection2.isDisposed());
 
-        StepVerifier.create(connection2.closeAsync(signal))
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(connection2.closeAsync(signal)).expectComplete().verify(VERIFY_TIMEOUT);
     }
 
     @Test
@@ -804,9 +771,9 @@ class ReactorConnectionTest {
         // Arrange
         final ReactorProvider provider = mock(ReactorProvider.class);
         final ReactorDispatcher dispatcher = mock(ReactorDispatcher.class);
-        final ReactorConnection connection2 = new ReactorConnection(CONNECTION_ID, connectionOptions, provider,
-            reactorHandlerProvider, linkProvider, tokenManager, messageSerializer, SenderSettleMode.SETTLED,
-            ReceiverSettleMode.FIRST, true);
+        final ReactorConnection connection2
+            = new ReactorConnection(CONNECTION_ID, connectionOptions, provider, reactorHandlerProvider, linkProvider,
+                tokenManager, messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.FIRST, true);
 
         when(provider.getReactorDispatcher()).thenReturn(dispatcher);
 
@@ -871,25 +838,25 @@ class ReactorConnectionTest {
         when(sessionHandler.getEndpointStates()).thenReturn(sessionEndpoints.flux());
         when(reactorHandlerProvider.createSessionHandler(any(),
             argThat(path -> path.contains("mgmt") && path.contains(entityPath)), anyString(), any()))
-            .thenReturn(sessionHandler);
+                .thenReturn(sessionHandler);
 
         final SendLinkHandler linkHandler = new SendLinkHandler(CONNECTION_ID, FULLY_QUALIFIED_NAMESPACE, linkName,
             entityPath, AmqpMetricsProvider.noop());
         when(reactorHandlerProvider.createSendLinkHandler(eq(CONNECTION_ID), eq(FULLY_QUALIFIED_NAMESPACE),
-            argThat(path -> path.contains("mgmt") && path.contains(entityPath)), argThat(path -> path.contains("management"))))
-            .thenReturn(linkHandler);
+            argThat(path -> path.contains("mgmt") && path.contains(entityPath)),
+            argThat(path -> path.contains("management")))).thenReturn(linkHandler);
         when(reactorHandlerProvider.createSendLinkHandler(eq(CONNECTION_ID), eq(FULLY_QUALIFIED_NAMESPACE),
             argThat(path -> path.contains("cbs") && path.contains(entityPath)), argThat(path -> path.contains("cbs"))))
-            .thenReturn(linkHandler);
+                .thenReturn(linkHandler);
 
         final ReceiveLinkHandler receiveLinkHandler = new ReceiveLinkHandler(CONNECTION_ID, FULLY_QUALIFIED_NAMESPACE,
             linkName, entityPath, AmqpMetricsProvider.noop());
         when(reactorHandlerProvider.createReceiveLinkHandler(eq(CONNECTION_ID), eq(FULLY_QUALIFIED_NAMESPACE),
-            argThat(path -> path.contains("mgmt") && path.contains(entityPath)), argThat(path -> path.contains("management"))))
-            .thenReturn(receiveLinkHandler);
+            argThat(path -> path.contains("mgmt") && path.contains(entityPath)),
+            argThat(path -> path.contains("management")))).thenReturn(receiveLinkHandler);
         when(reactorHandlerProvider.createReceiveLinkHandler(eq(CONNECTION_ID), eq(FULLY_QUALIFIED_NAMESPACE),
             argThat(path -> path.contains("cbs") && path.contains(entityPath)), argThat(path -> path.contains("cbs"))))
-            .thenReturn(receiveLinkHandler);
+                .thenReturn(receiveLinkHandler);
 
         // Act and Assert
         StepVerifier.create(connection.getManagementNode(entityPath))
@@ -901,7 +868,7 @@ class ReactorConnectionTest {
     private Answer<ReactorExecutor> answerByCreatingExecutor() {
         // Even before introducing 'ReactorProvider.createExecutorForReactor', the tests used to rely on a real
         // 'ReactorExecutor' object, not on a mock(ReactorExecutor), continue using a real 'ReactorExecutor'
-        //  object for now with this helper method. The tests could be reworked using mock(ReactorExecutor) later.
+        // object for now with this helper method. The tests could be reworked using mock(ReactorExecutor) later.
         return invocation -> {
             final Reactor r = invocation.getArgument(0);
             final String conId = invocation.getArgument(1);

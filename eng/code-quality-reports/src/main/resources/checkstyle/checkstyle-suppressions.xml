@@ -95,6 +95,7 @@
   <suppress checks="IllegalImport" files="com.azure.messaging.servicebus.LoggingSpanProcessor.java"/>
   <suppress checks="IllegalImport" files="com.azure.messaging.eventhubs.TracingIntegrationTests.java"/>
   <suppress checks="IllegalImport" files="com.azure.messaging.eventhubs.PublishEventsTracingWithCustomContextSample.java"/>
+  <suppress checks="IllegalImport" files="com.azure.messaging.eventhubs.EventProcessorWithTracingClientSample.java"/>
 
   <!-- AzureSpringMonitorConfig defines Spring bean used in https://github.com/open-telemetry/opentelemetry-java-instrumentation/blob/main/instrumentation/spring/spring-boot-autoconfigure/src/main/java/io/opentelemetry/instrumentation/spring/autoconfigure/OpenTelemetryAutoConfiguration.java-->
   <suppress checks="com.azure.tools.checkstyle.checks.ExternalDependencyExposedCheck"
@@ -480,4 +481,9 @@ the main ServiceBusClientBuilder. -->
 
   <!-- Suppress checks for defender Easm -->
   <suppress checks="com.azure.tools.checkstyle.checks.EnforceFinalFieldsCheck" files="com.azure.analytics.defender.easm.models.CountPagedResponse"/>
+
+  <!-- Exceptions thrown here are caught in the calling method. -->
+  <suppress checks="com.azure.tools.checkstyle.checks.ThrowFromClientLogger"
+            files="com.azure.security.keyvault.keys.cryptography.CryptographyClient.java"
+            lines="1234,1237,1243"/>
 </suppressions>

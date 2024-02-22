@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkMappingInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkMappingInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"state\":\"obpxjmflbvvn\",\"primaryNetworkFriendlyName\":\"rkcciwwzjuqk\",\"primaryNetworkId\":\"sa\",\"primaryFabricFriendlyName\":\"wkuofoskghsauu\",\"recoveryNetworkFriendlyName\":\"jmvxie\",\"recoveryNetworkId\":\"ugidyjrr\",\"recoveryFabricArmId\":\"y\",\"recoveryFabricFriendlyName\":\"svexcsonpclhoco\",\"fabricSpecificSettings\":{\"instanceType\":\"NetworkMappingFabricSpecificSettings\"}},\"location\":\"kevle\",\"id\":\"gz\",\"name\":\"buhfmvfaxkffeiit\",\"type\":\"lvmezyvshxmzsbbz\"}")
-                .toObject(NetworkMappingInner.class);
+        NetworkMappingInner model = BinaryData.fromString(
+            "{\"properties\":{\"state\":\"obpxjmflbvvn\",\"primaryNetworkFriendlyName\":\"rkcciwwzjuqk\",\"primaryNetworkId\":\"sa\",\"primaryFabricFriendlyName\":\"wkuofoskghsauu\",\"recoveryNetworkFriendlyName\":\"jmvxie\",\"recoveryNetworkId\":\"ugidyjrr\",\"recoveryFabricArmId\":\"y\",\"recoveryFabricFriendlyName\":\"svexcsonpclhoco\",\"fabricSpecificSettings\":{\"instanceType\":\"NetworkMappingFabricSpecificSettings\"}},\"location\":\"kevle\",\"id\":\"gz\",\"name\":\"buhfmvfaxkffeiit\",\"type\":\"lvmezyvshxmzsbbz\"}")
+            .toObject(NetworkMappingInner.class);
         Assertions.assertEquals("obpxjmflbvvn", model.properties().state());
         Assertions.assertEquals("rkcciwwzjuqk", model.properties().primaryNetworkFriendlyName());
         Assertions.assertEquals("sa", model.properties().primaryNetworkId());
@@ -31,20 +29,13 @@ public final class NetworkMappingInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkMappingInner model =
-            new NetworkMappingInner()
-                .withProperties(
-                    new NetworkMappingProperties()
-                        .withState("obpxjmflbvvn")
-                        .withPrimaryNetworkFriendlyName("rkcciwwzjuqk")
-                        .withPrimaryNetworkId("sa")
-                        .withPrimaryFabricFriendlyName("wkuofoskghsauu")
-                        .withRecoveryNetworkFriendlyName("jmvxie")
-                        .withRecoveryNetworkId("ugidyjrr")
-                        .withRecoveryFabricArmId("y")
-                        .withRecoveryFabricFriendlyName("svexcsonpclhoco")
-                        .withFabricSpecificSettings(new NetworkMappingFabricSpecificSettings()))
-                .withLocation("kevle");
+        NetworkMappingInner model = new NetworkMappingInner().withProperties(
+            new NetworkMappingProperties().withState("obpxjmflbvvn").withPrimaryNetworkFriendlyName("rkcciwwzjuqk")
+                .withPrimaryNetworkId("sa").withPrimaryFabricFriendlyName("wkuofoskghsauu")
+                .withRecoveryNetworkFriendlyName("jmvxie").withRecoveryNetworkId("ugidyjrr")
+                .withRecoveryFabricArmId("y").withRecoveryFabricFriendlyName("svexcsonpclhoco")
+                .withFabricSpecificSettings(new NetworkMappingFabricSpecificSettings()))
+            .withLocation("kevle");
         model = BinaryData.fromObject(model).toObject(NetworkMappingInner.class);
         Assertions.assertEquals("obpxjmflbvvn", model.properties().state());
         Assertions.assertEquals("rkcciwwzjuqk", model.properties().primaryNetworkFriendlyName());

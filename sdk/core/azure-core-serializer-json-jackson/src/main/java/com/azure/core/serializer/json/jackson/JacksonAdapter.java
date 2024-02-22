@@ -258,8 +258,7 @@ public final class JacksonAdapter implements SerializerAdapter {
 
     @SuppressWarnings("unchecked")
     @Override
-    public <T> T deserialize(InputStream inputStream, final Type type, SerializerEncoding encoding)
-        throws IOException {
+    public <T> T deserialize(InputStream inputStream, final Type type, SerializerEncoding encoding) throws IOException {
         if (inputStream == null) {
             return null;
         }
@@ -297,7 +296,7 @@ public final class JacksonAdapter implements SerializerAdapter {
         return outputStream.toByteArray();
     }
 
-    @SuppressWarnings({"unchecked", "rawtypes"})
+    @SuppressWarnings({ "unchecked", "rawtypes" })
     private static Object deserializeText(String value, Type type) throws IOException {
         if (type == String.class || type == CharSequence.class) {
             return value;

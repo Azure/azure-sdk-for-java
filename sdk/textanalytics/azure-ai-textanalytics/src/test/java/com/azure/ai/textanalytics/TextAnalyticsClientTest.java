@@ -2062,6 +2062,7 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             HEALTHCARE_ENTITY_OFFSET_INPUT);
     }
 
+    @Disabled("Regression, Missing Assertion, it is null now")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
     public void analyzeHealthcareEntitiesForAssertion(HttpClient httpClient,

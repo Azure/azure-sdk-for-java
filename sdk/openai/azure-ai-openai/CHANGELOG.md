@@ -7,6 +7,7 @@
 ### Breaking Changes
 
 ### Bugs Fixed
+- Made the `getContent` method in `ChatRequestUserMessage` class public.
 
 ### Other Changes
 

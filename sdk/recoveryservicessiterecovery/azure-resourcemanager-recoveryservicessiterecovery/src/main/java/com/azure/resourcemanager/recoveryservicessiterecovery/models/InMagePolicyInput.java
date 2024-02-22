@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** VMWare Azure specific protection profile Input. */
+/**
+ * VMWare Azure specific protection profile Input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMage")
 @Fluent
@@ -39,13 +41,15 @@ public final class InMagePolicyInput extends PolicyProviderSpecificInput {
     @JsonProperty(value = "multiVmSyncStatus", required = true)
     private SetMultiVmSyncStatus multiVmSyncStatus;
 
-    /** Creates an instance of InMagePolicyInput class. */
+    /**
+     * Creates an instance of InMagePolicyInput class.
+     */
     public InMagePolicyInput() {
     }
 
     /**
      * Get the recoveryPointThresholdInMinutes property: The recovery point threshold in minutes.
-     *
+     * 
      * @return the recoveryPointThresholdInMinutes value.
      */
     public Integer recoveryPointThresholdInMinutes() {
@@ -54,7 +58,7 @@ public final class InMagePolicyInput extends PolicyProviderSpecificInput {
 
     /**
      * Set the recoveryPointThresholdInMinutes property: The recovery point threshold in minutes.
-     *
+     * 
      * @param recoveryPointThresholdInMinutes the recoveryPointThresholdInMinutes value to set.
      * @return the InMagePolicyInput object itself.
      */
@@ -64,8 +68,9 @@ public final class InMagePolicyInput extends PolicyProviderSpecificInput {
     }
 
     /**
-     * Get the recoveryPointHistory property: The duration in minutes until which the recovery points need to be stored.
-     *
+     * Get the recoveryPointHistory property: The duration in minutes until which the recovery points need to be
+     * stored.
+     * 
      * @return the recoveryPointHistory value.
      */
     public Integer recoveryPointHistory() {
@@ -73,8 +78,9 @@ public final class InMagePolicyInput extends PolicyProviderSpecificInput {
     }
 
     /**
-     * Set the recoveryPointHistory property: The duration in minutes until which the recovery points need to be stored.
-     *
+     * Set the recoveryPointHistory property: The duration in minutes until which the recovery points need to be
+     * stored.
+     * 
      * @param recoveryPointHistory the recoveryPointHistory value to set.
      * @return the InMagePolicyInput object itself.
      */
@@ -85,7 +91,7 @@ public final class InMagePolicyInput extends PolicyProviderSpecificInput {
 
     /**
      * Get the appConsistentFrequencyInMinutes property: The app consistent snapshot frequency (in minutes).
-     *
+     * 
      * @return the appConsistentFrequencyInMinutes value.
      */
     public Integer appConsistentFrequencyInMinutes() {
@@ -94,7 +100,7 @@ public final class InMagePolicyInput extends PolicyProviderSpecificInput {
 
     /**
      * Set the appConsistentFrequencyInMinutes property: The app consistent snapshot frequency (in minutes).
-     *
+     * 
      * @param appConsistentFrequencyInMinutes the appConsistentFrequencyInMinutes value to set.
      * @return the InMagePolicyInput object itself.
      */
@@ -106,7 +112,7 @@ public final class InMagePolicyInput extends PolicyProviderSpecificInput {
     /**
      * Get the multiVmSyncStatus property: A value indicating whether multi-VM sync has to be enabled. Value should be
      * 'Enabled' or 'Disabled'.
-     *
+     * 
      * @return the multiVmSyncStatus value.
      */
     public SetMultiVmSyncStatus multiVmSyncStatus() {
@@ -116,7 +122,7 @@ public final class InMagePolicyInput extends PolicyProviderSpecificInput {
     /**
      * Set the multiVmSyncStatus property: A value indicating whether multi-VM sync has to be enabled. Value should be
      * 'Enabled' or 'Disabled'.
-     *
+     * 
      * @param multiVmSyncStatus the multiVmSyncStatus value to set.
      * @return the InMagePolicyInput object itself.
      */
@@ -127,17 +133,15 @@ public final class InMagePolicyInput extends PolicyProviderSpecificInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (multiVmSyncStatus() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property multiVmSyncStatus in model InMagePolicyInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property multiVmSyncStatus in model InMagePolicyInput"));
         }
     }
 

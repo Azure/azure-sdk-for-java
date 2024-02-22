@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** InMageRcm appliance specific details. */
+/**
+ * InMageRcm appliance specific details.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMageRcm")
 @Immutable
@@ -21,13 +23,15 @@ public final class InMageRcmApplianceSpecificDetails extends ApplianceSpecificDe
     @JsonProperty(value = "appliances", access = JsonProperty.Access.WRITE_ONLY)
     private List<InMageRcmApplianceDetails> appliances;
 
-    /** Creates an instance of InMageRcmApplianceSpecificDetails class. */
+    /**
+     * Creates an instance of InMageRcmApplianceSpecificDetails class.
+     */
     public InMageRcmApplianceSpecificDetails() {
     }
 
     /**
      * Get the appliances property: The list of appliances.
-     *
+     * 
      * @return the appliances value.
      */
     public List<InMageRcmApplianceDetails> appliances() {
@@ -36,7 +40,7 @@ public final class InMageRcmApplianceSpecificDetails extends ApplianceSpecificDe
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

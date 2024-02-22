@@ -34,7 +34,6 @@ public enum SerializerEncoding {
     private static final ClientLogger LOGGER = new ClientLogger(SerializerEncoding.class);
     private static final Map<String, SerializerEncoding> SUPPORTED_MIME_TYPES;
 
-
     static {
         // Encodings and suffixes from: https://tools.ietf.org/html/rfc6838
         SUPPORTED_MIME_TYPES = new TreeMap<>(String.CASE_INSENSITIVE_ORDER);

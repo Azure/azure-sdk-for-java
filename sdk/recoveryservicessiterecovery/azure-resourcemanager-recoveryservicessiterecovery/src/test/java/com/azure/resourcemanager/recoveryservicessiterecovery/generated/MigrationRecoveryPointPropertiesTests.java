@@ -10,11 +10,10 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.MigrationRe
 public final class MigrationRecoveryPointPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MigrationRecoveryPointProperties model =
-            BinaryData
-                .fromString(
-                    "{\"recoveryPointTime\":\"2021-04-08T00:20:33Z\",\"recoveryPointType\":\"ApplicationConsistent\"}")
-                .toObject(MigrationRecoveryPointProperties.class);
+        MigrationRecoveryPointProperties model = BinaryData
+            .fromString(
+                "{\"recoveryPointTime\":\"2021-04-08T00:20:33Z\",\"recoveryPointType\":\"ApplicationConsistent\"}")
+            .toObject(MigrationRecoveryPointProperties.class);
     }
 
     @org.junit.jupiter.api.Test
