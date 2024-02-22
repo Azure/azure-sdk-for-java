@@ -282,7 +282,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     void textToSpeechRunner(BiConsumer<String, SpeechGenerationOptions> testRunner) {
-        testRunner.accept("tts-hd", getSpeechGenerationOptions());
+        testRunner.accept("tts", getSpeechGenerationOptions());
     }
 
     void textToSpeechRunnerForNonAzure(BiConsumer<String, SpeechGenerationOptions> testRunner) {

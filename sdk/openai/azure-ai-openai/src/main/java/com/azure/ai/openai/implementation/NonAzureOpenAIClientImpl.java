@@ -1084,7 +1084,7 @@ public final class NonAzureOpenAIClientImpl {
      * @param modelId The LLM model ID to be injected in the JSON
      * @return an updated version of the JSON with the key "model" and its corresponding value "modelId" added
      */
-    private static BinaryData addModelIdJson(BinaryData inputJson, String modelId) throws JsonProcessingException {
+    public static BinaryData addModelIdJson(BinaryData inputJson, String modelId) throws JsonProcessingException {
         JsonNode jsonNode = JSON_MAPPER.readTree(inputJson.toString());
         if (jsonNode instanceof ObjectNode) {
             ObjectNode objectNode = (ObjectNode) jsonNode;
@@ -1573,15 +1573,8 @@ public final class NonAzureOpenAIClientImpl {
     public Mono<Response<BinaryData>> generateSpeechFromTextWithResponseAsync(String modelId,
         BinaryData speechGenerationOptions, RequestOptions requestOptions) {
         final String accept = "application/octet-stream, application/json";
-
-        // modelId is part of the request body in nonAzure OpenAI
-        try {
-            BinaryData speechGenerationOptionsWithModelId = addModelIdJson(speechGenerationOptions, modelId);
-            return FluxUtil.withContext(context -> service.generateSpeechFromText(
-                    OPEN_AI_ENDPOINT, accept, speechGenerationOptionsWithModelId, requestOptions, context));
-        } catch (JsonProcessingException e) {
-            return Mono.error(e);
-        }
+        return FluxUtil.withContext(context -> service.generateSpeechFromText(
+                    OPEN_AI_ENDPOINT, accept, speechGenerationOptions, requestOptions, context));
     }
 
     /**
@@ -1604,7 +1597,6 @@ public final class NonAzureOpenAIClientImpl {
      * BinaryData
      * }</pre>
      *
-     * @param modelId Specifies either the model name to use for this request.
      * @param speechGenerationOptions A representation of the request options that control the behavior of a
      * text-to-speech operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
@@ -1615,17 +1607,10 @@ public final class NonAzureOpenAIClientImpl {
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> generateSpeechFromTextWithResponse(String modelId,
-        BinaryData speechGenerationOptions, RequestOptions requestOptions) {
+    public Response<BinaryData> generateSpeechFromTextWithResponse(BinaryData speechGenerationOptions,
+                                                                   RequestOptions requestOptions) {
         final String accept = "application/octet-stream, application/json";
-        BinaryData speechGenerationOptionsWithModelId = null;
-        try {
-            speechGenerationOptionsWithModelId = addModelIdJson(speechGenerationOptions, modelId);
-        } catch (JsonProcessingException e) {
-            throw new RuntimeException(e);
-        }
-
-        return service.generateSpeechFromTextSync(OPEN_AI_ENDPOINT, accept, speechGenerationOptionsWithModelId,
+        return service.generateSpeechFromTextSync(OPEN_AI_ENDPOINT, accept, speechGenerationOptions,
                 requestOptions, Context.NONE);
     }
 }
