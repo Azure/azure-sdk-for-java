@@ -45,7 +45,7 @@ public class RetryPolicyTests {
 
     @ParameterizedTest
     @ValueSource(ints = {408, 500, 502, 503})
-    public void defaultRetryPolicyRetriesExpectedErrorCodes(int returnCode) {
+    public void defaultRetryPolicyRetriesExpectedErrorCodes(int returnCode) throws IOException {
         AtomicInteger attemptCount = new AtomicInteger();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy())
@@ -73,7 +73,7 @@ public class RetryPolicyTests {
 
     @ParameterizedTest
     @ValueSource(ints = {400, 401, 402, 403, 404, 409, 412, 501, 505})
-    public void defaultRetryPolicyDoesntRetryOnErrorCodes(int returnCode) {
+    public void defaultRetryPolicyDoesntRetryOnErrorCodes(int returnCode) throws IOException {
         AtomicInteger attemptCount = new AtomicInteger();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy())
@@ -98,7 +98,7 @@ public class RetryPolicyTests {
     }
 
     @Test
-    public void defaultRetryPolicyRetriesIOException() {
+    public void defaultRetryPolicyRetriesIOException() throws IOException {
         AtomicInteger attemptCount = new AtomicInteger();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy())
@@ -125,10 +125,11 @@ public class RetryPolicyTests {
         }
     }
 
+
     @ParameterizedTest
     @MethodSource("customRetryPolicyCanDetermineRetryStatusCodesSupplier")
     public void customRetryPolicyCanDetermineRetryStatusCodes(RetryPolicy.RetryStrategy retryStrategy, int[] statusCodes,
-                                                              int expectedStatusCode) {
+                                                              int expectedStatusCode) throws IOException {
         AtomicInteger attempt = new AtomicInteger();
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .policies(new RetryPolicy(retryStrategy, 2, null))
@@ -147,7 +148,7 @@ public class RetryPolicyTests {
     }
 
     @Test
-    public void retryMax() {
+    public void retryMax() throws IOException {
         final int maxRetries = 5;
         final HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new NoOpHttpClient() {
@@ -168,7 +169,7 @@ public class RetryPolicyTests {
     }
 
     @Test
-    public void fixedDelayRetry() {
+    public void fixedDelayRetry() throws IOException {
         final int maxRetries = 5;
         final long delayMillis = 500;
         final HttpPipeline pipeline = new HttpPipelineBuilder()
@@ -201,7 +202,7 @@ public class RetryPolicyTests {
     }
 
     @Test
-    public void exponentialDelayRetry() {
+    public void exponentialDelayRetry() throws IOException {
         final int maxRetries = 5;
         final long baseDelayMillis = 100;
         final long maxDelayMillis = 1000;
@@ -244,7 +245,7 @@ public class RetryPolicyTests {
         AtomicInteger closeCalls = new AtomicInteger();
         HttpResponse closeTrackingHttpResponse = new MockHttpResponse(null, 503, new Headers()) {
             @Override
-            public void close() {
+            public void close() throws IOException {
                 closeCalls.incrementAndGet();
                 super.close();
             }

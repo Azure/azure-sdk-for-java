@@ -18,6 +18,7 @@ import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.configuration.Configuration;
 
+import java.io.IOException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.Arrays;
@@ -405,7 +406,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         }
 
         @Override
-        public void close() {
+        public void close() throws IOException {
             actualResponse.close();
         }
 

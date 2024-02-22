@@ -15,7 +15,6 @@ import com.generic.core.models.Header;
 import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 import com.generic.core.shared.LocalTestServer;
-
 import org.eclipse.jetty.server.Response;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -162,7 +161,7 @@ public class DefaultHttpClientTest {
     }
 
     @Test
-    public void testFlowableWhenServerReturnsBodyAndNoErrorsWhenHttp500Returned() {
+    public void testFlowableWhenServerReturnsBodyAndNoErrorsWhenHttp500Returned() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
         try (HttpResponse response = doRequest(client, "/error")) {
@@ -196,7 +195,7 @@ public class DefaultHttpClientTest {
     }
 
     @Test
-    public void validateHeadersReturnAsIs() {
+    public void validateHeadersReturnAsIs() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
         HeaderName singleValueHeaderName = HeaderName.fromString("singleValue");
@@ -229,7 +228,7 @@ public class DefaultHttpClientTest {
     }
 
     @Test
-    public void testBufferedResponse() {
+    public void testBufferedResponse() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
         try (HttpResponse response = getResponse(client, "/short", Context.NONE)) {
@@ -238,7 +237,7 @@ public class DefaultHttpClientTest {
     }
 
     @Test
-    public void testEmptyBufferResponse() {
+    public void testEmptyBufferResponse() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
         try (HttpResponse response = getResponse(client, "/empty", Context.NONE)) {
@@ -247,13 +246,13 @@ public class DefaultHttpClientTest {
     }
 
     @Test
-    public void testRequestBodyPost() {
+    public void testRequestBodyPost() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
         String contentChunk = "abcdefgh";
         int repetitions = 1000;
         HttpRequest request = new HttpRequest(HttpMethod.POST, url(server, "/shortPost"))
-            .setHeader(HeaderName.CONTENT_LENGTH, String.valueOf(contentChunk.length() * (repetitions + 1)))
-            .setBody(contentChunk);
+            .setHeaders(new Headers().add(HeaderName.CONTENT_LENGTH, String.valueOf(contentChunk.length() * (repetitions + 1))))
+            .setBody(BinaryData.fromString(contentChunk));
 
         try (HttpResponse response = client.send(request)) {
             assertArrayEquals(SHORT_BODY, response.getBody().toBytes());
