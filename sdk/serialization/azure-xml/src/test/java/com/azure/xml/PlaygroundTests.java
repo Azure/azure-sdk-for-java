@@ -9,7 +9,7 @@ import org.junit.jupiter.api.Test;
 
 import javax.xml.stream.XMLStreamException;
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -18,26 +18,26 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 public class PlaygroundTests {
-    private static final String SIMPLE_XML = "<?xml version=\"1.0\" encoding=\"utf-8\"?>" + "<SignedIdentifiers>"
-        + "<SignedIdentifier>" + "<Id>MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=</Id>" + "<AccessPolicy>"
-        + "<Start>2009-09-28T08:49:37Z</Start>" + "<Expiry>2009-09-29T08:49:37Z</Expiry>"
-        + "<Permission>rwd</Permission>" + "</AccessPolicy>" + "</SignedIdentifier>" + "</SignedIdentifiers>";
+    private static final String SIMPLE_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?><SignedIdentifiers>"
+        + "<SignedIdentifier><Id>MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=</Id><AccessPolicy>"
+        + "<Start>2009-09-28T08:49:37Z</Start><Expiry>2009-09-29T08:49:37Z</Expiry><Permission>rwd</Permission>"
+        + "</AccessPolicy></SignedIdentifier></SignedIdentifiers>";
 
-    private static final String COMPLEX_XML = "<?xml version=\"1.0\" encoding=\"utf-8\"?>"
+    private static final String COMPLEX_XML = "<?xml version=\"1.0\" encoding=\"UTF-8\"?>"
         + "<entry xmlns=\"http://www.w3.org/2005/Atom\">"
         + "<id>https://shivangiservicebus.servicebus.windows.net/$namespaceinfo?api-version=2021-05</id>"
-        + "<title>ShivangiServiceBus</title>" + "<updated>2020-07-02T09:53:19Z</updated>" + "<author>"
-        + "<name>ShivangiServiceBus</name>" + "</author>"
+        + "<title>ShivangiServiceBus</title><updated>2020-07-02T09:53:19Z</updated>"
+        + "<author><name>ShivangiServiceBus</name></author>"
         + "<link rel=\"self\" href=\"https://shivangiservicebus.servicebus.windows.net/$namespaceinfo?api-version=2021-05\"/>"
         + "<content type=\"application/xml\">"
         + "<NamespaceInfo xmlns=\"http://schemas.microsoft.com/netservices/2010/10/servicebus/connect\">"
-        + "<Alias>MyServiceBusFallback</Alias>" + "<CreatedTime>2020-04-09T08:38:55.807Z</CreatedTime>"
-        + "<MessagingSKU>Premium</MessagingSKU>" + "<MessagingUnits>1</MessagingUnits>"
-        + "<ModifiedTime>2020-06-12T06:34:38.383Z</ModifiedTime>" + "<Name>ShivangiServiceBus</Name>"
-        + "<NamespaceType>Messaging</NamespaceType>" + "</NamespaceInfo>" + "</content>" + "</entry>";
+        + "<Alias>MyServiceBusFallback</Alias><CreatedTime>2020-04-09T08:38:55.807Z</CreatedTime>"
+        + "<MessagingSKU>Premium</MessagingSKU><MessagingUnits>1</MessagingUnits>"
+        + "<ModifiedTime>2020-06-12T06:34:38.383Z</ModifiedTime><Name>ShivangiServiceBus</Name>"
+        + "<NamespaceType>Messaging</NamespaceType></NamespaceInfo></content></entry>";
 
     @Test
-    public void toXmlSimple() throws IOException, XMLStreamException {
+    public void toXmlSimple() throws XMLStreamException, UnsupportedEncodingException {
         AccessPolicy accessPolicy = new AccessPolicy().setStartsOn(OffsetDateTime.parse("2009-09-28T08:49:37Z"))
             .setExpiresOn(OffsetDateTime.parse("2009-09-29T08:49:37Z"))
             .setPermissions("rwd");
@@ -58,7 +58,7 @@ public class PlaygroundTests {
     }
 
     @Test
-    public void fromXmlSimple() throws IOException, XMLStreamException {
+    public void fromXmlSimple() throws XMLStreamException {
         AccessPolicy accessPolicy = new AccessPolicy().setStartsOn(OffsetDateTime.parse("2009-09-28T08:49:37Z"))
             .setExpiresOn(OffsetDateTime.parse("2009-09-29T08:49:37Z"))
             .setPermissions("rwd");
@@ -91,7 +91,7 @@ public class PlaygroundTests {
     }
 
     @Test
-    public void toXmlComplex() throws IOException, XMLStreamException {
+    public void toXmlComplex() throws XMLStreamException, UnsupportedEncodingException {
         ResponseAuthor responseAuthor = new ResponseAuthor().setName("ShivangiServiceBus");
 
         ResponseLink responseLink = new ResponseLink()
@@ -129,7 +129,7 @@ public class PlaygroundTests {
     }
 
     @Test
-    public void fromXmlComplex() throws IOException, XMLStreamException {
+    public void fromXmlComplex() throws XMLStreamException {
         ResponseAuthor responseAuthor = new ResponseAuthor().setName("ShivangiServiceBus");
 
         ResponseLink responseLink = new ResponseLink()
