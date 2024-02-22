@@ -12,16 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ProvisionedClusterLicenseProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProvisionedClusterLicenseProfile model = BinaryData.fromString("{\"azureHybridBenefit\":\"NotApplicable\"}")
+        ProvisionedClusterLicenseProfile model = BinaryData.fromString("{\"azureHybridBenefit\":\"False\"}")
             .toObject(ProvisionedClusterLicenseProfile.class);
-        Assertions.assertEquals(AzureHybridBenefit.NOT_APPLICABLE, model.azureHybridBenefit());
+        Assertions.assertEquals(AzureHybridBenefit.FALSE, model.azureHybridBenefit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         ProvisionedClusterLicenseProfile model
-            = new ProvisionedClusterLicenseProfile().withAzureHybridBenefit(AzureHybridBenefit.NOT_APPLICABLE);
+            = new ProvisionedClusterLicenseProfile().withAzureHybridBenefit(AzureHybridBenefit.FALSE);
         model = BinaryData.fromObject(model).toObject(ProvisionedClusterLicenseProfile.class);
-        Assertions.assertEquals(AzureHybridBenefit.NOT_APPLICABLE, model.azureHybridBenefit());
+        Assertions.assertEquals(AzureHybridBenefit.FALSE, model.azureHybridBenefit());
     }
 }

@@ -26,7 +26,7 @@ public final class ManagedClusterWorkloadAutoScalerProfileKeda {
 
     /**
      * Get the enabled property: Whether to enable KEDA.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -35,7 +35,7 @@ public final class ManagedClusterWorkloadAutoScalerProfileKeda {
 
     /**
      * Set the enabled property: Whether to enable KEDA.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the ManagedClusterWorkloadAutoScalerProfileKeda object itself.
      */
@@ -46,7 +46,7 @@ public final class ManagedClusterWorkloadAutoScalerProfileKeda {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

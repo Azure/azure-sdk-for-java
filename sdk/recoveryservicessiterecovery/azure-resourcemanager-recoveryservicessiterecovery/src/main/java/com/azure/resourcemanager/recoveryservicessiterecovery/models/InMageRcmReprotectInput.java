@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** InMageRcm specific provider input. */
+/**
+ * InMageRcm specific provider input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMageRcm")
 @Fluent
@@ -39,13 +41,15 @@ public final class InMageRcmReprotectInput extends ReverseReplicationProviderSpe
     @JsonProperty(value = "policyId")
     private String policyId;
 
-    /** Creates an instance of InMageRcmReprotectInput class. */
+    /**
+     * Creates an instance of InMageRcmReprotectInput class.
+     */
     public InMageRcmReprotectInput() {
     }
 
     /**
      * Get the reprotectAgentId property: The reprotect agent Id.
-     *
+     * 
      * @return the reprotectAgentId value.
      */
     public String reprotectAgentId() {
@@ -54,7 +58,7 @@ public final class InMageRcmReprotectInput extends ReverseReplicationProviderSpe
 
     /**
      * Set the reprotectAgentId property: The reprotect agent Id.
-     *
+     * 
      * @param reprotectAgentId the reprotectAgentId value to set.
      * @return the InMageRcmReprotectInput object itself.
      */
@@ -65,7 +69,7 @@ public final class InMageRcmReprotectInput extends ReverseReplicationProviderSpe
 
     /**
      * Get the datastoreName property: The target datastore name.
-     *
+     * 
      * @return the datastoreName value.
      */
     public String datastoreName() {
@@ -74,7 +78,7 @@ public final class InMageRcmReprotectInput extends ReverseReplicationProviderSpe
 
     /**
      * Set the datastoreName property: The target datastore name.
-     *
+     * 
      * @param datastoreName the datastoreName value to set.
      * @return the InMageRcmReprotectInput object itself.
      */
@@ -85,7 +89,7 @@ public final class InMageRcmReprotectInput extends ReverseReplicationProviderSpe
 
     /**
      * Get the logStorageAccountId property: The log storage account ARM Id.
-     *
+     * 
      * @return the logStorageAccountId value.
      */
     public String logStorageAccountId() {
@@ -94,7 +98,7 @@ public final class InMageRcmReprotectInput extends ReverseReplicationProviderSpe
 
     /**
      * Set the logStorageAccountId property: The log storage account ARM Id.
-     *
+     * 
      * @param logStorageAccountId the logStorageAccountId value to set.
      * @return the InMageRcmReprotectInput object itself.
      */
@@ -105,7 +109,7 @@ public final class InMageRcmReprotectInput extends ReverseReplicationProviderSpe
 
     /**
      * Get the policyId property: The Policy Id.
-     *
+     * 
      * @return the policyId value.
      */
     public String policyId() {
@@ -114,7 +118,7 @@ public final class InMageRcmReprotectInput extends ReverseReplicationProviderSpe
 
     /**
      * Set the policyId property: The Policy Id.
-     *
+     * 
      * @param policyId the policyId value to set.
      * @return the InMageRcmReprotectInput object itself.
      */
@@ -125,29 +129,23 @@ public final class InMageRcmReprotectInput extends ReverseReplicationProviderSpe
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (reprotectAgentId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property reprotectAgentId in model InMageRcmReprotectInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property reprotectAgentId in model InMageRcmReprotectInput"));
         }
         if (datastoreName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property datastoreName in model InMageRcmReprotectInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property datastoreName in model InMageRcmReprotectInput"));
         }
         if (logStorageAccountId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property logStorageAccountId in model InMageRcmReprotectInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property logStorageAccountId in model InMageRcmReprotectInput"));
         }
     }
 

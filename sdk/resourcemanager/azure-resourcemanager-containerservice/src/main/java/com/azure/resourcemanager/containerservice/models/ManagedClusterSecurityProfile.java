@@ -46,7 +46,7 @@ public final class ManagedClusterSecurityProfile {
 
     /**
      * Get the defender property: Microsoft Defender settings for the security profile.
-     *
+     * 
      * @return the defender value.
      */
     public ManagedClusterSecurityProfileDefender defender() {
@@ -55,7 +55,7 @@ public final class ManagedClusterSecurityProfile {
 
     /**
      * Set the defender property: Microsoft Defender settings for the security profile.
-     *
+     * 
      * @param defender the defender value to set.
      * @return the ManagedClusterSecurityProfile object itself.
      */
@@ -67,7 +67,7 @@ public final class ManagedClusterSecurityProfile {
     /**
      * Get the azureKeyVaultKms property: Azure Key Vault [key management
      * service](https://kubernetes.io/docs/tasks/administer-cluster/kms-provider/) settings for the security profile.
-     *
+     * 
      * @return the azureKeyVaultKms value.
      */
     public AzureKeyVaultKms azureKeyVaultKms() {
@@ -77,7 +77,7 @@ public final class ManagedClusterSecurityProfile {
     /**
      * Set the azureKeyVaultKms property: Azure Key Vault [key management
      * service](https://kubernetes.io/docs/tasks/administer-cluster/kms-provider/) settings for the security profile.
-     *
+     * 
      * @param azureKeyVaultKms the azureKeyVaultKms value to set.
      * @return the ManagedClusterSecurityProfile object itself.
      */
@@ -90,7 +90,7 @@ public final class ManagedClusterSecurityProfile {
      * Get the workloadIdentity property: Workload identity settings for the security profile. Workload identity
      * enables Kubernetes applications to access Azure cloud resources securely with Azure AD. See
      * https://aka.ms/aks/wi for more details.
-     *
+     * 
      * @return the workloadIdentity value.
      */
     public ManagedClusterSecurityProfileWorkloadIdentity workloadIdentity() {
@@ -101,7 +101,7 @@ public final class ManagedClusterSecurityProfile {
      * Set the workloadIdentity property: Workload identity settings for the security profile. Workload identity
      * enables Kubernetes applications to access Azure cloud resources securely with Azure AD. See
      * https://aka.ms/aks/wi for more details.
-     *
+     * 
      * @param workloadIdentity the workloadIdentity value to set.
      * @return the ManagedClusterSecurityProfile object itself.
      */
@@ -113,7 +113,7 @@ public final class ManagedClusterSecurityProfile {
 
     /**
      * Get the imageCleaner property: Image Cleaner settings for the security profile.
-     *
+     * 
      * @return the imageCleaner value.
      */
     public ManagedClusterSecurityProfileImageCleaner imageCleaner() {
@@ -122,7 +122,7 @@ public final class ManagedClusterSecurityProfile {
 
     /**
      * Set the imageCleaner property: Image Cleaner settings for the security profile.
-     *
+     * 
      * @param imageCleaner the imageCleaner value to set.
      * @return the ManagedClusterSecurityProfile object itself.
      */
@@ -133,7 +133,7 @@ public final class ManagedClusterSecurityProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

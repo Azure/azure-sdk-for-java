@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.VaultSettingProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Vault setting. */
+/**
+ * Vault setting.
+ */
 @Fluent
 public final class VaultSettingInner extends ProxyResource {
     /*
@@ -24,13 +26,15 @@ public final class VaultSettingInner extends ProxyResource {
     @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of VaultSettingInner class. */
+    /**
+     * Creates an instance of VaultSettingInner class.
+     */
     public VaultSettingInner() {
     }
 
     /**
      * Get the properties property: The vault setting properties.
-     *
+     * 
      * @return the properties value.
      */
     public VaultSettingProperties properties() {
@@ -39,7 +43,7 @@ public final class VaultSettingInner extends ProxyResource {
 
     /**
      * Set the properties property: The vault setting properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the VaultSettingInner object itself.
      */
@@ -50,7 +54,7 @@ public final class VaultSettingInner extends ProxyResource {
 
     /**
      * Get the location property: Resource Location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -59,7 +63,7 @@ public final class VaultSettingInner extends ProxyResource {
 
     /**
      * Set the location property: Resource Location.
-     *
+     * 
      * @param location the location value to set.
      * @return the VaultSettingInner object itself.
      */
@@ -70,7 +74,7 @@ public final class VaultSettingInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

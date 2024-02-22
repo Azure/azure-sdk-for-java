@@ -131,21 +131,15 @@ public class SwaggerMethodParserTests {
         String clazzName = clazz.getName();
 
         return Stream.of(
-            Arguments.of(clazz.getDeclaredMethod("getMethod"), HttpMethod.GET, "test",
-                clazzName + ".getMethod"),
-            Arguments.of(clazz.getDeclaredMethod("putMethod"), HttpMethod.PUT, "test",
-                clazzName + ".putMethod"),
-            Arguments.of(clazz.getDeclaredMethod("headMethod"), HttpMethod.HEAD, "test",
-                clazzName + ".headMethod"),
+            Arguments.of(clazz.getDeclaredMethod("getMethod"), HttpMethod.GET, "test", clazzName + ".getMethod"),
+            Arguments.of(clazz.getDeclaredMethod("putMethod"), HttpMethod.PUT, "test", clazzName + ".putMethod"),
+            Arguments.of(clazz.getDeclaredMethod("headMethod"), HttpMethod.HEAD, "test", clazzName + ".headMethod"),
             Arguments.of(clazz.getDeclaredMethod("deleteMethod"), HttpMethod.DELETE, "test",
                 clazzName + ".deleteMethod"),
-            Arguments.of(clazz.getDeclaredMethod("postMethod"), HttpMethod.POST, "test",
-                clazzName + ".postMethod"),
-            Arguments.of(clazz.getDeclaredMethod("patchMethod"), HttpMethod.PATCH, "test",
-                clazzName + ".patchMethod"),
+            Arguments.of(clazz.getDeclaredMethod("postMethod"), HttpMethod.POST, "test", clazzName + ".postMethod"),
+            Arguments.of(clazz.getDeclaredMethod("patchMethod"), HttpMethod.PATCH, "test", clazzName + ".patchMethod"),
             Arguments.of(clazz.getDeclaredMethod("optionsMethod"), HttpMethod.OPTIONS, "test",
-                clazzName + ".optionsMethod")
-        );
+                clazzName + ".optionsMethod"));
     }
 
     @Host("https://raw.host.com")
@@ -181,13 +175,11 @@ public class SwaggerMethodParserTests {
     private static Stream<Arguments> wireTypesSupplier() throws NoSuchMethodException {
         Class<WireTypesMethods> clazz = WireTypesMethods.class;
 
-        return Stream.of(
-            Arguments.of(clazz.getDeclaredMethod("noWireType"), null),
+        return Stream.of(Arguments.of(clazz.getDeclaredMethod("noWireType"), null),
             Arguments.of(clazz.getDeclaredMethod("base64Url"), Base64Url.class),
             Arguments.of(clazz.getDeclaredMethod("dateTimeRfc1123"), DateTimeRfc1123.class),
             Arguments.of(clazz.getDeclaredMethod("page"), Page.class),
-            Arguments.of(clazz.getDeclaredMethod("unknownType"), null)
-        );
+            Arguments.of(clazz.getDeclaredMethod("unknownType"), null));
     }
 
     @Host("https://raw.host.com")
@@ -197,15 +189,15 @@ public class SwaggerMethodParserTests {
         void noHeaders();
 
         @Get("test")
-        @Headers({"", ":", "nameOnly:", ":valueOnly"})
+        @Headers({ "", ":", "nameOnly:", ":valueOnly" })
         void malformedHeaders();
 
         @Get("test")
-        @Headers({"name1:value1", " name2: value2", "name3 :value3 "})
+        @Headers({ "name1:value1", " name2: value2", "name3 :value3 " })
         void headers();
 
         @Get("test")
-        @Headers({"name:value1", "name:value2"})
+        @Headers({ "name:value1", "name:value2" })
         void sameKeyTwiceLastWins();
     }
 
@@ -224,13 +216,11 @@ public class SwaggerMethodParserTests {
 
     private static Stream<Arguments> headersSupplier() throws NoSuchMethodException {
         Class<HeaderMethods> clazz = HeaderMethods.class;
-        return Stream.of(
-            Arguments.of(clazz.getDeclaredMethod("noHeaders"), new HttpHeaders()),
+        return Stream.of(Arguments.of(clazz.getDeclaredMethod("noHeaders"), new HttpHeaders()),
             Arguments.of(clazz.getDeclaredMethod("malformedHeaders"), new HttpHeaders()),
-            Arguments.of(clazz.getDeclaredMethod("headers"), new HttpHeaders()
-                .set("name1", "value1").set("name2", "value2").set("name3", "value3")),
-            Arguments.of(clazz.getDeclaredMethod("sameKeyTwiceLastWins"), new HttpHeaders().set("name", "value2"))
-        );
+            Arguments.of(clazz.getDeclaredMethod("headers"),
+                new HttpHeaders().set("name1", "value1").set("name2", "value2").set("name3", "value3")),
+            Arguments.of(clazz.getDeclaredMethod("sameKeyTwiceLastWins"), new HttpHeaders().set("name", "value2")));
     }
 
     @Host("https://{sub1}.host.com")
@@ -271,8 +261,7 @@ public class SwaggerMethodParserTests {
         Method substitutionWrongParam = clazz.getDeclaredMethod("substitutionWrongParam", String.class);
         Method encodingSubstitutionWrongParam = clazz.getDeclaredMethod("encodingSubstitutionWrongParam", String.class);
 
-        return Stream.of(
-            Arguments.of(noSubstitutions, toObjectArray("raw"), "https://{sub1}.host.com"),
+        return Stream.of(Arguments.of(noSubstitutions, toObjectArray("raw"), "https://{sub1}.host.com"),
             Arguments.of(substitution, toObjectArray("raw"), "https://raw.host.com"),
             Arguments.of(substitution, toObjectArray("{sub1}"), "https://{sub1}.host.com"),
             Arguments.of(substitution, toObjectArray((String) null), "https://.host.com"),
@@ -282,8 +271,7 @@ public class SwaggerMethodParserTests {
             Arguments.of(encodingSubstitution, toObjectArray("{sub1}"), "https://%7Bsub1%7D.host.com"),
             Arguments.of(encodingSubstitution, toObjectArray((String) null), "https://.host.com"),
             Arguments.of(substitution, null, "https://{sub1}.host.com"),
-            Arguments.of(encodingSubstitutionWrongParam, toObjectArray("raw"), "https://{sub1}.host.com")
-        );
+            Arguments.of(encodingSubstitutionWrongParam, toObjectArray("raw"), "https://{sub1}.host.com"));
     }
 
     @Host("{sub1}://raw.host.com")
@@ -324,8 +312,7 @@ public class SwaggerMethodParserTests {
         Method substitutionWrongParam = clazz.getDeclaredMethod("substitutionWrongParam", String.class);
         Method encodingSubstitutionWrongParam = clazz.getDeclaredMethod("encodingSubstitutionWrongParam", String.class);
 
-        return Stream.of(
-            Arguments.of(noSubstitutions, toObjectArray("raw"), "raw.host.com"),
+        return Stream.of(Arguments.of(noSubstitutions, toObjectArray("raw"), "raw.host.com"),
             Arguments.of(substitution, toObjectArray("http"), "http://raw.host.com"),
             Arguments.of(substitution, toObjectArray("ĥttps"), "ĥttps://raw.host.com"),
             Arguments.of(substitution, toObjectArray((String) null), "raw.host.com"),
@@ -335,8 +322,7 @@ public class SwaggerMethodParserTests {
             Arguments.of(encodingSubstitution, toObjectArray("ĥttps"), "raw.host.com"),
             Arguments.of(encodingSubstitution, toObjectArray((String) null), "raw.host.com"),
             Arguments.of(substitution, null, "raw.host.com"),
-            Arguments.of(encodingSubstitutionWrongParam, toObjectArray("raw"), "raw.host.com")
-        );
+            Arguments.of(encodingSubstitutionWrongParam, toObjectArray("raw"), "raw.host.com"));
     }
 
     @Host("https://raw.host.com")
@@ -365,15 +351,13 @@ public class SwaggerMethodParserTests {
         Method substitution = clazz.getDeclaredMethod("substitution", String.class);
         Method encodedSubstitution = clazz.getDeclaredMethod("encodedSubstitution", String.class);
 
-        return Stream.of(
-            Arguments.of(noSubstitutions, toObjectArray("path"), "{sub1}"),
+        return Stream.of(Arguments.of(noSubstitutions, toObjectArray("path"), "{sub1}"),
             Arguments.of(encodedSubstitution, toObjectArray("path"), "path"),
             Arguments.of(encodedSubstitution, toObjectArray("{sub1}"), "{sub1}"),
             Arguments.of(encodedSubstitution, toObjectArray((String) null), ""),
             Arguments.of(substitution, toObjectArray("path"), "path"),
             Arguments.of(substitution, toObjectArray("{sub1}"), "%7Bsub1%7D"),
-            Arguments.of(substitution, toObjectArray((String) null), "")
-        );
+            Arguments.of(substitution, toObjectArray((String) null), ""));
     }
 
     @Host("https://raw.host.com")
@@ -404,8 +388,7 @@ public class SwaggerMethodParserTests {
         Method substitution = clazz.getDeclaredMethod("substitutions", String.class, boolean.class);
         Method encodedSubstitution = clazz.getDeclaredMethod("encodedSubstitutions", String.class, boolean.class);
 
-        return Stream.of(
-            Arguments.of(substitution, null, "https://raw.host.com"),
+        return Stream.of(Arguments.of(substitution, null, "https://raw.host.com"),
             Arguments.of(substitution, toObjectArray("raw", true), "https://raw.host.com?sub1=raw&sub2=true"),
             Arguments.of(substitution, toObjectArray(null, true), "https://raw.host.com?sub2=true"),
             Arguments.of(substitution, toObjectArray("{sub1}", false),
@@ -414,8 +397,7 @@ public class SwaggerMethodParserTests {
             Arguments.of(encodedSubstitution, toObjectArray("raw", true), "https://raw.host.com?sub1=raw&sub2=true"),
             Arguments.of(encodedSubstitution, toObjectArray(null, true), "https://raw.host.com?sub2=true"),
             Arguments.of(encodedSubstitution, toObjectArray("{sub1}", false),
-                "https://raw.host.com?sub1={sub1}&sub2=false")
-        );
+                "https://raw.host.com?sub1={sub1}&sub2=false"));
     }
 
     @Host("https://raw.host.com")
@@ -425,7 +407,7 @@ public class SwaggerMethodParserTests {
         void addHeaders(@HeaderParam("sub1") String sub1, @HeaderParam("sub2") boolean sub2);
 
         @Get("test")
-        @Headers({"sub1:sub1", "sub2:false"})
+        @Headers({ "sub1:sub1", "sub2:false" })
         void overrideHeaders(@HeaderParam("sub1") String sub1, @HeaderParam("sub2") boolean sub2);
 
         @Get("test")
@@ -454,11 +436,11 @@ public class SwaggerMethodParserTests {
         Map<String, String> simpleHeaderMap = Collections.singletonMap("key", "value");
         Map<String, String> expectedSimpleHeadersMap = Collections.singletonMap("x-ms-meta-key", "value");
 
-        Map<String, String> complexHeaderMap = new HttpHeaders().set("key1", (String) null).set("key2", "value2").toMap();
+        Map<String, String> complexHeaderMap
+            = new HttpHeaders().set("key1", (String) null).set("key2", "value2").toMap();
         Map<String, String> expectedComplexHeaderMap = Collections.singletonMap("x-ms-meta-key2", "value2");
 
-        return Stream.of(
-            Arguments.of(addHeaders, null, null),
+        return Stream.of(Arguments.of(addHeaders, null, null),
             Arguments.of(addHeaders, toObjectArray("header", true), createExpectedParameters("header", true)),
             Arguments.of(addHeaders, toObjectArray(null, true), createExpectedParameters(null, true)),
             Arguments.of(addHeaders, toObjectArray("{sub1}", false), createExpectedParameters("{sub1}", false)),
@@ -468,8 +450,7 @@ public class SwaggerMethodParserTests {
             Arguments.of(overrideHeaders, toObjectArray("{sub1}", true), createExpectedParameters("{sub1}", true)),
             Arguments.of(headerMap, null, null),
             Arguments.of(headerMap, toObjectArray(simpleHeaderMap), expectedSimpleHeadersMap),
-            Arguments.of(headerMap, toObjectArray(complexHeaderMap), expectedComplexHeaderMap)
-        );
+            Arguments.of(headerMap, toObjectArray(complexHeaderMap), expectedComplexHeaderMap));
     }
 
     @Host("https://raw.host.com")
@@ -508,10 +489,10 @@ public class SwaggerMethodParserTests {
     private static Stream<Arguments> bodySubstitutionSupplier() throws NoSuchMethodException {
         Class<BodySubstitutionMethods> clazz = BodySubstitutionMethods.class;
         Method jsonBody = clazz.getDeclaredMethod("applicationJsonBody", String.class);
-        Method formBody = clazz.getDeclaredMethod("formBody", String.class, Integer.class, OffsetDateTime.class,
-            List.class);
-        Method encodedFormBody = clazz.getDeclaredMethod("encodedFormBody", String.class, Integer.class,
-            OffsetDateTime.class, List.class);
+        Method formBody
+            = clazz.getDeclaredMethod("formBody", String.class, Integer.class, OffsetDateTime.class, List.class);
+        Method encodedFormBody
+            = clazz.getDeclaredMethod("encodedFormBody", String.class, Integer.class, OffsetDateTime.class, List.class);
         Method encodedFormKey = clazz.getDeclaredMethod("encodedFormKey", String.class);
         Method encodedFormKey2 = clazz.getDeclaredMethod("encodedFormKey2", String.class);
 
@@ -519,8 +500,7 @@ public class SwaggerMethodParserTests {
         List<String> favoriteColors = Arrays.asList("blue", "green");
         List<String> badFavoriteColors = Arrays.asList(null, "green");
 
-        return Stream.of(
-            Arguments.of(jsonBody, null, ContentType.APPLICATION_JSON, null),
+        return Stream.of(Arguments.of(jsonBody, null, ContentType.APPLICATION_JSON, null),
             Arguments.of(jsonBody, toObjectArray("{name:John Doe,age:40,dob:01-01-1980}"), ContentType.APPLICATION_JSON,
                 "{name:John Doe,age:40,dob:01-01-1980}"),
             Arguments.of(formBody, null, APPLICATION_X_WWW_FORM_URLENCODED, null),
@@ -540,8 +520,7 @@ public class SwaggerMethodParserTests {
             Arguments.of(encodedFormKey, toObjectArray("value"), APPLICATION_X_WWW_FORM_URLENCODED,
                 "x%3Ams%3Avalue=value"),
             Arguments.of(encodedFormKey2, toObjectArray("value"), APPLICATION_X_WWW_FORM_URLENCODED,
-                "x%3Ams%3Avalue=value")
-        );
+                "x%3Ams%3Avalue=value"));
     }
 
     @ParameterizedTest
@@ -556,11 +535,9 @@ public class SwaggerMethodParserTests {
 
         Context context = new Context("key", "value");
 
-        return Stream.of(
-            Arguments.of(swaggerMethodParser, toObjectArray(Context.NONE), Context.NONE),
+        return Stream.of(Arguments.of(swaggerMethodParser, toObjectArray(Context.NONE), Context.NONE),
             Arguments.of(swaggerMethodParser, toObjectArray((Object) null), Context.NONE),
-            Arguments.of(swaggerMethodParser, toObjectArray(context), context)
-        );
+            Arguments.of(swaggerMethodParser, toObjectArray(context), context));
     }
 
     @ParameterizedTest
@@ -574,25 +551,22 @@ public class SwaggerMethodParserTests {
         Method method = OperationMethods.class.getDeclaredMethod("getMethodWithRequestOptions", RequestOptions.class);
         SwaggerMethodParser swaggerMethodParser = new SwaggerMethodParser(method);
 
-        RequestOptions bodyOptions = new RequestOptions()
-            .setBody(BinaryData.fromString("{\"id\":\"123\"}"));
+        RequestOptions bodyOptions = new RequestOptions().setBody(BinaryData.fromString("{\"id\":\"123\"}"));
 
-        RequestOptions headerQueryOptions = new RequestOptions()
-            .addHeader("x-ms-foo", "bar")
-            .addQueryParam("foo", "bar");
+        RequestOptions headerQueryOptions
+            = new RequestOptions().addHeader("x-ms-foo", "bar").addQueryParam("foo", "bar");
 
-        RequestOptions urlOptions = new RequestOptions()
-            .addRequestCallback(httpRequest -> httpRequest.setUrl("https://foo.host.com"));
+        RequestOptions urlOptions
+            = new RequestOptions().addRequestCallback(httpRequest -> httpRequest.setUrl("https://foo.host.com"));
 
         // Add this test back if error options is ever made public.
         // RequestOptions statusOptionOptions = new RequestOptions().setErrorOptions(EnumSet.of(ErrorOptions.NO_THROW));
 
-        return Stream.of(
-            Arguments.of(swaggerMethodParser, toObjectArray((Object) null), null),
+        return Stream.of(Arguments.of(swaggerMethodParser, toObjectArray((Object) null), null),
             Arguments.of(swaggerMethodParser, toObjectArray(bodyOptions), bodyOptions),
             Arguments.of(swaggerMethodParser, toObjectArray(headerQueryOptions), headerQueryOptions),
             Arguments.of(swaggerMethodParser, toObjectArray(urlOptions), urlOptions)
-            // Arguments.of(swaggerMethodParser, toObjectArray(statusOptionOptions), statusOptionOptions)
+        // Arguments.of(swaggerMethodParser, toObjectArray(statusOptionOptions), statusOptionOptions)
         );
     }
 
@@ -603,11 +577,11 @@ public class SwaggerMethodParserTests {
         void noExpectedStatusCodes();
 
         @Get("test")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         void only200IsExpected();
 
         @Get("test")
-        @ExpectedResponses({429, 503})
+        @ExpectedResponses({ 429, 503 })
         void retryAfterExpected();
     }
 
@@ -628,19 +602,17 @@ public class SwaggerMethodParserTests {
     private static Stream<Arguments> expectedStatusCodeSupplier() throws NoSuchMethodException {
         Class<ExpectedStatusCodeMethods> clazz = ExpectedStatusCodeMethods.class;
 
-        return Stream.of(
-            Arguments.of(clazz.getDeclaredMethod("noExpectedStatusCodes"), 200, null, true),
+        return Stream.of(Arguments.of(clazz.getDeclaredMethod("noExpectedStatusCodes"), 200, null, true),
             Arguments.of(clazz.getDeclaredMethod("noExpectedStatusCodes"), 201, null, true),
             Arguments.of(clazz.getDeclaredMethod("noExpectedStatusCodes"), 400, null, false),
-            Arguments.of(clazz.getDeclaredMethod("only200IsExpected"), 200, new int[]{200}, true),
-            Arguments.of(clazz.getDeclaredMethod("only200IsExpected"), 201, new int[]{200}, false),
-            Arguments.of(clazz.getDeclaredMethod("only200IsExpected"), 400, new int[]{200}, false),
-            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 200, new int[]{429, 503}, false),
-            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 201, new int[]{429, 503}, false),
-            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 400, new int[]{429, 503}, false),
-            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 429, new int[]{429, 503}, true),
-            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 503, new int[]{429, 503}, true)
-        );
+            Arguments.of(clazz.getDeclaredMethod("only200IsExpected"), 200, new int[] { 200 }, true),
+            Arguments.of(clazz.getDeclaredMethod("only200IsExpected"), 201, new int[] { 200 }, false),
+            Arguments.of(clazz.getDeclaredMethod("only200IsExpected"), 400, new int[] { 200 }, false),
+            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 200, new int[] { 429, 503 }, false),
+            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 201, new int[] { 429, 503 }, false),
+            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 400, new int[] { 429, 503 }, false),
+            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 429, new int[] { 429, 503 }, true),
+            Arguments.of(clazz.getDeclaredMethod("retryAfterExpected"), 503, new int[] { 429, 503 }, true));
     }
 
     @Host("https://raw.host.com")
@@ -650,11 +622,11 @@ public class SwaggerMethodParserTests {
         void noUnexpectedStatusCodes();
 
         @Get("test")
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = {400, 404})
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 400, 404 })
         void notFoundStatusCode();
 
         @Get("test")
-        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = {400, 404})
+        @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 400, 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class)
         void customDefault();
     }
@@ -673,8 +645,7 @@ public class SwaggerMethodParserTests {
         Method notFoundStatusCode = clazz.getDeclaredMethod("notFoundStatusCode");
         Method customDefault = clazz.getDeclaredMethod("customDefault");
 
-        return Stream.of(
-            Arguments.of(noUnexpectedStatusCodes, 500, HttpResponseException.class),
+        return Stream.of(Arguments.of(noUnexpectedStatusCodes, 500, HttpResponseException.class),
             Arguments.of(noUnexpectedStatusCodes, 400, HttpResponseException.class),
             Arguments.of(noUnexpectedStatusCodes, 404, HttpResponseException.class),
             Arguments.of(notFoundStatusCode, 500, HttpResponseException.class),
@@ -682,8 +653,7 @@ public class SwaggerMethodParserTests {
             Arguments.of(notFoundStatusCode, 404, ResourceNotFoundException.class),
             Arguments.of(customDefault, 500, ResourceModifiedException.class),
             Arguments.of(customDefault, 400, ResourceNotFoundException.class),
-            Arguments.of(customDefault, 404, ResourceNotFoundException.class)
-        );
+            Arguments.of(customDefault, 404, ResourceNotFoundException.class));
     }
 
     @ParameterizedTest
@@ -731,15 +701,12 @@ public class SwaggerMethodParserTests {
             Arguments.of(byte[].class, binaryTypeStatus),
 
             // Both ByteBuffer and sub-types shouldn't be decode-able.
-            Arguments.of(ByteBuffer.class, binaryTypeStatus),
-            Arguments.of(MappedByteBuffer.class, binaryTypeStatus),
+            Arguments.of(ByteBuffer.class, binaryTypeStatus), Arguments.of(MappedByteBuffer.class, binaryTypeStatus),
 
             // Both InputSteam and sub-types shouldn't be decode-able.
-            Arguments.of(InputStream.class, binaryTypeStatus),
-            Arguments.of(FileInputStream.class, binaryTypeStatus),
+            Arguments.of(InputStream.class, binaryTypeStatus), Arguments.of(FileInputStream.class, binaryTypeStatus),
 
-            Arguments.of(void.class, voidTypeStatus),
-            Arguments.of(Void.class, voidTypeStatus),
+            Arguments.of(void.class, voidTypeStatus), Arguments.of(Void.class, voidTypeStatus),
             Arguments.of(Void.TYPE, voidTypeStatus),
 
             // Other POJO types are decode-able.
@@ -772,7 +739,6 @@ public class SwaggerMethodParserTests {
             Arguments.of(createParameterizedFlux(Void.TYPE), voidTypeStatus),
             Arguments.of(createParameterizedFlux(JsonPatchDocument.class), nonBinaryTypeStatus),
 
-
             // Response generics.
             // If the raw type is Response it should check the first, and only, generic type.
             Arguments.of(createParameterizedResponse(BinaryData.class), binaryTypeStatus),
@@ -804,58 +770,66 @@ public class SwaggerMethodParserTests {
             Arguments.of(createParameterizedMono(createParameterizedResponse(BinaryData.class)), binaryTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponse(byte[].class)), binaryTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponse(ByteBuffer.class)), binaryTypeStatus),
-            Arguments.of(createParameterizedMono(createParameterizedResponse(MappedByteBuffer.class)), binaryTypeStatus),
+            Arguments.of(createParameterizedMono(createParameterizedResponse(MappedByteBuffer.class)),
+                binaryTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponse(InputStream.class)), binaryTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponse(FileInputStream.class)), binaryTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponse(void.class)), voidTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponse(Void.class)), voidTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponse(Void.TYPE)), voidTypeStatus),
-            Arguments.of(createParameterizedMono(createParameterizedResponse(JsonPatchDocument.class)), nonBinaryTypeStatus),
+            Arguments.of(createParameterizedMono(createParameterizedResponse(JsonPatchDocument.class)),
+                nonBinaryTypeStatus),
 
             // Mono of ResponseBase
             Arguments.of(createParameterizedMono(createParameterizedResponseBase(BinaryData.class)), binaryTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponseBase(byte[].class)), binaryTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponseBase(ByteBuffer.class)), binaryTypeStatus),
-            Arguments.of(createParameterizedMono(createParameterizedResponseBase(MappedByteBuffer.class)), binaryTypeStatus),
+            Arguments.of(createParameterizedMono(createParameterizedResponseBase(MappedByteBuffer.class)),
+                binaryTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponseBase(InputStream.class)), binaryTypeStatus),
-            Arguments.of(createParameterizedMono(createParameterizedResponseBase(FileInputStream.class)), binaryTypeStatus),
+            Arguments.of(createParameterizedMono(createParameterizedResponseBase(FileInputStream.class)),
+                binaryTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponseBase(void.class)), voidTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponseBase(Void.class)), voidTypeStatus),
             Arguments.of(createParameterizedMono(createParameterizedResponseBase(Void.TYPE)), voidTypeStatus),
-            Arguments.of(createParameterizedMono(createParameterizedResponseBase(JsonPatchDocument.class)), nonBinaryTypeStatus),
+            Arguments.of(createParameterizedMono(createParameterizedResponseBase(JsonPatchDocument.class)),
+                nonBinaryTypeStatus),
 
             // Flux of Response
             Arguments.of(createParameterizedFlux(createParameterizedResponse(BinaryData.class)), binaryTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponse(byte[].class)), binaryTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponse(ByteBuffer.class)), binaryTypeStatus),
-            Arguments.of(createParameterizedFlux(createParameterizedResponse(MappedByteBuffer.class)), binaryTypeStatus),
+            Arguments.of(createParameterizedFlux(createParameterizedResponse(MappedByteBuffer.class)),
+                binaryTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponse(InputStream.class)), binaryTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponse(FileInputStream.class)), binaryTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponse(void.class)), voidTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponse(Void.class)), voidTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponse(Void.TYPE)), voidTypeStatus),
-            Arguments.of(createParameterizedFlux(createParameterizedResponse(JsonPatchDocument.class)), nonBinaryTypeStatus),
+            Arguments.of(createParameterizedFlux(createParameterizedResponse(JsonPatchDocument.class)),
+                nonBinaryTypeStatus),
 
             // Flux of ResponseBase
             Arguments.of(createParameterizedFlux(createParameterizedResponseBase(BinaryData.class)), binaryTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponseBase(byte[].class)), binaryTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponseBase(ByteBuffer.class)), binaryTypeStatus),
-            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(MappedByteBuffer.class)), binaryTypeStatus),
+            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(MappedByteBuffer.class)),
+                binaryTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponseBase(InputStream.class)), binaryTypeStatus),
-            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(FileInputStream.class)), binaryTypeStatus),
+            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(FileInputStream.class)),
+                binaryTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponseBase(void.class)), voidTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponseBase(Void.class)), voidTypeStatus),
             Arguments.of(createParameterizedFlux(createParameterizedResponseBase(Void.TYPE)), voidTypeStatus),
-            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(JsonPatchDocument.class)), nonBinaryTypeStatus),
+            Arguments.of(createParameterizedFlux(createParameterizedResponseBase(JsonPatchDocument.class)),
+                nonBinaryTypeStatus),
 
             // Custom implementations of Response and ResponseBase.
-            Arguments.of(VoidResponse.class, voidTypeStatus),
-            Arguments.of(StringResponse.class, nonBinaryTypeStatus),
+            Arguments.of(VoidResponse.class, voidTypeStatus), Arguments.of(StringResponse.class, nonBinaryTypeStatus),
             Arguments.of(StreamResponse.class, binaryTypeStatus),
 
             Arguments.of(VoidResponseWithDeserializedHeaders.class, voidTypeStatus),
-            Arguments.of(StringResponseWithDeserializedHeaders.class, nonBinaryTypeStatus)
-        );
+            Arguments.of(StringResponseWithDeserializedHeaders.class, nonBinaryTypeStatus));
     }
 
     private static ParameterizedType createParameterizedMono(Type genericType) {
@@ -894,8 +868,8 @@ public class SwaggerMethodParserTests {
     }
 
     private static final class StringResponseWithDeserializedHeaders extends ResponseBase<HttpHeaders, String> {
-        StringResponseWithDeserializedHeaders(HttpRequest request, int statusCode, HttpHeaders headers,
-            String value, HttpHeaders deserializedHeaders) {
+        StringResponseWithDeserializedHeaders(HttpRequest request, int statusCode, HttpHeaders headers, String value,
+            HttpHeaders deserializedHeaders) {
             super(request, statusCode, headers, value, deserializedHeaders);
         }
     }

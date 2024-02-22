@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerregistry.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The basic information of an event. */
+/**
+ * The basic information of an event.
+ */
 @Fluent
 public class EventInfoInner {
     /*
@@ -16,13 +18,15 @@ public class EventInfoInner {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of EventInfoInner class. */
+    /**
+     * Creates an instance of EventInfoInner class.
+     */
     public EventInfoInner() {
     }
 
     /**
      * Get the id property: The event ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -31,7 +35,7 @@ public class EventInfoInner {
 
     /**
      * Set the id property: The event ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the EventInfoInner object itself.
      */
@@ -42,7 +46,7 @@ public class EventInfoInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -40,7 +40,7 @@ public final class TrustedAccessRoleBindingProvisioningState
 
     /**
      * Creates a new instance of TrustedAccessRoleBindingProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -49,7 +49,7 @@ public final class TrustedAccessRoleBindingProvisioningState
 
     /**
      * Creates or finds a TrustedAccessRoleBindingProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TrustedAccessRoleBindingProvisioningState.
      */
@@ -60,7 +60,7 @@ public final class TrustedAccessRoleBindingProvisioningState
 
     /**
      * Gets known TrustedAccessRoleBindingProvisioningState values.
-     *
+     * 
      * @return known TrustedAccessRoleBindingProvisioningState values.
      */
     public static Collection<TrustedAccessRoleBindingProvisioningState> values() {

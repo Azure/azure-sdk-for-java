@@ -13,27 +13,39 @@ import java.util.Collection;
  * values are Active, Catchup, Provisioning, Updating, Broken, Reconfiguring.
  */
 public final class ReplicationState extends ExpandableStringEnum<ReplicationState> {
-    /** Static value Active for ReplicationState. */
+    /**
+     * Static value Active for ReplicationState.
+     */
     public static final ReplicationState ACTIVE = fromString("Active");
 
-    /** Static value Catchup for ReplicationState. */
+    /**
+     * Static value Catchup for ReplicationState.
+     */
     public static final ReplicationState CATCHUP = fromString("Catchup");
 
-    /** Static value Provisioning for ReplicationState. */
+    /**
+     * Static value Provisioning for ReplicationState.
+     */
     public static final ReplicationState PROVISIONING = fromString("Provisioning");
 
-    /** Static value Updating for ReplicationState. */
+    /**
+     * Static value Updating for ReplicationState.
+     */
     public static final ReplicationState UPDATING = fromString("Updating");
 
-    /** Static value Broken for ReplicationState. */
+    /**
+     * Static value Broken for ReplicationState.
+     */
     public static final ReplicationState BROKEN = fromString("Broken");
 
-    /** Static value Reconfiguring for ReplicationState. */
+    /**
+     * Static value Reconfiguring for ReplicationState.
+     */
     public static final ReplicationState RECONFIGURING = fromString("Reconfiguring");
 
     /**
      * Creates a new instance of ReplicationState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,7 +54,7 @@ public final class ReplicationState extends ExpandableStringEnum<ReplicationStat
 
     /**
      * Creates or finds a ReplicationState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ReplicationState.
      */
@@ -53,7 +65,7 @@ public final class ReplicationState extends ExpandableStringEnum<ReplicationStat
 
     /**
      * Gets known ReplicationState values.
-     *
+     * 
      * @return known ReplicationState values.
      */
     public static Collection<ReplicationState> values() {

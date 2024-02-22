@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.25 (Unreleased)
+## 1.0.0-beta.27 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,189 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0-beta.26 (2024-01-29)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.SalesforceV2Source` was modified
+
+* `readBehavior()` was removed
+* `withReadBehavior(java.lang.Object)` was removed
+
+#### `models.SalesforceServiceCloudV2Source` was modified
+
+* `readBehavior()` was removed
+* `withReadBehavior(java.lang.Object)` was removed
+
+### Features Added
+
+#### `models.SalesforceV2Source` was modified
+
+* `withIncludeDeletedObjects(java.lang.Object)` was added
+* `includeDeletedObjects()` was added
+
+#### `models.SalesforceServiceCloudV2LinkedService` was modified
+
+* `authenticationType()` was added
+* `withAuthenticationType(java.lang.Object)` was added
+
+#### `models.SalesforceServiceCloudV2Source` was modified
+
+* `withIncludeDeletedObjects(java.lang.Object)` was added
+* `includeDeletedObjects()` was added
+
+#### `models.SalesforceV2LinkedService` was modified
+
+* `authenticationType()` was added
+* `withAuthenticationType(java.lang.Object)` was added
+
+## 1.0.0-beta.25 (2024-01-22)
+
+- Azure Resource Manager DataFactory client library for Java. This package contains Microsoft Azure SDK for DataFactory Management SDK. The Azure Data Factory V2 management API provides a RESTful set of web services that interact with Azure Data Factory V2 services. Package tag package-2018-06. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+#### `models.WebActivity` was modified
+
+* `withHeaders(java.lang.Object)` was removed
+* `java.lang.Object headers()` -> `java.util.Map headers()`
+
+#### `models.WebhookActivity` was modified
+
+* `withHeaders(java.lang.Object)` was removed
+* `java.lang.Object headers()` -> `java.util.Map headers()`
+
+#### `models.MariaDBLinkedService` was modified
+
+* `withPwd(models.AzureKeyVaultSecretReference)` was removed
+* `pwd()` was removed
+
+#### `models.AzureFunctionActivity` was modified
+
+* `withHeaders(java.lang.Object)` was removed
+* `java.lang.Object headers()` -> `java.util.Map headers()`
+
+### Features Added
+
+* `models.WarehouseTableDataset` was added
+
+* `models.SalesforceV2Source` was added
+
+* `models.SnowflakeAuthenticationType` was added
+
+* `models.SalesforceServiceCloudV2LinkedService` was added
+
+* `models.WarehouseSource` was added
+
+* `models.SalesforceServiceCloudV2ObjectDataset` was added
+
+* `models.WarehouseSink` was added
+
+* `models.SalesforceServiceCloudV2Source` was added
+
+* `models.SalesforceV2SinkWriteBehavior` was added
+
+* `models.SalesforceV2LinkedService` was added
+
+* `models.SnowflakeV2Sink` was added
+
+* `models.SalesforceV2ObjectDataset` was added
+
+* `models.SnowflakeV2LinkedService` was added
+
+* `models.SnowflakeV2Dataset` was added
+
+* `models.WarehouseLinkedService` was added
+
+* `models.SnowflakeV2Source` was added
+
+* `models.SalesforceServiceCloudV2Sink` was added
+
+* `models.SalesforceV2Sink` was added
+
+#### `models.FileServerWriteSettings` was modified
+
+* `withMetadata(java.util.List)` was added
+
+#### `models.AzureFileStorageWriteSettings` was modified
+
+* `withMetadata(java.util.List)` was added
+
+#### `models.WebActivity` was modified
+
+* `withHeaders(java.util.Map)` was added
+* `turnOffAsync()` was added
+* `httpRequestTimeout()` was added
+* `withHttpRequestTimeout(java.lang.Object)` was added
+* `withTurnOffAsync(java.lang.Boolean)` was added
+
+#### `models.WebhookActivity` was modified
+
+* `withHeaders(java.util.Map)` was added
+
+#### `models.MariaDBLinkedService` was modified
+
+* `withDatabase(java.lang.Object)` was added
+* `withServer(java.lang.Object)` was added
+* `port()` was added
+* `driverVersion()` was added
+* `password()` was added
+* `withPassword(models.AzureKeyVaultSecretReference)` was added
+* `withUsername(java.lang.Object)` was added
+* `database()` was added
+* `withDriverVersion(java.lang.Object)` was added
+* `withPort(java.lang.Object)` was added
+* `server()` was added
+* `username()` was added
+
+#### `models.LakeHouseWriteSettings` was modified
+
+* `withMetadata(java.util.List)` was added
+
+#### `models.AzureBlobFSWriteSettings` was modified
+
+* `withMetadata(java.util.List)` was added
+
+#### `models.SftpWriteSettings` was modified
+
+* `withMetadata(java.util.List)` was added
+
+#### `models.AzureDataLakeStoreWriteSettings` was modified
+
+* `withMetadata(java.util.List)` was added
+
+#### `models.StoreWriteSettings` was modified
+
+* `withMetadata(java.util.List)` was added
+* `metadata()` was added
+
+#### `models.AzureBlobStorageWriteSettings` was modified
+
+* `withMetadata(java.util.List)` was added
+
+#### `models.AzureFunctionActivity` was modified
+
+* `withHeaders(java.util.Map)` was added
+
+#### `models.MySqlLinkedService` was modified
+
+* `withUsername(java.lang.Object)` was added
+* `withDriverVersion(java.lang.Object)` was added
+* `withDatabase(java.lang.Object)` was added
+* `withSslMode(java.lang.Object)` was added
+* `withUseSystemTrustStore(java.lang.Object)` was added
+* `server()` was added
+* `withPort(java.lang.Object)` was added
+* `username()` was added
+* `withServer(java.lang.Object)` was added
+* `port()` was added
+* `sslMode()` was added
+* `database()` was added
+* `driverVersion()` was added
+* `useSystemTrustStore()` was added
 
 ## 1.0.0-beta.24 (2023-11-22)
 

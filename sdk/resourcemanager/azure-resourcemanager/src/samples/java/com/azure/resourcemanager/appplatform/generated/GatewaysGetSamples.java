@@ -4,24 +4,21 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Gateways Get. */
+/**
+ * Samples for Gateways Get.
+ */
 public final class GatewaysGetSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Gateways_Get.json
+     * x-ms-original-file:
+     * specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Gateways_Get.json
      */
     /**
      * Sample code: Gateways_Get.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void gatewaysGet(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .springServices()
-            .manager()
-            .serviceClient()
-            .getGateways()
-            .getWithResponse("myResourceGroup", "myservice", "default", Context.NONE);
+        azure.springServices().manager().serviceClient().getGateways().getWithResponse("myResourceGroup", "myservice",
+            "default", com.azure.core.util.Context.NONE);
     }
 }

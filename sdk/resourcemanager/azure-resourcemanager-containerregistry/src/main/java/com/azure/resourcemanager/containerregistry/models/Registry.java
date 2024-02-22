@@ -106,6 +106,9 @@ public interface Registry
     /** @return whether the container registries dedicated data endpoints can be accessed from public network */
     boolean isDedicatedDataEndpointsEnabled();
 
+    /** @return Whether or not zone redundancy is enabled for this container registry */
+    boolean isZoneRedundancyEnabled();
+
     /** @return list of host names that will serve data when isDedicatedDataEndpointsEnabled is true */
     List<String> dedicatedDataEndpointsHostNames();
 
@@ -240,6 +243,21 @@ public interface Registry
         }
 
         /**
+         * The stage of the container registry definition allowing to configure Zone Redundancy.
+         */
+        interface WithZoneRedundancy {
+            /**
+             * Enables zone redundancy for the container registry.
+             *
+             * @return the next stage of the definition
+             * @see <a href="https://learn.microsoft.com/en-us/azure/container-registry/zone-redundancy">
+             *      Enable zone redundancy
+             *      </a>
+             */
+            WithCreate withZoneRedundancy();
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
          */
@@ -249,6 +267,7 @@ public interface Registry
             WithWebhook,
             WithPublicNetworkAccess,
             WithDedicatedDataEndpoints,
+            WithZoneRedundancy,
             Resource.DefinitionWithTags<WithCreate> {
         }
     }

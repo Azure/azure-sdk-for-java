@@ -18,9 +18,9 @@ public interface HybridIdentityMetadatas {
      * 
      * Creates the hybrid identity metadata proxy resource that facilitates the managed identity provisioning.
      * 
-     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     * @param connectedClusterResourceUri The fully qualified Azure Resource Manager identifier of the connected cluster
      * resource.
-     * @param body Defines the hybridIdentityMetadata.
+     * @param body Hybrid Identity Metadata resource definition.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -35,9 +35,9 @@ public interface HybridIdentityMetadatas {
      * 
      * Creates the hybrid identity metadata proxy resource that facilitates the managed identity provisioning.
      * 
-     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     * @param connectedClusterResourceUri The fully qualified Azure Resource Manager identifier of the connected cluster
      * resource.
-     * @param body Defines the hybridIdentityMetadata.
+     * @param body Hybrid Identity Metadata resource definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -50,7 +50,7 @@ public interface HybridIdentityMetadatas {
      * 
      * Get the hybrid identity metadata proxy resource.
      * 
-     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     * @param connectedClusterResourceUri The fully qualified Azure Resource Manager identifier of the connected cluster
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -65,7 +65,7 @@ public interface HybridIdentityMetadatas {
      * 
      * Get the hybrid identity metadata proxy resource.
      * 
-     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     * @param connectedClusterResourceUri The fully qualified Azure Resource Manager identifier of the connected cluster
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -79,7 +79,7 @@ public interface HybridIdentityMetadatas {
      * 
      * Deletes the hybrid identity metadata proxy resource.
      * 
-     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     * @param connectedClusterResourceUri The fully qualified Azure Resource Manager identifier of the connected cluster
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -92,7 +92,7 @@ public interface HybridIdentityMetadatas {
      * 
      * Deletes the hybrid identity metadata proxy resource.
      * 
-     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     * @param connectedClusterResourceUri The fully qualified Azure Resource Manager identifier of the connected cluster
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -106,7 +106,7 @@ public interface HybridIdentityMetadatas {
      * 
      * Lists the hybrid identity metadata proxy resource in a provisioned cluster instance.
      * 
-     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     * @param connectedClusterResourceUri The fully qualified Azure Resource Manager identifier of the connected cluster
      * resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -120,7 +120,7 @@ public interface HybridIdentityMetadatas {
      * 
      * Lists the hybrid identity metadata proxy resource in a provisioned cluster instance.
      * 
-     * @param connectedClusterResourceUri The fully qualified Azure Resource manager identifier of the connected cluster
+     * @param connectedClusterResourceUri The fully qualified Azure Resource Manager identifier of the connected cluster
      * resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

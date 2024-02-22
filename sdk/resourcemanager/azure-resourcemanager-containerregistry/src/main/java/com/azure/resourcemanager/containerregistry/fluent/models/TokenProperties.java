@@ -11,7 +11,9 @@ import com.azure.resourcemanager.containerregistry.models.TokenStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The properties of a token. */
+/**
+ * The properties of a token.
+ */
 @Fluent
 public final class TokenProperties {
     /*
@@ -44,13 +46,15 @@ public final class TokenProperties {
     @JsonProperty(value = "status")
     private TokenStatus status;
 
-    /** Creates an instance of TokenProperties class. */
+    /**
+     * Creates an instance of TokenProperties class.
+     */
     public TokenProperties() {
     }
 
     /**
      * Get the creationDate property: The creation date of scope map.
-     *
+     * 
      * @return the creationDate value.
      */
     public OffsetDateTime creationDate() {
@@ -59,7 +63,7 @@ public final class TokenProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -68,7 +72,7 @@ public final class TokenProperties {
 
     /**
      * Get the scopeMapId property: The resource ID of the scope map to which the token will be associated with.
-     *
+     * 
      * @return the scopeMapId value.
      */
     public String scopeMapId() {
@@ -77,7 +81,7 @@ public final class TokenProperties {
 
     /**
      * Set the scopeMapId property: The resource ID of the scope map to which the token will be associated with.
-     *
+     * 
      * @param scopeMapId the scopeMapId value to set.
      * @return the TokenProperties object itself.
      */
@@ -88,7 +92,7 @@ public final class TokenProperties {
 
     /**
      * Get the credentials property: The credentials that can be used for authenticating the token.
-     *
+     * 
      * @return the credentials value.
      */
     public TokenCredentialsProperties credentials() {
@@ -97,7 +101,7 @@ public final class TokenProperties {
 
     /**
      * Set the credentials property: The credentials that can be used for authenticating the token.
-     *
+     * 
      * @param credentials the credentials value to set.
      * @return the TokenProperties object itself.
      */
@@ -108,7 +112,7 @@ public final class TokenProperties {
 
     /**
      * Get the status property: The status of the token example enabled or disabled.
-     *
+     * 
      * @return the status value.
      */
     public TokenStatus status() {
@@ -117,7 +121,7 @@ public final class TokenProperties {
 
     /**
      * Set the status property: The status of the token example enabled or disabled.
-     *
+     * 
      * @param status the status value to set.
      * @return the TokenProperties object itself.
      */
@@ -128,7 +132,7 @@ public final class TokenProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

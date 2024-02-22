@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.Display;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Operations discovery class. */
+/**
+ * Operations discovery class.
+ */
 @Fluent
 public final class OperationsDiscoveryInner {
     /*
@@ -47,7 +49,9 @@ public final class OperationsDiscoveryInner {
     @JsonProperty(value = "properties")
     private Object properties;
 
-    /** Creates an instance of OperationsDiscoveryInner class. */
+    /**
+     * Creates an instance of OperationsDiscoveryInner class.
+     */
     public OperationsDiscoveryInner() {
     }
 
@@ -56,15 +60,15 @@ public final class OperationsDiscoveryInner {
      * should match the action name that appears in RBAC / the event service. Examples of operations include: *
      * Microsoft.Compute/virtualMachine/capture/action * Microsoft.Compute/virtualMachine/restart/action *
      * Microsoft.Compute/virtualMachine/write * Microsoft.Compute/virtualMachine/read *
-     * Microsoft.Compute/virtualMachine/delete Each action should include, in order: (1) Resource Provider Namespace (2)
-     * Type hierarchy for which the action applies (e.g. server/databases for a SQL Azure database) (3) Read, Write,
-     * Action or Delete indicating which type applies. If it is a PUT/PATCH on a collection or named value, Write should
-     * be used. If it is a GET, Read should be used. If it is a DELETE, Delete should be used. If it is a POST, Action
-     * should be used. As a note: all resource providers would need to include the "{Resource Provider
+     * Microsoft.Compute/virtualMachine/delete Each action should include, in order: (1) Resource Provider Namespace
+     * (2) Type hierarchy for which the action applies (e.g. server/databases for a SQL Azure database) (3) Read,
+     * Write, Action or Delete indicating which type applies. If it is a PUT/PATCH on a collection or named value,
+     * Write should be used. If it is a GET, Read should be used. If it is a DELETE, Delete should be used. If it is a
+     * POST, Action should be used. As a note: all resource providers would need to include the "{Resource Provider
      * Namespace}/register/action" operation in their response. This API is used to register for their service, and
      * should include details about the operation (e.g. a localized name for the resource provider + any special
      * considerations like PII release).
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -76,15 +80,15 @@ public final class OperationsDiscoveryInner {
      * should match the action name that appears in RBAC / the event service. Examples of operations include: *
      * Microsoft.Compute/virtualMachine/capture/action * Microsoft.Compute/virtualMachine/restart/action *
      * Microsoft.Compute/virtualMachine/write * Microsoft.Compute/virtualMachine/read *
-     * Microsoft.Compute/virtualMachine/delete Each action should include, in order: (1) Resource Provider Namespace (2)
-     * Type hierarchy for which the action applies (e.g. server/databases for a SQL Azure database) (3) Read, Write,
-     * Action or Delete indicating which type applies. If it is a PUT/PATCH on a collection or named value, Write should
-     * be used. If it is a GET, Read should be used. If it is a DELETE, Delete should be used. If it is a POST, Action
-     * should be used. As a note: all resource providers would need to include the "{Resource Provider
+     * Microsoft.Compute/virtualMachine/delete Each action should include, in order: (1) Resource Provider Namespace
+     * (2) Type hierarchy for which the action applies (e.g. server/databases for a SQL Azure database) (3) Read,
+     * Write, Action or Delete indicating which type applies. If it is a PUT/PATCH on a collection or named value,
+     * Write should be used. If it is a GET, Read should be used. If it is a DELETE, Delete should be used. If it is a
+     * POST, Action should be used. As a note: all resource providers would need to include the "{Resource Provider
      * Namespace}/register/action" operation in their response. This API is used to register for their service, and
      * should include details about the operation (e.g. a localized name for the resource provider + any special
      * considerations like PII release).
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationsDiscoveryInner object itself.
      */
@@ -95,7 +99,7 @@ public final class OperationsDiscoveryInner {
 
     /**
      * Get the display property: Object type.
-     *
+     * 
      * @return the display value.
      */
     public Display display() {
@@ -104,7 +108,7 @@ public final class OperationsDiscoveryInner {
 
     /**
      * Set the display property: Object type.
-     *
+     * 
      * @param display the display value to set.
      * @return the OperationsDiscoveryInner object itself.
      */
@@ -116,7 +120,7 @@ public final class OperationsDiscoveryInner {
     /**
      * Get the origin property: Origin. The intended executor of the operation; governs the display of the operation in
      * the RBAC UX and the audit logs UX. Default value is "user,system".
-     *
+     * 
      * @return the origin value.
      */
     public String origin() {
@@ -126,7 +130,7 @@ public final class OperationsDiscoveryInner {
     /**
      * Set the origin property: Origin. The intended executor of the operation; governs the display of the operation in
      * the RBAC UX and the audit logs UX. Default value is "user,system".
-     *
+     * 
      * @param origin the origin value to set.
      * @return the OperationsDiscoveryInner object itself.
      */
@@ -137,7 +141,7 @@ public final class OperationsDiscoveryInner {
 
     /**
      * Get the properties property: Properties. Reserved for future use.
-     *
+     * 
      * @return the properties value.
      */
     public Object properties() {
@@ -146,7 +150,7 @@ public final class OperationsDiscoveryInner {
 
     /**
      * Set the properties property: Properties. Reserved for future use.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the OperationsDiscoveryInner object itself.
      */
@@ -157,7 +161,7 @@ public final class OperationsDiscoveryInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

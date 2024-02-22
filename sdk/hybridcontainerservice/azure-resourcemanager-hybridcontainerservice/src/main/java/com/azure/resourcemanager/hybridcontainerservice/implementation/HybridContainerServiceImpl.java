@@ -258,7 +258,7 @@ public final class HybridContainerServiceImpl implements HybridContainerService 
         this.defaultPollInterval = defaultPollInterval;
         this.subscriptionId = subscriptionId;
         this.endpoint = endpoint;
-        this.apiVersion = "2023-11-15-preview";
+        this.apiVersion = "2024-01-01";
         this.provisionedClusterInstances = new ProvisionedClusterInstancesClientImpl(this);
         this.hybridIdentityMetadatas = new HybridIdentityMetadatasClientImpl(this);
         this.agentPools = new AgentPoolsClientImpl(this);

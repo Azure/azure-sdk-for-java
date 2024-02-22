@@ -14,7 +14,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** IaaS VM workload-specific backup item. */
+/**
+ * IaaS VM workload-specific backup item.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -25,8 +27,7 @@ import java.util.Map;
     @JsonSubTypes.Type(
         name = "Microsoft.ClassicCompute/virtualMachines",
         value = AzureIaaSClassicComputeVMProtectedItem.class),
-    @JsonSubTypes.Type(name = "Microsoft.Compute/virtualMachines", value = AzureIaaSComputeVMProtectedItem.class)
-})
+    @JsonSubTypes.Type(name = "Microsoft.Compute/virtualMachines", value = AzureIaaSComputeVMProtectedItem.class) })
 @Fluent
 public class AzureIaaSvmProtectedItem extends ProtectedItem {
     /*
@@ -102,13 +103,15 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
     @JsonProperty(value = "extendedProperties")
     private ExtendedProperties extendedProperties;
 
-    /** Creates an instance of AzureIaaSvmProtectedItem class. */
+    /**
+     * Creates an instance of AzureIaaSvmProtectedItem class.
+     */
     public AzureIaaSvmProtectedItem() {
     }
 
     /**
      * Get the friendlyName property: Friendly name of the VM represented by this backup item.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -117,7 +120,7 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
 
     /**
      * Get the virtualMachineId property: Fully qualified ARM ID of the virtual machine represented by this item.
-     *
+     * 
      * @return the virtualMachineId value.
      */
     public String virtualMachineId() {
@@ -126,7 +129,7 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
 
     /**
      * Get the protectionStatus property: Backup status of this backup item.
-     *
+     * 
      * @return the protectionStatus value.
      */
     public String protectionStatus() {
@@ -135,7 +138,7 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
 
     /**
      * Set the protectionStatus property: Backup status of this backup item.
-     *
+     * 
      * @param protectionStatus the protectionStatus value to set.
      * @return the AzureIaaSvmProtectedItem object itself.
      */
@@ -146,7 +149,7 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
 
     /**
      * Get the protectionState property: Backup state of this backup item.
-     *
+     * 
      * @return the protectionState value.
      */
     public ProtectionState protectionState() {
@@ -155,7 +158,7 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
 
     /**
      * Set the protectionState property: Backup state of this backup item.
-     *
+     * 
      * @param protectionState the protectionState value to set.
      * @return the AzureIaaSvmProtectedItem object itself.
      */
@@ -166,7 +169,7 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
 
     /**
      * Get the healthStatus property: Health status of protected item.
-     *
+     * 
      * @return the healthStatus value.
      */
     public HealthStatus healthStatus() {
@@ -175,7 +178,7 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
 
     /**
      * Get the healthDetails property: Health details on this backup item.
-     *
+     * 
      * @return the healthDetails value.
      */
     public List<AzureIaaSvmHealthDetails> healthDetails() {
@@ -184,7 +187,7 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
 
     /**
      * Set the healthDetails property: Health details on this backup item.
-     *
+     * 
      * @param healthDetails the healthDetails value to set.
      * @return the AzureIaaSvmProtectedItem object itself.
      */
@@ -195,7 +198,7 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
 
     /**
      * Get the kpisHealths property: Health details of different KPIs.
-     *
+     * 
      * @return the kpisHealths value.
      */
     public Map<String, KpiResourceHealthDetails> kpisHealths() {
@@ -204,7 +207,7 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
 
     /**
      * Set the kpisHealths property: Health details of different KPIs.
-     *
+     * 
      * @param kpisHealths the kpisHealths value to set.
      * @return the AzureIaaSvmProtectedItem object itself.
      */
@@ -215,7 +218,7 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
 
     /**
      * Get the lastBackupStatus property: Last backup operation status.
-     *
+     * 
      * @return the lastBackupStatus value.
      */
     public String lastBackupStatus() {
@@ -224,7 +227,7 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
 
     /**
      * Set the lastBackupStatus property: Last backup operation status.
-     *
+     * 
      * @param lastBackupStatus the lastBackupStatus value to set.
      * @return the AzureIaaSvmProtectedItem object itself.
      */
@@ -235,7 +238,7 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
 
     /**
      * Get the lastBackupTime property: Timestamp of the last backup operation on this backup item.
-     *
+     * 
      * @return the lastBackupTime value.
      */
     public OffsetDateTime lastBackupTime() {
@@ -244,7 +247,7 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
 
     /**
      * Get the protectedItemDataId property: Data ID of the protected item.
-     *
+     * 
      * @return the protectedItemDataId value.
      */
     public String protectedItemDataId() {
@@ -253,7 +256,7 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
 
     /**
      * Get the extendedInfo property: Additional information for this backup item.
-     *
+     * 
      * @return the extendedInfo value.
      */
     public AzureIaaSvmProtectedItemExtendedInfo extendedInfo() {
@@ -262,7 +265,7 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
 
     /**
      * Set the extendedInfo property: Additional information for this backup item.
-     *
+     * 
      * @param extendedInfo the extendedInfo value to set.
      * @return the AzureIaaSvmProtectedItem object itself.
      */
@@ -273,7 +276,7 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
 
     /**
      * Get the extendedProperties property: Extended Properties for Azure IaasVM Backup.
-     *
+     * 
      * @return the extendedProperties value.
      */
     public ExtendedProperties extendedProperties() {
@@ -282,7 +285,7 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
 
     /**
      * Set the extendedProperties property: Extended Properties for Azure IaasVM Backup.
-     *
+     * 
      * @param extendedProperties the extendedProperties value to set.
      * @return the AzureIaaSvmProtectedItem object itself.
      */
@@ -291,105 +294,135 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmProtectedItem withContainerName(String containerName) {
         super.withContainerName(containerName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmProtectedItem withSourceResourceId(String sourceResourceId) {
         super.withSourceResourceId(sourceResourceId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmProtectedItem withPolicyId(String policyId) {
         super.withPolicyId(policyId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmProtectedItem withLastRecoveryPoint(OffsetDateTime lastRecoveryPoint) {
         super.withLastRecoveryPoint(lastRecoveryPoint);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmProtectedItem withBackupSetName(String backupSetName) {
         super.withBackupSetName(backupSetName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmProtectedItem withCreateMode(CreateMode createMode) {
         super.withCreateMode(createMode);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmProtectedItem withDeferredDeleteTimeInUtc(OffsetDateTime deferredDeleteTimeInUtc) {
         super.withDeferredDeleteTimeInUtc(deferredDeleteTimeInUtc);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmProtectedItem withIsScheduledForDeferredDelete(Boolean isScheduledForDeferredDelete) {
         super.withIsScheduledForDeferredDelete(isScheduledForDeferredDelete);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmProtectedItem withDeferredDeleteTimeRemaining(String deferredDeleteTimeRemaining) {
         super.withDeferredDeleteTimeRemaining(deferredDeleteTimeRemaining);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmProtectedItem withIsDeferredDeleteScheduleUpcoming(Boolean isDeferredDeleteScheduleUpcoming) {
         super.withIsDeferredDeleteScheduleUpcoming(isDeferredDeleteScheduleUpcoming);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmProtectedItem withIsRehydrate(Boolean isRehydrate) {
         super.withIsRehydrate(isRehydrate);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmProtectedItem withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
         super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmProtectedItem withIsArchiveEnabled(Boolean isArchiveEnabled) {
         super.withIsArchiveEnabled(isArchiveEnabled);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmProtectedItem withPolicyName(String policyName) {
         super.withPolicyName(policyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureIaaSvmProtectedItem withSoftDeleteRetentionPeriod(Integer softDeleteRetentionPeriod) {
         super.withSoftDeleteRetentionPeriod(softDeleteRetentionPeriod);
@@ -398,7 +431,7 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -408,14 +441,11 @@ public class AzureIaaSvmProtectedItem extends ProtectedItem {
             healthDetails().forEach(e -> e.validate());
         }
         if (kpisHealths() != null) {
-            kpisHealths()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            kpisHealths().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (extendedInfo() != null) {
             extendedInfo().validate();

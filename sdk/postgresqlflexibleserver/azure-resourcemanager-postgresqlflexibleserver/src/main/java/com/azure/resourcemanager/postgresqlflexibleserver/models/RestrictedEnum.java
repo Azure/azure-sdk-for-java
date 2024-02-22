@@ -13,15 +13,19 @@ import java.util.Collection;
  * region is not restricted.
  */
 public final class RestrictedEnum extends ExpandableStringEnum<RestrictedEnum> {
-    /** Static value Enabled for RestrictedEnum. */
+    /**
+     * Static value Enabled for RestrictedEnum.
+     */
     public static final RestrictedEnum ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for RestrictedEnum. */
+    /**
+     * Static value Disabled for RestrictedEnum.
+     */
     public static final RestrictedEnum DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of RestrictedEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +34,7 @@ public final class RestrictedEnum extends ExpandableStringEnum<RestrictedEnum> {
 
     /**
      * Creates or finds a RestrictedEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RestrictedEnum.
      */
@@ -41,7 +45,7 @@ public final class RestrictedEnum extends ExpandableStringEnum<RestrictedEnum> {
 
     /**
      * Gets known RestrictedEnum values.
-     *
+     * 
      * @return known RestrictedEnum values.
      */
     public static Collection<RestrictedEnum> values() {

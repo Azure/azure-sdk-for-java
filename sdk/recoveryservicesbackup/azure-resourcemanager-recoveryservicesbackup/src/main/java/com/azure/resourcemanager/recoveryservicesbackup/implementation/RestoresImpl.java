@@ -17,53 +17,22 @@ public final class RestoresImpl implements Restores {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public RestoresImpl(
-        RestoresClient innerClient,
+    public RestoresImpl(RestoresClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public void trigger(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        RestoreRequestResource parameters) {
-        this
-            .serviceClient()
-            .trigger(
-                vaultName,
-                resourceGroupName,
-                fabricName,
-                containerName,
-                protectedItemName,
-                recoveryPointId,
-                parameters);
+    public void trigger(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName, String recoveryPointId, RestoreRequestResource parameters) {
+        this.serviceClient().trigger(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            recoveryPointId, parameters);
     }
 
-    public void trigger(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        RestoreRequestResource parameters,
-        Context context) {
-        this
-            .serviceClient()
-            .trigger(
-                vaultName,
-                resourceGroupName,
-                fabricName,
-                containerName,
-                protectedItemName,
-                recoveryPointId,
-                parameters,
-                context);
+    public void trigger(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName, String recoveryPointId, RestoreRequestResource parameters, Context context) {
+        this.serviceClient().trigger(vaultName, resourceGroupName, fabricName, containerName, protectedItemName,
+            recoveryPointId, parameters, context);
     }
 
     private RestoresClient serviceClient() {

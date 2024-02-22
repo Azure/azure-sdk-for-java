@@ -15,19 +15,17 @@ import org.junit.jupiter.api.Assertions;
 public final class InMageReprotectInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageReprotectInput model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"InMage\",\"masterTargetId\":\"ujjgnfgrzxbarc\",\"processServerId\":\"paefzqsy\",\"retentionDrive\":\"jwenjcytesmf\",\"runAsAccountId\":\"r\",\"datastoreName\":\"odqhuauzmzivrt\",\"diskExclusionInput\":{\"volumeOptions\":[{\"volumeLabel\":\"ezvhj\",\"onlyExcludeIfSingleVolume\":\"xdyyrud\"},{\"volumeLabel\":\"hswtvdkxbqssgfe\",\"onlyExcludeIfSingleVolume\":\"fdxbvwfqjchiv\"},{\"volumeLabel\":\"ija\",\"onlyExcludeIfSingleVolume\":\"ndmuvardlmz\"}],\"diskSignatureOptions\":[{\"diskSignature\":\"r\"}]},\"profileId\":\"muhcuhtuzl\",\"disksToInclude\":[\"yo\",\"garp\",\"ctwrapcz\",\"ojqyvzes\"]}")
-                .toObject(InMageReprotectInput.class);
+        InMageReprotectInput model = BinaryData.fromString(
+            "{\"instanceType\":\"InMage\",\"masterTargetId\":\"ujjgnfgrzxbarc\",\"processServerId\":\"paefzqsy\",\"retentionDrive\":\"jwenjcytesmf\",\"runAsAccountId\":\"r\",\"datastoreName\":\"odqhuauzmzivrt\",\"diskExclusionInput\":{\"volumeOptions\":[{\"volumeLabel\":\"ezvhj\",\"onlyExcludeIfSingleVolume\":\"xdyyrud\"},{\"volumeLabel\":\"hswtvdkxbqssgfe\",\"onlyExcludeIfSingleVolume\":\"fdxbvwfqjchiv\"},{\"volumeLabel\":\"ija\",\"onlyExcludeIfSingleVolume\":\"ndmuvardlmz\"}],\"diskSignatureOptions\":[{\"diskSignature\":\"r\"}]},\"profileId\":\"muhcuhtuzl\",\"disksToInclude\":[\"yo\",\"garp\",\"ctwrapcz\",\"ojqyvzes\"]}")
+            .toObject(InMageReprotectInput.class);
         Assertions.assertEquals("ujjgnfgrzxbarc", model.masterTargetId());
         Assertions.assertEquals("paefzqsy", model.processServerId());
         Assertions.assertEquals("jwenjcytesmf", model.retentionDrive());
         Assertions.assertEquals("r", model.runAsAccountId());
         Assertions.assertEquals("odqhuauzmzivrt", model.datastoreName());
         Assertions.assertEquals("ezvhj", model.diskExclusionInput().volumeOptions().get(0).volumeLabel());
-        Assertions
-            .assertEquals("xdyyrud", model.diskExclusionInput().volumeOptions().get(0).onlyExcludeIfSingleVolume());
+        Assertions.assertEquals("xdyyrud",
+            model.diskExclusionInput().volumeOptions().get(0).onlyExcludeIfSingleVolume());
         Assertions.assertEquals("r", model.diskExclusionInput().diskSignatureOptions().get(0).diskSignature());
         Assertions.assertEquals("muhcuhtuzl", model.profileId());
         Assertions.assertEquals("yo", model.disksToInclude().get(0));
@@ -35,31 +33,17 @@ public final class InMageReprotectInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageReprotectInput model =
-            new InMageReprotectInput()
-                .withMasterTargetId("ujjgnfgrzxbarc")
-                .withProcessServerId("paefzqsy")
-                .withRetentionDrive("jwenjcytesmf")
-                .withRunAsAccountId("r")
-                .withDatastoreName("odqhuauzmzivrt")
-                .withDiskExclusionInput(
-                    new InMageDiskExclusionInput()
-                        .withVolumeOptions(
-                            Arrays
-                                .asList(
-                                    new InMageVolumeExclusionOptions()
-                                        .withVolumeLabel("ezvhj")
-                                        .withOnlyExcludeIfSingleVolume("xdyyrud"),
-                                    new InMageVolumeExclusionOptions()
-                                        .withVolumeLabel("hswtvdkxbqssgfe")
-                                        .withOnlyExcludeIfSingleVolume("fdxbvwfqjchiv"),
-                                    new InMageVolumeExclusionOptions()
-                                        .withVolumeLabel("ija")
-                                        .withOnlyExcludeIfSingleVolume("ndmuvardlmz")))
-                        .withDiskSignatureOptions(
-                            Arrays.asList(new InMageDiskSignatureExclusionOptions().withDiskSignature("r"))))
-                .withProfileId("muhcuhtuzl")
-                .withDisksToInclude(Arrays.asList("yo", "garp", "ctwrapcz", "ojqyvzes"));
+        InMageReprotectInput model = new InMageReprotectInput().withMasterTargetId("ujjgnfgrzxbarc")
+            .withProcessServerId("paefzqsy").withRetentionDrive("jwenjcytesmf").withRunAsAccountId("r")
+            .withDatastoreName("odqhuauzmzivrt")
+            .withDiskExclusionInput(new InMageDiskExclusionInput().withVolumeOptions(Arrays.asList(
+                new InMageVolumeExclusionOptions().withVolumeLabel("ezvhj").withOnlyExcludeIfSingleVolume("xdyyrud"),
+                new InMageVolumeExclusionOptions().withVolumeLabel("hswtvdkxbqssgfe")
+                    .withOnlyExcludeIfSingleVolume("fdxbvwfqjchiv"),
+                new InMageVolumeExclusionOptions().withVolumeLabel("ija").withOnlyExcludeIfSingleVolume("ndmuvardlmz")))
+                .withDiskSignatureOptions(
+                    Arrays.asList(new InMageDiskSignatureExclusionOptions().withDiskSignature("r"))))
+            .withProfileId("muhcuhtuzl").withDisksToInclude(Arrays.asList("yo", "garp", "ctwrapcz", "ojqyvzes"));
         model = BinaryData.fromObject(model).toObject(InMageReprotectInput.class);
         Assertions.assertEquals("ujjgnfgrzxbarc", model.masterTargetId());
         Assertions.assertEquals("paefzqsy", model.processServerId());
@@ -67,8 +51,8 @@ public final class InMageReprotectInputTests {
         Assertions.assertEquals("r", model.runAsAccountId());
         Assertions.assertEquals("odqhuauzmzivrt", model.datastoreName());
         Assertions.assertEquals("ezvhj", model.diskExclusionInput().volumeOptions().get(0).volumeLabel());
-        Assertions
-            .assertEquals("xdyyrud", model.diskExclusionInput().volumeOptions().get(0).onlyExcludeIfSingleVolume());
+        Assertions.assertEquals("xdyyrud",
+            model.diskExclusionInput().volumeOptions().get(0).onlyExcludeIfSingleVolume());
         Assertions.assertEquals("r", model.diskExclusionInput().diskSignatureOptions().get(0).diskSignature());
         Assertions.assertEquals("muhcuhtuzl", model.profileId());
         Assertions.assertEquals("yo", model.disksToInclude().get(0));

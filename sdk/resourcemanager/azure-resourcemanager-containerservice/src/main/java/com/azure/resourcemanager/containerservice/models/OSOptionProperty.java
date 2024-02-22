@@ -33,7 +33,7 @@ public final class OSOptionProperty {
 
     /**
      * Get the osType property: The OS type.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -42,7 +42,7 @@ public final class OSOptionProperty {
 
     /**
      * Set the osType property: The OS type.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the OSOptionProperty object itself.
      */
@@ -53,7 +53,7 @@ public final class OSOptionProperty {
 
     /**
      * Get the enableFipsImage property: Whether the image is FIPS-enabled.
-     *
+     * 
      * @return the enableFipsImage value.
      */
     public boolean enableFipsImage() {
@@ -62,7 +62,7 @@ public final class OSOptionProperty {
 
     /**
      * Set the enableFipsImage property: Whether the image is FIPS-enabled.
-     *
+     * 
      * @param enableFipsImage the enableFipsImage value to set.
      * @return the OSOptionProperty object itself.
      */
@@ -73,7 +73,7 @@ public final class OSOptionProperty {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

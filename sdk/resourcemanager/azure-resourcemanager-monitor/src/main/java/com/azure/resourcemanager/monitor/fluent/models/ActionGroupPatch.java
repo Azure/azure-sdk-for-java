@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An Azure action group for patch operations. */
+/**
+ * An Azure action group for patch operations.
+ */
 @Fluent
 public final class ActionGroupPatch {
     /*
@@ -17,14 +19,16 @@ public final class ActionGroupPatch {
     @JsonProperty(value = "enabled")
     private Boolean enabled;
 
-    /** Creates an instance of ActionGroupPatch class. */
+    /**
+     * Creates an instance of ActionGroupPatch class.
+     */
     public ActionGroupPatch() {
     }
 
     /**
-     * Get the enabled property: Indicates whether this action group is enabled. If an action group is not enabled, then
-     * none of its actions will be activated.
-     *
+     * Get the enabled property: Indicates whether this action group is enabled. If an action group is not enabled,
+     * then none of its actions will be activated.
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -32,9 +36,9 @@ public final class ActionGroupPatch {
     }
 
     /**
-     * Set the enabled property: Indicates whether this action group is enabled. If an action group is not enabled, then
-     * none of its actions will be activated.
-     *
+     * Set the enabled property: Indicates whether this action group is enabled. If an action group is not enabled,
+     * then none of its actions will be activated.
+     * 
      * @param enabled the enabled value to set.
      * @return the ActionGroupPatch object itself.
      */
@@ -45,7 +49,7 @@ public final class ActionGroupPatch {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

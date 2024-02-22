@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.datafactory.models.DelimitedTextSink;
 import com.azure.resourcemanager.datafactory.models.DelimitedTextWriteSettings;
+import com.azure.resourcemanager.datafactory.models.MetadataItem;
 import com.azure.resourcemanager.datafactory.models.StoreWriteSettings;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -15,21 +17,23 @@ public final class DelimitedTextSinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         DelimitedTextSink model = BinaryData.fromString(
-            "{\"type\":\"DelimitedTextSink\",\"storeSettings\":{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"dataguuhylzbdimtdohj\",\"disableMetricsCollection\":\"dataq\",\"copyBehavior\":\"datauwcilxznxhbttkk\",\"\":{\"vkqjrbblhcmx\":\"datajxueilixz\",\"sfsquxxqcim\":\"dataxpnkxcljnk\",\"psybdgtfozysfjdc\":\"datachvkjwrivagcsmrt\",\"pqelmszob\":\"datakbp\"}},\"formatSettings\":{\"type\":\"DelimitedTextWriteSettings\",\"quoteAllText\":\"dataltnbyvbg\",\"fileExtension\":\"datadrumududwecdsyb\",\"maxRowsPerFile\":\"datazfvxdkwvceqly\",\"fileNamePrefix\":\"datayqqonkre\",\"\":{\"ntaovlyyk\":\"datajusmdodkuky\",\"vswlhj\":\"datayfpkdsldywr\"}},\"writeBatchSize\":\"datakqygszhpnatltj\",\"writeBatchTimeout\":\"dataqz\",\"sinkRetryCount\":\"datalkyrn\",\"sinkRetryWait\":\"datasbubzfayy\",\"maxConcurrentConnections\":\"dataec\",\"disableMetricsCollection\":\"datatrederz\",\"\":{\"smvvfpkymqnvvwfa\":\"datagmohhcgh\",\"armtuprqtcxqkoh\":\"datarulboawzplwghfgq\",\"kdejparjvsbo\":\"datapya\"}}")
+            "{\"type\":\"DelimitedTextSink\",\"storeSettings\":{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"datar\",\"disableMetricsCollection\":\"datavbjvvcogupsho\",\"copyBehavior\":\"dataaskyyvdjoorbuuhb\",\"metadata\":[{\"name\":\"datacvtelmdrmasvg\",\"value\":\"datahlbkquhmb\"}],\"\":{\"xsrglxljuyvk\":\"datasmviaasd\",\"xq\":\"datapovzespdip\"}},\"formatSettings\":{\"type\":\"DelimitedTextWriteSettings\",\"quoteAllText\":\"datajomddadwosjxyw\",\"fileExtension\":\"datavilkyhtnriyhdb\",\"maxRowsPerFile\":\"datagsjmcybrpwjenb\",\"fileNamePrefix\":\"datakghrrxauuhd\",\"\":{\"wip\":\"dataizyxoyxnhub\",\"ezzyrp\":\"dataryiv\"}},\"writeBatchSize\":\"dataygfpqxsemezk\",\"writeBatchTimeout\":\"datammowftfrqebr\",\"sinkRetryCount\":\"datapotefekfx\",\"sinkRetryWait\":\"dataj\",\"maxConcurrentConnections\":\"datawidnrd\",\"disableMetricsCollection\":\"datakvhuiadyh\",\"\":{\"eadokuqn\":\"datasypgapfdwhw\",\"kflnjaysrjeevm\":\"datao\"}}")
             .toObject(DelimitedTextSink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DelimitedTextSink model = new DelimitedTextSink().withWriteBatchSize("datakqygszhpnatltj")
-            .withWriteBatchTimeout("dataqz").withSinkRetryCount("datalkyrn").withSinkRetryWait("datasbubzfayy")
-            .withMaxConcurrentConnections("dataec").withDisableMetricsCollection("datatrederz")
-            .withStoreSettings(new StoreWriteSettings().withMaxConcurrentConnections("dataguuhylzbdimtdohj")
-                .withDisableMetricsCollection("dataq").withCopyBehavior("datauwcilxznxhbttkk")
+        DelimitedTextSink model = new DelimitedTextSink().withWriteBatchSize("dataygfpqxsemezk")
+            .withWriteBatchTimeout("datammowftfrqebr").withSinkRetryCount("datapotefekfx").withSinkRetryWait("dataj")
+            .withMaxConcurrentConnections("datawidnrd").withDisableMetricsCollection("datakvhuiadyh")
+            .withStoreSettings(new StoreWriteSettings().withMaxConcurrentConnections("datar")
+                .withDisableMetricsCollection("datavbjvvcogupsho").withCopyBehavior("dataaskyyvdjoorbuuhb")
+                .withMetadata(
+                    Arrays.asList(new MetadataItem().withName("datacvtelmdrmasvg").withValue("datahlbkquhmb")))
                 .withAdditionalProperties(mapOf("type", "StoreWriteSettings")))
-            .withFormatSettings(new DelimitedTextWriteSettings().withQuoteAllText("dataltnbyvbg")
-                .withFileExtension("datadrumududwecdsyb").withMaxRowsPerFile("datazfvxdkwvceqly")
-                .withFileNamePrefix("datayqqonkre"));
+            .withFormatSettings(new DelimitedTextWriteSettings().withQuoteAllText("datajomddadwosjxyw")
+                .withFileExtension("datavilkyhtnriyhdb").withMaxRowsPerFile("datagsjmcybrpwjenb")
+                .withFileNamePrefix("datakghrrxauuhd"));
         model = BinaryData.fromObject(model).toObject(DelimitedTextSink.class);
     }
 

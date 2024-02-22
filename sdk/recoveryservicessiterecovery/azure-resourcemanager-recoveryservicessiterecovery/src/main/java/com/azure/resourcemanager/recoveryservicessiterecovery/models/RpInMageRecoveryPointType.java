@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The recovery point type. */
+/**
+ * The recovery point type.
+ */
 public final class RpInMageRecoveryPointType extends ExpandableStringEnum<RpInMageRecoveryPointType> {
-    /** Static value LatestTime for RpInMageRecoveryPointType. */
+    /**
+     * Static value LatestTime for RpInMageRecoveryPointType.
+     */
     public static final RpInMageRecoveryPointType LATEST_TIME = fromString("LatestTime");
 
-    /** Static value LatestTag for RpInMageRecoveryPointType. */
+    /**
+     * Static value LatestTag for RpInMageRecoveryPointType.
+     */
     public static final RpInMageRecoveryPointType LATEST_TAG = fromString("LatestTag");
 
-    /** Static value Custom for RpInMageRecoveryPointType. */
+    /**
+     * Static value Custom for RpInMageRecoveryPointType.
+     */
     public static final RpInMageRecoveryPointType CUSTOM = fromString("Custom");
 
     /**
      * Creates a new instance of RpInMageRecoveryPointType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class RpInMageRecoveryPointType extends ExpandableStringEnum<RpInMa
 
     /**
      * Creates or finds a RpInMageRecoveryPointType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RpInMageRecoveryPointType.
      */
@@ -41,7 +49,7 @@ public final class RpInMageRecoveryPointType extends ExpandableStringEnum<RpInMa
 
     /**
      * Gets known RpInMageRecoveryPointType values.
-     *
+     * 
      * @return known RpInMageRecoveryPointType values.
      */
     public static Collection<RpInMageRecoveryPointType> values() {

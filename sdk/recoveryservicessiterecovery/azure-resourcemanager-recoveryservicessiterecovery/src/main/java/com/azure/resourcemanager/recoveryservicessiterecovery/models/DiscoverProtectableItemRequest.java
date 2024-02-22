@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Request to add a physical machine as a protectable item in a container. */
+/**
+ * Request to add a physical machine as a protectable item in a container.
+ */
 @Fluent
 public final class DiscoverProtectableItemRequest {
     /*
@@ -16,13 +18,15 @@ public final class DiscoverProtectableItemRequest {
     @JsonProperty(value = "properties")
     private DiscoverProtectableItemRequestProperties properties;
 
-    /** Creates an instance of DiscoverProtectableItemRequest class. */
+    /**
+     * Creates an instance of DiscoverProtectableItemRequest class.
+     */
     public DiscoverProtectableItemRequest() {
     }
 
     /**
      * Get the properties property: The properties of a discover protectable item request.
-     *
+     * 
      * @return the properties value.
      */
     public DiscoverProtectableItemRequestProperties properties() {
@@ -31,7 +35,7 @@ public final class DiscoverProtectableItemRequest {
 
     /**
      * Set the properties property: The properties of a discover protectable item request.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DiscoverProtectableItemRequest object itself.
      */
@@ -42,7 +46,7 @@ public final class DiscoverProtectableItemRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

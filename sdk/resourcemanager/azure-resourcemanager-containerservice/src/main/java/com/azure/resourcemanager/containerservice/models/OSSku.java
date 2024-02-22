@@ -40,7 +40,7 @@ public final class OSSku extends ExpandableStringEnum<OSSku> {
 
     /**
      * Creates a new instance of OSSku value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -49,7 +49,7 @@ public final class OSSku extends ExpandableStringEnum<OSSku> {
 
     /**
      * Creates or finds a OSSku from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OSSku.
      */
@@ -60,7 +60,7 @@ public final class OSSku extends ExpandableStringEnum<OSSku> {
 
     /**
      * Gets known OSSku values.
-     *
+     * 
      * @return known OSSku values.
      */
     public static Collection<OSSku> values() {

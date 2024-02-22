@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The HourlySchedule model. */
+/**
+ * The HourlySchedule model.
+ */
 @Fluent
 public final class HourlySchedule {
     /*
@@ -30,13 +32,16 @@ public final class HourlySchedule {
     @JsonProperty(value = "scheduleWindowDuration")
     private Integer scheduleWindowDuration;
 
-    /** Creates an instance of HourlySchedule class. */
+    /**
+     * Creates an instance of HourlySchedule class.
+     */
     public HourlySchedule() {
     }
 
     /**
-     * Get the interval property: Interval at which backup needs to be triggered. For hourly the value can be 4/6/8/12.
-     *
+     * Get the interval property: Interval at which backup needs to be triggered. For hourly the value
+     * can be 4/6/8/12.
+     * 
      * @return the interval value.
      */
     public Integer interval() {
@@ -44,8 +49,9 @@ public final class HourlySchedule {
     }
 
     /**
-     * Set the interval property: Interval at which backup needs to be triggered. For hourly the value can be 4/6/8/12.
-     *
+     * Set the interval property: Interval at which backup needs to be triggered. For hourly the value
+     * can be 4/6/8/12.
+     * 
      * @param interval the interval value to set.
      * @return the HourlySchedule object itself.
      */
@@ -56,7 +62,7 @@ public final class HourlySchedule {
 
     /**
      * Get the scheduleWindowStartTime property: To specify start time of the backup window.
-     *
+     * 
      * @return the scheduleWindowStartTime value.
      */
     public OffsetDateTime scheduleWindowStartTime() {
@@ -65,7 +71,7 @@ public final class HourlySchedule {
 
     /**
      * Set the scheduleWindowStartTime property: To specify start time of the backup window.
-     *
+     * 
      * @param scheduleWindowStartTime the scheduleWindowStartTime value to set.
      * @return the HourlySchedule object itself.
      */
@@ -76,7 +82,7 @@ public final class HourlySchedule {
 
     /**
      * Get the scheduleWindowDuration property: To specify duration of the backup window.
-     *
+     * 
      * @return the scheduleWindowDuration value.
      */
     public Integer scheduleWindowDuration() {
@@ -85,7 +91,7 @@ public final class HourlySchedule {
 
     /**
      * Set the scheduleWindowDuration property: To specify duration of the backup window.
-     *
+     * 
      * @param scheduleWindowDuration the scheduleWindowDuration value to set.
      * @return the HourlySchedule object itself.
      */
@@ -96,7 +102,7 @@ public final class HourlySchedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

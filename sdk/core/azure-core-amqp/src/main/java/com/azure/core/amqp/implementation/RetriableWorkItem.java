@@ -42,8 +42,8 @@ class RetriableWorkItem {
         this.metricsProvider = metricsProvider;
     }
 
-    RetriableWorkItem(byte[] bytes, int encodedMessageSize, int messageFormat, MonoSink<DeliveryState> monoSink, Duration timeout,
-        DeliveryState deliveryState, AmqpMetricsProvider metricsProvider) {
+    RetriableWorkItem(byte[] bytes, int encodedMessageSize, int messageFormat, MonoSink<DeliveryState> monoSink,
+        Duration timeout, DeliveryState deliveryState, AmqpMetricsProvider metricsProvider) {
         this.encodedBytes = bytes;
         this.encodedBuffer = null;
         this.encodedMessageSize = encodedMessageSize;

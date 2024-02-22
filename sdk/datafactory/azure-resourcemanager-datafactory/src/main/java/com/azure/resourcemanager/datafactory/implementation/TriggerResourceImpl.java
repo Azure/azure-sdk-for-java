@@ -104,9 +104,9 @@ public final class TriggerResourceImpl implements TriggerResource, TriggerResour
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.factoryName = Utils.getValueFromIdByName(innerObject.id(), "factories");
-        this.triggerName = Utils.getValueFromIdByName(innerObject.id(), "triggers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.factoryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "factories");
+        this.triggerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "triggers");
     }
 
     public TriggerResource refresh() {

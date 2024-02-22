@@ -23,6 +23,7 @@ public class HttpLogOptions {
     private Set<String> allowedHeaderNames;
     private Set<String> allowedQueryParamNames;
     private boolean prettyPrintBody;
+    private boolean disableRedactedHeaderLogging;
 
     private HttpRequestLogger requestLogger;
     private HttpResponseLogger responseLogger;
@@ -31,41 +32,17 @@ public class HttpLogOptions {
     private static final ClientLogger LOGGER = new ClientLogger(HttpLogOptions.class);
 
     private static final int MAX_APPLICATION_ID_LENGTH = 24;
-    private static final String INVALID_APPLICATION_ID_LENGTH = "'applicationId' length cannot be greater than "
-        + MAX_APPLICATION_ID_LENGTH;
+    private static final String INVALID_APPLICATION_ID_LENGTH
+        = "'applicationId' length cannot be greater than " + MAX_APPLICATION_ID_LENGTH;
     private static final String INVALID_APPLICATION_ID_SPACE = "'applicationId' cannot contain spaces.";
-    static final List<String> DEFAULT_HEADERS_ALLOWLIST = Arrays.asList(
-        "x-ms-request-id",
-        "x-ms-client-request-id",
-        "x-ms-return-client-request-id",
-        "traceparent",
-        "MS-CV",
+    static final List<String> DEFAULT_HEADERS_ALLOWLIST = Arrays.asList("x-ms-request-id", "x-ms-client-request-id",
+        "x-ms-return-client-request-id", "traceparent", "MS-CV",
 
-        "Accept",
-        "Cache-Control",
-        "Connection",
-        "Content-Length",
-        "Content-Type",
-        "Date",
-        "ETag",
-        "Expires",
-        "If-Match",
-        "If-Modified-Since",
-        "If-None-Match",
-        "If-Unmodified-Since",
-        "Last-Modified",
-        "Pragma",
-        "Request-Id",
-        "Retry-After",
-        "Server",
-        "Transfer-Encoding",
-        "User-Agent",
-        "WWW-Authenticate"
-    );
+        "Accept", "Cache-Control", "Connection", "Content-Length", "Content-Type", "Date", "ETag", "Expires",
+        "If-Match", "If-Modified-Since", "If-None-Match", "If-Unmodified-Since", "Last-Modified", "Pragma",
+        "Request-Id", "Retry-After", "Server", "Transfer-Encoding", "User-Agent", "WWW-Authenticate");
 
-    static final List<String> DEFAULT_QUERY_PARAMS_ALLOWLIST = Collections.singletonList(
-        "api-version"
-    );
+    static final List<String> DEFAULT_QUERY_PARAMS_ALLOWLIST = Collections.singletonList("api-version");
 
     /**
      * Creates a new instance that does not log any information about HTTP requests or responses.
@@ -278,5 +255,29 @@ public class HttpLogOptions {
     public HttpLogOptions setResponseLogger(HttpResponseLogger responseLogger) {
         this.responseLogger = responseLogger;
         return this;
+    }
+
+    /**
+     * Sets the flag that controls if header names which value is redacted should be logged.
+     * <p>
+     * Applies only if logging request and response headers is enabled. See {@link HttpLogOptions#setLogLevel(HttpLogDetailLevel)} for details.
+     * Defaults to `false` - redacted header names are logged.
+     *
+     * @param disableRedactedHeaderLogging If true, redacted header names are not logged.
+     * Otherwise, they are logged as a comma separated list under `redactedHeaders` property.
+     * @return The updated HttpLogOptions object.
+     */
+    public HttpLogOptions disableRedactedHeaderLogging(boolean disableRedactedHeaderLogging) {
+        this.disableRedactedHeaderLogging = disableRedactedHeaderLogging;
+        return this;
+    }
+
+    /**
+     * Gets the flag that controls if header names with redacted values should be logged.
+     *
+     * @return true if header names with redacted values should be logged.
+     */
+    public boolean isRedactedHeaderLoggingDisabled() {
+        return disableRedactedHeaderLogging;
     }
 }

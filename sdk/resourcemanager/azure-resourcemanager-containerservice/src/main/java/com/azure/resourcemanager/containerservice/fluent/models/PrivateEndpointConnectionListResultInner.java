@@ -27,7 +27,7 @@ public final class PrivateEndpointConnectionListResultInner {
 
     /**
      * Get the value property: The collection value.
-     *
+     * 
      * @return the value value.
      */
     public List<PrivateEndpointConnectionInner> value() {
@@ -36,7 +36,7 @@ public final class PrivateEndpointConnectionListResultInner {
 
     /**
      * Set the value property: The collection value.
-     *
+     * 
      * @param value the value value to set.
      * @return the PrivateEndpointConnectionListResultInner object itself.
      */
@@ -47,7 +47,7 @@ public final class PrivateEndpointConnectionListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

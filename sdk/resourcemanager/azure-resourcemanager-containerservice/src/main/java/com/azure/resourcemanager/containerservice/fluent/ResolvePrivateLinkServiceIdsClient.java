@@ -17,7 +17,7 @@ import reactor.core.publisher.Mono;
 public interface ResolvePrivateLinkServiceIdsClient {
     /**
      * Gets the private link service ID for the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters required in order to resolve a private link service ID.
@@ -33,7 +33,7 @@ public interface ResolvePrivateLinkServiceIdsClient {
 
     /**
      * Gets the private link service ID for the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters required in order to resolve a private link service ID.
@@ -48,7 +48,7 @@ public interface ResolvePrivateLinkServiceIdsClient {
 
     /**
      * Gets the private link service ID for the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters required in order to resolve a private link service ID.
@@ -64,7 +64,7 @@ public interface ResolvePrivateLinkServiceIdsClient {
 
     /**
      * Gets the private link service ID for the specified managed cluster.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param resourceName The name of the managed cluster resource.
      * @param parameters Parameters required in order to resolve a private link service ID.

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Recovery plan Automation runbook action details. */
+/**
+ * Recovery plan Automation runbook action details.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("AutomationRunbookActionDetails")
 @Fluent
@@ -33,13 +35,15 @@ public final class RecoveryPlanAutomationRunbookActionDetails extends RecoveryPl
     @JsonProperty(value = "fabricLocation", required = true)
     private RecoveryPlanActionLocation fabricLocation;
 
-    /** Creates an instance of RecoveryPlanAutomationRunbookActionDetails class. */
+    /**
+     * Creates an instance of RecoveryPlanAutomationRunbookActionDetails class.
+     */
     public RecoveryPlanAutomationRunbookActionDetails() {
     }
 
     /**
      * Get the runbookId property: The runbook ARM Id.
-     *
+     * 
      * @return the runbookId value.
      */
     public String runbookId() {
@@ -48,7 +52,7 @@ public final class RecoveryPlanAutomationRunbookActionDetails extends RecoveryPl
 
     /**
      * Set the runbookId property: The runbook ARM Id.
-     *
+     * 
      * @param runbookId the runbookId value to set.
      * @return the RecoveryPlanAutomationRunbookActionDetails object itself.
      */
@@ -59,7 +63,7 @@ public final class RecoveryPlanAutomationRunbookActionDetails extends RecoveryPl
 
     /**
      * Get the timeout property: The runbook timeout.
-     *
+     * 
      * @return the timeout value.
      */
     public String timeout() {
@@ -68,7 +72,7 @@ public final class RecoveryPlanAutomationRunbookActionDetails extends RecoveryPl
 
     /**
      * Set the timeout property: The runbook timeout.
-     *
+     * 
      * @param timeout the timeout value to set.
      * @return the RecoveryPlanAutomationRunbookActionDetails object itself.
      */
@@ -79,7 +83,7 @@ public final class RecoveryPlanAutomationRunbookActionDetails extends RecoveryPl
 
     /**
      * Get the fabricLocation property: The fabric location.
-     *
+     * 
      * @return the fabricLocation value.
      */
     public RecoveryPlanActionLocation fabricLocation() {
@@ -88,7 +92,7 @@ public final class RecoveryPlanAutomationRunbookActionDetails extends RecoveryPl
 
     /**
      * Set the fabricLocation property: The fabric location.
-     *
+     * 
      * @param fabricLocation the fabricLocation value to set.
      * @return the RecoveryPlanAutomationRunbookActionDetails object itself.
      */
@@ -99,18 +103,15 @@ public final class RecoveryPlanAutomationRunbookActionDetails extends RecoveryPl
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (fabricLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property fabricLocation in model"
-                            + " RecoveryPlanAutomationRunbookActionDetails"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property fabricLocation in model RecoveryPlanAutomationRunbookActionDetails"));
         }
     }
 

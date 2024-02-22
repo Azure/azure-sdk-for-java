@@ -5,10 +5,10 @@ package com.azure.core.implementation;
 
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
-import com.azure.core.http.policy.ExponentialBackoff;
-import com.azure.core.http.policy.FixedDelay;
 import com.azure.core.http.policy.RetryOptions;
 import com.azure.core.http.policy.RetryStrategy;
+import com.azure.core.implementation.accesshelpers.ExponentialBackoffAccessHelper;
+import com.azure.core.implementation.accesshelpers.FixedDelayAccessHelper;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
@@ -324,11 +324,17 @@ public final class ImplUtils {
 
         if (count >= 3 && bytes[offset] == EF && bytes[offset + 1] == BB && bytes[offset + 2] == BF) {
             return new String(bytes, 3, bytes.length - 3, StandardCharsets.UTF_8);
-        } else if (count >= 4 && bytes[offset] == ZERO && bytes[offset + 1] == ZERO
-            && bytes[offset + 2] == FE && bytes[offset + 3] == FF) {
+        } else if (count >= 4
+            && bytes[offset] == ZERO
+            && bytes[offset + 1] == ZERO
+            && bytes[offset + 2] == FE
+            && bytes[offset + 3] == FF) {
             return new String(bytes, 4, bytes.length - 4, UTF_32BE);
-        } else if (count >= 4 && bytes[offset] == FF && bytes[offset + 1] == FE
-            && bytes[offset + 2] == ZERO && bytes[offset + 3] == ZERO) {
+        } else if (count >= 4
+            && bytes[offset] == FF
+            && bytes[offset + 1] == FE
+            && bytes[offset + 2] == ZERO
+            && bytes[offset + 3] == ZERO) {
             return new String(bytes, 4, bytes.length - 4, UTF_32LE);
         } else if (count >= 2 && bytes[offset] == FE && bytes[offset + 1] == FF) {
             return new String(bytes, 2, bytes.length - 2, StandardCharsets.UTF_16BE);
@@ -389,8 +395,8 @@ public final class ImplUtils {
         try {
             return (Class<? extends T>) Class.forName(className, false, ImplUtils.class.getClassLoader());
         } catch (ClassNotFoundException e) {
-            throw LOGGER.logExceptionAsError(new RuntimeException(
-                "Class '" + className + "' is not found on the classpath.", e));
+            throw LOGGER.logExceptionAsError(
+                new RuntimeException("Class '" + className + "' is not found on the classpath.", e));
         }
     }
 
@@ -406,9 +412,11 @@ public final class ImplUtils {
         Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
 
         if (retryOptions.getExponentialBackoffOptions() != null) {
-            return new ExponentialBackoff(retryOptions.getExponentialBackoffOptions());
+            return ExponentialBackoffAccessHelper.create(retryOptions.getExponentialBackoffOptions(),
+                retryOptions.getShouldRetryCondition());
         } else if (retryOptions.getFixedDelayOptions() != null) {
-            return new FixedDelay(retryOptions.getFixedDelayOptions());
+            return FixedDelayAccessHelper.create(retryOptions.getFixedDelayOptions(),
+                retryOptions.getShouldRetryCondition());
         } else {
             // This should never happen.
             throw new IllegalArgumentException("'retryOptions' didn't define any retry strategy options");

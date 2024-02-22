@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents applicable recovery vm sizes properties. */
+/**
+ * Represents applicable recovery vm sizes properties.
+ */
 @Fluent
 public final class TargetComputeSizeProperties {
     /*
@@ -71,13 +73,15 @@ public final class TargetComputeSizeProperties {
     @JsonProperty(value = "hyperVGenerations")
     private List<String> hyperVGenerations;
 
-    /** Creates an instance of TargetComputeSizeProperties class. */
+    /**
+     * Creates an instance of TargetComputeSizeProperties class.
+     */
     public TargetComputeSizeProperties() {
     }
 
     /**
      * Get the name property: Target compute size name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -86,7 +90,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Set the name property: Target compute size name.
-     *
+     * 
      * @param name the name value to set.
      * @return the TargetComputeSizeProperties object itself.
      */
@@ -97,7 +101,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Get the friendlyName property: Target compute size display name.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -106,7 +110,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Set the friendlyName property: Target compute size display name.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the TargetComputeSizeProperties object itself.
      */
@@ -117,7 +121,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Get the cpuCoresCount property: The maximum cpu cores count supported by target compute size.
-     *
+     * 
      * @return the cpuCoresCount value.
      */
     public Integer cpuCoresCount() {
@@ -126,7 +130,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Set the cpuCoresCount property: The maximum cpu cores count supported by target compute size.
-     *
+     * 
      * @param cpuCoresCount the cpuCoresCount value to set.
      * @return the TargetComputeSizeProperties object itself.
      */
@@ -137,7 +141,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Get the vCpusAvailable property: The Available vCPUs supported by target compute size.
-     *
+     * 
      * @return the vCpusAvailable value.
      */
     public Integer vCpusAvailable() {
@@ -146,7 +150,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Get the memoryInGB property: The maximum memory in GB supported by target compute size.
-     *
+     * 
      * @return the memoryInGB value.
      */
     public Double memoryInGB() {
@@ -155,7 +159,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Set the memoryInGB property: The maximum memory in GB supported by target compute size.
-     *
+     * 
      * @param memoryInGB the memoryInGB value to set.
      * @return the TargetComputeSizeProperties object itself.
      */
@@ -166,7 +170,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Get the maxDataDiskCount property: The maximum data disks count supported by target compute size.
-     *
+     * 
      * @return the maxDataDiskCount value.
      */
     public Integer maxDataDiskCount() {
@@ -175,7 +179,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Set the maxDataDiskCount property: The maximum data disks count supported by target compute size.
-     *
+     * 
      * @param maxDataDiskCount the maxDataDiskCount value to set.
      * @return the TargetComputeSizeProperties object itself.
      */
@@ -186,7 +190,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Get the maxNicsCount property: The maximum Nics count supported by target compute size.
-     *
+     * 
      * @return the maxNicsCount value.
      */
     public Integer maxNicsCount() {
@@ -195,7 +199,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Set the maxNicsCount property: The maximum Nics count supported by target compute size.
-     *
+     * 
      * @param maxNicsCount the maxNicsCount value to set.
      * @return the TargetComputeSizeProperties object itself.
      */
@@ -206,7 +210,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Get the errors property: The reasons why the target compute size is not applicable for the protected item.
-     *
+     * 
      * @return the errors value.
      */
     public List<ComputeSizeErrorDetails> errors() {
@@ -215,7 +219,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Set the errors property: The reasons why the target compute size is not applicable for the protected item.
-     *
+     * 
      * @param errors the errors value to set.
      * @return the TargetComputeSizeProperties object itself.
      */
@@ -226,7 +230,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Get the highIopsSupported property: The value indicating whether the target compute size supports high Iops.
-     *
+     * 
      * @return the highIopsSupported value.
      */
     public String highIopsSupported() {
@@ -235,7 +239,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Set the highIopsSupported property: The value indicating whether the target compute size supports high Iops.
-     *
+     * 
      * @param highIopsSupported the highIopsSupported value to set.
      * @return the TargetComputeSizeProperties object itself.
      */
@@ -246,7 +250,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Get the hyperVGenerations property: The supported HyperV Generations.
-     *
+     * 
      * @return the hyperVGenerations value.
      */
     public List<String> hyperVGenerations() {
@@ -255,7 +259,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Set the hyperVGenerations property: The supported HyperV Generations.
-     *
+     * 
      * @param hyperVGenerations the hyperVGenerations value to set.
      * @return the TargetComputeSizeProperties object itself.
      */
@@ -266,7 +270,7 @@ public final class TargetComputeSizeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

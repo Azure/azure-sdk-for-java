@@ -44,7 +44,7 @@ public final class OperationValueDisplay {
 
     /**
      * Get the operation property: The display name of the operation.
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -53,7 +53,7 @@ public final class OperationValueDisplay {
 
     /**
      * Get the resource property: The display name of the resource the operation applies to.
-     *
+     * 
      * @return the resource value.
      */
     public String resource() {
@@ -62,7 +62,7 @@ public final class OperationValueDisplay {
 
     /**
      * Get the description property: The description of the operation.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -71,7 +71,7 @@ public final class OperationValueDisplay {
 
     /**
      * Get the provider property: The resource provider for the operation.
-     *
+     * 
      * @return the provider value.
      */
     public String provider() {
@@ -80,7 +80,7 @@ public final class OperationValueDisplay {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

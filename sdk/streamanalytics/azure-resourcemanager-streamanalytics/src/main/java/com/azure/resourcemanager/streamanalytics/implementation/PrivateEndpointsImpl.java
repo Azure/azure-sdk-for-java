@@ -13,41 +13,36 @@ import com.azure.resourcemanager.streamanalytics.fluent.PrivateEndpointsClient;
 import com.azure.resourcemanager.streamanalytics.fluent.models.PrivateEndpointInner;
 import com.azure.resourcemanager.streamanalytics.models.PrivateEndpoint;
 import com.azure.resourcemanager.streamanalytics.models.PrivateEndpoints;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class PrivateEndpointsImpl implements PrivateEndpoints {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(PrivateEndpointsImpl.class);
 
     private final PrivateEndpointsClient innerClient;
 
     private final com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager serviceManager;
 
-    public PrivateEndpointsImpl(
-        PrivateEndpointsClient innerClient,
+    public PrivateEndpointsImpl(PrivateEndpointsClient innerClient,
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
+    }
+
+    public Response<PrivateEndpoint> getWithResponse(String resourceGroupName, String clusterName,
+        String privateEndpointName, Context context) {
+        Response<PrivateEndpointInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, clusterName, privateEndpointName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new PrivateEndpointImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public PrivateEndpoint get(String resourceGroupName, String clusterName, String privateEndpointName) {
         PrivateEndpointInner inner = this.serviceClient().get(resourceGroupName, clusterName, privateEndpointName);
         if (inner != null) {
             return new PrivateEndpointImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<PrivateEndpoint> getWithResponse(
-        String resourceGroupName, String clusterName, String privateEndpointName, Context context) {
-        Response<PrivateEndpointInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, clusterName, privateEndpointName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new PrivateEndpointImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -63,123 +58,87 @@ public final class PrivateEndpointsImpl implements PrivateEndpoints {
 
     public PagedIterable<PrivateEndpoint> listByCluster(String resourceGroupName, String clusterName) {
         PagedIterable<PrivateEndpointInner> inner = this.serviceClient().listByCluster(resourceGroupName, clusterName);
-        return Utils.mapPage(inner, inner1 -> new PrivateEndpointImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateEndpointImpl(inner1, this.manager()));
     }
 
     public PagedIterable<PrivateEndpoint> listByCluster(String resourceGroupName, String clusterName, Context context) {
-        PagedIterable<PrivateEndpointInner> inner =
-            this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
-        return Utils.mapPage(inner, inner1 -> new PrivateEndpointImpl(inner1, this.manager()));
+        PagedIterable<PrivateEndpointInner> inner
+            = this.serviceClient().listByCluster(resourceGroupName, clusterName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new PrivateEndpointImpl(inner1, this.manager()));
     }
 
     public PrivateEndpoint getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String privateEndpointName = Utils.getValueFromIdByName(id, "privateEndpoints");
+        String privateEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpoints");
         if (privateEndpointName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'privateEndpoints'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateEndpoints'.", id)));
         }
         return this.getWithResponse(resourceGroupName, clusterName, privateEndpointName, Context.NONE).getValue();
     }
 
     public Response<PrivateEndpoint> getByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String privateEndpointName = Utils.getValueFromIdByName(id, "privateEndpoints");
+        String privateEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpoints");
         if (privateEndpointName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'privateEndpoints'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateEndpoints'.", id)));
         }
         return this.getWithResponse(resourceGroupName, clusterName, privateEndpointName, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String privateEndpointName = Utils.getValueFromIdByName(id, "privateEndpoints");
+        String privateEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpoints");
         if (privateEndpointName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'privateEndpoints'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateEndpoints'.", id)));
         }
         this.delete(resourceGroupName, clusterName, privateEndpointName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String clusterName = Utils.getValueFromIdByName(id, "clusters");
+        String clusterName = ResourceManagerUtils.getValueFromIdByName(id, "clusters");
         if (clusterName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'clusters'.", id)));
         }
-        String privateEndpointName = Utils.getValueFromIdByName(id, "privateEndpoints");
+        String privateEndpointName = ResourceManagerUtils.getValueFromIdByName(id, "privateEndpoints");
         if (privateEndpointName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'privateEndpoints'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'privateEndpoints'.", id)));
         }
         this.delete(resourceGroupName, clusterName, privateEndpointName, context);
     }

@@ -10,41 +10,31 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.AddDisksInp
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.AddDisksInputProperties;
 import java.util.Arrays;
 
-/** Samples for ReplicationProtectedItems AddDisks. */
+/**
+ * Samples for ReplicationProtectedItems AddDisks.
+ */
 public final class ReplicationProtectedItemsAddDisksSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationProtectedItems_AddDisks.json
+     * x-ms-original-file:
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * /ReplicationProtectedItems_AddDisks.json
      */
     /**
      * Sample code: Add disk(s) for protection.
-     *
+     * 
      * @param manager Entry point to SiteRecoveryManager.
      */
-    public static void addDiskSForProtection(
-        com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager
-            .replicationProtectedItems()
-            .addDisks(
-                "vault1",
-                "resourceGroupPS1",
-                "cloud1",
-                "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179",
-                "f8491e4f-817a-40dd-a90c-af773978c75b",
-                new AddDisksInput()
-                    .withProperties(
-                        new AddDisksInputProperties()
-                            .withProviderSpecificDetails(
-                                new A2AAddDisksInput()
-                                    .withVmDisks(
-                                        Arrays
-                                            .asList(
-                                                new A2AVmDiskInputDetails()
-                                                    .withDiskUri(
-                                                        "https://vmstorage.blob.core.windows.net/vhds/datadisk1.vhd")
-                                                    .withRecoveryAzureStorageAccountId(
-                                                        "/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourcegroups/recoveryResource/providers/Microsoft.Storage/storageAccounts/recoverystorage")
-                                                    .withPrimaryStagingAzureStorageAccountId(
-                                                        "/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourcegroups/primaryResource/providers/Microsoft.Storage/storageAccounts/vmcachestorage"))))),
-                com.azure.core.util.Context.NONE);
+    public static void
+        addDiskSForProtection(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
+        manager.replicationProtectedItems().addDisks("vault1", "resourceGroupPS1", "cloud1",
+            "cloud_6d224fc6-f326-5d35-96de-fbf51efb3179", "f8491e4f-817a-40dd-a90c-af773978c75b",
+            new AddDisksInput().withProperties(new AddDisksInputProperties().withProviderSpecificDetails(
+                new A2AAddDisksInput().withVmDisks(Arrays.asList(new A2AVmDiskInputDetails()
+                    .withDiskUri("https://vmstorage.blob.core.windows.net/vhds/datadisk1.vhd")
+                    .withRecoveryAzureStorageAccountId(
+                        "/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourcegroups/recoveryResource/providers/Microsoft.Storage/storageAccounts/recoverystorage")
+                    .withPrimaryStagingAzureStorageAccountId(
+                        "/subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourcegroups/primaryResource/providers/Microsoft.Storage/storageAccounts/vmcachestorage"))))),
+            com.azure.core.util.Context.NONE);
     }
 }

@@ -28,22 +28,6 @@ public final class ImageAnalysisOptions {
     }
 
     /**
-     * Creates an instance of ImageAnalysisOptions class.
-     *
-     * @param language the language to set (or null to default to "en" for English).
-     * @param genderNeutralCaption the gender neutral caption value to set (or null to default to "false").
-     * @param smartCropsAspectRatios the list of desired smart crops aspect ratios to set (or null to default to one smart crop region with an aspect ration the service sees fit).
-     * @param modelVersion the modelVersion value to set (or null to default to "latest").
-     */
-    public ImageAnalysisOptions(String language, Boolean genderNeutralCaption,
-        List<Double> smartCropsAspectRatios, String modelVersion) {
-        this.language = language;
-        this.genderNeutralCaption = genderNeutralCaption;
-        this.smartCropsAspectRatios = smartCropsAspectRatios;
-        this.modelVersion = modelVersion;
-    }
-
-    /**
      * Sets the desired language for output generation. At the moment this only applies to the 
      * visual feature {@link com.azure.ai.vision.imageanalysis.models.VisualFeatures#TAGS TAGS}.
      * If this parameter is not specified, the default value is "en" for English.

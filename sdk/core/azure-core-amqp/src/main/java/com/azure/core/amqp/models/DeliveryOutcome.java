@@ -11,9 +11,9 @@ import com.azure.core.annotation.Fluent;
  * {@link DeliveryState#ACCEPTED}.
  *
  * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-accepted">Delivery
- *     State: Accepted</a>
+ * State: Accepted</a>
  * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-released">Delivery
- *     State: Released</a>
+ * State: Released</a>
  * @see ModifiedDeliveryOutcome
  * @see RejectedDeliveryOutcome
  * @see TransactionalDeliveryOutcome

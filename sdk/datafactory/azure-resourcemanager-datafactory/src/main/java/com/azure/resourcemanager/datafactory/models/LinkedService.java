@@ -139,9 +139,13 @@ import java.util.Map;
     @JsonSubTypes.Type(name = "AzureDataExplorer", value = AzureDataExplorerLinkedService.class),
     @JsonSubTypes.Type(name = "AzureFunction", value = AzureFunctionLinkedService.class),
     @JsonSubTypes.Type(name = "Snowflake", value = SnowflakeLinkedService.class),
+    @JsonSubTypes.Type(name = "SnowflakeV2", value = SnowflakeV2LinkedService.class),
     @JsonSubTypes.Type(name = "SharePointOnlineList", value = SharePointOnlineListLinkedService.class),
     @JsonSubTypes.Type(name = "AzureSynapseArtifacts", value = AzureSynapseArtifactsLinkedService.class),
-    @JsonSubTypes.Type(name = "LakeHouse", value = LakeHouseLinkedService.class) })
+    @JsonSubTypes.Type(name = "LakeHouse", value = LakeHouseLinkedService.class),
+    @JsonSubTypes.Type(name = "SalesforceV2", value = SalesforceV2LinkedService.class),
+    @JsonSubTypes.Type(name = "SalesforceServiceCloudV2", value = SalesforceServiceCloudV2LinkedService.class),
+    @JsonSubTypes.Type(name = "Warehouse", value = WarehouseLinkedService.class) })
 @Fluent
 public class LinkedService {
     /*

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Update protected item input properties. */
+/**
+ * Update protected item input properties.
+ */
 @Fluent
 public final class UpdateReplicationProtectedItemInputProperties {
     /*
@@ -72,13 +74,15 @@ public final class UpdateReplicationProtectedItemInputProperties {
     @JsonProperty(value = "providerSpecificDetails")
     private UpdateReplicationProtectedItemProviderInput providerSpecificDetails;
 
-    /** Creates an instance of UpdateReplicationProtectedItemInputProperties class. */
+    /**
+     * Creates an instance of UpdateReplicationProtectedItemInputProperties class.
+     */
     public UpdateReplicationProtectedItemInputProperties() {
     }
 
     /**
      * Get the recoveryAzureVMName property: Target Azure VM name given by the user.
-     *
+     * 
      * @return the recoveryAzureVMName value.
      */
     public String recoveryAzureVMName() {
@@ -87,7 +91,7 @@ public final class UpdateReplicationProtectedItemInputProperties {
 
     /**
      * Set the recoveryAzureVMName property: Target Azure VM name given by the user.
-     *
+     * 
      * @param recoveryAzureVMName the recoveryAzureVMName value to set.
      * @return the UpdateReplicationProtectedItemInputProperties object itself.
      */
@@ -98,7 +102,7 @@ public final class UpdateReplicationProtectedItemInputProperties {
 
     /**
      * Get the recoveryAzureVMSize property: Target Azure VM size.
-     *
+     * 
      * @return the recoveryAzureVMSize value.
      */
     public String recoveryAzureVMSize() {
@@ -107,7 +111,7 @@ public final class UpdateReplicationProtectedItemInputProperties {
 
     /**
      * Set the recoveryAzureVMSize property: Target Azure VM size.
-     *
+     * 
      * @param recoveryAzureVMSize the recoveryAzureVMSize value to set.
      * @return the UpdateReplicationProtectedItemInputProperties object itself.
      */
@@ -118,7 +122,7 @@ public final class UpdateReplicationProtectedItemInputProperties {
 
     /**
      * Get the selectedRecoveryAzureNetworkId property: Target Azure Network Id.
-     *
+     * 
      * @return the selectedRecoveryAzureNetworkId value.
      */
     public String selectedRecoveryAzureNetworkId() {
@@ -127,19 +131,19 @@ public final class UpdateReplicationProtectedItemInputProperties {
 
     /**
      * Set the selectedRecoveryAzureNetworkId property: Target Azure Network Id.
-     *
+     * 
      * @param selectedRecoveryAzureNetworkId the selectedRecoveryAzureNetworkId value to set.
      * @return the UpdateReplicationProtectedItemInputProperties object itself.
      */
-    public UpdateReplicationProtectedItemInputProperties withSelectedRecoveryAzureNetworkId(
-        String selectedRecoveryAzureNetworkId) {
+    public UpdateReplicationProtectedItemInputProperties
+        withSelectedRecoveryAzureNetworkId(String selectedRecoveryAzureNetworkId) {
         this.selectedRecoveryAzureNetworkId = selectedRecoveryAzureNetworkId;
         return this;
     }
 
     /**
      * Get the selectedTfoAzureNetworkId property: The Azure Network Id for test failover.
-     *
+     * 
      * @return the selectedTfoAzureNetworkId value.
      */
     public String selectedTfoAzureNetworkId() {
@@ -148,12 +152,12 @@ public final class UpdateReplicationProtectedItemInputProperties {
 
     /**
      * Set the selectedTfoAzureNetworkId property: The Azure Network Id for test failover.
-     *
+     * 
      * @param selectedTfoAzureNetworkId the selectedTfoAzureNetworkId value to set.
      * @return the UpdateReplicationProtectedItemInputProperties object itself.
      */
-    public UpdateReplicationProtectedItemInputProperties withSelectedTfoAzureNetworkId(
-        String selectedTfoAzureNetworkId) {
+    public UpdateReplicationProtectedItemInputProperties
+        withSelectedTfoAzureNetworkId(String selectedTfoAzureNetworkId) {
         this.selectedTfoAzureNetworkId = selectedTfoAzureNetworkId;
         return this;
     }
@@ -161,7 +165,7 @@ public final class UpdateReplicationProtectedItemInputProperties {
     /**
      * Get the selectedSourceNicId property: The selected source nic Id which will be used as the primary nic during
      * failover.
-     *
+     * 
      * @return the selectedSourceNicId value.
      */
     public String selectedSourceNicId() {
@@ -171,7 +175,7 @@ public final class UpdateReplicationProtectedItemInputProperties {
     /**
      * Set the selectedSourceNicId property: The selected source nic Id which will be used as the primary nic during
      * failover.
-     *
+     * 
      * @param selectedSourceNicId the selectedSourceNicId value to set.
      * @return the UpdateReplicationProtectedItemInputProperties object itself.
      */
@@ -183,7 +187,7 @@ public final class UpdateReplicationProtectedItemInputProperties {
     /**
      * Get the enableRdpOnTargetOption property: The selected option to enable RDP\SSH on target vm after failover.
      * String value of SrsDataContract.EnableRDPOnTargetOption enum.
-     *
+     * 
      * @return the enableRdpOnTargetOption value.
      */
     public String enableRdpOnTargetOption() {
@@ -193,7 +197,7 @@ public final class UpdateReplicationProtectedItemInputProperties {
     /**
      * Set the enableRdpOnTargetOption property: The selected option to enable RDP\SSH on target vm after failover.
      * String value of SrsDataContract.EnableRDPOnTargetOption enum.
-     *
+     * 
      * @param enableRdpOnTargetOption the enableRdpOnTargetOption value to set.
      * @return the UpdateReplicationProtectedItemInputProperties object itself.
      */
@@ -204,7 +208,7 @@ public final class UpdateReplicationProtectedItemInputProperties {
 
     /**
      * Get the vmNics property: The list of VM nic details.
-     *
+     * 
      * @return the vmNics value.
      */
     public List<VMNicInputDetails> vmNics() {
@@ -213,7 +217,7 @@ public final class UpdateReplicationProtectedItemInputProperties {
 
     /**
      * Set the vmNics property: The list of VM nic details.
-     *
+     * 
      * @param vmNics the vmNics value to set.
      * @return the UpdateReplicationProtectedItemInputProperties object itself.
      */
@@ -224,7 +228,7 @@ public final class UpdateReplicationProtectedItemInputProperties {
 
     /**
      * Get the licenseType property: License type.
-     *
+     * 
      * @return the licenseType value.
      */
     public LicenseType licenseType() {
@@ -233,7 +237,7 @@ public final class UpdateReplicationProtectedItemInputProperties {
 
     /**
      * Set the licenseType property: License type.
-     *
+     * 
      * @param licenseType the licenseType value to set.
      * @return the UpdateReplicationProtectedItemInputProperties object itself.
      */
@@ -244,7 +248,7 @@ public final class UpdateReplicationProtectedItemInputProperties {
 
     /**
      * Get the recoveryAvailabilitySetId property: The target availability set Id.
-     *
+     * 
      * @return the recoveryAvailabilitySetId value.
      */
     public String recoveryAvailabilitySetId() {
@@ -253,19 +257,19 @@ public final class UpdateReplicationProtectedItemInputProperties {
 
     /**
      * Set the recoveryAvailabilitySetId property: The target availability set Id.
-     *
+     * 
      * @param recoveryAvailabilitySetId the recoveryAvailabilitySetId value to set.
      * @return the UpdateReplicationProtectedItemInputProperties object itself.
      */
-    public UpdateReplicationProtectedItemInputProperties withRecoveryAvailabilitySetId(
-        String recoveryAvailabilitySetId) {
+    public UpdateReplicationProtectedItemInputProperties
+        withRecoveryAvailabilitySetId(String recoveryAvailabilitySetId) {
         this.recoveryAvailabilitySetId = recoveryAvailabilitySetId;
         return this;
     }
 
     /**
      * Get the providerSpecificDetails property: The provider specific input to update replication protected item.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public UpdateReplicationProtectedItemProviderInput providerSpecificDetails() {
@@ -274,19 +278,19 @@ public final class UpdateReplicationProtectedItemInputProperties {
 
     /**
      * Set the providerSpecificDetails property: The provider specific input to update replication protected item.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the UpdateReplicationProtectedItemInputProperties object itself.
      */
-    public UpdateReplicationProtectedItemInputProperties withProviderSpecificDetails(
-        UpdateReplicationProtectedItemProviderInput providerSpecificDetails) {
+    public UpdateReplicationProtectedItemInputProperties
+        withProviderSpecificDetails(UpdateReplicationProtectedItemProviderInput providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

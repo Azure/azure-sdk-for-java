@@ -25,7 +25,7 @@ public final class ScaleDownMode extends ExpandableStringEnum<ScaleDownMode> {
 
     /**
      * Creates a new instance of ScaleDownMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,7 +34,7 @@ public final class ScaleDownMode extends ExpandableStringEnum<ScaleDownMode> {
 
     /**
      * Creates or finds a ScaleDownMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ScaleDownMode.
      */
@@ -45,7 +45,7 @@ public final class ScaleDownMode extends ExpandableStringEnum<ScaleDownMode> {
 
     /**
      * Gets known ScaleDownMode values.
-     *
+     * 
      * @return known ScaleDownMode values.
      */
     public static Collection<ScaleDownMode> values() {

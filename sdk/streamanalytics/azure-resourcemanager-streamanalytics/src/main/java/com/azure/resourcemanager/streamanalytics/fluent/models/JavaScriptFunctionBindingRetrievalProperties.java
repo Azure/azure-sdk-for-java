@@ -5,20 +5,16 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.models.UdfType;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The binding retrieval properties associated with a JavaScript function. */
+/**
+ * The binding retrieval properties associated with a JavaScript function.
+ */
 @Fluent
 public final class JavaScriptFunctionBindingRetrievalProperties {
-    @JsonIgnore
-    private final ClientLogger logger = new ClientLogger(JavaScriptFunctionBindingRetrievalProperties.class);
-
     /*
-     * The JavaScript code containing a single function definition. For
-     * example: 'function (x, y) { return x + y; }'.
+     * The JavaScript code containing a single function definition. For example: 'function (x, y) { return x + y; }'.
      */
     @JsonProperty(value = "script")
     private String script;
@@ -30,9 +26,15 @@ public final class JavaScriptFunctionBindingRetrievalProperties {
     private UdfType udfType;
 
     /**
+     * Creates an instance of JavaScriptFunctionBindingRetrievalProperties class.
+     */
+    public JavaScriptFunctionBindingRetrievalProperties() {
+    }
+
+    /**
      * Get the script property: The JavaScript code containing a single function definition. For example: 'function (x,
      * y) { return x + y; }'.
-     *
+     * 
      * @return the script value.
      */
     public String script() {
@@ -42,7 +44,7 @@ public final class JavaScriptFunctionBindingRetrievalProperties {
     /**
      * Set the script property: The JavaScript code containing a single function definition. For example: 'function (x,
      * y) { return x + y; }'.
-     *
+     * 
      * @param script the script value to set.
      * @return the JavaScriptFunctionBindingRetrievalProperties object itself.
      */
@@ -53,7 +55,7 @@ public final class JavaScriptFunctionBindingRetrievalProperties {
 
     /**
      * Get the udfType property: The function type.
-     *
+     * 
      * @return the udfType value.
      */
     public UdfType udfType() {
@@ -62,7 +64,7 @@ public final class JavaScriptFunctionBindingRetrievalProperties {
 
     /**
      * Set the udfType property: The function type.
-     *
+     * 
      * @param udfType the udfType value to set.
      * @return the JavaScriptFunctionBindingRetrievalProperties object itself.
      */
@@ -73,7 +75,7 @@ public final class JavaScriptFunctionBindingRetrievalProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

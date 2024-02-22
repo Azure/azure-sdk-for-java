@@ -15,8 +15,7 @@ public final class BackupManagementUsageImpl implements BackupManagementUsage {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    BackupManagementUsageImpl(
-        BackupManagementUsageInner innerObject,
+    BackupManagementUsageImpl(BackupManagementUsageInner innerObject,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -34,7 +34,7 @@ public final class IstioIngressGateway {
 
     /**
      * Get the mode property: Mode of an ingress gateway.
-     *
+     * 
      * @return the mode value.
      */
     public IstioIngressGatewayMode mode() {
@@ -43,7 +43,7 @@ public final class IstioIngressGateway {
 
     /**
      * Set the mode property: Mode of an ingress gateway.
-     *
+     * 
      * @param mode the mode value to set.
      * @return the IstioIngressGateway object itself.
      */
@@ -54,7 +54,7 @@ public final class IstioIngressGateway {
 
     /**
      * Get the enabled property: Whether to enable the ingress gateway.
-     *
+     * 
      * @return the enabled value.
      */
     public boolean enabled() {
@@ -63,7 +63,7 @@ public final class IstioIngressGateway {
 
     /**
      * Set the enabled property: Whether to enable the ingress gateway.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the IstioIngressGateway object itself.
      */
@@ -74,7 +74,7 @@ public final class IstioIngressGateway {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** This class contains the minimal job details required to navigate to the desired drill down. */
+/**
+ * This class contains the minimal job details required to navigate to the desired drill down.
+ */
 @Fluent
 public final class JobEntity {
     /*
@@ -46,13 +48,15 @@ public final class JobEntity {
     @JsonProperty(value = "jobScenarioName")
     private String jobScenarioName;
 
-    /** Creates an instance of JobEntity class. */
+    /**
+     * Creates an instance of JobEntity class.
+     */
     public JobEntity() {
     }
 
     /**
      * Get the jobId property: The job id.
-     *
+     * 
      * @return the jobId value.
      */
     public String jobId() {
@@ -61,7 +65,7 @@ public final class JobEntity {
 
     /**
      * Set the jobId property: The job id.
-     *
+     * 
      * @param jobId the jobId value to set.
      * @return the JobEntity object itself.
      */
@@ -72,7 +76,7 @@ public final class JobEntity {
 
     /**
      * Get the jobFriendlyName property: The job display name.
-     *
+     * 
      * @return the jobFriendlyName value.
      */
     public String jobFriendlyName() {
@@ -81,7 +85,7 @@ public final class JobEntity {
 
     /**
      * Set the jobFriendlyName property: The job display name.
-     *
+     * 
      * @param jobFriendlyName the jobFriendlyName value to set.
      * @return the JobEntity object itself.
      */
@@ -92,7 +96,7 @@ public final class JobEntity {
 
     /**
      * Get the targetObjectId property: The object id.
-     *
+     * 
      * @return the targetObjectId value.
      */
     public String targetObjectId() {
@@ -101,7 +105,7 @@ public final class JobEntity {
 
     /**
      * Set the targetObjectId property: The object id.
-     *
+     * 
      * @param targetObjectId the targetObjectId value to set.
      * @return the JobEntity object itself.
      */
@@ -112,7 +116,7 @@ public final class JobEntity {
 
     /**
      * Get the targetObjectName property: The object name.
-     *
+     * 
      * @return the targetObjectName value.
      */
     public String targetObjectName() {
@@ -121,7 +125,7 @@ public final class JobEntity {
 
     /**
      * Set the targetObjectName property: The object name.
-     *
+     * 
      * @param targetObjectName the targetObjectName value to set.
      * @return the JobEntity object itself.
      */
@@ -132,7 +136,7 @@ public final class JobEntity {
 
     /**
      * Get the targetInstanceType property: The workflow affected object type.
-     *
+     * 
      * @return the targetInstanceType value.
      */
     public String targetInstanceType() {
@@ -141,7 +145,7 @@ public final class JobEntity {
 
     /**
      * Set the targetInstanceType property: The workflow affected object type.
-     *
+     * 
      * @param targetInstanceType the targetInstanceType value to set.
      * @return the JobEntity object itself.
      */
@@ -152,7 +156,7 @@ public final class JobEntity {
 
     /**
      * Get the jobScenarioName property: The job name. Enum type ScenarioName.
-     *
+     * 
      * @return the jobScenarioName value.
      */
     public String jobScenarioName() {
@@ -161,7 +165,7 @@ public final class JobEntity {
 
     /**
      * Set the jobScenarioName property: The job name. Enum type ScenarioName.
-     *
+     * 
      * @param jobScenarioName the jobScenarioName value to set.
      * @return the JobEntity object itself.
      */
@@ -172,7 +176,7 @@ public final class JobEntity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

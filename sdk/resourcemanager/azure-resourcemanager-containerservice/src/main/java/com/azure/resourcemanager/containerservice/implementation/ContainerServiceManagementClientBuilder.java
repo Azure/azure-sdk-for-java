@@ -28,7 +28,7 @@ public final class ContainerServiceManagementClientBuilder {
     /**
      * Sets Subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms
      * part of the URI for every service call.
-     *
+     * 
      * @param subscriptionId the subscriptionId value.
      * @return the ContainerServiceManagementClientBuilder.
      */
@@ -44,7 +44,7 @@ public final class ContainerServiceManagementClientBuilder {
 
     /**
      * Sets server parameter.
-     *
+     * 
      * @param endpoint the endpoint value.
      * @return the ContainerServiceManagementClientBuilder.
      */
@@ -60,7 +60,7 @@ public final class ContainerServiceManagementClientBuilder {
 
     /**
      * Sets The environment to connect to.
-     *
+     * 
      * @param environment the environment value.
      * @return the ContainerServiceManagementClientBuilder.
      */
@@ -76,7 +76,7 @@ public final class ContainerServiceManagementClientBuilder {
 
     /**
      * Sets The HTTP pipeline to send requests through.
-     *
+     * 
      * @param pipeline the pipeline value.
      * @return the ContainerServiceManagementClientBuilder.
      */
@@ -92,7 +92,7 @@ public final class ContainerServiceManagementClientBuilder {
 
     /**
      * Sets The default poll interval for long-running operation.
-     *
+     * 
      * @param defaultPollInterval the defaultPollInterval value.
      * @return the ContainerServiceManagementClientBuilder.
      */
@@ -108,7 +108,7 @@ public final class ContainerServiceManagementClientBuilder {
 
     /**
      * Sets The serializer to serialize an object into a string.
-     *
+     * 
      * @param serializerAdapter the serializerAdapter value.
      * @return the ContainerServiceManagementClientBuilder.
      */
@@ -119,7 +119,7 @@ public final class ContainerServiceManagementClientBuilder {
 
     /**
      * Builds an instance of ContainerServiceManagementClientImpl with the provided parameters.
-     *
+     * 
      * @return an instance of ContainerServiceManagementClientImpl.
      */
     public ContainerServiceManagementClientImpl buildClient() {

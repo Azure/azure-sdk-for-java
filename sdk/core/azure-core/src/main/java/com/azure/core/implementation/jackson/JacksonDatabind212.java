@@ -64,8 +64,7 @@ final class JacksonDatabind212 {
             }
         }));
 
-        mapper.coercionConfigDefaults()
-            .setCoercion(CoercionInputShape.EmptyString, CoercionAction.AsNull);
+        mapper.coercionConfigDefaults().setCoercion(CoercionInputShape.EmptyString, CoercionAction.AsNull);
         return mapper;
     }
 

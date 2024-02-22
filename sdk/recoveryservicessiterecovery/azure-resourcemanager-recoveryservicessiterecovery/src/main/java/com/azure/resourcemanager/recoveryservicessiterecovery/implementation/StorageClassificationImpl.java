@@ -13,8 +13,7 @@ public final class StorageClassificationImpl implements StorageClassification {
 
     private final com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager;
 
-    StorageClassificationImpl(
-        StorageClassificationInner innerObject,
+    StorageClassificationImpl(StorageClassificationInner innerObject,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

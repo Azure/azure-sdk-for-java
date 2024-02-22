@@ -19,8 +19,7 @@ public final class OperationsImpl implements Operations {
 
     private final com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient,
+    public OperationsImpl(OperationsClient innerClient,
         com.azure.resourcemanager.hardwaresecuritymodules.HardwareSecurityModulesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -28,12 +27,12 @@ public final class OperationsImpl implements Operations {
 
     public PagedIterable<DedicatedHsmOperation> list() {
         PagedIterable<DedicatedHsmOperationInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new DedicatedHsmOperationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DedicatedHsmOperationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<DedicatedHsmOperation> list(Context context) {
         PagedIterable<DedicatedHsmOperationInner> inner = this.serviceClient().list(context);
-        return Utils.mapPage(inner, inner1 -> new DedicatedHsmOperationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new DedicatedHsmOperationImpl(inner1, this.manager()));
     }
 
     private OperationsClient serviceClient() {

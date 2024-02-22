@@ -246,6 +246,7 @@ public interface Tracer {
 
                 addMessagingAttributes(spanBuilder, context);
                 return start(spanName, spanBuilder, context);
+
             case MESSAGE:
                 spanBuilder = new StartSpanOptions(SpanKind.PRODUCER);
                 addMessagingAttributes(spanBuilder, context);
@@ -258,6 +259,7 @@ public interface Tracer {
                     }
                 }, context);
                 return context.addData(DIAGNOSTIC_ID_KEY, diagnosticId);
+
             case PROCESS:
                 // use previously created span builder with the links
                 spanBuilder = getOrNull(context, SPAN_BUILDER_KEY, StartSpanOptions.class);
@@ -266,7 +268,8 @@ public interface Tracer {
                     spanBuilder = new StartSpanOptions(SpanKind.CONSUMER).setRemoteParent(context);
                 }
                 addMessagingAttributes(spanBuilder, context);
-                return start(spanName, spanBuilder,  context);
+                return start(spanName, spanBuilder, context);
+
             default:
                 Utils.LOGGER.atWarning()
                     .addKeyValue("spanName", spanName)
@@ -368,7 +371,7 @@ public interface Tracer {
      * tracer.setAttribute&#40;&quot;foo&quot;, 42, span&#41;;
      * </pre>
      * <!-- end com.azure.core.util.tracing.set-attribute#int -->
-
+    
      * @param key attribute name
      * @param value atteribute value
      * @param context tracing context
@@ -534,7 +537,8 @@ public interface Tracer {
             return context;
         }
 
-        com.azure.core.util.tracing.SpanKind spanKind = getOrNull(context, SPAN_KIND_KEY, com.azure.core.util.tracing.SpanKind.class);
+        com.azure.core.util.tracing.SpanKind spanKind
+            = getOrNull(context, SPAN_KIND_KEY, com.azure.core.util.tracing.SpanKind.class);
         if (spanKind == null) {
             spanKind = com.azure.core.util.tracing.SpanKind.CLIENT;
         }
@@ -588,8 +592,7 @@ public interface Tracer {
      * @param context the call metadata containing information of the span to which the event should be associated with.
      * @throws NullPointerException if {@code eventName} is {@code null}.
      */
-    default void addEvent(String name, Map<String, Object> attributes, OffsetDateTime timestamp,
-                          Context context) {
+    default void addEvent(String name, Map<String, Object> attributes, OffsetDateTime timestamp, Context context) {
 
     }
 

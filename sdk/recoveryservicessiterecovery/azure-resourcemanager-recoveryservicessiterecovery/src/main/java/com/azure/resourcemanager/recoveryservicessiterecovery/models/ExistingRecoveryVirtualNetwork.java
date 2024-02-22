@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Existing recovery virtual network input. */
+/**
+ * Existing recovery virtual network input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
 @JsonTypeName("Existing")
 @Fluent
@@ -27,14 +29,16 @@ public final class ExistingRecoveryVirtualNetwork extends RecoveryVirtualNetwork
     @JsonProperty(value = "recoverySubnetName")
     private String recoverySubnetName;
 
-    /** Creates an instance of ExistingRecoveryVirtualNetwork class. */
+    /**
+     * Creates an instance of ExistingRecoveryVirtualNetwork class.
+     */
     public ExistingRecoveryVirtualNetwork() {
     }
 
     /**
      * Get the recoveryVirtualNetworkId property: The recovery virtual network Id. Will throw error, if resource does
      * not exist.
-     *
+     * 
      * @return the recoveryVirtualNetworkId value.
      */
     public String recoveryVirtualNetworkId() {
@@ -44,7 +48,7 @@ public final class ExistingRecoveryVirtualNetwork extends RecoveryVirtualNetwork
     /**
      * Set the recoveryVirtualNetworkId property: The recovery virtual network Id. Will throw error, if resource does
      * not exist.
-     *
+     * 
      * @param recoveryVirtualNetworkId the recoveryVirtualNetworkId value to set.
      * @return the ExistingRecoveryVirtualNetwork object itself.
      */
@@ -55,7 +59,7 @@ public final class ExistingRecoveryVirtualNetwork extends RecoveryVirtualNetwork
 
     /**
      * Get the recoverySubnetName property: The recovery subnet name.
-     *
+     * 
      * @return the recoverySubnetName value.
      */
     public String recoverySubnetName() {
@@ -64,7 +68,7 @@ public final class ExistingRecoveryVirtualNetwork extends RecoveryVirtualNetwork
 
     /**
      * Set the recoverySubnetName property: The recovery subnet name.
-     *
+     * 
      * @param recoverySubnetName the recoverySubnetName value to set.
      * @return the ExistingRecoveryVirtualNetwork object itself.
      */
@@ -75,17 +79,15 @@ public final class ExistingRecoveryVirtualNetwork extends RecoveryVirtualNetwork
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (recoveryVirtualNetworkId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoveryVirtualNetworkId in model ExistingRecoveryVirtualNetwork"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property recoveryVirtualNetworkId in model ExistingRecoveryVirtualNetwork"));
         }
     }
 

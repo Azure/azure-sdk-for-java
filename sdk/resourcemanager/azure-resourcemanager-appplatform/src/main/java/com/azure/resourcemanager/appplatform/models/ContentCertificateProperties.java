@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Properties of certificate imported from key vault. */
+/**
+ * Properties of certificate imported from key vault.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("ContentCertificate")
 @Fluent
@@ -21,8 +23,14 @@ public final class ContentCertificateProperties extends CertificateProperties {
     private String content;
 
     /**
+     * Creates an instance of ContentCertificateProperties class.
+     */
+    public ContentCertificateProperties() {
+    }
+
+    /**
      * Get the content property: The content of uploaded certificate.
-     *
+     * 
      * @return the content value.
      */
     public String content() {
@@ -31,7 +39,7 @@ public final class ContentCertificateProperties extends CertificateProperties {
 
     /**
      * Set the content property: The content of uploaded certificate.
-     *
+     * 
      * @param content the content value to set.
      * @return the ContentCertificateProperties object itself.
      */
@@ -42,7 +50,7 @@ public final class ContentCertificateProperties extends CertificateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

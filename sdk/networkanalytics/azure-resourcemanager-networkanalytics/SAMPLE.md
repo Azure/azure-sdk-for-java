@@ -171,6 +171,7 @@ public final class DataProductsDeleteSamples {
 ```java
 import com.azure.resourcemanager.networkanalytics.models.AccountSas;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Samples for DataProducts GenerateStorageAccountSasToken.
@@ -680,6 +681,7 @@ public final class DataTypesDeleteDataSamples {
 ```java
 import com.azure.resourcemanager.networkanalytics.models.ContainerSaS;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * Samples for DataTypes GenerateStorageContainerSasToken.

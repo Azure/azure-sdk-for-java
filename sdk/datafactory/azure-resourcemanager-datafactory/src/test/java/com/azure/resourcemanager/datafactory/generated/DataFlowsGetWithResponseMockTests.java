@@ -31,7 +31,7 @@ public final class DataFlowsGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"type\":\"DataFlow\",\"description\":\"cglfe\",\"annotations\":[\"datasyskivlz\"],\"folder\":{\"name\":\"qvlgcppnsiynz\"}},\"name\":\"dkurwgtypnj\",\"type\":\"ol\",\"etag\":\"sdgm\",\"id\":\"sktejcmhttiq\"}";
+            = "{\"properties\":{\"type\":\"DataFlow\",\"description\":\"rstannmjp\",\"annotations\":[\"datatlupzshgsidkzi\",\"dataarpsr\"],\"folder\":{\"name\":\"huokjwvsacwdu\"}},\"name\":\"zuykly\",\"type\":\"skelevard\",\"etag\":\"drtjakezorhjh\",\"id\":\"qh\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -48,11 +48,12 @@ public final class DataFlowsGetWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        DataFlowResource response = manager.dataFlows().getWithResponse("dfreyrgrgft", "ehxddmaevcjtrw",
-            "cnwqeixyjlfobj", "betsvnloduvcq", com.azure.core.util.Context.NONE).getValue();
+        DataFlowResource response = manager.dataFlows()
+            .getWithResponse("gjsj", "lhwbypvpd", "vycjuxa", "puphgogmggkkjc", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("sktejcmhttiq", response.id());
-        Assertions.assertEquals("cglfe", response.properties().description());
-        Assertions.assertEquals("qvlgcppnsiynz", response.properties().folder().name());
+        Assertions.assertEquals("qh", response.id());
+        Assertions.assertEquals("rstannmjp", response.properties().description());
+        Assertions.assertEquals("huokjwvsacwdu", response.properties().folder().name());
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A logic app receiver. */
+/**
+ * A logic app receiver.
+ */
 @Fluent
 public final class LogicAppReceiver {
     /*
@@ -35,14 +37,16 @@ public final class LogicAppReceiver {
     @JsonProperty(value = "useCommonAlertSchema")
     private Boolean useCommonAlertSchema;
 
-    /** Creates an instance of LogicAppReceiver class. */
+    /**
+     * Creates an instance of LogicAppReceiver class.
+     */
     public LogicAppReceiver() {
     }
 
     /**
      * Get the name property: The name of the logic app receiver. Names must be unique across all receivers within an
      * action group.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -52,7 +56,7 @@ public final class LogicAppReceiver {
     /**
      * Set the name property: The name of the logic app receiver. Names must be unique across all receivers within an
      * action group.
-     *
+     * 
      * @param name the name value to set.
      * @return the LogicAppReceiver object itself.
      */
@@ -63,7 +67,7 @@ public final class LogicAppReceiver {
 
     /**
      * Get the resourceId property: The azure resource id of the logic app receiver.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -72,7 +76,7 @@ public final class LogicAppReceiver {
 
     /**
      * Set the resourceId property: The azure resource id of the logic app receiver.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the LogicAppReceiver object itself.
      */
@@ -83,7 +87,7 @@ public final class LogicAppReceiver {
 
     /**
      * Get the callbackUrl property: The callback url where http request sent to.
-     *
+     * 
      * @return the callbackUrl value.
      */
     public String callbackUrl() {
@@ -92,7 +96,7 @@ public final class LogicAppReceiver {
 
     /**
      * Set the callbackUrl property: The callback url where http request sent to.
-     *
+     * 
      * @param callbackUrl the callbackUrl value to set.
      * @return the LogicAppReceiver object itself.
      */
@@ -103,7 +107,7 @@ public final class LogicAppReceiver {
 
     /**
      * Get the useCommonAlertSchema property: Indicates whether to use common alert schema.
-     *
+     * 
      * @return the useCommonAlertSchema value.
      */
     public Boolean useCommonAlertSchema() {
@@ -112,7 +116,7 @@ public final class LogicAppReceiver {
 
     /**
      * Set the useCommonAlertSchema property: Indicates whether to use common alert schema.
-     *
+     * 
      * @param useCommonAlertSchema the useCommonAlertSchema value to set.
      * @return the LogicAppReceiver object itself.
      */
@@ -123,24 +127,21 @@ public final class LogicAppReceiver {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model LogicAppReceiver"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model LogicAppReceiver"));
         }
         if (resourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property resourceId in model LogicAppReceiver"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property resourceId in model LogicAppReceiver"));
         }
         if (callbackUrl() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property callbackUrl in model LogicAppReceiver"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property callbackUrl in model LogicAppReceiver"));
         }
     }
 

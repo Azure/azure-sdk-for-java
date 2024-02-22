@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Encryption At Rest Type. */
+/**
+ * Encryption At Rest Type.
+ */
 public final class EncryptionAtRestType extends ExpandableStringEnum<EncryptionAtRestType> {
-    /** Static value Invalid for EncryptionAtRestType. */
+    /**
+     * Static value Invalid for EncryptionAtRestType.
+     */
     public static final EncryptionAtRestType INVALID = fromString("Invalid");
 
-    /** Static value MicrosoftManaged for EncryptionAtRestType. */
+    /**
+     * Static value MicrosoftManaged for EncryptionAtRestType.
+     */
     public static final EncryptionAtRestType MICROSOFT_MANAGED = fromString("MicrosoftManaged");
 
-    /** Static value CustomerManaged for EncryptionAtRestType. */
+    /**
+     * Static value CustomerManaged for EncryptionAtRestType.
+     */
     public static final EncryptionAtRestType CUSTOMER_MANAGED = fromString("CustomerManaged");
 
     /**
      * Creates a new instance of EncryptionAtRestType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class EncryptionAtRestType extends ExpandableStringEnum<EncryptionA
 
     /**
      * Creates or finds a EncryptionAtRestType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EncryptionAtRestType.
      */
@@ -41,7 +49,7 @@ public final class EncryptionAtRestType extends ExpandableStringEnum<EncryptionA
 
     /**
      * Gets known EncryptionAtRestType values.
-     *
+     * 
      * @return known EncryptionAtRestType values.
      */
     public static Collection<EncryptionAtRestType> values() {

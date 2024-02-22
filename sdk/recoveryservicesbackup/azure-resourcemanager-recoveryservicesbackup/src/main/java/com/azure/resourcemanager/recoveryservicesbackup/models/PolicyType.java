@@ -8,35 +8,53 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of backup policy type. */
+/**
+ * Type of backup policy type.
+ */
 public final class PolicyType extends ExpandableStringEnum<PolicyType> {
-    /** Static value Invalid for PolicyType. */
+    /**
+     * Static value Invalid for PolicyType.
+     */
     public static final PolicyType INVALID = fromString("Invalid");
 
-    /** Static value Full for PolicyType. */
+    /**
+     * Static value Full for PolicyType.
+     */
     public static final PolicyType FULL = fromString("Full");
 
-    /** Static value Differential for PolicyType. */
+    /**
+     * Static value Differential for PolicyType.
+     */
     public static final PolicyType DIFFERENTIAL = fromString("Differential");
 
-    /** Static value Log for PolicyType. */
+    /**
+     * Static value Log for PolicyType.
+     */
     public static final PolicyType LOG = fromString("Log");
 
-    /** Static value CopyOnlyFull for PolicyType. */
+    /**
+     * Static value CopyOnlyFull for PolicyType.
+     */
     public static final PolicyType COPY_ONLY_FULL = fromString("CopyOnlyFull");
 
-    /** Static value Incremental for PolicyType. */
+    /**
+     * Static value Incremental for PolicyType.
+     */
     public static final PolicyType INCREMENTAL = fromString("Incremental");
 
-    /** Static value SnapshotFull for PolicyType. */
+    /**
+     * Static value SnapshotFull for PolicyType.
+     */
     public static final PolicyType SNAPSHOT_FULL = fromString("SnapshotFull");
 
-    /** Static value SnapshotCopyOnlyFull for PolicyType. */
+    /**
+     * Static value SnapshotCopyOnlyFull for PolicyType.
+     */
     public static final PolicyType SNAPSHOT_COPY_ONLY_FULL = fromString("SnapshotCopyOnlyFull");
 
     /**
      * Creates a new instance of PolicyType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -45,7 +63,7 @@ public final class PolicyType extends ExpandableStringEnum<PolicyType> {
 
     /**
      * Creates or finds a PolicyType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PolicyType.
      */
@@ -56,7 +74,7 @@ public final class PolicyType extends ExpandableStringEnum<PolicyType> {
 
     /**
      * Gets known PolicyType values.
-     *
+     * 
      * @return known PolicyType values.
      */
     public static Collection<PolicyType> values() {

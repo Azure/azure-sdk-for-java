@@ -9,23 +9,27 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Recovery Availability Set custom input. */
+/**
+ * Recovery Availability Set custom input.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "resourceType",
     defaultImpl = RecoveryAvailabilitySetCustomDetails.class)
 @JsonTypeName("RecoveryAvailabilitySetCustomDetails")
-@JsonSubTypes({@JsonSubTypes.Type(name = "Existing", value = ExistingRecoveryAvailabilitySet.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "Existing", value = ExistingRecoveryAvailabilitySet.class) })
 @Immutable
 public class RecoveryAvailabilitySetCustomDetails {
-    /** Creates an instance of RecoveryAvailabilitySetCustomDetails class. */
+    /**
+     * Creates an instance of RecoveryAvailabilitySetCustomDetails class.
+     */
     public RecoveryAvailabilitySetCustomDetails() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

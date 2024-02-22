@@ -16,6 +16,7 @@ resource serviceBusNamespace 'Microsoft.ServiceBus/namespaces@2021-11-01' = {
   name: baseName
   location: location
   sku: {
+    capacity: 2
     name: 'Premium'
     tier: 'Premium'
   }
@@ -38,6 +39,7 @@ resource serviceBusQueue 'Microsoft.ServiceBus/namespaces/queues@2021-11-01' = {
   parent: serviceBusNamespace
   name: serviceBusQueueName
   properties: {
+    maxSizeInMegabytes: 5120
     lockDuration: serviceBusMessageLockDuration
   }
 }

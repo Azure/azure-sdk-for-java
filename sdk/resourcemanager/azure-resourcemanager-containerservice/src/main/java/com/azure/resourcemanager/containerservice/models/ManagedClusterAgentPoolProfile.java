@@ -18,7 +18,7 @@ import java.util.Map;
 public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoolProfileProperties {
     /*
      * Unique name of the agent pool profile in the context of the subscription and resource group.
-     *
+     * 
      * Windows agent pool names must be 6 characters or less.
      */
     @JsonProperty(value = "name", required = true)
@@ -33,9 +33,9 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     /**
      * Get the name property: Unique name of the agent pool profile in the context of the subscription and resource
      * group.
-     *
+     * 
      * Windows agent pool names must be 6 characters or less.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -45,9 +45,9 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
     /**
      * Set the name property: Unique name of the agent pool profile in the context of the subscription and resource
      * group.
-     *
+     * 
      * Windows agent pool names must be 6 characters or less.
-     *
+     * 
      * @param name the name value to set.
      * @return the ManagedClusterAgentPoolProfile object itself.
      */
@@ -418,7 +418,7 @@ public final class ManagedClusterAgentPoolProfile extends ManagedClusterAgentPoo
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

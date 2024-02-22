@@ -29,7 +29,7 @@ public final class TagsObject {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -38,7 +38,7 @@ public final class TagsObject {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the TagsObject object itself.
      */
@@ -49,7 +49,7 @@ public final class TagsObject {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

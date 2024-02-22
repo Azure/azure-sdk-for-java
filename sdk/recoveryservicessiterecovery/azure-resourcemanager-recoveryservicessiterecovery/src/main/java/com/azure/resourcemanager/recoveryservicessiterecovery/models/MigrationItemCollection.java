@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.Migr
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Migration item collection. */
+/**
+ * Migration item collection.
+ */
 @Fluent
 public final class MigrationItemCollection {
     /*
@@ -24,13 +26,15 @@ public final class MigrationItemCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of MigrationItemCollection class. */
+    /**
+     * Creates an instance of MigrationItemCollection class.
+     */
     public MigrationItemCollection() {
     }
 
     /**
      * Get the value property: The list of migration items.
-     *
+     * 
      * @return the value value.
      */
     public List<MigrationItemInner> value() {
@@ -39,7 +43,7 @@ public final class MigrationItemCollection {
 
     /**
      * Set the value property: The list of migration items.
-     *
+     * 
      * @param value the value value to set.
      * @return the MigrationItemCollection object itself.
      */
@@ -50,7 +54,7 @@ public final class MigrationItemCollection {
 
     /**
      * Get the nextLink property: The value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class MigrationItemCollection {
 
     /**
      * Set the nextLink property: The value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the MigrationItemCollection object itself.
      */
@@ -70,7 +74,7 @@ public final class MigrationItemCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

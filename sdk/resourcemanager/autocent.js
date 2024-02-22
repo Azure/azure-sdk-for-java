@@ -132,7 +132,17 @@ function writeMarkdown() {
     for (const i in sortedServices) {
         const service = sortedServices[i];
         content += "\n<br/>\n" + "<details>\n" + "<summary> " + service + " </summary>\n\n";
-        const sortedTags = Object.keys(data[service]).sort().reverse();
+        // 1. sort versions in tags
+        const tags = Object.keys(data[service]);
+        for (const j in tags) {
+            const tag = tags[j];
+            data[service][tag].sort(versionCompare);
+        }
+        // 2. sort tags by their largest version number
+        const sortedTags = Object.keys(data[service]).sort(function(tag1, tag2) {
+            return versionCompare(data[service][tag1][0], data[service][tag2][0]);
+        });
+        // 3. write by sorted tags
         for (const j in sortedTags) {
             const tag = sortedTags[j];
             const spec = specs[service] ? specs[service] : service;
@@ -149,44 +159,47 @@ function writeMarkdown() {
                 }
                 content += "* [" + tag + "](" + readmeUrl + ")\n";
             }
-            const sortedVersions = data[service][tag].sort(function (a, b) {
-                // custom method to sort versions
-                const aVerNums = a.split(".");
-                const bVerNums = b.split(".");
-                if (aVerNums[0] > bVerNums[0]) {
-                    return -1;
-                } else if (aVerNums[0] < bVerNums[0]) {
-                    return 1;
-                } else {
-                    if (aVerNums[1] > bVerNums[1]) {
-                        return -1;
-                    } else if (aVerNums[1] < bVerNums[1]) {
-                        return 1;
-                    } else {
-                        const aPatchNums = a.split("-beta.");
-                        const bPatchNums = b.split("-beta.");
-                        // sort GA version before beta version
-                        if (aPatchNums.length < bPatchNums.length) {
-                            return -1;
-                        } else if (aPatchNums.length > bPatchNums.length) {
-                            return 1;
-                        } else if (aPatchNums.length > 1) {
-                            // sort according to beta minor version
-                            return parseInt(bPatchNums[1]) - parseInt(aPatchNums[1]);
-                        } else {
-                            return b.localeCompare(a);
-                        }
-                    }
-                }
-            });
-            for (const k in sortedVersions) {
-                const sdk = sortedVersions[k];
+            for (const k in data[service][tag]) {
+                const sdk = data[service][tag][k];
                 content += "    * [" + sdk + "](" + groupUrl + "azure-resourcemanager-" + service + "/" + sdk + ")\n";
             }
         }
         content += "</details>\n";
     }
     fs.writeFileSync("docs/SINGLE_SERVICE_PACKAGES.md", content);
+}
+
+// compares two versions
+// if a > b, return -1; a < b, return 1; else return 0;
+function versionCompare(a, b) {
+    // custom method to sort versions
+    const aVerNums = a.split(".");
+    const bVerNums = b.split(".");
+    if (aVerNums[0] > bVerNums[0]) {
+        return -1;
+    } else if (aVerNums[0] < bVerNums[0]) {
+        return 1;
+    } else {
+        if (aVerNums[1] > bVerNums[1]) {
+            return -1;
+        } else if (aVerNums[1] < bVerNums[1]) {
+            return 1;
+        } else {
+            const aPatchNums = a.split("-beta.");
+            const bPatchNums = b.split("-beta.");
+            // sort GA version before beta version
+            if (aPatchNums.length < bPatchNums.length) {
+                return -1;
+            } else if (aPatchNums.length > bPatchNums.length) {
+                return 1;
+            } else if (aPatchNums.length > 1) {
+                // sort according to beta minor version
+                return parseInt(bPatchNums[1]) - parseInt(aPatchNums[1]);
+            } else {
+                return b.localeCompare(a);
+            }
+        }
+    }
 }
 
 async function existUrl(url, callback) {

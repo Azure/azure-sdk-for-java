@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** ListRecoveryPointsRecommendedForMoveRequest Request. */
+/**
+ * ListRecoveryPointsRecommendedForMoveRequest Request.
+ */
 @Fluent
 public final class ListRecoveryPointsRecommendedForMoveRequest {
     /*
@@ -23,13 +25,15 @@ public final class ListRecoveryPointsRecommendedForMoveRequest {
     @JsonProperty(value = "excludedRPList")
     private List<String> excludedRPList;
 
-    /** Creates an instance of ListRecoveryPointsRecommendedForMoveRequest class. */
+    /**
+     * Creates an instance of ListRecoveryPointsRecommendedForMoveRequest class.
+     */
     public ListRecoveryPointsRecommendedForMoveRequest() {
     }
 
     /**
      * Get the objectType property: Gets the class type.
-     *
+     * 
      * @return the objectType value.
      */
     public String objectType() {
@@ -38,7 +42,7 @@ public final class ListRecoveryPointsRecommendedForMoveRequest {
 
     /**
      * Set the objectType property: Gets the class type.
-     *
+     * 
      * @param objectType the objectType value to set.
      * @return the ListRecoveryPointsRecommendedForMoveRequest object itself.
      */
@@ -49,7 +53,7 @@ public final class ListRecoveryPointsRecommendedForMoveRequest {
 
     /**
      * Get the excludedRPList property: List of Recovery Points excluded from Move.
-     *
+     * 
      * @return the excludedRPList value.
      */
     public List<String> excludedRPList() {
@@ -58,7 +62,7 @@ public final class ListRecoveryPointsRecommendedForMoveRequest {
 
     /**
      * Set the excludedRPList property: List of Recovery Points excluded from Move.
-     *
+     * 
      * @param excludedRPList the excludedRPList value to set.
      * @return the ListRecoveryPointsRecommendedForMoveRequest object itself.
      */
@@ -69,7 +73,7 @@ public final class ListRecoveryPointsRecommendedForMoveRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
