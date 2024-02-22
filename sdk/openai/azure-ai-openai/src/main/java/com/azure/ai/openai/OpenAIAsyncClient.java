@@ -44,9 +44,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
-import java.nio.ByteBuffer;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
@@ -1390,15 +1389,15 @@ public final class OpenAIAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> generateSpeechFromTextWithResponse(String deploymentOrModelName,
         BinaryData speechGenerationOptions, RequestOptions requestOptions) {
-
         // modelId is part of the request body in nonAzure OpenAI
         try {
-            BinaryData speechGenerationOptionsWithModelId = addModelIdJson(speechGenerationOptions, deploymentOrModelName);
+            BinaryData speechGenerationOptionsWithModelId
+                = addModelIdJson(speechGenerationOptions, deploymentOrModelName);
             return this.openAIServiceClient != null
-                    ? this.openAIServiceClient.generateSpeechFromTextWithResponseAsync(deploymentOrModelName,
+                ? this.openAIServiceClient.generateSpeechFromTextWithResponseAsync(deploymentOrModelName,
                     speechGenerationOptionsWithModelId, requestOptions)
-                    : this.serviceClient.generateSpeechFromTextWithResponseAsync(deploymentOrModelName, speechGenerationOptionsWithModelId,
-                    requestOptions);
+                : this.serviceClient.generateSpeechFromTextWithResponseAsync(deploymentOrModelName,
+                    speechGenerationOptionsWithModelId, requestOptions);
         } catch (JsonProcessingException e) {
             return Mono.error(e);
         }

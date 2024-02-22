@@ -43,9 +43,8 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
 import com.azure.core.util.logging.ClientLogger;
-import java.nio.ByteBuffer;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
+import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 
 /**
@@ -1346,10 +1345,9 @@ public final class OpenAIClient {
         } catch (JsonProcessingException e) {
             throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
-
         return openAIServiceClient != null
-            ? this.openAIServiceClient.generateSpeechFromTextWithResponse(
-                speechGenerationOptionsWithModelId, requestOptions)
+            ? this.openAIServiceClient.generateSpeechFromTextWithResponse(speechGenerationOptionsWithModelId,
+                requestOptions)
             : this.serviceClient.generateSpeechFromTextWithResponse(deploymentOrModelName,
                 speechGenerationOptionsWithModelId, requestOptions);
     }
