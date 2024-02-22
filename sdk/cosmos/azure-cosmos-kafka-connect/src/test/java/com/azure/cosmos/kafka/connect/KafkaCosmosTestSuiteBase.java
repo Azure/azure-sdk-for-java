@@ -95,7 +95,6 @@ public class KafkaCosmosTestSuiteBase implements ITest {
         try (CosmosAsyncClient houseKeepingClient = createGatewayHouseKeepingDocumentClient(true).buildAsyncClient()) {
             databaseName = createDatabase(houseKeepingClient);
 
-            System.out.println("lalalalalal,the created database " + databaseName);
             CosmosContainerRequestOptions options = new CosmosContainerRequestOptions();
             multiPartitionContainerName =
                 createCollection(

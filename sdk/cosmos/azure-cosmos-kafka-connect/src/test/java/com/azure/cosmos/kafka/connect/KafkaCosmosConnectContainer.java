@@ -18,16 +18,12 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.utility.DockerImageName;
 
-import java.time.Duration;
 import java.util.Map;
 import java.util.Properties;
-
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosConnectContainer> {
     private static final Logger logger = LoggerFactory.getLogger(KafkaCosmosConnectContainer.class);
     private static final int KAFKA_CONNECT_PORT = 8083;
-    private static final Duration DEFAULT_START_UP_TIMEOUT = Duration.ofMinutes(5);
     private String effectiveBootStrapServer;
     private KafkaConsumer<String, JsonNode> kafkaConsumer;
 
@@ -37,11 +33,6 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
     }
 
     private void defaultConfig() {
-//        setWaitStrategy(
-//            new LogMessageWaitStrategy()
-//                .withRegEx(".*Session key updated.*")
-//                .withStartupTimeout(DEFAULT_START_UP_TIMEOUT));
-
         withEnv("CONNECT_GROUP_ID", KafkaCosmosTestConfigurations.CONNECT_GROUP_ID);
         withEnv("CONNECT_CONFIG_STORAGE_TOPIC", KafkaCosmosTestConfigurations.CONNECT_CONFIG_STORAGE_TOPIC);
         withEnv("CONNECT_OFFSET_STORAGE_TOPIC", KafkaCosmosTestConfigurations.CONNECT_OFFSET_STORAGE_TOPIC);
@@ -61,17 +52,54 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
 
     private Properties defaultConsumerConfig() {
         Properties kafkaConsumerProperties = new Properties();
-
-        assertThat(this.effectiveBootStrapServer).isNotEmpty();
-        kafkaConsumerProperties.put("bootstrap.servers", this.effectiveBootStrapServer);
         kafkaConsumerProperties.put("group.id", "IntegrationTest");
         kafkaConsumerProperties.put("value.deserializer", JsonDeserializer.class.getName());
         kafkaConsumerProperties.put("key.deserializer", StringDeserializer.class.getName());
         kafkaConsumerProperties.put("sasl.mechanism", "PLAIN");
         kafkaConsumerProperties.put("client.dns.lookup", "use_all_dns_ips");
         kafkaConsumerProperties.put("session.timeout.ms", "45000");
-
         return kafkaConsumerProperties;
+    }
+
+    public KafkaCosmosConnectContainer withLocalKafkaContainer(final KafkaContainer kafkaContainer) {
+        withNetwork(kafkaContainer.getNetwork());
+
+        withEnv("CONNECT_BOOTSTRAP_SERVERS", kafkaContainer.getNetworkAliases().get(0) + ":9092");
+        return self();
+    }
+
+    public KafkaCosmosConnectContainer withCloudKafkaContainer() {
+        withEnv("CONNECT_BOOTSTRAP_SERVERS", KafkaCosmosTestConfigurations.BOOTSTRAP_SERVER);
+        withEnv("CONNECT_SECURITY_PROTOCOL", "SASL_SSL");
+        withEnv("CONNECT_SASL_JAAS_CONFIG", KafkaCosmosTestConfigurations.SASL_JAAS);
+        withEnv("CONNECT_SASL_MECHANISM", "PLAIN");
+
+        withEnv("CONNECT_PRODUCER_SECURITY_PROTOCOL", "SASL_SSL");
+        withEnv("CONNECT_PRODUCER_SASL_JAAS_CONFIG", KafkaCosmosTestConfigurations.SASL_JAAS);
+        withEnv("CONNECT_PRODUCER_SASL_MECHANISM", "PLAIN");
+
+        withEnv("CONNECT_CONSUMER_SECURITY_PROTOCOL", "SASL_SSL");
+        withEnv("CONNECT_CONSUMER_SASL_JAAS_CONFIG", KafkaCosmosTestConfigurations.SASL_JAAS);
+        withEnv("CONNECT_CONSUMER_SASL_MECHANISM", "PLAIN");
+        return self();
+    }
+
+    public KafkaCosmosConnectContainer withLocalBootstrapServer(String localBootstrapServer) {
+        Properties consumerProperties = defaultConsumerConfig();
+        consumerProperties.put("bootstrap.servers", localBootstrapServer);
+        this.kafkaConsumer = new KafkaConsumer<>(consumerProperties);
+        return self();
+    }
+
+    public KafkaCosmosConnectContainer withCloudBootstrapServer() {
+        Properties consumerProperties = defaultConsumerConfig();
+        consumerProperties.put("bootstrap.servers", KafkaCosmosTestConfigurations.BOOTSTRAP_SERVER);
+        consumerProperties.put("sasl.jaas.config", KafkaCosmosTestConfigurations.SASL_JAAS);
+        consumerProperties.put("security.protocol", "SASL_SSL");
+        consumerProperties.put("sasl.mechanism", "PLAIN");
+
+        this.kafkaConsumer = new KafkaConsumer<>(consumerProperties);
+        return self();
     }
 
     public void registerConnector(String name, Map<String, String> config) {
@@ -101,42 +129,6 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
 
             logger.warn("Failed to delete connector {}", name);
         }
-    }
-
-    public KafkaCosmosConnectContainer withLocalKafkaContainer(final KafkaContainer kafkaContainer) {
-        withNetwork(kafkaContainer.getNetwork());
-        this.effectiveBootStrapServer = kafkaContainer.getNetworkAliases().get(0) + ":9092";
-
-        withEnv("CONNECT_BOOTSTRAP_SERVERS", effectiveBootStrapServer);
-
-        Properties consumerProperties = defaultConsumerConfig();
-        this.kafkaConsumer = new KafkaConsumer<String, JsonNode>(consumerProperties);
-
-        return self();
-    }
-
-    public KafkaCosmosConnectContainer withCloudKafkaContainer() {
-        withEnv("CONNECT_BOOTSTRAP_SERVERS", KafkaCosmosTestConfigurations.BOOTSTRAP_SERVER);
-        withEnv("CONNECT_SECURITY_PROTOCOL", "SASL_SSL");
-        withEnv("CONNECT_SASL_JAAS_CONFIG", KafkaCosmosTestConfigurations.SASL_JAAS);
-        withEnv("CONNECT_SASL_MECHANISM", "PLAIN");
-
-        withEnv("CONNECT_PRODUCER_SECURITY_PROTOCOL", "SASL_SSL");
-        withEnv("CONNECT_PRODUCER_SASL_JAAS_CONFIG", KafkaCosmosTestConfigurations.SASL_JAAS);
-        withEnv("CONNECT_PRODUCER_SASL_MECHANISM", "PLAIN");
-
-        withEnv("CONNECT_CONSUMER_SECURITY_PROTOCOL", "SASL_SSL");
-        withEnv("CONNECT_CONSUMER_SASL_JAAS_CONFIG", KafkaCosmosTestConfigurations.SASL_JAAS);
-        withEnv("CONNECT_CONSUMER_SASL_MECHANISM", "PLAIN");
-
-        this.effectiveBootStrapServer = KafkaCosmosTestConfigurations.BOOTSTRAP_SERVER;
-
-        Properties consumerProperties = defaultConsumerConfig();
-        consumerProperties.put("sasl.jaas.config", KafkaCosmosTestConfigurations.SASL_JAAS);
-        consumerProperties.put("security.protocol", "SASL_SSL");
-        this.kafkaConsumer = new KafkaConsumer<String, JsonNode>(consumerProperties);
-
-        return self();
     }
 
     public KafkaConsumer<String, JsonNode> getConsumer() {

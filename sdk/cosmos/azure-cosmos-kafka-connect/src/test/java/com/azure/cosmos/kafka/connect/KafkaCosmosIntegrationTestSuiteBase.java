@@ -51,7 +51,7 @@ public class KafkaCosmosIntegrationTestSuiteBase extends KafkaCosmosTestSuiteBas
     }
 
     private static void setupDockerContainers() throws IOException, InterruptedException {
-      //  createConnectorJar();
+        //createConnectorJar();
 
         logger.info("Setting up docker containers...");
 
@@ -68,17 +68,21 @@ public class KafkaCosmosIntegrationTestSuiteBase extends KafkaCosmosTestSuiteBas
         network = Network.newNetwork();
         kafkaContainer = new KafkaContainer(getDockerImageName("confluentinc/cp-kafka:"))
             .withNetwork(network)
-            .withEnv("CONNECT_BOOTSTRAP_SERVERS", KafkaCosmosTestConfigurations.BOOTSTRAP_SERVER)
+            .withNetworkAliases("broker")
             .withStartupTimeout(DEFAULT_CONTAINER_START_UP_TIMEOUT);
 
         kafkaCosmosConnectContainer = new KafkaCosmosConnectContainer(getDockerImageName("confluentinc/cp-kafka-connect:"))
-            .withLocalKafkaContainer(kafkaContainer)
+            .withNetwork(network)
             .dependsOn(kafkaContainer)
+            .withLocalKafkaContainer(kafkaContainer)
             .withStartupTimeout(DEFAULT_CONTAINER_START_UP_TIMEOUT)
             .withFileSystemBind("src/test/connectorPlugins", "/kafka/connect/cosmos-connector")
             .withLogConsumer(new Slf4jLogConsumer(logger));
 
         Startables.deepStart(Stream.of(kafkaContainer, kafkaCosmosConnectContainer)).join();
+
+        // the mapped bootstrap server port can only be obtained after the container started
+        kafkaCosmosConnectContainer.withLocalBootstrapServer(kafkaContainer.getBootstrapServers());
     }
 
     private static void setupDockerContainersForCloud() {
@@ -90,6 +94,8 @@ public class KafkaCosmosIntegrationTestSuiteBase extends KafkaCosmosTestSuiteBas
             .withLogConsumer(new Slf4jLogConsumer(logger));
 
         Startables.deepStart(Stream.of(kafkaCosmosConnectContainer)).join();
+
+        kafkaCosmosConnectContainer.withCloudBootstrapServer();
     }
 
     private static void createConnectorJar() throws IOException, InterruptedException {

@@ -41,8 +41,6 @@ public class CosmosDbSourceConnectorITest extends KafkaCosmosIntegrationTestSuit
         sourceConnectorConfig.put("kafka.connect.cosmos.source.database.name", databaseName);
         sourceConnectorConfig.put("kafka.connect.cosmos.source.containers.includeAll", "false");
         sourceConnectorConfig.put("kafka.connect.cosmos.source.containers.includedList", singlePartitionContainerName);
-        sourceConnectorConfig.put("kafka.connect.cosmos.source.containers.topicMap", "TestTopic4#" + singlePartitionContainerName);
-        sourceConnectorConfig.put("kafka.connect.cosmos.source.metadata.storage.topic", "_cosmos.metadata.topic3");
 
         // TODO[this PR]: create the topic ahead of time
         CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConnectorConfig);
@@ -66,7 +64,7 @@ public class CosmosDbSourceConnectorITest extends KafkaCosmosIntegrationTestSuit
             KafkaConsumer<String, JsonNode> kafkaConsumer = kafkaCosmosConnectContainer.getConsumer();
             kafkaConsumer.subscribe(
                 Arrays.asList(
-                    "TestTopic4", // TODO[this PR]: change to create the topic ahead of time
+                    singlePartitionContainerName,
                     sourceConfig.getMetadataConfig().getMetadataTopicName()));
 
             List<ConsumerRecord<String, JsonNode>> metadataRecords = new ArrayList<>();
@@ -76,7 +74,7 @@ public class CosmosDbSourceConnectorITest extends KafkaCosmosIntegrationTestSuit
                 kafkaConsumer.poll(Duration.ofMillis(1000))
                     .iterator()
                     .forEachRemaining(consumerRecord -> {
-                        if (consumerRecord.topic().equals("TestTopic4")) {
+                        if (consumerRecord.topic().equals(singlePartitionContainerName)) {
                             itemRecords.add(consumerRecord);
                         } else if (consumerRecord.topic().equals(sourceConfig.getMetadataConfig().getMetadataTopicName())) {
                             metadataRecords.add(consumerRecord);

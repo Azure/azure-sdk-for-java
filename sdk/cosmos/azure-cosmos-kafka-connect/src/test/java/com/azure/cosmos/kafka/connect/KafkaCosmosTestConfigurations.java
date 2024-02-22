@@ -176,14 +176,14 @@ public class KafkaCosmosTestConfigurations {
 
     private static Properties loadProperties() {
         Path root = FileSystems.getDefault().getPath("").toAbsolutePath();
-        Path propertiesInProject = Paths.get(root.toString(),"../kafka-cosmos.properties");
+        Path propertiesInProject = Paths.get(root.toString(),"../kafka-cosmos-local.properties");
 
         Properties props = loadFromPathIfExists(propertiesInProject);
         if (props != null) {
             return props;
         }
 
-        Path propertiesInUserHome = Paths.get(System.getProperty("user.home"), "kafka-cosmos.properties");
+        Path propertiesInUserHome = Paths.get(System.getProperty("user.home"), "kafka-cosmos-local.properties");
         props = loadFromPathIfExists(propertiesInUserHome);
         if (props != null) {
             return props;
