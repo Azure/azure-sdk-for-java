@@ -68,8 +68,7 @@ class VertxAsyncHttpClient implements HttpClient {
 
         ProgressReporter progressReporter = Contexts.with(context).getHttpRequestProgressReporter();
 
-        RequestOptions options = new RequestOptions()
-            .setMethod(HttpMethod.valueOf(request.getHttpMethod().name()))
+        RequestOptions options = new RequestOptions().setMethod(HttpMethod.valueOf(request.getHttpMethod().name()))
             .setAbsoluteURI(request.getUrl());
 
         return Mono.create(sink -> client.request(options, requestResult -> {
@@ -123,8 +122,8 @@ class VertxAsyncHttpClient implements HttpClient {
     }
 
     @SuppressWarnings("deprecation")
-    private void sendBody(MonoSink<HttpResponse> sink, HttpRequest azureRequest,
-        ProgressReporter progressReporter, HttpClientRequest vertxRequest) {
+    private void sendBody(MonoSink<HttpResponse> sink, HttpRequest azureRequest, ProgressReporter progressReporter,
+        HttpClientRequest vertxRequest) {
         BinaryData body = azureRequest.getBodyAsBinaryData();
         if (body == null) {
             vertxRequest.send(result -> {

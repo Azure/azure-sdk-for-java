@@ -32,7 +32,8 @@ abstract class CreditAccountingStrategy {
      * @param prefetch the prefetch configured.
      * @param logger the logger.
      */
-    protected CreditAccountingStrategy(AmqpReceiveLink receiver, Subscription subscription, int prefetch, ClientLogger logger) {
+    protected CreditAccountingStrategy(AmqpReceiveLink receiver, Subscription subscription, int prefetch,
+        ClientLogger logger) {
         this.receiver = receiver;
         this.subscription = subscription;
         this.prefetch = prefetch;

@@ -79,8 +79,9 @@ public final class NettyHttpClientLocalTestServer {
             } else if (get && DEFAULT_PATH.equals(path)) {
                 resp.setStatus(200);
             } else if (get && PREBUILT_CLIENT_PATH.equals(path)) {
-                boolean hasCookie = req.getCookies() != null && Arrays.stream(req.getCookies())
-                    .anyMatch(cookie -> "test".equals(cookie.getName()) && "success".equals(cookie.getValue()));
+                boolean hasCookie = req.getCookies() != null
+                    && Arrays.stream(req.getCookies())
+                        .anyMatch(cookie -> "test".equals(cookie.getName()) && "success".equals(cookie.getValue()));
 
                 // Mocked endpoint to test building a client with a set port.
                 if (!hasCookie) {
@@ -150,8 +151,7 @@ public final class NettyHttpClientLocalTestServer {
         byte[] longBody = new byte[duplicateBytes.length * 100000];
 
         for (int i = 0; i < 100000; i++) {
-            System.arraycopy(duplicateBytes, 0, longBody, i * duplicateBytes.length,
-                duplicateBytes.length);
+            System.arraycopy(duplicateBytes, 0, longBody, i * duplicateBytes.length, duplicateBytes.length);
         }
 
         return longBody;

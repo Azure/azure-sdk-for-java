@@ -31,8 +31,8 @@ public final class RangeReplaceSubstitution extends Substitution implements Comp
      * @param start The starting index of the range replacement substitution.
      * @param end The ending index of the range replacement substitution.
      */
-    private RangeReplaceSubstitution(String urlParameterName, int methodParameterIndex, boolean shouldEncode,
-        int start, int end) {
+    private RangeReplaceSubstitution(String urlParameterName, int methodParameterIndex, boolean shouldEncode, int start,
+        int end) {
         super(urlParameterName, methodParameterIndex, shouldEncode);
         this.start = start;
         this.end = end;
@@ -96,7 +96,6 @@ public final class RangeReplaceSubstitution extends Substitution implements Comp
     public int getSize() {
         return end - start;
     }
-
 
     @Override
     public int compareTo(RangeReplaceSubstitution o) {
