@@ -40,10 +40,7 @@ public final class PlayOptions {
      */
     private String operationCallbackUrl;
   
-    /*
-     * If set play can barge into other existing queued-up/currently-processing requests.
-    */
-    private boolean interruptCallMediaOperation;
+ 
 
     /**
      * Constructor
@@ -145,25 +142,7 @@ public final class PlayOptions {
         return this;
     }
 
-     /**
-     * Get the interruptCallMediaOperation property: If set play can barge into other existing
-     * queued-up/currently-processing requests.
-     *
-     * @return the interruptCallMediaOperation value.
-     */
-    public Boolean isInterruptCallMediaOperation() {
-        return this.interruptCallMediaOperation;
-    }
+ 
 
-    /**
-     * Set the interruptCallMediaOperation property: If set play can barge into other existing
-     * queued-up/currently-processing requests.
-     *
-     * @param interruptCallMediaOperation the interruptCallMediaOperation value to set.
-     * @return the PlayOptionsInternal object itself.
-     */
-    public PlayOptions setInterruptCallMediaOperation(Boolean interruptCallMediaOperation) {
-        this.interruptCallMediaOperation = interruptCallMediaOperation;
-        return this;
-    }
+ 
 }

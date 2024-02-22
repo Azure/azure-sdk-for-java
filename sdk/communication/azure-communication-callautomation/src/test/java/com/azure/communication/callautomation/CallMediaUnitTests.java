@@ -62,7 +62,6 @@ public class CallMediaUnitTests {
     public void playFileWithBargeInWithResponseTest() {
         playOptions = new PlayOptions(playFileSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
             .setLoop(false)
-            .setInterruptCallMediaOperation(true)
             .setOperationContext("operationContext");
         Response<Void> response = callMedia.playWithResponse(playOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
@@ -101,7 +100,6 @@ public class CallMediaUnitTests {
     public void playTextWithBargeInWithResponseTest() {
         playOptions = new PlayOptions(playTextSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
             .setLoop(false)
-            .setInterruptCallMediaOperation(true)
             .setOperationContext("operationContext");
         Response<Void> response = callMedia.playWithResponse(playOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);

@@ -61,7 +61,6 @@ import reactor.core.publisher.Mono;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
@@ -254,13 +253,17 @@ public final class CallMediaAsync {
 
     Mono<Response<Void>> playToAllWithResponseInternal(PlayToAllOptions options, Context context) {
         try {
-            PlayOptions playOptions = new PlayOptions(options.getPlaySources(), Collections.emptyList());
+            PlayToAllOptions playOptions = new PlayToAllOptions(options.getPlaySources());
             playOptions.setLoop(options.isLoop());
             playOptions.setInterruptCallMediaOperation(options.isInterruptCallMediaOperation());
             playOptions.setOperationContext(options.getOperationContext());
             playOptions.setOperationCallbackUrl(options.getOperationCallbackUrl());
 
-            return playWithResponseInternal(playOptions, context);
+            return withContext(contextValue -> {
+                contextValue = context == null ? contextValue : context;
+                PlayRequest request = getPlayToAllRequest(options);
+                return contentsInternal.playWithResponseAsync(callConnectionId, request, contextValue);
+            });
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }
@@ -292,6 +295,37 @@ public final class CallMediaAsync {
                         .stream()
                         .map(CommunicationIdentifierConverter::convert)
                         .collect(Collectors.toList()));
+
+            request.setPlayOptions(new PlayOptionsInternal().setLoop(options.isLoop()));
+            request.setOperationContext(options.getOperationContext());
+            request.setOperationCallbackUri(options.getOperationCallbackUrl());
+
+            return request;
+        }
+
+        throw logger.logExceptionAsError(new IllegalArgumentException(options.getPlaySources().getClass().getCanonicalName()));
+    }
+    PlayRequest getPlayToAllRequest(PlayToAllOptions options) {
+        List<PlaySourceInternal> playSourcesInternal = new ArrayList<>();
+        for (PlaySource source: options.getPlaySources()) {
+            PlaySourceInternal playSourceInternal = null;
+            if (source instanceof FileSource) {
+                playSourceInternal = getPlaySourceInternalFromFileSource((FileSource) source);
+            } else if (source instanceof TextSource) {
+                playSourceInternal = getPlaySourceInternalFromTextSource((TextSource) source);
+            } else if (source instanceof SsmlSource) {
+                playSourceInternal = getPlaySourceInternalFromSsmlSource((SsmlSource) source);
+            }
+            if (playSourceInternal != null && playSourceInternal.getKind() != null) {
+                playSourcesInternal.add(playSourceInternal);
+            } else {
+                throw logger.logExceptionAsError(new IllegalArgumentException(source.getClass().getCanonicalName()));
+            }
+        }
+
+        if (!playSourcesInternal.isEmpty()) {
+            PlayRequest request = new PlayRequest()
+                .setPlaySources(playSourcesInternal);
 
             request.setPlayOptions(new PlayOptionsInternal().setLoop(options.isLoop())
                                                             .setInterruptCallMediaOperation(options.isInterruptCallMediaOperation()));

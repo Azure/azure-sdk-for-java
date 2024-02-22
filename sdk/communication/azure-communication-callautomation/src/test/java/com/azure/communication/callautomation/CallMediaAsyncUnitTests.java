@@ -83,7 +83,6 @@ public class CallMediaAsyncUnitTests {
     public void playFileWithBargeInWithResponseTest() {
         playOptions = new PlayOptions(playFileSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
             .setLoop(false)
-            .setInterruptCallMediaOperation(true)
             .setOperationContext("operationContext");
 
         StepVerifier.create(
@@ -127,7 +126,6 @@ public class CallMediaAsyncUnitTests {
     public void playTextWithBargeInWithResponseTest() {
         playOptions = new PlayOptions(playTextSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
             .setLoop(false)
-            .setInterruptCallMediaOperation(true)
             .setOperationContext("operationContext");
         StepVerifier.create(
             callMedia.playWithResponse(playOptions))
@@ -173,7 +171,6 @@ public class CallMediaAsyncUnitTests {
     public void playSsmlWithBargeInWithResponseTest() {
         playOptions = new PlayOptions(playSsmlSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
             .setLoop(false)
-            .setInterruptCallMediaOperation(true)
             .setOperationContext("operationContext");
         StepVerifier.create(
             callMedia.playWithResponse(playOptions))
