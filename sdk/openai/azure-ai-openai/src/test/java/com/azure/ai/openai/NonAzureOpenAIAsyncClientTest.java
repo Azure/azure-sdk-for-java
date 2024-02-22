@@ -720,4 +720,33 @@ public class NonAzureOpenAIAsyncClientTest extends OpenAIClientTestBase {
             }).verifyComplete();
         });
     }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testTextToSpeech(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAIAsyncClient(httpClient);
+        textToSpeechRunnerForNonAzure(((modelId, speechGenerationOptions) -> {
+            StepVerifier.create(client.generateSpeechFromText(modelId, speechGenerationOptions))
+                    .assertNext(speech -> {
+                        assertNotNull(speech.toBytes());
+                    }).verifyComplete();
+        }));
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testTextToSpeechWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAIAsyncClient(httpClient);
+        textToSpeechRunnerForNonAzure(((modelId, speechGenerationOptions) -> {
+            StepVerifier.create(client.generateSpeechFromTextWithResponse(modelId,
+                            BinaryData.fromObject(speechGenerationOptions), new RequestOptions()))
+                    .assertNext(response -> {
+                        assertTrue(response.getStatusCode() > 0);
+                        assertNotNull(response.getHeaders());
+                        BinaryData speech = response.getValue();
+                        assertNotNull(speech);
+                        assertNotNull(speech.toBytes());
+                    }).verifyComplete();
+        }));
+    }
 }

@@ -39,6 +39,8 @@ import com.azure.ai.openai.models.FunctionDefinition;
 import com.azure.ai.openai.models.ImageGenerationData;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageGenerations;
+import com.azure.ai.openai.models.SpeechGenerationOptions;
+import com.azure.ai.openai.models.SpeechVoice;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
@@ -334,5 +336,16 @@ public final class ReadmeSamples {
             }
         }
         // END: readme-sample-toolCalls
+    }
+
+    public void textToSpeech() {
+        // BEGIN: readme-sample-textToSpeech
+        String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
+        SpeechGenerationOptions options = new SpeechGenerationOptions(
+                "Today is a wonderful day to build something people love!",
+                SpeechVoice.ALLOY);
+        BinaryData speech = client.generateSpeechFromText(deploymentOrModelId, options);
+        System.out.println("Speech: " + speech);
+        // END: readme-sample-textToSpeech
     }
 }

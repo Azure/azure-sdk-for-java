@@ -44,6 +44,8 @@ import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.FunctionDefinition;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageGenerations;
+import com.azure.ai.openai.models.SpeechGenerationOptions;
+import com.azure.ai.openai.models.SpeechVoice;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
 import com.azure.core.http.HttpClient;
@@ -279,6 +281,14 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept("gpt-35-turbo-1106", getChatCompletionsOptionWithToolCall());
     }
 
+    void textToSpeechRunner(BiConsumer<String, SpeechGenerationOptions> testRunner) {
+        testRunner.accept("tts-hd", getSpeechGenerationOptions());
+    }
+
+    void textToSpeechRunnerForNonAzure(BiConsumer<String, SpeechGenerationOptions> testRunner) {
+        testRunner.accept("tts-1", getSpeechGenerationOptions());
+    }
+    
     private static AudioTranslationOptions getAudioTranslationOptions(String fileName) {
         byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
         AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
@@ -311,6 +321,11 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         chatCompletionsOptions.setTools(Arrays.asList(toolDefinition));
 
         return chatCompletionsOptions;
+    }
+
+    private SpeechGenerationOptions getSpeechGenerationOptions() {
+        return new SpeechGenerationOptions("Today is a wonderful day to build something people love!",
+                SpeechVoice.ALLOY);
     }
 
     // Preparation for follow-up with the service
