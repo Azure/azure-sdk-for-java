@@ -168,7 +168,7 @@ com.azure:azure-monitor-query;1.2.9;1.3.0-beta.3
 com.azure:azure-monitor-query-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-perf-test-parent;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-quantum-jobs;1.0.0-beta.1;1.0.0-beta.2
-com.azure:azure-search-documents;11.6.1;11.6.2
+com.azure:azure-search-documents;11.6.2;11.7.0-beta.1
 com.azure:azure-search-perf;1.0.0-beta.1;1.0.0-beta.1
 com.azure:azure-security-attestation;1.1.21;1.2.0-beta.1
 com.azure:azure-security-confidentialledger;1.0.17;1.1.0-beta.1
