@@ -175,19 +175,19 @@ Licensed under the MIT License.
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
-      <artifactId>testcontainers</artifactId>
+      <artifactId>testcontainers</artifactId><!-- {x-version-update;cosmos_org.testcontainers:testcontainers;external_dependency} -->
       <version>1.19.5</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.testcontainers</groupId>
-      <artifactId>kafka</artifactId>
+      <artifactId>kafka</artifactId><!-- {x-version-update;cosmos_org.testcontainers:kafka;external_dependency} -->
       <version>1.19.5</version>
       <scope>test</scope>
     </dependency>
     <dependency>
       <groupId>org.sourcelab</groupId>
-      <artifactId>kafka-connect-client</artifactId>
+      <artifactId>kafka-connect-client</artifactId><!-- {x-version-update;cosmos_org.sourcelab:kafka-connect-client;external_dependency} -->
       <version>4.0.4</version>
       <scope>test</scope>
     </dependency>

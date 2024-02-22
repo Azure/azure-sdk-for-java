@@ -21,7 +21,7 @@ public class KafkaCosmosTestConfigurations {
 
     private static final String COSMOS_EMULATOR_KEY = "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
     private static final String COSMOS_EMULATOR_HOST = "https://localhost:8081/";
-    public static final String DEFAULT_CONFLUENT_VERSION = "7.5.0";
+    public static final String DEFAULT_CONFLUENT_VERSION = "7.6.0"; //https://docs.confluent.io/platform/current/installation/versions-interoperability.html
     public static final String DEFAULT_CONNECT_GROUP_ID = "1";
     public static final String DEFAULT_CONNECT_CONFIG_STORAGE_TOPIC = "docker-connect-configs";
     public static final String DEFAULT_CONNECT_CONFIG_STORAGE_REPLICATION_FACTOR = "1";
