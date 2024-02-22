@@ -219,11 +219,11 @@ class DefaultHttpClient implements HttpClient {
                             " http request. Treating response as regular response.");
                 }
 
-                return new DefaultHttpClientResponse(httpRequest, responseCode, responseHeaders, null);
+                return new HttpResponse(httpRequest, responseCode, responseHeaders, null);
             } else {
                 AccessibleByteArrayOutputStream outputStream = getAccessibleByteArrayOutputStream(connection);
 
-                return new DefaultHttpClientResponse(httpRequest, responseCode, responseHeaders,
+                return new HttpResponse(httpRequest, responseCode, responseHeaders,
                     BinaryData.fromByteBuffer(outputStream.toByteBuffer()));
             }
         } catch (IOException e) {
@@ -566,7 +566,7 @@ class DefaultHttpClient implements HttpClient {
 
             BinaryData body = BinaryData.fromByteBuffer(ByteBuffer.wrap(bodyString.toString().getBytes()));
 
-            return new DefaultHttpClientResponse(httpRequest, statusCode, headers, body);
+            return new HttpResponse(httpRequest, statusCode, headers, body);
         }
     }
 }

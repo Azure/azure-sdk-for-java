@@ -15,19 +15,14 @@ import okhttp3.ResponseBody;
  * Base response class for OkHttp with implementations for response metadata.
  */
 public class OkHttpResponse extends HttpResponse {
-    private final com.generic.core.models.Headers headers;
-    private final int statusCode;
     private final ResponseBody responseBody;
 
     private BinaryData value;
 
     public OkHttpResponse(Response response, HttpRequest request, boolean eagerlyConvertHeaders, byte[] bodyBytes) {
-        super(request);
+        super(request, response.code(), eagerlyConvertHeaders ? fromOkHttpHeaders(response.headers())
+            : new OkHttpToAzureCoreHttpHeadersWrapper(response.headers()), null);
 
-        this.statusCode = response.code();
-        this.headers = eagerlyConvertHeaders
-            ? fromOkHttpHeaders(response.headers())
-            : new OkHttpToAzureCoreHttpHeadersWrapper(response.headers());
         // innerResponse.body() getter will not return null for server returned responses.
         // It can be null:
         // [a]. if response is built manually with null body (e.g for mocking)
@@ -35,16 +30,6 @@ public class OkHttpResponse extends HttpResponse {
         // [ref](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response/body/).
         this.responseBody = response.body();
         this.value = bodyBytes == null ? null : BinaryData.fromBytes(bodyBytes);
-    }
-
-    @Override
-    public final int getStatusCode() {
-        return this.statusCode;
-    }
-
-    @Override
-    public final com.generic.core.models.Headers getHeaders() {
-        return this.headers;
     }
 
     /**

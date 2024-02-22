@@ -13,20 +13,11 @@ import java.io.IOException;
 /**
  * The response of an {@link HttpRequest}.
  */
-public abstract class HttpResponse implements Response<BinaryData>, Closeable {
-    private final HttpRequest request;
-
+public class HttpResponse implements Response<BinaryData>, Closeable {
     private final BinaryData value;
-
-    /**
-     * Creates an instance of {@link HttpResponse}.
-     *
-     * @param request The {@link HttpRequest} that resulted in this {@link HttpResponse}.
-     */
-    protected HttpResponse(HttpRequest request) {
-        this.request = request;
-        this.value = null;
-    }
+    private final Headers headers;
+    private final HttpRequest request;
+    private final int statusCode;
 
     /**
      * Creates an instance of {@link HttpResponse}.
@@ -34,8 +25,10 @@ public abstract class HttpResponse implements Response<BinaryData>, Closeable {
      * @param request The {@link HttpRequest} that resulted in this {@link HttpResponse}.
      * @param value The response body as a byte array.
      */
-    protected HttpResponse(HttpRequest request, BinaryData value) {
+    public HttpResponse(HttpRequest request, int statusCode, Headers headers, BinaryData value) {
         this.request = request;
+        this.statusCode = statusCode;
+        this.headers = headers;
         this.value = value;
     }
 
@@ -44,14 +37,18 @@ public abstract class HttpResponse implements Response<BinaryData>, Closeable {
      *
      * @return The response status code.
      */
-    public abstract int getStatusCode();
+    public int getStatusCode() {
+        return this.statusCode;
+    }
 
     /**
      * Get all response {@link Headers}.
      *
      * @return The response {@link Headers}.
      */
-    public abstract Headers getHeaders();
+    public Headers getHeaders() {
+         return this.headers;
+    }
 
     /**
      * Gets the {@link HttpRequest request} which resulted in this response.

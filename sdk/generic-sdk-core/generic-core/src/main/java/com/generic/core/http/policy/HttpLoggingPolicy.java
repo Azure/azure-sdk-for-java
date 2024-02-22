@@ -375,28 +375,13 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
         private LoggingHttpResponse(HttpResponse actualResponse, ClientLogger.LoggingEventBuilder logBuilder,
                                     ClientLogger logger, int contentLength, String contentTypeHeader) {
-            super(actualResponse.getRequest());
+            super(actualResponse.getRequest(), actualResponse.getStatusCode(), actualResponse.getHeaders(), null);
 
             this.actualResponse = actualResponse;
             this.logBuilder = logBuilder;
             this.logger = logger;
             this.contentLength = contentLength;
             this.contentTypeHeader = contentTypeHeader;
-        }
-
-        @Override
-        public int getStatusCode() {
-            return actualResponse.getStatusCode();
-        }
-
-        @Override
-        public Headers getHeaders() {
-            return actualResponse.getHeaders();
-        }
-
-        @Override
-        public BinaryData getValue() {
-            return actualResponse.getValue();
         }
 
         @Override

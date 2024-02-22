@@ -17,12 +17,8 @@ import static com.generic.core.util.TestUtils.cloneByteArray;
 public class MockHttpResponse extends HttpResponse {
     private static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
 
-    private final int statusCode;
-
-    private final Headers headers;
-
     /**
-     * Creates a HTTP response associated with a {@code request}, returns the {@code statusCode}, and has an empty
+     * Creates an HTTP response associated with a {@code request}, returns the {@code statusCode}, and has an empty
      * response body.
      *
      * @param request HttpRequest associated with the response.
@@ -65,10 +61,7 @@ public class MockHttpResponse extends HttpResponse {
      * @param bodyBytes Contents of the response.
      */
     public MockHttpResponse(HttpRequest request, int statusCode, Headers headers, byte[] bodyBytes) {
-        super(request, bodyBytes == null ? null : BinaryData.fromBytes(cloneByteArray(bodyBytes)));
-
-        this.statusCode = statusCode;
-        this.headers = headers;
+        super(request, statusCode, headers, bodyBytes == null ? null : BinaryData.fromBytes(cloneByteArray(bodyBytes)));
     }
 
     /**
@@ -102,15 +95,5 @@ public class MockHttpResponse extends HttpResponse {
         SERIALIZER.serializeToStream(stream, serializable);
 
         return stream.toByteArray();
-    }
-
-    @Override
-    public int getStatusCode() {
-        return statusCode;
-    }
-
-    @Override
-    public Headers getHeaders() {
-        return this.headers;
     }
 }
