@@ -6,17 +6,17 @@ package com.azure.monitor.query;
 import com.azure.core.util.ServiceVersion;
 
 /**
- * The versions of Azure Monitor Metrics Batch Query supported by this client library.
+ * The versions of Azure Monitor Metrics Query supported by this client library.
  */
-public enum MetricsBatchQueryServiceVersion implements ServiceVersion {
+public enum MetricsServiceVersion implements ServiceVersion {
     /**
-     * The preview version of the Metrics Batch Query service.
+     * The preview version of the Metrics Query service.
      */
     V2023_10_01("2023-10-01");
 
     private final String version;
 
-    MetricsBatchQueryServiceVersion(String version) {
+    MetricsServiceVersion(String version) {
         this.version = version;
     }
 
@@ -27,9 +27,9 @@ public enum MetricsBatchQueryServiceVersion implements ServiceVersion {
 
     /**
      * Gets the latest service version supported by this client library.
-     * @return the latest {@link MetricsBatchQueryServiceVersion}.
+     * @return the latest {@link MetricsServiceVersion}.
      */
-    public static MetricsBatchQueryServiceVersion getLatest() {
+    public static MetricsServiceVersion getLatest() {
         return V2023_10_01;
     }
 }

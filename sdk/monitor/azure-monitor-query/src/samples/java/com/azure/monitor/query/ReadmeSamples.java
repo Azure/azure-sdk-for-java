@@ -74,14 +74,14 @@ public class ReadmeSamples {
 
     public void createMetricsBatchClients() {
         // BEGIN: readme-sample-createMetricsBatchQueryClient
-        MetricsBatchQueryClient metricsBatchQueryClient = new MetricsBatchQueryClientBuilder()
+        MetricsClient metricsBatchQueryClient = new MetricsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("{endpoint}")
             .buildClient();
         // END: readme-sample-createMetricsBatchQueryClient
 
         // BEGIN: readme-sample-createMetricsBatchQueryAsyncClient
-        MetricsBatchQueryAsyncClient metricsBatchQueryAsyncClient = new MetricsBatchQueryClientBuilder()
+        MetricsAsyncClient metricsAsyncClient = new MetricsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("{endpoint}")
             .buildAsyncClient();
@@ -448,7 +448,7 @@ public class ReadmeSamples {
      */
     public void getMetricsBatch() {
         // BEGIN: readme-sample-metricsquerybatch
-        MetricsBatchQueryClient metricsBatchQueryClient = new MetricsBatchQueryClientBuilder()
+        MetricsClient metricsBatchQueryClient = new MetricsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("{endpoint}")
             .buildClient();

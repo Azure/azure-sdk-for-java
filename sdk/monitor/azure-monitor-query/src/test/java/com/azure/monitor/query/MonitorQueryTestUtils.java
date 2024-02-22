@@ -46,9 +46,9 @@ public final class MonitorQueryTestUtils {
 
     public static String getLogResourceId(boolean isPlaybackMode) {
         if (isPlaybackMode) {
-            return "subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.Storage/storageAccounts/srnagarstorage";
+            return "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/srnagar-azuresdkgroup/providers/Microsoft.Storage/storageAccounts/srnagarstorage";
         } else {
-            return LOG_RESOURCE_ID;
+            return LOG_RESOURCE_ID.substring(LOG_RESOURCE_ID.indexOf("/subscriptions"));
         }
     }
 
@@ -56,7 +56,7 @@ public final class MonitorQueryTestUtils {
         if (isPlaybackMode) {
             return "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg-jairmyree-test/providers/Microsoft.EventHub/namespaces/eventhubt9a76fe3bdd7263f8";
         } else {
-            return METRIC_RESOURCE_URI;
+            return METRIC_RESOURCE_URI.substring(METRIC_RESOURCE_URI.indexOf("/subscriptions"));
         }
     }
 

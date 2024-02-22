@@ -196,7 +196,7 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
 
     /**
      * Sets The ID of the target subscription.
-     * 
+     *
      * @param subscriptionId the subscriptionId value.
      * @return the AzureMonitorMetricsDataAPIBuilder.
      */
@@ -214,7 +214,7 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
 
     /**
      * Sets server parameter.
-     * 
+     *
      * @param host the host value.
      * @return the AzureMonitorMetricsDataAPIBuilder.
      */
@@ -232,7 +232,7 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
 
     /**
      * Sets Api Version.
-     * 
+     *
      * @param apiVersion the apiVersion value.
      * @return the AzureMonitorMetricsDataAPIBuilder.
      */
@@ -250,7 +250,7 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
 
     /**
      * Sets The serializer to serialize an object into a string.
-     * 
+     *
      * @param serializerAdapter the serializerAdapter value.
      * @return the AzureMonitorMetricsDataAPIBuilder.
      */
@@ -268,7 +268,7 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     * 
+     *
      * @param retryPolicy the retryPolicy value.
      * @return the AzureMonitorMetricsDataAPIBuilder.
      */
@@ -280,14 +280,14 @@ public final class MonitorManagementClientImplBuilder implements HttpTrait<Monit
 
     /**
      * Builds an instance of AzureMonitorMetricsDataAPI with the provided parameters.
-     * 
+     *
      * @return an instance of AzureMonitorMetricsDataAPI.
      */
     @Generated
     public MonitorManagementClientImpl buildClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         String localHost = (host != null) ? host : "https://management.azure.com";
-        String localApiVersion = (apiVersion != null) ? apiVersion : "2024-02-01";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2023-10-01";
         SerializerAdapter localSerializerAdapter
             = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         MonitorManagementClientImpl client = new MonitorManagementClientImpl(localPipeline, localSerializerAdapter,

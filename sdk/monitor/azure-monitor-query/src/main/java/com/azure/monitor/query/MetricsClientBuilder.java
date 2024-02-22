@@ -20,21 +20,21 @@ import com.azure.core.util.Configuration;
 import com.azure.monitor.query.implementation.metricsbatch.AzureMonitorMetricBatchBuilder;
 
 /**
- * Fluent builder for creating instances of {@link MetricsBatchQueryClient} and {@link MetricsBatchQueryAsyncClient}.
+ * Fluent builder for creating instances of {@link MetricsClient} and {@link MetricsAsyncClient}.
  */
-@ServiceClientBuilder(serviceClients = {MetricsBatchQueryClient.class, MetricsBatchQueryAsyncClient.class})
-public final class MetricsBatchQueryClientBuilder implements EndpointTrait<MetricsBatchQueryClientBuilder>,
-    HttpTrait<MetricsBatchQueryClientBuilder>, ConfigurationTrait<MetricsBatchQueryClientBuilder>, TokenCredentialTrait<MetricsBatchQueryClientBuilder> {
+@ServiceClientBuilder(serviceClients = {MetricsClient.class, MetricsAsyncClient.class})
+public final class MetricsClientBuilder implements EndpointTrait<MetricsClientBuilder>,
+    HttpTrait<MetricsClientBuilder>, ConfigurationTrait<MetricsClientBuilder>, TokenCredentialTrait<MetricsClientBuilder> {
 
     private final AzureMonitorMetricBatchBuilder innerMetricsBatchBuilder = new AzureMonitorMetricBatchBuilder();
 
     /**
      * Sets the metrics batch query endpoint.
      * @param endpoint the endpoint.
-     * @return the {@link MetricsBatchQueryClientBuilder}.
+     * @return the {@link MetricsClientBuilder}.
      */
     @Override
-    public MetricsBatchQueryClientBuilder endpoint(String endpoint) {
+    public MetricsClientBuilder endpoint(String endpoint) {
         innerMetricsBatchBuilder.endpoint(endpoint);
         return this;
     }
@@ -42,10 +42,10 @@ public final class MetricsBatchQueryClientBuilder implements EndpointTrait<Metri
     /**
      * Sets The HTTP pipeline to send requests through.
      * @param pipeline the pipeline value.
-     * @return the {@link MetricsBatchQueryClientBuilder}.
+     * @return the {@link MetricsClientBuilder}.
      */
     @Override
-    public MetricsBatchQueryClientBuilder pipeline(HttpPipeline pipeline) {
+    public MetricsClientBuilder pipeline(HttpPipeline pipeline) {
         innerMetricsBatchBuilder.pipeline(pipeline);
         return this;
     }
@@ -53,10 +53,10 @@ public final class MetricsBatchQueryClientBuilder implements EndpointTrait<Metri
     /**
      * Sets The HTTP client used to send the request.
      * @param httpClient the httpClient value.
-     * @return the {@link MetricsBatchQueryClientBuilder}.
+     * @return the {@link MetricsClientBuilder}.
      */
     @Override
-    public MetricsBatchQueryClientBuilder httpClient(HttpClient httpClient) {
+    public MetricsClientBuilder httpClient(HttpClient httpClient) {
         innerMetricsBatchBuilder.httpClient(httpClient);
         return this;
     }
@@ -64,10 +64,10 @@ public final class MetricsBatchQueryClientBuilder implements EndpointTrait<Metri
     /**
      * Sets The configuration store that is used during construction of the service client.
      * @param configuration the configuration value.
-     * @return the {@link MetricsBatchQueryClientBuilder}.
+     * @return the {@link MetricsClientBuilder}.
      */
     @Override
-    public MetricsBatchQueryClientBuilder configuration(Configuration configuration) {
+    public MetricsClientBuilder configuration(Configuration configuration) {
         innerMetricsBatchBuilder.configuration(configuration);
         return this;
     }
@@ -75,10 +75,10 @@ public final class MetricsBatchQueryClientBuilder implements EndpointTrait<Metri
     /**
      * Sets The logging configuration for HTTP requests and responses.
      * @param httpLogOptions the httpLogOptions value.
-     * @return the {@link MetricsBatchQueryClientBuilder}.
+     * @return the {@link MetricsClientBuilder}.
      */
     @Override
-    public MetricsBatchQueryClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
+    public MetricsClientBuilder httpLogOptions(HttpLogOptions httpLogOptions) {
         innerMetricsBatchBuilder.httpLogOptions(httpLogOptions);
         return this;
     }
@@ -86,9 +86,9 @@ public final class MetricsBatchQueryClientBuilder implements EndpointTrait<Metri
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
      * @param retryPolicy the retryPolicy value.
-     * @return the {@link MetricsBatchQueryClientBuilder}.
+     * @return the {@link MetricsClientBuilder}.
      */
-    public MetricsBatchQueryClientBuilder retryPolicy(RetryPolicy retryPolicy) {
+    public MetricsClientBuilder retryPolicy(RetryPolicy retryPolicy) {
         innerMetricsBatchBuilder.retryPolicy(retryPolicy);
         return this;
     }
@@ -96,10 +96,10 @@ public final class MetricsBatchQueryClientBuilder implements EndpointTrait<Metri
     /**
      * Sets the {@link RetryOptions} used for creating the client.
      * @param retryOptions The {@link RetryOptions}.
-     * @return the updated {@link MetricsBatchQueryClientBuilder}.
+     * @return the updated {@link MetricsClientBuilder}.
      */
     @Override
-    public MetricsBatchQueryClientBuilder retryOptions(RetryOptions retryOptions) {
+    public MetricsClientBuilder retryOptions(RetryOptions retryOptions) {
         innerMetricsBatchBuilder.retryOptions(retryOptions);
         return this;
     }
@@ -107,10 +107,10 @@ public final class MetricsBatchQueryClientBuilder implements EndpointTrait<Metri
     /**
      * Adds a custom Http pipeline policy.
      * @param customPolicy The custom Http pipeline policy to add.
-     * @return the {@link MetricsBatchQueryClientBuilder}.
+     * @return the {@link MetricsClientBuilder}.
      */
     @Override
-    public MetricsBatchQueryClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
+    public MetricsClientBuilder addPolicy(HttpPipelinePolicy customPolicy) {
         innerMetricsBatchBuilder.addPolicy(customPolicy);
         return this;
     }
@@ -118,10 +118,10 @@ public final class MetricsBatchQueryClientBuilder implements EndpointTrait<Metri
     /**
      * Sets The TokenCredential used for authentication.
      * @param tokenCredential the tokenCredential value.
-     * @return the {@link MetricsBatchQueryClientBuilder}.
+     * @return the {@link MetricsClientBuilder}.
      */
     @Override
-    public MetricsBatchQueryClientBuilder credential(TokenCredential tokenCredential) {
+    public MetricsClientBuilder credential(TokenCredential tokenCredential) {
         innerMetricsBatchBuilder.credential(tokenCredential);
         return this;
     }
@@ -129,38 +129,38 @@ public final class MetricsBatchQueryClientBuilder implements EndpointTrait<Metri
     /**
      * Set the {@link ClientOptions} used for creating the client.
      * @param clientOptions The {@link ClientOptions}.
-     * @return the {@link MetricsBatchQueryClientBuilder}.
+     * @return the {@link MetricsClientBuilder}.
      */
     @Override
-    public MetricsBatchQueryClientBuilder clientOptions(ClientOptions clientOptions) {
+    public MetricsClientBuilder clientOptions(ClientOptions clientOptions) {
         innerMetricsBatchBuilder.clientOptions(clientOptions);
         return this;
     }
 
     /**
      * The service version to use when creating the client.
-     * @param serviceVersion The {@link MetricsBatchQueryServiceVersion}.
-     * @return the {@link MetricsBatchQueryClientBuilder}.
+     * @param serviceVersion The {@link MetricsServiceVersion}.
+     * @return the {@link MetricsClientBuilder}.
      */
-    public MetricsBatchQueryClientBuilder serviceVersion(MetricsBatchQueryServiceVersion serviceVersion) {
+    public MetricsClientBuilder serviceVersion(MetricsServiceVersion serviceVersion) {
         innerMetricsBatchBuilder.apiVersion(serviceVersion.getVersion());
         return this;
     }
 
     /**
      * Creates a synchronous client with the configured options in this builder.
-     * @return A synchronous {@link MetricsBatchQueryClient}.
+     * @return A synchronous {@link MetricsClient}.
      */
-    public MetricsBatchQueryClient buildClient() {
-        return new MetricsBatchQueryClient(innerMetricsBatchBuilder.buildClient());
+    public MetricsClient buildClient() {
+        return new MetricsClient(innerMetricsBatchBuilder.buildClient());
     }
 
     /**
      * Creates an asynchronous client with the configured options in this builder.
-     * @return An asynchronous {@link MetricsBatchQueryAsyncClient}.
+     * @return An asynchronous {@link MetricsAsyncClient}.
      */
-    public MetricsBatchQueryAsyncClient buildAsyncClient() {
-        return new MetricsBatchQueryAsyncClient(innerMetricsBatchBuilder.buildClient());
+    public MetricsAsyncClient buildAsyncClient() {
+        return new MetricsAsyncClient(innerMetricsBatchBuilder.buildClient());
     }
 
 }

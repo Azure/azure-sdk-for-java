@@ -14,18 +14,18 @@ import com.azure.identity.DefaultAzureCredentialBuilder;
 
 import java.util.Arrays;
 
-public class MetricsBatchQueryTestBase extends TestProxyTestBase {
+public class MetricsClientTestBase extends TestProxyTestBase {
 
     static final String FAKE_RESOURCE_ID = "/subscriptions/faa080af-c1d8-40ad-9cce-e1a450ca5b57/resourceGroups/rg/providers/Microsoft.Compute/virtualMachines/vm";
     protected String metricEndpoint;
-    protected MetricsBatchQueryClientBuilder clientBuilder;
+    protected MetricsClientBuilder clientBuilder;
     protected ConfigurationClient configClient;
 
     @Override
     public void beforeTest() {
         metricEndpoint = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_METRICS_ENDPOINT", "https://westus.metrics.monitor.azure.com");
 
-        MetricsBatchQueryClientBuilder clientBuilder = new MetricsBatchQueryClientBuilder();
+        MetricsClientBuilder clientBuilder = new MetricsClientBuilder();
         ConfigurationClientBuilder configClientBuilder = new ConfigurationClientBuilder();
         if (getTestMode() == TestMode.PLAYBACK) {
             interceptorManager.addMatchers(new CustomMatcher()

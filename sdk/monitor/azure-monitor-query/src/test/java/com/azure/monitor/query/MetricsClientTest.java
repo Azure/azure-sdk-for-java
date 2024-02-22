@@ -22,13 +22,13 @@ import java.util.Arrays;
 import static org.junit.jupiter.api.Assertions.*;
 
 /**
- * Unit tests for {@link MetricsBatchQueryClient}.
+ * Unit tests for {@link MetricsClient}.
  */
-public class MetricsBatchQueryClientTest extends MetricsBatchQueryTestBase {
+public class MetricsClientTest extends MetricsClientTestBase {
 
     @Test
     public void testMetricsBatchQuery() {
-        MetricsBatchQueryClient metricsBatchQueryClient = clientBuilder
+        MetricsClient metricsClient = clientBuilder
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildClient();
         String resourceId = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_METRICS_RESOURCE_URI_2", FAKE_RESOURCE_ID);
@@ -45,7 +45,7 @@ public class MetricsBatchQueryClientTest extends MetricsBatchQueryTestBase {
             .setTop(10)
             .setTimeInterval(new QueryTimeInterval(OffsetDateTime.now().minusDays(1), OffsetDateTime.now()));
 
-        MetricsBatchQueryResult metricsQueryResults = metricsBatchQueryClient.queryBatchWithResponse(
+        MetricsBatchQueryResult metricsQueryResults = metricsClient.queryBatchWithResponse(
                 Arrays.asList(resourceId),
                 Arrays.asList("HttpIncomingRequestCount"), "microsoft.appconfiguration/configurationstores", options, Context.NONE)
             .getValue();
@@ -58,7 +58,7 @@ public class MetricsBatchQueryClientTest extends MetricsBatchQueryTestBase {
 
     @Test
     public void testMetricsBatchQueryDifferentResourceTypes() {
-        MetricsBatchQueryClient metricsBatchQueryClient = clientBuilder
+        MetricsClient metricsBatchQueryClient = clientBuilder
             .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
             .buildClient();
         String resourceId1 = Configuration.getGlobalConfiguration().get("AZURE_MONITOR_METRICS_RESOURCE_URI_1", FAKE_RESOURCE_ID);

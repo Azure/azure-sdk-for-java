@@ -21,7 +21,7 @@ public class MetricsBatchQuerySample {
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) {
-        MetricsBatchQueryClient metricsBatchQueryClient = new MetricsBatchQueryClientBuilder()
+        MetricsClient metricsBatchQueryClient = new MetricsClientBuilder()
             .credential(new DefaultAzureCredentialBuilder().build())
             .endpoint("https://westus2.monitoring.azure.com")
             .buildClient();

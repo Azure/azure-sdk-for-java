@@ -8,7 +8,6 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
-import com.azure.core.util.Context;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.query.implementation.metricsbatch.AzureMonitorMetricBatch;
@@ -19,12 +18,14 @@ import com.azure.monitor.query.models.AggregationType;
 import com.azure.monitor.query.models.MetricsBatchQueryResult;
 import com.azure.monitor.query.models.MetricsBatchQueryOptions;
 import com.azure.monitor.query.models.MetricsQueryResult;
+import reactor.core.publisher.Mono;
 
 import java.time.Duration;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import static com.azure.core.util.FluxUtil.monoError;
 import static com.azure.monitor.query.implementation.metrics.models.MetricsHelper.getSubscriptionFromResourceId;
 import static com.azure.monitor.query.implementation.metrics.models.MetricsHelper.mapToMetricsQueryResult;
 
@@ -32,13 +33,13 @@ import static com.azure.monitor.query.implementation.metrics.models.MetricsHelpe
  * This class provides an asynchronous client that contains all the query operations that use batch requests to retrieve
  * metrics for multiple resources.
  */
-@ServiceClient(builder = MetricsBatchQueryClientBuilder.class)
-public final class MetricsBatchQueryClient {
-    private static final ClientLogger LOGGER = new ClientLogger(MetricsBatchQueryClient.class);
+@ServiceClient(builder = MetricsClientBuilder.class, isAsync = true)
+public final class MetricsAsyncClient {
+    private static final ClientLogger LOGGER = new ClientLogger(MetricsAsyncClient.class);
 
     private final AzureMonitorMetricBatch serviceClient;
 
-    MetricsBatchQueryClient(AzureMonitorMetricBatch azureMonitorMetricBatch) {
+    MetricsAsyncClient(AzureMonitorMetricBatch azureMonitorMetricBatch) {
         this.serviceClient = azureMonitorMetricBatch;
     }
 
@@ -51,9 +52,9 @@ public final class MetricsBatchQueryClient {
      * @return A time-series metrics result for the requested metric names.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public MetricsBatchQueryResult queryBatch(List<String> resourceUris, List<String> metricsNames, String metricsNamespace) {
-        return this.queryBatchWithResponse(resourceUris, metricsNames, metricsNamespace, new MetricsBatchQueryOptions(),
-            Context.NONE).getValue();
+    public Mono<MetricsBatchQueryResult> queryBatch(List<String> resourceUris, List<String> metricsNames, String metricsNamespace) {
+        return this.queryBatchWithResponse(resourceUris, metricsNames, metricsNamespace, new MetricsBatchQueryOptions())
+            .map(Response::getValue);
     }
 
     /**
@@ -63,24 +64,24 @@ public final class MetricsBatchQueryClient {
      * @param metricsNames The names of the metrics to query.
      * @param metricsNamespace The namespace of the metrics to query.
      * @param options The {@link MetricsBatchQueryOptions} to include for the request.
-     * @param context The context to associate with this operation.
      * @return A time-series metrics result for the requested metric names.
      * @throws IllegalArgumentException thrown if {@code resourceUris}, {@code metricsNames} or {@code metricsNamespace} are empty.
      * @throws NullPointerException thrown if {@code resourceUris}, {@code metricsNames} or {@code metricsNamespace} are null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<MetricsBatchQueryResult> queryBatchWithResponse(List<String> resourceUris, List<String> metricsNames,
-                                                                    String metricsNamespace, MetricsBatchQueryOptions options, Context context) {
+    public Mono<Response<MetricsBatchQueryResult>> queryBatchWithResponse(List<String> resourceUris, List<String> metricsNames,
+                                                                          String metricsNamespace, MetricsBatchQueryOptions options) {
+
         if (CoreUtils.isNullOrEmpty(Objects.requireNonNull(resourceUris, "'resourceUris cannot be null."))) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("resourceUris cannot be empty"));
+            return monoError(LOGGER, new IllegalArgumentException("resourceUris cannot be empty"));
         }
 
         if (CoreUtils.isNullOrEmpty(Objects.requireNonNull(metricsNames, "metricsNames cannot be null"))) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("metricsNames cannot be empty"));
+            return monoError(LOGGER, new IllegalArgumentException("metricsNames cannot be empty"));
         }
 
         if (CoreUtils.isNullOrEmpty(Objects.requireNonNull(metricsNamespace, "metricsNamespace cannot be null"))) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException("metricsNamespace cannot be empty"));
+            return monoError(LOGGER, new IllegalArgumentException("metricsNamespace cannot be empty"));
         }
 
         String filter = null;
@@ -102,10 +103,9 @@ public final class MetricsBatchQueryClient {
                     .map(AggregationType::toString)
                     .collect(Collectors.joining(","));
             }
-
             if (options.getTimeInterval() != null) {
                 if (options.getTimeInterval().getDuration() != null) {
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException("Duration is not a supported time interval for batch query. Use startTime and endTime instead."));
+                    return monoError(LOGGER, new IllegalArgumentException("Duration is not a supported time interval for batch query. Use startTime and endTime instead."));
                 }
                 if (options.getTimeInterval().getStartTime() != null) {
                     startTime = options.getTimeInterval().getStartTime().toString();
@@ -115,25 +115,27 @@ public final class MetricsBatchQueryClient {
                 }
             }
 
+
             top = options.getTop();
             orderBy = options.getOrderBy();
         }
         String subscriptionId = getSubscriptionFromResourceId(resourceUris.get(0));
         ResourceIdList resourceIdList = new ResourceIdList();
         resourceIdList.setResourceids(resourceUris);
-        Response<MetricResultsResponse> response = this.serviceClient.getMetricsBatches()
-            .batchWithResponse(subscriptionId, metricsNamespace, metricsNames, resourceIdList, startTime,
-                endTime, granularity, aggregations, top, orderBy, filter, rollupBy, context);
-        MetricResultsResponse value = response.getValue();
-        List<MetricResultsResponseValuesItem> values = value.getValues();
-        List<MetricsQueryResult> metricsQueryResults = values.stream()
-            .map(result -> mapToMetricsQueryResult(result))
-            .collect(Collectors.toList());
-        MetricsBatchQueryResult metricsBatchQueryResult = new MetricsBatchQueryResult(metricsQueryResults);
+        Mono<Response<MetricResultsResponse>> responseMono = this.serviceClient.getMetricsBatches()
+            .batchWithResponseAsync(subscriptionId, metricsNamespace, metricsNames, resourceIdList, startTime,
+                endTime, granularity, aggregations, top, orderBy, filter, rollupBy);
 
-        return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
-            response.getHeaders(), metricsBatchQueryResult);
 
+        return responseMono.map(response -> {
+            MetricResultsResponse value = response.getValue();
+            List<MetricResultsResponseValuesItem> values = value.getValues();
+            List<MetricsQueryResult> metricsQueryResults = values.stream()
+                .map(result -> mapToMetricsQueryResult(result))
+                .collect(Collectors.toList());
+            MetricsBatchQueryResult metricsBatchQueryResult = new MetricsBatchQueryResult(metricsQueryResults);
+            return new SimpleResponse<>(response.getRequest(), response.getStatusCode(),
+                response.getHeaders(), metricsBatchQueryResult);
+        });
     }
-
 }

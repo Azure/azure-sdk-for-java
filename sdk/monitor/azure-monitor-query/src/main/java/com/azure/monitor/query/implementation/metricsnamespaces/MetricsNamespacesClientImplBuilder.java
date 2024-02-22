@@ -196,7 +196,7 @@ public final class MetricsNamespacesClientImplBuilder implements HttpTrait<Metri
 
     /**
      * Sets server parameter.
-     * 
+     *
      * @param host the host value.
      * @return the MonitorManagementClientBuilder.
      */
@@ -214,7 +214,7 @@ public final class MetricsNamespacesClientImplBuilder implements HttpTrait<Metri
 
     /**
      * Sets Api Version.
-     * 
+     *
      * @param apiVersion the apiVersion value.
      * @return the MonitorManagementClientBuilder.
      */
@@ -232,7 +232,7 @@ public final class MetricsNamespacesClientImplBuilder implements HttpTrait<Metri
 
     /**
      * Sets The serializer to serialize an object into a string.
-     * 
+     *
      * @param serializerAdapter the serializerAdapter value.
      * @return the MonitorManagementClientBuilder.
      */
@@ -250,7 +250,7 @@ public final class MetricsNamespacesClientImplBuilder implements HttpTrait<Metri
 
     /**
      * Sets The retry policy that will attempt to retry failed requests, if applicable.
-     * 
+     *
      * @param retryPolicy the retryPolicy value.
      * @return the MonitorManagementClientBuilder.
      */
@@ -262,14 +262,14 @@ public final class MetricsNamespacesClientImplBuilder implements HttpTrait<Metri
 
     /**
      * Builds an instance of MonitorManagementClient with the provided parameters.
-     * 
+     *
      * @return an instance of MonitorManagementClient.
      */
     @Generated
     public MetricsNamespacesClientImpl buildClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         String localHost = (host != null) ? host : "https://management.azure.com";
-        String localApiVersion = (apiVersion != null) ? apiVersion : "2024-02-01";
+        String localApiVersion = (apiVersion != null) ? apiVersion : "2017-12-01-preview";
         SerializerAdapter localSerializerAdapter
             = (serializerAdapter != null) ? serializerAdapter : JacksonAdapter.createDefaultSerializerAdapter();
         MetricsNamespacesClientImpl client

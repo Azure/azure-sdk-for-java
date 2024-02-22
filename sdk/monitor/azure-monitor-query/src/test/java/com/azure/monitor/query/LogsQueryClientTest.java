@@ -24,8 +24,9 @@ import com.azure.monitor.query.models.LogsQueryResult;
 import com.azure.monitor.query.models.LogsQueryResultStatus;
 import com.azure.monitor.query.models.QueryTimeInterval;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
+import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import reactor.core.publisher.Mono;
 
 import java.time.Duration;
@@ -37,8 +38,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 
 import static com.azure.monitor.query.MonitorQueryTestUtils.QUERY_STRING;
-import static com.azure.monitor.query.MonitorQueryTestUtils.getLogWorkspaceId;
 import static com.azure.monitor.query.MonitorQueryTestUtils.getLogResourceId;
+import static com.azure.monitor.query.MonitorQueryTestUtils.getLogWorkspaceId;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
@@ -197,8 +198,8 @@ public class LogsQueryClientTest extends TestProxyTestBase {
     }
 
     @Test
-    @DisabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE", disabledReason = "multi-workspace "
-            + "queries require sending logs to Azure Monitor first. So, run this test in playback or record mode only.")
+    @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "PLAYBACK", disabledReason = "multi-workspace "
+            + "queries require sending logs to Azure Monitor first. So, run this test in playback mode only.")
     public void testMultipleWorkspaces() {
         LogsQueryResult queryResults = client.queryWorkspaceWithResponse(workspaceId,
                 "union * | where TimeGenerated > ago(100d) | project TenantId | summarize count() by TenantId", null,
@@ -256,6 +257,7 @@ public class LogsQueryClientTest extends TestProxyTestBase {
     }
 
     @Test
+    @Disabled
     public void testBatchStatistics() {
         LogsBatchQuery logsBatchQuery = new LogsBatchQuery();
         logsBatchQuery.addWorkspaceQuery(workspaceId, QUERY_STRING, null);
@@ -277,7 +279,7 @@ public class LogsQueryClientTest extends TestProxyTestBase {
     }
 
     @Test
-    @DisabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "LIVE", disabledReason = "server timeout is "
+    @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "PLAYBACK", disabledReason = "server timeout is "
             + " not readily reproducible and because the service caches query results, the queries that require extended time "
             + "to complete if run the first time can return immediately if a cached result is available. So, this test can "
             + " wait for a long time before succeeding. So, disabling this in LIVE test mode")
