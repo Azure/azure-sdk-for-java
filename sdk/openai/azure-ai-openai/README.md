@@ -409,7 +409,12 @@ if (choice.getFinishReason() == CompletionsFinishReason.TOOL_CALLS) {
 The OpenAI service starts supporting `text to speech` with the introduction of `tts` models.
 The following code snippet shows how to use the service to convert text to speech.
 ```java readme-sample-textToSpeech
-
+String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
+SpeechGenerationOptions options = new SpeechGenerationOptions(
+        "Today is a wonderful day to build something people love!",
+        SpeechVoice.ALLOY);
+BinaryData speech = client.generateSpeechFromText(deploymentOrModelId, options);
+System.out.println("Speech: " + speech);
 ```
 For a complete sample example, see sample [Text to Speech][sample_text_to_speech].
 Please refer to the service documentation for a conceptual discussion of [Text to Speech][microsoft_docs_text_to_speech].

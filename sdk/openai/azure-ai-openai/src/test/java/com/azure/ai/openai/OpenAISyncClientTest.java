@@ -35,6 +35,7 @@ import com.azure.core.test.annotation.RecordWithoutRequestBody;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.IterableStream;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
@@ -768,6 +769,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         }));
     }
 
+    @Disabled("This test is disabled because the model is not available in the test environment")
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testTextToSpeech(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
@@ -775,6 +777,22 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
         textToSpeechRunner(((modelId, speechGenerationOptions) -> {
             BinaryData binaryData = client.generateSpeechFromText(modelId, speechGenerationOptions);
             assertNotNull(binaryData);
+        }));
+    }
+
+    @Disabled("This test is disabled because the model is not available in the test environment")
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testTextToSpeechWithResponse(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIClient(httpClient, serviceVersion);
+        textToSpeechRunnerForNonAzure(((modelId, speechGenerationOptions) -> {
+            Response<BinaryData> response = client.generateSpeechFromTextWithResponse(modelId,
+                    BinaryData.fromObject(speechGenerationOptions), new RequestOptions());
+            assertTrue(response.getStatusCode() > 0);
+            assertNotNull(response.getHeaders());
+            BinaryData speech = response.getValue();
+            assertNotNull(speech);
+            assertNotNull(speech.toBytes());
         }));
     }
 }
