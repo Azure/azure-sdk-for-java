@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Trigger reference type. */
+/**
+ * Trigger reference type.
+ */
 @Fluent
 public final class TriggerReference {
     /*
@@ -22,12 +24,15 @@ public final class TriggerReference {
     @JsonProperty(value = "referenceName", required = true)
     private String referenceName;
 
-    /** Creates an instance of TriggerReference class. */
-    public TriggerReference() {}
+    /**
+     * Creates an instance of TriggerReference class.
+     */
+    public TriggerReference() {
+    }
 
     /**
      * Get the type property: Trigger reference type.
-     *
+     * 
      * @return the type value.
      */
     public TriggerReferenceType getType() {
@@ -36,7 +41,7 @@ public final class TriggerReference {
 
     /**
      * Set the type property: Trigger reference type.
-     *
+     * 
      * @param type the type value to set.
      * @return the TriggerReference object itself.
      */
@@ -47,7 +52,7 @@ public final class TriggerReference {
 
     /**
      * Get the referenceName property: Reference trigger name.
-     *
+     * 
      * @return the referenceName value.
      */
     public String getReferenceName() {
@@ -56,7 +61,7 @@ public final class TriggerReference {
 
     /**
      * Set the referenceName property: Reference trigger name.
-     *
+     * 
      * @param referenceName the referenceName value to set.
      * @return the TriggerReference object itself.
      */

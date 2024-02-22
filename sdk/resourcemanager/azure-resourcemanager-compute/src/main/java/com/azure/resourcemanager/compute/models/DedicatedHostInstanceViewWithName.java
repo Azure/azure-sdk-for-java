@@ -20,27 +20,33 @@ public final class DedicatedHostInstanceViewWithName extends DedicatedHostInstan
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
-    /** Creates an instance of DedicatedHostInstanceViewWithName class. */
+    /**
+     * Creates an instance of DedicatedHostInstanceViewWithName class.
+     */
     public DedicatedHostInstanceViewWithName() {
     }
 
     /**
      * Get the name property: The name of the dedicated host.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
         return this.name;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DedicatedHostInstanceViewWithName withAvailableCapacity(DedicatedHostAvailableCapacity availableCapacity) {
         super.withAvailableCapacity(availableCapacity);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DedicatedHostInstanceViewWithName withStatuses(List<InstanceViewStatus> statuses) {
         super.withStatuses(statuses);
@@ -49,7 +55,7 @@ public final class DedicatedHostInstanceViewWithName extends DedicatedHostInstan
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

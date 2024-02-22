@@ -16,7 +16,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class AzureFunctionLinkedServiceTypeProperties {
     /*
-     * The endpoint of the Azure Function App. URL will be in the format https://<accountName>.azurewebsites.net.
+     * The endpoint of the Azure Function App. URL will be in the format https://<accountName>.azurewebsites.net. Type:
+     * string (or Expression with resultType string).
      */
     @JsonProperty(value = "functionAppUrl", required = true)
     private Object functionAppUrl;
@@ -41,7 +42,7 @@ public final class AzureFunctionLinkedServiceTypeProperties {
     private CredentialReference credential;
 
     /*
-     * Allowed token audiences for azure function.
+     * Allowed token audiences for azure function. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "resourceId")
     private Object resourceId;
@@ -61,7 +62,7 @@ public final class AzureFunctionLinkedServiceTypeProperties {
 
     /**
      * Get the functionAppUrl property: The endpoint of the Azure Function App. URL will be in the format
-     * https://&lt;accountName&gt;.azurewebsites.net.
+     * https://&lt;accountName&gt;.azurewebsites.net. Type: string (or Expression with resultType string).
      * 
      * @return the functionAppUrl value.
      */
@@ -71,7 +72,7 @@ public final class AzureFunctionLinkedServiceTypeProperties {
 
     /**
      * Set the functionAppUrl property: The endpoint of the Azure Function App. URL will be in the format
-     * https://&lt;accountName&gt;.azurewebsites.net.
+     * https://&lt;accountName&gt;.azurewebsites.net. Type: string (or Expression with resultType string).
      * 
      * @param functionAppUrl the functionAppUrl value to set.
      * @return the AzureFunctionLinkedServiceTypeProperties object itself.
@@ -144,7 +145,8 @@ public final class AzureFunctionLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the resourceId property: Allowed token audiences for azure function.
+     * Get the resourceId property: Allowed token audiences for azure function. Type: string (or Expression with
+     * resultType string).
      * 
      * @return the resourceId value.
      */
@@ -153,7 +155,8 @@ public final class AzureFunctionLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the resourceId property: Allowed token audiences for azure function.
+     * Set the resourceId property: Allowed token audiences for azure function. Type: string (or Expression with
+     * resultType string).
      * 
      * @param resourceId the resourceId value to set.
      * @return the AzureFunctionLinkedServiceTypeProperties object itself.

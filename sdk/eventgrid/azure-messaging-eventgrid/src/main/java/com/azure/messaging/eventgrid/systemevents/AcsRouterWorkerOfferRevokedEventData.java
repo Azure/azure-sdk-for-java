@@ -5,29 +5,35 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerOfferRevoked event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterWorkerOfferRevoked event.
+ */
 @Fluent
 public final class AcsRouterWorkerOfferRevokedEventData extends AcsRouterWorkerEventData {
     /*
      * Router Worker Offer Revoked Queue Id
      */
-    @JsonProperty(value = "queueId")
     private String queueId;
 
     /*
      * Router Worker Offer Revoked Offer Id
      */
-    @JsonProperty(value = "offerId")
     private String offerId;
 
-    /** Creates an instance of AcsRouterWorkerOfferRevokedEventData class. */
-    public AcsRouterWorkerOfferRevokedEventData() {}
+    /**
+     * Creates an instance of AcsRouterWorkerOfferRevokedEventData class.
+     */
+    public AcsRouterWorkerOfferRevokedEventData() {
+    }
 
     /**
      * Get the queueId property: Router Worker Offer Revoked Queue Id.
-     *
+     * 
      * @return the queueId value.
      */
     public String getQueueId() {
@@ -36,7 +42,7 @@ public final class AcsRouterWorkerOfferRevokedEventData extends AcsRouterWorkerE
 
     /**
      * Set the queueId property: Router Worker Offer Revoked Queue Id.
-     *
+     * 
      * @param queueId the queueId value to set.
      * @return the AcsRouterWorkerOfferRevokedEventData object itself.
      */
@@ -47,7 +53,7 @@ public final class AcsRouterWorkerOfferRevokedEventData extends AcsRouterWorkerE
 
     /**
      * Get the offerId property: Router Worker Offer Revoked Offer Id.
-     *
+     * 
      * @return the offerId value.
      */
     public String getOfferId() {
@@ -56,7 +62,7 @@ public final class AcsRouterWorkerOfferRevokedEventData extends AcsRouterWorkerE
 
     /**
      * Set the offerId property: Router Worker Offer Revoked Offer Id.
-     *
+     * 
      * @param offerId the offerId value to set.
      * @return the AcsRouterWorkerOfferRevokedEventData object itself.
      */
@@ -65,31 +71,88 @@ public final class AcsRouterWorkerOfferRevokedEventData extends AcsRouterWorkerE
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterWorkerOfferRevokedEventData setWorkerId(String workerId) {
         super.setWorkerId(workerId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterWorkerOfferRevokedEventData setJobId(String jobId) {
         super.setJobId(jobId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterWorkerOfferRevokedEventData setChannelReference(String channelReference) {
         super.setChannelReference(channelReference);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterWorkerOfferRevokedEventData setChannelId(String channelId) {
         super.setChannelId(channelId);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("jobId", getJobId());
+        jsonWriter.writeStringField("channelReference", getChannelReference());
+        jsonWriter.writeStringField("channelId", getChannelId());
+        jsonWriter.writeStringField("workerId", getWorkerId());
+        jsonWriter.writeStringField("queueId", this.queueId);
+        jsonWriter.writeStringField("offerId", this.offerId);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsRouterWorkerOfferRevokedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsRouterWorkerOfferRevokedEventData if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsRouterWorkerOfferRevokedEventData.
+     */
+    public static AcsRouterWorkerOfferRevokedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsRouterWorkerOfferRevokedEventData deserializedAcsRouterWorkerOfferRevokedEventData
+                = new AcsRouterWorkerOfferRevokedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("jobId".equals(fieldName)) {
+                    deserializedAcsRouterWorkerOfferRevokedEventData.setJobId(reader.getString());
+                } else if ("channelReference".equals(fieldName)) {
+                    deserializedAcsRouterWorkerOfferRevokedEventData.setChannelReference(reader.getString());
+                } else if ("channelId".equals(fieldName)) {
+                    deserializedAcsRouterWorkerOfferRevokedEventData.setChannelId(reader.getString());
+                } else if ("workerId".equals(fieldName)) {
+                    deserializedAcsRouterWorkerOfferRevokedEventData.setWorkerId(reader.getString());
+                } else if ("queueId".equals(fieldName)) {
+                    deserializedAcsRouterWorkerOfferRevokedEventData.queueId = reader.getString();
+                } else if ("offerId".equals(fieldName)) {
+                    deserializedAcsRouterWorkerOfferRevokedEventData.offerId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsRouterWorkerOfferRevokedEventData;
+        });
     }
 }

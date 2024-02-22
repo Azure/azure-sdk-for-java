@@ -7,7 +7,9 @@ package com.azure.resourcemanager.batch.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A VM Family and its associated core quota for the Batch account. */
+/**
+ * A VM Family and its associated core quota for the Batch account.
+ */
 @Immutable
 public final class VirtualMachineFamilyCoreQuota {
     /*
@@ -22,13 +24,15 @@ public final class VirtualMachineFamilyCoreQuota {
     @JsonProperty(value = "coreQuota", access = JsonProperty.Access.WRITE_ONLY)
     private Integer coreQuota;
 
-    /** Creates an instance of VirtualMachineFamilyCoreQuota class. */
+    /**
+     * Creates an instance of VirtualMachineFamilyCoreQuota class.
+     */
     public VirtualMachineFamilyCoreQuota() {
     }
 
     /**
      * Get the name property: The Virtual Machine family name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class VirtualMachineFamilyCoreQuota {
 
     /**
      * Get the coreQuota property: The core quota for the VM family for the Batch account.
-     *
+     * 
      * @return the coreQuota value.
      */
     public Integer coreQuota() {
@@ -46,7 +50,7 @@ public final class VirtualMachineFamilyCoreQuota {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

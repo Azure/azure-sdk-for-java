@@ -12,7 +12,9 @@ import com.azure.resourcemanager.compute.models.GalleryProvisioningState;
 import com.azure.resourcemanager.compute.models.ReplicationStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the properties of a gallery image version. */
+/**
+ * Describes the properties of a gallery image version.
+ */
 @Fluent
 public final class GalleryApplicationVersionProperties {
     /*
@@ -29,7 +31,7 @@ public final class GalleryApplicationVersionProperties {
 
     /*
      * The current state of the gallery or gallery artifact.
-     *
+     * 
      * The provisioning state, which only appears in the response.
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
@@ -41,13 +43,15 @@ public final class GalleryApplicationVersionProperties {
     @JsonProperty(value = "replicationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private ReplicationStatus replicationStatus;
 
-    /** Creates an instance of GalleryApplicationVersionProperties class. */
+    /**
+     * Creates an instance of GalleryApplicationVersionProperties class.
+     */
     public GalleryApplicationVersionProperties() {
     }
 
     /**
      * Get the publishingProfile property: The publishing profile of a gallery image version.
-     *
+     * 
      * @return the publishingProfile value.
      */
     public GalleryApplicationVersionPublishingProfile publishingProfile() {
@@ -56,19 +60,19 @@ public final class GalleryApplicationVersionProperties {
 
     /**
      * Set the publishingProfile property: The publishing profile of a gallery image version.
-     *
+     * 
      * @param publishingProfile the publishingProfile value to set.
      * @return the GalleryApplicationVersionProperties object itself.
      */
-    public GalleryApplicationVersionProperties withPublishingProfile(
-        GalleryApplicationVersionPublishingProfile publishingProfile) {
+    public GalleryApplicationVersionProperties
+        withPublishingProfile(GalleryApplicationVersionPublishingProfile publishingProfile) {
         this.publishingProfile = publishingProfile;
         return this;
     }
 
     /**
      * Get the safetyProfile property: The safety profile of the Gallery Application Version.
-     *
+     * 
      * @return the safetyProfile value.
      */
     public GalleryApplicationVersionSafetyProfile safetyProfile() {
@@ -77,7 +81,7 @@ public final class GalleryApplicationVersionProperties {
 
     /**
      * Set the safetyProfile property: The safety profile of the Gallery Application Version.
-     *
+     * 
      * @param safetyProfile the safetyProfile value to set.
      * @return the GalleryApplicationVersionProperties object itself.
      */
@@ -88,9 +92,9 @@ public final class GalleryApplicationVersionProperties {
 
     /**
      * Get the provisioningState property: The current state of the gallery or gallery artifact.
-     *
-     * <p>The provisioning state, which only appears in the response.
-     *
+     * 
+     * The provisioning state, which only appears in the response.
+     * 
      * @return the provisioningState value.
      */
     public GalleryProvisioningState provisioningState() {
@@ -99,7 +103,7 @@ public final class GalleryApplicationVersionProperties {
 
     /**
      * Get the replicationStatus property: This is the replication status of the gallery image version.
-     *
+     * 
      * @return the replicationStatus value.
      */
     public ReplicationStatus replicationStatus() {
@@ -108,15 +112,13 @@ public final class GalleryApplicationVersionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (publishingProfile() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property publishingProfile in model GalleryApplicationVersionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property publishingProfile in model GalleryApplicationVersionProperties"));
         } else {
             publishingProfile().validate();
         }

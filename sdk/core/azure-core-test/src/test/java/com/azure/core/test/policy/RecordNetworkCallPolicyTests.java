@@ -51,8 +51,7 @@ public class RecordNetworkCallPolicyTests {
     @MethodSource("sigValueIsRedactedSupplier")
     public void sigValueIsRedacted(String requestUrl, String expectedRedactedUrl) {
         RecordedData recordedData = new RecordedData();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(new RecordNetworkCallPolicy(recordedData))
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(new RecordNetworkCallPolicy(recordedData))
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .build();
 
@@ -65,11 +64,13 @@ public class RecordNetworkCallPolicyTests {
     }
 
     private static Stream<Arguments> sigValueIsRedactedSupplier() {
-        return Stream.of(
-            Arguments.of("https://azure.com", "https://REDACTED.com"), // No sig should result in no sig
-            Arguments.of("https://azure.com?sig", "https://REDACTED.com?sig=REDACTED"), // Empty sig should result in redacted sig
-            Arguments.of("https://azure.com?sig=", "https://REDACTED.com?sig=REDACTED"), // Empty sig should result in redacted sig
-            Arguments.of("https://azure.com?sig=fake", "https://REDACTED.com?sig=REDACTED") // sig should result in redacted sig
+        return Stream.of(Arguments.of("https://azure.com", "https://REDACTED.com"), // No sig should result in no sig
+            Arguments.of("https://azure.com?sig", "https://REDACTED.com?sig=REDACTED"), // Empty sig should result in
+            // redacted sig
+            Arguments.of("https://azure.com?sig=", "https://REDACTED.com?sig=REDACTED"), // Empty sig should result in
+            // redacted sig
+            Arguments.of("https://azure.com?sig=fake", "https://REDACTED.com?sig=REDACTED") // sig should result in
+                                                                                           // redacted sig
         );
     }
 }

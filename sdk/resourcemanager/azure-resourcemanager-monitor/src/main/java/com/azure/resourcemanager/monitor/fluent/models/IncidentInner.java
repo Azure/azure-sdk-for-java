@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** An alert incident indicates the activation status of an alert rule. */
+/**
+ * An alert incident indicates the activation status of an alert rule.
+ */
 @Immutable
 public final class IncidentInner {
     /*
@@ -41,13 +43,15 @@ public final class IncidentInner {
     @JsonProperty(value = "resolvedTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime resolvedTime;
 
-    /** Creates an instance of IncidentInner class. */
+    /**
+     * Creates an instance of IncidentInner class.
+     */
     public IncidentInner() {
     }
 
     /**
      * Get the name property: Incident name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -56,7 +60,7 @@ public final class IncidentInner {
 
     /**
      * Get the ruleName property: Rule name that is associated with the incident.
-     *
+     * 
      * @return the ruleName value.
      */
     public String ruleName() {
@@ -65,7 +69,7 @@ public final class IncidentInner {
 
     /**
      * Get the isActive property: A boolean to indicate whether the incident is active or resolved.
-     *
+     * 
      * @return the isActive value.
      */
     public Boolean isActive() {
@@ -74,7 +78,7 @@ public final class IncidentInner {
 
     /**
      * Get the activatedTime property: The time at which the incident was activated in ISO8601 format.
-     *
+     * 
      * @return the activatedTime value.
      */
     public OffsetDateTime activatedTime() {
@@ -84,7 +88,7 @@ public final class IncidentInner {
     /**
      * Get the resolvedTime property: The time at which the incident was resolved in ISO8601 format. If null, it means
      * the incident is still active.
-     *
+     * 
      * @return the resolvedTime value.
      */
     public OffsetDateTime resolvedTime() {
@@ -93,7 +97,7 @@ public final class IncidentInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

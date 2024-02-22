@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Volume group properties. */
+/**
+ * Volume group properties.
+ */
 @Fluent
 public final class VolumeGroupMetadata {
     /*
@@ -31,17 +33,11 @@ public final class VolumeGroupMetadata {
 
     /*
      * Global volume placement rules
-     *
+     * 
      * Application specific placement rules for the volume group
      */
     @JsonProperty(value = "globalPlacementRules")
     private List<PlacementKeyValuePairs> globalPlacementRules;
-
-    /*
-     * Application specific identifier of deployment rules for the volume group
-     */
-    @JsonProperty(value = "deploymentSpecId")
-    private String deploymentSpecId;
 
     /*
      * Number of volumes in volume group
@@ -49,13 +45,15 @@ public final class VolumeGroupMetadata {
     @JsonProperty(value = "volumesCount", access = JsonProperty.Access.WRITE_ONLY)
     private Long volumesCount;
 
-    /** Creates an instance of VolumeGroupMetadata class. */
+    /**
+     * Creates an instance of VolumeGroupMetadata class.
+     */
     public VolumeGroupMetadata() {
     }
 
     /**
      * Get the groupDescription property: Group Description.
-     *
+     * 
      * @return the groupDescription value.
      */
     public String groupDescription() {
@@ -64,7 +62,7 @@ public final class VolumeGroupMetadata {
 
     /**
      * Set the groupDescription property: Group Description.
-     *
+     * 
      * @param groupDescription the groupDescription value to set.
      * @return the VolumeGroupMetadata object itself.
      */
@@ -75,7 +73,7 @@ public final class VolumeGroupMetadata {
 
     /**
      * Get the applicationType property: Application Type.
-     *
+     * 
      * @return the applicationType value.
      */
     public ApplicationType applicationType() {
@@ -84,7 +82,7 @@ public final class VolumeGroupMetadata {
 
     /**
      * Set the applicationType property: Application Type.
-     *
+     * 
      * @param applicationType the applicationType value to set.
      * @return the VolumeGroupMetadata object itself.
      */
@@ -95,7 +93,7 @@ public final class VolumeGroupMetadata {
 
     /**
      * Get the applicationIdentifier property: Application specific identifier.
-     *
+     * 
      * @return the applicationIdentifier value.
      */
     public String applicationIdentifier() {
@@ -104,7 +102,7 @@ public final class VolumeGroupMetadata {
 
     /**
      * Set the applicationIdentifier property: Application specific identifier.
-     *
+     * 
      * @param applicationIdentifier the applicationIdentifier value to set.
      * @return the VolumeGroupMetadata object itself.
      */
@@ -115,9 +113,9 @@ public final class VolumeGroupMetadata {
 
     /**
      * Get the globalPlacementRules property: Global volume placement rules
-     *
-     * <p>Application specific placement rules for the volume group.
-     *
+     * 
+     * Application specific placement rules for the volume group.
+     * 
      * @return the globalPlacementRules value.
      */
     public List<PlacementKeyValuePairs> globalPlacementRules() {
@@ -126,9 +124,9 @@ public final class VolumeGroupMetadata {
 
     /**
      * Set the globalPlacementRules property: Global volume placement rules
-     *
-     * <p>Application specific placement rules for the volume group.
-     *
+     * 
+     * Application specific placement rules for the volume group.
+     * 
      * @param globalPlacementRules the globalPlacementRules value to set.
      * @return the VolumeGroupMetadata object itself.
      */
@@ -138,28 +136,8 @@ public final class VolumeGroupMetadata {
     }
 
     /**
-     * Get the deploymentSpecId property: Application specific identifier of deployment rules for the volume group.
-     *
-     * @return the deploymentSpecId value.
-     */
-    public String deploymentSpecId() {
-        return this.deploymentSpecId;
-    }
-
-    /**
-     * Set the deploymentSpecId property: Application specific identifier of deployment rules for the volume group.
-     *
-     * @param deploymentSpecId the deploymentSpecId value to set.
-     * @return the VolumeGroupMetadata object itself.
-     */
-    public VolumeGroupMetadata withDeploymentSpecId(String deploymentSpecId) {
-        this.deploymentSpecId = deploymentSpecId;
-        return this;
-    }
-
-    /**
      * Get the volumesCount property: Number of volumes in volume group.
-     *
+     * 
      * @return the volumesCount value.
      */
     public Long volumesCount() {
@@ -168,7 +146,7 @@ public final class VolumeGroupMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

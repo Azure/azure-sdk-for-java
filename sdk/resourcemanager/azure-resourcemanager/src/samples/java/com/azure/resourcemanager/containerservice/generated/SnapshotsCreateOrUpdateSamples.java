@@ -9,32 +9,26 @@ import com.azure.resourcemanager.containerservice.models.CreationData;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Snapshots CreateOrUpdate. */
+/**
+ * Samples for Snapshots CreateOrUpdate.
+ */
 public final class SnapshotsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-10-01/examples/SnapshotsCreate.json
+     * x-ms-original-file:
+     * specification/containerservice/resource-manager/Microsoft.ContainerService/aks/stable/2023-11-01/examples/
+     * SnapshotsCreate.json
      */
     /**
      * Sample code: Create/Update Snapshot.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void createUpdateSnapshot(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .kubernetesClusters()
-            .manager()
-            .serviceClient()
-            .getSnapshots()
-            .createOrUpdateWithResponse(
-                "rg1",
-                "snapshot1",
-                new SnapshotInner()
-                    .withLocation("westus")
-                    .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
-                    .withCreationData(
-                        new CreationData()
-                            .withSourceResourceId(
-                                "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0")),
+        azure.kubernetesClusters().manager().serviceClient().getSnapshots()
+            .createOrUpdateWithResponse("rg1", "snapshot1", new SnapshotInner().withLocation("westus")
+                .withTags(mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder"))
+                .withCreationData(new CreationData().withSourceResourceId(
+                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ContainerService/managedClusters/cluster1/agentPools/pool0")),
                 com.azure.core.util.Context.NONE);
     }
 

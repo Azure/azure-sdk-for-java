@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.ConfigurationType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Network Manager Commit. */
+/**
+ * Network Manager Commit.
+ */
 @Fluent
 public final class NetworkManagerCommitInner {
     /*
@@ -37,13 +39,15 @@ public final class NetworkManagerCommitInner {
     @JsonProperty(value = "commitType", required = true)
     private ConfigurationType commitType;
 
-    /** Creates an instance of NetworkManagerCommitInner class. */
+    /**
+     * Creates an instance of NetworkManagerCommitInner class.
+     */
     public NetworkManagerCommitInner() {
     }
 
     /**
      * Get the commitId property: Commit Id.
-     *
+     * 
      * @return the commitId value.
      */
     public String commitId() {
@@ -52,7 +56,7 @@ public final class NetworkManagerCommitInner {
 
     /**
      * Get the targetLocations property: List of target locations.
-     *
+     * 
      * @return the targetLocations value.
      */
     public List<String> targetLocations() {
@@ -61,7 +65,7 @@ public final class NetworkManagerCommitInner {
 
     /**
      * Set the targetLocations property: List of target locations.
-     *
+     * 
      * @param targetLocations the targetLocations value to set.
      * @return the NetworkManagerCommitInner object itself.
      */
@@ -72,7 +76,7 @@ public final class NetworkManagerCommitInner {
 
     /**
      * Get the configurationIds property: List of configuration ids.
-     *
+     * 
      * @return the configurationIds value.
      */
     public List<String> configurationIds() {
@@ -81,7 +85,7 @@ public final class NetworkManagerCommitInner {
 
     /**
      * Set the configurationIds property: List of configuration ids.
-     *
+     * 
      * @param configurationIds the configurationIds value to set.
      * @return the NetworkManagerCommitInner object itself.
      */
@@ -92,7 +96,7 @@ public final class NetworkManagerCommitInner {
 
     /**
      * Get the commitType property: Commit Type.
-     *
+     * 
      * @return the commitType value.
      */
     public ConfigurationType commitType() {
@@ -101,7 +105,7 @@ public final class NetworkManagerCommitInner {
 
     /**
      * Set the commitType property: Commit Type.
-     *
+     * 
      * @param commitType the commitType value to set.
      * @return the NetworkManagerCommitInner object itself.
      */
@@ -112,21 +116,17 @@ public final class NetworkManagerCommitInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targetLocations() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetLocations in model NetworkManagerCommitInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property targetLocations in model NetworkManagerCommitInner"));
         }
         if (commitType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property commitType in model NetworkManagerCommitInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property commitType in model NetworkManagerCommitInner"));
         }
     }
 

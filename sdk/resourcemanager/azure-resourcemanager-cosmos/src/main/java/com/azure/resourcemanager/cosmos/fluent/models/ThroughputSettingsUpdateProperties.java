@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.models.ThroughputSettingsResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties to update Azure Cosmos DB resource throughput. */
+/**
+ * Properties to update Azure Cosmos DB resource throughput.
+ */
 @Fluent
 public final class ThroughputSettingsUpdateProperties {
     /*
@@ -18,13 +20,15 @@ public final class ThroughputSettingsUpdateProperties {
     @JsonProperty(value = "resource", required = true)
     private ThroughputSettingsResource resource;
 
-    /** Creates an instance of ThroughputSettingsUpdateProperties class. */
+    /**
+     * Creates an instance of ThroughputSettingsUpdateProperties class.
+     */
     public ThroughputSettingsUpdateProperties() {
     }
 
     /**
      * Get the resource property: The standard JSON format of a resource throughput.
-     *
+     * 
      * @return the resource value.
      */
     public ThroughputSettingsResource resource() {
@@ -33,7 +37,7 @@ public final class ThroughputSettingsUpdateProperties {
 
     /**
      * Set the resource property: The standard JSON format of a resource throughput.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the ThroughputSettingsUpdateProperties object itself.
      */
@@ -44,15 +48,13 @@ public final class ThroughputSettingsUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resource() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resource in model ThroughputSettingsUpdateProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property resource in model ThroughputSettingsUpdateProperties"));
         } else {
             resource().validate();
         }

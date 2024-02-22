@@ -7,7 +7,9 @@ package com.azure.resourcemanager.healthcareapis.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The settings for the Cosmos DB database backing the service. */
+/**
+ * The settings for the Cosmos DB database backing the service.
+ */
 @Fluent
 public final class ServiceCosmosDbConfigurationInfo {
     /*
@@ -22,9 +24,21 @@ public final class ServiceCosmosDbConfigurationInfo {
     @JsonProperty(value = "keyVaultKeyUri")
     private String keyVaultKeyUri;
 
+    /*
+     * The multi-tenant application id used to enable CMK access for services in a data sovereign region.
+     */
+    @JsonProperty(value = "crossTenantCmkApplicationId")
+    private String crossTenantCmkApplicationId;
+
+    /**
+     * Creates an instance of ServiceCosmosDbConfigurationInfo class.
+     */
+    public ServiceCosmosDbConfigurationInfo() {
+    }
+
     /**
      * Get the offerThroughput property: The provisioned throughput for the backing database.
-     *
+     * 
      * @return the offerThroughput value.
      */
     public Integer offerThroughput() {
@@ -33,7 +47,7 @@ public final class ServiceCosmosDbConfigurationInfo {
 
     /**
      * Set the offerThroughput property: The provisioned throughput for the backing database.
-     *
+     * 
      * @param offerThroughput the offerThroughput value to set.
      * @return the ServiceCosmosDbConfigurationInfo object itself.
      */
@@ -44,7 +58,7 @@ public final class ServiceCosmosDbConfigurationInfo {
 
     /**
      * Get the keyVaultKeyUri property: The URI of the customer-managed key for the backing database.
-     *
+     * 
      * @return the keyVaultKeyUri value.
      */
     public String keyVaultKeyUri() {
@@ -53,7 +67,7 @@ public final class ServiceCosmosDbConfigurationInfo {
 
     /**
      * Set the keyVaultKeyUri property: The URI of the customer-managed key for the backing database.
-     *
+     * 
      * @param keyVaultKeyUri the keyVaultKeyUri value to set.
      * @return the ServiceCosmosDbConfigurationInfo object itself.
      */
@@ -63,8 +77,30 @@ public final class ServiceCosmosDbConfigurationInfo {
     }
 
     /**
+     * Get the crossTenantCmkApplicationId property: The multi-tenant application id used to enable CMK access for
+     * services in a data sovereign region.
+     * 
+     * @return the crossTenantCmkApplicationId value.
+     */
+    public String crossTenantCmkApplicationId() {
+        return this.crossTenantCmkApplicationId;
+    }
+
+    /**
+     * Set the crossTenantCmkApplicationId property: The multi-tenant application id used to enable CMK access for
+     * services in a data sovereign region.
+     * 
+     * @param crossTenantCmkApplicationId the crossTenantCmkApplicationId value to set.
+     * @return the ServiceCosmosDbConfigurationInfo object itself.
+     */
+    public ServiceCosmosDbConfigurationInfo withCrossTenantCmkApplicationId(String crossTenantCmkApplicationId) {
+        this.crossTenantCmkApplicationId = crossTenantCmkApplicationId;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

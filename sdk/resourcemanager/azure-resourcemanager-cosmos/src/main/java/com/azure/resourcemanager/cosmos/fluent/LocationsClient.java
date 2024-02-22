@@ -13,59 +13,61 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.cosmos.fluent.models.LocationGetResultInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LocationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LocationsClient.
+ */
 public interface LocationsClient {
     /**
      * List Cosmos DB locations and their properties.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains Cosmos DB locations and their properties as paginated response
-     *     with {@link PagedFlux}.
+     * with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<LocationGetResultInner> listAsync();
 
     /**
      * List Cosmos DB locations and their properties.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains Cosmos DB locations and their properties as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LocationGetResultInner> list();
 
     /**
      * List Cosmos DB locations and their properties.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains Cosmos DB locations and their properties as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<LocationGetResultInner> list(Context context);
 
     /**
      * Get the properties of an existing Cosmos DB location.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of an existing Cosmos DB location along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<LocationGetResultInner>> getWithResponseAsync(String location);
 
     /**
      * Get the properties of an existing Cosmos DB location.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -77,7 +79,7 @@ public interface LocationsClient {
 
     /**
      * Get the properties of an existing Cosmos DB location.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -90,7 +92,7 @@ public interface LocationsClient {
 
     /**
      * Get the properties of an existing Cosmos DB location.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

@@ -5,49 +5,53 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.SMSDeliveryReportReceived event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.SMSDeliveryReportReceived event.
+ */
 @Fluent
 public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBaseProperties {
     /*
      * Status of Delivery
      */
-    @JsonProperty(value = "deliveryStatus")
     private String deliveryStatus;
 
     /*
      * Details about Delivery Status
      */
-    @JsonProperty(value = "deliveryStatusDetails")
     private String deliveryStatusDetails;
 
     /*
      * List of details of delivery attempts made
      */
-    @JsonProperty(value = "deliveryAttempts")
     private List<AcsSmsDeliveryAttemptProperties> deliveryAttempts;
 
     /*
      * The time at which the SMS delivery report was received
      */
-    @JsonProperty(value = "receivedTimestamp")
     private OffsetDateTime receivedTimestamp;
 
     /*
      * Customer Content
      */
-    @JsonProperty(value = "tag")
     private String tag;
 
-    /** Creates an instance of AcsSmsDeliveryReportReceivedEventData class. */
-    public AcsSmsDeliveryReportReceivedEventData() {}
+    /**
+     * Creates an instance of AcsSmsDeliveryReportReceivedEventData class.
+     */
+    public AcsSmsDeliveryReportReceivedEventData() {
+    }
 
     /**
      * Get the deliveryStatus property: Status of Delivery.
-     *
+     * 
      * @return the deliveryStatus value.
      */
     public String getDeliveryStatus() {
@@ -56,7 +60,7 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
 
     /**
      * Set the deliveryStatus property: Status of Delivery.
-     *
+     * 
      * @param deliveryStatus the deliveryStatus value to set.
      * @return the AcsSmsDeliveryReportReceivedEventData object itself.
      */
@@ -67,7 +71,7 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
 
     /**
      * Get the deliveryStatusDetails property: Details about Delivery Status.
-     *
+     * 
      * @return the deliveryStatusDetails value.
      */
     public String getDeliveryStatusDetails() {
@@ -76,7 +80,7 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
 
     /**
      * Set the deliveryStatusDetails property: Details about Delivery Status.
-     *
+     * 
      * @param deliveryStatusDetails the deliveryStatusDetails value to set.
      * @return the AcsSmsDeliveryReportReceivedEventData object itself.
      */
@@ -87,7 +91,7 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
 
     /**
      * Get the deliveryAttempts property: List of details of delivery attempts made.
-     *
+     * 
      * @return the deliveryAttempts value.
      */
     public List<AcsSmsDeliveryAttemptProperties> getDeliveryAttempts() {
@@ -96,19 +100,19 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
 
     /**
      * Set the deliveryAttempts property: List of details of delivery attempts made.
-     *
+     * 
      * @param deliveryAttempts the deliveryAttempts value to set.
      * @return the AcsSmsDeliveryReportReceivedEventData object itself.
      */
-    public AcsSmsDeliveryReportReceivedEventData setDeliveryAttempts(
-            List<AcsSmsDeliveryAttemptProperties> deliveryAttempts) {
+    public AcsSmsDeliveryReportReceivedEventData
+        setDeliveryAttempts(List<AcsSmsDeliveryAttemptProperties> deliveryAttempts) {
         this.deliveryAttempts = deliveryAttempts;
         return this;
     }
 
     /**
      * Get the receivedTimestamp property: The time at which the SMS delivery report was received.
-     *
+     * 
      * @return the receivedTimestamp value.
      */
     public OffsetDateTime getReceivedTimestamp() {
@@ -117,7 +121,7 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
 
     /**
      * Set the receivedTimestamp property: The time at which the SMS delivery report was received.
-     *
+     * 
      * @param receivedTimestamp the receivedTimestamp value to set.
      * @return the AcsSmsDeliveryReportReceivedEventData object itself.
      */
@@ -128,7 +132,7 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
 
     /**
      * Get the tag property: Customer Content.
-     *
+     * 
      * @return the tag value.
      */
     public String getTag() {
@@ -137,7 +141,7 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
 
     /**
      * Set the tag property: Customer Content.
-     *
+     * 
      * @param tag the tag value to set.
      * @return the AcsSmsDeliveryReportReceivedEventData object itself.
      */
@@ -146,24 +150,90 @@ public final class AcsSmsDeliveryReportReceivedEventData extends AcsSmsEventBase
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsSmsDeliveryReportReceivedEventData setMessageId(String messageId) {
         super.setMessageId(messageId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsSmsDeliveryReportReceivedEventData setFrom(String from) {
         super.setFrom(from);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsSmsDeliveryReportReceivedEventData setTo(String to) {
         super.setTo(to);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("messageId", getMessageId());
+        jsonWriter.writeStringField("from", getFrom());
+        jsonWriter.writeStringField("to", getTo());
+        jsonWriter.writeStringField("deliveryStatus", this.deliveryStatus);
+        jsonWriter.writeStringField("deliveryStatusDetails", this.deliveryStatusDetails);
+        jsonWriter.writeArrayField("deliveryAttempts", this.deliveryAttempts,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeStringField("receivedTimestamp", this.receivedTimestamp == null ? null
+            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.receivedTimestamp));
+        jsonWriter.writeStringField("tag", this.tag);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsSmsDeliveryReportReceivedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsSmsDeliveryReportReceivedEventData if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsSmsDeliveryReportReceivedEventData.
+     */
+    public static AcsSmsDeliveryReportReceivedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsSmsDeliveryReportReceivedEventData deserializedAcsSmsDeliveryReportReceivedEventData
+                = new AcsSmsDeliveryReportReceivedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("messageId".equals(fieldName)) {
+                    deserializedAcsSmsDeliveryReportReceivedEventData.setMessageId(reader.getString());
+                } else if ("from".equals(fieldName)) {
+                    deserializedAcsSmsDeliveryReportReceivedEventData.setFrom(reader.getString());
+                } else if ("to".equals(fieldName)) {
+                    deserializedAcsSmsDeliveryReportReceivedEventData.setTo(reader.getString());
+                } else if ("deliveryStatus".equals(fieldName)) {
+                    deserializedAcsSmsDeliveryReportReceivedEventData.deliveryStatus = reader.getString();
+                } else if ("deliveryStatusDetails".equals(fieldName)) {
+                    deserializedAcsSmsDeliveryReportReceivedEventData.deliveryStatusDetails = reader.getString();
+                } else if ("deliveryAttempts".equals(fieldName)) {
+                    List<AcsSmsDeliveryAttemptProperties> deliveryAttempts
+                        = reader.readArray(reader1 -> AcsSmsDeliveryAttemptProperties.fromJson(reader1));
+                    deserializedAcsSmsDeliveryReportReceivedEventData.deliveryAttempts = deliveryAttempts;
+                } else if ("receivedTimestamp".equals(fieldName)) {
+                    deserializedAcsSmsDeliveryReportReceivedEventData.receivedTimestamp
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("tag".equals(fieldName)) {
+                    deserializedAcsSmsDeliveryReportReceivedEventData.tag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsSmsDeliveryReportReceivedEventData;
+        });
     }
 }

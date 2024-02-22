@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.4 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,278 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2024-01-24)
+
+- Azure Resource Manager HybridContainerService client library for Java. This package contains Microsoft Azure SDK for HybridContainerService Management SDK. The Microsoft.HybridContainerService Rest API spec. Package tag package-2024-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.KubernetesVersionCapabilities` was removed
+
+* `models.ProvisionedClustersListResult` was removed
+
+* `models.LinuxProfile` was removed
+
+* `models.VirtualNetworkPropertiesInfraVnetProfileVmware` was removed
+
+* `models.AgentPoolProvisioningStatusOperationStatusError` was removed
+
+* `models.ControlPlaneEndpointProfile` was removed
+
+* `models.AgentPoolProvisioningStatusOperationStatus` was removed
+
+* `models.ControlPlaneEndpointProfileControlPlaneEndpoint` was removed
+
+* `models.ProvisionedClusterPropertiesStatusOperationStatus` was removed
+
+* `models.ProvisionedClusters` was removed
+
+* `models.AgentPoolPatch` was removed
+
+* `models.ProvisionedClusterPropertiesStatusOperationStatusError` was removed
+
+#### `models.AgentPool$DefinitionStages` was modified
+
+* `withRegion(com.azure.core.management.Region)` was removed in stage 1
+* `withRegion(java.lang.String)` was removed in stage 1
+
+#### `models.VirtualNetworkPropertiesStatusOperationStatus` was modified
+
+* `phase()` was removed
+* `withPhase(java.lang.String)` was removed
+
+#### `models.AgentPool$Definition` was modified
+
+* `withRegion(com.azure.core.management.Region)` was removed
+* `withStatus(models.AgentPoolProvisioningStatusStatus)` was removed
+* `withOsType(models.OsType)` was removed
+* `withOsSku(models.Ossku)` was removed
+* `withNodeImageVersion(java.lang.String)` was removed
+* `withRegion(java.lang.String)` was removed
+* `withVmSize(java.lang.String)` was removed
+* `withAvailabilityZones(java.util.List)` was removed
+* `withCount(java.lang.Integer)` was removed
+
+#### `models.ProvisionedClusterInstances` was modified
+
+* `models.ProvisionedClusters get(java.lang.String)` -> `models.ProvisionedCluster get(java.lang.String)`
+* `createOrUpdate(java.lang.String,fluent.models.ProvisionedClustersInner,com.azure.core.util.Context)` was removed
+* `createOrUpdate(java.lang.String,fluent.models.ProvisionedClustersInner)` was removed
+
+#### `models.VirtualNetworkProperties` was modified
+
+* `dhcpServers()` was removed
+* `withDhcpServers(java.util.List)` was removed
+
+#### `models.AgentPools` was modified
+
+* `listByProvisionedClusterWithResponse(java.lang.String,com.azure.core.util.Context)` was removed
+* `models.AgentPoolListResult listByProvisionedCluster(java.lang.String)` -> `com.azure.core.http.rest.PagedIterable listByProvisionedCluster(java.lang.String)`
+
+#### `models.AgentPoolProvisioningStatusStatus` was modified
+
+* `withOperationStatus(models.AgentPoolProvisioningStatusOperationStatus)` was removed
+* `operationStatus()` was removed
+
+#### `models.KubernetesVersionProperties` was modified
+
+* `capabilities()` was removed
+
+#### `models.VirtualNetworkPropertiesInfraVnetProfile` was modified
+
+* `withVmware(models.VirtualNetworkPropertiesInfraVnetProfileVmware)` was removed
+* `vmware()` was removed
+
+#### `models.VirtualNetworkExtendedLocation` was modified
+
+* `java.lang.String type()` -> `models.ExtendedLocationTypes type()`
+* `withType(java.lang.String)` was removed
+
+#### `models.AgentPoolProfile` was modified
+
+* `withAvailabilityZones(java.util.List)` was removed
+* `withNodeImageVersion(java.lang.String)` was removed
+* `nodeImageVersion()` was removed
+* `availabilityZones()` was removed
+
+#### `models.ProvisionedClusterPropertiesStatus` was modified
+
+* `withOperationStatus(models.ProvisionedClusterPropertiesStatusOperationStatus)` was removed
+* `operationStatus()` was removed
+
+#### `models.AgentPool` was modified
+
+* `osType()` was removed
+* `provisioningState()` was removed
+* `vmSize()` was removed
+* `availabilityZones()` was removed
+* `count()` was removed
+* `location()` was removed
+* `regionName()` was removed
+* `nodeImageVersion()` was removed
+* `region()` was removed
+* `osSku()` was removed
+* `status()` was removed
+
+#### `models.NamedAgentPoolProfile` was modified
+
+* `withNodeImageVersion(java.lang.String)` was removed
+* `withAvailabilityZones(java.util.List)` was removed
+
+#### `models.ProvisionedClusterUpgradeProfile` was modified
+
+* `controlPlaneProfile()` was removed
+* `provisioningState()` was removed
+* `agentPoolProfiles()` was removed
+
+#### `models.HybridIdentityMetadata` was modified
+
+* `resourceUid()` was removed
+* `provisioningState()` was removed
+* `publicKey()` was removed
+
+#### `models.ControlPlaneProfile` was modified
+
+* `withCount(java.lang.Integer)` was removed
+* `withAvailabilityZones(java.util.List)` was removed
+* `withName(java.lang.String)` was removed
+* `withNodeImageVersion(java.lang.String)` was removed
+* `withOsSku(models.Ossku)` was removed
+* `linuxProfile()` was removed
+* `withOsType(models.OsType)` was removed
+* `withLinuxProfile(models.LinuxProfileProperties)` was removed
+* `withControlPlaneEndpoint(models.ControlPlaneEndpointProfileControlPlaneEndpoint)` was removed
+* `models.ControlPlaneEndpointProfileControlPlaneEndpoint controlPlaneEndpoint()` -> `models.ControlPlaneProfileControlPlaneEndpoint controlPlaneEndpoint()`
+* `withVmSize(java.lang.String)` was removed
+
+#### `models.AgentPoolListResult` was modified
+
+* `java.lang.String nextLink()` -> `java.lang.String nextLink()`
+* `innerModel()` was removed
+* `java.util.List value()` -> `java.util.List value()`
+
+#### `models.ProvisionedClusterPoolUpgradeProfile` was modified
+
+* `name()` was removed
+
+### Features Added
+
+* `models.StorageProfile` was added
+
+* `models.ProvisionedClusterListResult` was added
+
+* `models.ProvisionedClusterPropertiesAutoScalerProfile` was added
+
+* `models.ProvisionedClusterUpgradeProfileProperties` was added
+
+* `models.StorageProfileNfsCsiDriver` was added
+
+* `models.AgentPoolProperties` was added
+
+* `models.ClusterVMAccessProfile` was added
+
+* `models.Expander` was added
+
+* `models.StorageProfileSmbCsiDriver` was added
+
+* `models.ProvisionedCluster` was added
+
+* `models.ControlPlaneProfileControlPlaneEndpoint` was added
+
+* `models.HybridIdentityMetadataProperties` was added
+
+#### `models.AgentPool$Update` was modified
+
+* `withProperties(models.AgentPoolProperties)` was added
+* `withExtendedLocation(models.ExtendedLocation)` was added
+
+#### `models.AgentPool$Definition` was modified
+
+* `withProperties(models.AgentPoolProperties)` was added
+
+#### `models.ProvisionedClusterInstances` was modified
+
+* `createOrUpdate(java.lang.String,fluent.models.ProvisionedClusterInner,com.azure.core.util.Context)` was added
+* `createOrUpdate(java.lang.String,fluent.models.ProvisionedClusterInner)` was added
+
+#### `models.ProvisionedClusterProperties` was modified
+
+* `autoScalerProfile()` was added
+* `clusterVMAccessProfile()` was added
+* `storageProfile()` was added
+* `withAutoScalerProfile(models.ProvisionedClusterPropertiesAutoScalerProfile)` was added
+* `withStorageProfile(models.StorageProfile)` was added
+* `withClusterVMAccessProfile(models.ClusterVMAccessProfile)` was added
+
+#### `models.AgentPools` was modified
+
+* `listByProvisionedCluster(java.lang.String,com.azure.core.util.Context)` was added
+
+#### `models.AgentPoolProvisioningStatusStatus` was modified
+
+* `currentState()` was added
+
+#### `models.VirtualNetworkExtendedLocation` was modified
+
+* `withType(models.ExtendedLocationTypes)` was added
+
+#### `models.AgentPoolProfile` was modified
+
+* `maxCount()` was added
+* `withMinCount(java.lang.Integer)` was added
+* `maxPods()` was added
+* `nodeTaints()` was added
+* `withEnableAutoScaling(java.lang.Boolean)` was added
+* `withNodeTaints(java.util.List)` was added
+* `withNodeLabels(java.util.Map)` was added
+* `minCount()` was added
+* `withMaxCount(java.lang.Integer)` was added
+* `enableAutoScaling()` was added
+* `nodeLabels()` was added
+* `withMaxPods(java.lang.Integer)` was added
+
+#### `models.ProvisionedClusterPropertiesStatus` was modified
+
+* `currentState()` was added
+
+#### `models.AgentPool` was modified
+
+* `properties()` was added
+
+#### `models.NamedAgentPoolProfile` was modified
+
+* `withMinCount(java.lang.Integer)` was added
+* `withMaxCount(java.lang.Integer)` was added
+* `withNodeLabels(java.util.Map)` was added
+* `withMaxPods(java.lang.Integer)` was added
+* `withEnableAutoScaling(java.lang.Boolean)` was added
+* `kubernetesVersion()` was added
+* `withNodeTaints(java.util.List)` was added
+
+#### `models.ProvisionedClusterUpgradeProfile` was modified
+
+* `properties()` was added
+
+#### `models.HybridIdentityMetadata` was modified
+
+* `properties()` was added
+
+#### `models.AgentPoolUpdateProfile` was modified
+
+* `kubernetesVersion()` was added
+
+#### `models.ControlPlaneProfile` was modified
+
+* `withControlPlaneEndpoint(models.ControlPlaneProfileControlPlaneEndpoint)` was added
+* `vmSize()` was added
+* `count()` was added
+
+#### `models.AgentPoolListResult` was modified
+
+* `validate()` was added
+* `withNextLink(java.lang.String)` was added
+* `withValue(java.util.List)` was added
 
 ## 1.0.0-beta.3 (2023-11-23)
 

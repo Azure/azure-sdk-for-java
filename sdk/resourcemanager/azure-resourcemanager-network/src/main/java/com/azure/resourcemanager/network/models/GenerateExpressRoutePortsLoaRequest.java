@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The customer name to be printed on a letter of authorization. */
+/**
+ * The customer name to be printed on a letter of authorization.
+ */
 @Fluent
 public final class GenerateExpressRoutePortsLoaRequest {
     /*
@@ -17,13 +19,15 @@ public final class GenerateExpressRoutePortsLoaRequest {
     @JsonProperty(value = "customerName", required = true)
     private String customerName;
 
-    /** Creates an instance of GenerateExpressRoutePortsLoaRequest class. */
+    /**
+     * Creates an instance of GenerateExpressRoutePortsLoaRequest class.
+     */
     public GenerateExpressRoutePortsLoaRequest() {
     }
 
     /**
      * Get the customerName property: The customer name.
-     *
+     * 
      * @return the customerName value.
      */
     public String customerName() {
@@ -32,7 +36,7 @@ public final class GenerateExpressRoutePortsLoaRequest {
 
     /**
      * Set the customerName property: The customer name.
-     *
+     * 
      * @param customerName the customerName value to set.
      * @return the GenerateExpressRoutePortsLoaRequest object itself.
      */
@@ -43,15 +47,13 @@ public final class GenerateExpressRoutePortsLoaRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (customerName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property customerName in model GenerateExpressRoutePortsLoaRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property customerName in model GenerateExpressRoutePortsLoaRequest"));
         }
     }
 

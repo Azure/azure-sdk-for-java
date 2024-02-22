@@ -29,7 +29,6 @@ public class ServiceBusJmsConnectionFactoryFactory {
         Assert.notNull(properties, "Properties must not be null");
         this.properties = properties;
         this.factoryCustomizers = (factoryCustomizers != null) ? factoryCustomizers : Collections.emptyList();
-
     }
 
     <T extends ServiceBusJmsConnectionFactory> T createConnectionFactory(Class<T> factoryClass) {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** AddressSpace contains an array of IP address ranges that can be used by subnets of the virtual network. */
+/**
+ * AddressSpace contains an array of IP address ranges that can be used by subnets of the virtual network.
+ */
 @Fluent
 public final class AddressSpace {
     /*
@@ -17,13 +19,15 @@ public final class AddressSpace {
     @JsonProperty(value = "addressPrefixes")
     private List<String> addressPrefixes;
 
-    /** Creates an instance of AddressSpace class. */
+    /**
+     * Creates an instance of AddressSpace class.
+     */
     public AddressSpace() {
     }
 
     /**
      * Get the addressPrefixes property: A list of address blocks reserved for this virtual network in CIDR notation.
-     *
+     * 
      * @return the addressPrefixes value.
      */
     public List<String> addressPrefixes() {
@@ -32,7 +36,7 @@ public final class AddressSpace {
 
     /**
      * Set the addressPrefixes property: A list of address blocks reserved for this virtual network in CIDR notation.
-     *
+     * 
      * @param addressPrefixes the addressPrefixes value to set.
      * @return the AddressSpace object itself.
      */
@@ -43,7 +47,7 @@ public final class AddressSpace {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

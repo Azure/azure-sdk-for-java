@@ -24,7 +24,7 @@ import reactor.core.publisher.Mono;
 public interface VirtualMachineScaleSetVMExtensionsClient {
     /**
      * The operation to create or update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -36,16 +36,12 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @return describes a VMSS VM Extension along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String vmExtensionName,
-        VirtualMachineScaleSetVMExtensionInner extensionParameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionInner extensionParameters);
 
     /**
      * The operation to create or update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -58,16 +54,12 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
-        beginCreateOrUpdateAsync(
-            String resourceGroupName,
-            String vmScaleSetName,
-            String instanceId,
-            String vmExtensionName,
-            VirtualMachineScaleSetVMExtensionInner extensionParameters);
+        beginCreateOrUpdateAsync(String resourceGroupName, String vmScaleSetName, String instanceId,
+            String vmExtensionName, VirtualMachineScaleSetVMExtensionInner extensionParameters);
 
     /**
      * The operation to create or update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -80,16 +72,12 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String vmScaleSetName,
-            String instanceId,
-            String vmExtensionName,
+        beginCreateOrUpdate(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName,
             VirtualMachineScaleSetVMExtensionInner extensionParameters);
 
     /**
      * The operation to create or update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -103,17 +91,12 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
-        beginCreateOrUpdate(
-            String resourceGroupName,
-            String vmScaleSetName,
-            String instanceId,
-            String vmExtensionName,
-            VirtualMachineScaleSetVMExtensionInner extensionParameters,
-            Context context);
+        beginCreateOrUpdate(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName,
+            VirtualMachineScaleSetVMExtensionInner extensionParameters, Context context);
 
     /**
      * The operation to create or update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -125,16 +108,12 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @return describes a VMSS VM Extension on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualMachineScaleSetVMExtensionInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String vmExtensionName,
-        VirtualMachineScaleSetVMExtensionInner extensionParameters);
+    Mono<VirtualMachineScaleSetVMExtensionInner> createOrUpdateAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionInner extensionParameters);
 
     /**
      * The operation to create or update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -146,16 +125,12 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineScaleSetVMExtensionInner createOrUpdate(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String vmExtensionName,
-        VirtualMachineScaleSetVMExtensionInner extensionParameters);
+    VirtualMachineScaleSetVMExtensionInner createOrUpdate(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionInner extensionParameters);
 
     /**
      * The operation to create or update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -168,17 +143,13 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineScaleSetVMExtensionInner createOrUpdate(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String vmExtensionName,
-        VirtualMachineScaleSetVMExtensionInner extensionParameters,
+    VirtualMachineScaleSetVMExtensionInner createOrUpdate(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionInner extensionParameters,
         Context context);
 
     /**
      * The operation to update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -190,16 +161,12 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @return describes a VMSS VM Extension along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String vmExtensionName,
-        VirtualMachineScaleSetVMExtensionUpdate extensionParameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionUpdate extensionParameters);
 
     /**
      * The operation to update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -212,16 +179,12 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner>
-        beginUpdateAsync(
-            String resourceGroupName,
-            String vmScaleSetName,
-            String instanceId,
-            String vmExtensionName,
+        beginUpdateAsync(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName,
             VirtualMachineScaleSetVMExtensionUpdate extensionParameters);
 
     /**
      * The operation to update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -234,15 +197,12 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner> beginUpdate(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String vmExtensionName,
+        String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName,
         VirtualMachineScaleSetVMExtensionUpdate extensionParameters);
 
     /**
      * The operation to update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -256,16 +216,12 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<VirtualMachineScaleSetVMExtensionInner>, VirtualMachineScaleSetVMExtensionInner> beginUpdate(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String vmExtensionName,
-        VirtualMachineScaleSetVMExtensionUpdate extensionParameters,
-        Context context);
+        String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName,
+        VirtualMachineScaleSetVMExtensionUpdate extensionParameters, Context context);
 
     /**
      * The operation to update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -277,16 +233,12 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @return describes a VMSS VM Extension on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualMachineScaleSetVMExtensionInner> updateAsync(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String vmExtensionName,
-        VirtualMachineScaleSetVMExtensionUpdate extensionParameters);
+    Mono<VirtualMachineScaleSetVMExtensionInner> updateAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String vmExtensionName, VirtualMachineScaleSetVMExtensionUpdate extensionParameters);
 
     /**
      * The operation to update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -298,16 +250,12 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineScaleSetVMExtensionInner update(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String vmExtensionName,
-        VirtualMachineScaleSetVMExtensionUpdate extensionParameters);
+    VirtualMachineScaleSetVMExtensionInner update(String resourceGroupName, String vmScaleSetName, String instanceId,
+        String vmExtensionName, VirtualMachineScaleSetVMExtensionUpdate extensionParameters);
 
     /**
      * The operation to update the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -320,17 +268,12 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineScaleSetVMExtensionInner update(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String vmExtensionName,
-        VirtualMachineScaleSetVMExtensionUpdate extensionParameters,
-        Context context);
+    VirtualMachineScaleSetVMExtensionInner update(String resourceGroupName, String vmScaleSetName, String instanceId,
+        String vmExtensionName, VirtualMachineScaleSetVMExtensionUpdate extensionParameters, Context context);
 
     /**
      * The operation to delete the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -341,12 +284,12 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String vmExtensionName);
 
     /**
      * The operation to delete the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -357,12 +300,12 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String vmExtensionName);
 
     /**
      * The operation to delete the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -373,12 +316,12 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmScaleSetName, String instanceId,
+        String vmExtensionName);
 
     /**
      * The operation to delete the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -390,12 +333,12 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String vmScaleSetName, String instanceId,
+        String vmExtensionName, Context context);
 
     /**
      * The operation to delete the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -410,7 +353,7 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
 
     /**
      * The operation to delete the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -424,7 +367,7 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
 
     /**
      * The operation to delete the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -435,12 +378,12 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, Context context);
+    void delete(String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName,
+        Context context);
 
     /**
      * The operation to get the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -452,12 +395,12 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @return describes a VMSS VM Extension along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VirtualMachineScaleSetVMExtensionInner>> getWithResponseAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName, String expand);
+    Mono<Response<VirtualMachineScaleSetVMExtensionInner>> getWithResponseAsync(String resourceGroupName,
+        String vmScaleSetName, String instanceId, String vmExtensionName, String expand);
 
     /**
      * The operation to get the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -468,12 +411,12 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @return describes a VMSS VM Extension on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualMachineScaleSetVMExtensionInner> getAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName);
+    Mono<VirtualMachineScaleSetVMExtensionInner> getAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String vmExtensionName);
 
     /**
      * The operation to get the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -486,17 +429,12 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @return describes a VMSS VM Extension along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualMachineScaleSetVMExtensionInner> getWithResponse(
-        String resourceGroupName,
-        String vmScaleSetName,
-        String instanceId,
-        String vmExtensionName,
-        String expand,
-        Context context);
+    Response<VirtualMachineScaleSetVMExtensionInner> getWithResponse(String resourceGroupName, String vmScaleSetName,
+        String instanceId, String vmExtensionName, String expand, Context context);
 
     /**
      * The operation to get the VMSS VM extension.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -507,12 +445,12 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @return describes a VMSS VM Extension.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineScaleSetVMExtensionInner get(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String vmExtensionName);
+    VirtualMachineScaleSetVMExtensionInner get(String resourceGroupName, String vmScaleSetName, String instanceId,
+        String vmExtensionName);
 
     /**
      * The operation to get all extensions of an instance in Virtual Machine Scaleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -521,15 +459,15 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List VMSS VM Extension operation response along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<VirtualMachineScaleSetVMExtensionsListResultInner>> listWithResponseAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String expand);
+    Mono<Response<VirtualMachineScaleSetVMExtensionsListResultInner>> listWithResponseAsync(String resourceGroupName,
+        String vmScaleSetName, String instanceId, String expand);
 
     /**
      * The operation to get all extensions of an instance in Virtual Machine Scaleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -539,12 +477,12 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @return the List VMSS VM Extension operation response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<VirtualMachineScaleSetVMExtensionsListResultInner> listAsync(
-        String resourceGroupName, String vmScaleSetName, String instanceId);
+    Mono<VirtualMachineScaleSetVMExtensionsListResultInner> listAsync(String resourceGroupName, String vmScaleSetName,
+        String instanceId);
 
     /**
      * The operation to get all extensions of an instance in Virtual Machine Scaleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -556,12 +494,12 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @return the List VMSS VM Extension operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<VirtualMachineScaleSetVMExtensionsListResultInner> listWithResponse(
-        String resourceGroupName, String vmScaleSetName, String instanceId, String expand, Context context);
+    Response<VirtualMachineScaleSetVMExtensionsListResultInner> listWithResponse(String resourceGroupName,
+        String vmScaleSetName, String instanceId, String expand, Context context);
 
     /**
      * The operation to get all extensions of an instance in Virtual Machine Scaleset.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param vmScaleSetName The name of the VM scale set.
      * @param instanceId The instance ID of the virtual machine.
@@ -571,6 +509,6 @@ public interface VirtualMachineScaleSetVMExtensionsClient {
      * @return the List VMSS VM Extension operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    VirtualMachineScaleSetVMExtensionsListResultInner list(
-        String resourceGroupName, String vmScaleSetName, String instanceId);
+    VirtualMachineScaleSetVMExtensionsListResultInner list(String resourceGroupName, String vmScaleSetName,
+        String instanceId);
 }

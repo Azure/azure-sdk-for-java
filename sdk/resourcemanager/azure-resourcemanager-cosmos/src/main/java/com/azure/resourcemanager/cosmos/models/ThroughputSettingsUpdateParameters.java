@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.ThroughputSettingsUpdatePr
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Parameters to update Cosmos DB resource throughput. */
+/**
+ * Parameters to update Cosmos DB resource throughput.
+ */
 @Fluent
 public final class ThroughputSettingsUpdateParameters extends ArmResourceProperties {
     /*
@@ -19,27 +21,33 @@ public final class ThroughputSettingsUpdateParameters extends ArmResourcePropert
     @JsonProperty(value = "properties", required = true)
     private ThroughputSettingsUpdateProperties innerProperties = new ThroughputSettingsUpdateProperties();
 
-    /** Creates an instance of ThroughputSettingsUpdateParameters class. */
+    /**
+     * Creates an instance of ThroughputSettingsUpdateParameters class.
+     */
     public ThroughputSettingsUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: Properties to update Azure Cosmos DB resource throughput.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ThroughputSettingsUpdateProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ThroughputSettingsUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ThroughputSettingsUpdateParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -48,7 +56,7 @@ public final class ThroughputSettingsUpdateParameters extends ArmResourcePropert
 
     /**
      * Get the resource property: The standard JSON format of a resource throughput.
-     *
+     * 
      * @return the resource value.
      */
     public ThroughputSettingsResource resource() {
@@ -57,7 +65,7 @@ public final class ThroughputSettingsUpdateParameters extends ArmResourcePropert
 
     /**
      * Set the resource property: The standard JSON format of a resource throughput.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the ThroughputSettingsUpdateParameters object itself.
      */
@@ -71,17 +79,15 @@ public final class ThroughputSettingsUpdateParameters extends ArmResourcePropert
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ThroughputSettingsUpdateParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model ThroughputSettingsUpdateParameters"));
         } else {
             innerProperties().validate();
         }

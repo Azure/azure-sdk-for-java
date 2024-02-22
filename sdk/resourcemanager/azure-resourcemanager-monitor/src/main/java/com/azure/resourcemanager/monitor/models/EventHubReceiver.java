@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An Event hub receiver. */
+/**
+ * An Event hub receiver.
+ */
 @Fluent
 public final class EventHubReceiver {
     /*
@@ -47,14 +49,16 @@ public final class EventHubReceiver {
     @JsonProperty(value = "subscriptionId", required = true)
     private String subscriptionId;
 
-    /** Creates an instance of EventHubReceiver class. */
+    /**
+     * Creates an instance of EventHubReceiver class.
+     */
     public EventHubReceiver() {
     }
 
     /**
      * Get the name property: The name of the Event hub receiver. Names must be unique across all receivers within an
      * action group.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -64,7 +68,7 @@ public final class EventHubReceiver {
     /**
      * Set the name property: The name of the Event hub receiver. Names must be unique across all receivers within an
      * action group.
-     *
+     * 
      * @param name the name value to set.
      * @return the EventHubReceiver object itself.
      */
@@ -75,7 +79,7 @@ public final class EventHubReceiver {
 
     /**
      * Get the eventHubNameSpace property: The Event Hub namespace.
-     *
+     * 
      * @return the eventHubNameSpace value.
      */
     public String eventHubNameSpace() {
@@ -84,7 +88,7 @@ public final class EventHubReceiver {
 
     /**
      * Set the eventHubNameSpace property: The Event Hub namespace.
-     *
+     * 
      * @param eventHubNameSpace the eventHubNameSpace value to set.
      * @return the EventHubReceiver object itself.
      */
@@ -95,7 +99,7 @@ public final class EventHubReceiver {
 
     /**
      * Get the eventHubName property: The name of the specific Event Hub queue.
-     *
+     * 
      * @return the eventHubName value.
      */
     public String eventHubName() {
@@ -104,7 +108,7 @@ public final class EventHubReceiver {
 
     /**
      * Set the eventHubName property: The name of the specific Event Hub queue.
-     *
+     * 
      * @param eventHubName the eventHubName value to set.
      * @return the EventHubReceiver object itself.
      */
@@ -115,7 +119,7 @@ public final class EventHubReceiver {
 
     /**
      * Get the useCommonAlertSchema property: Indicates whether to use common alert schema.
-     *
+     * 
      * @return the useCommonAlertSchema value.
      */
     public Boolean useCommonAlertSchema() {
@@ -124,7 +128,7 @@ public final class EventHubReceiver {
 
     /**
      * Set the useCommonAlertSchema property: Indicates whether to use common alert schema.
-     *
+     * 
      * @param useCommonAlertSchema the useCommonAlertSchema value to set.
      * @return the EventHubReceiver object itself.
      */
@@ -135,7 +139,7 @@ public final class EventHubReceiver {
 
     /**
      * Get the tenantId property: The tenant Id for the subscription containing this event hub.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -144,7 +148,7 @@ public final class EventHubReceiver {
 
     /**
      * Set the tenantId property: The tenant Id for the subscription containing this event hub.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the EventHubReceiver object itself.
      */
@@ -155,7 +159,7 @@ public final class EventHubReceiver {
 
     /**
      * Get the subscriptionId property: The Id for the subscription containing this event hub.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -164,7 +168,7 @@ public final class EventHubReceiver {
 
     /**
      * Set the subscriptionId property: The Id for the subscription containing this event hub.
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the EventHubReceiver object itself.
      */
@@ -175,30 +179,25 @@ public final class EventHubReceiver {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model EventHubReceiver"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model EventHubReceiver"));
         }
         if (eventHubNameSpace() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property eventHubNameSpace in model EventHubReceiver"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property eventHubNameSpace in model EventHubReceiver"));
         }
         if (eventHubName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property eventHubName in model EventHubReceiver"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property eventHubName in model EventHubReceiver"));
         }
         if (subscriptionId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property subscriptionId in model EventHubReceiver"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property subscriptionId in model EventHubReceiver"));
         }
     }
 

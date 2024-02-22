@@ -11,7 +11,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.RoutingConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the ExpressRouteConnection subresource. */
+/**
+ * Properties of the ExpressRouteConnection subresource.
+ */
 @Fluent
 public final class ExpressRouteConnectionProperties {
     /*
@@ -63,13 +65,15 @@ public final class ExpressRouteConnectionProperties {
     @JsonProperty(value = "routingConfiguration")
     private RoutingConfiguration routingConfiguration;
 
-    /** Creates an instance of ExpressRouteConnectionProperties class. */
+    /**
+     * Creates an instance of ExpressRouteConnectionProperties class.
+     */
     public ExpressRouteConnectionProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the express route connection resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -78,7 +82,7 @@ public final class ExpressRouteConnectionProperties {
 
     /**
      * Get the expressRouteCircuitPeering property: The ExpressRoute circuit peering.
-     *
+     * 
      * @return the expressRouteCircuitPeering value.
      */
     public ExpressRouteCircuitPeeringId expressRouteCircuitPeering() {
@@ -87,19 +91,19 @@ public final class ExpressRouteConnectionProperties {
 
     /**
      * Set the expressRouteCircuitPeering property: The ExpressRoute circuit peering.
-     *
+     * 
      * @param expressRouteCircuitPeering the expressRouteCircuitPeering value to set.
      * @return the ExpressRouteConnectionProperties object itself.
      */
-    public ExpressRouteConnectionProperties withExpressRouteCircuitPeering(
-        ExpressRouteCircuitPeeringId expressRouteCircuitPeering) {
+    public ExpressRouteConnectionProperties
+        withExpressRouteCircuitPeering(ExpressRouteCircuitPeeringId expressRouteCircuitPeering) {
         this.expressRouteCircuitPeering = expressRouteCircuitPeering;
         return this;
     }
 
     /**
      * Get the authorizationKey property: Authorization key to establish the connection.
-     *
+     * 
      * @return the authorizationKey value.
      */
     public String authorizationKey() {
@@ -108,7 +112,7 @@ public final class ExpressRouteConnectionProperties {
 
     /**
      * Set the authorizationKey property: Authorization key to establish the connection.
-     *
+     * 
      * @param authorizationKey the authorizationKey value to set.
      * @return the ExpressRouteConnectionProperties object itself.
      */
@@ -119,7 +123,7 @@ public final class ExpressRouteConnectionProperties {
 
     /**
      * Get the routingWeight property: The routing weight associated to the connection.
-     *
+     * 
      * @return the routingWeight value.
      */
     public Integer routingWeight() {
@@ -128,7 +132,7 @@ public final class ExpressRouteConnectionProperties {
 
     /**
      * Set the routingWeight property: The routing weight associated to the connection.
-     *
+     * 
      * @param routingWeight the routingWeight value to set.
      * @return the ExpressRouteConnectionProperties object itself.
      */
@@ -139,7 +143,7 @@ public final class ExpressRouteConnectionProperties {
 
     /**
      * Get the enableInternetSecurity property: Enable internet security.
-     *
+     * 
      * @return the enableInternetSecurity value.
      */
     public Boolean enableInternetSecurity() {
@@ -148,7 +152,7 @@ public final class ExpressRouteConnectionProperties {
 
     /**
      * Set the enableInternetSecurity property: Enable internet security.
-     *
+     * 
      * @param enableInternetSecurity the enableInternetSecurity value to set.
      * @return the ExpressRouteConnectionProperties object itself.
      */
@@ -159,7 +163,7 @@ public final class ExpressRouteConnectionProperties {
 
     /**
      * Get the expressRouteGatewayBypass property: Enable FastPath to vWan Firewall hub.
-     *
+     * 
      * @return the expressRouteGatewayBypass value.
      */
     public Boolean expressRouteGatewayBypass() {
@@ -168,7 +172,7 @@ public final class ExpressRouteConnectionProperties {
 
     /**
      * Set the expressRouteGatewayBypass property: Enable FastPath to vWan Firewall hub.
-     *
+     * 
      * @param expressRouteGatewayBypass the expressRouteGatewayBypass value to set.
      * @return the ExpressRouteConnectionProperties object itself.
      */
@@ -180,7 +184,7 @@ public final class ExpressRouteConnectionProperties {
     /**
      * Get the enablePrivateLinkFastPath property: Bypass the ExpressRoute gateway when accessing private-links.
      * ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled.
-     *
+     * 
      * @return the enablePrivateLinkFastPath value.
      */
     public Boolean enablePrivateLinkFastPath() {
@@ -190,7 +194,7 @@ public final class ExpressRouteConnectionProperties {
     /**
      * Set the enablePrivateLinkFastPath property: Bypass the ExpressRoute gateway when accessing private-links.
      * ExpressRoute FastPath (expressRouteGatewayBypass) must be enabled.
-     *
+     * 
      * @param enablePrivateLinkFastPath the enablePrivateLinkFastPath value to set.
      * @return the ExpressRouteConnectionProperties object itself.
      */
@@ -202,7 +206,7 @@ public final class ExpressRouteConnectionProperties {
     /**
      * Get the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
      * tables on this connection.
-     *
+     * 
      * @return the routingConfiguration value.
      */
     public RoutingConfiguration routingConfiguration() {
@@ -212,7 +216,7 @@ public final class ExpressRouteConnectionProperties {
     /**
      * Set the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
      * tables on this connection.
-     *
+     * 
      * @param routingConfiguration the routingConfiguration value to set.
      * @return the ExpressRouteConnectionProperties object itself.
      */
@@ -223,16 +227,13 @@ public final class ExpressRouteConnectionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (expressRouteCircuitPeering() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property expressRouteCircuitPeering in model"
-                            + " ExpressRouteConnectionProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property expressRouteCircuitPeering in model ExpressRouteConnectionProperties"));
         } else {
             expressRouteCircuitPeering().validate();
         }

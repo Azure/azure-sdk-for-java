@@ -37,24 +37,24 @@ import reactor.core.publisher.Mono;
  * An instance of this class provides access to all the operations defined in RecoveryPointsRecommendedForMovesClient.
  */
 public final class RecoveryPointsRecommendedForMovesClientImpl implements RecoveryPointsRecommendedForMovesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RecoveryPointsRecommendedForMovesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final RecoveryServicesBackupClientImpl client;
 
     /**
      * Initializes an instance of RecoveryPointsRecommendedForMovesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RecoveryPointsRecommendedForMovesClientImpl(RecoveryServicesBackupClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    RecoveryPointsRecommendedForMovesService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(RecoveryPointsRecommendedForMovesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,38 +65,30 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
     public interface RecoveryPointsRecommendedForMovesService {
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPointsRecommendedForMove")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupFabrics/{fabricName}/protectionContainers/{containerName}/protectedItems/{protectedItemName}/recoveryPointsRecommendedForMove")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RecoveryPointResourceList>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
+        Mono<Response<RecoveryPointResourceList>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
-            @PathParam("containerName") String containerName,
-            @PathParam("protectedItemName") String protectedItemName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @PathParam("containerName") String containerName, @PathParam("protectedItemName") String protectedItemName,
             @BodyParam("application/json") ListRecoveryPointsRecommendedForMoveRequest parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<RecoveryPointResourceList>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists the recovery points recommended for move to another tier.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The fabricName parameter.
@@ -106,22 +98,16 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RecoveryPoint resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of RecoveryPoint resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecoveryPointResourceInner>> listSinglePageAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
+    private Mono<PagedResponse<RecoveryPointResourceInner>> listSinglePageAsync(String vaultName,
+        String resourceGroupName, String fabricName, String containerName, String protectedItemName,
         ListRecoveryPointsRecommendedForMoveRequest parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -131,10 +117,8 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -153,36 +137,17 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            containerName,
-                            protectedItemName,
-                            parameters,
-                            accept,
-                            context))
-            .<PagedResponse<RecoveryPointResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+                resourceGroupName, this.client.getSubscriptionId(), fabricName, containerName, protectedItemName,
+                parameters, accept, context))
+            .<PagedResponse<RecoveryPointResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists the recovery points recommended for move to another tier.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The fabricName parameter.
@@ -193,23 +158,16 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RecoveryPoint resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of RecoveryPoint resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RecoveryPointResourceInner>> listSinglePageAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        ListRecoveryPointsRecommendedForMoveRequest parameters,
-        Context context) {
+    private Mono<PagedResponse<RecoveryPointResourceInner>> listSinglePageAsync(String vaultName,
+        String resourceGroupName, String fabricName, String containerName, String protectedItemName,
+        ListRecoveryPointsRecommendedForMoveRequest parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -219,10 +177,8 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -241,33 +197,15 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                containerName,
-                protectedItemName,
-                parameters,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.list(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
+            this.client.getSubscriptionId(), fabricName, containerName, protectedItemName, parameters, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists the recovery points recommended for move to another tier.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The fabricName parameter.
@@ -280,23 +218,16 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
      * @return list of RecoveryPoint resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RecoveryPointResourceInner> listAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
+    private PagedFlux<RecoveryPointResourceInner> listAsync(String vaultName, String resourceGroupName,
+        String fabricName, String containerName, String protectedItemName,
         ListRecoveryPointsRecommendedForMoveRequest parameters) {
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters),
-            nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(vaultName, resourceGroupName, fabricName, containerName,
+            protectedItemName, parameters), nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists the recovery points recommended for move to another tier.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The fabricName parameter.
@@ -310,24 +241,16 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
      * @return list of RecoveryPoint resources as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RecoveryPointResourceInner> listAsync(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        ListRecoveryPointsRecommendedForMoveRequest parameters,
-        Context context) {
-        return new PagedFlux<>(
-            () ->
-                listSinglePageAsync(
-                    vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters, context),
-            nextLink -> listNextSinglePageAsync(nextLink, context));
+    private PagedFlux<RecoveryPointResourceInner> listAsync(String vaultName, String resourceGroupName,
+        String fabricName, String containerName, String protectedItemName,
+        ListRecoveryPointsRecommendedForMoveRequest parameters, Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(vaultName, resourceGroupName, fabricName, containerName,
+            protectedItemName, parameters, context), nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists the recovery points recommended for move to another tier.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The fabricName parameter.
@@ -340,20 +263,15 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
      * @return list of RecoveryPoint resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecoveryPointResourceInner> list(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        ListRecoveryPointsRecommendedForMoveRequest parameters) {
+    public PagedIterable<RecoveryPointResourceInner> list(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, ListRecoveryPointsRecommendedForMoveRequest parameters) {
         return new PagedIterable<>(
             listAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters));
     }
 
     /**
      * Lists the recovery points recommended for move to another tier.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The fabricName parameter.
@@ -367,13 +285,8 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
      * @return list of RecoveryPoint resources as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RecoveryPointResourceInner> list(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        ListRecoveryPointsRecommendedForMoveRequest parameters,
+    public PagedIterable<RecoveryPointResourceInner> list(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, ListRecoveryPointsRecommendedForMoveRequest parameters,
         Context context) {
         return new PagedIterable<>(
             listAsync(vaultName, resourceGroupName, fabricName, containerName, protectedItemName, parameters, context));
@@ -381,14 +294,15 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RecoveryPoint resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of RecoveryPoint resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoveryPointResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -396,37 +310,28 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<RecoveryPointResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<RecoveryPointResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return list of RecoveryPoint resources along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return list of RecoveryPoint resources along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<RecoveryPointResourceInner>> listNextSinglePageAsync(String nextLink, Context context) {
@@ -434,23 +339,13 @@ public final class RecoveryPointsRecommendedForMovesClientImpl implements Recove
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

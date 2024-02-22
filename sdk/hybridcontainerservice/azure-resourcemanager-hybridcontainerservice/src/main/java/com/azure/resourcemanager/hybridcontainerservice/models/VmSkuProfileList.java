@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * A list of VM SKU resources.
+ * The list of supported VM SKUs.
  */
 @Fluent
 public final class VmSkuProfileList {

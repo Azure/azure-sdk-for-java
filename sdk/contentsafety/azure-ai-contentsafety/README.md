@@ -2,8 +2,8 @@
 
 [Azure AI Content Safety][contentsafety_overview] detects harmful user-generated and AI-generated content in applications and services. Content Safety includes several APIs that allow you to detect material that is harmful:
 
-* Text Analysis API: Scans text for sexual content, violence, hate, and self harm with multi-severity levels.
-* Image Analysis API: Scans images for sexual content, violence, hate, and self harm with multi-severity levels.
+* Text Analysis API: Scans text for sexual content, violence, hate, and self-harm with multi-severity levels.
+* Image Analysis API: Scans images for sexual content, violence, hate, and self-harm with multi-severity levels.
 * Text Blocklist Management APIs: The default AI classifiers are sufficient for most content safety needs; however, you might need to screen for terms that are specific to your use case. You can create blocklists of terms to use with the Text API.
 
 ## Documentation
@@ -19,7 +19,7 @@ Various documentation is available to help you get started
 
 - [Java Development Kit (JDK)][jdk] with version 8 or above
 - You need an [Azure subscription][azure_subscription] to use this package.
-- An existing [Azure AI Content Safety][contentsafety_overview] instance.
+- An [Azure AI Content Safety][contentsafety_overview] resource, if no existing resource, you could [create a new one](https://aka.ms/acs-create).
 
 ### Adding the package to your product
 
@@ -51,44 +51,36 @@ The API key can be found in the [Azure Portal][azure_portal] or by running the f
 az cognitiveservices account keys list --name "<resource-name>" --resource-group "<resource-group-name>"
 ```
 
-#### Create a ContentSafetyClient with KeyCredential
-```java com.azure.ai.contentsafety.createcontentsafetyclient
+#### Create a ContentSafetyClient/BlocklistClient with KeyCredential
+```java com.azure.ai.contentsafety.createclientcredential
 String endpoint = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_ENDPOINT");
 String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY");
 ContentSafetyClient contentSafetyClient = new ContentSafetyClientBuilder()
     .credential(new KeyCredential(key))
     .endpoint(endpoint).buildClient();
+BlocklistClient blocklistClient = new BlocklistClientBuilder()
+    .credential(new KeyCredential(key))
+    .endpoint(endpoint).buildClient();
 ```
-
-#### Create a ContentSafetyClient with Microsoft Entra ID (formerly Azure Active Directory (AAD)) token credential
-- Step 1: Enable Microsoft Entra ID for your resource
-  Please refer to this Cognitive Services authentication document [Authenticate with Microsoft Entra ID.][authenticate_with_microsoft_entra_id] for the steps to enable AAD for your resource.
-
+#### Create a ContentSafetyClient/BlocklistClient with Microsoft Entra ID (formerly Azure Active Directory (AAD)) token credential
+- Step 1: Enable Microsoft Entra ID for your resource   
+Please refer to this Cognitive Services authentication document [Authenticate with Microsoft Entra ID.][authenticate_with_microsoft_entra_id] for the steps to enable AAD for your resource.
   The main steps are:
     - Create resource with a custom subdomain.
     - Create Service Principal and assign Cognitive Services User role to it.
 
-- Step 2: Set the values of the client ID, tenant ID, and client secret of the AAD application as environment variables: `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_CLIENT_SECRET`.
+- Step 2: Set the values of the client ID, tenant ID, and client secret of the Enable Microsoft Entra ID application as environment variables: `AZURE_CLIENT_ID`, `AZURE_TENANT_ID`, `AZURE_CLIENT_SECRET`.
 
-After setup, you can choose which type of [credential](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#examples) to use.
-As an example, [DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#authenticate-with-defaultazurecredential)
+After setup, you can use [DefaultAzureCredential](https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/identity/azure-identity#authenticate-with-defaultazurecredential)
 can be used to authenticate the client.
 
-`DefaultAzureCredential` will use the values from these environment variables.
-```java com.azure.ai.contentsafety.createcontentsafetyclienttoken 
+DefaultAzureCredential will use the values from these environment variables.
+```java com.azure.ai.contentsafety.createclienttoken
 ContentSafetyClient contentSafetyClientOauth = new ContentSafetyClientBuilder()
     .credential(new DefaultAzureCredentialBuilder().build())
     .endpoint(endpoint).buildClient();
-```
-
-
-#### Create a BlocklistClient with KeyCredential
-```java com.azure.ai.contentsafety.createblocklistclient
-String endpoint = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_ENDPOINT");
-String key = Configuration.getGlobalConfiguration().get("CONTENT_SAFETY_KEY");
-
-BlocklistClient blocklistClient = new BlocklistClientBuilder()
-    .credential(new KeyCredential(key))
+BlocklistClient blocklistClientOauth = new BlocklistClientBuilder()
+    .credential(new DefaultAzureCredentialBuilder().build())
     .endpoint(endpoint).buildClient();
 ```
 
@@ -96,11 +88,11 @@ BlocklistClient blocklistClient = new BlocklistClientBuilder()
 ### Available features
 There are different types of analysis available from this service. The following table describes the currently available APIs.
 
-|Feature  |Description  |
-|---------|---------|
-|Text Analysis API|Scans text for sexual content, violence, hate, and self harm with multi-severity levels.|
-|Image Analysis API|Scans images for sexual content, violence, hate, and self harm with multi-severity levels.|
-| Text Blocklist Management APIs|The default AI classifiers are sufficient for most content safety needs. However, you might need to screen for terms that are specific to your use case. You can create blocklists of terms to use with the Text API.|
+|Feature  | Description                                                                                                                                                                                                           |
+|---------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+|Text Analysis API| Scans text for sexual content, violence, hate, and self-harm with multi-severity levels.                                                                                                                              |
+|Image Analysis API| Scans images for sexual content, violence, hate, and self-harm with multi-severity levels.                                                                                                                            |
+| Text Blocklist Management APIs| The default AI classifiers are sufficient for most content safety needs. However, you might need to screen for terms that are specific to your use case. You can create blocklists of terms to use with the Text API. |
 
 ### Harm categories
 Content Safety recognizes four distinct categories of objectionable content.
@@ -117,14 +109,15 @@ Classification can be multi-labeled. For example, when a text sample goes throug
 ### Severity levels
 Every harm category the service applies also comes with a severity level rating. The severity level is meant to indicate the severity of the consequences of showing the flagged content.
 
-**Text**: The current version of the text model supports the full 0-7 severity scale. The classifier detects amongst all severities along this scale. If the user specifies, it can return severities in the trimmed scale of 0, 2, 4, and 6; each two adjacent levels are mapped to a single level. You can refer [text content severity levels definitions][text_severity_levels] for details.
+**Text**: The current version of the text model supports the **full 0-7 severity scale**. By default, the response will output 4 values: 0, 2, 4, and 6. Each two adjacent levels are mapped to a single level. Users could use "outputType" in request and set it as "EightSeverityLevels" to get 8 values in output: 0,1,2,3,4,5,6,7.  
+You can refer [text content severity levels definitions][text_severity_levels] for details. 
 
 - [0,1] -> 0
 - [2,3] -> 2
 - [4,5] -> 4
 - [6,7] -> 6
 
-**Image**: The current version of the image model supports the trimmed version of the full 0-7 severity scale. The classifier only returns severities 0, 2, 4, and 6; each two adjacent levels are mapped to a single level. You can refer [image content severity levels definitions][image_severity_levels] for details.
+**Image**: The current version of the image model supports the **trimmed version of the full 0-7 severity scale**. The classifier only returns severities 0, 2, 4, and 6; each two adjacent levels are mapped to a single level. You can refer [image content severity levels definitions][image_severity_levels] for details.
 
 - [0,1] -> 0
 - [2,3] -> 2
@@ -137,10 +130,10 @@ Following operations are supported to manage your text blocklist:
 - List all blocklists
 - Get a blocklist by blocklistName
 - Add blockItems to a blocklist
-- Remove blockItems from a blocklist
-- List all blockItems in a blocklist by blocklistName
-- Get a blockItem in a blocklist by blockItemId and blocklistName
-- Delete a blocklist and all of its blockItems
+- Remove blocklistItems from a blocklist
+- List all blocklistItems in a blocklist by blocklistName
+- Get a blocklistItem in a blocklist by blocklistItemId and blocklistName
+- Delete a blocklist and all of its blocklistItems
 
 You can set the blocklists you want to use when analyze text, then you can get blocklist match result from returned response.
 

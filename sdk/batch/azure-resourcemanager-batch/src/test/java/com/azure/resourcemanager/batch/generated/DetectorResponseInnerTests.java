@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DetectorResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DetectorResponseInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"value\":\"xmzsbbzogg\"},\"etag\":\"rxwburv\",\"id\":\"xxjnspydptk\",\"name\":\"enkouknvudw\",\"type\":\"iukbldngkpoci\"}")
-                .toObject(DetectorResponseInner.class);
+        DetectorResponseInner model = BinaryData.fromString(
+            "{\"properties\":{\"value\":\"xmzsbbzogg\"},\"etag\":\"rxwburv\",\"id\":\"xxjnspydptk\",\"name\":\"enkouknvudw\",\"type\":\"iukbldngkpoci\"}")
+            .toObject(DetectorResponseInner.class);
         Assertions.assertEquals("xmzsbbzogg", model.value());
     }
 

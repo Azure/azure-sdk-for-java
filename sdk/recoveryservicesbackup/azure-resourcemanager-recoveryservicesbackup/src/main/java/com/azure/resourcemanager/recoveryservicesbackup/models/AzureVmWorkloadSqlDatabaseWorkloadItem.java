@@ -8,72 +8,94 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Azure VM workload-specific workload item representing SQL Database. */
+/**
+ * Azure VM workload-specific workload item representing SQL Database.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "workloadItemType")
 @JsonTypeName("SQLDataBase")
 @Fluent
 public final class AzureVmWorkloadSqlDatabaseWorkloadItem extends AzureVmWorkloadItem {
-    /** Creates an instance of AzureVmWorkloadSqlDatabaseWorkloadItem class. */
+    /**
+     * Creates an instance of AzureVmWorkloadSqlDatabaseWorkloadItem class.
+     */
     public AzureVmWorkloadSqlDatabaseWorkloadItem() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlDatabaseWorkloadItem withParentName(String parentName) {
         super.withParentName(parentName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlDatabaseWorkloadItem withServerName(String serverName) {
         super.withServerName(serverName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlDatabaseWorkloadItem withIsAutoProtectable(Boolean isAutoProtectable) {
         super.withIsAutoProtectable(isAutoProtectable);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlDatabaseWorkloadItem withSubinquireditemcount(Integer subinquireditemcount) {
         super.withSubinquireditemcount(subinquireditemcount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlDatabaseWorkloadItem withSubWorkloadItemCount(Integer subWorkloadItemCount) {
         super.withSubWorkloadItemCount(subWorkloadItemCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlDatabaseWorkloadItem withBackupManagementType(String backupManagementType) {
         super.withBackupManagementType(backupManagementType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlDatabaseWorkloadItem withWorkloadType(String workloadType) {
         super.withWorkloadType(workloadType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlDatabaseWorkloadItem withFriendlyName(String friendlyName) {
         super.withFriendlyName(friendlyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureVmWorkloadSqlDatabaseWorkloadItem withProtectionState(ProtectionStatus protectionState) {
         super.withProtectionState(protectionState);
@@ -82,7 +104,7 @@ public final class AzureVmWorkloadSqlDatabaseWorkloadItem extends AzureVmWorkloa
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

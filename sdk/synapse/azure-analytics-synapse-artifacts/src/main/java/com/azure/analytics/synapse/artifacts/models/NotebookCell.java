@@ -13,7 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Notebook cell. */
+/**
+ * Notebook cell.
+ */
 @Fluent
 public final class NotebookCell {
     /*
@@ -49,14 +51,18 @@ public final class NotebookCell {
     /*
      * Notebook cell.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of NotebookCell class. */
-    public NotebookCell() {}
+    /**
+     * Creates an instance of NotebookCell class.
+     */
+    public NotebookCell() {
+    }
 
     /**
      * Get the cellType property: String identifying the type of cell.
-     *
+     * 
      * @return the cellType value.
      */
     public String getCellType() {
@@ -65,7 +71,7 @@ public final class NotebookCell {
 
     /**
      * Set the cellType property: String identifying the type of cell.
-     *
+     * 
      * @param cellType the cellType value to set.
      * @return the NotebookCell object itself.
      */
@@ -76,7 +82,7 @@ public final class NotebookCell {
 
     /**
      * Get the metadata property: Cell-level metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Object getMetadata() {
@@ -85,7 +91,7 @@ public final class NotebookCell {
 
     /**
      * Set the metadata property: Cell-level metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the NotebookCell object itself.
      */
@@ -96,7 +102,7 @@ public final class NotebookCell {
 
     /**
      * Get the source property: Contents of the cell, represented as an array of lines.
-     *
+     * 
      * @return the source value.
      */
     public List<String> getSource() {
@@ -105,7 +111,7 @@ public final class NotebookCell {
 
     /**
      * Set the source property: Contents of the cell, represented as an array of lines.
-     *
+     * 
      * @param source the source value to set.
      * @return the NotebookCell object itself.
      */
@@ -116,7 +122,7 @@ public final class NotebookCell {
 
     /**
      * Get the attachments property: Attachments associated with the cell.
-     *
+     * 
      * @return the attachments value.
      */
     public Object getAttachments() {
@@ -125,7 +131,7 @@ public final class NotebookCell {
 
     /**
      * Set the attachments property: Attachments associated with the cell.
-     *
+     * 
      * @param attachments the attachments value to set.
      * @return the NotebookCell object itself.
      */
@@ -136,7 +142,7 @@ public final class NotebookCell {
 
     /**
      * Get the outputs property: Cell-level output items.
-     *
+     * 
      * @return the outputs value.
      */
     public List<NotebookCellOutputItem> getOutputs() {
@@ -145,7 +151,7 @@ public final class NotebookCell {
 
     /**
      * Set the outputs property: Cell-level output items.
-     *
+     * 
      * @param outputs the outputs value to set.
      * @return the NotebookCell object itself.
      */
@@ -156,7 +162,7 @@ public final class NotebookCell {
 
     /**
      * Get the additionalProperties property: Notebook cell.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -166,7 +172,7 @@ public final class NotebookCell {
 
     /**
      * Set the additionalProperties property: Notebook cell.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the NotebookCell object itself.
      */

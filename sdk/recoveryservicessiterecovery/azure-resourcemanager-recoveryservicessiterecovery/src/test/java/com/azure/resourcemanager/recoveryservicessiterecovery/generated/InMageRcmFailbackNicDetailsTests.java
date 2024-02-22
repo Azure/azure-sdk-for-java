@@ -10,11 +10,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.InMageRcmFa
 public final class InMageRcmFailbackNicDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageRcmFailbackNicDetails model =
-            BinaryData
-                .fromString(
-                    "{\"macAddress\":\"aqawbmpspfeylql\",\"networkName\":\"vvujex\",\"adapterType\":\"glxrkgjnm\",\"sourceIpAddress\":\"aslavxj\"}")
-                .toObject(InMageRcmFailbackNicDetails.class);
+        InMageRcmFailbackNicDetails model = BinaryData.fromString(
+            "{\"macAddress\":\"aqawbmpspfeylql\",\"networkName\":\"vvujex\",\"adapterType\":\"glxrkgjnm\",\"sourceIpAddress\":\"aslavxj\"}")
+            .toObject(InMageRcmFailbackNicDetails.class);
     }
 
     @org.junit.jupiter.api.Test

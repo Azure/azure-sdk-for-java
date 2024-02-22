@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Analytical storage specific properties. */
+/**
+ * Analytical storage specific properties.
+ */
 @Fluent
 public final class AnalyticalStorageConfiguration {
     /*
@@ -16,13 +18,15 @@ public final class AnalyticalStorageConfiguration {
     @JsonProperty(value = "schemaType")
     private AnalyticalStorageSchemaType schemaType;
 
-    /** Creates an instance of AnalyticalStorageConfiguration class. */
+    /**
+     * Creates an instance of AnalyticalStorageConfiguration class.
+     */
     public AnalyticalStorageConfiguration() {
     }
 
     /**
      * Get the schemaType property: Describes the types of schema for analytical storage.
-     *
+     * 
      * @return the schemaType value.
      */
     public AnalyticalStorageSchemaType schemaType() {
@@ -31,7 +35,7 @@ public final class AnalyticalStorageConfiguration {
 
     /**
      * Set the schemaType property: Describes the types of schema for analytical storage.
-     *
+     * 
      * @param schemaType the schemaType value to set.
      * @return the AnalyticalStorageConfiguration object itself.
      */
@@ -42,7 +46,7 @@ public final class AnalyticalStorageConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

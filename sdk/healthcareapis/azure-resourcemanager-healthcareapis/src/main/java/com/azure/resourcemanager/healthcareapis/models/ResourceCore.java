@@ -8,19 +8,26 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The common properties for any resource, tracked or proxy. */
+/**
+ * The common properties for any resource, tracked or proxy.
+ */
 @Fluent
 public class ResourceCore extends ProxyResource {
     /*
-     * An etag associated with the resource, used for optimistic concurrency
-     * when editing it.
+     * An etag associated with the resource, used for optimistic concurrency when editing it.
      */
     @JsonProperty(value = "etag")
     private String etag;
 
     /**
+     * Creates an instance of ResourceCore class.
+     */
+    public ResourceCore() {
+    }
+
+    /**
      * Get the etag property: An etag associated with the resource, used for optimistic concurrency when editing it.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -29,7 +36,7 @@ public class ResourceCore extends ProxyResource {
 
     /**
      * Set the etag property: An etag associated with the resource, used for optimistic concurrency when editing it.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the ResourceCore object itself.
      */
@@ -40,7 +47,7 @@ public class ResourceCore extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

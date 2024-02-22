@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters for RouteTable. */
+/**
+ * Parameters for RouteTable.
+ */
 @Fluent
 public final class HubRouteTableProperties {
     /*
@@ -43,13 +45,15 @@ public final class HubRouteTableProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of HubRouteTableProperties class. */
+    /**
+     * Creates an instance of HubRouteTableProperties class.
+     */
     public HubRouteTableProperties() {
     }
 
     /**
      * Get the routes property: List of all routes.
-     *
+     * 
      * @return the routes value.
      */
     public List<HubRoute> routes() {
@@ -58,7 +62,7 @@ public final class HubRouteTableProperties {
 
     /**
      * Set the routes property: List of all routes.
-     *
+     * 
      * @param routes the routes value to set.
      * @return the HubRouteTableProperties object itself.
      */
@@ -69,7 +73,7 @@ public final class HubRouteTableProperties {
 
     /**
      * Get the labels property: List of labels associated with this route table.
-     *
+     * 
      * @return the labels value.
      */
     public List<String> labels() {
@@ -78,7 +82,7 @@ public final class HubRouteTableProperties {
 
     /**
      * Set the labels property: List of labels associated with this route table.
-     *
+     * 
      * @param labels the labels value to set.
      * @return the HubRouteTableProperties object itself.
      */
@@ -89,7 +93,7 @@ public final class HubRouteTableProperties {
 
     /**
      * Get the associatedConnections property: List of all connections associated with this route table.
-     *
+     * 
      * @return the associatedConnections value.
      */
     public List<String> associatedConnections() {
@@ -98,7 +102,7 @@ public final class HubRouteTableProperties {
 
     /**
      * Get the propagatingConnections property: List of all connections that advertise to this route table.
-     *
+     * 
      * @return the propagatingConnections value.
      */
     public List<String> propagatingConnections() {
@@ -107,7 +111,7 @@ public final class HubRouteTableProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the RouteTable resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -116,7 +120,7 @@ public final class HubRouteTableProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

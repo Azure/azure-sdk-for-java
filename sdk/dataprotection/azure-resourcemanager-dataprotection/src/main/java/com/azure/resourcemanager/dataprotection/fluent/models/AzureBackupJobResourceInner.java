@@ -9,7 +9,9 @@ import com.azure.resourcemanager.dataprotection.models.AzureBackupJob;
 import com.azure.resourcemanager.dataprotection.models.DppResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** AzureBackup Job Resource Class. */
+/**
+ * AzureBackup Job Resource Class.
+ */
 @Fluent
 public final class AzureBackupJobResourceInner extends DppResource {
     /*
@@ -18,13 +20,15 @@ public final class AzureBackupJobResourceInner extends DppResource {
     @JsonProperty(value = "properties")
     private AzureBackupJob properties;
 
-    /** Creates an instance of AzureBackupJobResourceInner class. */
+    /**
+     * Creates an instance of AzureBackupJobResourceInner class.
+     */
     public AzureBackupJobResourceInner() {
     }
 
     /**
      * Get the properties property: AzureBackupJobResource properties.
-     *
+     * 
      * @return the properties value.
      */
     public AzureBackupJob properties() {
@@ -33,7 +37,7 @@ public final class AzureBackupJobResourceInner extends DppResource {
 
     /**
      * Set the properties property: AzureBackupJobResource properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the AzureBackupJobResourceInner object itself.
      */
@@ -44,7 +48,7 @@ public final class AzureBackupJobResourceInner extends DppResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

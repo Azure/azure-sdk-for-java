@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Used for updating a disk access resource. */
+/**
+ * Used for updating a disk access resource.
+ */
 @Fluent
 public final class DiskAccessUpdate {
     /*
@@ -19,13 +21,15 @@ public final class DiskAccessUpdate {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of DiskAccessUpdate class. */
+    /**
+     * Creates an instance of DiskAccessUpdate class.
+     */
     public DiskAccessUpdate() {
     }
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -34,7 +38,7 @@ public final class DiskAccessUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the DiskAccessUpdate object itself.
      */
@@ -45,7 +49,7 @@ public final class DiskAccessUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

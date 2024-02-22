@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The snowflake dataset. */
+/**
+ * The snowflake dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SnowflakeTable")
 @JsonFlatten
@@ -30,13 +32,16 @@ public class SnowflakeDataset extends Dataset {
     @JsonProperty(value = "typeProperties.table")
     private Object table;
 
-    /** Creates an instance of SnowflakeDataset class. */
-    public SnowflakeDataset() {}
+    /**
+     * Creates an instance of SnowflakeDataset class.
+     */
+    public SnowflakeDataset() {
+    }
 
     /**
      * Get the schemaTypePropertiesSchema property: The schema name of the Snowflake database. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the schemaTypePropertiesSchema value.
      */
     public Object getSchemaTypePropertiesSchema() {
@@ -46,7 +51,7 @@ public class SnowflakeDataset extends Dataset {
     /**
      * Set the schemaTypePropertiesSchema property: The schema name of the Snowflake database. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param schemaTypePropertiesSchema the schemaTypePropertiesSchema value to set.
      * @return the SnowflakeDataset object itself.
      */
@@ -58,7 +63,7 @@ public class SnowflakeDataset extends Dataset {
     /**
      * Get the table property: The table name of the Snowflake database. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the table value.
      */
     public Object getTable() {
@@ -68,7 +73,7 @@ public class SnowflakeDataset extends Dataset {
     /**
      * Set the table property: The table name of the Snowflake database. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param table the table value to set.
      * @return the SnowflakeDataset object itself.
      */
@@ -77,49 +82,63 @@ public class SnowflakeDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnowflakeDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

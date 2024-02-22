@@ -4,7 +4,6 @@
 package com.azure.ai.formrecognizer.documentanalysis.administration.models;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 
 import java.util.Collection;
 
@@ -31,7 +30,6 @@ public final class ContentSourceKind extends ExpandableStringEnum<ContentSourceK
      * @param name a name to look for.
      * @return the corresponding ContentSourceKind.
      */
-    @JsonCreator
     public static ContentSourceKind fromString(String name) {
         return fromString(name, ContentSourceKind.class);
     }

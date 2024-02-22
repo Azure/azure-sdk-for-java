@@ -7,26 +7,30 @@ package com.azure.resourcemanager.batch.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Windows operating system settings to apply to the virtual machine. */
+/**
+ * Windows operating system settings to apply to the virtual machine.
+ */
 @Fluent
 public final class WindowsConfiguration {
     /*
      * Whether automatic updates are enabled on the virtual machine.
-     *
+     * 
      * If omitted, the default value is true.
      */
     @JsonProperty(value = "enableAutomaticUpdates")
     private Boolean enableAutomaticUpdates;
 
-    /** Creates an instance of WindowsConfiguration class. */
+    /**
+     * Creates an instance of WindowsConfiguration class.
+     */
     public WindowsConfiguration() {
     }
 
     /**
      * Get the enableAutomaticUpdates property: Whether automatic updates are enabled on the virtual machine.
-     *
-     * <p>If omitted, the default value is true.
-     *
+     * 
+     * If omitted, the default value is true.
+     * 
      * @return the enableAutomaticUpdates value.
      */
     public Boolean enableAutomaticUpdates() {
@@ -35,9 +39,9 @@ public final class WindowsConfiguration {
 
     /**
      * Set the enableAutomaticUpdates property: Whether automatic updates are enabled on the virtual machine.
-     *
-     * <p>If omitted, the default value is true.
-     *
+     * 
+     * If omitted, the default value is true.
+     * 
      * @param enableAutomaticUpdates the enableAutomaticUpdates value to set.
      * @return the WindowsConfiguration object itself.
      */
@@ -48,7 +52,7 @@ public final class WindowsConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

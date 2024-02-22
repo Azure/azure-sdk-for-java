@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The properties of the application type version resource. */
+/**
+ * The properties of the application type version resource.
+ */
 @Fluent
 public final class ApplicationTypeVersionResourceProperties {
     /*
@@ -32,14 +34,16 @@ public final class ApplicationTypeVersionResourceProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> defaultParameterList;
 
-    /** Creates an instance of ApplicationTypeVersionResourceProperties class. */
+    /**
+     * Creates an instance of ApplicationTypeVersionResourceProperties class.
+     */
     public ApplicationTypeVersionResourceProperties() {
     }
 
     /**
      * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
      * response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -48,7 +52,7 @@ public final class ApplicationTypeVersionResourceProperties {
 
     /**
      * Get the appPackageUrl property: The URL to the application package.
-     *
+     * 
      * @return the appPackageUrl value.
      */
     public String appPackageUrl() {
@@ -57,7 +61,7 @@ public final class ApplicationTypeVersionResourceProperties {
 
     /**
      * Set the appPackageUrl property: The URL to the application package.
-     *
+     * 
      * @param appPackageUrl the appPackageUrl value to set.
      * @return the ApplicationTypeVersionResourceProperties object itself.
      */
@@ -69,7 +73,7 @@ public final class ApplicationTypeVersionResourceProperties {
     /**
      * Get the defaultParameterList property: List of application type parameters that can be overridden when creating
      * or updating the application.
-     *
+     * 
      * @return the defaultParameterList value.
      */
     public Map<String, String> defaultParameterList() {
@@ -78,15 +82,13 @@ public final class ApplicationTypeVersionResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (appPackageUrl() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property appPackageUrl in model ApplicationTypeVersionResourceProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property appPackageUrl in model ApplicationTypeVersionResourceProperties"));
         }
     }
 

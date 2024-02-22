@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The current state of the VirtualHub to Peer. */
+/**
+ * The current state of the VirtualHub to Peer.
+ */
 public final class HubBgpConnectionStatus extends ExpandableStringEnum<HubBgpConnectionStatus> {
-    /** Static value Unknown for HubBgpConnectionStatus. */
+    /**
+     * Static value Unknown for HubBgpConnectionStatus.
+     */
     public static final HubBgpConnectionStatus UNKNOWN = fromString("Unknown");
 
-    /** Static value Connecting for HubBgpConnectionStatus. */
+    /**
+     * Static value Connecting for HubBgpConnectionStatus.
+     */
     public static final HubBgpConnectionStatus CONNECTING = fromString("Connecting");
 
-    /** Static value Connected for HubBgpConnectionStatus. */
+    /**
+     * Static value Connected for HubBgpConnectionStatus.
+     */
     public static final HubBgpConnectionStatus CONNECTED = fromString("Connected");
 
-    /** Static value NotConnected for HubBgpConnectionStatus. */
+    /**
+     * Static value NotConnected for HubBgpConnectionStatus.
+     */
     public static final HubBgpConnectionStatus NOT_CONNECTED = fromString("NotConnected");
 
     /**
      * Creates a new instance of HubBgpConnectionStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class HubBgpConnectionStatus extends ExpandableStringEnum<HubBgpCon
 
     /**
      * Creates or finds a HubBgpConnectionStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HubBgpConnectionStatus.
      */
@@ -44,7 +54,7 @@ public final class HubBgpConnectionStatus extends ExpandableStringEnum<HubBgpCon
 
     /**
      * Gets known HubBgpConnectionStatus values.
-     *
+     * 
      * @return known HubBgpConnectionStatus values.
      */
     public static Collection<HubBgpConnectionStatus> values() {

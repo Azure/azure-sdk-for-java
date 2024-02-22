@@ -5,11 +5,13 @@
 package com.azure.resourcemanager.healthcareapis.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.healthcareapis.models.FhirServiceAccessPolicyEntry;
+import com.azure.resourcemanager.healthcareapis.models.Encryption;
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceAcrConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceAuthenticationConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceCorsConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceExportConfiguration;
+import com.azure.resourcemanager.healthcareapis.models.FhirServiceImportConfiguration;
+import com.azure.resourcemanager.healthcareapis.models.ImplementationGuidesConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.healthcareapis.models.ProvisioningState;
 import com.azure.resourcemanager.healthcareapis.models.PublicNetworkAccess;
@@ -18,7 +20,9 @@ import com.azure.resourcemanager.healthcareapis.models.ServiceEventState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Fhir Service properties. */
+/**
+ * Fhir Service properties.
+ */
 @Fluent
 public final class FhirServiceProperties {
     /*
@@ -26,12 +30,6 @@ public final class FhirServiceProperties {
      */
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
-
-    /*
-     * Fhir Service access policies.
-     */
-    @JsonProperty(value = "accessPolicies")
-    private List<FhirServiceAccessPolicyEntry> accessPolicies;
 
     /*
      * Fhir Service Azure container registry configuration.
@@ -58,15 +56,13 @@ public final class FhirServiceProperties {
     private FhirServiceExportConfiguration exportConfiguration;
 
     /*
-     * The list of private endpoint connections that are set up for this
-     * resource.
+     * The list of private endpoint connections that are set up for this resource.
      */
     @JsonProperty(value = "privateEndpointConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnection> privateEndpointConnections;
 
     /*
-     * Control permission for data plane traffic coming from public networks
-     * while private endpoint is enabled.
+     * Control permission for data plane traffic coming from public networks while private endpoint is enabled.
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
@@ -83,9 +79,33 @@ public final class FhirServiceProperties {
     @JsonProperty(value = "resourceVersionPolicyConfiguration")
     private ResourceVersionPolicyConfiguration resourceVersionPolicyConfiguration;
 
+    /*
+     * Fhir Service import configuration.
+     */
+    @JsonProperty(value = "importConfiguration")
+    private FhirServiceImportConfiguration importConfiguration;
+
+    /*
+     * Implementation Guides configuration.
+     */
+    @JsonProperty(value = "implementationGuidesConfiguration")
+    private ImplementationGuidesConfiguration implementationGuidesConfiguration;
+
+    /*
+     * The encryption settings of the FHIR service
+     */
+    @JsonProperty(value = "encryption")
+    private Encryption encryption;
+
+    /**
+     * Creates an instance of FhirServiceProperties class.
+     */
+    public FhirServiceProperties() {
+    }
+
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -93,28 +113,8 @@ public final class FhirServiceProperties {
     }
 
     /**
-     * Get the accessPolicies property: Fhir Service access policies.
-     *
-     * @return the accessPolicies value.
-     */
-    public List<FhirServiceAccessPolicyEntry> accessPolicies() {
-        return this.accessPolicies;
-    }
-
-    /**
-     * Set the accessPolicies property: Fhir Service access policies.
-     *
-     * @param accessPolicies the accessPolicies value to set.
-     * @return the FhirServiceProperties object itself.
-     */
-    public FhirServiceProperties withAccessPolicies(List<FhirServiceAccessPolicyEntry> accessPolicies) {
-        this.accessPolicies = accessPolicies;
-        return this;
-    }
-
-    /**
      * Get the acrConfiguration property: Fhir Service Azure container registry configuration.
-     *
+     * 
      * @return the acrConfiguration value.
      */
     public FhirServiceAcrConfiguration acrConfiguration() {
@@ -123,7 +123,7 @@ public final class FhirServiceProperties {
 
     /**
      * Set the acrConfiguration property: Fhir Service Azure container registry configuration.
-     *
+     * 
      * @param acrConfiguration the acrConfiguration value to set.
      * @return the FhirServiceProperties object itself.
      */
@@ -134,7 +134,7 @@ public final class FhirServiceProperties {
 
     /**
      * Get the authenticationConfiguration property: Fhir Service authentication configuration.
-     *
+     * 
      * @return the authenticationConfiguration value.
      */
     public FhirServiceAuthenticationConfiguration authenticationConfiguration() {
@@ -143,19 +143,19 @@ public final class FhirServiceProperties {
 
     /**
      * Set the authenticationConfiguration property: Fhir Service authentication configuration.
-     *
+     * 
      * @param authenticationConfiguration the authenticationConfiguration value to set.
      * @return the FhirServiceProperties object itself.
      */
-    public FhirServiceProperties withAuthenticationConfiguration(
-        FhirServiceAuthenticationConfiguration authenticationConfiguration) {
+    public FhirServiceProperties
+        withAuthenticationConfiguration(FhirServiceAuthenticationConfiguration authenticationConfiguration) {
         this.authenticationConfiguration = authenticationConfiguration;
         return this;
     }
 
     /**
      * Get the corsConfiguration property: Fhir Service Cors configuration.
-     *
+     * 
      * @return the corsConfiguration value.
      */
     public FhirServiceCorsConfiguration corsConfiguration() {
@@ -164,7 +164,7 @@ public final class FhirServiceProperties {
 
     /**
      * Set the corsConfiguration property: Fhir Service Cors configuration.
-     *
+     * 
      * @param corsConfiguration the corsConfiguration value to set.
      * @return the FhirServiceProperties object itself.
      */
@@ -175,7 +175,7 @@ public final class FhirServiceProperties {
 
     /**
      * Get the exportConfiguration property: Fhir Service export configuration.
-     *
+     * 
      * @return the exportConfiguration value.
      */
     public FhirServiceExportConfiguration exportConfiguration() {
@@ -184,7 +184,7 @@ public final class FhirServiceProperties {
 
     /**
      * Set the exportConfiguration property: Fhir Service export configuration.
-     *
+     * 
      * @param exportConfiguration the exportConfiguration value to set.
      * @return the FhirServiceProperties object itself.
      */
@@ -196,7 +196,7 @@ public final class FhirServiceProperties {
     /**
      * Get the privateEndpointConnections property: The list of private endpoint connections that are set up for this
      * resource.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnection> privateEndpointConnections() {
@@ -204,9 +204,9 @@ public final class FhirServiceProperties {
     }
 
     /**
-     * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
-     * private endpoint is enabled.
-     *
+     * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks
+     * while private endpoint is enabled.
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -214,9 +214,9 @@ public final class FhirServiceProperties {
     }
 
     /**
-     * Set the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
-     * private endpoint is enabled.
-     *
+     * Set the publicNetworkAccess property: Control permission for data plane traffic coming from public networks
+     * while private endpoint is enabled.
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the FhirServiceProperties object itself.
      */
@@ -227,7 +227,7 @@ public final class FhirServiceProperties {
 
     /**
      * Get the eventState property: Fhir Service event support status.
-     *
+     * 
      * @return the eventState value.
      */
     public ServiceEventState eventState() {
@@ -236,7 +236,7 @@ public final class FhirServiceProperties {
 
     /**
      * Get the resourceVersionPolicyConfiguration property: Determines tracking of history for resources.
-     *
+     * 
      * @return the resourceVersionPolicyConfiguration value.
      */
     public ResourceVersionPolicyConfiguration resourceVersionPolicyConfiguration() {
@@ -245,25 +245,83 @@ public final class FhirServiceProperties {
 
     /**
      * Set the resourceVersionPolicyConfiguration property: Determines tracking of history for resources.
-     *
+     * 
      * @param resourceVersionPolicyConfiguration the resourceVersionPolicyConfiguration value to set.
      * @return the FhirServiceProperties object itself.
      */
-    public FhirServiceProperties withResourceVersionPolicyConfiguration(
-        ResourceVersionPolicyConfiguration resourceVersionPolicyConfiguration) {
+    public FhirServiceProperties
+        withResourceVersionPolicyConfiguration(ResourceVersionPolicyConfiguration resourceVersionPolicyConfiguration) {
         this.resourceVersionPolicyConfiguration = resourceVersionPolicyConfiguration;
         return this;
     }
 
     /**
+     * Get the importConfiguration property: Fhir Service import configuration.
+     * 
+     * @return the importConfiguration value.
+     */
+    public FhirServiceImportConfiguration importConfiguration() {
+        return this.importConfiguration;
+    }
+
+    /**
+     * Set the importConfiguration property: Fhir Service import configuration.
+     * 
+     * @param importConfiguration the importConfiguration value to set.
+     * @return the FhirServiceProperties object itself.
+     */
+    public FhirServiceProperties withImportConfiguration(FhirServiceImportConfiguration importConfiguration) {
+        this.importConfiguration = importConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the implementationGuidesConfiguration property: Implementation Guides configuration.
+     * 
+     * @return the implementationGuidesConfiguration value.
+     */
+    public ImplementationGuidesConfiguration implementationGuidesConfiguration() {
+        return this.implementationGuidesConfiguration;
+    }
+
+    /**
+     * Set the implementationGuidesConfiguration property: Implementation Guides configuration.
+     * 
+     * @param implementationGuidesConfiguration the implementationGuidesConfiguration value to set.
+     * @return the FhirServiceProperties object itself.
+     */
+    public FhirServiceProperties
+        withImplementationGuidesConfiguration(ImplementationGuidesConfiguration implementationGuidesConfiguration) {
+        this.implementationGuidesConfiguration = implementationGuidesConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the encryption property: The encryption settings of the FHIR service.
+     * 
+     * @return the encryption value.
+     */
+    public Encryption encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption property: The encryption settings of the FHIR service.
+     * 
+     * @param encryption the encryption value to set.
+     * @return the FhirServiceProperties object itself.
+     */
+    public FhirServiceProperties withEncryption(Encryption encryption) {
+        this.encryption = encryption;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (accessPolicies() != null) {
-            accessPolicies().forEach(e -> e.validate());
-        }
         if (acrConfiguration() != null) {
             acrConfiguration().validate();
         }
@@ -281,6 +339,15 @@ public final class FhirServiceProperties {
         }
         if (resourceVersionPolicyConfiguration() != null) {
             resourceVersionPolicyConfiguration().validate();
+        }
+        if (importConfiguration() != null) {
+            importConfiguration().validate();
+        }
+        if (implementationGuidesConfiguration() != null) {
+            implementationGuidesConfiguration().validate();
+        }
+        if (encryption() != null) {
+            encryption().validate();
         }
     }
 }

@@ -18,37 +18,34 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in AdminRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AdminRulesClient.
+ */
 public interface AdminRulesClient {
     /**
      * List all network manager security configuration admin rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
      * @param ruleCollectionName The name of the network manager security Configuration rule collection.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     *     server.
+     * server.
      * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element will include a skipToken parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
+     * a starting point to use for subsequent calls.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return security configuration admin rule list result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<BaseAdminRuleInner> listAsync(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
-        String ruleCollectionName,
-        Integer top,
-        String skipToken);
+    PagedFlux<BaseAdminRuleInner> listAsync(String resourceGroupName, String networkManagerName,
+        String configurationName, String ruleCollectionName, Integer top, String skipToken);
 
     /**
      * List all network manager security configuration admin rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -59,12 +56,12 @@ public interface AdminRulesClient {
      * @return security configuration admin rule list result as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedFlux<BaseAdminRuleInner> listAsync(
-        String resourceGroupName, String networkManagerName, String configurationName, String ruleCollectionName);
+    PagedFlux<BaseAdminRuleInner> listAsync(String resourceGroupName, String networkManagerName,
+        String configurationName, String ruleCollectionName);
 
     /**
      * List all network manager security configuration admin rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -75,21 +72,21 @@ public interface AdminRulesClient {
      * @return security configuration admin rule list result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BaseAdminRuleInner> list(
-        String resourceGroupName, String networkManagerName, String configurationName, String ruleCollectionName);
+    PagedIterable<BaseAdminRuleInner> list(String resourceGroupName, String networkManagerName,
+        String configurationName, String ruleCollectionName);
 
     /**
      * List all network manager security configuration admin rules.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
      * @param ruleCollectionName The name of the network manager security Configuration rule collection.
      * @param top An optional query parameter which specifies the maximum number of records to be returned by the
-     *     server.
+     * server.
      * @param skipToken SkipToken is only used if a previous operation returned a partial result. If a previous response
-     *     contains a nextLink element, the value of the nextLink element will include a skipToken parameter that
-     *     specifies a starting point to use for subsequent calls.
+     * contains a nextLink element, the value of the nextLink element will include a skipToken parameter that specifies
+     * a starting point to use for subsequent calls.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -97,18 +94,12 @@ public interface AdminRulesClient {
      * @return security configuration admin rule list result as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<BaseAdminRuleInner> list(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
-        String ruleCollectionName,
-        Integer top,
-        String skipToken,
-        Context context);
+    PagedIterable<BaseAdminRuleInner> list(String resourceGroupName, String networkManagerName,
+        String configurationName, String ruleCollectionName, Integer top, String skipToken, Context context);
 
     /**
      * Gets a network manager security configuration admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -118,19 +109,15 @@ public interface AdminRulesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a network manager security configuration admin rule along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BaseAdminRuleInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
-        String ruleCollectionName,
-        String ruleName);
+    Mono<Response<BaseAdminRuleInner>> getWithResponseAsync(String resourceGroupName, String networkManagerName,
+        String configurationName, String ruleCollectionName, String ruleName);
 
     /**
      * Gets a network manager security configuration admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -142,16 +129,12 @@ public interface AdminRulesClient {
      * @return a network manager security configuration admin rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BaseAdminRuleInner> getAsync(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
-        String ruleCollectionName,
-        String ruleName);
+    Mono<BaseAdminRuleInner> getAsync(String resourceGroupName, String networkManagerName, String configurationName,
+        String ruleCollectionName, String ruleName);
 
     /**
      * Gets a network manager security configuration admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -164,17 +147,12 @@ public interface AdminRulesClient {
      * @return a network manager security configuration admin rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BaseAdminRuleInner> getWithResponse(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
-        String ruleCollectionName,
-        String ruleName,
-        Context context);
+    Response<BaseAdminRuleInner> getWithResponse(String resourceGroupName, String networkManagerName,
+        String configurationName, String ruleCollectionName, String ruleName, Context context);
 
     /**
      * Gets a network manager security configuration admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -186,16 +164,12 @@ public interface AdminRulesClient {
      * @return a network manager security configuration admin rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BaseAdminRuleInner get(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
-        String ruleCollectionName,
-        String ruleName);
+    BaseAdminRuleInner get(String resourceGroupName, String networkManagerName, String configurationName,
+        String ruleCollectionName, String ruleName);
 
     /**
      * Creates or updates an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -208,17 +182,13 @@ public interface AdminRulesClient {
      * @return network base admin rule along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BaseAdminRuleInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
-        String ruleCollectionName,
-        String ruleName,
+    Mono<Response<BaseAdminRuleInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String networkManagerName, String configurationName, String ruleCollectionName, String ruleName,
         BaseAdminRuleInner adminRule);
 
     /**
      * Creates or updates an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -231,17 +201,12 @@ public interface AdminRulesClient {
      * @return network base admin rule on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BaseAdminRuleInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
-        String ruleCollectionName,
-        String ruleName,
-        BaseAdminRuleInner adminRule);
+    Mono<BaseAdminRuleInner> createOrUpdateAsync(String resourceGroupName, String networkManagerName,
+        String configurationName, String ruleCollectionName, String ruleName, BaseAdminRuleInner adminRule);
 
     /**
      * Creates or updates an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -255,18 +220,13 @@ public interface AdminRulesClient {
      * @return network base admin rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BaseAdminRuleInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
-        String ruleCollectionName,
-        String ruleName,
-        BaseAdminRuleInner adminRule,
+    Response<BaseAdminRuleInner> createOrUpdateWithResponse(String resourceGroupName, String networkManagerName,
+        String configurationName, String ruleCollectionName, String ruleName, BaseAdminRuleInner adminRule,
         Context context);
 
     /**
      * Creates or updates an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -279,65 +239,50 @@ public interface AdminRulesClient {
      * @return network base admin rule.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BaseAdminRuleInner createOrUpdate(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
-        String ruleCollectionName,
-        String ruleName,
-        BaseAdminRuleInner adminRule);
+    BaseAdminRuleInner createOrUpdate(String resourceGroupName, String networkManagerName, String configurationName,
+        String ruleCollectionName, String ruleName, BaseAdminRuleInner adminRule);
 
     /**
      * Deletes an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
      * @param ruleCollectionName The name of the network manager security Configuration rule collection.
      * @param ruleName The name of the rule.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
+     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
-        String ruleCollectionName,
-        String ruleName,
-        Boolean force);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String networkManagerName,
+        String configurationName, String ruleCollectionName, String ruleName, Boolean force);
 
     /**
      * Deletes an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
      * @param ruleCollectionName The name of the network manager security Configuration rule collection.
      * @param ruleName The name of the rule.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
+     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
-        String ruleCollectionName,
-        String ruleName,
-        Boolean force);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
+        String configurationName, String ruleCollectionName, String ruleName, Boolean force);
 
     /**
      * Deletes an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -349,16 +294,12 @@ public interface AdminRulesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
-        String ruleCollectionName,
-        String ruleName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String networkManagerName,
+        String configurationName, String ruleCollectionName, String ruleName);
 
     /**
      * Deletes an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -370,23 +311,19 @@ public interface AdminRulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
-        String ruleCollectionName,
-        String ruleName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName,
+        String configurationName, String ruleCollectionName, String ruleName);
 
     /**
      * Deletes an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
      * @param ruleCollectionName The name of the network manager security Configuration rule collection.
      * @param ruleName The name of the rule.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
+     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -394,42 +331,31 @@ public interface AdminRulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
-        String ruleCollectionName,
-        String ruleName,
-        Boolean force,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String networkManagerName,
+        String configurationName, String ruleCollectionName, String ruleName, Boolean force, Context context);
 
     /**
      * Deletes an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
      * @param ruleCollectionName The name of the network manager security Configuration rule collection.
      * @param ruleName The name of the rule.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
+     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
-        String ruleCollectionName,
-        String ruleName,
-        Boolean force);
+    Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String configurationName,
+        String ruleCollectionName, String ruleName, Boolean force);
 
     /**
      * Deletes an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -441,16 +367,12 @@ public interface AdminRulesClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
-        String ruleCollectionName,
-        String ruleName);
+    Mono<Void> deleteAsync(String resourceGroupName, String networkManagerName, String configurationName,
+        String ruleCollectionName, String ruleName);
 
     /**
      * Deletes an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
@@ -461,35 +383,25 @@ public interface AdminRulesClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
-        String ruleCollectionName,
-        String ruleName);
+    void delete(String resourceGroupName, String networkManagerName, String configurationName,
+        String ruleCollectionName, String ruleName);
 
     /**
      * Deletes an admin rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param networkManagerName The name of the network manager.
      * @param configurationName The name of the network manager Security Configuration.
      * @param ruleCollectionName The name of the network manager security Configuration rule collection.
      * @param ruleName The name of the rule.
      * @param force Deletes the resource even if it is part of a deployed configuration. If the configuration has been
-     *     deployed, the service will do a cleanup deployment in the background, prior to the delete.
+     * deployed, the service will do a cleanup deployment in the background, prior to the delete.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String networkManagerName,
-        String configurationName,
-        String ruleCollectionName,
-        String ruleName,
-        Boolean force,
-        Context context);
+    void delete(String resourceGroupName, String networkManagerName, String configurationName,
+        String ruleCollectionName, String ruleName, Boolean force, Context context);
 }

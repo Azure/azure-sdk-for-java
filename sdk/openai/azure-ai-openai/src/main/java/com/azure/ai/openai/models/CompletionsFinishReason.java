@@ -69,4 +69,10 @@ public final class CompletionsFinishReason extends ExpandableStringEnum<Completi
      */
     @Generated
     public static final CompletionsFinishReason FUNCTION_CALL = fromString("function_call");
+
+    /**
+     * Completion ended with the model calling a provided tool for output.
+     */
+    @Generated
+    public static final CompletionsFinishReason TOOL_CALLS = fromString("tool_calls");
 }

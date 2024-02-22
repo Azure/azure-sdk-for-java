@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.deviceupdate.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for Accounts Delete. */
+/**
+ * Samples for Accounts Delete.
+ */
 public final class AccountsDeleteSamples {
     /*
-     * x-ms-original-file: specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2022-10-01/examples/Accounts/Accounts_Delete.json
+     * x-ms-original-file:
+     * specification/deviceupdate/resource-manager/Microsoft.DeviceUpdate/stable/2023-07-01/examples/Accounts/
+     * Accounts_Delete.json
      */
     /**
      * Sample code: Deletes an account.
-     *
+     * 
      * @param manager Entry point to DeviceUpdateManager.
      */
     public static void deletesAnAccount(com.azure.resourcemanager.deviceupdate.DeviceUpdateManager manager) {
-        manager.accounts().delete("test-rg", "contoso", Context.NONE);
+        manager.accounts().delete("test-rg", "contoso", com.azure.core.util.Context.NONE);
     }
 }

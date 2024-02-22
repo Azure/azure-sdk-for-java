@@ -30,7 +30,8 @@ import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
  * Handler that receives events from its corresponding {@link Receiver}. Handlers must be associated to a
  * {@link Receiver} to receive its events.
  *
- * Note: ReceiveLinkHandler2 will become the ReceiveLinkHandler once the side by side support for v1 and v2 stack is removed.
+ * Note: ReceiveLinkHandler2 will become the ReceiveLinkHandler once the side by side support for v1 and v2 stack is
+ * removed.
  *
  * @see BaseHandler#setHandler(Extendable, Handler)
  * @see Receiver
@@ -48,22 +49,45 @@ public class ReceiveLinkHandler2 extends LinkHandler {
     private final ReceiverUnsettledDeliveries unsettledDeliveries;
     private final ReceiverDeliveryHandler deliveryHandler;
 
+    /**
+     * Creates a new instance of ReceiveLinkHandler2.
+     *
+     * @param connectionId The identifier of the connection this link belongs to.
+     * @param hostname The hostname for the connection.
+     * @param linkName The name of the link.
+     * @param entityPath The entity path this link is connected to.
+     * @param settlingMode The {@link DeliverySettleMode} to use.
+     * @param dispatcher The reactor dispatcher to handle reactor events.
+     * @param retryOptions The retry options to use when sending dispositions.
+     * @param includeDeliveryTagInMessage Whether to include the delivery tag in the message.
+     * @param metricsProvider The AMQP metrics provider.
+     */
     public ReceiveLinkHandler2(String connectionId, String hostname, String linkName, String entityPath,
-        DeliverySettleMode settlingMode, ReactorDispatcher dispatcher, AmqpRetryOptions retryOptions, boolean includeDeliveryTagInMessage,
-        AmqpMetricsProvider metricsProvider) {
+        DeliverySettleMode settlingMode, ReactorDispatcher dispatcher, AmqpRetryOptions retryOptions,
+        boolean includeDeliveryTagInMessage, AmqpMetricsProvider metricsProvider) {
         super(connectionId, hostname, entityPath, metricsProvider);
         this.linkName = Objects.requireNonNull(linkName, "'linkName' cannot be null.");
         this.entityPath = Objects.requireNonNull(entityPath, "'entityPath' cannot be null.");
-        this.unsettledDeliveries = new ReceiverUnsettledDeliveries(hostname, entityPath, linkName, dispatcher, retryOptions, super.logger);
-        this.deliveryHandler = new ReceiverDeliveryHandler(entityPath, linkName,
-            settlingMode, unsettledDeliveries,
+        this.unsettledDeliveries
+            = new ReceiverUnsettledDeliveries(hostname, entityPath, linkName, dispatcher, retryOptions, super.logger);
+        this.deliveryHandler = new ReceiverDeliveryHandler(entityPath, linkName, settlingMode, unsettledDeliveries,
             includeDeliveryTagInMessage, super.logger);
     }
 
+    /**
+     * Gets the name of the link.
+     *
+     * @return The name of the link.
+     */
     public String getLinkName() {
         return linkName;
     }
 
+    /**
+     * Gets the messages.
+     *
+     * @return The messages.
+     */
     public Flux<Message> getMessages() {
         return deliveryHandler.getMessages();
     }
@@ -104,9 +128,8 @@ public class ReceiveLinkHandler2 extends LinkHandler {
             return;
         }
 
-        LoggingEventBuilder logBuilder = logger.atInfo()
-            .addKeyValue(ENTITY_PATH_KEY, entityPath)
-            .addKeyValue(LINK_NAME_KEY, link.getName());
+        LoggingEventBuilder logBuilder
+            = logger.atInfo().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, link.getName());
 
         if (link.getRemoteSource() != null) {
             logBuilder.addKeyValue("remoteSource", link.getRemoteSource());
@@ -115,8 +138,7 @@ public class ReceiveLinkHandler2 extends LinkHandler {
                 onNext(EndpointState.ACTIVE);
             }
         } else {
-            logBuilder
-                .addKeyValue("action", "waitingForError");
+            logBuilder.addKeyValue("action", "waitingForError");
         }
 
         logBuilder.log("onLinkRemoteOpen");
@@ -171,7 +193,7 @@ public class ReceiveLinkHandler2 extends LinkHandler {
      * Disposition frame is sent via the same amqp receive-link that delivered the delivery, which was
      * notified to {@link ReceiverDeliveryHandler#onDelivery(Delivery)}}.
      *
-     * @param deliveryTag  the unique delivery tag identifying the delivery.
+     * @param deliveryTag the unique delivery tag identifying the delivery.
      * @param desiredState The state to include in the disposition frame indicating the desired-outcome
      *                     that the application wish to occur at the broker.
      * @return the {@link Mono} upon subscription starts the work by requesting ProtonJ library to send
@@ -195,7 +217,7 @@ public class ReceiveLinkHandler2 extends LinkHandler {
     }
 
     @Override
-    void onError(Throwable e) {
+    public void onError(Throwable e) {
         deliveryHandler.onLinkError();
         super.onError(e);
     }

@@ -10,8 +10,8 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.RetentionPolicy;
 public final class RetentionPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RetentionPolicy model =
-            BinaryData.fromString("{\"retentionPolicyType\":\"RetentionPolicy\"}").toObject(RetentionPolicy.class);
+        RetentionPolicy model
+            = BinaryData.fromString("{\"retentionPolicyType\":\"RetentionPolicy\"}").toObject(RetentionPolicy.class);
     }
 
     @org.junit.jupiter.api.Test

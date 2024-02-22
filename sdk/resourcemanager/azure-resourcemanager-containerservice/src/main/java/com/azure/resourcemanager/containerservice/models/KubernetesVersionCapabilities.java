@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Capabilities on this Kubernetes version. */
+/**
+ * Capabilities on this Kubernetes version.
+ */
 @Fluent
 public final class KubernetesVersionCapabilities {
     /*
@@ -17,13 +19,15 @@ public final class KubernetesVersionCapabilities {
     @JsonProperty(value = "supportPlan")
     private List<KubernetesSupportPlan> supportPlan;
 
-    /** Creates an instance of KubernetesVersionCapabilities class. */
+    /**
+     * Creates an instance of KubernetesVersionCapabilities class.
+     */
     public KubernetesVersionCapabilities() {
     }
 
     /**
      * Get the supportPlan property: The supportPlan property.
-     *
+     * 
      * @return the supportPlan value.
      */
     public List<KubernetesSupportPlan> supportPlan() {
@@ -32,7 +36,7 @@ public final class KubernetesVersionCapabilities {
 
     /**
      * Set the supportPlan property: The supportPlan property.
-     *
+     * 
      * @param supportPlan the supportPlan value to set.
      * @return the KubernetesVersionCapabilities object itself.
      */
@@ -43,7 +47,7 @@ public final class KubernetesVersionCapabilities {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

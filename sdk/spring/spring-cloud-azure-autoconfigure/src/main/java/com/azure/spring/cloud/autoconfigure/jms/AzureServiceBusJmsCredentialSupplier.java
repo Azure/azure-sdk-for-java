@@ -13,9 +13,7 @@ import java.util.function.Supplier;
  *
  * @since 4.7.0
  *
- * @deprecated use {@link com.microsoft.azure.servicebus.jms.ServiceBusJmsConnectionFactory} now, doesn't need this supplier anymore.
  */
-@Deprecated
 public class AzureServiceBusJmsCredentialSupplier implements Supplier<String> {
 
     private final AzureAuthenticationTemplate azureAuthenticationTemplate;

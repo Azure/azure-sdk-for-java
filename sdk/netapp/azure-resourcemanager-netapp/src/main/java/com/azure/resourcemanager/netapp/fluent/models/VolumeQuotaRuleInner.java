@@ -12,7 +12,9 @@ import com.azure.resourcemanager.netapp.models.Type;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Quota Rule of a Volume. */
+/**
+ * Quota Rule of a Volume.
+ */
 @Fluent
 public final class VolumeQuotaRuleInner extends Resource {
     /*
@@ -27,13 +29,15 @@ public final class VolumeQuotaRuleInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of VolumeQuotaRuleInner class. */
+    /**
+     * Creates an instance of VolumeQuotaRuleInner class.
+     */
     public VolumeQuotaRuleInner() {
     }
 
     /**
      * Get the innerProperties property: Volume Quota Rule Properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VolumeQuotaRulesProperties innerProperties() {
@@ -42,21 +46,25 @@ public final class VolumeQuotaRuleInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VolumeQuotaRuleInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VolumeQuotaRuleInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -65,7 +73,7 @@ public final class VolumeQuotaRuleInner extends Resource {
 
     /**
      * Get the provisioningState property: Gets the status of the VolumeQuotaRule at the time the operation was called.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -74,7 +82,7 @@ public final class VolumeQuotaRuleInner extends Resource {
 
     /**
      * Get the quotaSizeInKiBs property: Size of quota.
-     *
+     * 
      * @return the quotaSizeInKiBs value.
      */
     public Long quotaSizeInKiBs() {
@@ -83,7 +91,7 @@ public final class VolumeQuotaRuleInner extends Resource {
 
     /**
      * Set the quotaSizeInKiBs property: Size of quota.
-     *
+     * 
      * @param quotaSizeInKiBs the quotaSizeInKiBs value to set.
      * @return the VolumeQuotaRuleInner object itself.
      */
@@ -97,9 +105,9 @@ public final class VolumeQuotaRuleInner extends Resource {
 
     /**
      * Get the quotaType property: quotaType
-     *
-     * <p>Type of quota.
-     *
+     * 
+     * Type of quota.
+     * 
      * @return the quotaType value.
      */
     public Type quotaType() {
@@ -108,9 +116,9 @@ public final class VolumeQuotaRuleInner extends Resource {
 
     /**
      * Set the quotaType property: quotaType
-     *
-     * <p>Type of quota.
-     *
+     * 
+     * Type of quota.
+     * 
      * @param quotaType the quotaType value to set.
      * @return the VolumeQuotaRuleInner object itself.
      */
@@ -126,7 +134,7 @@ public final class VolumeQuotaRuleInner extends Resource {
      * Get the quotaTarget property: UserID/GroupID/SID based on the quota target type. UserID and groupID can be found
      * by running ‘id’ or ‘getent’ command for the user or group and SID can be found by running &lt;wmic useraccount
      * where name='user-name' get sid&gt;.
-     *
+     * 
      * @return the quotaTarget value.
      */
     public String quotaTarget() {
@@ -137,7 +145,7 @@ public final class VolumeQuotaRuleInner extends Resource {
      * Set the quotaTarget property: UserID/GroupID/SID based on the quota target type. UserID and groupID can be found
      * by running ‘id’ or ‘getent’ command for the user or group and SID can be found by running &lt;wmic useraccount
      * where name='user-name' get sid&gt;.
-     *
+     * 
      * @param quotaTarget the quotaTarget value to set.
      * @return the VolumeQuotaRuleInner object itself.
      */
@@ -151,7 +159,7 @@ public final class VolumeQuotaRuleInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -57,10 +57,10 @@ class DocumentAdministrationClientTestBase extends TestProxyTestBase {
                 builder.credential(new AzureKeyCredential(INVALID_KEY));
                 setMatchers();
             } else if (interceptorManager.isRecordMode()) {
-                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
+                builder.credential(new AzureKeyCredential(TestUtils.AZURE_DOCUMENTINTELLIGENCE_API_KEY_CONFIGURATION));
                 builder.addPolicy(interceptorManager.getRecordPolicy());
             } else if (interceptorManager.isLiveMode()) {
-                builder.credential(new AzureKeyCredential(TestUtils.AZURE_FORM_RECOGNIZER_API_KEY_CONFIGURATION));
+                builder.credential(new AzureKeyCredential(TestUtils.AZURE_DOCUMENTINTELLIGENCE_API_KEY_CONFIGURATION));
             }
         } else {
             if (interceptorManager.isPlaybackMode()) {
@@ -126,7 +126,7 @@ class DocumentAdministrationClientTestBase extends TestProxyTestBase {
     private String getEndpoint() {
         return interceptorManager.isPlaybackMode()
             ? "https://localhost:8080"
-            : TestUtils.AZURE_FORM_RECOGNIZER_ENDPOINT_CONFIGURATION;
+            : TestUtils.AZURE_DOCUMENTINTELLIGENCE_ENDPOINT_CONFIGURATION;
     }
 
 }

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity Dynamics sink. */
+/**
+ * A copy activity Dynamics sink.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("DynamicsSink")
 @Fluent
@@ -34,12 +36,15 @@ public final class DynamicsSink extends CopySink {
     @JsonProperty(value = "alternateKeyName")
     private Object alternateKeyName;
 
-    /** Creates an instance of DynamicsSink class. */
-    public DynamicsSink() {}
+    /**
+     * Creates an instance of DynamicsSink class.
+     */
+    public DynamicsSink() {
+    }
 
     /**
      * Get the writeBehavior property: The write behavior for the operation.
-     *
+     * 
      * @return the writeBehavior value.
      */
     public DynamicsSinkWriteBehavior getWriteBehavior() {
@@ -48,7 +53,7 @@ public final class DynamicsSink extends CopySink {
 
     /**
      * Set the writeBehavior property: The write behavior for the operation.
-     *
+     * 
      * @param writeBehavior the writeBehavior value to set.
      * @return the DynamicsSink object itself.
      */
@@ -60,7 +65,7 @@ public final class DynamicsSink extends CopySink {
     /**
      * Get the ignoreNullValues property: The flag indicating whether ignore null values from input dataset (except key
      * fields) during write operation. Default is false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @return the ignoreNullValues value.
      */
     public Object getIgnoreNullValues() {
@@ -70,7 +75,7 @@ public final class DynamicsSink extends CopySink {
     /**
      * Set the ignoreNullValues property: The flag indicating whether ignore null values from input dataset (except key
      * fields) during write operation. Default is false. Type: boolean (or Expression with resultType boolean).
-     *
+     * 
      * @param ignoreNullValues the ignoreNullValues value to set.
      * @return the DynamicsSink object itself.
      */
@@ -82,7 +87,7 @@ public final class DynamicsSink extends CopySink {
     /**
      * Get the alternateKeyName property: The logical name of the alternate key which will be used when upserting
      * records. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the alternateKeyName value.
      */
     public Object getAlternateKeyName() {
@@ -92,7 +97,7 @@ public final class DynamicsSink extends CopySink {
     /**
      * Set the alternateKeyName property: The logical name of the alternate key which will be used when upserting
      * records. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param alternateKeyName the alternateKeyName value to set.
      * @return the DynamicsSink object itself.
      */
@@ -101,35 +106,45 @@ public final class DynamicsSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

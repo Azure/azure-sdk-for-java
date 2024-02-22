@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters that define destination of connection. */
+/**
+ * Parameters that define destination of connection.
+ */
 @Fluent
 public final class ConnectivityDestination {
     /*
@@ -28,13 +30,15 @@ public final class ConnectivityDestination {
     @JsonProperty(value = "port")
     private Integer port;
 
-    /** Creates an instance of ConnectivityDestination class. */
+    /**
+     * Creates an instance of ConnectivityDestination class.
+     */
     public ConnectivityDestination() {
     }
 
     /**
      * Get the resourceId property: The ID of the resource to which a connection attempt will be made.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -43,7 +47,7 @@ public final class ConnectivityDestination {
 
     /**
      * Set the resourceId property: The ID of the resource to which a connection attempt will be made.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the ConnectivityDestination object itself.
      */
@@ -54,7 +58,7 @@ public final class ConnectivityDestination {
 
     /**
      * Get the address property: The IP address or URI the resource to which a connection attempt will be made.
-     *
+     * 
      * @return the address value.
      */
     public String address() {
@@ -63,7 +67,7 @@ public final class ConnectivityDestination {
 
     /**
      * Set the address property: The IP address or URI the resource to which a connection attempt will be made.
-     *
+     * 
      * @param address the address value to set.
      * @return the ConnectivityDestination object itself.
      */
@@ -74,7 +78,7 @@ public final class ConnectivityDestination {
 
     /**
      * Get the port property: Port on which check connectivity will be performed.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -83,7 +87,7 @@ public final class ConnectivityDestination {
 
     /**
      * Set the port property: Port on which check connectivity will be performed.
-     *
+     * 
      * @param port the port value to set.
      * @return the ConnectivityDestination object itself.
      */
@@ -94,7 +98,7 @@ public final class ConnectivityDestination {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

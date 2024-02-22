@@ -148,8 +148,10 @@ public class ClientCertificateCredential implements TokenCredential {
     public AccessToken getTokenSync(TokenRequestContext request) {
         try {
             AccessToken token = identitySyncClient.authenticateWithConfidentialClientCache(request);
-            LoggingUtil.logTokenSuccess(LOGGER, request);
-            return token;
+            if (token != null) {
+                LoggingUtil.logTokenSuccess(LOGGER, request);
+                return token;
+            }
         } catch (Exception e) { }
 
         try {

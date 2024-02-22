@@ -21,8 +21,8 @@ public final class JobsImpl implements Jobs {
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    public JobsImpl(
-        JobsClient innerClient, com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
+    public JobsImpl(JobsClient innerClient,
+        com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
@@ -33,20 +33,17 @@ public final class JobsImpl implements Jobs {
     }
 
     public PagedIterable<AzureBackupJobResource> list(String resourceGroupName, String vaultName, Context context) {
-        PagedIterable<AzureBackupJobResourceInner> inner =
-            this.serviceClient().list(resourceGroupName, vaultName, context);
+        PagedIterable<AzureBackupJobResourceInner> inner
+            = this.serviceClient().list(resourceGroupName, vaultName, context);
         return Utils.mapPage(inner, inner1 -> new AzureBackupJobResourceImpl(inner1, this.manager()));
     }
 
-    public Response<AzureBackupJobResource> getWithResponse(
-        String resourceGroupName, String vaultName, String jobId, Context context) {
-        Response<AzureBackupJobResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, vaultName, jobId, context);
+    public Response<AzureBackupJobResource> getWithResponse(String resourceGroupName, String vaultName, String jobId,
+        Context context) {
+        Response<AzureBackupJobResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, vaultName, jobId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AzureBackupJobResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;

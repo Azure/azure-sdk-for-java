@@ -19,11 +19,13 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ConfigurationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ConfigurationsClient.
+ */
 public interface ConfigurationsClient {
     /**
      * List all the configurations in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -36,7 +38,7 @@ public interface ConfigurationsClient {
 
     /**
      * List all the configurations in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -49,7 +51,7 @@ public interface ConfigurationsClient {
 
     /**
      * List all the configurations in a given server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param context The context to associate with this operation.
@@ -63,7 +65,7 @@ public interface ConfigurationsClient {
 
     /**
      * Gets information about a configuration of server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param configurationName The name of the server configuration.
@@ -71,15 +73,15 @@ public interface ConfigurationsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about a configuration of server along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ConfigurationInner>> getWithResponseAsync(
-        String resourceGroupName, String serverName, String configurationName);
+    Mono<Response<ConfigurationInner>> getWithResponseAsync(String resourceGroupName, String serverName,
+        String configurationName);
 
     /**
      * Gets information about a configuration of server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param configurationName The name of the server configuration.
@@ -93,7 +95,7 @@ public interface ConfigurationsClient {
 
     /**
      * Gets information about a configuration of server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param configurationName The name of the server configuration.
@@ -104,12 +106,12 @@ public interface ConfigurationsClient {
      * @return information about a configuration of server along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ConfigurationInner> getWithResponse(
-        String resourceGroupName, String serverName, String configurationName, Context context);
+    Response<ConfigurationInner> getWithResponse(String resourceGroupName, String serverName, String configurationName,
+        Context context);
 
     /**
      * Gets information about a configuration of server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param configurationName The name of the server configuration.
@@ -123,7 +125,7 @@ public interface ConfigurationsClient {
 
     /**
      * Updates a configuration of a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param configurationName The name of the server configuration.
@@ -134,12 +136,12 @@ public interface ConfigurationsClient {
      * @return represents a Configuration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String serverName, String configurationName, ConfigurationForUpdate parameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String serverName,
+        String configurationName, ConfigurationForUpdate parameters);
 
     /**
      * Updates a configuration of a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param configurationName The name of the server configuration.
@@ -150,12 +152,12 @@ public interface ConfigurationsClient {
      * @return the {@link PollerFlux} for polling of represents a Configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ConfigurationInner>, ConfigurationInner> beginUpdateAsync(
-        String resourceGroupName, String serverName, String configurationName, ConfigurationForUpdate parameters);
+    PollerFlux<PollResult<ConfigurationInner>, ConfigurationInner> beginUpdateAsync(String resourceGroupName,
+        String serverName, String configurationName, ConfigurationForUpdate parameters);
 
     /**
      * Updates a configuration of a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param configurationName The name of the server configuration.
@@ -166,12 +168,12 @@ public interface ConfigurationsClient {
      * @return the {@link SyncPoller} for polling of represents a Configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginUpdate(
-        String resourceGroupName, String serverName, String configurationName, ConfigurationForUpdate parameters);
+    SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginUpdate(String resourceGroupName,
+        String serverName, String configurationName, ConfigurationForUpdate parameters);
 
     /**
      * Updates a configuration of a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param configurationName The name of the server configuration.
@@ -183,16 +185,12 @@ public interface ConfigurationsClient {
      * @return the {@link SyncPoller} for polling of represents a Configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginUpdate(
-        String resourceGroupName,
-        String serverName,
-        String configurationName,
-        ConfigurationForUpdate parameters,
-        Context context);
+    SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginUpdate(String resourceGroupName,
+        String serverName, String configurationName, ConfigurationForUpdate parameters, Context context);
 
     /**
      * Updates a configuration of a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param configurationName The name of the server configuration.
@@ -203,12 +201,12 @@ public interface ConfigurationsClient {
      * @return represents a Configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ConfigurationInner> updateAsync(
-        String resourceGroupName, String serverName, String configurationName, ConfigurationForUpdate parameters);
+    Mono<ConfigurationInner> updateAsync(String resourceGroupName, String serverName, String configurationName,
+        ConfigurationForUpdate parameters);
 
     /**
      * Updates a configuration of a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param configurationName The name of the server configuration.
@@ -219,12 +217,12 @@ public interface ConfigurationsClient {
      * @return represents a Configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfigurationInner update(
-        String resourceGroupName, String serverName, String configurationName, ConfigurationForUpdate parameters);
+    ConfigurationInner update(String resourceGroupName, String serverName, String configurationName,
+        ConfigurationForUpdate parameters);
 
     /**
      * Updates a configuration of a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param configurationName The name of the server configuration.
@@ -236,16 +234,12 @@ public interface ConfigurationsClient {
      * @return represents a Configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfigurationInner update(
-        String resourceGroupName,
-        String serverName,
-        String configurationName,
-        ConfigurationForUpdate parameters,
-        Context context);
+    ConfigurationInner update(String resourceGroupName, String serverName, String configurationName,
+        ConfigurationForUpdate parameters, Context context);
 
     /**
      * Updates a configuration of a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param configurationName The name of the server configuration.
@@ -256,12 +250,12 @@ public interface ConfigurationsClient {
      * @return represents a Configuration along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> putWithResponseAsync(
-        String resourceGroupName, String serverName, String configurationName, ConfigurationInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> putWithResponseAsync(String resourceGroupName, String serverName,
+        String configurationName, ConfigurationInner parameters);
 
     /**
      * Updates a configuration of a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param configurationName The name of the server configuration.
@@ -272,12 +266,12 @@ public interface ConfigurationsClient {
      * @return the {@link PollerFlux} for polling of represents a Configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ConfigurationInner>, ConfigurationInner> beginPutAsync(
-        String resourceGroupName, String serverName, String configurationName, ConfigurationInner parameters);
+    PollerFlux<PollResult<ConfigurationInner>, ConfigurationInner> beginPutAsync(String resourceGroupName,
+        String serverName, String configurationName, ConfigurationInner parameters);
 
     /**
      * Updates a configuration of a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param configurationName The name of the server configuration.
@@ -288,12 +282,12 @@ public interface ConfigurationsClient {
      * @return the {@link SyncPoller} for polling of represents a Configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginPut(
-        String resourceGroupName, String serverName, String configurationName, ConfigurationInner parameters);
+    SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginPut(String resourceGroupName, String serverName,
+        String configurationName, ConfigurationInner parameters);
 
     /**
      * Updates a configuration of a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param configurationName The name of the server configuration.
@@ -305,16 +299,12 @@ public interface ConfigurationsClient {
      * @return the {@link SyncPoller} for polling of represents a Configuration.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginPut(
-        String resourceGroupName,
-        String serverName,
-        String configurationName,
-        ConfigurationInner parameters,
-        Context context);
+    SyncPoller<PollResult<ConfigurationInner>, ConfigurationInner> beginPut(String resourceGroupName, String serverName,
+        String configurationName, ConfigurationInner parameters, Context context);
 
     /**
      * Updates a configuration of a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param configurationName The name of the server configuration.
@@ -325,12 +315,12 @@ public interface ConfigurationsClient {
      * @return represents a Configuration on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ConfigurationInner> putAsync(
-        String resourceGroupName, String serverName, String configurationName, ConfigurationInner parameters);
+    Mono<ConfigurationInner> putAsync(String resourceGroupName, String serverName, String configurationName,
+        ConfigurationInner parameters);
 
     /**
      * Updates a configuration of a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param configurationName The name of the server configuration.
@@ -341,12 +331,12 @@ public interface ConfigurationsClient {
      * @return represents a Configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfigurationInner put(
-        String resourceGroupName, String serverName, String configurationName, ConfigurationInner parameters);
+    ConfigurationInner put(String resourceGroupName, String serverName, String configurationName,
+        ConfigurationInner parameters);
 
     /**
      * Updates a configuration of a server.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param serverName The name of the server.
      * @param configurationName The name of the server configuration.
@@ -358,10 +348,6 @@ public interface ConfigurationsClient {
      * @return represents a Configuration.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ConfigurationInner put(
-        String resourceGroupName,
-        String serverName,
-        String configurationName,
-        ConfigurationInner parameters,
-        Context context);
+    ConfigurationInner put(String resourceGroupName, String serverName, String configurationName,
+        ConfigurationInner parameters, Context context);
 }

@@ -10,29 +10,31 @@ import java.util.List;
 
 /**
  * The disk encryption configuration applied on compute nodes in the pool. Disk encryption configuration is not
- * supported on Linux pool created with Virtual Machine Image or Shared Image Gallery Image.
+ * supported on Linux pool created with Virtual Machine Image or Azure Compute Gallery Image.
  */
 @Fluent
 public final class DiskEncryptionConfiguration {
     /*
      * The list of disk targets Batch Service will encrypt on the compute node
-     *
+     * 
      * On Linux pool, only "TemporaryDisk" is supported; on Windows pool, "OsDisk" and "TemporaryDisk" must be
      * specified.
      */
     @JsonProperty(value = "targets")
     private List<DiskEncryptionTarget> targets;
 
-    /** Creates an instance of DiskEncryptionConfiguration class. */
+    /**
+     * Creates an instance of DiskEncryptionConfiguration class.
+     */
     public DiskEncryptionConfiguration() {
     }
 
     /**
      * Get the targets property: The list of disk targets Batch Service will encrypt on the compute node
-     *
-     * <p>On Linux pool, only "TemporaryDisk" is supported; on Windows pool, "OsDisk" and "TemporaryDisk" must be
+     * 
+     * On Linux pool, only "TemporaryDisk" is supported; on Windows pool, "OsDisk" and "TemporaryDisk" must be
      * specified.
-     *
+     * 
      * @return the targets value.
      */
     public List<DiskEncryptionTarget> targets() {
@@ -41,10 +43,10 @@ public final class DiskEncryptionConfiguration {
 
     /**
      * Set the targets property: The list of disk targets Batch Service will encrypt on the compute node
-     *
-     * <p>On Linux pool, only "TemporaryDisk" is supported; on Windows pool, "OsDisk" and "TemporaryDisk" must be
+     * 
+     * On Linux pool, only "TemporaryDisk" is supported; on Windows pool, "OsDisk" and "TemporaryDisk" must be
      * specified.
-     *
+     * 
      * @param targets the targets value to set.
      * @return the DiskEncryptionConfiguration object itself.
      */
@@ -55,7 +57,7 @@ public final class DiskEncryptionConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

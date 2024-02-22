@@ -5,17 +5,15 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.fluent.models.PrivateEndpointInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of private endpoints. */
+/**
+ * A list of private endpoints.
+ */
 @Immutable
 public final class PrivateEndpointListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(PrivateEndpointListResult.class);
-
     /*
      * A list of private endpoints.
      */
@@ -29,8 +27,14 @@ public final class PrivateEndpointListResult {
     private String nextLink;
 
     /**
+     * Creates an instance of PrivateEndpointListResult class.
+     */
+    public PrivateEndpointListResult() {
+    }
+
+    /**
      * Get the value property: A list of private endpoints.
-     *
+     * 
      * @return the value value.
      */
     public List<PrivateEndpointInner> value() {
@@ -39,7 +43,7 @@ public final class PrivateEndpointListResult {
 
     /**
      * Get the nextLink property: The URL to fetch the next set of private endpoints.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class PrivateEndpointListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

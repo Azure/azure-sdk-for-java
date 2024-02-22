@@ -11,31 +11,42 @@ import java.util.Collection;
 /**
  * The reliability level sets the replica set size of system services. Learn about
  * [ReliabilityLevel](https://docs.microsoft.com/azure/service-fabric/service-fabric-cluster-capacity).
- *
- * <p>- None - Run the System services with a target replica set count of 1. This should only be used for test clusters.
+ * 
+ * - None - Run the System services with a target replica set count of 1. This should only be used for test clusters.
  * - Bronze - Run the System services with a target replica set count of 3. This should only be used for test clusters.
- * - Silver - Run the System services with a target replica set count of 5. - Gold - Run the System services with a
- * target replica set count of 7. - Platinum - Run the System services with a target replica set count of 9.
+ * - Silver - Run the System services with a target replica set count of 5.
+ * - Gold - Run the System services with a target replica set count of 7.
+ * - Platinum - Run the System services with a target replica set count of 9.
  */
 public final class ReliabilityLevel extends ExpandableStringEnum<ReliabilityLevel> {
-    /** Static value None for ReliabilityLevel. */
+    /**
+     * Static value None for ReliabilityLevel.
+     */
     public static final ReliabilityLevel NONE = fromString("None");
 
-    /** Static value Bronze for ReliabilityLevel. */
+    /**
+     * Static value Bronze for ReliabilityLevel.
+     */
     public static final ReliabilityLevel BRONZE = fromString("Bronze");
 
-    /** Static value Silver for ReliabilityLevel. */
+    /**
+     * Static value Silver for ReliabilityLevel.
+     */
     public static final ReliabilityLevel SILVER = fromString("Silver");
 
-    /** Static value Gold for ReliabilityLevel. */
+    /**
+     * Static value Gold for ReliabilityLevel.
+     */
     public static final ReliabilityLevel GOLD = fromString("Gold");
 
-    /** Static value Platinum for ReliabilityLevel. */
+    /**
+     * Static value Platinum for ReliabilityLevel.
+     */
     public static final ReliabilityLevel PLATINUM = fromString("Platinum");
 
     /**
      * Creates a new instance of ReliabilityLevel value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -44,7 +55,7 @@ public final class ReliabilityLevel extends ExpandableStringEnum<ReliabilityLeve
 
     /**
      * Creates or finds a ReliabilityLevel from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ReliabilityLevel.
      */
@@ -55,7 +66,7 @@ public final class ReliabilityLevel extends ExpandableStringEnum<ReliabilityLeve
 
     /**
      * Gets known ReliabilityLevel values.
-     *
+     * 
      * @return known ReliabilityLevel values.
      */
     public static Collection<ReliabilityLevel> values() {

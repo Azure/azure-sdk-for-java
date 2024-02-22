@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.ClientEncryptionKey;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
+import com.azure.cosmos.implementation.CosmosQueryRequestOptionsBase;
 import com.azure.cosmos.implementation.CosmosResourceType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -31,6 +32,7 @@ import com.azure.cosmos.implementation.StoredProcedureResponse;
 import com.azure.cosmos.implementation.Trigger;
 import com.azure.cosmos.implementation.User;
 import com.azure.cosmos.implementation.UserDefinedFunction;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.Warning;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedMode;
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedStartFromInternal;
@@ -112,12 +114,12 @@ public final class ModelBridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosStoredProcedureProperties createCosmosStoredProcedureProperties(String jsonString) {
-        return new CosmosStoredProcedureProperties(jsonString);
+        return new CosmosStoredProcedureProperties(Utils.parseJson(jsonString));
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosPermissionProperties createCosmosPermissionProperties(String jsonString) {
-        return new CosmosPermissionProperties(jsonString);
+        return new CosmosPermissionProperties(Utils.parseJson(jsonString));
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -315,7 +317,8 @@ public final class ModelBridgeInternal {
      */
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosQueryRequestOptions setPartitionKeyRangeIdInternal(CosmosQueryRequestOptions options, String partitionKeyRangeId) {
-        return options.setPartitionKeyRangeIdInternal(partitionKeyRangeId);
+        options.setPartitionKeyRangeIdInternal(partitionKeyRangeId);
+        return options;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -421,7 +424,7 @@ public final class ModelBridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static Object getPartitionKeyObject(PartitionKey right) {
-        return right.getKeyObject();
+        throw new UnsupportedOperationException("getPartitionKeyObject is not supported");
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -720,12 +723,13 @@ public final class ModelBridgeInternal {
             return null;
         }
 
-        return options.getProperties();
+        return options.getImpl().getProperties();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosQueryRequestOptions setQueryRequestOptionsProperties(CosmosQueryRequestOptions options, Map<String, Object> properties) {
-        return options.setProperties(properties);
+        options.getImpl().setProperties(properties);
+        return options;
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -740,7 +744,7 @@ public final class ModelBridgeInternal {
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static <T> int getPayloadLength(CosmosItemResponse<T> cosmosItemResponse) {
-        return cosmosItemResponse.responseBodyAsByteArray != null ? cosmosItemResponse.responseBodyAsByteArray.length : 0;
+        return cosmosItemResponse.getResponsePayloadLength();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -916,6 +920,7 @@ public final class ModelBridgeInternal {
         CosmosItemRequestOptions.initialize();
         CosmosItemResponse.initialize();
         CosmosPatchOperations.initialize();
+        CosmosReadManyRequestOptions.initialize();
         CosmosQueryRequestOptions.initialize();
         FeedResponse.initialize();
         PartitionKey.initialize();

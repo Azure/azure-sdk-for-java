@@ -50,14 +50,14 @@ public interface VirtualNetwork {
     Map<String, String> tags();
 
     /**
-     * Gets the properties property: HybridAKSNetworkSpec defines the desired state of HybridAKSNetwork.
+     * Gets the properties property: Properties of the virtual network resource.
      * 
      * @return the properties value.
      */
     VirtualNetworkProperties properties();
 
     /**
-     * Gets the extendedLocation property: The extendedLocation property.
+     * Gets the extendedLocation property: Extended location pointing to the underlying infrastructure.
      * 
      * @return the extendedLocation value.
      */
@@ -189,9 +189,9 @@ public interface VirtualNetwork {
          */
         interface WithProperties {
             /**
-             * Specifies the properties property: HybridAKSNetworkSpec defines the desired state of HybridAKSNetwork.
+             * Specifies the properties property: Properties of the virtual network resource.
              * 
-             * @param properties HybridAKSNetworkSpec defines the desired state of HybridAKSNetwork.
+             * @param properties Properties of the virtual network resource.
              * @return the next definition stage.
              */
             WithCreate withProperties(VirtualNetworkProperties properties);
@@ -202,9 +202,9 @@ public interface VirtualNetwork {
          */
         interface WithExtendedLocation {
             /**
-             * Specifies the extendedLocation property: The extendedLocation property..
+             * Specifies the extendedLocation property: Extended location pointing to the underlying infrastructure.
              * 
-             * @param extendedLocation The extendedLocation property.
+             * @param extendedLocation Extended location pointing to the underlying infrastructure.
              * @return the next definition stage.
              */
             WithCreate withExtendedLocation(VirtualNetworkExtendedLocation extendedLocation);

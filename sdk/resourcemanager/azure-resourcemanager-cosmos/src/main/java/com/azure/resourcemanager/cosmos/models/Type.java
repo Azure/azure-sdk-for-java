@@ -8,38 +8,58 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of the connection string. */
+/**
+ * Type of the connection string.
+ */
 public final class Type extends ExpandableStringEnum<Type> {
-    /** Static value Sql for Type. */
+    /**
+     * Static value Sql for Type.
+     */
     public static final Type SQL = fromString("Sql");
 
-    /** Static value Table for Type. */
+    /**
+     * Static value Table for Type.
+     */
     public static final Type TABLE = fromString("Table");
 
-    /** Static value MongoDB for Type. */
+    /**
+     * Static value MongoDB for Type.
+     */
     public static final Type MONGO_DB = fromString("MongoDB");
 
-    /** Static value Cassandra for Type. */
+    /**
+     * Static value Cassandra for Type.
+     */
     public static final Type CASSANDRA = fromString("Cassandra");
 
-    /** Static value CassandraConnectorMetadata for Type. */
+    /**
+     * Static value CassandraConnectorMetadata for Type.
+     */
     public static final Type CASSANDRA_CONNECTOR_METADATA = fromString("CassandraConnectorMetadata");
 
-    /** Static value Gremlin for Type. */
+    /**
+     * Static value Gremlin for Type.
+     */
     public static final Type GREMLIN = fromString("Gremlin");
 
-    /** Static value SqlDedicatedGateway for Type. */
+    /**
+     * Static value SqlDedicatedGateway for Type.
+     */
     public static final Type SQL_DEDICATED_GATEWAY = fromString("SqlDedicatedGateway");
 
-    /** Static value GremlinV2 for Type. */
+    /**
+     * Static value GremlinV2 for Type.
+     */
     public static final Type GREMLIN_V2 = fromString("GremlinV2");
 
-    /** Static value Undefined for Type. */
+    /**
+     * Static value Undefined for Type.
+     */
     public static final Type UNDEFINED = fromString("Undefined");
 
     /**
      * Creates a new instance of Type value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -48,7 +68,7 @@ public final class Type extends ExpandableStringEnum<Type> {
 
     /**
      * Creates or finds a Type from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Type.
      */
@@ -59,7 +79,7 @@ public final class Type extends ExpandableStringEnum<Type> {
 
     /**
      * Gets known Type values.
-     *
+     * 
      * @return known Type values.
      */
     public static Collection<Type> values() {

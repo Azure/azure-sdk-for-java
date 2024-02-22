@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.FlowLogInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of flow logs. */
+/**
+ * List of flow logs.
+ */
 @Fluent
 public final class FlowLogListResult {
     /*
@@ -24,13 +26,15 @@ public final class FlowLogListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of FlowLogListResult class. */
+    /**
+     * Creates an instance of FlowLogListResult class.
+     */
     public FlowLogListResult() {
     }
 
     /**
      * Get the value property: Information about flow log resource.
-     *
+     * 
      * @return the value value.
      */
     public List<FlowLogInner> value() {
@@ -39,7 +43,7 @@ public final class FlowLogListResult {
 
     /**
      * Set the value property: Information about flow log resource.
-     *
+     * 
      * @param value the value value to set.
      * @return the FlowLogListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class FlowLogListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class FlowLogListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

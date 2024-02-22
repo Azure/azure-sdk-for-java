@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** OS family properties. */
+/**
+ * OS family properties.
+ */
 @Immutable
 public final class OSFamilyProperties {
     /*
@@ -29,13 +31,15 @@ public final class OSFamilyProperties {
     @JsonProperty(value = "versions", access = JsonProperty.Access.WRITE_ONLY)
     private List<OSVersionPropertiesBase> versions;
 
-    /** Creates an instance of OSFamilyProperties class. */
+    /**
+     * Creates an instance of OSFamilyProperties class.
+     */
     public OSFamilyProperties() {
     }
 
     /**
      * Get the name property: The OS family name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -44,7 +48,7 @@ public final class OSFamilyProperties {
 
     /**
      * Get the label property: The OS family label.
-     *
+     * 
      * @return the label value.
      */
     public String label() {
@@ -53,7 +57,7 @@ public final class OSFamilyProperties {
 
     /**
      * Get the versions property: List of OS versions belonging to this family.
-     *
+     * 
      * @return the versions value.
      */
     public List<OSVersionPropertiesBase> versions() {
@@ -62,7 +66,7 @@ public final class OSFamilyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

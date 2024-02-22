@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Azure container registry configuration information. */
+/**
+ * Azure container registry configuration information.
+ */
 @Fluent
 public final class ServiceAcrConfigurationInfo {
     /*
@@ -24,8 +26,14 @@ public final class ServiceAcrConfigurationInfo {
     private List<ServiceOciArtifactEntry> ociArtifacts;
 
     /**
+     * Creates an instance of ServiceAcrConfigurationInfo class.
+     */
+    public ServiceAcrConfigurationInfo() {
+    }
+
+    /**
      * Get the loginServers property: The list of the ACR login servers.
-     *
+     * 
      * @return the loginServers value.
      */
     public List<String> loginServers() {
@@ -34,7 +42,7 @@ public final class ServiceAcrConfigurationInfo {
 
     /**
      * Set the loginServers property: The list of the ACR login servers.
-     *
+     * 
      * @param loginServers the loginServers value to set.
      * @return the ServiceAcrConfigurationInfo object itself.
      */
@@ -45,7 +53,7 @@ public final class ServiceAcrConfigurationInfo {
 
     /**
      * Get the ociArtifacts property: The list of Open Container Initiative (OCI) artifacts.
-     *
+     * 
      * @return the ociArtifacts value.
      */
     public List<ServiceOciArtifactEntry> ociArtifacts() {
@@ -54,7 +62,7 @@ public final class ServiceAcrConfigurationInfo {
 
     /**
      * Set the ociArtifacts property: The list of Open Container Initiative (OCI) artifacts.
-     *
+     * 
      * @param ociArtifacts the ociArtifacts value to set.
      * @return the ServiceAcrConfigurationInfo object itself.
      */
@@ -65,7 +73,7 @@ public final class ServiceAcrConfigurationInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

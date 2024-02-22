@@ -4,11 +4,8 @@
 package com.azure.cosmos.implementation.http;
 
 import io.netty.buffer.ByteBuf;
-import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.netty.Connection;
-
-import java.nio.charset.Charset;
 
 /**
  * The type representing response of {@link HttpRequest}.
@@ -66,14 +63,7 @@ public abstract class HttpResponse implements AutoCloseable {
      *
      * @return The response's content as a stream of {@link ByteBuf}.
      */
-    public abstract Flux<ByteBuf> body();
-
-    /**
-     * Get the response content as a byte[].
-     *
-     * @return this response content as a byte[]
-     */
-    public abstract Mono<byte[]> bodyAsByteArray();
+    public abstract Mono<ByteBuf> body();
 
     /**
      * Get the response content as a string.
@@ -81,14 +71,6 @@ public abstract class HttpResponse implements AutoCloseable {
      * @return This response content as a string
      */
     public abstract Mono<String> bodyAsString();
-
-    /**
-     * Get the response content as a string.
-     *
-     * @param charset the charset to use as encoding
-     * @return This response content as a string
-     */
-    public abstract Mono<String> bodyAsString(Charset charset);
 
     /**
      * Get the request which resulted in this response.

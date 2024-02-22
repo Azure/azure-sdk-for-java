@@ -32,7 +32,7 @@ public final class GlobalParametersGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"dewf\":{\"type\":\"Array\",\"value\":\"databmqgimwivqph\"},\"zzak\":{\"type\":\"Int\",\"value\":\"dataajpojz\"},\"vykysavevnerpyzu\":{\"type\":\"Object\",\"value\":\"datatwnhpcfsqdzi\"},\"ot\":{\"type\":\"Object\",\"value\":\"datavinvryxwzxj\"}},\"name\":\"iwm\",\"type\":\"dxw\",\"etag\":\"mda\",\"id\":\"giglkinsrysga\"}";
+            = "{\"properties\":{\"oydzmbv\":{\"type\":\"Object\",\"value\":\"datapbbwicteqwjlynlr\"},\"otozxadk\":{\"type\":\"Bool\",\"value\":\"dataadxs\"}},\"name\":\"aptv\",\"type\":\"y\",\"etag\":\"gvzevpypkfvw\",\"id\":\"vxjxvspubfke\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -50,10 +50,9 @@ public final class GlobalParametersGetWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         GlobalParameterResource response = manager.globalParameters()
-            .getWithResponse("wasktzrdxxsbbd", "okjnbcdnjexcyhs", "vairau", com.azure.core.util.Context.NONE)
-            .getValue();
+            .getWithResponse("rd", "onovveouwixtefd", "qprhzsaquha", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("giglkinsrysga", response.id());
-        Assertions.assertEquals(GlobalParameterType.ARRAY, response.properties().get("dewf").type());
+        Assertions.assertEquals("vxjxvspubfke", response.id());
+        Assertions.assertEquals(GlobalParameterType.OBJECT, response.properties().get("oydzmbv").type());
     }
 }

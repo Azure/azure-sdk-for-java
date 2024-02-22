@@ -14,7 +14,9 @@ import com.azure.resourcemanager.healthcareapis.models.TaggedResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** IoT Connector definition. */
+/**
+ * IoT Connector definition.
+ */
 @Fluent
 public final class IotConnectorInner extends TaggedResource {
     /*
@@ -30,15 +32,20 @@ public final class IotConnectorInner extends TaggedResource {
     private SystemData systemData;
 
     /*
-     * Setting indicating whether the service has a managed identity associated
-     * with it.
+     * Setting indicating whether the service has a managed identity associated with it.
      */
     @JsonProperty(value = "identity")
     private ServiceManagedIdentityIdentity identity;
 
     /**
+     * Creates an instance of IotConnectorInner class.
+     */
+    public IotConnectorInner() {
+    }
+
+    /**
      * Get the innerProperties property: IoT Connector configuration.
-     *
+     * 
      * @return the innerProperties value.
      */
     private IotConnectorProperties innerProperties() {
@@ -47,7 +54,7 @@ public final class IotConnectorInner extends TaggedResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -56,7 +63,7 @@ public final class IotConnectorInner extends TaggedResource {
 
     /**
      * Get the identity property: Setting indicating whether the service has a managed identity associated with it.
-     *
+     * 
      * @return the identity value.
      */
     public ServiceManagedIdentityIdentity identity() {
@@ -65,7 +72,7 @@ public final class IotConnectorInner extends TaggedResource {
 
     /**
      * Set the identity property: Setting indicating whether the service has a managed identity associated with it.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the IotConnectorInner object itself.
      */
@@ -74,21 +81,27 @@ public final class IotConnectorInner extends TaggedResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IotConnectorInner withTags(Map<String, String> tags) {
         super.withTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IotConnectorInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IotConnectorInner withEtag(String etag) {
         super.withEtag(etag);
@@ -97,7 +110,7 @@ public final class IotConnectorInner extends TaggedResource {
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -106,7 +119,7 @@ public final class IotConnectorInner extends TaggedResource {
 
     /**
      * Get the ingestionEndpointConfiguration property: Source configuration.
-     *
+     * 
      * @return the ingestionEndpointConfiguration value.
      */
     public IotEventHubIngestionEndpointConfiguration ingestionEndpointConfiguration() {
@@ -115,12 +128,12 @@ public final class IotConnectorInner extends TaggedResource {
 
     /**
      * Set the ingestionEndpointConfiguration property: Source configuration.
-     *
+     * 
      * @param ingestionEndpointConfiguration the ingestionEndpointConfiguration value to set.
      * @return the IotConnectorInner object itself.
      */
-    public IotConnectorInner withIngestionEndpointConfiguration(
-        IotEventHubIngestionEndpointConfiguration ingestionEndpointConfiguration) {
+    public IotConnectorInner
+        withIngestionEndpointConfiguration(IotEventHubIngestionEndpointConfiguration ingestionEndpointConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new IotConnectorProperties();
         }
@@ -130,7 +143,7 @@ public final class IotConnectorInner extends TaggedResource {
 
     /**
      * Get the deviceMapping property: Device Mappings.
-     *
+     * 
      * @return the deviceMapping value.
      */
     public IotMappingProperties deviceMapping() {
@@ -139,7 +152,7 @@ public final class IotConnectorInner extends TaggedResource {
 
     /**
      * Set the deviceMapping property: Device Mappings.
-     *
+     * 
      * @param deviceMapping the deviceMapping value to set.
      * @return the IotConnectorInner object itself.
      */
@@ -153,7 +166,7 @@ public final class IotConnectorInner extends TaggedResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

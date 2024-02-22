@@ -14,25 +14,19 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkRuleSetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkRuleSet model =
-            BinaryData
-                .fromString(
-                    "{\"virtualNetworkRules\":[{\"id\":\"hzls\",\"action\":\"Allow\"},{\"id\":\"hoqqnwvlr\",\"action\":\"Allow\"},{\"id\":\"w\",\"action\":\"Allow\"}]}")
-                .toObject(NetworkRuleSet.class);
+        NetworkRuleSet model = BinaryData.fromString(
+            "{\"virtualNetworkRules\":[{\"id\":\"hzls\",\"action\":\"Allow\"},{\"id\":\"hoqqnwvlr\",\"action\":\"Allow\"},{\"id\":\"w\",\"action\":\"Allow\"}]}")
+            .toObject(NetworkRuleSet.class);
         Assertions.assertEquals("hzls", model.virtualNetworkRules().get(0).virtualNetworkResourceId());
         Assertions.assertEquals(Action.ALLOW, model.virtualNetworkRules().get(0).action());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkRuleSet model =
-            new NetworkRuleSet()
-                .withVirtualNetworkRules(
-                    Arrays
-                        .asList(
-                            new VirtualNetworkRule().withVirtualNetworkResourceId("hzls").withAction(Action.ALLOW),
-                            new VirtualNetworkRule().withVirtualNetworkResourceId("hoqqnwvlr").withAction(Action.ALLOW),
-                            new VirtualNetworkRule().withVirtualNetworkResourceId("w").withAction(Action.ALLOW)));
+        NetworkRuleSet model = new NetworkRuleSet().withVirtualNetworkRules(
+            Arrays.asList(new VirtualNetworkRule().withVirtualNetworkResourceId("hzls").withAction(Action.ALLOW),
+                new VirtualNetworkRule().withVirtualNetworkResourceId("hoqqnwvlr").withAction(Action.ALLOW),
+                new VirtualNetworkRule().withVirtualNetworkResourceId("w").withAction(Action.ALLOW)));
         model = BinaryData.fromObject(model).toObject(NetworkRuleSet.class);
         Assertions.assertEquals("hzls", model.virtualNetworkRules().get(0).virtualNetworkResourceId());
         Assertions.assertEquals(Action.ALLOW, model.virtualNetworkRules().get(0).action());

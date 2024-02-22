@@ -14,8 +14,7 @@ public final class UpgradableVersionPathResultImpl implements UpgradableVersionP
 
     private final com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager;
 
-    UpgradableVersionPathResultImpl(
-        UpgradableVersionPathResultInner innerObject,
+    UpgradableVersionPathResultImpl(UpgradableVersionPathResultInner innerObject,
         com.azure.resourcemanager.servicefabric.ServiceFabricManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

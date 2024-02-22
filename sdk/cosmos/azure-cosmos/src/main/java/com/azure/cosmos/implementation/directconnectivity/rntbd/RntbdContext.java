@@ -199,7 +199,7 @@ public final class RntbdContext {
         }
 
         Headers(final ByteBuf in) {
-            super(RntbdContextHeader.set, RntbdContextHeader.map, in);
+            super(RntbdContextHeader.set, RntbdContextHeader.map, in, RntbdContextHeader.class);
             this.clientVersion = this.get(RntbdContextHeader.ClientVersion);
             this.idleTimeoutInSeconds = this.get(RntbdContextHeader.IdleTimeoutInSeconds);
             this.protocolVersion = this.get(RntbdContextHeader.ProtocolVersion);

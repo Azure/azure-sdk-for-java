@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Certificate model. */
+/**
+ * The Certificate model.
+ */
 @Fluent
 public final class Certificate {
     /*
@@ -16,13 +18,15 @@ public final class Certificate {
     @JsonProperty(value = "pem")
     private String pem;
 
-    /** Creates an instance of Certificate class. */
+    /**
+     * Creates an instance of Certificate class.
+     */
     public Certificate() {
     }
 
     /**
      * Get the pem property: PEM formatted public key.
-     *
+     * 
      * @return the pem value.
      */
     public String pem() {
@@ -31,7 +35,7 @@ public final class Certificate {
 
     /**
      * Set the pem property: PEM formatted public key.
-     *
+     * 
      * @param pem the pem value to set.
      * @return the Certificate object itself.
      */
@@ -42,7 +46,7 @@ public final class Certificate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

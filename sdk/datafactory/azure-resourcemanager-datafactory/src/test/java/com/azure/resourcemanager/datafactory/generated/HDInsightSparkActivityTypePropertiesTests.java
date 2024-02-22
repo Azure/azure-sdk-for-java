@@ -17,26 +17,27 @@ public final class HDInsightSparkActivityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HDInsightSparkActivityTypeProperties model = BinaryData.fromString(
-            "{\"rootPath\":\"datazi\",\"entryFilePath\":\"datamvwjq\",\"arguments\":[\"dataqiaho\",\"datajzviv\"],\"getDebugInfo\":\"Always\",\"sparkJobLinkedService\":{\"referenceName\":\"tcfulmzxhgwzbyst\",\"parameters\":{\"jssjbpna\":\"datawehn\",\"ichzcajityjz\":\"datapymv\",\"you\":\"datap\"}},\"className\":\"qyeyzoivi\",\"proxyUser\":\"datanihmwvhc\",\"sparkConfig\":{\"djc\":\"datauasutdhmilhzy\"}}")
+            "{\"rootPath\":\"dataeimwhot\",\"entryFilePath\":\"datacgdpqkfxdqmdvrgl\",\"arguments\":[\"datamke\",\"dataeyqotmj\",\"dataqqahmzleta\"],\"getDebugInfo\":\"Always\",\"sparkJobLinkedService\":{\"referenceName\":\"wkkvarffjuefjbmo\",\"parameters\":{\"qwa\":\"dataodmdrdtywa\",\"jrpcpgcltf\":\"dataciapvcsw\",\"ptf\":\"dataaqmrimletjv\",\"blhzfglpswg\":\"dataab\"}},\"className\":\"xup\",\"proxyUser\":\"dataizkqnbiiand\",\"sparkConfig\":{\"ku\":\"datapqha\"}}")
             .toObject(HDInsightSparkActivityTypeProperties.class);
         Assertions.assertEquals(HDInsightActivityDebugInfoOption.ALWAYS, model.getDebugInfo());
-        Assertions.assertEquals("tcfulmzxhgwzbyst", model.sparkJobLinkedService().referenceName());
-        Assertions.assertEquals("qyeyzoivi", model.className());
+        Assertions.assertEquals("wkkvarffjuefjbmo", model.sparkJobLinkedService().referenceName());
+        Assertions.assertEquals("xup", model.className());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HDInsightSparkActivityTypeProperties model = new HDInsightSparkActivityTypeProperties().withRootPath("datazi")
-            .withEntryFilePath("datamvwjq").withArguments(Arrays.asList("dataqiaho", "datajzviv"))
+        HDInsightSparkActivityTypeProperties model = new HDInsightSparkActivityTypeProperties()
+            .withRootPath("dataeimwhot").withEntryFilePath("datacgdpqkfxdqmdvrgl")
+            .withArguments(Arrays.asList("datamke", "dataeyqotmj", "dataqqahmzleta"))
             .withGetDebugInfo(HDInsightActivityDebugInfoOption.ALWAYS)
-            .withSparkJobLinkedService(new LinkedServiceReference().withReferenceName("tcfulmzxhgwzbyst")
-                .withParameters(mapOf("jssjbpna", "datawehn", "ichzcajityjz", "datapymv", "you", "datap")))
-            .withClassName("qyeyzoivi").withProxyUser("datanihmwvhc")
-            .withSparkConfig(mapOf("djc", "datauasutdhmilhzy"));
+            .withSparkJobLinkedService(new LinkedServiceReference().withReferenceName("wkkvarffjuefjbmo")
+                .withParameters(mapOf("qwa", "dataodmdrdtywa", "jrpcpgcltf", "dataciapvcsw", "ptf", "dataaqmrimletjv",
+                    "blhzfglpswg", "dataab")))
+            .withClassName("xup").withProxyUser("dataizkqnbiiand").withSparkConfig(mapOf("ku", "datapqha"));
         model = BinaryData.fromObject(model).toObject(HDInsightSparkActivityTypeProperties.class);
         Assertions.assertEquals(HDInsightActivityDebugInfoOption.ALWAYS, model.getDebugInfo());
-        Assertions.assertEquals("tcfulmzxhgwzbyst", model.sparkJobLinkedService().referenceName());
-        Assertions.assertEquals("qyeyzoivi", model.className());
+        Assertions.assertEquals("wkkvarffjuefjbmo", model.sparkJobLinkedService().referenceName());
+        Assertions.assertEquals("xup", model.className());
     }
 
     // Use "Map.of" if available

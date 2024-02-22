@@ -5,8 +5,6 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -24,16 +22,23 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(
         name = "Microsoft.MachineLearning/WebService",
-        value = AzureMachineLearningWebServiceFunctionBinding.class),
-    @JsonSubTypes.Type(name = "Microsoft.StreamAnalytics/JavascriptUdf", value = JavaScriptFunctionBinding.class)
-})
+        value = AzureMachineLearningStudioFunctionBinding.class),
+    @JsonSubTypes.Type(name = "Microsoft.StreamAnalytics/JavascriptUdf", value = JavaScriptFunctionBinding.class),
+    @JsonSubTypes.Type(name = "Microsoft.StreamAnalytics/CLRUdf", value = CSharpFunctionBinding.class),
+    @JsonSubTypes.Type(
+        name = "Microsoft.MachineLearningServices",
+        value = AzureMachineLearningServiceFunctionBinding.class) })
 @Immutable
 public class FunctionBinding {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(FunctionBinding.class);
+    /**
+     * Creates an instance of FunctionBinding class.
+     */
+    public FunctionBinding() {
+    }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

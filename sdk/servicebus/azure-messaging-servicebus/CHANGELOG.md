@@ -1,6 +1,6 @@
 # Release History
 
-## 7.15.0-beta.6 (Unreleased)
+## 7.16.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -8,9 +8,44 @@
 
 ### Bugs Fixed
 
+### Other Changes
+
+## 7.15.1 (2024-02-16)
+
+### Bugs Fixed
+
+- Redesigned the synchronous to asynchronous receive layer to generalize it and fixed edge cases losing termination signals. ([38705](https://github.com/Azure/azure-sdk-for-java/pull/38705))
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.45.1` to `1.46.0`.
+- Upgraded `azure-core-amqp` from `2.9.0` to `2.9.1`.
+- Upgraded `azure-identity` from `1.11.1` to `1.11.2`.
+
+## 7.15.0 (2024-01-18)
+
+### Features Added
+
+- The version 7.15.0 is the stable release for all the features introduced in the 7.15.0-beta.* versions.
+
+### Bugs Fixed
+
 - Removes extraneous log messages when deserializing topics or subscriptions. ([32325](https://github.com/Azure/azure-sdk-for-java/issues/32325))
 
 ### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core-amqp` from `2.8.14` to `2.9.0`.
+
+## 7.14.7 (2023-12-07)
+
+### Other Changes
+
+#### Dependency Updates
+- Upgraded `azure-core` from `1.45.0` to `1.45.1`.
+- Upgraded `azure-core-amqp` from `2.8.13` to `2.8.14`.
+- Upgraded `azure-identity` from `1.11.0` to `1.11.1`.
 
 ## 7.15.0-beta.5 (2023-11-22)
 
@@ -19,6 +54,8 @@
 - Fixes the need for byte array allocation to track the combined size of messages in the batch. ([37197](https://github.com/Azure/azure-sdk-for-java/issues/37197))
 
 ### Other Changes
+
+- Stopped populating status attribute on metrics when no error has happened. ([#37884](https://github.com/Azure/azure-sdk-for-java/issues/37884))
 
 #### Dependency Updates
 - Upgraded `azure-core` from `1.44.1` to `1.45.0`.

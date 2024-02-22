@@ -9,7 +9,9 @@ import com.azure.resourcemanager.deviceupdate.fluent.models.InstanceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of Instances. */
+/**
+ * List of Instances.
+ */
 @Fluent
 public final class InstanceList {
     /*
@@ -25,8 +27,14 @@ public final class InstanceList {
     private List<InstanceInner> value;
 
     /**
+     * Creates an instance of InstanceList class.
+     */
+    public InstanceList() {
+    }
+
+    /**
      * Get the nextLink property: The link used to get the next page of Instances list.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -35,7 +43,7 @@ public final class InstanceList {
 
     /**
      * Set the nextLink property: The link used to get the next page of Instances list.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the InstanceList object itself.
      */
@@ -46,7 +54,7 @@ public final class InstanceList {
 
     /**
      * Get the value property: List of Instances.
-     *
+     * 
      * @return the value value.
      */
     public List<InstanceInner> value() {
@@ -55,7 +63,7 @@ public final class InstanceList {
 
     /**
      * Set the value property: List of Instances.
-     *
+     * 
      * @param value the value value to set.
      * @return the InstanceList object itself.
      */
@@ -66,7 +74,7 @@ public final class InstanceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

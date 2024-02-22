@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The LinkTableListResponse model. */
+/**
+ * The LinkTableListResponse model.
+ */
 @Fluent
 public final class LinkTableListResponse {
     /*
@@ -17,12 +19,15 @@ public final class LinkTableListResponse {
     @JsonProperty(value = "value")
     private List<LinkTableResource> value;
 
-    /** Creates an instance of LinkTableListResponse class. */
-    public LinkTableListResponse() {}
+    /**
+     * Creates an instance of LinkTableListResponse class.
+     */
+    public LinkTableListResponse() {
+    }
 
     /**
      * Get the value property: List link table value.
-     *
+     * 
      * @return the value value.
      */
     public List<LinkTableResource> getValue() {
@@ -31,7 +36,7 @@ public final class LinkTableListResponse {
 
     /**
      * Set the value property: List link table value.
-     *
+     * 
      * @param value the value value to set.
      * @return the LinkTableListResponse object itself.
      */

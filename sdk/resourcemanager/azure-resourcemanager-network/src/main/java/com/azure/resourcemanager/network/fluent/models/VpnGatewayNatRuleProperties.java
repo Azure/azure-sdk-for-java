@@ -13,7 +13,9 @@ import com.azure.resourcemanager.network.models.VpnNatRuleType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters for VpnGatewayNatRule. */
+/**
+ * Parameters for VpnGatewayNatRule.
+ */
 @Fluent
 public final class VpnGatewayNatRuleProperties {
     /*
@@ -64,13 +66,15 @@ public final class VpnGatewayNatRuleProperties {
     @JsonProperty(value = "ingressVpnSiteLinkConnections", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> ingressVpnSiteLinkConnections;
 
-    /** Creates an instance of VpnGatewayNatRuleProperties class. */
+    /**
+     * Creates an instance of VpnGatewayNatRuleProperties class.
+     */
     public VpnGatewayNatRuleProperties() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the NAT Rule resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -79,7 +83,7 @@ public final class VpnGatewayNatRuleProperties {
 
     /**
      * Get the type property: The type of NAT rule for VPN NAT.
-     *
+     * 
      * @return the type value.
      */
     public VpnNatRuleType type() {
@@ -88,7 +92,7 @@ public final class VpnGatewayNatRuleProperties {
 
     /**
      * Set the type property: The type of NAT rule for VPN NAT.
-     *
+     * 
      * @param type the type value to set.
      * @return the VpnGatewayNatRuleProperties object itself.
      */
@@ -99,7 +103,7 @@ public final class VpnGatewayNatRuleProperties {
 
     /**
      * Get the mode property: The Source NAT direction of a VPN NAT.
-     *
+     * 
      * @return the mode value.
      */
     public VpnNatRuleMode mode() {
@@ -108,7 +112,7 @@ public final class VpnGatewayNatRuleProperties {
 
     /**
      * Set the mode property: The Source NAT direction of a VPN NAT.
-     *
+     * 
      * @param mode the mode value to set.
      * @return the VpnGatewayNatRuleProperties object itself.
      */
@@ -119,7 +123,7 @@ public final class VpnGatewayNatRuleProperties {
 
     /**
      * Get the internalMappings property: The private IP address internal mapping for NAT.
-     *
+     * 
      * @return the internalMappings value.
      */
     public List<VpnNatRuleMapping> internalMappings() {
@@ -128,7 +132,7 @@ public final class VpnGatewayNatRuleProperties {
 
     /**
      * Set the internalMappings property: The private IP address internal mapping for NAT.
-     *
+     * 
      * @param internalMappings the internalMappings value to set.
      * @return the VpnGatewayNatRuleProperties object itself.
      */
@@ -139,7 +143,7 @@ public final class VpnGatewayNatRuleProperties {
 
     /**
      * Get the externalMappings property: The private IP address external mapping for NAT.
-     *
+     * 
      * @return the externalMappings value.
      */
     public List<VpnNatRuleMapping> externalMappings() {
@@ -148,7 +152,7 @@ public final class VpnGatewayNatRuleProperties {
 
     /**
      * Set the externalMappings property: The private IP address external mapping for NAT.
-     *
+     * 
      * @param externalMappings the externalMappings value to set.
      * @return the VpnGatewayNatRuleProperties object itself.
      */
@@ -159,7 +163,7 @@ public final class VpnGatewayNatRuleProperties {
 
     /**
      * Get the ipConfigurationId property: The IP Configuration ID this NAT rule applies to.
-     *
+     * 
      * @return the ipConfigurationId value.
      */
     public String ipConfigurationId() {
@@ -168,7 +172,7 @@ public final class VpnGatewayNatRuleProperties {
 
     /**
      * Set the ipConfigurationId property: The IP Configuration ID this NAT rule applies to.
-     *
+     * 
      * @param ipConfigurationId the ipConfigurationId value to set.
      * @return the VpnGatewayNatRuleProperties object itself.
      */
@@ -179,7 +183,7 @@ public final class VpnGatewayNatRuleProperties {
 
     /**
      * Get the egressVpnSiteLinkConnections property: List of egress VpnSiteLinkConnections.
-     *
+     * 
      * @return the egressVpnSiteLinkConnections value.
      */
     public List<SubResource> egressVpnSiteLinkConnections() {
@@ -188,7 +192,7 @@ public final class VpnGatewayNatRuleProperties {
 
     /**
      * Get the ingressVpnSiteLinkConnections property: List of ingress VpnSiteLinkConnections.
-     *
+     * 
      * @return the ingressVpnSiteLinkConnections value.
      */
     public List<SubResource> ingressVpnSiteLinkConnections() {
@@ -197,7 +201,7 @@ public final class VpnGatewayNatRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

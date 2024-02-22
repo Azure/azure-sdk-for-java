@@ -6,8 +6,11 @@ package com.azure.resourcemanager.appplatform.models;
 
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.time.OffsetDateTime;
 
-/** The build result triggered by a build. */
+/**
+ * The build result triggered by a build.
+ */
 @Fluent
 public final class TriggeredBuildResult {
     /*
@@ -16,9 +19,45 @@ public final class TriggeredBuildResult {
     @JsonProperty(value = "id")
     private String id;
 
+    /*
+     * The provisioning state of this build result
+     */
+    @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
+    private TriggeredBuildResultProvisioningState provisioningState;
+
+    /*
+     * The container image of this build result
+     */
+    @JsonProperty(value = "image")
+    private String image;
+
+    /*
+     * The last transition time of this build result
+     */
+    @JsonProperty(value = "lastTransitionTime")
+    private OffsetDateTime lastTransitionTime;
+
+    /*
+     * The last transition reason of this build result
+     */
+    @JsonProperty(value = "lastTransitionReason")
+    private String lastTransitionReason;
+
+    /*
+     * The last transition status of this build result
+     */
+    @JsonProperty(value = "lastTransitionStatus")
+    private String lastTransitionStatus;
+
+    /**
+     * Creates an instance of TriggeredBuildResult class.
+     */
+    public TriggeredBuildResult() {
+    }
+
     /**
      * Get the id property: The unique build id of this build result.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -27,7 +66,7 @@ public final class TriggeredBuildResult {
 
     /**
      * Set the id property: The unique build id of this build result.
-     *
+     * 
      * @param id the id value to set.
      * @return the TriggeredBuildResult object itself.
      */
@@ -37,8 +76,97 @@ public final class TriggeredBuildResult {
     }
 
     /**
+     * Get the provisioningState property: The provisioning state of this build result.
+     * 
+     * @return the provisioningState value.
+     */
+    public TriggeredBuildResultProvisioningState provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Get the image property: The container image of this build result.
+     * 
+     * @return the image value.
+     */
+    public String image() {
+        return this.image;
+    }
+
+    /**
+     * Set the image property: The container image of this build result.
+     * 
+     * @param image the image value to set.
+     * @return the TriggeredBuildResult object itself.
+     */
+    public TriggeredBuildResult withImage(String image) {
+        this.image = image;
+        return this;
+    }
+
+    /**
+     * Get the lastTransitionTime property: The last transition time of this build result.
+     * 
+     * @return the lastTransitionTime value.
+     */
+    public OffsetDateTime lastTransitionTime() {
+        return this.lastTransitionTime;
+    }
+
+    /**
+     * Set the lastTransitionTime property: The last transition time of this build result.
+     * 
+     * @param lastTransitionTime the lastTransitionTime value to set.
+     * @return the TriggeredBuildResult object itself.
+     */
+    public TriggeredBuildResult withLastTransitionTime(OffsetDateTime lastTransitionTime) {
+        this.lastTransitionTime = lastTransitionTime;
+        return this;
+    }
+
+    /**
+     * Get the lastTransitionReason property: The last transition reason of this build result.
+     * 
+     * @return the lastTransitionReason value.
+     */
+    public String lastTransitionReason() {
+        return this.lastTransitionReason;
+    }
+
+    /**
+     * Set the lastTransitionReason property: The last transition reason of this build result.
+     * 
+     * @param lastTransitionReason the lastTransitionReason value to set.
+     * @return the TriggeredBuildResult object itself.
+     */
+    public TriggeredBuildResult withLastTransitionReason(String lastTransitionReason) {
+        this.lastTransitionReason = lastTransitionReason;
+        return this;
+    }
+
+    /**
+     * Get the lastTransitionStatus property: The last transition status of this build result.
+     * 
+     * @return the lastTransitionStatus value.
+     */
+    public String lastTransitionStatus() {
+        return this.lastTransitionStatus;
+    }
+
+    /**
+     * Set the lastTransitionStatus property: The last transition status of this build result.
+     * 
+     * @param lastTransitionStatus the lastTransitionStatus value to set.
+     * @return the TriggeredBuildResult object itself.
+     */
+    public TriggeredBuildResult withLastTransitionStatus(String lastTransitionStatus) {
+        this.lastTransitionStatus = lastTransitionStatus;
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

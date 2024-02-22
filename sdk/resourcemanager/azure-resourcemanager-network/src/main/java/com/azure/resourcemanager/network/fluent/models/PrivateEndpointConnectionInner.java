@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.PrivateLinkServiceConnectionStat
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** PrivateEndpointConnection resource. */
+/**
+ * PrivateEndpointConnection resource.
+ */
 @Fluent
 public final class PrivateEndpointConnectionInner extends SubResource {
     /*
@@ -37,13 +39,15 @@ public final class PrivateEndpointConnectionInner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of PrivateEndpointConnectionInner class. */
+    /**
+     * Creates an instance of PrivateEndpointConnectionInner class.
+     */
     public PrivateEndpointConnectionInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the private end point connection.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PrivateEndpointConnectionPropertiesInner innerProperties() {
@@ -53,7 +57,7 @@ public final class PrivateEndpointConnectionInner extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -63,7 +67,7 @@ public final class PrivateEndpointConnectionInner extends SubResource {
     /**
      * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the PrivateEndpointConnectionInner object itself.
      */
@@ -74,7 +78,7 @@ public final class PrivateEndpointConnectionInner extends SubResource {
 
     /**
      * Get the type property: The resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -83,14 +87,16 @@ public final class PrivateEndpointConnectionInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PrivateEndpointConnectionInner withId(String id) {
         super.withId(id);
@@ -99,7 +105,7 @@ public final class PrivateEndpointConnectionInner extends SubResource {
 
     /**
      * Get the privateEndpoint property: The resource of private end point.
-     *
+     * 
      * @return the privateEndpoint value.
      */
     public PrivateEndpointInner privateEndpoint() {
@@ -107,9 +113,9 @@ public final class PrivateEndpointConnectionInner extends SubResource {
     }
 
     /**
-     * Get the privateLinkServiceConnectionState property: A collection of information about the state of the connection
-     * between service consumer and provider.
-     *
+     * Get the privateLinkServiceConnectionState property: A collection of information about the state of the
+     * connection between service consumer and provider.
+     * 
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkServiceConnectionState privateLinkServiceConnectionState() {
@@ -117,14 +123,14 @@ public final class PrivateEndpointConnectionInner extends SubResource {
     }
 
     /**
-     * Set the privateLinkServiceConnectionState property: A collection of information about the state of the connection
-     * between service consumer and provider.
-     *
+     * Set the privateLinkServiceConnectionState property: A collection of information about the state of the
+     * connection between service consumer and provider.
+     * 
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the PrivateEndpointConnectionInner object itself.
      */
-    public PrivateEndpointConnectionInner withPrivateLinkServiceConnectionState(
-        PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
+    public PrivateEndpointConnectionInner
+        withPrivateLinkServiceConnectionState(PrivateLinkServiceConnectionState privateLinkServiceConnectionState) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PrivateEndpointConnectionPropertiesInner();
         }
@@ -134,7 +140,7 @@ public final class PrivateEndpointConnectionInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the private endpoint connection resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -143,7 +149,7 @@ public final class PrivateEndpointConnectionInner extends SubResource {
 
     /**
      * Get the linkIdentifier property: The consumer link id.
-     *
+     * 
      * @return the linkIdentifier value.
      */
     public String linkIdentifier() {
@@ -152,7 +158,7 @@ public final class PrivateEndpointConnectionInner extends SubResource {
 
     /**
      * Get the privateEndpointLocation property: The location of the private endpoint.
-     *
+     * 
      * @return the privateEndpointLocation value.
      */
     public String privateEndpointLocation() {
@@ -161,7 +167,7 @@ public final class PrivateEndpointConnectionInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

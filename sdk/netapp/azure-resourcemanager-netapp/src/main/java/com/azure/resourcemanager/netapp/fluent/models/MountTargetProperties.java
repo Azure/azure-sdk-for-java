@@ -8,12 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Mount target properties. */
+/**
+ * Mount target properties.
+ */
 @Fluent
 public final class MountTargetProperties {
     /*
      * mountTargetId
-     *
+     * 
      * UUID v4 used to identify the MountTarget
      */
     @JsonProperty(value = "mountTargetId", access = JsonProperty.Access.WRITE_ONLY)
@@ -21,7 +23,7 @@ public final class MountTargetProperties {
 
     /*
      * fileSystemId
-     *
+     * 
      * UUID v4 used to identify the MountTarget
      */
     @JsonProperty(value = "fileSystemId", required = true)
@@ -29,7 +31,7 @@ public final class MountTargetProperties {
 
     /*
      * ipAddress
-     *
+     * 
      * The mount target's IPv4 address
      */
     @JsonProperty(value = "ipAddress", access = JsonProperty.Access.WRITE_ONLY)
@@ -37,21 +39,23 @@ public final class MountTargetProperties {
 
     /*
      * smbServerFQDN
-     *
+     * 
      * The SMB server's Fully Qualified Domain Name, FQDN
      */
     @JsonProperty(value = "smbServerFqdn")
     private String smbServerFqdn;
 
-    /** Creates an instance of MountTargetProperties class. */
+    /**
+     * Creates an instance of MountTargetProperties class.
+     */
     public MountTargetProperties() {
     }
 
     /**
      * Get the mountTargetId property: mountTargetId
-     *
-     * <p>UUID v4 used to identify the MountTarget.
-     *
+     * 
+     * UUID v4 used to identify the MountTarget.
+     * 
      * @return the mountTargetId value.
      */
     public String mountTargetId() {
@@ -60,9 +64,9 @@ public final class MountTargetProperties {
 
     /**
      * Get the fileSystemId property: fileSystemId
-     *
-     * <p>UUID v4 used to identify the MountTarget.
-     *
+     * 
+     * UUID v4 used to identify the MountTarget.
+     * 
      * @return the fileSystemId value.
      */
     public String fileSystemId() {
@@ -71,9 +75,9 @@ public final class MountTargetProperties {
 
     /**
      * Set the fileSystemId property: fileSystemId
-     *
-     * <p>UUID v4 used to identify the MountTarget.
-     *
+     * 
+     * UUID v4 used to identify the MountTarget.
+     * 
      * @param fileSystemId the fileSystemId value to set.
      * @return the MountTargetProperties object itself.
      */
@@ -84,9 +88,9 @@ public final class MountTargetProperties {
 
     /**
      * Get the ipAddress property: ipAddress
-     *
-     * <p>The mount target's IPv4 address.
-     *
+     * 
+     * The mount target's IPv4 address.
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -95,9 +99,9 @@ public final class MountTargetProperties {
 
     /**
      * Get the smbServerFqdn property: smbServerFQDN
-     *
-     * <p>The SMB server's Fully Qualified Domain Name, FQDN.
-     *
+     * 
+     * The SMB server's Fully Qualified Domain Name, FQDN.
+     * 
      * @return the smbServerFqdn value.
      */
     public String smbServerFqdn() {
@@ -106,9 +110,9 @@ public final class MountTargetProperties {
 
     /**
      * Set the smbServerFqdn property: smbServerFQDN
-     *
-     * <p>The SMB server's Fully Qualified Domain Name, FQDN.
-     *
+     * 
+     * The SMB server's Fully Qualified Domain Name, FQDN.
+     * 
      * @param smbServerFqdn the smbServerFqdn value to set.
      * @return the MountTargetProperties object itself.
      */
@@ -119,15 +123,13 @@ public final class MountTargetProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (fileSystemId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property fileSystemId in model MountTargetProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property fileSystemId in model MountTargetProperties"));
         }
     }
 

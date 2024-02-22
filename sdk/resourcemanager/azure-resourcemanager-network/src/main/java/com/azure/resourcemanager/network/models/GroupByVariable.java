@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Define user session group by clause variables. */
+/**
+ * Define user session group by clause variables.
+ */
 @Fluent
 public final class GroupByVariable {
     /*
@@ -17,13 +19,15 @@ public final class GroupByVariable {
     @JsonProperty(value = "variableName", required = true)
     private ApplicationGatewayFirewallUserSessionVariable variableName;
 
-    /** Creates an instance of GroupByVariable class. */
+    /**
+     * Creates an instance of GroupByVariable class.
+     */
     public GroupByVariable() {
     }
 
     /**
      * Get the variableName property: User Session clause variable.
-     *
+     * 
      * @return the variableName value.
      */
     public ApplicationGatewayFirewallUserSessionVariable variableName() {
@@ -32,7 +36,7 @@ public final class GroupByVariable {
 
     /**
      * Set the variableName property: User Session clause variable.
-     *
+     * 
      * @param variableName the variableName value to set.
      * @return the GroupByVariable object itself.
      */
@@ -43,14 +47,13 @@ public final class GroupByVariable {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (variableName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property variableName in model GroupByVariable"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property variableName in model GroupByVariable"));
         }
     }
 

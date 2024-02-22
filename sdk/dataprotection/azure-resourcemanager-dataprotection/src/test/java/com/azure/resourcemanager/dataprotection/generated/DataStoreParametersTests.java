@@ -12,9 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DataStoreParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataStoreParameters model =
-            BinaryData
-                .fromString("{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"ArchiveStore\"}")
+        DataStoreParameters model
+            = BinaryData.fromString("{\"objectType\":\"DataStoreParameters\",\"dataStoreType\":\"ArchiveStore\"}")
                 .toObject(DataStoreParameters.class);
         Assertions.assertEquals(DataStoreTypes.ARCHIVE_STORE, model.dataStoreType());
     }

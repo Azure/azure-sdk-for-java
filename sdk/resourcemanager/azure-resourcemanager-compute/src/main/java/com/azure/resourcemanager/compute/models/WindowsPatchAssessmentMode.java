@@ -15,15 +15,19 @@ import java.util.Collection;
  * property provisionVMAgent must be true.
  */
 public final class WindowsPatchAssessmentMode extends ExpandableStringEnum<WindowsPatchAssessmentMode> {
-    /** Static value ImageDefault for WindowsPatchAssessmentMode. */
+    /**
+     * Static value ImageDefault for WindowsPatchAssessmentMode.
+     */
     public static final WindowsPatchAssessmentMode IMAGE_DEFAULT = fromString("ImageDefault");
 
-    /** Static value AutomaticByPlatform for WindowsPatchAssessmentMode. */
+    /**
+     * Static value AutomaticByPlatform for WindowsPatchAssessmentMode.
+     */
     public static final WindowsPatchAssessmentMode AUTOMATIC_BY_PLATFORM = fromString("AutomaticByPlatform");
 
     /**
      * Creates a new instance of WindowsPatchAssessmentMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -32,7 +36,7 @@ public final class WindowsPatchAssessmentMode extends ExpandableStringEnum<Windo
 
     /**
      * Creates or finds a WindowsPatchAssessmentMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WindowsPatchAssessmentMode.
      */
@@ -43,7 +47,7 @@ public final class WindowsPatchAssessmentMode extends ExpandableStringEnum<Windo
 
     /**
      * Gets known WindowsPatchAssessmentMode values.
-     *
+     * 
      * @return known WindowsPatchAssessmentMode values.
      */
     public static Collection<WindowsPatchAssessmentMode> values() {

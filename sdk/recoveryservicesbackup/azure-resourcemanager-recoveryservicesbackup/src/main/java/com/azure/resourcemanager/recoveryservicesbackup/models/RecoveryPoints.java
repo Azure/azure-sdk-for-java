@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of RecoveryPoints. */
+/**
+ * Resource collection API of RecoveryPoints.
+ */
 public interface RecoveryPoints {
     /**
      * Lists the backup copies for the backed up item.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up item.
@@ -23,12 +25,12 @@ public interface RecoveryPoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of RecoveryPoint resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<RecoveryPointResource> list(
-        String vaultName, String resourceGroupName, String fabricName, String containerName, String protectedItemName);
+    PagedIterable<RecoveryPointResource> list(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName);
 
     /**
      * Lists the backup copies for the backed up item.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with the backed up item.
@@ -41,19 +43,14 @@ public interface RecoveryPoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of RecoveryPoint resources as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<RecoveryPointResource> list(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String filter,
-        Context context);
+    PagedIterable<RecoveryPointResource> list(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, String filter, Context context);
 
     /**
      * Provides the information of the backed up data identified using RecoveryPointID. This is an asynchronous
-     * operation. To know the status of the operation, call the GetProtectedItemOperationResult API.
-     *
+     * operation.
+     * To know the status of the operation, call the GetProtectedItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with backed up item.
@@ -66,19 +63,14 @@ public interface RecoveryPoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base class for backup copies along with {@link Response}.
      */
-    Response<RecoveryPointResource> getWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId,
-        Context context);
+    Response<RecoveryPointResource> getWithResponse(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String protectedItemName, String recoveryPointId, Context context);
 
     /**
      * Provides the information of the backed up data identified using RecoveryPointID. This is an asynchronous
-     * operation. To know the status of the operation, call the GetProtectedItemOperationResult API.
-     *
+     * operation.
+     * To know the status of the operation, call the GetProtectedItemOperationResult API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated with backed up item.
@@ -90,11 +82,6 @@ public interface RecoveryPoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base class for backup copies.
      */
-    RecoveryPointResource get(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String protectedItemName,
-        String recoveryPointId);
+    RecoveryPointResource get(String vaultName, String resourceGroupName, String fabricName, String containerName,
+        String protectedItemName, String recoveryPointId);
 }

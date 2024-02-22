@@ -11,16 +11,16 @@ public final class SapEccSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         SapEccSource model = BinaryData.fromString(
-            "{\"type\":\"SapEccSource\",\"query\":\"dataskb\",\"httpRequestTimeout\":\"datacakle\",\"queryTimeout\":\"datagxdhgezyhphao\",\"additionalColumns\":\"databqm\",\"sourceRetryCount\":\"dataglkqitpbyn\",\"sourceRetryWait\":\"datayx\",\"maxConcurrentConnections\":\"dataopocleffgggg\",\"disableMetricsCollection\":\"datasbouhmng\",\"\":{\"cpspaoxigpdiou\":\"datakgiusrvs\"}}")
+            "{\"type\":\"SapEccSource\",\"query\":\"dataqyoyjptkyfrk\",\"httpRequestTimeout\":\"datatxwyqkkdumxd\",\"queryTimeout\":\"dataimsioffyboo\",\"additionalColumns\":\"dataovfundk\",\"sourceRetryCount\":\"datamyxmsbtq\",\"sourceRetryWait\":\"datagn\",\"maxConcurrentConnections\":\"datacbjxgjudgbwr\",\"disableMetricsCollection\":\"dataiuzlfq\",\"\":{\"gsmlujunqwkjf\":\"datahlzljqcm\"}}")
             .toObject(SapEccSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapEccSource model = new SapEccSource().withSourceRetryCount("dataglkqitpbyn").withSourceRetryWait("datayx")
-            .withMaxConcurrentConnections("dataopocleffgggg").withDisableMetricsCollection("datasbouhmng")
-            .withQueryTimeout("datagxdhgezyhphao").withAdditionalColumns("databqm").withQuery("dataskb")
-            .withHttpRequestTimeout("datacakle");
+        SapEccSource model = new SapEccSource().withSourceRetryCount("datamyxmsbtq").withSourceRetryWait("datagn")
+            .withMaxConcurrentConnections("datacbjxgjudgbwr").withDisableMetricsCollection("dataiuzlfq")
+            .withQueryTimeout("dataimsioffyboo").withAdditionalColumns("dataovfundk").withQuery("dataqyoyjptkyfrk")
+            .withHttpRequestTimeout("datatxwyqkkdumxd");
         model = BinaryData.fromObject(model).toObject(SapEccSource.class);
     }
 }

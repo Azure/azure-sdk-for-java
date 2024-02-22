@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NodeTypeDescriptionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NodeTypeDescription model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"u\",\"placementProperties\":{\"nwzsymg\":\"ryrtihfxtijbpzv\",\"anufhfcbjysag\":\"zufcyzkohdbi\"},\"capacities\":{\"pikxwczbyscnpqxu\":\"xqhabi\"},\"clientConnectionEndpointPort\":1646115006,\"httpGatewayEndpointPort\":800348188,\"durabilityLevel\":\"Silver\",\"applicationPorts\":{\"startPort\":1574574303,\"endPort\":649847293},\"ephemeralPorts\":{\"startPort\":992034682,\"endPort\":355535904},\"isPrimary\":false,\"vmInstanceCount\":143848779,\"reverseProxyEndpointPort\":519347031,\"isStateless\":true,\"multipleAvailabilityZones\":true}")
-                .toObject(NodeTypeDescription.class);
+        NodeTypeDescription model = BinaryData.fromString(
+            "{\"name\":\"u\",\"placementProperties\":{\"nwzsymg\":\"ryrtihfxtijbpzv\",\"anufhfcbjysag\":\"zufcyzkohdbi\"},\"capacities\":{\"pikxwczbyscnpqxu\":\"xqhabi\"},\"clientConnectionEndpointPort\":1646115006,\"httpGatewayEndpointPort\":800348188,\"durabilityLevel\":\"Silver\",\"applicationPorts\":{\"startPort\":1574574303,\"endPort\":649847293},\"ephemeralPorts\":{\"startPort\":992034682,\"endPort\":355535904},\"isPrimary\":false,\"vmInstanceCount\":143848779,\"reverseProxyEndpointPort\":519347031,\"isStateless\":true,\"multipleAvailabilityZones\":true}")
+            .toObject(NodeTypeDescription.class);
         Assertions.assertEquals("u", model.name());
         Assertions.assertEquals("ryrtihfxtijbpzv", model.placementProperties().get("nwzsymg"));
         Assertions.assertEquals("xqhabi", model.capacities().get("pikxwczbyscnpqxu"));
@@ -39,21 +37,14 @@ public final class NodeTypeDescriptionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NodeTypeDescription model =
-            new NodeTypeDescription()
-                .withName("u")
-                .withPlacementProperties(mapOf("nwzsymg", "ryrtihfxtijbpzv", "anufhfcbjysag", "zufcyzkohdbi"))
-                .withCapacities(mapOf("pikxwczbyscnpqxu", "xqhabi"))
-                .withClientConnectionEndpointPort(1646115006)
-                .withHttpGatewayEndpointPort(800348188)
-                .withDurabilityLevel(DurabilityLevel.SILVER)
-                .withApplicationPorts(new EndpointRangeDescription().withStartPort(1574574303).withEndPort(649847293))
-                .withEphemeralPorts(new EndpointRangeDescription().withStartPort(992034682).withEndPort(355535904))
-                .withIsPrimary(false)
-                .withVmInstanceCount(143848779)
-                .withReverseProxyEndpointPort(519347031)
-                .withIsStateless(true)
-                .withMultipleAvailabilityZones(true);
+        NodeTypeDescription model = new NodeTypeDescription().withName("u")
+            .withPlacementProperties(mapOf("nwzsymg", "ryrtihfxtijbpzv", "anufhfcbjysag", "zufcyzkohdbi"))
+            .withCapacities(mapOf("pikxwczbyscnpqxu", "xqhabi")).withClientConnectionEndpointPort(1646115006)
+            .withHttpGatewayEndpointPort(800348188).withDurabilityLevel(DurabilityLevel.SILVER)
+            .withApplicationPorts(new EndpointRangeDescription().withStartPort(1574574303).withEndPort(649847293))
+            .withEphemeralPorts(new EndpointRangeDescription().withStartPort(992034682).withEndPort(355535904))
+            .withIsPrimary(false).withVmInstanceCount(143848779).withReverseProxyEndpointPort(519347031)
+            .withIsStateless(true).withMultipleAvailabilityZones(true);
         model = BinaryData.fromObject(model).toObject(NodeTypeDescription.class);
         Assertions.assertEquals("u", model.name());
         Assertions.assertEquals("ryrtihfxtijbpzv", model.placementProperties().get("nwzsymg"));
@@ -72,6 +63,7 @@ public final class NodeTypeDescriptionTests {
         Assertions.assertEquals(true, model.multipleAvailabilityZones());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

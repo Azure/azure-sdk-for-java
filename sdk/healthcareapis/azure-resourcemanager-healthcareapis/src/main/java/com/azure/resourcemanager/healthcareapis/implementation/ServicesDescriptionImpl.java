@@ -76,6 +76,10 @@ public final class ServicesDescriptionImpl
         return this.location();
     }
 
+    public String resourceGroupName() {
+        return resourceGroupName;
+    }
+
     public ServicesDescriptionInner innerModel() {
         return this.innerObject;
     }
@@ -96,25 +100,19 @@ public final class ServicesDescriptionImpl
     }
 
     public ServicesDescription create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServices()
-                .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getServices().createOrUpdate(resourceGroupName, resourceName,
+            this.innerModel(), Context.NONE);
         return this;
     }
 
     public ServicesDescription create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServices()
-                .createOrUpdate(resourceGroupName, resourceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getServices().createOrUpdate(resourceGroupName, resourceName,
+            this.innerModel(), context);
         return this;
     }
 
-    ServicesDescriptionImpl(
-        String name, com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager) {
+    ServicesDescriptionImpl(String name,
+        com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager) {
         this.innerObject = new ServicesDescriptionInner();
         this.serviceManager = serviceManager;
         this.resourceName = name;
@@ -126,25 +124,18 @@ public final class ServicesDescriptionImpl
     }
 
     public ServicesDescription apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServices()
-                .update(resourceGroupName, resourceName, updateServicePatchDescription, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getServices().update(resourceGroupName, resourceName,
+            updateServicePatchDescription, Context.NONE);
         return this;
     }
 
     public ServicesDescription apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServices()
-                .update(resourceGroupName, resourceName, updateServicePatchDescription, context);
+        this.innerObject = serviceManager.serviceClient().getServices().update(resourceGroupName, resourceName,
+            updateServicePatchDescription, context);
         return this;
     }
 
-    ServicesDescriptionImpl(
-        ServicesDescriptionInner innerObject,
+    ServicesDescriptionImpl(ServicesDescriptionInner innerObject,
         com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -153,22 +144,14 @@ public final class ServicesDescriptionImpl
     }
 
     public ServicesDescription refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServices()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getServices()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, Context.NONE).getValue();
         return this;
     }
 
     public ServicesDescription refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServices()
-                .getByResourceGroupWithResponse(resourceGroupName, resourceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getServices()
+            .getByResourceGroupWithResponse(resourceGroupName, resourceName, context).getValue();
         return this;
     }
 

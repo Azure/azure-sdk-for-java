@@ -8,7 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The agent that initiated the event. For most situations, this could be from the authorization context of the request.
+ * The agent that initiated the event. For most situations, this could be from the authorization context of the
+ * request.
  */
 @Fluent
 public final class Actor {
@@ -18,13 +19,15 @@ public final class Actor {
     @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of Actor class. */
+    /**
+     * Creates an instance of Actor class.
+     */
     public Actor() {
     }
 
     /**
      * Get the name property: The subject or username associated with the request context that generated the event.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -33,7 +36,7 @@ public final class Actor {
 
     /**
      * Set the name property: The subject or username associated with the request context that generated the event.
-     *
+     * 
      * @param name the name value to set.
      * @return the Actor object itself.
      */
@@ -44,7 +47,7 @@ public final class Actor {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

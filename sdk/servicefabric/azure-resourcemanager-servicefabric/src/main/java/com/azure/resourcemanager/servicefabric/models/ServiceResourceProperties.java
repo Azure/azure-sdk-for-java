@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The service resource properties. */
+/**
+ * The service resource properties.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -20,8 +22,7 @@ import java.util.List;
 @JsonTypeName("ServiceResourceProperties")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Stateful", value = StatefulServiceProperties.class),
-    @JsonSubTypes.Type(name = "Stateless", value = StatelessServiceProperties.class)
-})
+    @JsonSubTypes.Type(name = "Stateless", value = StatelessServiceProperties.class) })
 @Fluent
 public class ServiceResourceProperties extends ServiceResourcePropertiesBase {
     /*
@@ -55,14 +56,16 @@ public class ServiceResourceProperties extends ServiceResourcePropertiesBase {
     @JsonProperty(value = "serviceDnsName")
     private String serviceDnsName;
 
-    /** Creates an instance of ServiceResourceProperties class. */
+    /**
+     * Creates an instance of ServiceResourceProperties class.
+     */
     public ServiceResourceProperties() {
     }
 
     /**
      * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
      * response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -71,7 +74,7 @@ public class ServiceResourceProperties extends ServiceResourcePropertiesBase {
 
     /**
      * Get the serviceTypeName property: The name of the service type.
-     *
+     * 
      * @return the serviceTypeName value.
      */
     public String serviceTypeName() {
@@ -80,7 +83,7 @@ public class ServiceResourceProperties extends ServiceResourcePropertiesBase {
 
     /**
      * Set the serviceTypeName property: The name of the service type.
-     *
+     * 
      * @param serviceTypeName the serviceTypeName value to set.
      * @return the ServiceResourceProperties object itself.
      */
@@ -91,7 +94,7 @@ public class ServiceResourceProperties extends ServiceResourcePropertiesBase {
 
     /**
      * Get the partitionDescription property: Describes how the service is partitioned.
-     *
+     * 
      * @return the partitionDescription value.
      */
     public PartitionSchemeDescription partitionDescription() {
@@ -100,7 +103,7 @@ public class ServiceResourceProperties extends ServiceResourcePropertiesBase {
 
     /**
      * Set the partitionDescription property: Describes how the service is partitioned.
-     *
+     * 
      * @param partitionDescription the partitionDescription value to set.
      * @return the ServiceResourceProperties object itself.
      */
@@ -111,7 +114,7 @@ public class ServiceResourceProperties extends ServiceResourcePropertiesBase {
 
     /**
      * Get the servicePackageActivationMode property: The activation Mode of the service package.
-     *
+     * 
      * @return the servicePackageActivationMode value.
      */
     public ArmServicePackageActivationMode servicePackageActivationMode() {
@@ -120,12 +123,12 @@ public class ServiceResourceProperties extends ServiceResourcePropertiesBase {
 
     /**
      * Set the servicePackageActivationMode property: The activation Mode of the service package.
-     *
+     * 
      * @param servicePackageActivationMode the servicePackageActivationMode value to set.
      * @return the ServiceResourceProperties object itself.
      */
-    public ServiceResourceProperties withServicePackageActivationMode(
-        ArmServicePackageActivationMode servicePackageActivationMode) {
+    public ServiceResourceProperties
+        withServicePackageActivationMode(ArmServicePackageActivationMode servicePackageActivationMode) {
         this.servicePackageActivationMode = servicePackageActivationMode;
         return this;
     }
@@ -133,7 +136,7 @@ public class ServiceResourceProperties extends ServiceResourcePropertiesBase {
     /**
      * Get the serviceDnsName property: Dns name used for the service. If this is specified, then the service can be
      * accessed via its DNS name instead of service name.
-     *
+     * 
      * @return the serviceDnsName value.
      */
     public String serviceDnsName() {
@@ -143,7 +146,7 @@ public class ServiceResourceProperties extends ServiceResourcePropertiesBase {
     /**
      * Set the serviceDnsName property: Dns name used for the service. If this is specified, then the service can be
      * accessed via its DNS name instead of service name.
-     *
+     * 
      * @param serviceDnsName the serviceDnsName value to set.
      * @return the ServiceResourceProperties object itself.
      */
@@ -152,36 +155,46 @@ public class ServiceResourceProperties extends ServiceResourcePropertiesBase {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceResourceProperties withPlacementConstraints(String placementConstraints) {
         super.withPlacementConstraints(placementConstraints);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceResourceProperties withCorrelationScheme(List<ServiceCorrelationDescription> correlationScheme) {
         super.withCorrelationScheme(correlationScheme);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceResourceProperties withServiceLoadMetrics(List<ServiceLoadMetricDescription> serviceLoadMetrics) {
         super.withServiceLoadMetrics(serviceLoadMetrics);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ServiceResourceProperties withServicePlacementPolicies(
-        List<ServicePlacementPolicyDescription> servicePlacementPolicies) {
+    public ServiceResourceProperties
+        withServicePlacementPolicies(List<ServicePlacementPolicyDescription> servicePlacementPolicies) {
         super.withServicePlacementPolicies(servicePlacementPolicies);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceResourceProperties withDefaultMoveCost(MoveCost defaultMoveCost) {
         super.withDefaultMoveCost(defaultMoveCost);
@@ -190,7 +203,7 @@ public class ServiceResourceProperties extends ServiceResourcePropertiesBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

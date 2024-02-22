@@ -11,7 +11,9 @@ import com.azure.resourcemanager.monitor.models.ActivityLogAlertAllOfCondition;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An Azure Activity Log Alert rule. */
+/**
+ * An Azure Activity Log Alert rule.
+ */
 @Fluent
 public final class AlertRuleProperties {
     /*
@@ -46,7 +48,9 @@ public final class AlertRuleProperties {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of AlertRuleProperties class. */
+    /**
+     * Creates an instance of AlertRuleProperties class.
+     */
     public AlertRuleProperties() {
     }
 
@@ -54,7 +58,7 @@ public final class AlertRuleProperties {
      * Get the scopes property: A list of resource IDs that will be used as prefixes. The alert will only apply to
      * Activity Log events with resource IDs that fall under one of these prefixes. This list must include at least one
      * item.
-     *
+     * 
      * @return the scopes value.
      */
     public List<String> scopes() {
@@ -65,7 +69,7 @@ public final class AlertRuleProperties {
      * Set the scopes property: A list of resource IDs that will be used as prefixes. The alert will only apply to
      * Activity Log events with resource IDs that fall under one of these prefixes. This list must include at least one
      * item.
-     *
+     * 
      * @param scopes the scopes value to set.
      * @return the AlertRuleProperties object itself.
      */
@@ -76,7 +80,7 @@ public final class AlertRuleProperties {
 
     /**
      * Get the condition property: The condition that will cause this alert to activate.
-     *
+     * 
      * @return the condition value.
      */
     public ActivityLogAlertAllOfCondition condition() {
@@ -85,7 +89,7 @@ public final class AlertRuleProperties {
 
     /**
      * Set the condition property: The condition that will cause this alert to activate.
-     *
+     * 
      * @param condition the condition value to set.
      * @return the AlertRuleProperties object itself.
      */
@@ -96,7 +100,7 @@ public final class AlertRuleProperties {
 
     /**
      * Get the actions property: The actions that will activate when the condition is met.
-     *
+     * 
      * @return the actions value.
      */
     public ActionList actions() {
@@ -105,7 +109,7 @@ public final class AlertRuleProperties {
 
     /**
      * Set the actions property: The actions that will activate when the condition is met.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the AlertRuleProperties object itself.
      */
@@ -117,7 +121,7 @@ public final class AlertRuleProperties {
     /**
      * Get the enabled property: Indicates whether this Activity Log Alert rule is enabled. If an Activity Log Alert
      * rule is not enabled, then none of its actions will be activated.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -127,7 +131,7 @@ public final class AlertRuleProperties {
     /**
      * Set the enabled property: Indicates whether this Activity Log Alert rule is enabled. If an Activity Log Alert
      * rule is not enabled, then none of its actions will be activated.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the AlertRuleProperties object itself.
      */
@@ -138,7 +142,7 @@ public final class AlertRuleProperties {
 
     /**
      * Get the description property: A description of this Activity Log Alert rule.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -147,7 +151,7 @@ public final class AlertRuleProperties {
 
     /**
      * Set the description property: A description of this Activity Log Alert rule.
-     *
+     * 
      * @param description the description value to set.
      * @return the AlertRuleProperties object itself.
      */
@@ -158,26 +162,23 @@ public final class AlertRuleProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (scopes() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property scopes in model AlertRuleProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property scopes in model AlertRuleProperties"));
         }
         if (condition() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property condition in model AlertRuleProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property condition in model AlertRuleProperties"));
         } else {
             condition().validate();
         }
         if (actions() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property actions in model AlertRuleProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property actions in model AlertRuleProperties"));
         } else {
             actions().validate();
         }

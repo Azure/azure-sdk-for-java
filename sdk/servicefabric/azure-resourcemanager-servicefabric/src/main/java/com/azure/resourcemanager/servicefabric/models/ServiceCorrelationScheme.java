@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The service correlation scheme. */
+/**
+ * The service correlation scheme.
+ */
 public final class ServiceCorrelationScheme extends ExpandableStringEnum<ServiceCorrelationScheme> {
-    /** Static value Invalid for ServiceCorrelationScheme. */
+    /**
+     * Static value Invalid for ServiceCorrelationScheme.
+     */
     public static final ServiceCorrelationScheme INVALID = fromString("Invalid");
 
-    /** Static value Affinity for ServiceCorrelationScheme. */
+    /**
+     * Static value Affinity for ServiceCorrelationScheme.
+     */
     public static final ServiceCorrelationScheme AFFINITY = fromString("Affinity");
 
-    /** Static value AlignedAffinity for ServiceCorrelationScheme. */
+    /**
+     * Static value AlignedAffinity for ServiceCorrelationScheme.
+     */
     public static final ServiceCorrelationScheme ALIGNED_AFFINITY = fromString("AlignedAffinity");
 
-    /** Static value NonAlignedAffinity for ServiceCorrelationScheme. */
+    /**
+     * Static value NonAlignedAffinity for ServiceCorrelationScheme.
+     */
     public static final ServiceCorrelationScheme NON_ALIGNED_AFFINITY = fromString("NonAlignedAffinity");
 
     /**
      * Creates a new instance of ServiceCorrelationScheme value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class ServiceCorrelationScheme extends ExpandableStringEnum<Service
 
     /**
      * Creates or finds a ServiceCorrelationScheme from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ServiceCorrelationScheme.
      */
@@ -44,7 +54,7 @@ public final class ServiceCorrelationScheme extends ExpandableStringEnum<Service
 
     /**
      * Gets known ServiceCorrelationScheme values.
-     *
+     * 
      * @return known ServiceCorrelationScheme values.
      */
     public static Collection<ServiceCorrelationScheme> values() {

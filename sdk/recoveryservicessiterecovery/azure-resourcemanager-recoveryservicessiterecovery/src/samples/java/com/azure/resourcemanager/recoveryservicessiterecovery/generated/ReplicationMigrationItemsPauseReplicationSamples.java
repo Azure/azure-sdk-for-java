@@ -7,25 +7,24 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.PauseReplicationInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.PauseReplicationInputProperties;
 
-/** Samples for ReplicationMigrationItems PauseReplication. */
+/**
+ * Samples for ReplicationMigrationItems PauseReplication.
+ */
 public final class ReplicationMigrationItemsPauseReplicationSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationMigrationItems_PauseReplication.json
+     * x-ms-original-file:
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * /ReplicationMigrationItems_PauseReplication.json
      */
     /**
      * Sample code: Pause replication.
-     *
+     * 
      * @param manager Entry point to SiteRecoveryManager.
      */
-    public static void pauseReplication(
-        com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager
-            .replicationMigrationItems()
-            .pauseReplication(
-                "migrationvault",
-                "resourcegroup1",
-                "vmwarefabric1",
-                "vmwareContainer1",
+    public static void
+        pauseReplication(com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
+        manager.replicationMigrationItems()
+            .pauseReplication("migrationvault", "resourcegroup1", "vmwarefabric1", "vmwareContainer1",
                 "virtualmachine1",
                 new PauseReplicationInput()
                     .withProperties(new PauseReplicationInputProperties().withInstanceType("VMwareCbt")),

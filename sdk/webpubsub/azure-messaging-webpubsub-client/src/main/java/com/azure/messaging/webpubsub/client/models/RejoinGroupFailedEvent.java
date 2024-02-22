@@ -12,7 +12,7 @@ import com.azure.core.annotation.Immutable;
 public final class RejoinGroupFailedEvent {
 
     private final String group;
-    private final Exception exception;
+    private final SendMessageFailedException exception;
 
     /**
      * Creates a new instance of RejoinGroupFailedEvent.
@@ -20,7 +20,7 @@ public final class RejoinGroupFailedEvent {
      * @param group the group name.
      * @param exception the exception.
      */
-    public RejoinGroupFailedEvent(String group, Exception exception) {
+    public RejoinGroupFailedEvent(String group, SendMessageFailedException exception) {
         this.group = group;
         this.exception = exception;
     }
@@ -39,7 +39,7 @@ public final class RejoinGroupFailedEvent {
      *
      * @return the exception.
      */
-    public Exception getException() {
+    public SendMessageFailedException getException() {
         return exception;
     }
 }

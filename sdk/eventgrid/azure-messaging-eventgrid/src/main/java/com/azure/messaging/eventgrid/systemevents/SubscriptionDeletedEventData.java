@@ -5,26 +5,66 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.EventGrid.SubscriptionDeletedEvent event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.EventGrid.SubscriptionDeletedEvent event.
+ */
 @Immutable
-public final class SubscriptionDeletedEventData {
+public final class SubscriptionDeletedEventData implements JsonSerializable<SubscriptionDeletedEventData> {
     /*
      * The Azure resource ID of the deleted event subscription.
      */
-    @JsonProperty(value = "eventSubscriptionId", access = JsonProperty.Access.WRITE_ONLY)
     private String eventSubscriptionId;
 
-    /** Creates an instance of SubscriptionDeletedEventData class. */
-    public SubscriptionDeletedEventData() {}
+    /**
+     * Creates an instance of SubscriptionDeletedEventData class.
+     */
+    public SubscriptionDeletedEventData() {
+    }
 
     /**
      * Get the eventSubscriptionId property: The Azure resource ID of the deleted event subscription.
-     *
+     * 
      * @return the eventSubscriptionId value.
      */
     public String getEventSubscriptionId() {
         return this.eventSubscriptionId;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of SubscriptionDeletedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of SubscriptionDeletedEventData if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the SubscriptionDeletedEventData.
+     */
+    public static SubscriptionDeletedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            SubscriptionDeletedEventData deserializedSubscriptionDeletedEventData = new SubscriptionDeletedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("eventSubscriptionId".equals(fieldName)) {
+                    deserializedSubscriptionDeletedEventData.eventSubscriptionId = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedSubscriptionDeletedEventData;
+        });
     }
 }

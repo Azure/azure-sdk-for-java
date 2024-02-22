@@ -30,24 +30,28 @@ import com.azure.resourcemanager.cosmos.fluent.models.RestorableMongodbCollectio
 import com.azure.resourcemanager.cosmos.models.RestorableMongodbCollectionsListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RestorableMongodbCollectionsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RestorableMongodbCollectionsClient.
+ */
 public final class RestorableMongodbCollectionsClientImpl implements RestorableMongodbCollectionsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RestorableMongodbCollectionsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CosmosDBManagementClientImpl client;
 
     /**
      * Initializes an instance of RestorableMongodbCollectionsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RestorableMongodbCollectionsClientImpl(CosmosDBManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    RestorableMongodbCollectionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(RestorableMongodbCollectionsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -58,29 +62,23 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
     public interface RestorableMongodbCollectionsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableMongodbCollections")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableMongodbCollections")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RestorableMongodbCollectionsListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
-            @PathParam("instanceId") String instanceId,
+        Mono<Response<RestorableMongodbCollectionsListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @PathParam("instanceId") String instanceId,
             @QueryParam("restorableMongodbDatabaseRid") String restorableMongodbDatabaseRid,
-            @QueryParam("startTime") String startTime,
-            @QueryParam("endTime") String endTime,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("startTime") String startTime, @QueryParam("endTime") String endTime,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Show the event feed of all mutations done on all the Azure Cosmos DB MongoDB collections under a specific
      * database. This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableMongodbDatabaseRid The resource ID of the MongoDB database.
@@ -90,22 +88,18 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the MongoDB collection events and their properties along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RestorableMongodbCollectionGetResultInner>> listSinglePageAsync(
-        String location, String instanceId, String restorableMongodbDatabaseRid, String startTime, String endTime) {
+    private Mono<PagedResponse<RestorableMongodbCollectionGetResultInner>> listSinglePageAsync(String location,
+        String instanceId, String restorableMongodbDatabaseRid, String startTime, String endTime) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -115,24 +109,11 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            instanceId,
-                            restorableMongodbDatabaseRid,
-                            startTime,
-                            endTime,
-                            accept,
-                            context))
-            .<PagedResponse<RestorableMongodbCollectionGetResultInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), location, instanceId, restorableMongodbDatabaseRid, startTime, endTime,
+                accept, context))
+            .<PagedResponse<RestorableMongodbCollectionGetResultInner>>map(res -> new PagedResponseBase<>(
+                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -140,7 +121,7 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      * Show the event feed of all mutations done on all the Azure Cosmos DB MongoDB collections under a specific
      * database. This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableMongodbDatabaseRid The resource ID of the MongoDB database.
@@ -151,27 +132,18 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the MongoDB collection events and their properties along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RestorableMongodbCollectionGetResultInner>> listSinglePageAsync(
-        String location,
-        String instanceId,
-        String restorableMongodbDatabaseRid,
-        String startTime,
-        String endTime,
-        Context context) {
+    private Mono<PagedResponse<RestorableMongodbCollectionGetResultInner>> listSinglePageAsync(String location,
+        String instanceId, String restorableMongodbDatabaseRid, String startTime, String endTime, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -182,28 +154,17 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                location,
-                instanceId,
-                restorableMongodbDatabaseRid,
-                startTime,
-                endTime,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), location,
+                instanceId, restorableMongodbDatabaseRid, startTime, endTime, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Show the event feed of all mutations done on all the Azure Cosmos DB MongoDB collections under a specific
      * database. This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableMongodbDatabaseRid The resource ID of the MongoDB database.
@@ -213,11 +174,11 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the MongoDB collection events and their properties as
-     *     paginated response with {@link PagedFlux}.
+     * paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RestorableMongodbCollectionGetResultInner> listAsync(
-        String location, String instanceId, String restorableMongodbDatabaseRid, String startTime, String endTime) {
+    public PagedFlux<RestorableMongodbCollectionGetResultInner> listAsync(String location, String instanceId,
+        String restorableMongodbDatabaseRid, String startTime, String endTime) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(location, instanceId, restorableMongodbDatabaseRid, startTime, endTime));
     }
@@ -226,14 +187,14 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      * Show the event feed of all mutations done on all the Azure Cosmos DB MongoDB collections under a specific
      * database. This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the MongoDB collection events and their properties as
-     *     paginated response with {@link PagedFlux}.
+     * paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RestorableMongodbCollectionGetResultInner> listAsync(String location, String instanceId) {
@@ -248,7 +209,7 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      * Show the event feed of all mutations done on all the Azure Cosmos DB MongoDB collections under a specific
      * database. This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableMongodbDatabaseRid The resource ID of the MongoDB database.
@@ -259,16 +220,11 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the MongoDB collection events and their properties as
-     *     paginated response with {@link PagedFlux}.
+     * paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RestorableMongodbCollectionGetResultInner> listAsync(
-        String location,
-        String instanceId,
-        String restorableMongodbDatabaseRid,
-        String startTime,
-        String endTime,
-        Context context) {
+    private PagedFlux<RestorableMongodbCollectionGetResultInner> listAsync(String location, String instanceId,
+        String restorableMongodbDatabaseRid, String startTime, String endTime, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(location, instanceId, restorableMongodbDatabaseRid, startTime, endTime, context));
     }
@@ -277,14 +233,14 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      * Show the event feed of all mutations done on all the Azure Cosmos DB MongoDB collections under a specific
      * database. This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the MongoDB collection events and their properties as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorableMongodbCollectionGetResultInner> list(String location, String instanceId) {
@@ -298,7 +254,7 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      * Show the event feed of all mutations done on all the Azure Cosmos DB MongoDB collections under a specific
      * database. This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableMongodbDatabaseRid The resource ID of the MongoDB database.
@@ -309,16 +265,11 @@ public final class RestorableMongodbCollectionsClientImpl implements RestorableM
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the MongoDB collection events and their properties as
-     *     paginated response with {@link PagedIterable}.
+     * paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RestorableMongodbCollectionGetResultInner> list(
-        String location,
-        String instanceId,
-        String restorableMongodbDatabaseRid,
-        String startTime,
-        String endTime,
-        Context context) {
+    public PagedIterable<RestorableMongodbCollectionGetResultInner> list(String location, String instanceId,
+        String restorableMongodbDatabaseRid, String startTime, String endTime, Context context) {
         return new PagedIterable<>(
             listAsync(location, instanceId, restorableMongodbDatabaseRid, startTime, endTime, context));
     }

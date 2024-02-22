@@ -8,65 +8,104 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Type of the container. The value of this property for 1. Compute Azure VM is Microsoft.Compute/virtualMachines 2.
- * Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines.
+ * Type of the container. The value of this property for
+ * 1. Compute Azure VM is Microsoft.Compute/virtualMachines
+ * 2. Classic Compute Azure VM is Microsoft.ClassicCompute/virtualMachines.
  */
 public enum ProtectableContainerType {
-    /** Enum value Invalid. */
+    /**
+     * Enum value Invalid.
+     */
     INVALID("Invalid"),
 
-    /** Enum value Unknown. */
+    /**
+     * Enum value Unknown.
+     */
     UNKNOWN("Unknown"),
 
-    /** Enum value IaasVMContainer. */
+    /**
+     * Enum value IaasVMContainer.
+     */
     IAAS_VMCONTAINER("IaasVMContainer"),
 
-    /** Enum value IaasVMServiceContainer. */
+    /**
+     * Enum value IaasVMServiceContainer.
+     */
     IAAS_VMSERVICE_CONTAINER("IaasVMServiceContainer"),
 
-    /** Enum value DPMContainer. */
+    /**
+     * Enum value DPMContainer.
+     */
     DPMCONTAINER("DPMContainer"),
 
-    /** Enum value AzureBackupServerContainer. */
+    /**
+     * Enum value AzureBackupServerContainer.
+     */
     AZURE_BACKUP_SERVER_CONTAINER("AzureBackupServerContainer"),
 
-    /** Enum value MABContainer. */
+    /**
+     * Enum value MABContainer.
+     */
     MABCONTAINER("MABContainer"),
 
-    /** Enum value Cluster. */
+    /**
+     * Enum value Cluster.
+     */
     CLUSTER("Cluster"),
 
-    /** Enum value AzureSqlContainer. */
+    /**
+     * Enum value AzureSqlContainer.
+     */
     AZURE_SQL_CONTAINER("AzureSqlContainer"),
 
-    /** Enum value Windows. */
+    /**
+     * Enum value Windows.
+     */
     WINDOWS("Windows"),
 
-    /** Enum value VCenter. */
+    /**
+     * Enum value VCenter.
+     */
     VCENTER("VCenter"),
 
-    /** Enum value VMAppContainer. */
+    /**
+     * Enum value VMAppContainer.
+     */
     VMAPP_CONTAINER("VMAppContainer"),
 
-    /** Enum value SQLAGWorkLoadContainer. */
+    /**
+     * Enum value SQLAGWorkLoadContainer.
+     */
     SQLAGWORK_LOAD_CONTAINER("SQLAGWorkLoadContainer"),
 
-    /** Enum value StorageContainer. */
+    /**
+     * Enum value StorageContainer.
+     */
     STORAGE_CONTAINER("StorageContainer"),
 
-    /** Enum value GenericContainer. */
+    /**
+     * Enum value GenericContainer.
+     */
     GENERIC_CONTAINER("GenericContainer"),
 
-    /** Enum value Microsoft.ClassicCompute/virtualMachines. */
+    /**
+     * Enum value Microsoft.ClassicCompute/virtualMachines.
+     */
     MICROSOFT_CLASSIC_COMPUTE_VIRTUAL_MACHINES("Microsoft.ClassicCompute/virtualMachines"),
 
-    /** Enum value Microsoft.Compute/virtualMachines. */
+    /**
+     * Enum value Microsoft.Compute/virtualMachines.
+     */
     MICROSOFT_COMPUTE_VIRTUAL_MACHINES("Microsoft.Compute/virtualMachines"),
 
-    /** Enum value AzureWorkloadContainer. */
+    /**
+     * Enum value AzureWorkloadContainer.
+     */
     AZURE_WORKLOAD_CONTAINER("AzureWorkloadContainer");
 
-    /** The actual serialized value for a ProtectableContainerType instance. */
+    /**
+     * The actual serialized value for a ProtectableContainerType instance.
+     */
     private final String value;
 
     ProtectableContainerType(String value) {
@@ -75,7 +114,7 @@ public enum ProtectableContainerType {
 
     /**
      * Parses a serialized value to a ProtectableContainerType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ProtectableContainerType object, or null if unable to parse.
      */
@@ -93,7 +132,9 @@ public enum ProtectableContainerType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

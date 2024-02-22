@@ -4,6 +4,7 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterClientImpl;
+import com.azure.communication.jobrouter.implementation.accesshelpers.RouterJobConstructorProxy;
 import com.azure.communication.jobrouter.implementation.accesshelpers.RouterWorkerConstructorProxy;
 import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
 import com.azure.communication.jobrouter.implementation.converters.WorkerAdapter;
@@ -121,10 +122,10 @@ public final class JobRouterClient {
      *         (recursive schema, see above)
      *     ]
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     assignments (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
      *             assignedAt: OffsetDateTime (Required)
@@ -133,7 +134,7 @@ public final class JobRouterClient {
      *         }
      *     }
      *     tags (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     notes (Optional): [
      *          (Optional){
@@ -176,10 +177,10 @@ public final class JobRouterClient {
      *         (recursive schema, see above)
      *     ]
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     assignments (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
      *             assignedAt: OffsetDateTime (Required)
@@ -188,7 +189,7 @@ public final class JobRouterClient {
      *         }
      *     }
      *     tags (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     notes (Optional): [
      *          (Optional){
@@ -214,7 +215,8 @@ public final class JobRouterClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> upsertJobWithResponse(String jobId, BinaryData resource, RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertJob' is 'application/merge-patch+json'
+        // Convenience API is not generated, as operation 'upsertJob' is 'application/merge-patch+json' and
+        // stream-style-serialization is not enabled
         return this.serviceClient.upsertJobWithResponse(jobId, resource, requestOptions);
     }
 
@@ -528,9 +530,13 @@ public final class JobRouterClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> createJobWithResponse(CreateJobOptions createJobOptions,
         RequestOptions requestOptions) {
+        // Note: Update return type to Response<RouterJob> in version 2.
         RouterJobInternal routerJob = JobAdapter.convertCreateJobOptionsToRouterJob(createJobOptions);
-        return this.serviceClient.upsertJobWithResponse(createJobOptions.getJobId(), BinaryData.fromObject(routerJob),
-            requestOptions);
+        Response<BinaryData> response = this.serviceClient.upsertJobWithResponse(createJobOptions.getJobId(),
+            BinaryData.fromObject(routerJob), requestOptions);
+        return new SimpleResponse<BinaryData>(response.getRequest(), response.getStatusCode(), response.getHeaders(),
+            BinaryData
+                .fromObject(RouterJobConstructorProxy.create(response.getValue().toObject(RouterJobInternal.class))));
     }
 
     /**
@@ -580,10 +586,10 @@ public final class JobRouterClient {
      *         (recursive schema, see above)
      *     ]
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     assignments (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
      *             assignedAt: OffsetDateTime (Required)
@@ -592,7 +598,7 @@ public final class JobRouterClient {
      *         }
      *     }
      *     tags (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     notes (Optional): [
      *          (Optional){
@@ -851,10 +857,10 @@ public final class JobRouterClient {
      *         (recursive schema, see above)
      *     ]
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     assignments (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
      *             assignedAt: OffsetDateTime (Required)
@@ -863,7 +869,7 @@ public final class JobRouterClient {
      *         }
      *     }
      *     tags (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     notes (Optional): [
      *          (Optional){
@@ -1060,7 +1066,7 @@ public final class JobRouterClient {
      *     queueId: String (Required)
      *     length: int (Required)
      *     estimatedWaitTimeMinutes (Optional): {
-     *         String: double (Optional)
+     *         String: double (Required)
      *     }
      *     longestJobWaitTimeMinutes: Double (Optional)
      * }
@@ -1120,10 +1126,10 @@ public final class JobRouterClient {
      *     ]
      *     capacity: Integer (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     tags (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     channels (Optional): [
      *          (Optional){
@@ -1166,10 +1172,10 @@ public final class JobRouterClient {
      *     ]
      *     capacity: Integer (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     tags (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     channels (Optional): [
      *          (Optional){
@@ -1212,7 +1218,8 @@ public final class JobRouterClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     Response<BinaryData> upsertWorkerWithResponse(String workerId, BinaryData resource, RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertWorker' is 'application/merge-patch+json'
+        // Convenience API is not generated, as operation 'upsertWorker' is 'application/merge-patch+json' and
+        // stream-style-serialization is not enabled
         return this.serviceClient.upsertWorkerWithResponse(workerId, resource, requestOptions);
     }
 
@@ -1539,10 +1546,10 @@ public final class JobRouterClient {
      *     ]
      *     capacity: Integer (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     tags (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     channels (Optional): [
      *          (Optional){
@@ -1664,10 +1671,10 @@ public final class JobRouterClient {
      *     ]
      *     capacity: Integer (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     tags (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     channels (Optional): [
      *          (Optional){
@@ -1951,7 +1958,8 @@ public final class JobRouterClient {
     public RouterWorker getWorker(String workerId) {
         // Generated convenience method for getWorkerWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getWorkerWithResponse(workerId, requestOptions).getValue().toObject(RouterWorker.class);
+        return RouterWorkerConstructorProxy
+            .create(getWorkerWithResponse(workerId, requestOptions).getValue().toObject(RouterWorkerInternal.class));
     }
 
     /**

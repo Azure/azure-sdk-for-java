@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appplatform.fluent.models.CertificateResourceIn
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection compose of certificate resources list and a possible link for next page. */
+/**
+ * Collection compose of certificate resources list and a possible link for next page.
+ */
 @Fluent
 public final class CertificateResourceCollection {
     /*
@@ -25,8 +27,14 @@ public final class CertificateResourceCollection {
     private String nextLink;
 
     /**
+     * Creates an instance of CertificateResourceCollection class.
+     */
+    public CertificateResourceCollection() {
+    }
+
+    /**
      * Get the value property: The certificate resources list.
-     *
+     * 
      * @return the value value.
      */
     public List<CertificateResourceInner> value() {
@@ -35,7 +43,7 @@ public final class CertificateResourceCollection {
 
     /**
      * Set the value property: The certificate resources list.
-     *
+     * 
      * @param value the value value to set.
      * @return the CertificateResourceCollection object itself.
      */
@@ -46,7 +54,7 @@ public final class CertificateResourceCollection {
 
     /**
      * Get the nextLink property: The link to next page of certificate list.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -55,7 +63,7 @@ public final class CertificateResourceCollection {
 
     /**
      * Set the nextLink property: The link to next page of certificate list.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the CertificateResourceCollection object itself.
      */
@@ -66,7 +74,7 @@ public final class CertificateResourceCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

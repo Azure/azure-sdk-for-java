@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DiffDiskSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiffDiskSettings model =
-            BinaryData.fromString("{\"placement\":\"CacheDisk\"}").toObject(DiffDiskSettings.class);
+        DiffDiskSettings model
+            = BinaryData.fromString("{\"placement\":\"CacheDisk\"}").toObject(DiffDiskSettings.class);
         Assertions.assertEquals(DiffDiskPlacement.CACHE_DISK, model.placement());
     }
 

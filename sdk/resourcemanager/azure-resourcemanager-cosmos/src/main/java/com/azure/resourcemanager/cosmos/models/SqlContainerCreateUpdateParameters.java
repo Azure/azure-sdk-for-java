@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.SqlContainerCreateUpdatePr
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Parameters to create and update Cosmos DB container. */
+/**
+ * Parameters to create and update Cosmos DB container.
+ */
 @Fluent
 public final class SqlContainerCreateUpdateParameters extends ArmResourceProperties {
     /*
@@ -19,27 +21,33 @@ public final class SqlContainerCreateUpdateParameters extends ArmResourcePropert
     @JsonProperty(value = "properties", required = true)
     private SqlContainerCreateUpdateProperties innerProperties = new SqlContainerCreateUpdateProperties();
 
-    /** Creates an instance of SqlContainerCreateUpdateParameters class. */
+    /**
+     * Creates an instance of SqlContainerCreateUpdateParameters class.
+     */
     public SqlContainerCreateUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: Properties to create and update Azure Cosmos DB container.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SqlContainerCreateUpdateProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlContainerCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlContainerCreateUpdateParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -48,7 +56,7 @@ public final class SqlContainerCreateUpdateParameters extends ArmResourcePropert
 
     /**
      * Get the resource property: The standard JSON format of a container.
-     *
+     * 
      * @return the resource value.
      */
     public SqlContainerResource resource() {
@@ -57,7 +65,7 @@ public final class SqlContainerCreateUpdateParameters extends ArmResourcePropert
 
     /**
      * Set the resource property: The standard JSON format of a container.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the SqlContainerCreateUpdateParameters object itself.
      */
@@ -72,7 +80,7 @@ public final class SqlContainerCreateUpdateParameters extends ArmResourcePropert
     /**
      * Get the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @return the options value.
      */
     public CreateUpdateOptions options() {
@@ -82,7 +90,7 @@ public final class SqlContainerCreateUpdateParameters extends ArmResourcePropert
     /**
      * Set the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @param options the options value to set.
      * @return the SqlContainerCreateUpdateParameters object itself.
      */
@@ -96,17 +104,15 @@ public final class SqlContainerCreateUpdateParameters extends ArmResourcePropert
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model SqlContainerCreateUpdateParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model SqlContainerCreateUpdateParameters"));
         } else {
             innerProperties().validate();
         }

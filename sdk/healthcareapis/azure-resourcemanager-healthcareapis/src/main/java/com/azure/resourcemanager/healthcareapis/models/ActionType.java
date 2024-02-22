@@ -8,14 +8,27 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ActionType. */
+/**
+ * Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
+ */
 public final class ActionType extends ExpandableStringEnum<ActionType> {
-    /** Static value Internal for ActionType. */
+    /**
+     * Static value Internal for ActionType.
+     */
     public static final ActionType INTERNAL = fromString("Internal");
 
     /**
+     * Creates a new instance of ActionType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public ActionType() {
+    }
+
+    /**
      * Creates or finds a ActionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ActionType.
      */
@@ -24,7 +37,11 @@ public final class ActionType extends ExpandableStringEnum<ActionType> {
         return fromString(name, ActionType.class);
     }
 
-    /** @return known ActionType values. */
+    /**
+     * Gets known ActionType values.
+     * 
+     * @return known ActionType values.
+     */
     public static Collection<ActionType> values() {
         return values(ActionType.class);
     }

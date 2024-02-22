@@ -32,7 +32,7 @@ public final class IntegrationRuntimeObjectMetadatasGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"type\":\"SsisObjectMetadata\",\"id\":1075337942816524885,\"name\":\"m\",\"description\":\"bodswgnglmllrxpx\"},{\"type\":\"SsisObjectMetadata\",\"id\":3298767872651639188,\"name\":\"yscjefapouwsyns\",\"description\":\"ndirdlehjz\"},{\"type\":\"SsisObjectMetadata\",\"id\":6434920934723993066,\"name\":\"hggvhco\",\"description\":\"eti\"}],\"nextLink\":\"tkeiram\"}";
+            = "{\"value\":[{\"type\":\"SsisObjectMetadata\",\"id\":6879995143339576966,\"name\":\"ruwljfdcy\",\"description\":\"qq\"},{\"type\":\"SsisObjectMetadata\",\"id\":5293849071624099090,\"name\":\"ywbnerygsifsa\",\"description\":\"ccsvajn\"},{\"type\":\"SsisObjectMetadata\",\"id\":8970486371925458316,\"name\":\"yrv\",\"description\":\"ojkysolmzrfhlyn\"},{\"type\":\"SsisObjectMetadata\",\"id\":3036714402389451136,\"name\":\"yysbjt\",\"description\":\"fhnqx\"}],\"nextLink\":\"emvqxxuwsat\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -49,15 +49,14 @@ public final class IntegrationRuntimeObjectMetadatasGetWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        SsisObjectMetadataListResponse response
-            = manager.integrationRuntimeObjectMetadatas()
-                .getWithResponse("kd", "gr", "cltfkyqyiiujukc",
-                    new GetSsisObjectMetadataRequest().withMetadataPath("vp"), com.azure.core.util.Context.NONE)
-                .getValue();
+        SsisObjectMetadataListResponse response = manager.integrationRuntimeObjectMetadatas()
+            .getWithResponse("pwabrzrhdezlhs", "c", "dbolczhyqd",
+                new GetSsisObjectMetadataRequest().withMetadataPath("qoajfoscdemfat"), com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals(1075337942816524885L, response.value().get(0).id());
-        Assertions.assertEquals("m", response.value().get(0).name());
-        Assertions.assertEquals("bodswgnglmllrxpx", response.value().get(0).description());
-        Assertions.assertEquals("tkeiram", response.nextLink());
+        Assertions.assertEquals(6879995143339576966L, response.value().get(0).id());
+        Assertions.assertEquals("ruwljfdcy", response.value().get(0).name());
+        Assertions.assertEquals("qq", response.value().get(0).description());
+        Assertions.assertEquals("emvqxxuwsat", response.nextLink());
     }
 }

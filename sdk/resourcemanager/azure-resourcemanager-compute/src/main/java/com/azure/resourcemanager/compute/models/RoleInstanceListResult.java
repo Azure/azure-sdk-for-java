@@ -10,7 +10,9 @@ import com.azure.resourcemanager.compute.fluent.models.RoleInstanceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The list operation result. */
+/**
+ * The list operation result.
+ */
 @Fluent
 public final class RoleInstanceListResult {
     /*
@@ -26,13 +28,15 @@ public final class RoleInstanceListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of RoleInstanceListResult class. */
+    /**
+     * Creates an instance of RoleInstanceListResult class.
+     */
     public RoleInstanceListResult() {
     }
 
     /**
      * Get the value property: The list of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<RoleInstanceInner> value() {
@@ -41,7 +45,7 @@ public final class RoleInstanceListResult {
 
     /**
      * Set the value property: The list of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the RoleInstanceListResult object itself.
      */
@@ -53,7 +57,7 @@ public final class RoleInstanceListResult {
     /**
      * Get the nextLink property: The URI to fetch the next page of resources. Use this to get the next page of
      * resources. Do this till nextLink is null to fetch all the resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +67,7 @@ public final class RoleInstanceListResult {
     /**
      * Set the nextLink property: The URI to fetch the next page of resources. Use this to get the next page of
      * resources. Do this till nextLink is null to fetch all the resources.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the RoleInstanceListResult object itself.
      */
@@ -74,14 +78,13 @@ public final class RoleInstanceListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model RoleInstanceListResult"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model RoleInstanceListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

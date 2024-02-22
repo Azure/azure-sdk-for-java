@@ -5,44 +5,49 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadPropertiesUpdated event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatThreadPropertiesUpdated event.
+ */
 @Fluent
 public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThreadEventInThreadBaseProperties {
     /*
      * The communication identifier of the user who updated the thread properties
      */
-    @JsonProperty(value = "editedByCommunicationIdentifier")
     private CommunicationIdentifierModel editedByCommunicationIdentifier;
 
     /*
      * The time at which the properties of the thread were updated
      */
-    @JsonProperty(value = "editTime")
     private OffsetDateTime editTime;
 
     /*
      * The updated thread properties
      */
-    @JsonProperty(value = "properties")
     private Map<String, Object> properties;
 
     /*
      * The thread metadata
      */
-    @JsonProperty(value = "metadata")
     private Map<String, String> metadata;
 
-    /** Creates an instance of AcsChatThreadPropertiesUpdatedEventData class. */
-    public AcsChatThreadPropertiesUpdatedEventData() {}
+    /**
+     * Creates an instance of AcsChatThreadPropertiesUpdatedEventData class.
+     */
+    public AcsChatThreadPropertiesUpdatedEventData() {
+    }
 
     /**
-     * Get the editedByCommunicationIdentifier property: The communication identifier of the user who updated the thread
-     * properties.
-     *
+     * Get the editedByCommunicationIdentifier property: The communication identifier of the user who updated the
+     * thread properties.
+     * 
      * @return the editedByCommunicationIdentifier value.
      */
     public CommunicationIdentifierModel getEditedByCommunicationIdentifier() {
@@ -50,21 +55,21 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
     }
 
     /**
-     * Set the editedByCommunicationIdentifier property: The communication identifier of the user who updated the thread
-     * properties.
-     *
+     * Set the editedByCommunicationIdentifier property: The communication identifier of the user who updated the
+     * thread properties.
+     * 
      * @param editedByCommunicationIdentifier the editedByCommunicationIdentifier value to set.
      * @return the AcsChatThreadPropertiesUpdatedEventData object itself.
      */
-    public AcsChatThreadPropertiesUpdatedEventData setEditedByCommunicationIdentifier(
-            CommunicationIdentifierModel editedByCommunicationIdentifier) {
+    public AcsChatThreadPropertiesUpdatedEventData
+        setEditedByCommunicationIdentifier(CommunicationIdentifierModel editedByCommunicationIdentifier) {
         this.editedByCommunicationIdentifier = editedByCommunicationIdentifier;
         return this;
     }
 
     /**
      * Get the editTime property: The time at which the properties of the thread were updated.
-     *
+     * 
      * @return the editTime value.
      */
     public OffsetDateTime getEditTime() {
@@ -73,7 +78,7 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
 
     /**
      * Set the editTime property: The time at which the properties of the thread were updated.
-     *
+     * 
      * @param editTime the editTime value to set.
      * @return the AcsChatThreadPropertiesUpdatedEventData object itself.
      */
@@ -84,7 +89,7 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
 
     /**
      * Get the properties property: The updated thread properties.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, Object> getProperties() {
@@ -93,7 +98,7 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
 
     /**
      * Set the properties property: The updated thread properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the AcsChatThreadPropertiesUpdatedEventData object itself.
      */
@@ -104,7 +109,7 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
 
     /**
      * Get the metadata property: The thread metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> getMetadata() {
@@ -113,7 +118,7 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
 
     /**
      * Set the metadata property: The thread metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the AcsChatThreadPropertiesUpdatedEventData object itself.
      */
@@ -122,31 +127,102 @@ public final class AcsChatThreadPropertiesUpdatedEventData extends AcsChatThread
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatThreadPropertiesUpdatedEventData setCreateTime(OffsetDateTime createTime) {
         super.setCreateTime(createTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatThreadPropertiesUpdatedEventData setVersion(Long version) {
         super.setVersion(version);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatThreadPropertiesUpdatedEventData setTransactionId(String transactionId) {
         super.setTransactionId(transactionId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatThreadPropertiesUpdatedEventData setThreadId(String threadId) {
         super.setThreadId(threadId);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("transactionId", getTransactionId());
+        jsonWriter.writeStringField("threadId", getThreadId());
+        jsonWriter.writeStringField("createTime",
+            getCreateTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getCreateTime()));
+        jsonWriter.writeNumberField("version", getVersion());
+        jsonWriter.writeJsonField("editedByCommunicationIdentifier", this.editedByCommunicationIdentifier);
+        jsonWriter.writeStringField("editTime",
+            this.editTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.editTime));
+        jsonWriter.writeMapField("properties", this.properties, (writer, element) -> writer.writeUntyped(element));
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsChatThreadPropertiesUpdatedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsChatThreadPropertiesUpdatedEventData if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsChatThreadPropertiesUpdatedEventData.
+     */
+    public static AcsChatThreadPropertiesUpdatedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsChatThreadPropertiesUpdatedEventData deserializedAcsChatThreadPropertiesUpdatedEventData
+                = new AcsChatThreadPropertiesUpdatedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("transactionId".equals(fieldName)) {
+                    deserializedAcsChatThreadPropertiesUpdatedEventData.setTransactionId(reader.getString());
+                } else if ("threadId".equals(fieldName)) {
+                    deserializedAcsChatThreadPropertiesUpdatedEventData.setThreadId(reader.getString());
+                } else if ("createTime".equals(fieldName)) {
+                    deserializedAcsChatThreadPropertiesUpdatedEventData.setCreateTime(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                } else if ("version".equals(fieldName)) {
+                    deserializedAcsChatThreadPropertiesUpdatedEventData
+                        .setVersion(reader.getNullable(JsonReader::getLong));
+                } else if ("editedByCommunicationIdentifier".equals(fieldName)) {
+                    deserializedAcsChatThreadPropertiesUpdatedEventData.editedByCommunicationIdentifier
+                        = CommunicationIdentifierModel.fromJson(reader);
+                } else if ("editTime".equals(fieldName)) {
+                    deserializedAcsChatThreadPropertiesUpdatedEventData.editTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("properties".equals(fieldName)) {
+                    Map<String, Object> properties = reader.readMap(reader1 -> reader1.readUntyped());
+                    deserializedAcsChatThreadPropertiesUpdatedEventData.properties = properties;
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsChatThreadPropertiesUpdatedEventData.metadata = metadata;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsChatThreadPropertiesUpdatedEventData;
+        });
     }
 }

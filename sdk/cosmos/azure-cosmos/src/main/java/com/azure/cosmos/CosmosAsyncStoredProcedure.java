@@ -267,8 +267,8 @@ public class CosmosAsyncStoredProcedure {
         String spanName = "replaceStoredProcedure." + cosmosContainer.getId();
         Mono<CosmosStoredProcedureResponse> responseMono = cosmosContainer.getDatabase()
             .getDocClientWrapper()
-            .replaceStoredProcedure(new StoredProcedure(ModelBridgeInternal.toJsonFromJsonSerializable(
-                ModelBridgeInternal.getResource(storedProcedureSettings))),
+            .replaceStoredProcedure(new StoredProcedure(
+                ModelBridgeInternal.getResource(storedProcedureSettings).getPropertyBag()),
                 ModelBridgeInternal.toRequestOptions(options))
             .map(ModelBridgeInternal::createCosmosStoredProcedureResponse)
             .single();

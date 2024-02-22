@@ -84,8 +84,7 @@ final class JsonPatchOperation implements JsonSerializable<JsonPatchOperation> {
 
     @Override
     public int hashCode() {
-        return Objects.hash(op.toString(), from, path,
-            (value == null) ? null : value.getValue());
+        return Objects.hash(op.toString(), from, path, (value == null) ? null : value.getValue());
     }
 
     @Override
@@ -111,23 +110,16 @@ final class JsonPatchOperation implements JsonSerializable<JsonPatchOperation> {
     }
 
     StringBuilder buildString(StringBuilder builder) {
-        builder.append("{\"op\":\"")
-            .append(op.toString())
-            .append("\"");
+        builder.append("{\"op\":\"").append(op.toString()).append("\"");
 
         if (from != null) {
-            builder.append(",\"from\":\"")
-                .append(from)
-                .append("\"");
+            builder.append(",\"from\":\"").append(from).append("\"");
         }
 
-        builder.append(",\"path\":\"")
-            .append(path)
-            .append("\"");
+        builder.append(",\"path\":\"").append(path).append("\"");
 
         if (value.isInitialized()) {
-            builder.append(",\"value\":")
-                .append(value.getValue());
+            builder.append(",\"value\":").append(value.getValue());
         }
 
         return builder.append("}");

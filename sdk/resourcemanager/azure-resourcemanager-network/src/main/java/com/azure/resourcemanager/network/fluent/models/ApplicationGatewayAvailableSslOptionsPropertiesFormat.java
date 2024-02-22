@@ -12,7 +12,9 @@ import com.azure.resourcemanager.network.models.ApplicationGatewaySslProtocol;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of ApplicationGatewayAvailableSslOptions. */
+/**
+ * Properties of ApplicationGatewayAvailableSslOptions.
+ */
 @Fluent
 public final class ApplicationGatewayAvailableSslOptionsPropertiesFormat {
     /*
@@ -39,13 +41,15 @@ public final class ApplicationGatewayAvailableSslOptionsPropertiesFormat {
     @JsonProperty(value = "availableProtocols")
     private List<ApplicationGatewaySslProtocol> availableProtocols;
 
-    /** Creates an instance of ApplicationGatewayAvailableSslOptionsPropertiesFormat class. */
+    /**
+     * Creates an instance of ApplicationGatewayAvailableSslOptionsPropertiesFormat class.
+     */
     public ApplicationGatewayAvailableSslOptionsPropertiesFormat() {
     }
 
     /**
      * Get the predefinedPolicies property: List of available Ssl predefined policy.
-     *
+     * 
      * @return the predefinedPolicies value.
      */
     public List<SubResource> predefinedPolicies() {
@@ -54,19 +58,19 @@ public final class ApplicationGatewayAvailableSslOptionsPropertiesFormat {
 
     /**
      * Set the predefinedPolicies property: List of available Ssl predefined policy.
-     *
+     * 
      * @param predefinedPolicies the predefinedPolicies value to set.
      * @return the ApplicationGatewayAvailableSslOptionsPropertiesFormat object itself.
      */
-    public ApplicationGatewayAvailableSslOptionsPropertiesFormat withPredefinedPolicies(
-        List<SubResource> predefinedPolicies) {
+    public ApplicationGatewayAvailableSslOptionsPropertiesFormat
+        withPredefinedPolicies(List<SubResource> predefinedPolicies) {
         this.predefinedPolicies = predefinedPolicies;
         return this;
     }
 
     /**
      * Get the defaultPolicy property: Name of the Ssl predefined policy applied by default to application gateway.
-     *
+     * 
      * @return the defaultPolicy value.
      */
     public ApplicationGatewaySslPolicyName defaultPolicy() {
@@ -75,19 +79,19 @@ public final class ApplicationGatewayAvailableSslOptionsPropertiesFormat {
 
     /**
      * Set the defaultPolicy property: Name of the Ssl predefined policy applied by default to application gateway.
-     *
+     * 
      * @param defaultPolicy the defaultPolicy value to set.
      * @return the ApplicationGatewayAvailableSslOptionsPropertiesFormat object itself.
      */
-    public ApplicationGatewayAvailableSslOptionsPropertiesFormat withDefaultPolicy(
-        ApplicationGatewaySslPolicyName defaultPolicy) {
+    public ApplicationGatewayAvailableSslOptionsPropertiesFormat
+        withDefaultPolicy(ApplicationGatewaySslPolicyName defaultPolicy) {
         this.defaultPolicy = defaultPolicy;
         return this;
     }
 
     /**
      * Get the availableCipherSuites property: List of available Ssl cipher suites.
-     *
+     * 
      * @return the availableCipherSuites value.
      */
     public List<ApplicationGatewaySslCipherSuite> availableCipherSuites() {
@@ -96,19 +100,19 @@ public final class ApplicationGatewayAvailableSslOptionsPropertiesFormat {
 
     /**
      * Set the availableCipherSuites property: List of available Ssl cipher suites.
-     *
+     * 
      * @param availableCipherSuites the availableCipherSuites value to set.
      * @return the ApplicationGatewayAvailableSslOptionsPropertiesFormat object itself.
      */
-    public ApplicationGatewayAvailableSslOptionsPropertiesFormat withAvailableCipherSuites(
-        List<ApplicationGatewaySslCipherSuite> availableCipherSuites) {
+    public ApplicationGatewayAvailableSslOptionsPropertiesFormat
+        withAvailableCipherSuites(List<ApplicationGatewaySslCipherSuite> availableCipherSuites) {
         this.availableCipherSuites = availableCipherSuites;
         return this;
     }
 
     /**
      * Get the availableProtocols property: List of available Ssl protocols.
-     *
+     * 
      * @return the availableProtocols value.
      */
     public List<ApplicationGatewaySslProtocol> availableProtocols() {
@@ -117,19 +121,19 @@ public final class ApplicationGatewayAvailableSslOptionsPropertiesFormat {
 
     /**
      * Set the availableProtocols property: List of available Ssl protocols.
-     *
+     * 
      * @param availableProtocols the availableProtocols value to set.
      * @return the ApplicationGatewayAvailableSslOptionsPropertiesFormat object itself.
      */
-    public ApplicationGatewayAvailableSslOptionsPropertiesFormat withAvailableProtocols(
-        List<ApplicationGatewaySslProtocol> availableProtocols) {
+    public ApplicationGatewayAvailableSslOptionsPropertiesFormat
+        withAvailableProtocols(List<ApplicationGatewaySslProtocol> availableProtocols) {
         this.availableProtocols = availableProtocols;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

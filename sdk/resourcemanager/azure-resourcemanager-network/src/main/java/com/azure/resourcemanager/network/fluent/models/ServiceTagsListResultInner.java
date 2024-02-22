@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for the ListServiceTags API service call. */
+/**
+ * Response for the ListServiceTags API service call.
+ */
 @Immutable
 public final class ServiceTagsListResultInner {
     /*
@@ -53,13 +55,15 @@ public final class ServiceTagsListResultInner {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ServiceTagsListResultInner class. */
+    /**
+     * Creates an instance of ServiceTagsListResultInner class.
+     */
     public ServiceTagsListResultInner() {
     }
 
     /**
      * Get the name property: The name of the cloud.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -68,7 +72,7 @@ public final class ServiceTagsListResultInner {
 
     /**
      * Get the id property: The ID of the cloud.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -77,7 +81,7 @@ public final class ServiceTagsListResultInner {
 
     /**
      * Get the type property: The azure resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -86,7 +90,7 @@ public final class ServiceTagsListResultInner {
 
     /**
      * Get the changeNumber property: The iteration number.
-     *
+     * 
      * @return the changeNumber value.
      */
     public String changeNumber() {
@@ -95,7 +99,7 @@ public final class ServiceTagsListResultInner {
 
     /**
      * Get the cloud property: The name of the cloud.
-     *
+     * 
      * @return the cloud value.
      */
     public String cloud() {
@@ -104,7 +108,7 @@ public final class ServiceTagsListResultInner {
 
     /**
      * Get the values property: The list of service tag information resources.
-     *
+     * 
      * @return the values value.
      */
     public List<ServiceTagInformationInner> values() {
@@ -113,7 +117,7 @@ public final class ServiceTagsListResultInner {
 
     /**
      * Get the nextLink property: The URL to get next page of service tag information resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -122,7 +126,7 @@ public final class ServiceTagsListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.healthcareapis.fluent.models.FhirServiceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A collection of Fhir services. */
+/**
+ * A collection of Fhir services.
+ */
 @Fluent
 public final class FhirServiceCollection {
     /*
@@ -25,8 +27,14 @@ public final class FhirServiceCollection {
     private List<FhirServiceInner> value;
 
     /**
+     * Creates an instance of FhirServiceCollection class.
+     */
+    public FhirServiceCollection() {
+    }
+
+    /**
      * Get the nextLink property: The link used to get the next page of Fhir Services.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -35,7 +43,7 @@ public final class FhirServiceCollection {
 
     /**
      * Set the nextLink property: The link used to get the next page of Fhir Services.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the FhirServiceCollection object itself.
      */
@@ -46,7 +54,7 @@ public final class FhirServiceCollection {
 
     /**
      * Get the value property: The list of Fhir Services.
-     *
+     * 
      * @return the value value.
      */
     public List<FhirServiceInner> value() {
@@ -55,7 +63,7 @@ public final class FhirServiceCollection {
 
     /**
      * Set the value property: The list of Fhir Services.
-     *
+     * 
      * @param value the value value to set.
      * @return the FhirServiceCollection object itself.
      */
@@ -66,7 +74,7 @@ public final class FhirServiceCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

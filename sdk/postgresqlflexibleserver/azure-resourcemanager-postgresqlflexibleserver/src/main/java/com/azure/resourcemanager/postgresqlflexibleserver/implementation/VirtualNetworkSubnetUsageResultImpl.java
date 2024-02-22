@@ -15,8 +15,7 @@ public final class VirtualNetworkSubnetUsageResultImpl implements VirtualNetwork
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
 
-    VirtualNetworkSubnetUsageResultImpl(
-        VirtualNetworkSubnetUsageResultInner innerObject,
+    VirtualNetworkSubnetUsageResultImpl(VirtualNetworkSubnetUsageResultInner innerObject,
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

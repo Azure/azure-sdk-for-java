@@ -25,23 +25,28 @@ import com.azure.resourcemanager.recoveryservicesbackup.fluent.ValidateOperation
 import com.azure.resourcemanager.recoveryservicesbackup.fluent.models.ValidateOperationsResponseInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ValidateOperationResultsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ValidateOperationResultsClient.
+ */
 public final class ValidateOperationResultsClientImpl implements ValidateOperationResultsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ValidateOperationResultsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final RecoveryServicesBackupClientImpl client;
 
     /**
      * Initializes an instance of ValidateOperationResultsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ValidateOperationResultsClientImpl(RecoveryServicesBackupClientImpl client) {
-        this.service =
-            RestProxy
-                .create(ValidateOperationResultsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ValidateOperationResultsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -52,25 +57,20 @@ public final class ValidateOperationResultsClientImpl implements ValidateOperati
     @Host("{$host}")
     @ServiceInterface(name = "RecoveryServicesBack")
     public interface ValidateOperationResultsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupValidateOperationResults/{operationId}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{vaultName}/backupValidateOperationResults/{operationId}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ValidateOperationsResponseInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("vaultName") String vaultName,
+        Mono<Response<ValidateOperationsResponseInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("vaultName") String vaultName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("operationId") String operationId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("operationId") String operationId,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Fetches the result of a triggered validate operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID which represents the operation whose result needs to be fetched.
@@ -80,13 +80,11 @@ public final class ValidateOperationResultsClientImpl implements ValidateOperati
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ValidateOperationsResponseInner>> getWithResponseAsync(
-        String vaultName, String resourceGroupName, String operationId) {
+    private Mono<Response<ValidateOperationsResponseInner>> getWithResponseAsync(String vaultName,
+        String resourceGroupName, String operationId) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -96,34 +94,22 @@ public final class ValidateOperationResultsClientImpl implements ValidateOperati
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            vaultName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            operationId,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), vaultName,
+                resourceGroupName, this.client.getSubscriptionId(), operationId, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Fetches the result of a triggered validate operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID which represents the operation whose result needs to be fetched.
@@ -134,13 +120,11 @@ public final class ValidateOperationResultsClientImpl implements ValidateOperati
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ValidateOperationsResponseInner>> getWithResponseAsync(
-        String vaultName, String resourceGroupName, String operationId, Context context) {
+    private Mono<Response<ValidateOperationsResponseInner>> getWithResponseAsync(String vaultName,
+        String resourceGroupName, String operationId, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (vaultName == null) {
             return Mono.error(new IllegalArgumentException("Parameter vaultName is required and cannot be null."));
@@ -150,31 +134,21 @@ public final class ValidateOperationResultsClientImpl implements ValidateOperati
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                vaultName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                operationId,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), vaultName, resourceGroupName,
+            this.client.getSubscriptionId(), operationId, accept, context);
     }
 
     /**
      * Fetches the result of a triggered validate operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID which represents the operation whose result needs to be fetched.
@@ -184,15 +158,15 @@ public final class ValidateOperationResultsClientImpl implements ValidateOperati
      * @return the response body on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ValidateOperationsResponseInner> getAsync(
-        String vaultName, String resourceGroupName, String operationId) {
+    private Mono<ValidateOperationsResponseInner> getAsync(String vaultName, String resourceGroupName,
+        String operationId) {
         return getWithResponseAsync(vaultName, resourceGroupName, operationId)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Fetches the result of a triggered validate operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID which represents the operation whose result needs to be fetched.
@@ -203,14 +177,14 @@ public final class ValidateOperationResultsClientImpl implements ValidateOperati
      * @return the response body along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ValidateOperationsResponseInner> getWithResponse(
-        String vaultName, String resourceGroupName, String operationId, Context context) {
+    public Response<ValidateOperationsResponseInner> getWithResponse(String vaultName, String resourceGroupName,
+        String operationId, Context context) {
         return getWithResponseAsync(vaultName, resourceGroupName, operationId, context).block();
     }
 
     /**
      * Fetches the result of a triggered validate operation.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID which represents the operation whose result needs to be fetched.

@@ -13,18 +13,24 @@ import java.util.Collection;
  * 'Http' or 'Https' is specified, a 200 OK response from the specifies URI is required for the probe to be successful.
  */
 public final class ProbeProtocol extends ExpandableStringEnum<ProbeProtocol> {
-    /** Static value Http for ProbeProtocol. */
+    /**
+     * Static value Http for ProbeProtocol.
+     */
     public static final ProbeProtocol HTTP = fromString("Http");
 
-    /** Static value Tcp for ProbeProtocol. */
+    /**
+     * Static value Tcp for ProbeProtocol.
+     */
     public static final ProbeProtocol TCP = fromString("Tcp");
 
-    /** Static value Https for ProbeProtocol. */
+    /**
+     * Static value Https for ProbeProtocol.
+     */
     public static final ProbeProtocol HTTPS = fromString("Https");
 
     /**
      * Creates a new instance of ProbeProtocol value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +39,7 @@ public final class ProbeProtocol extends ExpandableStringEnum<ProbeProtocol> {
 
     /**
      * Creates or finds a ProbeProtocol from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProbeProtocol.
      */
@@ -44,7 +50,7 @@ public final class ProbeProtocol extends ExpandableStringEnum<ProbeProtocol> {
 
     /**
      * Gets known ProbeProtocol values.
-     *
+     * 
      * @return known ProbeProtocol values.
      */
     public static Collection<ProbeProtocol> values() {

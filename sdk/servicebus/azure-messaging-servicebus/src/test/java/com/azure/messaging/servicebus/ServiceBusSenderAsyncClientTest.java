@@ -595,10 +595,10 @@ class ServiceBusSenderAsyncClientTest {
 
         Map<String, Object> attributes1 = measurement1.getAttributes();
         Map<String, Object> attributes2 = measurement2.getAttributes();
-        assertEquals(3, attributes1.size());
-        assertCommonMetricAttributes(attributes1, "ok");
-        assertEquals(3, attributes2.size());
-        assertCommonMetricAttributes(attributes2, "ok");
+        assertEquals(2, attributes1.size());
+        assertCommonMetricAttributes(attributes1, null);
+        assertEquals(2, attributes2.size());
+        assertCommonMetricAttributes(attributes2, null);
     }
 
     @ParameterizedTest
@@ -636,8 +636,8 @@ class ServiceBusSenderAsyncClientTest {
         assertEquals(1, measurement.getValue());
 
         Map<String, Object> attributes = measurement.getAttributes();
-        assertEquals(3, attributes.size());
-        assertCommonMetricAttributes(attributes, "ok");
+        assertEquals(2, attributes.size());
+        assertCommonMetricAttributes(attributes, null);
         assertEquals(span, measurement.getContext());
     }
 
@@ -671,8 +671,8 @@ class ServiceBusSenderAsyncClientTest {
         TestMeasurement<Long> measurement = sentMessagesCounter.getMeasurements().get(0);
         assertEquals(2, measurement.getValue());
 
-        assertEquals(3,  measurement.getAttributes().size());
-        assertCommonMetricAttributes(measurement.getAttributes(), "ok");
+        assertEquals(2,  measurement.getAttributes().size());
+        assertCommonMetricAttributes(measurement.getAttributes(), null);
     }
 
     @ParameterizedTest

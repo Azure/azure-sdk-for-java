@@ -19,54 +19,56 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ReplicationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReplicationsClient.
+ */
 public interface ReplicationsClient {
     /**
      * Lists all the replications for the specified container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list replications for a container registry as paginated response with {@link
-     *     PagedFlux}.
+     * @return the result of a request to list replications for a container registry as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<ReplicationInner> listAsync(String resourceGroupName, String registryName);
 
     /**
      * Lists all the replications for the specified container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list replications for a container registry as paginated response with {@link
-     *     PagedIterable}.
+     * @return the result of a request to list replications for a container registry as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ReplicationInner> list(String resourceGroupName, String registryName);
 
     /**
      * Lists all the replications for the specified container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the result of a request to list replications for a container registry as paginated response with {@link
-     *     PagedIterable}.
+     * @return the result of a request to list replications for a container registry as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<ReplicationInner> list(String resourceGroupName, String registryName, Context context);
 
     /**
      * Gets the properties of the specified replication.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -74,15 +76,15 @@ public interface ReplicationsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified replication along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ReplicationInner>> getWithResponseAsync(
-        String resourceGroupName, String registryName, String replicationName);
+    Mono<Response<ReplicationInner>> getWithResponseAsync(String resourceGroupName, String registryName,
+        String replicationName);
 
     /**
      * Gets the properties of the specified replication.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -96,7 +98,7 @@ public interface ReplicationsClient {
 
     /**
      * Gets the properties of the specified replication.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -107,12 +109,12 @@ public interface ReplicationsClient {
      * @return the properties of the specified replication along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ReplicationInner> getWithResponse(
-        String resourceGroupName, String registryName, String replicationName, Context context);
+    Response<ReplicationInner> getWithResponse(String resourceGroupName, String registryName, String replicationName,
+        Context context);
 
     /**
      * Gets the properties of the specified replication.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -126,7 +128,7 @@ public interface ReplicationsClient {
 
     /**
      * Creates a replication for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -135,15 +137,15 @@ public interface ReplicationsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a replication for a container registry along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String registryName, String replicationName, ReplicationInner replication);
+    Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String registryName,
+        String replicationName, ReplicationInner replication);
 
     /**
      * Creates a replication for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -154,12 +156,12 @@ public interface ReplicationsClient {
      * @return the {@link PollerFlux} for polling of an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ReplicationInner>, ReplicationInner> beginCreateAsync(
-        String resourceGroupName, String registryName, String replicationName, ReplicationInner replication);
+    PollerFlux<PollResult<ReplicationInner>, ReplicationInner> beginCreateAsync(String resourceGroupName,
+        String registryName, String replicationName, ReplicationInner replication);
 
     /**
      * Creates a replication for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -170,12 +172,12 @@ public interface ReplicationsClient {
      * @return the {@link SyncPoller} for polling of an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ReplicationInner>, ReplicationInner> beginCreate(
-        String resourceGroupName, String registryName, String replicationName, ReplicationInner replication);
+    SyncPoller<PollResult<ReplicationInner>, ReplicationInner> beginCreate(String resourceGroupName,
+        String registryName, String replicationName, ReplicationInner replication);
 
     /**
      * Creates a replication for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -187,16 +189,12 @@ public interface ReplicationsClient {
      * @return the {@link SyncPoller} for polling of an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ReplicationInner>, ReplicationInner> beginCreate(
-        String resourceGroupName,
-        String registryName,
-        String replicationName,
-        ReplicationInner replication,
-        Context context);
+    SyncPoller<PollResult<ReplicationInner>, ReplicationInner> beginCreate(String resourceGroupName,
+        String registryName, String replicationName, ReplicationInner replication, Context context);
 
     /**
      * Creates a replication for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -204,16 +202,16 @@ public interface ReplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a replication for a container registry on successful completion of {@link
-     *     Mono}.
+     * @return an object that represents a replication for a container registry on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ReplicationInner> createAsync(
-        String resourceGroupName, String registryName, String replicationName, ReplicationInner replication);
+    Mono<ReplicationInner> createAsync(String resourceGroupName, String registryName, String replicationName,
+        ReplicationInner replication);
 
     /**
      * Creates a replication for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -224,12 +222,12 @@ public interface ReplicationsClient {
      * @return an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationInner create(
-        String resourceGroupName, String registryName, String replicationName, ReplicationInner replication);
+    ReplicationInner create(String resourceGroupName, String registryName, String replicationName,
+        ReplicationInner replication);
 
     /**
      * Creates a replication for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -241,16 +239,12 @@ public interface ReplicationsClient {
      * @return an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationInner create(
-        String resourceGroupName,
-        String registryName,
-        String replicationName,
-        ReplicationInner replication,
-        Context context);
+    ReplicationInner create(String resourceGroupName, String registryName, String replicationName,
+        ReplicationInner replication, Context context);
 
     /**
      * Deletes a replication from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -260,12 +254,12 @@ public interface ReplicationsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String registryName, String replicationName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String registryName,
+        String replicationName);
 
     /**
      * Deletes a replication from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -275,12 +269,12 @@ public interface ReplicationsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String registryName, String replicationName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String registryName,
+        String replicationName);
 
     /**
      * Deletes a replication from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -290,12 +284,12 @@ public interface ReplicationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String registryName, String replicationName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
+        String replicationName);
 
     /**
      * Deletes a replication from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -306,12 +300,12 @@ public interface ReplicationsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String registryName, String replicationName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String registryName,
+        String replicationName, Context context);
 
     /**
      * Deletes a replication from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -325,7 +319,7 @@ public interface ReplicationsClient {
 
     /**
      * Deletes a replication from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -338,7 +332,7 @@ public interface ReplicationsClient {
 
     /**
      * Deletes a replication from a container registry.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -352,7 +346,7 @@ public interface ReplicationsClient {
 
     /**
      * Updates a replication for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -361,18 +355,15 @@ public interface ReplicationsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return an object that represents a replication for a container registry along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String registryName,
-        String replicationName,
-        ReplicationUpdateParameters replicationUpdateParameters);
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String registryName,
+        String replicationName, ReplicationUpdateParameters replicationUpdateParameters);
 
     /**
      * Updates a replication for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -383,15 +374,12 @@ public interface ReplicationsClient {
      * @return the {@link PollerFlux} for polling of an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<ReplicationInner>, ReplicationInner> beginUpdateAsync(
-        String resourceGroupName,
-        String registryName,
-        String replicationName,
-        ReplicationUpdateParameters replicationUpdateParameters);
+    PollerFlux<PollResult<ReplicationInner>, ReplicationInner> beginUpdateAsync(String resourceGroupName,
+        String registryName, String replicationName, ReplicationUpdateParameters replicationUpdateParameters);
 
     /**
      * Updates a replication for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -402,15 +390,12 @@ public interface ReplicationsClient {
      * @return the {@link SyncPoller} for polling of an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ReplicationInner>, ReplicationInner> beginUpdate(
-        String resourceGroupName,
-        String registryName,
-        String replicationName,
-        ReplicationUpdateParameters replicationUpdateParameters);
+    SyncPoller<PollResult<ReplicationInner>, ReplicationInner> beginUpdate(String resourceGroupName,
+        String registryName, String replicationName, ReplicationUpdateParameters replicationUpdateParameters);
 
     /**
      * Updates a replication for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -422,16 +407,13 @@ public interface ReplicationsClient {
      * @return the {@link SyncPoller} for polling of an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<ReplicationInner>, ReplicationInner> beginUpdate(
-        String resourceGroupName,
-        String registryName,
-        String replicationName,
-        ReplicationUpdateParameters replicationUpdateParameters,
+    SyncPoller<PollResult<ReplicationInner>, ReplicationInner> beginUpdate(String resourceGroupName,
+        String registryName, String replicationName, ReplicationUpdateParameters replicationUpdateParameters,
         Context context);
 
     /**
      * Updates a replication for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -439,19 +421,16 @@ public interface ReplicationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an object that represents a replication for a container registry on successful completion of {@link
-     *     Mono}.
+     * @return an object that represents a replication for a container registry on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ReplicationInner> updateAsync(
-        String resourceGroupName,
-        String registryName,
-        String replicationName,
+    Mono<ReplicationInner> updateAsync(String resourceGroupName, String registryName, String replicationName,
         ReplicationUpdateParameters replicationUpdateParameters);
 
     /**
      * Updates a replication for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -462,15 +441,12 @@ public interface ReplicationsClient {
      * @return an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationInner update(
-        String resourceGroupName,
-        String registryName,
-        String replicationName,
+    ReplicationInner update(String resourceGroupName, String registryName, String replicationName,
         ReplicationUpdateParameters replicationUpdateParameters);
 
     /**
      * Updates a replication for a container registry with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param registryName The name of the container registry.
      * @param replicationName The name of the replication.
@@ -482,10 +458,6 @@ public interface ReplicationsClient {
      * @return an object that represents a replication for a container registry.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ReplicationInner update(
-        String resourceGroupName,
-        String registryName,
-        String replicationName,
-        ReplicationUpdateParameters replicationUpdateParameters,
-        Context context);
+    ReplicationInner update(String resourceGroupName, String registryName, String replicationName,
+        ReplicationUpdateParameters replicationUpdateParameters, Context context);
 }

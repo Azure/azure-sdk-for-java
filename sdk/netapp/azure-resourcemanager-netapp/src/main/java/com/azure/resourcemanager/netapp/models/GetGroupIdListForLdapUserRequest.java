@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Get group Id list for LDAP User request. */
+/**
+ * Get group Id list for LDAP User request.
+ */
 @Fluent
 public final class GetGroupIdListForLdapUserRequest {
     /*
@@ -17,13 +19,15 @@ public final class GetGroupIdListForLdapUserRequest {
     @JsonProperty(value = "username", required = true)
     private String username;
 
-    /** Creates an instance of GetGroupIdListForLdapUserRequest class. */
+    /**
+     * Creates an instance of GetGroupIdListForLdapUserRequest class.
+     */
     public GetGroupIdListForLdapUserRequest() {
     }
 
     /**
      * Get the username property: username is required to fetch the group to which user is part of.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -32,7 +36,7 @@ public final class GetGroupIdListForLdapUserRequest {
 
     /**
      * Set the username property: username is required to fetch the group to which user is part of.
-     *
+     * 
      * @param username the username value to set.
      * @return the GetGroupIdListForLdapUserRequest object itself.
      */
@@ -43,15 +47,13 @@ public final class GetGroupIdListForLdapUserRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (username() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property username in model GetGroupIdListForLdapUserRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property username in model GetGroupIdListForLdapUserRequest"));
         }
     }
 

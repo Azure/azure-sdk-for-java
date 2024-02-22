@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.RestorableMongodbResources
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List operation response, that contains the restorable MongoDB resources. */
+/**
+ * The List operation response, that contains the restorable MongoDB resources.
+ */
 @Immutable
 public final class RestorableMongodbResourcesListResult {
     /*
@@ -18,13 +20,15 @@ public final class RestorableMongodbResourcesListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorableMongodbResourcesGetResultInner> value;
 
-    /** Creates an instance of RestorableMongodbResourcesListResult class. */
+    /**
+     * Creates an instance of RestorableMongodbResourcesListResult class.
+     */
     public RestorableMongodbResourcesListResult() {
     }
 
     /**
      * Get the value property: List of restorable MongoDB resources, including the database and collection names.
-     *
+     * 
      * @return the value value.
      */
     public List<RestorableMongodbResourcesGetResultInner> value() {
@@ -33,7 +37,7 @@ public final class RestorableMongodbResourcesListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

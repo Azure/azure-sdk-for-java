@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ComputeNodeIdentityReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ComputeNodeIdentityReference model =
-            BinaryData.fromString("{\"resourceId\":\"esaagdfm\"}").toObject(ComputeNodeIdentityReference.class);
+        ComputeNodeIdentityReference model
+            = BinaryData.fromString("{\"resourceId\":\"esaagdfm\"}").toObject(ComputeNodeIdentityReference.class);
         Assertions.assertEquals("esaagdfm", model.resourceId());
     }
 

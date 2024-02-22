@@ -60,6 +60,8 @@ hybridaks:
   service: hybridcontainerservice
 keyvault:
   suffix: generated
+liftrastronomer:
+  service: astro
 liftrqumulo:
   service: qumulo
 loadtestservice:
@@ -76,6 +78,8 @@ network:
   suffix: generated
 newrelic:
   service: newrelicobservability
+offazurespringboot:
+  service: springappdiscovery
 operationalinsights:
   service: loganalytics
 paloaltonetworks:

@@ -175,7 +175,7 @@ public class ClientTelemetryTest extends TestSuiteBase {
 
         // Verifying above query operation, we should have 4 operation (1 latency, 1 request charge -
         // for both query plan and the actual feed response)
-        assertThat(clientTelemetry.getClientTelemetryInfo().getOperationInfoMap().size()).isEqualTo(4);
+        assertThat(clientTelemetry.getClientTelemetryInfo().getOperationInfoMap().size()).isGreaterThanOrEqualTo(4);
     }
 
     @Test(groups = {"emulator"}, timeOut = TIMEOUT)
@@ -223,10 +223,12 @@ public class ClientTelemetryTest extends TestSuiteBase {
     public void systemInfo(CosmosClient cosmosClient) throws Exception {
         ClientTelemetry clientTelemetry = cosmosClient.asyncClient().getContextClient().getClientTelemetry();
         readClientTelemetry(clientTelemetry);
-        assertThat(clientTelemetry.getClientTelemetryInfo().getSystemInfoMap().size()).isEqualTo(2);
+        assertThat(clientTelemetry.getClientTelemetryInfo().getSystemInfoMap().size()).isGreaterThanOrEqualTo(2);
         for (ReportPayload reportPayload : clientTelemetry.getClientTelemetryInfo().getSystemInfoMap().keySet()) {
             if (reportPayload.getMetricInfo().getMetricsName().equals("CPU")) {
                 assertThat(reportPayload.getMetricInfo().getUnitName()).isEqualTo("Percentage");
+            } else if (reportPayload.getMetricInfo().getMetricsName().equals(ClientTelemetry.TCP_NEW_CHANNEL_LATENCY_NAME)) {
+                assertThat(reportPayload.getMetricInfo().getUnitName()).isEqualTo(ClientTelemetry.TCP_NEW_CHANNEL_LATENCY_UNIT);
             } else {
                 assertThat(reportPayload.getMetricInfo().getMetricsName()).isEqualTo("MemoryRemaining");
                 assertThat(reportPayload.getMetricInfo().getUnitName()).isEqualTo("MB");

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a single user-assigned identity associated with the application. */
+/**
+ * Describes a single user-assigned identity associated with the application.
+ */
 @Fluent
 public final class UserIdentity {
     /*
@@ -22,13 +24,15 @@ public final class UserIdentity {
     @JsonProperty(value = "clientId")
     private String clientId;
 
-    /** Creates an instance of UserIdentity class. */
+    /**
+     * Creates an instance of UserIdentity class.
+     */
     public UserIdentity() {
     }
 
     /**
      * Get the principalId property: the object identifier of the Service Principal which this identity represents.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -37,7 +41,7 @@ public final class UserIdentity {
 
     /**
      * Set the principalId property: the object identifier of the Service Principal which this identity represents.
-     *
+     * 
      * @param principalId the principalId value to set.
      * @return the UserIdentity object itself.
      */
@@ -48,7 +52,7 @@ public final class UserIdentity {
 
     /**
      * Get the clientId property: the client identifier of the Service Principal which this identity represents.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -57,7 +61,7 @@ public final class UserIdentity {
 
     /**
      * Set the clientId property: the client identifier of the Service Principal which this identity represents.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the UserIdentity object itself.
      */
@@ -68,7 +72,7 @@ public final class UserIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

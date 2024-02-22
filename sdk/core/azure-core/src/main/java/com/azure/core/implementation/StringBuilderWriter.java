@@ -3,6 +3,8 @@
 
 package com.azure.core.implementation;
 
+import com.azure.core.util.logging.ClientLogger;
+
 import java.io.IOException;
 import java.io.Writer;
 import java.util.Objects;
@@ -13,6 +15,7 @@ import java.util.Objects;
  * Given the backing store of this {@link Writer} is a {@link StringBuilder} this is not thread-safe.
  */
 public final class StringBuilderWriter extends Writer {
+    private static final ClientLogger LOGGER = new ClientLogger(StringBuilderWriter.class);
     private final StringBuilder builder;
 
     // This can be non-volatile as StringBuilder itself isn't thread-safe.
@@ -100,9 +103,19 @@ public final class StringBuilderWriter extends Writer {
         closed = true;
     }
 
+    /**
+     * Returns the string held in the {@link StringBuilder} backing this {@link Writer}
+     * for consistency with other Writers.
+     * @return builder.toString()
+     */
+    @Override
+    public String toString() {
+        return builder.toString();
+    }
+
     private void ensureOpen() throws IOException {
         if (closed) {
-            throw new IOException("Writer has been closed.");
+            throw LOGGER.logThrowableAsError(new IOException("Writer has been closed."));
         }
     }
 }

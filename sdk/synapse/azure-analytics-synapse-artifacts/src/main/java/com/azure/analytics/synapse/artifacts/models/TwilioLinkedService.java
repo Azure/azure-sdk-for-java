@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Linked service for Twilio. */
+/**
+ * Linked service for Twilio.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Twilio")
 @JsonFlatten
@@ -30,12 +32,15 @@ public class TwilioLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.password", required = true)
     private SecretBase password;
 
-    /** Creates an instance of TwilioLinkedService class. */
-    public TwilioLinkedService() {}
+    /**
+     * Creates an instance of TwilioLinkedService class.
+     */
+    public TwilioLinkedService() {
+    }
 
     /**
      * Get the userName property: The Account SID of Twilio service.
-     *
+     * 
      * @return the userName value.
      */
     public Object getUserName() {
@@ -44,7 +49,7 @@ public class TwilioLinkedService extends LinkedService {
 
     /**
      * Set the userName property: The Account SID of Twilio service.
-     *
+     * 
      * @param userName the userName value to set.
      * @return the TwilioLinkedService object itself.
      */
@@ -55,7 +60,7 @@ public class TwilioLinkedService extends LinkedService {
 
     /**
      * Get the password property: The auth token of Twilio service.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -64,7 +69,7 @@ public class TwilioLinkedService extends LinkedService {
 
     /**
      * Set the password property: The auth token of Twilio service.
-     *
+     * 
      * @param password the password value to set.
      * @return the TwilioLinkedService object itself.
      */
@@ -73,28 +78,36 @@ public class TwilioLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TwilioLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TwilioLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TwilioLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public TwilioLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

@@ -31,7 +31,9 @@ public class VirtualMachinePopularImageTests extends ComputeManagementTest {
         rgName = generateRandomResourceName("rg", 10);
         List<Mono<VirtualMachine>> vmMonos = new ArrayList<>();
         for (KnownWindowsVirtualMachineImage image : Arrays.stream(KnownWindowsVirtualMachineImage.values())
-            .filter(image -> image != KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2019_DATACENTER_WITH_CONTAINERS_GEN2 && image != KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2019_DATACENTER_WITH_CONTAINERS)
+            .filter(image -> image != KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2019_DATACENTER_WITH_CONTAINERS_GEN2
+                && image != KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2019_DATACENTER_WITH_CONTAINERS
+                && image != KnownWindowsVirtualMachineImage.WINDOWS_DESKTOP_10_20H1_PRO)
             .collect(Collectors.toList())) {
             Mono<VirtualMachine> mono = computeManager.virtualMachines()
                 .define(generateRandomResourceName("vm", 10))

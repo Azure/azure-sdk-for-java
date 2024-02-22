@@ -12,12 +12,14 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.batch.fluent.models.ApplicationPackageInner;
 import com.azure.resourcemanager.batch.models.ActivateApplicationPackageParameters;
 
-/** An instance of this class provides access to all the operations defined in ApplicationPackagesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ApplicationPackagesClient.
+ */
 public interface ApplicationPackagesClient {
     /**
      * Activates the specified application package. This should be done after the `ApplicationPackage` was created and
      * uploaded. This needs to be done before an `ApplicationPackage` can be used on Pools or Tasks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param applicationName The name of the application. This must be unique within the account.
@@ -27,22 +29,17 @@ public interface ApplicationPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application package which represents a particular version of an application along with {@link
-     *     Response}.
+     * @return an application package which represents a particular version of an application along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationPackageInner> activateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String applicationName,
-        String versionName,
-        ActivateApplicationPackageParameters parameters,
-        Context context);
+    Response<ApplicationPackageInner> activateWithResponse(String resourceGroupName, String accountName,
+        String applicationName, String versionName, ActivateApplicationPackageParameters parameters, Context context);
 
     /**
      * Activates the specified application package. This should be done after the `ApplicationPackage` was created and
      * uploaded. This needs to be done before an `ApplicationPackage` can be used on Pools or Tasks.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param applicationName The name of the application. This must be unique within the account.
@@ -54,18 +51,14 @@ public interface ApplicationPackagesClient {
      * @return an application package which represents a particular version of an application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationPackageInner activate(
-        String resourceGroupName,
-        String accountName,
-        String applicationName,
-        String versionName,
-        ActivateApplicationPackageParameters parameters);
+    ApplicationPackageInner activate(String resourceGroupName, String accountName, String applicationName,
+        String versionName, ActivateApplicationPackageParameters parameters);
 
     /**
      * Creates an application package record. The record contains a storageUrl where the package should be uploaded to.
      * Once it is uploaded the `ApplicationPackage` needs to be activated using `ApplicationPackageActive` before it can
      * be used. If the auto storage account was configured to use storage keys, the URL returned will contain a SAS.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param applicationName The name of the application. This must be unique within the account.
@@ -75,23 +68,18 @@ public interface ApplicationPackagesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return an application package which represents a particular version of an application along with {@link
-     *     Response}.
+     * @return an application package which represents a particular version of an application along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationPackageInner> createWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String applicationName,
-        String versionName,
-        ApplicationPackageInner parameters,
-        Context context);
+    Response<ApplicationPackageInner> createWithResponse(String resourceGroupName, String accountName,
+        String applicationName, String versionName, ApplicationPackageInner parameters, Context context);
 
     /**
      * Creates an application package record. The record contains a storageUrl where the package should be uploaded to.
      * Once it is uploaded the `ApplicationPackage` needs to be activated using `ApplicationPackageActive` before it can
      * be used. If the auto storage account was configured to use storage keys, the URL returned will contain a SAS.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param applicationName The name of the application. This must be unique within the account.
@@ -102,12 +90,12 @@ public interface ApplicationPackagesClient {
      * @return an application package which represents a particular version of an application.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationPackageInner create(
-        String resourceGroupName, String accountName, String applicationName, String versionName);
+    ApplicationPackageInner create(String resourceGroupName, String accountName, String applicationName,
+        String versionName);
 
     /**
      * Deletes an application package record and its associated binary file.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param applicationName The name of the application. This must be unique within the account.
@@ -119,12 +107,12 @@ public interface ApplicationPackagesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String accountName, String applicationName, String versionName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String accountName, String applicationName,
+        String versionName, Context context);
 
     /**
      * Deletes an application package record and its associated binary file.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param applicationName The name of the application. This must be unique within the account.
@@ -138,7 +126,7 @@ public interface ApplicationPackagesClient {
 
     /**
      * Gets information about the specified application package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param applicationName The name of the application. This must be unique within the account.
@@ -150,12 +138,12 @@ public interface ApplicationPackagesClient {
      * @return information about the specified application package along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ApplicationPackageInner> getWithResponse(
-        String resourceGroupName, String accountName, String applicationName, String versionName, Context context);
+    Response<ApplicationPackageInner> getWithResponse(String resourceGroupName, String accountName,
+        String applicationName, String versionName, Context context);
 
     /**
      * Gets information about the specified application package.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param applicationName The name of the application. This must be unique within the account.
@@ -166,12 +154,12 @@ public interface ApplicationPackagesClient {
      * @return information about the specified application package.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ApplicationPackageInner get(
-        String resourceGroupName, String accountName, String applicationName, String versionName);
+    ApplicationPackageInner get(String resourceGroupName, String accountName, String applicationName,
+        String versionName);
 
     /**
      * Lists all of the application packages in the specified application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param applicationName The name of the application. This must be unique within the account.
@@ -185,7 +173,7 @@ public interface ApplicationPackagesClient {
 
     /**
      * Lists all of the application packages in the specified application.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the Batch account.
      * @param accountName The name of the Batch account.
      * @param applicationName The name of the application. This must be unique within the account.
@@ -197,6 +185,6 @@ public interface ApplicationPackagesClient {
      * @return the result of performing list application packages as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<ApplicationPackageInner> list(
-        String resourceGroupName, String accountName, String applicationName, Integer maxresults, Context context);
+    PagedIterable<ApplicationPackageInner> list(String resourceGroupName, String accountName, String applicationName,
+        Integer maxresults, Context context);
 }

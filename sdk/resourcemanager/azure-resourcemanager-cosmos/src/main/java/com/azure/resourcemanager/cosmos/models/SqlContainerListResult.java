@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.SqlContainerGetResultsInne
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List operation response, that contains the containers and their properties. */
+/**
+ * The List operation response, that contains the containers and their properties.
+ */
 @Immutable
 public final class SqlContainerListResult {
     /*
@@ -18,13 +20,15 @@ public final class SqlContainerListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SqlContainerGetResultsInner> value;
 
-    /** Creates an instance of SqlContainerListResult class. */
+    /**
+     * Creates an instance of SqlContainerListResult class.
+     */
     public SqlContainerListResult() {
     }
 
     /**
      * Get the value property: List of containers and their properties.
-     *
+     * 
      * @return the value value.
      */
     public List<SqlContainerGetResultsInner> value() {
@@ -33,7 +37,7 @@ public final class SqlContainerListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

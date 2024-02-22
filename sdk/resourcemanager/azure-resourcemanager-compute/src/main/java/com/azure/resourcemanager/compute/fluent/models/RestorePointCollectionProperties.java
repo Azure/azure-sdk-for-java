@@ -9,7 +9,9 @@ import com.azure.resourcemanager.compute.models.RestorePointCollectionSourceProp
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The restore point collection properties. */
+/**
+ * The restore point collection properties.
+ */
 @Fluent
 public final class RestorePointCollectionProperties {
     /*
@@ -36,14 +38,16 @@ public final class RestorePointCollectionProperties {
     @JsonProperty(value = "restorePoints", access = JsonProperty.Access.WRITE_ONLY)
     private List<RestorePointInner> restorePoints;
 
-    /** Creates an instance of RestorePointCollectionProperties class. */
+    /**
+     * Creates an instance of RestorePointCollectionProperties class.
+     */
     public RestorePointCollectionProperties() {
     }
 
     /**
      * Get the source property: The properties of the source resource that this restore point collection is created
      * from.
-     *
+     * 
      * @return the source value.
      */
     public RestorePointCollectionSourceProperties source() {
@@ -53,7 +57,7 @@ public final class RestorePointCollectionProperties {
     /**
      * Set the source property: The properties of the source resource that this restore point collection is created
      * from.
-     *
+     * 
      * @param source the source value to set.
      * @return the RestorePointCollectionProperties object itself.
      */
@@ -64,7 +68,7 @@ public final class RestorePointCollectionProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the restore point collection.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -73,7 +77,7 @@ public final class RestorePointCollectionProperties {
 
     /**
      * Get the restorePointCollectionId property: The unique id of the restore point collection.
-     *
+     * 
      * @return the restorePointCollectionId value.
      */
     public String restorePointCollectionId() {
@@ -81,8 +85,9 @@ public final class RestorePointCollectionProperties {
     }
 
     /**
-     * Get the restorePoints property: A list containing all restore points created under this restore point collection.
-     *
+     * Get the restorePoints property: A list containing all restore points created under this restore point
+     * collection.
+     * 
      * @return the restorePoints value.
      */
     public List<RestorePointInner> restorePoints() {
@@ -91,7 +96,7 @@ public final class RestorePointCollectionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

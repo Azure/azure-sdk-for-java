@@ -4,19 +4,21 @@
 
 package com.azure.resourcemanager.healthcareapis.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for IotConnectors Delete. */
+/**
+ * Samples for IotConnectors Delete.
+ */
 public final class IotConnectorsDeleteSamples {
     /*
-     * x-ms-original-file: specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2021-11-01/examples/iotconnectors/iotconnector_Delete.json
+     * x-ms-original-file:
+     * specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2023-11-01/examples/iotconnectors/
+     * iotconnector_Delete.json
      */
     /**
      * Sample code: Delete an IoT Connector.
-     *
+     * 
      * @param manager Entry point to HealthcareApisManager.
      */
     public static void deleteAnIoTConnector(com.azure.resourcemanager.healthcareapis.HealthcareApisManager manager) {
-        manager.iotConnectors().delete("testRG", "blue", "workspace1", Context.NONE);
+        manager.iotConnectors().delete("testRG", "blue", "workspace1", com.azure.core.util.Context.NONE);
     }
 }

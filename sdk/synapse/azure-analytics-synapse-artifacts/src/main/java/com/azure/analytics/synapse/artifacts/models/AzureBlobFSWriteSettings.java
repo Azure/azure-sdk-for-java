@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Azure blobFS write settings. */
+/**
+ * Azure blobFS write settings.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureBlobFSWriteSettings")
 @Fluent
@@ -20,13 +22,16 @@ public final class AzureBlobFSWriteSettings extends StoreWriteSettings {
     @JsonProperty(value = "blockSizeInMB")
     private Object blockSizeInMB;
 
-    /** Creates an instance of AzureBlobFSWriteSettings class. */
-    public AzureBlobFSWriteSettings() {}
+    /**
+     * Creates an instance of AzureBlobFSWriteSettings class.
+     */
+    public AzureBlobFSWriteSettings() {
+    }
 
     /**
      * Get the blockSizeInMB property: Indicates the block size(MB) when writing data to blob. Type: integer (or
      * Expression with resultType integer).
-     *
+     * 
      * @return the blockSizeInMB value.
      */
     public Object getBlockSizeInMB() {
@@ -36,7 +41,7 @@ public final class AzureBlobFSWriteSettings extends StoreWriteSettings {
     /**
      * Set the blockSizeInMB property: Indicates the block size(MB) when writing data to blob. Type: integer (or
      * Expression with resultType integer).
-     *
+     * 
      * @param blockSizeInMB the blockSizeInMB value to set.
      * @return the AzureBlobFSWriteSettings object itself.
      */
@@ -45,14 +50,18 @@ public final class AzureBlobFSWriteSettings extends StoreWriteSettings {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobFSWriteSettings setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobFSWriteSettings setCopyBehavior(Object copyBehavior) {
         super.setCopyBehavior(copyBehavior);

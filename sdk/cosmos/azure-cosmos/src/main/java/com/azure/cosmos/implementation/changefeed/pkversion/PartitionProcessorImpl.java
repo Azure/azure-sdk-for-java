@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.changefeed.pkversion;
 
 import com.azure.cosmos.CosmosException;
+import com.azure.cosmos.ThroughputControlGroupConfig;
 import com.azure.cosmos.implementation.CosmosSchedulers;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
@@ -55,16 +56,18 @@ class PartitionProcessorImpl implements PartitionProcessor {
 
     private volatile String lastServerContinuationToken;
     private volatile boolean hasMoreResults;
+    private final FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager;
 
     public PartitionProcessorImpl(ChangeFeedObserver<JsonNode> observer,
                                   ChangeFeedContextClient documentClient,
                                   ProcessorSettings settings,
-                                  PartitionCheckpointer checkpointer,
-                                  Lease lease) {
+                                  PartitionCheckpointer checkPointer,
+                                  Lease lease,
+                                  FeedRangeThroughputControlConfigManager feedRangeThroughputControlConfigManager) {
         this.observer = observer;
         this.documentClient = documentClient;
         this.settings = settings;
-        this.checkpointer = checkpointer;
+        this.checkpointer = checkPointer;
         this.lease = lease;
 
         ChangeFeedState state = settings.getStartState();
@@ -76,6 +79,7 @@ class PartitionProcessorImpl implements PartitionProcessor {
                 this.options,
                 HttpConstants.HttpHeaders.SDK_SUPPORTED_CAPABILITIES,
                 String.valueOf(HttpConstants.SDKSupportedCapabilities.SUPPORTED_CAPABILITIES_NONE));
+        this.feedRangeThroughputControlConfigManager = feedRangeThroughputControlConfigManager;
     }
 
     @Override
@@ -83,6 +87,12 @@ class PartitionProcessorImpl implements PartitionProcessor {
         logger.info("Partition {}: processing task started with owner {}.", this.lease.getLeaseToken(), this.lease.getOwner());
         this.hasMoreResults = true;
         this.checkpointer.setCancellationToken(cancellationToken);
+
+        // We only calculate/get the throughput control group config for the feed range at the beginning
+        // Only split/merge will impact the leases <-> partitionKeyRange mapping
+        // When split/merge happens, the processor for the current lease will be closed
+        // and a new processor will be created during load balancing stage
+        ThroughputControlGroupConfig throughputControlGroupConfigForFeedRange = this.tryGetThroughputControlConfigForFeedRange(this.lease);
 
         return Flux.just(this)
             .flatMap( value -> {
@@ -103,12 +113,16 @@ class PartitionProcessorImpl implements PartitionProcessor {
                         Instant currentTime = Instant.now();
                         return !cancellationToken.isCancellationRequested() && currentTime.isBefore(stopTimer);
                     }).last();
-
             })
-            .flatMap(value -> this.documentClient.createDocumentChangeFeedQuery(this.settings.getCollectionSelfLink(),
-                                                                                this.options, JsonNode.class)
-                .limitRequest(1)
-            )
+            .flatMap(value -> {
+                if (throughputControlGroupConfigForFeedRange != null) {
+                    this.options.setThroughputControlGroupName(throughputControlGroupConfigForFeedRange.getGroupName());
+                }
+                return this.documentClient.createDocumentChangeFeedQuery(
+                    this.settings.getCollectionSelfLink(),
+                    this.options,
+                    JsonNode.class).limitRequest(1);
+            })
             .flatMap(documentFeedResponse -> {
                 if (cancellationToken.isCancellationRequested()) return Flux.error(new TaskCancelledException());
 
@@ -263,6 +277,14 @@ class PartitionProcessorImpl implements PartitionProcessor {
             "FeedRange must be a PkRangeId FeedRange when using Lease V1 contract.");
 
         return (FeedRangePartitionKeyRangeImpl)feedRange;
+    }
+
+    private ThroughputControlGroupConfig tryGetThroughputControlConfigForFeedRange(Lease lease) {
+        if (this.feedRangeThroughputControlConfigManager == null) {
+            return null;
+        }
+
+        return this.feedRangeThroughputControlConfigManager.getThroughputControlConfigForFeedRange(lease.getFeedRange());
     }
 
     @Override

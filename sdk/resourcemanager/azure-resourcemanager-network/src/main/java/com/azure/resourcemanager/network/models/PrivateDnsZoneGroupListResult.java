@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.PrivateDnsZoneGroupInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for the ListPrivateDnsZoneGroups API service call. */
+/**
+ * Response for the ListPrivateDnsZoneGroups API service call.
+ */
 @Fluent
 public final class PrivateDnsZoneGroupListResult {
     /*
@@ -24,13 +26,15 @@ public final class PrivateDnsZoneGroupListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of PrivateDnsZoneGroupListResult class. */
+    /**
+     * Creates an instance of PrivateDnsZoneGroupListResult class.
+     */
     public PrivateDnsZoneGroupListResult() {
     }
 
     /**
      * Get the value property: A list of private dns zone group resources in a private endpoint.
-     *
+     * 
      * @return the value value.
      */
     public List<PrivateDnsZoneGroupInner> value() {
@@ -39,7 +43,7 @@ public final class PrivateDnsZoneGroupListResult {
 
     /**
      * Set the value property: A list of private dns zone group resources in a private endpoint.
-     *
+     * 
      * @param value the value value to set.
      * @return the PrivateDnsZoneGroupListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class PrivateDnsZoneGroupListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class PrivateDnsZoneGroupListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

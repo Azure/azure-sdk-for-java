@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Tier of Firewall Policy. */
+/**
+ * Tier of Firewall Policy.
+ */
 public final class FirewallPolicySkuTier extends ExpandableStringEnum<FirewallPolicySkuTier> {
-    /** Static value Standard for FirewallPolicySkuTier. */
+    /**
+     * Static value Standard for FirewallPolicySkuTier.
+     */
     public static final FirewallPolicySkuTier STANDARD = fromString("Standard");
 
-    /** Static value Premium for FirewallPolicySkuTier. */
+    /**
+     * Static value Premium for FirewallPolicySkuTier.
+     */
     public static final FirewallPolicySkuTier PREMIUM = fromString("Premium");
 
-    /** Static value Basic for FirewallPolicySkuTier. */
+    /**
+     * Static value Basic for FirewallPolicySkuTier.
+     */
     public static final FirewallPolicySkuTier BASIC = fromString("Basic");
 
     /**
      * Creates a new instance of FirewallPolicySkuTier value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class FirewallPolicySkuTier extends ExpandableStringEnum<FirewallPo
 
     /**
      * Creates or finds a FirewallPolicySkuTier from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FirewallPolicySkuTier.
      */
@@ -41,7 +49,7 @@ public final class FirewallPolicySkuTier extends ExpandableStringEnum<FirewallPo
 
     /**
      * Gets known FirewallPolicySkuTier values.
-     *
+     * 
      * @return known FirewallPolicySkuTier values.
      */
     public static Collection<FirewallPolicySkuTier> values() {

@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.compute.fluent.models.CloudServiceRoleInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in CloudServiceRolesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in CloudServiceRolesClient.
+ */
 public interface CloudServiceRolesClient {
     /**
      * Gets a role from a cloud service.
-     *
+     * 
      * @param roleName Name of the role.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -27,12 +29,12 @@ public interface CloudServiceRolesClient {
      * @return a role from a cloud service along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<CloudServiceRoleInner>> getWithResponseAsync(
-        String roleName, String resourceGroupName, String cloudServiceName);
+    Mono<Response<CloudServiceRoleInner>> getWithResponseAsync(String roleName, String resourceGroupName,
+        String cloudServiceName);
 
     /**
      * Gets a role from a cloud service.
-     *
+     * 
      * @param roleName Name of the role.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -46,7 +48,7 @@ public interface CloudServiceRolesClient {
 
     /**
      * Gets a role from a cloud service.
-     *
+     * 
      * @param roleName Name of the role.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -57,12 +59,12 @@ public interface CloudServiceRolesClient {
      * @return a role from a cloud service along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<CloudServiceRoleInner> getWithResponse(
-        String roleName, String resourceGroupName, String cloudServiceName, Context context);
+    Response<CloudServiceRoleInner> getWithResponse(String roleName, String resourceGroupName, String cloudServiceName,
+        Context context);
 
     /**
      * Gets a role from a cloud service.
-     *
+     * 
      * @param roleName Name of the role.
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
@@ -77,7 +79,7 @@ public interface CloudServiceRolesClient {
     /**
      * Gets a list of all roles in a cloud service. Use nextLink property in the response to get the next page of roles.
      * Do this till nextLink is null to fetch all the roles.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -91,7 +93,7 @@ public interface CloudServiceRolesClient {
     /**
      * Gets a list of all roles in a cloud service. Use nextLink property in the response to get the next page of roles.
      * Do this till nextLink is null to fetch all the roles.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -105,7 +107,7 @@ public interface CloudServiceRolesClient {
     /**
      * Gets a list of all roles in a cloud service. Use nextLink property in the response to get the next page of roles.
      * Do this till nextLink is null to fetch all the roles.
-     *
+     * 
      * @param resourceGroupName Name of the resource group.
      * @param cloudServiceName Name of the cloud service.
      * @param context The context to associate with this operation.

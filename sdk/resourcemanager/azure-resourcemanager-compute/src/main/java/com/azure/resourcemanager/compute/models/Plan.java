@@ -40,13 +40,15 @@ public final class Plan {
     @JsonProperty(value = "promotionCode")
     private String promotionCode;
 
-    /** Creates an instance of Plan class. */
+    /**
+     * Creates an instance of Plan class.
+     */
     public Plan() {
     }
 
     /**
      * Get the name property: The plan ID.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -55,7 +57,7 @@ public final class Plan {
 
     /**
      * Set the name property: The plan ID.
-     *
+     * 
      * @param name the name value to set.
      * @return the Plan object itself.
      */
@@ -66,7 +68,7 @@ public final class Plan {
 
     /**
      * Get the publisher property: The publisher ID.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -75,7 +77,7 @@ public final class Plan {
 
     /**
      * Set the publisher property: The publisher ID.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the Plan object itself.
      */
@@ -87,7 +89,7 @@ public final class Plan {
     /**
      * Get the product property: Specifies the product of the image from the marketplace. This is the same value as
      * Offer under the imageReference element.
-     *
+     * 
      * @return the product value.
      */
     public String product() {
@@ -97,7 +99,7 @@ public final class Plan {
     /**
      * Set the product property: Specifies the product of the image from the marketplace. This is the same value as
      * Offer under the imageReference element.
-     *
+     * 
      * @param product the product value to set.
      * @return the Plan object itself.
      */
@@ -108,7 +110,7 @@ public final class Plan {
 
     /**
      * Get the promotionCode property: The promotion code.
-     *
+     * 
      * @return the promotionCode value.
      */
     public String promotionCode() {
@@ -117,7 +119,7 @@ public final class Plan {
 
     /**
      * Set the promotionCode property: The promotion code.
-     *
+     * 
      * @param promotionCode the promotionCode value to set.
      * @return the Plan object itself.
      */
@@ -128,7 +130,7 @@ public final class Plan {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

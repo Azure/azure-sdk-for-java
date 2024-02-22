@@ -34,22 +34,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SolutionOperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SolutionOperationsClient.
+ */
 public final class SolutionOperationsClientImpl implements SolutionOperationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final SolutionOperationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final HelpRPImpl client;
 
     /**
      * Initializes an instance of SolutionOperationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     SolutionOperationsClientImpl(HelpRPImpl client) {
-        this.service =
-            RestProxy.create(SolutionOperationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(SolutionOperationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -60,60 +66,56 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
     @Host("{$host}")
     @ServiceInterface(name = "HelpRPSolutionOperat")
     public interface SolutionOperationsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/{scope}/providers/Microsoft.Help/solutions/{solutionResourceName}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("solutionResourceName") String solutionResourceName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SolutionResourceInner solutionRequestBody,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/{scope}/providers/Microsoft.Help/solutions/{solutionResourceName}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SolutionResourceInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<SolutionResourceInner>> get(@HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("solutionResourceName") String solutionResourceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Patch("/{scope}/providers/Microsoft.Help/solutions/{solutionResourceName}")
-        @ExpectedResponses({200, 202})
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam(value = "scope", encoded = true) String scope,
             @PathParam("solutionResourceName") String solutionResourceName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") SolutionPatchRequestBody solutionPatchRequestBody,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * Creates a solution for the specific Azure resource or subscription using the triggering criteria ‘solutionId and
-     * requiredInputs’ from discovery solutions.&lt;br/&gt; Solutions are a rich, insightful and a centralized self help
-     * experience that brings all the relevant content to troubleshoot an Azure issue into a unified experience.
-     * Solutions include the following components : Text, Diagnostics , Troubleshooters, Images , Video tutorials,
-     * Tables , custom charts, images , AzureKB, etc, with capabilities to support new solutions types in the future.
-     * Each solution type may require one or more ‘requiredParameters’ that are required to execute the individual
-     * solution component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
+     * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
+     * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
+     * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
+     * troubleshooting issues. These solutions encompass (1.) dynamic and context-aware diagnostics, guided
+     * troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
+     * diagrams and images, and (3.) thoughtfully assembled textual troubleshooting instructions. All these components
+     * are seamlessly converged into unified solutions tailored to address a specific support problem area. Each
+     * solution type may require one or more ‘requiredParameters’ that are required to execute the individual solution
+     * component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
      * execution, and you might see an empty response. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:&lt;/b&gt; &lt;br/&gt;1.
      * ‘requiredInputs’ from Discovery solutions response must be passed via ‘parameters’ in the request body of
      * Solutions API. &lt;br/&gt;2. ‘requiredParameters’ from the Solutions response is the same as ‘
      * additionalParameters’ in the request for diagnostics &lt;br/&gt;3. ‘requiredParameters’ from the Solutions
      * response is the same as ‘properties.parameters’ in the request for Troubleshooters.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @param solutionRequestBody The required request body for this solution resource creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -122,13 +124,11 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * @return solution response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String scope, String solutionResourceName, SolutionResourceInner solutionRequestBody) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String scope, String solutionResourceName,
+        SolutionResourceInner solutionRequestBody) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -142,35 +142,29 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            scope,
-                            solutionResourceName,
-                            this.client.getApiVersion(),
-                            solutionRequestBody,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), scope, solutionResourceName,
+                this.client.getApiVersion(), solutionRequestBody, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
-     * Creates a solution for the specific Azure resource or subscription using the triggering criteria ‘solutionId and
-     * requiredInputs’ from discovery solutions.&lt;br/&gt; Solutions are a rich, insightful and a centralized self help
-     * experience that brings all the relevant content to troubleshoot an Azure issue into a unified experience.
-     * Solutions include the following components : Text, Diagnostics , Troubleshooters, Images , Video tutorials,
-     * Tables , custom charts, images , AzureKB, etc, with capabilities to support new solutions types in the future.
-     * Each solution type may require one or more ‘requiredParameters’ that are required to execute the individual
-     * solution component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
+     * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
+     * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
+     * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
+     * troubleshooting issues. These solutions encompass (1.) dynamic and context-aware diagnostics, guided
+     * troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
+     * diagrams and images, and (3.) thoughtfully assembled textual troubleshooting instructions. All these components
+     * are seamlessly converged into unified solutions tailored to address a specific support problem area. Each
+     * solution type may require one or more ‘requiredParameters’ that are required to execute the individual solution
+     * component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
      * execution, and you might see an empty response. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:&lt;/b&gt; &lt;br/&gt;1.
      * ‘requiredInputs’ from Discovery solutions response must be passed via ‘parameters’ in the request body of
      * Solutions API. &lt;br/&gt;2. ‘requiredParameters’ from the Solutions response is the same as ‘
      * additionalParameters’ in the request for diagnostics &lt;br/&gt;3. ‘requiredParameters’ from the Solutions
      * response is the same as ‘properties.parameters’ in the request for Troubleshooters.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @param solutionRequestBody The required request body for this solution resource creation.
      * @param context The context to associate with this operation.
@@ -180,13 +174,11 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * @return solution response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String scope, String solutionResourceName, SolutionResourceInner solutionRequestBody, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String scope, String solutionResourceName,
+        SolutionResourceInner solutionRequestBody, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -200,32 +192,28 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                scope,
-                solutionResourceName,
-                this.client.getApiVersion(),
-                solutionRequestBody,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), scope, solutionResourceName, this.client.getApiVersion(),
+            solutionRequestBody, accept, context);
     }
 
     /**
-     * Creates a solution for the specific Azure resource or subscription using the triggering criteria ‘solutionId and
-     * requiredInputs’ from discovery solutions.&lt;br/&gt; Solutions are a rich, insightful and a centralized self help
-     * experience that brings all the relevant content to troubleshoot an Azure issue into a unified experience.
-     * Solutions include the following components : Text, Diagnostics , Troubleshooters, Images , Video tutorials,
-     * Tables , custom charts, images , AzureKB, etc, with capabilities to support new solutions types in the future.
-     * Each solution type may require one or more ‘requiredParameters’ that are required to execute the individual
-     * solution component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
+     * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
+     * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
+     * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
+     * troubleshooting issues. These solutions encompass (1.) dynamic and context-aware diagnostics, guided
+     * troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
+     * diagrams and images, and (3.) thoughtfully assembled textual troubleshooting instructions. All these components
+     * are seamlessly converged into unified solutions tailored to address a specific support problem area. Each
+     * solution type may require one or more ‘requiredParameters’ that are required to execute the individual solution
+     * component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
      * execution, and you might see an empty response. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:&lt;/b&gt; &lt;br/&gt;1.
      * ‘requiredInputs’ from Discovery solutions response must be passed via ‘parameters’ in the request body of
      * Solutions API. &lt;br/&gt;2. ‘requiredParameters’ from the Solutions response is the same as ‘
      * additionalParameters’ in the request for diagnostics &lt;br/&gt;3. ‘requiredParameters’ from the Solutions
      * response is the same as ‘properties.parameters’ in the request for Troubleshooters.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @param solutionRequestBody The required request body for this solution resource creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -234,35 +222,33 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * @return the {@link PollerFlux} for polling of solution response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SolutionResourceInner>, SolutionResourceInner> beginCreateAsync(
-        String scope, String solutionResourceName, SolutionResourceInner solutionRequestBody) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(scope, solutionResourceName, solutionRequestBody);
-        return this
-            .client
-            .<SolutionResourceInner, SolutionResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SolutionResourceInner.class,
-                SolutionResourceInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<SolutionResourceInner>, SolutionResourceInner> beginCreateAsync(String scope,
+        String solutionResourceName, SolutionResourceInner solutionRequestBody) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(scope, solutionResourceName, solutionRequestBody);
+        return this.client.<SolutionResourceInner, SolutionResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SolutionResourceInner.class, SolutionResourceInner.class,
+            this.client.getContext());
     }
 
     /**
-     * Creates a solution for the specific Azure resource or subscription using the triggering criteria ‘solutionId and
-     * requiredInputs’ from discovery solutions.&lt;br/&gt; Solutions are a rich, insightful and a centralized self help
-     * experience that brings all the relevant content to troubleshoot an Azure issue into a unified experience.
-     * Solutions include the following components : Text, Diagnostics , Troubleshooters, Images , Video tutorials,
-     * Tables , custom charts, images , AzureKB, etc, with capabilities to support new solutions types in the future.
-     * Each solution type may require one or more ‘requiredParameters’ that are required to execute the individual
-     * solution component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
+     * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
+     * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
+     * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
+     * troubleshooting issues. These solutions encompass (1.) dynamic and context-aware diagnostics, guided
+     * troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
+     * diagrams and images, and (3.) thoughtfully assembled textual troubleshooting instructions. All these components
+     * are seamlessly converged into unified solutions tailored to address a specific support problem area. Each
+     * solution type may require one or more ‘requiredParameters’ that are required to execute the individual solution
+     * component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
      * execution, and you might see an empty response. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:&lt;/b&gt; &lt;br/&gt;1.
      * ‘requiredInputs’ from Discovery solutions response must be passed via ‘parameters’ in the request body of
      * Solutions API. &lt;br/&gt;2. ‘requiredParameters’ from the Solutions response is the same as ‘
      * additionalParameters’ in the request for diagnostics &lt;br/&gt;3. ‘requiredParameters’ from the Solutions
      * response is the same as ‘properties.parameters’ in the request for Troubleshooters.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -270,36 +256,34 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * @return the {@link PollerFlux} for polling of solution response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SolutionResourceInner>, SolutionResourceInner> beginCreateAsync(
-        String scope, String solutionResourceName) {
+    private PollerFlux<PollResult<SolutionResourceInner>, SolutionResourceInner> beginCreateAsync(String scope,
+        String solutionResourceName) {
         final SolutionResourceInner solutionRequestBody = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(scope, solutionResourceName, solutionRequestBody);
-        return this
-            .client
-            .<SolutionResourceInner, SolutionResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SolutionResourceInner.class,
-                SolutionResourceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(scope, solutionResourceName, solutionRequestBody);
+        return this.client.<SolutionResourceInner, SolutionResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SolutionResourceInner.class, SolutionResourceInner.class,
+            this.client.getContext());
     }
 
     /**
-     * Creates a solution for the specific Azure resource or subscription using the triggering criteria ‘solutionId and
-     * requiredInputs’ from discovery solutions.&lt;br/&gt; Solutions are a rich, insightful and a centralized self help
-     * experience that brings all the relevant content to troubleshoot an Azure issue into a unified experience.
-     * Solutions include the following components : Text, Diagnostics , Troubleshooters, Images , Video tutorials,
-     * Tables , custom charts, images , AzureKB, etc, with capabilities to support new solutions types in the future.
-     * Each solution type may require one or more ‘requiredParameters’ that are required to execute the individual
-     * solution component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
+     * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
+     * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
+     * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
+     * troubleshooting issues. These solutions encompass (1.) dynamic and context-aware diagnostics, guided
+     * troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
+     * diagrams and images, and (3.) thoughtfully assembled textual troubleshooting instructions. All these components
+     * are seamlessly converged into unified solutions tailored to address a specific support problem area. Each
+     * solution type may require one or more ‘requiredParameters’ that are required to execute the individual solution
+     * component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
      * execution, and you might see an empty response. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:&lt;/b&gt; &lt;br/&gt;1.
      * ‘requiredInputs’ from Discovery solutions response must be passed via ‘parameters’ in the request body of
      * Solutions API. &lt;br/&gt;2. ‘requiredParameters’ from the Solutions response is the same as ‘
      * additionalParameters’ in the request for diagnostics &lt;br/&gt;3. ‘requiredParameters’ from the Solutions
      * response is the same as ‘properties.parameters’ in the request for Troubleshooters.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @param solutionRequestBody The required request body for this solution resource creation.
      * @param context The context to associate with this operation.
@@ -309,32 +293,33 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * @return the {@link PollerFlux} for polling of solution response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SolutionResourceInner>, SolutionResourceInner> beginCreateAsync(
-        String scope, String solutionResourceName, SolutionResourceInner solutionRequestBody, Context context) {
+    private PollerFlux<PollResult<SolutionResourceInner>, SolutionResourceInner> beginCreateAsync(String scope,
+        String solutionResourceName, SolutionResourceInner solutionRequestBody, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(scope, solutionResourceName, solutionRequestBody, context);
-        return this
-            .client
-            .<SolutionResourceInner, SolutionResourceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SolutionResourceInner.class, SolutionResourceInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(scope, solutionResourceName, solutionRequestBody, context);
+        return this.client.<SolutionResourceInner, SolutionResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SolutionResourceInner.class, SolutionResourceInner.class, context);
     }
 
     /**
-     * Creates a solution for the specific Azure resource or subscription using the triggering criteria ‘solutionId and
-     * requiredInputs’ from discovery solutions.&lt;br/&gt; Solutions are a rich, insightful and a centralized self help
-     * experience that brings all the relevant content to troubleshoot an Azure issue into a unified experience.
-     * Solutions include the following components : Text, Diagnostics , Troubleshooters, Images , Video tutorials,
-     * Tables , custom charts, images , AzureKB, etc, with capabilities to support new solutions types in the future.
-     * Each solution type may require one or more ‘requiredParameters’ that are required to execute the individual
-     * solution component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
+     * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
+     * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
+     * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
+     * troubleshooting issues. These solutions encompass (1.) dynamic and context-aware diagnostics, guided
+     * troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
+     * diagrams and images, and (3.) thoughtfully assembled textual troubleshooting instructions. All these components
+     * are seamlessly converged into unified solutions tailored to address a specific support problem area. Each
+     * solution type may require one or more ‘requiredParameters’ that are required to execute the individual solution
+     * component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
      * execution, and you might see an empty response. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:&lt;/b&gt; &lt;br/&gt;1.
      * ‘requiredInputs’ from Discovery solutions response must be passed via ‘parameters’ in the request body of
      * Solutions API. &lt;br/&gt;2. ‘requiredParameters’ from the Solutions response is the same as ‘
      * additionalParameters’ in the request for diagnostics &lt;br/&gt;3. ‘requiredParameters’ from the Solutions
      * response is the same as ‘properties.parameters’ in the request for Troubleshooters.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -342,27 +327,30 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * @return the {@link SyncPoller} for polling of solution response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SolutionResourceInner>, SolutionResourceInner> beginCreate(
-        String scope, String solutionResourceName) {
+    public SyncPoller<PollResult<SolutionResourceInner>, SolutionResourceInner> beginCreate(String scope,
+        String solutionResourceName) {
         final SolutionResourceInner solutionRequestBody = null;
         return this.beginCreateAsync(scope, solutionResourceName, solutionRequestBody).getSyncPoller();
     }
 
     /**
-     * Creates a solution for the specific Azure resource or subscription using the triggering criteria ‘solutionId and
-     * requiredInputs’ from discovery solutions.&lt;br/&gt; Solutions are a rich, insightful and a centralized self help
-     * experience that brings all the relevant content to troubleshoot an Azure issue into a unified experience.
-     * Solutions include the following components : Text, Diagnostics , Troubleshooters, Images , Video tutorials,
-     * Tables , custom charts, images , AzureKB, etc, with capabilities to support new solutions types in the future.
-     * Each solution type may require one or more ‘requiredParameters’ that are required to execute the individual
-     * solution component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
+     * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
+     * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
+     * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
+     * troubleshooting issues. These solutions encompass (1.) dynamic and context-aware diagnostics, guided
+     * troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
+     * diagrams and images, and (3.) thoughtfully assembled textual troubleshooting instructions. All these components
+     * are seamlessly converged into unified solutions tailored to address a specific support problem area. Each
+     * solution type may require one or more ‘requiredParameters’ that are required to execute the individual solution
+     * component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
      * execution, and you might see an empty response. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:&lt;/b&gt; &lt;br/&gt;1.
      * ‘requiredInputs’ from Discovery solutions response must be passed via ‘parameters’ in the request body of
      * Solutions API. &lt;br/&gt;2. ‘requiredParameters’ from the Solutions response is the same as ‘
      * additionalParameters’ in the request for diagnostics &lt;br/&gt;3. ‘requiredParameters’ from the Solutions
      * response is the same as ‘properties.parameters’ in the request for Troubleshooters.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @param solutionRequestBody The required request body for this solution resource creation.
      * @param context The context to associate with this operation.
@@ -372,26 +360,29 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * @return the {@link SyncPoller} for polling of solution response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SolutionResourceInner>, SolutionResourceInner> beginCreate(
-        String scope, String solutionResourceName, SolutionResourceInner solutionRequestBody, Context context) {
+    public SyncPoller<PollResult<SolutionResourceInner>, SolutionResourceInner> beginCreate(String scope,
+        String solutionResourceName, SolutionResourceInner solutionRequestBody, Context context) {
         return this.beginCreateAsync(scope, solutionResourceName, solutionRequestBody, context).getSyncPoller();
     }
 
     /**
-     * Creates a solution for the specific Azure resource or subscription using the triggering criteria ‘solutionId and
-     * requiredInputs’ from discovery solutions.&lt;br/&gt; Solutions are a rich, insightful and a centralized self help
-     * experience that brings all the relevant content to troubleshoot an Azure issue into a unified experience.
-     * Solutions include the following components : Text, Diagnostics , Troubleshooters, Images , Video tutorials,
-     * Tables , custom charts, images , AzureKB, etc, with capabilities to support new solutions types in the future.
-     * Each solution type may require one or more ‘requiredParameters’ that are required to execute the individual
-     * solution component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
+     * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
+     * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
+     * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
+     * troubleshooting issues. These solutions encompass (1.) dynamic and context-aware diagnostics, guided
+     * troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
+     * diagrams and images, and (3.) thoughtfully assembled textual troubleshooting instructions. All these components
+     * are seamlessly converged into unified solutions tailored to address a specific support problem area. Each
+     * solution type may require one or more ‘requiredParameters’ that are required to execute the individual solution
+     * component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
      * execution, and you might see an empty response. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:&lt;/b&gt; &lt;br/&gt;1.
      * ‘requiredInputs’ from Discovery solutions response must be passed via ‘parameters’ in the request body of
      * Solutions API. &lt;br/&gt;2. ‘requiredParameters’ from the Solutions response is the same as ‘
      * additionalParameters’ in the request for diagnostics &lt;br/&gt;3. ‘requiredParameters’ from the Solutions
      * response is the same as ‘properties.parameters’ in the request for Troubleshooters.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @param solutionRequestBody The required request body for this solution resource creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -400,28 +391,30 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * @return solution response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SolutionResourceInner> createAsync(
-        String scope, String solutionResourceName, SolutionResourceInner solutionRequestBody) {
-        return beginCreateAsync(scope, solutionResourceName, solutionRequestBody)
-            .last()
+    private Mono<SolutionResourceInner> createAsync(String scope, String solutionResourceName,
+        SolutionResourceInner solutionRequestBody) {
+        return beginCreateAsync(scope, solutionResourceName, solutionRequestBody).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Creates a solution for the specific Azure resource or subscription using the triggering criteria ‘solutionId and
-     * requiredInputs’ from discovery solutions.&lt;br/&gt; Solutions are a rich, insightful and a centralized self help
-     * experience that brings all the relevant content to troubleshoot an Azure issue into a unified experience.
-     * Solutions include the following components : Text, Diagnostics , Troubleshooters, Images , Video tutorials,
-     * Tables , custom charts, images , AzureKB, etc, with capabilities to support new solutions types in the future.
-     * Each solution type may require one or more ‘requiredParameters’ that are required to execute the individual
-     * solution component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
+     * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
+     * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
+     * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
+     * troubleshooting issues. These solutions encompass (1.) dynamic and context-aware diagnostics, guided
+     * troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
+     * diagrams and images, and (3.) thoughtfully assembled textual troubleshooting instructions. All these components
+     * are seamlessly converged into unified solutions tailored to address a specific support problem area. Each
+     * solution type may require one or more ‘requiredParameters’ that are required to execute the individual solution
+     * component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
      * execution, and you might see an empty response. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:&lt;/b&gt; &lt;br/&gt;1.
      * ‘requiredInputs’ from Discovery solutions response must be passed via ‘parameters’ in the request body of
      * Solutions API. &lt;br/&gt;2. ‘requiredParameters’ from the Solutions response is the same as ‘
      * additionalParameters’ in the request for diagnostics &lt;br/&gt;3. ‘requiredParameters’ from the Solutions
      * response is the same as ‘properties.parameters’ in the request for Troubleshooters.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -431,26 +424,28 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SolutionResourceInner> createAsync(String scope, String solutionResourceName) {
         final SolutionResourceInner solutionRequestBody = null;
-        return beginCreateAsync(scope, solutionResourceName, solutionRequestBody)
-            .last()
+        return beginCreateAsync(scope, solutionResourceName, solutionRequestBody).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Creates a solution for the specific Azure resource or subscription using the triggering criteria ‘solutionId and
-     * requiredInputs’ from discovery solutions.&lt;br/&gt; Solutions are a rich, insightful and a centralized self help
-     * experience that brings all the relevant content to troubleshoot an Azure issue into a unified experience.
-     * Solutions include the following components : Text, Diagnostics , Troubleshooters, Images , Video tutorials,
-     * Tables , custom charts, images , AzureKB, etc, with capabilities to support new solutions types in the future.
-     * Each solution type may require one or more ‘requiredParameters’ that are required to execute the individual
-     * solution component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
+     * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
+     * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
+     * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
+     * troubleshooting issues. These solutions encompass (1.) dynamic and context-aware diagnostics, guided
+     * troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
+     * diagrams and images, and (3.) thoughtfully assembled textual troubleshooting instructions. All these components
+     * are seamlessly converged into unified solutions tailored to address a specific support problem area. Each
+     * solution type may require one or more ‘requiredParameters’ that are required to execute the individual solution
+     * component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
      * execution, and you might see an empty response. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:&lt;/b&gt; &lt;br/&gt;1.
      * ‘requiredInputs’ from Discovery solutions response must be passed via ‘parameters’ in the request body of
      * Solutions API. &lt;br/&gt;2. ‘requiredParameters’ from the Solutions response is the same as ‘
      * additionalParameters’ in the request for diagnostics &lt;br/&gt;3. ‘requiredParameters’ from the Solutions
      * response is the same as ‘properties.parameters’ in the request for Troubleshooters.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @param solutionRequestBody The required request body for this solution resource creation.
      * @param context The context to associate with this operation.
@@ -460,28 +455,30 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * @return solution response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SolutionResourceInner> createAsync(
-        String scope, String solutionResourceName, SolutionResourceInner solutionRequestBody, Context context) {
-        return beginCreateAsync(scope, solutionResourceName, solutionRequestBody, context)
-            .last()
+    private Mono<SolutionResourceInner> createAsync(String scope, String solutionResourceName,
+        SolutionResourceInner solutionRequestBody, Context context) {
+        return beginCreateAsync(scope, solutionResourceName, solutionRequestBody, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
-     * Creates a solution for the specific Azure resource or subscription using the triggering criteria ‘solutionId and
-     * requiredInputs’ from discovery solutions.&lt;br/&gt; Solutions are a rich, insightful and a centralized self help
-     * experience that brings all the relevant content to troubleshoot an Azure issue into a unified experience.
-     * Solutions include the following components : Text, Diagnostics , Troubleshooters, Images , Video tutorials,
-     * Tables , custom charts, images , AzureKB, etc, with capabilities to support new solutions types in the future.
-     * Each solution type may require one or more ‘requiredParameters’ that are required to execute the individual
-     * solution component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
+     * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
+     * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
+     * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
+     * troubleshooting issues. These solutions encompass (1.) dynamic and context-aware diagnostics, guided
+     * troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
+     * diagrams and images, and (3.) thoughtfully assembled textual troubleshooting instructions. All these components
+     * are seamlessly converged into unified solutions tailored to address a specific support problem area. Each
+     * solution type may require one or more ‘requiredParameters’ that are required to execute the individual solution
+     * component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
      * execution, and you might see an empty response. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:&lt;/b&gt; &lt;br/&gt;1.
      * ‘requiredInputs’ from Discovery solutions response must be passed via ‘parameters’ in the request body of
      * Solutions API. &lt;br/&gt;2. ‘requiredParameters’ from the Solutions response is the same as ‘
      * additionalParameters’ in the request for diagnostics &lt;br/&gt;3. ‘requiredParameters’ from the Solutions
      * response is the same as ‘properties.parameters’ in the request for Troubleshooters.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -495,20 +492,23 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
     }
 
     /**
-     * Creates a solution for the specific Azure resource or subscription using the triggering criteria ‘solutionId and
-     * requiredInputs’ from discovery solutions.&lt;br/&gt; Solutions are a rich, insightful and a centralized self help
-     * experience that brings all the relevant content to troubleshoot an Azure issue into a unified experience.
-     * Solutions include the following components : Text, Diagnostics , Troubleshooters, Images , Video tutorials,
-     * Tables , custom charts, images , AzureKB, etc, with capabilities to support new solutions types in the future.
-     * Each solution type may require one or more ‘requiredParameters’ that are required to execute the individual
-     * solution component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
+     * Creates a solution for the specific Azure resource or subscription using the inputs ‘solutionId and
+     * requiredInputs’ from discovery solutions. &lt;br/&gt; Azure solutions comprise a comprehensive library of
+     * self-help resources that have been thoughtfully curated by Azure engineers to aid customers in resolving typical
+     * troubleshooting issues. These solutions encompass (1.) dynamic and context-aware diagnostics, guided
+     * troubleshooting wizards, and data visualizations, (2.) rich instructional video tutorials and illustrative
+     * diagrams and images, and (3.) thoughtfully assembled textual troubleshooting instructions. All these components
+     * are seamlessly converged into unified solutions tailored to address a specific support problem area. Each
+     * solution type may require one or more ‘requiredParameters’ that are required to execute the individual solution
+     * component. In the absence of the ‘requiredParameters’ it is likely that some of the solutions might fail
      * execution, and you might see an empty response. &lt;br/&gt;&lt;br/&gt; &lt;b&gt;Note:&lt;/b&gt; &lt;br/&gt;1.
      * ‘requiredInputs’ from Discovery solutions response must be passed via ‘parameters’ in the request body of
      * Solutions API. &lt;br/&gt;2. ‘requiredParameters’ from the Solutions response is the same as ‘
      * additionalParameters’ in the request for diagnostics &lt;br/&gt;3. ‘requiredParameters’ from the Solutions
      * response is the same as ‘properties.parameters’ in the request for Troubleshooters.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @param solutionRequestBody The required request body for this solution resource creation.
      * @param context The context to associate with this operation.
@@ -518,29 +518,28 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * @return solution response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SolutionResourceInner create(
-        String scope, String solutionResourceName, SolutionResourceInner solutionRequestBody, Context context) {
+    public SolutionResourceInner create(String scope, String solutionResourceName,
+        SolutionResourceInner solutionRequestBody, Context context) {
         return createAsync(scope, solutionResourceName, solutionRequestBody, context).block();
     }
 
     /**
      * Get the solution using the applicable solutionResourceName while creating the solution.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the solution using the applicable solutionResourceName while creating the solution along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the solution using the applicable solutionResourceName while creating the solution along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<SolutionResourceInner>> getWithResponseAsync(String scope, String solutionResourceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -551,39 +550,30 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            scope,
-                            solutionResourceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), scope, solutionResourceName,
+                this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the solution using the applicable solutionResourceName while creating the solution.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the solution using the applicable solutionResourceName while creating the solution along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return the solution using the applicable solutionResourceName while creating the solution along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<SolutionResourceInner>> getWithResponseAsync(
-        String scope, String solutionResourceName, Context context) {
+    private Mono<Response<SolutionResourceInner>> getWithResponseAsync(String scope, String solutionResourceName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -594,20 +584,21 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(this.client.getEndpoint(), scope, solutionResourceName, this.client.getApiVersion(), accept, context);
+        return service.get(this.client.getEndpoint(), scope, solutionResourceName, this.client.getApiVersion(), accept,
+            context);
     }
 
     /**
      * Get the solution using the applicable solutionResourceName while creating the solution.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the solution using the applicable solutionResourceName while creating the solution on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SolutionResourceInner> getAsync(String scope, String solutionResourceName) {
@@ -616,15 +607,16 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
 
     /**
      * Get the solution using the applicable solutionResourceName while creating the solution.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the solution using the applicable solutionResourceName while creating the solution along with {@link
-     *     Response}.
+     * @return the solution using the applicable solutionResourceName while creating the solution along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SolutionResourceInner> getWithResponse(String scope, String solutionResourceName, Context context) {
@@ -633,8 +625,9 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
 
     /**
      * Get the solution using the applicable solutionResourceName while creating the solution.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -648,8 +641,9 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
 
     /**
      * Update the requiredInputs or additional information needed to execute the solution.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @param solutionPatchRequestBody The required request body for updating a solution resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -658,13 +652,11 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * @return solution response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String scope, String solutionResourceName, SolutionPatchRequestBody solutionPatchRequestBody) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String scope, String solutionResourceName,
+        SolutionPatchRequestBody solutionPatchRequestBody) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -678,24 +670,16 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            scope,
-                            solutionResourceName,
-                            this.client.getApiVersion(),
-                            solutionPatchRequestBody,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), scope, solutionResourceName,
+                this.client.getApiVersion(), solutionPatchRequestBody, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update the requiredInputs or additional information needed to execute the solution.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @param solutionPatchRequestBody The required request body for updating a solution resource.
      * @param context The context to associate with this operation.
@@ -705,13 +689,11 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * @return solution response along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String scope, String solutionResourceName, SolutionPatchRequestBody solutionPatchRequestBody, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String scope, String solutionResourceName,
+        SolutionPatchRequestBody solutionPatchRequestBody, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (scope == null) {
             return Mono.error(new IllegalArgumentException("Parameter scope is required and cannot be null."));
@@ -725,21 +707,15 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                scope,
-                solutionResourceName,
-                this.client.getApiVersion(),
-                solutionPatchRequestBody,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), scope, solutionResourceName, this.client.getApiVersion(),
+            solutionPatchRequestBody, accept, context);
     }
 
     /**
      * Update the requiredInputs or additional information needed to execute the solution.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @param solutionPatchRequestBody The required request body for updating a solution resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -748,24 +724,20 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * @return the {@link PollerFlux} for polling of solution response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SolutionResourceInner>, SolutionResourceInner> beginUpdateAsync(
-        String scope, String solutionResourceName, SolutionPatchRequestBody solutionPatchRequestBody) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(scope, solutionResourceName, solutionPatchRequestBody);
-        return this
-            .client
-            .<SolutionResourceInner, SolutionResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SolutionResourceInner.class,
-                SolutionResourceInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<SolutionResourceInner>, SolutionResourceInner> beginUpdateAsync(String scope,
+        String solutionResourceName, SolutionPatchRequestBody solutionPatchRequestBody) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(scope, solutionResourceName, solutionPatchRequestBody);
+        return this.client.<SolutionResourceInner, SolutionResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SolutionResourceInner.class, SolutionResourceInner.class,
+            this.client.getContext());
     }
 
     /**
      * Update the requiredInputs or additional information needed to execute the solution.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -773,25 +745,21 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * @return the {@link PollerFlux} for polling of solution response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SolutionResourceInner>, SolutionResourceInner> beginUpdateAsync(
-        String scope, String solutionResourceName) {
+    private PollerFlux<PollResult<SolutionResourceInner>, SolutionResourceInner> beginUpdateAsync(String scope,
+        String solutionResourceName) {
         final SolutionPatchRequestBody solutionPatchRequestBody = null;
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(scope, solutionResourceName, solutionPatchRequestBody);
-        return this
-            .client
-            .<SolutionResourceInner, SolutionResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                SolutionResourceInner.class,
-                SolutionResourceInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(scope, solutionResourceName, solutionPatchRequestBody);
+        return this.client.<SolutionResourceInner, SolutionResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SolutionResourceInner.class, SolutionResourceInner.class,
+            this.client.getContext());
     }
 
     /**
      * Update the requiredInputs or additional information needed to execute the solution.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @param solutionPatchRequestBody The required request body for updating a solution resource.
      * @param context The context to associate with this operation.
@@ -801,21 +769,20 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * @return the {@link PollerFlux} for polling of solution response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<SolutionResourceInner>, SolutionResourceInner> beginUpdateAsync(
-        String scope, String solutionResourceName, SolutionPatchRequestBody solutionPatchRequestBody, Context context) {
+    private PollerFlux<PollResult<SolutionResourceInner>, SolutionResourceInner> beginUpdateAsync(String scope,
+        String solutionResourceName, SolutionPatchRequestBody solutionPatchRequestBody, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(scope, solutionResourceName, solutionPatchRequestBody, context);
-        return this
-            .client
-            .<SolutionResourceInner, SolutionResourceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), SolutionResourceInner.class, SolutionResourceInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(scope, solutionResourceName, solutionPatchRequestBody, context);
+        return this.client.<SolutionResourceInner, SolutionResourceInner>getLroResult(mono,
+            this.client.getHttpPipeline(), SolutionResourceInner.class, SolutionResourceInner.class, context);
     }
 
     /**
      * Update the requiredInputs or additional information needed to execute the solution.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -823,16 +790,17 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * @return the {@link SyncPoller} for polling of solution response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SolutionResourceInner>, SolutionResourceInner> beginUpdate(
-        String scope, String solutionResourceName) {
+    public SyncPoller<PollResult<SolutionResourceInner>, SolutionResourceInner> beginUpdate(String scope,
+        String solutionResourceName) {
         final SolutionPatchRequestBody solutionPatchRequestBody = null;
         return this.beginUpdateAsync(scope, solutionResourceName, solutionPatchRequestBody).getSyncPoller();
     }
 
     /**
      * Update the requiredInputs or additional information needed to execute the solution.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @param solutionPatchRequestBody The required request body for updating a solution resource.
      * @param context The context to associate with this operation.
@@ -842,15 +810,16 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * @return the {@link SyncPoller} for polling of solution response.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<SolutionResourceInner>, SolutionResourceInner> beginUpdate(
-        String scope, String solutionResourceName, SolutionPatchRequestBody solutionPatchRequestBody, Context context) {
+    public SyncPoller<PollResult<SolutionResourceInner>, SolutionResourceInner> beginUpdate(String scope,
+        String solutionResourceName, SolutionPatchRequestBody solutionPatchRequestBody, Context context) {
         return this.beginUpdateAsync(scope, solutionResourceName, solutionPatchRequestBody, context).getSyncPoller();
     }
 
     /**
      * Update the requiredInputs or additional information needed to execute the solution.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @param solutionPatchRequestBody The required request body for updating a solution resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -859,17 +828,17 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * @return solution response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SolutionResourceInner> updateAsync(
-        String scope, String solutionResourceName, SolutionPatchRequestBody solutionPatchRequestBody) {
-        return beginUpdateAsync(scope, solutionResourceName, solutionPatchRequestBody)
-            .last()
+    private Mono<SolutionResourceInner> updateAsync(String scope, String solutionResourceName,
+        SolutionPatchRequestBody solutionPatchRequestBody) {
+        return beginUpdateAsync(scope, solutionResourceName, solutionPatchRequestBody).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update the requiredInputs or additional information needed to execute the solution.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -879,15 +848,15 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<SolutionResourceInner> updateAsync(String scope, String solutionResourceName) {
         final SolutionPatchRequestBody solutionPatchRequestBody = null;
-        return beginUpdateAsync(scope, solutionResourceName, solutionPatchRequestBody)
-            .last()
+        return beginUpdateAsync(scope, solutionResourceName, solutionPatchRequestBody).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update the requiredInputs or additional information needed to execute the solution.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @param solutionPatchRequestBody The required request body for updating a solution resource.
      * @param context The context to associate with this operation.
@@ -897,17 +866,17 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * @return solution response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<SolutionResourceInner> updateAsync(
-        String scope, String solutionResourceName, SolutionPatchRequestBody solutionPatchRequestBody, Context context) {
-        return beginUpdateAsync(scope, solutionResourceName, solutionPatchRequestBody, context)
-            .last()
+    private Mono<SolutionResourceInner> updateAsync(String scope, String solutionResourceName,
+        SolutionPatchRequestBody solutionPatchRequestBody, Context context) {
+        return beginUpdateAsync(scope, solutionResourceName, solutionPatchRequestBody, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update the requiredInputs or additional information needed to execute the solution.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -922,8 +891,9 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
 
     /**
      * Update the requiredInputs or additional information needed to execute the solution.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @param solutionPatchRequestBody The required request body for updating a solution resource.
      * @param context The context to associate with this operation.
@@ -933,8 +903,8 @@ public final class SolutionOperationsClientImpl implements SolutionOperationsCli
      * @return solution response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SolutionResourceInner update(
-        String scope, String solutionResourceName, SolutionPatchRequestBody solutionPatchRequestBody, Context context) {
+    public SolutionResourceInner update(String scope, String solutionResourceName,
+        SolutionPatchRequestBody solutionPatchRequestBody, Context context) {
         return updateAsync(scope, solutionResourceName, solutionPatchRequestBody, context).block();
     }
 }

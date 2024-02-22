@@ -17,7 +17,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Virtual Network resource. */
+/**
+ * Virtual Network resource.
+ */
 @Fluent
 public final class VirtualNetworkInner extends Resource {
     /*
@@ -44,13 +46,15 @@ public final class VirtualNetworkInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of VirtualNetworkInner class. */
+    /**
+     * Creates an instance of VirtualNetworkInner class.
+     */
     public VirtualNetworkInner() {
     }
 
     /**
      * Get the extendedLocation property: The extended location of the virtual network.
-     *
+     * 
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -59,7 +63,7 @@ public final class VirtualNetworkInner extends Resource {
 
     /**
      * Set the extendedLocation property: The extended location of the virtual network.
-     *
+     * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the VirtualNetworkInner object itself.
      */
@@ -70,7 +74,7 @@ public final class VirtualNetworkInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the virtual network.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VirtualNetworkPropertiesFormat innerProperties() {
@@ -79,7 +83,7 @@ public final class VirtualNetworkInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -88,7 +92,7 @@ public final class VirtualNetworkInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -97,7 +101,7 @@ public final class VirtualNetworkInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the VirtualNetworkInner object itself.
      */
@@ -106,14 +110,18 @@ public final class VirtualNetworkInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualNetworkInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualNetworkInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -123,7 +131,7 @@ public final class VirtualNetworkInner extends Resource {
     /**
      * Get the addressSpace property: The AddressSpace that contains an array of IP address ranges that can be used by
      * subnets.
-     *
+     * 
      * @return the addressSpace value.
      */
     public AddressSpace addressSpace() {
@@ -133,7 +141,7 @@ public final class VirtualNetworkInner extends Resource {
     /**
      * Set the addressSpace property: The AddressSpace that contains an array of IP address ranges that can be used by
      * subnets.
-     *
+     * 
      * @param addressSpace the addressSpace value to set.
      * @return the VirtualNetworkInner object itself.
      */
@@ -148,7 +156,7 @@ public final class VirtualNetworkInner extends Resource {
     /**
      * Get the dhcpOptions property: The dhcpOptions that contains an array of DNS servers available to VMs deployed in
      * the virtual network.
-     *
+     * 
      * @return the dhcpOptions value.
      */
     public DhcpOptions dhcpOptions() {
@@ -158,7 +166,7 @@ public final class VirtualNetworkInner extends Resource {
     /**
      * Set the dhcpOptions property: The dhcpOptions that contains an array of DNS servers available to VMs deployed in
      * the virtual network.
-     *
+     * 
      * @param dhcpOptions the dhcpOptions value to set.
      * @return the VirtualNetworkInner object itself.
      */
@@ -172,7 +180,7 @@ public final class VirtualNetworkInner extends Resource {
 
     /**
      * Get the flowTimeoutInMinutes property: The FlowTimeout value (in minutes) for the Virtual Network.
-     *
+     * 
      * @return the flowTimeoutInMinutes value.
      */
     public Integer flowTimeoutInMinutes() {
@@ -181,7 +189,7 @@ public final class VirtualNetworkInner extends Resource {
 
     /**
      * Set the flowTimeoutInMinutes property: The FlowTimeout value (in minutes) for the Virtual Network.
-     *
+     * 
      * @param flowTimeoutInMinutes the flowTimeoutInMinutes value to set.
      * @return the VirtualNetworkInner object itself.
      */
@@ -195,7 +203,7 @@ public final class VirtualNetworkInner extends Resource {
 
     /**
      * Get the subnets property: A list of subnets in a Virtual Network.
-     *
+     * 
      * @return the subnets value.
      */
     public List<SubnetInner> subnets() {
@@ -204,7 +212,7 @@ public final class VirtualNetworkInner extends Resource {
 
     /**
      * Set the subnets property: A list of subnets in a Virtual Network.
-     *
+     * 
      * @param subnets the subnets value to set.
      * @return the VirtualNetworkInner object itself.
      */
@@ -218,7 +226,7 @@ public final class VirtualNetworkInner extends Resource {
 
     /**
      * Get the virtualNetworkPeerings property: A list of peerings in a Virtual Network.
-     *
+     * 
      * @return the virtualNetworkPeerings value.
      */
     public List<VirtualNetworkPeeringInner> virtualNetworkPeerings() {
@@ -227,7 +235,7 @@ public final class VirtualNetworkInner extends Resource {
 
     /**
      * Set the virtualNetworkPeerings property: A list of peerings in a Virtual Network.
-     *
+     * 
      * @param virtualNetworkPeerings the virtualNetworkPeerings value to set.
      * @return the VirtualNetworkInner object itself.
      */
@@ -241,7 +249,7 @@ public final class VirtualNetworkInner extends Resource {
 
     /**
      * Get the resourceGuid property: The resourceGuid property of the Virtual Network resource.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -250,7 +258,7 @@ public final class VirtualNetworkInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the virtual network resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -258,9 +266,9 @@ public final class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Get the enableDdosProtection property: Indicates if DDoS protection is enabled for all the protected resources in
-     * the virtual network. It requires a DDoS protection plan associated with the resource.
-     *
+     * Get the enableDdosProtection property: Indicates if DDoS protection is enabled for all the protected resources
+     * in the virtual network. It requires a DDoS protection plan associated with the resource.
+     * 
      * @return the enableDdosProtection value.
      */
     public Boolean enableDdosProtection() {
@@ -268,9 +276,9 @@ public final class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Set the enableDdosProtection property: Indicates if DDoS protection is enabled for all the protected resources in
-     * the virtual network. It requires a DDoS protection plan associated with the resource.
-     *
+     * Set the enableDdosProtection property: Indicates if DDoS protection is enabled for all the protected resources
+     * in the virtual network. It requires a DDoS protection plan associated with the resource.
+     * 
      * @param enableDdosProtection the enableDdosProtection value to set.
      * @return the VirtualNetworkInner object itself.
      */
@@ -285,7 +293,7 @@ public final class VirtualNetworkInner extends Resource {
     /**
      * Get the enableVmProtection property: Indicates if VM protection is enabled for all the subnets in the virtual
      * network.
-     *
+     * 
      * @return the enableVmProtection value.
      */
     public Boolean enableVmProtection() {
@@ -295,7 +303,7 @@ public final class VirtualNetworkInner extends Resource {
     /**
      * Set the enableVmProtection property: Indicates if VM protection is enabled for all the subnets in the virtual
      * network.
-     *
+     * 
      * @param enableVmProtection the enableVmProtection value to set.
      * @return the VirtualNetworkInner object itself.
      */
@@ -309,7 +317,7 @@ public final class VirtualNetworkInner extends Resource {
 
     /**
      * Get the ddosProtectionPlan property: The DDoS protection plan associated with the virtual network.
-     *
+     * 
      * @return the ddosProtectionPlan value.
      */
     public SubResource ddosProtectionPlan() {
@@ -318,7 +326,7 @@ public final class VirtualNetworkInner extends Resource {
 
     /**
      * Set the ddosProtectionPlan property: The DDoS protection plan associated with the virtual network.
-     *
+     * 
      * @param ddosProtectionPlan the ddosProtectionPlan value to set.
      * @return the VirtualNetworkInner object itself.
      */
@@ -331,9 +339,9 @@ public final class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Get the bgpCommunities property: Bgp Communities sent over ExpressRoute with each route corresponding to a prefix
-     * in this VNET.
-     *
+     * Get the bgpCommunities property: Bgp Communities sent over ExpressRoute with each route corresponding to a
+     * prefix in this VNET.
+     * 
      * @return the bgpCommunities value.
      */
     public VirtualNetworkBgpCommunities bgpCommunities() {
@@ -341,9 +349,9 @@ public final class VirtualNetworkInner extends Resource {
     }
 
     /**
-     * Set the bgpCommunities property: Bgp Communities sent over ExpressRoute with each route corresponding to a prefix
-     * in this VNET.
-     *
+     * Set the bgpCommunities property: Bgp Communities sent over ExpressRoute with each route corresponding to a
+     * prefix in this VNET.
+     * 
      * @param bgpCommunities the bgpCommunities value to set.
      * @return the VirtualNetworkInner object itself.
      */
@@ -358,7 +366,7 @@ public final class VirtualNetworkInner extends Resource {
     /**
      * Get the encryption property: Indicates if encryption is enabled on virtual network and if VM without encryption
      * is allowed in encrypted VNet.
-     *
+     * 
      * @return the encryption value.
      */
     public VirtualNetworkEncryption encryption() {
@@ -368,7 +376,7 @@ public final class VirtualNetworkInner extends Resource {
     /**
      * Set the encryption property: Indicates if encryption is enabled on virtual network and if VM without encryption
      * is allowed in encrypted VNet.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the VirtualNetworkInner object itself.
      */
@@ -382,7 +390,7 @@ public final class VirtualNetworkInner extends Resource {
 
     /**
      * Get the ipAllocations property: Array of IpAllocation which reference this VNET.
-     *
+     * 
      * @return the ipAllocations value.
      */
     public List<SubResource> ipAllocations() {
@@ -391,7 +399,7 @@ public final class VirtualNetworkInner extends Resource {
 
     /**
      * Set the ipAllocations property: Array of IpAllocation which reference this VNET.
-     *
+     * 
      * @param ipAllocations the ipAllocations value to set.
      * @return the VirtualNetworkInner object itself.
      */
@@ -405,7 +413,7 @@ public final class VirtualNetworkInner extends Resource {
 
     /**
      * Get the flowLogs property: A collection of references to flow log resources.
-     *
+     * 
      * @return the flowLogs value.
      */
     public List<FlowLogInner> flowLogs() {
@@ -414,7 +422,7 @@ public final class VirtualNetworkInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Base class common to RestoreTargetInfo and RestoreFilesTargetInfo. */
+/**
+ * Base class common to RestoreTargetInfo and RestoreFilesTargetInfo.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -21,8 +23,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ItemLevelRestoreTargetInfo", value = ItemLevelRestoreTargetInfo.class),
     @JsonSubTypes.Type(name = "RestoreFilesTargetInfo", value = RestoreFilesTargetInfo.class),
-    @JsonSubTypes.Type(name = "RestoreTargetInfo", value = RestoreTargetInfo.class)
-})
+    @JsonSubTypes.Type(name = "RestoreTargetInfo", value = RestoreTargetInfo.class) })
 @Fluent
 public class RestoreTargetInfoBase {
     /*
@@ -37,13 +38,15 @@ public class RestoreTargetInfoBase {
     @JsonProperty(value = "restoreLocation")
     private String restoreLocation;
 
-    /** Creates an instance of RestoreTargetInfoBase class. */
+    /**
+     * Creates an instance of RestoreTargetInfoBase class.
+     */
     public RestoreTargetInfoBase() {
     }
 
     /**
      * Get the recoveryOption property: Recovery Option.
-     *
+     * 
      * @return the recoveryOption value.
      */
     public RecoveryOption recoveryOption() {
@@ -52,7 +55,7 @@ public class RestoreTargetInfoBase {
 
     /**
      * Set the recoveryOption property: Recovery Option.
-     *
+     * 
      * @param recoveryOption the recoveryOption value to set.
      * @return the RestoreTargetInfoBase object itself.
      */
@@ -63,7 +66,7 @@ public class RestoreTargetInfoBase {
 
     /**
      * Get the restoreLocation property: Target Restore region.
-     *
+     * 
      * @return the restoreLocation value.
      */
     public String restoreLocation() {
@@ -72,7 +75,7 @@ public class RestoreTargetInfoBase {
 
     /**
      * Set the restoreLocation property: Target Restore region.
-     *
+     * 
      * @param restoreLocation the restoreLocation value to set.
      * @return the RestoreTargetInfoBase object itself.
      */
@@ -83,15 +86,13 @@ public class RestoreTargetInfoBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (recoveryOption() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoveryOption in model RestoreTargetInfoBase"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property recoveryOption in model RestoreTargetInfoBase"));
         }
     }
 

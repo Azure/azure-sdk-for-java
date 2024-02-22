@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Response for the CheckPrivateLinkServiceVisibility API service call. */
+/**
+ * Response for the CheckPrivateLinkServiceVisibility API service call.
+ */
 @Fluent
 public final class PrivateLinkServiceVisibilityInner {
     /*
@@ -16,13 +18,15 @@ public final class PrivateLinkServiceVisibilityInner {
     @JsonProperty(value = "visible")
     private Boolean visible;
 
-    /** Creates an instance of PrivateLinkServiceVisibilityInner class. */
+    /**
+     * Creates an instance of PrivateLinkServiceVisibilityInner class.
+     */
     public PrivateLinkServiceVisibilityInner() {
     }
 
     /**
      * Get the visible property: Private Link Service Visibility (True/False).
-     *
+     * 
      * @return the visible value.
      */
     public Boolean visible() {
@@ -31,7 +35,7 @@ public final class PrivateLinkServiceVisibilityInner {
 
     /**
      * Set the visible property: Private Link Service Visibility (True/False).
-     *
+     * 
      * @param visible the visible value to set.
      * @return the PrivateLinkServiceVisibilityInner object itself.
      */
@@ -42,7 +46,7 @@ public final class PrivateLinkServiceVisibilityInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

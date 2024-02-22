@@ -17,73 +17,46 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageTemplateSharedImageDistributorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageTemplateSharedImageDistributor model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SharedImage\",\"galleryImageId\":\"byao\",\"replicationRegions\":[\"xc\"],\"excludeFromLatest\":false,\"storageAccountType\":\"Standard_LRS\",\"targetRegions\":[{\"name\":\"ocohslkevleg\",\"replicaCount\":1396926466,\"storageAccountType\":\"Standard_LRS\"},{\"name\":\"hfmvfaxkffe\",\"replicaCount\":517393984,\"storageAccountType\":\"Standard_LRS\"},{\"name\":\"vmezy\",\"replicaCount\":1090911341,\"storageAccountType\":\"Standard_LRS\"}],\"versioning\":{\"scheme\":\"DistributeVersioner\"},\"runOutputName\":\"sbbzo\",\"artifactTags\":{\"vjxxjnsp\":\"grxwbu\",\"vudwtiukbldng\":\"dptkoenkouk\",\"g\":\"pocipazyxoegu\",\"mrbpizcdrqj\":\"npiucgygevqznty\"}}")
-                .toObject(ImageTemplateSharedImageDistributor.class);
-        Assertions.assertEquals("sbbzo", model.runOutputName());
-        Assertions.assertEquals("grxwbu", model.artifactTags().get("vjxxjnsp"));
-        Assertions.assertEquals("byao", model.galleryImageId());
-        Assertions.assertEquals("xc", model.replicationRegions().get(0));
-        Assertions.assertEquals(false, model.excludeFromLatest());
-        Assertions.assertEquals(SharedImageStorageAccountType.STANDARD_LRS, model.storageAccountType());
-        Assertions.assertEquals("ocohslkevleg", model.targetRegions().get(0).name());
-        Assertions.assertEquals(1396926466, model.targetRegions().get(0).replicaCount());
-        Assertions
-            .assertEquals(
-                SharedImageStorageAccountType.STANDARD_LRS, model.targetRegions().get(0).storageAccountType());
+        ImageTemplateSharedImageDistributor model = BinaryData.fromString(
+            "{\"type\":\"SharedImage\",\"galleryImageId\":\"wburvjxxjnspydpt\",\"replicationRegions\":[\"nkoukn\",\"udwtiukbl\",\"ngkpocipazy\"],\"excludeFromLatest\":true,\"storageAccountType\":\"Premium_LRS\",\"targetRegions\":[{\"name\":\"jnpiucgyg\",\"replicaCount\":1701243846,\"storageAccountType\":\"Premium_LRS\"}],\"versioning\":{\"scheme\":\"DistributeVersioner\"},\"runOutputName\":\"yp\",\"artifactTags\":{\"zcdrqjsdpydnfyhx\":\"p\",\"ifsjttgzfbishcb\":\"eoejzic\",\"alpbuxwgipwhon\":\"hajdeyeamdpha\",\"kix\":\"wkgshwa\"}}")
+            .toObject(ImageTemplateSharedImageDistributor.class);
+        Assertions.assertEquals("yp", model.runOutputName());
+        Assertions.assertEquals("p", model.artifactTags().get("zcdrqjsdpydnfyhx"));
+        Assertions.assertEquals("wburvjxxjnspydpt", model.galleryImageId());
+        Assertions.assertEquals("nkoukn", model.replicationRegions().get(0));
+        Assertions.assertEquals(true, model.excludeFromLatest());
+        Assertions.assertEquals(SharedImageStorageAccountType.PREMIUM_LRS, model.storageAccountType());
+        Assertions.assertEquals("jnpiucgyg", model.targetRegions().get(0).name());
+        Assertions.assertEquals(1701243846, model.targetRegions().get(0).replicaCount());
+        Assertions.assertEquals(SharedImageStorageAccountType.PREMIUM_LRS,
+            model.targetRegions().get(0).storageAccountType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplateSharedImageDistributor model =
-            new ImageTemplateSharedImageDistributor()
-                .withRunOutputName("sbbzo")
-                .withArtifactTags(
-                    mapOf(
-                        "vjxxjnsp",
-                        "grxwbu",
-                        "vudwtiukbldng",
-                        "dptkoenkouk",
-                        "g",
-                        "pocipazyxoegu",
-                        "mrbpizcdrqj",
-                        "npiucgygevqznty"))
-                .withGalleryImageId("byao")
-                .withReplicationRegions(Arrays.asList("xc"))
-                .withExcludeFromLatest(false)
-                .withStorageAccountType(SharedImageStorageAccountType.STANDARD_LRS)
-                .withTargetRegions(
-                    Arrays
-                        .asList(
-                            new TargetRegion()
-                                .withName("ocohslkevleg")
-                                .withReplicaCount(1396926466)
-                                .withStorageAccountType(SharedImageStorageAccountType.STANDARD_LRS),
-                            new TargetRegion()
-                                .withName("hfmvfaxkffe")
-                                .withReplicaCount(517393984)
-                                .withStorageAccountType(SharedImageStorageAccountType.STANDARD_LRS),
-                            new TargetRegion()
-                                .withName("vmezy")
-                                .withReplicaCount(1090911341)
-                                .withStorageAccountType(SharedImageStorageAccountType.STANDARD_LRS)))
-                .withVersioning(new DistributeVersioner());
+        ImageTemplateSharedImageDistributor model = new ImageTemplateSharedImageDistributor().withRunOutputName("yp")
+            .withArtifactTags(mapOf("zcdrqjsdpydnfyhx", "p", "ifsjttgzfbishcb", "eoejzic", "alpbuxwgipwhon",
+                "hajdeyeamdpha", "kix", "wkgshwa"))
+            .withGalleryImageId("wburvjxxjnspydpt")
+            .withReplicationRegions(Arrays.asList("nkoukn", "udwtiukbl", "ngkpocipazy")).withExcludeFromLatest(true)
+            .withStorageAccountType(SharedImageStorageAccountType.PREMIUM_LRS)
+            .withTargetRegions(Arrays.asList(new TargetRegion().withName("jnpiucgyg").withReplicaCount(1701243846)
+                .withStorageAccountType(SharedImageStorageAccountType.PREMIUM_LRS)))
+            .withVersioning(new DistributeVersioner());
         model = BinaryData.fromObject(model).toObject(ImageTemplateSharedImageDistributor.class);
-        Assertions.assertEquals("sbbzo", model.runOutputName());
-        Assertions.assertEquals("grxwbu", model.artifactTags().get("vjxxjnsp"));
-        Assertions.assertEquals("byao", model.galleryImageId());
-        Assertions.assertEquals("xc", model.replicationRegions().get(0));
-        Assertions.assertEquals(false, model.excludeFromLatest());
-        Assertions.assertEquals(SharedImageStorageAccountType.STANDARD_LRS, model.storageAccountType());
-        Assertions.assertEquals("ocohslkevleg", model.targetRegions().get(0).name());
-        Assertions.assertEquals(1396926466, model.targetRegions().get(0).replicaCount());
-        Assertions
-            .assertEquals(
-                SharedImageStorageAccountType.STANDARD_LRS, model.targetRegions().get(0).storageAccountType());
+        Assertions.assertEquals("yp", model.runOutputName());
+        Assertions.assertEquals("p", model.artifactTags().get("zcdrqjsdpydnfyhx"));
+        Assertions.assertEquals("wburvjxxjnspydpt", model.galleryImageId());
+        Assertions.assertEquals("nkoukn", model.replicationRegions().get(0));
+        Assertions.assertEquals(true, model.excludeFromLatest());
+        Assertions.assertEquals(SharedImageStorageAccountType.PREMIUM_LRS, model.storageAccountType());
+        Assertions.assertEquals("jnpiucgyg", model.targetRegions().get(0).name());
+        Assertions.assertEquals(1701243846, model.targetRegions().get(0).replicaCount());
+        Assertions.assertEquals(SharedImageStorageAccountType.PREMIUM_LRS,
+            model.targetRegions().get(0).storageAccountType());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

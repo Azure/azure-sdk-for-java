@@ -12,7 +12,9 @@ import com.azure.resourcemanager.network.models.RetentionPolicyParameters;
 import com.azure.resourcemanager.network.models.TrafficAnalyticsProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters that define the configuration of flow log. */
+/**
+ * Parameters that define the configuration of flow log.
+ */
 @Fluent
 public final class FlowLogPropertiesFormat {
     /*
@@ -63,13 +65,15 @@ public final class FlowLogPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of FlowLogPropertiesFormat class. */
+    /**
+     * Creates an instance of FlowLogPropertiesFormat class.
+     */
     public FlowLogPropertiesFormat() {
     }
 
     /**
      * Get the targetResourceId property: ID of network security group to which flow log will be applied.
-     *
+     * 
      * @return the targetResourceId value.
      */
     public String targetResourceId() {
@@ -78,7 +82,7 @@ public final class FlowLogPropertiesFormat {
 
     /**
      * Set the targetResourceId property: ID of network security group to which flow log will be applied.
-     *
+     * 
      * @param targetResourceId the targetResourceId value to set.
      * @return the FlowLogPropertiesFormat object itself.
      */
@@ -89,7 +93,7 @@ public final class FlowLogPropertiesFormat {
 
     /**
      * Get the targetResourceGuid property: Guid of network security group to which flow log will be applied.
-     *
+     * 
      * @return the targetResourceGuid value.
      */
     public String targetResourceGuid() {
@@ -98,7 +102,7 @@ public final class FlowLogPropertiesFormat {
 
     /**
      * Get the storageId property: ID of the storage account which is used to store the flow log.
-     *
+     * 
      * @return the storageId value.
      */
     public String storageId() {
@@ -107,7 +111,7 @@ public final class FlowLogPropertiesFormat {
 
     /**
      * Set the storageId property: ID of the storage account which is used to store the flow log.
-     *
+     * 
      * @param storageId the storageId value to set.
      * @return the FlowLogPropertiesFormat object itself.
      */
@@ -118,7 +122,7 @@ public final class FlowLogPropertiesFormat {
 
     /**
      * Get the enabled property: Flag to enable/disable flow logging.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -127,7 +131,7 @@ public final class FlowLogPropertiesFormat {
 
     /**
      * Set the enabled property: Flag to enable/disable flow logging.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the FlowLogPropertiesFormat object itself.
      */
@@ -138,7 +142,7 @@ public final class FlowLogPropertiesFormat {
 
     /**
      * Get the retentionPolicy property: Parameters that define the retention policy for flow log.
-     *
+     * 
      * @return the retentionPolicy value.
      */
     public RetentionPolicyParameters retentionPolicy() {
@@ -147,7 +151,7 @@ public final class FlowLogPropertiesFormat {
 
     /**
      * Set the retentionPolicy property: Parameters that define the retention policy for flow log.
-     *
+     * 
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the FlowLogPropertiesFormat object itself.
      */
@@ -158,7 +162,7 @@ public final class FlowLogPropertiesFormat {
 
     /**
      * Get the format property: Parameters that define the flow log format.
-     *
+     * 
      * @return the format value.
      */
     public FlowLogFormatParameters format() {
@@ -167,7 +171,7 @@ public final class FlowLogPropertiesFormat {
 
     /**
      * Set the format property: Parameters that define the flow log format.
-     *
+     * 
      * @param format the format value to set.
      * @return the FlowLogPropertiesFormat object itself.
      */
@@ -178,7 +182,7 @@ public final class FlowLogPropertiesFormat {
 
     /**
      * Get the flowAnalyticsConfiguration property: Parameters that define the configuration of traffic analytics.
-     *
+     * 
      * @return the flowAnalyticsConfiguration value.
      */
     public TrafficAnalyticsProperties flowAnalyticsConfiguration() {
@@ -187,19 +191,19 @@ public final class FlowLogPropertiesFormat {
 
     /**
      * Set the flowAnalyticsConfiguration property: Parameters that define the configuration of traffic analytics.
-     *
+     * 
      * @param flowAnalyticsConfiguration the flowAnalyticsConfiguration value to set.
      * @return the FlowLogPropertiesFormat object itself.
      */
-    public FlowLogPropertiesFormat withFlowAnalyticsConfiguration(
-        TrafficAnalyticsProperties flowAnalyticsConfiguration) {
+    public FlowLogPropertiesFormat
+        withFlowAnalyticsConfiguration(TrafficAnalyticsProperties flowAnalyticsConfiguration) {
         this.flowAnalyticsConfiguration = flowAnalyticsConfiguration;
         return this;
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the flow log.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -208,21 +212,17 @@ public final class FlowLogPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (targetResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property targetResourceId in model FlowLogPropertiesFormat"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property targetResourceId in model FlowLogPropertiesFormat"));
         }
         if (storageId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageId in model FlowLogPropertiesFormat"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property storageId in model FlowLogPropertiesFormat"));
         }
         if (retentionPolicy() != null) {
             retentionPolicy().validate();

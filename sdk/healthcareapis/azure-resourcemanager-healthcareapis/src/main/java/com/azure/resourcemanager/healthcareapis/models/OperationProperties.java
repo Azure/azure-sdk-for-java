@@ -7,7 +7,9 @@ package com.azure.resourcemanager.healthcareapis.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Extra Operation properties. */
+/**
+ * Extra Operation properties.
+ */
 @Fluent
 public final class OperationProperties {
     /*
@@ -17,8 +19,14 @@ public final class OperationProperties {
     private ServiceSpecification serviceSpecification;
 
     /**
+     * Creates an instance of OperationProperties class.
+     */
+    public OperationProperties() {
+    }
+
+    /**
      * Get the serviceSpecification property: Service specifications of the operation.
-     *
+     * 
      * @return the serviceSpecification value.
      */
     public ServiceSpecification serviceSpecification() {
@@ -27,7 +35,7 @@ public final class OperationProperties {
 
     /**
      * Set the serviceSpecification property: Service specifications of the operation.
-     *
+     * 
      * @param serviceSpecification the serviceSpecification value to set.
      * @return the OperationProperties object itself.
      */
@@ -38,7 +46,7 @@ public final class OperationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

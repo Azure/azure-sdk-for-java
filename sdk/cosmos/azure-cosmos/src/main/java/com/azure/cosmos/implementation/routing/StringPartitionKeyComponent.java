@@ -56,6 +56,11 @@ class StringPartitionKeyComponent implements IPartitionKeyComponent {
     }
 
     @Override
+    public Object toObject() {
+        return this.value;
+    }
+
+    @Override
     public void jsonEncode(JsonGenerator writer) {
         try {
             writer.writeString(this.value);

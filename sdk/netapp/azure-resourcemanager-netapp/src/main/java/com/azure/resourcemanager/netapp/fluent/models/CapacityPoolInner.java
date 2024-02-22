@@ -14,7 +14,9 @@ import com.azure.resourcemanager.netapp.models.ServiceLevel;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Capacity pool resource. */
+/**
+ * Capacity pool resource.
+ */
 @Fluent
 public final class CapacityPoolInner extends Resource {
     /*
@@ -35,13 +37,15 @@ public final class CapacityPoolInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of CapacityPoolInner class. */
+    /**
+     * Creates an instance of CapacityPoolInner class.
+     */
     public CapacityPoolInner() {
     }
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -50,7 +54,7 @@ public final class CapacityPoolInner extends Resource {
 
     /**
      * Get the innerProperties property: Capacity pool properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PoolProperties innerProperties() {
@@ -59,21 +63,25 @@ public final class CapacityPoolInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CapacityPoolInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CapacityPoolInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -82,9 +90,9 @@ public final class CapacityPoolInner extends Resource {
 
     /**
      * Get the poolId property: poolId
-     *
-     * <p>UUID v4 used to identify the Pool.
-     *
+     * 
+     * UUID v4 used to identify the Pool.
+     * 
      * @return the poolId value.
      */
     public String poolId() {
@@ -93,10 +101,10 @@ public final class CapacityPoolInner extends Resource {
 
     /**
      * Get the size property: size
-     *
-     * <p>Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
+     * 
+     * Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
      * 4398046511104).
-     *
+     * 
      * @return the size value.
      */
     public long size() {
@@ -105,10 +113,10 @@ public final class CapacityPoolInner extends Resource {
 
     /**
      * Set the size property: size
-     *
-     * <p>Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
+     * 
+     * Provisioned size of the pool (in bytes). Allowed values are in 1TiB chunks (value must be multiply of
      * 4398046511104).
-     *
+     * 
      * @param size the size value to set.
      * @return the CapacityPoolInner object itself.
      */
@@ -122,9 +130,9 @@ public final class CapacityPoolInner extends Resource {
 
     /**
      * Get the serviceLevel property: serviceLevel
-     *
-     * <p>The service level of the file system.
-     *
+     * 
+     * The service level of the file system.
+     * 
      * @return the serviceLevel value.
      */
     public ServiceLevel serviceLevel() {
@@ -133,9 +141,9 @@ public final class CapacityPoolInner extends Resource {
 
     /**
      * Set the serviceLevel property: serviceLevel
-     *
-     * <p>The service level of the file system.
-     *
+     * 
+     * The service level of the file system.
+     * 
      * @param serviceLevel the serviceLevel value to set.
      * @return the CapacityPoolInner object itself.
      */
@@ -149,7 +157,7 @@ public final class CapacityPoolInner extends Resource {
 
     /**
      * Get the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -158,7 +166,7 @@ public final class CapacityPoolInner extends Resource {
 
     /**
      * Get the totalThroughputMibps property: Total throughput of pool in MiB/s.
-     *
+     * 
      * @return the totalThroughputMibps value.
      */
     public Float totalThroughputMibps() {
@@ -167,7 +175,7 @@ public final class CapacityPoolInner extends Resource {
 
     /**
      * Get the utilizedThroughputMibps property: Utilized throughput of pool in MiB/s.
-     *
+     * 
      * @return the utilizedThroughputMibps value.
      */
     public Float utilizedThroughputMibps() {
@@ -176,7 +184,7 @@ public final class CapacityPoolInner extends Resource {
 
     /**
      * Get the qosType property: The qos type of the pool.
-     *
+     * 
      * @return the qosType value.
      */
     public QosType qosType() {
@@ -185,7 +193,7 @@ public final class CapacityPoolInner extends Resource {
 
     /**
      * Set the qosType property: The qos type of the pool.
-     *
+     * 
      * @param qosType the qosType value to set.
      * @return the CapacityPoolInner object itself.
      */
@@ -199,7 +207,7 @@ public final class CapacityPoolInner extends Resource {
 
     /**
      * Get the coolAccess property: If enabled (true) the pool can contain cool Access enabled volumes.
-     *
+     * 
      * @return the coolAccess value.
      */
     public Boolean coolAccess() {
@@ -208,7 +216,7 @@ public final class CapacityPoolInner extends Resource {
 
     /**
      * Set the coolAccess property: If enabled (true) the pool can contain cool Access enabled volumes.
-     *
+     * 
      * @param coolAccess the coolAccess value to set.
      * @return the CapacityPoolInner object itself.
      */
@@ -222,10 +230,10 @@ public final class CapacityPoolInner extends Resource {
 
     /**
      * Get the encryptionType property: encryptionType
-     *
-     * <p>Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in
-     * it. This value can only be set when creating new pool.
-     *
+     * 
+     * Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in it.
+     * This value can only be set when creating new pool.
+     * 
      * @return the encryptionType value.
      */
     public EncryptionType encryptionType() {
@@ -234,10 +242,10 @@ public final class CapacityPoolInner extends Resource {
 
     /**
      * Set the encryptionType property: encryptionType
-     *
-     * <p>Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in
-     * it. This value can only be set when creating new pool.
-     *
+     * 
+     * Encryption type of the capacity pool, set encryption type for data at rest for this pool and all volumes in it.
+     * This value can only be set when creating new pool.
+     * 
      * @param encryptionType the encryptionType value to set.
      * @return the CapacityPoolInner object itself.
      */
@@ -251,15 +259,13 @@ public final class CapacityPoolInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model CapacityPoolInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model CapacityPoolInner"));
         } else {
             innerProperties().validate();
         }

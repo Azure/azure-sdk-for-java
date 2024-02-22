@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Match condition to apply RouteMap rules. */
+/**
+ * Match condition to apply RouteMap rules.
+ */
 public final class RouteMapMatchCondition extends ExpandableStringEnum<RouteMapMatchCondition> {
-    /** Static value Unknown for RouteMapMatchCondition. */
+    /**
+     * Static value Unknown for RouteMapMatchCondition.
+     */
     public static final RouteMapMatchCondition UNKNOWN = fromString("Unknown");
 
-    /** Static value Contains for RouteMapMatchCondition. */
+    /**
+     * Static value Contains for RouteMapMatchCondition.
+     */
     public static final RouteMapMatchCondition CONTAINS = fromString("Contains");
 
-    /** Static value Equals for RouteMapMatchCondition. */
+    /**
+     * Static value Equals for RouteMapMatchCondition.
+     */
     public static final RouteMapMatchCondition EQUALS = fromString("Equals");
 
-    /** Static value NotContains for RouteMapMatchCondition. */
+    /**
+     * Static value NotContains for RouteMapMatchCondition.
+     */
     public static final RouteMapMatchCondition NOT_CONTAINS = fromString("NotContains");
 
-    /** Static value NotEquals for RouteMapMatchCondition. */
+    /**
+     * Static value NotEquals for RouteMapMatchCondition.
+     */
     public static final RouteMapMatchCondition NOT_EQUALS = fromString("NotEquals");
 
     /**
      * Creates a new instance of RouteMapMatchCondition value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class RouteMapMatchCondition extends ExpandableStringEnum<RouteMapM
 
     /**
      * Creates or finds a RouteMapMatchCondition from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RouteMapMatchCondition.
      */
@@ -47,7 +59,7 @@ public final class RouteMapMatchCondition extends ExpandableStringEnum<RouteMapM
 
     /**
      * Gets known RouteMapMatchCondition values.
-     *
+     * 
      * @return known RouteMapMatchCondition values.
      */
     public static Collection<RouteMapMatchCondition> values() {

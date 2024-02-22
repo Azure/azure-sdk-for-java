@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** User property. */
+/**
+ * User property.
+ */
 @Fluent
 public final class UserProperty {
     /*
@@ -22,12 +24,15 @@ public final class UserProperty {
     @JsonProperty(value = "value", required = true)
     private Object value;
 
-    /** Creates an instance of UserProperty class. */
-    public UserProperty() {}
+    /**
+     * Creates an instance of UserProperty class.
+     */
+    public UserProperty() {
+    }
 
     /**
      * Get the name property: User property name.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -36,7 +41,7 @@ public final class UserProperty {
 
     /**
      * Set the name property: User property name.
-     *
+     * 
      * @param name the name value to set.
      * @return the UserProperty object itself.
      */
@@ -47,7 +52,7 @@ public final class UserProperty {
 
     /**
      * Get the value property: User property value. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the value value.
      */
     public Object getValue() {
@@ -56,7 +61,7 @@ public final class UserProperty {
 
     /**
      * Set the value property: User property value. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param value the value value to set.
      * @return the UserProperty object itself.
      */

@@ -12,16 +12,24 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * are: **None for Standard storage. ReadOnly for Premium storage**.
  */
 public enum CachingTypes {
-    /** Enum value None. */
+    /**
+     * Enum value None.
+     */
     NONE("None"),
 
-    /** Enum value ReadOnly. */
+    /**
+     * Enum value ReadOnly.
+     */
     READ_ONLY("ReadOnly"),
 
-    /** Enum value ReadWrite. */
+    /**
+     * Enum value ReadWrite.
+     */
     READ_WRITE("ReadWrite");
 
-    /** The actual serialized value for a CachingTypes instance. */
+    /**
+     * The actual serialized value for a CachingTypes instance.
+     */
     private final String value;
 
     CachingTypes(String value) {
@@ -30,7 +38,7 @@ public enum CachingTypes {
 
     /**
      * Parses a serialized value to a CachingTypes instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed CachingTypes object, or null if unable to parse.
      */
@@ -48,7 +56,9 @@ public enum CachingTypes {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

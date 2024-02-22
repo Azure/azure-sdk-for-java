@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters for an Action. */
+/**
+ * Parameters for an Action.
+ */
 @Fluent
 public final class Parameter {
     /*
@@ -29,13 +31,15 @@ public final class Parameter {
     @JsonProperty(value = "asPath")
     private List<String> asPath;
 
-    /** Creates an instance of Parameter class. */
+    /**
+     * Creates an instance of Parameter class.
+     */
     public Parameter() {
     }
 
     /**
      * Get the routePrefix property: List of route prefixes.
-     *
+     * 
      * @return the routePrefix value.
      */
     public List<String> routePrefix() {
@@ -44,7 +48,7 @@ public final class Parameter {
 
     /**
      * Set the routePrefix property: List of route prefixes.
-     *
+     * 
      * @param routePrefix the routePrefix value to set.
      * @return the Parameter object itself.
      */
@@ -55,7 +59,7 @@ public final class Parameter {
 
     /**
      * Get the community property: List of BGP communities.
-     *
+     * 
      * @return the community value.
      */
     public List<String> community() {
@@ -64,7 +68,7 @@ public final class Parameter {
 
     /**
      * Set the community property: List of BGP communities.
-     *
+     * 
      * @param community the community value to set.
      * @return the Parameter object itself.
      */
@@ -75,7 +79,7 @@ public final class Parameter {
 
     /**
      * Get the asPath property: List of AS paths.
-     *
+     * 
      * @return the asPath value.
      */
     public List<String> asPath() {
@@ -84,7 +88,7 @@ public final class Parameter {
 
     /**
      * Set the asPath property: List of AS paths.
-     *
+     * 
      * @param asPath the asPath value to set.
      * @return the Parameter object itself.
      */
@@ -95,7 +99,7 @@ public final class Parameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

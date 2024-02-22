@@ -7,7 +7,7 @@ import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.util.BinaryData;
 import com.azure.messaging.webpubsub.client.models.SendMessageFailedException;
 import com.azure.messaging.webpubsub.client.models.SendToGroupOptions;
-import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
+import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
 import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -86,7 +86,7 @@ public class GroupMessageTests extends TestBase {
             JsonModel model = new JsonModel();
             model.name = "john";
             model.description = "unknown";
-            WebPubSubResult result = client.sendToGroup(groupName, BinaryData.fromObject(model), WebPubSubDataType.JSON);
+            WebPubSubResult result = client.sendToGroup(groupName, BinaryData.fromObject(model), WebPubSubDataFormat.JSON);
             Assertions.assertNotNull(result.getAckId());
 
             latch.await(1, TimeUnit.SECONDS);
@@ -117,7 +117,7 @@ public class GroupMessageTests extends TestBase {
             client.joinGroup(groupName);
 
             byte[] bytes = new byte[] { 0x64, 0x61, 0x74, 0x61 };
-            WebPubSubResult result = client.sendToGroup(groupName, BinaryData.fromBytes(bytes), WebPubSubDataType.BINARY);
+            WebPubSubResult result = client.sendToGroup(groupName, BinaryData.fromBytes(bytes), WebPubSubDataFormat.BINARY);
             Assertions.assertNotNull(result.getAckId());
 
             latch.await(1, TimeUnit.SECONDS);

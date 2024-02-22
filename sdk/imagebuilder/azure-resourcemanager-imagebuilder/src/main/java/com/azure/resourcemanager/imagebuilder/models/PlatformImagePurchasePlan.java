@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Purchase plan configuration for platform image. */
+/**
+ * Purchase plan configuration for platform image.
+ */
 @Fluent
 public final class PlatformImagePurchasePlan {
     /*
@@ -29,13 +31,15 @@ public final class PlatformImagePurchasePlan {
     @JsonProperty(value = "planPublisher", required = true)
     private String planPublisher;
 
-    /** Creates an instance of PlatformImagePurchasePlan class. */
+    /**
+     * Creates an instance of PlatformImagePurchasePlan class.
+     */
     public PlatformImagePurchasePlan() {
     }
 
     /**
      * Get the planName property: Name of the purchase plan.
-     *
+     * 
      * @return the planName value.
      */
     public String planName() {
@@ -44,7 +48,7 @@ public final class PlatformImagePurchasePlan {
 
     /**
      * Set the planName property: Name of the purchase plan.
-     *
+     * 
      * @param planName the planName value to set.
      * @return the PlatformImagePurchasePlan object itself.
      */
@@ -55,7 +59,7 @@ public final class PlatformImagePurchasePlan {
 
     /**
      * Get the planProduct property: Product of the purchase plan.
-     *
+     * 
      * @return the planProduct value.
      */
     public String planProduct() {
@@ -64,7 +68,7 @@ public final class PlatformImagePurchasePlan {
 
     /**
      * Set the planProduct property: Product of the purchase plan.
-     *
+     * 
      * @param planProduct the planProduct value to set.
      * @return the PlatformImagePurchasePlan object itself.
      */
@@ -75,7 +79,7 @@ public final class PlatformImagePurchasePlan {
 
     /**
      * Get the planPublisher property: Publisher of the purchase plan.
-     *
+     * 
      * @return the planPublisher value.
      */
     public String planPublisher() {
@@ -84,7 +88,7 @@ public final class PlatformImagePurchasePlan {
 
     /**
      * Set the planPublisher property: Publisher of the purchase plan.
-     *
+     * 
      * @param planPublisher the planPublisher value to set.
      * @return the PlatformImagePurchasePlan object itself.
      */
@@ -95,27 +99,21 @@ public final class PlatformImagePurchasePlan {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (planName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property planName in model PlatformImagePurchasePlan"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property planName in model PlatformImagePurchasePlan"));
         }
         if (planProduct() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property planProduct in model PlatformImagePurchasePlan"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property planProduct in model PlatformImagePurchasePlan"));
         }
         if (planPublisher() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property planPublisher in model PlatformImagePurchasePlan"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property planPublisher in model PlatformImagePurchasePlan"));
         }
     }
 

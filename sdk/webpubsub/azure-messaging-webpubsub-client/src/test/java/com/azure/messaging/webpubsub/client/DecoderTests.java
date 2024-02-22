@@ -9,7 +9,7 @@ import com.azure.messaging.webpubsub.client.implementation.models.ConnectedMessa
 import com.azure.messaging.webpubsub.client.implementation.models.DisconnectedMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.GroupDataMessage;
 import com.azure.messaging.webpubsub.client.implementation.models.ServerDataMessage;
-import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
+import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -94,7 +94,7 @@ public class DecoderTests {
 
         Assertions.assertEquals(1, message.getSequenceId());
         Assertions.assertEquals("<group_name>", message.getGroup());
-        Assertions.assertEquals(WebPubSubDataType.JSON, message.getDataType());
+        Assertions.assertEquals(WebPubSubDataFormat.JSON, message.getDataType());
         Assertions.assertEquals("{\"key\":\"value\"}", message.getData().toString());
         Assertions.assertEquals("abc", message.getFromUserId());
 
@@ -110,7 +110,7 @@ public class DecoderTests {
 
         Assertions.assertEquals(2, message.getSequenceId());
         Assertions.assertEquals("<group_name>", message.getGroup());
-        Assertions.assertEquals(WebPubSubDataType.TEXT, message.getDataType());
+        Assertions.assertEquals(WebPubSubDataFormat.TEXT, message.getDataType());
         Assertions.assertEquals("text", message.getData().toString());
         Assertions.assertEquals("abc", message.getFromUserId());
 
@@ -126,7 +126,7 @@ public class DecoderTests {
 
         Assertions.assertEquals(3, message.getSequenceId());
         Assertions.assertEquals("<group_name>", message.getGroup());
-        Assertions.assertEquals(WebPubSubDataType.BINARY, message.getDataType());
+        Assertions.assertEquals(WebPubSubDataFormat.BINARY, message.getDataType());
         Assertions.assertEquals("data", new String(message.getData().toBytes(), StandardCharsets.UTF_8));
         Assertions.assertEquals("abc", message.getFromUserId());
 
@@ -139,7 +139,7 @@ public class DecoderTests {
             + "}");
 
         Assertions.assertEquals("<group_name>", message.getGroup());
-        Assertions.assertEquals(WebPubSubDataType.TEXT, message.getDataType());
+        Assertions.assertEquals(WebPubSubDataFormat.TEXT, message.getDataType());
         Assertions.assertEquals("text", message.getData().toString());
     }
 
@@ -152,7 +152,7 @@ public class DecoderTests {
             + "    \"data\" : \"text\"\n"
             + "}");
 
-        Assertions.assertEquals(WebPubSubDataType.TEXT, message.getDataType());
+        Assertions.assertEquals(WebPubSubDataFormat.TEXT, message.getDataType());
         Assertions.assertEquals("text", message.getData().toString());
     }
 }

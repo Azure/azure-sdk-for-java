@@ -6,21 +6,29 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 
-/** The CassandraKeyspaceGetPropertiesOptions model. */
+/**
+ * The CassandraKeyspaceGetPropertiesOptions model.
+ */
 @Fluent
 public final class CassandraKeyspaceGetPropertiesOptions extends OptionsResource {
-    /** Creates an instance of CassandraKeyspaceGetPropertiesOptions class. */
+    /**
+     * Creates an instance of CassandraKeyspaceGetPropertiesOptions class.
+     */
     public CassandraKeyspaceGetPropertiesOptions() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraKeyspaceGetPropertiesOptions withThroughput(Integer throughput) {
         super.withThroughput(throughput);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraKeyspaceGetPropertiesOptions withAutoscaleSettings(AutoscaleSettings autoscaleSettings) {
         super.withAutoscaleSettings(autoscaleSettings);
@@ -29,7 +37,7 @@ public final class CassandraKeyspaceGetPropertiesOptions extends OptionsResource
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

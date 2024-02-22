@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SKU of a load balancer. */
+/**
+ * SKU of a load balancer.
+ */
 @Fluent
 public final class LoadBalancerSku {
     /*
@@ -22,13 +24,15 @@ public final class LoadBalancerSku {
     @JsonProperty(value = "tier")
     private LoadBalancerSkuTier tier;
 
-    /** Creates an instance of LoadBalancerSku class. */
+    /**
+     * Creates an instance of LoadBalancerSku class.
+     */
     public LoadBalancerSku() {
     }
 
     /**
      * Get the name property: Name of a load balancer SKU.
-     *
+     * 
      * @return the name value.
      */
     public LoadBalancerSkuName name() {
@@ -37,7 +41,7 @@ public final class LoadBalancerSku {
 
     /**
      * Set the name property: Name of a load balancer SKU.
-     *
+     * 
      * @param name the name value to set.
      * @return the LoadBalancerSku object itself.
      */
@@ -48,7 +52,7 @@ public final class LoadBalancerSku {
 
     /**
      * Get the tier property: Tier of a load balancer SKU.
-     *
+     * 
      * @return the tier value.
      */
     public LoadBalancerSkuTier tier() {
@@ -57,7 +61,7 @@ public final class LoadBalancerSku {
 
     /**
      * Set the tier property: Tier of a load balancer SKU.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the LoadBalancerSku object itself.
      */
@@ -68,7 +72,7 @@ public final class LoadBalancerSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

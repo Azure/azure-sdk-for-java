@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the public IP Sku. It can only be set with OrchestrationMode as Flexible. */
+/**
+ * Describes the public IP Sku. It can only be set with OrchestrationMode as Flexible.
+ */
 @Fluent
 public final class PublicIpAddressSku {
     /*
@@ -22,13 +24,15 @@ public final class PublicIpAddressSku {
     @JsonProperty(value = "tier")
     private PublicIpAddressSkuTier tier;
 
-    /** Creates an instance of PublicIpAddressSku class. */
+    /**
+     * Creates an instance of PublicIpAddressSku class.
+     */
     public PublicIpAddressSku() {
     }
 
     /**
      * Get the name property: Specify public IP sku name.
-     *
+     * 
      * @return the name value.
      */
     public PublicIpAddressSkuName name() {
@@ -37,7 +41,7 @@ public final class PublicIpAddressSku {
 
     /**
      * Set the name property: Specify public IP sku name.
-     *
+     * 
      * @param name the name value to set.
      * @return the PublicIpAddressSku object itself.
      */
@@ -48,7 +52,7 @@ public final class PublicIpAddressSku {
 
     /**
      * Get the tier property: Specify public IP sku tier.
-     *
+     * 
      * @return the tier value.
      */
     public PublicIpAddressSkuTier tier() {
@@ -57,7 +61,7 @@ public final class PublicIpAddressSku {
 
     /**
      * Set the tier property: Specify public IP sku tier.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the PublicIpAddressSku object itself.
      */
@@ -68,7 +72,7 @@ public final class PublicIpAddressSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

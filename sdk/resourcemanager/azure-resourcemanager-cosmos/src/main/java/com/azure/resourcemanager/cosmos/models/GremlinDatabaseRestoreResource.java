@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Specific Gremlin Databases to restore. */
+/**
+ * Specific Gremlin Databases to restore.
+ */
 @Fluent
 public final class GremlinDatabaseRestoreResource {
     /*
@@ -23,13 +25,15 @@ public final class GremlinDatabaseRestoreResource {
     @JsonProperty(value = "graphNames")
     private List<String> graphNames;
 
-    /** Creates an instance of GremlinDatabaseRestoreResource class. */
+    /**
+     * Creates an instance of GremlinDatabaseRestoreResource class.
+     */
     public GremlinDatabaseRestoreResource() {
     }
 
     /**
      * Get the databaseName property: The name of the gremlin database available for restore.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -38,7 +42,7 @@ public final class GremlinDatabaseRestoreResource {
 
     /**
      * Set the databaseName property: The name of the gremlin database available for restore.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the GremlinDatabaseRestoreResource object itself.
      */
@@ -49,7 +53,7 @@ public final class GremlinDatabaseRestoreResource {
 
     /**
      * Get the graphNames property: The names of the graphs available for restore.
-     *
+     * 
      * @return the graphNames value.
      */
     public List<String> graphNames() {
@@ -58,7 +62,7 @@ public final class GremlinDatabaseRestoreResource {
 
     /**
      * Set the graphNames property: The names of the graphs available for restore.
-     *
+     * 
      * @param graphNames the graphNames value to set.
      * @return the GremlinDatabaseRestoreResource object itself.
      */
@@ -69,7 +73,7 @@ public final class GremlinDatabaseRestoreResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

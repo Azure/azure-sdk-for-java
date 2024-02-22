@@ -10,11 +10,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.PrivateLinkReso
 public final class PrivateLinkResourceListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PrivateLinkResourceListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"groupId\":\"vqqaatjinrvgo\",\"requiredMembers\":[\"fiibfggjioolvr\",\"x\",\"v\"],\"requiredZoneNames\":[\"gllqwjy\"]},\"id\":\"jayvblmhv\",\"name\":\"zuhbxvvyhgsopb\",\"type\":\"rqufegxuvwz\"},{\"properties\":{\"groupId\":\"hlmctlpdngitvgb\",\"requiredMembers\":[\"ixkwmyijejveg\",\"hbpnaixexccbd\",\"eaxhcexdrrvqahqk\",\"htpwij\"],\"requiredZoneNames\":[\"jsvfycxzbfvoowv\",\"vmtgjqppy\"]},\"id\":\"tronzmyhgfi\",\"name\":\"nsxkmcwaekrrjr\",\"type\":\"afxtsgum\"},{\"properties\":{\"groupId\":\"lik\",\"requiredMembers\":[\"slol\",\"qpvuzlmvfelf\"],\"requiredZoneNames\":[\"plcrpwjxeznoig\",\"rnjwmw\",\"pn\",\"saz\"]},\"id\":\"joqkagfhsxt\",\"name\":\"augzxnfaazpxdtn\",\"type\":\"dm\"}],\"nextLink\":\"j\"}")
-                .toObject(PrivateLinkResourceListResult.class);
+        PrivateLinkResourceListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"groupId\":\"vqqaatjinrvgo\",\"requiredMembers\":[\"fiibfggjioolvr\",\"x\",\"v\"],\"requiredZoneNames\":[\"gllqwjy\"]},\"id\":\"jayvblmhv\",\"name\":\"zuhbxvvyhgsopb\",\"type\":\"rqufegxuvwz\"},{\"properties\":{\"groupId\":\"hlmctlpdngitvgb\",\"requiredMembers\":[\"ixkwmyijejveg\",\"hbpnaixexccbd\",\"eaxhcexdrrvqahqk\",\"htpwij\"],\"requiredZoneNames\":[\"jsvfycxzbfvoowv\",\"vmtgjqppy\"]},\"id\":\"tronzmyhgfi\",\"name\":\"nsxkmcwaekrrjr\",\"type\":\"afxtsgum\"},{\"properties\":{\"groupId\":\"lik\",\"requiredMembers\":[\"slol\",\"qpvuzlmvfelf\"],\"requiredZoneNames\":[\"plcrpwjxeznoig\",\"rnjwmw\",\"pn\",\"saz\"]},\"id\":\"joqkagfhsxt\",\"name\":\"augzxnfaazpxdtn\",\"type\":\"dm\"}],\"nextLink\":\"j\"}")
+            .toObject(PrivateLinkResourceListResult.class);
     }
 
     @org.junit.jupiter.api.Test

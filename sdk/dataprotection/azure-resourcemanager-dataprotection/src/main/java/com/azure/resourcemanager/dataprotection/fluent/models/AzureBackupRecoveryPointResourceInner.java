@@ -11,28 +11,30 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * AzureBackupRecoveryPointResource
- *
- * <p>Azure backup recoveryPoint resource.
+ * 
+ * Azure backup recoveryPoint resource.
  */
 @Fluent
 public final class AzureBackupRecoveryPointResourceInner extends DppResource {
     /*
      * AzureBackupRecoveryPoint
-     *
+     * 
      * AzureBackupRecoveryPointResource properties
      */
     @JsonProperty(value = "properties")
     private AzureBackupRecoveryPoint properties;
 
-    /** Creates an instance of AzureBackupRecoveryPointResourceInner class. */
+    /**
+     * Creates an instance of AzureBackupRecoveryPointResourceInner class.
+     */
     public AzureBackupRecoveryPointResourceInner() {
     }
 
     /**
      * Get the properties property: AzureBackupRecoveryPoint
-     *
-     * <p>AzureBackupRecoveryPointResource properties.
-     *
+     * 
+     * AzureBackupRecoveryPointResource properties.
+     * 
      * @return the properties value.
      */
     public AzureBackupRecoveryPoint properties() {
@@ -41,9 +43,9 @@ public final class AzureBackupRecoveryPointResourceInner extends DppResource {
 
     /**
      * Set the properties property: AzureBackupRecoveryPoint
-     *
-     * <p>AzureBackupRecoveryPointResource properties.
-     *
+     * 
+     * AzureBackupRecoveryPointResource properties.
+     * 
      * @param properties the properties value to set.
      * @return the AzureBackupRecoveryPointResourceInner object itself.
      */
@@ -54,7 +56,7 @@ public final class AzureBackupRecoveryPointResourceInner extends DppResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

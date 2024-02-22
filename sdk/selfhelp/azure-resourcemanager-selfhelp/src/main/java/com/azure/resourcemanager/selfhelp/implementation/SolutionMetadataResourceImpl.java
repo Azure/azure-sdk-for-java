@@ -16,8 +16,8 @@ public final class SolutionMetadataResourceImpl implements SolutionMetadataResou
 
     private final com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager;
 
-    SolutionMetadataResourceImpl(
-        SolutionMetadataResourceInner innerObject, com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager) {
+    SolutionMetadataResourceImpl(SolutionMetadataResourceInner innerObject,
+        com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

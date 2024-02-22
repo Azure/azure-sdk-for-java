@@ -33,90 +33,76 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in IotConnectorFhirDestinationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IotConnectorFhirDestinationsClient.
+ */
 public final class IotConnectorFhirDestinationsClientImpl implements IotConnectorFhirDestinationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final IotConnectorFhirDestinationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final HealthcareApisManagementClientImpl client;
 
     /**
      * Initializes an instance of IotConnectorFhirDestinationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     IotConnectorFhirDestinationsClientImpl(HealthcareApisManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    IotConnectorFhirDestinationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(IotConnectorFhirDestinationsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for HealthcareApisManagementClientIotConnectorFhirDestinations to be used
-     * by the proxy service to perform REST calls.
+     * The interface defining all the services for HealthcareApisManagementClientIotConnectorFhirDestinations to be
+     * used by the proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "HealthcareApisManage")
-    private interface IotConnectorFhirDestinationsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis"
-                + "/workspaces/{workspaceName}/iotconnectors/{iotConnectorName}/fhirdestinations/{fhirDestinationName}")
-        @ExpectedResponses({200})
+    public interface IotConnectorFhirDestinationsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/iotconnectors/{iotConnectorName}/fhirdestinations/{fhirDestinationName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<IotFhirDestinationInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<IotFhirDestinationInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("workspaceName") String workspaceName,
             @PathParam("iotConnectorName") String iotConnectorName,
-            @PathParam("fhirDestinationName") String fhirDestinationName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("fhirDestinationName") String fhirDestinationName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis"
-                + "/workspaces/{workspaceName}/iotconnectors/{iotConnectorName}/fhirdestinations/{fhirDestinationName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/iotconnectors/{iotConnectorName}/fhirdestinations/{fhirDestinationName}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("workspaceName") String workspaceName,
             @PathParam("iotConnectorName") String iotConnectorName,
             @PathParam("fhirDestinationName") String fhirDestinationName,
             @BodyParam("application/json") IotFhirDestinationInner iotFhirDestination,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis"
-                + "/workspaces/{workspaceName}/iotconnectors/{iotConnectorName}/fhirdestinations/{fhirDestinationName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/iotconnectors/{iotConnectorName}/fhirdestinations/{fhirDestinationName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
             @PathParam("iotConnectorName") String iotConnectorName,
-            @PathParam("fhirDestinationName") String fhirDestinationName,
-            @HeaderParam("Accept") String accept,
+            @PathParam("fhirDestinationName") String fhirDestinationName, @HeaderParam("Accept") String accept,
             Context context);
     }
 
     /**
      * Gets the properties of the specified Iot Connector FHIR destination.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -125,26 +111,22 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified Iot Connector FHIR destination along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IotFhirDestinationInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String iotConnectorName, String fhirDestinationName) {
+    private Mono<Response<IotFhirDestinationInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String iotConnectorName, String fhirDestinationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -159,25 +141,15 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            workspaceName,
-                            iotConnectorName,
-                            fhirDestinationName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), resourceGroupName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), workspaceName, iotConnectorName,
+                fhirDestinationName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the properties of the specified Iot Connector FHIR destination.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -187,30 +159,22 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified Iot Connector FHIR destination along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IotFhirDestinationInner>> getWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        String fhirDestinationName,
-        Context context) {
+    private Mono<Response<IotFhirDestinationInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String iotConnectorName, String fhirDestinationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -225,22 +189,13 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                workspaceName,
-                iotConnectorName,
-                fhirDestinationName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), workspaceName, iotConnectorName, fhirDestinationName, accept, context);
     }
 
     /**
      * Gets the properties of the specified Iot Connector FHIR destination.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -251,40 +206,15 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
      * @return the properties of the specified Iot Connector FHIR destination on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IotFhirDestinationInner> getAsync(
-        String resourceGroupName, String workspaceName, String iotConnectorName, String fhirDestinationName) {
+    private Mono<IotFhirDestinationInner> getAsync(String resourceGroupName, String workspaceName,
+        String iotConnectorName, String fhirDestinationName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName)
-            .flatMap(
-                (Response<IotFhirDestinationInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the properties of the specified Iot Connector FHIR destination.
-     *
-     * @param resourceGroupName The name of the resource group that contains the service instance.
-     * @param workspaceName The name of workspace resource.
-     * @param iotConnectorName The name of IoT Connector resource.
-     * @param fhirDestinationName The name of IoT Connector FHIR destination resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified Iot Connector FHIR destination.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IotFhirDestinationInner get(
-        String resourceGroupName, String workspaceName, String iotConnectorName, String fhirDestinationName) {
-        return getAsync(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName).block();
-    }
-
-    /**
-     * Gets the properties of the specified Iot Connector FHIR destination.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -296,19 +226,34 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
      * @return the properties of the specified Iot Connector FHIR destination along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IotFhirDestinationInner> getWithResponse(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        String fhirDestinationName,
-        Context context) {
+    public Response<IotFhirDestinationInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String iotConnectorName, String fhirDestinationName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, context)
             .block();
     }
 
     /**
+     * Gets the properties of the specified Iot Connector FHIR destination.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the service instance.
+     * @param workspaceName The name of workspace resource.
+     * @param iotConnectorName The name of IoT Connector resource.
+     * @param fhirDestinationName The name of IoT Connector FHIR destination resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified Iot Connector FHIR destination.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IotFhirDestinationInner get(String resourceGroupName, String workspaceName, String iotConnectorName,
+        String fhirDestinationName) {
+        return getWithResponse(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Creates or updates an IoT Connector FHIR destination resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -317,31 +262,24 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Connector FHIR destination definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return ioT Connector FHIR destination definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        String fhirDestinationName,
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String iotConnectorName, String fhirDestinationName,
         IotFhirDestinationInner iotFhirDestination) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -362,26 +300,15 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            workspaceName,
-                            iotConnectorName,
-                            fhirDestinationName,
-                            iotFhirDestination,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), workspaceName, iotConnectorName,
+                fhirDestinationName, iotFhirDestination, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates an IoT Connector FHIR destination resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -391,32 +318,24 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return ioT Connector FHIR destination definition along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return ioT Connector FHIR destination definition along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        String fhirDestinationName,
-        IotFhirDestinationInner iotFhirDestination,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String iotConnectorName, String fhirDestinationName,
+        IotFhirDestinationInner iotFhirDestination, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -437,23 +356,14 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                workspaceName,
-                iotConnectorName,
-                fhirDestinationName,
-                iotFhirDestination,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), workspaceName, iotConnectorName, fhirDestinationName, iotFhirDestination,
+            accept, context);
     }
 
     /**
      * Creates or updates an IoT Connector FHIR destination resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -466,27 +376,18 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IotFhirDestinationInner>, IotFhirDestinationInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        String fhirDestinationName,
+        String resourceGroupName, String workspaceName, String iotConnectorName, String fhirDestinationName,
         IotFhirDestinationInner iotFhirDestination) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, iotFhirDestination);
-        return this
-            .client
-            .<IotFhirDestinationInner, IotFhirDestinationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                IotFhirDestinationInner.class,
-                IotFhirDestinationInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName,
+            iotConnectorName, fhirDestinationName, iotFhirDestination);
+        return this.client.<IotFhirDestinationInner, IotFhirDestinationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), IotFhirDestinationInner.class, IotFhirDestinationInner.class,
+            this.client.getContext());
     }
 
     /**
      * Creates or updates an IoT Connector FHIR destination resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -500,29 +401,18 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IotFhirDestinationInner>, IotFhirDestinationInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        String fhirDestinationName,
-        IotFhirDestinationInner iotFhirDestination,
-        Context context) {
+        String resourceGroupName, String workspaceName, String iotConnectorName, String fhirDestinationName,
+        IotFhirDestinationInner iotFhirDestination, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(
-                resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, iotFhirDestination, context);
-        return this
-            .client
-            .<IotFhirDestinationInner, IotFhirDestinationInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                IotFhirDestinationInner.class,
-                IotFhirDestinationInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName,
+            iotConnectorName, fhirDestinationName, iotFhirDestination, context);
+        return this.client.<IotFhirDestinationInner, IotFhirDestinationInner>getLroResult(mono,
+            this.client.getHttpPipeline(), IotFhirDestinationInner.class, IotFhirDestinationInner.class, context);
     }
 
     /**
      * Creates or updates an IoT Connector FHIR destination resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -535,19 +425,15 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IotFhirDestinationInner>, IotFhirDestinationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        String fhirDestinationName,
+        String resourceGroupName, String workspaceName, String iotConnectorName, String fhirDestinationName,
         IotFhirDestinationInner iotFhirDestination) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, iotFhirDestination)
-            .getSyncPoller();
+        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName,
+            iotFhirDestination).getSyncPoller();
     }
 
     /**
      * Creates or updates an IoT Connector FHIR destination resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -561,20 +447,15 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<IotFhirDestinationInner>, IotFhirDestinationInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        String fhirDestinationName,
-        IotFhirDestinationInner iotFhirDestination,
-        Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, iotFhirDestination, context)
-            .getSyncPoller();
+        String resourceGroupName, String workspaceName, String iotConnectorName, String fhirDestinationName,
+        IotFhirDestinationInner iotFhirDestination, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName,
+            iotFhirDestination, context).getSyncPoller();
     }
 
     /**
      * Creates or updates an IoT Connector FHIR destination resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -586,21 +467,15 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
      * @return ioT Connector FHIR destination definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IotFhirDestinationInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        String fhirDestinationName,
-        IotFhirDestinationInner iotFhirDestination) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, iotFhirDestination)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<IotFhirDestinationInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String iotConnectorName, String fhirDestinationName, IotFhirDestinationInner iotFhirDestination) {
+        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName,
+            iotFhirDestination).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates an IoT Connector FHIR destination resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -613,22 +488,16 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
      * @return ioT Connector FHIR destination definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IotFhirDestinationInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        String fhirDestinationName,
-        IotFhirDestinationInner iotFhirDestination,
+    private Mono<IotFhirDestinationInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String iotConnectorName, String fhirDestinationName, IotFhirDestinationInner iotFhirDestination,
         Context context) {
-        return beginCreateOrUpdateAsync(
-                resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, iotFhirDestination, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName,
+            iotFhirDestination, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates an IoT Connector FHIR destination resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -640,20 +509,15 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
      * @return ioT Connector FHIR destination definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IotFhirDestinationInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        String fhirDestinationName,
-        IotFhirDestinationInner iotFhirDestination) {
-        return createOrUpdateAsync(
-                resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, iotFhirDestination)
-            .block();
+    public IotFhirDestinationInner createOrUpdate(String resourceGroupName, String workspaceName,
+        String iotConnectorName, String fhirDestinationName, IotFhirDestinationInner iotFhirDestination) {
+        return createOrUpdateAsync(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName,
+            iotFhirDestination).block();
     }
 
     /**
      * Creates or updates an IoT Connector FHIR destination resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -666,21 +530,16 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
      * @return ioT Connector FHIR destination definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IotFhirDestinationInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        String fhirDestinationName,
-        IotFhirDestinationInner iotFhirDestination,
+    public IotFhirDestinationInner createOrUpdate(String resourceGroupName, String workspaceName,
+        String iotConnectorName, String fhirDestinationName, IotFhirDestinationInner iotFhirDestination,
         Context context) {
-        return createOrUpdateAsync(
-                resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, iotFhirDestination, context)
-            .block();
+        return createOrUpdateAsync(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName,
+            iotFhirDestination, context).block();
     }
 
     /**
      * Deletes an IoT Connector FHIR destination.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -691,19 +550,15 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String workspaceName, String iotConnectorName, String fhirDestinationName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String iotConnectorName, String fhirDestinationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -722,25 +577,15 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            iotConnectorName,
-                            fhirDestinationName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, iotConnectorName,
+                fhirDestinationName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an IoT Connector FHIR destination.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -752,23 +597,15 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        String fhirDestinationName,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String workspaceName,
+        String iotConnectorName, String fhirDestinationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -787,22 +624,13 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                iotConnectorName,
-                fhirDestinationName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, accept, context);
     }
 
     /**
      * Deletes an IoT Connector FHIR destination.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -813,19 +641,17 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String workspaceName, String iotConnectorName, String fhirDestinationName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName,
+        String iotConnectorName, String fhirDestinationName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes an IoT Connector FHIR destination.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -837,23 +663,18 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        String fhirDestinationName,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String workspaceName,
+        String iotConnectorName, String fhirDestinationName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes an IoT Connector FHIR destination.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -864,15 +685,15 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String workspaceName, String iotConnectorName, String fhirDestinationName) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String iotConnectorName, String fhirDestinationName) {
+        return this.beginDeleteAsync(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName)
             .getSyncPoller();
     }
 
     /**
      * Deletes an IoT Connector FHIR destination.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -884,19 +705,15 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        String fhirDestinationName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, context)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String workspaceName,
+        String iotConnectorName, String fhirDestinationName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, context)
             .getSyncPoller();
     }
 
     /**
      * Deletes an IoT Connector FHIR destination.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -907,16 +724,15 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String workspaceName, String iotConnectorName, String fhirDestinationName) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String iotConnectorName,
+        String fhirDestinationName) {
+        return beginDeleteAsync(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an IoT Connector FHIR destination.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -928,20 +744,15 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        String fhirDestinationName,
-        Context context) {
-        return beginDeleteAsync(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String workspaceName, String iotConnectorName,
+        String fhirDestinationName, Context context) {
+        return beginDeleteAsync(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an IoT Connector FHIR destination.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -951,14 +762,14 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName, String workspaceName, String iotConnectorName, String fhirDestinationName) {
+    public void delete(String resourceGroupName, String workspaceName, String iotConnectorName,
+        String fhirDestinationName) {
         deleteAsync(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName).block();
     }
 
     /**
      * Deletes an IoT Connector FHIR destination.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -969,12 +780,8 @@ public final class IotConnectorFhirDestinationsClientImpl implements IotConnecto
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        String fhirDestinationName,
-        Context context) {
+    public void delete(String resourceGroupName, String workspaceName, String iotConnectorName,
+        String fhirDestinationName, Context context) {
         deleteAsync(resourceGroupName, workspaceName, iotConnectorName, fhirDestinationName, context).block();
     }
 }

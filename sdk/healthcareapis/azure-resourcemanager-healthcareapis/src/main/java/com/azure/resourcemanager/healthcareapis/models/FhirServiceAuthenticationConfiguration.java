@@ -7,7 +7,9 @@ package com.azure.resourcemanager.healthcareapis.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Authentication configuration information. */
+/**
+ * Authentication configuration information.
+ */
 @Fluent
 public final class FhirServiceAuthenticationConfiguration {
     /*
@@ -29,8 +31,14 @@ public final class FhirServiceAuthenticationConfiguration {
     private Boolean smartProxyEnabled;
 
     /**
+     * Creates an instance of FhirServiceAuthenticationConfiguration class.
+     */
+    public FhirServiceAuthenticationConfiguration() {
+    }
+
+    /**
      * Get the authority property: The authority url for the service.
-     *
+     * 
      * @return the authority value.
      */
     public String authority() {
@@ -39,7 +47,7 @@ public final class FhirServiceAuthenticationConfiguration {
 
     /**
      * Set the authority property: The authority url for the service.
-     *
+     * 
      * @param authority the authority value to set.
      * @return the FhirServiceAuthenticationConfiguration object itself.
      */
@@ -50,7 +58,7 @@ public final class FhirServiceAuthenticationConfiguration {
 
     /**
      * Get the audience property: The audience url for the service.
-     *
+     * 
      * @return the audience value.
      */
     public String audience() {
@@ -59,7 +67,7 @@ public final class FhirServiceAuthenticationConfiguration {
 
     /**
      * Set the audience property: The audience url for the service.
-     *
+     * 
      * @param audience the audience value to set.
      * @return the FhirServiceAuthenticationConfiguration object itself.
      */
@@ -70,7 +78,7 @@ public final class FhirServiceAuthenticationConfiguration {
 
     /**
      * Get the smartProxyEnabled property: If the SMART on FHIR proxy is enabled.
-     *
+     * 
      * @return the smartProxyEnabled value.
      */
     public Boolean smartProxyEnabled() {
@@ -79,7 +87,7 @@ public final class FhirServiceAuthenticationConfiguration {
 
     /**
      * Set the smartProxyEnabled property: If the SMART on FHIR proxy is enabled.
-     *
+     * 
      * @param smartProxyEnabled the smartProxyEnabled value to set.
      * @return the FhirServiceAuthenticationConfiguration object itself.
      */
@@ -90,7 +98,7 @@ public final class FhirServiceAuthenticationConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

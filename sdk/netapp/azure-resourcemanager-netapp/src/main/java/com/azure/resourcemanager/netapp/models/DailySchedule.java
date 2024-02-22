@@ -7,7 +7,9 @@ package com.azure.resourcemanager.netapp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Daily Schedule properties. */
+/**
+ * Daily Schedule properties.
+ */
 @Fluent
 public final class DailySchedule {
     /*
@@ -34,13 +36,15 @@ public final class DailySchedule {
     @JsonProperty(value = "usedBytes")
     private Long usedBytes;
 
-    /** Creates an instance of DailySchedule class. */
+    /**
+     * Creates an instance of DailySchedule class.
+     */
     public DailySchedule() {
     }
 
     /**
      * Get the snapshotsToKeep property: Daily snapshot count to keep.
-     *
+     * 
      * @return the snapshotsToKeep value.
      */
     public Integer snapshotsToKeep() {
@@ -49,7 +53,7 @@ public final class DailySchedule {
 
     /**
      * Set the snapshotsToKeep property: Daily snapshot count to keep.
-     *
+     * 
      * @param snapshotsToKeep the snapshotsToKeep value to set.
      * @return the DailySchedule object itself.
      */
@@ -60,7 +64,7 @@ public final class DailySchedule {
 
     /**
      * Get the hour property: Indicates which hour in UTC timezone a snapshot should be taken.
-     *
+     * 
      * @return the hour value.
      */
     public Integer hour() {
@@ -69,7 +73,7 @@ public final class DailySchedule {
 
     /**
      * Set the hour property: Indicates which hour in UTC timezone a snapshot should be taken.
-     *
+     * 
      * @param hour the hour value to set.
      * @return the DailySchedule object itself.
      */
@@ -80,7 +84,7 @@ public final class DailySchedule {
 
     /**
      * Get the minute property: Indicates which minute snapshot should be taken.
-     *
+     * 
      * @return the minute value.
      */
     public Integer minute() {
@@ -89,7 +93,7 @@ public final class DailySchedule {
 
     /**
      * Set the minute property: Indicates which minute snapshot should be taken.
-     *
+     * 
      * @param minute the minute value to set.
      * @return the DailySchedule object itself.
      */
@@ -100,7 +104,7 @@ public final class DailySchedule {
 
     /**
      * Get the usedBytes property: Resource size in bytes, current storage usage for the volume in bytes.
-     *
+     * 
      * @return the usedBytes value.
      */
     public Long usedBytes() {
@@ -109,7 +113,7 @@ public final class DailySchedule {
 
     /**
      * Set the usedBytes property: Resource size in bytes, current storage usage for the volume in bytes.
-     *
+     * 
      * @param usedBytes the usedBytes value to set.
      * @return the DailySchedule object itself.
      */
@@ -120,7 +124,7 @@ public final class DailySchedule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Reverse replication input properties. */
+/**
+ * Reverse replication input properties.
+ */
 @Fluent
 public final class ReverseReplicationInputProperties {
     /*
@@ -22,13 +24,15 @@ public final class ReverseReplicationInputProperties {
     @JsonProperty(value = "providerSpecificDetails")
     private ReverseReplicationProviderSpecificInput providerSpecificDetails;
 
-    /** Creates an instance of ReverseReplicationInputProperties class. */
+    /**
+     * Creates an instance of ReverseReplicationInputProperties class.
+     */
     public ReverseReplicationInputProperties() {
     }
 
     /**
      * Get the failoverDirection property: Failover direction.
-     *
+     * 
      * @return the failoverDirection value.
      */
     public String failoverDirection() {
@@ -37,7 +41,7 @@ public final class ReverseReplicationInputProperties {
 
     /**
      * Set the failoverDirection property: Failover direction.
-     *
+     * 
      * @param failoverDirection the failoverDirection value to set.
      * @return the ReverseReplicationInputProperties object itself.
      */
@@ -48,7 +52,7 @@ public final class ReverseReplicationInputProperties {
 
     /**
      * Get the providerSpecificDetails property: Provider specific reverse replication input.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public ReverseReplicationProviderSpecificInput providerSpecificDetails() {
@@ -57,19 +61,19 @@ public final class ReverseReplicationInputProperties {
 
     /**
      * Set the providerSpecificDetails property: Provider specific reverse replication input.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the ReverseReplicationInputProperties object itself.
      */
-    public ReverseReplicationInputProperties withProviderSpecificDetails(
-        ReverseReplicationProviderSpecificInput providerSpecificDetails) {
+    public ReverseReplicationInputProperties
+        withProviderSpecificDetails(ReverseReplicationProviderSpecificInput providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

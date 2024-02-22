@@ -12,20 +12,20 @@ public final class VirtualNetworkPropertiesInfraVnetProfileHciTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualNetworkPropertiesInfraVnetProfileHci model
-            = BinaryData.fromString("{\"mocGroup\":\"agvrvmnpkuk\",\"mocLocation\":\"i\",\"mocVnetName\":\"blxgwimf\"}")
+            = BinaryData.fromString("{\"mocGroup\":\"tgqr\",\"mocLocation\":\"tmuwlauwzi\",\"mocVnetName\":\"bm\"}")
                 .toObject(VirtualNetworkPropertiesInfraVnetProfileHci.class);
-        Assertions.assertEquals("agvrvmnpkuk", model.mocGroup());
-        Assertions.assertEquals("i", model.mocLocation());
-        Assertions.assertEquals("blxgwimf", model.mocVnetName());
+        Assertions.assertEquals("tgqr", model.mocGroup());
+        Assertions.assertEquals("tmuwlauwzi", model.mocLocation());
+        Assertions.assertEquals("bm", model.mocVnetName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualNetworkPropertiesInfraVnetProfileHci model = new VirtualNetworkPropertiesInfraVnetProfileHci()
-            .withMocGroup("agvrvmnpkuk").withMocLocation("i").withMocVnetName("blxgwimf");
+            .withMocGroup("tgqr").withMocLocation("tmuwlauwzi").withMocVnetName("bm");
         model = BinaryData.fromObject(model).toObject(VirtualNetworkPropertiesInfraVnetProfileHci.class);
-        Assertions.assertEquals("agvrvmnpkuk", model.mocGroup());
-        Assertions.assertEquals("i", model.mocLocation());
-        Assertions.assertEquals("blxgwimf", model.mocVnetName());
+        Assertions.assertEquals("tgqr", model.mocGroup());
+        Assertions.assertEquals("tmuwlauwzi", model.mocLocation());
+        Assertions.assertEquals("bm", model.mocVnetName());
     }
 }

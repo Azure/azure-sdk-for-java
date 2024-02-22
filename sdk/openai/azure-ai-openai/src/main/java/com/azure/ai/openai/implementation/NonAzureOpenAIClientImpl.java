@@ -218,7 +218,7 @@ public final class NonAzureOpenAIClientImpl {
             value = ResourceModifiedException.class,
             code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> generateImage(
+        Mono<Response<BinaryData>> getImageGenerations(
             @HostParam("endpoint") String endpoint,
             @HeaderParam("accept") String accept,
             @BodyParam("application/json") BinaryData imageGenerationOptions,
@@ -237,7 +237,7 @@ public final class NonAzureOpenAIClientImpl {
             value = ResourceModifiedException.class,
             code = {409})
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> generateImageSync(
+        Response<BinaryData> getImageGenerationsSync(
             @HostParam("endpoint") String endpoint,
             @HeaderParam("accept") String accept,
             @BodyParam("application/json") BinaryData imageGenerationOptions,
@@ -966,17 +966,24 @@ public final class NonAzureOpenAIClientImpl {
      * @return A list of image URLs that were generated based on the prompt sent in the request
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> generateImageWithResponseAsync(
+    public Mono<Response<BinaryData>> getImageGenerationsWithResponseAsync(String modelId,
         BinaryData imageGenerationOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
 
-        return service.generateImage(
-            OPEN_AI_ENDPOINT,
-            accept,
-            imageGenerationOptions,
-            requestOptions,
-            Context.NONE
-        );
+        // modelId is part of the request body in nonAzure OpenAI
+        try {
+            BinaryData imageGenerationOptionsUpdated = addModelIdJson(imageGenerationOptions, modelId);
+            return FluxUtil.withContext(
+                    context ->
+                            service.getImageGenerations(
+                                    OPEN_AI_ENDPOINT,
+                                    accept,
+                                    imageGenerationOptionsUpdated,
+                                    requestOptions,
+                                    context));
+        } catch (JsonProcessingException e) {
+            return Mono.error(e);
+        }
     }
 
     /**
@@ -1023,14 +1030,20 @@ public final class NonAzureOpenAIClientImpl {
      * @return A list of image URLs that were generated based on the prompt sent in the request
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> generateImageWithResponse(
+    public Response<BinaryData> getImageGenerationsWithResponse(String modelId,
         BinaryData imageGenerationOptions, RequestOptions requestOptions) {
         final String accept = "application/json";
+        BinaryData imageGenerationOptionsUpdated = null;
+        try {
+            imageGenerationOptionsUpdated = addModelIdJson(imageGenerationOptions, modelId);
+        } catch (JsonProcessingException e) {
+            throw new RuntimeException(e);
+        }
 
-        return service.generateImageSync(
+        return service.getImageGenerationsSync(
             OPEN_AI_ENDPOINT,
             accept,
-            imageGenerationOptions,
+            imageGenerationOptionsUpdated,
             requestOptions,
             Context.NONE
         );
