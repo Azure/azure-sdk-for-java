@@ -11,7 +11,15 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.*;
 import com.azure.core.util.Configuration;
 import com.azure.identity.AzureAuthorityHosts;
+import com.azure.identity.implementation.util.CertificateUtil;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.UncheckedIOException;
+import java.net.URL;
+import java.nio.file.Files;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,10 +39,17 @@ public class IdentityTestBase extends TestProxyTestBase {
             List<TestProxySanitizer> customSanitizers = new ArrayList<>();
             customSanitizers.add(new TestProxySanitizer("$..access_token", null, INVALID_DUMMY_TOKEN,
                 TestProxySanitizerType.BODY_KEY));
+            customSanitizers.add(new TestProxySanitizer("client-request-id", null, "REDACTED",
+                TestProxySanitizerType.HEADER));
+            customSanitizers.add(new TestProxySanitizer("x-client-last-telemetry", null, "REDACTED",
+                TestProxySanitizerType.HEADER));
             customSanitizers.add(new TestProxySanitizer(null, "(client_id=)[^&]+", "$1Dummy-Id",
                 TestProxySanitizerType.BODY_REGEX));
             customSanitizers.add(new TestProxySanitizer(null, "(client_secret=)[^&]+", "$1Dummy-Secret",
                 TestProxySanitizerType.BODY_REGEX));
+            customSanitizers.add(new TestProxySanitizer(null, "(client_assertion=)[^&]+", "$1Dummy-Secret",
+                TestProxySanitizerType.BODY_REGEX));
+
             interceptorManager.addSanitizers(customSanitizers);
         }
 
