@@ -1,11 +1,11 @@
 # Release History
 
-## 4.6.0 (2024-02-20)
+## 4.6.0 (2024-02-22)
 Changes when compared to the last stable release (`4.5.9`) include:
 
 ### Features Added
 - Added support for service version `7.5`.
-- Added `CertificateProperties.getX509ThumbprintHexString()` to return the hexadecimal string representation of the SHA-1 hash of a certificate.
+- Added `CertificateProperties.getX509ThumbprintString()` to return the hexadecimal string representation of the SHA-1 hash of a certificate.
 
 ### Other Changes
 

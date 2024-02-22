@@ -1,6 +1,6 @@
 # Release History
 
-## 4.8.0 (2024-02-20)
+## 4.8.0 (2024-02-22)
 Changes when compared to the last stable release (`4.7.3`) include:
 
 ### Features Added
