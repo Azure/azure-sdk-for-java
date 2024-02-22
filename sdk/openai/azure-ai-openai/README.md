@@ -21,6 +21,7 @@ For concrete examples you can have a look at the following links. Some of the mo
 * [Image Generation sample](#image-generation "Image Generation")
 * [Audio Transcription sample](#audio-transcription "Audio Transcription")
 * [Audio Translation sample](#audio-translation "Audio Translation")
+* [Text To Speech sample](#text-to-speech "Text To Speech")
 
 If you want to see the full code for these snippets check out our [samples folder][samples_folder].
 
@@ -403,6 +404,16 @@ if (choice.getFinishReason() == CompletionsFinishReason.TOOL_CALLS) {
 }
 ```
 
+### Text To Speech
+
+The OpenAI service starts supporting `text to speech` with the introduction of `tts` models.
+The following code snippet shows how to use the service to convert text to speech.
+```java readme-sample-textToSpeech
+
+```
+For a complete sample example, see sample [Text to Speech][sample_text_to_speech].
+Please refer to the service documentation for a conceptual discussion of [Text to Speech][microsoft_docs_text_to_speech].
+
 ## Troubleshooting
 ### Enable client logging
 You can set the `AZURE_LOG_LEVEL` environment variable to view logging statements made in the client library. For
@@ -445,6 +456,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [microsoft_docs_openai_completion]: https://learn.microsoft.com/azure/cognitive-services/openai/how-to/completions
 [microsoft_docs_openai_embedding]: https://learn.microsoft.com/azure/cognitive-services/openai/concepts/understand-embeddings
 [microsoft_docs_whisper_model]: https://learn.microsoft.com/azure/ai-services/openai/whisper-quickstart?tabs=command-line
+[microsoft_docs_text_to_speech]: https://learn.microsoft.com/azure/ai-services/openai/text-to-speech-quickstart?tabs=command-line
 [non_azure_openai_authentication]: https://platform.openai.com/docs/api-reference/authentication
 [performance_tuning]: https://github.com/Azure/azure-sdk-for-java/wiki/Performance-Tuning
 [product_documentation]: https://azure.microsoft.com/services/
@@ -464,6 +476,7 @@ For details on contributing to this repository, see the [contributing guide](htt
 [sample_audio_translation]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/AudioTranslationSample.java
 [sample_chat_with_images]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsVisionSample.java
 [sample_tool_calls]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/GetChatCompletionsToolCallSample.java
+[sample_text_to_speech]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/samples/java/com/azure/ai/openai/usage/TextToSpeechSample.java
 [openai_client_async]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIAsyncClient.java
 [openai_client_builder]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClientBuilder.java
 [openai_client_sync]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/openai/azure-ai-openai/src/main/java/com/azure/ai/openai/OpenAIClient.java

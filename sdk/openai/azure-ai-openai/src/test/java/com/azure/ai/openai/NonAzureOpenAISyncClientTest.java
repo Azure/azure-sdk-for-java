@@ -657,4 +657,14 @@ public class NonAzureOpenAISyncClientTest extends OpenAIClientTestBase {
             assertFalse(CoreUtils.isNullOrEmpty(contentBuilder.toString()));
         }));
     }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testTextToSpeech(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getNonAzureOpenAISyncClient(httpClient);
+        textToSpeechRunnerForNonAzure(((modelId, speechGenerationOptions) -> {
+            BinaryData binaryData = client.generateSpeechFromText(modelId, speechGenerationOptions);
+            assertNotNull(binaryData);
+        }));
+    }
 }

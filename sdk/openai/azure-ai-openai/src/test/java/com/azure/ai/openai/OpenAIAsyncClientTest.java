@@ -851,4 +851,16 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
             }).verifyComplete();
         });
     }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
+    public void testTextToSpeech(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
+        client = getOpenAIAsyncClient(httpClient, serviceVersion);
+        textToSpeechRunner(((modelId, speechGenerationOptions) -> {
+            StepVerifier.create(client.generateSpeechFromText(modelId, speechGenerationOptions))
+                    .assertNext(speech -> {
+                        assertNotNull(speech.toBytes());
+                    }).verifyComplete();
+        }));
+    }
 }

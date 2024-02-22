@@ -1384,12 +1384,14 @@ public final class OpenAIAsyncClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response} on successful completion of {@link Mono}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> generateSpeechFromTextWithResponse(String deploymentOrModelName,
         BinaryData speechGenerationOptions, RequestOptions requestOptions) {
-        return this.serviceClient.generateSpeechFromTextWithResponseAsync(deploymentOrModelName,
-            speechGenerationOptions, requestOptions);
+        return this.openAIServiceClient != null
+            ? this.openAIServiceClient.generateSpeechFromTextWithResponseAsync(deploymentOrModelName,
+                speechGenerationOptions, requestOptions)
+            : this.serviceClient.generateSpeechFromTextWithResponseAsync(deploymentOrModelName, speechGenerationOptions,
+                requestOptions);
     }
 
     /**

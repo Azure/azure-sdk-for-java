@@ -1334,12 +1334,14 @@ public final class OpenAIClient {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return the response body along with {@link Response}.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> generateSpeechFromTextWithResponse(String deploymentOrModelName,
         BinaryData speechGenerationOptions, RequestOptions requestOptions) {
-        return this.serviceClient.generateSpeechFromTextWithResponse(deploymentOrModelName, speechGenerationOptions,
-            requestOptions);
+        return openAIServiceClient != null
+                ? this.openAIServiceClient.generateSpeechFromTextWithResponse(deploymentOrModelName,
+                speechGenerationOptions, requestOptions)
+                : this.serviceClient.generateSpeechFromTextWithResponse(deploymentOrModelName,
+                speechGenerationOptions, requestOptions);
     }
 
     /**
