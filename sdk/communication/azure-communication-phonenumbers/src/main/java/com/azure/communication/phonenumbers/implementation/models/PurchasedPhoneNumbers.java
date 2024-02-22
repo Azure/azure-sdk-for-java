@@ -10,7 +10,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The PurchasedPhoneNumbers model. */
+/** The list of purchased phone numbers. */
 @Fluent
 @Generated
 public final class PurchasedPhoneNumbers {

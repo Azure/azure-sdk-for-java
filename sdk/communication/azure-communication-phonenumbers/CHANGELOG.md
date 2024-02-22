@@ -35,6 +35,12 @@
 - Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
 - Upgraded `azure-communication-common` from `1.2.13` to version `1.2.14`.
 
+## 1.2.0-beta.1 (2023-09-07)
+
+### Features Added
+- Number Lookup API public preview
+- API version `2023-05-01-preview` is the default
+
 ## 1.1.7 (2023-10-20)
 
 ### Other Changes

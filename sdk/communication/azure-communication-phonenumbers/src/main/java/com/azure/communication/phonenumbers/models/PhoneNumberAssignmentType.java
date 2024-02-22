@@ -27,9 +27,9 @@ public final class PhoneNumberAssignmentType extends ExpandableStringEnum<PhoneN
         return fromString(name, PhoneNumberAssignmentType.class);
     }
 
-    /** 
+    /**
      * Gives a collestion ov PhoneNumberAssignmentType
-     * 
+     *
      * @return known PhoneNumberAssignmentType values.
      */
     public static Collection<PhoneNumberAssignmentType> values() {
