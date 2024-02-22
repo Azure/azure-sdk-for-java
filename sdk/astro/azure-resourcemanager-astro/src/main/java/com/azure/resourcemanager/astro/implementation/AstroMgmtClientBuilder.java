@@ -15,10 +15,10 @@ import com.azure.core.util.serializer.SerializerAdapter;
 import java.time.Duration;
 
 /**
- * A builder for creating a new instance of the AstronomerAstroImpl type.
+ * A builder for creating a new instance of the AstroMgmtClientImpl type.
  */
-@ServiceClientBuilder(serviceClients = { AstronomerAstroImpl.class })
-public final class AstronomerAstroBuilder {
+@ServiceClientBuilder(serviceClients = { AstroMgmtClientImpl.class })
+public final class AstroMgmtClientBuilder {
     /*
      * The ID of the target subscription.
      */
@@ -28,9 +28,9 @@ public final class AstronomerAstroBuilder {
      * Sets The ID of the target subscription.
      * 
      * @param subscriptionId the subscriptionId value.
-     * @return the AstronomerAstroBuilder.
+     * @return the AstroMgmtClientBuilder.
      */
-    public AstronomerAstroBuilder subscriptionId(String subscriptionId) {
+    public AstroMgmtClientBuilder subscriptionId(String subscriptionId) {
         this.subscriptionId = subscriptionId;
         return this;
     }
@@ -44,9 +44,9 @@ public final class AstronomerAstroBuilder {
      * Sets server parameter.
      * 
      * @param endpoint the endpoint value.
-     * @return the AstronomerAstroBuilder.
+     * @return the AstroMgmtClientBuilder.
      */
-    public AstronomerAstroBuilder endpoint(String endpoint) {
+    public AstroMgmtClientBuilder endpoint(String endpoint) {
         this.endpoint = endpoint;
         return this;
     }
@@ -60,9 +60,9 @@ public final class AstronomerAstroBuilder {
      * Sets The environment to connect to.
      * 
      * @param environment the environment value.
-     * @return the AstronomerAstroBuilder.
+     * @return the AstroMgmtClientBuilder.
      */
-    public AstronomerAstroBuilder environment(AzureEnvironment environment) {
+    public AstroMgmtClientBuilder environment(AzureEnvironment environment) {
         this.environment = environment;
         return this;
     }
@@ -76,9 +76,9 @@ public final class AstronomerAstroBuilder {
      * Sets The HTTP pipeline to send requests through.
      * 
      * @param pipeline the pipeline value.
-     * @return the AstronomerAstroBuilder.
+     * @return the AstroMgmtClientBuilder.
      */
-    public AstronomerAstroBuilder pipeline(HttpPipeline pipeline) {
+    public AstroMgmtClientBuilder pipeline(HttpPipeline pipeline) {
         this.pipeline = pipeline;
         return this;
     }
@@ -92,9 +92,9 @@ public final class AstronomerAstroBuilder {
      * Sets The default poll interval for long-running operation.
      * 
      * @param defaultPollInterval the defaultPollInterval value.
-     * @return the AstronomerAstroBuilder.
+     * @return the AstroMgmtClientBuilder.
      */
-    public AstronomerAstroBuilder defaultPollInterval(Duration defaultPollInterval) {
+    public AstroMgmtClientBuilder defaultPollInterval(Duration defaultPollInterval) {
         this.defaultPollInterval = defaultPollInterval;
         return this;
     }
@@ -108,19 +108,19 @@ public final class AstronomerAstroBuilder {
      * Sets The serializer to serialize an object into a string.
      * 
      * @param serializerAdapter the serializerAdapter value.
-     * @return the AstronomerAstroBuilder.
+     * @return the AstroMgmtClientBuilder.
      */
-    public AstronomerAstroBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
+    public AstroMgmtClientBuilder serializerAdapter(SerializerAdapter serializerAdapter) {
         this.serializerAdapter = serializerAdapter;
         return this;
     }
 
     /**
-     * Builds an instance of AstronomerAstroImpl with the provided parameters.
+     * Builds an instance of AstroMgmtClientImpl with the provided parameters.
      * 
-     * @return an instance of AstronomerAstroImpl.
+     * @return an instance of AstroMgmtClientImpl.
      */
-    public AstronomerAstroImpl buildClient() {
+    public AstroMgmtClientImpl buildClient() {
         String localEndpoint = (endpoint != null) ? endpoint : "https://management.azure.com";
         AzureEnvironment localEnvironment = (environment != null) ? environment : AzureEnvironment.AZURE;
         HttpPipeline localPipeline = (pipeline != null) ? pipeline
@@ -129,7 +129,7 @@ public final class AstronomerAstroBuilder {
             = (defaultPollInterval != null) ? defaultPollInterval : Duration.ofSeconds(30);
         SerializerAdapter localSerializerAdapter = (serializerAdapter != null) ? serializerAdapter
             : SerializerFactory.createDefaultManagementSerializerAdapter();
-        AstronomerAstroImpl client = new AstronomerAstroImpl(localPipeline, localSerializerAdapter,
+        AstroMgmtClientImpl client = new AstroMgmtClientImpl(localPipeline, localSerializerAdapter,
             localDefaultPollInterval, localEnvironment, this.subscriptionId, localEndpoint);
         return client;
     }

@@ -23,8 +23,8 @@ import com.azure.core.management.http.policy.ArmChallengeAuthenticationPolicy;
 import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.resourcemanager.astro.fluent.AstronomerAstro;
-import com.azure.resourcemanager.astro.implementation.AstronomerAstroBuilder;
+import com.azure.resourcemanager.astro.fluent.AstroMgmtClient;
+import com.azure.resourcemanager.astro.implementation.AstroMgmtClientBuilder;
 import com.azure.resourcemanager.astro.implementation.OperationsImpl;
 import com.azure.resourcemanager.astro.implementation.OrganizationsImpl;
 import com.azure.resourcemanager.astro.models.Operations;
@@ -44,12 +44,12 @@ public final class AstroManager {
 
     private Organizations organizations;
 
-    private final AstronomerAstro clientObject;
+    private final AstroMgmtClient clientObject;
 
     private AstroManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject = new AstronomerAstroBuilder().pipeline(httpPipeline)
+        this.clientObject = new AstroMgmtClientBuilder().pipeline(httpPipeline)
             .endpoint(profile.getEnvironment().getResourceManagerEndpoint()).subscriptionId(profile.getSubscriptionId())
             .defaultPollInterval(defaultPollInterval).buildClient();
     }
@@ -267,12 +267,12 @@ public final class AstroManager {
     }
 
     /**
-     * Gets wrapped service client AstronomerAstro providing direct access to the underlying auto-generated API
+     * Gets wrapped service client AstroMgmtClient providing direct access to the underlying auto-generated API
      * implementation, based on Azure REST API.
      * 
-     * @return Wrapped service client AstronomerAstro.
+     * @return Wrapped service client AstroMgmtClient.
      */
-    public AstronomerAstro serviceClient() {
+    public AstroMgmtClient serviceClient() {
         return this.clientObject;
     }
 }

@@ -52,25 +52,25 @@ public final class OrganizationsClientImpl implements OrganizationsClient {
     /**
      * The service client containing this operation class.
      */
-    private final AstronomerAstroImpl client;
+    private final AstroMgmtClientImpl client;
 
     /**
      * Initializes an instance of OrganizationsClientImpl.
      * 
      * @param client the instance of the service client containing this operation class.
      */
-    OrganizationsClientImpl(AstronomerAstroImpl client) {
+    OrganizationsClientImpl(AstroMgmtClientImpl client) {
         this.service
             = RestProxy.create(OrganizationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AstronomerAstroOrganizations to be used by the proxy service to
+     * The interface defining all the services for AstroMgmtClientOrganizations to be used by the proxy service to
      * perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AstronomerAstroOrgan")
+    @ServiceInterface(name = "AstroMgmtClientOrgan")
     public interface OrganizationsService {
         @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Astronomer.Astro/organizations")

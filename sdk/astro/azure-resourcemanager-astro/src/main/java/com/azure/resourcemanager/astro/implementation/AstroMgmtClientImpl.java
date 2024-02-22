@@ -22,7 +22,7 @@ import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
-import com.azure.resourcemanager.astro.fluent.AstronomerAstro;
+import com.azure.resourcemanager.astro.fluent.AstroMgmtClient;
 import com.azure.resourcemanager.astro.fluent.OperationsClient;
 import com.azure.resourcemanager.astro.fluent.OrganizationsClient;
 import java.io.IOException;
@@ -35,10 +35,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 /**
- * Initializes a new instance of the AstronomerAstroImpl type.
+ * Initializes a new instance of the AstroMgmtClientImpl type.
  */
-@ServiceClient(builder = AstronomerAstroBuilder.class)
-public final class AstronomerAstroImpl implements AstronomerAstro {
+@ServiceClient(builder = AstroMgmtClientBuilder.class)
+public final class AstroMgmtClientImpl implements AstroMgmtClient {
     /**
      * The ID of the target subscription.
      */
@@ -152,7 +152,7 @@ public final class AstronomerAstroImpl implements AstronomerAstro {
     }
 
     /**
-     * Initializes an instance of AstronomerAstro client.
+     * Initializes an instance of AstroMgmtClient client.
      * 
      * @param httpPipeline The HTTP pipeline to send requests through.
      * @param serializerAdapter The serializer to serialize an object into a string.
@@ -161,7 +161,7 @@ public final class AstronomerAstroImpl implements AstronomerAstro {
      * @param subscriptionId The ID of the target subscription.
      * @param endpoint server parameter.
      */
-    AstronomerAstroImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval,
+    AstroMgmtClientImpl(HttpPipeline httpPipeline, SerializerAdapter serializerAdapter, Duration defaultPollInterval,
         AzureEnvironment environment, String subscriptionId, String endpoint) {
         this.httpPipeline = httpPipeline;
         this.serializerAdapter = serializerAdapter;
@@ -299,5 +299,5 @@ public final class AstronomerAstroImpl implements AstronomerAstro {
         }
     }
 
-    private static final ClientLogger LOGGER = new ClientLogger(AstronomerAstroImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(AstroMgmtClientImpl.class);
 }

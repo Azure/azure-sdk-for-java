@@ -8,9 +8,9 @@ import com.azure.core.http.HttpPipeline;
 import java.time.Duration;
 
 /**
- * The interface for AstronomerAstro class.
+ * The interface for AstroMgmtClient class.
  */
-public interface AstronomerAstro {
+public interface AstroMgmtClient {
     /**
      * Gets The ID of the target subscription.
      * 
