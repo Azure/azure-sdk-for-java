@@ -4,11 +4,11 @@
 package com.generic.core.http.policy;
 
 import com.generic.core.credential.KeyCredential;
-import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
 import com.generic.core.http.pipeline.HttpPipelinePolicy;
+import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
 
@@ -60,7 +60,7 @@ public class KeyCredentialPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public HttpResponse<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+    public HttpResponse process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         if ("http".equals(httpRequest.getUrl().getProtocol())) {
             throw LOGGER.logThrowableAsError(
                 new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));

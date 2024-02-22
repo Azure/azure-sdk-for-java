@@ -95,20 +95,20 @@ public abstract class RestProxyBase {
     @SuppressWarnings({"unchecked"})
     public Response<?> createResponse(HttpResponseDecoder.HttpDecodedResponse response, Type entityType,
                                       Object bodyAsObject) {
-        final Class<? extends Response<?>> cls = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
+        final Class<? extends Response<?>> clazz = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
 
         // Inspection of the response type needs to be performed to determine which course of action should be taken to
         // instantiate the Response<?> from the HttpResponse.
         //
         // If the type is either the Response or PagedResponse interface from azure-core a new instance of either
         // ResponseBase or PagedResponseBase can be returned.
-        if (cls.equals(Response.class)) {
+        if (clazz.equals(Response.class)) {
             // For Response return the received HttpDecodedResponse cast to the class.
-            if (response.getCachedBody() == null) {
+            if (response.getValue() == null) {
                 response.setCachedBody(bodyAsObject);
             }
 
-            return cls.cast(response);
+            return clazz.cast(response);
         }
 
         // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response subtype.
@@ -116,7 +116,7 @@ public abstract class RestProxyBase {
         // Ideally, in the future the SDKs won't need to dabble in reflection here as the Response subtypes should be
         // given a way to register their constructor as a callback method that consumes HttpDecodedResponse and the body
         // as an Object.
-        ReflectiveInvoker constructorReflectiveInvoker = RESPONSE_CONSTRUCTORS_CACHE.get(cls);
+        ReflectiveInvoker constructorReflectiveInvoker = RESPONSE_CONSTRUCTORS_CACHE.get(clazz);
 
         return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorReflectiveInvoker, response, bodyAsObject);
     }
@@ -246,17 +246,17 @@ public abstract class RestProxyBase {
      * @return The {@link HttpResponseException} created from the provided details.
      */
     public static HttpResponseException instantiateUnexpectedException(UnexpectedExceptionInformation unexpectedExceptionInformation,
-                                                                       HttpResponse<?> httpResponse,
+                                                                       HttpResponse httpResponse,
                                                                        byte[] responseContent,
                                                                        Object responseDecodedContent) {
         StringBuilder exceptionMessage = new StringBuilder("Status code ")
             .append(httpResponse.getStatusCode())
             .append(", ");
 
-        final String contentType = httpResponse.getHeaderValue(HeaderName.CONTENT_TYPE);
+        final String contentType = httpResponse.getHeaders().getValue(HeaderName.CONTENT_TYPE);
 
         if ("application/octet-stream".equalsIgnoreCase(contentType)) {
-            String contentLength = httpResponse.getHeaderValue(HeaderName.CONTENT_LENGTH);
+            String contentLength = httpResponse.getHeaders().getValue(HeaderName.CONTENT_LENGTH);
 
             exceptionMessage.append("(").append(contentLength).append("-byte body)");
         } else if (responseContent == null || responseContent.length == 0) {

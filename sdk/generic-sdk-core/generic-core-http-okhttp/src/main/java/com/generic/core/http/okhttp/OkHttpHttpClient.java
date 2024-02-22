@@ -46,7 +46,7 @@ class OkHttpHttpClient implements HttpClient {
     }
 
     @Override
-    public HttpResponse<?> send(HttpRequest request) {
+    public HttpResponse send(HttpRequest request) {
         boolean eagerlyConvertHeaders = request.getMetadata().isEagerlyConvertHeaders();
         boolean eagerlyReadResponse = request.getMetadata().isEagerlyReadResponse();
         boolean ignoreResponseBody = request.getMetadata().isIgnoreResponseBody();
@@ -140,7 +140,7 @@ class OkHttpHttpClient implements HttpClient {
         return contentLength;
     }
 
-    private static HttpResponse<?> toHttpResponse(HttpRequest request, okhttp3.Response response,
+    private static HttpResponse toHttpResponse(HttpRequest request, okhttp3.Response response,
                                                   boolean eagerlyReadResponse, boolean ignoreResponseBody,
                                                   boolean eagerlyConvertHeaders) throws IOException {
         /*// For now, eagerlyReadResponse and ignoreResponseBody works the same.
@@ -156,7 +156,7 @@ class OkHttpHttpClient implements HttpClient {
                 body.close();
             }
 
-            return new OkHttpBufferedResponse(response, request, EMPTY_BODY, eagerlyConvertHeaders);
+            return new OkHttpBufferedResponse(response, request, eagerlyConvertHeaders, EMPTY_BODY);
         }*/
 
         // Use a buffered response when we are eagerly reading the response from the network and the body isn't empty.
@@ -164,7 +164,7 @@ class OkHttpHttpClient implements HttpClient {
             try (ResponseBody body = response.body()) {
                 byte[] bytes = (body != null) ? body.bytes() : EMPTY_BODY;
 
-                return new OkHttpBufferedResponse(response, request, bytes, eagerlyConvertHeaders);
+                return new OkHttpBufferedResponse(response, request, eagerlyConvertHeaders, bytes);
             }
         } else {
             return new OkHttpResponse(response, request, eagerlyConvertHeaders);

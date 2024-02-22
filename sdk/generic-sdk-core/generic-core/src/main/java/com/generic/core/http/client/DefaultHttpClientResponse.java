@@ -3,22 +3,20 @@
 
 package com.generic.core.http.client;
 
-import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Headers;
 
-class DefaultHttpClientResponse extends HttpResponse<BinaryData> {
+class DefaultHttpClientResponse extends HttpResponse {
     private final int statusCode;
     private final Headers headers;
-    private final BinaryData body;
 
-    DefaultHttpClientResponse(HttpRequest request, int statusCode, Headers headers, BinaryData body) {
-        super(request);
+    DefaultHttpClientResponse(HttpRequest request, int statusCode, Headers headers, BinaryData value) {
+        super(request, value);
+
         this.statusCode = statusCode;
         this.headers = headers;
-        this.body = body;
     }
 
     @Override
@@ -27,26 +25,11 @@ class DefaultHttpClientResponse extends HttpResponse<BinaryData> {
     }
 
     @Override
-    public String getHeaderValue(HeaderName name) {
-        return headers.getValue(name);
-    }
-
-    @Override
     public Headers getHeaders() {
         return this.headers;
     }
 
-    @Override
-    public BinaryData getValue() {
-        return this.body;
-    }
-
-    @Override
-    public BinaryData getBody() {
-        return this.body;
-    }
-
-    public HttpResponse<?> buffer() {
+    public HttpResponse buffer() {
         return this;
     }
 }

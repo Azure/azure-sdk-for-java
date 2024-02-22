@@ -3,16 +3,16 @@
 
 package com.generic.core.http.okhttp.implementation;
 
-import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
+import com.generic.core.models.HeaderName;
 import okhttp3.Headers;
 import okhttp3.Response;
 
 /**
  * Base response class for OkHttp with implementations for response metadata.
  */
-abstract class OkHttpResponseBase<T> extends HttpResponse<T> {
+abstract class OkHttpResponseBase extends HttpResponse {
     private final int statusCode;
     private final com.generic.core.models.Headers headers;
 
@@ -30,22 +30,17 @@ abstract class OkHttpResponseBase<T> extends HttpResponse<T> {
         return this.statusCode;
     }
 
-
-    public final String getHeaderValue(HeaderName headerName) {
-        return this.headers.getValue(headerName);
-    }
-
     @Override
     public final com.generic.core.models.Headers getHeaders() {
         return this.headers;
     }
 
     /**
-     * Creates generic-core Headers from OkHttp headers.
+     * Creates {@link com.generic.core.models.Headers Generic Core's headers} from {@link Headers OkHttp headers}.
      *
-     * @param okHttpHeaders OkHttp headers
+     * @param okHttpHeaders {@link Headers OkHttp headers}.
      *
-     * @return generic-core Headers
+     * @return {@link com.generic.core.models.Headers Generic Core's headers}.
      */
     static com.generic.core.models.Headers fromOkHttpHeaders(Headers okHttpHeaders) {
         /*
@@ -58,11 +53,12 @@ abstract class OkHttpResponseBase<T> extends HttpResponse<T> {
         com.generic.core.models.Headers httpHeaders =
             new com.generic.core.models.Headers((int) (okHttpHeaders.size() / 0.75F));
 
-        // Use OkHttp's Headers forEach instead of the previous names and values approach.
-        // forEach allows for a single iteration over the internal array of header values whereas names and values
-        // will iterate over the internal array of header values for each name. With the new approach use generic-core
-        // HttpHeaders add method.
-        // Overall, this is much better performing as almost all headers will have a single value.
+        /*
+         * Use OkHttp's Headers.forEach() instead of the names and values approach. forEach() allows for a single
+         * iteration over the internal array of header values whereas names and values will iterate over the internal
+         * array of header values for each name. With the new approach we also use Generic Core's Headers.add() method.
+         * Overall, this is much better performing as almost all headers will have a single value.
+         */
         okHttpHeaders.forEach(nameValuePair ->
             httpHeaders.add(HeaderName.fromString(nameValuePair.getFirst()), nameValuePair.getSecond()));
 

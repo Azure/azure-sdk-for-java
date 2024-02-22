@@ -63,7 +63,7 @@ public class HttpPipelinePolicyTests {
      * @throws MalformedURLException ignored.
      */
     @Test
-    public void doesntThrowThatThreadIsNonBlocking() throws IOException, MalformedURLException {
+    public void doesntThrowThatThreadIsNonBlocking() throws IOException {
         SyncPolicy policy1 = new SyncPolicy();
         HttpPipelinePolicy badPolicy1 = (httpRequest, next) -> {
             try {
@@ -103,12 +103,11 @@ public class HttpPipelinePolicyTests {
         pipeline.send(new HttpRequest(HttpMethod.GET, url));
     }
 
-
     private static class SyncPolicy implements HttpPipelinePolicy {
         final AtomicInteger syncCalls = new AtomicInteger();
 
         @Override
-        public HttpResponse<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        public HttpResponse process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
             syncCalls.incrementAndGet();
 
             return next.process();
@@ -119,7 +118,7 @@ public class HttpPipelinePolicyTests {
         final AtomicInteger syncCalls = new AtomicInteger();
 
         @Override
-        public HttpResponse<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        public HttpResponse process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
             syncCalls.incrementAndGet();
 
             return next.process();

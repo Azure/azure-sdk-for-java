@@ -9,10 +9,10 @@ import com.generic.core.http.annotation.HeaderParam;
 import com.generic.core.http.annotation.HttpRequestInformation;
 import com.generic.core.http.annotation.PathParam;
 import com.generic.core.http.client.HttpClient;
-import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
+import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
 import com.generic.core.implementation.http.ContentType;
@@ -21,7 +21,7 @@ import com.generic.core.implementation.http.rest.RestProxyUtils;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Context;
-import com.generic.core.http.models.RequestOptions;
+import com.generic.core.models.HeaderName;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -247,7 +247,7 @@ public class RestProxyTests {
         private volatile boolean closeCalledOnResponse;
 
         @Override
-        public HttpResponse<?> send(HttpRequest request) {
+        public HttpResponse send(HttpRequest request) {
             lastHttpRequest = request;
             boolean success = request.getUrl().getPath().equals("/my/url/path");
 

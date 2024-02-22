@@ -5,7 +5,6 @@ package com.generic.core.http.models;
 
 import com.generic.core.http.Response;
 import com.generic.core.models.BinaryData;
-import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 
 import java.io.Closeable;
@@ -14,10 +13,10 @@ import java.io.IOException;
 /**
  * The response of an {@link HttpRequest}.
  */
-public abstract class HttpResponse<T> implements Closeable, Response<T> {
+public abstract class HttpResponse implements Response<BinaryData>, Closeable {
     private final HttpRequest request;
-    private BinaryData binaryData = null;
-    private final byte[] bodyBytes;
+
+    private final BinaryData value;
 
     /**
      * Creates an instance of {@link HttpResponse}.
@@ -26,18 +25,18 @@ public abstract class HttpResponse<T> implements Closeable, Response<T> {
      */
     protected HttpResponse(HttpRequest request) {
         this.request = request;
-        this.bodyBytes = null;
+        this.value = null;
     }
 
     /**
      * Creates an instance of {@link HttpResponse}.
      *
      * @param request The {@link HttpRequest} that resulted in this {@link HttpResponse}.
-     * @param bodyBytes The response body as a byte array.
+     * @param value The response body as a byte array.
      */
-    protected HttpResponse(HttpRequest request, byte[] bodyBytes) {
+    protected HttpResponse(HttpRequest request, BinaryData value) {
         this.request = request;
-        this.bodyBytes = bodyBytes;
+        this.value = value;
     }
 
     /**
@@ -48,38 +47,11 @@ public abstract class HttpResponse<T> implements Closeable, Response<T> {
     public abstract int getStatusCode();
 
     /**
-     * Lookup a response header with the provider {@link HeaderName}.
+     * Get all response {@link Headers}.
      *
-     * @param headerName The name of the header to lookup.
-     *
-     * @return The value of the header, or {@code null} if the header doesn't exist in the response.
-     */
-    public String getHeaderValue(HeaderName headerName) {
-        return getHeaders().getValue(headerName);
-    }
-
-    /**
-     * Get all response headers.
-     *
-     * @return the response headers
+     * @return The response {@link Headers}.
      */
     public abstract Headers getHeaders();
-
-    /**
-     * Gets the {@link BinaryData} that represents the body of the response.
-     *
-     * <p>Subclasses should override this method.</p>
-     *
-     * @return The {@link BinaryData} response body.
-     */
-    public BinaryData getBody() {
-        // We shouldn't create multiple binary data instances for a single stream.
-        if (binaryData == null && bodyBytes != null) {
-            binaryData = BinaryData.fromBytes(bodyBytes);
-        }
-
-        return binaryData;
-    }
 
     /**
      * Gets the {@link HttpRequest request} which resulted in this response.
@@ -87,7 +59,25 @@ public abstract class HttpResponse<T> implements Closeable, Response<T> {
      * @return The {@link HttpRequest request} which resulted in this response.
      */
     public final HttpRequest getRequest() {
-        return request;
+        return this.request;
+    }
+
+    /**
+     * Gets the deserialized value of this response.
+     *
+     * @return The deserialized value of this response.
+     */
+    public BinaryData getValue() {
+        return this.value;
+    }
+
+    /**
+     * Gets the {@link BinaryData} that represents the body of the response.
+     *
+     * @return The {@link BinaryData} response body.
+     */
+    public BinaryData getBody() {
+        return getValue();
     }
 
     /**

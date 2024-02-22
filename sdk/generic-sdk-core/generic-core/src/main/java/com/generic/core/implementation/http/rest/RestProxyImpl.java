@@ -7,12 +7,12 @@ import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
+import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.http.serializer.HttpResponseDecoder;
 import com.generic.core.implementation.util.Base64Url;
 import com.generic.core.models.BinaryData;
-import com.generic.core.http.models.RequestOptions;
 import com.generic.core.util.serializer.ObjectSerializer;
 import com.generic.json.JsonSerializable;
 
@@ -48,7 +48,7 @@ public class RestProxyImpl extends RestProxyBase {
      *
      * @return A {@link HttpResponse} that emits HttpResponse asynchronously.
      */
-    HttpResponse<?> send(HttpRequest request) {
+    HttpResponse send(HttpRequest request) {
         return httpPipeline.send(request);
     }
 
@@ -68,7 +68,7 @@ public class RestProxyImpl extends RestProxyBase {
             request.setBody(RestProxyUtils.validateLength(request));
         }
 
-        final HttpResponse<?> response = send(request);
+        final HttpResponse response = send(request);
         decodedResponse = this.decoder.decode(response, methodParser);
 
         int statusCode = decodedResponse.getStatusCode();
@@ -109,18 +109,18 @@ public class RestProxyImpl extends RestProxyBase {
         }
 
         // Otherwise, the response wasn't successful and the error object needs to be parsed.
-        BinaryData responseData = decodedResponse.getBody();
+        BinaryData responseData = decodedResponse.getSourceResponse().getBody();
         byte[] responseBytes = responseData == null ? null : responseData.toBytes();
 
         if (responseBytes == null || responseBytes.length == 0) {
             // No body, create exception empty content string no exception body object.
             throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
-                decodedResponse, null, null);
+                decodedResponse.getSourceResponse(), null, null);
         } else {
             Object decodedBody = decodedResponse.getDecodedBody();
             // Create exception with un-decodable content string and without exception body object.
             throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
-                decodedResponse, responseBytes, decodedBody);
+                decodedResponse.getSourceResponse(), responseBytes, decodedBody);
         }
     }
 
@@ -130,7 +130,7 @@ public class RestProxyImpl extends RestProxyBase {
             final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
 
             if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
-                response.close();
+                response.getSourceResponse().close();
 
                 return createResponse(response, entityType, null);
             } else {
@@ -144,7 +144,6 @@ public class RestProxyImpl extends RestProxyBase {
                 return httpResponse;
             }
         } else {
-            // For now, we're just throwing if the Maybe didn't emit a value.
             return handleBodyReturnType(response, methodParser, entityType);
         }
     }
@@ -163,7 +162,7 @@ public class RestProxyImpl extends RestProxyBase {
             result = (responseStatusCode / 100) == 2;
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, byte[].class)) {
             // byte[]
-            BinaryData binaryData = response.getBody();
+            BinaryData binaryData = response.getSourceResponse().getBody();
             byte[] responseBodyBytes = binaryData != null ? binaryData.toBytes() : null;
 
             if (returnValueWireType == Base64Url.class) {
@@ -173,7 +172,7 @@ public class RestProxyImpl extends RestProxyBase {
 
             result = responseBodyBytes != null ? (responseBodyBytes.length == 0 ? null : responseBodyBytes) : null;
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, InputStream.class)) {
-            result = response.getBody().toStream();
+            result = response.getSourceResponse().getBody().toStream();
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, BinaryData.class)) {
             // BinaryData
             //
@@ -181,7 +180,7 @@ public class RestProxyImpl extends RestProxyBase {
             // different methods to read the response. The reading of the response is delayed until BinaryData
             // is read and depending on which format the content is converted into, the response is not necessarily
             // fully copied into memory resulting in lesser overall memory usage.
-            result = response.getBody();
+            result = response.getSourceResponse().getBody();
         } else {
             // Object or Page<T>
             result = response.getDecodedBody();
@@ -208,11 +207,11 @@ public class RestProxyImpl extends RestProxyBase {
 
         if (TypeUtil.isTypeOrSubTypeOf(returnType, void.class) || TypeUtil.isTypeOrSubTypeOf(returnType, Void.class)) {
             // ProxyMethod ReturnType: Void
-            expectedResponse.close();
+            expectedResponse.getSourceResponse().close();
 
             result = null;
         } else {
-            // ProxyMethod ReturnType: T where T != async (Mono, Flux) or sync Void
+            // ProxyMethod ReturnType: T where T != Void
             // Block the deserialization until a value T is received
             result = handleRestResponseReturnType(httpDecodedResponse, methodParser, returnType);
         }

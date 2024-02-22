@@ -3,7 +3,6 @@
 
 package com.generic.core.http.policy;
 
-import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
@@ -12,6 +11,7 @@ import com.generic.core.implementation.http.policy.ExponentialBackoff;
 import com.generic.core.implementation.http.policy.RetryStrategy;
 import com.generic.core.implementation.util.ImplUtils;
 import com.generic.core.implementation.util.LoggingKeys;
+import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
 
@@ -110,7 +110,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public HttpResponse<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+    public HttpResponse process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         try {
             return attempt(httpRequest, next, 0, null);
         } catch (IOException e) {
@@ -118,11 +118,11 @@ public class RetryPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private HttpResponse<?> attempt(final HttpRequest httpRequest, final HttpPipelineNextPolicy next,
+    private HttpResponse attempt(final HttpRequest httpRequest, final HttpPipelineNextPolicy next,
                                     final int tryCount, final List<Throwable> suppressed) throws IOException {
         httpRequest.getMetadata().setRetryCount(tryCount + 1);
 
-        HttpResponse<?> httpResponse;
+        HttpResponse httpResponse;
 
         try {
             httpResponse = next.clone().process();
@@ -177,7 +177,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private static boolean shouldRetry(RetryStrategy retryStrategy, HttpResponse<?> response, int tryCount) {
+    private static boolean shouldRetry(RetryStrategy retryStrategy, HttpResponse response, int tryCount) {
         return tryCount < retryStrategy.getMaxRetries() && retryStrategy.shouldRetry(response);
     }
 
@@ -226,14 +226,14 @@ public class RetryPolicy implements HttpPipelinePolicy {
     /*
      * Determines the delay duration that should be waited before retrying.
      */
-    static Duration determineDelayDuration(HttpResponse<?> response, int tryCount, RetryStrategy retryStrategy,
+    static Duration determineDelayDuration(HttpResponse response, int tryCount, RetryStrategy retryStrategy,
                                            HeaderName retryAfterHeader, ChronoUnit retryAfterTimeUnit) {
         // If the retry after header hasn't been configured, attempt to look up the well-known headers.
         if (retryAfterHeader == null) {
             return getWellKnownRetryDelay(response.getHeaders(), tryCount, retryStrategy, OffsetDateTime::now);
         }
 
-        String retryHeaderValue = response.getHeaderValue(retryAfterHeader);
+        String retryHeaderValue = response.getHeaders().getValue(retryAfterHeader);
 
         // Retry header is missing or empty, return the default delay duration.
         if (isNullOrEmpty(retryHeaderValue)) {

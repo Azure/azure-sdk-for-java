@@ -7,7 +7,7 @@ import com.generic.core.http.models.HttpRequest;
 import com.generic.core.models.Headers;
 
 /**
- * REST response with a strongly-typed content specified.
+ * Response with a strongly-typed content specified.
  *
  * @param <T> The deserialized type of the response content.
  */

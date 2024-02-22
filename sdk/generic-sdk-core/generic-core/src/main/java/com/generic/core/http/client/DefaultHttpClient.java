@@ -38,7 +38,7 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * HttpClient implementation using {@link HttpURLConnection} to send requests and receive responses.
+ * {@link HttpClient} implementation using {@link HttpURLConnection} to send requests and receive responses.
  */
 class DefaultHttpClient implements HttpClient {
     private static final ClientLogger LOGGER = new ClientLogger(DefaultHttpClient.class);
@@ -53,14 +53,14 @@ class DefaultHttpClient implements HttpClient {
     }
 
     /**
-     * Synchronously send the HttpRequest.
+     * Synchronously send an {@link HttpRequest}.
      *
-     * @param httpRequest The HTTP request being sent
+     * @param httpRequest The {@link HttpRequest} being sent.
      *
-     * @return The HttpResponse object
+     * @return The corresponding {@link HttpResponse}.
      */
     @Override
-    public HttpResponse<?> send(HttpRequest httpRequest) {
+    public HttpResponse send(HttpRequest httpRequest) {
         if (httpRequest.getHttpMethod() == HttpMethod.PATCH) {
             return sendPatchViaSocket(httpRequest);
         }
@@ -73,13 +73,13 @@ class DefaultHttpClient implements HttpClient {
     }
 
     /**
-     * Synchronously sends a PATCH request via a socket client.
+     * Synchronously sends a {@code PATCH} request via a socket client.
      *
-     * @param httpRequest The HTTP request being sent
+     * @param httpRequest The {@link HttpRequest} being sent.
      *
-     * @return The HttpResponse object
+     * @return The corresponding {@link HttpResponse}.
      */
-    private HttpResponse<?> sendPatchViaSocket(HttpRequest httpRequest) {
+    private HttpResponse sendPatchViaSocket(HttpRequest httpRequest) {
         try {
             return SocketClient.sendPatchRequest(httpRequest);
         } catch (IOException e) {
@@ -88,14 +88,14 @@ class DefaultHttpClient implements HttpClient {
     }
 
     /**
-     * Open a connection based on the HttpRequest URL
+     * Open a connection based on the request URL.
      *
-     * <p>If a proxy is specified, the authorization type will default to 'Basic' unless Digest authentication is
+     * <p>If a proxy is specified, the authorization type will default to 'Basic' unless digest authentication is
      * specified in the 'Authorization' header.</p>
      *
-     * @param httpRequest The HTTP Request being sent
+     * @param httpRequest The {@link HttpRequest} being sent.
      *
-     * @return The HttpURLConnection object
+     * @return An instance of {@link HttpURLConnection}.
      */
     private HttpURLConnection connect(HttpRequest httpRequest) {
         try {
@@ -112,6 +112,7 @@ class DefaultHttpClient implements HttpClient {
                     if (proxyOptions.getUsername() != null && proxyOptions.getPassword() != null) {
                         String authString = proxyOptions.getUsername() + ":" + proxyOptions.getPassword();
                         String authStringEnc = Base64.getEncoder().encodeToString(authString.getBytes());
+
                         connection.setRequestProperty("Proxy-Authorization", "Basic " + authStringEnc);
                     }
                 } else {
@@ -148,14 +149,15 @@ class DefaultHttpClient implements HttpClient {
     }
 
     /**
-     * Synchronously sends the content of an HttpRequest via an HttpUrlConnection instance.
+     * Synchronously sends the content of a request via an {@link HttpURLConnection} instance.
      *
-     * @param httpRequest The HTTP Request being sent
-     * @param progressReporter A reporter for the progress of the request
-     * @param connection The HttpURLConnection that is being sent to
+     * @param httpRequest The {@link HttpRequest} being sent.
+     * @param progressReporter A reporter for the progress of the request.
+     * @param connection The {@link HttpURLConnection} used to send the request.
      */
     private void sendBody(HttpRequest httpRequest, Object progressReporter, HttpURLConnection connection) {
         BinaryData body = httpRequest.getBody();
+
         if (body == null) {
             return;
         }
@@ -165,7 +167,6 @@ class DefaultHttpClient implements HttpClient {
             case GET:
             case HEAD:
                 return;
-
             case OPTIONS:
             case TRACE:
             case CONNECT:
@@ -181,21 +182,20 @@ class DefaultHttpClient implements HttpClient {
                     throw LOGGER.logThrowableAsError(new RuntimeException(e));
                 }
                 return;
-
             default:
                 throw LOGGER.logThrowableAsError(new IllegalStateException("Unknown HTTP Method: " + method));
         }
     }
 
     /**
-     * Receive the response from the remote server
+     * Receive the response from the remote server.
      *
-     * @param httpRequest The HTTP Request being sent
-     * @param connection The HttpURLConnection being sent to
+     * @param httpRequest The {@link HttpRequest} being sent.
+     * @param connection The {@link HttpURLConnection} used to send the request.
      *
-     * @return A HttpResponse object
+     * @return An instance of {@link HttpResponse}.
      */
-    private HttpResponse<?> receiveResponse(HttpRequest httpRequest, HttpURLConnection connection) {
+    private HttpResponse receiveResponse(HttpRequest httpRequest, HttpURLConnection connection) {
         try {
             int responseCode = connection.getResponseCode();
 
@@ -214,6 +214,7 @@ class DefaultHttpClient implements HttpClient {
                  InputStream inputStream = (errorStream == null) ? connection.getInputStream() : errorStream) {
                 byte[] buffer = new byte[8192];
                 int length;
+
                 while ((length = inputStream.read(buffer)) != -1) {
                     outputStream.write(buffer, 0, length);
                 }
@@ -229,20 +230,21 @@ class DefaultHttpClient implements HttpClient {
     }
 
     private static class SocketClient {
-
         private static final String HTTP_VERSION = " HTTP/1.1";
         private static final SSLSocketFactory SSL_SOCKET_FACTORY = (SSLSocketFactory) SSLSocketFactory.getDefault();
 
         /**
-         * Opens a socket connection, then writes the PATCH request across the
-         * connection and reads the response
+         * Opens a socket connection, then writes the {@code PATCH} request across the connection and reads the
+         * response.
          *
-         * @param httpRequest The HTTP Request being sent
-         * @return an instance of HttpUrlConnectionResponse
-         * @throws ProtocolException If the protocol is not HTTP or HTTPS
-         * @throws IOException If an I/O error occurs
+         * @param httpRequest The {@link HttpRequest} being sent.
+         *
+         * @return An instance of {@link HttpResponse}.
+         *
+         * @throws ProtocolException If the protocol is not {@code HTTP} or {@code HTTPS}.
+         * @throws IOException If an I/O error occurs.
          */
-        public static DefaultHttpClientResponse sendPatchRequest(HttpRequest httpRequest) throws IOException {
+        public static HttpResponse sendPatchRequest(HttpRequest httpRequest) throws IOException {
             final URL requestUrl = httpRequest.getUrl();
             final String protocol = requestUrl.getProtocol();
             final String host = requestUrl.getHost();
@@ -266,17 +268,19 @@ class DefaultHttpClient implements HttpClient {
         }
 
         /**
-         * Calls buildAndSend to send a String representation of the request across the output
-         * stream, then calls buildResponse to get an instance of HttpUrlConnectionResponse
-         * from the input stream
+         * Calls {@link #buildAndSend} to send a {@link String} representation of the request across the output stream,
+         * then calls buildResponse to get an instance of {@link HttpResponse} from the input stream.
          *
-         * @param httpRequest The HTTP Request being sent
-         * @param socket An instance of the SocketClient
-         * @return an instance of HttpUrlConnectionResponse
+         * @param httpRequest The {@link HttpRequest} being sent..
+         * @param socket An instance of the SocketClient.
+         *
+         * @return an instance of HttpUrlConnectionResponse.
          */
         @SuppressWarnings("deprecation")
-        private static DefaultHttpClientResponse doInputOutput(HttpRequest httpRequest, Socket socket) throws IOException {
+        private static HttpResponse doInputOutput(HttpRequest httpRequest, Socket socket)
+            throws IOException {
             httpRequest.setHeader(HeaderName.HOST, httpRequest.getUrl().getHost());
+
             if (!"keep-alive".equalsIgnoreCase(httpRequest.getHeaders().getValue(HeaderName.CONNECTION))) {
                 httpRequest.setHeader(HeaderName.CONNECTION, "close");
             }
@@ -287,8 +291,8 @@ class DefaultHttpClient implements HttpClient {
                 OutputStreamWriter out = new OutputStreamWriter(socket.getOutputStream())) {
 
                 buildAndSend(httpRequest, out);
-                DefaultHttpClientResponse response = buildResponse(httpRequest, in);
 
+                HttpResponse response = buildResponse(httpRequest, in);
                 Header locationHeader = response.getHeaders().get(HeaderName.LOCATION);
                 String redirectLocation = (locationHeader == null) ? null : locationHeader.getValue();
 
@@ -298,19 +302,22 @@ class DefaultHttpClient implements HttpClient {
                     } else {
                         httpRequest.setUrl(new URL(httpRequest.getUrl(), redirectLocation));
                     }
+
                     return sendPatchRequest(httpRequest);
                 }
+
                 return response;
             }
         }
 
         /**
-         * Converts an instance of HttpRequest to a String representation for sending
-         * over the output stream
+         * Converts an instance of {@link HttpRequest} to a {@link String} representation for sending over an output
+         * stream.
          *
-         * @param httpRequest The HTTP Request being sent
-         * @param out output stream for writing the request
-         * @throws IOException If an I/O error occurs
+         * @param httpRequest The {@link HttpRequest} being sent.
+         * @param out {@link OutputStreamWriter} for writing the request to.
+         *
+         * @throws IOException If an I/O error occurs.
          */
         private static void buildAndSend(HttpRequest httpRequest, OutputStreamWriter out) throws IOException {
             final StringBuilder request = new StringBuilder();
@@ -339,15 +346,17 @@ class DefaultHttpClient implements HttpClient {
         }
 
         /**
-         * Reads the response from the input stream and extracts the information
-         * needed to construct an instance of HttpUrlConnectionResponse
+         * Reads the response from the input stream and extracts the information needed to construct an instance of
+         * {@link HttpResponse}.
          *
-         * @param httpRequest The HTTP Request being sent
-         * @param reader the input stream from the socket
-         * @return an instance of HttpUrlConnectionResponse
-         * @throws IOException If an I/O error occurs
+         * @param httpRequest The {@link HttpRequest} being sent.
+         * @param reader A {@link BufferedReader} created from the input stream from the socket.
+         *
+         * @return An instance of {@link HttpResponse}.
+         *
+         * @throws IOException If an I/O error occurs.
          */
-        private static DefaultHttpClientResponse buildResponse(HttpRequest httpRequest, BufferedReader reader)
+        private static HttpResponse buildResponse(HttpRequest httpRequest, BufferedReader reader)
             throws IOException {
             String statusLine = reader.readLine();
             int dotIndex = statusLine.indexOf('.');
@@ -355,14 +364,17 @@ class DefaultHttpClient implements HttpClient {
 
             Headers headers = new Headers();
             String line;
+
             while ((line = reader.readLine()) != null && !line.isEmpty()) {
                 String[] kv = line.split(": ", 2);
                 String k = kv[0];
                 String v = kv[1];
+
                 headers.add(HeaderName.fromString(k), v);
             }
 
             StringBuilder bodyString = new StringBuilder();
+
             while ((line = reader.readLine()) != null) {
                 bodyString.append(line);
             }
