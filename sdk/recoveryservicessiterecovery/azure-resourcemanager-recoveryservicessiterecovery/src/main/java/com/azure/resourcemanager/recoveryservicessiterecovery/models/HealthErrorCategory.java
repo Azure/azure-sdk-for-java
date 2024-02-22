@@ -8,48 +8,72 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The category of the health error. */
+/**
+ * The category of the health error.
+ */
 public final class HealthErrorCategory extends ExpandableStringEnum<HealthErrorCategory> {
-    /** Static value None for HealthErrorCategory. */
+    /**
+     * Static value None for HealthErrorCategory.
+     */
     public static final HealthErrorCategory NONE = fromString("None");
 
-    /** Static value Replication for HealthErrorCategory. */
+    /**
+     * Static value Replication for HealthErrorCategory.
+     */
     public static final HealthErrorCategory REPLICATION = fromString("Replication");
 
-    /** Static value TestFailover for HealthErrorCategory. */
+    /**
+     * Static value TestFailover for HealthErrorCategory.
+     */
     public static final HealthErrorCategory TEST_FAILOVER = fromString("TestFailover");
 
-    /** Static value Configuration for HealthErrorCategory. */
+    /**
+     * Static value Configuration for HealthErrorCategory.
+     */
     public static final HealthErrorCategory CONFIGURATION = fromString("Configuration");
 
-    /** Static value FabricInfrastructure for HealthErrorCategory. */
+    /**
+     * Static value FabricInfrastructure for HealthErrorCategory.
+     */
     public static final HealthErrorCategory FABRIC_INFRASTRUCTURE = fromString("FabricInfrastructure");
 
-    /** Static value VersionExpiry for HealthErrorCategory. */
+    /**
+     * Static value VersionExpiry for HealthErrorCategory.
+     */
     public static final HealthErrorCategory VERSION_EXPIRY = fromString("VersionExpiry");
 
-    /** Static value AgentAutoUpdateInfra for HealthErrorCategory. */
+    /**
+     * Static value AgentAutoUpdateInfra for HealthErrorCategory.
+     */
     public static final HealthErrorCategory AGENT_AUTO_UPDATE_INFRA = fromString("AgentAutoUpdateInfra");
 
-    /** Static value AgentAutoUpdateArtifactDeleted for HealthErrorCategory. */
-    public static final HealthErrorCategory AGENT_AUTO_UPDATE_ARTIFACT_DELETED =
-        fromString("AgentAutoUpdateArtifactDeleted");
+    /**
+     * Static value AgentAutoUpdateArtifactDeleted for HealthErrorCategory.
+     */
+    public static final HealthErrorCategory AGENT_AUTO_UPDATE_ARTIFACT_DELETED
+        = fromString("AgentAutoUpdateArtifactDeleted");
 
-    /** Static value AgentAutoUpdateRunAsAccount for HealthErrorCategory. */
-    public static final HealthErrorCategory AGENT_AUTO_UPDATE_RUN_AS_ACCOUNT =
-        fromString("AgentAutoUpdateRunAsAccount");
+    /**
+     * Static value AgentAutoUpdateRunAsAccount for HealthErrorCategory.
+     */
+    public static final HealthErrorCategory AGENT_AUTO_UPDATE_RUN_AS_ACCOUNT
+        = fromString("AgentAutoUpdateRunAsAccount");
 
-    /** Static value AgentAutoUpdateRunAsAccountExpiry for HealthErrorCategory. */
-    public static final HealthErrorCategory AGENT_AUTO_UPDATE_RUN_AS_ACCOUNT_EXPIRY =
-        fromString("AgentAutoUpdateRunAsAccountExpiry");
+    /**
+     * Static value AgentAutoUpdateRunAsAccountExpiry for HealthErrorCategory.
+     */
+    public static final HealthErrorCategory AGENT_AUTO_UPDATE_RUN_AS_ACCOUNT_EXPIRY
+        = fromString("AgentAutoUpdateRunAsAccountExpiry");
 
-    /** Static value AgentAutoUpdateRunAsAccountExpired for HealthErrorCategory. */
-    public static final HealthErrorCategory AGENT_AUTO_UPDATE_RUN_AS_ACCOUNT_EXPIRED =
-        fromString("AgentAutoUpdateRunAsAccountExpired");
+    /**
+     * Static value AgentAutoUpdateRunAsAccountExpired for HealthErrorCategory.
+     */
+    public static final HealthErrorCategory AGENT_AUTO_UPDATE_RUN_AS_ACCOUNT_EXPIRED
+        = fromString("AgentAutoUpdateRunAsAccountExpired");
 
     /**
      * Creates a new instance of HealthErrorCategory value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -58,7 +82,7 @@ public final class HealthErrorCategory extends ExpandableStringEnum<HealthErrorC
 
     /**
      * Creates or finds a HealthErrorCategory from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HealthErrorCategory.
      */
@@ -69,7 +93,7 @@ public final class HealthErrorCategory extends ExpandableStringEnum<HealthErrorC
 
     /**
      * Gets known HealthErrorCategory values.
-     *
+     * 
      * @return known HealthErrorCategory values.
      */
     public static Collection<HealthErrorCategory> values() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Logical Network Properties. */
+/**
+ * Logical Network Properties.
+ */
 @Fluent
 public final class LogicalNetworkProperties {
     /*
@@ -34,13 +36,15 @@ public final class LogicalNetworkProperties {
     @JsonProperty(value = "logicalNetworkDefinitionsStatus")
     private String logicalNetworkDefinitionsStatus;
 
-    /** Creates an instance of LogicalNetworkProperties class. */
+    /**
+     * Creates an instance of LogicalNetworkProperties class.
+     */
     public LogicalNetworkProperties() {
     }
 
     /**
      * Get the friendlyName property: The Friendly Name.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -49,7 +53,7 @@ public final class LogicalNetworkProperties {
 
     /**
      * Set the friendlyName property: The Friendly Name.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the LogicalNetworkProperties object itself.
      */
@@ -61,7 +65,7 @@ public final class LogicalNetworkProperties {
     /**
      * Get the networkVirtualizationStatus property: A value indicating whether Network Virtualization is enabled for
      * the logical network.
-     *
+     * 
      * @return the networkVirtualizationStatus value.
      */
     public String networkVirtualizationStatus() {
@@ -71,7 +75,7 @@ public final class LogicalNetworkProperties {
     /**
      * Set the networkVirtualizationStatus property: A value indicating whether Network Virtualization is enabled for
      * the logical network.
-     *
+     * 
      * @param networkVirtualizationStatus the networkVirtualizationStatus value to set.
      * @return the LogicalNetworkProperties object itself.
      */
@@ -83,7 +87,7 @@ public final class LogicalNetworkProperties {
     /**
      * Get the logicalNetworkUsage property: A value indicating whether logical network is used as private test network
      * by test failover.
-     *
+     * 
      * @return the logicalNetworkUsage value.
      */
     public String logicalNetworkUsage() {
@@ -93,7 +97,7 @@ public final class LogicalNetworkProperties {
     /**
      * Set the logicalNetworkUsage property: A value indicating whether logical network is used as private test network
      * by test failover.
-     *
+     * 
      * @param logicalNetworkUsage the logicalNetworkUsage value to set.
      * @return the LogicalNetworkProperties object itself.
      */
@@ -105,7 +109,7 @@ public final class LogicalNetworkProperties {
     /**
      * Get the logicalNetworkDefinitionsStatus property: A value indicating whether logical network definitions are
      * isolated.
-     *
+     * 
      * @return the logicalNetworkDefinitionsStatus value.
      */
     public String logicalNetworkDefinitionsStatus() {
@@ -115,7 +119,7 @@ public final class LogicalNetworkProperties {
     /**
      * Set the logicalNetworkDefinitionsStatus property: A value indicating whether logical network definitions are
      * isolated.
-     *
+     * 
      * @param logicalNetworkDefinitionsStatus the logicalNetworkDefinitionsStatus value to set.
      * @return the LogicalNetworkProperties object itself.
      */
@@ -126,7 +130,7 @@ public final class LogicalNetworkProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** VMware Azure specific enable protection input. */
+/**
+ * VMware Azure specific enable protection input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMage")
 @Fluent
@@ -76,13 +78,15 @@ public final class InMageEnableProtectionInput extends EnableProtectionProviderS
     @JsonProperty(value = "disksToInclude")
     private List<String> disksToInclude;
 
-    /** Creates an instance of InMageEnableProtectionInput class. */
+    /**
+     * Creates an instance of InMageEnableProtectionInput class.
+     */
     public InMageEnableProtectionInput() {
     }
 
     /**
      * Get the vmFriendlyName property: The VM Name.
-     *
+     * 
      * @return the vmFriendlyName value.
      */
     public String vmFriendlyName() {
@@ -91,7 +95,7 @@ public final class InMageEnableProtectionInput extends EnableProtectionProviderS
 
     /**
      * Set the vmFriendlyName property: The VM Name.
-     *
+     * 
      * @param vmFriendlyName the vmFriendlyName value to set.
      * @return the InMageEnableProtectionInput object itself.
      */
@@ -102,7 +106,7 @@ public final class InMageEnableProtectionInput extends EnableProtectionProviderS
 
     /**
      * Get the masterTargetId property: The Master Target Id.
-     *
+     * 
      * @return the masterTargetId value.
      */
     public String masterTargetId() {
@@ -111,7 +115,7 @@ public final class InMageEnableProtectionInput extends EnableProtectionProviderS
 
     /**
      * Set the masterTargetId property: The Master Target Id.
-     *
+     * 
      * @param masterTargetId the masterTargetId value to set.
      * @return the InMageEnableProtectionInput object itself.
      */
@@ -122,7 +126,7 @@ public final class InMageEnableProtectionInput extends EnableProtectionProviderS
 
     /**
      * Get the processServerId property: The Process Server Id.
-     *
+     * 
      * @return the processServerId value.
      */
     public String processServerId() {
@@ -131,7 +135,7 @@ public final class InMageEnableProtectionInput extends EnableProtectionProviderS
 
     /**
      * Set the processServerId property: The Process Server Id.
-     *
+     * 
      * @param processServerId the processServerId value to set.
      * @return the InMageEnableProtectionInput object itself.
      */
@@ -142,7 +146,7 @@ public final class InMageEnableProtectionInput extends EnableProtectionProviderS
 
     /**
      * Get the retentionDrive property: The retention drive to use on the MT.
-     *
+     * 
      * @return the retentionDrive value.
      */
     public String retentionDrive() {
@@ -151,7 +155,7 @@ public final class InMageEnableProtectionInput extends EnableProtectionProviderS
 
     /**
      * Set the retentionDrive property: The retention drive to use on the MT.
-     *
+     * 
      * @param retentionDrive the retentionDrive value to set.
      * @return the InMageEnableProtectionInput object itself.
      */
@@ -162,7 +166,7 @@ public final class InMageEnableProtectionInput extends EnableProtectionProviderS
 
     /**
      * Get the runAsAccountId property: The CS account Id.
-     *
+     * 
      * @return the runAsAccountId value.
      */
     public String runAsAccountId() {
@@ -171,7 +175,7 @@ public final class InMageEnableProtectionInput extends EnableProtectionProviderS
 
     /**
      * Set the runAsAccountId property: The CS account Id.
-     *
+     * 
      * @param runAsAccountId the runAsAccountId value to set.
      * @return the InMageEnableProtectionInput object itself.
      */
@@ -182,7 +186,7 @@ public final class InMageEnableProtectionInput extends EnableProtectionProviderS
 
     /**
      * Get the multiVmGroupId property: The multi VM group Id.
-     *
+     * 
      * @return the multiVmGroupId value.
      */
     public String multiVmGroupId() {
@@ -191,7 +195,7 @@ public final class InMageEnableProtectionInput extends EnableProtectionProviderS
 
     /**
      * Set the multiVmGroupId property: The multi VM group Id.
-     *
+     * 
      * @param multiVmGroupId the multiVmGroupId value to set.
      * @return the InMageEnableProtectionInput object itself.
      */
@@ -202,7 +206,7 @@ public final class InMageEnableProtectionInput extends EnableProtectionProviderS
 
     /**
      * Get the multiVmGroupName property: The multi VM group name.
-     *
+     * 
      * @return the multiVmGroupName value.
      */
     public String multiVmGroupName() {
@@ -211,7 +215,7 @@ public final class InMageEnableProtectionInput extends EnableProtectionProviderS
 
     /**
      * Set the multiVmGroupName property: The multi VM group name.
-     *
+     * 
      * @param multiVmGroupName the multiVmGroupName value to set.
      * @return the InMageEnableProtectionInput object itself.
      */
@@ -222,7 +226,7 @@ public final class InMageEnableProtectionInput extends EnableProtectionProviderS
 
     /**
      * Get the datastoreName property: The target datastore name.
-     *
+     * 
      * @return the datastoreName value.
      */
     public String datastoreName() {
@@ -231,7 +235,7 @@ public final class InMageEnableProtectionInput extends EnableProtectionProviderS
 
     /**
      * Set the datastoreName property: The target datastore name.
-     *
+     * 
      * @param datastoreName the datastoreName value to set.
      * @return the InMageEnableProtectionInput object itself.
      */
@@ -242,7 +246,7 @@ public final class InMageEnableProtectionInput extends EnableProtectionProviderS
 
     /**
      * Get the diskExclusionInput property: The enable disk exclusion input.
-     *
+     * 
      * @return the diskExclusionInput value.
      */
     public InMageDiskExclusionInput diskExclusionInput() {
@@ -251,7 +255,7 @@ public final class InMageEnableProtectionInput extends EnableProtectionProviderS
 
     /**
      * Set the diskExclusionInput property: The enable disk exclusion input.
-     *
+     * 
      * @param diskExclusionInput the diskExclusionInput value to set.
      * @return the InMageEnableProtectionInput object itself.
      */
@@ -262,7 +266,7 @@ public final class InMageEnableProtectionInput extends EnableProtectionProviderS
 
     /**
      * Get the disksToInclude property: The disks to include list.
-     *
+     * 
      * @return the disksToInclude value.
      */
     public List<String> disksToInclude() {
@@ -271,7 +275,7 @@ public final class InMageEnableProtectionInput extends EnableProtectionProviderS
 
     /**
      * Set the disksToInclude property: The disks to include list.
-     *
+     * 
      * @param disksToInclude the disksToInclude value to set.
      * @return the InMageEnableProtectionInput object itself.
      */
@@ -282,41 +286,31 @@ public final class InMageEnableProtectionInput extends EnableProtectionProviderS
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (masterTargetId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property masterTargetId in model InMageEnableProtectionInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property masterTargetId in model InMageEnableProtectionInput"));
         }
         if (processServerId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property processServerId in model InMageEnableProtectionInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property processServerId in model InMageEnableProtectionInput"));
         }
         if (retentionDrive() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property retentionDrive in model InMageEnableProtectionInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property retentionDrive in model InMageEnableProtectionInput"));
         }
         if (multiVmGroupId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property multiVmGroupId in model InMageEnableProtectionInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property multiVmGroupId in model InMageEnableProtectionInput"));
         }
         if (multiVmGroupName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property multiVmGroupName in model InMageEnableProtectionInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property multiVmGroupName in model InMageEnableProtectionInput"));
         }
         if (diskExclusionInput() != null) {
             diskExclusionInput().validate();

@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The progress health. */
+/**
+ * The progress health.
+ */
 public final class DiskReplicationProgressHealth extends ExpandableStringEnum<DiskReplicationProgressHealth> {
-    /** Static value None for DiskReplicationProgressHealth. */
+    /**
+     * Static value None for DiskReplicationProgressHealth.
+     */
     public static final DiskReplicationProgressHealth NONE = fromString("None");
 
-    /** Static value InProgress for DiskReplicationProgressHealth. */
+    /**
+     * Static value InProgress for DiskReplicationProgressHealth.
+     */
     public static final DiskReplicationProgressHealth IN_PROGRESS = fromString("InProgress");
 
-    /** Static value SlowProgress for DiskReplicationProgressHealth. */
+    /**
+     * Static value SlowProgress for DiskReplicationProgressHealth.
+     */
     public static final DiskReplicationProgressHealth SLOW_PROGRESS = fromString("SlowProgress");
 
-    /** Static value NoProgress for DiskReplicationProgressHealth. */
+    /**
+     * Static value NoProgress for DiskReplicationProgressHealth.
+     */
     public static final DiskReplicationProgressHealth NO_PROGRESS = fromString("NoProgress");
 
-    /** Static value Queued for DiskReplicationProgressHealth. */
+    /**
+     * Static value Queued for DiskReplicationProgressHealth.
+     */
     public static final DiskReplicationProgressHealth QUEUED = fromString("Queued");
 
     /**
      * Creates a new instance of DiskReplicationProgressHealth value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class DiskReplicationProgressHealth extends ExpandableStringEnum<Di
 
     /**
      * Creates or finds a DiskReplicationProgressHealth from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DiskReplicationProgressHealth.
      */
@@ -47,7 +59,7 @@ public final class DiskReplicationProgressHealth extends ExpandableStringEnum<Di
 
     /**
      * Gets known DiskReplicationProgressHealth values.
-     *
+     * 
      * @return known DiskReplicationProgressHealth values.
      */
     public static Collection<DiskReplicationProgressHealth> values() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Mobility Service update details. */
+/**
+ * The Mobility Service update details.
+ */
 @Fluent
 public final class MobilityServiceUpdate {
     /*
@@ -28,13 +30,15 @@ public final class MobilityServiceUpdate {
     @JsonProperty(value = "osType")
     private String osType;
 
-    /** Creates an instance of MobilityServiceUpdate class. */
+    /**
+     * Creates an instance of MobilityServiceUpdate class.
+     */
     public MobilityServiceUpdate() {
     }
 
     /**
      * Get the version property: The version of the latest update.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -43,7 +47,7 @@ public final class MobilityServiceUpdate {
 
     /**
      * Set the version property: The version of the latest update.
-     *
+     * 
      * @param version the version value to set.
      * @return the MobilityServiceUpdate object itself.
      */
@@ -54,7 +58,7 @@ public final class MobilityServiceUpdate {
 
     /**
      * Get the rebootStatus property: The reboot status of the update - whether it is required or not.
-     *
+     * 
      * @return the rebootStatus value.
      */
     public String rebootStatus() {
@@ -63,7 +67,7 @@ public final class MobilityServiceUpdate {
 
     /**
      * Set the rebootStatus property: The reboot status of the update - whether it is required or not.
-     *
+     * 
      * @param rebootStatus the rebootStatus value to set.
      * @return the MobilityServiceUpdate object itself.
      */
@@ -74,7 +78,7 @@ public final class MobilityServiceUpdate {
 
     /**
      * Get the osType property: The OS type.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -83,7 +87,7 @@ public final class MobilityServiceUpdate {
 
     /**
      * Set the osType property: The OS type.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the MobilityServiceUpdate object itself.
      */
@@ -94,7 +98,7 @@ public final class MobilityServiceUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

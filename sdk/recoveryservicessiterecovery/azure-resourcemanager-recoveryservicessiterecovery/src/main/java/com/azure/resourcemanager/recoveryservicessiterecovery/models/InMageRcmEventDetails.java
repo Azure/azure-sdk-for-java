@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Event details for InMageRcm provider. */
+/**
+ * Event details for InMageRcm provider.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMageRcm")
 @Immutable
@@ -62,13 +64,15 @@ public final class InMageRcmEventDetails extends EventProviderSpecificDetails {
     @JsonProperty(value = "componentDisplayName", access = JsonProperty.Access.WRITE_ONLY)
     private String componentDisplayName;
 
-    /** Creates an instance of InMageRcmEventDetails class. */
+    /**
+     * Creates an instance of InMageRcmEventDetails class.
+     */
     public InMageRcmEventDetails() {
     }
 
     /**
      * Get the protectedItemName property: The protected item name.
-     *
+     * 
      * @return the protectedItemName value.
      */
     public String protectedItemName() {
@@ -77,7 +81,7 @@ public final class InMageRcmEventDetails extends EventProviderSpecificDetails {
 
     /**
      * Get the vmName property: The protected item name.
-     *
+     * 
      * @return the vmName value.
      */
     public String vmName() {
@@ -86,7 +90,7 @@ public final class InMageRcmEventDetails extends EventProviderSpecificDetails {
 
     /**
      * Get the latestAgentVersion property: The latest agent version.
-     *
+     * 
      * @return the latestAgentVersion value.
      */
     public String latestAgentVersion() {
@@ -95,7 +99,7 @@ public final class InMageRcmEventDetails extends EventProviderSpecificDetails {
 
     /**
      * Get the jobId property: The job Id.
-     *
+     * 
      * @return the jobId value.
      */
     public String jobId() {
@@ -104,7 +108,7 @@ public final class InMageRcmEventDetails extends EventProviderSpecificDetails {
 
     /**
      * Get the fabricName property: The fabric name.
-     *
+     * 
      * @return the fabricName value.
      */
     public String fabricName() {
@@ -113,7 +117,7 @@ public final class InMageRcmEventDetails extends EventProviderSpecificDetails {
 
     /**
      * Get the applianceName property: The appliance name.
-     *
+     * 
      * @return the applianceName value.
      */
     public String applianceName() {
@@ -122,7 +126,7 @@ public final class InMageRcmEventDetails extends EventProviderSpecificDetails {
 
     /**
      * Get the serverType property: The server type.
-     *
+     * 
      * @return the serverType value.
      */
     public String serverType() {
@@ -131,7 +135,7 @@ public final class InMageRcmEventDetails extends EventProviderSpecificDetails {
 
     /**
      * Get the componentDisplayName property: The component display name.
-     *
+     * 
      * @return the componentDisplayName value.
      */
     public String componentDisplayName() {
@@ -140,7 +144,7 @@ public final class InMageRcmEventDetails extends EventProviderSpecificDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

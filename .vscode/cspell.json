@@ -112,6 +112,7 @@
     "sdk/communication/azure-communication-phonenumbers/**",
     "sdk/communication/azure-communication-rooms/**",
     "sdk/communication/azure-communication-sms/**",
+    "sdk/communication/azure-communication-messages/**",
     "sdk/confidentialledger/azure-security-confidentialledger/**",
     "sdk/core/.idea/**",
     "sdk/containerregistry/azure-containers-containerregistry/**",

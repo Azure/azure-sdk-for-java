@@ -173,7 +173,6 @@ Licensed under the MIT License.
       <version>1.14.8</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
-
     <dependency>
       <groupId>org.testcontainers</groupId>
       <artifactId>testcontainers</artifactId>
@@ -192,7 +191,6 @@ Licensed under the MIT License.
       <version>4.0.4</version>
       <scope>test</scope>
     </dependency>
-
   </dependencies>
 
   <build>

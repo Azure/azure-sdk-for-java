@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RecoveryPlanA2AInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryPlanA2AInput model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"A2A\",\"primaryZone\":\"wetkrhlolmc\",\"recoveryZone\":\"epfgsvbbvaqdl\",\"primaryExtendedLocation\":{\"name\":\"petlrn\",\"type\":\"EdgeZone\"},\"recoveryExtendedLocation\":{\"name\":\"tawevxehu\",\"type\":\"EdgeZone\"}}")
-                .toObject(RecoveryPlanA2AInput.class);
+        RecoveryPlanA2AInput model = BinaryData.fromString(
+            "{\"instanceType\":\"A2A\",\"primaryZone\":\"wetkrhlolmc\",\"recoveryZone\":\"epfgsvbbvaqdl\",\"primaryExtendedLocation\":{\"name\":\"petlrn\",\"type\":\"EdgeZone\"},\"recoveryExtendedLocation\":{\"name\":\"tawevxehu\",\"type\":\"EdgeZone\"}}")
+            .toObject(RecoveryPlanA2AInput.class);
         Assertions.assertEquals("wetkrhlolmc", model.primaryZone());
         Assertions.assertEquals("epfgsvbbvaqdl", model.recoveryZone());
         Assertions.assertEquals("petlrn", model.primaryExtendedLocation().name());
@@ -28,10 +26,8 @@ public final class RecoveryPlanA2AInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPlanA2AInput model =
-            new RecoveryPlanA2AInput()
-                .withPrimaryZone("wetkrhlolmc")
-                .withRecoveryZone("epfgsvbbvaqdl")
+        RecoveryPlanA2AInput model
+            = new RecoveryPlanA2AInput().withPrimaryZone("wetkrhlolmc").withRecoveryZone("epfgsvbbvaqdl")
                 .withPrimaryExtendedLocation(
                     new ExtendedLocation().withName("petlrn").withType(ExtendedLocationType.EDGE_ZONE))
                 .withRecoveryExtendedLocation(

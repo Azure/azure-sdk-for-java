@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Enable migration input properties. */
+/**
+ * Enable migration input properties.
+ */
 @Fluent
 public final class EnableMigrationInputProperties {
     /*
@@ -23,13 +25,15 @@ public final class EnableMigrationInputProperties {
     @JsonProperty(value = "providerSpecificDetails", required = true)
     private EnableMigrationProviderSpecificInput providerSpecificDetails;
 
-    /** Creates an instance of EnableMigrationInputProperties class. */
+    /**
+     * Creates an instance of EnableMigrationInputProperties class.
+     */
     public EnableMigrationInputProperties() {
     }
 
     /**
      * Get the policyId property: The policy Id.
-     *
+     * 
      * @return the policyId value.
      */
     public String policyId() {
@@ -38,7 +42,7 @@ public final class EnableMigrationInputProperties {
 
     /**
      * Set the policyId property: The policy Id.
-     *
+     * 
      * @param policyId the policyId value to set.
      * @return the EnableMigrationInputProperties object itself.
      */
@@ -49,7 +53,7 @@ public final class EnableMigrationInputProperties {
 
     /**
      * Get the providerSpecificDetails property: The provider specific details.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public EnableMigrationProviderSpecificInput providerSpecificDetails() {
@@ -58,33 +62,29 @@ public final class EnableMigrationInputProperties {
 
     /**
      * Set the providerSpecificDetails property: The provider specific details.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the EnableMigrationInputProperties object itself.
      */
-    public EnableMigrationInputProperties withProviderSpecificDetails(
-        EnableMigrationProviderSpecificInput providerSpecificDetails) {
+    public EnableMigrationInputProperties
+        withProviderSpecificDetails(EnableMigrationProviderSpecificInput providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (policyId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property policyId in model EnableMigrationInputProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property policyId in model EnableMigrationInputProperties"));
         }
         if (providerSpecificDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property providerSpecificDetails in model EnableMigrationInputProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property providerSpecificDetails in model EnableMigrationInputProperties"));
         } else {
             providerSpecificDetails().validate();
         }

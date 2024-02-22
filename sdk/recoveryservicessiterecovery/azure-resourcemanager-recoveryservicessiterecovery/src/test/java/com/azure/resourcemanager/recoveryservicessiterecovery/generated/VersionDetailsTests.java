@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VersionDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VersionDetails model =
-            BinaryData
-                .fromString(
-                    "{\"version\":\"avehhrvkbunzo\",\"expiryDate\":\"2021-06-10T11:46:22Z\",\"status\":\"SecurityUpdateRequired\"}")
-                .toObject(VersionDetails.class);
+        VersionDetails model = BinaryData.fromString(
+            "{\"version\":\"avehhrvkbunzo\",\"expiryDate\":\"2021-06-10T11:46:22Z\",\"status\":\"SecurityUpdateRequired\"}")
+            .toObject(VersionDetails.class);
         Assertions.assertEquals("avehhrvkbunzo", model.version());
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-10T11:46:22Z"), model.expiryDate());
         Assertions.assertEquals(AgentVersionStatus.SECURITY_UPDATE_REQUIRED, model.status());
@@ -25,11 +23,9 @@ public final class VersionDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VersionDetails model =
-            new VersionDetails()
-                .withVersion("avehhrvkbunzo")
-                .withExpiryDate(OffsetDateTime.parse("2021-06-10T11:46:22Z"))
-                .withStatus(AgentVersionStatus.SECURITY_UPDATE_REQUIRED);
+        VersionDetails model = new VersionDetails().withVersion("avehhrvkbunzo")
+            .withExpiryDate(OffsetDateTime.parse("2021-06-10T11:46:22Z"))
+            .withStatus(AgentVersionStatus.SECURITY_UPDATE_REQUIRED);
         model = BinaryData.fromObject(model).toObject(VersionDetails.class);
         Assertions.assertEquals("avehhrvkbunzo", model.version());
         Assertions.assertEquals(OffsetDateTime.parse("2021-06-10T11:46:22Z"), model.expiryDate());

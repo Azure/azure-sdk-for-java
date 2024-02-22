@@ -11,21 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureToAzureNetworkMappingSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureToAzureNetworkMappingSettings model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"AzureToAzure\",\"primaryFabricLocation\":\"tmbqdabzfivfok\",\"recoveryFabricLocation\":\"sthhzagjfwy\"}")
-                .toObject(AzureToAzureNetworkMappingSettings.class);
+        AzureToAzureNetworkMappingSettings model = BinaryData.fromString(
+            "{\"instanceType\":\"AzureToAzure\",\"primaryFabricLocation\":\"tmbqdabzfivfok\",\"recoveryFabricLocation\":\"sthhzagjfwy\"}")
+            .toObject(AzureToAzureNetworkMappingSettings.class);
         Assertions.assertEquals("tmbqdabzfivfok", model.primaryFabricLocation());
         Assertions.assertEquals("sthhzagjfwy", model.recoveryFabricLocation());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureToAzureNetworkMappingSettings model =
-            new AzureToAzureNetworkMappingSettings()
-                .withPrimaryFabricLocation("tmbqdabzfivfok")
-                .withRecoveryFabricLocation("sthhzagjfwy");
+        AzureToAzureNetworkMappingSettings model = new AzureToAzureNetworkMappingSettings()
+            .withPrimaryFabricLocation("tmbqdabzfivfok").withRecoveryFabricLocation("sthhzagjfwy");
         model = BinaryData.fromObject(model).toObject(AzureToAzureNetworkMappingSettings.class);
         Assertions.assertEquals("tmbqdabzfivfok", model.primaryFabricLocation());
         Assertions.assertEquals("sthhzagjfwy", model.recoveryFabricLocation());

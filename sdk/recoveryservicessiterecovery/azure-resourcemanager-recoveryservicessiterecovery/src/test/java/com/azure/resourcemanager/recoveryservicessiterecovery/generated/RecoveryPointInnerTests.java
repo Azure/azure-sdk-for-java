@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RecoveryPointInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryPointInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"recoveryPointTime\":\"2021-05-29T05:16:16Z\",\"recoveryPointType\":\"umvfclu\",\"providerSpecificDetails\":{\"instanceType\":\"ProviderSpecificRecoveryPointDetails\"}},\"location\":\"wxnb\",\"id\":\"fezzxscyhwzdg\",\"name\":\"rujbzbomvzzbtdc\",\"type\":\"vp\"}")
-                .toObject(RecoveryPointInner.class);
+        RecoveryPointInner model = BinaryData.fromString(
+            "{\"properties\":{\"recoveryPointTime\":\"2021-05-29T05:16:16Z\",\"recoveryPointType\":\"umvfclu\",\"providerSpecificDetails\":{\"instanceType\":\"ProviderSpecificRecoveryPointDetails\"}},\"location\":\"wxnb\",\"id\":\"fezzxscyhwzdg\",\"name\":\"rujbzbomvzzbtdc\",\"type\":\"vp\"}")
+            .toObject(RecoveryPointInner.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-05-29T05:16:16Z"), model.properties().recoveryPointTime());
         Assertions.assertEquals("umvfclu", model.properties().recoveryPointType());
         Assertions.assertEquals("wxnb", model.location());
@@ -26,14 +24,9 @@ public final class RecoveryPointInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPointInner model =
-            new RecoveryPointInner()
-                .withProperties(
-                    new RecoveryPointProperties()
-                        .withRecoveryPointTime(OffsetDateTime.parse("2021-05-29T05:16:16Z"))
-                        .withRecoveryPointType("umvfclu")
-                        .withProviderSpecificDetails(new ProviderSpecificRecoveryPointDetails()))
-                .withLocation("wxnb");
+        RecoveryPointInner model = new RecoveryPointInner().withProperties(new RecoveryPointProperties()
+            .withRecoveryPointTime(OffsetDateTime.parse("2021-05-29T05:16:16Z")).withRecoveryPointType("umvfclu")
+            .withProviderSpecificDetails(new ProviderSpecificRecoveryPointDetails())).withLocation("wxnb");
         model = BinaryData.fromObject(model).toObject(RecoveryPointInner.class);
         Assertions.assertEquals(OffsetDateTime.parse("2021-05-29T05:16:16Z"), model.properties().recoveryPointTime());
         Assertions.assertEquals("umvfclu", model.properties().recoveryPointType());

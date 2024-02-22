@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryServicesProviderProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Provider details. */
+/**
+ * Provider details.
+ */
 @Fluent
 public final class RecoveryServicesProviderInner extends ProxyResource {
     /*
@@ -24,13 +26,15 @@ public final class RecoveryServicesProviderInner extends ProxyResource {
     @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of RecoveryServicesProviderInner class. */
+    /**
+     * Creates an instance of RecoveryServicesProviderInner class.
+     */
     public RecoveryServicesProviderInner() {
     }
 
     /**
      * Get the properties property: Provider properties.
-     *
+     * 
      * @return the properties value.
      */
     public RecoveryServicesProviderProperties properties() {
@@ -39,7 +43,7 @@ public final class RecoveryServicesProviderInner extends ProxyResource {
 
     /**
      * Set the properties property: Provider properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the RecoveryServicesProviderInner object itself.
      */
@@ -50,7 +54,7 @@ public final class RecoveryServicesProviderInner extends ProxyResource {
 
     /**
      * Get the location property: Resource Location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -59,7 +63,7 @@ public final class RecoveryServicesProviderInner extends ProxyResource {
 
     /**
      * Set the location property: Resource Location.
-     *
+     * 
      * @param location the location value to set.
      * @return the RecoveryServicesProviderInner object itself.
      */
@@ -70,7 +74,7 @@ public final class RecoveryServicesProviderInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
