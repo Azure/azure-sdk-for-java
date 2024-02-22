@@ -485,8 +485,10 @@ public final class PollerFlux<T, U> extends Flux<AsyncPollResponse<T, U>> {
                 // Execute (subscribe to) the pollOnceMono after the default poll-interval
                 // or duration specified in the last retry-after response header elapses.
                 return pollOnceMono.delaySubscription(getDelay(cxt.getLatestResponse()));
-            }).switchIfEmpty(Mono.error(() -> new IllegalStateException("PollOperation returned Mono.empty().")))
-                .repeat().takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
+            })
+                .switchIfEmpty(Mono.error(() -> new IllegalStateException("PollOperation returned Mono.empty().")))
+                .repeat()
+                .takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
                 .concatMap(currentPollResponse -> {
                     cxt.setLatestResponse(currentPollResponse);
                     return Mono.just(new AsyncPollResponse<>(cxt, this.cancelOperation, this.fetchResultOperation));

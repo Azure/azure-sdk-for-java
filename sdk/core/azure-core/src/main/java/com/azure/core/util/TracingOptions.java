@@ -12,13 +12,18 @@ import static com.azure.core.implementation.ImplUtils.getClassByName;
  * Tracing configuration options for clients.
  */
 public class TracingOptions {
-    private static final ConfigurationProperty<Boolean> IS_DISABLED_PROPERTY = ConfigurationPropertyBuilder
-        .ofBoolean("tracing.disabled").environmentVariableName(Configuration.PROPERTY_AZURE_TRACING_DISABLED)
-        .shared(true).defaultValue(false).build();
+    private static final ConfigurationProperty<Boolean> IS_DISABLED_PROPERTY
+        = ConfigurationPropertyBuilder.ofBoolean("tracing.disabled")
+            .environmentVariableName(Configuration.PROPERTY_AZURE_TRACING_DISABLED)
+            .shared(true)
+            .defaultValue(false)
+            .build();
 
     private static final ConfigurationProperty<String> PROVIDER_NAME_PROPERTY
         = ConfigurationPropertyBuilder.ofString("tracing.provider.implementation")
-            .environmentVariableName(Configuration.PROPERTY_AZURE_TRACING_IMPLEMENTATION).shared(true).build();
+            .environmentVariableName(Configuration.PROPERTY_AZURE_TRACING_IMPLEMENTATION)
+            .shared(true)
+            .build();
 
     private static final Configuration GLOBAL_CONFIG = Configuration.getGlobalConfiguration();
     private final Class<? extends TracerProvider> tracerProvider;

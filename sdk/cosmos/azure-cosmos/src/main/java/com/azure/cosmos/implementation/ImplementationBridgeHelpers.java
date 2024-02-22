@@ -59,7 +59,6 @@ import com.azure.cosmos.models.CosmosItemResponse;
 import com.azure.cosmos.models.CosmosMetricName;
 import com.azure.cosmos.models.CosmosPatchOperations;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
-import com.azure.cosmos.models.CosmosQueryRequestOptionsBase;
 import com.azure.cosmos.models.CosmosReadManyRequestOptions;
 import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
@@ -83,7 +82,6 @@ import java.util.Collection;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -285,48 +283,38 @@ public class ImplementationBridgeHelpers {
         }
     }
 
-    public static final class CosmosQueryRequestOptionsBaseHelper {
-        private final static AtomicBoolean cosmosQueryRequestOptionsBaseClassLoaded = new AtomicBoolean(false);
-        private final static AtomicReference<CosmosQueryRequestOptionsBaseAccessor> accessor = new AtomicReference<>();
+    public static final class CosmosReadManyRequestOptionsHelper {
+        private final static AtomicBoolean cosmosReadManyRequestOptionsClassLoaded = new AtomicBoolean(false);
+        private final static AtomicReference<CosmosReadManyRequestOptionsAccessor> accessor = new AtomicReference<>();
 
-        private CosmosQueryRequestOptionsBaseHelper() {}
+        private CosmosReadManyRequestOptionsHelper() {}
 
-        public static void setCosmosQueryRequestOptionsBaseAccessor(final CosmosQueryRequestOptionsBaseAccessor newAccessor) {
+        public static void setCosmosReadManyRequestOptionsAccessor(final CosmosReadManyRequestOptionsAccessor newAccessor) {
             if (!accessor.compareAndSet(null, newAccessor)) {
-                logger.debug("CosmosQueryRequestOptionsBaseAccessor already initialized!");
+                logger.debug("CosmosReadManyRequestOptionsAccessor already initialized!");
             } else {
-                logger.debug("Setting CosmosQueryRequestOptionsBaseAccessor...");
-                cosmosQueryRequestOptionsBaseClassLoaded.set(true);
+                logger.debug("Setting CosmosReadManyRequestOptionsAccessor...");
+                cosmosReadManyRequestOptionsClassLoaded.set(true);
             }
         }
 
-        public static CosmosQueryRequestOptionsBaseAccessor getCosmosQueryRequestOptionsBaseAccessor() {
-            if (!cosmosQueryRequestOptionsBaseClassLoaded.get()) {
-                logger.debug("Initializing CosmosQueryRequestOptionsBaseAccessor...");
+        public static CosmosReadManyRequestOptionsAccessor getCosmosReadManyRequestOptionsAccessor() {
+            if (!cosmosReadManyRequestOptionsClassLoaded.get()) {
+                logger.debug("Initializing CosmosReadManyRequestOptionsAccessor...");
                 initializeAllAccessors();
             }
 
-            CosmosQueryRequestOptionsBaseAccessor snapshot = accessor.get();
+            CosmosReadManyRequestOptionsAccessor snapshot = accessor.get();
             if (snapshot == null) {
-                logger.error("CosmosQueryRequestOptionsBaseAccessor is not initialized yet!");
+                logger.error("CosmosReadManyRequestOptionsAccessor is not initialized yet!");
                 System.exit(9729); // Using a unique status code here to help debug the issue.
             }
 
             return snapshot;
         }
 
-        public interface CosmosQueryRequestOptionsBaseAccessor {
-            void setOperationContext(CosmosQueryRequestOptionsBase<?> queryRequestOptions, OperationContextAndListenerTuple operationContext);
-            OperationContextAndListenerTuple getOperationContext(CosmosQueryRequestOptionsBase<?> queryRequestOptions);
-            <T extends CosmosQueryRequestOptionsBase<?>> T setHeader(T queryRequestOptions, String name, String value);
-            Map<String, String> getHeader(CosmosQueryRequestOptionsBase<?> queryRequestOptions);
-            UUID getCorrelationActivityId(CosmosQueryRequestOptionsBase<?> queryRequestOptions);
-            <T extends CosmosQueryRequestOptionsBase<?>> T setCorrelationActivityId(T queryRequestOptions, UUID correlationActivityId);
-            <T> Function<JsonNode, T> getItemFactoryMethod(CosmosQueryRequestOptionsBase<?> queryRequestOptions, Class<T> classOfT);
-            <T extends CosmosQueryRequestOptionsBase<?>> T setItemFactoryMethod(T queryRequestOptions, Function<JsonNode, ?> factoryMethod);
-            CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosQueryRequestOptionsBase<?> options);
-            CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(CosmosQueryRequestOptionsBase<?> options);
-            List<String> getExcludeRegions(CosmosQueryRequestOptionsBase<?> options);
+        public interface CosmosReadManyRequestOptionsAccessor {
+            public CosmosQueryRequestOptionsBase<?> getImpl(CosmosReadManyRequestOptions options);
         }
     }
 

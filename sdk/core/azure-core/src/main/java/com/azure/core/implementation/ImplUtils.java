@@ -324,10 +324,16 @@ public final class ImplUtils {
 
         if (count >= 3 && bytes[offset] == EF && bytes[offset + 1] == BB && bytes[offset + 2] == BF) {
             return new String(bytes, 3, bytes.length - 3, StandardCharsets.UTF_8);
-        } else if (count >= 4 && bytes[offset] == ZERO && bytes[offset + 1] == ZERO && bytes[offset + 2] == FE
+        } else if (count >= 4
+            && bytes[offset] == ZERO
+            && bytes[offset + 1] == ZERO
+            && bytes[offset + 2] == FE
             && bytes[offset + 3] == FF) {
             return new String(bytes, 4, bytes.length - 4, UTF_32BE);
-        } else if (count >= 4 && bytes[offset] == FF && bytes[offset + 1] == FE && bytes[offset + 2] == ZERO
+        } else if (count >= 4
+            && bytes[offset] == FF
+            && bytes[offset + 1] == FE
+            && bytes[offset + 2] == ZERO
             && bytes[offset + 3] == ZERO) {
             return new String(bytes, 4, bytes.length - 4, UTF_32LE);
         } else if (count >= 2 && bytes[offset] == FE && bytes[offset + 1] == FF) {

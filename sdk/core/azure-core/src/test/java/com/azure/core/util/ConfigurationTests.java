@@ -244,7 +244,10 @@ public class ConfigurationTests {
     @Test
     public void getExplicitPropertyWithSystemPropertyAndEnvVar() {
         ConfigurationProperty<String> property = ConfigurationPropertyBuilder.ofString("foo")
-            .systemPropertyName("sys.foo").environmentVariableName("env.foo").defaultValue("bar").build();
+            .systemPropertyName("sys.foo")
+            .environmentVariableName("env.foo")
+            .defaultValue("bar")
+            .build();
 
         assertEquals("bar", new ConfigurationBuilder().build().get(property));
         assertEquals("explicit", new ConfigurationBuilder().putProperty("foo", "explicit").build().get(property));
@@ -253,7 +256,10 @@ public class ConfigurationTests {
     @Test
     public void getSystemPropertyWithSystemPropertyAndEnvVar() {
         ConfigurationProperty<String> property = ConfigurationPropertyBuilder.ofString("foo")
-            .systemPropertyName("sys.foo").environmentVariableName("env.foo").defaultValue("bar").build();
+            .systemPropertyName("sys.foo")
+            .environmentVariableName("env.foo")
+            .defaultValue("bar")
+            .build();
 
         Configuration envOnlyConfig
             = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE, new TestConfigurationSource().put("env.foo", "env"))
@@ -305,7 +311,9 @@ public class ConfigurationTests {
     @Test
     public void getLocalPropertyFromSection() {
         Configuration config = new ConfigurationBuilder().putProperty("appconfiguration.prop", "foo")
-            .putProperty("prop", "bar").putProperty("prop2", "baz").buildSection("appconfiguration");
+            .putProperty("prop", "bar")
+            .putProperty("prop2", "baz")
+            .buildSection("appconfiguration");
 
         ConfigurationProperty<String> localProp = ConfigurationPropertyBuilder.ofString("prop").build();
         ConfigurationProperty<String> localPropFullName
@@ -322,7 +330,8 @@ public class ConfigurationTests {
     @Test
     public void getGlobalPropertyFromDefaultsSection() {
         Configuration config = new ConfigurationBuilder().putProperty("appconfiguration.prop", "local")
-            .putProperty("global.prop", "default").buildSection("global");
+            .putProperty("global.prop", "default")
+            .buildSection("global");
 
         ConfigurationProperty<String> localProp = ConfigurationPropertyBuilder.ofString("prop").build();
         ConfigurationProperty<String> localPropFullName
@@ -337,7 +346,8 @@ public class ConfigurationTests {
     @Test
     public void getGlobalPropertyFromDefaultsAndRootSection() {
         Configuration config = new ConfigurationBuilder().putProperty("appconfiguration.prop", "local")
-            .putProperty("prop", "root").build();
+            .putProperty("prop", "root")
+            .build();
 
         ConfigurationProperty<String> localProp = ConfigurationPropertyBuilder.ofString("prop").build();
         ConfigurationProperty<String> localPropFullName
@@ -382,7 +392,9 @@ public class ConfigurationTests {
     @Test
     public void getPropertyWithSysProperty() {
         ConfigurationProperty<String> prop = ConfigurationPropertyBuilder.ofString("prop")
-            .environmentVariableName("prop").systemPropertyName("prop").build();
+            .environmentVariableName("prop")
+            .systemPropertyName("prop")
+            .build();
 
         EnvironmentConfiguration envConfig = new EnvironmentConfiguration(
             new TestConfigurationSource().put("prop", "sys"), new TestConfigurationSource().put("prop", "env"));
@@ -458,7 +470,9 @@ public class ConfigurationTests {
         configurations.put("prop", "p");
 
         Configuration config = new ConfigurationBuilder().putProperty("az.true", "true")
-            .putProperty("az.false", "false").putProperty("az.anything-else", "anything-else").buildSection("az");
+            .putProperty("az.false", "false")
+            .putProperty("az.anything-else", "anything-else")
+            .buildSection("az");
 
         assertTrue(config.get(ConfigurationPropertyBuilder.ofBoolean("true").build()));
         assertFalse(config.get(ConfigurationPropertyBuilder.ofBoolean("false").build()));

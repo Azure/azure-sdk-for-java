@@ -480,7 +480,9 @@ public class ClientLoggerTests {
         setupLogLevel(logLevelToConfigure.getLogLevel());
 
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class, globalContext);
-        logger.atInfo().addKeyValue("local", true).addKeyValue("connectionId", "conflict")
+        logger.atInfo()
+            .addKeyValue("local", true)
+            .addKeyValue("connectionId", "conflict")
             .log("Param 1: {}, Param 2: {}, Param 3: {}", "test1", "test2", "test3");
 
         assertMessage(
@@ -561,7 +563,8 @@ public class ClientLoggerTests {
         setupLogLevel(LogLevel.VERBOSE.getLogLevel());
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
 
-        logger.atVerbose().addKeyValue("connection\nId" + System.lineSeparator(), "foo")
+        logger.atVerbose()
+            .addKeyValue("connection\nId" + System.lineSeparator(), "foo")
             .addKeyValue("link\r\nName", "test" + System.lineSeparator() + "me")
             .log("multiline " + System.lineSeparator() + "message");
 
@@ -621,7 +624,8 @@ public class ClientLoggerTests {
         logger.atWarning()
             // this is technically invalid, but we should not throw because of logging in runtime
             .addKeyValue("connectionId", (Supplier<String>) null)
-            .addKeyValue("linkName", () -> String.format("complex value %s", 123)).log("test");
+            .addKeyValue("linkName", () -> String.format("complex value %s", 123))
+            .log("test");
 
         assertMessage("{\"az.sdk.message\":\"test\",\"connectionId\":null,\"linkName\":\"complex value 123\"}",
             byteArraySteamToString(logCaptureStream), LogLevel.INFORMATIONAL, LogLevel.WARNING);
@@ -650,7 +654,9 @@ public class ClientLoggerTests {
         setupLogLevel(logLevelToConfigure.getLogLevel());
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
 
-        logger.atWarning().addKeyValue("connectionId", () -> null).addKeyValue("linkName", "bar")
+        logger.atWarning()
+            .addKeyValue("connectionId", () -> null)
+            .addKeyValue("linkName", "bar")
             .log("Param 1: {}, Param 2: {}, Param 3: {}", "test1", "test2", "test3");
 
         assertMessage(
@@ -670,8 +676,10 @@ public class ClientLoggerTests {
         String exceptionMessage = "An exception message";
         RuntimeException runtimeException = createIllegalStateException(exceptionMessage);
 
-        logger.atWarning().addKeyValue("connectionId", "foo").addKeyValue("linkName", "bar").log("hello {}", "world",
-            runtimeException);
+        logger.atWarning()
+            .addKeyValue("connectionId", "foo")
+            .addKeyValue("linkName", "bar")
+            .log("hello {}", "world", runtimeException);
 
         String message = "{\"az.sdk.message\":\"hello world\",\"exception\":\"" + exceptionMessage
             + "\",\"connectionId\":\"foo\",\"linkName\":\"bar\"}";
@@ -695,7 +703,9 @@ public class ClientLoggerTests {
         String exceptionMessage = "An exception message";
         IOException ioException = createIOException(exceptionMessage);
 
-        logger.atWarning().addKeyValue("connectionId", "foo").addKeyValue("linkName", "bar")
+        logger.atWarning()
+            .addKeyValue("connectionId", "foo")
+            .addKeyValue("linkName", "bar")
             .log(() -> String.format("hello %s", "world"), ioException);
 
         String message = "{\"az.sdk.message\":\"hello world\",\"exception\":\"" + exceptionMessage
@@ -720,7 +730,9 @@ public class ClientLoggerTests {
         String exceptionMessage = "An exception \tmessage with \"special characters\"\r\n";
         RuntimeException runtimeException = createIllegalStateException(exceptionMessage);
 
-        logger.atWarning().addKeyValue("connection\tId", "foo").addKeyValue("linkName", "\rbar")
+        logger.atWarning()
+            .addKeyValue("connection\tId", "foo")
+            .addKeyValue("linkName", "\rbar")
             .log("hello {}, \"and\" {more}", "world", runtimeException);
 
         String escapedExceptionMessage = "An exception \\tmessage with \\\"special characters\\\"\\r\\n";

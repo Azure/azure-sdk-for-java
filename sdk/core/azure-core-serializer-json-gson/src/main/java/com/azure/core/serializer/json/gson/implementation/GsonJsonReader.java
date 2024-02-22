@@ -44,9 +44,10 @@ public final class GsonJsonReader extends JsonReader {
      */
     public GsonJsonReader(Reader reader, byte[] jsonBytes, String jsonString, boolean resetSupported,
         JsonOptions options) {
-        this(createGsonReader(Objects.requireNonNull(reader,
-            "Cannot create a GSON-based instance of com.azure.json.JsonReader with a null GSON JsonReader."), options),
-            jsonBytes, jsonString, resetSupported, options, false);
+        this(createGsonReader(
+            Objects.requireNonNull(reader,
+                "Cannot create a GSON-based instance of com.azure.json.JsonReader with a null GSON JsonReader."),
+            options), jsonBytes, jsonString, resetSupported, options, false);
     }
 
     private static com.google.gson.stream.JsonReader createGsonReader(Reader reader, JsonOptions options) {
@@ -65,8 +66,9 @@ public final class GsonJsonReader extends JsonReader {
      * {@link TypeAdapter}.
      */
     public GsonJsonReader(com.google.gson.stream.JsonReader reader, JsonOptions options, boolean typeAdapterContext) {
-        this(Objects.requireNonNull(reader,
-            "Cannot create a GSON-based instance of com.azure.json.JsonReader with a null GSON JsonReader."),
+        this(
+            Objects.requireNonNull(reader,
+                "Cannot create a GSON-based instance of com.azure.json.JsonReader with a null GSON JsonReader."),
             null, null, false, options, typeAdapterContext);
     }
 
@@ -268,22 +270,28 @@ public final class GsonJsonReader extends JsonReader {
         switch (token) {
             case BEGIN_OBJECT:
                 return JsonToken.START_OBJECT;
+
             case END_OBJECT:
                 return JsonToken.END_OBJECT;
 
             case BEGIN_ARRAY:
                 return JsonToken.START_ARRAY;
+
             case END_ARRAY:
                 return JsonToken.END_ARRAY;
 
             case NAME:
                 return JsonToken.FIELD_NAME;
+
             case STRING:
                 return JsonToken.STRING;
+
             case NUMBER:
                 return JsonToken.NUMBER;
+
             case BOOLEAN:
                 return JsonToken.BOOLEAN;
+
             case NULL:
                 return JsonToken.NULL;
 

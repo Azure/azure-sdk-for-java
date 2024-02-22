@@ -179,23 +179,24 @@ public class SliceInputStreamTest {
             byte[] data = new byte[dataSize];
             fillArray(data);
 
-            return Stream.of(0, 1, 2, 6, 15, 150, 998, 2048, 5 * 1024 * 1024, 50 * 1024 * 1024).flatMap(offset -> Stream
-                .of(0, 1, 2, 3, 5, 18, 211, 1568, 2098, 5 * 1024 * 1024, 50 * 1024 * 1024).map(count -> {
-                    byte[] expectedBytes;
-                    if (offset >= data.length) {
-                        expectedBytes = new byte[0];
-                    } else {
-                        expectedBytes = Arrays.copyOfRange(data, offset, Math.min(data.length, offset + count));
-                    }
+            return Stream.of(0, 1, 2, 6, 15, 150, 998, 2048, 5 * 1024 * 1024, 50 * 1024 * 1024)
+                .flatMap(offset -> Stream.of(0, 1, 2, 3, 5, 18, 211, 1568, 2098, 5 * 1024 * 1024, 50 * 1024 * 1024)
+                    .map(count -> {
+                        byte[] expectedBytes;
+                        if (offset >= data.length) {
+                            expectedBytes = new byte[0];
+                        } else {
+                            expectedBytes = Arrays.copyOfRange(data, offset, Math.min(data.length, offset + count));
+                        }
 
-                    InputStream innerStream = new ByteArrayInputStream(data);
-                    SliceInputStream sliceInputStream = new SliceInputStream(innerStream, offset, count);
+                        InputStream innerStream = new ByteArrayInputStream(data);
+                        SliceInputStream sliceInputStream = new SliceInputStream(innerStream, offset, count);
 
-                    return Arguments.of(Named.named("expectedBytes", expectedBytes),
-                        Named.named(
-                            "sliceInputStream innerSize=" + data.length + " offset=" + offset + " count=" + count,
-                            sliceInputStream));
-                }));
+                        return Arguments.of(Named.named("expectedBytes", expectedBytes),
+                            Named.named(
+                                "sliceInputStream innerSize=" + data.length + " offset=" + offset + " count=" + count,
+                                sliceInputStream));
+                    }));
         });
     }
 }

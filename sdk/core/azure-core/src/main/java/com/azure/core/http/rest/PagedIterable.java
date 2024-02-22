@@ -162,7 +162,8 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
     public PagedIterable(Supplier<PagedResponse<T>> firstPageRetriever,
         Function<String, PagedResponse<T>> nextPageRetriever) {
         this(
-            () -> (continuationToken, pageSize) -> continuationToken == null ? firstPageRetriever.get()
+            () -> (continuationToken, pageSize) -> continuationToken == null
+                ? firstPageRetriever.get()
                 : nextPageRetriever.apply(continuationToken),
             pageSize -> firstPageRetriever.get(),
             (continuationToken, pageSize) -> nextPageRetriever.apply(continuationToken));
@@ -188,7 +189,8 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
      */
     public PagedIterable(Function<Integer, PagedResponse<T>> firstPageRetriever,
         BiFunction<String, Integer, PagedResponse<T>> nextPageRetriever) {
-        this(() -> (continuationToken, pageSize) -> continuationToken == null ? firstPageRetriever.apply(pageSize)
+        this(() -> (continuationToken, pageSize) -> continuationToken == null
+            ? firstPageRetriever.apply(pageSize)
             : nextPageRetriever.apply(continuationToken, pageSize), firstPageRetriever, nextPageRetriever);
     }
 
@@ -239,7 +241,9 @@ public class PagedIterable<T> extends PagedIterableBase<T, PagedResponse<T>> {
         }
         return new PagedResponseBase<String, S>(pagedResponse.getRequest(), pagedResponse.getStatusCode(),
             pagedResponse.getHeaders(),
-            pagedResponse.getValue().stream().map(mapper)
+            pagedResponse.getValue()
+                .stream()
+                .map(mapper)
                 .collect(Collectors.toCollection(() -> new ArrayList<>(pagedResponse.getValue().size()))),
             pagedResponse.getContinuationToken(), null);
     }

@@ -33,6 +33,7 @@
 
   <properties>
     <checkstyle.suppressionsLocation>checkstyle-suppressions.xml</checkstyle.suppressionsLocation>
+    <spotless.skip>false</spotless.skip>
   </properties>
 
   <dependencies>
@@ -52,7 +53,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-data-appconfiguration</artifactId>
-      <version>1.5.1</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
+      <version>1.5.2</version> <!-- {x-version-update;com.azure:azure-data-appconfiguration;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

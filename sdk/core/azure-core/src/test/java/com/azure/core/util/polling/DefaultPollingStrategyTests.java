@@ -56,8 +56,10 @@ public class DefaultPollingStrategyTests {
             activationOperation::get, new DefaultPollingStrategy<>(createPipeline(httpClient), null, null),
             POLL_RESULT_TYPE_REFERENCE, POLL_RESULT_TYPE_REFERENCE);
 
-        StepVerifier.create(pollerFlux.map(AsyncPollResponse::getStatus)).expectSubscription()
-            .expectNext(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED).verifyComplete();
+        StepVerifier.create(pollerFlux.map(AsyncPollResponse::getStatus))
+            .expectSubscription()
+            .expectNext(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+            .verifyComplete();
         Assertions.assertEquals(Context.NONE, lastContext.get());
 
         // PollingStrategy with context
@@ -66,8 +68,10 @@ public class DefaultPollingStrategyTests {
             new DefaultPollingStrategy<>(createPipeline(httpClient), null, context), POLL_RESULT_TYPE_REFERENCE,
             POLL_RESULT_TYPE_REFERENCE);
 
-        StepVerifier.create(pollerFlux.map(AsyncPollResponse::getStatus)).expectSubscription()
-            .expectNext(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED).verifyComplete();
+        StepVerifier.create(pollerFlux.map(AsyncPollResponse::getStatus))
+            .expectSubscription()
+            .expectNext(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+            .verifyComplete();
         Assertions.assertEquals("value", lastContext.get().getData("key").orElse(null));
 
         pollerFlux = PollerFlux.create(Duration.ofMillis(1), activationOperation::get,
@@ -77,7 +81,9 @@ public class DefaultPollingStrategyTests {
         StepVerifier
             .create(pollerFlux.contextWrite(reactor.util.context.Context.of("key2", "value2"))
                 .map(AsyncPollResponse::getStatus))
-            .expectSubscription().expectNext(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED).verifyComplete();
+            .expectSubscription()
+            .expectNext(LongRunningOperationStatus.SUCCESSFULLY_COMPLETED)
+            .verifyComplete();
         Assertions.assertEquals("value2", lastContext.get().getData("key2").orElse(null));
 
         assertEquals(3, activationCallCount[0]);

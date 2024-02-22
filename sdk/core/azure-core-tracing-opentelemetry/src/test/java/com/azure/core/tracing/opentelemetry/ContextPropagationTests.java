@@ -32,9 +32,11 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class ContextPropagationTests {
 
     private static final SdkTracerProvider TRACER_PROVIDER = SdkTracerProvider.builder().build();
-    private static final OpenTelemetry OPEN_TELEMETRY = OpenTelemetrySdk.builder().setTracerProvider(TRACER_PROVIDER).build();
+    private static final OpenTelemetry OPEN_TELEMETRY
+        = OpenTelemetrySdk.builder().setTracerProvider(TRACER_PROVIDER).build();
     private static final Tracer TRACER = new OpenTelemetryTracer("test", null, null,
         new OpenTelemetryTracingOptions().setOpenTelemetry(OPEN_TELEMETRY));
+
     @Test
     public void extractContextEmpty() {
         // Act
@@ -60,7 +62,8 @@ public class ContextPropagationTests {
     @Test
     public void extractContextValid() {
         // Act
-        Context context = TRACER.extractContext(name -> "traceparent".equals(name) ? "00-0af7651916cd43dd8448eb211c80319c-b9c7c989f97918e1-01" : null);
+        Context context = TRACER.extractContext(
+            name -> "traceparent".equals(name) ? "00-0af7651916cd43dd8448eb211c80319c-b9c7c989f97918e1-01" : null);
 
         // Assert
         assertNotNull(context);
@@ -115,7 +118,8 @@ public class ContextPropagationTests {
     @Test
     public void extractDiagnosticId() {
         // Act
-        Context context = TRACER.extractContext(name -> "Diagnostic-Id".equals(name) ? "00-0af7651916cd43dd8448eb211c80319c-b9c7c989f97918e1-01" : null);
+        Context context = TRACER.extractContext(
+            name -> "Diagnostic-Id".equals(name) ? "00-0af7651916cd43dd8448eb211c80319c-b9c7c989f97918e1-01" : null);
 
         // Assert
         assertNotNull(context);
@@ -129,10 +133,11 @@ public class ContextPropagationTests {
 
     @Test
     public void injectTraceparent() {
-        //Arrange
+        // Arrange
 
         final Context contextWithSpan = TRACER.start("test", Context.NONE);
-        Span span = Span.fromContext((io.opentelemetry.context.Context) contextWithSpan.getData(PARENT_TRACE_CONTEXT_KEY).get());
+        Span span = Span
+            .fromContext((io.opentelemetry.context.Context) contextWithSpan.getData(PARENT_TRACE_CONTEXT_KEY).get());
 
         Map<String, String> headers = new HashMap<>();
         TRACER.injectContext((name, value) -> headers.put(name, value), contextWithSpan);
@@ -152,16 +157,15 @@ public class ContextPropagationTests {
         // Arrange
         io.opentelemetry.api.trace.Tracer otelTracer = TRACER_PROVIDER.get("test");
 
-        TraceState state = TraceState.builder()
-            .put("foo", "bar")
-            .put("baz", "42")
-            .build();
-        SpanContext withTraceState = SpanContext.create(IdGenerator.random().generateTraceId(), IdGenerator.random().generateSpanId(),
-            TraceFlags.getSampled(), state);
+        TraceState state = TraceState.builder().put("foo", "bar").put("baz", "42").build();
+        SpanContext withTraceState = SpanContext.create(IdGenerator.random().generateTraceId(),
+            IdGenerator.random().generateSpanId(), TraceFlags.getSampled(), state);
 
-        Span span = otelTracer.spanBuilder("span").setParent(io.opentelemetry.context.Context.root().with(Span.wrap(withTraceState)))
+        Span span = otelTracer.spanBuilder("span")
+            .setParent(io.opentelemetry.context.Context.root().with(Span.wrap(withTraceState)))
             .startSpan();
-        Context contextWithSpan = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root().with(span));
+        Context contextWithSpan
+            = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root().with(span));
 
         Map<String, String> headers = new HashMap<>();
 

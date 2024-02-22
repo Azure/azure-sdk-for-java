@@ -8,6 +8,7 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.ClientEncryptionKey;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
+import com.azure.cosmos.implementation.CosmosQueryRequestOptionsBase;
 import com.azure.cosmos.implementation.CosmosResourceType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseAccount;
@@ -919,7 +920,7 @@ public final class ModelBridgeInternal {
         CosmosItemRequestOptions.initialize();
         CosmosItemResponse.initialize();
         CosmosPatchOperations.initialize();
-        CosmosQueryRequestOptionsBase.initialize();
+        CosmosReadManyRequestOptions.initialize();
         CosmosQueryRequestOptions.initialize();
         FeedResponse.initialize();
         PartitionKey.initialize();

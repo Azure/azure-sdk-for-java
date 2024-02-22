@@ -27,7 +27,8 @@ public interface ObjectSerializer {
          * If the byte array is null pass an empty one by default. This is better than returning null as a previous
          * implementation of this may have custom handling for empty data.
          */
-        return (data == null) ? deserialize(new ByteArrayInputStream(new byte[0]), typeReference)
+        return (data == null)
+            ? deserialize(new ByteArrayInputStream(new byte[0]), typeReference)
             : deserialize(new ByteArrayInputStream(data), typeReference);
     }
 

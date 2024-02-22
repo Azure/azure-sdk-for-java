@@ -32,7 +32,6 @@ public final class MockHttpResponse extends HttpResponse {
         this.body = body;
     }
 
-
     @Override
     public int getStatusCode() {
         return statusCode;

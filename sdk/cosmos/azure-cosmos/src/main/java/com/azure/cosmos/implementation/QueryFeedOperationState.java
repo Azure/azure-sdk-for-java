@@ -17,12 +17,6 @@ public final class QueryFeedOperationState extends FeedOperationState {
         .CosmosQueryRequestOptionsHelper
         .getCosmosQueryRequestOptionsAccessor();
 
-    private static final ImplementationBridgeHelpers
-        .CosmosQueryRequestOptionsBaseHelper
-        .CosmosQueryRequestOptionsBaseAccessor qryOptBaseAccessor = ImplementationBridgeHelpers
-        .CosmosQueryRequestOptionsBaseHelper
-        .getCosmosQueryRequestOptionsBaseAccessor();
-
     private final CosmosQueryRequestOptions options;
     private final RequestOptions requestOptions;
 
@@ -51,10 +45,9 @@ public final class QueryFeedOperationState extends FeedOperationState {
                 queryRequestOptions.getConsistencyLevel()),
             clientAccessor.getEffectiveDiagnosticsThresholds(
                 cosmosAsyncClient,
-                qryOptBaseAccessor.getDiagnosticsThresholds(
-                    qryOptAccessor.getImpl(
-                        checkNotNull(queryRequestOptions, "Argument 'queryRequestOptions' must not be null.")))
-                    ),
+                qryOptAccessor.getImpl(
+                    checkNotNull(queryRequestOptions, "Argument 'queryRequestOptions' must not be null.")
+                ).getThresholds()),
             fluxOptions,
             getEffectiveMaxItemCount(fluxOptions, queryRequestOptions)
         );

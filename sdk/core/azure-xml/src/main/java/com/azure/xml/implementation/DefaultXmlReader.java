@@ -199,10 +199,13 @@ public final class DefaultXmlReader extends XmlReader {
         switch (event) {
             case 1:
                 return XmlToken.START_ELEMENT;
+
             case 2:
                 return XmlToken.END_ELEMENT;
+
             case 7:
                 return XmlToken.START_DOCUMENT;
+
             case 8:
                 return XmlToken.END_DOCUMENT;
 

@@ -23,14 +23,9 @@ public class GsonJsonInstantiationTests {
 
     @SuppressWarnings("resource")
     private static Stream<Executable> throwsNullPointerExceptionSupplier() {
-        return Stream.of(
-            () -> GsonJsonReader.fromBytes(null, null),
-            () -> GsonJsonReader.fromReader(null, null),
-            () -> GsonJsonReader.fromString(null, null),
-            () -> GsonJsonReader.fromStream(null, null),
+        return Stream.of(() -> GsonJsonReader.fromBytes(null, null), () -> GsonJsonReader.fromReader(null, null),
+            () -> GsonJsonReader.fromString(null, null), () -> GsonJsonReader.fromStream(null, null),
 
-            () -> GsonJsonWriter.toStream(null, null),
-            () -> GsonJsonWriter.toWriter(null, null)
-        );
+            () -> GsonJsonWriter.toStream(null, null), () -> GsonJsonWriter.toWriter(null, null));
     }
 }

@@ -76,8 +76,10 @@ public class PagedFluxTest {
     @Test
     public void testPagedFluxSubscribeToPagesFromStart() {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
-        StepVerifier.create(pagedFlux.byPage()).expectNext(pagedResponses.get(0), pagedResponses.get(1),
-            pagedResponses.get(2), pagedResponses.get(3), pagedResponses.get(4)).verifyComplete();
+        StepVerifier.create(pagedFlux.byPage())
+            .expectNext(pagedResponses.get(0), pagedResponses.get(1), pagedResponses.get(2), pagedResponses.get(3),
+                pagedResponses.get(4))
+            .verifyComplete();
     }
 
     @SuppressWarnings("deprecation")
@@ -109,7 +111,8 @@ public class PagedFluxTest {
     @Test
     public void testPagedFluxSubscribeToPagesFromContinuationToken() {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(5);
-        StepVerifier.create(pagedFlux.byPage("3")).expectNext(pagedResponses.get(3), pagedResponses.get(4))
+        StepVerifier.create(pagedFlux.byPage("3"))
+            .expectNext(pagedResponses.get(3), pagedResponses.get(4))
             .verifyComplete();
     }
 
@@ -140,7 +143,8 @@ public class PagedFluxTest {
     @Test
     public void testPagedFluxSubscribeToPagesWithTwoPages() {
         PagedFlux<Integer> pagedFlux = getIntegerPagedFlux(2);
-        StepVerifier.create(pagedFlux.byPage()).expectNext(pagedResponses.get(0), pagedResponses.get(1))
+        StepVerifier.create(pagedFlux.byPage())
+            .expectNext(pagedResponses.get(0), pagedResponses.get(1))
             .verifyComplete();
 
         pagedFlux = getIntegerPagedFlux(2);
@@ -179,7 +183,8 @@ public class PagedFluxTest {
         }));
 
         StepVerifier.create(singlePageFlux.byPage().contextWrite(Context.of(expectedContextKey, expectedContextValue)))
-            .assertNext(Assertions::assertNotNull).verifyComplete();
+            .assertNext(Assertions::assertNotNull)
+            .verifyComplete();
 
         final String expectedContinuationToken = "0";
         PagedFlux<Integer> multiPageFlux = new PagedFlux<>(() -> withContext(context -> {
@@ -192,7 +197,8 @@ public class PagedFluxTest {
         }));
 
         StepVerifier.create(multiPageFlux.byPage().contextWrite(Context.of(expectedContextKey, expectedContextValue)))
-            .expectNextCount(2).verifyComplete();
+            .expectNextCount(2)
+            .verifyComplete();
     }
 
     @Test
@@ -210,7 +216,8 @@ public class PagedFluxTest {
             return Mono.just(pagedResponseSupplier.apply(null));
         });
 
-        StepVerifier.create(singlePageFlux.byPage(expectedPageSize)).assertNext(Assertions::assertNotNull)
+        StepVerifier.create(singlePageFlux.byPage(expectedPageSize))
+            .assertNext(Assertions::assertNotNull)
             .verifyComplete();
 
         final String expectedContinuationToken = "0";
@@ -232,11 +239,13 @@ public class PagedFluxTest {
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost");
 
         String deserializedHeaders = "header1,value1,header2,value2";
-        pagedResponses = IntStream.range(0, noOfPages).boxed()
+        pagedResponses = IntStream.range(0, noOfPages)
+            .boxed()
             .map(i -> createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, i, noOfPages))
             .collect(Collectors.toList());
 
-        pagedStringResponses = IntStream.range(0, noOfPages).boxed()
+        pagedStringResponses = IntStream.range(0, noOfPages)
+            .boxed()
             .map(i -> createPagedResponseWithString(httpRequest, httpHeaders, deserializedHeaders, i, noOfPages))
             .collect(Collectors.toList());
 
@@ -250,11 +259,13 @@ public class PagedFluxTest {
         HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, "http://localhost");
 
         String deserializedHeaders = "header1,value1,header2,value2";
-        pagedResponses = IntStream.range(0, 1).boxed()
+        pagedResponses = IntStream.range(0, 1)
+            .boxed()
             .map(i -> createPagedResponse(httpRequest, httpHeaders, deserializedHeaders, i, 1))
             .collect(Collectors.toList());
 
-        pagedStringResponses = IntStream.range(0, 1).boxed()
+        pagedStringResponses = IntStream.range(0, 1)
+            .boxed()
             .map(i -> createPagedResponseWithString(httpRequest, httpHeaders, deserializedHeaders, i, 1))
             .collect(Collectors.toList());
         return new PagedFlux<>(() -> pagedResponses.isEmpty() ? Mono.empty() : Mono.just(pagedResponses.get(0)));

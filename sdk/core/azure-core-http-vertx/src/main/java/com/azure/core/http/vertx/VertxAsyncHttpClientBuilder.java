@@ -173,8 +173,8 @@ public class VertxAsyncHttpClientBuilder {
     public HttpClient build() {
         Vertx configuredVertx = this.vertx;
         if (configuredVertx == null) {
-            ServiceLoader<VertxProvider> vertxProviders = ServiceLoader.load(VertxProvider.class,
-                VertxProvider.class.getClassLoader());
+            ServiceLoader<VertxProvider> vertxProviders
+                = ServiceLoader.load(VertxProvider.class, VertxProvider.class.getClassLoader());
             configuredVertx = getVertx(vertxProviders.iterator());
         }
 
@@ -201,9 +201,8 @@ public class VertxAsyncHttpClientBuilder {
 
             this.httpClientOptions.setIdleTimeout((int) this.idleTimeout.getSeconds());
 
-            Configuration buildConfiguration = (this.configuration == null)
-                ? Configuration.getGlobalConfiguration()
-                : configuration;
+            Configuration buildConfiguration
+                = (this.configuration == null) ? Configuration.getGlobalConfiguration() : configuration;
 
             ProxyOptions buildProxyOptions = (this.proxyOptions == null)
                 ? ProxyOptions.fromConfiguration(buildConfiguration, true)
@@ -279,11 +278,9 @@ public class VertxAsyncHttpClientBuilder {
      * @return String array of desanitized proxy host strings
      */
     private String[] desanitizedNonProxyHosts(String nonProxyHosts) {
-        String desanitzedNonProxyHosts = NON_PROXY_HOST_DESANITIZE.matcher(nonProxyHosts)
-            .replaceAll("");
+        String desanitzedNonProxyHosts = NON_PROXY_HOST_DESANITIZE.matcher(nonProxyHosts).replaceAll("");
 
-        desanitzedNonProxyHosts = NON_PROXY_HOST_DOT_STAR.matcher(desanitzedNonProxyHosts)
-            .replaceAll("*");
+        desanitzedNonProxyHosts = NON_PROXY_HOST_DOT_STAR.matcher(desanitzedNonProxyHosts).replaceAll("*");
 
         return NON_PROXY_HOSTS_SPLIT.split(desanitzedNonProxyHosts);
     }

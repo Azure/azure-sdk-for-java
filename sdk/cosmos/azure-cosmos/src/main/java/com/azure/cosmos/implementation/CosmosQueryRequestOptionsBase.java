@@ -1,15 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.models;
+package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
-import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
-import com.azure.cosmos.implementation.RequestOptions;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
+import com.azure.cosmos.models.DedicatedGatewayRequestOptions;
 import com.fasterxml.jackson.databind.JsonNode;
 
 import java.time.Duration;
@@ -75,11 +75,11 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
         this.properties = options.properties;
     }
 
-    void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
+    public void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
         this.operationContextAndListenerTuple = operationContextAndListenerTuple;
     }
 
-    OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
+    public OperationContextAndListenerTuple getOperationContextAndListenerTuple() {
         return this.operationContextAndListenerTuple;
     }
 
@@ -88,14 +88,13 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
      *
      * @return the consistency level.
      */
-
     public ConsistencyLevel getConsistencyLevel() {
         return consistencyLevel;
     }
 
     /**
      * Sets the consistency level required for the request. The effective consistency level
-     * can only be reduce for read/query requests. So when the Account's default consistency level
+     * can only be reduced for read/query requests. So when the Account's default consistency level
      * is for example Session you can specify on a request-by-request level for individual requests
      * that Eventual consistency is sufficient - which could reduce the latency and RU charges for this
      * request but will not guarantee session consistency (read-your-own-write) anymore
@@ -137,7 +136,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
      *
      * @return the correlation activityId
      */
-    UUID getCorrelationActivityId() {
+    public UUID getCorrelationActivityId() {
         return this.correlationActivityId;
     }
 
@@ -149,7 +148,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
      * @return the CosmosQueryRequestOptions.
      */
     @SuppressWarnings("unchecked")
-    T setCorrelationActivityId(UUID correlationActivityId) {
+    public T setCorrelationActivityId(UUID correlationActivityId) {
         this.correlationActivityId = correlationActivityId;
         return (T)this;
     }
@@ -259,7 +258,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
      *
      * @return Map of request options properties
      */
-    Map<String, Object> getProperties() {
+    public Map<String, Object> getProperties() {
         return properties;
     }
 
@@ -270,7 +269,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
      * @return the CosmosQueryRequestOptions.
      */
     @SuppressWarnings("unchecked")
-    T setProperties(Map<String, Object> properties) {
+    public T setProperties(Map<String, Object> properties) {
         this.properties = properties;
         return (T)this;
     }
@@ -403,7 +402,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
      * @return the CosmosQueryRequestOptions.
      */
     @SuppressWarnings("unchecked")
-    T setHeader(String name, String value) {
+    public T setHeader(String name, String value) {
         if (this.customOptions == null) {
             this.customOptions = new HashMap<>();
         }
@@ -416,28 +415,34 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
      *
      * @return Map of custom request options
      */
-    Map<String, String> getHeaders() {
+    public Map<String, String> getHeaders() {
         return this.customOptions;
     }
 
-    Function<JsonNode, ?> getItemFactoryMethod() { return this.itemFactoryMethod; }
+    public Function<JsonNode, ?> getItemFactoryMethod() { return this.itemFactoryMethod; }
 
     @SuppressWarnings("unchecked")
-    T setItemFactoryMethod(Function<JsonNode, ?> factoryMethod) {
+    public <T> Function<JsonNode, T> getItemFactoryMethod(Class<T> classOfT) {
+
+        return (Function<JsonNode, T>)this.itemFactoryMethod;
+    }
+
+    @SuppressWarnings("unchecked")
+    public T setItemFactoryMethod(Function<JsonNode, ?> factoryMethod) {
         this.itemFactoryMethod = factoryMethod;
 
         return (T)this;
     }
 
-    CosmosDiagnosticsThresholds getThresholds() {
+    public CosmosDiagnosticsThresholds getThresholds() {
         return this.thresholds;
     }
 
-    CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyConfig() {
+    public CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyConfig() {
         return cosmosEndToEndOperationLatencyPolicyConfig;
     }
 
-    RequestOptions applyToRequestOptions(RequestOptions requestOptions) {
+    public RequestOptions applyToRequestOptions(RequestOptions requestOptions) {
         requestOptions.setConsistencyLevel(this.getConsistencyLevel());
         requestOptions.setSessionToken(this.getSessionToken());
         requestOptions.setThroughputControlGroupName(this.getThroughputControlGroupName());
@@ -457,90 +462,4 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
 
         return requestOptions;
     }
-
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    // the following helper/accessor only helps to access this class outside of this package.//
-    ///////////////////////////////////////////////////////////////////////////////////////////
-    static void initialize() {
-        ImplementationBridgeHelpers.CosmosQueryRequestOptionsBaseHelper.setCosmosQueryRequestOptionsBaseAccessor(
-            new ImplementationBridgeHelpers.CosmosQueryRequestOptionsBaseHelper.CosmosQueryRequestOptionsBaseAccessor() {
-                @Override
-                public void setOperationContext(CosmosQueryRequestOptionsBase<?> queryRequestOptions,
-                                                OperationContextAndListenerTuple operationContextAndListenerTuple) {
-                    queryRequestOptions.setOperationContextAndListenerTuple(operationContextAndListenerTuple);
-                }
-
-                @Override
-                public OperationContextAndListenerTuple getOperationContext(CosmosQueryRequestOptionsBase<?> queryRequestOptions) {
-                    if (queryRequestOptions == null) {
-                        return null;
-                    }
-
-                    return queryRequestOptions.getOperationContextAndListenerTuple();
-                }
-
-                @Override
-                @SuppressWarnings("unchecked")
-                public <T extends CosmosQueryRequestOptionsBase<?>> T setHeader(T queryRequestOptions, String name
-                    , String value) {
-                    return (T)queryRequestOptions.setHeader(name, value);
-                }
-
-                @Override
-                public Map<String, String> getHeader(CosmosQueryRequestOptionsBase<?> queryRequestOptions) {
-                    return queryRequestOptions.getHeaders();
-                }
-
-                @Override
-                public UUID getCorrelationActivityId(CosmosQueryRequestOptionsBase<?> queryRequestOptions) {
-                    if (queryRequestOptions == null) {
-                        return null;
-                    }
-
-                    return queryRequestOptions.getCorrelationActivityId();
-                }
-
-                @Override
-                @SuppressWarnings("unchecked")
-                public <T extends CosmosQueryRequestOptionsBase<?>> T setCorrelationActivityId(
-                    T queryRequestOptions, UUID correlationActivityId) {
-
-                    return (T)queryRequestOptions.setCorrelationActivityId(correlationActivityId);
-                }
-
-                @Override
-                @SuppressWarnings("unchecked")
-                public <T> Function<JsonNode, T> getItemFactoryMethod(
-                    CosmosQueryRequestOptionsBase<?> queryRequestOptions, Class<T> classOfT) {
-
-                    return (Function<JsonNode, T>)queryRequestOptions.getItemFactoryMethod();
-                }
-
-                @Override
-                @SuppressWarnings("unchecked")
-                public <T extends CosmosQueryRequestOptionsBase<?>> T setItemFactoryMethod(
-                    T queryRequestOptions,
-                    Function<JsonNode, ?> factoryMethod) {
-
-                    return (T)queryRequestOptions.setItemFactoryMethod(factoryMethod);
-                }
-
-                @Override
-                public CosmosDiagnosticsThresholds getDiagnosticsThresholds(CosmosQueryRequestOptionsBase<?> options) {
-                    return options.getThresholds();
-                }
-
-                @Override
-                public CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyPolicyConfig(CosmosQueryRequestOptionsBase<?> options) {
-                    return options.getEndToEndOperationLatencyConfig();
-                }
-
-                @Override
-                public List<String> getExcludeRegions(CosmosQueryRequestOptionsBase<?> options) {
-                    return options.getExcludedRegions();
-                }
-            });
-    }
-
-    static { initialize(); }
 }

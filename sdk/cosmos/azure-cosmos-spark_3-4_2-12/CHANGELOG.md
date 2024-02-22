@@ -1,14 +1,9 @@
 ## Release History
 
-### 4.27.0-beta.1 (Unreleased)
+### 4.27.0 (2024-02-20)
 
 #### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
-
-#### Other Changes
+* Added an option to retrieve the `CosmosAsyncClient` used by the connector internally to allow Spark applications to reuse the same instance instead of having to instantiate their own `CosmsoAsyncClient` when also using the Cosmos Java SDK besides the Spark connector. - See [PR 38834](https://github.com/Azure/azure-sdk-for-java/pull/38834)
 
 ### 4.26.1 (2024-02-13)
 

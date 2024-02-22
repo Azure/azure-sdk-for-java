@@ -22,7 +22,6 @@ public class FeedRangesMetadataTopicPartition {
 
         this.databaseName = databaseName;
         this.containerRid = containerRid;
-
     }
 
     public String getDatabaseName() {

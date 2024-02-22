@@ -102,12 +102,15 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
     public boolean shouldAttemptRedirect(HttpPipelineCallContext context, HttpResponse httpResponse, int tryCount,
         Set<String> attemptedRedirectUrls) {
 
-        if (isValidRedirectStatusCode(httpResponse.getStatusCode()) && isValidRedirectCount(tryCount)
+        if (isValidRedirectStatusCode(httpResponse.getStatusCode())
+            && isValidRedirectCount(tryCount)
             && isAllowedRedirectMethod(httpResponse.getRequest().getHttpMethod())) {
             String redirectUrl = httpResponse.getHeaderValue(locationHeader);
             if (redirectUrl != null && !alreadyAttemptedRedirectUrl(redirectUrl, attemptedRedirectUrls)) {
-                LOGGER.atVerbose().addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
-                    .addKeyValue(REDIRECT_URLS_KEY, attemptedRedirectUrls::toString).log("Redirecting.");
+                LOGGER.atVerbose()
+                    .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
+                    .addKeyValue(REDIRECT_URLS_KEY, attemptedRedirectUrls::toString)
+                    .log("Redirecting.");
                 attemptedRedirectUrls.add(redirectUrl);
                 return true;
             } else {
@@ -138,7 +141,8 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
      */
     private boolean alreadyAttemptedRedirectUrl(String redirectUrl, Set<String> attemptedRedirectUrls) {
         if (attemptedRedirectUrls.contains(redirectUrl)) {
-            LOGGER.atError().addKeyValue(LoggingKeys.REDIRECT_URL_KEY, redirectUrl)
+            LOGGER.atError()
+                .addKeyValue(LoggingKeys.REDIRECT_URL_KEY, redirectUrl)
                 .log("Request was redirected more than once to the same URL.");
 
             return true;
@@ -171,7 +175,8 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
         if (allowedRedirectHttpMethods.contains(httpMethod)) {
             return true;
         } else {
-            LOGGER.atError().addKeyValue(LoggingKeys.HTTP_METHOD_KEY, httpMethod)
+            LOGGER.atError()
+                .addKeyValue(LoggingKeys.HTTP_METHOD_KEY, httpMethod)
                 .log("Request was redirected from an invalid redirect allowed method.");
 
             return false;
@@ -185,7 +190,9 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
      * @return {@code true} if the request {@code statusCode} is a valid http redirect method, {@code false} otherwise.
      */
     private boolean isValidRedirectStatusCode(int statusCode) {
-        return statusCode == HttpURLConnection.HTTP_MOVED_TEMP || statusCode == HttpURLConnection.HTTP_MOVED_PERM
-            || statusCode == PERMANENT_REDIRECT_STATUS_CODE || statusCode == TEMPORARY_REDIRECT_STATUS_CODE;
+        return statusCode == HttpURLConnection.HTTP_MOVED_TEMP
+            || statusCode == HttpURLConnection.HTTP_MOVED_PERM
+            || statusCode == PERMANENT_REDIRECT_STATUS_CODE
+            || statusCode == TEMPORARY_REDIRECT_STATUS_CODE;
     }
 }

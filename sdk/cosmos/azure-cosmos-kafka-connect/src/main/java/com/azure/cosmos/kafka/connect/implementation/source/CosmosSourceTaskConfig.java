@@ -42,7 +42,6 @@ public class CosmosSourceTaskConfig extends CosmosSourceConfig {
     }
 
     private static void defineTaskUnitsConfig(ConfigDef result) {
-        //TODO: seems like all the configs does not provide default value will need to be configured, re-evaluate
         result
             .defineInternal(
                 SOURCE_FEED_RANGE_TASK_UNITS,
@@ -59,8 +58,9 @@ public class CosmosSourceTaskConfig extends CosmosSourceConfig {
     }
 
     private List<FeedRangeTaskUnit> parseFeedRangeTaskUnits() {
+        String feedRangesTaskUnitsConfig = this.getString(SOURCE_FEED_RANGE_TASK_UNITS);
+
         try {
-            String feedRangesTaskUnitsConfig = this.getString(SOURCE_FEED_RANGE_TASK_UNITS);
             if (!StringUtils.isEmpty(feedRangesTaskUnitsConfig)) {
                 return OBJECT_MAPPER
                     .readValue(feedRangesTaskUnitsConfig, new TypeReference<List<String>>() {})
@@ -69,7 +69,7 @@ public class CosmosSourceTaskConfig extends CosmosSourceConfig {
                         try {
                             return OBJECT_MAPPER.readValue(taskUnitConfigJson, FeedRangeTaskUnit.class);
                         } catch (JsonProcessingException e) {
-                            throw new IllegalArgumentException("Failed to parseFeedRangeTaskUnit", e);
+                            throw new IllegalArgumentException("Failed to parseFeedRangeTaskUnit[" + taskUnitConfigJson + "]", e);
                         }
                     })
                     .collect(Collectors.toList());
@@ -77,7 +77,7 @@ public class CosmosSourceTaskConfig extends CosmosSourceConfig {
 
             return new ArrayList<>();
         } catch (JsonProcessingException e) {
-            throw new IllegalArgumentException("Failed to parseFeedRangeTaskUnits", e);
+            throw new IllegalArgumentException("Failed to parseFeedRangeTaskUnits[" + feedRangesTaskUnitsConfig + "]", e);
         }
 
     }
@@ -88,7 +88,7 @@ public class CosmosSourceTaskConfig extends CosmosSourceConfig {
             try {
                 return OBJECT_MAPPER.readValue(metadataTaskUnitConfig, MetadataTaskUnit.class);
             } catch (JsonProcessingException e) {
-                throw new IllegalArgumentException("Failed to parseMetadataTaskUnit", e);
+                throw new IllegalArgumentException("Failed to parseMetadataTaskUnit[" + metadataTaskUnitConfig + "]", e);
             }
         }
 
@@ -114,7 +114,7 @@ public class CosmosSourceTaskConfig extends CosmosSourceConfig {
                 ));
             return taskConfigMap;
         } catch (JsonProcessingException e) {
-            throw new ConfigException("Failed to getFeedRangTaskUnitsConfigMap ", e);
+            throw new RuntimeException(e);
         }
     }
 
@@ -126,7 +126,7 @@ public class CosmosSourceTaskConfig extends CosmosSourceConfig {
             }
             return taskConfigMap;
         } catch (JsonProcessingException e) {
-            throw new ConfigException("Failed to getFeedRangTaskUnitsConfigMap ", e);
+            throw new RuntimeException(e);
         }
     }
 

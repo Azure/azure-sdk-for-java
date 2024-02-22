@@ -25,9 +25,6 @@ public class PipelinedDocumentQueryExecutionContext<T>
     private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor qryOptAccessor =
         ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
 
-    private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsBaseHelper.CosmosQueryRequestOptionsBaseAccessor qryOptBaseAccessor =
-        ImplementationBridgeHelpers.CosmosQueryRequestOptionsBaseHelper.getCosmosQueryRequestOptionsBaseAccessor();
-
     private final IDocumentQueryExecutionComponent<Document> component;
 
     private PipelinedDocumentQueryExecutionContext(
@@ -56,7 +53,7 @@ public class PipelinedDocumentQueryExecutionContext<T>
                 CosmosQueryRequestOptions orderByCosmosQueryRequestOptions =
                     qryOptAccessor.clone(requestOptions);
                 ModelBridgeInternal.setQueryRequestOptionsContinuationToken(orderByCosmosQueryRequestOptions, continuationToken);
-                qryOptBaseAccessor.setItemFactoryMethod(qryOptAccessor.getImpl(orderByCosmosQueryRequestOptions), null);
+                qryOptAccessor.getImpl(orderByCosmosQueryRequestOptions).setItemFactoryMethod(null);
 
                 documentQueryParams.setCosmosQueryRequestOptions(orderByCosmosQueryRequestOptions);
 
@@ -67,7 +64,7 @@ public class PipelinedDocumentQueryExecutionContext<T>
             createBaseComponentFunction = (continuationToken, documentQueryParams) -> {
                 CosmosQueryRequestOptions parallelCosmosQueryRequestOptions =
                     qryOptAccessor.clone(requestOptions);
-                qryOptBaseAccessor.setItemFactoryMethod(qryOptAccessor.getImpl(parallelCosmosQueryRequestOptions), null);
+                qryOptAccessor.getImpl(parallelCosmosQueryRequestOptions).setItemFactoryMethod(null);
                 ModelBridgeInternal.setQueryRequestOptionsContinuationToken(parallelCosmosQueryRequestOptions, continuationToken);
 
                 documentQueryParams.setCosmosQueryRequestOptions(parallelCosmosQueryRequestOptions);

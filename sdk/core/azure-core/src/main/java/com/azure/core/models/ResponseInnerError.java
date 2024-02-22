@@ -64,7 +64,9 @@ final class ResponseInnerError implements JsonSerializable<ResponseInnerError> {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        return jsonWriter.writeStartObject().writeStringField("code", code).writeJsonField("innererror", innerError)
+        return jsonWriter.writeStartObject()
+            .writeStringField("code", code)
+            .writeJsonField("innererror", innerError)
             .writeEndObject();
     }
 
