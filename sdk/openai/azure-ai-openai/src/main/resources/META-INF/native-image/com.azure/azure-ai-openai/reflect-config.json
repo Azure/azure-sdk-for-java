@@ -1,11 +1,5 @@
 [
     {
-        "name": "com.azure.storage.blob.implementation.OpenAIClientImpl",
-        "allDeclaredConstructors": true,
-        "allDeclaredFields": true,
-        "allDeclaredMethods": true
-    },
-    {
         "name": "com.azure.ai.openai.OpenAIClient",
         "allDeclaredConstructors": true,
         "allDeclaredFields": true,
