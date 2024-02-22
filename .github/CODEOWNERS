@@ -105,7 +105,7 @@
 # PRLabel: %OpenTelemetry
 /sdk/core/azure-core-tracing-opentelemetry/          @lmolkova @trask
 
-# ServiceLabel: %Cosmos 
+# ServiceLabel: %Cosmos
 # PRLabel: %Cosmos
 /sdk/cosmos/                                         @kushagraThapar @FabianMeiswinkel @kirankumarkolli @xinlian12 @milismsft @aayush3011 @simorenoh @jeet1995 @Pilchie
 
@@ -124,7 +124,7 @@
 # AzureSdkOwners: @billwert
 # ServiceLabel: %Event Grid
 # PRLabel: %Event Grid
-/sdk/eventgrid/                                     @billwert @mssfang @srnagar @lmolkova 
+/sdk/eventgrid/                                     @billwert @mssfang @srnagar @lmolkova
 
 # AzureSdkOwners: @conniey @anuchandy @lmolkova
 # ServiceLabel: %Event Hubs
@@ -204,6 +204,11 @@
 # ServiceLabel: %Search
 # PRLabel: %Search
 /sdk/search/                                         @alzimmermsft @jairmyree @Azure/azsdk-search
+
+# AzureSdkOwners: @alzimmermsft
+# ServiceLabel: %Azure.Core
+# PRLabel: %Azure.Core
+/sdk/serialization/                                  @alzimmermsft
 
 # AzureSdkOwners: @anuchandy
 # ServiceLabel: %Service Bus
