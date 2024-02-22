@@ -7,7 +7,6 @@ import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
-import com.generic.core.http.okhttp.implementation.OkHttpBufferedResponse;
 import com.generic.core.http.okhttp.implementation.OkHttpFileRequestBody;
 import com.generic.core.http.okhttp.implementation.OkHttpInputStreamRequestBody;
 import com.generic.core.http.okhttp.implementation.OkHttpResponse;
@@ -164,10 +163,10 @@ class OkHttpHttpClient implements HttpClient {
             try (ResponseBody body = response.body()) {
                 byte[] bytes = (body != null) ? body.bytes() : EMPTY_BODY;
 
-                return new OkHttpBufferedResponse(response, request, eagerlyConvertHeaders, bytes);
+                return new OkHttpResponse(response, request, eagerlyConvertHeaders, bytes);
             }
         } else {
-            return new OkHttpResponse(response, request, eagerlyConvertHeaders);
+            return new OkHttpResponse(response, request, eagerlyConvertHeaders, null);
         }
     }
 }

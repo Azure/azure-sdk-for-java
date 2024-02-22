@@ -153,7 +153,7 @@ public final class OkHttpToAzureCoreHttpHeadersWrapper extends com.generic.core.
             return;
         }
 
-        coreHeaders = OkHttpResponseBase.fromOkHttpHeaders(okhttpHeaders);
+        coreHeaders = OkHttpResponse.fromOkHttpHeaders(okhttpHeaders);
         converted = true;
     }
 }
