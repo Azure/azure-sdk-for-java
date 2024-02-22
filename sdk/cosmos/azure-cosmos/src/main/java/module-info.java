@@ -77,6 +77,7 @@ module com.azure.cosmos {
     exports com.azure.cosmos.implementation.routing to com.azure.cosmos.test, com.azure.cosmos.kafka.connect;
     opens com.azure.cosmos to com.azure.cosmos.test, com.azure.spring.data.cosmos, com.fasterxml.jackson.databind, com.fasterxml.jackson.module.afterburner, java.logging;
     opens com.azure.cosmos.models to com.azure.cosmos.test, com.azure.spring.data.cosmos, com.fasterxml.jackson.databind, com.fasterxml.jackson.module.afterburner, java.logging;
+    exports com.azure.cosmos.implementation.changefeed.common to com.azure.cosmos.kafka.connect;
 
     uses com.azure.cosmos.implementation.guava25.base.PatternCompiler;
     uses com.azure.core.util.tracing.Tracer;
