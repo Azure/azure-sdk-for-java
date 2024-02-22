@@ -3,6 +3,7 @@
 ## 1.0.0-beta.7 (Unreleased)
 
 ### Features Added
+- Spring native support, to benefit from GraalVM native image generation when using the Spring framework.
 
 ### Breaking Changes
 
