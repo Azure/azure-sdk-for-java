@@ -298,7 +298,7 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
      *
      * @return The thumbprint of the certificate as a hex string.
      */
-    public String getX509ThumbprintString() {
+    public String getX509ThumbprintAsString() {
         return bytesToHexString(getX509Thumbprint());
     }
 

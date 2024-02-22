@@ -874,7 +874,7 @@ public class CertificateAsyncClientTest extends CertificateClientTestBase {
             StepVerifier.create(certificateAsyncClient.importCertificate(importCertificateOptions))
                 .assertNext(importedCertificate -> {
                     assertTrue("db1497bc2c82b365c5c7c73f611513ee117790a9"
-                        .equalsIgnoreCase(importedCertificate.getProperties().getX509ThumbprintString()));
+                        .equalsIgnoreCase(importedCertificate.getProperties().getX509ThumbprintAsString()));
                     assertEquals(importCertificateOptions.isEnabled(), importedCertificate.getProperties().isEnabled());
 
                     // Load the CER part into X509Certificate object
