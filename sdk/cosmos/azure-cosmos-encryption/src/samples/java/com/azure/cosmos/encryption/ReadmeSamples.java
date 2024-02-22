@@ -140,6 +140,10 @@ public class ReadmeSamples {
             return id;
         }
 
+        String getSensitiveString() {
+            return sensitiveString;
+        }
+
         void setSensitiveString(String sensitiveString) {
             this.sensitiveString = sensitiveString;
         }

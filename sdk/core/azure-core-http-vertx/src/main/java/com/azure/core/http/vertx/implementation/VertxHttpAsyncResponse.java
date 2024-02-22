@@ -41,12 +41,10 @@ public final class VertxHttpAsyncResponse extends VertxHttpResponseBase {
     private Flux<ByteBuffer> streamResponseBody() {
         HttpClientResponse vertxHttpResponse = getVertxHttpResponse();
         return Flux.create(sink -> {
-            vertxHttpResponse.handler(buffer -> sink.next(buffer.getByteBuf().nioBuffer()))
-                .endHandler(event -> {
-                    closed = true;
-                    sink.complete();
-                })
-                .exceptionHandler(sink::error);
+            vertxHttpResponse.handler(buffer -> sink.next(buffer.getByteBuf().nioBuffer())).endHandler(event -> {
+                closed = true;
+                sink.complete();
+            }).exceptionHandler(sink::error);
 
             vertxHttpResponse.resume();
         });

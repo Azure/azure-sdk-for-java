@@ -34,8 +34,8 @@ public final class DefaultXmlWriter extends XmlWriter {
      */
     public static XmlWriter toStream(OutputStream xml) throws XMLStreamException {
         Objects.requireNonNull(xml, "'xml' cannot be null.");
-        return new DefaultXmlWriter(XML_OUTPUT_FACTORY.createXMLStreamWriter(
-            new OutputStreamWriter(xml, StandardCharsets.UTF_8)));
+        return new DefaultXmlWriter(
+            XML_OUTPUT_FACTORY.createXMLStreamWriter(new OutputStreamWriter(xml, StandardCharsets.UTF_8)));
     }
 
     /**
@@ -113,8 +113,8 @@ public final class DefaultXmlWriter extends XmlWriter {
     }
 
     @Override
-    public XmlWriter writeStringAttribute(String namespaceUri, String localName,
-        String value) throws XMLStreamException {
+    public XmlWriter writeStringAttribute(String namespaceUri, String localName, String value)
+        throws XMLStreamException {
         if (value == null) {
             return this;
         }

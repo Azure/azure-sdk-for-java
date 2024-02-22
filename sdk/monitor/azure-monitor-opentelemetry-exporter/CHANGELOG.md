@@ -1,9 +1,12 @@
 # Release History
 
-## 1.0.0-beta.18 (2024-01-26)
+## 1.0.0-beta.18 (2024-02-16)
 
 ### Bugs Fixed
 - [Fix min and max values for pre-aggregated metrics](https://github.com/Azure/azure-sdk-for-java/pull/38516)
+
+### Other Changes
+- [Update OpenTelemetry to 2.1.0](https://github.com/Azure/azure-sdk-for-java/pull/38808)
 
 ## 1.0.0-beta.17 (2024-01-25)
 - [Fix pre-aggregated metrics with stable http semantic convention](https://github.com/Azure/azure-sdk-for-java/pull/38497)

@@ -128,6 +128,10 @@ public final class Region {
      * UK West (Europe)
      */
     public static final Region UK_WEST = new Region("ukwest", "UK West");
+    /**
+     * Italy North (Europe)
+     */
+    public static final Region ITALY_NORTH = new Region("italynorth", "Italy North");
     /*
      * Azure Cloud - Asia
      */

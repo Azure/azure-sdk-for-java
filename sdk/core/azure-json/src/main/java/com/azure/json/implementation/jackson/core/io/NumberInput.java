@@ -4,8 +4,7 @@ package com.azure.json.implementation.jackson.core.io;
 import java.math.BigDecimal;
 
 @SuppressWarnings("fallthrough")
-public final class NumberInput
-{
+public final class NumberInput {
     /**
      * Textual representation of a double constant that can cause nasty problems
      * with JDK (see http://www.exploringbinary.com/java-hangs-when-converting-2-2250738585072012e-308).
@@ -34,27 +33,26 @@ public final class NumberInput
      *
      * @return Decoded {@code int} value
      */
-    public static int parseInt(char[] ch, int off, int len)
-    {
+    public static int parseInt(char[] ch, int off, int len) {
         int num = ch[off + len - 1] - '0';
 
-        switch(len) {
-        case 9:
-          num += (ch[off++] - '0') * 100000000;
-        case 8:
-          num += (ch[off++] - '0') * 10000000;
-        case 7:
-          num += (ch[off++] - '0') * 1000000;
-        case 6:
-          num += (ch[off++] - '0') * 100000;
-        case 5:
-          num += (ch[off++] - '0') * 10000;
-        case 4:
-          num += (ch[off++] - '0') * 1000;
-        case 3:
-          num += (ch[off++] - '0') * 100;
-        case 2:
-          num += (ch[off] - '0') * 10;
+        switch (len) {
+            case 9:
+                num += (ch[off++] - '0') * 100000000;
+            case 8:
+                num += (ch[off++] - '0') * 10000000;
+            case 7:
+                num += (ch[off++] - '0') * 1000000;
+            case 6:
+                num += (ch[off++] - '0') * 100000;
+            case 5:
+                num += (ch[off++] - '0') * 10000;
+            case 4:
+                num += (ch[off++] - '0') * 1000;
+            case 3:
+                num += (ch[off++] - '0') * 100;
+            case 2:
+                num += (ch[off] - '0') * 10;
         }
         return num;
     }
@@ -72,9 +70,9 @@ public final class NumberInput
      *
      * @return Decoded {@code int} value
      */
-    public static int parseInt(String s)
-    {
-        /* Ok: let's keep strategy simple: ignoring optional minus sign,
+    public static int parseInt(String s) {
+        /*
+         * Ok: let's keep strategy simple: ignoring optional minus sign,
          * we'll accept 1 - 9 digits and parse things efficiently;
          * otherwise just defer to JDK parse functionality.
          */
@@ -125,12 +123,11 @@ public final class NumberInput
         return neg ? -num : num;
     }
 
-    public static long parseLong(char[] ch, int off, int len)
-    {
+    public static long parseLong(char[] ch, int off, int len) {
         // Note: caller must ensure length is [10, 18]
-        int len1 = len-9;
+        int len1 = len - 9;
         long val = parseInt(ch, off, len1) * L_BILLION;
-        return val + (long) parseInt(ch, off+len1, 9);
+        return val + (long) parseInt(ch, off + len1, 9);
     }
 
     /**
@@ -140,8 +137,7 @@ public final class NumberInput
      *
      * @return Decoded {@code long} value
      */
-    public static long parseLong(String s)
-    {
+    public static long parseLong(String s) {
         // Ok, now; as the very first thing, let's just optimize case of "fake longs";
         // that is, if we know they must be ints, call int parsing
         int length = s.length();
@@ -167,16 +163,16 @@ public final class NumberInput
      * @return {@code True} if specified String representation is within Java
      *   {@code long} range; {@code false} if not.
      */
-    public static boolean inLongRange(char[] ch, int off, int len,
-            boolean negative)
-    {
+    public static boolean inLongRange(char[] ch, int off, int len, boolean negative) {
         String cmpStr = negative ? MIN_LONG_STR_NO_SIGN : MAX_LONG_STR;
         int cmpLen = cmpStr.length();
-        if (len < cmpLen) return true;
-        if (len > cmpLen) return false;
+        if (len < cmpLen)
+            return true;
+        if (len > cmpLen)
+            return false;
 
         for (int i = 0; i < cmpLen; ++i) {
-            int diff = ch[off+i] - cmpStr.charAt(i);
+            int diff = ch[off + i] - cmpStr.charAt(i);
             if (diff != 0) {
                 return (diff < 0);
             }
@@ -195,13 +191,14 @@ public final class NumberInput
      * @return {@code True} if specified String representation is within Java
      *   {@code long} range; {@code false} if not.
      */
-    public static boolean inLongRange(String s, boolean negative)
-    {
+    public static boolean inLongRange(String s, boolean negative) {
         String cmp = negative ? MIN_LONG_STR_NO_SIGN : MAX_LONG_STR;
         int cmpLen = cmp.length();
         int alen = s.length();
-        if (alen < cmpLen) return true;
-        if (alen > cmpLen) return false;
+        if (alen < cmpLen)
+            return true;
+        if (alen > cmpLen)
+            return false;
 
         // could perhaps just use String.compareTo()?
         for (int i = 0; i < cmpLen; ++i) {
@@ -213,8 +210,7 @@ public final class NumberInput
         return true;
     }
 
-    public static int parseAsInt(String s, int def)
-    {
+    public static int parseAsInt(String s, int def) {
         if (s == null) {
             return def;
         }
@@ -246,12 +242,12 @@ public final class NumberInput
         }
         try {
             return Integer.parseInt(s);
-        } catch (NumberFormatException e) { }
+        } catch (NumberFormatException e) {
+        }
         return def;
     }
 
-    public static long parseAsLong(String s, long def)
-    {
+    public static long parseAsLong(String s, long def) {
         if (s == null) {
             return def;
         }
@@ -283,13 +279,15 @@ public final class NumberInput
         }
         try {
             return Long.parseLong(s);
-        } catch (NumberFormatException e) { }
+        } catch (NumberFormatException e) {
+        }
         return def;
     }
 
-    public static double parseAsDouble(String s, double def)
-    {
-        if (s == null) { return def; }
+    public static double parseAsDouble(String s, double def) {
+        if (s == null) {
+            return def;
+        }
         s = s.trim();
         int len = s.length();
         if (len == 0) {
@@ -297,13 +295,15 @@ public final class NumberInput
         }
         try {
             return parseDouble(s);
-        } catch (NumberFormatException e) { }
+        } catch (NumberFormatException e) {
+        }
         return def;
     }
 
     public static double parseDouble(String s) throws NumberFormatException {
         // [JACKSON-486]: avoid some nasty float representations... but should it be MIN_NORMAL or MIN_VALUE?
-        /* as per [JACKSON-827], let's use MIN_VALUE as it is available on all JDKs; normalized
+        /*
+         * as per [JACKSON-827], let's use MIN_VALUE as it is available on all JDKs; normalized
          * only in JDK 1.6. In practice, should not really matter.
          */
         if (NASTY_SMALL_DOUBLE.equals(s)) {

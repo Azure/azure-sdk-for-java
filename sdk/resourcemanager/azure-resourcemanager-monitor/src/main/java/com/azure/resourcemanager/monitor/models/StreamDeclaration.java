@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Declaration of a custom stream. */
+/**
+ * Declaration of a custom stream.
+ */
 @Fluent
 public final class StreamDeclaration {
     /*
@@ -17,13 +19,15 @@ public final class StreamDeclaration {
     @JsonProperty(value = "columns")
     private List<ColumnDefinition> columns;
 
-    /** Creates an instance of StreamDeclaration class. */
+    /**
+     * Creates an instance of StreamDeclaration class.
+     */
     public StreamDeclaration() {
     }
 
     /**
      * Get the columns property: List of columns used by data in this stream.
-     *
+     * 
      * @return the columns value.
      */
     public List<ColumnDefinition> columns() {
@@ -32,7 +36,7 @@ public final class StreamDeclaration {
 
     /**
      * Set the columns property: List of columns used by data in this stream.
-     *
+     * 
      * @param columns the columns value to set.
      * @return the StreamDeclaration object itself.
      */
@@ -43,7 +47,7 @@ public final class StreamDeclaration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

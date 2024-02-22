@@ -4,7 +4,7 @@
 package com.azure.cosmos.spark
 
 import com.azure.cosmos.models.CosmosParameterizedQuery
-import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, LoggerHelper}
+import com.azure.cosmos.spark.diagnostics.{DiagnosticsContext, LoggerHelper, SparkTaskContext}
 import org.apache.spark.TaskContext
 import org.apache.spark.broadcast.Broadcast
 import org.apache.spark.sql.catalyst.InternalRow
@@ -42,7 +42,7 @@ private case class ItemsScanPartitionReaderFactory
           diagnosticsConfig,
           sparkEnvironmentInfo,
           TaskContext.get(),
-          readManyFilters)
+          readManyFilters.iterator.map(idText => CosmosItemIdentityHelper.tryParseCosmosItemIdentity(idText).get))
       }
       case _ => {
         log.logInfo(s"Creating an ItemsPartitionReader to read from feed-range [$feedRange] ${containerConfig.container}")

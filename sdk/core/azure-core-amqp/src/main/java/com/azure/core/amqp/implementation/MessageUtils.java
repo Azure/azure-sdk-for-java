@@ -70,17 +70,18 @@ final class MessageUtils {
 
         final Message response = Proton.message();
 
-        //TODO (conniey): support AMQP sequence and AMQP value.
+        // TODO (conniey): support AMQP sequence and AMQP value.
         final AmqpMessageBody body = message.getBody();
         switch (body.getBodyType()) {
             case DATA:
                 response.setBody(new Data(new Binary(body.getFirstData())));
                 break;
+
             case VALUE:
             case SEQUENCE:
             default:
-                throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-                    "bodyType [" + body.getBodyType() + "] is not supported yet."));
+                throw LOGGER.logExceptionAsError(
+                    new UnsupportedOperationException("bodyType [" + body.getBodyType() + "] is not supported yet."));
         }
 
         // Setting message properties.
@@ -111,8 +112,7 @@ final class MessageUtils {
         response.getProperties().setUserId(new Binary(properties.getUserId()));
 
         if (properties.getAbsoluteExpiryTime() != null) {
-            response.getProperties().setAbsoluteExpiryTime(
-                Date.from(properties.getAbsoluteExpiryTime().toInstant()));
+            response.getProperties().setAbsoluteExpiryTime(Date.from(properties.getAbsoluteExpiryTime().toInstant()));
         }
 
         if (properties.getCreationTime() != null) {
@@ -172,13 +172,12 @@ final class MessageUtils {
         final byte[] bytes;
         final Section body = message.getBody();
         if (body != null) {
-            //TODO (conniey): Support other AMQP types like AmqpValue and AmqpSequence.
+            // TODO (conniey): Support other AMQP types like AmqpValue and AmqpSequence.
             if (body instanceof Data) {
                 final Binary messageData = ((Data) body).getValue();
                 bytes = messageData.getArray();
             } else {
-                LOGGER.warning("Message not of type Data. Actual: {}",
-                    body.getType());
+                LOGGER.warning("Message not of type Data. Actual: {}", body.getType());
                 bytes = EMPTY_BYTE_ARRAY;
             }
         } else {
@@ -209,7 +208,8 @@ final class MessageUtils {
         // Footer
         final Footer footer = message.getFooter();
         if (footer != null && footer.getValue() != null) {
-            @SuppressWarnings("unchecked") final Map<Symbol, Object> footerValue = footer.getValue();
+            @SuppressWarnings("unchecked")
+            final Map<Symbol, Object> footerValue = footer.getValue();
 
             setValues(footerValue, response.getFooter());
         }
@@ -240,12 +240,12 @@ final class MessageUtils {
             }
 
             if (amqpProperties.getAbsoluteExpiryTime() != null) {
-                responseProperties.setAbsoluteExpiryTime(amqpProperties.getAbsoluteExpiryTime().toInstant()
-                    .atOffset(ZoneOffset.UTC));
+                responseProperties
+                    .setAbsoluteExpiryTime(amqpProperties.getAbsoluteExpiryTime().toInstant().atOffset(ZoneOffset.UTC));
             }
             if (amqpProperties.getCreationTime() != null) {
-                responseProperties.setCreationTime(amqpProperties.getCreationTime().toInstant()
-                    .atOffset(ZoneOffset.UTC));
+                responseProperties
+                    .setCreationTime(amqpProperties.getCreationTime().toInstant().atOffset(ZoneOffset.UTC));
             }
         }
 
@@ -290,16 +290,18 @@ final class MessageUtils {
         switch (deliveryState.getType()) {
             case Accepted:
                 return new DeliveryOutcome(DeliveryState.ACCEPTED);
+
             case Modified:
                 if (!(deliveryState instanceof Modified)) {
                     return new ModifiedDeliveryOutcome();
                 }
 
                 return toDeliveryOutcome((Modified) deliveryState);
+
             case Received:
                 if (!(deliveryState instanceof Received)) {
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                        "Received delivery state should have a Received state."));
+                    throw LOGGER.logExceptionAsError(
+                        new IllegalArgumentException("Received delivery state should have a Received state."));
                 }
 
                 final Received received = (Received) deliveryState;
@@ -310,20 +312,24 @@ final class MessageUtils {
 
                 return new ReceivedDeliveryOutcome(received.getSectionNumber().intValue(),
                     received.getSectionOffset().longValue());
+
             case Rejected:
                 if (!(deliveryState instanceof Rejected)) {
                     return new DeliveryOutcome(DeliveryState.REJECTED);
                 }
 
                 return toDeliveryOutcome((Rejected) deliveryState);
+
             case Released:
                 return new DeliveryOutcome(DeliveryState.RELEASED);
+
             case Declared:
                 if (!(deliveryState instanceof Declared)) {
-                    throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                        "Declared delivery type should have a declared outcome"));
+                    throw LOGGER.logExceptionAsError(
+                        new IllegalArgumentException("Declared delivery type should have a declared outcome"));
                 }
                 return toDeliveryOutcome((Declared) deliveryState);
+
             case Transactional:
                 if (!(deliveryState instanceof TransactionalState)) {
                     throw LOGGER.logExceptionAsError(new IllegalArgumentException(
@@ -339,9 +345,10 @@ final class MessageUtils {
                 final AmqpTransaction transaction = new AmqpTransaction(transactionalState.getTxnId().asByteBuffer());
                 final DeliveryOutcome outcome = toDeliveryOutcome(transactionalState.getOutcome());
                 return new TransactionalDeliveryOutcome(transaction).setOutcome(outcome);
+
             default:
-                throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-                    "Delivery state not supported: " + deliveryState.getType()));
+                throw LOGGER.logExceptionAsError(
+                    new UnsupportedOperationException("Delivery state not supported: " + deliveryState.getType()));
         }
     }
 
@@ -370,8 +377,7 @@ final class MessageUtils {
         } else if (outcome instanceof Declared) {
             return toDeliveryOutcome((Declared) outcome);
         } else {
-            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-                "Outcome is not known: " + outcome));
+            throw LOGGER.logExceptionAsError(new UnsupportedOperationException("Outcome is not known: " + outcome));
         }
     }
 
@@ -416,8 +422,8 @@ final class MessageUtils {
             final TransactionalDeliveryOutcome transaction = ((TransactionalDeliveryOutcome) deliveryOutcome);
             final TransactionalState state = new TransactionalState();
             if (transaction.getTransactionId() == null) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                    "Transactional deliveries require an id."));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("Transactional deliveries require an id."));
             }
 
             final Binary binary = Objects.requireNonNull(Binary.create(transaction.getTransactionId()),
@@ -427,8 +433,9 @@ final class MessageUtils {
             state.setTxnId(binary);
             return state;
         } else {
-            throw LOGGER.logExceptionAsError(new UnsupportedOperationException(
-                "Outcome could not be translated to a proton-j delivery outcome:" + deliveryOutcome.getDeliveryState()));
+            throw LOGGER.logExceptionAsError(
+                new UnsupportedOperationException("Outcome could not be translated to a proton-j delivery outcome:"
+                    + deliveryOutcome.getDeliveryState()));
         }
     }
 
@@ -490,9 +497,8 @@ final class MessageUtils {
             return rejected;
         }
 
-
-        final ErrorCondition condition = new ErrorCondition(
-            Symbol.getSymbol(errorCondition.getErrorCondition()), errorCondition.toString());
+        final ErrorCondition condition
+            = new ErrorCondition(Symbol.getSymbol(errorCondition.getErrorCondition()), errorCondition.toString());
 
         condition.setInfo(convert(rejectedDeliveryOutcome.getErrorInfo()));
 
@@ -521,21 +527,19 @@ final class MessageUtils {
             return new DeliveryOutcome(DeliveryState.REJECTED);
         }
 
-        AmqpErrorCondition errorCondition =
-            AmqpErrorCondition.fromString(rejectedError.getCondition().toString());
+        AmqpErrorCondition errorCondition = AmqpErrorCondition.fromString(rejectedError.getCondition().toString());
         if (errorCondition == null) {
             LOGGER.warning("Error condition is unknown: {}", rejected.getError());
             errorCondition = AmqpErrorCondition.INTERNAL_ERROR;
         }
 
-        return new RejectedDeliveryOutcome(errorCondition)
-            .setErrorInfo(convertMap(rejectedError.getInfo()));
+        return new RejectedDeliveryOutcome(errorCondition).setErrorInfo(convertMap(rejectedError.getInfo()));
     }
 
     private static DeliveryOutcome toDeliveryOutcome(Declared declared) {
         if (declared.getTxnId() == null) {
-            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
-                "Declared delivery states should have an associated transaction id."));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Declared delivery states should have an associated transaction id."));
         }
 
         return new TransactionalDeliveryOutcome(new AmqpTransaction(declared.getTxnId().asByteBuffer()));
@@ -548,7 +552,7 @@ final class MessageUtils {
      *
      * @return A corresponding map.
      */
-    @SuppressWarnings({"rawtypes", "unchecked"})
+    @SuppressWarnings({ "rawtypes", "unchecked" })
     private static Map<String, Object> convertMap(Map map) {
         // proton-j only exposes "Map" even though the underlying data structure is this.
         final Map<String, Object> outcomeMessageAnnotations = new HashMap<>();
@@ -579,9 +583,9 @@ final class MessageUtils {
             return null;
         }
 
-        return sourceMap.entrySet().stream()
-            .collect(HashMap::new,
-                (existing, entry) -> existing.put(Symbol.valueOf(entry.getKey()), entry.getValue()),
+        return sourceMap.entrySet()
+            .stream()
+            .collect(HashMap::new, (existing, entry) -> existing.put(Symbol.valueOf(entry.getKey()), entry.getValue()),
                 (HashMap::putAll));
     }
 

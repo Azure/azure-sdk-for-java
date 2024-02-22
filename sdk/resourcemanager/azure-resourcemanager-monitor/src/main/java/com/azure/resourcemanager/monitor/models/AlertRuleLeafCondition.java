@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * An Activity Log Alert rule condition that is met by comparing the field and value of an Activity Log event. This
- * condition must contain 'field' and either 'equals' or 'containsAny'.
+ * An Activity Log Alert rule condition that is met by comparing the field and value of an Activity Log event.
+ * This condition must contain 'field' and either 'equals' or 'containsAny'.
  */
 @Fluent
 public class AlertRuleLeafCondition {
@@ -37,16 +37,18 @@ public class AlertRuleLeafCondition {
     @JsonProperty(value = "containsAny")
     private List<String> containsAny;
 
-    /** Creates an instance of AlertRuleLeafCondition class. */
+    /**
+     * Creates an instance of AlertRuleLeafCondition class.
+     */
     public AlertRuleLeafCondition() {
     }
 
     /**
-     * Get the field property: The name of the Activity Log event's field that this condition will examine. The possible
-     * values for this field are (case-insensitive): 'resourceId', 'category', 'caller', 'level', 'operationName',
-     * 'resourceGroup', 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything beginning with
-     * 'properties'.
-     *
+     * Get the field property: The name of the Activity Log event's field that this condition will examine.
+     * The possible values for this field are (case-insensitive): 'resourceId', 'category', 'caller', 'level',
+     * 'operationName', 'resourceGroup', 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything
+     * beginning with 'properties'.
+     * 
      * @return the field value.
      */
     public String field() {
@@ -54,11 +56,11 @@ public class AlertRuleLeafCondition {
     }
 
     /**
-     * Set the field property: The name of the Activity Log event's field that this condition will examine. The possible
-     * values for this field are (case-insensitive): 'resourceId', 'category', 'caller', 'level', 'operationName',
-     * 'resourceGroup', 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything beginning with
-     * 'properties'.
-     *
+     * Set the field property: The name of the Activity Log event's field that this condition will examine.
+     * The possible values for this field are (case-insensitive): 'resourceId', 'category', 'caller', 'level',
+     * 'operationName', 'resourceGroup', 'resourceProvider', 'status', 'subStatus', 'resourceType', or anything
+     * beginning with 'properties'.
+     * 
      * @param field the field value to set.
      * @return the AlertRuleLeafCondition object itself.
      */
@@ -70,7 +72,7 @@ public class AlertRuleLeafCondition {
     /**
      * Get the equals property: The value of the event's field will be compared to this value (case-insensitive) to
      * determine if the condition is met.
-     *
+     * 
      * @return the equals value.
      */
     public String equals() {
@@ -80,7 +82,7 @@ public class AlertRuleLeafCondition {
     /**
      * Set the equals property: The value of the event's field will be compared to this value (case-insensitive) to
      * determine if the condition is met.
-     *
+     * 
      * @param equals the equals value to set.
      * @return the AlertRuleLeafCondition object itself.
      */
@@ -92,7 +94,7 @@ public class AlertRuleLeafCondition {
     /**
      * Get the containsAny property: The value of the event's field will be compared to the values in this array
      * (case-insensitive) to determine if the condition is met.
-     *
+     * 
      * @return the containsAny value.
      */
     public List<String> containsAny() {
@@ -102,7 +104,7 @@ public class AlertRuleLeafCondition {
     /**
      * Set the containsAny property: The value of the event's field will be compared to the values in this array
      * (case-insensitive) to determine if the condition is met.
-     *
+     * 
      * @param containsAny the containsAny value to set.
      * @return the AlertRuleLeafCondition object itself.
      */
@@ -113,7 +115,7 @@ public class AlertRuleLeafCondition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

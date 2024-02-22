@@ -4,11 +4,21 @@
 
 ### Features Added
 
+- Added new Azure region `Region.ITALY_NORTH`.
+
 ### Breaking Changes
 
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.11.10 (2024-02-02)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to `1.46.0`.
 
 ## 1.11.8 (2023-11-03)
 

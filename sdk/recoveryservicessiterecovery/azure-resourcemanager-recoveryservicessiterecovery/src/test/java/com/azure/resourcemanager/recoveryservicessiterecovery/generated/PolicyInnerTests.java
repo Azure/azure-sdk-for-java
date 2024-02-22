@@ -13,24 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class PolicyInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PolicyInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"friendlyName\":\"hzjqatucoige\",\"providerSpecificDetails\":{\"instanceType\":\"PolicyProviderSpecificDetails\"}},\"location\":\"cnwfepbnwgfmxjg\",\"id\":\"g\",\"name\":\"jbgdlfgtdysnaquf\",\"type\":\"qbctqha\"}")
-                .toObject(PolicyInner.class);
+        PolicyInner model = BinaryData.fromString(
+            "{\"properties\":{\"friendlyName\":\"hzjqatucoige\",\"providerSpecificDetails\":{\"instanceType\":\"PolicyProviderSpecificDetails\"}},\"location\":\"cnwfepbnwgfmxjg\",\"id\":\"g\",\"name\":\"jbgdlfgtdysnaquf\",\"type\":\"qbctqha\"}")
+            .toObject(PolicyInner.class);
         Assertions.assertEquals("hzjqatucoige", model.properties().friendlyName());
         Assertions.assertEquals("cnwfepbnwgfmxjg", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolicyInner model =
-            new PolicyInner()
-                .withProperties(
-                    new PolicyProperties()
-                        .withFriendlyName("hzjqatucoige")
-                        .withProviderSpecificDetails(new PolicyProviderSpecificDetails()))
-                .withLocation("cnwfepbnwgfmxjg");
+        PolicyInner model = new PolicyInner().withProperties(new PolicyProperties().withFriendlyName("hzjqatucoige")
+            .withProviderSpecificDetails(new PolicyProviderSpecificDetails())).withLocation("cnwfepbnwgfmxjg");
         model = BinaryData.fromObject(model).toObject(PolicyInner.class);
         Assertions.assertEquals("hzjqatucoige", model.properties().friendlyName());
         Assertions.assertEquals("cnwfepbnwgfmxjg", model.location());

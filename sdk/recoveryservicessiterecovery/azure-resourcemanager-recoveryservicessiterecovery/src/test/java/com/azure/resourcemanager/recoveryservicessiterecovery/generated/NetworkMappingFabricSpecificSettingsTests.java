@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.NetworkMapp
 public final class NetworkMappingFabricSpecificSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkMappingFabricSpecificSettings model =
-            BinaryData
-                .fromString("{\"instanceType\":\"NetworkMappingFabricSpecificSettings\"}")
+        NetworkMappingFabricSpecificSettings model
+            = BinaryData.fromString("{\"instanceType\":\"NetworkMappingFabricSpecificSettings\"}")
                 .toObject(NetworkMappingFabricSpecificSettings.class);
     }
 

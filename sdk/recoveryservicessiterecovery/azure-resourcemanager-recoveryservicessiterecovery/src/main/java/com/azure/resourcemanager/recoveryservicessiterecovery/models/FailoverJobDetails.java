@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** This class represents the details for a failover job. */
+/**
+ * This class represents the details for a failover job.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("FailoverJobDetails")
 @Fluent
@@ -22,13 +24,15 @@ public final class FailoverJobDetails extends JobDetails {
     @JsonProperty(value = "protectedItemDetails")
     private List<FailoverReplicationProtectedItemDetails> protectedItemDetails;
 
-    /** Creates an instance of FailoverJobDetails class. */
+    /**
+     * Creates an instance of FailoverJobDetails class.
+     */
     public FailoverJobDetails() {
     }
 
     /**
      * Get the protectedItemDetails property: The test VM details.
-     *
+     * 
      * @return the protectedItemDetails value.
      */
     public List<FailoverReplicationProtectedItemDetails> protectedItemDetails() {
@@ -37,17 +41,19 @@ public final class FailoverJobDetails extends JobDetails {
 
     /**
      * Set the protectedItemDetails property: The test VM details.
-     *
+     * 
      * @param protectedItemDetails the protectedItemDetails value to set.
      * @return the FailoverJobDetails object itself.
      */
-    public FailoverJobDetails withProtectedItemDetails(
-        List<FailoverReplicationProtectedItemDetails> protectedItemDetails) {
+    public FailoverJobDetails
+        withProtectedItemDetails(List<FailoverReplicationProtectedItemDetails> protectedItemDetails) {
         this.protectedItemDetails = protectedItemDetails;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FailoverJobDetails withAffectedObjectDetails(Map<String, String> affectedObjectDetails) {
         super.withAffectedObjectDetails(affectedObjectDetails);
@@ -56,7 +62,7 @@ public final class FailoverJobDetails extends JobDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

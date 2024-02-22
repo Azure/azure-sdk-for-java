@@ -9,8 +9,7 @@ package com.azure.json.implementation.jackson.core.util;
  *
  * @since 2.12
  */
-public interface JacksonFeature
-{
+public interface JacksonFeature {
     /**
      * Accessor for checking whether this feature is enabled by default.
      *

@@ -7,13 +7,13 @@ products:
 urlFragment: search-samples
 ---
 
-# Azure Cognitive Search Samples client library for Java
+# Azure AI Search Samples client library for Java
 This document explains samples and how to use them.
 
 ## Key concepts
 Key concepts are explained in detail [here][SDK_README_KEY_CONCEPTS].
 
-# Samples Azure Cognitive Search APIs
+# Samples Azure AI Search APIs
 This document describes how to use samples and what is done in each sample.
 
 ## Getting started

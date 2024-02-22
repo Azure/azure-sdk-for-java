@@ -7,7 +7,7 @@
         "Maven": {
           "ArtifactId": "guava",
           "GroupId": "com.google.guava",
-          "Version": "30.1.1-jre"
+          "Version": "33.0.0-jre"
         }
       }
     },

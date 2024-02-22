@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An action group object for the body of patch operations. */
+/**
+ * An action group object for the body of patch operations.
+ */
 @Fluent
 public final class ActionGroupPatchBody {
     /*
@@ -26,13 +28,15 @@ public final class ActionGroupPatchBody {
     @JsonProperty(value = "properties")
     private ActionGroupPatch innerProperties;
 
-    /** Creates an instance of ActionGroupPatchBody class. */
+    /**
+     * Creates an instance of ActionGroupPatchBody class.
+     */
     public ActionGroupPatchBody() {
     }
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -41,7 +45,7 @@ public final class ActionGroupPatchBody {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ActionGroupPatchBody object itself.
      */
@@ -52,7 +56,7 @@ public final class ActionGroupPatchBody {
 
     /**
      * Get the innerProperties property: The action group settings for an update operation.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ActionGroupPatch innerProperties() {
@@ -60,9 +64,9 @@ public final class ActionGroupPatchBody {
     }
 
     /**
-     * Get the enabled property: Indicates whether this action group is enabled. If an action group is not enabled, then
-     * none of its actions will be activated.
-     *
+     * Get the enabled property: Indicates whether this action group is enabled. If an action group is not enabled,
+     * then none of its actions will be activated.
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -70,9 +74,9 @@ public final class ActionGroupPatchBody {
     }
 
     /**
-     * Set the enabled property: Indicates whether this action group is enabled. If an action group is not enabled, then
-     * none of its actions will be activated.
-     *
+     * Set the enabled property: Indicates whether this action group is enabled. If an action group is not enabled,
+     * then none of its actions will be activated.
+     * 
      * @param enabled the enabled value to set.
      * @return the ActionGroupPatchBody object itself.
      */
@@ -86,7 +90,7 @@ public final class ActionGroupPatchBody {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

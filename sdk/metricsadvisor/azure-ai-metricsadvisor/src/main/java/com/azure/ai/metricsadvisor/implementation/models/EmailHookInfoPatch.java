@@ -10,7 +10,6 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.List;
-import java.util.Objects;
 
 /**
  * The EmailHookInfoPatch model.
@@ -87,7 +86,7 @@ public final class EmailHookInfoPatch extends HookInfoPatch {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("hookType", Objects.toString(HookType.EMAIL, null));
+        jsonWriter.writeStringField("hookType", HookType.EMAIL == null ? null : HookType.EMAIL.toString());
         jsonWriter.writeStringField("hookName", getHookName());
         jsonWriter.writeStringField("description", getDescription());
         jsonWriter.writeStringField("externalLink", getExternalLink());

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** InMageRcm NIC details. */
+/**
+ * InMageRcm NIC details.
+ */
 @Fluent
 public final class InMageRcmNicDetails {
     /*
@@ -88,13 +90,15 @@ public final class InMageRcmNicDetails {
     @JsonProperty(value = "testIPAddressType")
     private EthernetAddressType testIpAddressType;
 
-    /** Creates an instance of InMageRcmNicDetails class. */
+    /**
+     * Creates an instance of InMageRcmNicDetails class.
+     */
     public InMageRcmNicDetails() {
     }
 
     /**
      * Get the nicId property: The NIC Id.
-     *
+     * 
      * @return the nicId value.
      */
     public String nicId() {
@@ -103,7 +107,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Get the isPrimaryNic property: A value indicating whether this is the primary NIC.
-     *
+     * 
      * @return the isPrimaryNic value.
      */
     public String isPrimaryNic() {
@@ -112,7 +116,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Set the isPrimaryNic property: A value indicating whether this is the primary NIC.
-     *
+     * 
      * @param isPrimaryNic the isPrimaryNic value to set.
      * @return the InMageRcmNicDetails object itself.
      */
@@ -123,7 +127,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Get the isSelectedForFailover property: A value indicating whether this NIC is selected for failover.
-     *
+     * 
      * @return the isSelectedForFailover value.
      */
     public String isSelectedForFailover() {
@@ -132,7 +136,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Set the isSelectedForFailover property: A value indicating whether this NIC is selected for failover.
-     *
+     * 
      * @param isSelectedForFailover the isSelectedForFailover value to set.
      * @return the InMageRcmNicDetails object itself.
      */
@@ -143,7 +147,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Get the sourceIpAddress property: The source IP address.
-     *
+     * 
      * @return the sourceIpAddress value.
      */
     public String sourceIpAddress() {
@@ -152,7 +156,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Get the sourceIpAddressType property: The source IP address type.
-     *
+     * 
      * @return the sourceIpAddressType value.
      */
     public EthernetAddressType sourceIpAddressType() {
@@ -161,7 +165,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Get the sourceNetworkId property: Source network Id.
-     *
+     * 
      * @return the sourceNetworkId value.
      */
     public String sourceNetworkId() {
@@ -170,7 +174,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Get the sourceSubnetName property: Source subnet name.
-     *
+     * 
      * @return the sourceSubnetName value.
      */
     public String sourceSubnetName() {
@@ -179,7 +183,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Get the targetIpAddress property: The target IP address.
-     *
+     * 
      * @return the targetIpAddress value.
      */
     public String targetIpAddress() {
@@ -188,7 +192,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Set the targetIpAddress property: The target IP address.
-     *
+     * 
      * @param targetIpAddress the targetIpAddress value to set.
      * @return the InMageRcmNicDetails object itself.
      */
@@ -199,7 +203,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Get the targetIpAddressType property: The target IP address type.
-     *
+     * 
      * @return the targetIpAddressType value.
      */
     public EthernetAddressType targetIpAddressType() {
@@ -208,7 +212,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Set the targetIpAddressType property: The target IP address type.
-     *
+     * 
      * @param targetIpAddressType the targetIpAddressType value to set.
      * @return the InMageRcmNicDetails object itself.
      */
@@ -219,7 +223,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Get the targetSubnetName property: Target subnet name.
-     *
+     * 
      * @return the targetSubnetName value.
      */
     public String targetSubnetName() {
@@ -228,7 +232,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Set the targetSubnetName property: Target subnet name.
-     *
+     * 
      * @param targetSubnetName the targetSubnetName value to set.
      * @return the InMageRcmNicDetails object itself.
      */
@@ -239,7 +243,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Get the testSubnetName property: Test subnet name.
-     *
+     * 
      * @return the testSubnetName value.
      */
     public String testSubnetName() {
@@ -248,7 +252,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Set the testSubnetName property: Test subnet name.
-     *
+     * 
      * @param testSubnetName the testSubnetName value to set.
      * @return the InMageRcmNicDetails object itself.
      */
@@ -259,7 +263,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Get the testIpAddress property: The test IP address.
-     *
+     * 
      * @return the testIpAddress value.
      */
     public String testIpAddress() {
@@ -268,7 +272,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Set the testIpAddress property: The test IP address.
-     *
+     * 
      * @param testIpAddress the testIpAddress value to set.
      * @return the InMageRcmNicDetails object itself.
      */
@@ -279,7 +283,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Get the testIpAddressType property: The test IP address type.
-     *
+     * 
      * @return the testIpAddressType value.
      */
     public EthernetAddressType testIpAddressType() {
@@ -288,7 +292,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Set the testIpAddressType property: The test IP address type.
-     *
+     * 
      * @param testIpAddressType the testIpAddressType value to set.
      * @return the InMageRcmNicDetails object itself.
      */
@@ -299,7 +303,7 @@ public final class InMageRcmNicDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
