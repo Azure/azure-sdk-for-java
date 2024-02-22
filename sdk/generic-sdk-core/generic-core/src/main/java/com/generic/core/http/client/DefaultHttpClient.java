@@ -210,6 +210,7 @@ class DefaultHttpClient implements HttpClient {
             Headers responseHeaders = getResponseHeaders(connection);
 
             ServerSentEventListener listener = httpRequest.getServerSentEventListener();
+
             if (connection.getErrorStream() == null && isTextEventStream(responseHeaders)) {
                 if (listener != null) {
                     processTextEventStream(httpRequest, connection, listener);
@@ -217,9 +218,11 @@ class DefaultHttpClient implements HttpClient {
                     LOGGER.log(ClientLogger.LogLevel.INFORMATIONAL, () -> "No listener attached to the server sent event" +
                             " http request. Treating response as regular response.");
                 }
-                return new DefaultHttpClientResponse(httpRequest, responseCode, responseHeaders);
+
+                return new DefaultHttpClientResponse(httpRequest, responseCode, responseHeaders, null);
             } else {
                 AccessibleByteArrayOutputStream outputStream = getAccessibleByteArrayOutputStream(connection);
+
                 return new DefaultHttpClientResponse(httpRequest, responseCode, responseHeaders,
                     BinaryData.fromByteBuffer(outputStream.toByteBuffer()));
             }
