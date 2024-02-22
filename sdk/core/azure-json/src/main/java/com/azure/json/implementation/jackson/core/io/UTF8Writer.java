@@ -3,8 +3,7 @@ package com.azure.json.implementation.jackson.core.io;
 
 import java.io.*;
 
-public final class UTF8Writer extends Writer
-{
+public final class UTF8Writer extends Writer {
     final static int SURR1_FIRST = 0xD800;
     final static int SURR1_LAST = 0xDBFF;
     final static int SURR2_FIRST = 0xDC00;
@@ -27,13 +26,13 @@ public final class UTF8Writer extends Writer
      */
     private int _surrogate;
 
-    public UTF8Writer(IOContext ctxt, OutputStream out)
-    {
+    public UTF8Writer(IOContext ctxt, OutputStream out) {
         _context = ctxt;
         _out = out;
 
         _outBuffer = ctxt.allocWriteEncodingBuffer();
-        /* Max. expansion for a single char (in unmodified UTF-8) is
+        /*
+         * Max. expansion for a single char (in unmodified UTF-8) is
          * 4 bytes (or 3 depending on how you view it -- 4 when recombining
          * surrogate pairs)
          */
@@ -42,17 +41,13 @@ public final class UTF8Writer extends Writer
     }
 
     @Override
-    public Writer append(char c)
-        throws IOException
-    {
+    public Writer append(char c) throws IOException {
         write(c);
         return this;
     }
 
     @Override
-    public void close()
-        throws IOException
-    {
+    public void close() throws IOException {
         if (_out != null) {
             if (_outPtr > 0) {
                 _out.write(_outBuffer, 0, _outPtr);
@@ -80,9 +75,7 @@ public final class UTF8Writer extends Writer
     }
 
     @Override
-    public void flush()
-        throws IOException
-    {
+    public void flush() throws IOException {
         if (_out != null) {
             if (_outPtr > 0) {
                 _out.write(_outBuffer, 0, _outPtr);
@@ -93,16 +86,12 @@ public final class UTF8Writer extends Writer
     }
 
     @Override
-    public void write(char[] cbuf)
-        throws IOException
-    {
+    public void write(char[] cbuf) throws IOException {
         write(cbuf, 0, cbuf.length);
     }
 
     @Override
-    public void write(char[] cbuf, int off, int len)
-        throws IOException
-    {
+    public void write(char[] cbuf, int off, int len) throws IOException {
         if (len < 2) {
             if (len == 1) {
                 write(cbuf[off]);
@@ -125,9 +114,9 @@ public final class UTF8Writer extends Writer
         // All right; can just loop it nice and easy now:
         len += off; // len will now be the end of input buffer
 
-        output_loop:
-        for (; off < len; ) {
-            /* First, let's ensure we can output at least 4 bytes
+        output_loop: for (; off < len;) {
+            /*
+             * First, let's ensure we can output at least 4 bytes
              * (longest UTF-8 encoded codepoint):
              */
             if (outPtr >= outBufLast) {
@@ -138,7 +127,7 @@ public final class UTF8Writer extends Writer
             int c = cbuf[off++];
             // And then see if we have an Ascii char:
             if (c < 0x80) { // If so, can do a tight inner loop:
-                outBuf[outPtr++] = (byte)c;
+                outBuf[outPtr++] = (byte) c;
                 // Let's calc how many ascii chars we can copy at most:
                 int maxInCount = (len - off);
                 int maxOutCount = (outBufLast - outPtr);
@@ -147,8 +136,7 @@ public final class UTF8Writer extends Writer
                     maxInCount = maxOutCount;
                 }
                 maxInCount += off;
-                ascii_loop:
-                while (true) {
+                ascii_loop: while (true) {
                     if (off >= maxInCount) { // done with max. ascii seq
                         continue output_loop;
                     }
@@ -195,10 +183,9 @@ public final class UTF8Writer extends Writer
         }
         _outPtr = outPtr;
     }
-    
+
     @Override
-    public void write(int c) throws IOException
-    {
+    public void write(int c) throws IOException {
         // First; do we have a left over surrogate?
         if (_surrogate > 0) {
             c = convertSurrogate(c);
@@ -243,14 +230,12 @@ public final class UTF8Writer extends Writer
     }
 
     @Override
-    public void write(String str) throws IOException
-    {
+    public void write(String str) throws IOException {
         write(str, 0, str.length());
     }
 
     @Override
-    public void write(String str, int off, int len)  throws IOException
-    {
+    public void write(String str, int off, int len) throws IOException {
         if (len < 2) {
             if (len == 1) {
                 write(str.charAt(off));
@@ -273,9 +258,9 @@ public final class UTF8Writer extends Writer
         // All right; can just loop it nice and easy now:
         len += off; // len will now be the end of input buffer
 
-        output_loop:
-        for (; off < len; ) {
-            /* First, let's ensure we can output at least 4 bytes
+        output_loop: for (; off < len;) {
+            /*
+             * First, let's ensure we can output at least 4 bytes
              * (longest UTF-8 encoded codepoint):
              */
             if (outPtr >= outBufLast) {
@@ -286,7 +271,7 @@ public final class UTF8Writer extends Writer
             int c = str.charAt(off++);
             // And then see if we have an Ascii char:
             if (c < 0x80) { // If so, can do a tight inner loop:
-                outBuf[outPtr++] = (byte)c;
+                outBuf[outPtr++] = (byte) c;
                 // Let's calc how many ascii chars we can copy at most:
                 int maxInCount = (len - off);
                 int maxOutCount = (outBufLast - outPtr);
@@ -295,8 +280,7 @@ public final class UTF8Writer extends Writer
                     maxInCount = maxOutCount;
                 }
                 maxInCount += off;
-                ascii_loop:
-                while (true) {
+                ascii_loop: while (true) {
                     if (off >= maxInCount) { // done with max. ascii seq
                         continue output_loop;
                     }
@@ -345,9 +329,9 @@ public final class UTF8Writer extends Writer
     }
 
     /*
-    /**********************************************************
-    /* Internal methods
-    /**********************************************************
+     * /**********************************************************
+     * /* Internal methods
+     * /**********************************************************
      */
 
     /**
@@ -359,35 +343,34 @@ public final class UTF8Writer extends Writer
      *
      * @throws IOException If surrogate pair is invalid
      */
-    protected int convertSurrogate(int secondPart)
-        throws IOException
-    {
+    protected int convertSurrogate(int secondPart) throws IOException {
         int firstPart = _surrogate;
         _surrogate = 0;
 
         // Ok, then, is the second part valid?
         if (secondPart < SURR2_FIRST || secondPart > SURR2_LAST) {
-            throw new IOException("Broken surrogate pair: first char 0x"+Integer.toHexString(firstPart)+", second 0x"+Integer.toHexString(secondPart)+"; illegal combination");
+            throw new IOException("Broken surrogate pair: first char 0x" + Integer.toHexString(firstPart)
+                + ", second 0x" + Integer.toHexString(secondPart) + "; illegal combination");
         }
         return 0x10000 + ((firstPart - SURR1_FIRST) << 10) + (secondPart - SURR2_FIRST);
     }
-    
+
     protected static void illegalSurrogate(int code) throws IOException {
         throw new IOException(illegalSurrogateDesc(code));
     }
-    
-    protected static String illegalSurrogateDesc(int code)
-    {
+
+    protected static String illegalSurrogateDesc(int code) {
         if (code > 0x10FFFF) { // over max?
-            return "Illegal character point (0x"+Integer.toHexString(code)+") to output; max is 0x10FFFF as per RFC 4627";
+            return "Illegal character point (0x" + Integer.toHexString(code)
+                + ") to output; max is 0x10FFFF as per RFC 4627";
         }
         if (code >= SURR1_FIRST) {
             if (code <= SURR1_LAST) { // Unmatched first part (closing without second part?)
-                return "Unmatched first part of surrogate pair (0x"+Integer.toHexString(code)+")";
+                return "Unmatched first part of surrogate pair (0x" + Integer.toHexString(code) + ")";
             }
-            return "Unmatched second part of surrogate pair (0x"+Integer.toHexString(code)+")";
+            return "Unmatched second part of surrogate pair (0x" + Integer.toHexString(code) + ")";
         }
         // should we ever get this?
-        return "Illegal character point (0x"+Integer.toHexString(code)+") to output";
+        return "Illegal character point (0x" + Integer.toHexString(code) + ") to output";
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Create recovery plan input class. */
+/**
+ * Create recovery plan input class.
+ */
 @Fluent
 public final class CreateRecoveryPlanInput {
     /*
@@ -17,13 +19,15 @@ public final class CreateRecoveryPlanInput {
     @JsonProperty(value = "properties", required = true)
     private CreateRecoveryPlanInputProperties properties;
 
-    /** Creates an instance of CreateRecoveryPlanInput class. */
+    /**
+     * Creates an instance of CreateRecoveryPlanInput class.
+     */
     public CreateRecoveryPlanInput() {
     }
 
     /**
      * Get the properties property: Recovery plan creation properties.
-     *
+     * 
      * @return the properties value.
      */
     public CreateRecoveryPlanInputProperties properties() {
@@ -32,7 +36,7 @@ public final class CreateRecoveryPlanInput {
 
     /**
      * Set the properties property: Recovery plan creation properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the CreateRecoveryPlanInput object itself.
      */
@@ -43,15 +47,13 @@ public final class CreateRecoveryPlanInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model CreateRecoveryPlanInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property properties in model CreateRecoveryPlanInput"));
         } else {
             properties().validate();
         }

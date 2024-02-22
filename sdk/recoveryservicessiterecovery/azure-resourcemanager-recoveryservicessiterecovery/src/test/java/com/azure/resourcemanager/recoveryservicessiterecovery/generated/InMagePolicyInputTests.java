@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InMagePolicyInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMagePolicyInput model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"InMage\",\"recoveryPointThresholdInMinutes\":1710079987,\"recoveryPointHistory\":902786810,\"appConsistentFrequencyInMinutes\":1471706402,\"multiVmSyncStatus\":\"Enable\"}")
-                .toObject(InMagePolicyInput.class);
+        InMagePolicyInput model = BinaryData.fromString(
+            "{\"instanceType\":\"InMage\",\"recoveryPointThresholdInMinutes\":1710079987,\"recoveryPointHistory\":902786810,\"appConsistentFrequencyInMinutes\":1471706402,\"multiVmSyncStatus\":\"Enable\"}")
+            .toObject(InMagePolicyInput.class);
         Assertions.assertEquals(1710079987, model.recoveryPointThresholdInMinutes());
         Assertions.assertEquals(902786810, model.recoveryPointHistory());
         Assertions.assertEquals(1471706402, model.appConsistentFrequencyInMinutes());
@@ -25,12 +23,9 @@ public final class InMagePolicyInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMagePolicyInput model =
-            new InMagePolicyInput()
-                .withRecoveryPointThresholdInMinutes(1710079987)
-                .withRecoveryPointHistory(902786810)
-                .withAppConsistentFrequencyInMinutes(1471706402)
-                .withMultiVmSyncStatus(SetMultiVmSyncStatus.ENABLE);
+        InMagePolicyInput model = new InMagePolicyInput().withRecoveryPointThresholdInMinutes(1710079987)
+            .withRecoveryPointHistory(902786810).withAppConsistentFrequencyInMinutes(1471706402)
+            .withMultiVmSyncStatus(SetMultiVmSyncStatus.ENABLE);
         model = BinaryData.fromObject(model).toObject(InMagePolicyInput.class);
         Assertions.assertEquals(1710079987, model.recoveryPointThresholdInMinutes());
         Assertions.assertEquals(902786810, model.recoveryPointHistory());

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerregistry.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ReplicationUpdateParametersProperties model. */
+/**
+ * The ReplicationUpdateParametersProperties model.
+ */
 @Fluent
 public final class ReplicationUpdateParametersProperties {
     /*
@@ -17,7 +19,9 @@ public final class ReplicationUpdateParametersProperties {
     @JsonProperty(value = "regionEndpointEnabled")
     private Boolean regionEndpointEnabled;
 
-    /** Creates an instance of ReplicationUpdateParametersProperties class. */
+    /**
+     * Creates an instance of ReplicationUpdateParametersProperties class.
+     */
     public ReplicationUpdateParametersProperties() {
     }
 
@@ -25,7 +29,7 @@ public final class ReplicationUpdateParametersProperties {
      * Get the regionEndpointEnabled property: Specifies whether the replication's regional endpoint is enabled.
      * Requests will not be routed to a replication whose regional endpoint is disabled, however its data will continue
      * to be synced with other replications.
-     *
+     * 
      * @return the regionEndpointEnabled value.
      */
     public Boolean regionEndpointEnabled() {
@@ -36,7 +40,7 @@ public final class ReplicationUpdateParametersProperties {
      * Set the regionEndpointEnabled property: Specifies whether the replication's regional endpoint is enabled.
      * Requests will not be routed to a replication whose regional endpoint is disabled, however its data will continue
      * to be synced with other replications.
-     *
+     * 
      * @param regionEndpointEnabled the regionEndpointEnabled value to set.
      * @return the ReplicationUpdateParametersProperties object itself.
      */
@@ -47,7 +51,7 @@ public final class ReplicationUpdateParametersProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

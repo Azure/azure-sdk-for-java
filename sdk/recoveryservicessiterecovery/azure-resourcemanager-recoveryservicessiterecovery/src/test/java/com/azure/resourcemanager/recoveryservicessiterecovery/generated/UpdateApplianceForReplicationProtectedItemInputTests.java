@@ -13,22 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateApplianceForReplicationProtectedItemInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateApplianceForReplicationProtectedItemInput model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"targetApplianceId\":\"xsffgcviz\",\"providerSpecificDetails\":{\"instanceType\":\"UpdateApplianceForReplicationProtectedItemProviderSpecificInput\"}}}")
-                .toObject(UpdateApplianceForReplicationProtectedItemInput.class);
+        UpdateApplianceForReplicationProtectedItemInput model = BinaryData.fromString(
+            "{\"properties\":{\"targetApplianceId\":\"xsffgcviz\",\"providerSpecificDetails\":{\"instanceType\":\"UpdateApplianceForReplicationProtectedItemProviderSpecificInput\"}}}")
+            .toObject(UpdateApplianceForReplicationProtectedItemInput.class);
         Assertions.assertEquals("xsffgcviz", model.properties().targetApplianceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateApplianceForReplicationProtectedItemInput model =
-            new UpdateApplianceForReplicationProtectedItemInput()
-                .withProperties(
-                    new UpdateApplianceForReplicationProtectedItemInputProperties()
-                        .withTargetApplianceId("xsffgcviz")
-                        .withProviderSpecificDetails(new UpdateReplicationProtectedItemProviderSpecificInput()));
+        UpdateApplianceForReplicationProtectedItemInput model
+            = new UpdateApplianceForReplicationProtectedItemInput().withProperties(
+                new UpdateApplianceForReplicationProtectedItemInputProperties().withTargetApplianceId("xsffgcviz")
+                    .withProviderSpecificDetails(new UpdateReplicationProtectedItemProviderSpecificInput()));
         model = BinaryData.fromObject(model).toObject(UpdateApplianceForReplicationProtectedItemInput.class);
         Assertions.assertEquals("xsffgcviz", model.properties().targetApplianceId());
     }

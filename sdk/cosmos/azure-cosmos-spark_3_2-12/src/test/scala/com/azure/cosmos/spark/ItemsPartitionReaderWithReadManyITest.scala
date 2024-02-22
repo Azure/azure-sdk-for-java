@@ -88,9 +88,11 @@ class ItemsPartitionReaderWithReadManyITest
           MockTaskContext.mockTaskContext(),
           itemsOnPlannedFeedRange
             .map(objectNode =>
+              CosmosItemIdentityHelper.tryParseCosmosItemIdentity(
               CosmosItemIdentityHelper.getCosmosItemIdentityValueString(
                 objectNode.get(idProperty).asText(),
-                List(objectNode.get(testCase._2).asText())))
+                List(objectNode.get(testCase._2).asText()))
+              ).get).iterator
         )
 
       val cosmosRowConverter = CosmosRowConverter.get(CosmosSerializationConfig.parseSerializationConfig(config))

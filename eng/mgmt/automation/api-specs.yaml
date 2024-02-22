@@ -60,6 +60,8 @@ hybridaks:
   service: hybridcontainerservice
 keyvault:
   suffix: generated
+liftrastronomer:
+  service: astro
 liftrqumulo:
   service: qumulo
 loadtestservice:

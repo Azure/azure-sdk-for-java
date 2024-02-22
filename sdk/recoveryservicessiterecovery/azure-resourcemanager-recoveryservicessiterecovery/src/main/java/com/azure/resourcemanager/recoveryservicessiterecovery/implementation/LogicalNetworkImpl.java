@@ -13,8 +13,7 @@ public final class LogicalNetworkImpl implements LogicalNetwork {
 
     private final com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager;
 
-    LogicalNetworkImpl(
-        LogicalNetworkInner innerObject,
+    LogicalNetworkImpl(LogicalNetworkInner innerObject,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

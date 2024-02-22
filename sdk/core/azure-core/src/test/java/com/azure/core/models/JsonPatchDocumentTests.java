@@ -41,35 +41,31 @@ public class JsonPatchDocumentTests {
     @ParameterizedTest
     @MethodSource("formattingSupplier")
     public void jsonifyOperations(JsonPatchDocument document, String expected) throws IOException {
-        assertEquals(expected, SERIALIZER.serialize(document.getOperations(), SerializerEncoding.JSON)
-            .replace(" ", ""));
+        assertEquals(expected,
+            SERIALIZER.serialize(document.getOperations(), SerializerEncoding.JSON).replace(" ", ""));
     }
 
     private static Stream<Arguments> formattingSupplier() {
-        JsonPatchDocument complexDocument = newDocument()
-            .appendTest("/a/b/c", "foo")
+        JsonPatchDocument complexDocument = newDocument().appendTest("/a/b/c", "foo")
             .appendRemove("/a/b/c")
-            .appendAdd("/a/b/c", new String[]{"foo", "bar"})
+            .appendAdd("/a/b/c", new String[] { "foo", "bar" })
             .appendReplace("/a/b/c", 42)
             .appendMove("/a/b/c", "/a/b/d")
             .appendCopy("/a/b/d", "/a/b/e");
 
-        JsonPatchDocument complexDocumentRaw = newDocument()
-            .appendTestRaw("/a/b/c", "\"foo\"")
+        JsonPatchDocument complexDocumentRaw = newDocument().appendTestRaw("/a/b/c", "\"foo\"")
             .appendRemove("/a/b/c")
             .appendAddRaw("/a/b/c", "[\"foo\",\"bar\"]")
             .appendReplaceRaw("/a/b/c", "42")
             .appendMove("/a/b/c", "/a/b/d")
             .appendCopy("/a/b/d", "/a/b/e");
 
-        String complexExpected = "["
-            + "{\"op\":\"test\",\"path\":\"/a/b/c\",\"value\":\"foo\"},"
+        String complexExpected = "[" + "{\"op\":\"test\",\"path\":\"/a/b/c\",\"value\":\"foo\"},"
             + "{\"op\":\"remove\",\"path\":\"/a/b/c\"},"
             + "{\"op\":\"add\",\"path\":\"/a/b/c\",\"value\":[\"foo\",\"bar\"]},"
             + "{\"op\":\"replace\",\"path\":\"/a/b/c\",\"value\":42},"
             + "{\"op\":\"move\",\"from\":\"/a/b/c\",\"path\":\"/a/b/d\"},"
-            + "{\"op\":\"copy\",\"from\":\"/a/b/d\",\"path\":\"/a/b/e\"}"
-            + "]";
+            + "{\"op\":\"copy\",\"from\":\"/a/b/d\",\"path\":\"/a/b/e\"}" + "]";
 
         return Stream.of(
             Arguments.of(newDocument().appendAdd("/baz", "qux"),
@@ -78,11 +74,11 @@ public class JsonPatchDocumentTests {
             Arguments.of(newDocument().appendAdd("/foo/1", "qux"),
                 constructExpectedOperation("add", null, "/foo/1", "qux")),
 
-            Arguments.of(newDocument().appendAdd("/child",
-                Collections.singletonMap("grandchild", Collections.emptyMap())),
+            Arguments.of(
+                newDocument().appendAdd("/child", Collections.singletonMap("grandchild", Collections.emptyMap())),
                 constructExpectedOperation("add", null, "/child", "{\"grandchild\":{}}", false)),
 
-            Arguments.of(newDocument().appendAdd("/foo/-", new String[]{"abc", "def"}),
+            Arguments.of(newDocument().appendAdd("/foo/-", new String[] { "abc", "def" }),
                 constructExpectedOperation("add", null, "/foo/-", "[\"abc\",\"def\"]", false)),
 
             Arguments.of(newDocument().appendAddRaw("/baz", "\"qux\""),
@@ -100,7 +96,7 @@ public class JsonPatchDocumentTests {
             Arguments.of(newDocument().appendReplace("/bar", "foo"),
                 constructExpectedOperation("replace", null, "/bar", "foo")),
 
-            Arguments.of(newDocument().appendReplace("/foo", new String[]{"fizz", "buzz", "fizzbuzz"}),
+            Arguments.of(newDocument().appendReplace("/foo", new String[] { "fizz", "buzz", "fizzbuzz" }),
                 constructExpectedOperation("replace", null, "/foo", "[\"fizz\",\"buzz\",\"fizzbuzz\"]", false)),
 
             Arguments.of(newDocument().appendReplace("/baz", "foo"),
@@ -136,14 +132,12 @@ public class JsonPatchDocumentTests {
             Arguments.of(newDocument().appendMove("/baz", "/fizz"),
                 constructExpectedOperation("move", "/baz", "/fizz", null)),
 
-            Arguments.of(newDocument().appendRemove("/bar"),
-                constructExpectedOperation("remove", null, "/bar", null)),
+            Arguments.of(newDocument().appendRemove("/bar"), constructExpectedOperation("remove", null, "/bar", null)),
 
             Arguments.of(newDocument().appendRemove("/foo/bar"),
                 constructExpectedOperation("remove", null, "/foo/bar", null)),
 
-            Arguments.of(newDocument().appendRemove("/baz"),
-                constructExpectedOperation("remove", null, "/baz", null)),
+            Arguments.of(newDocument().appendRemove("/baz"), constructExpectedOperation("remove", null, "/baz", null)),
 
             Arguments.of(newDocument().appendTest("/foo", "bar"),
                 constructExpectedOperation("test", null, "/foo", "bar")),
@@ -165,8 +159,7 @@ public class JsonPatchDocumentTests {
 
             Arguments.of(complexDocument, complexExpected),
 
-            Arguments.of(complexDocumentRaw, complexExpected)
-        );
+            Arguments.of(complexDocumentRaw, complexExpected));
     }
 
     private static String constructExpectedOperation(String op, String from, String path, String value) {
@@ -184,10 +177,7 @@ public class JsonPatchDocumentTests {
         builder.append(",\"path\":\"").append(path).append("\"");
 
         if (value != null) {
-            builder.append(",\"value\":")
-                .append(quoteValue ? "\"" : "")
-                .append(value)
-                .append(quoteValue ? "\"" : "");
+            builder.append(",\"value\":").append(quoteValue ? "\"" : "").append(value).append(quoteValue ? "\"" : "");
         }
 
         return builder.append("}]").toString();
@@ -201,8 +191,7 @@ public class JsonPatchDocumentTests {
 
     private static Stream<Arguments> invalidArgumentSupplier() {
         JsonPatchDocument document = newDocument();
-        return Stream.of(
-            Arguments.of((Runnable) () -> document.appendAdd(null, "\"bar\"")),
+        return Stream.of(Arguments.of((Runnable) () -> document.appendAdd(null, "\"bar\"")),
 
             Arguments.of((Runnable) () -> document.appendReplace(null, "\"bar\"")),
 
@@ -214,8 +203,7 @@ public class JsonPatchDocumentTests {
 
             Arguments.of((Runnable) () -> document.appendRemove(null)),
 
-            Arguments.of((Runnable) () -> document.appendTest(null, "\"bar\""))
-        );
+            Arguments.of((Runnable) () -> document.appendTest(null, "\"bar\"")));
     }
 
     private static JsonPatchDocument newDocument() {

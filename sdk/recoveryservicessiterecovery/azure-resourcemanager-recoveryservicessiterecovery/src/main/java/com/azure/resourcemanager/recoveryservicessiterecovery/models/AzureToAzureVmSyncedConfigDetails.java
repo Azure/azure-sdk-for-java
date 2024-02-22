@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Azure to Azure VM synced configuration details. */
+/**
+ * Azure to Azure VM synced configuration details.
+ */
 @Fluent
 public final class AzureToAzureVmSyncedConfigDetails {
     /*
@@ -26,13 +28,15 @@ public final class AzureToAzureVmSyncedConfigDetails {
     @JsonProperty(value = "inputEndpoints")
     private List<InputEndpoint> inputEndpoints;
 
-    /** Creates an instance of AzureToAzureVmSyncedConfigDetails class. */
+    /**
+     * Creates an instance of AzureToAzureVmSyncedConfigDetails class.
+     */
     public AzureToAzureVmSyncedConfigDetails() {
     }
 
     /**
      * Get the tags property: The Azure VM tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -41,7 +45,7 @@ public final class AzureToAzureVmSyncedConfigDetails {
 
     /**
      * Set the tags property: The Azure VM tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the AzureToAzureVmSyncedConfigDetails object itself.
      */
@@ -52,7 +56,7 @@ public final class AzureToAzureVmSyncedConfigDetails {
 
     /**
      * Get the inputEndpoints property: The Azure VM input endpoints.
-     *
+     * 
      * @return the inputEndpoints value.
      */
     public List<InputEndpoint> inputEndpoints() {
@@ -61,7 +65,7 @@ public final class AzureToAzureVmSyncedConfigDetails {
 
     /**
      * Set the inputEndpoints property: The Azure VM input endpoints.
-     *
+     * 
      * @param inputEndpoints the inputEndpoints value to set.
      * @return the AzureToAzureVmSyncedConfigDetails object itself.
      */
@@ -72,7 +76,7 @@ public final class AzureToAzureVmSyncedConfigDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

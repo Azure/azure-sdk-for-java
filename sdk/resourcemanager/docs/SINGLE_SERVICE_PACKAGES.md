@@ -583,7 +583,7 @@ service
 <details>
 <summary> deploymentmanager </summary>
 
-* [package-2019-11-01-preview](https://github.com/Azure/azure-rest-api-specs/tree/main/specification/deploymentmanager/resource-manager#tag-package-2019-11-01-preview)
+* package-2019-11-01-preview
     * [1.0.0-beta.2](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-deploymentmanager/1.0.0-beta.2)
     * [1.0.0-beta.1](https://repo1.maven.org/maven2/com/azure/resourcemanager/azure-resourcemanager-deploymentmanager/1.0.0-beta.1)
 </details>

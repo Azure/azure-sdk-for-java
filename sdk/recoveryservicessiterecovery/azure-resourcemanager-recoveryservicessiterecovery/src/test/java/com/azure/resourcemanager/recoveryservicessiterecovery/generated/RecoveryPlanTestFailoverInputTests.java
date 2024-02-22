@@ -15,34 +15,25 @@ import org.junit.jupiter.api.Assertions;
 public final class RecoveryPlanTestFailoverInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryPlanTestFailoverInput model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"failoverDirection\":\"RecoveryToPrimary\",\"networkType\":\"eshoygzcb\",\"networkId\":\"qxkfaoytehqp\",\"providerSpecificDetails\":[{\"instanceType\":\"RecoveryPlanProviderSpecificFailoverInput\"},{\"instanceType\":\"RecoveryPlanProviderSpecificFailoverInput\"}]}}")
-                .toObject(RecoveryPlanTestFailoverInput.class);
-        Assertions
-            .assertEquals(PossibleOperationsDirections.RECOVERY_TO_PRIMARY, model.properties().failoverDirection());
+        RecoveryPlanTestFailoverInput model = BinaryData.fromString(
+            "{\"properties\":{\"failoverDirection\":\"RecoveryToPrimary\",\"networkType\":\"eshoygzcb\",\"networkId\":\"qxkfaoytehqp\",\"providerSpecificDetails\":[{\"instanceType\":\"RecoveryPlanProviderSpecificFailoverInput\"},{\"instanceType\":\"RecoveryPlanProviderSpecificFailoverInput\"}]}}")
+            .toObject(RecoveryPlanTestFailoverInput.class);
+        Assertions.assertEquals(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+            model.properties().failoverDirection());
         Assertions.assertEquals("eshoygzcb", model.properties().networkType());
         Assertions.assertEquals("qxkfaoytehqp", model.properties().networkId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPlanTestFailoverInput model =
-            new RecoveryPlanTestFailoverInput()
-                .withProperties(
-                    new RecoveryPlanTestFailoverInputProperties()
-                        .withFailoverDirection(PossibleOperationsDirections.RECOVERY_TO_PRIMARY)
-                        .withNetworkType("eshoygzcb")
-                        .withNetworkId("qxkfaoytehqp")
-                        .withProviderSpecificDetails(
-                            Arrays
-                                .asList(
-                                    new RecoveryPlanProviderSpecificFailoverInput(),
-                                    new RecoveryPlanProviderSpecificFailoverInput())));
+        RecoveryPlanTestFailoverInput model
+            = new RecoveryPlanTestFailoverInput().withProperties(new RecoveryPlanTestFailoverInputProperties()
+                .withFailoverDirection(PossibleOperationsDirections.RECOVERY_TO_PRIMARY).withNetworkType("eshoygzcb")
+                .withNetworkId("qxkfaoytehqp").withProviderSpecificDetails(Arrays.asList(
+                    new RecoveryPlanProviderSpecificFailoverInput(), new RecoveryPlanProviderSpecificFailoverInput())));
         model = BinaryData.fromObject(model).toObject(RecoveryPlanTestFailoverInput.class);
-        Assertions
-            .assertEquals(PossibleOperationsDirections.RECOVERY_TO_PRIMARY, model.properties().failoverDirection());
+        Assertions.assertEquals(PossibleOperationsDirections.RECOVERY_TO_PRIMARY,
+            model.properties().failoverDirection());
         Assertions.assertEquals("eshoygzcb", model.properties().networkType());
         Assertions.assertEquals("qxkfaoytehqp", model.properties().networkId());
     }

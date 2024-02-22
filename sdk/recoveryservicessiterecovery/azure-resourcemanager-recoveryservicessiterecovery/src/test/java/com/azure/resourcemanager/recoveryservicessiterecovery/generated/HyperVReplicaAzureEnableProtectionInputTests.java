@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class HyperVReplicaAzureEnableProtectionInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HyperVReplicaAzureEnableProtectionInput model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"HyperVReplicaAzure\",\"hvHostVmId\":\"adxkxeqbwpntghy\",\"vmName\":\"a\",\"osType\":\"drnxsluvlzla\",\"vhdId\":\"t\",\"targetStorageAccountId\":\"pbqhvfdqqjwkr\",\"targetAzureNetworkId\":\"zdanojis\",\"targetAzureSubnetId\":\"lmvokat\",\"enableRdpOnTargetOption\":\"tjctibpvbkaeh\",\"targetAzureVmName\":\"mzy\",\"logStorageAccountId\":\"fwakw\",\"disksToInclude\":[\"vmakxhysowljuxl\",\"bectvtfjmskdch\"],\"targetAzureV1ResourceGroupId\":\"iubavlzwpvgm\",\"targetAzureV2ResourceGroupId\":\"lkzazmgok\",\"useManagedDisks\":\"gjqafkmkrokzr\",\"targetAvailabilitySetId\":\"qetwpqrtvaozn\",\"targetAvailabilityZone\":\"ixiezeag\",\"licenseType\":\"NotSpecified\",\"sqlServerLicenseType\":\"NotSpecified\",\"targetVmSize\":\"ugedh\",\"targetProximityPlacementGroupId\":\"jstlzmblsyj\",\"useManagedDisksForReplication\":\"olctae\",\"diskType\":\"Standard_LRS\",\"disksToIncludeForManagedDisks\":[{\"diskId\":\"edjc\",\"logStorageAccountId\":\"tb\",\"diskType\":\"StandardSSD_LRS\",\"diskEncryptionSetId\":\"gdxzvsgeafgfoseh\"},{\"diskId\":\"zsxezppkkwaae\",\"logStorageAccountId\":\"yfjlpzeqto\",\"diskType\":\"Premium_LRS\",\"diskEncryptionSetId\":\"ixlajmllpquevham\"}],\"diskEncryptionSetId\":\"wg\",\"targetVmTags\":{\"qovchiqbp\":\"mkekxpkzwaqxo\"},\"seedManagedDiskTags\":{\"ztekxbyjgmsfep\":\"idu\",\"dicxdw\":\"yihpqadagrh\",\"vcxjsgbipcukdvek\":\"jfowxwy\",\"scrdp\":\"buhoduchv\"},\"targetManagedDiskTags\":{\"szekbh\":\"dyjdussp\",\"hbfrnuybfflj\":\"lkaaggkr\"},\"targetNicTags\":{\"srexxfavs\":\"mreoagsqtaad\",\"l\":\"wudohzilfm\"}}")
-                .toObject(HyperVReplicaAzureEnableProtectionInput.class);
+        HyperVReplicaAzureEnableProtectionInput model = BinaryData.fromString(
+            "{\"instanceType\":\"HyperVReplicaAzure\",\"hvHostVmId\":\"adxkxeqbwpntghy\",\"vmName\":\"a\",\"osType\":\"drnxsluvlzla\",\"vhdId\":\"t\",\"targetStorageAccountId\":\"pbqhvfdqqjwkr\",\"targetAzureNetworkId\":\"zdanojis\",\"targetAzureSubnetId\":\"lmvokat\",\"enableRdpOnTargetOption\":\"tjctibpvbkaeh\",\"targetAzureVmName\":\"mzy\",\"logStorageAccountId\":\"fwakw\",\"disksToInclude\":[\"vmakxhysowljuxl\",\"bectvtfjmskdch\"],\"targetAzureV1ResourceGroupId\":\"iubavlzwpvgm\",\"targetAzureV2ResourceGroupId\":\"lkzazmgok\",\"useManagedDisks\":\"gjqafkmkrokzr\",\"targetAvailabilitySetId\":\"qetwpqrtvaozn\",\"targetAvailabilityZone\":\"ixiezeag\",\"licenseType\":\"NotSpecified\",\"sqlServerLicenseType\":\"NotSpecified\",\"targetVmSize\":\"ugedh\",\"targetProximityPlacementGroupId\":\"jstlzmblsyj\",\"useManagedDisksForReplication\":\"olctae\",\"diskType\":\"Standard_LRS\",\"disksToIncludeForManagedDisks\":[{\"diskId\":\"edjc\",\"logStorageAccountId\":\"tb\",\"diskType\":\"StandardSSD_LRS\",\"diskEncryptionSetId\":\"gdxzvsgeafgfoseh\"},{\"diskId\":\"zsxezppkkwaae\",\"logStorageAccountId\":\"yfjlpzeqto\",\"diskType\":\"Premium_LRS\",\"diskEncryptionSetId\":\"ixlajmllpquevham\"}],\"diskEncryptionSetId\":\"wg\",\"targetVmTags\":{\"qovchiqbp\":\"mkekxpkzwaqxo\"},\"seedManagedDiskTags\":{\"ztekxbyjgmsfep\":\"idu\",\"dicxdw\":\"yihpqadagrh\",\"vcxjsgbipcukdvek\":\"jfowxwy\",\"scrdp\":\"buhoduchv\"},\"targetManagedDiskTags\":{\"szekbh\":\"dyjdussp\",\"hbfrnuybfflj\":\"lkaaggkr\"},\"targetNicTags\":{\"srexxfavs\":\"mreoagsqtaad\",\"l\":\"wudohzilfm\"}}")
+            .toObject(HyperVReplicaAzureEnableProtectionInput.class);
         Assertions.assertEquals("adxkxeqbwpntghy", model.hvHostVmId());
         Assertions.assertEquals("a", model.vmName());
         Assertions.assertEquals("drnxsluvlzla", model.osType());
@@ -47,8 +45,8 @@ public final class HyperVReplicaAzureEnableProtectionInputTests {
         Assertions.assertEquals(DiskAccountType.STANDARD_LRS, model.diskType());
         Assertions.assertEquals("edjc", model.disksToIncludeForManagedDisks().get(0).diskId());
         Assertions.assertEquals("tb", model.disksToIncludeForManagedDisks().get(0).logStorageAccountId());
-        Assertions
-            .assertEquals(DiskAccountType.STANDARD_SSD_LRS, model.disksToIncludeForManagedDisks().get(0).diskType());
+        Assertions.assertEquals(DiskAccountType.STANDARD_SSD_LRS,
+            model.disksToIncludeForManagedDisks().get(0).diskType());
         Assertions.assertEquals("gdxzvsgeafgfoseh", model.disksToIncludeForManagedDisks().get(0).diskEncryptionSetId());
         Assertions.assertEquals("wg", model.diskEncryptionSetId());
         Assertions.assertEquals("mkekxpkzwaqxo", model.targetVmTags().get("qovchiqbp"));
@@ -59,55 +57,27 @@ public final class HyperVReplicaAzureEnableProtectionInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HyperVReplicaAzureEnableProtectionInput model =
-            new HyperVReplicaAzureEnableProtectionInput()
-                .withHvHostVmId("adxkxeqbwpntghy")
-                .withVmName("a")
-                .withOsType("drnxsluvlzla")
-                .withVhdId("t")
-                .withTargetStorageAccountId("pbqhvfdqqjwkr")
-                .withTargetAzureNetworkId("zdanojis")
-                .withTargetAzureSubnetId("lmvokat")
-                .withEnableRdpOnTargetOption("tjctibpvbkaeh")
-                .withTargetAzureVmName("mzy")
-                .withLogStorageAccountId("fwakw")
-                .withDisksToInclude(Arrays.asList("vmakxhysowljuxl", "bectvtfjmskdch"))
-                .withTargetAzureV1ResourceGroupId("iubavlzwpvgm")
-                .withTargetAzureV2ResourceGroupId("lkzazmgok")
-                .withUseManagedDisks("gjqafkmkrokzr")
-                .withTargetAvailabilitySetId("qetwpqrtvaozn")
-                .withTargetAvailabilityZone("ixiezeag")
-                .withLicenseType(LicenseType.NOT_SPECIFIED)
-                .withSqlServerLicenseType(SqlServerLicenseType.NOT_SPECIFIED)
-                .withTargetVmSize("ugedh")
-                .withTargetProximityPlacementGroupId("jstlzmblsyj")
-                .withUseManagedDisksForReplication("olctae")
+        HyperVReplicaAzureEnableProtectionInput model
+            = new HyperVReplicaAzureEnableProtectionInput().withHvHostVmId("adxkxeqbwpntghy").withVmName("a")
+                .withOsType("drnxsluvlzla").withVhdId("t").withTargetStorageAccountId("pbqhvfdqqjwkr")
+                .withTargetAzureNetworkId("zdanojis").withTargetAzureSubnetId("lmvokat")
+                .withEnableRdpOnTargetOption("tjctibpvbkaeh").withTargetAzureVmName("mzy")
+                .withLogStorageAccountId("fwakw").withDisksToInclude(Arrays.asList("vmakxhysowljuxl", "bectvtfjmskdch"))
+                .withTargetAzureV1ResourceGroupId("iubavlzwpvgm").withTargetAzureV2ResourceGroupId("lkzazmgok")
+                .withUseManagedDisks("gjqafkmkrokzr").withTargetAvailabilitySetId("qetwpqrtvaozn")
+                .withTargetAvailabilityZone("ixiezeag").withLicenseType(LicenseType.NOT_SPECIFIED)
+                .withSqlServerLicenseType(SqlServerLicenseType.NOT_SPECIFIED).withTargetVmSize("ugedh")
+                .withTargetProximityPlacementGroupId("jstlzmblsyj").withUseManagedDisksForReplication("olctae")
                 .withDiskType(DiskAccountType.STANDARD_LRS)
-                .withDisksToIncludeForManagedDisks(
-                    Arrays
-                        .asList(
-                            new HyperVReplicaAzureDiskInputDetails()
-                                .withDiskId("edjc")
-                                .withLogStorageAccountId("tb")
-                                .withDiskType(DiskAccountType.STANDARD_SSD_LRS)
-                                .withDiskEncryptionSetId("gdxzvsgeafgfoseh"),
-                            new HyperVReplicaAzureDiskInputDetails()
-                                .withDiskId("zsxezppkkwaae")
-                                .withLogStorageAccountId("yfjlpzeqto")
-                                .withDiskType(DiskAccountType.PREMIUM_LRS)
-                                .withDiskEncryptionSetId("ixlajmllpquevham")))
-                .withDiskEncryptionSetId("wg")
-                .withTargetVmTags(mapOf("qovchiqbp", "mkekxpkzwaqxo"))
-                .withSeedManagedDiskTags(
-                    mapOf(
-                        "ztekxbyjgmsfep",
-                        "idu",
-                        "dicxdw",
-                        "yihpqadagrh",
-                        "vcxjsgbipcukdvek",
-                        "jfowxwy",
-                        "scrdp",
-                        "buhoduchv"))
+                .withDisksToIncludeForManagedDisks(Arrays.asList(
+                    new HyperVReplicaAzureDiskInputDetails().withDiskId("edjc").withLogStorageAccountId("tb")
+                        .withDiskType(DiskAccountType.STANDARD_SSD_LRS).withDiskEncryptionSetId("gdxzvsgeafgfoseh"),
+                    new HyperVReplicaAzureDiskInputDetails().withDiskId("zsxezppkkwaae")
+                        .withLogStorageAccountId("yfjlpzeqto").withDiskType(DiskAccountType.PREMIUM_LRS)
+                        .withDiskEncryptionSetId("ixlajmllpquevham")))
+                .withDiskEncryptionSetId("wg").withTargetVmTags(mapOf("qovchiqbp", "mkekxpkzwaqxo"))
+                .withSeedManagedDiskTags(mapOf("ztekxbyjgmsfep", "idu", "dicxdw", "yihpqadagrh", "vcxjsgbipcukdvek",
+                    "jfowxwy", "scrdp", "buhoduchv"))
                 .withTargetManagedDiskTags(mapOf("szekbh", "dyjdussp", "hbfrnuybfflj", "lkaaggkr"))
                 .withTargetNicTags(mapOf("srexxfavs", "mreoagsqtaad", "l", "wudohzilfm"));
         model = BinaryData.fromObject(model).toObject(HyperVReplicaAzureEnableProtectionInput.class);
@@ -135,8 +105,8 @@ public final class HyperVReplicaAzureEnableProtectionInputTests {
         Assertions.assertEquals(DiskAccountType.STANDARD_LRS, model.diskType());
         Assertions.assertEquals("edjc", model.disksToIncludeForManagedDisks().get(0).diskId());
         Assertions.assertEquals("tb", model.disksToIncludeForManagedDisks().get(0).logStorageAccountId());
-        Assertions
-            .assertEquals(DiskAccountType.STANDARD_SSD_LRS, model.disksToIncludeForManagedDisks().get(0).diskType());
+        Assertions.assertEquals(DiskAccountType.STANDARD_SSD_LRS,
+            model.disksToIncludeForManagedDisks().get(0).diskType());
         Assertions.assertEquals("gdxzvsgeafgfoseh", model.disksToIncludeForManagedDisks().get(0).diskEncryptionSetId());
         Assertions.assertEquals("wg", model.diskEncryptionSetId());
         Assertions.assertEquals("mkekxpkzwaqxo", model.targetVmTags().get("qovchiqbp"));

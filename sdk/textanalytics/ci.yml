@@ -44,6 +44,12 @@ extends:
       - name: azure-ai-textanalytics
         groupId: com.azure
         safeName: azureaitextanalytics
+    MatrixConfigs:
+      - Name: Text_analytics_ci
+        Path: sdk/textanalytics/platform-matrix-ci.json
+        Selection: sparse
+        NonSparseParameters: Agent
+        GenerateVMJobs: true
     AdditionalModules:
       - name: azure-ai-textanalytics-perf
         groupId: com.azure

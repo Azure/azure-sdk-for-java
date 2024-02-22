@@ -79,26 +79,19 @@ public final class VCenterImpl implements VCenter, VCenter.Definition, VCenter.U
     }
 
     public VCenter create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicationvCenters()
-                .create(
-                    resourceName, resourceGroupName, fabricName, vcenterName, createAddVCenterRequest, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getReplicationvCenters().create(resourceName,
+            resourceGroupName, fabricName, vcenterName, createAddVCenterRequest, Context.NONE);
         return this;
     }
 
     public VCenter create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicationvCenters()
-                .create(resourceName, resourceGroupName, fabricName, vcenterName, createAddVCenterRequest, context);
+        this.innerObject = serviceManager.serviceClient().getReplicationvCenters().create(resourceName,
+            resourceGroupName, fabricName, vcenterName, createAddVCenterRequest, context);
         return this;
     }
 
-    VCenterImpl(
-        String name, com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
+    VCenterImpl(String name,
+        com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = new VCenterInner();
         this.serviceManager = serviceManager;
         this.vcenterName = name;
@@ -111,52 +104,36 @@ public final class VCenterImpl implements VCenter, VCenter.Definition, VCenter.U
     }
 
     public VCenter apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicationvCenters()
-                .update(
-                    resourceName, resourceGroupName, fabricName, vcenterName, updateUpdateVCenterRequest, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getReplicationvCenters().update(resourceName,
+            resourceGroupName, fabricName, vcenterName, updateUpdateVCenterRequest, Context.NONE);
         return this;
     }
 
     public VCenter apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicationvCenters()
-                .update(resourceName, resourceGroupName, fabricName, vcenterName, updateUpdateVCenterRequest, context);
+        this.innerObject = serviceManager.serviceClient().getReplicationvCenters().update(resourceName,
+            resourceGroupName, fabricName, vcenterName, updateUpdateVCenterRequest, context);
         return this;
     }
 
-    VCenterImpl(
-        VCenterInner innerObject,
+    VCenterImpl(VCenterInner innerObject,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceName = Utils.getValueFromIdByName(innerObject.id(), "vaults");
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.fabricName = Utils.getValueFromIdByName(innerObject.id(), "replicationFabrics");
-        this.vcenterName = Utils.getValueFromIdByName(innerObject.id(), "replicationvCenters");
+        this.resourceName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "vaults");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.fabricName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "replicationFabrics");
+        this.vcenterName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "replicationvCenters");
     }
 
     public VCenter refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicationvCenters()
-                .getWithResponse(resourceName, resourceGroupName, fabricName, vcenterName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getReplicationvCenters()
+            .getWithResponse(resourceName, resourceGroupName, fabricName, vcenterName, Context.NONE).getValue();
         return this;
     }
 
     public VCenter refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getReplicationvCenters()
-                .getWithResponse(resourceName, resourceGroupName, fabricName, vcenterName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getReplicationvCenters()
+            .getWithResponse(resourceName, resourceGroupName, fabricName, vcenterName, context).getValue();
         return this;
     }
 

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Model class for event details of a job status event. */
+/**
+ * Model class for event details of a job status event.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("JobStatus")
 @Fluent
@@ -38,13 +40,15 @@ public final class JobStatusEventDetails extends EventSpecificDetails {
     @JsonProperty(value = "affectedObjectType")
     private String affectedObjectType;
 
-    /** Creates an instance of JobStatusEventDetails class. */
+    /**
+     * Creates an instance of JobStatusEventDetails class.
+     */
     public JobStatusEventDetails() {
     }
 
     /**
      * Get the jobId property: Job arm id for the event.
-     *
+     * 
      * @return the jobId value.
      */
     public String jobId() {
@@ -53,7 +57,7 @@ public final class JobStatusEventDetails extends EventSpecificDetails {
 
     /**
      * Set the jobId property: Job arm id for the event.
-     *
+     * 
      * @param jobId the jobId value to set.
      * @return the JobStatusEventDetails object itself.
      */
@@ -64,7 +68,7 @@ public final class JobStatusEventDetails extends EventSpecificDetails {
 
     /**
      * Get the jobFriendlyName property: JobName for the Event.
-     *
+     * 
      * @return the jobFriendlyName value.
      */
     public String jobFriendlyName() {
@@ -73,7 +77,7 @@ public final class JobStatusEventDetails extends EventSpecificDetails {
 
     /**
      * Set the jobFriendlyName property: JobName for the Event.
-     *
+     * 
      * @param jobFriendlyName the jobFriendlyName value to set.
      * @return the JobStatusEventDetails object itself.
      */
@@ -84,7 +88,7 @@ public final class JobStatusEventDetails extends EventSpecificDetails {
 
     /**
      * Get the jobStatus property: JobStatus for the Event.
-     *
+     * 
      * @return the jobStatus value.
      */
     public String jobStatus() {
@@ -93,7 +97,7 @@ public final class JobStatusEventDetails extends EventSpecificDetails {
 
     /**
      * Set the jobStatus property: JobStatus for the Event.
-     *
+     * 
      * @param jobStatus the jobStatus value to set.
      * @return the JobStatusEventDetails object itself.
      */
@@ -104,7 +108,7 @@ public final class JobStatusEventDetails extends EventSpecificDetails {
 
     /**
      * Get the affectedObjectType property: AffectedObjectType for the event.
-     *
+     * 
      * @return the affectedObjectType value.
      */
     public String affectedObjectType() {
@@ -113,7 +117,7 @@ public final class JobStatusEventDetails extends EventSpecificDetails {
 
     /**
      * Set the affectedObjectType property: AffectedObjectType for the event.
-     *
+     * 
      * @param affectedObjectType the affectedObjectType value to set.
      * @return the JobStatusEventDetails object itself.
      */
@@ -124,7 +128,7 @@ public final class JobStatusEventDetails extends EventSpecificDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

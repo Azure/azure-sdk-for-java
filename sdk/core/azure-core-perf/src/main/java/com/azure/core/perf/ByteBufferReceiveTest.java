@@ -22,14 +22,13 @@ public class ByteBufferReceiveTest extends RestProxyTestBase<CorePerfStressOptio
     private static Function<HttpRequest, HttpResponse> createMockResponseSupplier(CorePerfStressOptions options) {
         byte[] bodyBytes = new byte[(int) options.getSize()];
         new Random(0).nextBytes(bodyBytes);
-        return httpRequest -> createMockResponse(httpRequest,
-            "application/octet-stream", bodyBytes);
+        return httpRequest -> createMockResponse(httpRequest, "application/octet-stream", bodyBytes);
     }
 
     @Override
     public Mono<Void> setupAsync() {
-        return service.setRawData(
-            endpoint, id, TestDataCreationHelper.createRandomByteBufferFlux(options.getSize()), options.getSize());
+        return service.setRawData(endpoint, id, TestDataCreationHelper.createRandomByteBufferFlux(options.getSize()),
+            options.getSize());
     }
 
     @Override
@@ -39,13 +38,11 @@ public class ByteBufferReceiveTest extends RestProxyTestBase<CorePerfStressOptio
 
     @Override
     public Mono<Void> runAsync() {
-        return service.getRawDataAsync(endpoint, id)
-           .flatMapMany(response -> response.getValue())
-           .map(byteBuffer -> {
-               for (int i = 0; i < byteBuffer.remaining(); i++) {
-                   byteBuffer.get();
-               }
-               return 1;
-           }).then();
+        return service.getRawDataAsync(endpoint, id).flatMapMany(response -> response.getValue()).map(byteBuffer -> {
+            for (int i = 0; i < byteBuffer.remaining(); i++) {
+                byteBuffer.get();
+            }
+            return 1;
+        }).then();
     }
 }

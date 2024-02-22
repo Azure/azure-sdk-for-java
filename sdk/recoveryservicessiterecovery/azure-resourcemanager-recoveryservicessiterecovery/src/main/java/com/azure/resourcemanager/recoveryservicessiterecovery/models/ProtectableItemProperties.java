@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Replication protected item custom data details. */
+/**
+ * Replication protected item custom data details.
+ */
 @Fluent
 public final class ProtectableItemProperties {
     /*
@@ -53,13 +55,15 @@ public final class ProtectableItemProperties {
     @JsonProperty(value = "customDetails")
     private ConfigurationSettings customDetails;
 
-    /** Creates an instance of ProtectableItemProperties class. */
+    /**
+     * Creates an instance of ProtectableItemProperties class.
+     */
     public ProtectableItemProperties() {
     }
 
     /**
      * Get the friendlyName property: The name.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -68,7 +72,7 @@ public final class ProtectableItemProperties {
 
     /**
      * Set the friendlyName property: The name.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the ProtectableItemProperties object itself.
      */
@@ -79,7 +83,7 @@ public final class ProtectableItemProperties {
 
     /**
      * Get the protectionStatus property: The protection status.
-     *
+     * 
      * @return the protectionStatus value.
      */
     public String protectionStatus() {
@@ -88,7 +92,7 @@ public final class ProtectableItemProperties {
 
     /**
      * Set the protectionStatus property: The protection status.
-     *
+     * 
      * @param protectionStatus the protectionStatus value to set.
      * @return the ProtectableItemProperties object itself.
      */
@@ -99,7 +103,7 @@ public final class ProtectableItemProperties {
 
     /**
      * Get the replicationProtectedItemId property: The ARM resource of protected items.
-     *
+     * 
      * @return the replicationProtectedItemId value.
      */
     public String replicationProtectedItemId() {
@@ -108,7 +112,7 @@ public final class ProtectableItemProperties {
 
     /**
      * Set the replicationProtectedItemId property: The ARM resource of protected items.
-     *
+     * 
      * @param replicationProtectedItemId the replicationProtectedItemId value to set.
      * @return the ProtectableItemProperties object itself.
      */
@@ -119,7 +123,7 @@ public final class ProtectableItemProperties {
 
     /**
      * Get the recoveryServicesProviderId property: The recovery provider ARM Id.
-     *
+     * 
      * @return the recoveryServicesProviderId value.
      */
     public String recoveryServicesProviderId() {
@@ -128,7 +132,7 @@ public final class ProtectableItemProperties {
 
     /**
      * Set the recoveryServicesProviderId property: The recovery provider ARM Id.
-     *
+     * 
      * @param recoveryServicesProviderId the recoveryServicesProviderId value to set.
      * @return the ProtectableItemProperties object itself.
      */
@@ -139,7 +143,7 @@ public final class ProtectableItemProperties {
 
     /**
      * Get the protectionReadinessErrors property: The Current protection readiness errors.
-     *
+     * 
      * @return the protectionReadinessErrors value.
      */
     public List<String> protectionReadinessErrors() {
@@ -148,7 +152,7 @@ public final class ProtectableItemProperties {
 
     /**
      * Set the protectionReadinessErrors property: The Current protection readiness errors.
-     *
+     * 
      * @param protectionReadinessErrors the protectionReadinessErrors value to set.
      * @return the ProtectableItemProperties object itself.
      */
@@ -160,7 +164,7 @@ public final class ProtectableItemProperties {
     /**
      * Get the supportedReplicationProviders property: The list of replication providers supported for the protectable
      * item.
-     *
+     * 
      * @return the supportedReplicationProviders value.
      */
     public List<String> supportedReplicationProviders() {
@@ -170,7 +174,7 @@ public final class ProtectableItemProperties {
     /**
      * Set the supportedReplicationProviders property: The list of replication providers supported for the protectable
      * item.
-     *
+     * 
      * @param supportedReplicationProviders the supportedReplicationProviders value to set.
      * @return the ProtectableItemProperties object itself.
      */
@@ -181,7 +185,7 @@ public final class ProtectableItemProperties {
 
     /**
      * Get the customDetails property: The Replication provider custom settings.
-     *
+     * 
      * @return the customDetails value.
      */
     public ConfigurationSettings customDetails() {
@@ -190,7 +194,7 @@ public final class ProtectableItemProperties {
 
     /**
      * Set the customDetails property: The Replication provider custom settings.
-     *
+     * 
      * @param customDetails the customDetails value to set.
      * @return the ProtectableItemProperties object itself.
      */
@@ -201,7 +205,7 @@ public final class ProtectableItemProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
