@@ -726,7 +726,7 @@ public final class PhoneNumbersClient {
      * @return A {@link OperatorInformationResult} which contains the results of the search.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<OperatorInformationResult> searchOperatorInformation(List<String> phoneNumbers,
+    public Response<OperatorInformationResult> searchOperatorInformationWithResponse(List<String> phoneNumbers,
             boolean includeAdditionalOperatorDetails,
             Context context) {
         context = context == null ? Context.NONE : context;
