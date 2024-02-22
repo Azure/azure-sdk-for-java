@@ -157,8 +157,8 @@ public class ManagementError implements JsonSerializable<ManagementError> {
         return jsonReader.readObject(reader -> {
             // Buffer the next JSON object as ResponseError can take two forms:
             //
-            // - A ResponseError object
-            // - A ResponseError object wrapped in an "error" node.
+            // - A ManagementError object
+            // - A ManagementError object wrapped in an "error" node.
             JsonReader bufferedReader = reader.bufferObject();
             bufferedReader.nextToken(); // Get to the START_OBJECT token.
             while (bufferedReader.nextToken() != JsonToken.END_OBJECT) {
@@ -166,7 +166,7 @@ public class ManagementError implements JsonSerializable<ManagementError> {
                 bufferedReader.nextToken();
 
                 if ("error".equals(fieldName)) {
-                    // If the ResponseError was wrapped in the "error" node begin reading it now.
+                    // If the ManagementError was wrapped in the "error" node begin reading it now.
                     return readManagementError(bufferedReader);
                 } else {
                     bufferedReader.skipChildren();
