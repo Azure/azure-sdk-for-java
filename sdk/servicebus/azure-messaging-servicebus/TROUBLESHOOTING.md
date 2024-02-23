@@ -7,7 +7,7 @@ The 7.15.x line reduces thread hopping, removes locks and optimizes code in hot 
 
 The 7.15.x also comes with various **reliability improvements** – it addresses several race conditions (e.g. prefetch, credit calculations) and improved error handling resulting in a better reliability in presence of transient issues across various client types.
 
-## Using feaures in 7.15.x
+## Using features in 7.15.x
 
 The new underlying framework in 7.15.x with improvements is called V2-Stack. The 7.15.x composes both the previous generation of the underlying stack (The stack 7.14.x uses) and the new V2-Stack.
  
