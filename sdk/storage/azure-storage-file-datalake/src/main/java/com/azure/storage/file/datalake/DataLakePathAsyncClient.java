@@ -932,18 +932,6 @@ public class DataLakePathAsyncClient {
     /**
      * Returns the resource's metadata and properties.
      *
-     * <p><strong>Code Samples</strong></p>
-     *
-     * <!-- src_embed com.azure.storage.file.datalake.DataLakePathAsyncClient.getPropertiesUsingOptionsWithResponse#PathGetPropertiesOptions -->
-     * <pre>
-     * PathGetPropertiesOptions options = new PathGetPropertiesOptions&#40;&#41;.setUserPrincipalName&#40;true&#41;;
-     *
-     * client.getPropertiesUsingOptionsWithResponse&#40;options&#41;.subscribe&#40;
-     *     response -&gt; System.out.printf&#40;&quot;Creation Time: %s, Size: %d%n&quot;, response.getValue&#40;&#41;.getCreationTime&#40;&#41;,
-     *         response.getValue&#40;&#41;.getFileSize&#40;&#41;&#41;&#41;;
-     * </pre>
-     * <!-- end com.azure.storage.file.datalake.DataLakePathAsyncClient.getPropertiesUsingOptionsWithResponse#PathGetPropertiesOptions -->
-     *
      * <p>For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/get-blob-properties">Azure Docs</a></p>
      *
@@ -951,7 +939,7 @@ public class DataLakePathAsyncClient {
      * @return A reactive response containing the resource's properties and metadata.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<PathProperties>> getPropertiesUsingOptionsWithResponse(PathGetPropertiesOptions options) {
+    private Mono<Response<PathProperties>> getPropertiesUsingOptionsWithResponse(PathGetPropertiesOptions options) {
         Context context = BuilderHelper.addUpnHeader(() -> (options == null) ? null : options.isUserPrincipalName(), null);
 
         return blockBlobAsyncClient.getPropertiesWithResponse(Transforms.toBlobRequestConditions(options.getRequestConditions()))

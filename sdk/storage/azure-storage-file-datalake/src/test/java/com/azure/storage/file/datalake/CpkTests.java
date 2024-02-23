@@ -58,7 +58,7 @@ public class CpkTests extends DataLakeTestBase {
     public void pathGetProperties() {
         cpkFile.create();
 
-        Response<PathProperties> response = cpkFile.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null);
+        Response<PathProperties> response = cpkFile.getPropertiesWithResponse(null, null, null);
 
         assertEquals(200, response.getStatusCode());
         assertTrue(response.getValue().isServerEncrypted());

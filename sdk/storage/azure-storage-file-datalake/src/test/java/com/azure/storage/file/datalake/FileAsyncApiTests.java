@@ -4215,9 +4215,6 @@ public class FileAsyncApiTests extends DataLakeTestBase {
             .assertNext(r -> assertNotNull(r.getAccessControlList()))
             .verifyComplete();
 
-        StepVerifier.create(fc.getPropertiesUsingOptionsWithResponse(propertiesOptions))
-            .assertNext(r -> assertNotNull(r.getValue().getAccessControlList()));
-
         //readToFile
         File outFile = new File(testResourceNamer.randomName("", 60) + ".txt");
         outFile.deleteOnExit();

@@ -47,7 +47,7 @@ public class LeaseApiTests extends DataLakeTestBase {
 
         assertEquals(leaseId, leaseClient.getLeaseId());
 
-        Response<PathProperties> response = fc.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null);
+        Response<PathProperties> response = fc.getPropertiesWithResponse(null, null, null);
 
         assertEquals(leaseStateType, response.getValue().getLeaseState());
         assertEquals(leaseDurationType, response.getValue().getLeaseDuration());

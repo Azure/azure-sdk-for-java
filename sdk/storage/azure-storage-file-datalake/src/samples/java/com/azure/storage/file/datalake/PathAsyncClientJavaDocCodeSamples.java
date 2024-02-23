@@ -175,7 +175,6 @@ public class PathAsyncClientJavaDocCodeSamples {
 
     /**
      * Code snippets for {@link DataLakePathAsyncClient#getPropertiesWithResponse(DataLakeRequestConditions)}
-     * and {@link DataLakePathAsyncClient#getPropertiesUsingOptionsWithResponse(PathGetPropertiesOptions)}
      */
     public void getPropertiesWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.getPropertiesWithResponse#DataLakeRequestConditions
@@ -185,14 +184,6 @@ public class PathAsyncClientJavaDocCodeSamples {
             response -> System.out.printf("Creation Time: %s, Size: %d%n", response.getValue().getCreationTime(),
                 response.getValue().getFileSize()));
         // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.getPropertiesWithResponse#DataLakeRequestConditions
-
-        // BEGIN: com.azure.storage.file.datalake.DataLakePathAsyncClient.getPropertiesUsingOptionsWithResponse#PathGetPropertiesOptions
-        PathGetPropertiesOptions options = new PathGetPropertiesOptions().setUserPrincipalName(true);
-
-        client.getPropertiesUsingOptionsWithResponse(options).subscribe(
-            response -> System.out.printf("Creation Time: %s, Size: %d%n", response.getValue().getCreationTime(),
-                response.getValue().getFileSize()));
-        // END: com.azure.storage.file.datalake.DataLakePathAsyncClient.getPropertiesUsingOptionsWithResponse#PathGetPropertiesOptions
     }
 
     /**
