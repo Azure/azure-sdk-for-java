@@ -88,9 +88,8 @@ extends:
       - name: perf-test-core
         groupId: com.azure
     LiveTestStages:
-      - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml
         parameters:
-          CalledFromClient: true
           ServiceDirectory: template
           Artifacts:
             - name: azure-sdk-template
