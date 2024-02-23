@@ -34,7 +34,8 @@ public class TestProxySanitizer {
      * @param redactedValue the replacement text for the regex matched content
      * @param testProxySanitizerType the type of sanitizer
      */
-    public TestProxySanitizer(String key, String regex, String redactedValue, TestProxySanitizerType testProxySanitizerType) {
+    public TestProxySanitizer(String key, String regex, String redactedValue,
+        TestProxySanitizerType testProxySanitizerType) {
         this.testProxySanitizerType = testProxySanitizerType;
         this.key = key;
         this.regex = regex;

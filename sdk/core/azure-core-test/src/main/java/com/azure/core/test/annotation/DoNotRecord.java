@@ -20,7 +20,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * sensitive content that cannot be redacted or calls into code that cannot be mocked.
  */
 @Retention(RUNTIME)
-@Target({METHOD})
+@Target({ METHOD })
 public @interface DoNotRecord {
 
     /**

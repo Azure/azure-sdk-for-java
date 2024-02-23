@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VMwareCbtNicInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VMwareCbtNicInput model =
-            BinaryData
-                .fromString(
-                    "{\"nicId\":\"vewwpzrdwcgldo\",\"isPrimaryNic\":\"gcandxfhhhtes\",\"targetSubnetName\":\"qtdn\",\"targetStaticIPAddress\":\"kkpljdsh\",\"isSelectedForMigration\":\"fkdxccyijjimhi\",\"targetNicName\":\"rqnjxmvvsduydwnw\",\"testSubnetName\":\"uhhqldrdymnswxie\",\"testStaticIPAddress\":\"wqnghxnimvyuj\"}")
-                .toObject(VMwareCbtNicInput.class);
+        VMwareCbtNicInput model = BinaryData.fromString(
+            "{\"nicId\":\"vewwpzrdwcgldo\",\"isPrimaryNic\":\"gcandxfhhhtes\",\"targetSubnetName\":\"qtdn\",\"targetStaticIPAddress\":\"kkpljdsh\",\"isSelectedForMigration\":\"fkdxccyijjimhi\",\"targetNicName\":\"rqnjxmvvsduydwnw\",\"testSubnetName\":\"uhhqldrdymnswxie\",\"testStaticIPAddress\":\"wqnghxnimvyuj\"}")
+            .toObject(VMwareCbtNicInput.class);
         Assertions.assertEquals("vewwpzrdwcgldo", model.nicId());
         Assertions.assertEquals("gcandxfhhhtes", model.isPrimaryNic());
         Assertions.assertEquals("qtdn", model.targetSubnetName());
@@ -28,16 +26,10 @@ public final class VMwareCbtNicInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMwareCbtNicInput model =
-            new VMwareCbtNicInput()
-                .withNicId("vewwpzrdwcgldo")
-                .withIsPrimaryNic("gcandxfhhhtes")
-                .withTargetSubnetName("qtdn")
-                .withTargetStaticIpAddress("kkpljdsh")
-                .withIsSelectedForMigration("fkdxccyijjimhi")
-                .withTargetNicName("rqnjxmvvsduydwnw")
-                .withTestSubnetName("uhhqldrdymnswxie")
-                .withTestStaticIpAddress("wqnghxnimvyuj");
+        VMwareCbtNicInput model = new VMwareCbtNicInput().withNicId("vewwpzrdwcgldo").withIsPrimaryNic("gcandxfhhhtes")
+            .withTargetSubnetName("qtdn").withTargetStaticIpAddress("kkpljdsh")
+            .withIsSelectedForMigration("fkdxccyijjimhi").withTargetNicName("rqnjxmvvsduydwnw")
+            .withTestSubnetName("uhhqldrdymnswxie").withTestStaticIpAddress("wqnghxnimvyuj");
         model = BinaryData.fromObject(model).toObject(VMwareCbtNicInput.class);
         Assertions.assertEquals("vewwpzrdwcgldo", model.nicId());
         Assertions.assertEquals("gcandxfhhhtes", model.isPrimaryNic());

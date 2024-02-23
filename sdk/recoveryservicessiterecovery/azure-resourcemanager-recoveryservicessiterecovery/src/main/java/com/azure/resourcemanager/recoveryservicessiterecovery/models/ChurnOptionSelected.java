@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** A value indicating the churn option selected by user. */
+/**
+ * A value indicating the churn option selected by user.
+ */
 public final class ChurnOptionSelected extends ExpandableStringEnum<ChurnOptionSelected> {
-    /** Static value Normal for ChurnOptionSelected. */
+    /**
+     * Static value Normal for ChurnOptionSelected.
+     */
     public static final ChurnOptionSelected NORMAL = fromString("Normal");
 
-    /** Static value High for ChurnOptionSelected. */
+    /**
+     * Static value High for ChurnOptionSelected.
+     */
     public static final ChurnOptionSelected HIGH = fromString("High");
 
     /**
      * Creates a new instance of ChurnOptionSelected value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class ChurnOptionSelected extends ExpandableStringEnum<ChurnOptionS
 
     /**
      * Creates or finds a ChurnOptionSelected from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ChurnOptionSelected.
      */
@@ -38,7 +44,7 @@ public final class ChurnOptionSelected extends ExpandableStringEnum<ChurnOptionS
 
     /**
      * Gets known ChurnOptionSelected values.
-     *
+     * 
      * @return known ChurnOptionSelected values.
      */
     public static Collection<ChurnOptionSelected> values() {

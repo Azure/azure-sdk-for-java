@@ -16,13 +16,11 @@ import static com.azure.json.implementation.jackson.core.JsonTokenId.*;
 /**
  * Intermediate base class for non-blocking JSON parsers.
  */
-public abstract class NonBlockingJsonParserBase
-    extends ParserBase
-{
+public abstract class NonBlockingJsonParserBase extends ParserBase {
     /*
-    /**********************************************************************
-    /* Major state constants
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Major state constants
+     * /**********************************************************************
      */
 
     /**
@@ -52,9 +50,9 @@ public abstract class NonBlockingJsonParserBase
     protected final static int MAJOR_CLOSED = 7;
 
     /*
-    /**********************************************************************
-    /* Minor state constants
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Minor state constants
+     * /**********************************************************************
      */
 
     /**
@@ -130,11 +128,11 @@ public abstract class NonBlockingJsonParserBase
     protected final static int MINOR_COMMENT_C = 53;
     protected final static int MINOR_COMMENT_CPP = 54;
     protected final static int MINOR_COMMENT_YAML = 55;
-    
+
     /*
-    /**********************************************************************
-    /* Helper objects, symbols (field names)
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Helper objects, symbols (field names)
+     * /**********************************************************************
      */
 
     /**
@@ -160,9 +158,9 @@ public abstract class NonBlockingJsonParserBase
     protected int _quotedDigits;
 
     /*
-    /**********************************************************************
-    /* Additional parsing state
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Additional parsing state
+     * /**********************************************************************
      */
 
     /**
@@ -193,9 +191,9 @@ public abstract class NonBlockingJsonParserBase
     protected boolean _endOfInput = false;
 
     /*
-    /**********************************************************************
-    /* Additional parsing state: non-standard tokens
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Additional parsing state: non-standard tokens
+     * /**********************************************************************
      */
 
     protected final static int NON_STD_TOKEN_NAN = 0;
@@ -204,16 +202,11 @@ public abstract class NonBlockingJsonParserBase
     protected final static int NON_STD_TOKEN_PLUS_INFINITY = 2;
     protected final static int NON_STD_TOKEN_MINUS_INFINITY = 3;
 
-    protected final static String[] NON_STD_TOKENS = new String[] {
-            "NaN",
-            "Infinity", "+Infinity", "-Infinity",
-    };
+    protected final static String[] NON_STD_TOKENS = new String[] { "NaN", "Infinity", "+Infinity", "-Infinity", };
 
-    protected final static double[] NON_STD_TOKEN_VALUES = new double[] {
-            Double.NaN,
-            Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY,
-    };
-    
+    protected final static double[] NON_STD_TOKEN_VALUES
+        = new double[] { Double.NaN, Double.POSITIVE_INFINITY, Double.POSITIVE_INFINITY, Double.NEGATIVE_INFINITY, };
+
     /**
      * When tokenizing non-standard ("odd") tokens, this is the type to consider;
      * also works as index to actual textual representation.
@@ -221,9 +214,9 @@ public abstract class NonBlockingJsonParserBase
     protected int _nonStdTokenType;
 
     /*
-    /**********************************************************************
-    /* Location tracking, additional
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Location tracking, additional
+     * /**********************************************************************
      */
 
     /**
@@ -232,7 +225,7 @@ public abstract class NonBlockingJsonParserBase
      * logical offset within input "stream"
      */
     protected int _currBufferStart = 0;
-    
+
     /**
      * Alternate row tracker, used to keep track of position by `\r` marker
      * (whereas <code>_currInputRow</code> tracks `\n`). Used to simplify
@@ -241,16 +234,14 @@ public abstract class NonBlockingJsonParserBase
      * case we can simply choose max of two row candidates.
      */
     protected int _currInputRowAlt = 1;
-    
+
     /*
-    /**********************************************************************
-    /* Life-cycle
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Life-cycle
+     * /**********************************************************************
      */
 
-    public NonBlockingJsonParserBase(IOContext ctxt, int parserFeatures,
-            ByteQuadsCanonicalizer sym)
-    {
+    public NonBlockingJsonParserBase(IOContext ctxt, int parserFeatures, ByteQuadsCanonicalizer sym) {
         super(ctxt, parserFeatures);
         _symbols = sym;
         _currToken = null;
@@ -269,7 +260,9 @@ public abstract class NonBlockingJsonParserBase
     }
 
     @Override // since 2.9
-    public boolean canParseAsync() { return true; }
+    public boolean canParseAsync() {
+        return true;
+    }
 
     @Override // @since 2.12
     public JacksonFeatureSet<StreamReadCapability> getReadCapabilities() {
@@ -277,9 +270,9 @@ public abstract class NonBlockingJsonParserBase
     }
 
     /*
-    /**********************************************************
-    /* Test support
-    /**********************************************************
+     * /**********************************************************
+     * /* Test support
+     * /**********************************************************
      */
 
     protected ByteQuadsCanonicalizer symbolTableForTests() {
@@ -287,17 +280,16 @@ public abstract class NonBlockingJsonParserBase
     }
 
     /*
-    /**********************************************************
-    /* Abstract methods from JsonParser
-    /**********************************************************
+     * /**********************************************************
+     * /* Abstract methods from JsonParser
+     * /**********************************************************
      */
 
     @Override
     public abstract int releaseBuffered(OutputStream out) throws IOException;
 
     @Override
-    protected void _releaseBuffers() throws IOException
-    {
+    protected void _releaseBuffers() throws IOException {
         super._releaseBuffers();
         // Merge found symbols, if any:
         _symbols.release();
@@ -313,21 +305,20 @@ public abstract class NonBlockingJsonParserBase
     @Override
     protected void _closeInput() throws IOException {
         // 30-May-2017, tatu: Seems like this is the most certain way to prevent
-        //    further decoding... not the optimal place, but due to inheritance
-        //    hierarchy most convenient.
+        // further decoding... not the optimal place, but due to inheritance
+        // hierarchy most convenient.
         _currBufferStart = 0;
         _inputEnd = 0;
     }
 
     /*
-    /**********************************************************************
-    /* Overridden methods
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Overridden methods
+     * /**********************************************************************
      */
 
     @Override
-    public boolean hasTextCharacters()
-    {
+    public boolean hasTextCharacters() {
         if (_currToken == JsonToken.VALUE_STRING) {
             // yes; is or can be made available efficiently as char[]
             return _textBuffer.hasTextAsCharacters();
@@ -341,27 +332,24 @@ public abstract class NonBlockingJsonParserBase
     }
 
     @Override
-    public JsonLocation getCurrentLocation()
-    {
+    public JsonLocation getCurrentLocation() {
         int col = _inputPtr - _currInputRowStart + 1; // 1-based
         // Since we track CR and LF separately, max should gives us right answer
         int row = Math.max(_currInputRow, _currInputRowAlt);
-        return new JsonLocation(_contentReference(),
-                _currInputProcessed + (_inputPtr - _currBufferStart), -1L, // bytes, chars
-                row, col);
+        return new JsonLocation(_contentReference(), _currInputProcessed + (_inputPtr - _currBufferStart), -1L, // bytes,
+            // chars
+            row, col);
     }
 
     @Override
-    public JsonLocation getTokenLocation()
-    {
-        return new JsonLocation(_contentReference(),
-                _tokenInputTotal, -1L, _tokenInputRow, _tokenInputCol);
+    public JsonLocation getTokenLocation() {
+        return new JsonLocation(_contentReference(), _tokenInputTotal, -1L, _tokenInputRow, _tokenInputCol);
     }
 
     /*
-    /**********************************************************************
-    /* Public API, access to token information, text
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, access to token information, text
+     * /**********************************************************************
      */
 
     /**
@@ -371,37 +359,37 @@ public abstract class NonBlockingJsonParserBase
      * Method can be called for any event.
      */
     @Override
-    public String getText() throws IOException
-    {
+    public String getText() throws IOException {
         if (_currToken == JsonToken.VALUE_STRING) {
             return _textBuffer.contentsAsString();
         }
         return _getText2(_currToken);
     }
 
-    protected final String _getText2(JsonToken t)
-    {
+    protected final String _getText2(JsonToken t) {
         if (t == null) {
             return null;
         }
         switch (t.id()) {
-        case ID_NOT_AVAILABLE:
-            return null;
-        case ID_FIELD_NAME:
-            return _parsingContext.getCurrentName();
-        case ID_STRING:
-            // fall through
-        case ID_NUMBER_INT:
-        case ID_NUMBER_FLOAT:
-            return _textBuffer.contentsAsString();
-        default:
-          return t.asString();
+            case ID_NOT_AVAILABLE:
+                return null;
+
+            case ID_FIELD_NAME:
+                return _parsingContext.getCurrentName();
+
+            case ID_STRING:
+                // fall through
+            case ID_NUMBER_INT:
+            case ID_NUMBER_FLOAT:
+                return _textBuffer.contentsAsString();
+
+            default:
+                return t.asString();
         }
     }
 
     @Override // since 2.8
-    public int getText(Writer writer) throws IOException
-    {
+    public int getText(Writer writer) throws IOException {
         JsonToken t = _currToken;
         if (t == JsonToken.VALUE_STRING) {
             return _textBuffer.contentsToWriter(writer);
@@ -426,11 +414,10 @@ public abstract class NonBlockingJsonParserBase
     }
 
     // // // Let's override default impls for improved performance
-    
+
     // @since 2.1
     @Override
-    public String getValueAsString() throws IOException
-    {
+    public String getValueAsString() throws IOException {
         if (_currToken == JsonToken.VALUE_STRING) {
             return _textBuffer.contentsAsString();
         }
@@ -439,11 +426,10 @@ public abstract class NonBlockingJsonParserBase
         }
         return super.getValueAsString(null);
     }
-    
+
     // @since 2.1
     @Override
-    public String getValueAsString(String defValue) throws IOException
-    {
+    public String getValueAsString(String defValue) throws IOException {
         if (_currToken == JsonToken.VALUE_STRING) {
             return _textBuffer.contentsAsString();
         }
@@ -454,90 +440,89 @@ public abstract class NonBlockingJsonParserBase
     }
 
     @Override
-    public char[] getTextCharacters() throws IOException
-    {
+    public char[] getTextCharacters() throws IOException {
         if (_currToken != null) { // null only before/after document
             switch (_currToken.id()) {
-                
-            case ID_FIELD_NAME:
-                if (!_nameCopied) {
-                    String name = _parsingContext.getCurrentName();
-                    int nameLen = name.length();
-                    if (_nameCopyBuffer == null) {
-                        _nameCopyBuffer = _ioContext.allocNameCopyBuffer(nameLen);
-                    } else if (_nameCopyBuffer.length < nameLen) {
-                        _nameCopyBuffer = new char[nameLen];
+
+                case ID_FIELD_NAME:
+                    if (!_nameCopied) {
+                        String name = _parsingContext.getCurrentName();
+                        int nameLen = name.length();
+                        if (_nameCopyBuffer == null) {
+                            _nameCopyBuffer = _ioContext.allocNameCopyBuffer(nameLen);
+                        } else if (_nameCopyBuffer.length < nameLen) {
+                            _nameCopyBuffer = new char[nameLen];
+                        }
+                        name.getChars(0, nameLen, _nameCopyBuffer, 0);
+                        _nameCopied = true;
                     }
-                    name.getChars(0, nameLen, _nameCopyBuffer, 0);
-                    _nameCopied = true;
-                }
-                return _nameCopyBuffer;
-    
-            case ID_STRING:
-                // fall through
-            case ID_NUMBER_INT:
-            case ID_NUMBER_FLOAT:
-                return _textBuffer.getTextBuffer();
-                
-            default:
-                return _currToken.asCharArray();
+                    return _nameCopyBuffer;
+
+                case ID_STRING:
+                    // fall through
+                case ID_NUMBER_INT:
+                case ID_NUMBER_FLOAT:
+                    return _textBuffer.getTextBuffer();
+
+                default:
+                    return _currToken.asCharArray();
             }
         }
         return null;
     }
 
     @Override
-    public int getTextLength() throws IOException
-    {
+    public int getTextLength() throws IOException {
         if (_currToken != null) { // null only before/after document
             switch (_currToken.id()) {
-                
-            case ID_FIELD_NAME:
-                return _parsingContext.getCurrentName().length();
-            case ID_STRING:
-                // fall through
-            case ID_NUMBER_INT:
-            case ID_NUMBER_FLOAT:
-                return _textBuffer.size();
-                
-            default:
-                return _currToken.asCharArray().length;
+
+                case ID_FIELD_NAME:
+                    return _parsingContext.getCurrentName().length();
+
+                case ID_STRING:
+                    // fall through
+                case ID_NUMBER_INT:
+                case ID_NUMBER_FLOAT:
+                    return _textBuffer.size();
+
+                default:
+                    return _currToken.asCharArray().length;
             }
         }
         return 0;
     }
 
     @Override
-    public int getTextOffset() throws IOException
-    {
+    public int getTextOffset() throws IOException {
         // Most have offset of 0, only some may have other values:
         if (_currToken != null) {
             switch (_currToken.id()) {
-            case ID_FIELD_NAME:
-                return 0;
-            case ID_STRING:
-                // fall through
-            case ID_NUMBER_INT:
-            case ID_NUMBER_FLOAT:
-                return _textBuffer.getTextOffset();
-            default:
+                case ID_FIELD_NAME:
+                    return 0;
+
+                case ID_STRING:
+                    // fall through
+                case ID_NUMBER_INT:
+                case ID_NUMBER_FLOAT:
+                    return _textBuffer.getTextOffset();
+
+                default:
             }
         }
         return 0;
     }
 
     /*
-    /**********************************************************************
-    /* Public API, access to token information, binary
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Public API, access to token information, binary
+     * /**********************************************************************
      */
 
     @Override
-    public byte[] getBinaryValue(Base64Variant b64variant) throws IOException
-    {
+    public byte[] getBinaryValue(Base64Variant b64variant) throws IOException {
         if (_currToken != JsonToken.VALUE_STRING) {
             _reportError("Current token (%s) not VALUE_STRING or VALUE_EMBEDDED_OBJECT, can not access as binary",
-                    _currToken);
+                _currToken);
         }
         if (_binaryValue == null) {
             @SuppressWarnings("resource")
@@ -549,46 +534,41 @@ public abstract class NonBlockingJsonParserBase
     }
 
     @Override
-    public int readBinaryValue(Base64Variant b64variant, OutputStream out) throws IOException
-    {
+    public int readBinaryValue(Base64Variant b64variant, OutputStream out) throws IOException {
         byte[] b = getBinaryValue(b64variant);
         out.write(b);
         return b.length;
     }
 
     @Override
-    public Object getEmbeddedObject() throws IOException
-    {
-        if (_currToken == JsonToken.VALUE_EMBEDDED_OBJECT ) {
+    public Object getEmbeddedObject() throws IOException {
+        if (_currToken == JsonToken.VALUE_EMBEDDED_OBJECT) {
             return _binaryValue;
         }
         return null;
     }
 
     /*
-    /**********************************************************************
-    /* Handling of nested scope, state
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Handling of nested scope, state
+     * /**********************************************************************
      */
 
-    protected final JsonToken _startArrayScope() throws IOException
-    {
+    protected final JsonToken _startArrayScope() throws IOException {
         _parsingContext = _parsingContext.createChildArrayContext(-1, -1);
         _majorState = MAJOR_ARRAY_ELEMENT_FIRST;
         _majorStateAfterValue = MAJOR_ARRAY_ELEMENT_NEXT;
         return (_currToken = JsonToken.START_ARRAY);
     }
 
-    protected final JsonToken _startObjectScope() throws IOException
-    {
+    protected final JsonToken _startObjectScope() throws IOException {
         _parsingContext = _parsingContext.createChildObjectContext(-1, -1);
         _majorState = MAJOR_OBJECT_FIELD_FIRST;
         _majorStateAfterValue = MAJOR_OBJECT_FIELD_NEXT;
         return (_currToken = JsonToken.START_OBJECT);
     }
 
-    protected final JsonToken _closeArrayScope() throws IOException
-    {
+    protected final JsonToken _closeArrayScope() throws IOException {
         if (!_parsingContext.inArray()) {
             _reportMismatchedEndMarker(']', '}');
         }
@@ -607,8 +587,7 @@ public abstract class NonBlockingJsonParserBase
         return (_currToken = JsonToken.END_ARRAY);
     }
 
-    protected final JsonToken _closeObjectScope() throws IOException
-    {
+    protected final JsonToken _closeObjectScope() throws IOException {
         if (!_parsingContext.inObject()) {
             _reportMismatchedEndMarker('}', ']');
         }
@@ -628,13 +607,12 @@ public abstract class NonBlockingJsonParserBase
     }
 
     /*
-    /**********************************************************
-    /* Internal methods, symbol (name) handling
-    /**********************************************************
+     * /**********************************************************
+     * /* Internal methods, symbol (name) handling
+     * /**********************************************************
      */
 
-    protected final String _findName(int q1, int lastQuadBytes) throws JsonParseException
-    {
+    protected final String _findName(int q1, int lastQuadBytes) throws JsonParseException {
         q1 = _padLastQuad(q1, lastQuadBytes);
         // Usually we'll find it from the canonical symbol table already
         String name = _symbols.findName(q1);
@@ -646,8 +624,7 @@ public abstract class NonBlockingJsonParserBase
         return _addName(_quadBuffer, 1, lastQuadBytes);
     }
 
-    protected final String _findName(int q1, int q2, int lastQuadBytes) throws JsonParseException
-    {
+    protected final String _findName(int q1, int q2, int lastQuadBytes) throws JsonParseException {
         q2 = _padLastQuad(q2, lastQuadBytes);
         // Usually we'll find it from the canonical symbol table already
         String name = _symbols.findName(q1, q2);
@@ -660,8 +637,7 @@ public abstract class NonBlockingJsonParserBase
         return _addName(_quadBuffer, 2, lastQuadBytes);
     }
 
-    protected final String _findName(int q1, int q2, int q3, int lastQuadBytes) throws JsonParseException
-    {
+    protected final String _findName(int q1, int q2, int q3, int lastQuadBytes) throws JsonParseException {
         q3 = _padLastQuad(q3, lastQuadBytes);
         String name = _symbols.findName(q1, q2, q3);
         if (name != null) {
@@ -678,16 +654,17 @@ public abstract class NonBlockingJsonParserBase
     // table miss. It needs to demultiplex individual bytes, decode
     // multi-byte chars (if any), and then construct Name instance
     // and add it to the symbol table.
-    protected final String _addName(int[] quads, int qlen, int lastQuadBytes) throws JsonParseException
-    {
-        /* Ok: must decode UTF-8 chars. No other validation is
+    protected final String _addName(int[] quads, int qlen, int lastQuadBytes) throws JsonParseException {
+        /*
+         * Ok: must decode UTF-8 chars. No other validation is
          * needed, since unescaping has been done earlier as necessary
          * (as well as error reporting for unescaped control chars)
          */
         // 4 bytes per quad, except last one maybe less
         int byteLen = (qlen << 2) - 4 + lastQuadBytes;
 
-        /* And last one is not correctly aligned (leading zero bytes instead
+        /*
+         * And last one is not correctly aligned (leading zero bytes instead
          * need to shift a bit, instead of trailing). Only need to shift it
          * for UTF-8 decoding; need revert for storage (since key will not
          * be aligned, to optimize lookup speed)
@@ -695,9 +672,9 @@ public abstract class NonBlockingJsonParserBase
         int lastQuad;
 
         if (lastQuadBytes < 4) {
-            lastQuad = quads[qlen-1];
+            lastQuad = quads[qlen - 1];
             // 8/16/24 bit left shift
-            quads[qlen-1] = (lastQuad << ((4 - lastQuadBytes) << 3));
+            quads[qlen - 1] = (lastQuad << ((4 - lastQuadBytes) << 3));
         } else {
             lastQuad = 0;
         }
@@ -706,7 +683,7 @@ public abstract class NonBlockingJsonParserBase
         char[] cbuf = _textBuffer.emptyAndGetCurrentSegment();
         int cix = 0;
 
-        for (int ix = 0; ix < byteLen; ) {
+        for (int ix = 0; ix < byteLen;) {
             int ch = quads[ix >> 2]; // current quad, need to shift+mask
             int byteIx = (ix & 3);
             ch = (ch >> ((3 - byteIx) << 3)) & 0xFF;
@@ -730,13 +707,13 @@ public abstract class NonBlockingJsonParserBase
                 if ((ix + needed) > byteLen) {
                     _reportInvalidEOF(" in field name", JsonToken.FIELD_NAME);
                 }
-                
+
                 // Ok, always need at least one more:
                 int ch2 = quads[ix >> 2]; // current quad, need to shift+mask
                 byteIx = (ix & 3);
                 ch2 = (ch2 >> ((3 - byteIx) << 3));
                 ++ix;
-                
+
                 if ((ch2 & 0xC0) != 0x080) {
                     _reportInvalidOther(ch2);
                 }
@@ -746,7 +723,7 @@ public abstract class NonBlockingJsonParserBase
                     byteIx = (ix & 3);
                     ch2 = (ch2 >> ((3 - byteIx) << 3));
                     ++ix;
-                    
+
                     if ((ch2 & 0xC0) != 0x080) {
                         _reportInvalidOther(ch2);
                     }
@@ -781,7 +758,7 @@ public abstract class NonBlockingJsonParserBase
         String baseName = new String(cbuf, 0, cix);
         // And finally, un-align if necessary
         if (lastQuadBytes < 4) {
-            quads[qlen-1] = lastQuad;
+            quads[qlen - 1] = lastQuad;
         }
         return _symbols.addName(baseName, quads, qlen);
     }
@@ -792,9 +769,9 @@ public abstract class NonBlockingJsonParserBase
     }
 
     /*
-    /**********************************************************************
-    /* Internal methods, state changes
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Internal methods, state changes
+     * /**********************************************************************
      */
 
     // Helper method called at point when all input has been exhausted and
@@ -808,22 +785,19 @@ public abstract class NonBlockingJsonParserBase
         return (_currToken = null);
     }
 
-    protected final JsonToken _fieldComplete(String name) throws IOException
-    {
+    protected final JsonToken _fieldComplete(String name) throws IOException {
         _majorState = MAJOR_OBJECT_VALUE;
         _parsingContext.setCurrentName(name);
         return (_currToken = JsonToken.FIELD_NAME);
     }
 
-    protected final JsonToken _valueComplete(JsonToken t) throws IOException
-    {
+    protected final JsonToken _valueComplete(JsonToken t) throws IOException {
         _majorState = _majorStateAfterValue;
         _currToken = t;
         return t;
     }
 
-    protected final JsonToken _valueCompleteInt(int value, String asText) throws IOException
-    {
+    protected final JsonToken _valueCompleteInt(int value, String asText) throws IOException {
         _textBuffer.resetWithString(asText);
         _intLength = asText.length();
         _numTypesValid = NR_INT; // to force parsing
@@ -835,13 +809,12 @@ public abstract class NonBlockingJsonParserBase
     }
 
     @SuppressWarnings("deprecation")
-    protected final JsonToken _valueNonStdNumberComplete(int type) throws IOException
-    {
+    protected final JsonToken _valueNonStdNumberComplete(int type) throws IOException {
         String tokenStr = NON_STD_TOKENS[type];
         _textBuffer.resetWithString(tokenStr);
         if (!isEnabled(Feature.ALLOW_NON_NUMERIC_NUMBERS)) {
             _reportError("Non-standard token '%s': enable JsonParser.Feature.ALLOW_NON_NUMERIC_NUMBERS to allow",
-                    tokenStr);
+                tokenStr);
         }
         _intLength = 0;
         _numTypesValid = NR_DOUBLE;
@@ -855,13 +828,12 @@ public abstract class NonBlockingJsonParserBase
     }
 
     /*
-    /**********************************************************************
-    /* Internal methods, error reporting, related
-    /**********************************************************************
+     * /**********************************************************************
+     * /* Internal methods, error reporting, related
+     * /**********************************************************************
      */
 
-    protected final void _updateTokenLocation()
-    {
+    protected final void _updateTokenLocation() {
         _tokenInputRow = Math.max(_currInputRow, _currInputRowAlt);
         final int ptr = _inputPtr;
         _tokenInputCol = ptr - _currInputRowStart;
@@ -877,7 +849,7 @@ public abstract class NonBlockingJsonParserBase
     }
 
     protected void _reportInvalidInitial(int mask) throws JsonParseException {
-        _reportError("Invalid UTF-8 start byte 0x"+Integer.toHexString(mask));
+        _reportError("Invalid UTF-8 start byte 0x" + Integer.toHexString(mask));
     }
 
     protected void _reportInvalidOther(int mask, int ptr) throws JsonParseException {
@@ -886,6 +858,6 @@ public abstract class NonBlockingJsonParserBase
     }
 
     protected void _reportInvalidOther(int mask) throws JsonParseException {
-        _reportError("Invalid UTF-8 middle byte 0x"+Integer.toHexString(mask));
+        _reportError("Invalid UTF-8 middle byte 0x" + Integer.toHexString(mask));
     }
 }

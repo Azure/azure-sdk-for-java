@@ -30,8 +30,7 @@ public class TracingTest extends RestProxyTestBase<CorePerfStressOptions> {
 
     @Override
     public Mono<Void> runAsync() {
-        return Mono.fromSupplier(binaryDataSupplier)
-            .flatMap(data -> service.setBinaryData(endpoint, id, data, length));
+        return Mono.fromSupplier(binaryDataSupplier).flatMap(data -> service.setBinaryData(endpoint, id, data, length));
     }
 
     private static class MockTracer implements Tracer {
@@ -40,7 +39,6 @@ public class TracingTest extends RestProxyTestBase<CorePerfStressOptions> {
         public Context start(String methodName, Context context) {
             return context;
         }
-
 
         @Override
         public void end(String statusMessage, Throwable error, Context context) {

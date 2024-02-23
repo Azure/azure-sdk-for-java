@@ -56,6 +56,7 @@ public class LoggingTracerProvider implements TracerProvider {
      */
     private static class LoggingTracer implements Tracer {
         private final boolean isEnabled;
+
         LoggingTracer(TracingOptions options) {
             this.isEnabled = options.isEnabled();
         }
@@ -135,8 +136,8 @@ public class LoggingTracerProvider implements TracerProvider {
             }
 
             // follows https://www.w3.org/TR/trace-context/
-            return new Context("traceId", traceparent.substring(3, 35))
-                .addData("spanId", traceparent.substring(36, 52));
+            return new Context("traceId", traceparent.substring(3, 35)).addData("spanId",
+                traceparent.substring(36, 52));
         }
 
         private LoggingSpan getSpan(Context context) {
@@ -213,9 +214,7 @@ public class LoggingTracerProvider implements TracerProvider {
          * Generates random id with given length up to 32 chars.
          */
         private static String getRandomId(int length) {
-            return CoreUtils.randomUuid().toString()
-                .replace("-", "")
-                .substring(32 - length);
+            return CoreUtils.randomUuid().toString().replace("-", "").substring(32 - length);
         }
     }
 }

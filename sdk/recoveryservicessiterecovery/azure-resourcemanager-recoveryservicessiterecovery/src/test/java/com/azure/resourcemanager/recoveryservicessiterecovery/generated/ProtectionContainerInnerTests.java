@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ProtectionContainerInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProtectionContainerInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"fabricFriendlyName\":\"tsthsucocm\",\"friendlyName\":\"yazttbtwwrqpue\",\"fabricType\":\"kzywbiex\",\"protectedItemCount\":1206070255,\"pairingStatus\":\"ue\",\"role\":\"ibx\",\"fabricSpecificDetails\":{\"instanceType\":\"bhqwalmuzyoxa\"}},\"location\":\"dkzjancuxrh\",\"id\":\"wbavxbniwdj\",\"name\":\"wz\",\"type\":\"s\"}")
-                .toObject(ProtectionContainerInner.class);
+        ProtectionContainerInner model = BinaryData.fromString(
+            "{\"properties\":{\"fabricFriendlyName\":\"tsthsucocm\",\"friendlyName\":\"yazttbtwwrqpue\",\"fabricType\":\"kzywbiex\",\"protectedItemCount\":1206070255,\"pairingStatus\":\"ue\",\"role\":\"ibx\",\"fabricSpecificDetails\":{\"instanceType\":\"bhqwalmuzyoxa\"}},\"location\":\"dkzjancuxrh\",\"id\":\"wbavxbniwdj\",\"name\":\"wz\",\"type\":\"s\"}")
+            .toObject(ProtectionContainerInner.class);
         Assertions.assertEquals("tsthsucocm", model.properties().fabricFriendlyName());
         Assertions.assertEquals("yazttbtwwrqpue", model.properties().friendlyName());
         Assertions.assertEquals("kzywbiex", model.properties().fabricType());
@@ -29,17 +27,12 @@ public final class ProtectionContainerInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProtectionContainerInner model =
-            new ProtectionContainerInner()
-                .withProperties(
-                    new ProtectionContainerProperties()
-                        .withFabricFriendlyName("tsthsucocm")
-                        .withFriendlyName("yazttbtwwrqpue")
-                        .withFabricType("kzywbiex")
-                        .withProtectedItemCount(1206070255)
-                        .withPairingStatus("ue")
-                        .withRole("ibx")
-                        .withFabricSpecificDetails(new ProtectionContainerFabricSpecificDetails()))
+        ProtectionContainerInner model
+            = new ProtectionContainerInner()
+                .withProperties(new ProtectionContainerProperties().withFabricFriendlyName("tsthsucocm")
+                    .withFriendlyName("yazttbtwwrqpue").withFabricType("kzywbiex").withProtectedItemCount(1206070255)
+                    .withPairingStatus("ue").withRole("ibx")
+                    .withFabricSpecificDetails(new ProtectionContainerFabricSpecificDetails()))
                 .withLocation("dkzjancuxrh");
         model = BinaryData.fromObject(model).toObject(ProtectionContainerInner.class);
         Assertions.assertEquals("tsthsucocm", model.properties().fabricFriendlyName());

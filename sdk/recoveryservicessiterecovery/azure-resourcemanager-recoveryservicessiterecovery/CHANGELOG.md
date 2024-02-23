@@ -1,14 +1,25 @@
 # Release History
 
-## 1.1.0-beta.1 (Unreleased)
+## 1.1.0 (2024-02-22)
+
+- Azure Resource Manager SiteRecovery client library for Java. This package contains Microsoft Azure SDK for SiteRecovery Management SDK.  Package tag package-2023-08. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
 
 ### Features Added
 
-### Breaking Changes
+#### `models.ReplicationFabrics` was modified
 
-### Bugs Fixed
+* `removeInfra(java.lang.String,java.lang.String,java.lang.String)` was added
+* `removeInfra(java.lang.String,java.lang.String,java.lang.String,com.azure.core.util.Context)` was added
 
-### Other Changes
+#### `models.A2AEnableProtectionInput` was modified
+
+* `autoProtectionOfDataDisk()` was added
+* `withAutoProtectionOfDataDisk(models.AutoProtectionOfDataDisk)` was added
+
+#### `models.Fabric` was modified
+
+* `removeInfra()` was added
+* `removeInfra(com.azure.core.util.Context)` was added
 
 ## 1.0.0 (2023-09-22)
 

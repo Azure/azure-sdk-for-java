@@ -15,7 +15,7 @@ import java.util.Map;
 public final class VirtualHubsCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/VirtualHubPut.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/VirtualHubPut.json
      */
     /**
      * Sample code: VirtualHubPut.

@@ -965,7 +965,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         if (options == null) {
             return null;
         }
-        return ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor().getOperationContext(options);
+        return qryOptAccessor.getImpl(options).getOperationContextAndListenerTuple();
     }
 
     private OperationContextAndListenerTuple getOperationContextAndListenerTuple(RequestOptions options) {
@@ -998,7 +998,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CosmosQueryRequestOptions nonNullQueryOptions = state.getQueryOptions();
 
         UUID correlationActivityIdOfRequestOptions = qryOptAccessor
-            .getCorrelationActivityId(nonNullQueryOptions);
+            .getImpl(nonNullQueryOptions)
+            .getCorrelationActivityId();
         UUID correlationActivityId = correlationActivityIdOfRequestOptions != null ?
             correlationActivityIdOfRequestOptions : randomUuid();
 
@@ -3371,11 +3372,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Class<T> klass) {
 
         Function<JsonNode, T> factoryMethod = queryRequestOptions == null ?
-                null :
-                ImplementationBridgeHelpers
-                        .CosmosQueryRequestOptionsHelper
-                        .getCosmosQueryRequestOptionsAccessor()
-                        .getItemFactoryMethod(queryRequestOptions, klass);
+                null : qryOptAccessor.getImpl(queryRequestOptions).getItemFactoryMethod(klass);
 
         if (factoryMethod == null) {
             return this.itemDeserializer; // using default itemDeserializer
@@ -4944,10 +4941,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             request -> readFeed(request)
                 .map(response -> toFeedResponsePage(
                                     response,
-                                    ImplementationBridgeHelpers
-                                        .CosmosQueryRequestOptionsHelper
-                                        .getCosmosQueryRequestOptionsAccessor()
-                                        .getItemFactoryMethod(nonNullOptions, klass),
+                                    qryOptAccessor.getImpl(nonNullOptions).getItemFactoryMethod(klass),
                                     klass));
 
         return Paginator

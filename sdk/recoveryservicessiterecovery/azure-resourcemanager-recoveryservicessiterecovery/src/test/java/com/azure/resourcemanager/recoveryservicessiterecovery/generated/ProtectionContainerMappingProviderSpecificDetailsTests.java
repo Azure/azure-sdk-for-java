@@ -10,16 +10,15 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.ProtectionC
 public final class ProtectionContainerMappingProviderSpecificDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProtectionContainerMappingProviderSpecificDetails model =
-            BinaryData
-                .fromString("{\"instanceType\":\"ProtectionContainerMappingProviderSpecificDetails\"}")
+        ProtectionContainerMappingProviderSpecificDetails model
+            = BinaryData.fromString("{\"instanceType\":\"ProtectionContainerMappingProviderSpecificDetails\"}")
                 .toObject(ProtectionContainerMappingProviderSpecificDetails.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProtectionContainerMappingProviderSpecificDetails model =
-            new ProtectionContainerMappingProviderSpecificDetails();
+        ProtectionContainerMappingProviderSpecificDetails model
+            = new ProtectionContainerMappingProviderSpecificDetails();
         model = BinaryData.fromObject(model).toObject(ProtectionContainerMappingProviderSpecificDetails.class);
     }
 }

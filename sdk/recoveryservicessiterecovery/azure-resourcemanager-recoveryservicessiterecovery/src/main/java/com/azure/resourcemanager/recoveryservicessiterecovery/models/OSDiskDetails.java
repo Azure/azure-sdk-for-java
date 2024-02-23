@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details of the OS Disk. */
+/**
+ * Details of the OS Disk.
+ */
 @Fluent
 public final class OSDiskDetails {
     /*
@@ -28,13 +30,15 @@ public final class OSDiskDetails {
     @JsonProperty(value = "vhdName")
     private String vhdName;
 
-    /** Creates an instance of OSDiskDetails class. */
+    /**
+     * Creates an instance of OSDiskDetails class.
+     */
     public OSDiskDetails() {
     }
 
     /**
      * Get the osVhdId property: The id of the disk containing the OS.
-     *
+     * 
      * @return the osVhdId value.
      */
     public String osVhdId() {
@@ -43,7 +47,7 @@ public final class OSDiskDetails {
 
     /**
      * Set the osVhdId property: The id of the disk containing the OS.
-     *
+     * 
      * @param osVhdId the osVhdId value to set.
      * @return the OSDiskDetails object itself.
      */
@@ -54,7 +58,7 @@ public final class OSDiskDetails {
 
     /**
      * Get the osType property: The type of the OS on the VM.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -63,7 +67,7 @@ public final class OSDiskDetails {
 
     /**
      * Set the osType property: The type of the OS on the VM.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the OSDiskDetails object itself.
      */
@@ -74,7 +78,7 @@ public final class OSDiskDetails {
 
     /**
      * Get the vhdName property: The OS disk VHD name.
-     *
+     * 
      * @return the vhdName value.
      */
     public String vhdName() {
@@ -83,7 +87,7 @@ public final class OSDiskDetails {
 
     /**
      * Set the vhdName property: The OS disk VHD name.
-     *
+     * 
      * @param vhdName the vhdName value to set.
      * @return the OSDiskDetails object itself.
      */
@@ -94,7 +98,7 @@ public final class OSDiskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

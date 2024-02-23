@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** InMageRcmFailback disk level sync details. */
+/**
+ * InMageRcmFailback disk level sync details.
+ */
 @Immutable
 public final class InMageRcmFailbackSyncDetails {
     /*
@@ -58,13 +60,15 @@ public final class InMageRcmFailbackSyncDetails {
     @JsonProperty(value = "progressPercentage", access = JsonProperty.Access.WRITE_ONLY)
     private Integer progressPercentage;
 
-    /** Creates an instance of InMageRcmFailbackSyncDetails class. */
+    /**
+     * Creates an instance of InMageRcmFailbackSyncDetails class.
+     */
     public InMageRcmFailbackSyncDetails() {
     }
 
     /**
      * Get the progressHealth property: The progress health.
-     *
+     * 
      * @return the progressHealth value.
      */
     public DiskReplicationProgressHealth progressHealth() {
@@ -73,7 +77,7 @@ public final class InMageRcmFailbackSyncDetails {
 
     /**
      * Get the transferredBytes property: The transferred bytes from source VM to azure for the disk.
-     *
+     * 
      * @return the transferredBytes value.
      */
     public Long transferredBytes() {
@@ -83,7 +87,7 @@ public final class InMageRcmFailbackSyncDetails {
     /**
      * Get the last15MinutesTransferredBytes property: The bytes transferred in last 15 minutes from source VM to
      * target.
-     *
+     * 
      * @return the last15MinutesTransferredBytes value.
      */
     public Long last15MinutesTransferredBytes() {
@@ -92,7 +96,7 @@ public final class InMageRcmFailbackSyncDetails {
 
     /**
      * Get the lastDataTransferTimeUtc property: The time of the last data transfer from source VM to target.
-     *
+     * 
      * @return the lastDataTransferTimeUtc value.
      */
     public String lastDataTransferTimeUtc() {
@@ -102,7 +106,7 @@ public final class InMageRcmFailbackSyncDetails {
     /**
      * Get the processedBytes property: The total processed bytes. This includes bytes that are transferred from source
      * VM to target and matched bytes.
-     *
+     * 
      * @return the processedBytes value.
      */
     public Long processedBytes() {
@@ -111,7 +115,7 @@ public final class InMageRcmFailbackSyncDetails {
 
     /**
      * Get the startTime property: The start time.
-     *
+     * 
      * @return the startTime value.
      */
     public String startTime() {
@@ -120,7 +124,7 @@ public final class InMageRcmFailbackSyncDetails {
 
     /**
      * Get the lastRefreshTime property: The last refresh time.
-     *
+     * 
      * @return the lastRefreshTime value.
      */
     public String lastRefreshTime() {
@@ -128,9 +132,9 @@ public final class InMageRcmFailbackSyncDetails {
     }
 
     /**
-     * Get the progressPercentage property: Progress in percentage. Progress percentage is calculated based on processed
-     * bytes.
-     *
+     * Get the progressPercentage property: Progress in percentage. Progress percentage is calculated based on
+     * processed bytes.
+     * 
      * @return the progressPercentage value.
      */
     public Integer progressPercentage() {
@@ -139,7 +143,7 @@ public final class InMageRcmFailbackSyncDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

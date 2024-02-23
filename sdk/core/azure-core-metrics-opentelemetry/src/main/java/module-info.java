@@ -11,6 +11,5 @@ module com.azure.core.metrics.opentelemetry {
 
     exports com.azure.core.metrics.opentelemetry;
 
-    provides MeterProvider
-        with OpenTelemetryMeterProvider;
+    provides MeterProvider with OpenTelemetryMeterProvider;
 }

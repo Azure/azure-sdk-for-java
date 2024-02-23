@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** This class contains monitoring details of all the inconsistent Protected Entities in Vmm. */
+/**
+ * This class contains monitoring details of all the inconsistent Protected Entities in Vmm.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("ConsistencyCheckTaskDetails")
 @Fluent
@@ -21,13 +23,15 @@ public final class ConsistencyCheckTaskDetails extends TaskTypeDetails {
     @JsonProperty(value = "vmDetails")
     private List<InconsistentVmDetails> vmDetails;
 
-    /** Creates an instance of ConsistencyCheckTaskDetails class. */
+    /**
+     * Creates an instance of ConsistencyCheckTaskDetails class.
+     */
     public ConsistencyCheckTaskDetails() {
     }
 
     /**
      * Get the vmDetails property: The list of inconsistent Vm details.
-     *
+     * 
      * @return the vmDetails value.
      */
     public List<InconsistentVmDetails> vmDetails() {
@@ -36,7 +40,7 @@ public final class ConsistencyCheckTaskDetails extends TaskTypeDetails {
 
     /**
      * Set the vmDetails property: The list of inconsistent Vm details.
-     *
+     * 
      * @param vmDetails the vmDetails value to set.
      * @return the ConsistencyCheckTaskDetails object itself.
      */
@@ -47,7 +51,7 @@ public final class ConsistencyCheckTaskDetails extends TaskTypeDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

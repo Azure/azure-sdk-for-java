@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Input definition for unplanned failover input properties. */
+/**
+ * Input definition for unplanned failover input properties.
+ */
 @Fluent
 public final class UnplannedFailoverInputProperties {
     /*
@@ -28,13 +30,15 @@ public final class UnplannedFailoverInputProperties {
     @JsonProperty(value = "providerSpecificDetails")
     private UnplannedFailoverProviderSpecificInput providerSpecificDetails;
 
-    /** Creates an instance of UnplannedFailoverInputProperties class. */
+    /**
+     * Creates an instance of UnplannedFailoverInputProperties class.
+     */
     public UnplannedFailoverInputProperties() {
     }
 
     /**
      * Get the failoverDirection property: Failover direction.
-     *
+     * 
      * @return the failoverDirection value.
      */
     public String failoverDirection() {
@@ -43,7 +47,7 @@ public final class UnplannedFailoverInputProperties {
 
     /**
      * Set the failoverDirection property: Failover direction.
-     *
+     * 
      * @param failoverDirection the failoverDirection value to set.
      * @return the UnplannedFailoverInputProperties object itself.
      */
@@ -54,7 +58,7 @@ public final class UnplannedFailoverInputProperties {
 
     /**
      * Get the sourceSiteOperations property: Source site operations status.
-     *
+     * 
      * @return the sourceSiteOperations value.
      */
     public String sourceSiteOperations() {
@@ -63,7 +67,7 @@ public final class UnplannedFailoverInputProperties {
 
     /**
      * Set the sourceSiteOperations property: Source site operations status.
-     *
+     * 
      * @param sourceSiteOperations the sourceSiteOperations value to set.
      * @return the UnplannedFailoverInputProperties object itself.
      */
@@ -74,7 +78,7 @@ public final class UnplannedFailoverInputProperties {
 
     /**
      * Get the providerSpecificDetails property: Provider specific settings.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public UnplannedFailoverProviderSpecificInput providerSpecificDetails() {
@@ -83,19 +87,19 @@ public final class UnplannedFailoverInputProperties {
 
     /**
      * Set the providerSpecificDetails property: Provider specific settings.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the UnplannedFailoverInputProperties object itself.
      */
-    public UnplannedFailoverInputProperties withProviderSpecificDetails(
-        UnplannedFailoverProviderSpecificInput providerSpecificDetails) {
+    public UnplannedFailoverInputProperties
+        withProviderSpecificDetails(UnplannedFailoverProviderSpecificInput providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

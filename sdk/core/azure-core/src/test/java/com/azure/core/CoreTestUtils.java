@@ -3,7 +3,6 @@
 
 package com.azure.core;
 
-
 import com.azure.core.util.UrlBuilder;
 
 import java.io.IOException;
@@ -61,8 +60,8 @@ public final class CoreTestUtils {
      * @param actual Actual array.
      * @param actualLength Amount of bytes to compare in the actual array.
      */
-    public static void assertArraysEqual(byte[] expected, int expectedOffset, int expectedLength,
-        byte[] actual, int actualLength) {
+    public static void assertArraysEqual(byte[] expected, int expectedOffset, int expectedLength, byte[] actual,
+        int actualLength) {
         if (!Objects.equals(ByteBuffer.wrap(expected, expectedOffset, expectedLength),
             ByteBuffer.wrap(actual, 0, actualLength))) {
             assertArrayEquals(Arrays.copyOfRange(expected, expectedOffset, expectedOffset + expectedLength),

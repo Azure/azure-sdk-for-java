@@ -93,9 +93,7 @@ public class SendLinkHandlerTest {
             .expectComplete()
             .verify(VERIFY_TIMEOUT);
 
-        StepVerifier.create(handler.getDeliveredMessages())
-            .expectComplete()
-            .verify(VERIFY_TIMEOUT);
+        StepVerifier.create(handler.getDeliveredMessages()).expectComplete().verify(VERIFY_TIMEOUT);
 
         // The only thing we should be doing here is emitting a close state. We are waiting for
         // the remote close event.

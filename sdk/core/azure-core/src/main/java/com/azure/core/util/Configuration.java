@@ -301,8 +301,8 @@ public class Configuration implements Cloneable {
         String path, Configuration sharedConfiguration) {
         this.configurations = configurations;
         this.isEmpty = configurations.isEmpty();
-        this.environmentConfiguration = Objects.requireNonNull(environmentConfiguration,
-            "'environmentConfiguration' cannot be null");
+        this.environmentConfiguration
+            = Objects.requireNonNull(environmentConfiguration, "'environmentConfiguration' cannot be null");
         this.path = path;
         this.sharedConfiguration = sharedConfiguration;
     }
@@ -614,16 +614,12 @@ public class Configuration implements Cloneable {
             String key = CoreUtils.isNullOrEmpty(path) ? prop.getKey() : prop.getKey().substring(path.length() + 1);
             String value = prop.getValue();
 
-            LOGGER.atVerbose()
-                .addKeyValue("name", prop.getKey())
-                .log("Got property from configuration source.");
+            LOGGER.atVerbose().addKeyValue("name", prop.getKey()).log("Got property from configuration source.");
 
             if (key != null && value != null) {
                 props.put(key, value);
             } else {
-                LOGGER.atWarning()
-                    .addKeyValue("name", prop.getKey())
-                    .log("Key or value is null, property is ignored.");
+                LOGGER.atWarning().addKeyValue("name", prop.getKey()).log("Key or value is null, property is ignored.");
             }
         }
 

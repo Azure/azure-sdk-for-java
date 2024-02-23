@@ -59,14 +59,8 @@ public class AuthorizationChallengeHandler {
     private static final String MD5_SESS = MD5 + SESS;
 
     // TODO: Prefer SESS based challenges?
-    private static final String[] ALGORITHM_PREFERENCE_ORDER = {
-        SHA_512_256,
-        SHA_512_256_SESS,
-        SHA_256,
-        SHA_256_SESS,
-        MD5,
-        MD5_SESS
-    };
+    private static final String[] ALGORITHM_PREFERENCE_ORDER
+        = { SHA_512_256, SHA_512_256_SESS, SHA_256, SHA_256_SESS, MD5, MD5_SESS };
 
     /**
      * Header representing a server requesting authentication.
@@ -158,8 +152,8 @@ public class AuthorizationChallengeHandler {
                 continue;
             }
 
-            ConcurrentHashMap<String, String> challenge = new ConcurrentHashMap<>(challengesByType.get(algorithm)
-                .get(0));
+            ConcurrentHashMap<String, String> challenge
+                = new ConcurrentHashMap<>(challengesByType.get(algorithm).get(0));
             lastChallenge.set(challenge);
 
             return createDigestAuthorizationHeader(method, uri, challenge, algorithm, entityBodySupplier,
@@ -329,8 +323,8 @@ public class AuthorizationChallengeHandler {
      */
     private static String calculateHa1NoSess(Function<byte[], byte[]> digestFunction, String username, String realm,
         String password) {
-        return bytesToHexString(digestFunction.apply((
-            username + ":" + realm + ":" + password).getBytes(StandardCharsets.UTF_8)));
+        return bytesToHexString(
+            digestFunction.apply((username + ":" + realm + ":" + password).getBytes(StandardCharsets.UTF_8)));
     }
 
     /*
@@ -346,8 +340,8 @@ public class AuthorizationChallengeHandler {
         String password, String nonce, String cnonce) {
         String ha1NoSess = calculateHa1NoSess(digestFunction, username, realm, password);
 
-        return bytesToHexString(digestFunction.apply(
-            (ha1NoSess + ":" + nonce + ":" + cnonce).getBytes(StandardCharsets.UTF_8)));
+        return bytesToHexString(
+            digestFunction.apply((ha1NoSess + ":" + nonce + ":" + cnonce).getBytes(StandardCharsets.UTF_8)));
     }
 
     /*
@@ -380,8 +374,8 @@ public class AuthorizationChallengeHandler {
         byte[] requestEntityBody) {
         String bodyHex = bytesToHexString(digestFunction.apply(requestEntityBody));
 
-        return bytesToHexString(digestFunction.apply(
-            (httpMethod + ":" + uri + ":" + bodyHex).getBytes(StandardCharsets.UTF_8)));
+        return bytesToHexString(
+            digestFunction.apply((httpMethod + ":" + uri + ":" + bodyHex).getBytes(StandardCharsets.UTF_8)));
     }
 
     /*
@@ -409,8 +403,8 @@ public class AuthorizationChallengeHandler {
         int nc, String cnonce, String qop, String ha2) {
         String zeroPadNc = String.format("%08X", nc);
 
-        return bytesToHexString(digestFunction.apply(
-            (ha1 + ":" + nonce + ":" + zeroPadNc + ":" + cnonce + ":" + qop + ":" + ha2)
+        return bytesToHexString(
+            digestFunction.apply((ha1 + ":" + nonce + ":" + zeroPadNc + ":" + cnonce + ":" + qop + ":" + ha2)
                 .getBytes(StandardCharsets.UTF_8)));
     }
 
@@ -449,8 +443,8 @@ public class AuthorizationChallengeHandler {
     /*
      * Splits the Authenticate challenges by the algorithm it uses.
      */
-    private static Map<String, List<Map<String, String>>> partitionByChallengeType(
-        List<Map<String, String>> challenges) {
+    private static Map<String, List<Map<String, String>>>
+        partitionByChallengeType(List<Map<String, String>> challenges) {
         return challenges.stream().collect(Collectors.groupingBy(headers -> {
             String algorithmHeader = headers.get(ALGORITHM);
 
@@ -476,11 +470,21 @@ public class AuthorizationChallengeHandler {
         StringBuilder authorizationBuilder = new StringBuilder(512);
 
         authorizationBuilder.append(DIGEST)
-            .append("username=\"").append(username).append("\", ")
-            .append("realm=\"").append(realm).append("\", ")
-            .append("nonce=\"").append(nonce).append("\", ")
-            .append("uri=\"").append(uri).append("\", ")
-            .append("response=\"").append(response).append("\"");
+            .append("username=\"")
+            .append(username)
+            .append("\", ")
+            .append("realm=\"")
+            .append(realm)
+            .append("\", ")
+            .append("nonce=\"")
+            .append(nonce)
+            .append("\", ")
+            .append("uri=\"")
+            .append(uri)
+            .append("\", ")
+            .append("response=\"")
+            .append(response)
+            .append("\"");
 
         if (!CoreUtils.isNullOrEmpty(algorithm)) {
             authorizationBuilder.append(", algorithm=").append(algorithm);
