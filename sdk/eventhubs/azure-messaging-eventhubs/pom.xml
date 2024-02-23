@@ -145,11 +145,5 @@
       <version>1.0.0-beta.47</version> <!-- {x-version-update;com.azure:azure-core-experimental;dependency} -->
       <scope>test</scope>
     </dependency>
-      <dependency>
-          <groupId>com.nimbusds</groupId>
-          <artifactId>oauth2-oidc-sdk</artifactId>
-          <version>10.7.1</version>
-          <scope>test</scope>
-      </dependency>
   </dependencies>
 </project>
