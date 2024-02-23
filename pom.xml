@@ -22,6 +22,7 @@
     <module>sdk/appconfiguration</module>
     <module>sdk/appcontainers</module>
     <module>sdk/applicationinsights</module>
+    <module>sdk/astro</module>
     <module>sdk/attestation</module>
     <module>sdk/automanage</module>
     <module>sdk/automation</module>
@@ -176,6 +177,7 @@
     <module>sdk/securitydevops</module>
     <module>sdk/securityinsights</module>
     <module>sdk/selfhelp</module>
+    <module>sdk/serialization</module>
     <module>sdk/servicebus</module>
     <module>sdk/servicefabric</module>
     <module>sdk/servicelinker</module>

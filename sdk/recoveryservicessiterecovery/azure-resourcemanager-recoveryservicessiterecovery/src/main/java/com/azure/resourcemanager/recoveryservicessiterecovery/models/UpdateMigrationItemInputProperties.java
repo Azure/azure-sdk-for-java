@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Update migration item input properties. */
+/**
+ * Update migration item input properties.
+ */
 @Fluent
 public final class UpdateMigrationItemInputProperties {
     /*
@@ -17,13 +19,15 @@ public final class UpdateMigrationItemInputProperties {
     @JsonProperty(value = "providerSpecificDetails", required = true)
     private UpdateMigrationItemProviderSpecificInput providerSpecificDetails;
 
-    /** Creates an instance of UpdateMigrationItemInputProperties class. */
+    /**
+     * Creates an instance of UpdateMigrationItemInputProperties class.
+     */
     public UpdateMigrationItemInputProperties() {
     }
 
     /**
      * Get the providerSpecificDetails property: The provider specific input to update migration item.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public UpdateMigrationItemProviderSpecificInput providerSpecificDetails() {
@@ -32,28 +36,25 @@ public final class UpdateMigrationItemInputProperties {
 
     /**
      * Set the providerSpecificDetails property: The provider specific input to update migration item.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the UpdateMigrationItemInputProperties object itself.
      */
-    public UpdateMigrationItemInputProperties withProviderSpecificDetails(
-        UpdateMigrationItemProviderSpecificInput providerSpecificDetails) {
+    public UpdateMigrationItemInputProperties
+        withProviderSpecificDetails(UpdateMigrationItemProviderSpecificInput providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (providerSpecificDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property providerSpecificDetails in model"
-                            + " UpdateMigrationItemInputProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property providerSpecificDetails in model UpdateMigrationItemInputProperties"));
         } else {
             providerSpecificDetails().validate();
         }

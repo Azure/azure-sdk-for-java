@@ -14,13 +14,16 @@ public class PollOperationDetailsTests {
     public void testDeserialization() {
         final String expectedOperationId = "Uw_N1zoT53-rhHeaB5UJ_BaWKv8QVanU_Rjmo5FVdRs";
 
-        String successResponseBody = "{\"id\":\"Uw_N1zoT53-rhHeaB5UJ_BaWKv8QVanU_Rjmo5FVdRs\",\"status\":\"Succeeded\",\"error\":null}";
-        PollOperationDetails pollOperationDetails = BinaryData.fromString(successResponseBody).toObject(PollOperationDetails.class);
+        String successResponseBody
+            = "{\"id\":\"Uw_N1zoT53-rhHeaB5UJ_BaWKv8QVanU_Rjmo5FVdRs\",\"status\":\"Succeeded\",\"error\":null}";
+        PollOperationDetails pollOperationDetails
+            = BinaryData.fromString(successResponseBody).toObject(PollOperationDetails.class);
         Assertions.assertEquals(expectedOperationId, pollOperationDetails.getOperationId());
         Assertions.assertNull(pollOperationDetails.getError());
 
         // dummy error response
-        String failureResponseBody = "{\"id\":\"Uw_N1zoT53-rhHeaB5UJ_BaWKv8QVanU_Rjmo5FVdRs\",\"status\":\"Failed\",\"error\":{\"code\":\"CODE\",\"message\":\"MESSAGE\"}}";
+        String failureResponseBody
+            = "{\"id\":\"Uw_N1zoT53-rhHeaB5UJ_BaWKv8QVanU_Rjmo5FVdRs\",\"status\":\"Failed\",\"error\":{\"code\":\"CODE\",\"message\":\"MESSAGE\"}}";
         pollOperationDetails = BinaryData.fromString(failureResponseBody).toObject(PollOperationDetails.class);
         Assertions.assertEquals(expectedOperationId, pollOperationDetails.getOperationId());
         Assertions.assertNotNull(pollOperationDetails.getError());

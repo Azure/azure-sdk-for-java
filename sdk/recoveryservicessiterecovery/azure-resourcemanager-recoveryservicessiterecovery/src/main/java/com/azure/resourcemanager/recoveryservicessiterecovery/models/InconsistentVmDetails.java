@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** This class stores the monitoring details for consistency check of inconsistent Protected Entity. */
+/**
+ * This class stores the monitoring details for consistency check of inconsistent Protected Entity.
+ */
 @Fluent
 public final class InconsistentVmDetails {
     /*
@@ -35,13 +37,15 @@ public final class InconsistentVmDetails {
     @JsonProperty(value = "errorIds")
     private List<String> errorIds;
 
-    /** Creates an instance of InconsistentVmDetails class. */
+    /**
+     * Creates an instance of InconsistentVmDetails class.
+     */
     public InconsistentVmDetails() {
     }
 
     /**
      * Get the vmName property: The Vm name.
-     *
+     * 
      * @return the vmName value.
      */
     public String vmName() {
@@ -50,7 +54,7 @@ public final class InconsistentVmDetails {
 
     /**
      * Set the vmName property: The Vm name.
-     *
+     * 
      * @param vmName the vmName value to set.
      * @return the InconsistentVmDetails object itself.
      */
@@ -61,7 +65,7 @@ public final class InconsistentVmDetails {
 
     /**
      * Get the cloudName property: The Cloud name.
-     *
+     * 
      * @return the cloudName value.
      */
     public String cloudName() {
@@ -70,7 +74,7 @@ public final class InconsistentVmDetails {
 
     /**
      * Set the cloudName property: The Cloud name.
-     *
+     * 
      * @param cloudName the cloudName value to set.
      * @return the InconsistentVmDetails object itself.
      */
@@ -81,7 +85,7 @@ public final class InconsistentVmDetails {
 
     /**
      * Get the details property: The list of details regarding state of the Protected Entity in SRS and On prem.
-     *
+     * 
      * @return the details value.
      */
     public List<String> details() {
@@ -90,7 +94,7 @@ public final class InconsistentVmDetails {
 
     /**
      * Set the details property: The list of details regarding state of the Protected Entity in SRS and On prem.
-     *
+     * 
      * @param details the details value to set.
      * @return the InconsistentVmDetails object itself.
      */
@@ -101,7 +105,7 @@ public final class InconsistentVmDetails {
 
     /**
      * Get the errorIds property: The list of error ids.
-     *
+     * 
      * @return the errorIds value.
      */
     public List<String> errorIds() {
@@ -110,7 +114,7 @@ public final class InconsistentVmDetails {
 
     /**
      * Set the errorIds property: The list of error ids.
-     *
+     * 
      * @param errorIds the errorIds value to set.
      * @return the InconsistentVmDetails object itself.
      */
@@ -121,7 +125,7 @@ public final class InconsistentVmDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

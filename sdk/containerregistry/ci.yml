@@ -48,6 +48,11 @@ extends:
       - name: azure-containers-containerregistry
         groupId: com.azure
         safeName: azurecontainerscontainerregistry
+    MatrixConfigs:
+      - Name: Container_registry_live_test
+        Path: sdk/containerregistry/platform-matrix-ci.json
+        Selection: sparse
+        GenerateVMJobs: true
     AdditionalModules:
       - name: azure-containers-containerregistry-perf
         groupId: com.azure

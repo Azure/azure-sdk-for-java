@@ -91,8 +91,8 @@ public class ByteCountingWritableByteChannelTest {
         byte[] data = new byte[10 * 1204 + 127];
         fillArray(data);
         TestByteArrayOutputStream bos = new TestByteArrayOutputStream(data.length);
-        ByteCountingWritableByteChannel channel = new ByteCountingWritableByteChannel(
-            new PartialWriteChannel(Channels.newChannel(bos)), null);
+        ByteCountingWritableByteChannel channel
+            = new ByteCountingWritableByteChannel(new PartialWriteChannel(Channels.newChannel(bos)), null);
 
         int position = 0;
         while (position < data.length) {
@@ -114,7 +114,8 @@ public class ByteCountingWritableByteChannelTest {
         TestByteArrayOutputStream bos = new TestByteArrayOutputStream(data.length);
         ConcurrentLinkedQueue<Long> progresses = new ConcurrentLinkedQueue<>();
         ProgressReporter progressReporter = ProgressReporter.withProgressListener(progresses::add);
-        ByteCountingWritableByteChannel channel = new ByteCountingWritableByteChannel(Channels.newChannel(bos), progressReporter);
+        ByteCountingWritableByteChannel channel
+            = new ByteCountingWritableByteChannel(Channels.newChannel(bos), progressReporter);
 
         int position = 0;
         while (position < data.length) {
@@ -137,8 +138,8 @@ public class ByteCountingWritableByteChannelTest {
         TestByteArrayOutputStream bos = new TestByteArrayOutputStream(data.length);
         ConcurrentLinkedQueue<Long> progresses = new ConcurrentLinkedQueue<>();
         ProgressReporter progressReporter = ProgressReporter.withProgressListener(progresses::add);
-        ByteCountingWritableByteChannel channel = new ByteCountingWritableByteChannel(
-            new PartialWriteChannel(Channels.newChannel(bos)), progressReporter);
+        ByteCountingWritableByteChannel channel
+            = new ByteCountingWritableByteChannel(new PartialWriteChannel(Channels.newChannel(bos)), progressReporter);
 
         int position = 0;
         while (position < data.length) {

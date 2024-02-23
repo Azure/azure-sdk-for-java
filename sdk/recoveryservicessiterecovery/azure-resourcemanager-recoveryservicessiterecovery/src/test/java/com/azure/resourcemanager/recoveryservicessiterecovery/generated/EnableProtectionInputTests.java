@@ -13,24 +13,18 @@ import org.junit.jupiter.api.Assertions;
 public final class EnableProtectionInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnableProtectionInput model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"policyId\":\"njhf\",\"protectableItemId\":\"wmszkk\",\"providerSpecificDetails\":{\"instanceType\":\"EnableProtectionProviderSpecificInput\"}}}")
-                .toObject(EnableProtectionInput.class);
+        EnableProtectionInput model = BinaryData.fromString(
+            "{\"properties\":{\"policyId\":\"njhf\",\"protectableItemId\":\"wmszkk\",\"providerSpecificDetails\":{\"instanceType\":\"EnableProtectionProviderSpecificInput\"}}}")
+            .toObject(EnableProtectionInput.class);
         Assertions.assertEquals("njhf", model.properties().policyId());
         Assertions.assertEquals("wmszkk", model.properties().protectableItemId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnableProtectionInput model =
-            new EnableProtectionInput()
-                .withProperties(
-                    new EnableProtectionInputProperties()
-                        .withPolicyId("njhf")
-                        .withProtectableItemId("wmszkk")
-                        .withProviderSpecificDetails(new EnableProtectionProviderSpecificInput()));
+        EnableProtectionInput model = new EnableProtectionInput()
+            .withProperties(new EnableProtectionInputProperties().withPolicyId("njhf").withProtectableItemId("wmszkk")
+                .withProviderSpecificDetails(new EnableProtectionProviderSpecificInput()));
         model = BinaryData.fromObject(model).toObject(EnableProtectionInput.class);
         Assertions.assertEquals("njhf", model.properties().policyId());
         Assertions.assertEquals("wmszkk", model.properties().protectableItemId());

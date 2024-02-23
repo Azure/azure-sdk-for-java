@@ -19,8 +19,8 @@ public class ByteCountingWritableByteChannel implements WritableByteChannel {
     private final WritableByteChannel channel;
     private final ProgressReporter progressReporter;
 
-    private static final AtomicLongFieldUpdater<ByteCountingWritableByteChannel> BYTES_WRITTEN_ATOMIC_UPDATER =
-        AtomicLongFieldUpdater.newUpdater(ByteCountingWritableByteChannel.class, "bytesWritten");
+    private static final AtomicLongFieldUpdater<ByteCountingWritableByteChannel> BYTES_WRITTEN_ATOMIC_UPDATER
+        = AtomicLongFieldUpdater.newUpdater(ByteCountingWritableByteChannel.class, "bytesWritten");
     private volatile long bytesWritten;
 
     /**

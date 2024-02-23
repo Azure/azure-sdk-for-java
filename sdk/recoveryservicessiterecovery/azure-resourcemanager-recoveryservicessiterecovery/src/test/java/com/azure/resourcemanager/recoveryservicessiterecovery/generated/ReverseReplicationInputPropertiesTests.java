@@ -12,19 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ReverseReplicationInputPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReverseReplicationInputProperties model =
-            BinaryData
-                .fromString(
-                    "{\"failoverDirection\":\"otmrfhir\",\"providerSpecificDetails\":{\"instanceType\":\"ReverseReplicationProviderSpecificInput\"}}")
-                .toObject(ReverseReplicationInputProperties.class);
+        ReverseReplicationInputProperties model = BinaryData.fromString(
+            "{\"failoverDirection\":\"otmrfhir\",\"providerSpecificDetails\":{\"instanceType\":\"ReverseReplicationProviderSpecificInput\"}}")
+            .toObject(ReverseReplicationInputProperties.class);
         Assertions.assertEquals("otmrfhir", model.failoverDirection());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReverseReplicationInputProperties model =
-            new ReverseReplicationInputProperties()
-                .withFailoverDirection("otmrfhir")
+        ReverseReplicationInputProperties model
+            = new ReverseReplicationInputProperties().withFailoverDirection("otmrfhir")
                 .withProviderSpecificDetails(new ReverseReplicationProviderSpecificInput());
         model = BinaryData.fromObject(model).toObject(ReverseReplicationInputProperties.class);
         Assertions.assertEquals("otmrfhir", model.failoverDirection());

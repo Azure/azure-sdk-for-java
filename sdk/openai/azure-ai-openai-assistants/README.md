@@ -25,7 +25,7 @@ Use this library to:
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-ai-openai-assistants</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0-beta.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

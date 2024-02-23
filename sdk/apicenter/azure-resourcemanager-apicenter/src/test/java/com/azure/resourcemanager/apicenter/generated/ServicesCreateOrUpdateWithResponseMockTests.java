@@ -15,6 +15,7 @@ import com.azure.resourcemanager.apicenter.ApiCenterManager;
 import com.azure.resourcemanager.apicenter.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.apicenter.models.ManagedServiceIdentityType;
 import com.azure.resourcemanager.apicenter.models.Service;
+import com.azure.resourcemanager.apicenter.models.ServiceProperties;
 import com.azure.resourcemanager.apicenter.models.UserAssignedIdentity;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -35,58 +36,35 @@ public final class ServicesCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Failed\"},\"identity\":{\"principalId\":\"09d969e0-8912-41e0-83f3-4d59c3b38494\",\"tenantId\":\"8a8757af-25fc-4b22-8cba-6a7e879fef62\",\"type\":\"None\",\"userAssignedIdentities\":{\"nohjt\":{\"principalId\":\"faba7cbf-d116-4d99-bedc-38cc45aac6c7\",\"clientId\":\"3b143447-ee65-45e6-800a-709faf27b2f3\"},\"h\":{\"principalId\":\"250d95d1-1c2c-499a-85a2-8da1bf352c5f\",\"clientId\":\"194bab30-7616-4423-9bc5-8460f35a1d1f\"},\"ifiyipjxsqwpgrj\":{\"principalId\":\"e1176e05-a394-430d-b649-9352937f0b39\",\"clientId\":\"5805bba2-c4f5-49f4-b290-70d3ca8d9a48\"},\"orcjxvsnby\":{\"principalId\":\"0532ff43-0cbc-428d-9d18-2fab3317f8db\",\"clientId\":\"85e33bf6-eece-4e65-86a3-e09d2f837654\"}}},\"location\":\"abnmocpcyshu\",\"tags\":{\"gpbtoqcjmklj\":\"fblj\",\"qajzyulpkudjkr\":\"vbqid\",\"e\":\"khbzhfepgzg\",\"scpai\":\"zloc\"},\"id\":\"rhhbcs\",\"name\":\"l\",\"type\":\"mmajtjaodx\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\"},\"identity\":{\"principalId\":\"f61d776f-58df-489c-8d8a-4a2aa9a956aa\",\"tenantId\":\"f1e53774-6500-4c12-9baf-ead965993b37\",\"type\":\"SystemAssigned,UserAssigned\",\"userAssignedIdentities\":{\"mubyynt\":{\"principalId\":\"bb08376d-bb27-4ae2-aa13-ad3ee818d332\",\"clientId\":\"50e43af6-1b30-496b-8135-c8df929ddee8\"},\"bqtkoievseotgqr\":{\"principalId\":\"4118343a-b4c8-400b-8948-96d08b8b19ca\",\"clientId\":\"3f8ff19e-7f53-4f28-8100-f714a1280a05\"},\"muwlauwzizxbm\":{\"principalId\":\"005584e9-0237-448a-bfc2-a6205ee0325a\",\"clientId\":\"b7393661-ce8c-495f-bf6b-b20048537bf6\"}}},\"location\":\"cjefuzmu\",\"tags\":{\"bhjpglkfgohdne\":\"ttdumorppxebmnzb\",\"phsdyhto\":\"el\",\"v\":\"fikdowwqu\"},\"id\":\"zx\",\"name\":\"lvithhqzonosgg\",\"type\":\"hcohfwdsjnk\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ApiCenterManager manager =
-            ApiCenterManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ApiCenterManager manager = ApiCenterManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Service response =
-            manager
-                .services()
-                .define("gazxuf")
-                .withRegion("mijcmmxdcufufs")
-                .withExistingResourceGroup("prwzwbnguitnwui")
-                .withTags(mapOf("sgfyccsnew", "mzidnsezcxtb", "oosflnr", "dwzjeiach"))
-                .withIdentity(
-                    new ManagedServiceIdentity()
-                        .withType(ManagedServiceIdentityType.NONE)
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "dfvzwdzuhty",
-                                new UserAssignedIdentity(),
-                                "sdkf",
-                                new UserAssignedIdentity(),
-                                "xmnteiwaop",
-                                new UserAssignedIdentity())))
-                .create();
+        Service response = manager.services().define("vwiwubmwmbesld").withRegion("ikvmkqzeqqk")
+            .withExistingResourceGroup("tshhszhedp").withTags(mapOf("bdagxt", "fzxmhhvhgureodkw"))
+            .withProperties(new ServiceProperties())
+            .withIdentity(new ManagedServiceIdentity().withType(ManagedServiceIdentityType.SYSTEM_ASSIGNED)
+                .withUserAssignedIdentities(
+                    mapOf("ogaok", new UserAssignedIdentity(), "m", new UserAssignedIdentity())))
+            .create();
 
-        Assertions.assertEquals("abnmocpcyshu", response.location());
-        Assertions.assertEquals("fblj", response.tags().get("gpbtoqcjmklj"));
-        Assertions.assertEquals(ManagedServiceIdentityType.NONE, response.identity().type());
+        Assertions.assertEquals("cjefuzmu", response.location());
+        Assertions.assertEquals("ttdumorppxebmnzb", response.tags().get("bhjpglkfgohdne"));
+        Assertions.assertEquals(ManagedServiceIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED, response.identity().type());
     }
 
     // Use "Map.of" if available
