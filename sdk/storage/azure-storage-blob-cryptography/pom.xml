@@ -13,7 +13,7 @@
 
   <groupId>com.azure</groupId>
   <artifactId>azure-storage-blob-cryptography</artifactId>
-  <version>12.24.2</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
+  <version>12.25.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob-cryptography;current} -->
 
   <name>Microsoft Azure client library for Blob Storage cryptography</name>
   <description>This module contains client library for Microsoft Azure Blob Storage cryptography.</description>
@@ -59,7 +59,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-blob</artifactId>
-      <version>12.25.2</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
+      <version>12.26.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-blob;current} -->
     </dependency>
 
     <dependency>
@@ -71,7 +71,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.24.2</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
+      <version>12.25.0-beta.1</version> <!-- {x-version-update;com.azure:azure-storage-common;current} -->
       <classifier>tests</classifier>
       <type>test-jar</type>
       <scope>test</scope>
