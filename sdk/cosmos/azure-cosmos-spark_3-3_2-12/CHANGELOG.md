@@ -1,14 +1,9 @@
 ## Release History
 
-### 4.28.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
+### 4.27.1 (2024-02-23)
 
 #### Other Changes
+* Prevented any types in azure-cosmos package from being omitted during shading process. - See [PR 38902](https://github.com/Azure/azure-sdk-for-java/pull/38902)
 
 ### 4.27.0 (2024-02-20)
 
