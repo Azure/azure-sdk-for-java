@@ -8,27 +8,27 @@ import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
 /**
- * Exception thrown for an invalid response with TableServiceError information.
+ * Exception thrown for an invalid response with TableServiceJsonError information.
  */
-public final class TableServiceErrorException extends HttpResponseException {
+public final class TableServiceJsonErrorException extends HttpResponseException {
     /**
-     * Initializes a new instance of the TableServiceErrorException class.
+     * Initializes a new instance of the TableServiceJsonErrorException class.
      * 
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      */
-    public TableServiceErrorException(String message, HttpResponse response) {
+    public TableServiceJsonErrorException(String message, HttpResponse response) {
         super(message, response);
     }
 
     /**
-     * Initializes a new instance of the TableServiceErrorException class.
+     * Initializes a new instance of the TableServiceJsonErrorException class.
      * 
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      * @param value the deserialized response value.
      */
-    public TableServiceErrorException(String message, HttpResponse response, TableServiceError value) {
+    public TableServiceJsonErrorException(String message, HttpResponse response, TableServiceJsonError value) {
         super(message, response, value);
     }
 
@@ -36,7 +36,7 @@ public final class TableServiceErrorException extends HttpResponseException {
      * {@inheritDoc}
      */
     @Override
-    public TableServiceError getValue() {
-        return (TableServiceError) super.getValue();
+    public TableServiceJsonError getValue() {
+        return (TableServiceJsonError) super.getValue();
     }
 }
