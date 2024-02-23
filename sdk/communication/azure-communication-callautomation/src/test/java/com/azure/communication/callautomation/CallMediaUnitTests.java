@@ -94,7 +94,7 @@ public class CallMediaUnitTests {
         Response<Void> response = callMedia.playToAllWithResponse(playToAllOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
-    
+
     @Test
     public void playTextToAllWithBargeInWithResponseTest() {
         playToAllOptions = new PlayToAllOptions(playTextSource)
@@ -104,6 +104,7 @@ public class CallMediaUnitTests {
         Response<Void> response = callMedia.playToAllWithResponse(playToAllOptions, Context.NONE);
         assertEquals(response.getStatusCode(), 202);
     }
+    
     @Test
     public void cancelAllOperationsWithResponse() {
         Response<Void> response = callMedia.cancelAllMediaOperationsWithResponse(Context.NONE);
