@@ -10,7 +10,9 @@ import com.azure.resourcemanager.datafactory.models.ScriptActivityTypeProperties
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Script activity properties. */
+/**
+ * Script activity properties.
+ */
 @Fluent
 public final class ScriptActivityTypeProperties {
     /*
@@ -32,14 +34,16 @@ public final class ScriptActivityTypeProperties {
     @JsonProperty(value = "logSettings")
     private ScriptActivityTypePropertiesLogSettings logSettings;
 
-    /** Creates an instance of ScriptActivityTypeProperties class. */
+    /**
+     * Creates an instance of ScriptActivityTypeProperties class.
+     */
     public ScriptActivityTypeProperties() {
     }
 
     /**
      * Get the scriptBlockExecutionTimeout property: ScriptBlock execution timeout. Type: string (or Expression with
      * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the scriptBlockExecutionTimeout value.
      */
     public Object scriptBlockExecutionTimeout() {
@@ -49,7 +53,7 @@ public final class ScriptActivityTypeProperties {
     /**
      * Set the scriptBlockExecutionTimeout property: ScriptBlock execution timeout. Type: string (or Expression with
      * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param scriptBlockExecutionTimeout the scriptBlockExecutionTimeout value to set.
      * @return the ScriptActivityTypeProperties object itself.
      */
@@ -60,7 +64,7 @@ public final class ScriptActivityTypeProperties {
 
     /**
      * Get the scripts property: Array of script blocks. Type: array.
-     *
+     * 
      * @return the scripts value.
      */
     public List<ScriptActivityScriptBlock> scripts() {
@@ -69,7 +73,7 @@ public final class ScriptActivityTypeProperties {
 
     /**
      * Set the scripts property: Array of script blocks. Type: array.
-     *
+     * 
      * @param scripts the scripts value to set.
      * @return the ScriptActivityTypeProperties object itself.
      */
@@ -80,7 +84,7 @@ public final class ScriptActivityTypeProperties {
 
     /**
      * Get the logSettings property: Log settings of script activity.
-     *
+     * 
      * @return the logSettings value.
      */
     public ScriptActivityTypePropertiesLogSettings logSettings() {
@@ -89,7 +93,7 @@ public final class ScriptActivityTypeProperties {
 
     /**
      * Set the logSettings property: Log settings of script activity.
-     *
+     * 
      * @param logSettings the logSettings value to set.
      * @return the ScriptActivityTypeProperties object itself.
      */
@@ -100,7 +104,7 @@ public final class ScriptActivityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

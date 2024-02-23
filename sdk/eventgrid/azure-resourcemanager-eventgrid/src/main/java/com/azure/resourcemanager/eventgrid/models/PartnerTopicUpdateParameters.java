@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Properties of the Partner Topic update. */
+/**
+ * Properties of the Partner Topic update.
+ */
 @Fluent
 public final class PartnerTopicUpdateParameters {
     /*
@@ -25,13 +27,15 @@ public final class PartnerTopicUpdateParameters {
     @JsonProperty(value = "identity")
     private IdentityInfo identity;
 
-    /** Creates an instance of PartnerTopicUpdateParameters class. */
+    /**
+     * Creates an instance of PartnerTopicUpdateParameters class.
+     */
     public PartnerTopicUpdateParameters() {
     }
 
     /**
      * Get the tags property: Tags of the Partner Topic resource.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -40,7 +44,7 @@ public final class PartnerTopicUpdateParameters {
 
     /**
      * Set the tags property: Tags of the Partner Topic resource.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the PartnerTopicUpdateParameters object itself.
      */
@@ -51,7 +55,7 @@ public final class PartnerTopicUpdateParameters {
 
     /**
      * Get the identity property: Identity information for the Partner Topic resource.
-     *
+     * 
      * @return the identity value.
      */
     public IdentityInfo identity() {
@@ -60,7 +64,7 @@ public final class PartnerTopicUpdateParameters {
 
     /**
      * Set the identity property: Identity information for the Partner Topic resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the PartnerTopicUpdateParameters object itself.
      */
@@ -71,7 +75,7 @@ public final class PartnerTopicUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

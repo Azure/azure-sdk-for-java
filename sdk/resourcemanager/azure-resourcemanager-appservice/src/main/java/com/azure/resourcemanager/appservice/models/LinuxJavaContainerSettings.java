@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Linux Java Container settings. */
+/**
+ * Linux Java Container settings.
+ */
 @Immutable
 public final class LinuxJavaContainerSettings {
     /*
@@ -59,13 +61,15 @@ public final class LinuxJavaContainerSettings {
     @JsonProperty(value = "isEarlyAccess", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isEarlyAccess;
 
-    /** Creates an instance of LinuxJavaContainerSettings class. */
+    /**
+     * Creates an instance of LinuxJavaContainerSettings class.
+     */
     public LinuxJavaContainerSettings() {
     }
 
     /**
      * Get the java11Runtime property: Java 11 version (runtime only).
-     *
+     * 
      * @return the java11Runtime value.
      */
     public String java11Runtime() {
@@ -74,7 +78,7 @@ public final class LinuxJavaContainerSettings {
 
     /**
      * Get the java8Runtime property: Java 8 version (runtime only).
-     *
+     * 
      * @return the java8Runtime value.
      */
     public String java8Runtime() {
@@ -84,7 +88,7 @@ public final class LinuxJavaContainerSettings {
     /**
      * Get the isPreview property: &lt;code&gt;true&lt;/code&gt; if the stack is in preview; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isPreview value.
      */
     public Boolean isPreview() {
@@ -94,7 +98,7 @@ public final class LinuxJavaContainerSettings {
     /**
      * Get the isDeprecated property: &lt;code&gt;true&lt;/code&gt; if the stack is deprecated; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isDeprecated value.
      */
     public Boolean isDeprecated() {
@@ -104,7 +108,7 @@ public final class LinuxJavaContainerSettings {
     /**
      * Get the isHidden property: &lt;code&gt;true&lt;/code&gt; if the stack should be hidden; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isHidden value.
      */
     public Boolean isHidden() {
@@ -113,7 +117,7 @@ public final class LinuxJavaContainerSettings {
 
     /**
      * Get the endOfLifeDate property: End-of-life date for the minor version.
-     *
+     * 
      * @return the endOfLifeDate value.
      */
     public OffsetDateTime endOfLifeDate() {
@@ -123,7 +127,7 @@ public final class LinuxJavaContainerSettings {
     /**
      * Get the isAutoUpdate property: &lt;code&gt;true&lt;/code&gt; if the stack version is auto-updated; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isAutoUpdate value.
      */
     public Boolean isAutoUpdate() {
@@ -133,7 +137,7 @@ public final class LinuxJavaContainerSettings {
     /**
      * Get the isEarlyAccess property: &lt;code&gt;true&lt;/code&gt; if the minor version is early-access; otherwise,
      * &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the isEarlyAccess value.
      */
     public Boolean isEarlyAccess() {
@@ -142,7 +146,7 @@ public final class LinuxJavaContainerSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

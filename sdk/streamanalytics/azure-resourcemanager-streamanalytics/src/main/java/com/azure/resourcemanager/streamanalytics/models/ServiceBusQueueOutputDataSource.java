@@ -5,32 +5,35 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.fluent.models.ServiceBusQueueOutputDataSourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Describes a Service Bus Queue output data source. */
+/**
+ * Describes a Service Bus Queue output data source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Microsoft.ServiceBus/Queue")
 @Fluent
 public final class ServiceBusQueueOutputDataSource extends OutputDataSource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ServiceBusQueueOutputDataSource.class);
-
     /*
-     * The properties that are associated with a Service Bus Queue output.
-     * Required on PUT (CreateOrReplace) requests.
+     * The properties that are associated with a Service Bus Queue output. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "properties")
     private ServiceBusQueueOutputDataSourceProperties innerProperties;
 
     /**
-     * Get the innerProperties property: The properties that are associated with a Service Bus Queue output. Required on
-     * PUT (CreateOrReplace) requests.
-     *
+     * Creates an instance of ServiceBusQueueOutputDataSource class.
+     */
+    public ServiceBusQueueOutputDataSource() {
+    }
+
+    /**
+     * Get the innerProperties property: The properties that are associated with a Service Bus Queue output. Required
+     * on PUT (CreateOrReplace) requests.
+     * 
      * @return the innerProperties value.
      */
     private ServiceBusQueueOutputDataSourceProperties innerProperties() {
@@ -39,7 +42,7 @@ public final class ServiceBusQueueOutputDataSource extends OutputDataSource {
 
     /**
      * Get the queueName property: The name of the Service Bus Queue. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the queueName value.
      */
     public String queueName() {
@@ -48,7 +51,7 @@ public final class ServiceBusQueueOutputDataSource extends OutputDataSource {
 
     /**
      * Set the queueName property: The name of the Service Bus Queue. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param queueName the queueName value to set.
      * @return the ServiceBusQueueOutputDataSource object itself.
      */
@@ -63,7 +66,7 @@ public final class ServiceBusQueueOutputDataSource extends OutputDataSource {
     /**
      * Get the propertyColumns property: A string array of the names of output columns to be attached to Service Bus
      * messages as custom properties.
-     *
+     * 
      * @return the propertyColumns value.
      */
     public List<String> propertyColumns() {
@@ -73,7 +76,7 @@ public final class ServiceBusQueueOutputDataSource extends OutputDataSource {
     /**
      * Set the propertyColumns property: A string array of the names of output columns to be attached to Service Bus
      * messages as custom properties.
-     *
+     * 
      * @param propertyColumns the propertyColumns value to set.
      * @return the ServiceBusQueueOutputDataSource object itself.
      */
@@ -87,9 +90,9 @@ public final class ServiceBusQueueOutputDataSource extends OutputDataSource {
 
     /**
      * Get the systemPropertyColumns property: The system properties associated with the Service Bus Queue. The
-     * following system properties are supported: ReplyToSessionId, ContentType, To, Subject, CorrelationId, TimeToLive,
-     * PartitionKey, SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
-     *
+     * following system properties are supported: ReplyToSessionId, ContentType, To, Subject, CorrelationId,
+     * TimeToLive, PartitionKey, SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
+     * 
      * @return the systemPropertyColumns value.
      */
     public Object systemPropertyColumns() {
@@ -98,9 +101,9 @@ public final class ServiceBusQueueOutputDataSource extends OutputDataSource {
 
     /**
      * Set the systemPropertyColumns property: The system properties associated with the Service Bus Queue. The
-     * following system properties are supported: ReplyToSessionId, ContentType, To, Subject, CorrelationId, TimeToLive,
-     * PartitionKey, SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
-     *
+     * following system properties are supported: ReplyToSessionId, ContentType, To, Subject, CorrelationId,
+     * TimeToLive, PartitionKey, SessionId, ScheduledEnqueueTime, MessageId, ReplyTo, Label, ScheduledEnqueueTimeUtc.
+     * 
      * @param systemPropertyColumns the systemPropertyColumns value to set.
      * @return the ServiceBusQueueOutputDataSource object itself.
      */
@@ -115,7 +118,7 @@ public final class ServiceBusQueueOutputDataSource extends OutputDataSource {
     /**
      * Get the serviceBusNamespace property: The namespace that is associated with the desired Event Hub, Service Bus
      * Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the serviceBusNamespace value.
      */
     public String serviceBusNamespace() {
@@ -125,7 +128,7 @@ public final class ServiceBusQueueOutputDataSource extends OutputDataSource {
     /**
      * Set the serviceBusNamespace property: The namespace that is associated with the desired Event Hub, Service Bus
      * Queue, Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param serviceBusNamespace the serviceBusNamespace value to set.
      * @return the ServiceBusQueueOutputDataSource object itself.
      */
@@ -140,7 +143,7 @@ public final class ServiceBusQueueOutputDataSource extends OutputDataSource {
     /**
      * Get the sharedAccessPolicyName property: The shared access policy name for the Event Hub, Service Bus Queue,
      * Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the sharedAccessPolicyName value.
      */
     public String sharedAccessPolicyName() {
@@ -150,7 +153,7 @@ public final class ServiceBusQueueOutputDataSource extends OutputDataSource {
     /**
      * Set the sharedAccessPolicyName property: The shared access policy name for the Event Hub, Service Bus Queue,
      * Service Bus Topic, etc. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param sharedAccessPolicyName the sharedAccessPolicyName value to set.
      * @return the ServiceBusQueueOutputDataSource object itself.
      */
@@ -165,7 +168,7 @@ public final class ServiceBusQueueOutputDataSource extends OutputDataSource {
     /**
      * Get the sharedAccessPolicyKey property: The shared access policy key for the specified shared access policy.
      * Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the sharedAccessPolicyKey value.
      */
     public String sharedAccessPolicyKey() {
@@ -175,7 +178,7 @@ public final class ServiceBusQueueOutputDataSource extends OutputDataSource {
     /**
      * Set the sharedAccessPolicyKey property: The shared access policy key for the specified shared access policy.
      * Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param sharedAccessPolicyKey the sharedAccessPolicyKey value to set.
      * @return the ServiceBusQueueOutputDataSource object itself.
      */
@@ -189,7 +192,7 @@ public final class ServiceBusQueueOutputDataSource extends OutputDataSource {
 
     /**
      * Get the authenticationMode property: Authentication Mode.
-     *
+     * 
      * @return the authenticationMode value.
      */
     public AuthenticationMode authenticationMode() {
@@ -198,7 +201,7 @@ public final class ServiceBusQueueOutputDataSource extends OutputDataSource {
 
     /**
      * Set the authenticationMode property: Authentication Mode.
-     *
+     * 
      * @param authenticationMode the authenticationMode value to set.
      * @return the ServiceBusQueueOutputDataSource object itself.
      */
@@ -212,7 +215,7 @@ public final class ServiceBusQueueOutputDataSource extends OutputDataSource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

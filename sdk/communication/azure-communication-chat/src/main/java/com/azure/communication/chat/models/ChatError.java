@@ -6,7 +6,9 @@ package com.azure.communication.chat.models;
 import com.azure.core.annotation.Fluent;
 import java.util.List;
 
-/** The Chat Services error. */
+/**
+ * The Chat Services error.
+ */
 @Fluent
 public final class ChatError {
 

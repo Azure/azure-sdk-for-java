@@ -5,6 +5,7 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -26,9 +27,22 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
             value = WeightedAllocationWorkerSelectorAttachment.class)
 })
 @Immutable
-public class WorkerSelectorAttachment {
+public abstract class WorkerSelectorAttachment {
+    /**
+     * kind discriminator.
+     */
+    @JsonProperty(value = "kind")
+    private String kind;
 
     /** Creates an instance of WorkerSelectorAttachment class. */
     @Generated
     public WorkerSelectorAttachment() {}
+
+    /**
+     * Returns kind discriminator.
+     * @return kind.
+     */
+    public String getKind() {
+        return this.kind;
+    }
 }

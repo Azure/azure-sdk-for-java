@@ -21,21 +21,18 @@ public final class PermissionBindingsImpl implements PermissionBindings {
 
     private final com.azure.resourcemanager.eventgrid.EventGridManager serviceManager;
 
-    public PermissionBindingsImpl(
-        PermissionBindingsClient innerClient, com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
+    public PermissionBindingsImpl(PermissionBindingsClient innerClient,
+        com.azure.resourcemanager.eventgrid.EventGridManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<PermissionBinding> getWithResponse(
-        String resourceGroupName, String namespaceName, String permissionBindingName, Context context) {
-        Response<PermissionBindingInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, namespaceName, permissionBindingName, context);
+    public Response<PermissionBinding> getWithResponse(String resourceGroupName, String namespaceName,
+        String permissionBindingName, Context context) {
+        Response<PermissionBindingInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, namespaceName, permissionBindingName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PermissionBindingImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -43,8 +40,8 @@ public final class PermissionBindingsImpl implements PermissionBindings {
     }
 
     public PermissionBinding get(String resourceGroupName, String namespaceName, String permissionBindingName) {
-        PermissionBindingInner inner =
-            this.serviceClient().get(resourceGroupName, namespaceName, permissionBindingName);
+        PermissionBindingInner inner
+            = this.serviceClient().get(resourceGroupName, namespaceName, permissionBindingName);
         if (inner != null) {
             return new PermissionBindingImpl(inner, this.manager());
         } else {
@@ -61,42 +58,33 @@ public final class PermissionBindingsImpl implements PermissionBindings {
     }
 
     public PagedIterable<PermissionBinding> listByNamespace(String resourceGroupName, String namespaceName) {
-        PagedIterable<PermissionBindingInner> inner =
-            this.serviceClient().listByNamespace(resourceGroupName, namespaceName);
+        PagedIterable<PermissionBindingInner> inner
+            = this.serviceClient().listByNamespace(resourceGroupName, namespaceName);
         return Utils.mapPage(inner, inner1 -> new PermissionBindingImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PermissionBinding> listByNamespace(
-        String resourceGroupName, String namespaceName, String filter, Integer top, Context context) {
-        PagedIterable<PermissionBindingInner> inner =
-            this.serviceClient().listByNamespace(resourceGroupName, namespaceName, filter, top, context);
+    public PagedIterable<PermissionBinding> listByNamespace(String resourceGroupName, String namespaceName,
+        String filter, Integer top, Context context) {
+        PagedIterable<PermissionBindingInner> inner
+            = this.serviceClient().listByNamespace(resourceGroupName, namespaceName, filter, top, context);
         return Utils.mapPage(inner, inner1 -> new PermissionBindingImpl(inner1, this.manager()));
     }
 
     public PermissionBinding getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
         String permissionBindingName = Utils.getValueFromIdByName(id, "permissionBindings");
         if (permissionBindingName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'permissionBindings'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'permissionBindings'.", id)));
         }
         return this.getWithResponse(resourceGroupName, namespaceName, permissionBindingName, Context.NONE).getValue();
     }
@@ -104,27 +92,18 @@ public final class PermissionBindingsImpl implements PermissionBindings {
     public Response<PermissionBinding> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
         String permissionBindingName = Utils.getValueFromIdByName(id, "permissionBindings");
         if (permissionBindingName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'permissionBindings'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'permissionBindings'.", id)));
         }
         return this.getWithResponse(resourceGroupName, namespaceName, permissionBindingName, context);
     }
@@ -132,27 +111,18 @@ public final class PermissionBindingsImpl implements PermissionBindings {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
         String permissionBindingName = Utils.getValueFromIdByName(id, "permissionBindings");
         if (permissionBindingName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'permissionBindings'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'permissionBindings'.", id)));
         }
         this.delete(resourceGroupName, namespaceName, permissionBindingName, Context.NONE);
     }
@@ -160,27 +130,18 @@ public final class PermissionBindingsImpl implements PermissionBindings {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String namespaceName = Utils.getValueFromIdByName(id, "namespaces");
         if (namespaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'namespaces'.", id)));
         }
         String permissionBindingName = Utils.getValueFromIdByName(id, "permissionBindings");
         if (permissionBindingName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'permissionBindings'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'permissionBindings'.", id)));
         }
         this.delete(resourceGroupName, namespaceName, permissionBindingName, context);
     }

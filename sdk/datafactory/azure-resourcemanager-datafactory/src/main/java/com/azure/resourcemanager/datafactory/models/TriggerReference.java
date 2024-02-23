@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Trigger reference type. */
+/**
+ * Trigger reference type.
+ */
 @Fluent
 public final class TriggerReference {
     /*
@@ -23,13 +25,15 @@ public final class TriggerReference {
     @JsonProperty(value = "referenceName", required = true)
     private String referenceName;
 
-    /** Creates an instance of TriggerReference class. */
+    /**
+     * Creates an instance of TriggerReference class.
+     */
     public TriggerReference() {
     }
 
     /**
      * Get the type property: Trigger reference type.
-     *
+     * 
      * @return the type value.
      */
     public TriggerReferenceType type() {
@@ -38,7 +42,7 @@ public final class TriggerReference {
 
     /**
      * Set the type property: Trigger reference type.
-     *
+     * 
      * @param type the type value to set.
      * @return the TriggerReference object itself.
      */
@@ -49,7 +53,7 @@ public final class TriggerReference {
 
     /**
      * Get the referenceName property: Reference trigger name.
-     *
+     * 
      * @return the referenceName value.
      */
     public String referenceName() {
@@ -58,7 +62,7 @@ public final class TriggerReference {
 
     /**
      * Set the referenceName property: Reference trigger name.
-     *
+     * 
      * @param referenceName the referenceName value to set.
      * @return the TriggerReference object itself.
      */
@@ -69,19 +73,17 @@ public final class TriggerReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model TriggerReference"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model TriggerReference"));
         }
         if (referenceName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property referenceName in model TriggerReference"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property referenceName in model TriggerReference"));
         }
     }
 

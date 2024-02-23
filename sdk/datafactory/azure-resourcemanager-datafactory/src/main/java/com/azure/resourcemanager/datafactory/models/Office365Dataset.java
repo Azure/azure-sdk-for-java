@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The Office365 account. */
+/**
+ * The Office365 account.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Office365Table")
 @Fluent
@@ -24,62 +26,78 @@ public final class Office365Dataset extends Dataset {
     @JsonProperty(value = "typeProperties", required = true)
     private Office365DatasetTypeProperties innerTypeProperties = new Office365DatasetTypeProperties();
 
-    /** Creates an instance of Office365Dataset class. */
+    /**
+     * Creates an instance of Office365Dataset class.
+     */
     public Office365Dataset() {
     }
 
     /**
      * Get the innerTypeProperties property: Office365 dataset properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private Office365DatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Office365Dataset withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Office365Dataset withStructure(Object structure) {
         super.withStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Office365Dataset withSchema(Object schema) {
         super.withSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Office365Dataset withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Office365Dataset withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Office365Dataset withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Office365Dataset withFolder(DatasetFolder folder) {
         super.withFolder(folder);
@@ -89,7 +107,7 @@ public final class Office365Dataset extends Dataset {
     /**
      * Get the tableName property: Name of the dataset to extract from Office 365. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the tableName value.
      */
     public Object tableName() {
@@ -99,7 +117,7 @@ public final class Office365Dataset extends Dataset {
     /**
      * Set the tableName property: Name of the dataset to extract from Office 365. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the Office365Dataset object itself.
      */
@@ -114,7 +132,7 @@ public final class Office365Dataset extends Dataset {
     /**
      * Get the predicate property: A predicate expression that can be used to filter the specific rows to extract from
      * Office 365. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the predicate value.
      */
     public Object predicate() {
@@ -124,7 +142,7 @@ public final class Office365Dataset extends Dataset {
     /**
      * Set the predicate property: A predicate expression that can be used to filter the specific rows to extract from
      * Office 365. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param predicate the predicate value to set.
      * @return the Office365Dataset object itself.
      */
@@ -138,17 +156,15 @@ public final class Office365Dataset extends Dataset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model Office365Dataset"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model Office365Dataset"));
         } else {
             innerTypeProperties().validate();
         }

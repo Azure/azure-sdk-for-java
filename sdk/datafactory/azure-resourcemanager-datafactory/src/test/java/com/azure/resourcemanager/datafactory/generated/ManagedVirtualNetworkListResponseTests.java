@@ -16,28 +16,19 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedVirtualNetworkListResponseTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedVirtualNetworkListResponse model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"vNetId\":\"o\",\"alias\":\"vmfqhppubo\",\"\":{\"juahokqto\":\"datapdfgkmtdherngbt\",\"hfphwpnulaiywze\":\"datakauxof\",\"wrpqafgfugsnnf\":\"dataywhslwkojpllndnp\",\"coc\":\"datayetefyp\"}},\"name\":\"jgtixr\",\"type\":\"zuyt\",\"etag\":\"mlmuowol\",\"id\":\"uir\"}],\"nextLink\":\"ionszonwp\"}")
-                .toObject(ManagedVirtualNetworkListResponse.class);
+        ManagedVirtualNetworkListResponse model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"vNetId\":\"o\",\"alias\":\"vmfqhppubo\",\"\":{\"juahokqto\":\"datapdfgkmtdherngbt\",\"hfphwpnulaiywze\":\"datakauxof\",\"wrpqafgfugsnnf\":\"dataywhslwkojpllndnp\",\"coc\":\"datayetefyp\"}},\"name\":\"jgtixr\",\"type\":\"zuyt\",\"etag\":\"mlmuowol\",\"id\":\"uir\"}],\"nextLink\":\"ionszonwp\"}")
+            .toObject(ManagedVirtualNetworkListResponse.class);
         Assertions.assertEquals("uir", model.value().get(0).id());
         Assertions.assertEquals("ionszonwp", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedVirtualNetworkListResponse model =
-            new ManagedVirtualNetworkListResponse()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ManagedVirtualNetworkResourceInner()
-                                .withId("uir")
-                                .withProperties(
-                                    new ManagedVirtualNetwork()
-                                        .withAdditionalProperties(mapOf("vNetId", "o", "alias", "vmfqhppubo")))))
-                .withNextLink("ionszonwp");
+        ManagedVirtualNetworkListResponse model = new ManagedVirtualNetworkListResponse()
+            .withValue(Arrays.asList(new ManagedVirtualNetworkResourceInner().withId("uir").withProperties(
+                new ManagedVirtualNetwork().withAdditionalProperties(mapOf("vNetId", "o", "alias", "vmfqhppubo")))))
+            .withNextLink("ionszonwp");
         model = BinaryData.fromObject(model).toObject(ManagedVirtualNetworkListResponse.class);
         Assertions.assertEquals("uir", model.value().get(0).id());
         Assertions.assertEquals("ionszonwp", model.nextLink());

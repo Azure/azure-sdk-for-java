@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list pipeline runs. */
+/**
+ * A list pipeline runs.
+ */
 @Fluent
 public final class PipelineRunsQueryResponse {
     /*
@@ -23,12 +25,15 @@ public final class PipelineRunsQueryResponse {
     @JsonProperty(value = "continuationToken")
     private String continuationToken;
 
-    /** Creates an instance of PipelineRunsQueryResponse class. */
-    public PipelineRunsQueryResponse() {}
+    /**
+     * Creates an instance of PipelineRunsQueryResponse class.
+     */
+    public PipelineRunsQueryResponse() {
+    }
 
     /**
      * Get the value property: List of pipeline runs.
-     *
+     * 
      * @return the value value.
      */
     public List<PipelineRun> getValue() {
@@ -37,7 +42,7 @@ public final class PipelineRunsQueryResponse {
 
     /**
      * Set the value property: List of pipeline runs.
-     *
+     * 
      * @param value the value value to set.
      * @return the PipelineRunsQueryResponse object itself.
      */
@@ -47,9 +52,9 @@ public final class PipelineRunsQueryResponse {
     }
 
     /**
-     * Get the continuationToken property: The continuation token for getting the next page of results, if any remaining
-     * results exist, null otherwise.
-     *
+     * Get the continuationToken property: The continuation token for getting the next page of results, if any
+     * remaining results exist, null otherwise.
+     * 
      * @return the continuationToken value.
      */
     public String getContinuationToken() {
@@ -57,9 +62,9 @@ public final class PipelineRunsQueryResponse {
     }
 
     /**
-     * Set the continuationToken property: The continuation token for getting the next page of results, if any remaining
-     * results exist, null otherwise.
-     *
+     * Set the continuationToken property: The continuation token for getting the next page of results, if any
+     * remaining results exist, null otherwise.
+     * 
      * @param continuationToken the continuationToken value to set.
      * @return the PipelineRunsQueryResponse object itself.
      */

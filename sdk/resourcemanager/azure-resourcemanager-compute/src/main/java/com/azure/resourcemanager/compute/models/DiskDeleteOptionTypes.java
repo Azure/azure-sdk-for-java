@@ -15,15 +15,19 @@ import java.util.Collection;
  * 2021-03-01.
  */
 public final class DiskDeleteOptionTypes extends ExpandableStringEnum<DiskDeleteOptionTypes> {
-    /** Static value Delete for DiskDeleteOptionTypes. */
+    /**
+     * Static value Delete for DiskDeleteOptionTypes.
+     */
     public static final DiskDeleteOptionTypes DELETE = fromString("Delete");
 
-    /** Static value Detach for DiskDeleteOptionTypes. */
+    /**
+     * Static value Detach for DiskDeleteOptionTypes.
+     */
     public static final DiskDeleteOptionTypes DETACH = fromString("Detach");
 
     /**
      * Creates a new instance of DiskDeleteOptionTypes value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -32,7 +36,7 @@ public final class DiskDeleteOptionTypes extends ExpandableStringEnum<DiskDelete
 
     /**
      * Creates or finds a DiskDeleteOptionTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DiskDeleteOptionTypes.
      */
@@ -43,7 +47,7 @@ public final class DiskDeleteOptionTypes extends ExpandableStringEnum<DiskDelete
 
     /**
      * Gets known DiskDeleteOptionTypes values.
-     *
+     * 
      * @return known DiskDeleteOptionTypes values.
      */
     public static Collection<DiskDeleteOptionTypes> values() {

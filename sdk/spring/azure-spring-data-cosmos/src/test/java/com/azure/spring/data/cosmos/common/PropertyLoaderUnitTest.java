@@ -13,5 +13,6 @@ public class PropertyLoaderUnitTest {
 
         Assert.assertNotNull(version);
         Assert.assertNotEquals(version, "");
+        Assert.assertNotEquals(version, "@project.version@");
     }
 }

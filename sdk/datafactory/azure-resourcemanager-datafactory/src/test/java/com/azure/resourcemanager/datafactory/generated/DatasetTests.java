@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Dataset model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"Dataset\",\"description\":\"mjsjqb\",\"structure\":\"datahyxxrwlycoduhpk\",\"schema\":\"datagymare\",\"linkedServiceName\":{\"referenceName\":\"n\",\"parameters\":{\"dgssofwqmzqal\":\"dataqugjhkycube\",\"cqqudf\":\"datarmnjijpx\",\"ayffim\":\"databyxbaaabjy\",\"gsexne\":\"datazrtuzq\"}},\"parameters\":{\"ewzsyyceuzsoib\":{\"type\":\"Int\",\"defaultValue\":\"datanw\"}},\"annotations\":[\"datapfrxtrthzvay\",\"datadwkqbrq\",\"databpaxhexiilivpdt\",\"datairqtdqoa\"],\"folder\":{\"name\":\"uzf\"},\"\":{\"zwl\":\"datauyfxrxxleptramxj\",\"tdooaoj\":\"datanwxuqlcvydyp\"}}")
-                .toObject(Dataset.class);
+        Dataset model = BinaryData.fromString(
+            "{\"type\":\"Dataset\",\"description\":\"mjsjqb\",\"structure\":\"datahyxxrwlycoduhpk\",\"schema\":\"datagymare\",\"linkedServiceName\":{\"referenceName\":\"n\",\"parameters\":{\"dgssofwqmzqal\":\"dataqugjhkycube\",\"cqqudf\":\"datarmnjijpx\",\"ayffim\":\"databyxbaaabjy\",\"gsexne\":\"datazrtuzq\"}},\"parameters\":{\"ewzsyyceuzsoib\":{\"type\":\"Int\",\"defaultValue\":\"datanw\"}},\"annotations\":[\"datapfrxtrthzvay\",\"datadwkqbrq\",\"databpaxhexiilivpdt\",\"datairqtdqoa\"],\"folder\":{\"name\":\"uzf\"},\"\":{\"zwl\":\"datauyfxrxxleptramxj\",\"tdooaoj\":\"datanwxuqlcvydyp\"}}")
+            .toObject(Dataset.class);
         Assertions.assertEquals("mjsjqb", model.description());
         Assertions.assertEquals("n", model.linkedServiceName().referenceName());
         Assertions.assertEquals(ParameterType.INT, model.parameters().get("ewzsyyceuzsoib").type());
@@ -31,32 +29,15 @@ public final class DatasetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Dataset model =
-            new Dataset()
-                .withDescription("mjsjqb")
-                .withStructure("datahyxxrwlycoduhpk")
-                .withSchema("datagymare")
-                .withLinkedServiceName(
-                    new LinkedServiceReference()
-                        .withReferenceName("n")
-                        .withParameters(
-                            mapOf(
-                                "dgssofwqmzqal",
-                                "dataqugjhkycube",
-                                "cqqudf",
-                                "datarmnjijpx",
-                                "ayffim",
-                                "databyxbaaabjy",
-                                "gsexne",
-                                "datazrtuzq")))
-                .withParameters(
-                    mapOf(
-                        "ewzsyyceuzsoib",
-                        new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datanw")))
-                .withAnnotations(
-                    Arrays.asList("datapfrxtrthzvay", "datadwkqbrq", "databpaxhexiilivpdt", "datairqtdqoa"))
-                .withFolder(new DatasetFolder().withName("uzf"))
-                .withAdditionalProperties(mapOf("type", "Dataset"));
+        Dataset model = new Dataset().withDescription("mjsjqb").withStructure("datahyxxrwlycoduhpk")
+            .withSchema("datagymare")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("n")
+                .withParameters(mapOf("dgssofwqmzqal", "dataqugjhkycube", "cqqudf", "datarmnjijpx", "ayffim",
+                    "databyxbaaabjy", "gsexne", "datazrtuzq")))
+            .withParameters(mapOf("ewzsyyceuzsoib",
+                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datanw")))
+            .withAnnotations(Arrays.asList("datapfrxtrthzvay", "datadwkqbrq", "databpaxhexiilivpdt", "datairqtdqoa"))
+            .withFolder(new DatasetFolder().withName("uzf")).withAdditionalProperties(mapOf("type", "Dataset"));
         model = BinaryData.fromObject(model).toObject(Dataset.class);
         Assertions.assertEquals("mjsjqb", model.description());
         Assertions.assertEquals("n", model.linkedServiceName().referenceName());

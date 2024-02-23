@@ -28,15 +28,15 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static com.azure.monitor.opentelemetry.exporter.implementation.SemanticAttributes.HTTP_STATUS_CODE;
-import static com.azure.monitor.opentelemetry.exporter.implementation.SemanticAttributes.NET_HOST_NAME;
-import static com.azure.monitor.opentelemetry.exporter.implementation.SemanticAttributes.NET_PEER_NAME;
+import static com.azure.monitor.opentelemetry.exporter.implementation.SemanticAttributes.HTTP_RESPONSE_STATUS_CODE;
+import static com.azure.monitor.opentelemetry.exporter.implementation.SemanticAttributes.SERVER_ADDRESS;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.DOUBLE_GAUGE;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.DOUBLE_SUM;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.HISTOGRAM;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.LONG_GAUGE;
 import static io.opentelemetry.sdk.metrics.data.MetricDataType.LONG_SUM;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
 
 public class AzureMonitorMetricExporterTest {
 
@@ -118,7 +118,7 @@ public class AzureMonitorMetricExporterTest {
 
         DoubleCounter counter = meter.counterBuilder("testAttributes").ofDoubles().build();
         Attributes attributes = Attributes.builder()
-            .put(NET_PEER_NAME, "example.io")
+            .put(SERVER_ADDRESS, "example.io")
             .put(AttributeKey.stringKey("foo"), "bar")
             .build();
 
@@ -139,7 +139,7 @@ public class AzureMonitorMetricExporterTest {
         Map<String, String> properties = metricsData.getProperties();
 
         assertThat(properties.size()).isEqualTo(2);
-        assertThat(properties.get(NET_PEER_NAME.getKey())).isEqualTo("example.io");
+        assertThat(properties.get(SERVER_ADDRESS.getKey())).isEqualTo("example.io");
         assertThat(properties.get("foo")).isEqualTo("bar");
     }
 
@@ -154,8 +154,8 @@ public class AzureMonitorMetricExporterTest {
 
         DoubleHistogram serverDuration = meter.histogramBuilder("http.server.duration").build();
         Attributes attributes = Attributes.builder()
-            .put(HTTP_STATUS_CODE, 200)
-            .put(NET_HOST_NAME, "example.io")
+            .put(HTTP_RESPONSE_STATUS_CODE, 200)
+            .put(SERVER_ADDRESS, "example.io")
             .put(AttributeKey.stringKey("foo"), "baz")
             .build();
         serverDuration.record(0.1, attributes);
@@ -371,5 +371,44 @@ public class AzureMonitorMetricExporterTest {
 
         assertThat(metricData.getType()).isEqualTo(HISTOGRAM);
         assertThat(metricData.getName()).isEqualTo("testDoubleHistogram");
+    }
+
+    @Test
+    public void testNoAttributeWithPrefixApplicationInsightsInternal() {
+        InMemoryMetricExporter inMemoryMetricExporter = InMemoryMetricExporter.create();
+        SdkMeterProvider meterProvider = SdkMeterProvider.builder()
+            .registerMetricReader(
+                PeriodicMetricReader.builder(inMemoryMetricExporter).build())
+            .build();
+        Meter meter = meterProvider.get("AzureMonitorMetricExporterTest");
+
+        // create a long counter with two attributes including one with "applicationinsights.internal." as prefix
+        LongCounter longCounter =
+            meter.counterBuilder("testLongCounter")
+                .setDescription("testLongCounter")
+                .setUnit("1").build();
+
+        Attributes attributes = Attributes.of(AttributeKey.stringKey("applicationinsights.internal.test"), "test", AttributeKey.stringKey("foo"), "bar");
+        longCounter.add(1, attributes);
+
+        meterProvider.forceFlush();
+
+        List<MetricData> metricDataList = inMemoryMetricExporter.getFinishedMetricItems();
+        assertThat(metricDataList).hasSize(1);
+
+        MetricData metricData = metricDataList.get(0);
+        assertThat(metricData.getData().getPoints().size()).isEqualTo(1);
+        PointData pointData = metricData.getData().getPoints().iterator().next();
+        MetricTelemetryBuilder builder = MetricTelemetryBuilder.create();
+        MetricDataMapper.updateMetricPointBuilder(builder, metricData, pointData, true, false);
+        MetricsData metricsData = (MetricsData) builder.build().getData().getBaseData();
+        assertThat(metricsData.getMetrics().size()).isEqualTo(1);
+        assertThat(metricsData.getProperties()).isNotNull();
+        assertThat(metricsData.getProperties().size()).isEqualTo(1);
+        assertThat(metricsData.getProperties()).containsExactly(entry("foo", "bar"));
+        assertThat(metricsData.getProperties().get("applicationinsights.internal.test")).isNull();
+
+        assertThat(metricData.getType()).isEqualTo(LONG_SUM);
+        assertThat(metricData.getName()).isEqualTo("testLongCounter");
     }
 }

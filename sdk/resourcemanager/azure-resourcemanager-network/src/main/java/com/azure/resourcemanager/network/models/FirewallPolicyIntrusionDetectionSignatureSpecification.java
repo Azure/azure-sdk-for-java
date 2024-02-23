@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Intrusion detection signatures specification states. */
+/**
+ * Intrusion detection signatures specification states.
+ */
 @Fluent
 public final class FirewallPolicyIntrusionDetectionSignatureSpecification {
     /*
@@ -22,13 +24,15 @@ public final class FirewallPolicyIntrusionDetectionSignatureSpecification {
     @JsonProperty(value = "mode")
     private FirewallPolicyIntrusionDetectionStateType mode;
 
-    /** Creates an instance of FirewallPolicyIntrusionDetectionSignatureSpecification class. */
+    /**
+     * Creates an instance of FirewallPolicyIntrusionDetectionSignatureSpecification class.
+     */
     public FirewallPolicyIntrusionDetectionSignatureSpecification() {
     }
 
     /**
      * Get the id property: Signature id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -37,7 +41,7 @@ public final class FirewallPolicyIntrusionDetectionSignatureSpecification {
 
     /**
      * Set the id property: Signature id.
-     *
+     * 
      * @param id the id value to set.
      * @return the FirewallPolicyIntrusionDetectionSignatureSpecification object itself.
      */
@@ -48,7 +52,7 @@ public final class FirewallPolicyIntrusionDetectionSignatureSpecification {
 
     /**
      * Get the mode property: The signature state.
-     *
+     * 
      * @return the mode value.
      */
     public FirewallPolicyIntrusionDetectionStateType mode() {
@@ -57,19 +61,19 @@ public final class FirewallPolicyIntrusionDetectionSignatureSpecification {
 
     /**
      * Set the mode property: The signature state.
-     *
+     * 
      * @param mode the mode value to set.
      * @return the FirewallPolicyIntrusionDetectionSignatureSpecification object itself.
      */
-    public FirewallPolicyIntrusionDetectionSignatureSpecification withMode(
-        FirewallPolicyIntrusionDetectionStateType mode) {
+    public FirewallPolicyIntrusionDetectionSignatureSpecification
+        withMode(FirewallPolicyIntrusionDetectionStateType mode) {
         this.mode = mode;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,8 +10,8 @@ import com.azure.resourcemanager.datafactory.fluent.models.ODataResourceDatasetT
 public final class ODataResourceDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ODataResourceDatasetTypeProperties model =
-            BinaryData.fromString("{\"path\":\"datazgkqwvde\"}").toObject(ODataResourceDatasetTypeProperties.class);
+        ODataResourceDatasetTypeProperties model
+            = BinaryData.fromString("{\"path\":\"datazgkqwvde\"}").toObject(ODataResourceDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test

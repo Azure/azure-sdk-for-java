@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Metadata Properties. */
+/**
+ * Metadata Properties.
+ */
 @Fluent
 public final class SolutionMetadataProperties {
     /*
@@ -35,13 +37,15 @@ public final class SolutionMetadataProperties {
     @JsonProperty(value = "requiredInputs", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> requiredInputs;
 
-    /** Creates an instance of SolutionMetadataProperties class. */
+    /**
+     * Creates an instance of SolutionMetadataProperties class.
+     */
     public SolutionMetadataProperties() {
     }
 
     /**
      * Get the solutionId property: Solution Id.
-     *
+     * 
      * @return the solutionId value.
      */
     public String solutionId() {
@@ -50,7 +54,7 @@ public final class SolutionMetadataProperties {
 
     /**
      * Set the solutionId property: Solution Id.
-     *
+     * 
      * @param solutionId the solutionId value to set.
      * @return the SolutionMetadataProperties object itself.
      */
@@ -61,7 +65,7 @@ public final class SolutionMetadataProperties {
 
     /**
      * Get the solutionType property: Solution Type.
-     *
+     * 
      * @return the solutionType value.
      */
     public SolutionType solutionType() {
@@ -70,7 +74,7 @@ public final class SolutionMetadataProperties {
 
     /**
      * Get the description property: A detailed description of solution.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -79,7 +83,7 @@ public final class SolutionMetadataProperties {
 
     /**
      * Get the requiredInputs property: Required parameters for invoking this particular solution.
-     *
+     * 
      * @return the requiredInputs value.
      */
     public List<String> requiredInputs() {
@@ -88,7 +92,7 @@ public final class SolutionMetadataProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

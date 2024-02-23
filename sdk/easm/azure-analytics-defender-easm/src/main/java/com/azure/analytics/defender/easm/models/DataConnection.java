@@ -11,17 +11,18 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 
-/** The DataConnection model. */
+/**
+ * The DataConnection model.
+ */
 @JsonTypeInfo(
-        use = JsonTypeInfo.Id.NAME,
-        include = JsonTypeInfo.As.PROPERTY,
-        property = "kind",
-        defaultImpl = DataConnection.class)
+    use = JsonTypeInfo.Id.NAME,
+    include = JsonTypeInfo.As.PROPERTY,
+    property = "kind",
+    defaultImpl = DataConnection.class)
 @JsonTypeName("DataConnection")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "logAnalytics", value = LogAnalyticsDataConnection.class),
-    @JsonSubTypes.Type(name = "azureDataExplorer", value = AzureDataExplorerDataConnection.class)
-})
+    @JsonSubTypes.Type(name = "azureDataExplorer", value = AzureDataExplorerDataConnection.class) })
 @Immutable
 public class DataConnection {
 
@@ -102,9 +103,12 @@ public class DataConnection {
     @JsonProperty(value = "inactiveMessage", access = JsonProperty.Access.WRITE_ONLY)
     private String inactiveMessage;
 
-    /** Creates an instance of DataConnection class. */
+    /**
+     * Creates an instance of DataConnection class.
+     */
     @Generated
-    protected DataConnection() {}
+    protected DataConnection() {
+    }
 
     /**
      * Get the id property: The system generated unique id for the resource.

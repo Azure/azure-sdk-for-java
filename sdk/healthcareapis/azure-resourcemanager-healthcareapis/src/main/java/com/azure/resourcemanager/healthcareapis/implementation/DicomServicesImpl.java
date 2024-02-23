@@ -21,8 +21,7 @@ public final class DicomServicesImpl implements DicomServices {
 
     private final com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager;
 
-    public DicomServicesImpl(
-        DicomServicesClient innerClient,
+    public DicomServicesImpl(DicomServicesClient innerClient,
         com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -33,32 +32,29 @@ public final class DicomServicesImpl implements DicomServices {
         return Utils.mapPage(inner, inner1 -> new DicomServiceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DicomService> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context) {
-        PagedIterable<DicomServiceInner> inner =
-            this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
+    public PagedIterable<DicomService> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context) {
+        PagedIterable<DicomServiceInner> inner
+            = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
         return Utils.mapPage(inner, inner1 -> new DicomServiceImpl(inner1, this.manager()));
+    }
+
+    public Response<DicomService> getWithResponse(String resourceGroupName, String workspaceName,
+        String dicomServiceName, Context context) {
+        Response<DicomServiceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, workspaceName, dicomServiceName, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new DicomServiceImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
     }
 
     public DicomService get(String resourceGroupName, String workspaceName, String dicomServiceName) {
         DicomServiceInner inner = this.serviceClient().get(resourceGroupName, workspaceName, dicomServiceName);
         if (inner != null) {
             return new DicomServiceImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<DicomService> getWithResponse(
-        String resourceGroupName, String workspaceName, String dicomServiceName, Context context) {
-        Response<DicomServiceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, workspaceName, dicomServiceName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new DicomServiceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
@@ -75,25 +71,18 @@ public final class DicomServicesImpl implements DicomServices {
     public DicomService getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String dicomServiceName = Utils.getValueFromIdByName(id, "dicomservices");
         if (dicomServiceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'dicomservices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dicomservices'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, dicomServiceName, Context.NONE).getValue();
     }
@@ -101,25 +90,18 @@ public final class DicomServicesImpl implements DicomServices {
     public Response<DicomService> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         String dicomServiceName = Utils.getValueFromIdByName(id, "dicomservices");
         if (dicomServiceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'dicomservices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dicomservices'.", id)));
         }
         return this.getWithResponse(resourceGroupName, workspaceName, dicomServiceName, context);
     }
@@ -127,25 +109,18 @@ public final class DicomServicesImpl implements DicomServices {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String dicomServiceName = Utils.getValueFromIdByName(id, "dicomservices");
         if (dicomServiceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'dicomservices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dicomservices'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         this.delete(resourceGroupName, dicomServiceName, workspaceName, Context.NONE);
     }
@@ -153,25 +128,18 @@ public final class DicomServicesImpl implements DicomServices {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String dicomServiceName = Utils.getValueFromIdByName(id, "dicomservices");
         if (dicomServiceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'dicomservices'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'dicomservices'.", id)));
         }
         String workspaceName = Utils.getValueFromIdByName(id, "workspaces");
         if (workspaceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'workspaces'.", id)));
         }
         this.delete(resourceGroupName, dicomServiceName, workspaceName, context);
     }

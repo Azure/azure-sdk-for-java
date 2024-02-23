@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.models.BooleanEnum;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Support information for the resource. */
+/**
+ * Support information for the resource.
+ */
 @Fluent
 public final class SupportInfoInner {
     /*
@@ -83,13 +85,15 @@ public final class SupportInfoInner {
     @JsonProperty(value = "registerURL")
     private String registerUrl;
 
-    /** Creates an instance of SupportInfoInner class. */
+    /**
+     * Creates an instance of SupportInfoInner class.
+     */
     public SupportInfoInner() {
     }
 
     /**
      * Get the productSku property: product SKU associated with given resource.
-     *
+     * 
      * @return the productSku value.
      */
     public String productSku() {
@@ -98,7 +102,7 @@ public final class SupportInfoInner {
 
     /**
      * Set the productSku property: product SKU associated with given resource.
-     *
+     * 
      * @param productSku the productSku value to set.
      * @return the SupportInfoInner object itself.
      */
@@ -109,7 +113,7 @@ public final class SupportInfoInner {
 
     /**
      * Get the productSerial property: product Serial associated with given resource.
-     *
+     * 
      * @return the productSerial value.
      */
     public String productSerial() {
@@ -118,7 +122,7 @@ public final class SupportInfoInner {
 
     /**
      * Set the productSerial property: product Serial associated with given resource.
-     *
+     * 
      * @param productSerial the productSerial value to set.
      * @return the SupportInfoInner object itself.
      */
@@ -129,7 +133,7 @@ public final class SupportInfoInner {
 
     /**
      * Get the accountRegistered property: account registered in Customer Support Portal.
-     *
+     * 
      * @return the accountRegistered value.
      */
     public BooleanEnum accountRegistered() {
@@ -138,7 +142,7 @@ public final class SupportInfoInner {
 
     /**
      * Set the accountRegistered property: account registered in Customer Support Portal.
-     *
+     * 
      * @param accountRegistered the accountRegistered value to set.
      * @return the SupportInfoInner object itself.
      */
@@ -149,7 +153,7 @@ public final class SupportInfoInner {
 
     /**
      * Get the accountId property: Support account associated with given resource.
-     *
+     * 
      * @return the accountId value.
      */
     public String accountId() {
@@ -158,7 +162,7 @@ public final class SupportInfoInner {
 
     /**
      * Set the accountId property: Support account associated with given resource.
-     *
+     * 
      * @param accountId the accountId value to set.
      * @return the SupportInfoInner object itself.
      */
@@ -169,7 +173,7 @@ public final class SupportInfoInner {
 
     /**
      * Get the userDomainSupported property: user domain is supported in Customer Support Portal.
-     *
+     * 
      * @return the userDomainSupported value.
      */
     public BooleanEnum userDomainSupported() {
@@ -178,7 +182,7 @@ public final class SupportInfoInner {
 
     /**
      * Set the userDomainSupported property: user domain is supported in Customer Support Portal.
-     *
+     * 
      * @param userDomainSupported the userDomainSupported value to set.
      * @return the SupportInfoInner object itself.
      */
@@ -189,7 +193,7 @@ public final class SupportInfoInner {
 
     /**
      * Get the userRegistered property: user registered in Customer Support Portal.
-     *
+     * 
      * @return the userRegistered value.
      */
     public BooleanEnum userRegistered() {
@@ -198,7 +202,7 @@ public final class SupportInfoInner {
 
     /**
      * Set the userRegistered property: user registered in Customer Support Portal.
-     *
+     * 
      * @param userRegistered the userRegistered value to set.
      * @return the SupportInfoInner object itself.
      */
@@ -209,7 +213,7 @@ public final class SupportInfoInner {
 
     /**
      * Get the freeTrial property: Product usage is in free trial period.
-     *
+     * 
      * @return the freeTrial value.
      */
     public BooleanEnum freeTrial() {
@@ -218,7 +222,7 @@ public final class SupportInfoInner {
 
     /**
      * Set the freeTrial property: Product usage is in free trial period.
-     *
+     * 
      * @param freeTrial the freeTrial value to set.
      * @return the SupportInfoInner object itself.
      */
@@ -229,7 +233,7 @@ public final class SupportInfoInner {
 
     /**
      * Get the freeTrialDaysLeft property: Free trial days remaining.
-     *
+     * 
      * @return the freeTrialDaysLeft value.
      */
     public Integer freeTrialDaysLeft() {
@@ -238,7 +242,7 @@ public final class SupportInfoInner {
 
     /**
      * Set the freeTrialDaysLeft property: Free trial days remaining.
-     *
+     * 
      * @param freeTrialDaysLeft the freeTrialDaysLeft value to set.
      * @return the SupportInfoInner object itself.
      */
@@ -249,7 +253,7 @@ public final class SupportInfoInner {
 
     /**
      * Get the freeTrialCreditLeft property: Free trial credit remaining.
-     *
+     * 
      * @return the freeTrialCreditLeft value.
      */
     public Integer freeTrialCreditLeft() {
@@ -258,7 +262,7 @@ public final class SupportInfoInner {
 
     /**
      * Set the freeTrialCreditLeft property: Free trial credit remaining.
-     *
+     * 
      * @param freeTrialCreditLeft the freeTrialCreditLeft value to set.
      * @return the SupportInfoInner object itself.
      */
@@ -269,7 +273,7 @@ public final class SupportInfoInner {
 
     /**
      * Get the helpUrl property: URL for paloaltonetworks live community.
-     *
+     * 
      * @return the helpUrl value.
      */
     public String helpUrl() {
@@ -278,7 +282,7 @@ public final class SupportInfoInner {
 
     /**
      * Set the helpUrl property: URL for paloaltonetworks live community.
-     *
+     * 
      * @param helpUrl the helpUrl value to set.
      * @return the SupportInfoInner object itself.
      */
@@ -289,7 +293,7 @@ public final class SupportInfoInner {
 
     /**
      * Get the supportUrl property: URL for paloaltonetworks Customer Service Portal.
-     *
+     * 
      * @return the supportUrl value.
      */
     public String supportUrl() {
@@ -298,7 +302,7 @@ public final class SupportInfoInner {
 
     /**
      * Set the supportUrl property: URL for paloaltonetworks Customer Service Portal.
-     *
+     * 
      * @param supportUrl the supportUrl value to set.
      * @return the SupportInfoInner object itself.
      */
@@ -309,7 +313,7 @@ public final class SupportInfoInner {
 
     /**
      * Get the registerUrl property: URL for registering product in paloaltonetworks Customer Service Portal.
-     *
+     * 
      * @return the registerUrl value.
      */
     public String registerUrl() {
@@ -318,7 +322,7 @@ public final class SupportInfoInner {
 
     /**
      * Set the registerUrl property: URL for registering product in paloaltonetworks Customer Service Portal.
-     *
+     * 
      * @param registerUrl the registerUrl value to set.
      * @return the SupportInfoInner object itself.
      */
@@ -329,7 +333,7 @@ public final class SupportInfoInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

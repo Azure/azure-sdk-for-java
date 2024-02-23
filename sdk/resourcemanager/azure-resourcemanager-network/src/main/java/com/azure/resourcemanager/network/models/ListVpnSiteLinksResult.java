@@ -10,8 +10,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Result of the request to list VpnSiteLinks. It contains a list of VpnSiteLinks and a URL nextLink to get the next set
- * of results.
+ * Result of the request to list VpnSiteLinks. It contains a list of VpnSiteLinks and a URL nextLink to get the next
+ * set of results.
  */
 @Fluent
 public final class ListVpnSiteLinksResult {
@@ -27,13 +27,15 @@ public final class ListVpnSiteLinksResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ListVpnSiteLinksResult class. */
+    /**
+     * Creates an instance of ListVpnSiteLinksResult class.
+     */
     public ListVpnSiteLinksResult() {
     }
 
     /**
      * Get the value property: List of VpnSitesLinks.
-     *
+     * 
      * @return the value value.
      */
     public List<VpnSiteLinkInner> value() {
@@ -42,7 +44,7 @@ public final class ListVpnSiteLinksResult {
 
     /**
      * Set the value property: List of VpnSitesLinks.
-     *
+     * 
      * @param value the value value to set.
      * @return the ListVpnSiteLinksResult object itself.
      */
@@ -53,7 +55,7 @@ public final class ListVpnSiteLinksResult {
 
     /**
      * Get the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +64,7 @@ public final class ListVpnSiteLinksResult {
 
     /**
      * Set the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ListVpnSiteLinksResult object itself.
      */
@@ -73,7 +75,7 @@ public final class ListVpnSiteLinksResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

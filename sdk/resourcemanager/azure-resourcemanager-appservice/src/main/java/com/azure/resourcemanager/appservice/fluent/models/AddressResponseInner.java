@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.models.VirtualIpMapping;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes main public IP address and any extra virtual IPs. */
+/**
+ * Describes main public IP address and any extra virtual IPs.
+ */
 @Fluent
 public final class AddressResponseInner extends ProxyOnlyResource {
     /*
@@ -19,20 +21,24 @@ public final class AddressResponseInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private AddressResponseProperties innerProperties;
 
-    /** Creates an instance of AddressResponseInner class. */
+    /**
+     * Creates an instance of AddressResponseInner class.
+     */
     public AddressResponseInner() {
     }
 
     /**
      * Get the innerProperties property: AddressResponse resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AddressResponseProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AddressResponseInner withKind(String kind) {
         super.withKind(kind);
@@ -41,7 +47,7 @@ public final class AddressResponseInner extends ProxyOnlyResource {
 
     /**
      * Get the serviceIpAddress property: Main public virtual IP.
-     *
+     * 
      * @return the serviceIpAddress value.
      */
     public String serviceIpAddress() {
@@ -50,7 +56,7 @@ public final class AddressResponseInner extends ProxyOnlyResource {
 
     /**
      * Set the serviceIpAddress property: Main public virtual IP.
-     *
+     * 
      * @param serviceIpAddress the serviceIpAddress value to set.
      * @return the AddressResponseInner object itself.
      */
@@ -65,7 +71,7 @@ public final class AddressResponseInner extends ProxyOnlyResource {
     /**
      * Get the internalIpAddress property: Virtual Network internal IP address of the App Service Environment if it is
      * in internal load-balancing mode.
-     *
+     * 
      * @return the internalIpAddress value.
      */
     public String internalIpAddress() {
@@ -75,7 +81,7 @@ public final class AddressResponseInner extends ProxyOnlyResource {
     /**
      * Set the internalIpAddress property: Virtual Network internal IP address of the App Service Environment if it is
      * in internal load-balancing mode.
-     *
+     * 
      * @param internalIpAddress the internalIpAddress value to set.
      * @return the AddressResponseInner object itself.
      */
@@ -89,7 +95,7 @@ public final class AddressResponseInner extends ProxyOnlyResource {
 
     /**
      * Get the outboundIpAddresses property: IP addresses appearing on outbound connections.
-     *
+     * 
      * @return the outboundIpAddresses value.
      */
     public List<String> outboundIpAddresses() {
@@ -98,7 +104,7 @@ public final class AddressResponseInner extends ProxyOnlyResource {
 
     /**
      * Set the outboundIpAddresses property: IP addresses appearing on outbound connections.
-     *
+     * 
      * @param outboundIpAddresses the outboundIpAddresses value to set.
      * @return the AddressResponseInner object itself.
      */
@@ -112,7 +118,7 @@ public final class AddressResponseInner extends ProxyOnlyResource {
 
     /**
      * Get the vipMappings property: Additional virtual IPs.
-     *
+     * 
      * @return the vipMappings value.
      */
     public List<VirtualIpMapping> vipMappings() {
@@ -121,7 +127,7 @@ public final class AddressResponseInner extends ProxyOnlyResource {
 
     /**
      * Set the vipMappings property: Additional virtual IPs.
-     *
+     * 
      * @param vipMappings the vipMappings value to set.
      * @return the AddressResponseInner object itself.
      */
@@ -135,7 +141,7 @@ public final class AddressResponseInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

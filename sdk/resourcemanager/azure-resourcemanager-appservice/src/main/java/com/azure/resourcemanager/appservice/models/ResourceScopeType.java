@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Name of a resource type this recommendation applies, e.g. Subscription, ServerFarm, Site. */
+/**
+ * Name of a resource type this recommendation applies, e.g. Subscription, ServerFarm, Site.
+ */
 public final class ResourceScopeType extends ExpandableStringEnum<ResourceScopeType> {
-    /** Static value ServerFarm for ResourceScopeType. */
+    /**
+     * Static value ServerFarm for ResourceScopeType.
+     */
     public static final ResourceScopeType SERVER_FARM = fromString("ServerFarm");
 
-    /** Static value Subscription for ResourceScopeType. */
+    /**
+     * Static value Subscription for ResourceScopeType.
+     */
     public static final ResourceScopeType SUBSCRIPTION = fromString("Subscription");
 
-    /** Static value WebSite for ResourceScopeType. */
+    /**
+     * Static value WebSite for ResourceScopeType.
+     */
     public static final ResourceScopeType WEB_SITE = fromString("WebSite");
 
     /**
      * Creates a new instance of ResourceScopeType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class ResourceScopeType extends ExpandableStringEnum<ResourceScopeT
 
     /**
      * Creates or finds a ResourceScopeType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ResourceScopeType.
      */
@@ -41,7 +49,7 @@ public final class ResourceScopeType extends ExpandableStringEnum<ResourceScopeT
 
     /**
      * Gets known ResourceScopeType values.
-     *
+     * 
      * @return known ResourceScopeType values.
      */
     public static Collection<ResourceScopeType> values() {

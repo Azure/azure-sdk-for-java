@@ -7,7 +7,9 @@ package com.azure.resourcemanager.dataprotection.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** This class contains all the details about a critical operation. */
+/**
+ * This class contains all the details about a critical operation.
+ */
 @Immutable
 public final class ResourceGuardOperation {
     /*
@@ -22,13 +24,15 @@ public final class ResourceGuardOperation {
     @JsonProperty(value = "requestResourceType", access = JsonProperty.Access.WRITE_ONLY)
     private String requestResourceType;
 
-    /** Creates an instance of ResourceGuardOperation class. */
+    /**
+     * Creates an instance of ResourceGuardOperation class.
+     */
     public ResourceGuardOperation() {
     }
 
     /**
      * Get the vaultCriticalOperation property: Name of the critical operation.
-     *
+     * 
      * @return the vaultCriticalOperation value.
      */
     public String vaultCriticalOperation() {
@@ -37,7 +41,7 @@ public final class ResourceGuardOperation {
 
     /**
      * Get the requestResourceType property: Type of resource request.
-     *
+     * 
      * @return the requestResourceType value.
      */
     public String requestResourceType() {
@@ -46,7 +50,7 @@ public final class ResourceGuardOperation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

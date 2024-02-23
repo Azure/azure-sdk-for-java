@@ -19,24 +19,23 @@ public final class FhirDestinationsImpl implements FhirDestinations {
 
     private final com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager;
 
-    public FhirDestinationsImpl(
-        FhirDestinationsClient innerClient,
+    public FhirDestinationsImpl(FhirDestinationsClient innerClient,
         com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<IotFhirDestination> listByIotConnector(
-        String resourceGroupName, String workspaceName, String iotConnectorName) {
-        PagedIterable<IotFhirDestinationInner> inner =
-            this.serviceClient().listByIotConnector(resourceGroupName, workspaceName, iotConnectorName);
+    public PagedIterable<IotFhirDestination> listByIotConnector(String resourceGroupName, String workspaceName,
+        String iotConnectorName) {
+        PagedIterable<IotFhirDestinationInner> inner
+            = this.serviceClient().listByIotConnector(resourceGroupName, workspaceName, iotConnectorName);
         return Utils.mapPage(inner, inner1 -> new IotFhirDestinationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<IotFhirDestination> listByIotConnector(
-        String resourceGroupName, String workspaceName, String iotConnectorName, Context context) {
-        PagedIterable<IotFhirDestinationInner> inner =
-            this.serviceClient().listByIotConnector(resourceGroupName, workspaceName, iotConnectorName, context);
+    public PagedIterable<IotFhirDestination> listByIotConnector(String resourceGroupName, String workspaceName,
+        String iotConnectorName, Context context) {
+        PagedIterable<IotFhirDestinationInner> inner
+            = this.serviceClient().listByIotConnector(resourceGroupName, workspaceName, iotConnectorName, context);
         return Utils.mapPage(inner, inner1 -> new IotFhirDestinationImpl(inner1, this.manager()));
     }
 

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The related metadata items for the Log Analytics solution. */
+/**
+ * The related metadata items for the Log Analytics solution.
+ */
 @Fluent
 public final class MetadataSolutionRelated {
     /*
@@ -44,7 +46,7 @@ public final class MetadataSolutionRelated {
 
     /**
      * Creates an instance of MetadataSolutionRelated class.
-     *
+     * 
      * @param tables the tables value to set.
      */
     @JsonCreator
@@ -54,7 +56,7 @@ public final class MetadataSolutionRelated {
 
     /**
      * Get the tables property: The tables related to the Log Analytics solution.
-     *
+     * 
      * @return the tables value.
      */
     public List<String> getTables() {
@@ -63,7 +65,7 @@ public final class MetadataSolutionRelated {
 
     /**
      * Get the functions property: The functions related to the Log Analytics solution.
-     *
+     * 
      * @return the functions value.
      */
     public List<String> getFunctions() {
@@ -72,7 +74,7 @@ public final class MetadataSolutionRelated {
 
     /**
      * Set the functions property: The functions related to the Log Analytics solution.
-     *
+     * 
      * @param functions the functions value to set.
      * @return the MetadataSolutionRelated object itself.
      */
@@ -83,7 +85,7 @@ public final class MetadataSolutionRelated {
 
     /**
      * Get the categories property: The categories related to the Log Analytics solution.
-     *
+     * 
      * @return the categories value.
      */
     public List<String> getCategories() {
@@ -92,7 +94,7 @@ public final class MetadataSolutionRelated {
 
     /**
      * Set the categories property: The categories related to the Log Analytics solution.
-     *
+     * 
      * @param categories the categories value to set.
      * @return the MetadataSolutionRelated object itself.
      */
@@ -103,7 +105,7 @@ public final class MetadataSolutionRelated {
 
     /**
      * Get the queries property: The saved queries related to the Log Analytics solution.
-     *
+     * 
      * @return the queries value.
      */
     public List<String> getQueries() {
@@ -112,7 +114,7 @@ public final class MetadataSolutionRelated {
 
     /**
      * Set the queries property: The saved queries related to the Log Analytics solution.
-     *
+     * 
      * @param queries the queries value to set.
      * @return the MetadataSolutionRelated object itself.
      */
@@ -124,7 +126,7 @@ public final class MetadataSolutionRelated {
     /**
      * Get the workspaces property: The Workspaces referenced in the metadata request that are related to the Log
      * Analytics solution.
-     *
+     * 
      * @return the workspaces value.
      */
     public List<String> getWorkspaces() {
@@ -134,23 +136,12 @@ public final class MetadataSolutionRelated {
     /**
      * Set the workspaces property: The Workspaces referenced in the metadata request that are related to the Log
      * Analytics solution.
-     *
+     * 
      * @param workspaces the workspaces value to set.
      * @return the MetadataSolutionRelated object itself.
      */
     public MetadataSolutionRelated setWorkspaces(List<String> workspaces) {
         this.workspaces = workspaces;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getTables() == null) {
-            throw new IllegalArgumentException("Missing required property tables in model MetadataSolutionRelated");
-        }
     }
 }

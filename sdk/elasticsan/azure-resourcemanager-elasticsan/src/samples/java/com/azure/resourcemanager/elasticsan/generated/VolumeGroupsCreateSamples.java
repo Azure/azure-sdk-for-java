@@ -19,60 +19,47 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for VolumeGroups Create. */
+/**
+ * Samples for VolumeGroups Create.
+ */
 public final class VolumeGroupsCreateSamples {
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/VolumeGroups_Create_MinimumSet_Gen.json
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/
+     * VolumeGroups_Create_MinimumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_Create_MinimumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ElasticSanManager.
      */
     public static void volumeGroupsCreateMinimumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
-        manager
-            .volumeGroups()
-            .define("volumegroupname")
-            .withExistingElasticSan("resourcegroupname", "elasticsanname")
+        manager.volumeGroups().define("volumegroupname").withExistingElasticSan("resourcegroupname", "elasticsanname")
             .create();
     }
 
     /*
-     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/VolumeGroups_Create_MaximumSet_Gen.json
+     * x-ms-original-file: specification/elasticsan/resource-manager/Microsoft.ElasticSan/stable/2023-01-01/examples/
+     * VolumeGroups_Create_MaximumSet_Gen.json
      */
     /**
      * Sample code: VolumeGroups_Create_MaximumSet_Gen.
-     *
+     * 
      * @param manager Entry point to ElasticSanManager.
      */
     public static void volumeGroupsCreateMaximumSetGen(com.azure.resourcemanager.elasticsan.ElasticSanManager manager) {
-        manager
-            .volumeGroups()
-            .define("volumegroupname")
-            .withExistingElasticSan("resourcegroupname", "elasticsanname")
-            .withIdentity(
-                new Identity()
-                    .withType(IdentityType.NONE)
-                    .withUserAssignedIdentities(mapOf("key7482", new UserAssignedIdentity())))
+        manager.volumeGroups().define("volumegroupname").withExistingElasticSan("resourcegroupname", "elasticsanname")
+            .withIdentity(new Identity().withType(IdentityType.NONE)
+                .withUserAssignedIdentities(mapOf("key7482", new UserAssignedIdentity())))
             .withProtocolType(StorageTargetType.ISCSI)
             .withEncryption(EncryptionType.ENCRYPTION_AT_REST_WITH_CUSTOMER_MANAGED_KEY)
-            .withEncryptionProperties(
-                new EncryptionProperties()
-                    .withKeyVaultProperties(
-                        new KeyVaultProperties()
-                            .withKeyName("fakeTokenPlaceholder")
-                            .withKeyVersion("fakeTokenPlaceholder")
-                            .withKeyVaultUri("fakeTokenPlaceholder"))
-                    .withEncryptionIdentity(new EncryptionIdentity().withEncryptionUserAssignedIdentity("im")))
-            .withNetworkAcls(
-                new NetworkRuleSet()
-                    .withVirtualNetworkRules(
-                        Arrays
-                            .asList(
-                                new VirtualNetworkRule()
-                                    .withVirtualNetworkResourceId(
-                                        "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}")
-                                    .withAction(Action.ALLOW))))
+            .withEncryptionProperties(new EncryptionProperties()
+                .withKeyVaultProperties(new KeyVaultProperties().withKeyName("fakeTokenPlaceholder")
+                    .withKeyVersion("fakeTokenPlaceholder").withKeyVaultUri("fakeTokenPlaceholder"))
+                .withEncryptionIdentity(new EncryptionIdentity().withEncryptionUserAssignedIdentity("im")))
+            .withNetworkAcls(new NetworkRuleSet().withVirtualNetworkRules(Arrays.asList(new VirtualNetworkRule()
+                .withVirtualNetworkResourceId(
+                    "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/virtualNetworks/{vnetName}/subnets/{subnetName}")
+                .withAction(Action.ALLOW))))
             .create();
     }
 

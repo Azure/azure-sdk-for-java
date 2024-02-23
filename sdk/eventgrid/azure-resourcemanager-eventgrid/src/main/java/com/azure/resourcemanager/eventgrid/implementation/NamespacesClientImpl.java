@@ -43,22 +43,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in NamespacesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NamespacesClient.
+ */
 public final class NamespacesClientImpl implements NamespacesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final NamespacesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final EventGridManagementClientImpl client;
 
     /**
      * Initializes an instance of NamespacesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     NamespacesClientImpl(EventGridManagementClientImpl client) {
-        this.service =
-            RestProxy.create(NamespacesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(NamespacesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -69,147 +75,106 @@ public final class NamespacesClientImpl implements NamespacesClient {
     @Host("{$host}")
     @ServiceInterface(name = "EventGridManagementC")
     public interface NamespacesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NamespaceInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<NamespaceInner>> getByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}")
-        @ExpectedResponses({200, 201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @QueryParam("api-version") String apiVersion,
-            @BodyParam("application/json") NamespaceInner namespaceInfo,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") NamespaceInner namespaceInfo,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") NamespaceUpdateParameters namespaceUpdateParameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.EventGrid/namespaces")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NamespacesListResult>> list(
-            @HostParam("$host") String endpoint,
-            @PathParam("subscriptionId") String subscriptionId,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<NamespacesListResult>> list(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NamespacesListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
+        Mono<Response<NamespacesListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @QueryParam("$filter") String filter,
-            @QueryParam("$top") Integer top,
-            @HeaderParam("Accept") String accept,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @QueryParam("$filter") String filter, @QueryParam("$top") Integer top, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/listKeys")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/listKeys")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<NamespaceSharedAccessKeysInner>> listSharedAccessKeys(
-            @HostParam("$host") String endpoint,
+        Mono<Response<NamespaceSharedAccessKeysInner>> listSharedAccessKeys(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/regenerateKey")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.EventGrid/namespaces/{namespaceName}/regenerateKey")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> regenerateKey(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> regenerateKey(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("namespaceName") String namespaceName,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("namespaceName") String namespaceName,
             @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") NamespaceRegenerateKeyRequest regenerateKeyRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NamespacesListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<NamespacesListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Get a namespace.
-     *
-     * <p>Get properties of a namespace.
-     *
+     * 
+     * Get properties of a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -218,19 +183,15 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return properties of a namespace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NamespaceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String namespaceName) {
+    private Mono<Response<NamespaceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String namespaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -242,24 +203,16 @@ public final class NamespacesClientImpl implements NamespacesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            namespaceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, namespaceName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a namespace.
-     *
-     * <p>Get properties of a namespace.
-     *
+     * 
+     * Get properties of a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param context The context to associate with this operation.
@@ -269,19 +222,15 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return properties of a namespace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NamespaceInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String namespaceName, Context context) {
+    private Mono<Response<NamespaceInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String namespaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -292,22 +241,15 @@ public final class NamespacesClientImpl implements NamespacesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                namespaceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            namespaceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get a namespace.
-     *
-     * <p>Get properties of a namespace.
-     *
+     * 
+     * Get properties of a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -323,9 +265,9 @@ public final class NamespacesClientImpl implements NamespacesClient {
 
     /**
      * Get a namespace.
-     *
-     * <p>Get properties of a namespace.
-     *
+     * 
+     * Get properties of a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param context The context to associate with this operation.
@@ -335,16 +277,16 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return properties of a namespace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NamespaceInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String namespaceName, Context context) {
+    public Response<NamespaceInner> getByResourceGroupWithResponse(String resourceGroupName, String namespaceName,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, namespaceName, context).block();
     }
 
     /**
      * Get a namespace.
-     *
-     * <p>Get properties of a namespace.
-     *
+     * 
+     * Get properties of a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -359,9 +301,9 @@ public final class NamespacesClientImpl implements NamespacesClient {
 
     /**
      * Create or update a namespace.
-     *
-     * <p>Asynchronously creates or updates a new namespace with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new namespace with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param namespaceInfo Namespace information.
@@ -371,19 +313,15 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return namespace resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String namespaceName, NamespaceInner namespaceInfo) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String namespaceName, NamespaceInner namespaceInfo) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -399,26 +337,16 @@ public final class NamespacesClientImpl implements NamespacesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            namespaceName,
-                            this.client.getApiVersion(),
-                            namespaceInfo,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, namespaceName, this.client.getApiVersion(), namespaceInfo, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or update a namespace.
-     *
-     * <p>Asynchronously creates or updates a new namespace with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new namespace with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param namespaceInfo Namespace information.
@@ -429,19 +357,15 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return namespace resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String namespaceName, NamespaceInner namespaceInfo, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String namespaceName, NamespaceInner namespaceInfo, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -457,23 +381,15 @@ public final class NamespacesClientImpl implements NamespacesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                namespaceName,
-                this.client.getApiVersion(),
-                namespaceInfo,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            namespaceName, this.client.getApiVersion(), namespaceInfo, accept, context);
     }
 
     /**
      * Create or update a namespace.
-     *
-     * <p>Asynchronously creates or updates a new namespace with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new namespace with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param namespaceInfo Namespace information.
@@ -483,25 +399,19 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return the {@link PollerFlux} for polling of namespace resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NamespaceInner>, NamespaceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String namespaceName, NamespaceInner namespaceInfo) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, namespaceName, namespaceInfo);
-        return this
-            .client
-            .<NamespaceInner, NamespaceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NamespaceInner.class,
-                NamespaceInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<NamespaceInner>, NamespaceInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String namespaceName, NamespaceInner namespaceInfo) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, namespaceName, namespaceInfo);
+        return this.client.<NamespaceInner, NamespaceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            NamespaceInner.class, NamespaceInner.class, this.client.getContext());
     }
 
     /**
      * Create or update a namespace.
-     *
-     * <p>Asynchronously creates or updates a new namespace with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new namespace with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param namespaceInfo Namespace information.
@@ -512,22 +422,20 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return the {@link PollerFlux} for polling of namespace resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NamespaceInner>, NamespaceInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String namespaceName, NamespaceInner namespaceInfo, Context context) {
+    private PollerFlux<PollResult<NamespaceInner>, NamespaceInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String namespaceName, NamespaceInner namespaceInfo, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, namespaceName, namespaceInfo, context);
-        return this
-            .client
-            .<NamespaceInner, NamespaceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), NamespaceInner.class, NamespaceInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, namespaceName, namespaceInfo, context);
+        return this.client.<NamespaceInner, NamespaceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            NamespaceInner.class, NamespaceInner.class, context);
     }
 
     /**
      * Create or update a namespace.
-     *
-     * <p>Asynchronously creates or updates a new namespace with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new namespace with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param namespaceInfo Namespace information.
@@ -537,16 +445,16 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return the {@link SyncPoller} for polling of namespace resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NamespaceInner>, NamespaceInner> beginCreateOrUpdate(
-        String resourceGroupName, String namespaceName, NamespaceInner namespaceInfo) {
+    public SyncPoller<PollResult<NamespaceInner>, NamespaceInner> beginCreateOrUpdate(String resourceGroupName,
+        String namespaceName, NamespaceInner namespaceInfo) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, namespaceName, namespaceInfo).getSyncPoller();
     }
 
     /**
      * Create or update a namespace.
-     *
-     * <p>Asynchronously creates or updates a new namespace with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new namespace with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param namespaceInfo Namespace information.
@@ -557,16 +465,16 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return the {@link SyncPoller} for polling of namespace resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NamespaceInner>, NamespaceInner> beginCreateOrUpdate(
-        String resourceGroupName, String namespaceName, NamespaceInner namespaceInfo, Context context) {
+    public SyncPoller<PollResult<NamespaceInner>, NamespaceInner> beginCreateOrUpdate(String resourceGroupName,
+        String namespaceName, NamespaceInner namespaceInfo, Context context) {
         return this.beginCreateOrUpdateAsync(resourceGroupName, namespaceName, namespaceInfo, context).getSyncPoller();
     }
 
     /**
      * Create or update a namespace.
-     *
-     * <p>Asynchronously creates or updates a new namespace with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new namespace with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param namespaceInfo Namespace information.
@@ -576,18 +484,17 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return namespace resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NamespaceInner> createOrUpdateAsync(
-        String resourceGroupName, String namespaceName, NamespaceInner namespaceInfo) {
-        return beginCreateOrUpdateAsync(resourceGroupName, namespaceName, namespaceInfo)
-            .last()
+    private Mono<NamespaceInner> createOrUpdateAsync(String resourceGroupName, String namespaceName,
+        NamespaceInner namespaceInfo) {
+        return beginCreateOrUpdateAsync(resourceGroupName, namespaceName, namespaceInfo).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a namespace.
-     *
-     * <p>Asynchronously creates or updates a new namespace with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new namespace with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param namespaceInfo Namespace information.
@@ -598,18 +505,17 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return namespace resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NamespaceInner> createOrUpdateAsync(
-        String resourceGroupName, String namespaceName, NamespaceInner namespaceInfo, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, namespaceName, namespaceInfo, context)
-            .last()
+    private Mono<NamespaceInner> createOrUpdateAsync(String resourceGroupName, String namespaceName,
+        NamespaceInner namespaceInfo, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, namespaceName, namespaceInfo, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or update a namespace.
-     *
-     * <p>Asynchronously creates or updates a new namespace with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new namespace with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param namespaceInfo Namespace information.
@@ -625,9 +531,9 @@ public final class NamespacesClientImpl implements NamespacesClient {
 
     /**
      * Create or update a namespace.
-     *
-     * <p>Asynchronously creates or updates a new namespace with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new namespace with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param namespaceInfo Namespace information.
@@ -638,16 +544,16 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return namespace resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NamespaceInner createOrUpdate(
-        String resourceGroupName, String namespaceName, NamespaceInner namespaceInfo, Context context) {
+    public NamespaceInner createOrUpdate(String resourceGroupName, String namespaceName, NamespaceInner namespaceInfo,
+        Context context) {
         return createOrUpdateAsync(resourceGroupName, namespaceName, namespaceInfo, context).block();
     }
 
     /**
      * Delete a namespace.
-     *
-     * <p>Delete existing namespace.
-     *
+     * 
+     * Delete existing namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -658,16 +564,12 @@ public final class NamespacesClientImpl implements NamespacesClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String namespaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -678,25 +580,16 @@ public final class NamespacesClientImpl implements NamespacesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            namespaceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, namespaceName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a namespace.
-     *
-     * <p>Delete existing namespace.
-     *
+     * 
+     * Delete existing namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param context The context to associate with this operation.
@@ -706,19 +599,15 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String namespaceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String namespaceName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -729,22 +618,15 @@ public final class NamespacesClientImpl implements NamespacesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                namespaceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            namespaceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Delete a namespace.
-     *
-     * <p>Delete existing namespace.
-     *
+     * 
+     * Delete existing namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -755,17 +637,15 @@ public final class NamespacesClientImpl implements NamespacesClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String namespaceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, namespaceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a namespace.
-     *
-     * <p>Delete existing namespace.
-     *
+     * 
+     * Delete existing namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param context The context to associate with this operation.
@@ -775,20 +655,19 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String namespaceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String namespaceName,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, namespaceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a namespace.
-     *
-     * <p>Delete existing namespace.
-     *
+     * 
+     * Delete existing namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -803,9 +682,9 @@ public final class NamespacesClientImpl implements NamespacesClient {
 
     /**
      * Delete a namespace.
-     *
-     * <p>Delete existing namespace.
-     *
+     * 
+     * Delete existing namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param context The context to associate with this operation.
@@ -815,16 +694,16 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String namespaceName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName,
+        Context context) {
         return this.beginDeleteAsync(resourceGroupName, namespaceName, context).getSyncPoller();
     }
 
     /**
      * Delete a namespace.
-     *
-     * <p>Delete existing namespace.
-     *
+     * 
+     * Delete existing namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -839,9 +718,9 @@ public final class NamespacesClientImpl implements NamespacesClient {
 
     /**
      * Delete a namespace.
-     *
-     * <p>Delete existing namespace.
-     *
+     * 
+     * Delete existing namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param context The context to associate with this operation.
@@ -852,16 +731,15 @@ public final class NamespacesClientImpl implements NamespacesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String namespaceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, namespaceName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, namespaceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a namespace.
-     *
-     * <p>Delete existing namespace.
-     *
+     * 
+     * Delete existing namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -875,9 +753,9 @@ public final class NamespacesClientImpl implements NamespacesClient {
 
     /**
      * Delete a namespace.
-     *
-     * <p>Delete existing namespace.
-     *
+     * 
+     * Delete existing namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param context The context to associate with this operation.
@@ -892,9 +770,9 @@ public final class NamespacesClientImpl implements NamespacesClient {
 
     /**
      * Update a namespace.
-     *
-     * <p>Asynchronously updates a namespace with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a namespace with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param namespaceUpdateParameters Namespace update information.
@@ -904,19 +782,15 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return namespace resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String namespaceName, NamespaceUpdateParameters namespaceUpdateParameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String namespaceName,
+        NamespaceUpdateParameters namespaceUpdateParameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -926,35 +800,24 @@ public final class NamespacesClientImpl implements NamespacesClient {
             return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
         }
         if (namespaceUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter namespaceUpdateParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter namespaceUpdateParameters is required and cannot be null."));
         } else {
             namespaceUpdateParameters.validate();
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            namespaceName,
-                            this.client.getApiVersion(),
-                            namespaceUpdateParameters,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    namespaceName, this.client.getApiVersion(), namespaceUpdateParameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update a namespace.
-     *
-     * <p>Asynchronously updates a namespace with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a namespace with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param namespaceUpdateParameters Namespace update information.
@@ -965,22 +828,15 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return namespace resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String namespaceName,
-        NamespaceUpdateParameters namespaceUpdateParameters,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String namespaceName,
+        NamespaceUpdateParameters namespaceUpdateParameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -990,32 +846,22 @@ public final class NamespacesClientImpl implements NamespacesClient {
             return Mono.error(new IllegalArgumentException("Parameter namespaceName is required and cannot be null."));
         }
         if (namespaceUpdateParameters == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter namespaceUpdateParameters is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter namespaceUpdateParameters is required and cannot be null."));
         } else {
             namespaceUpdateParameters.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                namespaceName,
-                this.client.getApiVersion(),
-                namespaceUpdateParameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            namespaceName, this.client.getApiVersion(), namespaceUpdateParameters, accept, context);
     }
 
     /**
      * Update a namespace.
-     *
-     * <p>Asynchronously updates a namespace with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a namespace with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param namespaceUpdateParameters Namespace update information.
@@ -1025,25 +871,19 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return the {@link PollerFlux} for polling of namespace resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NamespaceInner>, NamespaceInner> beginUpdateAsync(
-        String resourceGroupName, String namespaceName, NamespaceUpdateParameters namespaceUpdateParameters) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, namespaceName, namespaceUpdateParameters);
-        return this
-            .client
-            .<NamespaceInner, NamespaceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NamespaceInner.class,
-                NamespaceInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<NamespaceInner>, NamespaceInner> beginUpdateAsync(String resourceGroupName,
+        String namespaceName, NamespaceUpdateParameters namespaceUpdateParameters) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, namespaceName, namespaceUpdateParameters);
+        return this.client.<NamespaceInner, NamespaceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            NamespaceInner.class, NamespaceInner.class, this.client.getContext());
     }
 
     /**
      * Update a namespace.
-     *
-     * <p>Asynchronously updates a namespace with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a namespace with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param namespaceUpdateParameters Namespace update information.
@@ -1054,25 +894,20 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return the {@link PollerFlux} for polling of namespace resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<NamespaceInner>, NamespaceInner> beginUpdateAsync(
-        String resourceGroupName,
-        String namespaceName,
-        NamespaceUpdateParameters namespaceUpdateParameters,
-        Context context) {
+    private PollerFlux<PollResult<NamespaceInner>, NamespaceInner> beginUpdateAsync(String resourceGroupName,
+        String namespaceName, NamespaceUpdateParameters namespaceUpdateParameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, namespaceName, namespaceUpdateParameters, context);
-        return this
-            .client
-            .<NamespaceInner, NamespaceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), NamespaceInner.class, NamespaceInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, namespaceName, namespaceUpdateParameters, context);
+        return this.client.<NamespaceInner, NamespaceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            NamespaceInner.class, NamespaceInner.class, context);
     }
 
     /**
      * Update a namespace.
-     *
-     * <p>Asynchronously updates a namespace with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a namespace with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param namespaceUpdateParameters Namespace update information.
@@ -1082,16 +917,16 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return the {@link SyncPoller} for polling of namespace resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NamespaceInner>, NamespaceInner> beginUpdate(
-        String resourceGroupName, String namespaceName, NamespaceUpdateParameters namespaceUpdateParameters) {
+    public SyncPoller<PollResult<NamespaceInner>, NamespaceInner> beginUpdate(String resourceGroupName,
+        String namespaceName, NamespaceUpdateParameters namespaceUpdateParameters) {
         return this.beginUpdateAsync(resourceGroupName, namespaceName, namespaceUpdateParameters).getSyncPoller();
     }
 
     /**
      * Update a namespace.
-     *
-     * <p>Asynchronously updates a namespace with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a namespace with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param namespaceUpdateParameters Namespace update information.
@@ -1102,21 +937,17 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return the {@link SyncPoller} for polling of namespace resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<NamespaceInner>, NamespaceInner> beginUpdate(
-        String resourceGroupName,
-        String namespaceName,
-        NamespaceUpdateParameters namespaceUpdateParameters,
-        Context context) {
-        return this
-            .beginUpdateAsync(resourceGroupName, namespaceName, namespaceUpdateParameters, context)
+    public SyncPoller<PollResult<NamespaceInner>, NamespaceInner> beginUpdate(String resourceGroupName,
+        String namespaceName, NamespaceUpdateParameters namespaceUpdateParameters, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, namespaceName, namespaceUpdateParameters, context)
             .getSyncPoller();
     }
 
     /**
      * Update a namespace.
-     *
-     * <p>Asynchronously updates a namespace with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a namespace with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param namespaceUpdateParameters Namespace update information.
@@ -1126,18 +957,17 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return namespace resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NamespaceInner> updateAsync(
-        String resourceGroupName, String namespaceName, NamespaceUpdateParameters namespaceUpdateParameters) {
-        return beginUpdateAsync(resourceGroupName, namespaceName, namespaceUpdateParameters)
-            .last()
+    private Mono<NamespaceInner> updateAsync(String resourceGroupName, String namespaceName,
+        NamespaceUpdateParameters namespaceUpdateParameters) {
+        return beginUpdateAsync(resourceGroupName, namespaceName, namespaceUpdateParameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update a namespace.
-     *
-     * <p>Asynchronously updates a namespace with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a namespace with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param namespaceUpdateParameters Namespace update information.
@@ -1148,21 +978,17 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return namespace resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NamespaceInner> updateAsync(
-        String resourceGroupName,
-        String namespaceName,
-        NamespaceUpdateParameters namespaceUpdateParameters,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, namespaceName, namespaceUpdateParameters, context)
-            .last()
+    private Mono<NamespaceInner> updateAsync(String resourceGroupName, String namespaceName,
+        NamespaceUpdateParameters namespaceUpdateParameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, namespaceName, namespaceUpdateParameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update a namespace.
-     *
-     * <p>Asynchronously updates a namespace with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a namespace with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param namespaceUpdateParameters Namespace update information.
@@ -1172,16 +998,16 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return namespace resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NamespaceInner update(
-        String resourceGroupName, String namespaceName, NamespaceUpdateParameters namespaceUpdateParameters) {
+    public NamespaceInner update(String resourceGroupName, String namespaceName,
+        NamespaceUpdateParameters namespaceUpdateParameters) {
         return updateAsync(resourceGroupName, namespaceName, namespaceUpdateParameters).block();
     }
 
     /**
      * Update a namespace.
-     *
-     * <p>Asynchronously updates a namespace with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a namespace with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param namespaceUpdateParameters Namespace update information.
@@ -1192,141 +1018,98 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return namespace resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NamespaceInner update(
-        String resourceGroupName,
-        String namespaceName,
-        NamespaceUpdateParameters namespaceUpdateParameters,
-        Context context) {
+    public NamespaceInner update(String resourceGroupName, String namespaceName,
+        NamespaceUpdateParameters namespaceUpdateParameters, Context context) {
         return updateAsync(resourceGroupName, namespaceName, namespaceUpdateParameters, context).block();
     }
 
     /**
      * List namespaces under an Azure subscription.
-     *
-     * <p>List all the namespaces under an Azure subscription.
-     *
+     * 
+     * List all the namespaces under an Azure subscription.
+     * 
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Namespaces operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NamespaceInner>> listSinglePageAsync(String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            this.client.getApiVersion(),
-                            filter,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<NamespaceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                this.client.getApiVersion(), filter, top, accept, context))
+            .<PagedResponse<NamespaceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List namespaces under an Azure subscription.
-     *
-     * <p>List all the namespaces under an Azure subscription.
-     *
+     * 
+     * List all the namespaces under an Azure subscription.
+     * 
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Namespaces operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NamespaceInner>> listSinglePageAsync(String filter, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                this.client.getApiVersion(),
-                filter,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), this.client.getApiVersion(), filter, top,
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List namespaces under an Azure subscription.
-     *
-     * <p>List all the namespaces under an Azure subscription.
-     *
+     * 
+     * List all the namespaces under an Azure subscription.
+     * 
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1334,15 +1117,15 @@ public final class NamespacesClientImpl implements NamespacesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NamespaceInner> listAsync(String filter, Integer top) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, top), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, top),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * List namespaces under an Azure subscription.
-     *
-     * <p>List all the namespaces under an Azure subscription.
-     *
+     * 
+     * List all the namespaces under an Azure subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Namespaces operation as paginated response with {@link PagedFlux}.
@@ -1351,23 +1134,22 @@ public final class NamespacesClientImpl implements NamespacesClient {
     private PagedFlux<NamespaceInner> listAsync() {
         final String filter = null;
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, top), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, top),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * List namespaces under an Azure subscription.
-     *
-     * <p>List all the namespaces under an Azure subscription.
-     *
+     * 
+     * List all the namespaces under an Azure subscription.
+     * 
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1376,16 +1158,15 @@ public final class NamespacesClientImpl implements NamespacesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NamespaceInner> listAsync(String filter, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(filter, top, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(filter, top, context),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List namespaces under an Azure subscription.
-     *
-     * <p>List all the namespaces under an Azure subscription.
-     *
+     * 
+     * List all the namespaces under an Azure subscription.
+     * 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Namespaces operation as paginated response with {@link PagedIterable}.
@@ -1399,17 +1180,16 @@ public final class NamespacesClientImpl implements NamespacesClient {
 
     /**
      * List namespaces under an Azure subscription.
-     *
-     * <p>List all the namespaces under an Azure subscription.
-     *
+     * 
+     * List all the namespaces under an Azure subscription.
+     * 
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1423,38 +1203,33 @@ public final class NamespacesClientImpl implements NamespacesClient {
 
     /**
      * List namespaces under a resource group.
-     *
-     * <p>List all the namespaces under a resource group.
-     *
+     * 
+     * List all the namespaces under a resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Namespaces operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NamespaceInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String filter, Integer top) {
+    private Mono<PagedResponse<NamespaceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        String filter, Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1463,64 +1238,43 @@ public final class NamespacesClientImpl implements NamespacesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            filter,
-                            top,
-                            accept,
-                            context))
-            .<PagedResponse<NamespaceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+                context -> service.listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, this.client.getApiVersion(), filter, top, accept, context))
+            .<PagedResponse<NamespaceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List namespaces under a resource group.
-     *
-     * <p>List all the namespaces under a resource group.
-     *
+     * 
+     * List all the namespaces under a resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Namespaces operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NamespaceInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, String filter, Integer top, Context context) {
+    private Mono<PagedResponse<NamespaceInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        String filter, Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1529,40 +1283,25 @@ public final class NamespacesClientImpl implements NamespacesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                filter,
-                top,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                this.client.getApiVersion(), filter, top, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List namespaces under a resource group.
-     *
-     * <p>List all the namespaces under a resource group.
-     *
+     * 
+     * List all the namespaces under a resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1570,16 +1309,15 @@ public final class NamespacesClientImpl implements NamespacesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<NamespaceInner> listByResourceGroupAsync(String resourceGroupName, String filter, Integer top) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * List namespaces under a resource group.
-     *
-     * <p>List all the namespaces under a resource group.
-     *
+     * 
+     * List all the namespaces under a resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1590,25 +1328,23 @@ public final class NamespacesClientImpl implements NamespacesClient {
     private PagedFlux<NamespaceInner> listByResourceGroupAsync(String resourceGroupName) {
         final String filter = null;
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * List namespaces under a resource group.
-     *
-     * <p>List all the namespaces under a resource group.
-     *
+     * 
+     * List all the namespaces under a resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1616,18 +1352,17 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return result of the List Namespaces operation as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<NamespaceInner> listByResourceGroupAsync(
-        String resourceGroupName, String filter, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top, context),
+    private PagedFlux<NamespaceInner> listByResourceGroupAsync(String resourceGroupName, String filter, Integer top,
+        Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, filter, top, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List namespaces under a resource group.
-     *
-     * <p>List all the namespaces under a resource group.
-     *
+     * 
+     * List all the namespaces under a resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1643,18 +1378,17 @@ public final class NamespacesClientImpl implements NamespacesClient {
 
     /**
      * List namespaces under a resource group.
-     *
-     * <p>List all the namespaces under a resource group.
-     *
+     * 
+     * List all the namespaces under a resource group.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1662,16 +1396,16 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return result of the List Namespaces operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<NamespaceInner> listByResourceGroup(
-        String resourceGroupName, String filter, Integer top, Context context) {
+    public PagedIterable<NamespaceInner> listByResourceGroup(String resourceGroupName, String filter, Integer top,
+        Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, filter, top, context));
     }
 
     /**
      * List keys for a namespace.
-     *
-     * <p>List the two keys used to publish to a namespace.
-     *
+     * 
+     * List the two keys used to publish to a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1680,19 +1414,15 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return shared access keys of the Namespace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NamespaceSharedAccessKeysInner>> listSharedAccessKeysWithResponseAsync(
-        String resourceGroupName, String namespaceName) {
+    private Mono<Response<NamespaceSharedAccessKeysInner>>
+        listSharedAccessKeysWithResponseAsync(String resourceGroupName, String namespaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1704,24 +1434,16 @@ public final class NamespacesClientImpl implements NamespacesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .listSharedAccessKeys(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            namespaceName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.listSharedAccessKeys(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, namespaceName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List keys for a namespace.
-     *
-     * <p>List the two keys used to publish to a namespace.
-     *
+     * 
+     * List the two keys used to publish to a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param context The context to associate with this operation.
@@ -1731,19 +1453,15 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return shared access keys of the Namespace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<NamespaceSharedAccessKeysInner>> listSharedAccessKeysWithResponseAsync(
-        String resourceGroupName, String namespaceName, Context context) {
+    private Mono<Response<NamespaceSharedAccessKeysInner>>
+        listSharedAccessKeysWithResponseAsync(String resourceGroupName, String namespaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1754,22 +1472,15 @@ public final class NamespacesClientImpl implements NamespacesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listSharedAccessKeys(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                namespaceName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.listSharedAccessKeys(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, namespaceName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * List keys for a namespace.
-     *
-     * <p>List the two keys used to publish to a namespace.
-     *
+     * 
+     * List the two keys used to publish to a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1778,17 +1489,17 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return shared access keys of the Namespace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NamespaceSharedAccessKeysInner> listSharedAccessKeysAsync(
-        String resourceGroupName, String namespaceName) {
+    private Mono<NamespaceSharedAccessKeysInner> listSharedAccessKeysAsync(String resourceGroupName,
+        String namespaceName) {
         return listSharedAccessKeysWithResponseAsync(resourceGroupName, namespaceName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * List keys for a namespace.
-     *
-     * <p>List the two keys used to publish to a namespace.
-     *
+     * 
+     * List the two keys used to publish to a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param context The context to associate with this operation.
@@ -1798,16 +1509,16 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return shared access keys of the Namespace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<NamespaceSharedAccessKeysInner> listSharedAccessKeysWithResponse(
-        String resourceGroupName, String namespaceName, Context context) {
+    public Response<NamespaceSharedAccessKeysInner> listSharedAccessKeysWithResponse(String resourceGroupName,
+        String namespaceName, Context context) {
         return listSharedAccessKeysWithResponseAsync(resourceGroupName, namespaceName, context).block();
     }
 
     /**
      * List keys for a namespace.
-     *
-     * <p>List the two keys used to publish to a namespace.
-     *
+     * 
+     * List the two keys used to publish to a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1822,9 +1533,9 @@ public final class NamespacesClientImpl implements NamespacesClient {
 
     /**
      * Regenerate key for a namespace.
-     *
-     * <p>Regenerate a shared access key for a namespace.
-     *
+     * 
+     * Regenerate a shared access key for a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the Namespace.
      * @param regenerateKeyRequest Request body to regenerate key.
@@ -1834,19 +1545,15 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return shared access keys of the Namespace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> regenerateKeyWithResponseAsync(
-        String resourceGroupName, String namespaceName, NamespaceRegenerateKeyRequest regenerateKeyRequest) {
+    private Mono<Response<Flux<ByteBuffer>>> regenerateKeyWithResponseAsync(String resourceGroupName,
+        String namespaceName, NamespaceRegenerateKeyRequest regenerateKeyRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1863,26 +1570,16 @@ public final class NamespacesClientImpl implements NamespacesClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .regenerateKey(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            namespaceName,
-                            this.client.getApiVersion(),
-                            regenerateKeyRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.regenerateKey(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, namespaceName, this.client.getApiVersion(), regenerateKeyRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Regenerate key for a namespace.
-     *
-     * <p>Regenerate a shared access key for a namespace.
-     *
+     * 
+     * Regenerate a shared access key for a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the Namespace.
      * @param regenerateKeyRequest Request body to regenerate key.
@@ -1893,22 +1590,15 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return shared access keys of the Namespace along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> regenerateKeyWithResponseAsync(
-        String resourceGroupName,
-        String namespaceName,
-        NamespaceRegenerateKeyRequest regenerateKeyRequest,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> regenerateKeyWithResponseAsync(String resourceGroupName,
+        String namespaceName, NamespaceRegenerateKeyRequest regenerateKeyRequest, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1925,23 +1615,15 @@ public final class NamespacesClientImpl implements NamespacesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .regenerateKey(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                namespaceName,
-                this.client.getApiVersion(),
-                regenerateKeyRequest,
-                accept,
-                context);
+        return service.regenerateKey(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            namespaceName, this.client.getApiVersion(), regenerateKeyRequest, accept, context);
     }
 
     /**
      * Regenerate key for a namespace.
-     *
-     * <p>Regenerate a shared access key for a namespace.
-     *
+     * 
+     * Regenerate a shared access key for a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the Namespace.
      * @param regenerateKeyRequest Request body to regenerate key.
@@ -1952,25 +1634,20 @@ public final class NamespacesClientImpl implements NamespacesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NamespaceSharedAccessKeysInner>, NamespaceSharedAccessKeysInner>
-        beginRegenerateKeyAsync(
-            String resourceGroupName, String namespaceName, NamespaceRegenerateKeyRequest regenerateKeyRequest) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            regenerateKeyWithResponseAsync(resourceGroupName, namespaceName, regenerateKeyRequest);
-        return this
-            .client
-            .<NamespaceSharedAccessKeysInner, NamespaceSharedAccessKeysInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NamespaceSharedAccessKeysInner.class,
-                NamespaceSharedAccessKeysInner.class,
-                this.client.getContext());
+        beginRegenerateKeyAsync(String resourceGroupName, String namespaceName,
+            NamespaceRegenerateKeyRequest regenerateKeyRequest) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = regenerateKeyWithResponseAsync(resourceGroupName, namespaceName, regenerateKeyRequest);
+        return this.client.<NamespaceSharedAccessKeysInner, NamespaceSharedAccessKeysInner>getLroResult(mono,
+            this.client.getHttpPipeline(), NamespaceSharedAccessKeysInner.class, NamespaceSharedAccessKeysInner.class,
+            this.client.getContext());
     }
 
     /**
      * Regenerate key for a namespace.
-     *
-     * <p>Regenerate a shared access key for a namespace.
-     *
+     * 
+     * Regenerate a shared access key for a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the Namespace.
      * @param regenerateKeyRequest Request body to regenerate key.
@@ -1982,29 +1659,21 @@ public final class NamespacesClientImpl implements NamespacesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<NamespaceSharedAccessKeysInner>, NamespaceSharedAccessKeysInner>
-        beginRegenerateKeyAsync(
-            String resourceGroupName,
-            String namespaceName,
-            NamespaceRegenerateKeyRequest regenerateKeyRequest,
-            Context context) {
+        beginRegenerateKeyAsync(String resourceGroupName, String namespaceName,
+            NamespaceRegenerateKeyRequest regenerateKeyRequest, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            regenerateKeyWithResponseAsync(resourceGroupName, namespaceName, regenerateKeyRequest, context);
-        return this
-            .client
-            .<NamespaceSharedAccessKeysInner, NamespaceSharedAccessKeysInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                NamespaceSharedAccessKeysInner.class,
-                NamespaceSharedAccessKeysInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = regenerateKeyWithResponseAsync(resourceGroupName, namespaceName, regenerateKeyRequest, context);
+        return this.client.<NamespaceSharedAccessKeysInner, NamespaceSharedAccessKeysInner>getLroResult(mono,
+            this.client.getHttpPipeline(), NamespaceSharedAccessKeysInner.class, NamespaceSharedAccessKeysInner.class,
+            context);
     }
 
     /**
      * Regenerate key for a namespace.
-     *
-     * <p>Regenerate a shared access key for a namespace.
-     *
+     * 
+     * Regenerate a shared access key for a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the Namespace.
      * @param regenerateKeyRequest Request body to regenerate key.
@@ -2021,9 +1690,9 @@ public final class NamespacesClientImpl implements NamespacesClient {
 
     /**
      * Regenerate key for a namespace.
-     *
-     * <p>Regenerate a shared access key for a namespace.
-     *
+     * 
+     * Regenerate a shared access key for a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the Namespace.
      * @param regenerateKeyRequest Request body to regenerate key.
@@ -2035,20 +1704,17 @@ public final class NamespacesClientImpl implements NamespacesClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<NamespaceSharedAccessKeysInner>, NamespaceSharedAccessKeysInner> beginRegenerateKey(
-        String resourceGroupName,
-        String namespaceName,
-        NamespaceRegenerateKeyRequest regenerateKeyRequest,
+        String resourceGroupName, String namespaceName, NamespaceRegenerateKeyRequest regenerateKeyRequest,
         Context context) {
-        return this
-            .beginRegenerateKeyAsync(resourceGroupName, namespaceName, regenerateKeyRequest, context)
+        return this.beginRegenerateKeyAsync(resourceGroupName, namespaceName, regenerateKeyRequest, context)
             .getSyncPoller();
     }
 
     /**
      * Regenerate key for a namespace.
-     *
-     * <p>Regenerate a shared access key for a namespace.
-     *
+     * 
+     * Regenerate a shared access key for a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the Namespace.
      * @param regenerateKeyRequest Request body to regenerate key.
@@ -2058,18 +1724,17 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return shared access keys of the Namespace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NamespaceSharedAccessKeysInner> regenerateKeyAsync(
-        String resourceGroupName, String namespaceName, NamespaceRegenerateKeyRequest regenerateKeyRequest) {
-        return beginRegenerateKeyAsync(resourceGroupName, namespaceName, regenerateKeyRequest)
-            .last()
+    private Mono<NamespaceSharedAccessKeysInner> regenerateKeyAsync(String resourceGroupName, String namespaceName,
+        NamespaceRegenerateKeyRequest regenerateKeyRequest) {
+        return beginRegenerateKeyAsync(resourceGroupName, namespaceName, regenerateKeyRequest).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Regenerate key for a namespace.
-     *
-     * <p>Regenerate a shared access key for a namespace.
-     *
+     * 
+     * Regenerate a shared access key for a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the Namespace.
      * @param regenerateKeyRequest Request body to regenerate key.
@@ -2080,21 +1745,17 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return shared access keys of the Namespace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<NamespaceSharedAccessKeysInner> regenerateKeyAsync(
-        String resourceGroupName,
-        String namespaceName,
-        NamespaceRegenerateKeyRequest regenerateKeyRequest,
-        Context context) {
-        return beginRegenerateKeyAsync(resourceGroupName, namespaceName, regenerateKeyRequest, context)
-            .last()
+    private Mono<NamespaceSharedAccessKeysInner> regenerateKeyAsync(String resourceGroupName, String namespaceName,
+        NamespaceRegenerateKeyRequest regenerateKeyRequest, Context context) {
+        return beginRegenerateKeyAsync(resourceGroupName, namespaceName, regenerateKeyRequest, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Regenerate key for a namespace.
-     *
-     * <p>Regenerate a shared access key for a namespace.
-     *
+     * 
+     * Regenerate a shared access key for a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the Namespace.
      * @param regenerateKeyRequest Request body to regenerate key.
@@ -2104,16 +1765,16 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return shared access keys of the Namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NamespaceSharedAccessKeysInner regenerateKey(
-        String resourceGroupName, String namespaceName, NamespaceRegenerateKeyRequest regenerateKeyRequest) {
+    public NamespaceSharedAccessKeysInner regenerateKey(String resourceGroupName, String namespaceName,
+        NamespaceRegenerateKeyRequest regenerateKeyRequest) {
         return regenerateKeyAsync(resourceGroupName, namespaceName, regenerateKeyRequest).block();
     }
 
     /**
      * Regenerate key for a namespace.
-     *
-     * <p>Regenerate a shared access key for a namespace.
-     *
+     * 
+     * Regenerate a shared access key for a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the Namespace.
      * @param regenerateKeyRequest Request body to regenerate key.
@@ -2124,24 +1785,22 @@ public final class NamespacesClientImpl implements NamespacesClient {
      * @return shared access keys of the Namespace.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public NamespaceSharedAccessKeysInner regenerateKey(
-        String resourceGroupName,
-        String namespaceName,
-        NamespaceRegenerateKeyRequest regenerateKeyRequest,
-        Context context) {
+    public NamespaceSharedAccessKeysInner regenerateKey(String resourceGroupName, String namespaceName,
+        NamespaceRegenerateKeyRequest regenerateKeyRequest, Context context) {
         return regenerateKeyAsync(resourceGroupName, namespaceName, regenerateKeyRequest, context).block();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Namespaces operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NamespaceInner>> listBySubscriptionNextSinglePageAsync(String nextLink) {
@@ -2149,76 +1808,59 @@ public final class NamespacesClientImpl implements NamespacesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NamespaceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<NamespaceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Namespaces operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NamespaceInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<NamespaceInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Namespaces operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<NamespaceInner>> listByResourceGroupNextSinglePageAsync(String nextLink) {
@@ -2226,63 +1868,45 @@ public final class NamespacesClientImpl implements NamespacesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<NamespaceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<NamespaceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the List Namespaces operation along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<NamespaceInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<NamespaceInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

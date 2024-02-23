@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Virtual IP mapping. */
+/**
+ * Virtual IP mapping.
+ */
 @Fluent
 public final class VirtualIpMapping {
     /*
@@ -40,13 +42,15 @@ public final class VirtualIpMapping {
     @JsonProperty(value = "serviceName")
     private String serviceName;
 
-    /** Creates an instance of VirtualIpMapping class. */
+    /**
+     * Creates an instance of VirtualIpMapping class.
+     */
     public VirtualIpMapping() {
     }
 
     /**
      * Get the virtualIp property: Virtual IP address.
-     *
+     * 
      * @return the virtualIp value.
      */
     public String virtualIp() {
@@ -55,7 +59,7 @@ public final class VirtualIpMapping {
 
     /**
      * Set the virtualIp property: Virtual IP address.
-     *
+     * 
      * @param virtualIp the virtualIp value to set.
      * @return the VirtualIpMapping object itself.
      */
@@ -66,7 +70,7 @@ public final class VirtualIpMapping {
 
     /**
      * Get the internalHttpPort property: Internal HTTP port.
-     *
+     * 
      * @return the internalHttpPort value.
      */
     public Integer internalHttpPort() {
@@ -75,7 +79,7 @@ public final class VirtualIpMapping {
 
     /**
      * Set the internalHttpPort property: Internal HTTP port.
-     *
+     * 
      * @param internalHttpPort the internalHttpPort value to set.
      * @return the VirtualIpMapping object itself.
      */
@@ -86,7 +90,7 @@ public final class VirtualIpMapping {
 
     /**
      * Get the internalHttpsPort property: Internal HTTPS port.
-     *
+     * 
      * @return the internalHttpsPort value.
      */
     public Integer internalHttpsPort() {
@@ -95,7 +99,7 @@ public final class VirtualIpMapping {
 
     /**
      * Set the internalHttpsPort property: Internal HTTPS port.
-     *
+     * 
      * @param internalHttpsPort the internalHttpsPort value to set.
      * @return the VirtualIpMapping object itself.
      */
@@ -106,7 +110,7 @@ public final class VirtualIpMapping {
 
     /**
      * Get the inUse property: Is virtual IP mapping in use.
-     *
+     * 
      * @return the inUse value.
      */
     public Boolean inUse() {
@@ -115,7 +119,7 @@ public final class VirtualIpMapping {
 
     /**
      * Set the inUse property: Is virtual IP mapping in use.
-     *
+     * 
      * @param inUse the inUse value to set.
      * @return the VirtualIpMapping object itself.
      */
@@ -126,7 +130,7 @@ public final class VirtualIpMapping {
 
     /**
      * Get the serviceName property: name of the service that virtual IP is assigned to.
-     *
+     * 
      * @return the serviceName value.
      */
     public String serviceName() {
@@ -135,7 +139,7 @@ public final class VirtualIpMapping {
 
     /**
      * Set the serviceName property: name of the service that virtual IP is assigned to.
-     *
+     * 
      * @param serviceName the serviceName value to set.
      * @return the VirtualIpMapping object itself.
      */
@@ -146,7 +150,7 @@ public final class VirtualIpMapping {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of BackupPolicies. */
+/**
+ * Resource collection API of BackupPolicies.
+ */
 public interface BackupPolicies {
     /**
      * Returns list of backup policies belonging to a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface BackupPolicies {
 
     /**
      * Returns list of backup policies belonging to a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
@@ -37,7 +39,7 @@ public interface BackupPolicies {
 
     /**
      * Gets a backup policy belonging to a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupPolicyName The backupPolicyName parameter.
@@ -47,12 +49,12 @@ public interface BackupPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a backup policy belonging to a backup vault along with {@link Response}.
      */
-    Response<BaseBackupPolicyResource> getWithResponse(
-        String resourceGroupName, String vaultName, String backupPolicyName, Context context);
+    Response<BaseBackupPolicyResource> getWithResponse(String resourceGroupName, String vaultName,
+        String backupPolicyName, Context context);
 
     /**
      * Gets a backup policy belonging to a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupPolicyName The backupPolicyName parameter.
@@ -65,7 +67,7 @@ public interface BackupPolicies {
 
     /**
      * Deletes a backup policy belonging to a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupPolicyName The backupPolicyName parameter.
@@ -75,12 +77,12 @@ public interface BackupPolicies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String vaultName, String backupPolicyName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String vaultName, String backupPolicyName,
+        Context context);
 
     /**
      * Deletes a backup policy belonging to a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupPolicyName The backupPolicyName parameter.
@@ -92,7 +94,7 @@ public interface BackupPolicies {
 
     /**
      * Gets a backup policy belonging to a backup vault.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -103,7 +105,7 @@ public interface BackupPolicies {
 
     /**
      * Gets a backup policy belonging to a backup vault.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -115,7 +117,7 @@ public interface BackupPolicies {
 
     /**
      * Deletes a backup policy belonging to a backup vault.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -125,7 +127,7 @@ public interface BackupPolicies {
 
     /**
      * Deletes a backup policy belonging to a backup vault.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -137,7 +139,7 @@ public interface BackupPolicies {
 
     /**
      * Begins definition for a new BaseBackupPolicyResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new BaseBackupPolicyResource definition.
      */

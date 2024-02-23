@@ -69,7 +69,7 @@ private[spark] class ItemsReadOnlyTable(val sparkSession: SparkSession,
   protected val tableName: String = s"com.azure.cosmos.spark.items.${clientConfig.accountName}." +
     s"${cosmosContainerConfig.database}.${cosmosContainerConfig.container}"
   protected val sparkEnvironmentInfo: String = CosmosClientConfiguration.getSparkEnvironmentInfo(Some(sparkSession))
-  log.logInfo(s"Instantiated ${this.getClass.getSimpleName} for $tableName")
+  log.logTrace(s"Instantiated ${this.getClass.getSimpleName} for $tableName")
   //scalastyle:on multiple.string.literals
 
   override def name(): String = tableName

@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CurrentUsagesBaseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CurrentUsagesBaseInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"usages\":{\"value\":304908421,\"usagesType\":\"Individual\"},\"unit\":\"gjxpybczmehmt\",\"name\":{\"value\":\"bsphrupidgsybbe\",\"localizedValue\":\"ph\"},\"resourceType\":\"cmsxaobhdxbm\",\"quotaPeriod\":\"ioq\",\"isQuotaApplicable\":false,\"properties\":\"datatbmufpo\"},\"id\":\"noi\",\"name\":\"hwlrx\",\"type\":\"bqsoqijg\"}")
-                .toObject(CurrentUsagesBaseInner.class);
+        CurrentUsagesBaseInner model = BinaryData.fromString(
+            "{\"properties\":{\"usages\":{\"value\":304908421,\"usagesType\":\"Individual\"},\"unit\":\"gjxpybczmehmt\",\"name\":{\"value\":\"bsphrupidgsybbe\",\"localizedValue\":\"ph\"},\"resourceType\":\"cmsxaobhdxbm\",\"quotaPeriod\":\"ioq\",\"isQuotaApplicable\":false,\"properties\":\"datatbmufpo\"},\"id\":\"noi\",\"name\":\"hwlrx\",\"type\":\"bqsoqijg\"}")
+            .toObject(CurrentUsagesBaseInner.class);
         Assertions.assertEquals(304908421, model.properties().usages().value());
         Assertions.assertEquals(UsagesTypes.INDIVIDUAL, model.properties().usages().usagesType());
         Assertions.assertEquals("bsphrupidgsybbe", model.properties().name().value());
@@ -28,14 +26,10 @@ public final class CurrentUsagesBaseInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CurrentUsagesBaseInner model =
-            new CurrentUsagesBaseInner()
-                .withProperties(
-                    new UsagesProperties()
-                        .withUsages(new UsagesObject().withValue(304908421).withUsagesType(UsagesTypes.INDIVIDUAL))
-                        .withName(new ResourceName().withValue("bsphrupidgsybbe"))
-                        .withResourceType("cmsxaobhdxbm")
-                        .withProperties("datatbmufpo"));
+        CurrentUsagesBaseInner model = new CurrentUsagesBaseInner().withProperties(new UsagesProperties()
+            .withUsages(new UsagesObject().withValue(304908421).withUsagesType(UsagesTypes.INDIVIDUAL))
+            .withName(new ResourceName().withValue("bsphrupidgsybbe")).withResourceType("cmsxaobhdxbm")
+            .withProperties("datatbmufpo"));
         model = BinaryData.fromObject(model).toObject(CurrentUsagesBaseInner.class);
         Assertions.assertEquals(304908421, model.properties().usages().value());
         Assertions.assertEquals(UsagesTypes.INDIVIDUAL, model.properties().usages().usagesType());

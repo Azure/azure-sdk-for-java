@@ -7,7 +7,9 @@ package com.azure.resourcemanager.eventgrid.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Routing identity info for topic spaces configuration. */
+/**
+ * Routing identity info for topic spaces configuration.
+ */
 @Fluent
 public final class RoutingIdentityInfo {
     /*
@@ -22,13 +24,15 @@ public final class RoutingIdentityInfo {
     @JsonProperty(value = "userAssignedIdentity")
     private String userAssignedIdentity;
 
-    /** Creates an instance of RoutingIdentityInfo class. */
+    /**
+     * Creates an instance of RoutingIdentityInfo class.
+     */
     public RoutingIdentityInfo() {
     }
 
     /**
      * Get the type property: The type property.
-     *
+     * 
      * @return the type value.
      */
     public RoutingIdentityType type() {
@@ -37,7 +41,7 @@ public final class RoutingIdentityInfo {
 
     /**
      * Set the type property: The type property.
-     *
+     * 
      * @param type the type value to set.
      * @return the RoutingIdentityInfo object itself.
      */
@@ -48,7 +52,7 @@ public final class RoutingIdentityInfo {
 
     /**
      * Get the userAssignedIdentity property: The userAssignedIdentity property.
-     *
+     * 
      * @return the userAssignedIdentity value.
      */
     public String userAssignedIdentity() {
@@ -57,7 +61,7 @@ public final class RoutingIdentityInfo {
 
     /**
      * Set the userAssignedIdentity property: The userAssignedIdentity property.
-     *
+     * 
      * @param userAssignedIdentity the userAssignedIdentity value to set.
      * @return the RoutingIdentityInfo object itself.
      */
@@ -68,7 +72,7 @@ public final class RoutingIdentityInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

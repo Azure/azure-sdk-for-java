@@ -14,6 +14,8 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.resourcemanager.servicefabric.ServiceFabricManager;
 import com.azure.resourcemanager.servicefabric.models.ArmServicePackageActivationMode;
 import com.azure.resourcemanager.servicefabric.models.MoveCost;
+import com.azure.resourcemanager.servicefabric.models.ServiceCorrelationScheme;
+import com.azure.resourcemanager.servicefabric.models.ServiceLoadMetricWeight;
 import com.azure.resourcemanager.servicefabric.models.ServiceResource;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -32,50 +34,44 @@ public final class ServicesGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"serviceKind\":\"ServiceResourceProperties\",\"provisioningState\":\"kudzpxgwj\",\"serviceTypeName\":\"mag\",\"partitionDescription\":{\"partitionScheme\":\"PartitionSchemeDescription\"},\"servicePackageActivationMode\":\"ExclusiveProcess\",\"serviceDnsName\":\"hpfkyrkdbdgi\",\"placementConstraints\":\"sjkmnwqj\",\"correlationScheme\":[],\"serviceLoadMetrics\":[],\"servicePlacementPolicies\":[],\"defaultMoveCost\":\"Zero\"},\"location\":\"iacegfnmn\",\"tags\":{\"vvbalx\":\"mvmemfnczd\",\"chp\":\"l\",\"evwrdnhfuk\":\"db\",\"fcvlerch\":\"vsjcswsmystuluqy\"},\"etag\":\"bm\",\"id\":\"jbabwidf\",\"name\":\"xsspuunnoxyhk\",\"type\":\"g\"}";
+        String responseStr
+            = "{\"properties\":{\"serviceKind\":\"ServiceResourceProperties\",\"provisioningState\":\"rqzz\",\"serviceTypeName\":\"jvpglydzgk\",\"partitionDescription\":{\"partitionScheme\":\"PartitionSchemeDescription\"},\"servicePackageActivationMode\":\"SharedProcess\",\"serviceDnsName\":\"vtoepryutnw\",\"placementConstraints\":\"pzdm\",\"correlationScheme\":[{\"scheme\":\"Invalid\",\"serviceName\":\"fvaawzqa\"},{\"scheme\":\"Invalid\",\"serviceName\":\"lgzurig\"}],\"serviceLoadMetrics\":[{\"name\":\"cx\",\"weight\":\"Zero\",\"primaryDefaultLoad\":1221508981,\"secondaryDefaultLoad\":1691117977,\"defaultLoad\":675680646}],\"servicePlacementPolicies\":[{\"type\":\"ServicePlacementPolicyDescription\"},{\"type\":\"ServicePlacementPolicyDescription\"},{\"type\":\"ServicePlacementPolicyDescription\"}],\"defaultMoveCost\":\"Low\"},\"location\":\"mldgxobfirc\",\"tags\":{\"khyawfvjlboxqv\":\"kciayzri\"},\"etag\":\"lmxhomdyn\",\"id\":\"wdigumbnraauz\",\"name\":\"p\",\"type\":\"jazysdzhezwwvaiq\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ServiceFabricManager manager =
-            ServiceFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ServiceFabricManager manager = ServiceFabricManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ServiceResource response =
-            manager
-                .services()
-                .getWithResponse("b", "yvudtjuewbci", "xuuwhcj", "xccybvpa", com.azure.core.util.Context.NONE)
-                .getValue();
+        ServiceResource response = manager.services()
+            .getWithResponse("apeewchpxlkt", "kuziycsle", "ufuztcktyhjtq", "dcgzul", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("sjkmnwqj", response.properties().placementConstraints());
-        Assertions.assertEquals(MoveCost.ZERO, response.properties().defaultMoveCost());
-        Assertions.assertEquals("mag", response.properties().serviceTypeName());
-        Assertions
-            .assertEquals(
-                ArmServicePackageActivationMode.EXCLUSIVE_PROCESS,
-                response.properties().servicePackageActivationMode());
-        Assertions.assertEquals("hpfkyrkdbdgi", response.properties().serviceDnsName());
-        Assertions.assertEquals("iacegfnmn", response.location());
-        Assertions.assertEquals("mvmemfnczd", response.tags().get("vvbalx"));
+        Assertions.assertEquals("pzdm", response.properties().placementConstraints());
+        Assertions.assertEquals(ServiceCorrelationScheme.INVALID,
+            response.properties().correlationScheme().get(0).scheme());
+        Assertions.assertEquals("fvaawzqa", response.properties().correlationScheme().get(0).serviceName());
+        Assertions.assertEquals("cx", response.properties().serviceLoadMetrics().get(0).name());
+        Assertions.assertEquals(ServiceLoadMetricWeight.ZERO,
+            response.properties().serviceLoadMetrics().get(0).weight());
+        Assertions.assertEquals(1221508981, response.properties().serviceLoadMetrics().get(0).primaryDefaultLoad());
+        Assertions.assertEquals(1691117977, response.properties().serviceLoadMetrics().get(0).secondaryDefaultLoad());
+        Assertions.assertEquals(675680646, response.properties().serviceLoadMetrics().get(0).defaultLoad());
+        Assertions.assertEquals(MoveCost.LOW, response.properties().defaultMoveCost());
+        Assertions.assertEquals("jvpglydzgk", response.properties().serviceTypeName());
+        Assertions.assertEquals(ArmServicePackageActivationMode.SHARED_PROCESS,
+            response.properties().servicePackageActivationMode());
+        Assertions.assertEquals("vtoepryutnw", response.properties().serviceDnsName());
+        Assertions.assertEquals("mldgxobfirc", response.location());
+        Assertions.assertEquals("kciayzri", response.tags().get("khyawfvjlboxqv"));
     }
 }

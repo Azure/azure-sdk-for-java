@@ -59,13 +59,13 @@ public class RouterJobLiveTests extends JobRouterTestBase {
          */
         Map<String, RouterValue> labels = new HashMap<String, RouterValue>() {
             {
-                put("Label", new RouterValue("Value", null, null, null));
+                put("Label", new RouterValue("Value"));
             }
         };
 
         Map<String, RouterValue> tags = new HashMap<String, RouterValue>() {
             {
-                put("Tag", new RouterValue("Value", null, null, null));
+                put("Tag", new RouterValue("Value"));
             }
         };
 
@@ -121,8 +121,13 @@ public class RouterJobLiveTests extends JobRouterTestBase {
         // Verify
         assertEquals(1, unassignJobResult.getUnassignmentCount());
 
+        RequestOptions requestOptions = new RequestOptions();
+        CancelJobOptions cancelJobOptions = new CancelJobOptions()
+            .setDispositionCode("dispositionCode")
+            .setNote("note");
+        requestOptions.setBody(BinaryData.fromObject(cancelJobOptions));
         // Cleanup
-        jobRouterClient.cancelJob(jobId, new CancelJobOptions().setNote("Done.").setDispositionCode("test"));
+        jobRouterClient.cancelJob(jobId, requestOptions);
         jobRouterClient.deleteJob(jobId);
         jobRouterClient.deleteWorker(workerId);
         routerAdminClient.deleteQueue(queueId);

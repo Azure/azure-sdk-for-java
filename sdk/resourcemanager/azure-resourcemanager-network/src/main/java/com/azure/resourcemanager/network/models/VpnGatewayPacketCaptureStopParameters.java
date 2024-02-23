@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Stop packet capture parameters. */
+/**
+ * Stop packet capture parameters.
+ */
 @Fluent
 public final class VpnGatewayPacketCaptureStopParameters {
     /*
@@ -16,13 +18,15 @@ public final class VpnGatewayPacketCaptureStopParameters {
     @JsonProperty(value = "sasUrl")
     private String sasUrl;
 
-    /** Creates an instance of VpnGatewayPacketCaptureStopParameters class. */
+    /**
+     * Creates an instance of VpnGatewayPacketCaptureStopParameters class.
+     */
     public VpnGatewayPacketCaptureStopParameters() {
     }
 
     /**
      * Get the sasUrl property: SAS url for packet capture on vpn gateway.
-     *
+     * 
      * @return the sasUrl value.
      */
     public String sasUrl() {
@@ -31,7 +35,7 @@ public final class VpnGatewayPacketCaptureStopParameters {
 
     /**
      * Set the sasUrl property: SAS url for packet capture on vpn gateway.
-     *
+     * 
      * @param sasUrl the sasUrl value to set.
      * @return the VpnGatewayPacketCaptureStopParameters object itself.
      */
@@ -42,7 +46,7 @@ public final class VpnGatewayPacketCaptureStopParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Frontend setting for Firewall. */
+/**
+ * Frontend setting for Firewall.
+ */
 @Fluent
 public final class FrontendSetting {
     /*
@@ -35,13 +37,15 @@ public final class FrontendSetting {
     @JsonProperty(value = "backendConfiguration", required = true)
     private EndpointConfiguration backendConfiguration;
 
-    /** Creates an instance of FrontendSetting class. */
+    /**
+     * Creates an instance of FrontendSetting class.
+     */
     public FrontendSetting() {
     }
 
     /**
      * Get the name property: Settings name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -50,7 +54,7 @@ public final class FrontendSetting {
 
     /**
      * Set the name property: Settings name.
-     *
+     * 
      * @param name the name value to set.
      * @return the FrontendSetting object itself.
      */
@@ -61,7 +65,7 @@ public final class FrontendSetting {
 
     /**
      * Get the protocol property: Protocol Type.
-     *
+     * 
      * @return the protocol value.
      */
     public ProtocolType protocol() {
@@ -70,7 +74,7 @@ public final class FrontendSetting {
 
     /**
      * Set the protocol property: Protocol Type.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the FrontendSetting object itself.
      */
@@ -81,7 +85,7 @@ public final class FrontendSetting {
 
     /**
      * Get the frontendConfiguration property: Frontend configurations.
-     *
+     * 
      * @return the frontendConfiguration value.
      */
     public EndpointConfiguration frontendConfiguration() {
@@ -90,7 +94,7 @@ public final class FrontendSetting {
 
     /**
      * Set the frontendConfiguration property: Frontend configurations.
-     *
+     * 
      * @param frontendConfiguration the frontendConfiguration value to set.
      * @return the FrontendSetting object itself.
      */
@@ -101,7 +105,7 @@ public final class FrontendSetting {
 
     /**
      * Get the backendConfiguration property: Backend configurations.
-     *
+     * 
      * @return the backendConfiguration value.
      */
     public EndpointConfiguration backendConfiguration() {
@@ -110,7 +114,7 @@ public final class FrontendSetting {
 
     /**
      * Set the backendConfiguration property: Backend configurations.
-     *
+     * 
      * @param backendConfiguration the backendConfiguration value to set.
      * @return the FrontendSetting object itself.
      */
@@ -121,33 +125,27 @@ public final class FrontendSetting {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model FrontendSetting"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model FrontendSetting"));
         }
         if (protocol() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property protocol in model FrontendSetting"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property protocol in model FrontendSetting"));
         }
         if (frontendConfiguration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property frontendConfiguration in model FrontendSetting"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property frontendConfiguration in model FrontendSetting"));
         } else {
             frontendConfiguration().validate();
         }
         if (backendConfiguration() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property backendConfiguration in model FrontendSetting"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property backendConfiguration in model FrontendSetting"));
         } else {
             backendConfiguration().validate();
         }

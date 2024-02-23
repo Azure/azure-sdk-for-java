@@ -9,7 +9,9 @@ import com.azure.resourcemanager.quota.fluent.models.CurrentQuotaLimitBaseInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Quota limits. */
+/**
+ * Quota limits.
+ */
 @Fluent
 public final class QuotaLimits {
     /*
@@ -24,13 +26,15 @@ public final class QuotaLimits {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of QuotaLimits class. */
+    /**
+     * Creates an instance of QuotaLimits class.
+     */
     public QuotaLimits() {
     }
 
     /**
      * Get the value property: List of quota limits.
-     *
+     * 
      * @return the value value.
      */
     public List<CurrentQuotaLimitBaseInner> value() {
@@ -39,7 +43,7 @@ public final class QuotaLimits {
 
     /**
      * Set the value property: List of quota limits.
-     *
+     * 
      * @param value the value value to set.
      * @return the QuotaLimits object itself.
      */
@@ -51,7 +55,7 @@ public final class QuotaLimits {
     /**
      * Get the nextLink property: The URI used to fetch the next page of quota limits. When there are no more pages,
      * this string is null.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -61,7 +65,7 @@ public final class QuotaLimits {
     /**
      * Set the nextLink property: The URI used to fetch the next page of quota limits. When there are no more pages,
      * this string is null.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the QuotaLimits object itself.
      */
@@ -72,7 +76,7 @@ public final class QuotaLimits {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

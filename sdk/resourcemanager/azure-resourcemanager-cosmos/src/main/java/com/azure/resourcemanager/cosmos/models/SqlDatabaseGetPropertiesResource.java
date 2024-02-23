@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SqlDatabaseGetPropertiesResource model. */
+/**
+ * The SqlDatabaseGetPropertiesResource model.
+ */
 @Fluent
 public final class SqlDatabaseGetPropertiesResource extends SqlDatabaseResource {
     /*
@@ -40,14 +42,16 @@ public final class SqlDatabaseGetPropertiesResource extends SqlDatabaseResource 
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of SqlDatabaseGetPropertiesResource class. */
+    /**
+     * Creates an instance of SqlDatabaseGetPropertiesResource class.
+     */
     public SqlDatabaseGetPropertiesResource() {
     }
 
     /**
      * Get the colls property: A system generated property that specified the addressable path of the collections
      * resource.
-     *
+     * 
      * @return the colls value.
      */
     public String colls() {
@@ -57,7 +61,7 @@ public final class SqlDatabaseGetPropertiesResource extends SqlDatabaseResource 
     /**
      * Set the colls property: A system generated property that specified the addressable path of the collections
      * resource.
-     *
+     * 
      * @param colls the colls value to set.
      * @return the SqlDatabaseGetPropertiesResource object itself.
      */
@@ -68,7 +72,7 @@ public final class SqlDatabaseGetPropertiesResource extends SqlDatabaseResource 
 
     /**
      * Get the users property: A system generated property that specifies the addressable path of the users resource.
-     *
+     * 
      * @return the users value.
      */
     public String users() {
@@ -77,7 +81,7 @@ public final class SqlDatabaseGetPropertiesResource extends SqlDatabaseResource 
 
     /**
      * Set the users property: A system generated property that specifies the addressable path of the users resource.
-     *
+     * 
      * @param users the users value to set.
      * @return the SqlDatabaseGetPropertiesResource object itself.
      */
@@ -88,7 +92,7 @@ public final class SqlDatabaseGetPropertiesResource extends SqlDatabaseResource 
 
     /**
      * Get the rid property: A system generated property. A unique identifier.
-     *
+     * 
      * @return the rid value.
      */
     public String rid() {
@@ -97,7 +101,7 @@ public final class SqlDatabaseGetPropertiesResource extends SqlDatabaseResource 
 
     /**
      * Get the ts property: A system generated property that denotes the last updated timestamp of the resource.
-     *
+     * 
      * @return the ts value.
      */
     public Float ts() {
@@ -107,14 +111,16 @@ public final class SqlDatabaseGetPropertiesResource extends SqlDatabaseResource 
     /**
      * Get the etag property: A system generated property representing the resource etag required for optimistic
      * concurrency control.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlDatabaseGetPropertiesResource withId(String id) {
         super.withId(id);
@@ -122,8 +128,26 @@ public final class SqlDatabaseGetPropertiesResource extends SqlDatabaseResource 
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlDatabaseGetPropertiesResource withRestoreParameters(ResourceRestoreParameters restoreParameters) {
+        super.withRestoreParameters(restoreParameters);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public SqlDatabaseGetPropertiesResource withCreateMode(CreateMode createMode) {
+        super.withCreateMode(createMode);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

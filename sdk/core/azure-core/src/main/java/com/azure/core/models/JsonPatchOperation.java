@@ -5,8 +5,13 @@ package com.azure.core.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.core.implementation.Option;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 
+import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
 
@@ -15,7 +20,7 @@ import java.util.Optional;
  */
 @Immutable
 @JsonSerialize(using = JsonPatchOperationSerializer.class)
-final class JsonPatchOperation {
+final class JsonPatchOperation implements JsonSerializable<JsonPatchOperation> {
     private final JsonPatchOperationKind op;
     private final String from;
     private final String path;
@@ -79,8 +84,7 @@ final class JsonPatchOperation {
 
     @Override
     public int hashCode() {
-        return Objects.hash(op.toString(), from, path,
-            (value == null) ? null : value.getValue());
+        return Objects.hash(op.toString(), from, path, (value == null) ? null : value.getValue());
     }
 
     @Override
@@ -106,25 +110,73 @@ final class JsonPatchOperation {
     }
 
     StringBuilder buildString(StringBuilder builder) {
-        builder.append("{\"op\":\"")
-            .append(op.toString())
-            .append("\"");
+        builder.append("{\"op\":\"").append(op.toString()).append("\"");
 
         if (from != null) {
-            builder.append(",\"from\":\"")
-                .append(from)
-                .append("\"");
+            builder.append(",\"from\":\"").append(from).append("\"");
         }
 
-        builder.append(",\"path\":\"")
-            .append(path)
-            .append("\"");
+        builder.append(",\"path\":\"").append(path).append("\"");
 
         if (value.isInitialized()) {
-            builder.append(",\"value\":")
-                .append(value.getValue());
+            builder.append(",\"value\":").append(value.getValue());
         }
 
         return builder.append("}");
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject()
+            .writeStringField("op", op.toString())
+            .writeStringField("from", from)
+            .writeStringField("path", path);
+
+        if (value.isInitialized()) {
+            String valueString = value.getValue();
+            if (valueString == null) {
+                jsonWriter.writeNullField("value");
+            } else {
+                jsonWriter.writeRawField("value", value.getValue());
+            }
+        }
+
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads a JSON stream into a {@link JsonPatchOperation}.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @return The {@link JsonPatchOperation} that the JSON stream represented, or null if it pointed to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If a {@link JsonPatchOperation} fails to be read from the {@code jsonReader}.
+     */
+    public static JsonPatchOperation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            JsonPatchOperationKind op = null;
+            String from = null;
+            String path = null;
+            Option<String> value = Option.uninitialized();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("op".equals(fieldName)) {
+                    op = JsonPatchOperationKind.fromString(reader.getString());
+                } else if ("from".equals(fieldName)) {
+                    from = reader.getString();
+                } else if ("path".equals(fieldName)) {
+                    path = reader.getString();
+                } else if ("value".equals(fieldName)) {
+                    value = Option.of(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return new JsonPatchOperation(op, from, path, value);
+        });
     }
 }

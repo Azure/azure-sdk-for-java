@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The ScanMetadata model. */
+/**
+ * The ScanMetadata model.
+ */
 @Immutable
 public final class ScanMetadata {
 
@@ -40,9 +42,12 @@ public final class ScanMetadata {
     @JsonProperty(value = "endScan")
     private OffsetDateTime endScan;
 
-    /** Creates an instance of ScanMetadata class. */
+    /**
+     * Creates an instance of ScanMetadata class.
+     */
     @Generated
-    private ScanMetadata() {}
+    private ScanMetadata() {
+    }
 
     /**
      * Get the port property: The port property.

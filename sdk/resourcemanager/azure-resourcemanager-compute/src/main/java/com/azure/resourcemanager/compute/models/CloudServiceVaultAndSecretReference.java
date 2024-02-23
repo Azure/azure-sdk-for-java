@@ -9,7 +9,8 @@ import com.azure.core.management.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Protected settings for the extension, referenced using KeyVault which are encrypted before sent to the role instance.
+ * Protected settings for the extension, referenced using KeyVault which are encrypted before sent to the role
+ * instance.
  */
 @Fluent
 public final class CloudServiceVaultAndSecretReference {
@@ -25,13 +26,15 @@ public final class CloudServiceVaultAndSecretReference {
     @JsonProperty(value = "secretUrl")
     private String secretUrl;
 
-    /** Creates an instance of CloudServiceVaultAndSecretReference class. */
+    /**
+     * Creates an instance of CloudServiceVaultAndSecretReference class.
+     */
     public CloudServiceVaultAndSecretReference() {
     }
 
     /**
      * Get the sourceVault property: The ARM Resource ID of the Key Vault.
-     *
+     * 
      * @return the sourceVault value.
      */
     public SubResource sourceVault() {
@@ -40,7 +43,7 @@ public final class CloudServiceVaultAndSecretReference {
 
     /**
      * Set the sourceVault property: The ARM Resource ID of the Key Vault.
-     *
+     * 
      * @param sourceVault the sourceVault value to set.
      * @return the CloudServiceVaultAndSecretReference object itself.
      */
@@ -51,7 +54,7 @@ public final class CloudServiceVaultAndSecretReference {
 
     /**
      * Get the secretUrl property: Secret URL which contains the protected settings of the extension.
-     *
+     * 
      * @return the secretUrl value.
      */
     public String secretUrl() {
@@ -60,7 +63,7 @@ public final class CloudServiceVaultAndSecretReference {
 
     /**
      * Set the secretUrl property: Secret URL which contains the protected settings of the extension.
-     *
+     * 
      * @param secretUrl the secretUrl value to set.
      * @return the CloudServiceVaultAndSecretReference object itself.
      */
@@ -71,7 +74,7 @@ public final class CloudServiceVaultAndSecretReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

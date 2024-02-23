@@ -3,6 +3,8 @@
 
 package com.azure.cosmos.implementation;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
+
 /**
  * Represents a database user in the Azure Cosmos DB database service.
  */
@@ -18,10 +20,10 @@ public class User extends Resource {
     /**
      * Initialize a user object from json string.
      *
-     * @param jsonString the json string that represents the database user.
+     * @param jsonNode the json node that represents the database user.
      */
-    public User(String jsonString) {
-        super(jsonString);
+    public User(ObjectNode jsonNode) {
+        super(jsonNode);
     }
 
     /**

@@ -5,18 +5,20 @@
 package com.azure.resourcemanager.postgresqlflexibleserver.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.CapabilityPropertiesInner;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.FlexibleServerCapabilityInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** location capability. */
+/**
+ * Capability for the PostgreSQL server.
+ */
 @Immutable
 public final class CapabilitiesListResult {
     /*
      * A list of supported capabilities.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
-    private List<CapabilityPropertiesInner> value;
+    private List<FlexibleServerCapabilityInner> value;
 
     /*
      * Link to retrieve next page of results.
@@ -24,22 +26,24 @@ public final class CapabilitiesListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of CapabilitiesListResult class. */
+    /**
+     * Creates an instance of CapabilitiesListResult class.
+     */
     public CapabilitiesListResult() {
     }
 
     /**
      * Get the value property: A list of supported capabilities.
-     *
+     * 
      * @return the value value.
      */
-    public List<CapabilityPropertiesInner> value() {
+    public List<FlexibleServerCapabilityInner> value() {
         return this.value;
     }
 
     /**
      * Get the nextLink property: Link to retrieve next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class CapabilitiesListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

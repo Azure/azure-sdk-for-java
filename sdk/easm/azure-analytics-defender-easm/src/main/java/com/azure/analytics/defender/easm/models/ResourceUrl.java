@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The ResourceUrl model. */
+/**
+ * The ResourceUrl model.
+ */
 @Immutable
 public final class ResourceUrl {
 
@@ -55,9 +57,12 @@ public final class ResourceUrl {
     @JsonProperty(value = "recent")
     private Boolean recent;
 
-    /** Creates an instance of ResourceUrl class. */
+    /**
+     * Creates an instance of ResourceUrl class.
+     */
     @Generated
-    private ResourceUrl() {}
+    private ResourceUrl() {
+    }
 
     /**
      * Get the url property: The url property.

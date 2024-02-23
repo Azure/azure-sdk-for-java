@@ -32,8 +32,8 @@ public final class XmlProviders {
         // But this choice here provides additional flexibility in managed environments that control
         // classloading differently (OSGi, Spring and others) and don't depend on the
         // System classloader to load HttpClientProvider classes.
-        ServiceLoader<XmlProvider> serviceLoader = ServiceLoader.load(XmlProvider.class,
-            XmlProvider.class.getClassLoader());
+        ServiceLoader<XmlProvider> serviceLoader
+            = ServiceLoader.load(XmlProvider.class, XmlProvider.class.getClassLoader());
         // Use the first provider found in the service loader iterator.
         Iterator<XmlProvider> it = serviceLoader.iterator();
         if (it.hasNext()) {

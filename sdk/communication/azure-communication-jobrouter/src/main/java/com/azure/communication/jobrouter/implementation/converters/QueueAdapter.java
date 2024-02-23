@@ -21,10 +21,10 @@ public class QueueAdapter {
      * @return JobQueue
      */
     public static RouterQueueInternal convertCreateQueueOptionsToRouterQueueInternal(CreateQueueOptions createQueueOptions) {
-        Map<String, Object> labels = createQueueOptions.getLabels().entrySet()
+        Map<String, Object> labels = createQueueOptions.getLabels() != null ? createQueueOptions.getLabels().entrySet()
             .stream()
             .collect(Collectors.toMap(entry -> entry.getKey(),
-                entry -> RouterValueAdapter.getValue(entry.getValue())));
+                entry -> RouterValueAdapter.getValue(entry.getValue()))) : null;
 
         return new RouterQueueInternal()
             .setName(createQueueOptions.getName())
@@ -34,9 +34,9 @@ public class QueueAdapter {
     }
 
     public static RouterQueueInternal convertRouterQueueToRouterQueueInternal(RouterQueue routerQueue) {
-        Map<String, Object> labels = routerQueue.getLabels()
+        Map<String, Object> labels = routerQueue.getLabels() != null ? routerQueue.getLabels()
             .entrySet().stream()
-            .collect(Collectors.toMap(entry -> entry.getKey(), entry -> RouterValueAdapter.getValue(entry.getValue())));
+            .collect(Collectors.toMap(entry -> entry.getKey(), entry -> RouterValueAdapter.getValue(entry.getValue()))) : null;
         return new RouterQueueInternal()
             .setEtag(routerQueue.getEtag())
             .setId(routerQueue.getId())

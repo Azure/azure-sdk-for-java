@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Package store for the SSIS integration runtime. */
+/**
+ * Package store for the SSIS integration runtime.
+ */
 @Fluent
 public final class PackageStore {
     /*
@@ -23,13 +25,15 @@ public final class PackageStore {
     @JsonProperty(value = "packageStoreLinkedService", required = true)
     private EntityReference packageStoreLinkedService;
 
-    /** Creates an instance of PackageStore class. */
+    /**
+     * Creates an instance of PackageStore class.
+     */
     public PackageStore() {
     }
 
     /**
      * Get the name property: The name of the package store.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +42,7 @@ public final class PackageStore {
 
     /**
      * Set the name property: The name of the package store.
-     *
+     * 
      * @param name the name value to set.
      * @return the PackageStore object itself.
      */
@@ -49,7 +53,7 @@ public final class PackageStore {
 
     /**
      * Get the packageStoreLinkedService property: The package store linked service reference.
-     *
+     * 
      * @return the packageStoreLinkedService value.
      */
     public EntityReference packageStoreLinkedService() {
@@ -58,7 +62,7 @@ public final class PackageStore {
 
     /**
      * Set the packageStoreLinkedService property: The package store linked service reference.
-     *
+     * 
      * @param packageStoreLinkedService the packageStoreLinkedService value to set.
      * @return the PackageStore object itself.
      */
@@ -69,20 +73,17 @@ public final class PackageStore {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model PackageStore"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model PackageStore"));
         }
         if (packageStoreLinkedService() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property packageStoreLinkedService in model PackageStore"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property packageStoreLinkedService in model PackageStore"));
         } else {
             packageStoreLinkedService().validate();
         }

@@ -11,7 +11,9 @@ import com.azure.resourcemanager.compute.models.RollingUpgradeProgressInfo;
 import com.azure.resourcemanager.compute.models.RollingUpgradeRunningStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The status of the latest virtual machine scale set rolling upgrade. */
+/**
+ * The status of the latest virtual machine scale set rolling upgrade.
+ */
 @Immutable
 public final class RollingUpgradeStatusInfoProperties {
     /*
@@ -38,13 +40,15 @@ public final class RollingUpgradeStatusInfoProperties {
     @JsonProperty(value = "error", access = JsonProperty.Access.WRITE_ONLY)
     private ApiError error;
 
-    /** Creates an instance of RollingUpgradeStatusInfoProperties class. */
+    /**
+     * Creates an instance of RollingUpgradeStatusInfoProperties class.
+     */
     public RollingUpgradeStatusInfoProperties() {
     }
 
     /**
      * Get the policy property: The rolling upgrade policies applied for this upgrade.
-     *
+     * 
      * @return the policy value.
      */
     public RollingUpgradePolicy policy() {
@@ -53,7 +57,7 @@ public final class RollingUpgradeStatusInfoProperties {
 
     /**
      * Get the runningStatus property: Information about the current running state of the overall upgrade.
-     *
+     * 
      * @return the runningStatus value.
      */
     public RollingUpgradeRunningStatus runningStatus() {
@@ -62,7 +66,7 @@ public final class RollingUpgradeStatusInfoProperties {
 
     /**
      * Get the progress property: Information about the number of virtual machine instances in each upgrade state.
-     *
+     * 
      * @return the progress value.
      */
     public RollingUpgradeProgressInfo progress() {
@@ -71,7 +75,7 @@ public final class RollingUpgradeStatusInfoProperties {
 
     /**
      * Get the error property: Error details for this upgrade, if there are any.
-     *
+     * 
      * @return the error value.
      */
     public ApiError error() {
@@ -80,7 +84,7 @@ public final class RollingUpgradeStatusInfoProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

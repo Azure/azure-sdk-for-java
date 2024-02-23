@@ -15,11 +15,13 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.PreRulesRes
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.RuleCounterInner;
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.RuleCounterResetInner;
 
-/** An instance of this class provides access to all the operations defined in PreRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in PreRulesClient.
+ */
 public interface PreRulesClient {
     /**
      * List PreRulesResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -31,7 +33,7 @@ public interface PreRulesClient {
 
     /**
      * List PreRulesResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -44,7 +46,7 @@ public interface PreRulesClient {
 
     /**
      * Get a PreRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @param context The context to associate with this operation.
@@ -58,7 +60,7 @@ public interface PreRulesClient {
 
     /**
      * Get a PreRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -71,7 +73,7 @@ public interface PreRulesClient {
 
     /**
      * Create a PreRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @param resource Resource create parameters.
@@ -81,12 +83,12 @@ public interface PreRulesClient {
      * @return the {@link SyncPoller} for polling of preRulestack rule list.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PreRulesResourceInner>, PreRulesResourceInner> beginCreateOrUpdate(
-        String globalRulestackName, String priority, PreRulesResourceInner resource);
+    SyncPoller<PollResult<PreRulesResourceInner>, PreRulesResourceInner> beginCreateOrUpdate(String globalRulestackName,
+        String priority, PreRulesResourceInner resource);
 
     /**
      * Create a PreRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @param resource Resource create parameters.
@@ -97,12 +99,12 @@ public interface PreRulesClient {
      * @return the {@link SyncPoller} for polling of preRulestack rule list.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<PreRulesResourceInner>, PreRulesResourceInner> beginCreateOrUpdate(
-        String globalRulestackName, String priority, PreRulesResourceInner resource, Context context);
+    SyncPoller<PollResult<PreRulesResourceInner>, PreRulesResourceInner> beginCreateOrUpdate(String globalRulestackName,
+        String priority, PreRulesResourceInner resource, Context context);
 
     /**
      * Create a PreRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @param resource Resource create parameters.
@@ -116,7 +118,7 @@ public interface PreRulesClient {
 
     /**
      * Create a PreRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @param resource Resource create parameters.
@@ -127,12 +129,12 @@ public interface PreRulesClient {
      * @return preRulestack rule list.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    PreRulesResourceInner createOrUpdate(
-        String globalRulestackName, String priority, PreRulesResourceInner resource, Context context);
+    PreRulesResourceInner createOrUpdate(String globalRulestackName, String priority, PreRulesResourceInner resource,
+        Context context);
 
     /**
      * Delete a PreRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -145,7 +147,7 @@ public interface PreRulesClient {
 
     /**
      * Delete a PreRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @param context The context to associate with this operation.
@@ -159,7 +161,7 @@ public interface PreRulesClient {
 
     /**
      * Delete a PreRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -171,7 +173,7 @@ public interface PreRulesClient {
 
     /**
      * Delete a PreRulesResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @param context The context to associate with this operation.
@@ -184,7 +186,7 @@ public interface PreRulesClient {
 
     /**
      * Get counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @param firewallName The firewallName parameter.
@@ -195,12 +197,12 @@ public interface PreRulesClient {
      * @return counters along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RuleCounterInner> getCountersWithResponse(
-        String globalRulestackName, String priority, String firewallName, Context context);
+    Response<RuleCounterInner> getCountersWithResponse(String globalRulestackName, String priority, String firewallName,
+        Context context);
 
     /**
      * Get counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -213,7 +215,7 @@ public interface PreRulesClient {
 
     /**
      * Refresh counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @param firewallName The firewallName parameter.
@@ -224,12 +226,12 @@ public interface PreRulesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<Void> refreshCountersWithResponse(
-        String globalRulestackName, String priority, String firewallName, Context context);
+    Response<Void> refreshCountersWithResponse(String globalRulestackName, String priority, String firewallName,
+        Context context);
 
     /**
      * Refresh counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -241,7 +243,7 @@ public interface PreRulesClient {
 
     /**
      * Reset counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @param firewallName The firewallName parameter.
@@ -252,12 +254,12 @@ public interface PreRulesClient {
      * @return rule counter reset along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RuleCounterResetInner> resetCountersWithResponse(
-        String globalRulestackName, String priority, String firewallName, Context context);
+    Response<RuleCounterResetInner> resetCountersWithResponse(String globalRulestackName, String priority,
+        String firewallName, Context context);
 
     /**
      * Reset counters.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param priority Pre Rule priority.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

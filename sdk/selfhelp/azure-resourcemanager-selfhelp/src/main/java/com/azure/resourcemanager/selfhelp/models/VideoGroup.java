@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Video group detail. */
+/**
+ * Video group detail.
+ */
 @Fluent
 public final class VideoGroup {
     /*
@@ -23,13 +25,15 @@ public final class VideoGroup {
     @JsonProperty(value = "replacementKey")
     private String replacementKey;
 
-    /** Creates an instance of VideoGroup class. */
+    /**
+     * Creates an instance of VideoGroup class.
+     */
     public VideoGroup() {
     }
 
     /**
      * Get the videos property: List of videos will be shown to customers.
-     *
+     * 
      * @return the videos value.
      */
     public List<VideoGroupVideo> videos() {
@@ -38,7 +42,7 @@ public final class VideoGroup {
 
     /**
      * Set the videos property: List of videos will be shown to customers.
-     *
+     * 
      * @param videos the videos value to set.
      * @return the VideoGroup object itself.
      */
@@ -49,7 +53,7 @@ public final class VideoGroup {
 
     /**
      * Get the replacementKey property: Place holder used in HTML Content replace control with the insight content.
-     *
+     * 
      * @return the replacementKey value.
      */
     public String replacementKey() {
@@ -58,7 +62,7 @@ public final class VideoGroup {
 
     /**
      * Set the replacementKey property: Place holder used in HTML Content replace control with the insight content.
-     *
+     * 
      * @param replacementKey the replacementKey value to set.
      * @return the VideoGroup object itself.
      */
@@ -69,7 +73,7 @@ public final class VideoGroup {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

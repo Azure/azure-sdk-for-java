@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Collection of instances belong to the Service Registry. */
+/**
+ * Collection of instances belong to the Service Registry.
+ */
 @Immutable
 public final class ServiceRegistryInstance {
     /*
@@ -23,8 +25,14 @@ public final class ServiceRegistryInstance {
     private String status;
 
     /**
+     * Creates an instance of ServiceRegistryInstance class.
+     */
+    public ServiceRegistryInstance() {
+    }
+
+    /**
      * Get the name property: Name of the Service Registry instance.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -33,7 +41,7 @@ public final class ServiceRegistryInstance {
 
     /**
      * Get the status property: Status of the Service Registry instance.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -42,7 +50,7 @@ public final class ServiceRegistryInstance {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

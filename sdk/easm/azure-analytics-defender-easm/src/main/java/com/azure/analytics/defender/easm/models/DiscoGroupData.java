@@ -8,7 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A request body used to create a discovery group. */
+/**
+ * A request body used to create a discovery group.
+ */
 @Fluent
 public final class DiscoGroupData {
 
@@ -68,9 +70,12 @@ public final class DiscoGroupData {
     @JsonProperty(value = "templateId")
     private String templateId;
 
-    /** Creates an instance of DiscoGroupData class. */
+    /**
+     * Creates an instance of DiscoGroupData class.
+     */
     @Generated
-    public DiscoGroupData() {}
+    public DiscoGroupData() {
+    }
 
     /**
      * Get the name property: The name for a disco group.

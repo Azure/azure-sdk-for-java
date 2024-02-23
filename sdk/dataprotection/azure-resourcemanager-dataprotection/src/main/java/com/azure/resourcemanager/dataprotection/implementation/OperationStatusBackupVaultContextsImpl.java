@@ -20,22 +20,18 @@ public final class OperationStatusBackupVaultContextsImpl implements OperationSt
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    public OperationStatusBackupVaultContextsImpl(
-        OperationStatusBackupVaultContextsClient innerClient,
+    public OperationStatusBackupVaultContextsImpl(OperationStatusBackupVaultContextsClient innerClient,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<OperationResource> getWithResponse(
-        String resourceGroupName, String vaultName, String operationId, Context context) {
-        Response<OperationResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, vaultName, operationId, context);
+    public Response<OperationResource> getWithResponse(String resourceGroupName, String vaultName, String operationId,
+        Context context) {
+        Response<OperationResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, vaultName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;

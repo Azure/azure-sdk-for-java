@@ -15,7 +15,7 @@ public final class IdentityTests {
         Identity model =
             BinaryData
                 .fromString(
-                    "{\"principalId\":\"scnpqxuhivy\",\"tenantId\":\"iwbybrkxvdumjg\",\"type\":\"SystemAssigned\"}")
+                    "{\"principalId\":\"pocipazyxoegu\",\"tenantId\":\"jnpiucgyg\",\"type\":\"SystemAssigned\"}")
                 .toObject(Identity.class);
         Assertions.assertEquals(ResourceIdentityType.SYSTEM_ASSIGNED, model.type());
     }

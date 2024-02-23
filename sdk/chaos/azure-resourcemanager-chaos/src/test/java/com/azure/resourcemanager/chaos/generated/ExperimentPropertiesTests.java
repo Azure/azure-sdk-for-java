@@ -6,11 +6,11 @@ package com.azure.resourcemanager.chaos.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.chaos.fluent.models.ExperimentProperties;
-import com.azure.resourcemanager.chaos.models.Action;
-import com.azure.resourcemanager.chaos.models.Branch;
-import com.azure.resourcemanager.chaos.models.Filter;
-import com.azure.resourcemanager.chaos.models.Selector;
-import com.azure.resourcemanager.chaos.models.Step;
+import com.azure.resourcemanager.chaos.models.ChaosExperimentAction;
+import com.azure.resourcemanager.chaos.models.ChaosExperimentBranch;
+import com.azure.resourcemanager.chaos.models.ChaosExperimentStep;
+import com.azure.resourcemanager.chaos.models.ChaosTargetFilter;
+import com.azure.resourcemanager.chaos.models.ChaosTargetSelector;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
@@ -22,13 +22,12 @@ public final class ExperimentPropertiesTests {
         ExperimentProperties model =
             BinaryData
                 .fromString(
-                    "{\"steps\":[{\"name\":\"bbaumnyquped\",\"branches\":[{\"name\":\"jn\",\"actions\":[{\"type\":\"Action\",\"name\":\"ckhsmtxpsieb\"},{\"type\":\"Action\",\"name\":\"fhvpesaps\"},{\"type\":\"Action\",\"name\":\"rdqmhjjdhtldwkyz\"}]},{\"name\":\"uutkncw\",\"actions\":[{\"type\":\"Action\",\"name\":\"wsvlxotogtwrupqs\"},{\"type\":\"Action\",\"name\":\"vnm\"},{\"type\":\"Action\",\"name\":\"cykvceo\"}]},{\"name\":\"eil\",\"actions\":[{\"type\":\"Action\",\"name\":\"notyfjfcnjbkcn\"},{\"type\":\"Action\",\"name\":\"dhbt\"},{\"type\":\"Action\",\"name\":\"kphywpnvjto\"}]},{\"name\":\"nermcl\",\"actions\":[{\"type\":\"Action\",\"name\":\"lphox\"},{\"type\":\"Action\",\"name\":\"scrpabgyepsbjt\"}]}]}],\"selectors\":[{\"type\":\"Selector\",\"id\":\"qugxywpmueefjzwf\",\"filter\":{\"type\":\"Filter\"},\"\":{\"xtccmg\":\"datajidsuyonobglaoc\",\"wfudwpzntxhdzhl\":\"dataudxytlmoyrx\",\"hckfrlhrx\":\"dataqj\"}}],\"startOnCreation\":false}")
+                    "{\"provisioningState\":\"Creating\",\"steps\":[{\"name\":\"mg\",\"branches\":[{\"name\":\"nkjzkdeslpvlop\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"yighxpk\"}]},{\"name\":\"wzbaiue\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"a\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"m\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"yqupedeojnabckh\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"mtxpsiebtfh\"}]},{\"name\":\"pesapskrdqmhjj\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"tldwkyzxuutk\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"cwscwsvlx\"}]}]},{\"name\":\"togt\",\"branches\":[{\"name\":\"upqsx\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"micykvceoveilo\"}]},{\"name\":\"notyfjfcnjbkcn\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"hbttkphyw\"}]},{\"name\":\"nv\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"oqnermclfpl\"}]}]},{\"name\":\"hoxus\",\"branches\":[{\"name\":\"pabgyeps\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"tazqugxywpmueefj\"}]},{\"name\":\"wfqkquj\",\"actions\":[{\"type\":\"ChaosExperimentAction\",\"name\":\"suyonobglaocq\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"tcc\"},{\"type\":\"ChaosExperimentAction\",\"name\":\"g\"}]}]}],\"selectors\":[{\"type\":\"ChaosTargetSelector\",\"id\":\"dxyt\",\"filter\":{\"type\":\"ChaosTargetFilter\"},\"\":{\"fudwpznt\":\"datarxv\",\"hckfrlhrx\":\"datahdzhlrqj\",\"ca\":\"databkyvp\",\"b\":\"datauzbpzkafku\"}},{\"type\":\"ChaosTargetSelector\",\"id\":\"rnwb\",\"filter\":{\"type\":\"ChaosTargetFilter\"},\"\":{\"srtslhspkdeem\":\"dataseyvj\",\"ahvljuaha\":\"dataofmxagkvtmelmqkr\"}},{\"type\":\"ChaosTargetSelector\",\"id\":\"uhcdhm\",\"filter\":{\"type\":\"ChaosTargetFilter\"},\"\":{\"pvfadmwsrcr\":\"dataaex\",\"fmisg\":\"datavxpvgomz\"}}]}")
                 .toObject(ExperimentProperties.class);
-        Assertions.assertEquals("bbaumnyquped", model.steps().get(0).name());
-        Assertions.assertEquals("jn", model.steps().get(0).branches().get(0).name());
-        Assertions.assertEquals("ckhsmtxpsieb", model.steps().get(0).branches().get(0).actions().get(0).name());
-        Assertions.assertEquals("qugxywpmueefjzwf", model.selectors().get(0).id());
-        Assertions.assertEquals(false, model.startOnCreation());
+        Assertions.assertEquals("mg", model.steps().get(0).name());
+        Assertions.assertEquals("nkjzkdeslpvlop", model.steps().get(0).branches().get(0).name());
+        Assertions.assertEquals("yighxpk", model.steps().get(0).branches().get(0).actions().get(0).name());
+        Assertions.assertEquals("dxyt", model.selectors().get(0).id());
     }
 
     @org.junit.jupiter.api.Test
@@ -38,58 +37,93 @@ public final class ExperimentPropertiesTests {
                 .withSteps(
                     Arrays
                         .asList(
-                            new Step()
-                                .withName("bbaumnyquped")
+                            new ChaosExperimentStep()
+                                .withName("mg")
                                 .withBranches(
                                     Arrays
                                         .asList(
-                                            new Branch()
-                                                .withName("jn")
+                                            new ChaosExperimentBranch()
+                                                .withName("nkjzkdeslpvlop")
+                                                .withActions(
+                                                    Arrays.asList(new ChaosExperimentAction().withName("yighxpk"))),
+                                            new ChaosExperimentBranch()
+                                                .withName("wzbaiue")
                                                 .withActions(
                                                     Arrays
                                                         .asList(
-                                                            new Action().withName("ckhsmtxpsieb"),
-                                                            new Action().withName("fhvpesaps"),
-                                                            new Action().withName("rdqmhjjdhtldwkyz"))),
-                                            new Branch()
-                                                .withName("uutkncw")
+                                                            new ChaosExperimentAction().withName("a"),
+                                                            new ChaosExperimentAction().withName("m"),
+                                                            new ChaosExperimentAction().withName("yqupedeojnabckh"),
+                                                            new ChaosExperimentAction().withName("mtxpsiebtfh"))),
+                                            new ChaosExperimentBranch()
+                                                .withName("pesapskrdqmhjj")
                                                 .withActions(
                                                     Arrays
                                                         .asList(
-                                                            new Action().withName("wsvlxotogtwrupqs"),
-                                                            new Action().withName("vnm"),
-                                                            new Action().withName("cykvceo"))),
-                                            new Branch()
-                                                .withName("eil")
+                                                            new ChaosExperimentAction().withName("tldwkyzxuutk"),
+                                                            new ChaosExperimentAction().withName("cwscwsvlx"))))),
+                            new ChaosExperimentStep()
+                                .withName("togt")
+                                .withBranches(
+                                    Arrays
+                                        .asList(
+                                            new ChaosExperimentBranch()
+                                                .withName("upqsx")
                                                 .withActions(
                                                     Arrays
                                                         .asList(
-                                                            new Action().withName("notyfjfcnjbkcn"),
-                                                            new Action().withName("dhbt"),
-                                                            new Action().withName("kphywpnvjto"))),
-                                            new Branch()
-                                                .withName("nermcl")
+                                                            new ChaosExperimentAction().withName("micykvceoveilo"))),
+                                            new ChaosExperimentBranch()
+                                                .withName("notyfjfcnjbkcn")
+                                                .withActions(
+                                                    Arrays.asList(new ChaosExperimentAction().withName("hbttkphyw"))),
+                                            new ChaosExperimentBranch()
+                                                .withName("nv")
+                                                .withActions(
+                                                    Arrays
+                                                        .asList(new ChaosExperimentAction().withName("oqnermclfpl"))))),
+                            new ChaosExperimentStep()
+                                .withName("hoxus")
+                                .withBranches(
+                                    Arrays
+                                        .asList(
+                                            new ChaosExperimentBranch()
+                                                .withName("pabgyeps")
                                                 .withActions(
                                                     Arrays
                                                         .asList(
-                                                            new Action().withName("lphox"),
-                                                            new Action().withName("scrpabgyepsbjt")))))))
+                                                            new ChaosExperimentAction().withName("tazqugxywpmueefj"))),
+                                            new ChaosExperimentBranch()
+                                                .withName("wfqkquj")
+                                                .withActions(
+                                                    Arrays
+                                                        .asList(
+                                                            new ChaosExperimentAction().withName("suyonobglaocq"),
+                                                            new ChaosExperimentAction().withName("tcc"),
+                                                            new ChaosExperimentAction().withName("g")))))))
                 .withSelectors(
                     Arrays
                         .asList(
-                            new Selector()
-                                .withId("qugxywpmueefjzwf")
-                                .withFilter(new Filter())
-                                .withAdditionalProperties(mapOf("type", "Selector"))))
-                .withStartOnCreation(false);
+                            new ChaosTargetSelector()
+                                .withId("dxyt")
+                                .withFilter(new ChaosTargetFilter())
+                                .withAdditionalProperties(mapOf("type", "ChaosTargetSelector")),
+                            new ChaosTargetSelector()
+                                .withId("rnwb")
+                                .withFilter(new ChaosTargetFilter())
+                                .withAdditionalProperties(mapOf("type", "ChaosTargetSelector")),
+                            new ChaosTargetSelector()
+                                .withId("uhcdhm")
+                                .withFilter(new ChaosTargetFilter())
+                                .withAdditionalProperties(mapOf("type", "ChaosTargetSelector"))));
         model = BinaryData.fromObject(model).toObject(ExperimentProperties.class);
-        Assertions.assertEquals("bbaumnyquped", model.steps().get(0).name());
-        Assertions.assertEquals("jn", model.steps().get(0).branches().get(0).name());
-        Assertions.assertEquals("ckhsmtxpsieb", model.steps().get(0).branches().get(0).actions().get(0).name());
-        Assertions.assertEquals("qugxywpmueefjzwf", model.selectors().get(0).id());
-        Assertions.assertEquals(false, model.startOnCreation());
+        Assertions.assertEquals("mg", model.steps().get(0).name());
+        Assertions.assertEquals("nkjzkdeslpvlop", model.steps().get(0).branches().get(0).name());
+        Assertions.assertEquals("yighxpk", model.steps().get(0).branches().get(0).actions().get(0).name());
+        Assertions.assertEquals("dxyt", model.selectors().get(0).id());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

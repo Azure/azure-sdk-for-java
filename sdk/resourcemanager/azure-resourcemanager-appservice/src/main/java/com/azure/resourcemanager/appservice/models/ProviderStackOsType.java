@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ProviderStackOsType. */
+/**
+ * Defines values for ProviderStackOsType.
+ */
 public final class ProviderStackOsType extends ExpandableStringEnum<ProviderStackOsType> {
-    /** Static value Windows for ProviderStackOsType. */
+    /**
+     * Static value Windows for ProviderStackOsType.
+     */
     public static final ProviderStackOsType WINDOWS = fromString("Windows");
 
-    /** Static value Linux for ProviderStackOsType. */
+    /**
+     * Static value Linux for ProviderStackOsType.
+     */
     public static final ProviderStackOsType LINUX = fromString("Linux");
 
-    /** Static value All for ProviderStackOsType. */
+    /**
+     * Static value All for ProviderStackOsType.
+     */
     public static final ProviderStackOsType ALL = fromString("All");
 
     /**
      * Creates a new instance of ProviderStackOsType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class ProviderStackOsType extends ExpandableStringEnum<ProviderStac
 
     /**
      * Creates or finds a ProviderStackOsType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ProviderStackOsType.
      */
@@ -41,7 +49,7 @@ public final class ProviderStackOsType extends ExpandableStringEnum<ProviderStac
 
     /**
      * Gets known ProviderStackOsType values.
-     *
+     * 
      * @return known ProviderStackOsType values.
      */
     public static Collection<ProviderStackOsType> values() {

@@ -13,8 +13,8 @@ public final class SubvolumeModelImpl implements SubvolumeModel {
 
     private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
-    SubvolumeModelImpl(
-        SubvolumeModelInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
+    SubvolumeModelImpl(SubvolumeModelInner innerObject,
+        com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

@@ -4,6 +4,7 @@
 package com.azure.security.keyvault.keys.cryptography;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.policy.ExponentialBackoffOptions;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -82,7 +83,7 @@ public class CryptographyClientBuilderTest {
 
         assertNotNull(cryptographyClient);
         assertEquals(CryptographyClient.class.getSimpleName(), cryptographyClient.getClass().getSimpleName());
-        assertTrue(cryptographyClient.getImplClient().getVaultUrl().contains(":443"));
+        assertTrue(cryptographyClient.getVaultUrl().contains(":443"));
     }
 
     @Test
@@ -138,7 +139,7 @@ public class CryptographyClientBuilderTest {
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
             .clientOptions(new ClientOptions().setApplicationId("aNewApplication"))
             .httpClient(httpRequest -> {
-                assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("aNewApplication"));
+                assertTrue(httpRequest.getHeaders().getValue(HttpHeaderName.USER_AGENT).contains("aNewApplication"));
 
                 return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
             })
@@ -154,7 +155,7 @@ public class CryptographyClientBuilderTest {
             .credential(new TestUtils.TestCredential())
             .httpLogOptions(new HttpLogOptions().setApplicationId("anOldApplication"))
             .httpClient(httpRequest -> {
-                assertTrue(httpRequest.getHeaders().getValue("User-Agent").contains("anOldApplication"));
+                assertTrue(httpRequest.getHeaders().getValue(HttpHeaderName.USER_AGENT).contains("anOldApplication"));
                 return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
             })
             .buildClient();
@@ -170,7 +171,7 @@ public class CryptographyClientBuilderTest {
             .clientOptions(new ClientOptions()
                 .setHeaders(Collections.singletonList(new Header("User-Agent", "custom"))))
             .httpClient(httpRequest -> {
-                assertEquals("custom", httpRequest.getHeaders().getValue("User-Agent"));
+                assertEquals("custom", httpRequest.getHeaders().getValue(HttpHeaderName.USER_AGENT));
 
                 return Mono.error(new HttpResponseException(new MockHttpResponse(httpRequest, 400)));
             })

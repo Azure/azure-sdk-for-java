@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** State of soft delete. */
+/**
+ * State of soft delete.
+ */
 public final class SoftDeleteState extends ExpandableStringEnum<SoftDeleteState> {
-    /** Static value Off for SoftDeleteState. */
+    /**
+     * Static value Off for SoftDeleteState.
+     */
     public static final SoftDeleteState OFF = fromString("Off");
 
-    /** Static value On for SoftDeleteState. */
+    /**
+     * Static value On for SoftDeleteState.
+     */
     public static final SoftDeleteState ON = fromString("On");
 
-    /** Static value AlwaysOn for SoftDeleteState. */
+    /**
+     * Static value AlwaysOn for SoftDeleteState.
+     */
     public static final SoftDeleteState ALWAYS_ON = fromString("AlwaysOn");
 
     /**
      * Creates a new instance of SoftDeleteState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class SoftDeleteState extends ExpandableStringEnum<SoftDeleteState>
 
     /**
      * Creates or finds a SoftDeleteState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SoftDeleteState.
      */
@@ -41,7 +49,7 @@ public final class SoftDeleteState extends ExpandableStringEnum<SoftDeleteState>
 
     /**
      * Gets known SoftDeleteState values.
-     *
+     * 
      * @return known SoftDeleteState values.
      */
     public static Collection<SoftDeleteState> values() {

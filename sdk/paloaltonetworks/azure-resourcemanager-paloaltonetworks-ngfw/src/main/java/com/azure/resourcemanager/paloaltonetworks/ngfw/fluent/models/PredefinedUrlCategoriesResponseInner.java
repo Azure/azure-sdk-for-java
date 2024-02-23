@@ -10,7 +10,9 @@ import com.azure.resourcemanager.paloaltonetworks.ngfw.models.PredefinedUrlCateg
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** predefined url categories response. */
+/**
+ * predefined url categories response.
+ */
 @Fluent
 public final class PredefinedUrlCategoriesResponseInner {
     /*
@@ -25,13 +27,15 @@ public final class PredefinedUrlCategoriesResponseInner {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of PredefinedUrlCategoriesResponseInner class. */
+    /**
+     * Creates an instance of PredefinedUrlCategoriesResponseInner class.
+     */
     public PredefinedUrlCategoriesResponseInner() {
     }
 
     /**
      * Get the value property: predefined url categories.
-     *
+     * 
      * @return the value value.
      */
     public List<PredefinedUrlCategory> value() {
@@ -40,7 +44,7 @@ public final class PredefinedUrlCategoriesResponseInner {
 
     /**
      * Set the value property: predefined url categories.
-     *
+     * 
      * @param value the value value to set.
      * @return the PredefinedUrlCategoriesResponseInner object itself.
      */
@@ -51,7 +55,7 @@ public final class PredefinedUrlCategoriesResponseInner {
 
     /**
      * Get the nextLink property: next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class PredefinedUrlCategoriesResponseInner {
 
     /**
      * Set the nextLink property: next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the PredefinedUrlCategoriesResponseInner object itself.
      */
@@ -71,15 +75,13 @@ public final class PredefinedUrlCategoriesResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model PredefinedUrlCategoriesResponseInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model PredefinedUrlCategoriesResponseInner"));
         } else {
             value().forEach(e -> e.validate());
         }

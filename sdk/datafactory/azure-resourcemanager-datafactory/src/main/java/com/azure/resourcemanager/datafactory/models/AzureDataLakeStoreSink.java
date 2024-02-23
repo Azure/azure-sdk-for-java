@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity Azure Data Lake Store sink. */
+/**
+ * A copy activity Azure Data Lake Store sink.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureDataLakeStoreSink")
 @Fluent
@@ -26,14 +28,16 @@ public final class AzureDataLakeStoreSink extends CopySink {
     @JsonProperty(value = "enableAdlsSingleFileParallel")
     private Object enableAdlsSingleFileParallel;
 
-    /** Creates an instance of AzureDataLakeStoreSink class. */
+    /**
+     * Creates an instance of AzureDataLakeStoreSink class.
+     */
     public AzureDataLakeStoreSink() {
     }
 
     /**
      * Get the copyBehavior property: The type of copy behavior for copy sink. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the copyBehavior value.
      */
     public Object copyBehavior() {
@@ -43,7 +47,7 @@ public final class AzureDataLakeStoreSink extends CopySink {
     /**
      * Set the copyBehavior property: The type of copy behavior for copy sink. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param copyBehavior the copyBehavior value to set.
      * @return the AzureDataLakeStoreSink object itself.
      */
@@ -54,7 +58,7 @@ public final class AzureDataLakeStoreSink extends CopySink {
 
     /**
      * Get the enableAdlsSingleFileParallel property: Single File Parallel.
-     *
+     * 
      * @return the enableAdlsSingleFileParallel value.
      */
     public Object enableAdlsSingleFileParallel() {
@@ -63,7 +67,7 @@ public final class AzureDataLakeStoreSink extends CopySink {
 
     /**
      * Set the enableAdlsSingleFileParallel property: Single File Parallel.
-     *
+     * 
      * @param enableAdlsSingleFileParallel the enableAdlsSingleFileParallel value to set.
      * @return the AzureDataLakeStoreSink object itself.
      */
@@ -72,42 +76,54 @@ public final class AzureDataLakeStoreSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataLakeStoreSink withWriteBatchSize(Object writeBatchSize) {
         super.withWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataLakeStoreSink withWriteBatchTimeout(Object writeBatchTimeout) {
         super.withWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataLakeStoreSink withSinkRetryCount(Object sinkRetryCount) {
         super.withSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataLakeStoreSink withSinkRetryWait(Object sinkRetryWait) {
         super.withSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataLakeStoreSink withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataLakeStoreSink withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
@@ -116,7 +132,7 @@ public final class AzureDataLakeStoreSink extends CopySink {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

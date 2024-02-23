@@ -21,7 +21,7 @@ This package contains a Java SDK for Azure Communication Call Automation Service
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-callautomation</artifactId>
-    <version>1.0.2</version>
+    <version>1.1.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -37,7 +37,7 @@ This is the restart of Call Automation Service. It is renamed to Call Automation
 
 `CallRecording` provides the functionality of recording the call.
 
-`EventHandler` provides the functionality to handle events from the ACS resource.
+`CallAutomationEventParser` provides the functionality to handle events from the ACS resource.
 
 ## Examples
 
@@ -48,7 +48,7 @@ Take a look at `CallAutomationEventProcessor`. This will ensure correlation betw
 @RestController
 public class ActionController {
     // Controller implementation...
-    
+
     @RequestMapping(value = "/api/events", method = POST)
     public ResponseEntity<?> handleCallEvents(@RequestBody String requestBody) {
         try {
@@ -108,9 +108,15 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 
 ## Next steps
 
-- [Read more about Call Automation in Azure Communication Services][call_automation_apis_overview]
-- [Read more about Call Recording in Azure Communication Services][call_recording_overview]
-- For a basic guide on how to record and download calls with Event Grid please refer to the [Record and download calls with Event Grid][record_and_download_calls_with_event_grid].
+- [Call Automation Overview][overview]
+- [Incoming Call Concept][incomingcall]
+- [Build a customer interaction workflow using Call Automation][build1]
+- [Redirect inbound telephony calls with Call Automation][build2]
+- [Connect Azure Communication Services with Azure AI services][cognitive_integration]
+- [Quickstart: Play action][build3]
+- [Quickstart: Recognize action][build4]
+- [Read more about Call Recording in Azure Communication Services][recording1]
+- [Record and download calls with Event Grid][recording2]
 
 <!-- LINKS -->
 [cla]: https://cla.microsoft.com
@@ -120,7 +126,13 @@ This project has adopted the [Microsoft Open Source Code of Conduct][coc]. For m
 [product_docs]: https://docs.microsoft.com/azure/communication-services/
 [package]: https://dev.azure.com/azure-sdk/public/_artifacts/feed/azure-sdk-for-java-communication-interaction
 [api_documentation]: https://aka.ms/java-docs
-[call_automation_apis_overview]:https://docs.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-automation-apis
-[call_recording_overview]:https://docs.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-recording
-[record_and_download_calls_with_event_grid]:https://docs.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/download-recording-file-sample
 [source]: https://github.com/Azure/azure-sdk-for-java/tree/main/sdk/communication/azure-communication-callautomation/src
+[overview]: https://learn.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-automation
+[incomingcall]: https://learn.microsoft.com/azure/communication-services/concepts/voice-video-calling/incoming-call-notification
+[build1]: https://learn.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/callflows-for-customer-interactions?pivots=programming-language-java
+[build2]: https://learn.microsoft.com/azure/communication-services/how-tos/call-automation-sdk/redirect-inbound-telephony-calls?pivots=programming-language-java
+[build3]: https://learn.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/play-action?pivots=programming-language-java
+[build4]: https://learn.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/recognize-action?pivots=programming-language-java
+[recording1]: https://learn.microsoft.com/azure/communication-services/concepts/voice-video-calling/call-recording
+[recording2]: https://learn.microsoft.com/azure/communication-services/quickstarts/voice-video-calling/get-started-call-recording?pivots=programming-language-java
+[cognitive_integration]: https://learn.microsoft.com/azure/communication-services/concepts/call-automation/azure-communication-services-azure-cognitive-services-integration

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes an Operating System disk. */
+/**
+ * Describes an Operating System disk.
+ */
 @Fluent
 public final class RestorePointSourceVmosDisk {
     /*
@@ -58,13 +60,15 @@ public final class RestorePointSourceVmosDisk {
     @JsonProperty(value = "writeAcceleratorEnabled", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean writeAcceleratorEnabled;
 
-    /** Creates an instance of RestorePointSourceVmosDisk class. */
+    /**
+     * Creates an instance of RestorePointSourceVmosDisk class.
+     */
     public RestorePointSourceVmosDisk() {
     }
 
     /**
      * Get the osType property: Gets the Operating System type.
-     *
+     * 
      * @return the osType value.
      */
     public OperatingSystemType osType() {
@@ -73,7 +77,7 @@ public final class RestorePointSourceVmosDisk {
 
     /**
      * Get the encryptionSettings property: Gets the disk encryption settings.
-     *
+     * 
      * @return the encryptionSettings value.
      */
     public DiskEncryptionSettings encryptionSettings() {
@@ -82,7 +86,7 @@ public final class RestorePointSourceVmosDisk {
 
     /**
      * Get the name property: Gets the disk name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -91,7 +95,7 @@ public final class RestorePointSourceVmosDisk {
 
     /**
      * Get the caching property: Gets the caching type.
-     *
+     * 
      * @return the caching value.
      */
     public CachingTypes caching() {
@@ -100,7 +104,7 @@ public final class RestorePointSourceVmosDisk {
 
     /**
      * Get the diskSizeGB property: Gets the disk size in GB.
-     *
+     * 
      * @return the diskSizeGB value.
      */
     public Integer diskSizeGB() {
@@ -109,7 +113,7 @@ public final class RestorePointSourceVmosDisk {
 
     /**
      * Get the managedDisk property: Gets the managed disk details.
-     *
+     * 
      * @return the managedDisk value.
      */
     public ManagedDiskParameters managedDisk() {
@@ -118,7 +122,7 @@ public final class RestorePointSourceVmosDisk {
 
     /**
      * Set the managedDisk property: Gets the managed disk details.
-     *
+     * 
      * @param managedDisk the managedDisk value to set.
      * @return the RestorePointSourceVmosDisk object itself.
      */
@@ -129,7 +133,7 @@ public final class RestorePointSourceVmosDisk {
 
     /**
      * Get the diskRestorePoint property: Contains Disk Restore Point properties.
-     *
+     * 
      * @return the diskRestorePoint value.
      */
     public DiskRestorePointAttributes diskRestorePoint() {
@@ -138,7 +142,7 @@ public final class RestorePointSourceVmosDisk {
 
     /**
      * Set the diskRestorePoint property: Contains Disk Restore Point properties.
-     *
+     * 
      * @param diskRestorePoint the diskRestorePoint value to set.
      * @return the RestorePointSourceVmosDisk object itself.
      */
@@ -149,7 +153,7 @@ public final class RestorePointSourceVmosDisk {
 
     /**
      * Get the writeAcceleratorEnabled property: Shows true if the disk is write-accelerator enabled.
-     *
+     * 
      * @return the writeAcceleratorEnabled value.
      */
     public Boolean writeAcceleratorEnabled() {
@@ -158,7 +162,7 @@ public final class RestorePointSourceVmosDisk {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

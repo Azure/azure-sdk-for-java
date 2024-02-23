@@ -40,7 +40,6 @@ import reactor.core.publisher.Mono;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -53,7 +52,7 @@ import static com.azure.core.util.tracing.Tracer.AZ_TRACING_NAMESPACE_KEY;
 public final class Utility {
     private static final ClientLogger LOGGER = new ClientLogger(Utility.class);
     private static final String HTTP_REST_PROXY_SYNC_PROXY_ENABLE = "com.azure.core.http.restproxy.syncproxy.enable";
-    // Please see <a href=https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers>here</a>
+    // Please see https://docs.microsoft.com/azure/azure-resource-manager/management/azure-services-resource-providers
     // for more information on Azure resource provider namespaces.
     private static final String COGNITIVE_TRACING_NAMESPACE_VALUE = "Microsoft.CognitiveServices";
     private static final String CLIENT_NAME;
@@ -174,8 +173,9 @@ public final class Utility {
      * @return the UUID model Identifier.
      */
     public static String generateRandomModelID() {
-        return UUID.randomUUID().toString();
+        return CoreUtils.randomUuid().toString();
     }
+
     public static Context enableSyncRestProxy(Context context) {
         return context.addData(HTTP_REST_PROXY_SYNC_PROXY_ENABLE, true);
     }

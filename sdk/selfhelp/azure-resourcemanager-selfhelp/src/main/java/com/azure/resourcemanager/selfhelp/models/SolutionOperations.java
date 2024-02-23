@@ -7,26 +7,30 @@ package com.azure.resourcemanager.selfhelp.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of SolutionOperations. */
+/**
+ * Resource collection API of SolutionOperations.
+ */
 public interface SolutionOperations {
     /**
      * Get the solution using the applicable solutionResourceName while creating the solution.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the solution using the applicable solutionResourceName while creating the solution along with {@link
-     *     Response}.
+     * @return the solution using the applicable solutionResourceName while creating the solution along with
+     * {@link Response}.
      */
     Response<SolutionResource> getWithResponse(String scope, String solutionResourceName, Context context);
 
     /**
      * Get the solution using the applicable solutionResourceName while creating the solution.
-     *
-     * @param scope This is an extension resource provider and only resource level extension is supported at the moment.
+     * 
+     * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+     * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
      * @param solutionResourceName Solution resource Name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -37,32 +41,32 @@ public interface SolutionOperations {
 
     /**
      * Get the solution using the applicable solutionResourceName while creating the solution.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the solution using the applicable solutionResourceName while creating the solution along with {@link
-     *     Response}.
+     * @return the solution using the applicable solutionResourceName while creating the solution along with
+     * {@link Response}.
      */
     SolutionResource getById(String id);
 
     /**
      * Get the solution using the applicable solutionResourceName while creating the solution.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the solution using the applicable solutionResourceName while creating the solution along with {@link
-     *     Response}.
+     * @return the solution using the applicable solutionResourceName while creating the solution along with
+     * {@link Response}.
      */
     Response<SolutionResource> getByIdWithResponse(String id, Context context);
 
     /**
      * Begins definition for a new SolutionResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new SolutionResource definition.
      */

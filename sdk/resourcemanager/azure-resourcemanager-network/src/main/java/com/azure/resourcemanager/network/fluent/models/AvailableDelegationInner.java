@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The serviceName of an AvailableDelegation indicates a possible delegation for a subnet. */
+/**
+ * The serviceName of an AvailableDelegation indicates a possible delegation for a subnet.
+ */
 @Fluent
 public final class AvailableDelegationInner {
     /*
@@ -41,13 +43,15 @@ public final class AvailableDelegationInner {
     @JsonProperty(value = "actions")
     private List<String> actions;
 
-    /** Creates an instance of AvailableDelegationInner class. */
+    /**
+     * Creates an instance of AvailableDelegationInner class.
+     */
     public AvailableDelegationInner() {
     }
 
     /**
      * Get the name property: The name of the AvailableDelegation resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -56,7 +60,7 @@ public final class AvailableDelegationInner {
 
     /**
      * Set the name property: The name of the AvailableDelegation resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the AvailableDelegationInner object itself.
      */
@@ -67,7 +71,7 @@ public final class AvailableDelegationInner {
 
     /**
      * Get the id property: A unique identifier of the AvailableDelegation resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -76,7 +80,7 @@ public final class AvailableDelegationInner {
 
     /**
      * Set the id property: A unique identifier of the AvailableDelegation resource.
-     *
+     * 
      * @param id the id value to set.
      * @return the AvailableDelegationInner object itself.
      */
@@ -87,7 +91,7 @@ public final class AvailableDelegationInner {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -96,7 +100,7 @@ public final class AvailableDelegationInner {
 
     /**
      * Set the type property: Resource type.
-     *
+     * 
      * @param type the type value to set.
      * @return the AvailableDelegationInner object itself.
      */
@@ -107,7 +111,7 @@ public final class AvailableDelegationInner {
 
     /**
      * Get the serviceName property: The name of the service and resource.
-     *
+     * 
      * @return the serviceName value.
      */
     public String serviceName() {
@@ -116,7 +120,7 @@ public final class AvailableDelegationInner {
 
     /**
      * Set the serviceName property: The name of the service and resource.
-     *
+     * 
      * @param serviceName the serviceName value to set.
      * @return the AvailableDelegationInner object itself.
      */
@@ -127,7 +131,7 @@ public final class AvailableDelegationInner {
 
     /**
      * Get the actions property: The actions permitted to the service upon delegation.
-     *
+     * 
      * @return the actions value.
      */
     public List<String> actions() {
@@ -136,7 +140,7 @@ public final class AvailableDelegationInner {
 
     /**
      * Set the actions property: The actions permitted to the service upon delegation.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the AvailableDelegationInner object itself.
      */
@@ -147,7 +151,7 @@ public final class AvailableDelegationInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

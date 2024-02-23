@@ -24,13 +24,15 @@ public final class SecureString extends SecretBase {
     @JsonProperty(value = "value", required = true)
     private String value;
 
-    /** Creates an instance of SecureString class. */
+    /**
+     * Creates an instance of SecureString class.
+     */
     public SecureString() {
     }
 
     /**
      * Get the value property: Value of secure string.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -39,7 +41,7 @@ public final class SecureString extends SecretBase {
 
     /**
      * Set the value property: Value of secure string.
-     *
+     * 
      * @param value the value value to set.
      * @return the SecureString object itself.
      */
@@ -50,16 +52,15 @@ public final class SecureString extends SecretBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model SecureString"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model SecureString"));
         }
     }
 

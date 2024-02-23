@@ -59,11 +59,6 @@ public final class TargetsDeleteWithResponseMockTests {
         manager
             .targets()
             .deleteWithResponse(
-                "hzvhxnkomtkubo",
-                "ppnvdxz",
-                "hihfrbbcevqagtlt",
-                "hlfkqojpy",
-                "vgtrdcnifmzzs",
-                com.azure.core.util.Context.NONE);
+                "vgtrdcnifmzzs", "ymbrnysuxmpraf", "g", "khocxvdfffwaf", "roud", com.azure.core.util.Context.NONE);
     }
 }

@@ -9,8 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Representation of the token counts processed for a completions request. Counts consider all tokens across prompts,
- * choices, choice alternates, best_of generations, and other consumers.
+ * Representation of the token counts processed for a completions request.
+ * Counts consider all tokens across prompts, choices, choice alternates, best_of generations, and
+ * other consumers.
  */
 @Immutable
 public final class CompletionsUsage {
@@ -45,10 +46,9 @@ public final class CompletionsUsage {
      */
     @Generated
     @JsonCreator
-    private CompletionsUsage(
-            @JsonProperty(value = "completion_tokens") int completionTokens,
-            @JsonProperty(value = "prompt_tokens") int promptTokens,
-            @JsonProperty(value = "total_tokens") int totalTokens) {
+    private CompletionsUsage(@JsonProperty(value = "completion_tokens") int completionTokens,
+        @JsonProperty(value = "prompt_tokens") int promptTokens,
+        @JsonProperty(value = "total_tokens") int totalTokens) {
         this.completionTokens = completionTokens;
         this.promptTokens = promptTokens;
         this.totalTokens = totalTokens;

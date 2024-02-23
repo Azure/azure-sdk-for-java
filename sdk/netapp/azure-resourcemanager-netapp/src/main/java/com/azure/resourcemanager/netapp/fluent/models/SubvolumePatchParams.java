@@ -7,12 +7,14 @@ package com.azure.resourcemanager.netapp.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters with which a subvolume can be updated. */
+/**
+ * Parameters with which a subvolume can be updated.
+ */
 @Fluent
 public final class SubvolumePatchParams {
     /*
      * size
-     *
+     * 
      * Truncate subvolume to the provided size in bytes
      */
     @JsonProperty(value = "size")
@@ -20,21 +22,23 @@ public final class SubvolumePatchParams {
 
     /*
      * path
-     *
+     * 
      * path to the subvolume
      */
     @JsonProperty(value = "path")
     private String path;
 
-    /** Creates an instance of SubvolumePatchParams class. */
+    /**
+     * Creates an instance of SubvolumePatchParams class.
+     */
     public SubvolumePatchParams() {
     }
 
     /**
      * Get the size property: size
-     *
-     * <p>Truncate subvolume to the provided size in bytes.
-     *
+     * 
+     * Truncate subvolume to the provided size in bytes.
+     * 
      * @return the size value.
      */
     public Long size() {
@@ -43,9 +47,9 @@ public final class SubvolumePatchParams {
 
     /**
      * Set the size property: size
-     *
-     * <p>Truncate subvolume to the provided size in bytes.
-     *
+     * 
+     * Truncate subvolume to the provided size in bytes.
+     * 
      * @param size the size value to set.
      * @return the SubvolumePatchParams object itself.
      */
@@ -56,9 +60,9 @@ public final class SubvolumePatchParams {
 
     /**
      * Get the path property: path
-     *
-     * <p>path to the subvolume.
-     *
+     * 
+     * path to the subvolume.
+     * 
      * @return the path value.
      */
     public String path() {
@@ -67,9 +71,9 @@ public final class SubvolumePatchParams {
 
     /**
      * Set the path property: path
-     *
-     * <p>path to the subvolume.
-     *
+     * 
+     * path to the subvolume.
+     * 
      * @param path the path value to set.
      * @return the SubvolumePatchParams object itself.
      */
@@ -80,7 +84,7 @@ public final class SubvolumePatchParams {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

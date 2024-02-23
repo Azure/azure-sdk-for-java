@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.AvailableProvidersListCountry;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of available countries with details. */
+/**
+ * List of available countries with details.
+ */
 @Fluent
 public final class AvailableProvidersListInner {
     /*
@@ -19,13 +21,15 @@ public final class AvailableProvidersListInner {
     @JsonProperty(value = "countries", required = true)
     private List<AvailableProvidersListCountry> countries;
 
-    /** Creates an instance of AvailableProvidersListInner class. */
+    /**
+     * Creates an instance of AvailableProvidersListInner class.
+     */
     public AvailableProvidersListInner() {
     }
 
     /**
      * Get the countries property: List of available countries.
-     *
+     * 
      * @return the countries value.
      */
     public List<AvailableProvidersListCountry> countries() {
@@ -34,7 +38,7 @@ public final class AvailableProvidersListInner {
 
     /**
      * Set the countries property: List of available countries.
-     *
+     * 
      * @param countries the countries value to set.
      * @return the AvailableProvidersListInner object itself.
      */
@@ -45,15 +49,13 @@ public final class AvailableProvidersListInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (countries() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property countries in model AvailableProvidersListInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property countries in model AvailableProvidersListInner"));
         } else {
             countries().forEach(e -> e.validate());
         }

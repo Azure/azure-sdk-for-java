@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The access key regenerate action content. */
+/**
+ * The access key regenerate action content.
+ */
 @Fluent
 public final class RegenerateActionParameter {
     /*
@@ -16,13 +18,15 @@ public final class RegenerateActionParameter {
     @JsonProperty(value = "keyType")
     private KeyType keyType;
 
-    /** Creates an instance of RegenerateActionParameter class. */
+    /**
+     * Creates an instance of RegenerateActionParameter class.
+     */
     public RegenerateActionParameter() {
     }
 
     /**
      * Get the keyType property: The key type.
-     *
+     * 
      * @return the keyType value.
      */
     public KeyType keyType() {
@@ -31,7 +35,7 @@ public final class RegenerateActionParameter {
 
     /**
      * Set the keyType property: The key type.
-     *
+     * 
      * @param keyType the keyType value to set.
      * @return the RegenerateActionParameter object itself.
      */
@@ -42,7 +46,7 @@ public final class RegenerateActionParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SolutionMetadataPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SolutionMetadataProperties model =
-            BinaryData
-                .fromString(
-                    "{\"solutionId\":\"qqwx\",\"solutionType\":\"Solutions\",\"description\":\"al\",\"requiredInputs\":[\"sub\",\"snjampmng\",\"zscxaqwo\"]}")
-                .toObject(SolutionMetadataProperties.class);
+        SolutionMetadataProperties model = BinaryData.fromString(
+            "{\"solutionId\":\"qqwx\",\"solutionType\":\"Solutions\",\"description\":\"al\",\"requiredInputs\":[\"sub\",\"snjampmng\",\"zscxaqwo\"]}")
+            .toObject(SolutionMetadataProperties.class);
         Assertions.assertEquals("qqwx", model.solutionId());
     }
 

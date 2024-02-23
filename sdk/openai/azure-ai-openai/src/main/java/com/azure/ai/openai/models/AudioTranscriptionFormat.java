@@ -8,29 +8,42 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines available options for the underlying response format of output transcription information. */
+/**
+ * Defines available options for the underlying response format of output transcription information.
+ */
 public final class AudioTranscriptionFormat extends ExpandableStringEnum<AudioTranscriptionFormat> {
 
-    /** Use a response body that is a JSON object containing a single 'text' field for the transcription. */
-    @Generated public static final AudioTranscriptionFormat JSON = fromString("json");
+    /**
+     * Use a response body that is a JSON object containing a single 'text' field for the transcription.
+     */
+    @Generated
+    public static final AudioTranscriptionFormat JSON = fromString("json");
 
     /**
      * Use a response body that is a JSON object containing transcription text along with timing, segments, and other
      * metadata.
      */
-    @Generated public static final AudioTranscriptionFormat VERBOSE_JSON = fromString("verbose_json");
+    @Generated
+    public static final AudioTranscriptionFormat VERBOSE_JSON = fromString("verbose_json");
 
-    /** Use a response body that is plain text containing the raw, unannotated transcription. */
-    @Generated public static final AudioTranscriptionFormat TEXT = fromString("text");
+    /**
+     * Use a response body that is plain text containing the raw, unannotated transcription.
+     */
+    @Generated
+    public static final AudioTranscriptionFormat TEXT = fromString("text");
 
-    /** Use a response body that is plain text in SubRip (SRT) format that also includes timing information. */
-    @Generated public static final AudioTranscriptionFormat SRT = fromString("srt");
+    /**
+     * Use a response body that is plain text in SubRip (SRT) format that also includes timing information.
+     */
+    @Generated
+    public static final AudioTranscriptionFormat SRT = fromString("srt");
 
     /**
      * Use a response body that is plain text in Web Video Text Tracks (VTT) format that also includes timing
      * information.
      */
-    @Generated public static final AudioTranscriptionFormat VTT = fromString("vtt");
+    @Generated
+    public static final AudioTranscriptionFormat VTT = fromString("vtt");
 
     /**
      * Creates a new instance of AudioTranscriptionFormat value.
@@ -39,7 +52,8 @@ public final class AudioTranscriptionFormat extends ExpandableStringEnum<AudioTr
      */
     @Generated
     @Deprecated
-    public AudioTranscriptionFormat() {}
+    public AudioTranscriptionFormat() {
+    }
 
     /**
      * Creates or finds a AudioTranscriptionFormat from its string representation.

@@ -6,11 +6,16 @@ package com.azure.analytics.defender.easm.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 
-/** The properties required to establish connection to a particular service. */
+/**
+ * The properties required to establish connection to a particular service.
+ */
 @Immutable
 public class DataConnectionProperties {
 
-    /** Creates an instance of DataConnectionProperties class. */
+    /**
+     * Creates an instance of DataConnectionProperties class.
+     */
     @Generated
-    public DataConnectionProperties() {}
+    public DataConnectionProperties() {
+    }
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Description of the App Service plan scale options. */
+/**
+ * Description of the App Service plan scale options.
+ */
 @Fluent
 public final class SkuCapacity {
     /*
@@ -40,13 +42,15 @@ public final class SkuCapacity {
     @JsonProperty(value = "scaleType")
     private String scaleType;
 
-    /** Creates an instance of SkuCapacity class. */
+    /**
+     * Creates an instance of SkuCapacity class.
+     */
     public SkuCapacity() {
     }
 
     /**
      * Get the minimum property: Minimum number of workers for this App Service plan SKU.
-     *
+     * 
      * @return the minimum value.
      */
     public Integer minimum() {
@@ -55,7 +59,7 @@ public final class SkuCapacity {
 
     /**
      * Set the minimum property: Minimum number of workers for this App Service plan SKU.
-     *
+     * 
      * @param minimum the minimum value to set.
      * @return the SkuCapacity object itself.
      */
@@ -66,7 +70,7 @@ public final class SkuCapacity {
 
     /**
      * Get the maximum property: Maximum number of workers for this App Service plan SKU.
-     *
+     * 
      * @return the maximum value.
      */
     public Integer maximum() {
@@ -75,7 +79,7 @@ public final class SkuCapacity {
 
     /**
      * Set the maximum property: Maximum number of workers for this App Service plan SKU.
-     *
+     * 
      * @param maximum the maximum value to set.
      * @return the SkuCapacity object itself.
      */
@@ -86,7 +90,7 @@ public final class SkuCapacity {
 
     /**
      * Get the elasticMaximum property: Maximum number of Elastic workers for this App Service plan SKU.
-     *
+     * 
      * @return the elasticMaximum value.
      */
     public Integer elasticMaximum() {
@@ -95,7 +99,7 @@ public final class SkuCapacity {
 
     /**
      * Set the elasticMaximum property: Maximum number of Elastic workers for this App Service plan SKU.
-     *
+     * 
      * @param elasticMaximum the elasticMaximum value to set.
      * @return the SkuCapacity object itself.
      */
@@ -106,7 +110,7 @@ public final class SkuCapacity {
 
     /**
      * Get the defaultProperty property: Default number of workers for this App Service plan SKU.
-     *
+     * 
      * @return the defaultProperty value.
      */
     public Integer defaultProperty() {
@@ -115,7 +119,7 @@ public final class SkuCapacity {
 
     /**
      * Set the defaultProperty property: Default number of workers for this App Service plan SKU.
-     *
+     * 
      * @param defaultProperty the defaultProperty value to set.
      * @return the SkuCapacity object itself.
      */
@@ -126,7 +130,7 @@ public final class SkuCapacity {
 
     /**
      * Get the scaleType property: Available scale configurations for an App Service plan.
-     *
+     * 
      * @return the scaleType value.
      */
     public String scaleType() {
@@ -135,7 +139,7 @@ public final class SkuCapacity {
 
     /**
      * Set the scaleType property: Available scale configurations for an App Service plan.
-     *
+     * 
      * @param scaleType the scaleType value to set.
      * @return the SkuCapacity object itself.
      */
@@ -146,7 +150,7 @@ public final class SkuCapacity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

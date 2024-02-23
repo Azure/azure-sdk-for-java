@@ -13,8 +13,8 @@ stages:
           safeName: azuredataschemaregistryapacheavro
       TimeoutInMinutes: 60
       EnvVars:
-        AZURE_CLIENT_ID: $(aad-azure-sdk-test-client-id)
-        AZURE_CLIENT_SECRET: $(aad-azure-sdk-test-client-secret)
-        AZURE_TENANT_ID: $(aad-azure-sdk-test-tenant-id)
+        AZURE_CLIENT_ID: $(SCHEMAREGISTRY_CLIENT_ID)
+        AZURE_CLIENT_SECRET: $(SCHEMAREGISTRY_CLIENT_SECRET)
+        AZURE_TENANT_ID: $(SCHEMAREGISTRY_TENANT_ID)
         SCHEMA_REGISTRY_GROUP: $(SCHEMA_REGISTRY_GROUP)
         SCHEMA_REGISTRY_ENDPOINT: $(SCHEMA_REGISTRY_ENDPOINT)

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The localizable string class. */
+/**
+ * The localizable string class.
+ */
 @Fluent
 public final class LocalizableString {
     /*
@@ -25,7 +27,7 @@ public final class LocalizableString {
 
     /**
      * Creates an instance of LocalizableString class.
-     *
+     * 
      * @param value the value value to set.
      */
     @JsonCreator
@@ -35,7 +37,7 @@ public final class LocalizableString {
 
     /**
      * Get the value property: The invariant value.
-     *
+     * 
      * @return the value value.
      */
     public String getValue() {
@@ -44,7 +46,7 @@ public final class LocalizableString {
 
     /**
      * Get the localizedValue property: The display name.
-     *
+     * 
      * @return the localizedValue value.
      */
     public String getLocalizedValue() {
@@ -53,7 +55,7 @@ public final class LocalizableString {
 
     /**
      * Set the localizedValue property: The display name.
-     *
+     * 
      * @param localizedValue the localizedValue value to set.
      * @return the LocalizableString object itself.
      */

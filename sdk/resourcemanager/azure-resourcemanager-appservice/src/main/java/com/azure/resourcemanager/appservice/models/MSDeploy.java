@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** MSDeploy ARM PUT information. */
+/**
+ * MSDeploy ARM PUT information.
+ */
 @Fluent
 public final class MSDeploy extends ProxyOnlyResource {
     /*
@@ -19,20 +21,24 @@ public final class MSDeploy extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private MSDeployProperties innerProperties;
 
-    /** Creates an instance of MSDeploy class. */
+    /**
+     * Creates an instance of MSDeploy class.
+     */
     public MSDeploy() {
     }
 
     /**
      * Get the innerProperties property: Core resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MSDeployProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MSDeploy withKind(String kind) {
         super.withKind(kind);
@@ -42,7 +48,7 @@ public final class MSDeploy extends ProxyOnlyResource {
     /**
      * Get the addOnPackages property: List of Add-On packages. Add-On packages implicitly enable the Do Not Delete
      * MSDeploy rule.
-     *
+     * 
      * @return the addOnPackages value.
      */
     public List<MSDeployCore> addOnPackages() {
@@ -52,7 +58,7 @@ public final class MSDeploy extends ProxyOnlyResource {
     /**
      * Set the addOnPackages property: List of Add-On packages. Add-On packages implicitly enable the Do Not Delete
      * MSDeploy rule.
-     *
+     * 
      * @param addOnPackages the addOnPackages value to set.
      * @return the MSDeploy object itself.
      */
@@ -66,7 +72,7 @@ public final class MSDeploy extends ProxyOnlyResource {
 
     /**
      * Get the packageUri property: Package URI.
-     *
+     * 
      * @return the packageUri value.
      */
     public String packageUri() {
@@ -75,7 +81,7 @@ public final class MSDeploy extends ProxyOnlyResource {
 
     /**
      * Set the packageUri property: Package URI.
-     *
+     * 
      * @param packageUri the packageUri value to set.
      * @return the MSDeploy object itself.
      */
@@ -89,7 +95,7 @@ public final class MSDeploy extends ProxyOnlyResource {
 
     /**
      * Get the connectionString property: SQL Connection String.
-     *
+     * 
      * @return the connectionString value.
      */
     public String connectionString() {
@@ -98,7 +104,7 @@ public final class MSDeploy extends ProxyOnlyResource {
 
     /**
      * Set the connectionString property: SQL Connection String.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the MSDeploy object itself.
      */
@@ -112,7 +118,7 @@ public final class MSDeploy extends ProxyOnlyResource {
 
     /**
      * Get the dbType property: Database Type.
-     *
+     * 
      * @return the dbType value.
      */
     public String dbType() {
@@ -121,7 +127,7 @@ public final class MSDeploy extends ProxyOnlyResource {
 
     /**
      * Set the dbType property: Database Type.
-     *
+     * 
      * @param dbType the dbType value to set.
      * @return the MSDeploy object itself.
      */
@@ -136,7 +142,7 @@ public final class MSDeploy extends ProxyOnlyResource {
     /**
      * Get the setParametersXmlFileUri property: URI of MSDeploy Parameters file. Must not be set if SetParameters is
      * used.
-     *
+     * 
      * @return the setParametersXmlFileUri value.
      */
     public String setParametersXmlFileUri() {
@@ -146,7 +152,7 @@ public final class MSDeploy extends ProxyOnlyResource {
     /**
      * Set the setParametersXmlFileUri property: URI of MSDeploy Parameters file. Must not be set if SetParameters is
      * used.
-     *
+     * 
      * @param setParametersXmlFileUri the setParametersXmlFileUri value to set.
      * @return the MSDeploy object itself.
      */
@@ -160,7 +166,7 @@ public final class MSDeploy extends ProxyOnlyResource {
 
     /**
      * Get the setParameters property: MSDeploy Parameters. Must not be set if SetParametersXmlFileUri is used.
-     *
+     * 
      * @return the setParameters value.
      */
     public Map<String, String> setParameters() {
@@ -169,7 +175,7 @@ public final class MSDeploy extends ProxyOnlyResource {
 
     /**
      * Set the setParameters property: MSDeploy Parameters. Must not be set if SetParametersXmlFileUri is used.
-     *
+     * 
      * @param setParameters the setParameters value to set.
      * @return the MSDeploy object itself.
      */
@@ -182,10 +188,11 @@ public final class MSDeploy extends ProxyOnlyResource {
     }
 
     /**
-     * Get the skipAppData property: Controls whether the MSDeploy operation skips the App_Data directory. If set to
-     * &lt;code&gt;true&lt;/code&gt;, the existing App_Data directory on the destination will not be deleted, and any
-     * App_Data directory in the source will be ignored. Setting is &lt;code&gt;false&lt;/code&gt; by default.
-     *
+     * Get the skipAppData property: Controls whether the MSDeploy operation skips the App_Data directory.
+     * If set to &lt;code&gt;true&lt;/code&gt;, the existing App_Data directory on the destination
+     * will not be deleted, and any App_Data directory in the source will be ignored.
+     * Setting is &lt;code&gt;false&lt;/code&gt; by default.
+     * 
      * @return the skipAppData value.
      */
     public Boolean skipAppData() {
@@ -193,10 +200,11 @@ public final class MSDeploy extends ProxyOnlyResource {
     }
 
     /**
-     * Set the skipAppData property: Controls whether the MSDeploy operation skips the App_Data directory. If set to
-     * &lt;code&gt;true&lt;/code&gt;, the existing App_Data directory on the destination will not be deleted, and any
-     * App_Data directory in the source will be ignored. Setting is &lt;code&gt;false&lt;/code&gt; by default.
-     *
+     * Set the skipAppData property: Controls whether the MSDeploy operation skips the App_Data directory.
+     * If set to &lt;code&gt;true&lt;/code&gt;, the existing App_Data directory on the destination
+     * will not be deleted, and any App_Data directory in the source will be ignored.
+     * Setting is &lt;code&gt;false&lt;/code&gt; by default.
+     * 
      * @param skipAppData the skipAppData value to set.
      * @return the MSDeploy object itself.
      */
@@ -209,9 +217,9 @@ public final class MSDeploy extends ProxyOnlyResource {
     }
 
     /**
-     * Get the appOffline property: Sets the AppOffline rule while the MSDeploy operation executes. Setting is
-     * &lt;code&gt;false&lt;/code&gt; by default.
-     *
+     * Get the appOffline property: Sets the AppOffline rule while the MSDeploy operation executes.
+     * Setting is &lt;code&gt;false&lt;/code&gt; by default.
+     * 
      * @return the appOffline value.
      */
     public Boolean appOffline() {
@@ -219,9 +227,9 @@ public final class MSDeploy extends ProxyOnlyResource {
     }
 
     /**
-     * Set the appOffline property: Sets the AppOffline rule while the MSDeploy operation executes. Setting is
-     * &lt;code&gt;false&lt;/code&gt; by default.
-     *
+     * Set the appOffline property: Sets the AppOffline rule while the MSDeploy operation executes.
+     * Setting is &lt;code&gt;false&lt;/code&gt; by default.
+     * 
      * @param appOffline the appOffline value to set.
      * @return the MSDeploy object itself.
      */
@@ -235,7 +243,7 @@ public final class MSDeploy extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

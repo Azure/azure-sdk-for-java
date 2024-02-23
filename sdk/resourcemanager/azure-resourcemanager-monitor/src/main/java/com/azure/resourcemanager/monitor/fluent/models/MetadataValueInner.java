@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents a metric metadata value. */
+/**
+ * Represents a metric metadata value.
+ */
 @Fluent
 public final class MetadataValueInner {
     /*
@@ -22,13 +24,15 @@ public final class MetadataValueInner {
     @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of MetadataValueInner class. */
+    /**
+     * Creates an instance of MetadataValueInner class.
+     */
     public MetadataValueInner() {
     }
 
     /**
      * Get the name property: the name of the metadata.
-     *
+     * 
      * @return the name value.
      */
     public LocalizableStringInner name() {
@@ -37,7 +41,7 @@ public final class MetadataValueInner {
 
     /**
      * Set the name property: the name of the metadata.
-     *
+     * 
      * @param name the name value to set.
      * @return the MetadataValueInner object itself.
      */
@@ -48,7 +52,7 @@ public final class MetadataValueInner {
 
     /**
      * Get the value property: the value of the metadata.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -57,7 +61,7 @@ public final class MetadataValueInner {
 
     /**
      * Set the value property: the value of the metadata.
-     *
+     * 
      * @param value the value value to set.
      * @return the MetadataValueInner object itself.
      */
@@ -68,7 +72,7 @@ public final class MetadataValueInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

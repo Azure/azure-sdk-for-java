@@ -8,16 +8,22 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** IsNullOrUndefined Filter. */
+/**
+ * IsNullOrUndefined Filter.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "operatorType")
 @JsonTypeName("IsNullOrUndefined")
 @Fluent
 public final class IsNullOrUndefinedFilter extends Filter {
-    /** Creates an instance of IsNullOrUndefinedFilter class. */
+    /**
+     * Creates an instance of IsNullOrUndefinedFilter class.
+     */
     public IsNullOrUndefinedFilter() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public IsNullOrUndefinedFilter withKey(String key) {
         super.withKey(key);
@@ -26,7 +32,7 @@ public final class IsNullOrUndefinedFilter extends Filter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

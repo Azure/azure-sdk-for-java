@@ -26,6 +26,7 @@ public class DistributionPolicyAdapter {
      */
     public static DistributionPolicyInternal convertCreateOptionsToDistributionPolicy(CreateDistributionPolicyOptions createDistributionPolicyOptions) {
         return new DistributionPolicyInternal()
+            .setId(createDistributionPolicyOptions.getDistributionPolicyId())
             .setMode(convertDistributionModeToInternal(createDistributionPolicyOptions.getMode()))
             .setOfferExpiresAfterSeconds((double) createDistributionPolicyOptions.getOfferExpiresAfter().getSeconds())
             .setName(createDistributionPolicyOptions.getName());
@@ -81,5 +82,14 @@ public class DistributionPolicyAdapter {
         }
 
         return null;
+    }
+
+    public static DistributionPolicyInternal convertDistributionPolicyToInternal(DistributionPolicy distributionPolicy) {
+        return new DistributionPolicyInternal()
+            .setEtag(distributionPolicy.getEtag())
+            .setId(distributionPolicy.getId())
+            .setName(distributionPolicy.getName())
+            .setMode(convertDistributionModeToInternal(distributionPolicy.getMode()))
+            .setOfferExpiresAfterSeconds(Double.valueOf(distributionPolicy.getOfferExpiresAfter().getSeconds()));
     }
 }

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity Salesforce sink. */
+/**
+ * A copy activity Salesforce sink.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SalesforceSink")
 @Fluent
@@ -37,13 +39,15 @@ public final class SalesforceSink extends CopySink {
     @JsonProperty(value = "ignoreNullValues")
     private Object ignoreNullValues;
 
-    /** Creates an instance of SalesforceSink class. */
+    /**
+     * Creates an instance of SalesforceSink class.
+     */
     public SalesforceSink() {
     }
 
     /**
      * Get the writeBehavior property: The write behavior for the operation. Default is Insert.
-     *
+     * 
      * @return the writeBehavior value.
      */
     public SalesforceSinkWriteBehavior writeBehavior() {
@@ -52,7 +56,7 @@ public final class SalesforceSink extends CopySink {
 
     /**
      * Set the writeBehavior property: The write behavior for the operation. Default is Insert.
-     *
+     * 
      * @param writeBehavior the writeBehavior value to set.
      * @return the SalesforceSink object itself.
      */
@@ -64,7 +68,7 @@ public final class SalesforceSink extends CopySink {
     /**
      * Get the externalIdFieldName property: The name of the external ID field for upsert operation. Default value is
      * 'Id' column. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the externalIdFieldName value.
      */
     public Object externalIdFieldName() {
@@ -74,7 +78,7 @@ public final class SalesforceSink extends CopySink {
     /**
      * Set the externalIdFieldName property: The name of the external ID field for upsert operation. Default value is
      * 'Id' column. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param externalIdFieldName the externalIdFieldName value to set.
      * @return the SalesforceSink object itself.
      */
@@ -90,7 +94,7 @@ public final class SalesforceSink extends CopySink {
      * when doing insert operation, versus ADF will update the data in the destination object to NULL when doing
      * upsert/update operation and insert NULL value when doing insert operation. Type: boolean (or Expression with
      * resultType boolean).
-     *
+     * 
      * @return the ignoreNullValues value.
      */
     public Object ignoreNullValues() {
@@ -104,7 +108,7 @@ public final class SalesforceSink extends CopySink {
      * when doing insert operation, versus ADF will update the data in the destination object to NULL when doing
      * upsert/update operation and insert NULL value when doing insert operation. Type: boolean (or Expression with
      * resultType boolean).
-     *
+     * 
      * @param ignoreNullValues the ignoreNullValues value to set.
      * @return the SalesforceSink object itself.
      */
@@ -113,42 +117,54 @@ public final class SalesforceSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceSink withWriteBatchSize(Object writeBatchSize) {
         super.withWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceSink withWriteBatchTimeout(Object writeBatchTimeout) {
         super.withWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceSink withSinkRetryCount(Object sinkRetryCount) {
         super.withSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceSink withSinkRetryWait(Object sinkRetryWait) {
         super.withSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceSink withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceSink withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
@@ -157,7 +173,7 @@ public final class SalesforceSink extends CopySink {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

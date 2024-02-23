@@ -84,25 +84,19 @@ public final class PrefixListResourceImpl
     }
 
     public PrefixListResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrefixListLocalRulestacks()
-                .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getPrefixListLocalRulestacks()
+            .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), Context.NONE);
         return this;
     }
 
     public PrefixListResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrefixListLocalRulestacks()
-                .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getPrefixListLocalRulestacks()
+            .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), context);
         return this;
     }
 
-    PrefixListResourceImpl(
-        String name, com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
+    PrefixListResourceImpl(String name,
+        com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = new PrefixListResourceInner();
         this.serviceManager = serviceManager;
         this.name = name;
@@ -113,25 +107,18 @@ public final class PrefixListResourceImpl
     }
 
     public PrefixListResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrefixListLocalRulestacks()
-                .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getPrefixListLocalRulestacks()
+            .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), Context.NONE);
         return this;
     }
 
     public PrefixListResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrefixListLocalRulestacks()
-                .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getPrefixListLocalRulestacks()
+            .createOrUpdate(resourceGroupName, localRulestackName, name, this.innerModel(), context);
         return this;
     }
 
-    PrefixListResourceImpl(
-        PrefixListResourceInner innerObject,
+    PrefixListResourceImpl(PrefixListResourceInner innerObject,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -141,22 +128,14 @@ public final class PrefixListResourceImpl
     }
 
     public PrefixListResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrefixListLocalRulestacks()
-                .getWithResponse(resourceGroupName, localRulestackName, name, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getPrefixListLocalRulestacks()
+            .getWithResponse(resourceGroupName, localRulestackName, name, Context.NONE).getValue();
         return this;
     }
 
     public PrefixListResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getPrefixListLocalRulestacks()
-                .getWithResponse(resourceGroupName, localRulestackName, name, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getPrefixListLocalRulestacks()
+            .getWithResponse(resourceGroupName, localRulestackName, name, context).getValue();
         return this;
     }
 

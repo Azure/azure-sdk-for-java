@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The custom dataset. */
+/**
+ * The custom dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("CustomDataset")
 @Fluent
@@ -22,12 +24,15 @@ public final class CustomDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private Object typeProperties;
 
-    /** Creates an instance of CustomDataset class. */
-    public CustomDataset() {}
+    /**
+     * Creates an instance of CustomDataset class.
+     */
+    public CustomDataset() {
+    }
 
     /**
      * Get the typeProperties property: Custom dataset properties.
-     *
+     * 
      * @return the typeProperties value.
      */
     public Object getTypeProperties() {
@@ -36,7 +41,7 @@ public final class CustomDataset extends Dataset {
 
     /**
      * Set the typeProperties property: Custom dataset properties.
-     *
+     * 
      * @param typeProperties the typeProperties value to set.
      * @return the CustomDataset object itself.
      */
@@ -45,49 +50,63 @@ public final class CustomDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

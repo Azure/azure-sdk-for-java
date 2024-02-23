@@ -7,15 +7,23 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** The type of migration operation to be done. */
+/**
+ * The type of migration operation to be done.
+ */
 public enum MySqlMigrationType {
-    /** Enum value LocalToRemote. */
+    /**
+     * Enum value LocalToRemote.
+     */
     LOCAL_TO_REMOTE("LocalToRemote"),
 
-    /** Enum value RemoteToLocal. */
+    /**
+     * Enum value RemoteToLocal.
+     */
     REMOTE_TO_LOCAL("RemoteToLocal");
 
-    /** The actual serialized value for a MySqlMigrationType instance. */
+    /**
+     * The actual serialized value for a MySqlMigrationType instance.
+     */
     private final String value;
 
     MySqlMigrationType(String value) {
@@ -24,7 +32,7 @@ public enum MySqlMigrationType {
 
     /**
      * Parses a serialized value to a MySqlMigrationType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed MySqlMigrationType object, or null if unable to parse.
      */
@@ -42,7 +50,9 @@ public enum MySqlMigrationType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

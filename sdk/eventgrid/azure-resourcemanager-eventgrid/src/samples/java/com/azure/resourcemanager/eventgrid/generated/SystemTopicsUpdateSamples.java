@@ -8,25 +8,28 @@ import com.azure.resourcemanager.eventgrid.models.SystemTopic;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for SystemTopics Update. */
+/**
+ * Samples for SystemTopics Update.
+ */
 public final class SystemTopicsUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/SystemTopics_Update.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * SystemTopics_Update.json
      */
     /**
      * Sample code: SystemTopics_Update.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
     public static void systemTopicsUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        SystemTopic resource =
-            manager
-                .systemTopics()
-                .getByResourceGroupWithResponse("examplerg", "exampleSystemTopic1", com.azure.core.util.Context.NONE)
-                .getValue();
+        SystemTopic resource = manager.systemTopics()
+            .getByResourceGroupWithResponse("examplerg", "exampleSystemTopic1", com.azure.core.util.Context.NONE)
+            .getValue();
         resource.update().withTags(mapOf("tag1", "value1", "tag2", "value2")).apply();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

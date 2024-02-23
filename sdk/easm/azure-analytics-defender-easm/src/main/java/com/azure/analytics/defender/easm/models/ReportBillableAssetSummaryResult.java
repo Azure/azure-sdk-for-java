@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The ReportBillableAssetSummaryResult model. */
+/**
+ * The ReportBillableAssetSummaryResult model.
+ */
 @Immutable
 public final class ReportBillableAssetSummaryResult {
 
@@ -19,9 +21,12 @@ public final class ReportBillableAssetSummaryResult {
     @JsonProperty(value = "assetSummaries")
     private List<ReportBillableAssetSnapshotResult> assetSummaries;
 
-    /** Creates an instance of ReportBillableAssetSummaryResult class. */
+    /**
+     * Creates an instance of ReportBillableAssetSummaryResult class.
+     */
     @Generated
-    private ReportBillableAssetSummaryResult() {}
+    private ReportBillableAssetSummaryResult() {
+    }
 
     /**
      * Get the assetSummaries property: The assetSummaries property.

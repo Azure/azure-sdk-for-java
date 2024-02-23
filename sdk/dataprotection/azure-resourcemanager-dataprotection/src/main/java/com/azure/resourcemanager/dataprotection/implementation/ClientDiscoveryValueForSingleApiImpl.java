@@ -14,8 +14,7 @@ public final class ClientDiscoveryValueForSingleApiImpl implements ClientDiscove
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    ClientDiscoveryValueForSingleApiImpl(
-        ClientDiscoveryValueForSingleApiInner innerObject,
+    ClientDiscoveryValueForSingleApiImpl(ClientDiscoveryValueForSingleApiInner innerObject,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** security services. */
+/**
+ * security services.
+ */
 @Fluent
 public final class SecurityServices {
     /*
@@ -58,13 +60,15 @@ public final class SecurityServices {
     @JsonProperty(value = "outboundTrustCertificate")
     private String outboundTrustCertificate;
 
-    /** Creates an instance of SecurityServices class. */
+    /**
+     * Creates an instance of SecurityServices class.
+     */
     public SecurityServices() {
     }
 
     /**
      * Get the vulnerabilityProfile property: IPs Vulnerability Profile Data.
-     *
+     * 
      * @return the vulnerabilityProfile value.
      */
     public String vulnerabilityProfile() {
@@ -73,7 +77,7 @@ public final class SecurityServices {
 
     /**
      * Set the vulnerabilityProfile property: IPs Vulnerability Profile Data.
-     *
+     * 
      * @param vulnerabilityProfile the vulnerabilityProfile value to set.
      * @return the SecurityServices object itself.
      */
@@ -84,7 +88,7 @@ public final class SecurityServices {
 
     /**
      * Get the antiSpywareProfile property: Anti spyware Profile data.
-     *
+     * 
      * @return the antiSpywareProfile value.
      */
     public String antiSpywareProfile() {
@@ -93,7 +97,7 @@ public final class SecurityServices {
 
     /**
      * Set the antiSpywareProfile property: Anti spyware Profile data.
-     *
+     * 
      * @param antiSpywareProfile the antiSpywareProfile value to set.
      * @return the SecurityServices object itself.
      */
@@ -104,7 +108,7 @@ public final class SecurityServices {
 
     /**
      * Get the antiVirusProfile property: anti virus profile data.
-     *
+     * 
      * @return the antiVirusProfile value.
      */
     public String antiVirusProfile() {
@@ -113,7 +117,7 @@ public final class SecurityServices {
 
     /**
      * Set the antiVirusProfile property: anti virus profile data.
-     *
+     * 
      * @param antiVirusProfile the antiVirusProfile value to set.
      * @return the SecurityServices object itself.
      */
@@ -124,7 +128,7 @@ public final class SecurityServices {
 
     /**
      * Get the urlFilteringProfile property: URL filtering profile data.
-     *
+     * 
      * @return the urlFilteringProfile value.
      */
     public String urlFilteringProfile() {
@@ -133,7 +137,7 @@ public final class SecurityServices {
 
     /**
      * Set the urlFilteringProfile property: URL filtering profile data.
-     *
+     * 
      * @param urlFilteringProfile the urlFilteringProfile value to set.
      * @return the SecurityServices object itself.
      */
@@ -144,7 +148,7 @@ public final class SecurityServices {
 
     /**
      * Get the fileBlockingProfile property: File blocking profile data.
-     *
+     * 
      * @return the fileBlockingProfile value.
      */
     public String fileBlockingProfile() {
@@ -153,7 +157,7 @@ public final class SecurityServices {
 
     /**
      * Set the fileBlockingProfile property: File blocking profile data.
-     *
+     * 
      * @param fileBlockingProfile the fileBlockingProfile value to set.
      * @return the SecurityServices object itself.
      */
@@ -164,7 +168,7 @@ public final class SecurityServices {
 
     /**
      * Get the dnsSubscription property: DNS Subscription profile data.
-     *
+     * 
      * @return the dnsSubscription value.
      */
     public String dnsSubscription() {
@@ -173,7 +177,7 @@ public final class SecurityServices {
 
     /**
      * Set the dnsSubscription property: DNS Subscription profile data.
-     *
+     * 
      * @param dnsSubscription the dnsSubscription value to set.
      * @return the SecurityServices object itself.
      */
@@ -184,7 +188,7 @@ public final class SecurityServices {
 
     /**
      * Get the outboundUnTrustCertificate property: Untrusted Egress Decryption profile data.
-     *
+     * 
      * @return the outboundUnTrustCertificate value.
      */
     public String outboundUnTrustCertificate() {
@@ -193,7 +197,7 @@ public final class SecurityServices {
 
     /**
      * Set the outboundUnTrustCertificate property: Untrusted Egress Decryption profile data.
-     *
+     * 
      * @param outboundUnTrustCertificate the outboundUnTrustCertificate value to set.
      * @return the SecurityServices object itself.
      */
@@ -204,7 +208,7 @@ public final class SecurityServices {
 
     /**
      * Get the outboundTrustCertificate property: Trusted Egress Decryption profile data.
-     *
+     * 
      * @return the outboundTrustCertificate value.
      */
     public String outboundTrustCertificate() {
@@ -213,7 +217,7 @@ public final class SecurityServices {
 
     /**
      * Set the outboundTrustCertificate property: Trusted Egress Decryption profile data.
-     *
+     * 
      * @param outboundTrustCertificate the outboundTrustCertificate value to set.
      * @return the SecurityServices object itself.
      */
@@ -224,7 +228,7 @@ public final class SecurityServices {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

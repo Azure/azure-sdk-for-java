@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Availability of the metric. */
+/**
+ * Availability of the metric.
+ */
 @Fluent
 public final class Availability {
     /*
@@ -28,13 +30,15 @@ public final class Availability {
     @JsonProperty(value = "blobDuration")
     private String blobDuration;
 
-    /** Creates an instance of Availability class. */
+    /**
+     * Creates an instance of Availability class.
+     */
     public Availability() {
     }
 
     /**
      * Get the timeGrain property: The time grain of the availability.
-     *
+     * 
      * @return the timeGrain value.
      */
     public String timeGrain() {
@@ -43,7 +47,7 @@ public final class Availability {
 
     /**
      * Set the timeGrain property: The time grain of the availability.
-     *
+     * 
      * @param timeGrain the timeGrain value to set.
      * @return the Availability object itself.
      */
@@ -54,7 +58,7 @@ public final class Availability {
 
     /**
      * Get the retention property: The retention of the availability.
-     *
+     * 
      * @return the retention value.
      */
     public String retention() {
@@ -63,7 +67,7 @@ public final class Availability {
 
     /**
      * Set the retention property: The retention of the availability.
-     *
+     * 
      * @param retention the retention value to set.
      * @return the Availability object itself.
      */
@@ -74,7 +78,7 @@ public final class Availability {
 
     /**
      * Get the blobDuration property: Duration of the availability blob.
-     *
+     * 
      * @return the blobDuration value.
      */
     public String blobDuration() {
@@ -83,7 +87,7 @@ public final class Availability {
 
     /**
      * Set the blobDuration property: Duration of the availability blob.
-     *
+     * 
      * @param blobDuration the blobDuration value to set.
      * @return the Availability object itself.
      */
@@ -94,7 +98,7 @@ public final class Availability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

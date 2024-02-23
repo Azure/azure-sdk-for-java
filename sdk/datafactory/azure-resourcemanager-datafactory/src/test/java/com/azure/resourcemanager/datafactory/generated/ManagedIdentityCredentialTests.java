@@ -12,23 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedIdentityCredentialTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedIdentityCredential model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"ManagedIdentity\",\"typeProperties\":{\"resourceId\":\"mflrytswfpfmdgyc\"},\"description\":\"mskwhqjjysl\",\"annotations\":[\"datapshhkvpedwqslsr\",\"datampqvwwsk\",\"datandcbrwi\",\"datauvqejosovyrrle\"],\"\":{\"bbpihehcecy\":\"datainuqtljq\",\"kfrexcrseqwjks\":\"datamrqbrjbbmpxdlv\",\"zhxogjggsvo\":\"datahud\",\"hrkmdyomkxfbvfbh\":\"datajkxibda\"}}")
-                .toObject(ManagedIdentityCredential.class);
+        ManagedIdentityCredential model = BinaryData.fromString(
+            "{\"type\":\"ManagedIdentity\",\"typeProperties\":{\"resourceId\":\"mflrytswfpfmdgyc\"},\"description\":\"mskwhqjjysl\",\"annotations\":[\"datapshhkvpedwqslsr\",\"datampqvwwsk\",\"datandcbrwi\",\"datauvqejosovyrrle\"],\"\":{\"bbpihehcecy\":\"datainuqtljq\",\"kfrexcrseqwjks\":\"datamrqbrjbbmpxdlv\",\"zhxogjggsvo\":\"datahud\",\"hrkmdyomkxfbvfbh\":\"datajkxibda\"}}")
+            .toObject(ManagedIdentityCredential.class);
         Assertions.assertEquals("mskwhqjjysl", model.description());
         Assertions.assertEquals("mflrytswfpfmdgyc", model.resourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ManagedIdentityCredential model =
-            new ManagedIdentityCredential()
-                .withDescription("mskwhqjjysl")
-                .withAnnotations(
-                    Arrays.asList("datapshhkvpedwqslsr", "datampqvwwsk", "datandcbrwi", "datauvqejosovyrrle"))
-                .withResourceId("mflrytswfpfmdgyc");
+        ManagedIdentityCredential model = new ManagedIdentityCredential().withDescription("mskwhqjjysl")
+            .withAnnotations(Arrays.asList("datapshhkvpedwqslsr", "datampqvwwsk", "datandcbrwi", "datauvqejosovyrrle"))
+            .withResourceId("mflrytswfpfmdgyc");
         model = BinaryData.fromObject(model).toObject(ManagedIdentityCredential.class);
         Assertions.assertEquals("mskwhqjjysl", model.description());
         Assertions.assertEquals("mflrytswfpfmdgyc", model.resourceId());

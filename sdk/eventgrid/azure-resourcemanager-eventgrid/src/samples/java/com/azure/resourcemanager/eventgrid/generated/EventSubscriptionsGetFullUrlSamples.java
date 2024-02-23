@@ -4,77 +4,74 @@
 
 package com.azure.resourcemanager.eventgrid.generated;
 
-/** Samples for EventSubscriptions GetFullUrl. */
+/**
+ * Samples for EventSubscriptions GetFullUrl.
+ */
 public final class EventSubscriptionsGetFullUrlSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/EventSubscriptions_GetFullUrlForResource.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * EventSubscriptions_GetFullUrlForResource.json
      */
     /**
      * Sample code: EventSubscriptions_GetFullUrlForResource.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
-    public static void eventSubscriptionsGetFullUrlForResource(
-        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .eventSubscriptions()
-            .getFullUrlWithResponse(
-                "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1",
-                "examplesubscription1",
-                com.azure.core.util.Context.NONE);
+    public static void
+        eventSubscriptionsGetFullUrlForResource(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager.eventSubscriptions().getFullUrlWithResponse(
+            "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventHub/namespaces/examplenamespace1",
+            "examplesubscription1", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/EventSubscriptions_GetFullUrlForResourceGroup.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * EventSubscriptions_GetFullUrlForResourceGroup.json
      */
     /**
      * Sample code: EventSubscriptions_GetFullUrlForResourceGroup.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
-    public static void eventSubscriptionsGetFullUrlForResourceGroup(
-        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .eventSubscriptions()
-            .getFullUrlWithResponse(
-                "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg",
-                "examplesubscription2",
-                com.azure.core.util.Context.NONE);
+    public static void
+        eventSubscriptionsGetFullUrlForResourceGroup(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager.eventSubscriptions().getFullUrlWithResponse(
+            "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg", "examplesubscription2",
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/EventSubscriptions_GetFullUrlForSubscription.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * EventSubscriptions_GetFullUrlForSubscription.json
      */
     /**
      * Sample code: EventSubscriptions_GetFullUrlForSubscription.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
-    public static void eventSubscriptionsGetFullUrlForSubscription(
-        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .eventSubscriptions()
-            .getFullUrlWithResponse(
-                "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40",
-                "examplesubscription3",
-                com.azure.core.util.Context.NONE);
+    public static void
+        eventSubscriptionsGetFullUrlForSubscription(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager.eventSubscriptions().getFullUrlWithResponse("subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40",
+            "examplesubscription3", com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/EventSubscriptions_GetFullUrlForCustomTopic.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * EventSubscriptions_GetFullUrlForCustomTopic.json
      */
     /**
      * Sample code: EventSubscriptions_GetFullUrlForCustomTopic.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
-    public static void eventSubscriptionsGetFullUrlForCustomTopic(
-        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .eventSubscriptions()
-            .getFullUrlWithResponse(
-                "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
-                "examplesubscription1",
-                com.azure.core.util.Context.NONE);
+    public static void
+        eventSubscriptionsGetFullUrlForCustomTopic(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager.eventSubscriptions().getFullUrlWithResponse(
+            "subscriptions/8f6b6269-84f2-4d09-9e31-1127efcd1e40/resourceGroups/examplerg/providers/Microsoft.EventGrid/topics/exampletopic2",
+            "examplesubscription1", com.azure.core.util.Context.NONE);
     }
 }

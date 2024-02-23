@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LinkedServiceDebugResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LinkedServiceDebugResource model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"type\":\"LinkedService\",\"connectVia\":{\"referenceName\":\"ffm\",\"parameters\":{\"dby\":\"datawfbkgozxwo\",\"zqaclna\":\"datap\"}},\"description\":\"biygnugjknfsmfct\",\"parameters\":{\"jhvsujztczyt\":{\"type\":\"Float\",\"defaultValue\":\"datayilflqoiquvrehmr\"},\"auunfprnjletlx\":{\"type\":\"Bool\",\"defaultValue\":\"dataw\"},\"nlqwzdvpiwhx\":{\"type\":\"Object\",\"defaultValue\":\"datapddouifamowaziyn\"},\"quhuxylrj\":{\"type\":\"SecureString\",\"defaultValue\":\"datadtmaa\"}},\"annotations\":[\"dataygjbmzyospspsh\"],\"\":{\"df\":\"datakyjpmspbps\",\"vczkcnyxrxmunjd\":\"datapyogtieyuj\",\"nkvxlxpaglqi\":\"datavg\",\"khpzvuqdflv\":\"databgkc\"}},\"name\":\"iypfp\"}")
-                .toObject(LinkedServiceDebugResource.class);
+        LinkedServiceDebugResource model = BinaryData.fromString(
+            "{\"properties\":{\"type\":\"LinkedService\",\"connectVia\":{\"referenceName\":\"ffm\",\"parameters\":{\"dby\":\"datawfbkgozxwo\",\"zqaclna\":\"datap\"}},\"description\":\"biygnugjknfsmfct\",\"parameters\":{\"jhvsujztczyt\":{\"type\":\"Float\",\"defaultValue\":\"datayilflqoiquvrehmr\"},\"auunfprnjletlx\":{\"type\":\"Bool\",\"defaultValue\":\"dataw\"},\"nlqwzdvpiwhx\":{\"type\":\"Object\",\"defaultValue\":\"datapddouifamowaziyn\"},\"quhuxylrj\":{\"type\":\"SecureString\",\"defaultValue\":\"datadtmaa\"}},\"annotations\":[\"dataygjbmzyospspsh\"],\"\":{\"df\":\"datakyjpmspbps\",\"vczkcnyxrxmunjd\":\"datapyogtieyuj\",\"nkvxlxpaglqi\":\"datavg\",\"khpzvuqdflv\":\"databgkc\"}},\"name\":\"iypfp\"}")
+            .toObject(LinkedServiceDebugResource.class);
         Assertions.assertEquals("iypfp", model.name());
         Assertions.assertEquals("ffm", model.properties().connectVia().referenceName());
         Assertions.assertEquals("biygnugjknfsmfct", model.properties().description());
@@ -31,34 +29,21 @@ public final class LinkedServiceDebugResourceTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LinkedServiceDebugResource model =
-            new LinkedServiceDebugResource()
-                .withName("iypfp")
-                .withProperties(
-                    new LinkedService()
-                        .withConnectVia(
-                            new IntegrationRuntimeReference()
-                                .withReferenceName("ffm")
-                                .withParameters(mapOf("dby", "datawfbkgozxwo", "zqaclna", "datap")))
-                        .withDescription("biygnugjknfsmfct")
-                        .withParameters(
-                            mapOf(
-                                "jhvsujztczyt",
-                                new ParameterSpecification()
-                                    .withType(ParameterType.FLOAT)
-                                    .withDefaultValue("datayilflqoiquvrehmr"),
-                                "auunfprnjletlx",
-                                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataw"),
-                                "nlqwzdvpiwhx",
-                                new ParameterSpecification()
-                                    .withType(ParameterType.OBJECT)
-                                    .withDefaultValue("datapddouifamowaziyn"),
-                                "quhuxylrj",
-                                new ParameterSpecification()
-                                    .withType(ParameterType.SECURE_STRING)
-                                    .withDefaultValue("datadtmaa")))
-                        .withAnnotations(Arrays.asList("dataygjbmzyospspsh"))
-                        .withAdditionalProperties(mapOf("type", "LinkedService")));
+        LinkedServiceDebugResource model = new LinkedServiceDebugResource().withName("iypfp")
+            .withProperties(new LinkedService()
+                .withConnectVia(new IntegrationRuntimeReference().withReferenceName("ffm")
+                    .withParameters(mapOf("dby", "datawfbkgozxwo", "zqaclna", "datap")))
+                .withDescription("biygnugjknfsmfct")
+                .withParameters(mapOf("jhvsujztczyt",
+                    new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datayilflqoiquvrehmr"),
+                    "auunfprnjletlx",
+                    new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataw"), "nlqwzdvpiwhx",
+                    new ParameterSpecification().withType(ParameterType.OBJECT)
+                        .withDefaultValue("datapddouifamowaziyn"),
+                    "quhuxylrj",
+                    new ParameterSpecification().withType(ParameterType.SECURE_STRING).withDefaultValue("datadtmaa")))
+                .withAnnotations(Arrays.asList("dataygjbmzyospspsh"))
+                .withAdditionalProperties(mapOf("type", "LinkedService")));
         model = BinaryData.fromObject(model).toObject(LinkedServiceDebugResource.class);
         Assertions.assertEquals("iypfp", model.name());
         Assertions.assertEquals("ffm", model.properties().connectVia().referenceName());

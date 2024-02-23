@@ -25,6 +25,13 @@ public abstract class AadCredentialBuilderBase<T extends AadCredentialBuilderBas
     String tenantId;
 
     /**
+     * Constructs an instance of AadCredentialBuilderBase.
+     */
+    public AadCredentialBuilderBase() {
+        super();
+    }
+
+    /**
      * Specifies the Microsoft Entra endpoint to acquire tokens.
      * @param authorityHost the Microsoft Entra endpoint
      * @return An updated instance of this builder with the authority host set as specified.

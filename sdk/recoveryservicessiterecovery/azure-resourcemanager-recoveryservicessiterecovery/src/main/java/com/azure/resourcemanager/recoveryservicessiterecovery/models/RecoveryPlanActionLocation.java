@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The fabric location. */
+/**
+ * The fabric location.
+ */
 public final class RecoveryPlanActionLocation extends ExpandableStringEnum<RecoveryPlanActionLocation> {
-    /** Static value Primary for RecoveryPlanActionLocation. */
+    /**
+     * Static value Primary for RecoveryPlanActionLocation.
+     */
     public static final RecoveryPlanActionLocation PRIMARY = fromString("Primary");
 
-    /** Static value Recovery for RecoveryPlanActionLocation. */
+    /**
+     * Static value Recovery for RecoveryPlanActionLocation.
+     */
     public static final RecoveryPlanActionLocation RECOVERY = fromString("Recovery");
 
     /**
      * Creates a new instance of RecoveryPlanActionLocation value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class RecoveryPlanActionLocation extends ExpandableStringEnum<Recov
 
     /**
      * Creates or finds a RecoveryPlanActionLocation from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RecoveryPlanActionLocation.
      */
@@ -38,7 +44,7 @@ public final class RecoveryPlanActionLocation extends ExpandableStringEnum<Recov
 
     /**
      * Gets known RecoveryPlanActionLocation values.
-     *
+     * 
      * @return known RecoveryPlanActionLocation values.
      */
     public static Collection<RecoveryPlanActionLocation> values() {

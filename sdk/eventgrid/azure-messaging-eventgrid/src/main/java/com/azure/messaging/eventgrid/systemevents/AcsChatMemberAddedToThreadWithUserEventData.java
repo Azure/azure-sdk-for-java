@@ -30,6 +30,13 @@ public final class AcsChatMemberAddedToThreadWithUserEventData extends AcsChatTh
     private AcsChatThreadMemberProperties memberAdded;
 
     /**
+     * Creates an instance of AcsChatMemberAddedToThreadWithUserEventData class
+     */
+    public AcsChatMemberAddedToThreadWithUserEventData() {
+
+    }
+
+    /**
      * Get the time property: The time at which the user was added to the thread.
      *
      * @return the time value.

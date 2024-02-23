@@ -19,9 +19,9 @@ public class DevBoxesListDevBoxesByUser {
                         .endpoint(
                                 "https://8a40af38-3b4c-4672-a6a4-5e964b1870ed-contosodevcenter.centralus.devcenter.azure.com/")
                         .buildClient();
-        // BEGIN:com.azure.developer.devcenter.generated.devboxeslistdevboxesbyuser.devboxeslistdevboxesbyuser
+        // BEGIN:com.azure.developer.devcenter.generated.devboxeslistdevboxes.devboxeslistdevboxesbyuser
         RequestOptions requestOptions = new RequestOptions();
-        PagedIterable<BinaryData> response = devBoxesClient.listDevBoxesByUser("myProject", "me", requestOptions);
-        // END:com.azure.developer.devcenter.generated.devboxeslistdevboxesbyuser.devboxeslistdevboxesbyuser
+        PagedIterable<BinaryData> response = devBoxesClient.listDevBoxes("myProject", "me", requestOptions);
+        // END:com.azure.developer.devcenter.generated.devboxeslistdevboxes.devboxeslistdevboxesbyuser
     }
 }

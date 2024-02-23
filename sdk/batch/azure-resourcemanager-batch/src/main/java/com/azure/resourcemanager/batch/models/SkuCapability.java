@@ -7,7 +7,9 @@ package com.azure.resourcemanager.batch.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A SKU capability, such as the number of cores. */
+/**
+ * A SKU capability, such as the number of cores.
+ */
 @Immutable
 public final class SkuCapability {
     /*
@@ -22,13 +24,15 @@ public final class SkuCapability {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
-    /** Creates an instance of SkuCapability class. */
+    /**
+     * Creates an instance of SkuCapability class.
+     */
     public SkuCapability() {
     }
 
     /**
      * Get the name property: The name of the feature.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class SkuCapability {
 
     /**
      * Get the value property: The value of the feature.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -46,7 +50,7 @@ public final class SkuCapability {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.FabricProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Fabric definition. */
+/**
+ * Fabric definition.
+ */
 @Fluent
 public final class FabricInner extends ProxyResource {
     /*
@@ -24,13 +26,15 @@ public final class FabricInner extends ProxyResource {
     @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of FabricInner class. */
+    /**
+     * Creates an instance of FabricInner class.
+     */
     public FabricInner() {
     }
 
     /**
      * Get the properties property: Fabric related data.
-     *
+     * 
      * @return the properties value.
      */
     public FabricProperties properties() {
@@ -39,7 +43,7 @@ public final class FabricInner extends ProxyResource {
 
     /**
      * Set the properties property: Fabric related data.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the FabricInner object itself.
      */
@@ -50,7 +54,7 @@ public final class FabricInner extends ProxyResource {
 
     /**
      * Get the location property: Resource Location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -59,7 +63,7 @@ public final class FabricInner extends ProxyResource {
 
     /**
      * Set the location property: Resource Location.
-     *
+     * 
      * @param location the location value to set.
      * @return the FabricInner object itself.
      */
@@ -70,7 +74,7 @@ public final class FabricInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

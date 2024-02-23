@@ -7,25 +7,23 @@ package com.azure.resourcemanager.nginx.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.nginx.models.NginxConfigurationFile;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class NginxConfigurationFileTests {
-    @Test
-    public void testDeserialize() {
-        NginxConfigurationFile model =
-            BinaryData
-                .fromString("{\"content\":\"mppeebvmgxs\",\"virtualPath\":\"kyqduujit\"}")
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        NginxConfigurationFile model
+            = BinaryData.fromString("{\"content\":\"prbnwbxgjvtbv\",\"virtualPath\":\"sszdnru\"}")
                 .toObject(NginxConfigurationFile.class);
-        Assertions.assertEquals("mppeebvmgxs", model.content());
-        Assertions.assertEquals("kyqduujit", model.virtualPath());
+        Assertions.assertEquals("prbnwbxgjvtbv", model.content());
+        Assertions.assertEquals("sszdnru", model.virtualPath());
     }
 
-    @Test
-    public void testSerialize() {
-        NginxConfigurationFile model =
-            new NginxConfigurationFile().withContent("mppeebvmgxs").withVirtualPath("kyqduujit");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        NginxConfigurationFile model
+            = new NginxConfigurationFile().withContent("prbnwbxgjvtbv").withVirtualPath("sszdnru");
         model = BinaryData.fromObject(model).toObject(NginxConfigurationFile.class);
-        Assertions.assertEquals("mppeebvmgxs", model.content());
-        Assertions.assertEquals("kyqduujit", model.virtualPath());
+        Assertions.assertEquals("prbnwbxgjvtbv", model.content());
+        Assertions.assertEquals("sszdnru", model.virtualPath());
     }
 }

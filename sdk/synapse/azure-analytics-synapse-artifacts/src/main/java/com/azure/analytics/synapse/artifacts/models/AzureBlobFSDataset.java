@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The Azure Data Lake Storage Gen2 storage. */
+/**
+ * The Azure Data Lake Storage Gen2 storage.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureBlobFSFile")
 @JsonFlatten
@@ -42,13 +44,16 @@ public class AzureBlobFSDataset extends Dataset {
     @JsonProperty(value = "typeProperties.compression")
     private DatasetCompression compression;
 
-    /** Creates an instance of AzureBlobFSDataset class. */
-    public AzureBlobFSDataset() {}
+    /**
+     * Creates an instance of AzureBlobFSDataset class.
+     */
+    public AzureBlobFSDataset() {
+    }
 
     /**
      * Get the folderPath property: The path of the Azure Data Lake Storage Gen2 storage. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the folderPath value.
      */
     public Object getFolderPath() {
@@ -58,7 +63,7 @@ public class AzureBlobFSDataset extends Dataset {
     /**
      * Set the folderPath property: The path of the Azure Data Lake Storage Gen2 storage. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param folderPath the folderPath value to set.
      * @return the AzureBlobFSDataset object itself.
      */
@@ -70,7 +75,7 @@ public class AzureBlobFSDataset extends Dataset {
     /**
      * Get the fileName property: The name of the Azure Data Lake Storage Gen2. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the fileName value.
      */
     public Object getFileName() {
@@ -80,7 +85,7 @@ public class AzureBlobFSDataset extends Dataset {
     /**
      * Set the fileName property: The name of the Azure Data Lake Storage Gen2. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param fileName the fileName value to set.
      * @return the AzureBlobFSDataset object itself.
      */
@@ -91,7 +96,7 @@ public class AzureBlobFSDataset extends Dataset {
 
     /**
      * Get the format property: The format of the Azure Data Lake Storage Gen2 storage.
-     *
+     * 
      * @return the format value.
      */
     public DatasetStorageFormat getFormat() {
@@ -100,7 +105,7 @@ public class AzureBlobFSDataset extends Dataset {
 
     /**
      * Set the format property: The format of the Azure Data Lake Storage Gen2 storage.
-     *
+     * 
      * @param format the format value to set.
      * @return the AzureBlobFSDataset object itself.
      */
@@ -111,7 +116,7 @@ public class AzureBlobFSDataset extends Dataset {
 
     /**
      * Get the compression property: The data compression method used for the blob storage.
-     *
+     * 
      * @return the compression value.
      */
     public DatasetCompression getCompression() {
@@ -120,7 +125,7 @@ public class AzureBlobFSDataset extends Dataset {
 
     /**
      * Set the compression property: The data compression method used for the blob storage.
-     *
+     * 
      * @param compression the compression value to set.
      * @return the AzureBlobFSDataset object itself.
      */
@@ -129,49 +134,63 @@ public class AzureBlobFSDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobFSDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobFSDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobFSDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobFSDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobFSDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobFSDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureBlobFSDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

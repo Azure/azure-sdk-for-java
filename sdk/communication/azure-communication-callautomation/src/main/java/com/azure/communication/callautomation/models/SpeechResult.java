@@ -2,12 +2,19 @@
 // Licensed under the MIT License.
 
 package com.azure.communication.callautomation.models;
-import com.fasterxml.jackson.annotation.JsonProperty;
+
 import com.azure.core.annotation.Fluent;
+import com.azure.core.annotation.Immutable;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /** The continuous speech recognition result. */
 @Fluent
+@Immutable
 public final class SpeechResult extends RecognizeResult {
+
+    private SpeechResult() {
+    }
+
     /*
      * The recognized speech in string.
      */
@@ -21,16 +28,5 @@ public final class SpeechResult extends RecognizeResult {
      */
     public String getSpeech() {
         return this.speech;
-    }
-
-    /**
-     * Set the speech property: The recognized speech in string.
-     *
-     * @param speech the speech value to set.
-     * @return the SpeechResult object itself.
-     */
-    public SpeechResult setSpeech(String speech) {
-        this.speech = speech;
-        return this;
     }
 }

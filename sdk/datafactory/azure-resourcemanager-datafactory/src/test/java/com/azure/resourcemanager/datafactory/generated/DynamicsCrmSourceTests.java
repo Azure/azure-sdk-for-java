@@ -10,23 +10,17 @@ import com.azure.resourcemanager.datafactory.models.DynamicsCrmSource;
 public final class DynamicsCrmSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DynamicsCrmSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"DynamicsCrmSource\",\"query\":\"datakd\",\"additionalColumns\":\"datakdpn\",\"sourceRetryCount\":\"datadwcxjv\",\"sourceRetryWait\":\"datal\",\"maxConcurrentConnections\":\"dataxcmcccotqocnryyp\",\"disableMetricsCollection\":\"dataduldsolbz\",\"\":{\"pvaagrdfwvglqds\":\"dataufkeyl\",\"ucryhuohthzfotfr\":\"datahvo\",\"op\":\"datahrjkahdofshgmqx\",\"aittbmobrxhwpg\":\"datanitrmzvnrfkzn\"}}")
-                .toObject(DynamicsCrmSource.class);
+        DynamicsCrmSource model = BinaryData.fromString(
+            "{\"type\":\"DynamicsCrmSource\",\"query\":\"datawmfwr\",\"additionalColumns\":\"dataizggvmuotc\",\"sourceRetryCount\":\"dataabfyjampvwx\",\"sourceRetryWait\":\"datahpr\",\"maxConcurrentConnections\":\"datax\",\"disableMetricsCollection\":\"datamnqrbyqhywxb\",\"\":{\"uewgy\":\"datajkarggv\",\"qlugnbudjypli\":\"dataolvxw\",\"qdoxooxuaufqoo\":\"datatgtlansykvlxsyc\",\"t\":\"datawx\"}}")
+            .toObject(DynamicsCrmSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DynamicsCrmSource model =
-            new DynamicsCrmSource()
-                .withSourceRetryCount("datadwcxjv")
-                .withSourceRetryWait("datal")
-                .withMaxConcurrentConnections("dataxcmcccotqocnryyp")
-                .withDisableMetricsCollection("dataduldsolbz")
-                .withQuery("datakd")
-                .withAdditionalColumns("datakdpn");
+        DynamicsCrmSource model
+            = new DynamicsCrmSource().withSourceRetryCount("dataabfyjampvwx").withSourceRetryWait("datahpr")
+                .withMaxConcurrentConnections("datax").withDisableMetricsCollection("datamnqrbyqhywxb")
+                .withQuery("datawmfwr").withAdditionalColumns("dataizggvmuotc");
         model = BinaryData.fromObject(model).toObject(DynamicsCrmSource.class);
     }
 }

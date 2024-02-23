@@ -60,6 +60,16 @@ class JobRouterTestBase extends TestProxyTestBase {
         return jobRouterAdministrationClient;
     }
 
+    protected JobRouterAdministrationAsyncClient getRouterAdministrationAsyncClient(HttpClient client) {
+        HttpPipeline httpPipeline = buildHttpPipeline(client);
+        CommunicationConnectionString connectionString = new CommunicationConnectionString(getConnectionString());
+        JobRouterAdministrationAsyncClient jobRouterAdministrationAsyncClient = new JobRouterAdministrationClientBuilder()
+            .endpoint(connectionString.getEndpoint())
+            .pipeline(httpPipeline)
+            .buildAsyncClient();
+        return jobRouterAdministrationAsyncClient;
+    }
+
     protected JobRouterClient getRouterClient(HttpClient client) {
         CommunicationConnectionString connectionString = new CommunicationConnectionString(getConnectionString());
 
@@ -69,6 +79,17 @@ class JobRouterTestBase extends TestProxyTestBase {
             .pipeline(httpPipeline)
             .buildClient();
         return jobRouterClient;
+    }
+
+    protected JobRouterAsyncClient getRouterAsyncClient(HttpClient client) {
+        CommunicationConnectionString connectionString = new CommunicationConnectionString(getConnectionString());
+
+        HttpPipeline httpPipeline = buildHttpPipeline(client);
+        JobRouterAsyncClient jobRouterAsyncClient = new JobRouterClientBuilder()
+            .endpoint(connectionString.getEndpoint())
+            .pipeline(httpPipeline)
+            .buildAsyncClient();
+        return jobRouterAsyncClient;
     }
 
     private HttpPipeline buildHttpPipeline(HttpClient httpClient) {
@@ -114,7 +135,7 @@ class JobRouterTestBase extends TestProxyTestBase {
         String queueName = String.format("%s-Name", queueId);
         Map<String, RouterValue> queueLabels = new HashMap<String, RouterValue>() {
             {
-                put("Label_1", new RouterValue("Value_1", null, null, null));
+                put("Label_1", new RouterValue("Value_1"));
             }
         };
 
@@ -148,7 +169,7 @@ class JobRouterTestBase extends TestProxyTestBase {
                 new ArrayList<RouterWorkerSelector>() {
                     {
                         new RouterWorkerSelector("Some-skill", LabelOperator.GREATER_THAN)
-                            .setValue(new RouterValue(null, 10, null, null));
+                            .setValue(new RouterValue(10));
                     }
                 }
             );

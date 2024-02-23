@@ -120,20 +120,14 @@ public final class DomainResourceImpl implements DomainResource, DomainResource.
     }
 
     public DomainResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDomains()
-                .createOrUpdate(resourceGroupName, emailServiceName, domainName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getDomains().createOrUpdate(resourceGroupName,
+            emailServiceName, domainName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public DomainResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDomains()
-                .createOrUpdate(resourceGroupName, emailServiceName, domainName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getDomains().createOrUpdate(resourceGroupName,
+            emailServiceName, domainName, this.innerModel(), context);
         return this;
     }
 
@@ -149,25 +143,19 @@ public final class DomainResourceImpl implements DomainResource, DomainResource.
     }
 
     public DomainResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDomains()
-                .update(resourceGroupName, emailServiceName, domainName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getDomains().update(resourceGroupName, emailServiceName,
+            domainName, updateParameters, Context.NONE);
         return this;
     }
 
     public DomainResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDomains()
-                .update(resourceGroupName, emailServiceName, domainName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient().getDomains().update(resourceGroupName, emailServiceName,
+            domainName, updateParameters, context);
         return this;
     }
 
-    DomainResourceImpl(
-        DomainResourceInner innerObject, com.azure.resourcemanager.communication.CommunicationManager serviceManager) {
+    DomainResourceImpl(DomainResourceInner innerObject,
+        com.azure.resourcemanager.communication.CommunicationManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -176,22 +164,14 @@ public final class DomainResourceImpl implements DomainResource, DomainResource.
     }
 
     public DomainResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDomains()
-                .getWithResponse(resourceGroupName, emailServiceName, domainName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getDomains()
+            .getWithResponse(resourceGroupName, emailServiceName, domainName, Context.NONE).getValue();
         return this;
     }
 
     public DomainResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getDomains()
-                .getWithResponse(resourceGroupName, emailServiceName, domainName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getDomains()
+            .getWithResponse(resourceGroupName, emailServiceName, domainName, context).getValue();
         return this;
     }
 
@@ -200,9 +180,8 @@ public final class DomainResourceImpl implements DomainResource, DomainResource.
     }
 
     public void initiateVerification(VerificationParameter parameters, Context context) {
-        serviceManager
-            .domains()
-            .initiateVerification(resourceGroupName, emailServiceName, domainName, parameters, context);
+        serviceManager.domains().initiateVerification(resourceGroupName, emailServiceName, domainName, parameters,
+            context);
     }
 
     public void cancelVerification(VerificationParameter parameters) {
@@ -210,9 +189,8 @@ public final class DomainResourceImpl implements DomainResource, DomainResource.
     }
 
     public void cancelVerification(VerificationParameter parameters, Context context) {
-        serviceManager
-            .domains()
-            .cancelVerification(resourceGroupName, emailServiceName, domainName, parameters, context);
+        serviceManager.domains().cancelVerification(resourceGroupName, emailServiceName, domainName, parameters,
+            context);
     }
 
     public DomainResourceImpl withRegion(Region location) {

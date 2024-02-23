@@ -8,12 +8,10 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.servicenetworking.fluent.models.TrafficControllerInner;
-import com.azure.resourcemanager.servicenetworking.models.ProvisioningState;
-import com.azure.resourcemanager.servicenetworking.models.ResourceId;
 import com.azure.resourcemanager.servicenetworking.models.TrafficController;
+import com.azure.resourcemanager.servicenetworking.models.TrafficControllerProperties;
 import com.azure.resourcemanager.servicenetworking.models.TrafficControllerUpdate;
 import java.util.Collections;
-import java.util.List;
 import java.util.Map;
 
 public final class TrafficControllerImpl
@@ -47,39 +45,12 @@ public final class TrafficControllerImpl
         }
     }
 
+    public TrafficControllerProperties properties() {
+        return this.innerModel().properties();
+    }
+
     public SystemData systemData() {
         return this.innerModel().systemData();
-    }
-
-    public List<String> configurationEndpoints() {
-        List<String> inner = this.innerModel().configurationEndpoints();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public List<ResourceId> frontends() {
-        List<ResourceId> inner = this.innerModel().frontends();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public List<ResourceId> associations() {
-        List<ResourceId> inner = this.innerModel().associations();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
-    public ProvisioningState provisioningState() {
-        return this.innerModel().provisioningState();
     }
 
     public Region region() {
@@ -114,25 +85,19 @@ public final class TrafficControllerImpl
     }
 
     public TrafficController create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTrafficControllerInterfaces()
-                .createOrUpdate(resourceGroupName, trafficControllerName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getTrafficControllerInterfaces()
+            .createOrUpdate(resourceGroupName, trafficControllerName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public TrafficController create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTrafficControllerInterfaces()
-                .createOrUpdate(resourceGroupName, trafficControllerName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getTrafficControllerInterfaces()
+            .createOrUpdate(resourceGroupName, trafficControllerName, this.innerModel(), context);
         return this;
     }
 
-    TrafficControllerImpl(
-        String name, com.azure.resourcemanager.servicenetworking.TrafficControllerManager serviceManager) {
+    TrafficControllerImpl(String name,
+        com.azure.resourcemanager.servicenetworking.TrafficControllerManager serviceManager) {
         this.innerObject = new TrafficControllerInner();
         this.serviceManager = serviceManager;
         this.trafficControllerName = name;
@@ -144,27 +109,18 @@ public final class TrafficControllerImpl
     }
 
     public TrafficController apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTrafficControllerInterfaces()
-                .updateWithResponse(resourceGroupName, trafficControllerName, updateProperties, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getTrafficControllerInterfaces()
+            .updateWithResponse(resourceGroupName, trafficControllerName, updateProperties, Context.NONE).getValue();
         return this;
     }
 
     public TrafficController apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTrafficControllerInterfaces()
-                .updateWithResponse(resourceGroupName, trafficControllerName, updateProperties, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getTrafficControllerInterfaces()
+            .updateWithResponse(resourceGroupName, trafficControllerName, updateProperties, context).getValue();
         return this;
     }
 
-    TrafficControllerImpl(
-        TrafficControllerInner innerObject,
+    TrafficControllerImpl(TrafficControllerInner innerObject,
         com.azure.resourcemanager.servicenetworking.TrafficControllerManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -173,22 +129,14 @@ public final class TrafficControllerImpl
     }
 
     public TrafficController refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTrafficControllerInterfaces()
-                .getByResourceGroupWithResponse(resourceGroupName, trafficControllerName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getTrafficControllerInterfaces()
+            .getByResourceGroupWithResponse(resourceGroupName, trafficControllerName, Context.NONE).getValue();
         return this;
     }
 
     public TrafficController refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTrafficControllerInterfaces()
-                .getByResourceGroupWithResponse(resourceGroupName, trafficControllerName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getTrafficControllerInterfaces()
+            .getByResourceGroupWithResponse(resourceGroupName, trafficControllerName, context).getValue();
         return this;
     }
 
@@ -210,6 +158,11 @@ public final class TrafficControllerImpl
             this.updateProperties.withTags(tags);
             return this;
         }
+    }
+
+    public TrafficControllerImpl withProperties(TrafficControllerProperties properties) {
+        this.innerModel().withProperties(properties);
+        return this;
     }
 
     private boolean isInCreateMode() {

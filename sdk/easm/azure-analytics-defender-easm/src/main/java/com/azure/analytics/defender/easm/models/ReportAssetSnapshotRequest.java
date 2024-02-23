@@ -7,7 +7,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A request body used to retrieve an asset report snapshot. */
+/**
+ * A request body used to retrieve an asset report snapshot.
+ */
 @Fluent
 public final class ReportAssetSnapshotRequest {
 
@@ -39,9 +41,12 @@ public final class ReportAssetSnapshotRequest {
     @JsonProperty(value = "page")
     private Integer page;
 
-    /** Creates an instance of ReportAssetSnapshotRequest class. */
+    /**
+     * Creates an instance of ReportAssetSnapshotRequest class.
+     */
     @Generated
-    public ReportAssetSnapshotRequest() {}
+    public ReportAssetSnapshotRequest() {
+    }
 
     /**
      * Get the metric property: The metric to retrieve a snapshot for.

@@ -10,20 +10,15 @@ import com.azure.resourcemanager.datafactory.models.SqlPartitionSettings;
 public final class SqlPartitionSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SqlPartitionSettings model =
-            BinaryData
-                .fromString(
-                    "{\"partitionColumnName\":\"databsspexejhwpnjc\",\"partitionUpperBound\":\"datacj\",\"partitionLowerBound\":\"dataovuvmdzdqtir\"}")
-                .toObject(SqlPartitionSettings.class);
+        SqlPartitionSettings model = BinaryData.fromString(
+            "{\"partitionColumnName\":\"dataeqkuozarr\",\"partitionUpperBound\":\"datapyzryjb\",\"partitionLowerBound\":\"databcvoyqnrjdrc\"}")
+            .toObject(SqlPartitionSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SqlPartitionSettings model =
-            new SqlPartitionSettings()
-                .withPartitionColumnName("databsspexejhwpnjc")
-                .withPartitionUpperBound("datacj")
-                .withPartitionLowerBound("dataovuvmdzdqtir");
+        SqlPartitionSettings model = new SqlPartitionSettings().withPartitionColumnName("dataeqkuozarr")
+            .withPartitionUpperBound("datapyzryjb").withPartitionLowerBound("databcvoyqnrjdrc");
         model = BinaryData.fromObject(model).toObject(SqlPartitionSettings.class);
     }
 }

@@ -11,13 +11,15 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.eventgrid.fluent.models.VerifiedPartnerInner;
 
-/** An instance of this class provides access to all the operations defined in VerifiedPartnersClient. */
+/**
+ * An instance of this class provides access to all the operations defined in VerifiedPartnersClient.
+ */
 public interface VerifiedPartnersClient {
     /**
      * Get a verified partner.
-     *
-     * <p>Get properties of a verified partner.
-     *
+     * 
+     * Get properties of a verified partner.
+     * 
      * @param verifiedPartnerName Name of the verified partner.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,9 +32,9 @@ public interface VerifiedPartnersClient {
 
     /**
      * Get a verified partner.
-     *
-     * <p>Get properties of a verified partner.
-     *
+     * 
+     * Get properties of a verified partner.
+     * 
      * @param verifiedPartnerName Name of the verified partner.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -44,9 +46,9 @@ public interface VerifiedPartnersClient {
 
     /**
      * List all verified partners.
-     *
-     * <p>Get a list of all verified partners.
-     *
+     * 
+     * Get a list of all verified partners.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of all verified partners as paginated response with {@link PagedIterable}.
@@ -56,17 +58,16 @@ public interface VerifiedPartnersClient {
 
     /**
      * List all verified partners.
-     *
-     * <p>Get a list of all verified partners.
-     *
+     * 
+     * Get a list of all verified partners.
+     * 
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

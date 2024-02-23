@@ -7,25 +7,27 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeMonitoringDataInner;
 import java.util.List;
 
-/** An immutable client-side representation of IntegrationRuntimeMonitoringData. */
+/**
+ * An immutable client-side representation of IntegrationRuntimeMonitoringData.
+ */
 public interface IntegrationRuntimeMonitoringData {
     /**
      * Gets the name property: Integration runtime name.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the nodes property: Integration runtime node monitoring data.
-     *
+     * 
      * @return the nodes value.
      */
     List<IntegrationRuntimeNodeMonitoringData> nodes();
 
     /**
      * Gets the inner com.azure.resourcemanager.datafactory.fluent.models.IntegrationRuntimeMonitoringDataInner object.
-     *
+     * 
      * @return the inner object.
      */
     IntegrationRuntimeMonitoringDataInner innerModel();

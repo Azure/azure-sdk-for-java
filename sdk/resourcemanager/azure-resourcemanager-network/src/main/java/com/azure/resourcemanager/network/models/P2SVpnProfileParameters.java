@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Vpn Client Parameters for package generation. */
+/**
+ * Vpn Client Parameters for package generation.
+ */
 @Fluent
 public final class P2SVpnProfileParameters {
     /*
@@ -16,13 +18,15 @@ public final class P2SVpnProfileParameters {
     @JsonProperty(value = "authenticationMethod")
     private AuthenticationMethod authenticationMethod;
 
-    /** Creates an instance of P2SVpnProfileParameters class. */
+    /**
+     * Creates an instance of P2SVpnProfileParameters class.
+     */
     public P2SVpnProfileParameters() {
     }
 
     /**
      * Get the authenticationMethod property: VPN client authentication method.
-     *
+     * 
      * @return the authenticationMethod value.
      */
     public AuthenticationMethod authenticationMethod() {
@@ -31,7 +35,7 @@ public final class P2SVpnProfileParameters {
 
     /**
      * Set the authenticationMethod property: VPN client authentication method.
-     *
+     * 
      * @param authenticationMethod the authenticationMethod value to set.
      * @return the P2SVpnProfileParameters object itself.
      */
@@ -42,7 +46,7 @@ public final class P2SVpnProfileParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

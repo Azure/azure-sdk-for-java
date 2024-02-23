@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Gateway load balancer tunnel interface of a load balancer backend address pool. */
+/**
+ * Gateway load balancer tunnel interface of a load balancer backend address pool.
+ */
 @Fluent
 public final class GatewayLoadBalancerTunnelInterface {
     /*
@@ -34,13 +36,15 @@ public final class GatewayLoadBalancerTunnelInterface {
     @JsonProperty(value = "type")
     private GatewayLoadBalancerTunnelInterfaceType type;
 
-    /** Creates an instance of GatewayLoadBalancerTunnelInterface class. */
+    /**
+     * Creates an instance of GatewayLoadBalancerTunnelInterface class.
+     */
     public GatewayLoadBalancerTunnelInterface() {
     }
 
     /**
      * Get the port property: Port of gateway load balancer tunnel interface.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -49,7 +53,7 @@ public final class GatewayLoadBalancerTunnelInterface {
 
     /**
      * Set the port property: Port of gateway load balancer tunnel interface.
-     *
+     * 
      * @param port the port value to set.
      * @return the GatewayLoadBalancerTunnelInterface object itself.
      */
@@ -60,7 +64,7 @@ public final class GatewayLoadBalancerTunnelInterface {
 
     /**
      * Get the identifier property: Identifier of gateway load balancer tunnel interface.
-     *
+     * 
      * @return the identifier value.
      */
     public Integer identifier() {
@@ -69,7 +73,7 @@ public final class GatewayLoadBalancerTunnelInterface {
 
     /**
      * Set the identifier property: Identifier of gateway load balancer tunnel interface.
-     *
+     * 
      * @param identifier the identifier value to set.
      * @return the GatewayLoadBalancerTunnelInterface object itself.
      */
@@ -80,7 +84,7 @@ public final class GatewayLoadBalancerTunnelInterface {
 
     /**
      * Get the protocol property: Protocol of gateway load balancer tunnel interface.
-     *
+     * 
      * @return the protocol value.
      */
     public GatewayLoadBalancerTunnelProtocol protocol() {
@@ -89,7 +93,7 @@ public final class GatewayLoadBalancerTunnelInterface {
 
     /**
      * Set the protocol property: Protocol of gateway load balancer tunnel interface.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the GatewayLoadBalancerTunnelInterface object itself.
      */
@@ -100,7 +104,7 @@ public final class GatewayLoadBalancerTunnelInterface {
 
     /**
      * Get the type property: Traffic type of gateway load balancer tunnel interface.
-     *
+     * 
      * @return the type value.
      */
     public GatewayLoadBalancerTunnelInterfaceType type() {
@@ -109,7 +113,7 @@ public final class GatewayLoadBalancerTunnelInterface {
 
     /**
      * Set the type property: Traffic type of gateway load balancer tunnel interface.
-     *
+     * 
      * @param type the type value to set.
      * @return the GatewayLoadBalancerTunnelInterface object itself.
      */
@@ -120,7 +124,7 @@ public final class GatewayLoadBalancerTunnelInterface {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

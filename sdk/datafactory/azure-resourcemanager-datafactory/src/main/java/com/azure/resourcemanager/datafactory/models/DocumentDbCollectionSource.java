@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity Document Database Collection source. */
+/**
+ * A copy activity Document Database Collection source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("DocumentDbCollectionSource")
 @Fluent
@@ -40,13 +42,15 @@ public final class DocumentDbCollectionSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
-    /** Creates an instance of DocumentDbCollectionSource class. */
+    /**
+     * Creates an instance of DocumentDbCollectionSource class.
+     */
     public DocumentDbCollectionSource() {
     }
 
     /**
      * Get the query property: Documents query. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the query value.
      */
     public Object query() {
@@ -55,7 +59,7 @@ public final class DocumentDbCollectionSource extends CopySource {
 
     /**
      * Set the query property: Documents query. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param query the query value to set.
      * @return the DocumentDbCollectionSource object itself.
      */
@@ -67,7 +71,7 @@ public final class DocumentDbCollectionSource extends CopySource {
     /**
      * Get the nestingSeparator property: Nested properties separator. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the nestingSeparator value.
      */
     public Object nestingSeparator() {
@@ -77,7 +81,7 @@ public final class DocumentDbCollectionSource extends CopySource {
     /**
      * Set the nestingSeparator property: Nested properties separator. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param nestingSeparator the nestingSeparator value to set.
      * @return the DocumentDbCollectionSource object itself.
      */
@@ -89,7 +93,7 @@ public final class DocumentDbCollectionSource extends CopySource {
     /**
      * Get the queryTimeout property: Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the queryTimeout value.
      */
     public Object queryTimeout() {
@@ -99,7 +103,7 @@ public final class DocumentDbCollectionSource extends CopySource {
     /**
      * Set the queryTimeout property: Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param queryTimeout the queryTimeout value to set.
      * @return the DocumentDbCollectionSource object itself.
      */
@@ -111,7 +115,7 @@ public final class DocumentDbCollectionSource extends CopySource {
     /**
      * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @return the additionalColumns value.
      */
     public Object additionalColumns() {
@@ -121,7 +125,7 @@ public final class DocumentDbCollectionSource extends CopySource {
     /**
      * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @param additionalColumns the additionalColumns value to set.
      * @return the DocumentDbCollectionSource object itself.
      */
@@ -130,28 +134,36 @@ public final class DocumentDbCollectionSource extends CopySource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DocumentDbCollectionSource withSourceRetryCount(Object sourceRetryCount) {
         super.withSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DocumentDbCollectionSource withSourceRetryWait(Object sourceRetryWait) {
         super.withSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DocumentDbCollectionSource withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DocumentDbCollectionSource withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
@@ -160,7 +172,7 @@ public final class DocumentDbCollectionSource extends CopySource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

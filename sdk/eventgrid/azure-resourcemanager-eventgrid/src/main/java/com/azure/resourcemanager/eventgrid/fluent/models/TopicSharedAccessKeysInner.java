@@ -7,7 +7,9 @@ package com.azure.resourcemanager.eventgrid.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Shared access keys of the Topic. */
+/**
+ * Shared access keys of the Topic.
+ */
 @Fluent
 public final class TopicSharedAccessKeysInner {
     /*
@@ -22,13 +24,15 @@ public final class TopicSharedAccessKeysInner {
     @JsonProperty(value = "key2")
     private String key2;
 
-    /** Creates an instance of TopicSharedAccessKeysInner class. */
+    /**
+     * Creates an instance of TopicSharedAccessKeysInner class.
+     */
     public TopicSharedAccessKeysInner() {
     }
 
     /**
      * Get the key1 property: Shared access key1 for the topic.
-     *
+     * 
      * @return the key1 value.
      */
     public String key1() {
@@ -37,7 +41,7 @@ public final class TopicSharedAccessKeysInner {
 
     /**
      * Set the key1 property: Shared access key1 for the topic.
-     *
+     * 
      * @param key1 the key1 value to set.
      * @return the TopicSharedAccessKeysInner object itself.
      */
@@ -48,7 +52,7 @@ public final class TopicSharedAccessKeysInner {
 
     /**
      * Get the key2 property: Shared access key2 for the topic.
-     *
+     * 
      * @return the key2 value.
      */
     public String key2() {
@@ -57,7 +61,7 @@ public final class TopicSharedAccessKeysInner {
 
     /**
      * Set the key2 property: Shared access key2 for the topic.
-     *
+     * 
      * @param key2 the key2 value to set.
      * @return the TopicSharedAccessKeysInner object itself.
      */
@@ -68,7 +72,7 @@ public final class TopicSharedAccessKeysInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

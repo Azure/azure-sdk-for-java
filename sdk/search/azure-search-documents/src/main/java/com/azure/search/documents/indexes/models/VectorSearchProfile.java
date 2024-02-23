@@ -15,7 +15,9 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-/** Defines a combination of configurations to use with vector search. */
+/**
+ * Defines a combination of configurations to use with vector search.
+ */
 @Fluent
 public final class VectorSearchProfile implements JsonSerializable<VectorSearchProfile> {
     /*
@@ -26,7 +28,7 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
     /*
      * The name of the vector search algorithm configuration that specifies the algorithm and optional parameters.
      */
-    private final String algorithm;
+    private final String algorithmConfigurationName;
 
     /*
      * The name of the kind of vectorization method being configured for use with vector search.
@@ -35,18 +37,18 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
 
     /**
      * Creates an instance of VectorSearchProfile class.
-     *
+     * 
      * @param name the name value to set.
-     * @param algorithm the algorithm value to set.
+     * @param algorithmConfigurationName the algorithmConfigurationName value to set.
      */
-    public VectorSearchProfile(String name, String algorithm) {
+    public VectorSearchProfile(String name, String algorithmConfigurationName) {
         this.name = name;
-        this.algorithm = algorithm;
+        this.algorithmConfigurationName = algorithmConfigurationName;
     }
 
     /**
      * Get the name property: The name to associate with this particular vector search profile.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -54,19 +56,19 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
     }
 
     /**
-     * Get the algorithm property: The name of the vector search algorithm configuration that specifies the algorithm
-     * and optional parameters.
-     *
-     * @return the algorithm value.
+     * Get the algorithmConfigurationName property: The name of the vector search algorithm configuration that
+     * specifies the algorithm and optional parameters.
+     * 
+     * @return the algorithmConfigurationName value.
      */
-    public String getAlgorithm() {
-        return this.algorithm;
+    public String getAlgorithmConfigurationName() {
+        return this.algorithmConfigurationName;
     }
 
     /**
      * Get the vectorizer property: The name of the kind of vectorization method being configured for use with vector
      * search.
-     *
+     * 
      * @return the vectorizer value.
      */
     public String getVectorizer() {
@@ -76,7 +78,7 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
     /**
      * Set the vectorizer property: The name of the kind of vectorization method being configured for use with vector
      * search.
-     *
+     * 
      * @param vectorizer the vectorizer value to set.
      * @return the VectorSearchProfile object itself.
      */
@@ -89,60 +91,60 @@ public final class VectorSearchProfile implements JsonSerializable<VectorSearchP
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("algorithm", this.algorithm);
+        jsonWriter.writeStringField("algorithm", this.algorithmConfigurationName);
         jsonWriter.writeStringField("vectorizer", this.vectorizer);
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of VectorSearchProfile from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of VectorSearchProfile if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the VectorSearchProfile.
      */
     public static VectorSearchProfile fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean nameFound = false;
-                    String name = null;
-                    boolean algorithmFound = false;
-                    String algorithm = null;
-                    String vectorizer = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            boolean nameFound = false;
+            String name = null;
+            boolean algorithmConfigurationNameFound = false;
+            String algorithmConfigurationName = null;
+            String vectorizer = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("name".equals(fieldName)) {
-                            name = reader.getString();
-                            nameFound = true;
-                        } else if ("algorithm".equals(fieldName)) {
-                            algorithm = reader.getString();
-                            algorithmFound = true;
-                        } else if ("vectorizer".equals(fieldName)) {
-                            vectorizer = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    if (nameFound && algorithmFound) {
-                        VectorSearchProfile deserializedVectorSearchProfile = new VectorSearchProfile(name, algorithm);
-                        deserializedVectorSearchProfile.vectorizer = vectorizer;
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                    nameFound = true;
+                } else if ("algorithm".equals(fieldName)) {
+                    algorithmConfigurationName = reader.getString();
+                    algorithmConfigurationNameFound = true;
+                } else if ("vectorizer".equals(fieldName)) {
+                    vectorizer = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (nameFound && algorithmConfigurationNameFound) {
+                VectorSearchProfile deserializedVectorSearchProfile
+                    = new VectorSearchProfile(name, algorithmConfigurationName);
+                deserializedVectorSearchProfile.vectorizer = vectorizer;
 
-                        return deserializedVectorSearchProfile;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!nameFound) {
-                        missingProperties.add("name");
-                    }
-                    if (!algorithmFound) {
-                        missingProperties.add("algorithm");
-                    }
+                return deserializedVectorSearchProfile;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!nameFound) {
+                missingProperties.add("name");
+            }
+            if (!algorithmConfigurationNameFound) {
+                missingProperties.add("algorithm");
+            }
 
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

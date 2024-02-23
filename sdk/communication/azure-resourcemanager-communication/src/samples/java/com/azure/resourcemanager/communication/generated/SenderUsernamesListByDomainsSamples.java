@@ -4,21 +4,23 @@
 
 package com.azure.resourcemanager.communication.generated;
 
-/** Samples for SenderUsernames ListByDomains. */
+/**
+ * Samples for SenderUsernames ListByDomains.
+ */
 public final class SenderUsernamesListByDomainsSamples {
     /*
-     * x-ms-original-file: specification/communication/resource-manager/Microsoft.Communication/preview/2023-04-01-preview/examples/senderUsernames/listByDomain.json
+     * x-ms-original-file:
+     * specification/communication/resource-manager/Microsoft.Communication/preview/2023-06-01-preview/examples/
+     * senderUsernames/listByDomain.json
      */
     /**
-     * Sample code: Get SenderUsernames resource.
-     *
+     * Sample code: Get all SenderUsernames resources for a Domain.
+     * 
      * @param manager Entry point to CommunicationManager.
      */
-    public static void getSenderUsernamesResource(
-        com.azure.resourcemanager.communication.CommunicationManager manager) {
-        manager
-            .senderUsernames()
-            .listByDomains(
-                "contosoResourceGroup", "contosoEmailService", "contoso.com", com.azure.core.util.Context.NONE);
+    public static void
+        getAllSenderUsernamesResourcesForADomain(com.azure.resourcemanager.communication.CommunicationManager manager) {
+        manager.senderUsernames().listByDomains("contosoResourceGroup", "contosoEmailService", "contoso.com",
+            com.azure.core.util.Context.NONE);
     }
 }

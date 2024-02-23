@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InformixTableDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InformixTableDataset model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"InformixTable\",\"typeProperties\":{\"tableName\":\"dataspth\"},\"description\":\"fmwtblgm\",\"structure\":\"datakqoikxiefwln\",\"schema\":\"datakffcnuestbsl\",\"linkedServiceName\":{\"referenceName\":\"e\",\"parameters\":{\"ikjiytehhxt\":\"dataccote\",\"n\":\"dataxqdwbymuq\"}},\"parameters\":{\"pek\":{\"type\":\"Bool\",\"defaultValue\":\"dataorctyse\"},\"tzcvimmwckoz\":{\"type\":\"Float\",\"defaultValue\":\"databyh\"},\"xup\":{\"type\":\"String\",\"defaultValue\":\"dataymtrts\"},\"rfrjschjxncqzahg\":{\"type\":\"String\",\"defaultValue\":\"datackjbcbkg\"}},\"annotations\":[\"datagdobimor\"],\"folder\":{\"name\":\"xosgihtrxue\"},\"\":{\"znjqswshe\":\"dataxqfg\"}}")
-                .toObject(InformixTableDataset.class);
+        InformixTableDataset model = BinaryData.fromString(
+            "{\"type\":\"InformixTable\",\"typeProperties\":{\"tableName\":\"dataspth\"},\"description\":\"fmwtblgm\",\"structure\":\"datakqoikxiefwln\",\"schema\":\"datakffcnuestbsl\",\"linkedServiceName\":{\"referenceName\":\"e\",\"parameters\":{\"ikjiytehhxt\":\"dataccote\",\"n\":\"dataxqdwbymuq\"}},\"parameters\":{\"pek\":{\"type\":\"Bool\",\"defaultValue\":\"dataorctyse\"},\"tzcvimmwckoz\":{\"type\":\"Float\",\"defaultValue\":\"databyh\"},\"xup\":{\"type\":\"String\",\"defaultValue\":\"dataymtrts\"},\"rfrjschjxncqzahg\":{\"type\":\"String\",\"defaultValue\":\"datackjbcbkg\"}},\"annotations\":[\"datagdobimor\"],\"folder\":{\"name\":\"xosgihtrxue\"},\"\":{\"znjqswshe\":\"dataxqfg\"}}")
+            .toObject(InformixTableDataset.class);
         Assertions.assertEquals("fmwtblgm", model.description());
         Assertions.assertEquals("e", model.linkedServiceName().referenceName());
         Assertions.assertEquals(ParameterType.BOOL, model.parameters().get("pek").type());
@@ -31,28 +29,18 @@ public final class InformixTableDatasetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InformixTableDataset model =
-            new InformixTableDataset()
-                .withDescription("fmwtblgm")
-                .withStructure("datakqoikxiefwln")
-                .withSchema("datakffcnuestbsl")
-                .withLinkedServiceName(
-                    new LinkedServiceReference()
-                        .withReferenceName("e")
-                        .withParameters(mapOf("ikjiytehhxt", "dataccote", "n", "dataxqdwbymuq")))
-                .withParameters(
-                    mapOf(
-                        "pek",
-                        new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataorctyse"),
-                        "tzcvimmwckoz",
-                        new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("databyh"),
-                        "xup",
-                        new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataymtrts"),
-                        "rfrjschjxncqzahg",
-                        new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datackjbcbkg")))
-                .withAnnotations(Arrays.asList("datagdobimor"))
-                .withFolder(new DatasetFolder().withName("xosgihtrxue"))
-                .withTableName("dataspth");
+        InformixTableDataset model = new InformixTableDataset().withDescription("fmwtblgm")
+            .withStructure("datakqoikxiefwln").withSchema("datakffcnuestbsl")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("e")
+                .withParameters(mapOf("ikjiytehhxt", "dataccote", "n", "dataxqdwbymuq")))
+            .withParameters(mapOf("pek",
+                new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("dataorctyse"),
+                "tzcvimmwckoz", new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("databyh"),
+                "xup", new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataymtrts"),
+                "rfrjschjxncqzahg",
+                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("datackjbcbkg")))
+            .withAnnotations(Arrays.asList("datagdobimor")).withFolder(new DatasetFolder().withName("xosgihtrxue"))
+            .withTableName("dataspth");
         model = BinaryData.fromObject(model).toObject(InformixTableDataset.class);
         Assertions.assertEquals("fmwtblgm", model.description());
         Assertions.assertEquals("e", model.linkedServiceName().referenceName());

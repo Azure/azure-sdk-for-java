@@ -32,13 +32,15 @@ public final class Sku {
     @JsonProperty(value = "capacity")
     private Long capacity;
 
-    /** Creates an instance of Sku class. */
+    /**
+     * Creates an instance of Sku class.
+     */
     public Sku() {
     }
 
     /**
      * Get the name property: The sku name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -47,7 +49,7 @@ public final class Sku {
 
     /**
      * Set the name property: The sku name.
-     *
+     * 
      * @param name the name value to set.
      * @return the Sku object itself.
      */
@@ -59,7 +61,7 @@ public final class Sku {
     /**
      * Get the tier property: Specifies the tier of virtual machines in a scale set.&lt;br /&gt;&lt;br /&gt; Possible
      * Values:&lt;br /&gt;&lt;br /&gt; **Standard**&lt;br /&gt;&lt;br /&gt; **Basic**.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -69,7 +71,7 @@ public final class Sku {
     /**
      * Set the tier property: Specifies the tier of virtual machines in a scale set.&lt;br /&gt;&lt;br /&gt; Possible
      * Values:&lt;br /&gt;&lt;br /&gt; **Standard**&lt;br /&gt;&lt;br /&gt; **Basic**.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the Sku object itself.
      */
@@ -80,7 +82,7 @@ public final class Sku {
 
     /**
      * Get the capacity property: Specifies the number of virtual machines in the scale set.
-     *
+     * 
      * @return the capacity value.
      */
     public Long capacity() {
@@ -89,7 +91,7 @@ public final class Sku {
 
     /**
      * Set the capacity property: Specifies the number of virtual machines in the scale set.
-     *
+     * 
      * @param capacity the capacity value to set.
      * @return the Sku object itself.
      */
@@ -100,7 +102,7 @@ public final class Sku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

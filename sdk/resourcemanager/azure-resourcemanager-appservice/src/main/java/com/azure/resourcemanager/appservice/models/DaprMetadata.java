@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Container App Dapr component metadata. */
+/**
+ * Container App Dapr component metadata.
+ */
 @Fluent
 public final class DaprMetadata {
     /*
@@ -28,13 +30,15 @@ public final class DaprMetadata {
     @JsonProperty(value = "secretRef")
     private String secretRef;
 
-    /** Creates an instance of DaprMetadata class. */
+    /**
+     * Creates an instance of DaprMetadata class.
+     */
     public DaprMetadata() {
     }
 
     /**
      * Get the name property: Metadata property name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,7 +47,7 @@ public final class DaprMetadata {
 
     /**
      * Set the name property: Metadata property name.
-     *
+     * 
      * @param name the name value to set.
      * @return the DaprMetadata object itself.
      */
@@ -54,7 +58,7 @@ public final class DaprMetadata {
 
     /**
      * Get the value property: Metadata property value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -63,7 +67,7 @@ public final class DaprMetadata {
 
     /**
      * Set the value property: Metadata property value.
-     *
+     * 
      * @param value the value value to set.
      * @return the DaprMetadata object itself.
      */
@@ -74,7 +78,7 @@ public final class DaprMetadata {
 
     /**
      * Get the secretRef property: Name of the Container App secret from which to pull the metadata property value.
-     *
+     * 
      * @return the secretRef value.
      */
     public String secretRef() {
@@ -83,7 +87,7 @@ public final class DaprMetadata {
 
     /**
      * Set the secretRef property: Name of the Container App secret from which to pull the metadata property value.
-     *
+     * 
      * @param secretRef the secretRef value to set.
      * @return the DaprMetadata object itself.
      */
@@ -94,7 +98,7 @@ public final class DaprMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

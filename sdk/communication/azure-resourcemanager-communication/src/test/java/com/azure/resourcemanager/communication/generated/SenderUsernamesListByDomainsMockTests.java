@@ -31,41 +31,28 @@ public final class SenderUsernamesListByDomainsMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"dataLocation\":\"tmuwlauwzi\",\"username\":\"xbmp\",\"displayName\":\"jefuzmuvpbttdumo\",\"provisioningState\":\"Succeeded\"},\"id\":\"ebmnzbtbhjpglk\",\"name\":\"gohdneuelfphsd\",\"type\":\"htozfikdow\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"dataLocation\":\"qkacewii\",\"username\":\"fpubjibwwi\",\"displayName\":\"ohqkvpuvksgpls\",\"provisioningState\":\"Failed\"},\"id\":\"n\",\"name\":\"synljphuopxodl\",\"type\":\"iyntorzihle\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CommunicationManager manager =
-            CommunicationManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CommunicationManager manager = CommunicationManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<SenderUsernameResource> response =
-            manager
-                .senderUsernames()
-                .listByDomains("ebxmubyynt", "lrb", "tkoievseotgq", com.azure.core.util.Context.NONE);
+        PagedIterable<SenderUsernameResource> response = manager.senderUsernames().listByDomains("rsndsytgadgvra",
+            "aeneqnzarrwl", "uu", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("xbmp", response.iterator().next().username());
-        Assertions.assertEquals("jefuzmuvpbttdumo", response.iterator().next().displayName());
+        Assertions.assertEquals("fpubjibwwi", response.iterator().next().username());
+        Assertions.assertEquals("ohqkvpuvksgpls", response.iterator().next().displayName());
     }
 }

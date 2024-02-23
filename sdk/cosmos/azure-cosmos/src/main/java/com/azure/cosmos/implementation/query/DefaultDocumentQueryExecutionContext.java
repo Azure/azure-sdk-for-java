@@ -257,8 +257,12 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
                 return true;
             }
 
-            ValueHolder<TakeContinuationToken> outTakeContinuationToken = new ValueHolder<>();
-            return TakeContinuationToken.tryParse(continuationToken, outTakeContinuationToken);
+            ValueHolder<TopContinuationToken> outTopContinuationToken = new ValueHolder<>();
+            if (TopContinuationToken.tryParse(continuationToken, outTopContinuationToken)) {
+                return true;
+            }
+            ValueHolder<LimitContinuationToken> outLimitContinuationToken = new ValueHolder<>();
+            return LimitContinuationToken.tryParse(continuationToken, outLimitContinuationToken);
         }
 
         return false;

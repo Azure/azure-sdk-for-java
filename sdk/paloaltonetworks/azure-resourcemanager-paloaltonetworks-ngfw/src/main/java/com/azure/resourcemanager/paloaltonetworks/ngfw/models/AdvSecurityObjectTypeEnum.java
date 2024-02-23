@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for AdvSecurityObjectTypeEnum. */
+/**
+ * Defines values for AdvSecurityObjectTypeEnum.
+ */
 public final class AdvSecurityObjectTypeEnum extends ExpandableStringEnum<AdvSecurityObjectTypeEnum> {
-    /** Static value urlCustom for AdvSecurityObjectTypeEnum. */
+    /**
+     * Static value urlCustom for AdvSecurityObjectTypeEnum.
+     */
     public static final AdvSecurityObjectTypeEnum URL_CUSTOM = fromString("urlCustom");
 
-    /** Static value feeds for AdvSecurityObjectTypeEnum. */
+    /**
+     * Static value feeds for AdvSecurityObjectTypeEnum.
+     */
     public static final AdvSecurityObjectTypeEnum FEEDS = fromString("feeds");
 
     /**
      * Creates a new instance of AdvSecurityObjectTypeEnum value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class AdvSecurityObjectTypeEnum extends ExpandableStringEnum<AdvSec
 
     /**
      * Creates or finds a AdvSecurityObjectTypeEnum from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AdvSecurityObjectTypeEnum.
      */
@@ -38,7 +44,7 @@ public final class AdvSecurityObjectTypeEnum extends ExpandableStringEnum<AdvSec
 
     /**
      * Gets known AdvSecurityObjectTypeEnum values.
-     *
+     * 
      * @return known AdvSecurityObjectTypeEnum values.
      */
     public static Collection<AdvSecurityObjectTypeEnum> values() {

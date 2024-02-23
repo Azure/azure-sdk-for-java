@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.fluent.models.StaticSiteResetPropertiesArmResourceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Static Site Reset Properties ARM resource. */
+/**
+ * Static Site Reset Properties ARM resource.
+ */
 @Fluent
 public final class StaticSiteResetPropertiesArmResource extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class StaticSiteResetPropertiesArmResource extends ProxyOnlyResourc
     @JsonProperty(value = "properties")
     private StaticSiteResetPropertiesArmResourceProperties innerProperties;
 
-    /** Creates an instance of StaticSiteResetPropertiesArmResource class. */
+    /**
+     * Creates an instance of StaticSiteResetPropertiesArmResource class.
+     */
     public StaticSiteResetPropertiesArmResource() {
     }
 
     /**
      * Get the innerProperties property: StaticSiteResetPropertiesARMResource resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StaticSiteResetPropertiesArmResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StaticSiteResetPropertiesArmResource withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +45,7 @@ public final class StaticSiteResetPropertiesArmResource extends ProxyOnlyResourc
 
     /**
      * Get the repositoryToken property: The token which proves admin privileges to the repository.
-     *
+     * 
      * @return the repositoryToken value.
      */
     public String repositoryToken() {
@@ -48,7 +54,7 @@ public final class StaticSiteResetPropertiesArmResource extends ProxyOnlyResourc
 
     /**
      * Set the repositoryToken property: The token which proves admin privileges to the repository.
-     *
+     * 
      * @param repositoryToken the repositoryToken value to set.
      * @return the StaticSiteResetPropertiesArmResource object itself.
      */
@@ -63,7 +69,7 @@ public final class StaticSiteResetPropertiesArmResource extends ProxyOnlyResourc
     /**
      * Get the shouldUpdateRepository property: Determines whether the repository should be updated with the new
      * properties.
-     *
+     * 
      * @return the shouldUpdateRepository value.
      */
     public Boolean shouldUpdateRepository() {
@@ -73,7 +79,7 @@ public final class StaticSiteResetPropertiesArmResource extends ProxyOnlyResourc
     /**
      * Set the shouldUpdateRepository property: Determines whether the repository should be updated with the new
      * properties.
-     *
+     * 
      * @param shouldUpdateRepository the shouldUpdateRepository value to set.
      * @return the StaticSiteResetPropertiesArmResource object itself.
      */
@@ -87,7 +93,7 @@ public final class StaticSiteResetPropertiesArmResource extends ProxyOnlyResourc
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

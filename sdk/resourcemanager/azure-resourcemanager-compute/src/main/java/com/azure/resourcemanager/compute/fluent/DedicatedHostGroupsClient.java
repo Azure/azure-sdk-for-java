@@ -18,15 +18,15 @@ import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsGe
 import com.azure.resourcemanager.resources.fluentcore.collection.InnerSupportsListing;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DedicatedHostGroupsClient. */
-public interface DedicatedHostGroupsClient
-    extends InnerSupportsGet<DedicatedHostGroupInner>,
-        InnerSupportsListing<DedicatedHostGroupInner>,
-        InnerSupportsDelete<Void> {
+/**
+ * An instance of this class provides access to all the operations defined in DedicatedHostGroupsClient.
+ */
+public interface DedicatedHostGroupsClient extends InnerSupportsGet<DedicatedHostGroupInner>,
+    InnerSupportsListing<DedicatedHostGroupInner>, InnerSupportsDelete<Void> {
     /**
      * Create or update a dedicated host group. For details of Dedicated Host and Dedicated Host Groups please see
      * [Dedicated Host Documentation] (https://go.microsoft.com/fwlink/?linkid=2082596).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param parameters Parameters supplied to the Create Dedicated Host Group.
@@ -34,16 +34,16 @@ public interface DedicatedHostGroupsClient
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the dedicated host group that the dedicated hosts should be assigned to along
-     *     with {@link Response} on successful completion of {@link Mono}.
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DedicatedHostGroupInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String hostGroupName, DedicatedHostGroupInner parameters);
+    Mono<Response<DedicatedHostGroupInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String hostGroupName, DedicatedHostGroupInner parameters);
 
     /**
      * Create or update a dedicated host group. For details of Dedicated Host and Dedicated Host Groups please see
      * [Dedicated Host Documentation] (https://go.microsoft.com/fwlink/?linkid=2082596).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param parameters Parameters supplied to the Create Dedicated Host Group.
@@ -51,16 +51,16 @@ public interface DedicatedHostGroupsClient
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the dedicated host group that the dedicated hosts should be assigned to on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DedicatedHostGroupInner> createOrUpdateAsync(
-        String resourceGroupName, String hostGroupName, DedicatedHostGroupInner parameters);
+    Mono<DedicatedHostGroupInner> createOrUpdateAsync(String resourceGroupName, String hostGroupName,
+        DedicatedHostGroupInner parameters);
 
     /**
      * Create or update a dedicated host group. For details of Dedicated Host and Dedicated Host Groups please see
      * [Dedicated Host Documentation] (https://go.microsoft.com/fwlink/?linkid=2082596).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param parameters Parameters supplied to the Create Dedicated Host Group.
@@ -69,16 +69,16 @@ public interface DedicatedHostGroupsClient
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the dedicated host group that the dedicated hosts should be assigned to along
-     *     with {@link Response}.
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DedicatedHostGroupInner> createOrUpdateWithResponse(
-        String resourceGroupName, String hostGroupName, DedicatedHostGroupInner parameters, Context context);
+    Response<DedicatedHostGroupInner> createOrUpdateWithResponse(String resourceGroupName, String hostGroupName,
+        DedicatedHostGroupInner parameters, Context context);
 
     /**
      * Create or update a dedicated host group. For details of Dedicated Host and Dedicated Host Groups please see
      * [Dedicated Host Documentation] (https://go.microsoft.com/fwlink/?linkid=2082596).
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param parameters Parameters supplied to the Create Dedicated Host Group.
@@ -88,12 +88,12 @@ public interface DedicatedHostGroupsClient
      * @return specifies information about the dedicated host group that the dedicated hosts should be assigned to.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DedicatedHostGroupInner createOrUpdate(
-        String resourceGroupName, String hostGroupName, DedicatedHostGroupInner parameters);
+    DedicatedHostGroupInner createOrUpdate(String resourceGroupName, String hostGroupName,
+        DedicatedHostGroupInner parameters);
 
     /**
      * Update an dedicated host group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param parameters Parameters supplied to the Update Dedicated Host Group operation.
@@ -101,15 +101,15 @@ public interface DedicatedHostGroupsClient
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the dedicated host group that the dedicated hosts should be assigned to along
-     *     with {@link Response} on successful completion of {@link Mono}.
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DedicatedHostGroupInner>> updateWithResponseAsync(
-        String resourceGroupName, String hostGroupName, DedicatedHostGroupUpdate parameters);
+    Mono<Response<DedicatedHostGroupInner>> updateWithResponseAsync(String resourceGroupName, String hostGroupName,
+        DedicatedHostGroupUpdate parameters);
 
     /**
      * Update an dedicated host group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param parameters Parameters supplied to the Update Dedicated Host Group operation.
@@ -117,15 +117,15 @@ public interface DedicatedHostGroupsClient
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the dedicated host group that the dedicated hosts should be assigned to on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DedicatedHostGroupInner> updateAsync(
-        String resourceGroupName, String hostGroupName, DedicatedHostGroupUpdate parameters);
+    Mono<DedicatedHostGroupInner> updateAsync(String resourceGroupName, String hostGroupName,
+        DedicatedHostGroupUpdate parameters);
 
     /**
      * Update an dedicated host group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param parameters Parameters supplied to the Update Dedicated Host Group operation.
@@ -134,15 +134,15 @@ public interface DedicatedHostGroupsClient
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the dedicated host group that the dedicated hosts should be assigned to along
-     *     with {@link Response}.
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DedicatedHostGroupInner> updateWithResponse(
-        String resourceGroupName, String hostGroupName, DedicatedHostGroupUpdate parameters, Context context);
+    Response<DedicatedHostGroupInner> updateWithResponse(String resourceGroupName, String hostGroupName,
+        DedicatedHostGroupUpdate parameters, Context context);
 
     /**
      * Update an dedicated host group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param parameters Parameters supplied to the Update Dedicated Host Group operation.
@@ -156,7 +156,7 @@ public interface DedicatedHostGroupsClient
 
     /**
      * Delete a dedicated host group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -169,7 +169,7 @@ public interface DedicatedHostGroupsClient
 
     /**
      * Delete a dedicated host group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -182,7 +182,7 @@ public interface DedicatedHostGroupsClient
 
     /**
      * Delete a dedicated host group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param context The context to associate with this operation.
@@ -196,7 +196,7 @@ public interface DedicatedHostGroupsClient
 
     /**
      * Delete a dedicated host group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -208,58 +208,58 @@ public interface DedicatedHostGroupsClient
 
     /**
      * Retrieves information about a dedicated host group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance
-     *     views of the dedicated hosts under the dedicated host group. 'UserData' is not supported for dedicated host
-     *     group.
+     * views of the dedicated hosts under the dedicated host group. 'UserData' is not supported for dedicated host
+     * group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the dedicated host group that the dedicated hosts should be assigned to along
-     *     with {@link Response} on successful completion of {@link Mono}.
+     * with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DedicatedHostGroupInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String hostGroupName, InstanceViewTypes expand);
+    Mono<Response<DedicatedHostGroupInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String hostGroupName, InstanceViewTypes expand);
 
     /**
      * Retrieves information about a dedicated host group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the dedicated host group that the dedicated hosts should be assigned to on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<DedicatedHostGroupInner> getByResourceGroupAsync(String resourceGroupName, String hostGroupName);
 
     /**
      * Retrieves information about a dedicated host group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @param expand The expand expression to apply on the operation. 'InstanceView' will retrieve the list of instance
-     *     views of the dedicated hosts under the dedicated host group. 'UserData' is not supported for dedicated host
-     *     group.
+     * views of the dedicated hosts under the dedicated host group. 'UserData' is not supported for dedicated host
+     * group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return specifies information about the dedicated host group that the dedicated hosts should be assigned to along
-     *     with {@link Response}.
+     * with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DedicatedHostGroupInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String hostGroupName, InstanceViewTypes expand, Context context);
+    Response<DedicatedHostGroupInner> getByResourceGroupWithResponse(String resourceGroupName, String hostGroupName,
+        InstanceViewTypes expand, Context context);
 
     /**
      * Retrieves information about a dedicated host group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param hostGroupName The name of the dedicated host group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -273,7 +273,7 @@ public interface DedicatedHostGroupsClient
     /**
      * Lists all of the dedicated host groups in the specified resource group. Use the nextLink property in the response
      * to get the next page of dedicated host groups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
@@ -286,13 +286,13 @@ public interface DedicatedHostGroupsClient
     /**
      * Lists all of the dedicated host groups in the specified resource group. Use the nextLink property in the response
      * to get the next page of dedicated host groups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Dedicated Host Group with resource group response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the List Dedicated Host Group with resource group response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DedicatedHostGroupInner> listByResourceGroup(String resourceGroupName);
@@ -300,14 +300,14 @@ public interface DedicatedHostGroupsClient
     /**
      * Lists all of the dedicated host groups in the specified resource group. Use the nextLink property in the response
      * to get the next page of dedicated host groups.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Dedicated Host Group with resource group response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the List Dedicated Host Group with resource group response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DedicatedHostGroupInner> listByResourceGroup(String resourceGroupName, Context context);
@@ -315,7 +315,7 @@ public interface DedicatedHostGroupsClient
     /**
      * Lists all of the dedicated host groups in the subscription. Use the nextLink property in the response to get the
      * next page of dedicated host groups.
-     *
+     * 
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List Dedicated Host Group with resource group response as paginated response with {@link PagedFlux}.
@@ -326,11 +326,11 @@ public interface DedicatedHostGroupsClient
     /**
      * Lists all of the dedicated host groups in the subscription. Use the nextLink property in the response to get the
      * next page of dedicated host groups.
-     *
+     * 
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Dedicated Host Group with resource group response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the List Dedicated Host Group with resource group response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DedicatedHostGroupInner> list();
@@ -338,13 +338,13 @@ public interface DedicatedHostGroupsClient
     /**
      * Lists all of the dedicated host groups in the subscription. Use the nextLink property in the response to get the
      * next page of dedicated host groups.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.compute.models.ApiErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the List Dedicated Host Group with resource group response as paginated response with {@link
-     *     PagedIterable}.
+     * @return the List Dedicated Host Group with resource group response as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<DedicatedHostGroupInner> list(Context context);

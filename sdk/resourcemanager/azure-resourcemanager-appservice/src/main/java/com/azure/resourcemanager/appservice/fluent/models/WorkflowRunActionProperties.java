@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The workflow run action properties. */
+/**
+ * The workflow run action properties.
+ */
 @Fluent
 public final class WorkflowRunActionProperties {
     /*
@@ -82,13 +84,15 @@ public final class WorkflowRunActionProperties {
     @JsonProperty(value = "retryHistory")
     private List<RetryHistory> retryHistory;
 
-    /** Creates an instance of WorkflowRunActionProperties class. */
+    /**
+     * Creates an instance of WorkflowRunActionProperties class.
+     */
     public WorkflowRunActionProperties() {
     }
 
     /**
      * Get the startTime property: Gets the start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -97,7 +101,7 @@ public final class WorkflowRunActionProperties {
 
     /**
      * Get the endTime property: Gets the end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -106,7 +110,7 @@ public final class WorkflowRunActionProperties {
 
     /**
      * Get the status property: Gets the status.
-     *
+     * 
      * @return the status value.
      */
     public WorkflowStatus status() {
@@ -115,7 +119,7 @@ public final class WorkflowRunActionProperties {
 
     /**
      * Get the code property: Gets the code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -124,7 +128,7 @@ public final class WorkflowRunActionProperties {
 
     /**
      * Get the error property: Gets the error.
-     *
+     * 
      * @return the error value.
      */
     public Object error() {
@@ -133,7 +137,7 @@ public final class WorkflowRunActionProperties {
 
     /**
      * Get the trackingId property: Gets the tracking id.
-     *
+     * 
      * @return the trackingId value.
      */
     public String trackingId() {
@@ -142,7 +146,7 @@ public final class WorkflowRunActionProperties {
 
     /**
      * Get the correlation property: The correlation properties.
-     *
+     * 
      * @return the correlation value.
      */
     public RunActionCorrelation correlation() {
@@ -151,7 +155,7 @@ public final class WorkflowRunActionProperties {
 
     /**
      * Set the correlation property: The correlation properties.
-     *
+     * 
      * @param correlation the correlation value to set.
      * @return the WorkflowRunActionProperties object itself.
      */
@@ -162,7 +166,7 @@ public final class WorkflowRunActionProperties {
 
     /**
      * Get the inputsLink property: Gets the link to inputs.
-     *
+     * 
      * @return the inputsLink value.
      */
     public ContentLink inputsLink() {
@@ -171,7 +175,7 @@ public final class WorkflowRunActionProperties {
 
     /**
      * Get the outputsLink property: Gets the link to outputs.
-     *
+     * 
      * @return the outputsLink value.
      */
     public ContentLink outputsLink() {
@@ -180,7 +184,7 @@ public final class WorkflowRunActionProperties {
 
     /**
      * Get the trackedProperties property: Gets the tracked properties.
-     *
+     * 
      * @return the trackedProperties value.
      */
     public Object trackedProperties() {
@@ -189,7 +193,7 @@ public final class WorkflowRunActionProperties {
 
     /**
      * Get the retryHistory property: Gets the retry histories.
-     *
+     * 
      * @return the retryHistory value.
      */
     public List<RetryHistory> retryHistory() {
@@ -198,7 +202,7 @@ public final class WorkflowRunActionProperties {
 
     /**
      * Set the retryHistory property: Gets the retry histories.
-     *
+     * 
      * @param retryHistory the retryHistory value to set.
      * @return the WorkflowRunActionProperties object itself.
      */
@@ -209,7 +213,7 @@ public final class WorkflowRunActionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

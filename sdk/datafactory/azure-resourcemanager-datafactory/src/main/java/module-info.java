@@ -10,10 +10,6 @@ module com.azure.resourcemanager.datafactory {
     exports com.azure.resourcemanager.datafactory.fluent.models;
     exports com.azure.resourcemanager.datafactory.models;
 
-    opens com.azure.resourcemanager.datafactory.fluent.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
-    opens com.azure.resourcemanager.datafactory.models to
-        com.azure.core,
-        com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.datafactory.fluent.models to com.azure.core, com.fasterxml.jackson.databind;
+    opens com.azure.resourcemanager.datafactory.models to com.azure.core, com.fasterxml.jackson.databind;
 }

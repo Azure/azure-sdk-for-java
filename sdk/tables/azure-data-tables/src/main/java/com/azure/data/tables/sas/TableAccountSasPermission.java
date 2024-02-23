@@ -35,6 +35,14 @@ public final class TableAccountSasPermission {
     private boolean tagsPermission;
     private boolean filterTagsPermission;
 
+    // empty constructor necessary due to Javadoc warnings
+    /**
+     * Returns an instance of {@link TableAccountSasPermission} that has all fields set to false.
+     */
+    public TableAccountSasPermission() {
+
+    }
+
     /**
      * Creates an {@link TableAccountSasPermission} from the specified permissions string. This method will throw an
      * {@link IllegalArgumentException} if it encounters a character that does not correspond to a valid permission.
@@ -304,6 +312,7 @@ public final class TableAccountSasPermission {
     }
 
     /**
+     * Returns the tags permission status. Used to read or write the tags on a blob.
      * @return The tags permission status. Used to read or write the tags on a blob.
      */
     public boolean hasTagsPermission() {
@@ -325,6 +334,7 @@ public final class TableAccountSasPermission {
 
 
     /**
+     * Returns the filter tags permission status. Used to filter blobs by their tags.
      * @return The filter tags permission status. Used to filter blobs by their tags.
      */
     public boolean hasFilterTagsPermission() {

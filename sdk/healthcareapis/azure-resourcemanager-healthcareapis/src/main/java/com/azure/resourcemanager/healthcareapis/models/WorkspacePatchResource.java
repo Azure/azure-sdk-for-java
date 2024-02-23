@@ -7,10 +7,20 @@ package com.azure.resourcemanager.healthcareapis.models;
 import com.azure.core.annotation.Fluent;
 import java.util.Map;
 
-/** Workspace patch properties. */
+/**
+ * Workspace patch properties.
+ */
 @Fluent
 public final class WorkspacePatchResource extends ResourceTags {
-    /** {@inheritDoc} */
+    /**
+     * Creates an instance of WorkspacePatchResource class.
+     */
+    public WorkspacePatchResource() {
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkspacePatchResource withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -19,7 +29,7 @@ public final class WorkspacePatchResource extends ResourceTags {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

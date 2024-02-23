@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The effective RouteMap route configured on the connection resource. */
+/**
+ * The effective RouteMap route configured on the connection resource.
+ */
 @Fluent
 public final class EffectiveRouteMapRoute {
     /*
@@ -28,13 +30,15 @@ public final class EffectiveRouteMapRoute {
     @JsonProperty(value = "asPath")
     private String asPath;
 
-    /** Creates an instance of EffectiveRouteMapRoute class. */
+    /**
+     * Creates an instance of EffectiveRouteMapRoute class.
+     */
     public EffectiveRouteMapRoute() {
     }
 
     /**
      * Get the prefix property: The address prefix of the route.
-     *
+     * 
      * @return the prefix value.
      */
     public String prefix() {
@@ -43,7 +47,7 @@ public final class EffectiveRouteMapRoute {
 
     /**
      * Set the prefix property: The address prefix of the route.
-     *
+     * 
      * @param prefix the prefix value to set.
      * @return the EffectiveRouteMapRoute object itself.
      */
@@ -54,7 +58,7 @@ public final class EffectiveRouteMapRoute {
 
     /**
      * Get the bgpCommunities property: BGP communities of the route.
-     *
+     * 
      * @return the bgpCommunities value.
      */
     public String bgpCommunities() {
@@ -63,7 +67,7 @@ public final class EffectiveRouteMapRoute {
 
     /**
      * Set the bgpCommunities property: BGP communities of the route.
-     *
+     * 
      * @param bgpCommunities the bgpCommunities value to set.
      * @return the EffectiveRouteMapRoute object itself.
      */
@@ -74,7 +78,7 @@ public final class EffectiveRouteMapRoute {
 
     /**
      * Get the asPath property: The ASPath of this route.
-     *
+     * 
      * @return the asPath value.
      */
     public String asPath() {
@@ -83,7 +87,7 @@ public final class EffectiveRouteMapRoute {
 
     /**
      * Set the asPath property: The ASPath of this route.
-     *
+     * 
      * @param asPath the asPath value to set.
      * @return the EffectiveRouteMapRoute object itself.
      */
@@ -94,7 +98,7 @@ public final class EffectiveRouteMapRoute {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

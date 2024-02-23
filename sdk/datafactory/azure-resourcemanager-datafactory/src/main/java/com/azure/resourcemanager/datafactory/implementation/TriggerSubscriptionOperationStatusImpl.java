@@ -13,8 +13,7 @@ public final class TriggerSubscriptionOperationStatusImpl implements TriggerSubs
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    TriggerSubscriptionOperationStatusImpl(
-        TriggerSubscriptionOperationStatusInner innerObject,
+    TriggerSubscriptionOperationStatusImpl(TriggerSubscriptionOperationStatusInner innerObject,
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

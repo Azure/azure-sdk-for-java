@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Address properties. */
+/**
+ * Address properties.
+ */
 @Fluent
 public final class SourceAddr {
     /*
@@ -35,13 +37,15 @@ public final class SourceAddr {
     @JsonProperty(value = "prefixLists")
     private List<String> prefixLists;
 
-    /** Creates an instance of SourceAddr class. */
+    /**
+     * Creates an instance of SourceAddr class.
+     */
     public SourceAddr() {
     }
 
     /**
      * Get the cidrs property: special value 'any'.
-     *
+     * 
      * @return the cidrs value.
      */
     public List<String> cidrs() {
@@ -50,7 +54,7 @@ public final class SourceAddr {
 
     /**
      * Set the cidrs property: special value 'any'.
-     *
+     * 
      * @param cidrs the cidrs value to set.
      * @return the SourceAddr object itself.
      */
@@ -61,7 +65,7 @@ public final class SourceAddr {
 
     /**
      * Get the countries property: list of countries.
-     *
+     * 
      * @return the countries value.
      */
     public List<String> countries() {
@@ -70,7 +74,7 @@ public final class SourceAddr {
 
     /**
      * Set the countries property: list of countries.
-     *
+     * 
      * @param countries the countries value to set.
      * @return the SourceAddr object itself.
      */
@@ -81,7 +85,7 @@ public final class SourceAddr {
 
     /**
      * Get the feeds property: list of feeds.
-     *
+     * 
      * @return the feeds value.
      */
     public List<String> feeds() {
@@ -90,7 +94,7 @@ public final class SourceAddr {
 
     /**
      * Set the feeds property: list of feeds.
-     *
+     * 
      * @param feeds the feeds value to set.
      * @return the SourceAddr object itself.
      */
@@ -101,7 +105,7 @@ public final class SourceAddr {
 
     /**
      * Get the prefixLists property: prefix list.
-     *
+     * 
      * @return the prefixLists value.
      */
     public List<String> prefixLists() {
@@ -110,7 +114,7 @@ public final class SourceAddr {
 
     /**
      * Set the prefixLists property: prefix list.
-     *
+     * 
      * @param prefixLists the prefixLists value to set.
      * @return the SourceAddr object itself.
      */
@@ -121,7 +125,7 @@ public final class SourceAddr {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -13,7 +13,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** The raw concatenated strings that were sent to the semantic enrichment process. */
+/**
+ * The raw concatenated strings that were sent to the semantic enrichment process.
+ */
 @Immutable
 public final class QueryResultDocumentRerankerInput implements JsonSerializable<QueryResultDocumentRerankerInput> {
     /*
@@ -31,12 +33,15 @@ public final class QueryResultDocumentRerankerInput implements JsonSerializable<
      */
     private String keywords;
 
-    /** Creates an instance of QueryResultDocumentRerankerInput class. */
-    public QueryResultDocumentRerankerInput() {}
+    /**
+     * Creates an instance of QueryResultDocumentRerankerInput class.
+     */
+    public QueryResultDocumentRerankerInput() {
+    }
 
     /**
      * Get the title property: The raw string for the title field that was used for semantic enrichment.
-     *
+     * 
      * @return the title value.
      */
     public String getTitle() {
@@ -46,7 +51,7 @@ public final class QueryResultDocumentRerankerInput implements JsonSerializable<
     /**
      * Get the content property: The raw concatenated strings for the content fields that were used for semantic
      * enrichment.
-     *
+     * 
      * @return the content value.
      */
     public String getContent() {
@@ -56,7 +61,7 @@ public final class QueryResultDocumentRerankerInput implements JsonSerializable<
     /**
      * Get the keywords property: The raw concatenated strings for the keyword fields that were used for semantic
      * enrichment.
-     *
+     * 
      * @return the keywords value.
      */
     public String getKeywords() {
@@ -66,41 +71,37 @@ public final class QueryResultDocumentRerankerInput implements JsonSerializable<
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("title", this.title);
-        jsonWriter.writeStringField("content", this.content);
-        jsonWriter.writeStringField("keywords", this.keywords);
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of QueryResultDocumentRerankerInput from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of QueryResultDocumentRerankerInput if the JsonReader was pointing to an instance of it, or
-     *     null if it was pointing to JSON null.
+     * null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the QueryResultDocumentRerankerInput.
      */
     public static QueryResultDocumentRerankerInput fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    QueryResultDocumentRerankerInput deserializedQueryResultDocumentRerankerInput =
-                            new QueryResultDocumentRerankerInput();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            QueryResultDocumentRerankerInput deserializedQueryResultDocumentRerankerInput
+                = new QueryResultDocumentRerankerInput();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("title".equals(fieldName)) {
-                            deserializedQueryResultDocumentRerankerInput.title = reader.getString();
-                        } else if ("content".equals(fieldName)) {
-                            deserializedQueryResultDocumentRerankerInput.content = reader.getString();
-                        } else if ("keywords".equals(fieldName)) {
-                            deserializedQueryResultDocumentRerankerInput.keywords = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("title".equals(fieldName)) {
+                    deserializedQueryResultDocumentRerankerInput.title = reader.getString();
+                } else if ("content".equals(fieldName)) {
+                    deserializedQueryResultDocumentRerankerInput.content = reader.getString();
+                } else if ("keywords".equals(fieldName)) {
+                    deserializedQueryResultDocumentRerankerInput.keywords = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedQueryResultDocumentRerankerInput;
-                });
+            return deserializedQueryResultDocumentRerankerInput;
+        });
     }
 }

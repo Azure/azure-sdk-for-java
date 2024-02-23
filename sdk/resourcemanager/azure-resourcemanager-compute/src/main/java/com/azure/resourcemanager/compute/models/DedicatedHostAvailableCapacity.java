@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Dedicated host unutilized capacity. */
+/**
+ * Dedicated host unutilized capacity.
+ */
 @Fluent
 public final class DedicatedHostAvailableCapacity {
     /*
@@ -18,14 +20,16 @@ public final class DedicatedHostAvailableCapacity {
     @JsonProperty(value = "allocatableVMs")
     private List<DedicatedHostAllocatableVM> allocatableVMs;
 
-    /** Creates an instance of DedicatedHostAvailableCapacity class. */
+    /**
+     * Creates an instance of DedicatedHostAvailableCapacity class.
+     */
     public DedicatedHostAvailableCapacity() {
     }
 
     /**
      * Get the allocatableVMs property: The unutilized capacity of the dedicated host represented in terms of each VM
      * size that is allowed to be deployed to the dedicated host.
-     *
+     * 
      * @return the allocatableVMs value.
      */
     public List<DedicatedHostAllocatableVM> allocatableVMs() {
@@ -35,7 +39,7 @@ public final class DedicatedHostAvailableCapacity {
     /**
      * Set the allocatableVMs property: The unutilized capacity of the dedicated host represented in terms of each VM
      * size that is allowed to be deployed to the dedicated host.
-     *
+     * 
      * @param allocatableVMs the allocatableVMs value to set.
      * @return the DedicatedHostAvailableCapacity object itself.
      */
@@ -46,7 +50,7 @@ public final class DedicatedHostAvailableCapacity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -21,36 +21,32 @@ public final class FqdnListLocalRulestacksImpl implements FqdnListLocalRulestack
 
     private final com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager;
 
-    public FqdnListLocalRulestacksImpl(
-        FqdnListLocalRulestacksClient innerClient,
+    public FqdnListLocalRulestacksImpl(FqdnListLocalRulestacksClient innerClient,
         com.azure.resourcemanager.paloaltonetworks.ngfw.PaloAltoNetworksNgfwManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<FqdnListLocalRulestackResource> listByLocalRulestacks(
-        String resourceGroupName, String localRulestackName) {
-        PagedIterable<FqdnListLocalRulestackResourceInner> inner =
-            this.serviceClient().listByLocalRulestacks(resourceGroupName, localRulestackName);
+    public PagedIterable<FqdnListLocalRulestackResource> listByLocalRulestacks(String resourceGroupName,
+        String localRulestackName) {
+        PagedIterable<FqdnListLocalRulestackResourceInner> inner
+            = this.serviceClient().listByLocalRulestacks(resourceGroupName, localRulestackName);
         return Utils.mapPage(inner, inner1 -> new FqdnListLocalRulestackResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<FqdnListLocalRulestackResource> listByLocalRulestacks(
-        String resourceGroupName, String localRulestackName, Context context) {
-        PagedIterable<FqdnListLocalRulestackResourceInner> inner =
-            this.serviceClient().listByLocalRulestacks(resourceGroupName, localRulestackName, context);
+    public PagedIterable<FqdnListLocalRulestackResource> listByLocalRulestacks(String resourceGroupName,
+        String localRulestackName, Context context) {
+        PagedIterable<FqdnListLocalRulestackResourceInner> inner
+            = this.serviceClient().listByLocalRulestacks(resourceGroupName, localRulestackName, context);
         return Utils.mapPage(inner, inner1 -> new FqdnListLocalRulestackResourceImpl(inner1, this.manager()));
     }
 
-    public Response<FqdnListLocalRulestackResource> getWithResponse(
-        String resourceGroupName, String localRulestackName, String name, Context context) {
-        Response<FqdnListLocalRulestackResourceInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, localRulestackName, name, context);
+    public Response<FqdnListLocalRulestackResource> getWithResponse(String resourceGroupName, String localRulestackName,
+        String name, Context context) {
+        Response<FqdnListLocalRulestackResourceInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, localRulestackName, name, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new FqdnListLocalRulestackResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -58,8 +54,8 @@ public final class FqdnListLocalRulestacksImpl implements FqdnListLocalRulestack
     }
 
     public FqdnListLocalRulestackResource get(String resourceGroupName, String localRulestackName, String name) {
-        FqdnListLocalRulestackResourceInner inner =
-            this.serviceClient().get(resourceGroupName, localRulestackName, name);
+        FqdnListLocalRulestackResourceInner inner
+            = this.serviceClient().get(resourceGroupName, localRulestackName, name);
         if (inner != null) {
             return new FqdnListLocalRulestackResourceImpl(inner, this.manager());
         } else {
@@ -78,26 +74,18 @@ public final class FqdnListLocalRulestacksImpl implements FqdnListLocalRulestack
     public FqdnListLocalRulestackResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String localRulestackName = Utils.getValueFromIdByName(id, "localRulestacks");
         if (localRulestackName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "fqdnlists");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'fqdnlists'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'fqdnlists'.", id)));
         }
         return this.getWithResponse(resourceGroupName, localRulestackName, name, Context.NONE).getValue();
     }
@@ -105,26 +93,18 @@ public final class FqdnListLocalRulestacksImpl implements FqdnListLocalRulestack
     public Response<FqdnListLocalRulestackResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String localRulestackName = Utils.getValueFromIdByName(id, "localRulestacks");
         if (localRulestackName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "fqdnlists");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'fqdnlists'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'fqdnlists'.", id)));
         }
         return this.getWithResponse(resourceGroupName, localRulestackName, name, context);
     }
@@ -132,26 +112,18 @@ public final class FqdnListLocalRulestacksImpl implements FqdnListLocalRulestack
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String localRulestackName = Utils.getValueFromIdByName(id, "localRulestacks");
         if (localRulestackName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "fqdnlists");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'fqdnlists'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'fqdnlists'.", id)));
         }
         this.delete(resourceGroupName, localRulestackName, name, Context.NONE);
     }
@@ -159,26 +131,18 @@ public final class FqdnListLocalRulestacksImpl implements FqdnListLocalRulestack
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String localRulestackName = Utils.getValueFromIdByName(id, "localRulestacks");
         if (localRulestackName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'localRulestacks'.", id)));
         }
         String name = Utils.getValueFromIdByName(id, "fqdnlists");
         if (name == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'fqdnlists'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'fqdnlists'.", id)));
         }
         this.delete(resourceGroupName, localRulestackName, name, context);
     }

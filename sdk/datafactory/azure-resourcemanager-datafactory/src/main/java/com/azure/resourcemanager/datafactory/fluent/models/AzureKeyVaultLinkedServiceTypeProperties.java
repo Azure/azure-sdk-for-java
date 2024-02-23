@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.CredentialReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure Key Vault linked service properties. */
+/**
+ * Azure Key Vault linked service properties.
+ */
 @Fluent
 public final class AzureKeyVaultLinkedServiceTypeProperties {
     /*
@@ -25,14 +27,16 @@ public final class AzureKeyVaultLinkedServiceTypeProperties {
     @JsonProperty(value = "credential")
     private CredentialReference credential;
 
-    /** Creates an instance of AzureKeyVaultLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of AzureKeyVaultLinkedServiceTypeProperties class.
+     */
     public AzureKeyVaultLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the baseUrl property: The base URL of the Azure Key Vault. e.g. https://myakv.vault.azure.net Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @return the baseUrl value.
      */
     public Object baseUrl() {
@@ -42,7 +46,7 @@ public final class AzureKeyVaultLinkedServiceTypeProperties {
     /**
      * Set the baseUrl property: The base URL of the Azure Key Vault. e.g. https://myakv.vault.azure.net Type: string
      * (or Expression with resultType string).
-     *
+     * 
      * @param baseUrl the baseUrl value to set.
      * @return the AzureKeyVaultLinkedServiceTypeProperties object itself.
      */
@@ -53,7 +57,7 @@ public final class AzureKeyVaultLinkedServiceTypeProperties {
 
     /**
      * Get the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @return the credential value.
      */
     public CredentialReference credential() {
@@ -62,7 +66,7 @@ public final class AzureKeyVaultLinkedServiceTypeProperties {
 
     /**
      * Set the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @param credential the credential value to set.
      * @return the AzureKeyVaultLinkedServiceTypeProperties object itself.
      */
@@ -73,15 +77,13 @@ public final class AzureKeyVaultLinkedServiceTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (baseUrl() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property baseUrl in model AzureKeyVaultLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property baseUrl in model AzureKeyVaultLinkedServiceTypeProperties"));
         }
         if (credential() != null) {
             credential().validate();

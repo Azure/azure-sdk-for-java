@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.models.WorkflowEnvelopeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Workflow properties definition. */
+/**
+ * Workflow properties definition.
+ */
 @Fluent
 public final class WorkflowEnvelopeInner {
     /*
@@ -47,13 +49,15 @@ public final class WorkflowEnvelopeInner {
     @JsonProperty(value = "properties")
     private WorkflowEnvelopeProperties properties;
 
-    /** Creates an instance of WorkflowEnvelopeInner class. */
+    /**
+     * Creates an instance of WorkflowEnvelopeInner class.
+     */
     public WorkflowEnvelopeInner() {
     }
 
     /**
      * Get the id property: The resource id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -62,7 +66,7 @@ public final class WorkflowEnvelopeInner {
 
     /**
      * Get the name property: Gets the resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -71,7 +75,7 @@ public final class WorkflowEnvelopeInner {
 
     /**
      * Get the type property: Gets the resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -80,7 +84,7 @@ public final class WorkflowEnvelopeInner {
 
     /**
      * Get the kind property: The resource kind.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -89,7 +93,7 @@ public final class WorkflowEnvelopeInner {
 
     /**
      * Set the kind property: The resource kind.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the WorkflowEnvelopeInner object itself.
      */
@@ -100,7 +104,7 @@ public final class WorkflowEnvelopeInner {
 
     /**
      * Get the location property: The resource location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -109,7 +113,7 @@ public final class WorkflowEnvelopeInner {
 
     /**
      * Set the location property: The resource location.
-     *
+     * 
      * @param location the location value to set.
      * @return the WorkflowEnvelopeInner object itself.
      */
@@ -120,7 +124,7 @@ public final class WorkflowEnvelopeInner {
 
     /**
      * Get the properties property: Additional workflow properties.
-     *
+     * 
      * @return the properties value.
      */
     public WorkflowEnvelopeProperties properties() {
@@ -129,7 +133,7 @@ public final class WorkflowEnvelopeInner {
 
     /**
      * Set the properties property: Additional workflow properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the WorkflowEnvelopeInner object itself.
      */
@@ -140,7 +144,7 @@ public final class WorkflowEnvelopeInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

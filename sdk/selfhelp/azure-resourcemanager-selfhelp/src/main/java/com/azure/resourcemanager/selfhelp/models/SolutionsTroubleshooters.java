@@ -7,7 +7,9 @@ package com.azure.resourcemanager.selfhelp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Troubleshooters in Solutions. */
+/**
+ * Troubleshooters in Solutions.
+ */
 @Fluent
 public final class SolutionsTroubleshooters {
     /*
@@ -28,13 +30,15 @@ public final class SolutionsTroubleshooters {
     @JsonProperty(value = "summary")
     private String summary;
 
-    /** Creates an instance of SolutionsTroubleshooters class. */
+    /**
+     * Creates an instance of SolutionsTroubleshooters class.
+     */
     public SolutionsTroubleshooters() {
     }
 
     /**
      * Get the solutionId property: Solution Id to identify single Solutions Troubleshooter.
-     *
+     * 
      * @return the solutionId value.
      */
     public String solutionId() {
@@ -43,7 +47,7 @@ public final class SolutionsTroubleshooters {
 
     /**
      * Set the solutionId property: Solution Id to identify single Solutions Troubleshooter.
-     *
+     * 
      * @param solutionId the solutionId value to set.
      * @return the SolutionsTroubleshooters object itself.
      */
@@ -54,7 +58,7 @@ public final class SolutionsTroubleshooters {
 
     /**
      * Get the title property: Troubleshooter title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -63,7 +67,7 @@ public final class SolutionsTroubleshooters {
 
     /**
      * Set the title property: Troubleshooter title.
-     *
+     * 
      * @param title the title value to set.
      * @return the SolutionsTroubleshooters object itself.
      */
@@ -74,7 +78,7 @@ public final class SolutionsTroubleshooters {
 
     /**
      * Get the summary property: Troubleshooter summary.
-     *
+     * 
      * @return the summary value.
      */
     public String summary() {
@@ -83,7 +87,7 @@ public final class SolutionsTroubleshooters {
 
     /**
      * Set the summary property: Troubleshooter summary.
-     *
+     * 
      * @param summary the summary value to set.
      * @return the SolutionsTroubleshooters object itself.
      */
@@ -94,7 +98,7 @@ public final class SolutionsTroubleshooters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

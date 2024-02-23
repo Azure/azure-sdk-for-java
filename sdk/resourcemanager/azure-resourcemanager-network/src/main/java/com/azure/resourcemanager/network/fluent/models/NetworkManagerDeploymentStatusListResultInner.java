@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.NetworkManagerDeploymentStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of Network Manager Deployment Status. */
+/**
+ * A list of Network Manager Deployment Status.
+ */
 @Fluent
 public final class NetworkManagerDeploymentStatusListResultInner {
     /*
@@ -25,13 +27,15 @@ public final class NetworkManagerDeploymentStatusListResultInner {
     @JsonProperty(value = "skipToken")
     private String skipToken;
 
-    /** Creates an instance of NetworkManagerDeploymentStatusListResultInner class. */
+    /**
+     * Creates an instance of NetworkManagerDeploymentStatusListResultInner class.
+     */
     public NetworkManagerDeploymentStatusListResultInner() {
     }
 
     /**
      * Get the value property: Gets a page of Network Manager Deployment Status.
-     *
+     * 
      * @return the value value.
      */
     public List<NetworkManagerDeploymentStatus> value() {
@@ -40,7 +44,7 @@ public final class NetworkManagerDeploymentStatusListResultInner {
 
     /**
      * Set the value property: Gets a page of Network Manager Deployment Status.
-     *
+     * 
      * @param value the value value to set.
      * @return the NetworkManagerDeploymentStatusListResultInner object itself.
      */
@@ -52,7 +56,7 @@ public final class NetworkManagerDeploymentStatusListResultInner {
     /**
      * Get the skipToken property: When present, the value can be passed to a subsequent query call (together with the
      * same query and scopes used in the current request) to retrieve the next page of data.
-     *
+     * 
      * @return the skipToken value.
      */
     public String skipToken() {
@@ -62,7 +66,7 @@ public final class NetworkManagerDeploymentStatusListResultInner {
     /**
      * Set the skipToken property: When present, the value can be passed to a subsequent query call (together with the
      * same query and scopes used in the current request) to retrieve the next page of data.
-     *
+     * 
      * @param skipToken the skipToken value to set.
      * @return the NetworkManagerDeploymentStatusListResultInner object itself.
      */
@@ -73,7 +77,7 @@ public final class NetworkManagerDeploymentStatusListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

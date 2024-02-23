@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes the storage profile. */
+/**
+ * Describes the storage profile.
+ */
 @Fluent
 public final class RestorePointSourceVMStorageProfile {
     /*
@@ -23,13 +25,21 @@ public final class RestorePointSourceVMStorageProfile {
     @JsonProperty(value = "dataDisks")
     private List<RestorePointSourceVMDataDisk> dataDisks;
 
-    /** Creates an instance of RestorePointSourceVMStorageProfile class. */
+    /*
+     * Gets the disk controller type of the VM captured at the time of the restore point creation.
+     */
+    @JsonProperty(value = "diskControllerType", access = JsonProperty.Access.WRITE_ONLY)
+    private DiskControllerTypes diskControllerType;
+
+    /**
+     * Creates an instance of RestorePointSourceVMStorageProfile class.
+     */
     public RestorePointSourceVMStorageProfile() {
     }
 
     /**
      * Get the osDisk property: Gets the OS disk of the VM captured at the time of the restore point creation.
-     *
+     * 
      * @return the osDisk value.
      */
     public RestorePointSourceVmosDisk osDisk() {
@@ -38,7 +48,7 @@ public final class RestorePointSourceVMStorageProfile {
 
     /**
      * Set the osDisk property: Gets the OS disk of the VM captured at the time of the restore point creation.
-     *
+     * 
      * @param osDisk the osDisk value to set.
      * @return the RestorePointSourceVMStorageProfile object itself.
      */
@@ -49,7 +59,7 @@ public final class RestorePointSourceVMStorageProfile {
 
     /**
      * Get the dataDisks property: Gets the data disks of the VM captured at the time of the restore point creation.
-     *
+     * 
      * @return the dataDisks value.
      */
     public List<RestorePointSourceVMDataDisk> dataDisks() {
@@ -58,7 +68,7 @@ public final class RestorePointSourceVMStorageProfile {
 
     /**
      * Set the dataDisks property: Gets the data disks of the VM captured at the time of the restore point creation.
-     *
+     * 
      * @param dataDisks the dataDisks value to set.
      * @return the RestorePointSourceVMStorageProfile object itself.
      */
@@ -68,8 +78,18 @@ public final class RestorePointSourceVMStorageProfile {
     }
 
     /**
+     * Get the diskControllerType property: Gets the disk controller type of the VM captured at the time of the restore
+     * point creation.
+     * 
+     * @return the diskControllerType value.
+     */
+    public DiskControllerTypes diskControllerType() {
+        return this.diskControllerType;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

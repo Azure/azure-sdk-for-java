@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.appservice.generated;
 
-/** Samples for Provider GetFunctionAppStacks. */
+/**
+ * Samples for Provider GetFunctionAppStacks.
+ */
 public final class ProviderGetFunctionAppStacksSamples {
     /*
-     * x-ms-original-file: specification/web/resource-manager/Microsoft.Web/stable/2022-09-01/examples/GetFunctionAppStacks.json
+     * x-ms-original-file:
+     * specification/web/resource-manager/Microsoft.Web/stable/2023-01-01/examples/GetFunctionAppStacks.json
      */
     /**
      * Sample code: Get Function App Stacks.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void getFunctionAppStacks(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .webApps()
-            .manager()
-            .serviceClient()
-            .getProviders()
-            .getFunctionAppStacks(null, com.azure.core.util.Context.NONE);
+        azure.webApps().manager().serviceClient().getProviders().getFunctionAppStacks(null,
+            com.azure.core.util.Context.NONE);
     }
 }

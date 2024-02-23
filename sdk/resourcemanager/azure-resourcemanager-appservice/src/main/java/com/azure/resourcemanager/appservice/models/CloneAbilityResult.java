@@ -7,18 +7,28 @@ package com.azure.resourcemanager.appservice.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Name of app. */
+/**
+ * Name of app.
+ */
 public enum CloneAbilityResult {
-    /** Enum value Cloneable. */
+    /**
+     * Enum value Cloneable.
+     */
     CLONEABLE("Cloneable"),
 
-    /** Enum value PartiallyCloneable. */
+    /**
+     * Enum value PartiallyCloneable.
+     */
     PARTIALLY_CLONEABLE("PartiallyCloneable"),
 
-    /** Enum value NotCloneable. */
+    /**
+     * Enum value NotCloneable.
+     */
     NOT_CLONEABLE("NotCloneable");
 
-    /** The actual serialized value for a CloneAbilityResult instance. */
+    /**
+     * The actual serialized value for a CloneAbilityResult instance.
+     */
     private final String value;
 
     CloneAbilityResult(String value) {
@@ -27,7 +37,7 @@ public enum CloneAbilityResult {
 
     /**
      * Parses a serialized value to a CloneAbilityResult instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed CloneAbilityResult object, or null if unable to parse.
      */
@@ -45,7 +55,9 @@ public enum CloneAbilityResult {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

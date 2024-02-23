@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class FactoryUpdateParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FactoryUpdateParameters model =
-            BinaryData
-                .fromString(
-                    "{\"tags\":{\"bldngkpoc\":\"kouknvudwtiu\",\"npiucgygevqznty\":\"pazyxoegukg\"},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"10f625b5-4311-42ec-a306-58132df8c701\",\"tenantId\":\"f8678525-59b4-4cfc-adb5-bf483baa0f2a\",\"userAssignedIdentities\":{\"r\":\"datac\",\"dpydn\":\"dataj\",\"sjttgzfbish\":\"datayhxdeoejzicwi\",\"jdeyeamdpha\":\"databkh\"}},\"properties\":{\"publicNetworkAccess\":\"Disabled\"}}")
-                .toObject(FactoryUpdateParameters.class);
+        FactoryUpdateParameters model = BinaryData.fromString(
+            "{\"tags\":{\"bldngkpoc\":\"kouknvudwtiu\",\"npiucgygevqznty\":\"pazyxoegukg\"},\"identity\":{\"type\":\"SystemAssigned\",\"principalId\":\"7577ba02-7532-4693-956f-6193797d6dcd\",\"tenantId\":\"363b425a-1048-4117-a731-700e76eedd89\",\"userAssignedIdentities\":{\"r\":\"datac\",\"dpydn\":\"dataj\",\"sjttgzfbish\":\"datayhxdeoejzicwi\",\"jdeyeamdpha\":\"databkh\"}},\"properties\":{\"publicNetworkAccess\":\"Disabled\"}}")
+            .toObject(FactoryUpdateParameters.class);
         Assertions.assertEquals("kouknvudwtiu", model.tags().get("bldngkpoc"));
         Assertions.assertEquals(FactoryIdentityType.SYSTEM_ASSIGNED, model.identity().type());
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
@@ -28,22 +26,12 @@ public final class FactoryUpdateParametersTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FactoryUpdateParameters model =
-            new FactoryUpdateParameters()
+        FactoryUpdateParameters model
+            = new FactoryUpdateParameters()
                 .withTags(mapOf("bldngkpoc", "kouknvudwtiu", "npiucgygevqznty", "pazyxoegukg"))
-                .withIdentity(
-                    new FactoryIdentity()
-                        .withType(FactoryIdentityType.SYSTEM_ASSIGNED)
-                        .withUserAssignedIdentities(
-                            mapOf(
-                                "r",
-                                "datac",
-                                "dpydn",
-                                "dataj",
-                                "sjttgzfbish",
-                                "datayhxdeoejzicwi",
-                                "jdeyeamdpha",
-                                "databkh")))
+                .withIdentity(new FactoryIdentity().withType(FactoryIdentityType.SYSTEM_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf("r", "datac", "dpydn", "dataj", "sjttgzfbish",
+                        "datayhxdeoejzicwi", "jdeyeamdpha", "databkh")))
                 .withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
         model = BinaryData.fromObject(model).toObject(FactoryUpdateParameters.class);
         Assertions.assertEquals("kouknvudwtiu", model.tags().get("bldngkpoc"));

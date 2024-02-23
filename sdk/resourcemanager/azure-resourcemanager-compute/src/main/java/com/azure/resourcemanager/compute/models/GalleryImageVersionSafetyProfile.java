@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** This is the safety profile of the Gallery Image Version. */
+/**
+ * This is the safety profile of the Gallery Image Version.
+ */
 @Fluent
 public final class GalleryImageVersionSafetyProfile extends GalleryArtifactSafetyProfileBase {
     /*
@@ -23,14 +25,16 @@ public final class GalleryImageVersionSafetyProfile extends GalleryArtifactSafet
     @JsonProperty(value = "policyViolations", access = JsonProperty.Access.WRITE_ONLY)
     private List<PolicyViolation> policyViolations;
 
-    /** Creates an instance of GalleryImageVersionSafetyProfile class. */
+    /**
+     * Creates an instance of GalleryImageVersionSafetyProfile class.
+     */
     public GalleryImageVersionSafetyProfile() {
     }
 
     /**
      * Get the reportedForPolicyViolation property: Indicates whether this image has been reported as violating
      * Microsoft's policies.
-     *
+     * 
      * @return the reportedForPolicyViolation value.
      */
     public Boolean reportedForPolicyViolation() {
@@ -40,24 +44,26 @@ public final class GalleryImageVersionSafetyProfile extends GalleryArtifactSafet
     /**
      * Get the policyViolations property: A list of Policy Violations that have been reported for this Gallery Image
      * Version.
-     *
+     * 
      * @return the policyViolations value.
      */
     public List<PolicyViolation> policyViolations() {
         return this.policyViolations;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public GalleryImageVersionSafetyProfile withAllowDeletionOfReplicatedLocations(
-        Boolean allowDeletionOfReplicatedLocations) {
+    public GalleryImageVersionSafetyProfile
+        withAllowDeletionOfReplicatedLocations(Boolean allowDeletionOfReplicatedLocations) {
         super.withAllowDeletionOfReplicatedLocations(allowDeletionOfReplicatedLocations);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

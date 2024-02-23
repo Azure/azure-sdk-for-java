@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The settings that will be leveraged for SAP HANA source partitioning. */
+/**
+ * The settings that will be leveraged for SAP HANA source partitioning.
+ */
 @Fluent
 public final class SapHanaPartitionSettings {
     /*
@@ -17,14 +19,16 @@ public final class SapHanaPartitionSettings {
     @JsonProperty(value = "partitionColumnName")
     private Object partitionColumnName;
 
-    /** Creates an instance of SapHanaPartitionSettings class. */
+    /**
+     * Creates an instance of SapHanaPartitionSettings class.
+     */
     public SapHanaPartitionSettings() {
     }
 
     /**
-     * Get the partitionColumnName property: The name of the column that will be used for proceeding range partitioning.
-     * Type: string (or Expression with resultType string).
-     *
+     * Get the partitionColumnName property: The name of the column that will be used for proceeding range
+     * partitioning. Type: string (or Expression with resultType string).
+     * 
      * @return the partitionColumnName value.
      */
     public Object partitionColumnName() {
@@ -32,9 +36,9 @@ public final class SapHanaPartitionSettings {
     }
 
     /**
-     * Set the partitionColumnName property: The name of the column that will be used for proceeding range partitioning.
-     * Type: string (or Expression with resultType string).
-     *
+     * Set the partitionColumnName property: The name of the column that will be used for proceeding range
+     * partitioning. Type: string (or Expression with resultType string).
+     * 
      * @param partitionColumnName the partitionColumnName value to set.
      * @return the SapHanaPartitionSettings object itself.
      */
@@ -45,7 +49,7 @@ public final class SapHanaPartitionSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

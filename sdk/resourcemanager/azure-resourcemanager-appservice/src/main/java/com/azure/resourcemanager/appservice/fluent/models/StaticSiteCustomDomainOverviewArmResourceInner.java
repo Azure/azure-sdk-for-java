@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Static Site Custom Domain Overview ARM resource. */
+/**
+ * Static Site Custom Domain Overview ARM resource.
+ */
 @Fluent
 public final class StaticSiteCustomDomainOverviewArmResourceInner extends ProxyOnlyResource {
     /*
@@ -19,20 +21,24 @@ public final class StaticSiteCustomDomainOverviewArmResourceInner extends ProxyO
     @JsonProperty(value = "properties")
     private StaticSiteCustomDomainOverviewArmResourceProperties innerProperties;
 
-    /** Creates an instance of StaticSiteCustomDomainOverviewArmResourceInner class. */
+    /**
+     * Creates an instance of StaticSiteCustomDomainOverviewArmResourceInner class.
+     */
     public StaticSiteCustomDomainOverviewArmResourceInner() {
     }
 
     /**
      * Get the innerProperties property: StaticSiteCustomDomainOverviewARMResource resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private StaticSiteCustomDomainOverviewArmResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public StaticSiteCustomDomainOverviewArmResourceInner withKind(String kind) {
         super.withKind(kind);
@@ -41,7 +47,7 @@ public final class StaticSiteCustomDomainOverviewArmResourceInner extends ProxyO
 
     /**
      * Get the domainName property: The domain name for the static site custom domain.
-     *
+     * 
      * @return the domainName value.
      */
     public String domainName() {
@@ -50,7 +56,7 @@ public final class StaticSiteCustomDomainOverviewArmResourceInner extends ProxyO
 
     /**
      * Get the createdOn property: The date and time on which the custom domain was created for the static site.
-     *
+     * 
      * @return the createdOn value.
      */
     public OffsetDateTime createdOn() {
@@ -59,7 +65,7 @@ public final class StaticSiteCustomDomainOverviewArmResourceInner extends ProxyO
 
     /**
      * Get the status property: The status of the custom domain.
-     *
+     * 
      * @return the status value.
      */
     public CustomDomainStatus status() {
@@ -68,7 +74,7 @@ public final class StaticSiteCustomDomainOverviewArmResourceInner extends ProxyO
 
     /**
      * Get the validationToken property: The TXT record validation token.
-     *
+     * 
      * @return the validationToken value.
      */
     public String validationToken() {
@@ -77,7 +83,7 @@ public final class StaticSiteCustomDomainOverviewArmResourceInner extends ProxyO
 
     /**
      * Get the errorMessage property: The errorMessage property.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String errorMessage() {
@@ -86,7 +92,7 @@ public final class StaticSiteCustomDomainOverviewArmResourceInner extends ProxyO
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

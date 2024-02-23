@@ -8,17 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for TestKeyType. */
+/**
+ * Type of the test key.
+ */
 public final class TestKeyType extends ExpandableStringEnum<TestKeyType> {
-    /** Static value Primary for TestKeyType. */
+    /**
+     * Static value Primary for TestKeyType.
+     */
     public static final TestKeyType PRIMARY = fromString("Primary");
 
-    /** Static value Secondary for TestKeyType. */
+    /**
+     * Static value Secondary for TestKeyType.
+     */
     public static final TestKeyType SECONDARY = fromString("Secondary");
 
     /**
+     * Creates a new instance of TestKeyType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public TestKeyType() {
+    }
+
+    /**
      * Creates or finds a TestKeyType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TestKeyType.
      */
@@ -29,7 +44,7 @@ public final class TestKeyType extends ExpandableStringEnum<TestKeyType> {
 
     /**
      * Gets known TestKeyType values.
-     *
+     * 
      * @return known TestKeyType values.
      */
     public static Collection<TestKeyType> values() {

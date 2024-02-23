@@ -15,8 +15,7 @@ public final class BackupStatusResponseImpl implements BackupStatusResponse {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    BackupStatusResponseImpl(
-        BackupStatusResponseInner innerObject,
+    BackupStatusResponseImpl(BackupStatusResponseInner innerObject,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

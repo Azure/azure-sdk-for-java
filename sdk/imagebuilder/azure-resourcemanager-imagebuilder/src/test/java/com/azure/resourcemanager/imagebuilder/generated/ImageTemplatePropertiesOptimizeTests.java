@@ -13,18 +13,15 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageTemplatePropertiesOptimizeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageTemplatePropertiesOptimize model =
-            BinaryData
-                .fromString("{\"vmBoot\":{\"state\":\"Enabled\"}}")
-                .toObject(ImageTemplatePropertiesOptimize.class);
+        ImageTemplatePropertiesOptimize model = BinaryData.fromString("{\"vmBoot\":{\"state\":\"Enabled\"}}")
+            .toObject(ImageTemplatePropertiesOptimize.class);
         Assertions.assertEquals(VMBootOptimizationState.ENABLED, model.vmBoot().state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplatePropertiesOptimize model =
-            new ImageTemplatePropertiesOptimize()
-                .withVmBoot(new ImageTemplatePropertiesOptimizeVmBoot().withState(VMBootOptimizationState.ENABLED));
+        ImageTemplatePropertiesOptimize model = new ImageTemplatePropertiesOptimize()
+            .withVmBoot(new ImageTemplatePropertiesOptimizeVmBoot().withState(VMBootOptimizationState.ENABLED));
         model = BinaryData.fromObject(model).toObject(ImageTemplatePropertiesOptimize.class);
         Assertions.assertEquals(VMBootOptimizationState.ENABLED, model.vmBoot().state());
     }

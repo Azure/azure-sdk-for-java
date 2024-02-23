@@ -18,12 +18,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
         defaultImpl = DistributionMode.class)
 @JsonTypeName("DistributionMode")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "best-worker", value = BestWorkerMode.class),
-    @JsonSubTypes.Type(name = "longest-idle", value = LongestIdleMode.class),
-    @JsonSubTypes.Type(name = "round-robin", value = RoundRobinMode.class)
+    @JsonSubTypes.Type(name = "bestWorker", value = BestWorkerMode.class),
+    @JsonSubTypes.Type(name = "longestIdle", value = LongestIdleMode.class),
+    @JsonSubTypes.Type(name = "roundRobin", value = RoundRobinMode.class)
 })
 @Fluent
-public class DistributionMode {
+public abstract class DistributionMode {
+
+    /**
+     * kind discriminator.
+     */
+    @JsonProperty(value = "kind")
+    private String kind;
 
     /*
      * Governs the minimum desired number of active concurrent offers a job can have.
@@ -122,5 +128,13 @@ public class DistributionMode {
     public DistributionMode setBypassSelectors(Boolean bypassSelectors) {
         this.bypassSelectors = bypassSelectors;
         return this;
+    }
+
+    /**
+     * Returns kind discriminator.
+     * @return kind.
+     */
+    public String getKind() {
+        return this.kind;
     }
 }

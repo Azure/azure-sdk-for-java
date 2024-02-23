@@ -13,7 +13,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** Base type for normalizers. */
+/**
+ * Base type for normalizers.
+ */
 @Immutable
 public class LexicalNormalizer implements JsonSerializable<LexicalNormalizer> {
     /*
@@ -25,7 +27,7 @@ public class LexicalNormalizer implements JsonSerializable<LexicalNormalizer> {
 
     /**
      * Creates an instance of LexicalNormalizer class.
-     *
+     * 
      * @param name the name value to set.
      */
     public LexicalNormalizer(String name) {
@@ -34,9 +36,10 @@ public class LexicalNormalizer implements JsonSerializable<LexicalNormalizer> {
 
     /**
      * Get the name property: The name of the normalizer. It must only contain letters, digits, spaces, dashes or
-     * underscores, can only start and end with alphanumeric characters, and is limited to 128 characters. It cannot end
-     * in '.microsoft' nor '.lucene', nor be named 'asciifolding', 'standard', 'lowercase', 'uppercase', or 'elision'.
-     *
+     * underscores, can only start and end with alphanumeric characters, and is limited to 128 characters. It cannot
+     * end in '.microsoft' nor '.lucene', nor be named 'asciifolding', 'standard', 'lowercase', 'uppercase', or
+     * 'elision'.
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -52,42 +55,58 @@ public class LexicalNormalizer implements JsonSerializable<LexicalNormalizer> {
 
     /**
      * Reads an instance of LexicalNormalizer from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of LexicalNormalizer if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     *     polymorphic discriminator.
+     * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the LexicalNormalizer.
      */
     public static LexicalNormalizer fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    String discriminatorValue = null;
-                    JsonReader readerToUse = reader.bufferObject();
+        return jsonReader.readObject(reader -> {
+            String discriminatorValue = null;
+            JsonReader readerToUse = reader.bufferObject();
 
-                    readerToUse.nextToken(); // Prepare for reading
-                    while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = readerToUse.getFieldName();
-                        readerToUse.nextToken();
-                        if ("@odata.type".equals(fieldName)) {
-                            discriminatorValue = readerToUse.getString();
-                            break;
-                        } else {
-                            readerToUse.skipChildren();
-                        }
-                    }
+            readerToUse.nextToken(); // Prepare for reading
+            while (readerToUse.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = readerToUse.getFieldName();
+                readerToUse.nextToken();
+                if ("@odata.type".equals(fieldName)) {
+                    discriminatorValue = readerToUse.getString();
+                    break;
+                } else {
+                    readerToUse.skipChildren();
+                }
+            }
+            // Use the discriminator value to determine which subtype should be deserialized.
+            if ("#Microsoft.Azure.Search.CustomNormalizer".equals(discriminatorValue)) {
+                return CustomNormalizer.fromJson(readerToUse.reset());
+            } else {
+                return fromJsonKnownDiscriminator(readerToUse.reset());
+            }
+        });
+    }
 
-                    if (discriminatorValue != null) {
-                        readerToUse = readerToUse.reset();
-                    }
-                    // Use the discriminator value to determine which subtype should be deserialized.
-                    if ("#Microsoft.Azure.Search.CustomNormalizer".equals(discriminatorValue)) {
-                        return CustomNormalizer.fromJson(readerToUse);
-                    } else {
-                        throw new IllegalStateException(
-                                "Discriminator field '@odata.type' didn't match one of the expected values '#Microsoft.Azure.Search.CustomNormalizer'");
-                    }
-                });
+    static LexicalNormalizer fromJsonKnownDiscriminator(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            boolean nameFound = false;
+            String name = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                    nameFound = true;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (nameFound) {
+                return new LexicalNormalizer(name);
+            }
+            throw new IllegalStateException("Missing required property: name");
+        });
     }
 }

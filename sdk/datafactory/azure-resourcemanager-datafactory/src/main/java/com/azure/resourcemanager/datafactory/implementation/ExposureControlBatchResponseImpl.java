@@ -17,8 +17,7 @@ public final class ExposureControlBatchResponseImpl implements ExposureControlBa
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    ExposureControlBatchResponseImpl(
-        ExposureControlBatchResponseInner innerObject,
+    ExposureControlBatchResponseImpl(ExposureControlBatchResponseInner innerObject,
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,8 @@ public final class ExposureControlBatchResponseImpl implements ExposureControlBa
     public List<ExposureControlResponse> exposureControlResponses() {
         List<ExposureControlResponseInner> inner = this.innerModel().exposureControlResponses();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new ExposureControlResponseImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new ExposureControlResponseImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

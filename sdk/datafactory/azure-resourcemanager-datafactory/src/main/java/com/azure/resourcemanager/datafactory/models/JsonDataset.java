@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Json dataset. */
+/**
+ * Json dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Json")
 @Fluent
@@ -23,62 +25,78 @@ public final class JsonDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private JsonDatasetTypeProperties innerTypeProperties;
 
-    /** Creates an instance of JsonDataset class. */
+    /**
+     * Creates an instance of JsonDataset class.
+     */
     public JsonDataset() {
     }
 
     /**
      * Get the innerTypeProperties property: Json dataset properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private JsonDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonDataset withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonDataset withStructure(Object structure) {
         super.withStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonDataset withSchema(Object schema) {
         super.withSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonDataset withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonDataset withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonDataset withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JsonDataset withFolder(DatasetFolder folder) {
         super.withFolder(folder);
@@ -87,7 +105,7 @@ public final class JsonDataset extends Dataset {
 
     /**
      * Get the location property: The location of the json data storage.
-     *
+     * 
      * @return the location value.
      */
     public DatasetLocation location() {
@@ -96,7 +114,7 @@ public final class JsonDataset extends Dataset {
 
     /**
      * Set the location property: The location of the json data storage.
-     *
+     * 
      * @param location the location value to set.
      * @return the JsonDataset object itself.
      */
@@ -113,7 +131,7 @@ public final class JsonDataset extends Dataset {
      * is UTF-8, unless BOM denotes another Unicode encoding. Refer to the name column of the table in the following
      * link to set supported values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the encodingName value.
      */
     public Object encodingName() {
@@ -125,7 +143,7 @@ public final class JsonDataset extends Dataset {
      * is UTF-8, unless BOM denotes another Unicode encoding. Refer to the name column of the table in the following
      * link to set supported values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param encodingName the encodingName value to set.
      * @return the JsonDataset object itself.
      */
@@ -139,7 +157,7 @@ public final class JsonDataset extends Dataset {
 
     /**
      * Get the compression property: The data compression method used for the json dataset.
-     *
+     * 
      * @return the compression value.
      */
     public DatasetCompression compression() {
@@ -148,7 +166,7 @@ public final class JsonDataset extends Dataset {
 
     /**
      * Set the compression property: The data compression method used for the json dataset.
-     *
+     * 
      * @param compression the compression value to set.
      * @return the JsonDataset object itself.
      */
@@ -162,7 +180,7 @@ public final class JsonDataset extends Dataset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

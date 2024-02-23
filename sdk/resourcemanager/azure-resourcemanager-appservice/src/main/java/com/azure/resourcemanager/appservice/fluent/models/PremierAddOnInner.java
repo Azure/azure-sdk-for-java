@@ -9,7 +9,9 @@ import com.azure.core.management.Resource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Premier add-on. */
+/**
+ * Premier add-on.
+ */
 @Fluent
 public final class PremierAddOnInner extends Resource {
     /*
@@ -24,13 +26,15 @@ public final class PremierAddOnInner extends Resource {
     @JsonProperty(value = "kind")
     private String kind;
 
-    /** Creates an instance of PremierAddOnInner class. */
+    /**
+     * Creates an instance of PremierAddOnInner class.
+     */
     public PremierAddOnInner() {
     }
 
     /**
      * Get the innerProperties property: PremierAddOn resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PremierAddOnProperties innerProperties() {
@@ -39,7 +43,7 @@ public final class PremierAddOnInner extends Resource {
 
     /**
      * Get the kind property: Kind of resource.
-     *
+     * 
      * @return the kind value.
      */
     public String kind() {
@@ -48,7 +52,7 @@ public final class PremierAddOnInner extends Resource {
 
     /**
      * Set the kind property: Kind of resource.
-     *
+     * 
      * @param kind the kind value to set.
      * @return the PremierAddOnInner object itself.
      */
@@ -57,14 +61,18 @@ public final class PremierAddOnInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PremierAddOnInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PremierAddOnInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -73,7 +81,7 @@ public final class PremierAddOnInner extends Resource {
 
     /**
      * Get the sku property: Premier add on SKU.
-     *
+     * 
      * @return the sku value.
      */
     public String sku() {
@@ -82,7 +90,7 @@ public final class PremierAddOnInner extends Resource {
 
     /**
      * Set the sku property: Premier add on SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the PremierAddOnInner object itself.
      */
@@ -96,7 +104,7 @@ public final class PremierAddOnInner extends Resource {
 
     /**
      * Get the product property: Premier add on Product.
-     *
+     * 
      * @return the product value.
      */
     public String product() {
@@ -105,7 +113,7 @@ public final class PremierAddOnInner extends Resource {
 
     /**
      * Set the product property: Premier add on Product.
-     *
+     * 
      * @param product the product value to set.
      * @return the PremierAddOnInner object itself.
      */
@@ -119,7 +127,7 @@ public final class PremierAddOnInner extends Resource {
 
     /**
      * Get the vendor property: Premier add on Vendor.
-     *
+     * 
      * @return the vendor value.
      */
     public String vendor() {
@@ -128,7 +136,7 @@ public final class PremierAddOnInner extends Resource {
 
     /**
      * Set the vendor property: Premier add on Vendor.
-     *
+     * 
      * @param vendor the vendor value to set.
      * @return the PremierAddOnInner object itself.
      */
@@ -142,7 +150,7 @@ public final class PremierAddOnInner extends Resource {
 
     /**
      * Get the marketplacePublisher property: Premier add on Marketplace publisher.
-     *
+     * 
      * @return the marketplacePublisher value.
      */
     public String marketplacePublisher() {
@@ -151,7 +159,7 @@ public final class PremierAddOnInner extends Resource {
 
     /**
      * Set the marketplacePublisher property: Premier add on Marketplace publisher.
-     *
+     * 
      * @param marketplacePublisher the marketplacePublisher value to set.
      * @return the PremierAddOnInner object itself.
      */
@@ -165,7 +173,7 @@ public final class PremierAddOnInner extends Resource {
 
     /**
      * Get the marketplaceOffer property: Premier add on Marketplace offer.
-     *
+     * 
      * @return the marketplaceOffer value.
      */
     public String marketplaceOffer() {
@@ -174,7 +182,7 @@ public final class PremierAddOnInner extends Resource {
 
     /**
      * Set the marketplaceOffer property: Premier add on Marketplace offer.
-     *
+     * 
      * @param marketplaceOffer the marketplaceOffer value to set.
      * @return the PremierAddOnInner object itself.
      */
@@ -188,7 +196,7 @@ public final class PremierAddOnInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

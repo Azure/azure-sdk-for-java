@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information about filtered content severity level and if it has been filtered or not. */
+/**
+ * Information about filtered content severity level and if it has been filtered or not.
+ */
 @Immutable
 public final class ContentFilterResult {
 
@@ -34,9 +36,8 @@ public final class ContentFilterResult {
      */
     @Generated
     @JsonCreator
-    private ContentFilterResult(
-            @JsonProperty(value = "severity") ContentFilterSeverity severity,
-            @JsonProperty(value = "filtered") boolean filtered) {
+    private ContentFilterResult(@JsonProperty(value = "severity") ContentFilterSeverity severity,
+        @JsonProperty(value = "filtered") boolean filtered) {
         this.severity = severity;
         this.filtered = filtered;
     }

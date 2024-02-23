@@ -8,17 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The phase the task is in. */
+/**
+ * The phase the task is in.
+ */
 public final class TaskPhase extends ExpandableStringEnum<TaskPhase> {
 
-    /** Static value running for TaskPhase. */
-    @Generated public static final TaskPhase RUNNING = fromString("running");
+    /**
+     * Static value running for TaskPhase.
+     */
+    @Generated
+    public static final TaskPhase RUNNING = fromString("running");
 
-    /** Static value polling for TaskPhase. */
-    @Generated public static final TaskPhase POLLING = fromString("polling");
+    /**
+     * Static value polling for TaskPhase.
+     */
+    @Generated
+    public static final TaskPhase POLLING = fromString("polling");
 
-    /** Static value complete for TaskPhase. */
-    @Generated public static final TaskPhase COMPLETE = fromString("complete");
+    /**
+     * Static value complete for TaskPhase.
+     */
+    @Generated
+    public static final TaskPhase COMPLETE = fromString("complete");
 
     /**
      * Creates a new instance of TaskPhase value.
@@ -27,7 +38,8 @@ public final class TaskPhase extends ExpandableStringEnum<TaskPhase> {
      */
     @Generated
     @Deprecated
-    public TaskPhase() {}
+    public TaskPhase() {
+    }
 
     /**
      * Creates or finds a TaskPhase from its string representation.

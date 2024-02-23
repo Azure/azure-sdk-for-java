@@ -6,18 +6,20 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 
 import com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.SecurityServicesResponseInner;
 
-/** An immutable client-side representation of SecurityServicesResponse. */
+/**
+ * An immutable client-side representation of SecurityServicesResponse.
+ */
 public interface SecurityServicesResponse {
     /**
      * Gets the value property: response value.
-     *
+     * 
      * @return the value value.
      */
     SecurityServicesTypeList value();
 
     /**
      * Gets the nextLink property: next link.
-     *
+     * 
      * @return the nextLink value.
      */
     String nextLink();
@@ -25,7 +27,7 @@ public interface SecurityServicesResponse {
     /**
      * Gets the inner com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models.SecurityServicesResponseInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     SecurityServicesResponseInner innerModel();

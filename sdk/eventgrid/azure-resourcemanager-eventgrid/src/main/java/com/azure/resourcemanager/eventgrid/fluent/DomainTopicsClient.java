@@ -13,13 +13,15 @@ import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.eventgrid.fluent.models.DomainTopicInner;
 
-/** An instance of this class provides access to all the operations defined in DomainTopicsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DomainTopicsClient.
+ */
 public interface DomainTopicsClient {
     /**
      * Get a domain topic.
-     *
-     * <p>Get properties of a domain topic.
-     *
+     * 
+     * Get properties of a domain topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the topic.
@@ -30,14 +32,14 @@ public interface DomainTopicsClient {
      * @return properties of a domain topic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DomainTopicInner> getWithResponse(
-        String resourceGroupName, String domainName, String domainTopicName, Context context);
+    Response<DomainTopicInner> getWithResponse(String resourceGroupName, String domainName, String domainTopicName,
+        Context context);
 
     /**
      * Get a domain topic.
-     *
-     * <p>Get properties of a domain topic.
-     *
+     * 
+     * Get properties of a domain topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the topic.
@@ -51,9 +53,9 @@ public interface DomainTopicsClient {
 
     /**
      * Create or update a domain topic.
-     *
-     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new domain topic with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -63,14 +65,14 @@ public interface DomainTopicsClient {
      * @return the {@link SyncPoller} for polling of domain Topic.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DomainTopicInner>, DomainTopicInner> beginCreateOrUpdate(
-        String resourceGroupName, String domainName, String domainTopicName);
+    SyncPoller<PollResult<DomainTopicInner>, DomainTopicInner> beginCreateOrUpdate(String resourceGroupName,
+        String domainName, String domainTopicName);
 
     /**
      * Create or update a domain topic.
-     *
-     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new domain topic with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -81,14 +83,14 @@ public interface DomainTopicsClient {
      * @return the {@link SyncPoller} for polling of domain Topic.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DomainTopicInner>, DomainTopicInner> beginCreateOrUpdate(
-        String resourceGroupName, String domainName, String domainTopicName, Context context);
+    SyncPoller<PollResult<DomainTopicInner>, DomainTopicInner> beginCreateOrUpdate(String resourceGroupName,
+        String domainName, String domainTopicName, Context context);
 
     /**
      * Create or update a domain topic.
-     *
-     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new domain topic with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -102,9 +104,9 @@ public interface DomainTopicsClient {
 
     /**
      * Create or update a domain topic.
-     *
-     * <p>Asynchronously creates or updates a new domain topic with the specified parameters.
-     *
+     * 
+     * Asynchronously creates or updates a new domain topic with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -115,14 +117,14 @@ public interface DomainTopicsClient {
      * @return domain Topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DomainTopicInner createOrUpdate(
-        String resourceGroupName, String domainName, String domainTopicName, Context context);
+    DomainTopicInner createOrUpdate(String resourceGroupName, String domainName, String domainTopicName,
+        Context context);
 
     /**
      * Delete a domain topic.
-     *
-     * <p>Delete existing domain topic.
-     *
+     * 
+     * Delete existing domain topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -136,9 +138,9 @@ public interface DomainTopicsClient {
 
     /**
      * Delete a domain topic.
-     *
-     * <p>Delete existing domain topic.
-     *
+     * 
+     * Delete existing domain topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -149,14 +151,14 @@ public interface DomainTopicsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String domainName, String domainTopicName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String domainName, String domainTopicName,
+        Context context);
 
     /**
      * Delete a domain topic.
-     *
-     * <p>Delete existing domain topic.
-     *
+     * 
+     * Delete existing domain topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -169,9 +171,9 @@ public interface DomainTopicsClient {
 
     /**
      * Delete a domain topic.
-     *
-     * <p>Delete existing domain topic.
-     *
+     * 
+     * Delete existing domain topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Name of the domain.
      * @param domainTopicName Name of the domain topic.
@@ -185,9 +187,9 @@ public interface DomainTopicsClient {
 
     /**
      * List domain topics.
-     *
-     * <p>List all the topics in a domain.
-     *
+     * 
+     * List all the topics in a domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Domain name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -200,19 +202,18 @@ public interface DomainTopicsClient {
 
     /**
      * List domain topics.
-     *
-     * <p>List all the topics in a domain.
-     *
+     * 
+     * List all the topics in a domain.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param domainName Domain name.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -220,6 +221,6 @@ public interface DomainTopicsClient {
      * @return result of the List Domain Topics operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<DomainTopicInner> listByDomain(
-        String resourceGroupName, String domainName, String filter, Integer top, Context context);
+    PagedIterable<DomainTopicInner> listByDomain(String resourceGroupName, String domainName, String filter,
+        Integer top, Context context);
 }

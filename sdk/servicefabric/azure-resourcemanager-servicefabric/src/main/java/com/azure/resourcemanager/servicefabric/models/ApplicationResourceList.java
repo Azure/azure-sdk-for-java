@@ -4,29 +4,71 @@
 
 package com.azure.resourcemanager.servicefabric.models;
 
-import com.azure.resourcemanager.servicefabric.fluent.models.ApplicationResourceListInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.servicefabric.fluent.models.ApplicationResourceInner;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An immutable client-side representation of ApplicationResourceList. */
-public interface ApplicationResourceList {
+/**
+ * The list of application resources.
+ */
+@Fluent
+public final class ApplicationResourceList {
+    /*
+     * The value property.
+     */
+    @JsonProperty(value = "value")
+    private List<ApplicationResourceInner> value;
+
+    /*
+     * URL to get the next set of application list results if there are any.
+     */
+    @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
+    private String nextLink;
+
     /**
-     * Gets the value property: The value property.
-     *
+     * Creates an instance of ApplicationResourceList class.
+     */
+    public ApplicationResourceList() {
+    }
+
+    /**
+     * Get the value property: The value property.
+     * 
      * @return the value value.
      */
-    List<ApplicationResource> value();
+    public List<ApplicationResourceInner> value() {
+        return this.value;
+    }
 
     /**
-     * Gets the nextLink property: URL to get the next set of application list results if there are any.
-     *
+     * Set the value property: The value property.
+     * 
+     * @param value the value value to set.
+     * @return the ApplicationResourceList object itself.
+     */
+    public ApplicationResourceList withValue(List<ApplicationResourceInner> value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
+     * Get the nextLink property: URL to get the next set of application list results if there are any.
+     * 
      * @return the nextLink value.
      */
-    String nextLink();
+    public String nextLink() {
+        return this.nextLink;
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.servicefabric.fluent.models.ApplicationResourceListInner object.
-     *
-     * @return the inner object.
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
      */
-    ApplicationResourceListInner innerModel();
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
+    }
 }

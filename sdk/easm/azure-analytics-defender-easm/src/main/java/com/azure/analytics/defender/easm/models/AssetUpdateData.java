@@ -8,7 +8,9 @@ import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** A request body used to update an asset. */
+/**
+ * A request body used to update an asset.
+ */
 @Fluent
 public final class AssetUpdateData {
 
@@ -40,9 +42,12 @@ public final class AssetUpdateData {
     @JsonProperty(value = "transfers")
     private AssetUpdateTransfers transfers;
 
-    /** Creates an instance of AssetUpdateData class. */
+    /**
+     * Creates an instance of AssetUpdateData class.
+     */
     @Generated
-    public AssetUpdateData() {}
+    public AssetUpdateData() {
+    }
 
     /**
      * Get the state property: The state to update the asset to.

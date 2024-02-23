@@ -10,7 +10,9 @@ import com.azure.resourcemanager.eventgrid.models.PartnerUpdateTopicInfo;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Properties of the channel update parameters. */
+/**
+ * Properties of the channel update parameters.
+ */
 @Fluent
 public final class ChannelUpdateParametersProperties {
     /*
@@ -33,15 +35,17 @@ public final class ChannelUpdateParametersProperties {
     @JsonProperty(value = "partnerTopicInfo")
     private PartnerUpdateTopicInfo partnerTopicInfo;
 
-    /** Creates an instance of ChannelUpdateParametersProperties class. */
+    /**
+     * Creates an instance of ChannelUpdateParametersProperties class.
+     */
     public ChannelUpdateParametersProperties() {
     }
 
     /**
-     * Get the expirationTimeIfNotActivatedUtc property: Expiration time of the channel. If this timer expires while the
-     * corresponding partner topic or partner destination is never activated, the channel and corresponding partner
-     * topic or partner destination are deleted.
-     *
+     * Get the expirationTimeIfNotActivatedUtc property: Expiration time of the channel. If this timer expires while
+     * the corresponding partner topic or partner destination is never activated,
+     * the channel and corresponding partner topic or partner destination are deleted.
+     * 
      * @return the expirationTimeIfNotActivatedUtc value.
      */
     public OffsetDateTime expirationTimeIfNotActivatedUtc() {
@@ -49,23 +53,23 @@ public final class ChannelUpdateParametersProperties {
     }
 
     /**
-     * Set the expirationTimeIfNotActivatedUtc property: Expiration time of the channel. If this timer expires while the
-     * corresponding partner topic or partner destination is never activated, the channel and corresponding partner
-     * topic or partner destination are deleted.
-     *
+     * Set the expirationTimeIfNotActivatedUtc property: Expiration time of the channel. If this timer expires while
+     * the corresponding partner topic or partner destination is never activated,
+     * the channel and corresponding partner topic or partner destination are deleted.
+     * 
      * @param expirationTimeIfNotActivatedUtc the expirationTimeIfNotActivatedUtc value to set.
      * @return the ChannelUpdateParametersProperties object itself.
      */
-    public ChannelUpdateParametersProperties withExpirationTimeIfNotActivatedUtc(
-        OffsetDateTime expirationTimeIfNotActivatedUtc) {
+    public ChannelUpdateParametersProperties
+        withExpirationTimeIfNotActivatedUtc(OffsetDateTime expirationTimeIfNotActivatedUtc) {
         this.expirationTimeIfNotActivatedUtc = expirationTimeIfNotActivatedUtc;
         return this;
     }
 
     /**
-     * Get the partnerDestinationInfo property: Partner destination properties which can be updated if the channel is of
-     * type PartnerDestination.
-     *
+     * Get the partnerDestinationInfo property: Partner destination properties which can be updated if the channel is
+     * of type PartnerDestination.
+     * 
      * @return the partnerDestinationInfo value.
      */
     public PartnerUpdateDestinationInfo partnerDestinationInfo() {
@@ -73,14 +77,14 @@ public final class ChannelUpdateParametersProperties {
     }
 
     /**
-     * Set the partnerDestinationInfo property: Partner destination properties which can be updated if the channel is of
-     * type PartnerDestination.
-     *
+     * Set the partnerDestinationInfo property: Partner destination properties which can be updated if the channel is
+     * of type PartnerDestination.
+     * 
      * @param partnerDestinationInfo the partnerDestinationInfo value to set.
      * @return the ChannelUpdateParametersProperties object itself.
      */
-    public ChannelUpdateParametersProperties withPartnerDestinationInfo(
-        PartnerUpdateDestinationInfo partnerDestinationInfo) {
+    public ChannelUpdateParametersProperties
+        withPartnerDestinationInfo(PartnerUpdateDestinationInfo partnerDestinationInfo) {
         this.partnerDestinationInfo = partnerDestinationInfo;
         return this;
     }
@@ -88,7 +92,7 @@ public final class ChannelUpdateParametersProperties {
     /**
      * Get the partnerTopicInfo property: Partner topic properties which can be updated if the channel is of type
      * PartnerTopic.
-     *
+     * 
      * @return the partnerTopicInfo value.
      */
     public PartnerUpdateTopicInfo partnerTopicInfo() {
@@ -98,7 +102,7 @@ public final class ChannelUpdateParametersProperties {
     /**
      * Set the partnerTopicInfo property: Partner topic properties which can be updated if the channel is of type
      * PartnerTopic.
-     *
+     * 
      * @param partnerTopicInfo the partnerTopicInfo value to set.
      * @return the ChannelUpdateParametersProperties object itself.
      */
@@ -109,7 +113,7 @@ public final class ChannelUpdateParametersProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

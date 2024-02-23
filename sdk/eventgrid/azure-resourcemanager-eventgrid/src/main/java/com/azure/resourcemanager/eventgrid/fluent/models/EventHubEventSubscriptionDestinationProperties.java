@@ -9,7 +9,9 @@ import com.azure.resourcemanager.eventgrid.models.DeliveryAttributeMapping;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The properties for a event hub destination. */
+/**
+ * The properties for a event hub destination.
+ */
 @Fluent
 public final class EventHubEventSubscriptionDestinationProperties {
     /*
@@ -24,14 +26,16 @@ public final class EventHubEventSubscriptionDestinationProperties {
     @JsonProperty(value = "deliveryAttributeMappings")
     private List<DeliveryAttributeMapping> deliveryAttributeMappings;
 
-    /** Creates an instance of EventHubEventSubscriptionDestinationProperties class. */
+    /**
+     * Creates an instance of EventHubEventSubscriptionDestinationProperties class.
+     */
     public EventHubEventSubscriptionDestinationProperties() {
     }
 
     /**
-     * Get the resourceId property: The Azure Resource Id that represents the endpoint of an Event Hub destination of an
-     * event subscription.
-     *
+     * Get the resourceId property: The Azure Resource Id that represents the endpoint of an Event Hub destination of
+     * an event subscription.
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -39,9 +43,9 @@ public final class EventHubEventSubscriptionDestinationProperties {
     }
 
     /**
-     * Set the resourceId property: The Azure Resource Id that represents the endpoint of an Event Hub destination of an
-     * event subscription.
-     *
+     * Set the resourceId property: The Azure Resource Id that represents the endpoint of an Event Hub destination of
+     * an event subscription.
+     * 
      * @param resourceId the resourceId value to set.
      * @return the EventHubEventSubscriptionDestinationProperties object itself.
      */
@@ -52,7 +56,7 @@ public final class EventHubEventSubscriptionDestinationProperties {
 
     /**
      * Get the deliveryAttributeMappings property: Delivery attribute details.
-     *
+     * 
      * @return the deliveryAttributeMappings value.
      */
     public List<DeliveryAttributeMapping> deliveryAttributeMappings() {
@@ -61,19 +65,19 @@ public final class EventHubEventSubscriptionDestinationProperties {
 
     /**
      * Set the deliveryAttributeMappings property: Delivery attribute details.
-     *
+     * 
      * @param deliveryAttributeMappings the deliveryAttributeMappings value to set.
      * @return the EventHubEventSubscriptionDestinationProperties object itself.
      */
-    public EventHubEventSubscriptionDestinationProperties withDeliveryAttributeMappings(
-        List<DeliveryAttributeMapping> deliveryAttributeMappings) {
+    public EventHubEventSubscriptionDestinationProperties
+        withDeliveryAttributeMappings(List<DeliveryAttributeMapping> deliveryAttributeMappings) {
         this.deliveryAttributeMappings = deliveryAttributeMappings;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

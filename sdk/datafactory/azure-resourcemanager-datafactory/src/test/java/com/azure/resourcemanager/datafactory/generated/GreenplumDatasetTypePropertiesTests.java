@@ -10,19 +10,15 @@ import com.azure.resourcemanager.datafactory.fluent.models.GreenplumDatasetTypeP
 public final class GreenplumDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GreenplumDatasetTypeProperties model =
-            BinaryData
-                .fromString("{\"tableName\":\"dataqicmdrgcuzjmvk\",\"table\":\"datar\",\"schema\":\"dataqhgcm\"}")
-                .toObject(GreenplumDatasetTypeProperties.class);
+        GreenplumDatasetTypeProperties model = BinaryData
+            .fromString("{\"tableName\":\"dataqicmdrgcuzjmvk\",\"table\":\"datar\",\"schema\":\"dataqhgcm\"}")
+            .toObject(GreenplumDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        GreenplumDatasetTypeProperties model =
-            new GreenplumDatasetTypeProperties()
-                .withTableName("dataqicmdrgcuzjmvk")
-                .withTable("datar")
-                .withSchema("dataqhgcm");
+        GreenplumDatasetTypeProperties model = new GreenplumDatasetTypeProperties().withTableName("dataqicmdrgcuzjmvk")
+            .withTable("datar").withSchema("dataqhgcm");
         model = BinaryData.fromObject(model).toObject(GreenplumDatasetTypeProperties.class);
     }
 }

@@ -13,7 +13,7 @@ public final class TargetTypePropertiesTests {
         TargetTypeProperties model =
             BinaryData
                 .fromString(
-                    "{\"displayName\":\"cskfcktqumiekk\",\"description\":\"zikhl\",\"propertiesSchema\":\"jhdgqggebdunyga\",\"resourceTypes\":[\"db\"]}")
+                    "{\"displayName\":\"dmjsjqb\",\"description\":\"hyxxrwlycoduhpk\",\"propertiesSchema\":\"gymare\",\"resourceTypes\":[\"jxqugjhky\"]}")
                 .toObject(TargetTypeProperties.class);
     }
 

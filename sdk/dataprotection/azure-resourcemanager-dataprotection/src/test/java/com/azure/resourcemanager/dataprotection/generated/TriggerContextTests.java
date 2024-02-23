@@ -10,8 +10,8 @@ import com.azure.resourcemanager.dataprotection.models.TriggerContext;
 public final class TriggerContextTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TriggerContext model =
-            BinaryData.fromString("{\"objectType\":\"TriggerContext\"}").toObject(TriggerContext.class);
+        TriggerContext model
+            = BinaryData.fromString("{\"objectType\":\"TriggerContext\"}").toObject(TriggerContext.class);
     }
 
     @org.junit.jupiter.api.Test

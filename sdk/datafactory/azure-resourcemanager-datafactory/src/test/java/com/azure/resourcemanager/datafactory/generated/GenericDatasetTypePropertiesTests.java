@@ -10,8 +10,8 @@ import com.azure.resourcemanager.datafactory.fluent.models.GenericDatasetTypePro
 public final class GenericDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        GenericDatasetTypeProperties model =
-            BinaryData.fromString("{\"tableName\":\"dataypkcpwsrqnn\"}").toObject(GenericDatasetTypeProperties.class);
+        GenericDatasetTypeProperties model
+            = BinaryData.fromString("{\"tableName\":\"dataypkcpwsrqnn\"}").toObject(GenericDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test

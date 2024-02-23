@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The CassandraTableGetPropertiesResource model. */
+/**
+ * The CassandraTableGetPropertiesResource model.
+ */
 @Fluent
 public final class CassandraTableGetPropertiesResource extends CassandraTableResource {
     /*
@@ -28,13 +30,15 @@ public final class CassandraTableGetPropertiesResource extends CassandraTableRes
     @JsonProperty(value = "_etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of CassandraTableGetPropertiesResource class. */
+    /**
+     * Creates an instance of CassandraTableGetPropertiesResource class.
+     */
     public CassandraTableGetPropertiesResource() {
     }
 
     /**
      * Get the rid property: A system generated property. A unique identifier.
-     *
+     * 
      * @return the rid value.
      */
     public String rid() {
@@ -43,7 +47,7 @@ public final class CassandraTableGetPropertiesResource extends CassandraTableRes
 
     /**
      * Get the ts property: A system generated property that denotes the last updated timestamp of the resource.
-     *
+     * 
      * @return the ts value.
      */
     public Float ts() {
@@ -53,35 +57,43 @@ public final class CassandraTableGetPropertiesResource extends CassandraTableRes
     /**
      * Get the etag property: A system generated property representing the resource etag required for optimistic
      * concurrency control.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraTableGetPropertiesResource withId(String id) {
         super.withId(id);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraTableGetPropertiesResource withDefaultTtl(Integer defaultTtl) {
         super.withDefaultTtl(defaultTtl);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraTableGetPropertiesResource withSchema(CassandraSchema schema) {
         super.withSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CassandraTableGetPropertiesResource withAnalyticalStorageTtl(Integer analyticalStorageTtl) {
         super.withAnalyticalStorageTtl(analyticalStorageTtl);
@@ -90,7 +102,7 @@ public final class CassandraTableGetPropertiesResource extends CassandraTableRes
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

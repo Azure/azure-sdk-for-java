@@ -15,34 +15,23 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplianceCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplianceCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"providerSpecificDetails\":{\"instanceType\":\"ApplianceSpecificDetails\"}}},{\"properties\":{\"providerSpecificDetails\":{\"instanceType\":\"ApplianceSpecificDetails\"}}},{\"properties\":{\"providerSpecificDetails\":{\"instanceType\":\"ApplianceSpecificDetails\"}}}],\"nextLink\":\"nuvamiheogna\"}")
-                .toObject(ApplianceCollection.class);
+        ApplianceCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"providerSpecificDetails\":{\"instanceType\":\"ApplianceSpecificDetails\"}}},{\"properties\":{\"providerSpecificDetails\":{\"instanceType\":\"ApplianceSpecificDetails\"}}},{\"properties\":{\"providerSpecificDetails\":{\"instanceType\":\"ApplianceSpecificDetails\"}}}],\"nextLink\":\"nuvamiheogna\"}")
+            .toObject(ApplianceCollection.class);
         Assertions.assertEquals("nuvamiheogna", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplianceCollection model =
-            new ApplianceCollection()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new ReplicationApplianceInner()
-                                .withProperties(
-                                    new ReplicationApplianceProperties()
-                                        .withProviderSpecificDetails(new ApplianceSpecificDetails())),
-                            new ReplicationApplianceInner()
-                                .withProperties(
-                                    new ReplicationApplianceProperties()
-                                        .withProviderSpecificDetails(new ApplianceSpecificDetails())),
-                            new ReplicationApplianceInner()
-                                .withProperties(
-                                    new ReplicationApplianceProperties()
-                                        .withProviderSpecificDetails(new ApplianceSpecificDetails()))))
-                .withNextLink("nuvamiheogna");
+        ApplianceCollection model = new ApplianceCollection()
+            .withValue(Arrays.asList(
+                new ReplicationApplianceInner().withProperties(
+                    new ReplicationApplianceProperties().withProviderSpecificDetails(new ApplianceSpecificDetails())),
+                new ReplicationApplianceInner().withProperties(
+                    new ReplicationApplianceProperties().withProviderSpecificDetails(new ApplianceSpecificDetails())),
+                new ReplicationApplianceInner().withProperties(
+                    new ReplicationApplianceProperties().withProviderSpecificDetails(new ApplianceSpecificDetails()))))
+            .withNextLink("nuvamiheogna");
         model = BinaryData.fromObject(model).toObject(ApplianceCollection.class);
         Assertions.assertEquals("nuvamiheogna", model.nextLink());
     }

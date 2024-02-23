@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The linked integration runtime information. */
+/**
+ * The linked integration runtime information.
+ */
 @Immutable
 public final class LinkedIntegrationRuntime {
     /*
@@ -41,13 +43,15 @@ public final class LinkedIntegrationRuntime {
     @JsonProperty(value = "createTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime createTime;
 
-    /** Creates an instance of LinkedIntegrationRuntime class. */
+    /**
+     * Creates an instance of LinkedIntegrationRuntime class.
+     */
     public LinkedIntegrationRuntime() {
     }
 
     /**
      * Get the name property: The name of the linked integration runtime.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -56,7 +60,7 @@ public final class LinkedIntegrationRuntime {
 
     /**
      * Get the subscriptionId property: The subscription ID for which the linked integration runtime belong to.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -66,7 +70,7 @@ public final class LinkedIntegrationRuntime {
     /**
      * Get the dataFactoryName property: The name of the data factory for which the linked integration runtime belong
      * to.
-     *
+     * 
      * @return the dataFactoryName value.
      */
     public String dataFactoryName() {
@@ -76,7 +80,7 @@ public final class LinkedIntegrationRuntime {
     /**
      * Get the dataFactoryLocation property: The location of the data factory for which the linked integration runtime
      * belong to.
-     *
+     * 
      * @return the dataFactoryLocation value.
      */
     public String dataFactoryLocation() {
@@ -85,7 +89,7 @@ public final class LinkedIntegrationRuntime {
 
     /**
      * Get the createTime property: The creating time of the linked integration runtime.
-     *
+     * 
      * @return the createTime value.
      */
     public OffsetDateTime createTime() {
@@ -94,7 +98,7 @@ public final class LinkedIntegrationRuntime {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

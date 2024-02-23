@@ -13,7 +13,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Request body structure for starting data flow debug session. */
+/**
+ * Request body structure for starting data flow debug session.
+ */
 @Fluent
 public final class DataFlowDebugPackage {
     /*
@@ -61,15 +63,18 @@ public final class DataFlowDebugPackage {
     /*
      * Request body structure for starting data flow debug session.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of DataFlowDebugPackage class. */
+    /**
+     * Creates an instance of DataFlowDebugPackage class.
+     */
     public DataFlowDebugPackage() {
     }
 
     /**
      * Get the sessionId property: The ID of data flow debug session.
-     *
+     * 
      * @return the sessionId value.
      */
     public String sessionId() {
@@ -78,7 +83,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Set the sessionId property: The ID of data flow debug session.
-     *
+     * 
      * @param sessionId the sessionId value to set.
      * @return the DataFlowDebugPackage object itself.
      */
@@ -89,7 +94,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Get the dataFlow property: Data flow instance.
-     *
+     * 
      * @return the dataFlow value.
      */
     public DataFlowDebugResource dataFlow() {
@@ -98,7 +103,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Set the dataFlow property: Data flow instance.
-     *
+     * 
      * @param dataFlow the dataFlow value to set.
      * @return the DataFlowDebugPackage object itself.
      */
@@ -109,7 +114,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Get the dataFlows property: List of Data flows.
-     *
+     * 
      * @return the dataFlows value.
      */
     public List<DataFlowDebugResource> dataFlows() {
@@ -118,7 +123,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Set the dataFlows property: List of Data flows.
-     *
+     * 
      * @param dataFlows the dataFlows value to set.
      * @return the DataFlowDebugPackage object itself.
      */
@@ -129,7 +134,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Get the datasets property: List of datasets.
-     *
+     * 
      * @return the datasets value.
      */
     public List<DatasetDebugResource> datasets() {
@@ -138,7 +143,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Set the datasets property: List of datasets.
-     *
+     * 
      * @param datasets the datasets value to set.
      * @return the DataFlowDebugPackage object itself.
      */
@@ -149,7 +154,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Get the linkedServices property: List of linked services.
-     *
+     * 
      * @return the linkedServices value.
      */
     public List<LinkedServiceDebugResource> linkedServices() {
@@ -158,7 +163,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Set the linkedServices property: List of linked services.
-     *
+     * 
      * @param linkedServices the linkedServices value to set.
      * @return the DataFlowDebugPackage object itself.
      */
@@ -169,7 +174,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Get the staging property: Staging info for debug session.
-     *
+     * 
      * @return the staging value.
      */
     public DataFlowStagingInfo staging() {
@@ -178,7 +183,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Set the staging property: Staging info for debug session.
-     *
+     * 
      * @param staging the staging value to set.
      * @return the DataFlowDebugPackage object itself.
      */
@@ -189,7 +194,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Get the debugSettings property: Data flow debug settings.
-     *
+     * 
      * @return the debugSettings value.
      */
     public DataFlowDebugPackageDebugSettings debugSettings() {
@@ -198,7 +203,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Set the debugSettings property: Data flow debug settings.
-     *
+     * 
      * @param debugSettings the debugSettings value to set.
      * @return the DataFlowDebugPackage object itself.
      */
@@ -209,7 +214,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Get the additionalProperties property: Request body structure for starting data flow debug session.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -219,7 +224,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Set the additionalProperties property: Request body structure for starting data flow debug session.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the DataFlowDebugPackage object itself.
      */
@@ -238,7 +243,7 @@ public final class DataFlowDebugPackage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

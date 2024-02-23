@@ -7,7 +7,9 @@ package com.azure.resourcemanager.nginx.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The NginxNetworkProfile model. */
+/**
+ * The NginxNetworkProfile model.
+ */
 @Fluent
 public final class NginxNetworkProfile {
     /*
@@ -22,13 +24,15 @@ public final class NginxNetworkProfile {
     @JsonProperty(value = "networkInterfaceConfiguration")
     private NginxNetworkInterfaceConfiguration networkInterfaceConfiguration;
 
-    /** Creates an instance of NginxNetworkProfile class. */
+    /**
+     * Creates an instance of NginxNetworkProfile class.
+     */
     public NginxNetworkProfile() {
     }
 
     /**
      * Get the frontEndIpConfiguration property: The frontEndIPConfiguration property.
-     *
+     * 
      * @return the frontEndIpConfiguration value.
      */
     public NginxFrontendIpConfiguration frontEndIpConfiguration() {
@@ -37,7 +41,7 @@ public final class NginxNetworkProfile {
 
     /**
      * Set the frontEndIpConfiguration property: The frontEndIPConfiguration property.
-     *
+     * 
      * @param frontEndIpConfiguration the frontEndIpConfiguration value to set.
      * @return the NginxNetworkProfile object itself.
      */
@@ -48,7 +52,7 @@ public final class NginxNetworkProfile {
 
     /**
      * Get the networkInterfaceConfiguration property: The networkInterfaceConfiguration property.
-     *
+     * 
      * @return the networkInterfaceConfiguration value.
      */
     public NginxNetworkInterfaceConfiguration networkInterfaceConfiguration() {
@@ -57,19 +61,19 @@ public final class NginxNetworkProfile {
 
     /**
      * Set the networkInterfaceConfiguration property: The networkInterfaceConfiguration property.
-     *
+     * 
      * @param networkInterfaceConfiguration the networkInterfaceConfiguration value to set.
      * @return the NginxNetworkProfile object itself.
      */
-    public NginxNetworkProfile withNetworkInterfaceConfiguration(
-        NginxNetworkInterfaceConfiguration networkInterfaceConfiguration) {
+    public NginxNetworkProfile
+        withNetworkInterfaceConfiguration(NginxNetworkInterfaceConfiguration networkInterfaceConfiguration) {
         this.networkInterfaceConfiguration = networkInterfaceConfiguration;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

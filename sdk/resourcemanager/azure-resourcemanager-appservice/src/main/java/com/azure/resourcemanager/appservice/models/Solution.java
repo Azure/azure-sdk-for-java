@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Class Representing Solution for problems detected. */
+/**
+ * Class Representing Solution for problems detected.
+ */
 @Fluent
 public final class Solution {
     /*
@@ -53,13 +55,15 @@ public final class Solution {
     @JsonProperty(value = "metadata")
     private List<List<NameValuePair>> metadata;
 
-    /** Creates an instance of Solution class. */
+    /**
+     * Creates an instance of Solution class.
+     */
     public Solution() {
     }
 
     /**
      * Get the id property: Solution Id.
-     *
+     * 
      * @return the id value.
      */
     public Double id() {
@@ -68,7 +72,7 @@ public final class Solution {
 
     /**
      * Set the id property: Solution Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the Solution object itself.
      */
@@ -79,7 +83,7 @@ public final class Solution {
 
     /**
      * Get the displayName property: Display Name of the solution.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -88,7 +92,7 @@ public final class Solution {
 
     /**
      * Set the displayName property: Display Name of the solution.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the Solution object itself.
      */
@@ -99,7 +103,7 @@ public final class Solution {
 
     /**
      * Get the order property: Order of the solution.
-     *
+     * 
      * @return the order value.
      */
     public Double order() {
@@ -108,7 +112,7 @@ public final class Solution {
 
     /**
      * Set the order property: Order of the solution.
-     *
+     * 
      * @param order the order value to set.
      * @return the Solution object itself.
      */
@@ -119,7 +123,7 @@ public final class Solution {
 
     /**
      * Get the description property: Description of the solution.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -128,7 +132,7 @@ public final class Solution {
 
     /**
      * Set the description property: Description of the solution.
-     *
+     * 
      * @param description the description value to set.
      * @return the Solution object itself.
      */
@@ -139,7 +143,7 @@ public final class Solution {
 
     /**
      * Get the type property: Type of Solution.
-     *
+     * 
      * @return the type value.
      */
     public SolutionType type() {
@@ -148,7 +152,7 @@ public final class Solution {
 
     /**
      * Set the type property: Type of Solution.
-     *
+     * 
      * @param type the type value to set.
      * @return the Solution object itself.
      */
@@ -159,7 +163,7 @@ public final class Solution {
 
     /**
      * Get the data property: Solution Data.
-     *
+     * 
      * @return the data value.
      */
     public List<List<NameValuePair>> data() {
@@ -168,7 +172,7 @@ public final class Solution {
 
     /**
      * Set the data property: Solution Data.
-     *
+     * 
      * @param data the data value to set.
      * @return the Solution object itself.
      */
@@ -179,7 +183,7 @@ public final class Solution {
 
     /**
      * Get the metadata property: Solution Metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public List<List<NameValuePair>> metadata() {
@@ -188,7 +192,7 @@ public final class Solution {
 
     /**
      * Set the metadata property: Solution Metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the Solution object itself.
      */
@@ -199,7 +203,7 @@ public final class Solution {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

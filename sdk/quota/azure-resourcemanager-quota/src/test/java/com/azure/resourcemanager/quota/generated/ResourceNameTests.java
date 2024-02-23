@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ResourceNameTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceName model =
-            BinaryData
-                .fromString("{\"value\":\"xrifkwmrvkts\",\"localizedValue\":\"nt\"}")
-                .toObject(ResourceName.class);
+        ResourceName model = BinaryData.fromString("{\"value\":\"xrifkwmrvkts\",\"localizedValue\":\"nt\"}")
+            .toObject(ResourceName.class);
         Assertions.assertEquals("xrifkwmrvkts", model.value());
     }
 

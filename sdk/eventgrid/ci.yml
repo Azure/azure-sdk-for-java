@@ -55,6 +55,7 @@ extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: eventgrid
+    JavadocSafeJavaBuildVersion: '1.21'
     EnableBatchRelease: true
     Artifacts:
       - name: azure-messaging-eventgrid

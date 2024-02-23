@@ -7,11 +7,13 @@ package com.azure.resourcemanager.healthcareapis.models;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 
-/** Resource collection API of FhirDestinations. */
+/**
+ * Resource collection API of FhirDestinations.
+ */
 public interface FhirDestinations {
     /**
      * Lists all FHIR destinations for the given IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -20,12 +22,12 @@ public interface FhirDestinations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of IoT Connector FHIR destinations as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<IotFhirDestination> listByIotConnector(
-        String resourceGroupName, String workspaceName, String iotConnectorName);
+    PagedIterable<IotFhirDestination> listByIotConnector(String resourceGroupName, String workspaceName,
+        String iotConnectorName);
 
     /**
      * Lists all FHIR destinations for the given IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -35,6 +37,6 @@ public interface FhirDestinations {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a collection of IoT Connector FHIR destinations as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<IotFhirDestination> listByIotConnector(
-        String resourceGroupName, String workspaceName, String iotConnectorName, Context context);
+    PagedIterable<IotFhirDestination> listByIotConnector(String resourceGroupName, String workspaceName,
+        String iotConnectorName, Context context);
 }

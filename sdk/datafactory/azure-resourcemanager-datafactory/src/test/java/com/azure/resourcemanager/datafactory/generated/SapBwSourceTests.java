@@ -10,24 +10,16 @@ import com.azure.resourcemanager.datafactory.models.SapBwSource;
 public final class SapBwSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapBwSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SapBwSource\",\"query\":\"datajthmibqgld\",\"queryTimeout\":\"datatkalp\",\"additionalColumns\":\"datanny\",\"sourceRetryCount\":\"datajea\",\"sourceRetryWait\":\"datalewlwbxufq\",\"maxConcurrentConnections\":\"datakkvij\",\"disableMetricsCollection\":\"dataf\",\"\":{\"aqoaopzqpf\":\"datadzowdqvqfl\",\"ee\":\"datanjdyoxform\"}}")
-                .toObject(SapBwSource.class);
+        SapBwSource model = BinaryData.fromString(
+            "{\"type\":\"SapBwSource\",\"query\":\"datarziryx\",\"queryTimeout\":\"datajrutmxqv\",\"additionalColumns\":\"datapoftsapfwusf\",\"sourceRetryCount\":\"datanjvzlynvje\",\"sourceRetryWait\":\"datavu\",\"maxConcurrentConnections\":\"datalwzn\",\"disableMetricsCollection\":\"dataie\",\"\":{\"wwutduch\":\"datagkfiftgbupuukp\"}}")
+            .toObject(SapBwSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapBwSource model =
-            new SapBwSource()
-                .withSourceRetryCount("datajea")
-                .withSourceRetryWait("datalewlwbxufq")
-                .withMaxConcurrentConnections("datakkvij")
-                .withDisableMetricsCollection("dataf")
-                .withQueryTimeout("datatkalp")
-                .withAdditionalColumns("datanny")
-                .withQuery("datajthmibqgld");
+        SapBwSource model = new SapBwSource().withSourceRetryCount("datanjvzlynvje").withSourceRetryWait("datavu")
+            .withMaxConcurrentConnections("datalwzn").withDisableMetricsCollection("dataie")
+            .withQueryTimeout("datajrutmxqv").withAdditionalColumns("datapoftsapfwusf").withQuery("datarziryx");
         model = BinaryData.fromObject(model).toObject(SapBwSource.class);
     }
 }

@@ -11,8 +11,8 @@ import java.util.List;
 
 /**
  * A type of resource in Azure.
- *
- * <p>Metadata about types of Azure resources, containing relevant tables, functions, etc.
+ * 
+ * Metadata about types of Azure resources, containing relevant tables, functions, etc.
  */
 @Fluent
 public final class MetadataResourceType {
@@ -66,21 +66,20 @@ public final class MetadataResourceType {
 
     /**
      * Creates an instance of MetadataResourceType class.
-     *
+     * 
      * @param id the id value to set.
      * @param type the type value to set.
      */
     @JsonCreator
-    public MetadataResourceType(
-            @JsonProperty(value = "id", required = true) String id,
-            @JsonProperty(value = "type", required = true) String type) {
+    public MetadataResourceType(@JsonProperty(value = "id", required = true) String id,
+        @JsonProperty(value = "type", required = true) String type) {
         this.id = id;
         this.type = type;
     }
 
     /**
      * Get the id property: The ID of the resource-type.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -89,7 +88,7 @@ public final class MetadataResourceType {
 
     /**
      * Get the type property: The type of the resource-type.
-     *
+     * 
      * @return the type value.
      */
     public String getType() {
@@ -98,7 +97,7 @@ public final class MetadataResourceType {
 
     /**
      * Get the displayName property: The display name of the resource-type.
-     *
+     * 
      * @return the displayName value.
      */
     public String getDisplayName() {
@@ -107,7 +106,7 @@ public final class MetadataResourceType {
 
     /**
      * Set the displayName property: The display name of the resource-type.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MetadataResourceType object itself.
      */
@@ -118,7 +117,7 @@ public final class MetadataResourceType {
 
     /**
      * Get the description property: The description of the resource-type.
-     *
+     * 
      * @return the description value.
      */
     public String getDescription() {
@@ -127,7 +126,7 @@ public final class MetadataResourceType {
 
     /**
      * Set the description property: The description of the resource-type.
-     *
+     * 
      * @param description the description value to set.
      * @return the MetadataResourceType object itself.
      */
@@ -138,7 +137,7 @@ public final class MetadataResourceType {
 
     /**
      * Get the labels property: The user-defined labels of the resource-type.
-     *
+     * 
      * @return the labels value.
      */
     public List<String> getLabels() {
@@ -147,7 +146,7 @@ public final class MetadataResourceType {
 
     /**
      * Set the labels property: The user-defined labels of the resource-type.
-     *
+     * 
      * @param labels the labels value to set.
      * @return the MetadataResourceType object itself.
      */
@@ -158,7 +157,7 @@ public final class MetadataResourceType {
 
     /**
      * Get the tags property: The tags associated with the resource-type.
-     *
+     * 
      * @return the tags value.
      */
     public Object getTags() {
@@ -167,7 +166,7 @@ public final class MetadataResourceType {
 
     /**
      * Set the tags property: The tags associated with the resource-type.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the MetadataResourceType object itself.
      */
@@ -178,7 +177,7 @@ public final class MetadataResourceType {
 
     /**
      * Get the properties property: The properties of the resource-type.
-     *
+     * 
      * @return the properties value.
      */
     public Object getProperties() {
@@ -187,7 +186,7 @@ public final class MetadataResourceType {
 
     /**
      * Set the properties property: The properties of the resource-type.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the MetadataResourceType object itself.
      */
@@ -198,7 +197,7 @@ public final class MetadataResourceType {
 
     /**
      * Get the related property: The related metadata items for the resource-type.
-     *
+     * 
      * @return the related value.
      */
     public MetadataResourceTypeRelated getRelated() {
@@ -207,29 +206,12 @@ public final class MetadataResourceType {
 
     /**
      * Set the related property: The related metadata items for the resource-type.
-     *
+     * 
      * @param related the related value to set.
      * @return the MetadataResourceType object itself.
      */
     public MetadataResourceType setRelated(MetadataResourceTypeRelated related) {
         this.related = related;
         return this;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getId() == null) {
-            throw new IllegalArgumentException("Missing required property id in model MetadataResourceType");
-        }
-        if (getType() == null) {
-            throw new IllegalArgumentException("Missing required property type in model MetadataResourceType");
-        }
-        if (getRelated() != null) {
-            getRelated().validate();
-        }
     }
 }

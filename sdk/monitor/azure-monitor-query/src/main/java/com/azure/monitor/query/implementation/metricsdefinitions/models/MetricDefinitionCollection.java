@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents collection of metric definitions. */
+/**
+ * Represents collection of metric definitions.
+ */
 @Immutable
 public final class MetricDefinitionCollection {
     /*
@@ -20,7 +22,7 @@ public final class MetricDefinitionCollection {
 
     /**
      * Creates an instance of MetricDefinitionCollection class.
-     *
+     * 
      * @param value the value value to set.
      */
     @JsonCreator
@@ -30,23 +32,10 @@ public final class MetricDefinitionCollection {
 
     /**
      * Get the value property: the values for the metric definitions.
-     *
+     * 
      * @return the value value.
      */
     public List<MetricDefinition> getValue() {
         return this.value;
-    }
-
-    /**
-     * Validates the instance.
-     *
-     * @throws IllegalArgumentException thrown if the instance is not valid.
-     */
-    public void validate() {
-        if (getValue() == null) {
-            throw new IllegalArgumentException("Missing required property value in model MetricDefinitionCollection");
-        } else {
-            getValue().forEach(e -> e.validate());
-        }
     }
 }

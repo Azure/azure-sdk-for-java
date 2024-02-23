@@ -22,66 +22,72 @@ public final class PccRuleConfigurationTests {
         PccRuleConfiguration model =
             BinaryData
                 .fromString(
-                    "{\"ruleName\":\"gitvg\",\"rulePrecedence\":1795332478,\"ruleQosPolicy\":{\"guaranteedBitRate\":{\"uplink\":\"ixkwmyijejveg\",\"downlink\":\"hbpnaixexccbd\"},\"5qi\":303838192,\"allocationAndRetentionPriorityLevel\":393468474,\"preemptionCapability\":\"MayPreempt\",\"preemptionVulnerability\":\"Preemptable\",\"maximumBitRate\":{\"uplink\":\"rrvqa\",\"downlink\":\"qkghtpwijnhy\"}},\"trafficControl\":\"Enabled\",\"serviceDataFlowTemplates\":[{\"templateName\":\"ycxzbfvoo\",\"direction\":\"Bidirectional\",\"protocol\":[\"vmtgjqppy\",\"s\"],\"remoteIpList\":[\"on\",\"myhgfipnsxkmc\",\"a\"],\"ports\":[\"rjreafxts\",\"umh\",\"glikkxwslolb\"]}]}")
+                    "{\"ruleName\":\"vm\",\"rulePrecedence\":1907297138,\"ruleQosPolicy\":{\"guaranteedBitRate\":{\"uplink\":\"slthaq\",\"downlink\":\"x\"},\"5qi\":400254725,\"allocationAndRetentionPriorityLevel\":236380813,\"preemptionCapability\":\"NotPreempt\",\"preemptionVulnerability\":\"Preemptable\",\"maximumBitRate\":{\"uplink\":\"srezp\",\"downlink\":\"rhneuyowq\"}},\"trafficControl\":\"Enabled\",\"serviceDataFlowTemplates\":[{\"templateName\":\"t\",\"direction\":\"Bidirectional\",\"protocol\":[\"bi\"],\"remoteIpList\":[\"gpikpzimejza\",\"lfzxiavrmbzonoki\"],\"ports\":[\"q\"]},{\"templateName\":\"irgzp\",\"direction\":\"Bidirectional\",\"protocol\":[\"azszrnwoiindfpw\",\"jylwbtlhflsj\"],\"remoteIpList\":[\"hszfjvfb\",\"ofel\"],\"ports\":[\"rqmq\",\"ldvriiiojnalghfk\",\"tvsexsowuel\"]}]}")
                 .toObject(PccRuleConfiguration.class);
-        Assertions.assertEquals("gitvg", model.ruleName());
-        Assertions.assertEquals(1795332478, model.rulePrecedence());
-        Assertions.assertEquals(303838192, model.ruleQosPolicy().fiveQi());
-        Assertions.assertEquals(393468474, model.ruleQosPolicy().allocationAndRetentionPriorityLevel());
-        Assertions.assertEquals(PreemptionCapability.MAY_PREEMPT, model.ruleQosPolicy().preemptionCapability());
+        Assertions.assertEquals("vm", model.ruleName());
+        Assertions.assertEquals(1907297138, model.rulePrecedence());
+        Assertions.assertEquals(400254725, model.ruleQosPolicy().fiveQi());
+        Assertions.assertEquals(236380813, model.ruleQosPolicy().allocationAndRetentionPriorityLevel());
+        Assertions.assertEquals(PreemptionCapability.NOT_PREEMPT, model.ruleQosPolicy().preemptionCapability());
         Assertions.assertEquals(PreemptionVulnerability.PREEMPTABLE, model.ruleQosPolicy().preemptionVulnerability());
-        Assertions.assertEquals("rrvqa", model.ruleQosPolicy().maximumBitRate().uplink());
-        Assertions.assertEquals("qkghtpwijnhy", model.ruleQosPolicy().maximumBitRate().downlink());
-        Assertions.assertEquals("ixkwmyijejveg", model.ruleQosPolicy().guaranteedBitRate().uplink());
-        Assertions.assertEquals("hbpnaixexccbd", model.ruleQosPolicy().guaranteedBitRate().downlink());
+        Assertions.assertEquals("srezp", model.ruleQosPolicy().maximumBitRate().uplink());
+        Assertions.assertEquals("rhneuyowq", model.ruleQosPolicy().maximumBitRate().downlink());
+        Assertions.assertEquals("slthaq", model.ruleQosPolicy().guaranteedBitRate().uplink());
+        Assertions.assertEquals("x", model.ruleQosPolicy().guaranteedBitRate().downlink());
         Assertions.assertEquals(TrafficControlPermission.ENABLED, model.trafficControl());
-        Assertions.assertEquals("ycxzbfvoo", model.serviceDataFlowTemplates().get(0).templateName());
+        Assertions.assertEquals("t", model.serviceDataFlowTemplates().get(0).templateName());
         Assertions.assertEquals(SdfDirection.BIDIRECTIONAL, model.serviceDataFlowTemplates().get(0).direction());
-        Assertions.assertEquals("vmtgjqppy", model.serviceDataFlowTemplates().get(0).protocol().get(0));
-        Assertions.assertEquals("on", model.serviceDataFlowTemplates().get(0).remoteIpList().get(0));
-        Assertions.assertEquals("rjreafxts", model.serviceDataFlowTemplates().get(0).ports().get(0));
+        Assertions.assertEquals("bi", model.serviceDataFlowTemplates().get(0).protocol().get(0));
+        Assertions.assertEquals("gpikpzimejza", model.serviceDataFlowTemplates().get(0).remoteIpList().get(0));
+        Assertions.assertEquals("q", model.serviceDataFlowTemplates().get(0).ports().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         PccRuleConfiguration model =
             new PccRuleConfiguration()
-                .withRuleName("gitvg")
-                .withRulePrecedence(1795332478)
+                .withRuleName("vm")
+                .withRulePrecedence(1907297138)
                 .withRuleQosPolicy(
                     new PccRuleQosPolicy()
-                        .withFiveQi(303838192)
-                        .withAllocationAndRetentionPriorityLevel(393468474)
-                        .withPreemptionCapability(PreemptionCapability.MAY_PREEMPT)
+                        .withFiveQi(400254725)
+                        .withAllocationAndRetentionPriorityLevel(236380813)
+                        .withPreemptionCapability(PreemptionCapability.NOT_PREEMPT)
                         .withPreemptionVulnerability(PreemptionVulnerability.PREEMPTABLE)
-                        .withMaximumBitRate(new Ambr().withUplink("rrvqa").withDownlink("qkghtpwijnhy"))
-                        .withGuaranteedBitRate(new Ambr().withUplink("ixkwmyijejveg").withDownlink("hbpnaixexccbd")))
+                        .withMaximumBitRate(new Ambr().withUplink("srezp").withDownlink("rhneuyowq"))
+                        .withGuaranteedBitRate(new Ambr().withUplink("slthaq").withDownlink("x")))
                 .withTrafficControl(TrafficControlPermission.ENABLED)
                 .withServiceDataFlowTemplates(
                     Arrays
                         .asList(
                             new ServiceDataFlowTemplate()
-                                .withTemplateName("ycxzbfvoo")
+                                .withTemplateName("t")
                                 .withDirection(SdfDirection.BIDIRECTIONAL)
-                                .withProtocol(Arrays.asList("vmtgjqppy", "s"))
-                                .withRemoteIpList(Arrays.asList("on", "myhgfipnsxkmc", "a"))
-                                .withPorts(Arrays.asList("rjreafxts", "umh", "glikkxwslolb"))));
+                                .withProtocol(Arrays.asList("bi"))
+                                .withRemoteIpList(Arrays.asList("gpikpzimejza", "lfzxiavrmbzonoki"))
+                                .withPorts(Arrays.asList("q")),
+                            new ServiceDataFlowTemplate()
+                                .withTemplateName("irgzp")
+                                .withDirection(SdfDirection.BIDIRECTIONAL)
+                                .withProtocol(Arrays.asList("azszrnwoiindfpw", "jylwbtlhflsj"))
+                                .withRemoteIpList(Arrays.asList("hszfjvfb", "ofel"))
+                                .withPorts(Arrays.asList("rqmq", "ldvriiiojnalghfk", "tvsexsowuel"))));
         model = BinaryData.fromObject(model).toObject(PccRuleConfiguration.class);
-        Assertions.assertEquals("gitvg", model.ruleName());
-        Assertions.assertEquals(1795332478, model.rulePrecedence());
-        Assertions.assertEquals(303838192, model.ruleQosPolicy().fiveQi());
-        Assertions.assertEquals(393468474, model.ruleQosPolicy().allocationAndRetentionPriorityLevel());
-        Assertions.assertEquals(PreemptionCapability.MAY_PREEMPT, model.ruleQosPolicy().preemptionCapability());
+        Assertions.assertEquals("vm", model.ruleName());
+        Assertions.assertEquals(1907297138, model.rulePrecedence());
+        Assertions.assertEquals(400254725, model.ruleQosPolicy().fiveQi());
+        Assertions.assertEquals(236380813, model.ruleQosPolicy().allocationAndRetentionPriorityLevel());
+        Assertions.assertEquals(PreemptionCapability.NOT_PREEMPT, model.ruleQosPolicy().preemptionCapability());
         Assertions.assertEquals(PreemptionVulnerability.PREEMPTABLE, model.ruleQosPolicy().preemptionVulnerability());
-        Assertions.assertEquals("rrvqa", model.ruleQosPolicy().maximumBitRate().uplink());
-        Assertions.assertEquals("qkghtpwijnhy", model.ruleQosPolicy().maximumBitRate().downlink());
-        Assertions.assertEquals("ixkwmyijejveg", model.ruleQosPolicy().guaranteedBitRate().uplink());
-        Assertions.assertEquals("hbpnaixexccbd", model.ruleQosPolicy().guaranteedBitRate().downlink());
+        Assertions.assertEquals("srezp", model.ruleQosPolicy().maximumBitRate().uplink());
+        Assertions.assertEquals("rhneuyowq", model.ruleQosPolicy().maximumBitRate().downlink());
+        Assertions.assertEquals("slthaq", model.ruleQosPolicy().guaranteedBitRate().uplink());
+        Assertions.assertEquals("x", model.ruleQosPolicy().guaranteedBitRate().downlink());
         Assertions.assertEquals(TrafficControlPermission.ENABLED, model.trafficControl());
-        Assertions.assertEquals("ycxzbfvoo", model.serviceDataFlowTemplates().get(0).templateName());
+        Assertions.assertEquals("t", model.serviceDataFlowTemplates().get(0).templateName());
         Assertions.assertEquals(SdfDirection.BIDIRECTIONAL, model.serviceDataFlowTemplates().get(0).direction());
-        Assertions.assertEquals("vmtgjqppy", model.serviceDataFlowTemplates().get(0).protocol().get(0));
-        Assertions.assertEquals("on", model.serviceDataFlowTemplates().get(0).remoteIpList().get(0));
-        Assertions.assertEquals("rjreafxts", model.serviceDataFlowTemplates().get(0).ports().get(0));
+        Assertions.assertEquals("bi", model.serviceDataFlowTemplates().get(0).protocol().get(0));
+        Assertions.assertEquals("gpikpzimejza", model.serviceDataFlowTemplates().get(0).remoteIpList().get(0));
+        Assertions.assertEquals("q", model.serviceDataFlowTemplates().get(0).ports().get(0));
     }
 }

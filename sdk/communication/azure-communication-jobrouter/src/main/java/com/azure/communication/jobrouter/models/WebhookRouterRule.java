@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** A rule providing a binding to an external web server. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("webhook-rule")
+@JsonTypeName("webhook")
 @Fluent
 public final class WebhookRouterRule extends RouterRule {
 

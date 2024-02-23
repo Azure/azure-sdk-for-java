@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class MapperAttributeReferenceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MapperAttributeReference model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"oyjfqipu\",\"entity\":\"znclkfkeebgv\",\"entityConnectionReference\":{\"connectionName\":\"m\",\"type\":\"linkedservicetype\"}}")
-                .toObject(MapperAttributeReference.class);
+        MapperAttributeReference model = BinaryData.fromString(
+            "{\"name\":\"oyjfqipu\",\"entity\":\"znclkfkeebgv\",\"entityConnectionReference\":{\"connectionName\":\"m\",\"type\":\"linkedservicetype\"}}")
+            .toObject(MapperAttributeReference.class);
         Assertions.assertEquals("oyjfqipu", model.name());
         Assertions.assertEquals("znclkfkeebgv", model.entity());
         Assertions.assertEquals("m", model.entityConnectionReference().connectionName());
@@ -26,12 +24,9 @@ public final class MapperAttributeReferenceTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        MapperAttributeReference model =
-            new MapperAttributeReference()
-                .withName("oyjfqipu")
-                .withEntity("znclkfkeebgv")
-                .withEntityConnectionReference(
-                    new MapperConnectionReference().withConnectionName("m").withType(ConnectionType.LINKEDSERVICETYPE));
+        MapperAttributeReference model = new MapperAttributeReference().withName("oyjfqipu").withEntity("znclkfkeebgv")
+            .withEntityConnectionReference(
+                new MapperConnectionReference().withConnectionName("m").withType(ConnectionType.LINKEDSERVICETYPE));
         model = BinaryData.fromObject(model).toObject(MapperAttributeReference.class);
         Assertions.assertEquals("oyjfqipu", model.name());
         Assertions.assertEquals("znclkfkeebgv", model.entity());

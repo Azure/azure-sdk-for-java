@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Instructions for rendering the data. */
+/**
+ * Instructions for rendering the data.
+ */
 @Fluent
 public final class Rendering {
     /*
@@ -28,13 +30,15 @@ public final class Rendering {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of Rendering class. */
+    /**
+     * Creates an instance of Rendering class.
+     */
     public Rendering() {
     }
 
     /**
      * Get the type property: Rendering Type.
-     *
+     * 
      * @return the type value.
      */
     public RenderingType type() {
@@ -43,7 +47,7 @@ public final class Rendering {
 
     /**
      * Set the type property: Rendering Type.
-     *
+     * 
      * @param type the type value to set.
      * @return the Rendering object itself.
      */
@@ -54,7 +58,7 @@ public final class Rendering {
 
     /**
      * Get the title property: Title of data.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -63,7 +67,7 @@ public final class Rendering {
 
     /**
      * Set the title property: Title of data.
-     *
+     * 
      * @param title the title value to set.
      * @return the Rendering object itself.
      */
@@ -74,7 +78,7 @@ public final class Rendering {
 
     /**
      * Get the description property: Description of the data that will help it be interpreted.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -83,7 +87,7 @@ public final class Rendering {
 
     /**
      * Set the description property: Description of the data that will help it be interpreted.
-     *
+     * 
      * @param description the description value to set.
      * @return the Rendering object itself.
      */
@@ -94,7 +98,7 @@ public final class Rendering {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

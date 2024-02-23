@@ -21,52 +21,42 @@ public final class VolumeQuotaRulesImpl implements VolumeQuotaRules {
 
     private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
-    public VolumeQuotaRulesImpl(
-        VolumeQuotaRulesClient innerClient, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
+    public VolumeQuotaRulesImpl(VolumeQuotaRulesClient innerClient,
+        com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<VolumeQuotaRule> listByVolume(
-        String resourceGroupName, String accountName, String poolName, String volumeName) {
-        PagedIterable<VolumeQuotaRuleInner> inner =
-            this.serviceClient().listByVolume(resourceGroupName, accountName, poolName, volumeName);
+    public PagedIterable<VolumeQuotaRule> listByVolume(String resourceGroupName, String accountName, String poolName,
+        String volumeName) {
+        PagedIterable<VolumeQuotaRuleInner> inner
+            = this.serviceClient().listByVolume(resourceGroupName, accountName, poolName, volumeName);
         return Utils.mapPage(inner, inner1 -> new VolumeQuotaRuleImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<VolumeQuotaRule> listByVolume(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
-        PagedIterable<VolumeQuotaRuleInner> inner =
-            this.serviceClient().listByVolume(resourceGroupName, accountName, poolName, volumeName, context);
+    public PagedIterable<VolumeQuotaRule> listByVolume(String resourceGroupName, String accountName, String poolName,
+        String volumeName, Context context) {
+        PagedIterable<VolumeQuotaRuleInner> inner
+            = this.serviceClient().listByVolume(resourceGroupName, accountName, poolName, volumeName, context);
         return Utils.mapPage(inner, inner1 -> new VolumeQuotaRuleImpl(inner1, this.manager()));
     }
 
-    public Response<VolumeQuotaRule> getWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        Context context) {
-        Response<VolumeQuotaRuleInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, context);
+    public Response<VolumeQuotaRule> getWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String volumeQuotaRuleName, Context context) {
+        Response<VolumeQuotaRuleInner> inner = this.serviceClient().getWithResponse(resourceGroupName, accountName,
+            poolName, volumeName, volumeQuotaRuleName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new VolumeQuotaRuleImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public VolumeQuotaRule get(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String volumeQuotaRuleName) {
-        VolumeQuotaRuleInner inner =
-            this.serviceClient().get(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName);
+    public VolumeQuotaRule get(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String volumeQuotaRuleName) {
+        VolumeQuotaRuleInner inner
+            = this.serviceClient().get(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName);
         if (inner != null) {
             return new VolumeQuotaRuleImpl(inner, this.manager());
         } else {
@@ -74,60 +64,41 @@ public final class VolumeQuotaRulesImpl implements VolumeQuotaRules {
         }
     }
 
-    public void delete(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String volumeQuotaRuleName) {
+    public void delete(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String volumeQuotaRuleName) {
         this.serviceClient().delete(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName);
     }
 
-    public void delete(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String volumeQuotaRuleName,
-        Context context) {
+    public void delete(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String volumeQuotaRuleName, Context context) {
         this.serviceClient().delete(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, context);
     }
 
     public VolumeQuotaRule getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
         String poolName = Utils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
         String volumeName = Utils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
         String volumeQuotaRuleName = Utils.getValueFromIdByName(id, "volumeQuotaRules");
         if (volumeQuotaRuleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'volumeQuotaRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'volumeQuotaRules'.", id)));
         }
         return this
             .getWithResponse(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, Context.NONE)
@@ -137,42 +108,28 @@ public final class VolumeQuotaRulesImpl implements VolumeQuotaRules {
     public Response<VolumeQuotaRule> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
         String poolName = Utils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
         String volumeName = Utils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
         String volumeQuotaRuleName = Utils.getValueFromIdByName(id, "volumeQuotaRules");
         if (volumeQuotaRuleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'volumeQuotaRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'volumeQuotaRules'.", id)));
         }
         return this.getWithResponse(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, context);
     }
@@ -180,42 +137,28 @@ public final class VolumeQuotaRulesImpl implements VolumeQuotaRules {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
         String poolName = Utils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
         String volumeName = Utils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
         String volumeQuotaRuleName = Utils.getValueFromIdByName(id, "volumeQuotaRules");
         if (volumeQuotaRuleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'volumeQuotaRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'volumeQuotaRules'.", id)));
         }
         this.delete(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, Context.NONE);
     }
@@ -223,42 +166,28 @@ public final class VolumeQuotaRulesImpl implements VolumeQuotaRules {
     public void deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String accountName = Utils.getValueFromIdByName(id, "netAppAccounts");
         if (accountName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'netAppAccounts'.", id)));
         }
         String poolName = Utils.getValueFromIdByName(id, "capacityPools");
         if (poolName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'capacityPools'.", id)));
         }
         String volumeName = Utils.getValueFromIdByName(id, "volumes");
         if (volumeName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'volumes'.", id)));
         }
         String volumeQuotaRuleName = Utils.getValueFromIdByName(id, "volumeQuotaRules");
         if (volumeQuotaRuleName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'volumeQuotaRules'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'volumeQuotaRules'.", id)));
         }
         this.delete(resourceGroupName, accountName, poolName, volumeName, volumeQuotaRuleName, context);
     }

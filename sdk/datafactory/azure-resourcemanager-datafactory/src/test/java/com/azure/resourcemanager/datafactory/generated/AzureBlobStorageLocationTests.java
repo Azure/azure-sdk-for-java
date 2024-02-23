@@ -10,20 +10,15 @@ import com.azure.resourcemanager.datafactory.models.AzureBlobStorageLocation;
 public final class AzureBlobStorageLocationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureBlobStorageLocation model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"AzureBlobStorageLocation\",\"container\":\"dataovsfb\",\"folderPath\":\"datavzopaxmfmvsm\",\"fileName\":\"dataoxfaxdtn\",\"\":{\"oiauesugmocpcj\":\"databsat\",\"rgttw\":\"datacboe\"}}")
-                .toObject(AzureBlobStorageLocation.class);
+        AzureBlobStorageLocation model = BinaryData.fromString(
+            "{\"type\":\"AzureBlobStorageLocation\",\"container\":\"dataovsfb\",\"folderPath\":\"datavzopaxmfmvsm\",\"fileName\":\"dataoxfaxdtn\",\"\":{\"oiauesugmocpcj\":\"databsat\",\"rgttw\":\"datacboe\"}}")
+            .toObject(AzureBlobStorageLocation.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureBlobStorageLocation model =
-            new AzureBlobStorageLocation()
-                .withFolderPath("datavzopaxmfmvsm")
-                .withFileName("dataoxfaxdtn")
-                .withContainer("dataovsfb");
+        AzureBlobStorageLocation model = new AzureBlobStorageLocation().withFolderPath("datavzopaxmfmvsm")
+            .withFileName("dataoxfaxdtn").withContainer("dataovsfb");
         model = BinaryData.fromObject(model).toObject(AzureBlobStorageLocation.class);
     }
 }

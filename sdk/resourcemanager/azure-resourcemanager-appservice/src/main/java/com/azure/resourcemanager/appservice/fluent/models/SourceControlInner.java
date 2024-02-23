@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The source control OAuth token. */
+/**
+ * The source control OAuth token.
+ */
 @Fluent
 public final class SourceControlInner extends ProxyOnlyResource {
     /*
@@ -18,20 +20,24 @@ public final class SourceControlInner extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private SourceControlProperties innerProperties;
 
-    /** Creates an instance of SourceControlInner class. */
+    /**
+     * Creates an instance of SourceControlInner class.
+     */
     public SourceControlInner() {
     }
 
     /**
      * Get the innerProperties property: SourceControl resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SourceControlProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SourceControlInner withKind(String kind) {
         super.withKind(kind);
@@ -40,7 +46,7 @@ public final class SourceControlInner extends ProxyOnlyResource {
 
     /**
      * Get the token property: OAuth access token.
-     *
+     * 
      * @return the token value.
      */
     public String token() {
@@ -49,7 +55,7 @@ public final class SourceControlInner extends ProxyOnlyResource {
 
     /**
      * Set the token property: OAuth access token.
-     *
+     * 
      * @param token the token value to set.
      * @return the SourceControlInner object itself.
      */
@@ -63,7 +69,7 @@ public final class SourceControlInner extends ProxyOnlyResource {
 
     /**
      * Get the tokenSecret property: OAuth access token secret.
-     *
+     * 
      * @return the tokenSecret value.
      */
     public String tokenSecret() {
@@ -72,7 +78,7 @@ public final class SourceControlInner extends ProxyOnlyResource {
 
     /**
      * Set the tokenSecret property: OAuth access token secret.
-     *
+     * 
      * @param tokenSecret the tokenSecret value to set.
      * @return the SourceControlInner object itself.
      */
@@ -86,7 +92,7 @@ public final class SourceControlInner extends ProxyOnlyResource {
 
     /**
      * Get the refreshToken property: OAuth refresh token.
-     *
+     * 
      * @return the refreshToken value.
      */
     public String refreshToken() {
@@ -95,7 +101,7 @@ public final class SourceControlInner extends ProxyOnlyResource {
 
     /**
      * Set the refreshToken property: OAuth refresh token.
-     *
+     * 
      * @param refreshToken the refreshToken value to set.
      * @return the SourceControlInner object itself.
      */
@@ -109,7 +115,7 @@ public final class SourceControlInner extends ProxyOnlyResource {
 
     /**
      * Get the expirationTime property: OAuth token expiration.
-     *
+     * 
      * @return the expirationTime value.
      */
     public OffsetDateTime expirationTime() {
@@ -118,7 +124,7 @@ public final class SourceControlInner extends ProxyOnlyResource {
 
     /**
      * Set the expirationTime property: OAuth token expiration.
-     *
+     * 
      * @param expirationTime the expirationTime value to set.
      * @return the SourceControlInner object itself.
      */
@@ -132,7 +138,7 @@ public final class SourceControlInner extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

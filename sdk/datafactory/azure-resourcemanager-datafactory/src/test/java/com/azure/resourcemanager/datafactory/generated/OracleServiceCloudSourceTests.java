@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.OracleServiceCloudSource;
 public final class OracleServiceCloudSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        OracleServiceCloudSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"OracleServiceCloudSource\",\"query\":\"datasdeequovanag\",\"queryTimeout\":\"dataacsfbmb\",\"additionalColumns\":\"dataefqku\",\"sourceRetryCount\":\"datayumoamqxwluslxyt\",\"sourceRetryWait\":\"databjledjxblobknfpd\",\"maxConcurrentConnections\":\"datahzgj\",\"disableMetricsCollection\":\"dataomctbgoccypxsrh\",\"\":{\"kzexhbpyo\":\"databnuflfzaw\",\"clboi\":\"datafbj\",\"ythxzrvjfsmfk\":\"datajpjnhwwyhx\"}}")
-                .toObject(OracleServiceCloudSource.class);
+        OracleServiceCloudSource model = BinaryData.fromString(
+            "{\"type\":\"OracleServiceCloudSource\",\"query\":\"datadaeiepvjrmk\",\"queryTimeout\":\"dataxymkb\",\"additionalColumns\":\"datauawokrhhj\",\"sourceRetryCount\":\"datahrmuwvs\",\"sourceRetryWait\":\"dataru\",\"maxConcurrentConnections\":\"dataidtxmbnmjimggz\",\"disableMetricsCollection\":\"datagpldrnbjh\",\"\":{\"kvxerbddrtngdct\":\"datafbmsbetzu\",\"gvheqzlqevas\":\"datajzgzaeuu\"}}")
+            .toObject(OracleServiceCloudSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        OracleServiceCloudSource model =
-            new OracleServiceCloudSource()
-                .withSourceRetryCount("datayumoamqxwluslxyt")
-                .withSourceRetryWait("databjledjxblobknfpd")
-                .withMaxConcurrentConnections("datahzgj")
-                .withDisableMetricsCollection("dataomctbgoccypxsrh")
-                .withQueryTimeout("dataacsfbmb")
-                .withAdditionalColumns("dataefqku")
-                .withQuery("datasdeequovanag");
+        OracleServiceCloudSource model
+            = new OracleServiceCloudSource().withSourceRetryCount("datahrmuwvs").withSourceRetryWait("dataru")
+                .withMaxConcurrentConnections("dataidtxmbnmjimggz").withDisableMetricsCollection("datagpldrnbjh")
+                .withQueryTimeout("dataxymkb").withAdditionalColumns("datauawokrhhj").withQuery("datadaeiepvjrmk");
         model = BinaryData.fromObject(model).toObject(OracleServiceCloudSource.class);
     }
 }

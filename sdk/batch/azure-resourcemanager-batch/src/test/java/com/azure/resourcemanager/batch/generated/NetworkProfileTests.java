@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class NetworkProfileTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetworkProfile model =
-            BinaryData
-                .fromString(
-                    "{\"accountAccess\":{\"defaultAction\":\"Deny\",\"ipRules\":[{\"value\":\"wmrvktsizntocipa\"}]},\"nodeManagementAccess\":{\"defaultAction\":\"Allow\",\"ipRules\":[{\"value\":\"s\"},{\"value\":\"ucmpoyfd\"},{\"value\":\"fogknygjofjdde\"}]}}")
-                .toObject(NetworkProfile.class);
+        NetworkProfile model = BinaryData.fromString(
+            "{\"accountAccess\":{\"defaultAction\":\"Deny\",\"ipRules\":[{\"value\":\"wmrvktsizntocipa\"}]},\"nodeManagementAccess\":{\"defaultAction\":\"Allow\",\"ipRules\":[{\"value\":\"s\"},{\"value\":\"ucmpoyfd\"},{\"value\":\"fogknygjofjdde\"}]}}")
+            .toObject(NetworkProfile.class);
         Assertions.assertEquals(EndpointAccessDefaultAction.DENY, model.accountAccess().defaultAction());
         Assertions.assertEquals("wmrvktsizntocipa", model.accountAccess().ipRules().get(0).value());
         Assertions.assertEquals(EndpointAccessDefaultAction.ALLOW, model.nodeManagementAccess().defaultAction());
@@ -28,21 +26,12 @@ public final class NetworkProfileTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetworkProfile model =
-            new NetworkProfile()
-                .withAccountAccess(
-                    new EndpointAccessProfile()
-                        .withDefaultAction(EndpointAccessDefaultAction.DENY)
-                        .withIpRules(Arrays.asList(new IpRule().withValue("wmrvktsizntocipa"))))
-                .withNodeManagementAccess(
-                    new EndpointAccessProfile()
-                        .withDefaultAction(EndpointAccessDefaultAction.ALLOW)
-                        .withIpRules(
-                            Arrays
-                                .asList(
-                                    new IpRule().withValue("s"),
-                                    new IpRule().withValue("ucmpoyfd"),
-                                    new IpRule().withValue("fogknygjofjdde"))));
+        NetworkProfile model = new NetworkProfile()
+            .withAccountAccess(new EndpointAccessProfile().withDefaultAction(EndpointAccessDefaultAction.DENY)
+                .withIpRules(Arrays.asList(new IpRule().withValue("wmrvktsizntocipa"))))
+            .withNodeManagementAccess(new EndpointAccessProfile().withDefaultAction(EndpointAccessDefaultAction.ALLOW)
+                .withIpRules(Arrays.asList(new IpRule().withValue("s"), new IpRule().withValue("ucmpoyfd"),
+                    new IpRule().withValue("fogknygjofjdde"))));
         model = BinaryData.fromObject(model).toObject(NetworkProfile.class);
         Assertions.assertEquals(EndpointAccessDefaultAction.DENY, model.accountAccess().defaultAction());
         Assertions.assertEquals("wmrvktsizntocipa", model.accountAccess().ipRules().get(0).value());

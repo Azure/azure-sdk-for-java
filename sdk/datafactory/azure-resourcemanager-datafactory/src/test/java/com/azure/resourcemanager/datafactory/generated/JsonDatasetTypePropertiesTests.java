@@ -14,28 +14,18 @@ import java.util.Map;
 public final class JsonDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JsonDatasetTypeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"location\":{\"type\":\"DatasetLocation\",\"folderPath\":\"datawjflobh\",\"fileName\":\"dataqmomfe\",\"\":{\"j\":\"datakfrocgbmxl\",\"lslu\":\"datazezbjes\",\"pnyh\":\"databqfy\",\"yvouprsytq\":\"datadzuqscag\"}},\"encodingName\":\"dataslhmgw\",\"compression\":{\"type\":\"dataivrxpfduiol\",\"level\":\"datayqvpbfjpo\",\"\":{\"zdquurbo\":\"datacfzlu\",\"elbprn\":\"datamvhvz\",\"svhbngqiwyejto\":\"dataujywzcqyggmn\"}}}")
-                .toObject(JsonDatasetTypeProperties.class);
+        JsonDatasetTypeProperties model = BinaryData.fromString(
+            "{\"location\":{\"type\":\"DatasetLocation\",\"folderPath\":\"datafr\",\"fileName\":\"datagbmxldjmz\",\"\":{\"lurb\":\"datajesyl\",\"uqs\":\"datafygpnyhgd\",\"qyvoupr\":\"dataa\"}},\"encodingName\":\"datatqzsslhmgwfnivr\",\"compression\":{\"type\":\"datafduiolhgyqvpb\",\"level\":\"datapoqzucfz\",\"\":{\"mvhvz\":\"datazdquurbo\",\"ujywzcqyggmn\":\"dataelbprn\",\"drrp\":\"datasvhbngqiwyejto\"}}}")
+            .toObject(JsonDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JsonDatasetTypeProperties model =
-            new JsonDatasetTypeProperties()
-                .withLocation(
-                    new DatasetLocation()
-                        .withFolderPath("datawjflobh")
-                        .withFileName("dataqmomfe")
-                        .withAdditionalProperties(mapOf("type", "DatasetLocation")))
-                .withEncodingName("dataslhmgw")
-                .withCompression(
-                    new DatasetCompression()
-                        .withType("dataivrxpfduiol")
-                        .withLevel("datayqvpbfjpo")
-                        .withAdditionalProperties(mapOf()));
+        JsonDatasetTypeProperties model = new JsonDatasetTypeProperties()
+            .withLocation(new DatasetLocation().withFolderPath("datafr").withFileName("datagbmxldjmz")
+                .withAdditionalProperties(mapOf("type", "DatasetLocation")))
+            .withEncodingName("datatqzsslhmgwfnivr").withCompression(new DatasetCompression()
+                .withType("datafduiolhgyqvpb").withLevel("datapoqzucfz").withAdditionalProperties(mapOf()));
         model = BinaryData.fromObject(model).toObject(JsonDatasetTypeProperties.class);
     }
 

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Ssis parameter. */
+/**
+ * Ssis parameter.
+ */
 @Fluent
 public final class SsisParameter {
     /*
@@ -82,13 +84,15 @@ public final class SsisParameter {
     @JsonProperty(value = "variable")
     private String variable;
 
-    /** Creates an instance of SsisParameter class. */
+    /**
+     * Creates an instance of SsisParameter class.
+     */
     public SsisParameter() {
     }
 
     /**
      * Get the id property: Parameter id.
-     *
+     * 
      * @return the id value.
      */
     public Long id() {
@@ -97,7 +101,7 @@ public final class SsisParameter {
 
     /**
      * Set the id property: Parameter id.
-     *
+     * 
      * @param id the id value to set.
      * @return the SsisParameter object itself.
      */
@@ -108,7 +112,7 @@ public final class SsisParameter {
 
     /**
      * Get the name property: Parameter name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -117,7 +121,7 @@ public final class SsisParameter {
 
     /**
      * Set the name property: Parameter name.
-     *
+     * 
      * @param name the name value to set.
      * @return the SsisParameter object itself.
      */
@@ -128,7 +132,7 @@ public final class SsisParameter {
 
     /**
      * Get the description property: Parameter description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -137,7 +141,7 @@ public final class SsisParameter {
 
     /**
      * Set the description property: Parameter description.
-     *
+     * 
      * @param description the description value to set.
      * @return the SsisParameter object itself.
      */
@@ -148,7 +152,7 @@ public final class SsisParameter {
 
     /**
      * Get the dataType property: Parameter type.
-     *
+     * 
      * @return the dataType value.
      */
     public String dataType() {
@@ -157,7 +161,7 @@ public final class SsisParameter {
 
     /**
      * Set the dataType property: Parameter type.
-     *
+     * 
      * @param dataType the dataType value to set.
      * @return the SsisParameter object itself.
      */
@@ -168,7 +172,7 @@ public final class SsisParameter {
 
     /**
      * Get the required property: Whether parameter is required.
-     *
+     * 
      * @return the required value.
      */
     public Boolean required() {
@@ -177,7 +181,7 @@ public final class SsisParameter {
 
     /**
      * Set the required property: Whether parameter is required.
-     *
+     * 
      * @param required the required value to set.
      * @return the SsisParameter object itself.
      */
@@ -188,7 +192,7 @@ public final class SsisParameter {
 
     /**
      * Get the sensitive property: Whether parameter is sensitive.
-     *
+     * 
      * @return the sensitive value.
      */
     public Boolean sensitive() {
@@ -197,7 +201,7 @@ public final class SsisParameter {
 
     /**
      * Set the sensitive property: Whether parameter is sensitive.
-     *
+     * 
      * @param sensitive the sensitive value to set.
      * @return the SsisParameter object itself.
      */
@@ -208,7 +212,7 @@ public final class SsisParameter {
 
     /**
      * Get the designDefaultValue property: Design default value of parameter.
-     *
+     * 
      * @return the designDefaultValue value.
      */
     public String designDefaultValue() {
@@ -217,7 +221,7 @@ public final class SsisParameter {
 
     /**
      * Set the designDefaultValue property: Design default value of parameter.
-     *
+     * 
      * @param designDefaultValue the designDefaultValue value to set.
      * @return the SsisParameter object itself.
      */
@@ -228,7 +232,7 @@ public final class SsisParameter {
 
     /**
      * Get the defaultValue property: Default value of parameter.
-     *
+     * 
      * @return the defaultValue value.
      */
     public String defaultValue() {
@@ -237,7 +241,7 @@ public final class SsisParameter {
 
     /**
      * Set the defaultValue property: Default value of parameter.
-     *
+     * 
      * @param defaultValue the defaultValue value to set.
      * @return the SsisParameter object itself.
      */
@@ -248,7 +252,7 @@ public final class SsisParameter {
 
     /**
      * Get the sensitiveDefaultValue property: Default sensitive value of parameter.
-     *
+     * 
      * @return the sensitiveDefaultValue value.
      */
     public String sensitiveDefaultValue() {
@@ -257,7 +261,7 @@ public final class SsisParameter {
 
     /**
      * Set the sensitiveDefaultValue property: Default sensitive value of parameter.
-     *
+     * 
      * @param sensitiveDefaultValue the sensitiveDefaultValue value to set.
      * @return the SsisParameter object itself.
      */
@@ -268,7 +272,7 @@ public final class SsisParameter {
 
     /**
      * Get the valueType property: Parameter value type.
-     *
+     * 
      * @return the valueType value.
      */
     public String valueType() {
@@ -277,7 +281,7 @@ public final class SsisParameter {
 
     /**
      * Set the valueType property: Parameter value type.
-     *
+     * 
      * @param valueType the valueType value to set.
      * @return the SsisParameter object itself.
      */
@@ -288,7 +292,7 @@ public final class SsisParameter {
 
     /**
      * Get the valueSet property: Parameter value set.
-     *
+     * 
      * @return the valueSet value.
      */
     public Boolean valueSet() {
@@ -297,7 +301,7 @@ public final class SsisParameter {
 
     /**
      * Set the valueSet property: Parameter value set.
-     *
+     * 
      * @param valueSet the valueSet value to set.
      * @return the SsisParameter object itself.
      */
@@ -308,7 +312,7 @@ public final class SsisParameter {
 
     /**
      * Get the variable property: Parameter reference variable.
-     *
+     * 
      * @return the variable value.
      */
     public String variable() {
@@ -317,7 +321,7 @@ public final class SsisParameter {
 
     /**
      * Set the variable property: Parameter reference variable.
-     *
+     * 
      * @param variable the variable value to set.
      * @return the SsisParameter object itself.
      */
@@ -328,7 +332,7 @@ public final class SsisParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

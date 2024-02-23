@@ -10,20 +10,15 @@ import com.azure.resourcemanager.datafactory.fluent.models.AzurePostgreSqlTableD
 public final class AzurePostgreSqlTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzurePostgreSqlTableDatasetTypeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"tableName\":\"datavcpi\",\"table\":\"dataqbvxqtolpwbopv\",\"schema\":\"databtzaprjxco\"}")
-                .toObject(AzurePostgreSqlTableDatasetTypeProperties.class);
+        AzurePostgreSqlTableDatasetTypeProperties model = BinaryData
+            .fromString("{\"tableName\":\"datavcpi\",\"table\":\"dataqbvxqtolpwbopv\",\"schema\":\"databtzaprjxco\"}")
+            .toObject(AzurePostgreSqlTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzurePostgreSqlTableDatasetTypeProperties model =
-            new AzurePostgreSqlTableDatasetTypeProperties()
-                .withTableName("datavcpi")
-                .withTable("dataqbvxqtolpwbopv")
-                .withSchema("databtzaprjxco");
+        AzurePostgreSqlTableDatasetTypeProperties model = new AzurePostgreSqlTableDatasetTypeProperties()
+            .withTableName("datavcpi").withTable("dataqbvxqtolpwbopv").withSchema("databtzaprjxco");
         model = BinaryData.fromObject(model).toObject(AzurePostgreSqlTableDatasetTypeProperties.class);
     }
 }

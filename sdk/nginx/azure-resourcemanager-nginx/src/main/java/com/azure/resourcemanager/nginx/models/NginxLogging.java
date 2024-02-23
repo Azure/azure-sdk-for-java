@@ -7,7 +7,9 @@ package com.azure.resourcemanager.nginx.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The NginxLogging model. */
+/**
+ * The NginxLogging model.
+ */
 @Fluent
 public final class NginxLogging {
     /*
@@ -16,13 +18,15 @@ public final class NginxLogging {
     @JsonProperty(value = "storageAccount")
     private NginxStorageAccount storageAccount;
 
-    /** Creates an instance of NginxLogging class. */
+    /**
+     * Creates an instance of NginxLogging class.
+     */
     public NginxLogging() {
     }
 
     /**
      * Get the storageAccount property: The storageAccount property.
-     *
+     * 
      * @return the storageAccount value.
      */
     public NginxStorageAccount storageAccount() {
@@ -31,7 +35,7 @@ public final class NginxLogging {
 
     /**
      * Set the storageAccount property: The storageAccount property.
-     *
+     * 
      * @param storageAccount the storageAccount value to set.
      * @return the NginxLogging object itself.
      */
@@ -42,7 +46,7 @@ public final class NginxLogging {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

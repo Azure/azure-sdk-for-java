@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Route Filter Resource. */
+/**
+ * Route Filter Resource.
+ */
 @Fluent
 public final class RouteFilterPropertiesFormat {
     /*
@@ -36,13 +38,15 @@ public final class RouteFilterPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of RouteFilterPropertiesFormat class. */
+    /**
+     * Creates an instance of RouteFilterPropertiesFormat class.
+     */
     public RouteFilterPropertiesFormat() {
     }
 
     /**
      * Get the rules property: Collection of RouteFilterRules contained within a route filter.
-     *
+     * 
      * @return the rules value.
      */
     public List<RouteFilterRuleInner> rules() {
@@ -51,7 +55,7 @@ public final class RouteFilterPropertiesFormat {
 
     /**
      * Set the rules property: Collection of RouteFilterRules contained within a route filter.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the RouteFilterPropertiesFormat object itself.
      */
@@ -62,7 +66,7 @@ public final class RouteFilterPropertiesFormat {
 
     /**
      * Get the peerings property: A collection of references to express route circuit peerings.
-     *
+     * 
      * @return the peerings value.
      */
     public List<ExpressRouteCircuitPeeringInner> peerings() {
@@ -71,7 +75,7 @@ public final class RouteFilterPropertiesFormat {
 
     /**
      * Get the ipv6Peerings property: A collection of references to express route circuit ipv6 peerings.
-     *
+     * 
      * @return the ipv6Peerings value.
      */
     public List<ExpressRouteCircuitPeeringInner> ipv6Peerings() {
@@ -80,7 +84,7 @@ public final class RouteFilterPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the route filter resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -89,7 +93,7 @@ public final class RouteFilterPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

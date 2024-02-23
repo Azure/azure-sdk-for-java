@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerregistry.fluent.models.TokenInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The result of a request to list tokens for a container registry. */
+/**
+ * The result of a request to list tokens for a container registry.
+ */
 @Fluent
 public final class TokenListResult {
     /*
@@ -25,14 +27,16 @@ public final class TokenListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of TokenListResult class. */
+    /**
+     * Creates an instance of TokenListResult class.
+     */
     public TokenListResult() {
     }
 
     /**
      * Get the value property: The list of tokens. Since this list may be incomplete, the nextLink field should be used
      * to request the next list of tokens.
-     *
+     * 
      * @return the value value.
      */
     public List<TokenInner> value() {
@@ -42,7 +46,7 @@ public final class TokenListResult {
     /**
      * Set the value property: The list of tokens. Since this list may be incomplete, the nextLink field should be used
      * to request the next list of tokens.
-     *
+     * 
      * @param value the value value to set.
      * @return the TokenListResult object itself.
      */
@@ -53,7 +57,7 @@ public final class TokenListResult {
 
     /**
      * Get the nextLink property: The URI that can be used to request the next list of tokens.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +66,7 @@ public final class TokenListResult {
 
     /**
      * Set the nextLink property: The URI that can be used to request the next list of tokens.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the TokenListResult object itself.
      */
@@ -73,7 +77,7 @@ public final class TokenListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

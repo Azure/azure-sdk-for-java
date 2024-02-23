@@ -19,6 +19,7 @@ import org.springframework.core.env.CompositePropertySource;
 import org.springframework.core.env.ConfigurableEnvironment;
 import org.springframework.core.env.Environment;
 import org.springframework.core.env.PropertySource;
+import org.springframework.util.StringUtils;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
 import com.azure.spring.cloud.appconfiguration.config.implementation.properties.AppConfigurationKeyValueSelector;
@@ -114,9 +115,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
                 for (AppConfigurationReplicaClient client : clients) {
                     sourceList = new ArrayList<>();
 
-                    if (!STARTUP.get() && reloadFailed
-                        && !AppConfigurationRefreshUtil.checkStoreAfterRefreshFailed(client, clientFactory,
-                            configStore.getFeatureFlags(), profiles)) {
+                    if (!STARTUP.get() && reloadFailed && !AppConfigurationRefreshUtil
+                        .checkStoreAfterRefreshFailed(client, clientFactory, configStore.getFeatureFlags(), profiles)) {
                         // This store doesn't have any changes where to refresh store did. Skipping Checking next.
                         continue;
                     }
@@ -196,9 +196,7 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
             if (watchKey != null) {
                 watchKeysSettings.add(watchKey);
             } else {
-                watchKeysSettings
-                    .add(new ConfigurationSetting().setKey(trigger.getKey())
-                        .setLabel(trigger.getLabel()));
+                watchKeysSettings.add(new ConfigurationSetting().setKey(trigger.getKey()).setLabel(trigger.getLabel()));
             }
         }
         return watchKeysSettings;
@@ -210,7 +208,8 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         if (configStore.getFeatureFlags().getEnabled()) {
             for (AppConfigurationPropertySource propertySource : sources) {
                 if (propertySource instanceof AppConfigurationFeatureManagementPropertySource) {
-                    watchKeysFeatures.addAll(((AppConfigurationFeatureManagementPropertySource) propertySource).getFeatureFlagSettings());
+                    watchKeysFeatures.addAll(
+                        ((AppConfigurationFeatureManagementPropertySource) propertySource).getFeatureFlagSettings());
                 }
             }
         }
@@ -260,20 +259,29 @@ public final class AppConfigurationPropertySourceLocator implements PropertySour
         if (store.getFeatureFlags().getEnabled()) {
             for (FeatureFlagKeyValueSelector selectedKeys : store.getFeatureFlags().getSelects()) {
                 AppConfigurationFeatureManagementPropertySource propertySource = new AppConfigurationFeatureManagementPropertySource(
-                    store.getEndpoint(), client, selectedKeys.getKeyFilter(),
-                    selectedKeys.getLabelFilter(profiles));
+                    store.getEndpoint(), client,
+                    selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles));
 
-                propertySource.initProperties();
+                propertySource.initProperties(null);
                 sourceList.add(propertySource);
             }
         }
 
         for (AppConfigurationKeyValueSelector selectedKeys : selects) {
-            AppConfigurationApplicationSettingPropertySource propertySource = new AppConfigurationApplicationSettingPropertySource(
-                store.getEndpoint(), client, keyVaultClientFactory, selectedKeys.getKeyFilter(),
-                selectedKeys.getLabelFilter(profiles), appProperties.getMaxRetryTime());
-            propertySource.initProperties();
+            AppConfigurationPropertySource propertySource = null;
+
+            if (StringUtils.hasText(selectedKeys.getSnapshotName())) {
+                propertySource = new AppConfigurationSnapshotPropertySource(
+                    selectedKeys.getSnapshotName() + "/" + store.getEndpoint(), client, keyVaultClientFactory,
+                    selectedKeys.getSnapshotName());
+            } else {
+                propertySource = new AppConfigurationApplicationSettingPropertySource(
+                    selectedKeys.getKeyFilter() + store.getEndpoint() + "/", client, keyVaultClientFactory,
+                    selectedKeys.getKeyFilter(), selectedKeys.getLabelFilter(profiles));
+            }
+            propertySource.initProperties(store.getTrimKeyPrefix());
             sourceList.add(propertySource);
+
         }
 
         return sourceList;

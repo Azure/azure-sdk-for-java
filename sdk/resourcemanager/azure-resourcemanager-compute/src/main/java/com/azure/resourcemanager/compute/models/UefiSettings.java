@@ -25,14 +25,16 @@ public final class UefiSettings {
     @JsonProperty(value = "vTpmEnabled")
     private Boolean vTpmEnabled;
 
-    /** Creates an instance of UefiSettings class. */
+    /**
+     * Creates an instance of UefiSettings class.
+     */
     public UefiSettings() {
     }
 
     /**
      * Get the secureBootEnabled property: Specifies whether secure boot should be enabled on the virtual machine.
      * Minimum api-version: 2020-12-01.
-     *
+     * 
      * @return the secureBootEnabled value.
      */
     public Boolean secureBootEnabled() {
@@ -42,7 +44,7 @@ public final class UefiSettings {
     /**
      * Set the secureBootEnabled property: Specifies whether secure boot should be enabled on the virtual machine.
      * Minimum api-version: 2020-12-01.
-     *
+     * 
      * @param secureBootEnabled the secureBootEnabled value to set.
      * @return the UefiSettings object itself.
      */
@@ -54,7 +56,7 @@ public final class UefiSettings {
     /**
      * Get the vTpmEnabled property: Specifies whether vTPM should be enabled on the virtual machine. Minimum
      * api-version: 2020-12-01.
-     *
+     * 
      * @return the vTpmEnabled value.
      */
     public Boolean vTpmEnabled() {
@@ -64,7 +66,7 @@ public final class UefiSettings {
     /**
      * Set the vTpmEnabled property: Specifies whether vTPM should be enabled on the virtual machine. Minimum
      * api-version: 2020-12-01.
-     *
+     * 
      * @param vTpmEnabled the vTpmEnabled value to set.
      * @return the UefiSettings object itself.
      */
@@ -75,7 +77,7 @@ public final class UefiSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

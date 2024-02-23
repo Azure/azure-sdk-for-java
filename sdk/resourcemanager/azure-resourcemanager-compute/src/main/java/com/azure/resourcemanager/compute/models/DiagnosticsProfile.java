@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specifies the boot diagnostic settings state. Minimum api-version: 2015-06-15. */
+/**
+ * Specifies the boot diagnostic settings state. Minimum api-version: 2015-06-15.
+ */
 @Fluent
 public final class DiagnosticsProfile {
     /*
@@ -19,16 +21,18 @@ public final class DiagnosticsProfile {
     @JsonProperty(value = "bootDiagnostics")
     private BootDiagnostics bootDiagnostics;
 
-    /** Creates an instance of DiagnosticsProfile class. */
+    /**
+     * Creates an instance of DiagnosticsProfile class.
+     */
     public DiagnosticsProfile() {
     }
 
     /**
-     * Get the bootDiagnostics property: Boot Diagnostics is a debugging feature which allows you to view Console Output
-     * and Screenshot to diagnose VM status. **NOTE**: If storageUri is being specified then ensure that the storage
-     * account is in the same region and subscription as the VM. You can easily view the output of your console log.
-     * Azure also enables you to see a screenshot of the VM from the hypervisor.
-     *
+     * Get the bootDiagnostics property: Boot Diagnostics is a debugging feature which allows you to view Console
+     * Output and Screenshot to diagnose VM status. **NOTE**: If storageUri is being specified then ensure that the
+     * storage account is in the same region and subscription as the VM. You can easily view the output of your console
+     * log. Azure also enables you to see a screenshot of the VM from the hypervisor.
+     * 
      * @return the bootDiagnostics value.
      */
     public BootDiagnostics bootDiagnostics() {
@@ -36,11 +40,11 @@ public final class DiagnosticsProfile {
     }
 
     /**
-     * Set the bootDiagnostics property: Boot Diagnostics is a debugging feature which allows you to view Console Output
-     * and Screenshot to diagnose VM status. **NOTE**: If storageUri is being specified then ensure that the storage
-     * account is in the same region and subscription as the VM. You can easily view the output of your console log.
-     * Azure also enables you to see a screenshot of the VM from the hypervisor.
-     *
+     * Set the bootDiagnostics property: Boot Diagnostics is a debugging feature which allows you to view Console
+     * Output and Screenshot to diagnose VM status. **NOTE**: If storageUri is being specified then ensure that the
+     * storage account is in the same region and subscription as the VM. You can easily view the output of your console
+     * log. Azure also enables you to see a screenshot of the VM from the hypervisor.
+     * 
      * @param bootDiagnostics the bootDiagnostics value to set.
      * @return the DiagnosticsProfile object itself.
      */
@@ -51,7 +55,7 @@ public final class DiagnosticsProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

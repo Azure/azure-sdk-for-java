@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** ContinuousWebJob resource specific properties. */
+/**
+ * ContinuousWebJob resource specific properties.
+ */
 @Fluent
 public final class ContinuousWebJobProperties {
     /*
@@ -75,13 +77,15 @@ public final class ContinuousWebJobProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> settings;
 
-    /** Creates an instance of ContinuousWebJobProperties class. */
+    /**
+     * Creates an instance of ContinuousWebJobProperties class.
+     */
     public ContinuousWebJobProperties() {
     }
 
     /**
      * Get the status property: Job status.
-     *
+     * 
      * @return the status value.
      */
     public ContinuousWebJobStatus status() {
@@ -90,7 +94,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Set the status property: Job status.
-     *
+     * 
      * @param status the status value to set.
      * @return the ContinuousWebJobProperties object itself.
      */
@@ -101,7 +105,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Get the detailedStatus property: Detailed status.
-     *
+     * 
      * @return the detailedStatus value.
      */
     public String detailedStatus() {
@@ -110,7 +114,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Set the detailedStatus property: Detailed status.
-     *
+     * 
      * @param detailedStatus the detailedStatus value to set.
      * @return the ContinuousWebJobProperties object itself.
      */
@@ -121,7 +125,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Get the logUrl property: Log URL.
-     *
+     * 
      * @return the logUrl value.
      */
     public String logUrl() {
@@ -130,7 +134,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Set the logUrl property: Log URL.
-     *
+     * 
      * @param logUrl the logUrl value to set.
      * @return the ContinuousWebJobProperties object itself.
      */
@@ -141,7 +145,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Get the runCommand property: Run command.
-     *
+     * 
      * @return the runCommand value.
      */
     public String runCommand() {
@@ -150,7 +154,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Set the runCommand property: Run command.
-     *
+     * 
      * @param runCommand the runCommand value to set.
      * @return the ContinuousWebJobProperties object itself.
      */
@@ -161,7 +165,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Get the url property: Job URL.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -170,7 +174,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Set the url property: Job URL.
-     *
+     * 
      * @param url the url value to set.
      * @return the ContinuousWebJobProperties object itself.
      */
@@ -181,7 +185,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Get the extraInfoUrl property: Extra Info URL.
-     *
+     * 
      * @return the extraInfoUrl value.
      */
     public String extraInfoUrl() {
@@ -190,7 +194,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Set the extraInfoUrl property: Extra Info URL.
-     *
+     * 
      * @param extraInfoUrl the extraInfoUrl value to set.
      * @return the ContinuousWebJobProperties object itself.
      */
@@ -201,7 +205,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Get the webJobType property: Job type.
-     *
+     * 
      * @return the webJobType value.
      */
     public WebJobType webJobType() {
@@ -210,7 +214,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Set the webJobType property: Job type.
-     *
+     * 
      * @param webJobType the webJobType value to set.
      * @return the ContinuousWebJobProperties object itself.
      */
@@ -221,7 +225,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Get the error property: Error information.
-     *
+     * 
      * @return the error value.
      */
     public String error() {
@@ -230,7 +234,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Set the error property: Error information.
-     *
+     * 
      * @param error the error value to set.
      * @return the ContinuousWebJobProperties object itself.
      */
@@ -241,7 +245,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Get the usingSdk property: Using SDK?.
-     *
+     * 
      * @return the usingSdk value.
      */
     public Boolean usingSdk() {
@@ -250,7 +254,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Set the usingSdk property: Using SDK?.
-     *
+     * 
      * @param usingSdk the usingSdk value to set.
      * @return the ContinuousWebJobProperties object itself.
      */
@@ -261,7 +265,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Get the settings property: Job settings.
-     *
+     * 
      * @return the settings value.
      */
     public Map<String, Object> settings() {
@@ -270,7 +274,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Set the settings property: Job settings.
-     *
+     * 
      * @param settings the settings value to set.
      * @return the ContinuousWebJobProperties object itself.
      */
@@ -281,7 +285,7 @@ public final class ContinuousWebJobProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

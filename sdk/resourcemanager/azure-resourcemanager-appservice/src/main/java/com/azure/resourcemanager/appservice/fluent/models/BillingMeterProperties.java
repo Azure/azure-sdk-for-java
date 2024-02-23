@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** BillingMeter resource specific properties. */
+/**
+ * BillingMeter resource specific properties.
+ */
 @Fluent
 public final class BillingMeterProperties {
     /*
@@ -52,13 +54,15 @@ public final class BillingMeterProperties {
     @JsonProperty(value = "multiplier")
     private Double multiplier;
 
-    /** Creates an instance of BillingMeterProperties class. */
+    /**
+     * Creates an instance of BillingMeterProperties class.
+     */
     public BillingMeterProperties() {
     }
 
     /**
      * Get the meterId property: Meter GUID onboarded in Commerce.
-     *
+     * 
      * @return the meterId value.
      */
     public String meterId() {
@@ -67,7 +71,7 @@ public final class BillingMeterProperties {
 
     /**
      * Set the meterId property: Meter GUID onboarded in Commerce.
-     *
+     * 
      * @param meterId the meterId value to set.
      * @return the BillingMeterProperties object itself.
      */
@@ -78,7 +82,7 @@ public final class BillingMeterProperties {
 
     /**
      * Get the billingLocation property: Azure Location of billable resource.
-     *
+     * 
      * @return the billingLocation value.
      */
     public String billingLocation() {
@@ -87,7 +91,7 @@ public final class BillingMeterProperties {
 
     /**
      * Set the billingLocation property: Azure Location of billable resource.
-     *
+     * 
      * @param billingLocation the billingLocation value to set.
      * @return the BillingMeterProperties object itself.
      */
@@ -98,7 +102,7 @@ public final class BillingMeterProperties {
 
     /**
      * Get the shortName property: Short Name from App Service Azure pricing Page.
-     *
+     * 
      * @return the shortName value.
      */
     public String shortName() {
@@ -107,7 +111,7 @@ public final class BillingMeterProperties {
 
     /**
      * Set the shortName property: Short Name from App Service Azure pricing Page.
-     *
+     * 
      * @param shortName the shortName value to set.
      * @return the BillingMeterProperties object itself.
      */
@@ -118,7 +122,7 @@ public final class BillingMeterProperties {
 
     /**
      * Get the friendlyName property: Friendly name of the meter.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -127,7 +131,7 @@ public final class BillingMeterProperties {
 
     /**
      * Set the friendlyName property: Friendly name of the meter.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the BillingMeterProperties object itself.
      */
@@ -138,7 +142,7 @@ public final class BillingMeterProperties {
 
     /**
      * Get the resourceType property: App Service ResourceType meter used for.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -147,7 +151,7 @@ public final class BillingMeterProperties {
 
     /**
      * Set the resourceType property: App Service ResourceType meter used for.
-     *
+     * 
      * @param resourceType the resourceType value to set.
      * @return the BillingMeterProperties object itself.
      */
@@ -158,7 +162,7 @@ public final class BillingMeterProperties {
 
     /**
      * Get the osType property: App Service OS type meter used for.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -167,7 +171,7 @@ public final class BillingMeterProperties {
 
     /**
      * Set the osType property: App Service OS type meter used for.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the BillingMeterProperties object itself.
      */
@@ -178,7 +182,7 @@ public final class BillingMeterProperties {
 
     /**
      * Get the multiplier property: Meter Multiplier.
-     *
+     * 
      * @return the multiplier value.
      */
     public Double multiplier() {
@@ -187,7 +191,7 @@ public final class BillingMeterProperties {
 
     /**
      * Set the multiplier property: Meter Multiplier.
-     *
+     * 
      * @param multiplier the multiplier value to set.
      * @return the BillingMeterProperties object itself.
      */
@@ -198,7 +202,7 @@ public final class BillingMeterProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

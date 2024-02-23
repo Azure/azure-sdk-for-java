@@ -8,26 +8,30 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The DppTrackedResource model. */
+/**
+ * The DppTrackedResource model.
+ */
 @Fluent
 public class DppTrackedResource extends DppBaseTrackedResource {
     /*
      * DppIdentityDetails
-     *
+     * 
      * Input Managed Identity Details
      */
     @JsonProperty(value = "identity")
     private DppIdentityDetails identity;
 
-    /** Creates an instance of DppTrackedResource class. */
+    /**
+     * Creates an instance of DppTrackedResource class.
+     */
     public DppTrackedResource() {
     }
 
     /**
      * Get the identity property: DppIdentityDetails
-     *
-     * <p>Input Managed Identity Details.
-     *
+     * 
+     * Input Managed Identity Details.
+     * 
      * @return the identity value.
      */
     public DppIdentityDetails identity() {
@@ -36,9 +40,9 @@ public class DppTrackedResource extends DppBaseTrackedResource {
 
     /**
      * Set the identity property: DppIdentityDetails
-     *
-     * <p>Input Managed Identity Details.
-     *
+     * 
+     * Input Managed Identity Details.
+     * 
      * @param identity the identity value to set.
      * @return the DppTrackedResource object itself.
      */
@@ -47,21 +51,27 @@ public class DppTrackedResource extends DppBaseTrackedResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DppTrackedResource withEtag(String etag) {
         super.withEtag(etag);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DppTrackedResource withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DppTrackedResource withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -70,7 +80,7 @@ public class DppTrackedResource extends DppBaseTrackedResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
-/** Samples for Pools Get. */
+/**
+ * Samples for Pools Get.
+ */
 public final class PoolsGetSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-05-01/examples/Pools_Get.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/Pools_Get.json
      */
     /**
      * Sample code: Pools_Get.
-     *
+     * 
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void poolsGet(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {

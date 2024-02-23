@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** WebJob resource specific properties. */
+/**
+ * WebJob resource specific properties.
+ */
 @Fluent
 public final class WebJobProperties {
     /*
@@ -56,13 +58,15 @@ public final class WebJobProperties {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Object> settings;
 
-    /** Creates an instance of WebJobProperties class. */
+    /**
+     * Creates an instance of WebJobProperties class.
+     */
     public WebJobProperties() {
     }
 
     /**
      * Get the runCommand property: Run command.
-     *
+     * 
      * @return the runCommand value.
      */
     public String runCommand() {
@@ -71,7 +75,7 @@ public final class WebJobProperties {
 
     /**
      * Set the runCommand property: Run command.
-     *
+     * 
      * @param runCommand the runCommand value to set.
      * @return the WebJobProperties object itself.
      */
@@ -82,7 +86,7 @@ public final class WebJobProperties {
 
     /**
      * Get the url property: Job URL.
-     *
+     * 
      * @return the url value.
      */
     public String url() {
@@ -91,7 +95,7 @@ public final class WebJobProperties {
 
     /**
      * Set the url property: Job URL.
-     *
+     * 
      * @param url the url value to set.
      * @return the WebJobProperties object itself.
      */
@@ -102,7 +106,7 @@ public final class WebJobProperties {
 
     /**
      * Get the extraInfoUrl property: Extra Info URL.
-     *
+     * 
      * @return the extraInfoUrl value.
      */
     public String extraInfoUrl() {
@@ -111,7 +115,7 @@ public final class WebJobProperties {
 
     /**
      * Set the extraInfoUrl property: Extra Info URL.
-     *
+     * 
      * @param extraInfoUrl the extraInfoUrl value to set.
      * @return the WebJobProperties object itself.
      */
@@ -122,7 +126,7 @@ public final class WebJobProperties {
 
     /**
      * Get the webJobType property: Job type.
-     *
+     * 
      * @return the webJobType value.
      */
     public WebJobType webJobType() {
@@ -131,7 +135,7 @@ public final class WebJobProperties {
 
     /**
      * Set the webJobType property: Job type.
-     *
+     * 
      * @param webJobType the webJobType value to set.
      * @return the WebJobProperties object itself.
      */
@@ -142,7 +146,7 @@ public final class WebJobProperties {
 
     /**
      * Get the error property: Error information.
-     *
+     * 
      * @return the error value.
      */
     public String error() {
@@ -151,7 +155,7 @@ public final class WebJobProperties {
 
     /**
      * Set the error property: Error information.
-     *
+     * 
      * @param error the error value to set.
      * @return the WebJobProperties object itself.
      */
@@ -162,7 +166,7 @@ public final class WebJobProperties {
 
     /**
      * Get the usingSdk property: Using SDK?.
-     *
+     * 
      * @return the usingSdk value.
      */
     public Boolean usingSdk() {
@@ -171,7 +175,7 @@ public final class WebJobProperties {
 
     /**
      * Set the usingSdk property: Using SDK?.
-     *
+     * 
      * @param usingSdk the usingSdk value to set.
      * @return the WebJobProperties object itself.
      */
@@ -182,7 +186,7 @@ public final class WebJobProperties {
 
     /**
      * Get the settings property: Job settings.
-     *
+     * 
      * @return the settings value.
      */
     public Map<String, Object> settings() {
@@ -191,7 +195,7 @@ public final class WebJobProperties {
 
     /**
      * Set the settings property: Job settings.
-     *
+     * 
      * @param settings the settings value to set.
      * @return the WebJobProperties object itself.
      */
@@ -202,7 +206,7 @@ public final class WebJobProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

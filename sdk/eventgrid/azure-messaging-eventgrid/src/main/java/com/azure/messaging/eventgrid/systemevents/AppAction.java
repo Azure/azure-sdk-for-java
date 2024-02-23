@@ -5,51 +5,64 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of action of the operation. */
+/**
+ * Type of action of the operation.
+ */
 public final class AppAction extends ExpandableStringEnum<AppAction> {
-    /** Web app was restarted. */
+    /**
+     * Web app was restarted.
+     */
     public static final AppAction RESTARTED = fromString("Restarted");
 
-    /** Web app was stopped. */
+    /**
+     * Web app was stopped.
+     */
     public static final AppAction STOPPED = fromString("Stopped");
 
-    /** There was an operation to change app setting on the web app. */
+    /**
+     * There was an operation to change app setting on the web app.
+     */
     public static final AppAction CHANGED_APP_SETTINGS = fromString("ChangedAppSettings");
 
-    /** The job has started. */
+    /**
+     * The job has started.
+     */
     public static final AppAction STARTED = fromString("Started");
 
-    /** The job has completed. */
+    /**
+     * The job has completed.
+     */
     public static final AppAction COMPLETED = fromString("Completed");
 
-    /** The job has failed to complete. */
+    /**
+     * The job has failed to complete.
+     */
     public static final AppAction FAILED = fromString("Failed");
 
     /**
      * Creates a new instance of AppAction value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public AppAction() {}
+    public AppAction() {
+    }
 
     /**
      * Creates or finds a AppAction from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AppAction.
      */
-    @JsonCreator
     public static AppAction fromString(String name) {
         return fromString(name, AppAction.class);
     }
 
     /**
      * Gets known AppAction values.
-     *
+     * 
      * @return known AppAction values.
      */
     public static Collection<AppAction> values() {

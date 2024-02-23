@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Cosmos DB location metadata. */
+/**
+ * Cosmos DB location metadata.
+ */
 @Immutable
 public final class LocationProperties {
     /*
@@ -47,14 +49,16 @@ public final class LocationProperties {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private Status status;
 
-    /** Creates an instance of LocationProperties class. */
+    /**
+     * Creates an instance of LocationProperties class.
+     */
     public LocationProperties() {
     }
 
     /**
      * Get the supportsAvailabilityZone property: Flag indicating whether the location supports availability zones or
      * not.
-     *
+     * 
      * @return the supportsAvailabilityZone value.
      */
     public Boolean supportsAvailabilityZone() {
@@ -63,7 +67,7 @@ public final class LocationProperties {
 
     /**
      * Get the isResidencyRestricted property: Flag indicating whether the location is residency sensitive.
-     *
+     * 
      * @return the isResidencyRestricted value.
      */
     public Boolean isResidencyRestricted() {
@@ -72,7 +76,7 @@ public final class LocationProperties {
 
     /**
      * Get the backupStorageRedundancies property: The properties of available backup storage redundancies.
-     *
+     * 
      * @return the backupStorageRedundancies value.
      */
     public List<BackupStorageRedundancy> backupStorageRedundancies() {
@@ -82,7 +86,7 @@ public final class LocationProperties {
     /**
      * Get the isSubscriptionRegionAccessAllowedForRegular property: Flag indicating whether the subscription have
      * access in region for Non-Availability Zones.
-     *
+     * 
      * @return the isSubscriptionRegionAccessAllowedForRegular value.
      */
     public Boolean isSubscriptionRegionAccessAllowedForRegular() {
@@ -92,7 +96,7 @@ public final class LocationProperties {
     /**
      * Get the isSubscriptionRegionAccessAllowedForAz property: Flag indicating whether the subscription have access in
      * region for Availability Zones(Az).
-     *
+     * 
      * @return the isSubscriptionRegionAccessAllowedForAz value.
      */
     public Boolean isSubscriptionRegionAccessAllowedForAz() {
@@ -101,7 +105,7 @@ public final class LocationProperties {
 
     /**
      * Get the status property: Enum to indicate current buildout status of the region.
-     *
+     * 
      * @return the status value.
      */
     public Status status() {
@@ -110,7 +114,7 @@ public final class LocationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

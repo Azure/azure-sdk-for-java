@@ -7,7 +7,9 @@ package com.azure.resourcemanager.servicefabric.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Port range details. */
+/**
+ * Port range details.
+ */
 @Fluent
 public final class EndpointRangeDescription {
     /*
@@ -22,13 +24,15 @@ public final class EndpointRangeDescription {
     @JsonProperty(value = "endPort", required = true)
     private int endPort;
 
-    /** Creates an instance of EndpointRangeDescription class. */
+    /**
+     * Creates an instance of EndpointRangeDescription class.
+     */
     public EndpointRangeDescription() {
     }
 
     /**
      * Get the startPort property: Starting port of a range of ports.
-     *
+     * 
      * @return the startPort value.
      */
     public int startPort() {
@@ -37,7 +41,7 @@ public final class EndpointRangeDescription {
 
     /**
      * Set the startPort property: Starting port of a range of ports.
-     *
+     * 
      * @param startPort the startPort value to set.
      * @return the EndpointRangeDescription object itself.
      */
@@ -48,7 +52,7 @@ public final class EndpointRangeDescription {
 
     /**
      * Get the endPort property: End port of a range of ports.
-     *
+     * 
      * @return the endPort value.
      */
     public int endPort() {
@@ -57,7 +61,7 @@ public final class EndpointRangeDescription {
 
     /**
      * Set the endPort property: End port of a range of ports.
-     *
+     * 
      * @param endPort the endPort value to set.
      * @return the EndpointRangeDescription object itself.
      */
@@ -68,7 +72,7 @@ public final class EndpointRangeDescription {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

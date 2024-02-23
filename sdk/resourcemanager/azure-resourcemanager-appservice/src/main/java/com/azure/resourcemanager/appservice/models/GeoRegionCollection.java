@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.GeoRegionInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of geographical regions. */
+/**
+ * Collection of geographical regions.
+ */
 @Fluent
 public final class GeoRegionCollection {
     /*
@@ -25,13 +27,15 @@ public final class GeoRegionCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of GeoRegionCollection class. */
+    /**
+     * Creates an instance of GeoRegionCollection class.
+     */
     public GeoRegionCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<GeoRegionInner> value() {
@@ -40,7 +44,7 @@ public final class GeoRegionCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the GeoRegionCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class GeoRegionCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,14 +64,13 @@ public final class GeoRegionCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model GeoRegionCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model GeoRegionCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

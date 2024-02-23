@@ -6,32 +6,34 @@ package com.azure.resourcemanager.quota.models;
 
 import com.azure.resourcemanager.quota.fluent.models.OperationResponseInner;
 
-/** An immutable client-side representation of OperationResponse. */
+/**
+ * An immutable client-side representation of OperationResponse.
+ */
 public interface OperationResponse {
     /**
      * Gets the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the display property: The display property.
-     *
+     * 
      * @return the display value.
      */
     OperationDisplay display();
 
     /**
      * Gets the origin property: The origin property.
-     *
+     * 
      * @return the origin value.
      */
     String origin();
 
     /**
      * Gets the inner com.azure.resourcemanager.quota.fluent.models.OperationResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     OperationResponseInner innerModel();

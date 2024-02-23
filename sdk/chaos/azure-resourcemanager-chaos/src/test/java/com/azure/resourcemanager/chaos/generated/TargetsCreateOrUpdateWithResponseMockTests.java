@@ -34,7 +34,7 @@ public final class TargetsCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"location\":\"faxvxil\",\"properties\":{\"hnze\":\"datatg\"},\"id\":\"qxtjjfzqlqhyca\",\"name\":\"odggx\",\"type\":\"beesmieknlra\"}";
+            "{\"location\":\"qwogfnzjvus\",\"properties\":{\"ozuxylfsbtkadpys\":\"datald\",\"tgkbugrjqctojc\":\"datawn\",\"cuplcplcwkhih\":\"dataisofieypefojyqd\"},\"id\":\"hlhzdsqtzbsrgno\",\"name\":\"cjhfgmvecactxmw\",\"type\":\"teyowclu\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -66,20 +66,30 @@ public final class TargetsCreateOrUpdateWithResponseMockTests {
             manager
                 .targets()
                 .createOrUpdateWithResponse(
-                    "ymbrnysuxmpraf",
-                    "g",
-                    "khocxvdfffwaf",
-                    "roud",
                     "spave",
+                    "hrv",
+                    "bunzozudh",
+                    "xg",
+                    "moy",
                     new TargetInner()
-                        .withLocation("vkbunzozudh")
-                        .withProperties(mapOf("bzydvfvfcj", "datagkmoyxcdyuibhmfd")),
+                        .withLocation("yuibhm")
+                        .withProperties(
+                            mapOf(
+                                "aeoisrvh",
+                                "datanbzydvfvfcj",
+                                "ukiscvwmzhw",
+                                "datagorf",
+                                "nzeyqxtjj",
+                                "datalefaxvxilcbtgn",
+                                "vodggxdbee",
+                                "datazqlqhyc")),
                     com.azure.core.util.Context.NONE)
                 .getValue();
 
-        Assertions.assertEquals("faxvxil", response.location());
+        Assertions.assertEquals("qwogfnzjvus", response.location());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

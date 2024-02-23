@@ -50,7 +50,7 @@ public final class RouterValueConstructorProxy {
         // application accesses LabelValue which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.
         if (accessor == null) {
-            new RouterValue("", null, null, null);
+            new RouterValue("");
         }
 
         assert accessor != null;

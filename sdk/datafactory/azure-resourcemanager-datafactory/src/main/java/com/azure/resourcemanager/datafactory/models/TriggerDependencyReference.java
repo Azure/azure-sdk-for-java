@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Trigger referenced dependency. */
+/**
+ * Trigger referenced dependency.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -21,8 +23,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(
         name = "TumblingWindowTriggerDependencyReference",
-        value = TumblingWindowTriggerDependencyReference.class)
-})
+        value = TumblingWindowTriggerDependencyReference.class) })
 @Fluent
 public class TriggerDependencyReference extends DependencyReference {
     /*
@@ -31,13 +32,15 @@ public class TriggerDependencyReference extends DependencyReference {
     @JsonProperty(value = "referenceTrigger", required = true)
     private TriggerReference referenceTrigger;
 
-    /** Creates an instance of TriggerDependencyReference class. */
+    /**
+     * Creates an instance of TriggerDependencyReference class.
+     */
     public TriggerDependencyReference() {
     }
 
     /**
      * Get the referenceTrigger property: Referenced trigger.
-     *
+     * 
      * @return the referenceTrigger value.
      */
     public TriggerReference referenceTrigger() {
@@ -46,7 +49,7 @@ public class TriggerDependencyReference extends DependencyReference {
 
     /**
      * Set the referenceTrigger property: Referenced trigger.
-     *
+     * 
      * @param referenceTrigger the referenceTrigger value to set.
      * @return the TriggerDependencyReference object itself.
      */
@@ -57,17 +60,15 @@ public class TriggerDependencyReference extends DependencyReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (referenceTrigger() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property referenceTrigger in model TriggerDependencyReference"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property referenceTrigger in model TriggerDependencyReference"));
         } else {
             referenceTrigger().validate();
         }

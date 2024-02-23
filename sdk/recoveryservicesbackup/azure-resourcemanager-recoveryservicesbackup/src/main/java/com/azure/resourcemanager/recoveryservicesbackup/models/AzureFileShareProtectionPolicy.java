@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** AzureStorage backup policy. */
+/**
+ * AzureStorage backup policy.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "backupManagementType")
 @JsonTypeName("AzureStorage")
 @Fluent
@@ -34,18 +36,26 @@ public final class AzureFileShareProtectionPolicy extends ProtectionPolicy {
     private RetentionPolicy retentionPolicy;
 
     /*
+     * Retention policy with the details on hardened backup copy retention ranges.
+     */
+    @JsonProperty(value = "vaultRetentionPolicy")
+    private VaultRetentionPolicy vaultRetentionPolicy;
+
+    /*
      * TimeZone optional input as string. For example: TimeZone = "Pacific Standard Time".
      */
     @JsonProperty(value = "timeZone")
     private String timeZone;
 
-    /** Creates an instance of AzureFileShareProtectionPolicy class. */
+    /**
+     * Creates an instance of AzureFileShareProtectionPolicy class.
+     */
     public AzureFileShareProtectionPolicy() {
     }
 
     /**
      * Get the workLoadType property: Type of workload for the backup management.
-     *
+     * 
      * @return the workLoadType value.
      */
     public WorkloadType workLoadType() {
@@ -54,7 +64,7 @@ public final class AzureFileShareProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Set the workLoadType property: Type of workload for the backup management.
-     *
+     * 
      * @param workLoadType the workLoadType value to set.
      * @return the AzureFileShareProtectionPolicy object itself.
      */
@@ -65,7 +75,7 @@ public final class AzureFileShareProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Get the schedulePolicy property: Backup schedule specified as part of backup policy.
-     *
+     * 
      * @return the schedulePolicy value.
      */
     public SchedulePolicy schedulePolicy() {
@@ -74,7 +84,7 @@ public final class AzureFileShareProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Set the schedulePolicy property: Backup schedule specified as part of backup policy.
-     *
+     * 
      * @param schedulePolicy the schedulePolicy value to set.
      * @return the AzureFileShareProtectionPolicy object itself.
      */
@@ -85,7 +95,7 @@ public final class AzureFileShareProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Get the retentionPolicy property: Retention policy with the details on backup copy retention ranges.
-     *
+     * 
      * @return the retentionPolicy value.
      */
     public RetentionPolicy retentionPolicy() {
@@ -94,7 +104,7 @@ public final class AzureFileShareProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Set the retentionPolicy property: Retention policy with the details on backup copy retention ranges.
-     *
+     * 
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the AzureFileShareProtectionPolicy object itself.
      */
@@ -104,8 +114,30 @@ public final class AzureFileShareProtectionPolicy extends ProtectionPolicy {
     }
 
     /**
+     * Get the vaultRetentionPolicy property: Retention policy with the details on hardened backup copy retention
+     * ranges.
+     * 
+     * @return the vaultRetentionPolicy value.
+     */
+    public VaultRetentionPolicy vaultRetentionPolicy() {
+        return this.vaultRetentionPolicy;
+    }
+
+    /**
+     * Set the vaultRetentionPolicy property: Retention policy with the details on hardened backup copy retention
+     * ranges.
+     * 
+     * @param vaultRetentionPolicy the vaultRetentionPolicy value to set.
+     * @return the AzureFileShareProtectionPolicy object itself.
+     */
+    public AzureFileShareProtectionPolicy withVaultRetentionPolicy(VaultRetentionPolicy vaultRetentionPolicy) {
+        this.vaultRetentionPolicy = vaultRetentionPolicy;
+        return this;
+    }
+
+    /**
      * Get the timeZone property: TimeZone optional input as string. For example: TimeZone = "Pacific Standard Time".
-     *
+     * 
      * @return the timeZone value.
      */
     public String timeZone() {
@@ -114,7 +146,7 @@ public final class AzureFileShareProtectionPolicy extends ProtectionPolicy {
 
     /**
      * Set the timeZone property: TimeZone optional input as string. For example: TimeZone = "Pacific Standard Time".
-     *
+     * 
      * @param timeZone the timeZone value to set.
      * @return the AzureFileShareProtectionPolicy object itself.
      */
@@ -123,24 +155,28 @@ public final class AzureFileShareProtectionPolicy extends ProtectionPolicy {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFileShareProtectionPolicy withProtectedItemsCount(Integer protectedItemsCount) {
         super.withProtectedItemsCount(protectedItemsCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AzureFileShareProtectionPolicy withResourceGuardOperationRequests(
-        List<String> resourceGuardOperationRequests) {
+    public AzureFileShareProtectionPolicy
+        withResourceGuardOperationRequests(List<String> resourceGuardOperationRequests) {
         super.withResourceGuardOperationRequests(resourceGuardOperationRequests);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -151,6 +187,9 @@ public final class AzureFileShareProtectionPolicy extends ProtectionPolicy {
         }
         if (retentionPolicy() != null) {
             retentionPolicy().validate();
+        }
+        if (vaultRetentionPolicy() != null) {
+            vaultRetentionPolicy().validate();
         }
     }
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Header configuration of the Actions set in Application Gateway. */
+/**
+ * Header configuration of the Actions set in Application Gateway.
+ */
 @Fluent
 public final class ApplicationGatewayHeaderConfiguration {
     /*
@@ -22,13 +24,15 @@ public final class ApplicationGatewayHeaderConfiguration {
     @JsonProperty(value = "headerValue")
     private String headerValue;
 
-    /** Creates an instance of ApplicationGatewayHeaderConfiguration class. */
+    /**
+     * Creates an instance of ApplicationGatewayHeaderConfiguration class.
+     */
     public ApplicationGatewayHeaderConfiguration() {
     }
 
     /**
      * Get the headerName property: Header name of the header configuration.
-     *
+     * 
      * @return the headerName value.
      */
     public String headerName() {
@@ -37,7 +41,7 @@ public final class ApplicationGatewayHeaderConfiguration {
 
     /**
      * Set the headerName property: Header name of the header configuration.
-     *
+     * 
      * @param headerName the headerName value to set.
      * @return the ApplicationGatewayHeaderConfiguration object itself.
      */
@@ -48,7 +52,7 @@ public final class ApplicationGatewayHeaderConfiguration {
 
     /**
      * Get the headerValue property: Header value of the header configuration.
-     *
+     * 
      * @return the headerValue value.
      */
     public String headerValue() {
@@ -57,7 +61,7 @@ public final class ApplicationGatewayHeaderConfiguration {
 
     /**
      * Set the headerValue property: Header value of the header configuration.
-     *
+     * 
      * @param headerValue the headerValue value to set.
      * @return the ApplicationGatewayHeaderConfiguration object itself.
      */
@@ -68,7 +72,7 @@ public final class ApplicationGatewayHeaderConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The resource reference. */
+/**
+ * The resource reference.
+ */
 @Fluent
 public final class ResourceReference {
     /*
@@ -28,13 +30,15 @@ public final class ResourceReference {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ResourceReference class. */
+    /**
+     * Creates an instance of ResourceReference class.
+     */
     public ResourceReference() {
     }
 
     /**
      * Get the id property: The resource id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -43,7 +47,7 @@ public final class ResourceReference {
 
     /**
      * Set the id property: The resource id.
-     *
+     * 
      * @param id the id value to set.
      * @return the ResourceReference object itself.
      */
@@ -54,7 +58,7 @@ public final class ResourceReference {
 
     /**
      * Get the name property: Gets the resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -63,7 +67,7 @@ public final class ResourceReference {
 
     /**
      * Get the type property: Gets the resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -72,7 +76,7 @@ public final class ResourceReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

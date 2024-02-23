@@ -10,16 +10,15 @@ import com.azure.resourcemanager.datafactory.fluent.models.CommonDataServiceForA
 public final class CommonDataServiceForAppsEntityDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CommonDataServiceForAppsEntityDatasetTypeProperties model =
-            BinaryData
-                .fromString("{\"entityName\":\"dataufzg\"}")
+        CommonDataServiceForAppsEntityDatasetTypeProperties model
+            = BinaryData.fromString("{\"entityName\":\"dataufzg\"}")
                 .toObject(CommonDataServiceForAppsEntityDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CommonDataServiceForAppsEntityDatasetTypeProperties model =
-            new CommonDataServiceForAppsEntityDatasetTypeProperties().withEntityName("dataufzg");
+        CommonDataServiceForAppsEntityDatasetTypeProperties model
+            = new CommonDataServiceForAppsEntityDatasetTypeProperties().withEntityName("dataufzg");
         model = BinaryData.fromObject(model).toObject(CommonDataServiceForAppsEntityDatasetTypeProperties.class);
     }
 }

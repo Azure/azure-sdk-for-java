@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Field indicating sync type e.g. to sync only in case of failure or in all cases. */
+/**
+ * Field indicating sync type e.g. to sync only in case of failure or in all cases.
+ */
 public final class SyncType extends ExpandableStringEnum<SyncType> {
-    /** Static value Default for SyncType. */
+    /**
+     * Static value Default for SyncType.
+     */
     public static final SyncType DEFAULT = fromString("Default");
 
-    /** Static value ForceResync for SyncType. */
+    /**
+     * Static value ForceResync for SyncType.
+     */
     public static final SyncType FORCE_RESYNC = fromString("ForceResync");
 
     /**
      * Creates a new instance of SyncType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class SyncType extends ExpandableStringEnum<SyncType> {
 
     /**
      * Creates or finds a SyncType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SyncType.
      */
@@ -38,7 +44,7 @@ public final class SyncType extends ExpandableStringEnum<SyncType> {
 
     /**
      * Gets known SyncType values.
-     *
+     * 
      * @return known SyncType values.
      */
     public static Collection<SyncType> values() {

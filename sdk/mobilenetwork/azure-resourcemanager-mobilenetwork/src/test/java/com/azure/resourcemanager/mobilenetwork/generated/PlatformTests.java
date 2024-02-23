@@ -18,13 +18,13 @@ public final class PlatformTests {
         Platform model =
             BinaryData
                 .fromString(
-                    "{\"platformType\":\"3P-AZURE-STACK-HCI\",\"versionState\":\"Deprecated\",\"minimumPlatformSoftwareVersion\":\"pvjzbe\",\"maximumPlatformSoftwareVersion\":\"l\",\"recommendedVersion\":\"Recommended\",\"obsoleteVersion\":\"Obsolete\"}")
+                    "{\"platformType\":\"3P-AZURE-STACK-HCI\",\"versionState\":\"Unknown\",\"minimumPlatformSoftwareVersion\":\"fpbsjyofdxl\",\"maximumPlatformSoftwareVersion\":\"sd\",\"recommendedVersion\":\"NotRecommended\",\"obsoleteVersion\":\"Obsolete\"}")
                 .toObject(Platform.class);
         Assertions.assertEquals(PlatformType.THREE_P_AZURE_STACK_HCI, model.platformType());
-        Assertions.assertEquals(VersionState.DEPRECATED, model.versionState());
-        Assertions.assertEquals("pvjzbe", model.minimumPlatformSoftwareVersion());
-        Assertions.assertEquals("l", model.maximumPlatformSoftwareVersion());
-        Assertions.assertEquals(RecommendedVersion.RECOMMENDED, model.recommendedVersion());
+        Assertions.assertEquals(VersionState.UNKNOWN, model.versionState());
+        Assertions.assertEquals("fpbsjyofdxl", model.minimumPlatformSoftwareVersion());
+        Assertions.assertEquals("sd", model.maximumPlatformSoftwareVersion());
+        Assertions.assertEquals(RecommendedVersion.NOT_RECOMMENDED, model.recommendedVersion());
         Assertions.assertEquals(ObsoleteVersion.OBSOLETE, model.obsoleteVersion());
     }
 
@@ -33,17 +33,17 @@ public final class PlatformTests {
         Platform model =
             new Platform()
                 .withPlatformType(PlatformType.THREE_P_AZURE_STACK_HCI)
-                .withVersionState(VersionState.DEPRECATED)
-                .withMinimumPlatformSoftwareVersion("pvjzbe")
-                .withMaximumPlatformSoftwareVersion("l")
-                .withRecommendedVersion(RecommendedVersion.RECOMMENDED)
+                .withVersionState(VersionState.UNKNOWN)
+                .withMinimumPlatformSoftwareVersion("fpbsjyofdxl")
+                .withMaximumPlatformSoftwareVersion("sd")
+                .withRecommendedVersion(RecommendedVersion.NOT_RECOMMENDED)
                 .withObsoleteVersion(ObsoleteVersion.OBSOLETE);
         model = BinaryData.fromObject(model).toObject(Platform.class);
         Assertions.assertEquals(PlatformType.THREE_P_AZURE_STACK_HCI, model.platformType());
-        Assertions.assertEquals(VersionState.DEPRECATED, model.versionState());
-        Assertions.assertEquals("pvjzbe", model.minimumPlatformSoftwareVersion());
-        Assertions.assertEquals("l", model.maximumPlatformSoftwareVersion());
-        Assertions.assertEquals(RecommendedVersion.RECOMMENDED, model.recommendedVersion());
+        Assertions.assertEquals(VersionState.UNKNOWN, model.versionState());
+        Assertions.assertEquals("fpbsjyofdxl", model.minimumPlatformSoftwareVersion());
+        Assertions.assertEquals("sd", model.maximumPlatformSoftwareVersion());
+        Assertions.assertEquals(RecommendedVersion.NOT_RECOMMENDED, model.recommendedVersion());
         Assertions.assertEquals(ObsoleteVersion.OBSOLETE, model.obsoleteVersion());
     }
 }

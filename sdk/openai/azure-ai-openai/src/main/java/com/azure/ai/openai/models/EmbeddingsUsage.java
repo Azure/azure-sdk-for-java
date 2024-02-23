@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Measurement of the amount of tokens used in this request and response. */
+/**
+ * Measurement of the amount of tokens used in this request and response.
+ */
 @Immutable
 public final class EmbeddingsUsage {
 
@@ -34,9 +36,8 @@ public final class EmbeddingsUsage {
      */
     @Generated
     @JsonCreator
-    private EmbeddingsUsage(
-            @JsonProperty(value = "prompt_tokens") int promptTokens,
-            @JsonProperty(value = "total_tokens") int totalTokens) {
+    private EmbeddingsUsage(@JsonProperty(value = "prompt_tokens") int promptTokens,
+        @JsonProperty(value = "total_tokens") int totalTokens) {
         this.promptTokens = promptTokens;
         this.totalTokens = totalTokens;
     }

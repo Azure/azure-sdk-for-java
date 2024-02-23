@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** The service resource properties for patch operations. */
+/**
+ * The service resource properties for patch operations.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -19,46 +21,57 @@ import java.util.List;
 @JsonTypeName("ServiceResourceUpdateProperties")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Stateful", value = StatefulServiceUpdateProperties.class),
-    @JsonSubTypes.Type(name = "Stateless", value = StatelessServiceUpdateProperties.class)
-})
+    @JsonSubTypes.Type(name = "Stateless", value = StatelessServiceUpdateProperties.class) })
 @Fluent
 public class ServiceResourceUpdateProperties extends ServiceResourcePropertiesBase {
-    /** Creates an instance of ServiceResourceUpdateProperties class. */
+    /**
+     * Creates an instance of ServiceResourceUpdateProperties class.
+     */
     public ServiceResourceUpdateProperties() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceResourceUpdateProperties withPlacementConstraints(String placementConstraints) {
         super.withPlacementConstraints(placementConstraints);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ServiceResourceUpdateProperties withCorrelationScheme(
-        List<ServiceCorrelationDescription> correlationScheme) {
+    public ServiceResourceUpdateProperties
+        withCorrelationScheme(List<ServiceCorrelationDescription> correlationScheme) {
         super.withCorrelationScheme(correlationScheme);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ServiceResourceUpdateProperties withServiceLoadMetrics(
-        List<ServiceLoadMetricDescription> serviceLoadMetrics) {
+    public ServiceResourceUpdateProperties
+        withServiceLoadMetrics(List<ServiceLoadMetricDescription> serviceLoadMetrics) {
         super.withServiceLoadMetrics(serviceLoadMetrics);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public ServiceResourceUpdateProperties withServicePlacementPolicies(
-        List<ServicePlacementPolicyDescription> servicePlacementPolicies) {
+    public ServiceResourceUpdateProperties
+        withServicePlacementPolicies(List<ServicePlacementPolicyDescription> servicePlacementPolicies) {
         super.withServicePlacementPolicies(servicePlacementPolicies);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceResourceUpdateProperties withDefaultMoveCost(MoveCost defaultMoveCost) {
         super.withDefaultMoveCost(defaultMoveCost);
@@ -67,7 +80,7 @@ public class ServiceResourceUpdateProperties extends ServiceResourcePropertiesBa
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

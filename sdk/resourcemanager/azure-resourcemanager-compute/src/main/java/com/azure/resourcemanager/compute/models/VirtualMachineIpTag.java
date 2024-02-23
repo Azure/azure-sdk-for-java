@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains the IP tag associated with the public IP address. */
+/**
+ * Contains the IP tag associated with the public IP address.
+ */
 @Fluent
 public final class VirtualMachineIpTag {
     /*
@@ -22,13 +24,15 @@ public final class VirtualMachineIpTag {
     @JsonProperty(value = "tag")
     private String tag;
 
-    /** Creates an instance of VirtualMachineIpTag class. */
+    /**
+     * Creates an instance of VirtualMachineIpTag class.
+     */
     public VirtualMachineIpTag() {
     }
 
     /**
      * Get the ipTagType property: IP tag type. Example: FirstPartyUsage.
-     *
+     * 
      * @return the ipTagType value.
      */
     public String ipTagType() {
@@ -37,7 +41,7 @@ public final class VirtualMachineIpTag {
 
     /**
      * Set the ipTagType property: IP tag type. Example: FirstPartyUsage.
-     *
+     * 
      * @param ipTagType the ipTagType value to set.
      * @return the VirtualMachineIpTag object itself.
      */
@@ -48,7 +52,7 @@ public final class VirtualMachineIpTag {
 
     /**
      * Get the tag property: IP tag associated with the public IP. Example: SQL, Storage etc.
-     *
+     * 
      * @return the tag value.
      */
     public String tag() {
@@ -57,7 +61,7 @@ public final class VirtualMachineIpTag {
 
     /**
      * Set the tag property: IP tag associated with the public IP. Example: SQL, Storage etc.
-     *
+     * 
      * @param tag the tag value to set.
      * @return the VirtualMachineIpTag object itself.
      */
@@ -68,7 +72,7 @@ public final class VirtualMachineIpTag {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

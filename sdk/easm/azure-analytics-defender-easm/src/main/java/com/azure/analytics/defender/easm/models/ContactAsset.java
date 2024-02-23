@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The ContactAsset model. */
+/**
+ * The ContactAsset model.
+ */
 @Immutable
 public final class ContactAsset extends InventoryAsset {
 
@@ -62,9 +64,12 @@ public final class ContactAsset extends InventoryAsset {
     @JsonProperty(value = "count")
     private Long count;
 
-    /** Creates an instance of ContactAsset class. */
+    /**
+     * Creates an instance of ContactAsset class.
+     */
     @Generated
-    private ContactAsset() {}
+    private ContactAsset() {
+    }
 
     /**
      * Get the email property: The email property.

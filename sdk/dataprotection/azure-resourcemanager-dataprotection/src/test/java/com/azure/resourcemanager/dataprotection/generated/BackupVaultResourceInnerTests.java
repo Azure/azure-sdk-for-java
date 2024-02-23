@@ -33,116 +33,86 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupVaultResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupVaultResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"monitoringSettings\":{\"azureMonitorAlertSettings\":{\"alertsForAllJobFailures\":\"Disabled\"}},\"provisioningState\":\"Failed\",\"resourceMoveState\":\"PrepareTimedout\",\"resourceMoveDetails\":{\"operationId\":\"v\",\"startTimeUtc\":\"mjqulngsn\",\"completionTimeUtc\":\"bybkzgcwrwclxx\",\"sourceResourcePath\":\"ljdousk\",\"targetResourcePath\":\"vkocrcjdkwtn\"},\"securitySettings\":{\"softDeleteSettings\":{\"state\":\"AlwaysOn\",\"retentionDurationInDays\":30.743644504476197},\"immutabilitySettings\":{\"state\":\"Disabled\"}},\"storageSettings\":[{\"datastoreType\":\"ArchiveStore\",\"type\":\"LocallyRedundant\"}],\"isVaultProtectedByResourceGuard\":true,\"featureSettings\":{\"crossSubscriptionRestoreSettings\":{\"state\":\"PermanentlyDisabled\"},\"crossRegionRestoreSettings\":{\"state\":\"Enabled\"}},\"secureScore\":\"Maximum\"},\"identity\":{\"principalId\":\"ppeebvmgxsab\",\"tenantId\":\"qduujitcjczdz\",\"type\":\"ndhkrw\",\"userAssignedIdentities\":{\"dsbdkvwrwjf\":{\"principalId\":\"31776e23-8c83-4449-96f9-1cf2a857ddc1\",\"clientId\":\"b575cc54-aa3b-408a-b375-706c48648f79\"}}},\"eTag\":\"snhu\",\"location\":\"eltmrldhugjzzdat\",\"tags\":{\"geablgphuticndvk\":\"oc\",\"ftyxolniw\":\"ozwyiftyhxhuro\"},\"id\":\"wcukjfkgiawxk\",\"name\":\"ryplwckbasyypn\",\"type\":\"dhsgcba\"}")
-                .toObject(BackupVaultResourceInner.class);
-        Assertions.assertEquals("eltmrldhugjzzdat", model.location());
-        Assertions.assertEquals("oc", model.tags().get("geablgphuticndvk"));
-        Assertions.assertEquals("snhu", model.etag());
-        Assertions.assertEquals("ndhkrw", model.identity().type());
-        Assertions
-            .assertEquals(
-                AlertsState.DISABLED,
-                model.properties().monitoringSettings().azureMonitorAlertSettings().alertsForAllJobFailures());
-        Assertions
-            .assertEquals(
-                SoftDeleteState.ALWAYS_ON, model.properties().securitySettings().softDeleteSettings().state());
-        Assertions
-            .assertEquals(
-                30.743644504476197D,
-                model.properties().securitySettings().softDeleteSettings().retentionDurationInDays());
-        Assertions
-            .assertEquals(
-                ImmutabilityState.DISABLED, model.properties().securitySettings().immutabilitySettings().state());
-        Assertions
-            .assertEquals(
-                StorageSettingStoreTypes.ARCHIVE_STORE, model.properties().storageSettings().get(0).datastoreType());
-        Assertions
-            .assertEquals(StorageSettingTypes.LOCALLY_REDUNDANT, model.properties().storageSettings().get(0).type());
-        Assertions
-            .assertEquals(
-                CrossSubscriptionRestoreState.PERMANENTLY_DISABLED,
-                model.properties().featureSettings().crossSubscriptionRestoreSettings().state());
-        Assertions
-            .assertEquals(
-                CrossRegionRestoreState.ENABLED,
-                model.properties().featureSettings().crossRegionRestoreSettings().state());
+        BackupVaultResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"monitoringSettings\":{\"azureMonitorAlertSettings\":{\"alertsForAllJobFailures\":\"Enabled\"}},\"provisioningState\":\"Updating\",\"resourceMoveState\":\"MoveSucceeded\",\"resourceMoveDetails\":{\"operationId\":\"zzd\",\"startTimeUtc\":\"qxhocdgeablgphut\",\"completionTimeUtc\":\"ndv\",\"sourceResourcePath\":\"ozwyiftyhxhuro\",\"targetResourcePath\":\"tyxolniwpwc\"},\"securitySettings\":{\"softDeleteSettings\":{\"state\":\"AlwaysOn\",\"retentionDurationInDays\":45.29645347714083},\"immutabilitySettings\":{\"state\":\"Locked\"}},\"storageSettings\":[{\"datastoreType\":\"OperationalStore\",\"type\":\"LocallyRedundant\"},{\"datastoreType\":\"ArchiveStore\",\"type\":\"GeoRedundant\"},{\"datastoreType\":\"OperationalStore\",\"type\":\"ZoneRedundant\"},{\"datastoreType\":\"VaultStore\",\"type\":\"GeoRedundant\"}],\"isVaultProtectedByResourceGuard\":false,\"featureSettings\":{\"crossSubscriptionRestoreSettings\":{\"state\":\"Enabled\"},\"crossRegionRestoreSettings\":{\"state\":\"Enabled\"}},\"secureScore\":\"NotSupported\",\"replicatedRegions\":[\"tynqgoul\"]},\"identity\":{\"principalId\":\"likwyqkgfgib\",\"tenantId\":\"dgak\",\"type\":\"s\",\"userAssignedIdentities\":{\"qqedqytbciqfou\":{\"principalId\":\"aa424a22-7312-457d-9847-0b532a4cf7cd\",\"clientId\":\"983a69cb-8e5a-42ea-affe-d59671367543\"}}},\"eTag\":\"mmnkzsmodmgl\",\"location\":\"gpbkwtmut\",\"tags\":{\"kdosvqw\":\"ktapspwgcuertu\",\"bjf\":\"bmdg\",\"bexppb\":\"dgmb\",\"rolfpfp\":\"tq\"},\"id\":\"algbquxigjyjg\",\"name\":\"jaoyfhrtx\",\"type\":\"lnerkujysvleju\"}")
+            .toObject(BackupVaultResourceInner.class);
+        Assertions.assertEquals("gpbkwtmut", model.location());
+        Assertions.assertEquals("ktapspwgcuertu", model.tags().get("kdosvqw"));
+        Assertions.assertEquals("mmnkzsmodmgl", model.etag());
+        Assertions.assertEquals("s", model.identity().type());
+        Assertions.assertEquals(AlertsState.ENABLED,
+            model.properties().monitoringSettings().azureMonitorAlertSettings().alertsForAllJobFailures());
+        Assertions.assertEquals(SoftDeleteState.ALWAYS_ON,
+            model.properties().securitySettings().softDeleteSettings().state());
+        Assertions.assertEquals(45.29645347714083D,
+            model.properties().securitySettings().softDeleteSettings().retentionDurationInDays());
+        Assertions.assertEquals(ImmutabilityState.LOCKED,
+            model.properties().securitySettings().immutabilitySettings().state());
+        Assertions.assertEquals(StorageSettingStoreTypes.OPERATIONAL_STORE,
+            model.properties().storageSettings().get(0).datastoreType());
+        Assertions.assertEquals(StorageSettingTypes.LOCALLY_REDUNDANT,
+            model.properties().storageSettings().get(0).type());
+        Assertions.assertEquals(CrossSubscriptionRestoreState.ENABLED,
+            model.properties().featureSettings().crossSubscriptionRestoreSettings().state());
+        Assertions.assertEquals(CrossRegionRestoreState.ENABLED,
+            model.properties().featureSettings().crossRegionRestoreSettings().state());
+        Assertions.assertEquals("tynqgoul", model.properties().replicatedRegions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupVaultResourceInner model =
-            new BackupVaultResourceInner()
-                .withLocation("eltmrldhugjzzdat")
-                .withTags(mapOf("geablgphuticndvk", "oc", "ftyxolniw", "ozwyiftyhxhuro"))
-                .withEtag("snhu")
-                .withIdentity(
-                    new DppIdentityDetails()
-                        .withType("ndhkrw")
-                        .withUserAssignedIdentities(mapOf("dsbdkvwrwjf", new UserAssignedIdentity())))
-                .withProperties(
-                    new BackupVault()
-                        .withMonitoringSettings(
-                            new MonitoringSettings()
-                                .withAzureMonitorAlertSettings(
-                                    new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.DISABLED)))
-                        .withSecuritySettings(
-                            new SecuritySettings()
-                                .withSoftDeleteSettings(
-                                    new SoftDeleteSettings()
-                                        .withState(SoftDeleteState.ALWAYS_ON)
-                                        .withRetentionDurationInDays(30.743644504476197D))
-                                .withImmutabilitySettings(
-                                    new ImmutabilitySettings().withState(ImmutabilityState.DISABLED)))
-                        .withStorageSettings(
-                            Arrays
-                                .asList(
-                                    new StorageSetting()
-                                        .withDatastoreType(StorageSettingStoreTypes.ARCHIVE_STORE)
-                                        .withType(StorageSettingTypes.LOCALLY_REDUNDANT)))
-                        .withFeatureSettings(
-                            new FeatureSettings()
-                                .withCrossSubscriptionRestoreSettings(
-                                    new CrossSubscriptionRestoreSettings()
-                                        .withState(CrossSubscriptionRestoreState.PERMANENTLY_DISABLED))
-                                .withCrossRegionRestoreSettings(
-                                    new CrossRegionRestoreSettings().withState(CrossRegionRestoreState.ENABLED))));
+        BackupVaultResourceInner model = new BackupVaultResourceInner().withLocation("gpbkwtmut")
+            .withTags(mapOf("kdosvqw", "ktapspwgcuertu", "bjf", "bmdg", "bexppb", "dgmb", "rolfpfp", "tq"))
+            .withEtag("mmnkzsmodmgl")
+            .withIdentity(new DppIdentityDetails().withType("s")
+                .withUserAssignedIdentities(mapOf("qqedqytbciqfou", new UserAssignedIdentity())))
+            .withProperties(new BackupVault()
+                .withMonitoringSettings(new MonitoringSettings().withAzureMonitorAlertSettings(
+                    new AzureMonitorAlertSettings().withAlertsForAllJobFailures(AlertsState.ENABLED)))
+                .withSecuritySettings(new SecuritySettings()
+                    .withSoftDeleteSettings(new SoftDeleteSettings().withState(SoftDeleteState.ALWAYS_ON)
+                        .withRetentionDurationInDays(45.29645347714083D))
+                    .withImmutabilitySettings(new ImmutabilitySettings().withState(ImmutabilityState.LOCKED)))
+                .withStorageSettings(Arrays.asList(
+                    new StorageSetting().withDatastoreType(StorageSettingStoreTypes.OPERATIONAL_STORE)
+                        .withType(StorageSettingTypes.LOCALLY_REDUNDANT),
+                    new StorageSetting().withDatastoreType(StorageSettingStoreTypes.ARCHIVE_STORE)
+                        .withType(StorageSettingTypes.GEO_REDUNDANT),
+                    new StorageSetting().withDatastoreType(StorageSettingStoreTypes.OPERATIONAL_STORE)
+                        .withType(StorageSettingTypes.ZONE_REDUNDANT),
+                    new StorageSetting().withDatastoreType(StorageSettingStoreTypes.VAULT_STORE)
+                        .withType(StorageSettingTypes.GEO_REDUNDANT)))
+                .withFeatureSettings(new FeatureSettings()
+                    .withCrossSubscriptionRestoreSettings(
+                        new CrossSubscriptionRestoreSettings().withState(CrossSubscriptionRestoreState.ENABLED))
+                    .withCrossRegionRestoreSettings(
+                        new CrossRegionRestoreSettings().withState(CrossRegionRestoreState.ENABLED)))
+                .withReplicatedRegions(Arrays.asList("tynqgoul")));
         model = BinaryData.fromObject(model).toObject(BackupVaultResourceInner.class);
-        Assertions.assertEquals("eltmrldhugjzzdat", model.location());
-        Assertions.assertEquals("oc", model.tags().get("geablgphuticndvk"));
-        Assertions.assertEquals("snhu", model.etag());
-        Assertions.assertEquals("ndhkrw", model.identity().type());
-        Assertions
-            .assertEquals(
-                AlertsState.DISABLED,
-                model.properties().monitoringSettings().azureMonitorAlertSettings().alertsForAllJobFailures());
-        Assertions
-            .assertEquals(
-                SoftDeleteState.ALWAYS_ON, model.properties().securitySettings().softDeleteSettings().state());
-        Assertions
-            .assertEquals(
-                30.743644504476197D,
-                model.properties().securitySettings().softDeleteSettings().retentionDurationInDays());
-        Assertions
-            .assertEquals(
-                ImmutabilityState.DISABLED, model.properties().securitySettings().immutabilitySettings().state());
-        Assertions
-            .assertEquals(
-                StorageSettingStoreTypes.ARCHIVE_STORE, model.properties().storageSettings().get(0).datastoreType());
-        Assertions
-            .assertEquals(StorageSettingTypes.LOCALLY_REDUNDANT, model.properties().storageSettings().get(0).type());
-        Assertions
-            .assertEquals(
-                CrossSubscriptionRestoreState.PERMANENTLY_DISABLED,
-                model.properties().featureSettings().crossSubscriptionRestoreSettings().state());
-        Assertions
-            .assertEquals(
-                CrossRegionRestoreState.ENABLED,
-                model.properties().featureSettings().crossRegionRestoreSettings().state());
+        Assertions.assertEquals("gpbkwtmut", model.location());
+        Assertions.assertEquals("ktapspwgcuertu", model.tags().get("kdosvqw"));
+        Assertions.assertEquals("mmnkzsmodmgl", model.etag());
+        Assertions.assertEquals("s", model.identity().type());
+        Assertions.assertEquals(AlertsState.ENABLED,
+            model.properties().monitoringSettings().azureMonitorAlertSettings().alertsForAllJobFailures());
+        Assertions.assertEquals(SoftDeleteState.ALWAYS_ON,
+            model.properties().securitySettings().softDeleteSettings().state());
+        Assertions.assertEquals(45.29645347714083D,
+            model.properties().securitySettings().softDeleteSettings().retentionDurationInDays());
+        Assertions.assertEquals(ImmutabilityState.LOCKED,
+            model.properties().securitySettings().immutabilitySettings().state());
+        Assertions.assertEquals(StorageSettingStoreTypes.OPERATIONAL_STORE,
+            model.properties().storageSettings().get(0).datastoreType());
+        Assertions.assertEquals(StorageSettingTypes.LOCALLY_REDUNDANT,
+            model.properties().storageSettings().get(0).type());
+        Assertions.assertEquals(CrossSubscriptionRestoreState.ENABLED,
+            model.properties().featureSettings().crossSubscriptionRestoreSettings().state());
+        Assertions.assertEquals(CrossRegionRestoreState.ENABLED,
+            model.properties().featureSettings().crossRegionRestoreSettings().state());
+        Assertions.assertEquals("tynqgoul", model.properties().replicatedRegions().get(0));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

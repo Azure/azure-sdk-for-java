@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The PageAsset model. */
+/**
+ * The PageAsset model.
+ */
 @Immutable
 public final class PageAsset extends InventoryAsset {
 
@@ -440,9 +442,12 @@ public final class PageAsset extends InventoryAsset {
     @JsonProperty(value = "ipv6")
     private List<ObservedBoolean> ipv6;
 
-    /** Creates an instance of PageAsset class. */
+    /**
+     * Creates an instance of PageAsset class.
+     */
     @Generated
-    private PageAsset() {}
+    private PageAsset() {
+    }
 
     /**
      * Get the url property: The url property.

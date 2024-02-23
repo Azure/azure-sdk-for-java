@@ -53,7 +53,7 @@ public final class RouterValue {
      * @param boolValue boolValue.
      */
     @JsonCreator
-    public RouterValue(@JsonProperty(value = "stringValue") String stringValue,
+    RouterValue(@JsonProperty(value = "stringValue") String stringValue,
                        @JsonProperty(value = "intValue") Integer intValue,
                        @JsonProperty(value = "doubleValue") Double doubleValue,
                        @JsonProperty(value = "boolValue") Boolean boolValue) {
@@ -65,6 +65,38 @@ public final class RouterValue {
 
     static {
         RouterValueConstructorProxy.setAccessor(internal -> new RouterValue(internal));
+    }
+
+    /**
+     * String constructor.
+     * @param stringValue stringValue.
+     */
+    public RouterValue(String stringValue) {
+        this(stringValue, null, null, null);
+    }
+
+    /**
+     * Constructor for intValue.
+     * @param intValue intValue.
+     */
+    public RouterValue(Integer intValue) {
+        this(null, intValue, null, null);
+    }
+
+    /**
+     * DoubleValue constructor.
+     * @param doubleValue doubleValue.
+     */
+    public RouterValue(Double doubleValue) {
+        this(null, null, doubleValue, null);
+    }
+
+    /**
+     * BoolValue constructor.
+     * @param boolValue boolValue
+     */
+    public RouterValue(Boolean boolValue) {
+        this(null, null, null, boolValue);
     }
 
     /**
@@ -114,7 +146,7 @@ public final class RouterValue {
      * Returns boolValue.
      * @return boolValue.
      */
-    public Boolean getBoolValue() {
+    public Boolean getBooleanValue() {
         return boolValue;
     }
 }

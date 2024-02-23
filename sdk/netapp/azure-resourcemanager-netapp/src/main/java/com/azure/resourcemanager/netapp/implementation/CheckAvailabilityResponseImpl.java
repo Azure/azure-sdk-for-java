@@ -13,8 +13,7 @@ public final class CheckAvailabilityResponseImpl implements CheckAvailabilityRes
 
     private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
-    CheckAvailabilityResponseImpl(
-        CheckAvailabilityResponseInner innerObject,
+    CheckAvailabilityResponseImpl(CheckAvailabilityResponseInner innerObject,
         com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

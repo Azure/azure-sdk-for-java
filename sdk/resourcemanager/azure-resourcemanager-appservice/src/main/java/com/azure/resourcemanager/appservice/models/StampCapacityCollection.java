@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.StampCapacityInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of stamp capacities. */
+/**
+ * Collection of stamp capacities.
+ */
 @Fluent
 public final class StampCapacityCollection {
     /*
@@ -25,13 +27,15 @@ public final class StampCapacityCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of StampCapacityCollection class. */
+    /**
+     * Creates an instance of StampCapacityCollection class.
+     */
     public StampCapacityCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<StampCapacityInner> value() {
@@ -40,7 +44,7 @@ public final class StampCapacityCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the StampCapacityCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class StampCapacityCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,14 +64,13 @@ public final class StampCapacityCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model StampCapacityCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model StampCapacityCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

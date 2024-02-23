@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Gets or sets the type. */
+/**
+ * Gets or sets the type.
+ */
 public final class StorageSettingTypes extends ExpandableStringEnum<StorageSettingTypes> {
-    /** Static value GeoRedundant for StorageSettingTypes. */
+    /**
+     * Static value GeoRedundant for StorageSettingTypes.
+     */
     public static final StorageSettingTypes GEO_REDUNDANT = fromString("GeoRedundant");
 
-    /** Static value LocallyRedundant for StorageSettingTypes. */
+    /**
+     * Static value LocallyRedundant for StorageSettingTypes.
+     */
     public static final StorageSettingTypes LOCALLY_REDUNDANT = fromString("LocallyRedundant");
 
-    /** Static value ZoneRedundant for StorageSettingTypes. */
+    /**
+     * Static value ZoneRedundant for StorageSettingTypes.
+     */
     public static final StorageSettingTypes ZONE_REDUNDANT = fromString("ZoneRedundant");
 
     /**
      * Creates a new instance of StorageSettingTypes value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class StorageSettingTypes extends ExpandableStringEnum<StorageSetti
 
     /**
      * Creates or finds a StorageSettingTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StorageSettingTypes.
      */
@@ -41,7 +49,7 @@ public final class StorageSettingTypes extends ExpandableStringEnum<StorageSetti
 
     /**
      * Gets known StorageSettingTypes values.
-     *
+     * 
      * @return known StorageSettingTypes values.
      */
     public static Collection<StorageSettingTypes> values() {

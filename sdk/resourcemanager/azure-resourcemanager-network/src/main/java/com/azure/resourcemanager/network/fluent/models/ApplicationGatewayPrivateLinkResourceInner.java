@@ -9,7 +9,9 @@ import com.azure.core.management.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** PrivateLink Resource of an application gateway. */
+/**
+ * PrivateLink Resource of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayPrivateLinkResourceInner extends SubResource {
     /*
@@ -36,13 +38,15 @@ public final class ApplicationGatewayPrivateLinkResourceInner extends SubResourc
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ApplicationGatewayPrivateLinkResourceInner class. */
+    /**
+     * Creates an instance of ApplicationGatewayPrivateLinkResourceInner class.
+     */
     public ApplicationGatewayPrivateLinkResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the application gateway private link resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGatewayPrivateLinkResourceProperties innerProperties() {
@@ -51,7 +55,7 @@ public final class ApplicationGatewayPrivateLinkResourceInner extends SubResourc
 
     /**
      * Get the name property: Name of the private link resource that is unique within an Application Gateway.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -60,7 +64,7 @@ public final class ApplicationGatewayPrivateLinkResourceInner extends SubResourc
 
     /**
      * Set the name property: Name of the private link resource that is unique within an Application Gateway.
-     *
+     * 
      * @param name the name value to set.
      * @return the ApplicationGatewayPrivateLinkResourceInner object itself.
      */
@@ -71,7 +75,7 @@ public final class ApplicationGatewayPrivateLinkResourceInner extends SubResourc
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -80,14 +84,16 @@ public final class ApplicationGatewayPrivateLinkResourceInner extends SubResourc
 
     /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayPrivateLinkResourceInner withId(String id) {
         super.withId(id);
@@ -96,7 +102,7 @@ public final class ApplicationGatewayPrivateLinkResourceInner extends SubResourc
 
     /**
      * Get the groupId property: Group identifier of private link resource.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -105,7 +111,7 @@ public final class ApplicationGatewayPrivateLinkResourceInner extends SubResourc
 
     /**
      * Get the requiredMembers property: Required member names of private link resource.
-     *
+     * 
      * @return the requiredMembers value.
      */
     public List<String> requiredMembers() {
@@ -114,7 +120,7 @@ public final class ApplicationGatewayPrivateLinkResourceInner extends SubResourc
 
     /**
      * Get the requiredZoneNames property: Required DNS zone names of the the private link resource.
-     *
+     * 
      * @return the requiredZoneNames value.
      */
     public List<String> requiredZoneNames() {
@@ -123,7 +129,7 @@ public final class ApplicationGatewayPrivateLinkResourceInner extends SubResourc
 
     /**
      * Set the requiredZoneNames property: Required DNS zone names of the the private link resource.
-     *
+     * 
      * @param requiredZoneNames the requiredZoneNames value to set.
      * @return the ApplicationGatewayPrivateLinkResourceInner object itself.
      */
@@ -137,7 +143,7 @@ public final class ApplicationGatewayPrivateLinkResourceInner extends SubResourc
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

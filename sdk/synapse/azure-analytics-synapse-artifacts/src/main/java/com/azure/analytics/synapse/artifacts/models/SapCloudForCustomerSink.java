@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity SAP Cloud for Customer sink. */
+/**
+ * A copy activity SAP Cloud for Customer sink.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SapCloudForCustomerSink")
 @Fluent
@@ -28,12 +30,15 @@ public final class SapCloudForCustomerSink extends CopySink {
     @JsonProperty(value = "httpRequestTimeout")
     private Object httpRequestTimeout;
 
-    /** Creates an instance of SapCloudForCustomerSink class. */
-    public SapCloudForCustomerSink() {}
+    /**
+     * Creates an instance of SapCloudForCustomerSink class.
+     */
+    public SapCloudForCustomerSink() {
+    }
 
     /**
      * Get the writeBehavior property: The write behavior for the operation. Default is 'Insert'.
-     *
+     * 
      * @return the writeBehavior value.
      */
     public SapCloudForCustomerSinkWriteBehavior getWriteBehavior() {
@@ -42,7 +47,7 @@ public final class SapCloudForCustomerSink extends CopySink {
 
     /**
      * Set the writeBehavior property: The write behavior for the operation. Default is 'Insert'.
-     *
+     * 
      * @param writeBehavior the writeBehavior value to set.
      * @return the SapCloudForCustomerSink object itself.
      */
@@ -55,7 +60,7 @@ public final class SapCloudForCustomerSink extends CopySink {
      * Get the httpRequestTimeout property: The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a
      * response, not the timeout to read response data. Default value: 00:05:00. Type: string (or Expression with
      * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the httpRequestTimeout value.
      */
     public Object getHttpRequestTimeout() {
@@ -66,7 +71,7 @@ public final class SapCloudForCustomerSink extends CopySink {
      * Set the httpRequestTimeout property: The timeout (TimeSpan) to get an HTTP response. It is the timeout to get a
      * response, not the timeout to read response data. Default value: 00:05:00. Type: string (or Expression with
      * resultType string), pattern: ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param httpRequestTimeout the httpRequestTimeout value to set.
      * @return the SapCloudForCustomerSink object itself.
      */
@@ -75,35 +80,45 @@ public final class SapCloudForCustomerSink extends CopySink {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapCloudForCustomerSink setWriteBatchSize(Object writeBatchSize) {
         super.setWriteBatchSize(writeBatchSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapCloudForCustomerSink setWriteBatchTimeout(Object writeBatchTimeout) {
         super.setWriteBatchTimeout(writeBatchTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapCloudForCustomerSink setSinkRetryCount(Object sinkRetryCount) {
         super.setSinkRetryCount(sinkRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapCloudForCustomerSink setSinkRetryWait(Object sinkRetryWait) {
         super.setSinkRetryWait(sinkRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SapCloudForCustomerSink setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

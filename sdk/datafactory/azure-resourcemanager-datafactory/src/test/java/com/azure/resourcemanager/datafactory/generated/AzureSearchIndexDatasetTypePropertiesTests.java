@@ -10,16 +10,14 @@ import com.azure.resourcemanager.datafactory.fluent.models.AzureSearchIndexDatas
 public final class AzureSearchIndexDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureSearchIndexDatasetTypeProperties model =
-            BinaryData
-                .fromString("{\"indexName\":\"datasesboynpytporr\"}")
-                .toObject(AzureSearchIndexDatasetTypeProperties.class);
+        AzureSearchIndexDatasetTypeProperties model = BinaryData.fromString("{\"indexName\":\"datasesboynpytporr\"}")
+            .toObject(AzureSearchIndexDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureSearchIndexDatasetTypeProperties model =
-            new AzureSearchIndexDatasetTypeProperties().withIndexName("datasesboynpytporr");
+        AzureSearchIndexDatasetTypeProperties model
+            = new AzureSearchIndexDatasetTypeProperties().withIndexName("datasesboynpytporr");
         model = BinaryData.fromObject(model).toObject(AzureSearchIndexDatasetTypeProperties.class);
     }
 }

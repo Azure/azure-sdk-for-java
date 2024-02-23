@@ -13,10 +13,11 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-/** Response from a List Datasources request. If successful, it includes the full definitions of all datasources. */
+/**
+ * Response from a List Datasources request. If successful, it includes the full definitions of all datasources.
+ */
 @Immutable
 public final class ListDataSourcesResult implements JsonSerializable<ListDataSourcesResult> {
     /*
@@ -26,7 +27,7 @@ public final class ListDataSourcesResult implements JsonSerializable<ListDataSou
 
     /**
      * Creates an instance of ListDataSourcesResult class.
-     *
+     * 
      * @param dataSources the dataSources value to set.
      */
     public ListDataSourcesResult(List<SearchIndexerDataSourceConnection> dataSources) {
@@ -35,7 +36,7 @@ public final class ListDataSourcesResult implements JsonSerializable<ListDataSou
 
     /**
      * Get the dataSources property: The datasources in the Search service.
-     *
+     * 
      * @return the dataSources value.
      */
     public List<SearchIndexerDataSourceConnection> getDataSources() {
@@ -45,49 +46,37 @@ public final class ListDataSourcesResult implements JsonSerializable<ListDataSou
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("value", this.dataSources, (writer, element) -> writer.writeJson(element));
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of ListDataSourcesResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ListDataSourcesResult if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the ListDataSourcesResult.
      */
     public static ListDataSourcesResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean dataSourcesFound = false;
-                    List<SearchIndexerDataSourceConnection> dataSources = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            boolean dataSourcesFound = false;
+            List<SearchIndexerDataSourceConnection> dataSources = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("value".equals(fieldName)) {
-                            dataSources =
-                                    reader.readArray(reader1 -> SearchIndexerDataSourceConnection.fromJson(reader1));
-                            dataSourcesFound = true;
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    if (dataSourcesFound) {
-                        ListDataSourcesResult deserializedListDataSourcesResult =
-                                new ListDataSourcesResult(dataSources);
-
-                        return deserializedListDataSourcesResult;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!dataSourcesFound) {
-                        missingProperties.add("value");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
+                if ("value".equals(fieldName)) {
+                    dataSources = reader.readArray(reader1 -> SearchIndexerDataSourceConnection.fromJson(reader1));
+                    dataSourcesFound = true;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (dataSourcesFound) {
+                return new ListDataSourcesResult(dataSources);
+            }
+            throw new IllegalStateException("Missing required property: value");
+        });
     }
 }

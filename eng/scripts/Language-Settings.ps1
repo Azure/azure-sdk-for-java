@@ -3,7 +3,6 @@ $LanguageDisplayName = "Java"
 $PackageRepository = "Maven"
 $packagePattern = "*.pom"
 $MetadataUri = "https://raw.githubusercontent.com/Azure/azure-sdk/main/_data/releases/latest/java-packages.csv"
-$BlobStorageUrl = "https://azuresdkdocs.blob.core.windows.net/%24web?restype=container&comp=list&prefix=java%2F&delimiter=%2F"
 $CampaignTag = Resolve-Path (Join-Path -Path $PSScriptRoot -ChildPath "../repo-docs/ga_tag.html")
 $GithubUri = "https://github.com/Azure/azure-sdk-for-java"
 $PackageRepositoryUri = "https://repo1.maven.org/maven2"
@@ -222,7 +221,13 @@ function Get-java-GithubIoDocIndex()
   $nonClientPackages = $metadata | Where-Object { $_.GroupId -ne 'com.azure' -and !$clientPackages.Package.Contains($_.Package) }
   $uniquePackages = $clientPackages + $nonClientPackages
   # Get the artifacts name from blob storage
-  $artifacts =  Get-BlobStorage-Artifacts -blobStorageUrl $BlobStorageUrl -blobDirectoryRegex "^java/(.*)/$" -blobArtifactsReplacement '$1'
+  $artifacts =  Get-BlobStorage-Artifacts `
+    -blobDirectoryRegex "^java/(.*)/$" `
+    -blobArtifactsReplacement '$1' `
+    -storageAccountName 'azuresdkdocs' `
+    -storageContainerName '$web' `
+    -storagePrefix 'java/'
+
   # Build up the artifact to service name mapping for GithubIo toc.
   $tocContent = Get-TocMapping -metadata $uniquePackages -artifacts $artifacts
   # Generate yml/md toc files and build site.
@@ -282,7 +287,7 @@ $PackageExclusions = @{
   "azure-cosmos-spark_3-1_2-12" = "Javadoc dependency issue.";
   "azure-cosmos-spark_3-2_2-12" = "Javadoc dependency issue.";
   "azure-cosmos-spark_3-3_2-12" = "Javadoc dependency issue.";
-  "azure-cosmos-spark_3-4_2-12" = "Javadoc dependency issue.";  
+  "azure-cosmos-spark_3-4_2-12" = "Javadoc dependency issue.";
   "azure-cosmos-test" = "Don't want to include the test framework package.";
   "azure-aot-graalvm-support-netty" = "No Javadocs for the package.";
   "azure-aot-graalvm-support" = "No Javadocs for the package.";
@@ -316,7 +321,7 @@ function SourcePackageHasComFolder($artifactNamePrefix, $packageDirectory) {
 
     $sourcesJarPath = (Get-ChildItem -File -Path $packageDirectory -Filter "*-sources.jar")[0]
     $sourcesExtractPath = Join-Path $packageDirectory "sources"
-    
+
     # Ensure that the sources folder is empty before extracting the jar
     # otherwise there could be file collisions from a previous extraction run on
     # the same system.
@@ -747,7 +752,7 @@ function Get-java-DocsMsMetadataForPackage($PackageInfo) {
 }
 
 # Defined in common.ps1 as:
-# $ValidateDocsMsPackagesFn = "Validate-${Language}-DocMsPackages" 
+# $ValidateDocsMsPackagesFn = "Validate-${Language}-DocMsPackages"
 function Validate-java-DocMsPackages ($PackageInfo, $PackageInfos, $DocValidationImageId) {
   # While eng/common/scripts/Update-DocsMsMetadata.ps1 is still passing a single packageInfo, process as a batch
   if (!$PackageInfos) {
@@ -768,4 +773,39 @@ function Get-java-EmitterName() {
 
 function Get-java-EmitterAdditionalOptions([string]$projectDirectory) {
   return "--option @azure-tools/typespec-java.emitter-output-dir=$projectDirectory/"
+}
+
+function Get-java-DirectoriesForGeneration() {
+    $sdkDirectories = Get-ChildItem -Path "$RepoRoot/sdk" -Directory | Get-ChildItem -Directory
+
+    return $sdkDirectories | Where-Object {
+        (Test-Path -Path "$_/tsp-location.yaml") -or
+        (Test-Path -Path "$_/swagger/Update-Codegeneration.ps1")
+    }
+}
+
+function Update-java-GeneratedSdks([string]$PackageDirectoriesFile) {
+  $packageDirectories = Get-Content $PackageDirectoriesFile | ConvertFrom-Json
+
+  foreach ($directory in $packageDirectories) {
+    Push-Location $RepoRoot
+    try {
+        $tspLocationFile = Get-Item -Path "sdk/$directory/tsp-location.yaml" -ErrorAction SilentlyContinue
+        $updateScript = Get-Item -Path "sdk/$directory/swagger/Update-CodeGeneration.ps1" -ErrorAction SilentlyContinue
+
+        if ($tspLocationFile) {
+            Write-Host "Found tsp-location.yaml in $directory, using typespec to generate projects"
+            ./eng/common/scripts/TypeSpec-Project-Sync.ps1 "sdk/$directory"
+            ./eng/common/scripts/TypeSpec-Project-Generate.ps1 "sdk/$directory"
+        } elseif ($updateScript) {
+            Write-Host "Using $updateScript to generate projects"
+            & $updateScript.FullName
+        } else {
+            Write-Host "No tsp-location.yaml or swagger/Update-Codegeneration.ps1 found in $directory, skipping"
+        }
+    }
+    finally {
+      Pop-Location
+    }
+  }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Open authentication access policy defined by user. */
+/**
+ * Open authentication access policy defined by user.
+ */
 @Fluent
 public final class OpenAuthenticationAccessPolicy {
     /*
@@ -23,13 +25,15 @@ public final class OpenAuthenticationAccessPolicy {
     @JsonProperty(value = "claims")
     private List<OpenAuthenticationPolicyClaim> claims;
 
-    /** Creates an instance of OpenAuthenticationAccessPolicy class. */
+    /**
+     * Creates an instance of OpenAuthenticationAccessPolicy class.
+     */
     public OpenAuthenticationAccessPolicy() {
     }
 
     /**
      * Get the type property: Type of provider for OAuth.
-     *
+     * 
      * @return the type value.
      */
     public OpenAuthenticationProviderType type() {
@@ -38,7 +42,7 @@ public final class OpenAuthenticationAccessPolicy {
 
     /**
      * Set the type property: Type of provider for OAuth.
-     *
+     * 
      * @param type the type value to set.
      * @return the OpenAuthenticationAccessPolicy object itself.
      */
@@ -49,7 +53,7 @@ public final class OpenAuthenticationAccessPolicy {
 
     /**
      * Get the claims property: The access policy claims.
-     *
+     * 
      * @return the claims value.
      */
     public List<OpenAuthenticationPolicyClaim> claims() {
@@ -58,7 +62,7 @@ public final class OpenAuthenticationAccessPolicy {
 
     /**
      * Set the claims property: The access policy claims.
-     *
+     * 
      * @param claims the claims value to set.
      * @return the OpenAuthenticationAccessPolicy object itself.
      */
@@ -69,7 +73,7 @@ public final class OpenAuthenticationAccessPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Factory's GitHub repo information. */
+/**
+ * Factory's GitHub repo information.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("FactoryGitHubConfiguration")
 @Fluent
@@ -32,13 +34,15 @@ public final class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
     @JsonProperty(value = "clientSecret")
     private GitHubClientSecret clientSecret;
 
-    /** Creates an instance of FactoryGitHubConfiguration class. */
+    /**
+     * Creates an instance of FactoryGitHubConfiguration class.
+     */
     public FactoryGitHubConfiguration() {
     }
 
     /**
      * Get the hostname property: GitHub Enterprise host name. For example: `https://github.mydomain.com`.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -47,7 +51,7 @@ public final class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
 
     /**
      * Set the hostname property: GitHub Enterprise host name. For example: `https://github.mydomain.com`.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the FactoryGitHubConfiguration object itself.
      */
@@ -58,7 +62,7 @@ public final class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
 
     /**
      * Get the clientId property: GitHub bring your own app client id.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -67,7 +71,7 @@ public final class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
 
     /**
      * Set the clientId property: GitHub bring your own app client id.
-     *
+     * 
      * @param clientId the clientId value to set.
      * @return the FactoryGitHubConfiguration object itself.
      */
@@ -78,7 +82,7 @@ public final class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
 
     /**
      * Get the clientSecret property: GitHub bring your own app client secret information.
-     *
+     * 
      * @return the clientSecret value.
      */
     public GitHubClientSecret clientSecret() {
@@ -87,7 +91,7 @@ public final class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
 
     /**
      * Set the clientSecret property: GitHub bring your own app client secret information.
-     *
+     * 
      * @param clientSecret the clientSecret value to set.
      * @return the FactoryGitHubConfiguration object itself.
      */
@@ -96,42 +100,54 @@ public final class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FactoryGitHubConfiguration withAccountName(String accountName) {
         super.withAccountName(accountName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FactoryGitHubConfiguration withRepositoryName(String repositoryName) {
         super.withRepositoryName(repositoryName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FactoryGitHubConfiguration withCollaborationBranch(String collaborationBranch) {
         super.withCollaborationBranch(collaborationBranch);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FactoryGitHubConfiguration withRootFolder(String rootFolder) {
         super.withRootFolder(rootFolder);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FactoryGitHubConfiguration withLastCommitId(String lastCommitId) {
         super.withLastCommitId(lastCommitId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FactoryGitHubConfiguration withDisablePublish(Boolean disablePublish) {
         super.withDisablePublish(disablePublish);
@@ -140,7 +156,7 @@ public final class FactoryGitHubConfiguration extends FactoryRepoConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

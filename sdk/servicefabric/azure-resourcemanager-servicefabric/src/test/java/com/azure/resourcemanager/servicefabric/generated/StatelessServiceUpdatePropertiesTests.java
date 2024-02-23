@@ -18,80 +18,51 @@ import org.junit.jupiter.api.Assertions;
 public final class StatelessServiceUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        StatelessServiceUpdateProperties model =
-            BinaryData
-                .fromString(
-                    "{\"serviceKind\":\"Stateless\",\"instanceCount\":1064161892,\"instanceCloseDelayDuration\":\"uetae\",\"placementConstraints\":\"ruvdmov\",\"correlationScheme\":[{\"scheme\":\"Invalid\",\"serviceName\":\"xwabmqoe\"},{\"scheme\":\"Invalid\",\"serviceName\":\"ifrvtpu\"},{\"scheme\":\"NonAlignedAffinity\",\"serviceName\":\"jmqlgkfb\"},{\"scheme\":\"Invalid\",\"serviceName\":\"doaon\"}],\"serviceLoadMetrics\":[{\"name\":\"cn\",\"weight\":\"High\",\"primaryDefaultLoad\":1062686421,\"secondaryDefaultLoad\":635729957,\"defaultLoad\":307486773},{\"name\":\"ftwwaezkojvdc\",\"weight\":\"Medium\",\"primaryDefaultLoad\":1504008224,\"secondaryDefaultLoad\":1599861645,\"defaultLoad\":1139129644}],\"servicePlacementPolicies\":[{\"type\":\"ServicePlacementPolicyDescription\"},{\"type\":\"ServicePlacementPolicyDescription\"},{\"type\":\"ServicePlacementPolicyDescription\"},{\"type\":\"ServicePlacementPolicyDescription\"}],\"defaultMoveCost\":\"Zero\"}")
-                .toObject(StatelessServiceUpdateProperties.class);
-        Assertions.assertEquals("ruvdmov", model.placementConstraints());
+        StatelessServiceUpdateProperties model = BinaryData.fromString(
+            "{\"serviceKind\":\"Stateless\",\"instanceCount\":313573135,\"instanceCloseDelayDuration\":\"szqzudphqamv\",\"placementConstraints\":\"fwynwcvtbvkay\",\"correlationScheme\":[{\"scheme\":\"Invalid\",\"serviceName\":\"vyqia\"},{\"scheme\":\"Affinity\",\"serviceName\":\"zwpcnpwzcjaesg\"},{\"scheme\":\"Invalid\",\"serviceName\":\"sccyajguqf\"}],\"serviceLoadMetrics\":[{\"name\":\"gzlvdnkfxu\",\"weight\":\"High\",\"primaryDefaultLoad\":1547666647,\"secondaryDefaultLoad\":252265287,\"defaultLoad\":372421736}],\"servicePlacementPolicies\":[{\"type\":\"ServicePlacementPolicyDescription\"},{\"type\":\"ServicePlacementPolicyDescription\"},{\"type\":\"ServicePlacementPolicyDescription\"}],\"defaultMoveCost\":\"Low\"}")
+            .toObject(StatelessServiceUpdateProperties.class);
+        Assertions.assertEquals("fwynwcvtbvkay", model.placementConstraints());
         Assertions.assertEquals(ServiceCorrelationScheme.INVALID, model.correlationScheme().get(0).scheme());
-        Assertions.assertEquals("xwabmqoe", model.correlationScheme().get(0).serviceName());
-        Assertions.assertEquals("cn", model.serviceLoadMetrics().get(0).name());
+        Assertions.assertEquals("vyqia", model.correlationScheme().get(0).serviceName());
+        Assertions.assertEquals("gzlvdnkfxu", model.serviceLoadMetrics().get(0).name());
         Assertions.assertEquals(ServiceLoadMetricWeight.HIGH, model.serviceLoadMetrics().get(0).weight());
-        Assertions.assertEquals(1062686421, model.serviceLoadMetrics().get(0).primaryDefaultLoad());
-        Assertions.assertEquals(635729957, model.serviceLoadMetrics().get(0).secondaryDefaultLoad());
-        Assertions.assertEquals(307486773, model.serviceLoadMetrics().get(0).defaultLoad());
-        Assertions.assertEquals(MoveCost.ZERO, model.defaultMoveCost());
-        Assertions.assertEquals(1064161892, model.instanceCount());
-        Assertions.assertEquals("uetae", model.instanceCloseDelayDuration());
+        Assertions.assertEquals(1547666647, model.serviceLoadMetrics().get(0).primaryDefaultLoad());
+        Assertions.assertEquals(252265287, model.serviceLoadMetrics().get(0).secondaryDefaultLoad());
+        Assertions.assertEquals(372421736, model.serviceLoadMetrics().get(0).defaultLoad());
+        Assertions.assertEquals(MoveCost.LOW, model.defaultMoveCost());
+        Assertions.assertEquals(313573135, model.instanceCount());
+        Assertions.assertEquals("szqzudphqamv", model.instanceCloseDelayDuration());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        StatelessServiceUpdateProperties model =
-            new StatelessServiceUpdateProperties()
-                .withPlacementConstraints("ruvdmov")
-                .withCorrelationScheme(
-                    Arrays
-                        .asList(
-                            new ServiceCorrelationDescription()
-                                .withScheme(ServiceCorrelationScheme.INVALID)
-                                .withServiceName("xwabmqoe"),
-                            new ServiceCorrelationDescription()
-                                .withScheme(ServiceCorrelationScheme.INVALID)
-                                .withServiceName("ifrvtpu"),
-                            new ServiceCorrelationDescription()
-                                .withScheme(ServiceCorrelationScheme.NON_ALIGNED_AFFINITY)
-                                .withServiceName("jmqlgkfb"),
-                            new ServiceCorrelationDescription()
-                                .withScheme(ServiceCorrelationScheme.INVALID)
-                                .withServiceName("doaon")))
-                .withServiceLoadMetrics(
-                    Arrays
-                        .asList(
-                            new ServiceLoadMetricDescription()
-                                .withName("cn")
-                                .withWeight(ServiceLoadMetricWeight.HIGH)
-                                .withPrimaryDefaultLoad(1062686421)
-                                .withSecondaryDefaultLoad(635729957)
-                                .withDefaultLoad(307486773),
-                            new ServiceLoadMetricDescription()
-                                .withName("ftwwaezkojvdc")
-                                .withWeight(ServiceLoadMetricWeight.MEDIUM)
-                                .withPrimaryDefaultLoad(1504008224)
-                                .withSecondaryDefaultLoad(1599861645)
-                                .withDefaultLoad(1139129644)))
-                .withServicePlacementPolicies(
-                    Arrays
-                        .asList(
-                            new ServicePlacementPolicyDescription(),
-                            new ServicePlacementPolicyDescription(),
-                            new ServicePlacementPolicyDescription(),
-                            new ServicePlacementPolicyDescription()))
-                .withDefaultMoveCost(MoveCost.ZERO)
-                .withInstanceCount(1064161892)
-                .withInstanceCloseDelayDuration("uetae");
+        StatelessServiceUpdateProperties model
+            = new StatelessServiceUpdateProperties().withPlacementConstraints("fwynwcvtbvkay")
+                .withCorrelationScheme(Arrays.asList(
+                    new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.INVALID)
+                        .withServiceName("vyqia"),
+                    new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.AFFINITY)
+                        .withServiceName("zwpcnpwzcjaesg"),
+                    new ServiceCorrelationDescription().withScheme(ServiceCorrelationScheme.INVALID)
+                        .withServiceName("sccyajguqf")))
+                .withServiceLoadMetrics(Arrays.asList(new ServiceLoadMetricDescription().withName("gzlvdnkfxu")
+                    .withWeight(ServiceLoadMetricWeight.HIGH).withPrimaryDefaultLoad(1547666647)
+                    .withSecondaryDefaultLoad(252265287).withDefaultLoad(372421736)))
+                .withServicePlacementPolicies(Arrays.asList(new ServicePlacementPolicyDescription(),
+                    new ServicePlacementPolicyDescription(), new ServicePlacementPolicyDescription()))
+                .withDefaultMoveCost(MoveCost.LOW).withInstanceCount(313573135)
+                .withInstanceCloseDelayDuration("szqzudphqamv");
         model = BinaryData.fromObject(model).toObject(StatelessServiceUpdateProperties.class);
-        Assertions.assertEquals("ruvdmov", model.placementConstraints());
+        Assertions.assertEquals("fwynwcvtbvkay", model.placementConstraints());
         Assertions.assertEquals(ServiceCorrelationScheme.INVALID, model.correlationScheme().get(0).scheme());
-        Assertions.assertEquals("xwabmqoe", model.correlationScheme().get(0).serviceName());
-        Assertions.assertEquals("cn", model.serviceLoadMetrics().get(0).name());
+        Assertions.assertEquals("vyqia", model.correlationScheme().get(0).serviceName());
+        Assertions.assertEquals("gzlvdnkfxu", model.serviceLoadMetrics().get(0).name());
         Assertions.assertEquals(ServiceLoadMetricWeight.HIGH, model.serviceLoadMetrics().get(0).weight());
-        Assertions.assertEquals(1062686421, model.serviceLoadMetrics().get(0).primaryDefaultLoad());
-        Assertions.assertEquals(635729957, model.serviceLoadMetrics().get(0).secondaryDefaultLoad());
-        Assertions.assertEquals(307486773, model.serviceLoadMetrics().get(0).defaultLoad());
-        Assertions.assertEquals(MoveCost.ZERO, model.defaultMoveCost());
-        Assertions.assertEquals(1064161892, model.instanceCount());
-        Assertions.assertEquals("uetae", model.instanceCloseDelayDuration());
+        Assertions.assertEquals(1547666647, model.serviceLoadMetrics().get(0).primaryDefaultLoad());
+        Assertions.assertEquals(252265287, model.serviceLoadMetrics().get(0).secondaryDefaultLoad());
+        Assertions.assertEquals(372421736, model.serviceLoadMetrics().get(0).defaultLoad());
+        Assertions.assertEquals(MoveCost.LOW, model.defaultMoveCost());
+        Assertions.assertEquals(313573135, model.instanceCount());
+        Assertions.assertEquals("szqzudphqamv", model.instanceCloseDelayDuration());
     }
 }

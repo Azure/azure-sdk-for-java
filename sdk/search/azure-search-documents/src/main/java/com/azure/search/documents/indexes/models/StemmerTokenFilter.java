@@ -13,16 +13,12 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-/** Language specific stemming filter. This token filter is implemented using Apache Lucene. */
+/**
+ * Language specific stemming filter. This token filter is implemented using Apache Lucene.
+ */
 @Immutable
 public final class StemmerTokenFilter extends TokenFilter {
-    /*
-     * Identifies the concrete type of the token filter.
-     */
-    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.StemmerTokenFilter";
-
     /*
      * The language to use.
      */
@@ -30,7 +26,7 @@ public final class StemmerTokenFilter extends TokenFilter {
 
     /**
      * Creates an instance of StemmerTokenFilter class.
-     *
+     * 
      * @param name the name value to set.
      * @param language the language value to set.
      */
@@ -41,7 +37,7 @@ public final class StemmerTokenFilter extends TokenFilter {
 
     /**
      * Get the language property: The language to use.
-     *
+     * 
      * @return the language value.
      */
     public StemmerTokenFilterLanguage getLanguage() {
@@ -51,68 +47,62 @@ public final class StemmerTokenFilter extends TokenFilter {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.StemmerTokenFilter");
         jsonWriter.writeStringField("name", getName());
-        jsonWriter.writeStringField("language", Objects.toString(this.language, null));
+        jsonWriter.writeStringField("language", this.language == null ? null : this.language.toString());
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of StemmerTokenFilter from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of StemmerTokenFilter if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     *     polymorphic discriminator.
+     * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the StemmerTokenFilter.
      */
     public static StemmerTokenFilter fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean nameFound = false;
-                    String name = null;
-                    boolean languageFound = false;
-                    StemmerTokenFilterLanguage language = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            boolean nameFound = false;
+            String name = null;
+            boolean languageFound = false;
+            StemmerTokenFilterLanguage language = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("@odata.type".equals(fieldName)) {
-                            String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
-                                throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
-                                                + odataType
-                                                + "'.");
-                            }
-                        } else if ("name".equals(fieldName)) {
-                            name = reader.getString();
-                            nameFound = true;
-                        } else if ("language".equals(fieldName)) {
-                            language = StemmerTokenFilterLanguage.fromString(reader.getString());
-                            languageFound = true;
-                        } else {
-                            reader.skipChildren();
-                        }
+                if ("@odata.type".equals(fieldName)) {
+                    String odataType = reader.getString();
+                    if (!"#Microsoft.Azure.Search.StemmerTokenFilter".equals(odataType)) {
+                        throw new IllegalStateException(
+                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.StemmerTokenFilter'. The found '@odata.type' was '"
+                                + odataType + "'.");
                     }
-                    if (nameFound && languageFound) {
-                        StemmerTokenFilter deserializedStemmerTokenFilter = new StemmerTokenFilter(name, language);
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                    nameFound = true;
+                } else if ("language".equals(fieldName)) {
+                    language = StemmerTokenFilterLanguage.fromString(reader.getString());
+                    languageFound = true;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (nameFound && languageFound) {
+                return new StemmerTokenFilter(name, language);
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!nameFound) {
+                missingProperties.add("name");
+            }
+            if (!languageFound) {
+                missingProperties.add("language");
+            }
 
-                        return deserializedStemmerTokenFilter;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!nameFound) {
-                        missingProperties.add("name");
-                    }
-                    if (!languageFound) {
-                        missingProperties.add("language");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

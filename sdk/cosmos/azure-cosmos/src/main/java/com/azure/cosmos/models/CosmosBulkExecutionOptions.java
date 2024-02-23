@@ -6,10 +6,10 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants;
+import com.azure.cosmos.implementation.batch.BulkExecutorDiagnosticsTracker;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 
 import java.time.Duration;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -29,7 +29,7 @@ public final class CosmosBulkExecutionOptions {
     private double minMicroBatchRetryRate = BatchRequestResponseConstants.DEFAULT_MIN_MICRO_BATCH_RETRY_RATE;
 
     private int maxMicroBatchPayloadSizeInBytes = BatchRequestResponseConstants.DEFAULT_MAX_DIRECT_MODE_BATCH_REQUEST_BODY_SIZE_IN_BYTES;
-    private Duration maxMicroBatchInterval = Duration.ofMillis(
+    private final Duration maxMicroBatchInterval = Duration.ofMillis(
         BatchRequestResponseConstants.DEFAULT_MAX_MICRO_BATCH_INTERVAL_IN_MILLISECONDS);
     private final Object legacyBatchScopedContext;
     private final CosmosBulkExecutionThresholdsState thresholds;
@@ -38,6 +38,8 @@ public final class CosmosBulkExecutionOptions {
     private Map<String, String> customOptions;
     private String throughputControlGroupName;
     private List<String> excludeRegions;
+
+    private BulkExecutorDiagnosticsTracker diagnosticsTracker = null;
 
     /**
      * Constructor
@@ -325,6 +327,14 @@ public final class CosmosBulkExecutionOptions {
         return UnmodifiableList.unmodifiableList(this.excludeRegions);
     }
 
+    void setDiagnosticsTracker(BulkExecutorDiagnosticsTracker tracker) {
+        this.diagnosticsTracker = tracker;
+    }
+
+    BulkExecutorDiagnosticsTracker getDiagnosticsTracker() {
+        return this.diagnosticsTracker;
+    }
+
     ///////////////////////////////////////////////////////////////////////////////////////////
     // the following helper/accessor only helps to access this class outside of this package.//
     ///////////////////////////////////////////////////////////////////////////////////////////
@@ -437,6 +447,15 @@ public final class CosmosBulkExecutionOptions {
                     cosmosBulkExecutionOptions.setMaxMicroBatchSize(maxMicroBatchSize);
                 }
 
+                @Override
+                public void setDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions, BulkExecutorDiagnosticsTracker tracker) {
+                    cosmosBulkExecutionOptions.setDiagnosticsTracker(tracker);
+                }
+
+                @Override
+                public BulkExecutorDiagnosticsTracker getDiagnosticsTracker(CosmosBulkExecutionOptions cosmosBulkExecutionOptions) {
+                    return cosmosBulkExecutionOptions.getDiagnosticsTracker();
+                }
             });
     }
 

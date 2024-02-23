@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.eventgrid.models.ResourceProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the System Topic. */
+/**
+ * Properties of the System Topic.
+ */
 @Fluent
 public final class SystemTopicProperties {
     /*
@@ -35,13 +37,15 @@ public final class SystemTopicProperties {
     @JsonProperty(value = "metricResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String metricResourceId;
 
-    /** Creates an instance of SystemTopicProperties class. */
+    /**
+     * Creates an instance of SystemTopicProperties class.
+     */
     public SystemTopicProperties() {
     }
 
     /**
      * Get the provisioningState property: Provisioning state of the system topic.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ResourceProvisioningState provisioningState() {
@@ -50,7 +54,7 @@ public final class SystemTopicProperties {
 
     /**
      * Get the source property: Source for the system topic.
-     *
+     * 
      * @return the source value.
      */
     public String source() {
@@ -59,7 +63,7 @@ public final class SystemTopicProperties {
 
     /**
      * Set the source property: Source for the system topic.
-     *
+     * 
      * @param source the source value to set.
      * @return the SystemTopicProperties object itself.
      */
@@ -70,7 +74,7 @@ public final class SystemTopicProperties {
 
     /**
      * Get the topicType property: TopicType for the system topic.
-     *
+     * 
      * @return the topicType value.
      */
     public String topicType() {
@@ -79,7 +83,7 @@ public final class SystemTopicProperties {
 
     /**
      * Set the topicType property: TopicType for the system topic.
-     *
+     * 
      * @param topicType the topicType value to set.
      * @return the SystemTopicProperties object itself.
      */
@@ -90,7 +94,7 @@ public final class SystemTopicProperties {
 
     /**
      * Get the metricResourceId property: Metric resource id for the system topic.
-     *
+     * 
      * @return the metricResourceId value.
      */
     public String metricResourceId() {
@@ -99,7 +103,7 @@ public final class SystemTopicProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

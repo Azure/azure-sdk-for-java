@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Name value pair. */
+/**
+ * Name value pair.
+ */
 @Fluent
 public final class NameValuePair {
     /*
@@ -22,13 +24,15 @@ public final class NameValuePair {
     @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of NameValuePair class. */
+    /**
+     * Creates an instance of NameValuePair class.
+     */
     public NameValuePair() {
     }
 
     /**
      * Get the name property: Pair name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class NameValuePair {
 
     /**
      * Set the name property: Pair name.
-     *
+     * 
      * @param name the name value to set.
      * @return the NameValuePair object itself.
      */
@@ -48,7 +52,7 @@ public final class NameValuePair {
 
     /**
      * Get the value property: Pair value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -57,7 +61,7 @@ public final class NameValuePair {
 
     /**
      * Set the value property: Pair value.
-     *
+     * 
      * @param value the value value to set.
      * @return the NameValuePair object itself.
      */
@@ -68,7 +72,7 @@ public final class NameValuePair {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

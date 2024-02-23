@@ -86,6 +86,7 @@ public class ExceptionPolicyExample {
     private void getExceptionPolicy() {
         String connectionString = System.getenv("AZURE_TEST_JOBROUTER_CONNECTION_STRING");
         JobRouterAdministrationClient routerAdminClient = new JobRouterAdministrationClientBuilder()
+            .connectionString(connectionString)
             .buildClient();
 
         ExceptionPolicy exceptionPolicyResult = routerAdminClient.getExceptionPolicy(exceptionPolicyId);
@@ -95,6 +96,7 @@ public class ExceptionPolicyExample {
     private void listExceptionPolicies() {
         String connectionString = System.getenv("AZURE_TEST_JOBROUTER_CONNECTION_STRING");
         JobRouterAdministrationClient routerAdminClient = new JobRouterAdministrationClientBuilder()
+            .connectionString(connectionString)
             .buildClient();
 
         PagedIterable<ExceptionPolicy> exceptionPolicyPagedIterable = routerAdminClient.listExceptionPolicies();
@@ -110,6 +112,7 @@ public class ExceptionPolicyExample {
     private void cleanUp() {
         String connectionString = System.getenv("AZURE_TEST_JOBROUTER_CONNECTION_STRING");
         JobRouterAdministrationClient routerAdminClient = new JobRouterAdministrationClientBuilder()
+            .connectionString(connectionString)
             .buildClient();
         routerAdminClient.deleteExceptionPolicy(exceptionPolicyId);
     }

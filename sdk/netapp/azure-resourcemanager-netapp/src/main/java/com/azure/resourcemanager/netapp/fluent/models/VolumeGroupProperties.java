@@ -10,7 +10,9 @@ import com.azure.resourcemanager.netapp.models.VolumeGroupVolumeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Volume group properties. */
+/**
+ * Volume group properties.
+ */
 @Fluent
 public final class VolumeGroupProperties {
     /*
@@ -31,13 +33,15 @@ public final class VolumeGroupProperties {
     @JsonProperty(value = "volumes")
     private List<VolumeGroupVolumeProperties> volumes;
 
-    /** Creates an instance of VolumeGroupProperties class. */
+    /**
+     * Creates an instance of VolumeGroupProperties class.
+     */
     public VolumeGroupProperties() {
     }
 
     /**
      * Get the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -46,7 +50,7 @@ public final class VolumeGroupProperties {
 
     /**
      * Get the groupMetadata property: Volume group details.
-     *
+     * 
      * @return the groupMetadata value.
      */
     public VolumeGroupMetadata groupMetadata() {
@@ -55,7 +59,7 @@ public final class VolumeGroupProperties {
 
     /**
      * Set the groupMetadata property: Volume group details.
-     *
+     * 
      * @param groupMetadata the groupMetadata value to set.
      * @return the VolumeGroupProperties object itself.
      */
@@ -66,7 +70,7 @@ public final class VolumeGroupProperties {
 
     /**
      * Get the volumes property: List of volumes from group.
-     *
+     * 
      * @return the volumes value.
      */
     public List<VolumeGroupVolumeProperties> volumes() {
@@ -75,7 +79,7 @@ public final class VolumeGroupProperties {
 
     /**
      * Set the volumes property: List of volumes from group.
-     *
+     * 
      * @param volumes the volumes value to set.
      * @return the VolumeGroupProperties object itself.
      */
@@ -86,7 +90,7 @@ public final class VolumeGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

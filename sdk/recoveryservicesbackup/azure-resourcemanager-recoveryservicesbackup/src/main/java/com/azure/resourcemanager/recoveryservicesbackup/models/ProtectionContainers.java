@@ -7,11 +7,13 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ProtectionContainers. */
+/**
+ * Resource collection API of ProtectionContainers.
+ */
 public interface ProtectionContainers {
     /**
      * Gets details of the specific container registered to your Recovery Services Vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Name of the fabric where the container belongs.
@@ -22,12 +24,12 @@ public interface ProtectionContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of the specific container registered to your Recovery Services Vault along with {@link Response}.
      */
-    Response<ProtectionContainerResource> getWithResponse(
-        String vaultName, String resourceGroupName, String fabricName, String containerName, Context context);
+    Response<ProtectionContainerResource> getWithResponse(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, Context context);
 
     /**
      * Gets details of the specific container registered to your Recovery Services Vault.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Name of the fabric where the container belongs.
@@ -37,14 +39,14 @@ public interface ProtectionContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return details of the specific container registered to your Recovery Services Vault.
      */
-    ProtectionContainerResource get(
-        String vaultName, String resourceGroupName, String fabricName, String containerName);
+    ProtectionContainerResource get(String vaultName, String resourceGroupName, String fabricName,
+        String containerName);
 
     /**
      * Unregisters the given container from your Recovery Services Vault. This is an asynchronous operation. To
-     * determine whether the backend service has finished processing the request, call Get Container Operation Result
-     * API.
-     *
+     * determine
+     * whether the backend service has finished processing the request, call Get Container Operation Result API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Name of the fabric where the container belongs.
@@ -55,14 +57,14 @@ public interface ProtectionContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> unregisterWithResponse(
-        String vaultName, String resourceGroupName, String fabricName, String containerName, Context context);
+    Response<Void> unregisterWithResponse(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, Context context);
 
     /**
      * Unregisters the given container from your Recovery Services Vault. This is an asynchronous operation. To
-     * determine whether the backend service has finished processing the request, call Get Container Operation Result
-     * API.
-     *
+     * determine
+     * whether the backend service has finished processing the request, call Get Container Operation Result API.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Name of the fabric where the container belongs.
@@ -75,9 +77,9 @@ public interface ProtectionContainers {
 
     /**
      * Inquires all the protectable items under the given container.
-     *
-     * <p>This is an async operation and the results should be tracked using location header or Azure-async-url.
-     *
+     * 
+     * This is an async operation and the results should be tracked using location header or Azure-async-url.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric Name associated with the container.
@@ -89,19 +91,14 @@ public interface ProtectionContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> inquireWithResponse(
-        String vaultName,
-        String resourceGroupName,
-        String fabricName,
-        String containerName,
-        String filter,
-        Context context);
+    Response<Void> inquireWithResponse(String vaultName, String resourceGroupName, String fabricName,
+        String containerName, String filter, Context context);
 
     /**
      * Inquires all the protectable items under the given container.
-     *
-     * <p>This is an async operation and the results should be tracked using location header or Azure-async-url.
-     *
+     * 
+     * This is an async operation and the results should be tracked using location header or Azure-async-url.
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric Name associated with the container.
@@ -115,7 +112,7 @@ public interface ProtectionContainers {
     /**
      * Discovers all the containers in the subscription that can be backed up to Recovery Services Vault. This is an
      * asynchronous operation. To know the status of the operation, call GetRefreshOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated the container.
@@ -126,13 +123,13 @@ public interface ProtectionContainers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> refreshWithResponse(
-        String vaultName, String resourceGroupName, String fabricName, String filter, Context context);
+    Response<Void> refreshWithResponse(String vaultName, String resourceGroupName, String fabricName, String filter,
+        Context context);
 
     /**
      * Discovers all the containers in the subscription that can be backed up to Recovery Services Vault. This is an
      * asynchronous operation. To know the status of the operation, call GetRefreshOperationResult API.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name associated the container.
@@ -144,7 +141,7 @@ public interface ProtectionContainers {
 
     /**
      * Gets details of the specific container registered to your Recovery Services Vault.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -155,7 +152,7 @@ public interface ProtectionContainers {
 
     /**
      * Gets details of the specific container registered to your Recovery Services Vault.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -167,7 +164,7 @@ public interface ProtectionContainers {
 
     /**
      * Begins definition for a new ProtectionContainerResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ProtectionContainerResource definition.
      */

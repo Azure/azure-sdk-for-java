@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** This is the top-level error object whose code matches the x-ms-error-code response header. */
+/**
+ * This is the top-level error object whose code matches the x-ms-error-code response header.
+ */
 @Immutable
 public final class ErrorDetail {
 
@@ -102,8 +104,8 @@ public final class ErrorDetail {
     }
 
     /**
-     * Get the innererror property: This is an object containing more specific information than the current object about
-     * the error.
+     * Get the innererror property: This is an object containing more specific information than the current object
+     * about the error.
      *
      * @return the innererror value.
      */

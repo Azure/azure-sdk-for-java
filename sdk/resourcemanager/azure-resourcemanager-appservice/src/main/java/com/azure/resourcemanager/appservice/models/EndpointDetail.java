@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Current TCP connectivity information from the App Service Environment to a single endpoint. */
+/**
+ * Current TCP connectivity information from the App Service Environment to a single endpoint.
+ */
 @Fluent
 public final class EndpointDetail {
     /*
@@ -36,13 +38,15 @@ public final class EndpointDetail {
     @JsonProperty(value = "isAccessible")
     private Boolean isAccessible;
 
-    /** Creates an instance of EndpointDetail class. */
+    /**
+     * Creates an instance of EndpointDetail class.
+     */
     public EndpointDetail() {
     }
 
     /**
      * Get the ipAddress property: An IP Address that Domain Name currently resolves to.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -51,7 +55,7 @@ public final class EndpointDetail {
 
     /**
      * Set the ipAddress property: An IP Address that Domain Name currently resolves to.
-     *
+     * 
      * @param ipAddress the ipAddress value to set.
      * @return the EndpointDetail object itself.
      */
@@ -62,7 +66,7 @@ public final class EndpointDetail {
 
     /**
      * Get the port property: The port an endpoint is connected to.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -71,7 +75,7 @@ public final class EndpointDetail {
 
     /**
      * Set the port property: The port an endpoint is connected to.
-     *
+     * 
      * @param port the port value to set.
      * @return the EndpointDetail object itself.
      */
@@ -83,7 +87,7 @@ public final class EndpointDetail {
     /**
      * Get the latency property: The time in milliseconds it takes for a TCP connection to be created from the App
      * Service Environment to this IpAddress at this Port.
-     *
+     * 
      * @return the latency value.
      */
     public Double latency() {
@@ -93,7 +97,7 @@ public final class EndpointDetail {
     /**
      * Set the latency property: The time in milliseconds it takes for a TCP connection to be created from the App
      * Service Environment to this IpAddress at this Port.
-     *
+     * 
      * @param latency the latency value to set.
      * @return the EndpointDetail object itself.
      */
@@ -103,9 +107,9 @@ public final class EndpointDetail {
     }
 
     /**
-     * Get the isAccessible property: Whether it is possible to create a TCP connection from the App Service Environment
-     * to this IpAddress at this Port.
-     *
+     * Get the isAccessible property: Whether it is possible to create a TCP connection from the App Service
+     * Environment to this IpAddress at this Port.
+     * 
      * @return the isAccessible value.
      */
     public Boolean isAccessible() {
@@ -113,9 +117,9 @@ public final class EndpointDetail {
     }
 
     /**
-     * Set the isAccessible property: Whether it is possible to create a TCP connection from the App Service Environment
-     * to this IpAddress at this Port.
-     *
+     * Set the isAccessible property: Whether it is possible to create a TCP connection from the App Service
+     * Environment to this IpAddress at this Port.
+     * 
      * @param isAccessible the isAccessible value to set.
      * @return the EndpointDetail object itself.
      */
@@ -126,7 +130,7 @@ public final class EndpointDetail {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

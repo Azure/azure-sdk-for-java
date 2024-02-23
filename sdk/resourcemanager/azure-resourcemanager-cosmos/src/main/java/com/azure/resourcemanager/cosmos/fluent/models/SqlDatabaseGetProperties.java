@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.models.SqlDatabaseGetPropertiesOptions;
 import com.azure.resourcemanager.cosmos.models.SqlDatabaseGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of an Azure Cosmos DB SQL database. */
+/**
+ * The properties of an Azure Cosmos DB SQL database.
+ */
 @Fluent
 public final class SqlDatabaseGetProperties {
     /*
@@ -24,13 +26,15 @@ public final class SqlDatabaseGetProperties {
     @JsonProperty(value = "options")
     private SqlDatabaseGetPropertiesOptions options;
 
-    /** Creates an instance of SqlDatabaseGetProperties class. */
+    /**
+     * Creates an instance of SqlDatabaseGetProperties class.
+     */
     public SqlDatabaseGetProperties() {
     }
 
     /**
      * Get the resource property: The resource property.
-     *
+     * 
      * @return the resource value.
      */
     public SqlDatabaseGetPropertiesResource resource() {
@@ -39,7 +43,7 @@ public final class SqlDatabaseGetProperties {
 
     /**
      * Set the resource property: The resource property.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the SqlDatabaseGetProperties object itself.
      */
@@ -50,7 +54,7 @@ public final class SqlDatabaseGetProperties {
 
     /**
      * Get the options property: The options property.
-     *
+     * 
      * @return the options value.
      */
     public SqlDatabaseGetPropertiesOptions options() {
@@ -59,7 +63,7 @@ public final class SqlDatabaseGetProperties {
 
     /**
      * Set the options property: The options property.
-     *
+     * 
      * @param options the options value to set.
      * @return the SqlDatabaseGetProperties object itself.
      */
@@ -70,7 +74,7 @@ public final class SqlDatabaseGetProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

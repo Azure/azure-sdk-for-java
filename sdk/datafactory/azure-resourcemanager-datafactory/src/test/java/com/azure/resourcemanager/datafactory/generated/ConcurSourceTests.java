@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.ConcurSource;
 public final class ConcurSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConcurSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"ConcurSource\",\"query\":\"datapyilojwcza\",\"queryTimeout\":\"datawtausk\",\"additionalColumns\":\"datahhmtypgrkdmezaun\",\"sourceRetryCount\":\"datacqtigav\",\"sourceRetryWait\":\"datasnrjhjlploaeppl\",\"maxConcurrentConnections\":\"datakcazuj\",\"disableMetricsCollection\":\"datauuzbsxhivncue\",\"\":{\"rtlnzdk\":\"dataexcn\"}}")
-                .toObject(ConcurSource.class);
+        ConcurSource model = BinaryData.fromString(
+            "{\"type\":\"ConcurSource\",\"query\":\"datarctbxpuis\",\"queryTimeout\":\"dataamgnpeosusi\",\"additionalColumns\":\"dataco\",\"sourceRetryCount\":\"datajabd\",\"sourceRetryWait\":\"dataalipbuqkdieuop\",\"maxConcurrentConnections\":\"dataaknhmi\",\"disableMetricsCollection\":\"dataf\",\"\":{\"oy\":\"datafmoonnria\"}}")
+            .toObject(ConcurSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConcurSource model =
-            new ConcurSource()
-                .withSourceRetryCount("datacqtigav")
-                .withSourceRetryWait("datasnrjhjlploaeppl")
-                .withMaxConcurrentConnections("datakcazuj")
-                .withDisableMetricsCollection("datauuzbsxhivncue")
-                .withQueryTimeout("datawtausk")
-                .withAdditionalColumns("datahhmtypgrkdmezaun")
-                .withQuery("datapyilojwcza");
+        ConcurSource model
+            = new ConcurSource().withSourceRetryCount("datajabd").withSourceRetryWait("dataalipbuqkdieuop")
+                .withMaxConcurrentConnections("dataaknhmi").withDisableMetricsCollection("dataf")
+                .withQueryTimeout("dataamgnpeosusi").withAdditionalColumns("dataco").withQuery("datarctbxpuis");
         model = BinaryData.fromObject(model).toObject(ConcurSource.class);
     }
 }

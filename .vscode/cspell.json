@@ -50,9 +50,11 @@
     "*.crt",
     "*.yml",
     ".vscode/cspell.json",
+    ".vscode/eclipse-format-azure-sdk-for-java.xml",
     "*.parquet",
     "**/sdk/**/src/main/java/**/implementation/**",
     "**/*-perf/**",
+    "**/*-stress/**",
     "**/*-tests/**",
     "**/*-test-*/**",
     "**/resourcemanager/**",
@@ -110,6 +112,7 @@
     "sdk/communication/azure-communication-phonenumbers/**",
     "sdk/communication/azure-communication-rooms/**",
     "sdk/communication/azure-communication-sms/**",
+    "sdk/communication/azure-communication-messages/**",
     "sdk/confidentialledger/azure-security-confidentialledger/**",
     "sdk/core/.idea/**",
     "sdk/containerregistry/azure-containers-containerregistry/**",
@@ -138,6 +141,7 @@
     "sdk/cosmos/azure-cosmos-encryption/**",
     "sdk/cosmos/azure-cosmos-spark_3_2-12/**",
     "sdk/spring/azure-spring-data-cosmos/**",
+    "sdk/cosmos/azure-cosmos-kafka-connect/**",
     "sdk/core/azure-json/**",
     "sdk/deviceupdate/azure-iot-deviceupdate/**",
     "sdk/e2e/src/**",
@@ -160,6 +164,7 @@
     "sdk/keyvault/test-resources.json",
     "sdk/formrecognizer/azure-ai-formrecognizer/**",
     "sdk/core/azure-core/**",
+    "sdk/documentintelligence/azure-ai-documentintelligence/**",
     "sdk/maps/azure-maps-render/**",
     "sdk/maps/azure-maps-route/**",
     "sdk/monitor/azure-monitor-ingestion/**",
@@ -250,7 +255,9 @@
     "creds",
     "credscan",
     "curr",
+    "dall",
     "DALL-E",
+    "dall-e",
     "databind",
     "databricks",
     "DAZURE",
@@ -327,6 +334,7 @@
     "logit",
     "logprobs",
     "logz",
+    "LOINC",
     "Lucene",
     "mgmt",
     "mibps",
@@ -372,6 +380,7 @@
     "SBOM",
     "scalastyle",
     "schemaregistryapacheavroserializer",
+    "SERIALVERSIONID",
     "servicebus",
     "sftdl",
     "skus",
@@ -392,6 +401,8 @@
     "unmanaged",
     "unmutated",
     "versionid",
+    "vertx",
+    "Vertx",
     "vmware",
     "vnet",
     "VNET",
@@ -480,6 +491,14 @@
       "filename": "sdk/maps/azure-maps-weather/src/main/java/com/azure/maps/weather/models/WeatherAlongRoutePrecipitation.java",
       "words": [
         "Decibles"
+      ]
+    },
+    {
+      "filename": "sdk/healthinsights/**",
+      "words": [
+        "authorid",
+        "encounterid",
+        "docid"
       ]
     },
     {
@@ -694,11 +713,11 @@
       ]
     },
     {
-      "filename": "**/sdk/cosmos/platform-matrix.json",
+      "filename": "**/sdk/cosmos/live-platform-matrix.json",
       "words": [
         "Pfast",
         "Pdirect",
-	      "Pmulti",
+	    "Pmulti",
         "Psplit",
         "Pquery",
         "Pcfp",
@@ -813,7 +832,8 @@
         "Oleh",
         "Dokuka",
         "Netifi",
-        "Zaugg"
+        "Zaugg",
+        "lrgrwrks"
       ]
     },
     {
@@ -864,7 +884,10 @@
     {
       "filename": "sdk/servicebus/azure-messaging-servicebus/**",
       "words": [
+        "anu",
         "Conniey",
+        "liudmila",
+        "Milli",
         "qpid",
         "unretriable"
         ]
@@ -1054,13 +1077,14 @@
         "Drevapi",
         "Dskip",
         "Dspotbugs",
-        "Pdev"
+        "Pdev",
+	"Djava"
       ]
     },
     {
-      "filename": "sdk/spring/spring-cloud-azure-starter-monitor/**.md",
+      "filename": "sdk/vision/azure-ai-vision-imageanalysis/**",
       "words": [
-        "Djava"
+        "javac"
       ]
     },
     {

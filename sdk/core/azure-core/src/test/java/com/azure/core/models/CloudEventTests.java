@@ -20,9 +20,10 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Base64;
-import java.util.HashMap;
+import java.util.Collections;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Stream;
@@ -43,27 +44,14 @@ public class CloudEventTests {
     public void testRoundTripCloudEvents() throws IOException {
         final String cloudEventJson = getTestPayloadFromFile("CloudEventDifferentDataTypes.json");
         final CloudEvent cloudEvent = CloudEvent.fromString(cloudEventJson).get(0);
-        final Map<String, Object> map = new HashMap<String, Object>() {
-            {
-                put("str", "str value");
-                put("number", 1.3);
-                put("integer", 1);
-                put("bool", true);
-                put("null", null);
-                put("array", new ArrayList<Integer>() {
-                    {
-                        add(1);
-                        add(2);
-                        add(3);
-                    }
-                });
-                put("object", new HashMap<String, String>() {
-                    {
-                        put("okey", "ovalue");
-                    }
-                });
-            }
-        };
+        final Map<String, Object> map = new LinkedHashMap<>();
+        map.put("str", "str value");
+        map.put("number", 1.3);
+        map.put("integer", 1);
+        map.put("bool", true);
+        map.put("null", null);
+        map.put("array", Arrays.asList(1, 2, 3));
+        map.put("object", Collections.singletonMap("okey", "ovalue"));
 
         // Check if deserialized CloudEvent has the correct properties.
         assertNotNull(cloudEvent);
@@ -129,8 +117,8 @@ public class CloudEventTests {
         assertNotNull(events);
         assertEquals(1, events.size());
 
-        final ContosoItemReceivedEventData data = events.get(0).getData().toObject(ContosoItemReceivedEventData.class,
-            SERIALIZER);
+        final ContosoItemReceivedEventData data
+            = events.get(0).getData().toObject(ContosoItemReceivedEventData.class, SERIALIZER);
         assertNotNull(data);
 
         assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", data.getItemSku());
@@ -178,8 +166,8 @@ public class CloudEventTests {
         assertNotNull(events);
         assertEquals(1, events.size());
 
-        final ContosoItemReceivedEventData data = events.get(0).getData().toObject(ContosoItemReceivedEventData.class,
-            SERIALIZER);
+        final ContosoItemReceivedEventData data
+            = events.get(0).getData().toObject(ContosoItemReceivedEventData.class, SERIALIZER);
         assertNotNull(data);
 
         assertEquals("512d38b6-c7b8-40c8-89fe-f46f9e9622b6", data.getItemSku());
@@ -211,12 +199,13 @@ public class CloudEventTests {
     public void serializeByteData() throws IOException {
         final String dataPayload = "AAA";
         final BinaryData binaryData = BinaryData.fromBytes(dataPayload.getBytes(StandardCharsets.UTF_8));
-        final CloudEvent cloudEvent = new CloudEvent("/testSource", "CloudEvent.Test", binaryData, CloudEventDataFormat.BYTES, "bytes")
-            .setDataSchema("/testSchema")
-            .setSubject("testSubject")
-            .setTime(OffsetDateTime.now())
-            .setSpecVersion("1.0")
-            .addExtensionAttribute("foo", "value");
+        final CloudEvent cloudEvent
+            = new CloudEvent("/testSource", "CloudEvent.Test", binaryData, CloudEventDataFormat.BYTES, "bytes")
+                .setDataSchema("/testSchema")
+                .setSubject("testSubject")
+                .setTime(OffsetDateTime.now())
+                .setSpecVersion("1.0")
+                .addExtensionAttribute("foo", "value");
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
             SERIALIZER.serialize(bos, cloudEvent);
             final String serializedString = bos.toString();
@@ -229,19 +218,17 @@ public class CloudEventTests {
 
     @Test
     public void serializeJsonData() throws IOException {
-        final Map<String, Object> mapData = new HashMap<String, Object>() {
-            {
-                put("Field1", "Value1");
-                put("Field2", "Value2");
-            }
-        };
+        final Map<String, Object> mapData = new LinkedHashMap<>();
+        mapData.put("Field1", "Value1");
+        mapData.put("Field2", "Value2");
+
         final BinaryData binaryData = BinaryData.fromObject(mapData, SERIALIZER);
-        final CloudEvent cloudEvent = new CloudEvent("/testSource", "CloudEvent.Test", binaryData, CloudEventDataFormat.JSON, "application/json")
-            .setDataSchema("/testSchema")
-            .setSubject("testSubject")
-            .setTime(OffsetDateTime.now())
-            .setSpecVersion("1.0")
-            .addExtensionAttribute("foo", "value");
+        final CloudEvent cloudEvent = new CloudEvent("/testSource", "CloudEvent.Test", binaryData,
+            CloudEventDataFormat.JSON, "application/json").setDataSchema("/testSchema")
+                .setSubject("testSubject")
+                .setTime(OffsetDateTime.now())
+                .setSpecVersion("1.0")
+                .addExtensionAttribute("foo", "value");
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
             SERIALIZER.serialize(bos, cloudEvent);
             final String serializedString = bos.toString();
@@ -256,11 +243,11 @@ public class CloudEventTests {
     @MethodSource("primitiveDataValues")
     public void serializePrimitiveData(Object dataValue) throws IOException {
         final BinaryData binaryData = BinaryData.fromObject(dataValue, SERIALIZER);
-        final CloudEvent cloudEvent = new CloudEvent("/testSource", "CloudEvent.Test", binaryData, CloudEventDataFormat.JSON, "application/json")
-            .setDataSchema("/testSchema")
-            .setSubject("testSubject")
-            .setTime(OffsetDateTime.now())
-            .setSpecVersion("1.0");
+        final CloudEvent cloudEvent = new CloudEvent("/testSource", "CloudEvent.Test", binaryData,
+            CloudEventDataFormat.JSON, "application/json").setDataSchema("/testSchema")
+                .setSubject("testSubject")
+                .setTime(OffsetDateTime.now())
+                .setSpecVersion("1.0");
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
             SERIALIZER.serialize(bos, cloudEvent);
             final String serializedString = bos.toString();
@@ -288,25 +275,20 @@ public class CloudEventTests {
     }
 
     private static Stream<Arguments> primitiveDataValues() {
-        return Stream.of(
-            Arguments.of("str"),
-            Arguments.of(1),
-            Arguments.of(1.1),
-            Arguments.of(true),
-            Arguments.of(false)
-        );
+        return Stream.of(Arguments.of("str"), Arguments.of(1), Arguments.of(1.1), Arguments.of(true),
+            Arguments.of(false));
     }
 
     @Test
     public void serializeStringDataAsObject() throws IOException {
         final String dataPayload = "AAA";
         final BinaryData binaryData = BinaryData.fromObject(dataPayload, SERIALIZER);
-        final CloudEvent cloudEvent = new CloudEvent("/testSource", "CloudEvent.Test", binaryData, CloudEventDataFormat.JSON, "application/json")
-            .setDataSchema("/testSchema")
-            .setSubject("testSubject")
-            .setTime(OffsetDateTime.now())
-            .setSpecVersion("1.0")
-            .addExtensionAttribute("foo", "value");
+        final CloudEvent cloudEvent = new CloudEvent("/testSource", "CloudEvent.Test", binaryData,
+            CloudEventDataFormat.JSON, "application/json").setDataSchema("/testSchema")
+                .setSubject("testSubject")
+                .setTime(OffsetDateTime.now())
+                .setSpecVersion("1.0")
+                .addExtensionAttribute("foo", "value");
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
             SERIALIZER.serialize(bos, cloudEvent);
             final String serializedString = bos.toString();
@@ -333,19 +315,19 @@ public class CloudEventTests {
     @Test
     public void serializeStringDataJsonLiteral() throws IOException {
         final BinaryData binaryData = BinaryData.fromString("{\"foo\":\"value\"}");
-        final CloudEvent cloudEvent = new CloudEvent("/testSource", "CloudEvent.Test", binaryData, CloudEventDataFormat.JSON, "application/json")
-            .setDataSchema("/testSchema")
-            .setSubject("testSubject")
-            .setTime(OffsetDateTime.now())
-            .setSpecVersion("1.0")
-            .addExtensionAttribute("foo", "value");
+        final CloudEvent cloudEvent = new CloudEvent("/testSource", "CloudEvent.Test", binaryData,
+            CloudEventDataFormat.JSON, "application/json").setDataSchema("/testSchema")
+                .setSubject("testSubject")
+                .setTime(OffsetDateTime.now())
+                .setSpecVersion("1.0")
+                .addExtensionAttribute("foo", "value");
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
             SERIALIZER.serialize(bos, cloudEvent);
             final String serializedString = bos.toString();
             final CloudEvent deserializedCloudEvent = CloudEvent.fromString(serializedString).get(0);
             assertEquals("{\"foo\":\"value\"}", deserializedCloudEvent.getData().toString());
-            final Map<String, String> deserializedMap = deserializedCloudEvent.getData().toObject(
-                new TypeReference<Map<String, String>>() {
+            final Map<String, String> deserializedMap
+                = deserializedCloudEvent.getData().toObject(new TypeReference<Map<String, String>>() {
 
                 }, SERIALIZER);
             assertEquals("value", deserializedMap.get("foo"));
@@ -355,12 +337,13 @@ public class CloudEventTests {
 
     @Test
     public void serializeNullBinaryData() throws IOException {
-        final CloudEvent cloudEvent = new CloudEvent("/testSource", "CloudEvent.Test", null, CloudEventDataFormat.JSON, "application/json")
-            .setDataSchema("/testSchema")
-            .setSubject("testSubject")
-            .setTime(OffsetDateTime.now())
-            .setSpecVersion("1.0")
-            .addExtensionAttribute("foo", "value");
+        final CloudEvent cloudEvent
+            = new CloudEvent("/testSource", "CloudEvent.Test", null, CloudEventDataFormat.JSON, "application/json")
+                .setDataSchema("/testSchema")
+                .setSubject("testSubject")
+                .setTime(OffsetDateTime.now())
+                .setSpecVersion("1.0")
+                .addExtensionAttribute("foo", "value");
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
             SERIALIZER.serialize(bos, cloudEvent);
             final String serializedString = bos.toString();
@@ -373,14 +356,13 @@ public class CloudEventTests {
 
     @Test
     public void serializeBinaryDataFromNull() throws IOException {
-        final CloudEvent cloudEvent = new CloudEvent("/testSource", "CloudEvent.Test",
-            null,
-            CloudEventDataFormat.JSON, "application/json")
-            .setDataSchema("/testSchema")
-            .setSubject("testSubject")
-            .setTime(OffsetDateTime.now())
-            .setSpecVersion("1.0")
-            .addExtensionAttribute("foo", "value");
+        final CloudEvent cloudEvent
+            = new CloudEvent("/testSource", "CloudEvent.Test", null, CloudEventDataFormat.JSON, "application/json")
+                .setDataSchema("/testSchema")
+                .setSubject("testSubject")
+                .setTime(OffsetDateTime.now())
+                .setSpecVersion("1.0")
+                .addExtensionAttribute("foo", "value");
         try (ByteArrayOutputStream bos = new ByteArrayOutputStream()) {
             SERIALIZER.serialize(bos, cloudEvent);
             final String serializedString = bos.toString();
@@ -396,16 +378,12 @@ public class CloudEventTests {
     public void addAttributeIllegalArgument(String attributeName, Object value) {
         assertThrows(IllegalArgumentException.class, () -> {
             new CloudEvent("/testsrouce", "testtype", BinaryData.fromObject("str", SERIALIZER),
-                CloudEventDataFormat.JSON, "application/json")
-                .addExtensionAttribute(attributeName, value);
+                CloudEventDataFormat.JSON, "application/json").addExtensionAttribute(attributeName, value);
         });
     }
 
     private static Stream<Arguments> addAttributeIllegalArgumentTestData() {
-        return Stream.of(
-            Arguments.of("a_b", "value"),
-            Arguments.of("Ab", 1)
-        );
+        return Stream.of(Arguments.of("a_b", "value"), Arguments.of("Ab", 1));
     }
 
     @ParameterizedTest
@@ -413,24 +391,19 @@ public class CloudEventTests {
     public void addAttributeNullPointer(String attributeName, Object value) {
         assertThrows(NullPointerException.class, () -> {
             new CloudEvent("/testsrouce", "testtype", BinaryData.fromObject("str", SERIALIZER),
-                CloudEventDataFormat.JSON, "application/json")
-                .addExtensionAttribute(attributeName, value);
+                CloudEventDataFormat.JSON, "application/json").addExtensionAttribute(attributeName, value);
         });
     }
 
     private static Stream<Arguments> addAttributeNullPointerTestData() {
-        return Stream.of(
-            Arguments.of(null, "value"),
-            Arguments.of("name", null)
-        );
+        return Stream.of(Arguments.of(null, "value"), Arguments.of("name", null));
     }
 
     @Test
     public void addAttribute() {
         assertDoesNotThrow(() -> {
             new CloudEvent("/testsrouce", "testtype", BinaryData.fromObject("str", SERIALIZER),
-                CloudEventDataFormat.JSON, "application/json")
-                .addExtensionAttribute("name", "value");
+                CloudEventDataFormat.JSON, "application/json").addExtensionAttribute("name", "value");
         });
     }
 

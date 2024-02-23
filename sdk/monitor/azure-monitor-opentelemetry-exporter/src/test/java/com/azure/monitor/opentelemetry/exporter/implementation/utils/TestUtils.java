@@ -80,7 +80,7 @@ public final class TestUtils {
         new AzureMonitorExporterBuilder()
             .connectionString(connectionString)
             .httpPipeline(httpPipeline)
-            .build(sdkBuilder);
+            .install(sdkBuilder);
 
         return sdkBuilder.addPropertiesSupplier(() -> configuration).build().getOpenTelemetrySdk();
     }

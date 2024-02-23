@@ -38,23 +38,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in FqdnListGlobalRulestacksClient. */
+/**
+ * An instance of this class provides access to all the operations defined in FqdnListGlobalRulestacksClient.
+ */
 public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalRulestacksClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final FqdnListGlobalRulestacksService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final PaloAltoNetworksCloudngfwImpl client;
 
     /**
      * Initializes an instance of FqdnListGlobalRulestacksClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     FqdnListGlobalRulestacksClientImpl(PaloAltoNetworksCloudngfwImpl client) {
-        this.service =
-            RestProxy
-                .create(FqdnListGlobalRulestacksService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(FqdnListGlobalRulestacksService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,82 +70,64 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
     @Host("{$host}")
     @ServiceInterface(name = "PaloAltoNetworksClou")
     public interface FqdnListGlobalRulestacksService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/fqdnlists")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FqdnListGlobalRulestackResourceListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("globalRulestackName") String globalRulestackName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<FqdnListGlobalRulestackResourceListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("globalRulestackName") String globalRulestackName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/fqdnlists/{name}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FqdnListGlobalRulestackResourceInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("globalRulestackName") String globalRulestackName,
-            @PathParam("name") String name,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<FqdnListGlobalRulestackResourceInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("globalRulestackName") String globalRulestackName,
+            @PathParam("name") String name, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Put("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/fqdnlists/{name}")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("globalRulestackName") String globalRulestackName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("globalRulestackName") String globalRulestackName,
             @PathParam("name") String name,
             @BodyParam("application/json") FqdnListGlobalRulestackResourceInner resource,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Delete("/providers/PaloAltoNetworks.Cloudngfw/globalRulestacks/{globalRulestackName}/fqdnlists/{name}")
-        @ExpectedResponses({200, 202, 204})
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("globalRulestackName") String globalRulestackName,
-            @PathParam("name") String name,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("globalRulestackName") String globalRulestackName,
+            @PathParam("name") String name, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<FqdnListGlobalRulestackResourceListResult>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * List FqdnListGlobalRulestackResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a FqdnListGlobalRulestackResource list operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FqdnListGlobalRulestackResourceInner>> listSinglePageAsync(String globalRulestackName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -148,46 +135,30 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            globalRulestackName,
-                            accept,
-                            context))
-            .<PagedResponse<FqdnListGlobalRulestackResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                globalRulestackName, accept, context))
+            .<PagedResponse<FqdnListGlobalRulestackResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * List FqdnListGlobalRulestackResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a FqdnListGlobalRulestackResource list operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FqdnListGlobalRulestackResourceInner>> listSinglePageAsync(
-        String globalRulestackName, Context context) {
+    private Mono<PagedResponse<FqdnListGlobalRulestackResourceInner>> listSinglePageAsync(String globalRulestackName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -197,60 +168,52 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
         context = this.client.mergeContext(context);
         return service
             .list(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * List FqdnListGlobalRulestackResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FqdnListGlobalRulestackResource list operation as paginated response with {@link
-     *     PagedFlux}.
+     * @return the response of a FqdnListGlobalRulestackResource list operation as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FqdnListGlobalRulestackResourceInner> listAsync(String globalRulestackName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(globalRulestackName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(globalRulestackName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * List FqdnListGlobalRulestackResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FqdnListGlobalRulestackResource list operation as paginated response with {@link
-     *     PagedFlux}.
+     * @return the response of a FqdnListGlobalRulestackResource list operation as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FqdnListGlobalRulestackResourceInner> listAsync(String globalRulestackName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(globalRulestackName, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(globalRulestackName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * List FqdnListGlobalRulestackResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FqdnListGlobalRulestackResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a FqdnListGlobalRulestackResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FqdnListGlobalRulestackResourceInner> list(String globalRulestackName) {
@@ -259,14 +222,14 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
 
     /**
      * List FqdnListGlobalRulestackResource resources by Tenant.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response of a FqdnListGlobalRulestackResource list operation as paginated response with {@link
-     *     PagedIterable}.
+     * @return the response of a FqdnListGlobalRulestackResource list operation as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<FqdnListGlobalRulestackResourceInner> list(String globalRulestackName, Context context) {
@@ -275,7 +238,7 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
 
     /**
      * Get a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -284,13 +247,11 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
      * @return a FqdnListGlobalRulestackResource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FqdnListGlobalRulestackResourceInner>> getWithResponseAsync(
-        String globalRulestackName, String name) {
+    private Mono<Response<FqdnListGlobalRulestackResourceInner>> getWithResponseAsync(String globalRulestackName,
+        String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -301,22 +262,14 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            globalRulestackName,
-                            name,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                globalRulestackName, name, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @param context The context to associate with this operation.
@@ -326,13 +279,11 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
      * @return a FqdnListGlobalRulestackResource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FqdnListGlobalRulestackResourceInner>> getWithResponseAsync(
-        String globalRulestackName, String name, Context context) {
+    private Mono<Response<FqdnListGlobalRulestackResourceInner>> getWithResponseAsync(String globalRulestackName,
+        String name, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -343,13 +294,13 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, name, accept, context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, name, accept,
+            context);
     }
 
     /**
      * Get a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -364,7 +315,7 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
 
     /**
      * Get a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @param context The context to associate with this operation.
@@ -374,14 +325,14 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
      * @return a FqdnListGlobalRulestackResource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FqdnListGlobalRulestackResourceInner> getWithResponse(
-        String globalRulestackName, String name, Context context) {
+    public Response<FqdnListGlobalRulestackResourceInner> getWithResponse(String globalRulestackName, String name,
+        Context context) {
         return getWithResponseAsync(globalRulestackName, name, context).block();
     }
 
     /**
      * Get a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -396,7 +347,7 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
 
     /**
      * Create a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @param resource Resource create parameters.
@@ -406,13 +357,11 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
      * @return globalRulestack fqdnList along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String globalRulestackName, String name, FqdnListGlobalRulestackResourceInner resource) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String globalRulestackName, String name,
+        FqdnListGlobalRulestackResourceInner resource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -428,23 +377,14 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            globalRulestackName,
-                            name,
-                            resource,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(),
+                globalRulestackName, name, resource, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @param resource Resource create parameters.
@@ -455,13 +395,11 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
      * @return globalRulestack fqdnList along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String globalRulestackName, String name, FqdnListGlobalRulestackResourceInner resource, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String globalRulestackName, String name,
+        FqdnListGlobalRulestackResourceInner resource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -477,20 +415,13 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                globalRulestackName,
-                name,
-                resource,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, name,
+            resource, accept, context);
     }
 
     /**
      * Create a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @param resource Resource create parameters.
@@ -501,22 +432,17 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FqdnListGlobalRulestackResourceInner>, FqdnListGlobalRulestackResourceInner>
-        beginCreateOrUpdateAsync(
-            String globalRulestackName, String name, FqdnListGlobalRulestackResourceInner resource) {
+        beginCreateOrUpdateAsync(String globalRulestackName, String name,
+            FqdnListGlobalRulestackResourceInner resource) {
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(globalRulestackName, name, resource);
-        return this
-            .client
-            .<FqdnListGlobalRulestackResourceInner, FqdnListGlobalRulestackResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                FqdnListGlobalRulestackResourceInner.class,
-                FqdnListGlobalRulestackResourceInner.class,
-                this.client.getContext());
+        return this.client.<FqdnListGlobalRulestackResourceInner, FqdnListGlobalRulestackResourceInner>getLroResult(
+            mono, this.client.getHttpPipeline(), FqdnListGlobalRulestackResourceInner.class,
+            FqdnListGlobalRulestackResourceInner.class, this.client.getContext());
     }
 
     /**
      * Create a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @param resource Resource create parameters.
@@ -528,24 +454,19 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<FqdnListGlobalRulestackResourceInner>, FqdnListGlobalRulestackResourceInner>
-        beginCreateOrUpdateAsync(
-            String globalRulestackName, String name, FqdnListGlobalRulestackResourceInner resource, Context context) {
+        beginCreateOrUpdateAsync(String globalRulestackName, String name, FqdnListGlobalRulestackResourceInner resource,
+            Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(globalRulestackName, name, resource, context);
-        return this
-            .client
-            .<FqdnListGlobalRulestackResourceInner, FqdnListGlobalRulestackResourceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                FqdnListGlobalRulestackResourceInner.class,
-                FqdnListGlobalRulestackResourceInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(globalRulestackName, name, resource, context);
+        return this.client.<FqdnListGlobalRulestackResourceInner, FqdnListGlobalRulestackResourceInner>getLroResult(
+            mono, this.client.getHttpPipeline(), FqdnListGlobalRulestackResourceInner.class,
+            FqdnListGlobalRulestackResourceInner.class, context);
     }
 
     /**
      * Create a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @param resource Resource create parameters.
@@ -562,7 +483,7 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
 
     /**
      * Create a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @param resource Resource create parameters.
@@ -574,14 +495,14 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<FqdnListGlobalRulestackResourceInner>, FqdnListGlobalRulestackResourceInner>
-        beginCreateOrUpdate(
-            String globalRulestackName, String name, FqdnListGlobalRulestackResourceInner resource, Context context) {
+        beginCreateOrUpdate(String globalRulestackName, String name, FqdnListGlobalRulestackResourceInner resource,
+            Context context) {
         return this.beginCreateOrUpdateAsync(globalRulestackName, name, resource, context).getSyncPoller();
     }
 
     /**
      * Create a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @param resource Resource create parameters.
@@ -591,16 +512,15 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
      * @return globalRulestack fqdnList on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FqdnListGlobalRulestackResourceInner> createOrUpdateAsync(
-        String globalRulestackName, String name, FqdnListGlobalRulestackResourceInner resource) {
-        return beginCreateOrUpdateAsync(globalRulestackName, name, resource)
-            .last()
+    private Mono<FqdnListGlobalRulestackResourceInner> createOrUpdateAsync(String globalRulestackName, String name,
+        FqdnListGlobalRulestackResourceInner resource) {
+        return beginCreateOrUpdateAsync(globalRulestackName, name, resource).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @param resource Resource create parameters.
@@ -611,16 +531,15 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
      * @return globalRulestack fqdnList on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FqdnListGlobalRulestackResourceInner> createOrUpdateAsync(
-        String globalRulestackName, String name, FqdnListGlobalRulestackResourceInner resource, Context context) {
-        return beginCreateOrUpdateAsync(globalRulestackName, name, resource, context)
-            .last()
+    private Mono<FqdnListGlobalRulestackResourceInner> createOrUpdateAsync(String globalRulestackName, String name,
+        FqdnListGlobalRulestackResourceInner resource, Context context) {
+        return beginCreateOrUpdateAsync(globalRulestackName, name, resource, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @param resource Resource create parameters.
@@ -630,14 +549,14 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
      * @return globalRulestack fqdnList.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FqdnListGlobalRulestackResourceInner createOrUpdate(
-        String globalRulestackName, String name, FqdnListGlobalRulestackResourceInner resource) {
+    public FqdnListGlobalRulestackResourceInner createOrUpdate(String globalRulestackName, String name,
+        FqdnListGlobalRulestackResourceInner resource) {
         return createOrUpdateAsync(globalRulestackName, name, resource).block();
     }
 
     /**
      * Create a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @param resource Resource create parameters.
@@ -648,14 +567,14 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
      * @return globalRulestack fqdnList.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FqdnListGlobalRulestackResourceInner createOrUpdate(
-        String globalRulestackName, String name, FqdnListGlobalRulestackResourceInner resource, Context context) {
+    public FqdnListGlobalRulestackResourceInner createOrUpdate(String globalRulestackName, String name,
+        FqdnListGlobalRulestackResourceInner resource, Context context) {
         return createOrUpdateAsync(globalRulestackName, name, resource, context).block();
     }
 
     /**
      * Delete a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -666,10 +585,8 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String globalRulestackName, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -680,22 +597,14 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            globalRulestackName,
-                            name,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                globalRulestackName, name, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @param context The context to associate with this operation.
@@ -705,13 +614,11 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String globalRulestackName, String name, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String globalRulestackName, String name,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (globalRulestackName == null) {
             return Mono
@@ -722,13 +629,13 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, name, accept, context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), globalRulestackName, name, accept,
+            context);
     }
 
     /**
      * Delete a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -739,15 +646,13 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String globalRulestackName, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(globalRulestackName, name);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @param context The context to associate with this operation.
@@ -757,18 +662,17 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String globalRulestackName, String name, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String globalRulestackName, String name,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(globalRulestackName, name, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -783,7 +687,7 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
 
     /**
      * Delete a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @param context The context to associate with this operation.
@@ -799,7 +703,7 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
 
     /**
      * Delete a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -814,7 +718,7 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
 
     /**
      * Delete a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @param context The context to associate with this operation.
@@ -825,14 +729,13 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String globalRulestackName, String name, Context context) {
-        return beginDeleteAsync(globalRulestackName, name, context)
-            .last()
+        return beginDeleteAsync(globalRulestackName, name, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -846,7 +749,7 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
 
     /**
      * Delete a FqdnListGlobalRulestackResource.
-     *
+     * 
      * @param globalRulestackName GlobalRulestack resource name.
      * @param name fqdn list name.
      * @param context The context to associate with this operation.
@@ -861,14 +764,15 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a FqdnListGlobalRulestackResource list operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FqdnListGlobalRulestackResourceInner>> listNextSinglePageAsync(String nextLink) {
@@ -876,62 +780,43 @@ public final class FqdnListGlobalRulestacksClientImpl implements FqdnListGlobalR
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<FqdnListGlobalRulestackResourceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<FqdnListGlobalRulestackResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a FqdnListGlobalRulestackResource list operation along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FqdnListGlobalRulestackResourceInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<FqdnListGlobalRulestackResourceInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

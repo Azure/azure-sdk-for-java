@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.SalesforceServiceCloudSource
 public final class SalesforceServiceCloudSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SalesforceServiceCloudSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SalesforceServiceCloudSource\",\"query\":\"dataouppgp\",\"readBehavior\":\"datamg\",\"additionalColumns\":\"datatn\",\"sourceRetryCount\":\"datanp\",\"sourceRetryWait\":\"dataxnbogxkid\",\"maxConcurrentConnections\":\"dataxbgfwwcfwlwnj\",\"disableMetricsCollection\":\"datanmop\",\"\":{\"gimviefbjes\":\"datatdru\",\"juqwn\":\"dataiyjkhjuuep\",\"pxqs\":\"datajb\",\"isdwtug\":\"dataaxvq\"}}")
-                .toObject(SalesforceServiceCloudSource.class);
+        SalesforceServiceCloudSource model = BinaryData.fromString(
+            "{\"type\":\"SalesforceServiceCloudSource\",\"query\":\"datag\",\"readBehavior\":\"dataotvocjk\",\"additionalColumns\":\"datah\",\"sourceRetryCount\":\"datayvtrsgfdmtfn\",\"sourceRetryWait\":\"datatxqqlbmiq\",\"maxConcurrentConnections\":\"dataiahjxcd\",\"disableMetricsCollection\":\"datadlxwsfddyqpfyn\",\"\":{\"jzsjhhru\":\"datamjsurhl\",\"o\":\"dataizqvga\",\"am\":\"dataepnglzjhaqx\",\"s\":\"dataptc\"}}")
+            .toObject(SalesforceServiceCloudSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SalesforceServiceCloudSource model =
-            new SalesforceServiceCloudSource()
-                .withSourceRetryCount("datanp")
-                .withSourceRetryWait("dataxnbogxkid")
-                .withMaxConcurrentConnections("dataxbgfwwcfwlwnj")
-                .withDisableMetricsCollection("datanmop")
-                .withQuery("dataouppgp")
-                .withReadBehavior("datamg")
-                .withAdditionalColumns("datatn");
+        SalesforceServiceCloudSource model = new SalesforceServiceCloudSource().withSourceRetryCount("datayvtrsgfdmtfn")
+            .withSourceRetryWait("datatxqqlbmiq").withMaxConcurrentConnections("dataiahjxcd")
+            .withDisableMetricsCollection("datadlxwsfddyqpfyn").withQuery("datag").withReadBehavior("dataotvocjk")
+            .withAdditionalColumns("datah");
         model = BinaryData.fromObject(model).toObject(SalesforceServiceCloudSource.class);
     }
 }

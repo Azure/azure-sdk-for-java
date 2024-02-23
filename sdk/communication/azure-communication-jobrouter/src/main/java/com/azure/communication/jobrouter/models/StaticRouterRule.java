@@ -11,7 +11,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /** A rule providing static rules that always return the same result, regardless of input. */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("static-rule")
+@JsonTypeName("static")
 @Fluent
 public final class StaticRouterRule extends RouterRule {
 

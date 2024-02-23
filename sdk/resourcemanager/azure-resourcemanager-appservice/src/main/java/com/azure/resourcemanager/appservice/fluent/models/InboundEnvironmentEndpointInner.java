@@ -32,13 +32,15 @@ public final class InboundEnvironmentEndpointInner {
     @JsonProperty(value = "ports")
     private List<String> ports;
 
-    /** Creates an instance of InboundEnvironmentEndpointInner class. */
+    /**
+     * Creates an instance of InboundEnvironmentEndpointInner class.
+     */
     public InboundEnvironmentEndpointInner() {
     }
 
     /**
      * Get the description property: Short text describing the purpose of the network traffic.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -47,7 +49,7 @@ public final class InboundEnvironmentEndpointInner {
 
     /**
      * Set the description property: Short text describing the purpose of the network traffic.
-     *
+     * 
      * @param description the description value to set.
      * @return the InboundEnvironmentEndpointInner object itself.
      */
@@ -58,7 +60,7 @@ public final class InboundEnvironmentEndpointInner {
 
     /**
      * Get the endpoints property: The IP addresses that network traffic will originate from in cidr notation.
-     *
+     * 
      * @return the endpoints value.
      */
     public List<String> endpoints() {
@@ -67,7 +69,7 @@ public final class InboundEnvironmentEndpointInner {
 
     /**
      * Set the endpoints property: The IP addresses that network traffic will originate from in cidr notation.
-     *
+     * 
      * @param endpoints the endpoints value to set.
      * @return the InboundEnvironmentEndpointInner object itself.
      */
@@ -78,7 +80,7 @@ public final class InboundEnvironmentEndpointInner {
 
     /**
      * Get the ports property: The ports that network traffic will arrive to the App Service Environment at.
-     *
+     * 
      * @return the ports value.
      */
     public List<String> ports() {
@@ -87,7 +89,7 @@ public final class InboundEnvironmentEndpointInner {
 
     /**
      * Set the ports property: The ports that network traffic will arrive to the App Service Environment at.
-     *
+     * 
      * @param ports the ports value to set.
      * @return the InboundEnvironmentEndpointInner object itself.
      */
@@ -98,7 +100,7 @@ public final class InboundEnvironmentEndpointInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

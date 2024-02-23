@@ -17,8 +17,6 @@ import java.util.Collections;
 import java.util.Map;
 
 class PropertiesPostProcessor implements EnvironmentPostProcessor, Ordered {
-    private static final Logger LOG = LoggerFactory.getLogger(PropertiesPostProcessor.class);
-
     @Override
     public void postProcessEnvironment(ConfigurableEnvironment environment, SpringApplication application) {
 

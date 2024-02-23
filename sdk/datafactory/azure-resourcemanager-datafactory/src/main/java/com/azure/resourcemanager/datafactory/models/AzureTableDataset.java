@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The Azure Table storage dataset. */
+/**
+ * The Azure Table storage dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureTable")
 @Fluent
@@ -24,62 +26,78 @@ public final class AzureTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties", required = true)
     private AzureTableDatasetTypeProperties innerTypeProperties = new AzureTableDatasetTypeProperties();
 
-    /** Creates an instance of AzureTableDataset class. */
+    /**
+     * Creates an instance of AzureTableDataset class.
+     */
     public AzureTableDataset() {
     }
 
     /**
      * Get the innerTypeProperties property: Azure Table dataset properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private AzureTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableDataset withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableDataset withStructure(Object structure) {
         super.withStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableDataset withSchema(Object schema) {
         super.withSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableDataset withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableDataset withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableDataset withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableDataset withFolder(DatasetFolder folder) {
         super.withFolder(folder);
@@ -89,7 +107,7 @@ public final class AzureTableDataset extends Dataset {
     /**
      * Get the tableName property: The table name of the Azure Table storage. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the tableName value.
      */
     public Object tableName() {
@@ -99,7 +117,7 @@ public final class AzureTableDataset extends Dataset {
     /**
      * Set the tableName property: The table name of the Azure Table storage. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the AzureTableDataset object itself.
      */
@@ -113,17 +131,15 @@ public final class AzureTableDataset extends Dataset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model AzureTableDataset"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model AzureTableDataset"));
         } else {
             innerTypeProperties().validate();
         }

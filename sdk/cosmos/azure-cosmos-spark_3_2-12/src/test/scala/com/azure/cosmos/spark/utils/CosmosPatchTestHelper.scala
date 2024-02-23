@@ -6,7 +6,7 @@ package com.azure.cosmos.spark.utils
 import com.azure.cosmos.CosmosAsyncContainer
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils
 import com.azure.cosmos.models.PartitionKeyDefinition
-import com.azure.cosmos.spark.{BulkWriter, CosmosPatchColumnConfig, CosmosPatchConfigs, CosmosWriteConfig, DiagnosticsConfig, ItemWriteStrategy, PointWriter}
+import com.azure.cosmos.spark.{BulkWriter, CosmosPatchColumnConfig, CosmosPatchConfigs, CosmosWriteConfig, DiagnosticsConfig, ItemWriteStrategy, OutputMetricsPublisherTrait, PointWriter}
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.databind.node.ObjectNode
 import org.apache.commons.lang3.RandomUtils
@@ -17,7 +17,7 @@ import java.util.UUID
 import scala.collection.concurrent.TrieMap
 import scala.collection.mutable.ListBuffer
 
-object CosmosPatchTestHelper {
+private[spark] object CosmosPatchTestHelper {
  private val objectMapper = new ObjectMapper()
  private val IdAttributeName = "id"
 
@@ -25,12 +25,17 @@ object CosmosPatchTestHelper {
   getPatchItemWithSchema(id, partitionKeyPath, getPatchFullTestSchema())
  }
 
+def getPatchItemWithFullSchemaSubpartitions(id: String): ObjectNode = {
+  getPatchItemWithSchema(id, null, getPatchFullTestSchemaWithSubpartitions())
+}
+
  def getPatchItemWithSchema(id: String, partitionKeyPath: String, schema: StructType): ObjectNode = {
   val objectNode = objectMapper.createObjectNode()
   objectNode.put(IdAttributeName, id)
-  if (partitionKeyPath != IdAttributeName) {
-   objectNode.put(partitionKeyPath, UUID.randomUUID().toString)
+  if (partitionKeyPath != null && partitionKeyPath != IdAttributeName) {
+      objectNode.put(partitionKeyPath, UUID.randomUUID().toString)
   }
+  val guid = UUID.randomUUID().toString
 
   for (field <- schema.fields) {
    field.dataType match {
@@ -45,7 +50,21 @@ object CosmosPatchTestHelper {
     case BooleanType =>
      objectNode.put(field.name, RandomUtils.nextBoolean())
     case StringType =>
-     objectNode.put(field.name, UUID.randomUUID().toString)
+        if (!field.name.equals("tenantId") && !field.name.equals("userId") && !field.name.equals("sessionId")) {
+            objectNode.put(field.name, guid)
+        }
+        else if (field.name.equals("tenantId")) {
+            objectNode.put(field.name, id)
+        }
+        else if (field.name.equals("userId")) {
+            objectNode.put(field.name, "userId1")
+        }
+        else if (field.name.equals("sessionId")) {
+            objectNode.put(field.name, "sessionId1")
+        }
+        else {
+            objectNode.put(field.name, UUID.randomUUID().toString)
+        }
     case _: ArrayType =>
      val arrayNode = objectNode.putArray(field.name)
      arrayNode.add(UUID.randomUUID().toString)
@@ -64,6 +83,7 @@ object CosmosPatchTestHelper {
                             baseObjectNode: ObjectNode): ObjectNode = {
   val objectNode = objectMapper.createObjectNode()
 
+  val idguid = UUID.randomUUID().toString
   for (field <- schema.fields) {
    field.dataType match {
     case IntegerType =>
@@ -77,8 +97,25 @@ object CosmosPatchTestHelper {
     case BooleanType =>
      objectNode.put(field.name, !baseObjectNode.get(field.name).asBoolean())
     case StringType =>
-     if (field.name != IdAttributeName && field.name != partitionKeyPath) {
-      objectNode.put(field.name, UUID.randomUUID().toString)
+     if (field.name != IdAttributeName && field.name != partitionKeyPath && !field.name.equals("tenantId") && !field.name.equals("userId") && !field.name.equals("sessionId")) {
+      objectNode.put(field.name, idguid)
+     }
+     else if (field.name.equals("tenantId")) {
+         if (baseObjectNode.get("id") != null) {
+             objectNode.put(field.name, baseObjectNode.get("id").textValue())
+         }
+         else {
+             objectNode.put(field.name, idguid)
+         }
+     }
+     else if (field.name.equals("userId")) {
+         objectNode.put(field.name, "userId1")
+     }
+     else if (field.name.equals("sessionId")) {
+         objectNode.put(field.name, "sessionId1")
+     }
+     else {
+      objectNode.put(field.name, baseObjectNode.get(field.name).textValue())
      }
     case _: ArrayType =>
      val arrayNode = objectNode.putArray(field.name)
@@ -88,10 +125,11 @@ object CosmosPatchTestHelper {
    }
   }
 
+
+
+
   // add id and partitionKey
   objectNode.put(IdAttributeName, baseObjectNode.get(IdAttributeName).textValue())
-  objectNode.put(partitionKeyPath, baseObjectNode.get(partitionKeyPath).textValue())
-
   objectNode
  }
 
@@ -107,10 +145,26 @@ object CosmosPatchTestHelper {
   ))
  }
 
+def getPatchFullTestSchemaWithSubpartitions(): StructType = {
+  StructType(Seq(
+   StructField("propInt", IntegerType),
+   StructField("propLong", LongType),
+   StructField("propFloat", FloatType),
+   StructField("propDouble", DoubleType),
+   StructField("propBoolean", BooleanType),
+   StructField("propString", StringType),
+   StructField("tenantId", StringType),
+   StructField("userId", StringType),
+   StructField("sessionId", StringType),
+   StructField("propArray", ArrayType(StringType))
+  ))
+}
+
  def getBulkWriterForPatch(columnConfigsMap: TrieMap[String, CosmosPatchColumnConfig],
                            container: CosmosAsyncContainer,
                            partitionKeyDefinition: PartitionKeyDefinition,
-                           patchPredicateFilter: Option[String] = None): BulkWriter = {
+                           patchPredicateFilter: Option[String] = None,
+                           metricsPublisher: OutputMetricsPublisherTrait = new TestOutputMetricsPublisher): BulkWriter = {
   val patchConfigs = CosmosPatchConfigs(columnConfigsMap, patchPredicateFilter)
   val writeConfigForPatch = CosmosWriteConfig(
    ItemWriteStrategy.ItemPatch,
@@ -118,7 +172,12 @@ object CosmosPatchTestHelper {
    bulkEnabled = true,
    patchConfigs = Some(patchConfigs))
 
-  new BulkWriter(container, partitionKeyDefinition, writeConfigForPatch, DiagnosticsConfig(Option.empty, false, None))
+  new BulkWriter(
+    container,
+    partitionKeyDefinition,
+    writeConfigForPatch,
+    DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+    metricsPublisher)
  }
 
  def getBulkWriterForPatchBulkUpdate(columnConfigsMap: TrieMap[String, CosmosPatchColumnConfig],
@@ -132,13 +191,19 @@ object CosmosPatchTestHelper {
          bulkEnabled = true,
          patchConfigs = Some(patchConfigs))
 
-     new BulkWriter(container, partitionKeyDefinition, writeConfigForPatch, DiagnosticsConfig(Option.empty, false, None))
+     new BulkWriter(
+       container,
+       partitionKeyDefinition,
+       writeConfigForPatch,
+       DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+       new TestOutputMetricsPublisher)
  }
 
  def getPointWriterForPatch(columnConfigsMap: TrieMap[String, CosmosPatchColumnConfig],
                             container: CosmosAsyncContainer,
                             partitionKeyDefinition: PartitionKeyDefinition,
-                            patchPredicateFilter: Option[String] = None): PointWriter = {
+                            patchPredicateFilter: Option[String] = None,
+                            metricsPublisher: OutputMetricsPublisherTrait = new TestOutputMetricsPublisher): PointWriter = {
 
   val patchConfigs = CosmosPatchConfigs(columnConfigsMap, patchPredicateFilter)
   val writeConfigForPatch = CosmosWriteConfig(
@@ -148,7 +213,12 @@ object CosmosPatchTestHelper {
    patchConfigs = Some(patchConfigs))
 
   new PointWriter(
-   container, partitionKeyDefinition, writeConfigForPatch, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
+   container,
+    partitionKeyDefinition,
+    writeConfigForPatch,
+    DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+    MockTaskContext.mockTaskContext(),
+    metricsPublisher)
  }
 
  def getPointWriterForPatchBulkUpdate(columnConfigsMap: TrieMap[String, CosmosPatchColumnConfig],
@@ -164,7 +234,12 @@ object CosmosPatchTestHelper {
          patchConfigs = Some(patchConfigs))
 
      new PointWriter(
-         container, partitionKeyDefinition, writeConfigForPatch, DiagnosticsConfig(Option.empty, false, None), MockTaskContext.mockTaskContext())
+         container,
+       partitionKeyDefinition,
+       writeConfigForPatch,
+       DiagnosticsConfig(Option.empty, isClientTelemetryEnabled = false, None),
+       MockTaskContext.mockTaskContext(),
+       new TestOutputMetricsPublisher)
  }
 
  def getPatchConfigTestSchema(): StructType = {
@@ -219,7 +294,7 @@ object CosmosPatchTestHelper {
   *
   * @return the partition key path without
   */
-  // TODO: Reexamine the logic here when hierarchical partitioning being supported
+  // for hierarchical partitioning this is not used/circumvented, see logic in getPatchItemWithSchema()
  def getStrippedPartitionKeyPath(partitionKeyDefinition: PartitionKeyDefinition): String = {
   StringUtils.join(partitionKeyDefinition.getPaths, "").substring(1)
  }

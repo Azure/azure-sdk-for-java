@@ -11,11 +11,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.datafactory.fluent.models.ActivityRunsQueryResponseInner;
 import com.azure.resourcemanager.datafactory.models.RunFilterParameters;
 
-/** An instance of this class provides access to all the operations defined in ActivityRunsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ActivityRunsClient.
+ */
 public interface ActivityRunsClient {
     /**
      * Query activity runs based on input filter conditions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param runId The pipeline run identifier.
@@ -27,16 +29,12 @@ public interface ActivityRunsClient {
      * @return a list activity runs along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ActivityRunsQueryResponseInner> queryByPipelineRunWithResponse(
-        String resourceGroupName,
-        String factoryName,
-        String runId,
-        RunFilterParameters filterParameters,
-        Context context);
+    Response<ActivityRunsQueryResponseInner> queryByPipelineRunWithResponse(String resourceGroupName,
+        String factoryName, String runId, RunFilterParameters filterParameters, Context context);
 
     /**
      * Query activity runs based on input filter conditions.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param runId The pipeline run identifier.
@@ -47,6 +45,6 @@ public interface ActivityRunsClient {
      * @return a list activity runs.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ActivityRunsQueryResponseInner queryByPipelineRun(
-        String resourceGroupName, String factoryName, String runId, RunFilterParameters filterParameters);
+    ActivityRunsQueryResponseInner queryByPipelineRun(String resourceGroupName, String factoryName, String runId,
+        RunFilterParameters filterParameters);
 }

@@ -9,7 +9,9 @@ import com.azure.core.management.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes the network profile for the role instance. */
+/**
+ * Describes the network profile for the role instance.
+ */
 @Immutable
 public final class RoleInstanceNetworkProfile {
     /*
@@ -18,14 +20,16 @@ public final class RoleInstanceNetworkProfile {
     @JsonProperty(value = "networkInterfaces", access = JsonProperty.Access.WRITE_ONLY)
     private List<SubResource> networkInterfaces;
 
-    /** Creates an instance of RoleInstanceNetworkProfile class. */
+    /**
+     * Creates an instance of RoleInstanceNetworkProfile class.
+     */
     public RoleInstanceNetworkProfile() {
     }
 
     /**
-     * Get the networkInterfaces property: Specifies the list of resource Ids for the network interfaces associated with
-     * the role instance.
-     *
+     * Get the networkInterfaces property: Specifies the list of resource Ids for the network interfaces associated
+     * with the role instance.
+     * 
      * @return the networkInterfaces value.
      */
     public List<SubResource> networkInterfaces() {
@@ -34,7 +38,7 @@ public final class RoleInstanceNetworkProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

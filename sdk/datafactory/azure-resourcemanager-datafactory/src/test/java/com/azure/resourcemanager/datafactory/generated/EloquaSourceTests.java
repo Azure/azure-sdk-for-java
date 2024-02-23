@@ -10,24 +10,16 @@ import com.azure.resourcemanager.datafactory.models.EloquaSource;
 public final class EloquaSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EloquaSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"EloquaSource\",\"query\":\"dataxmpgfspwhfhdgu\",\"queryTimeout\":\"datagav\",\"additionalColumns\":\"datavdfytqzx\",\"sourceRetryCount\":\"dataqnwpwrfe\",\"sourceRetryWait\":\"dataggrm\",\"maxConcurrentConnections\":\"datafhkoe\",\"disableMetricsCollection\":\"datarjmicha\",\"\":{\"pxydi\":\"datantaqjvddeiqvrjh\"}}")
-                .toObject(EloquaSource.class);
+        EloquaSource model = BinaryData.fromString(
+            "{\"type\":\"EloquaSource\",\"query\":\"datafqqrarolc\",\"queryTimeout\":\"datahbynlbwcnn\",\"additionalColumns\":\"datafgstdifbyfjsl\",\"sourceRetryCount\":\"datagee\",\"sourceRetryWait\":\"datasoj\",\"maxConcurrentConnections\":\"dataarliig\",\"disableMetricsCollection\":\"datav\",\"\":{\"xuuqcmunh\":\"datadsjhx\"}}")
+            .toObject(EloquaSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EloquaSource model =
-            new EloquaSource()
-                .withSourceRetryCount("dataqnwpwrfe")
-                .withSourceRetryWait("dataggrm")
-                .withMaxConcurrentConnections("datafhkoe")
-                .withDisableMetricsCollection("datarjmicha")
-                .withQueryTimeout("datagav")
-                .withAdditionalColumns("datavdfytqzx")
-                .withQuery("dataxmpgfspwhfhdgu");
+        EloquaSource model = new EloquaSource().withSourceRetryCount("datagee").withSourceRetryWait("datasoj")
+            .withMaxConcurrentConnections("dataarliig").withDisableMetricsCollection("datav")
+            .withQueryTimeout("datahbynlbwcnn").withAdditionalColumns("datafgstdifbyfjsl").withQuery("datafqqrarolc");
         model = BinaryData.fromObject(model).toObject(EloquaSource.class);
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.appservice.fluent.models.RenewCertificateOrderRequestProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Class representing certificate renew request. */
+/**
+ * Class representing certificate renew request.
+ */
 @Fluent
 public final class RenewCertificateOrderRequest extends ProxyOnlyResource {
     /*
@@ -17,20 +19,24 @@ public final class RenewCertificateOrderRequest extends ProxyOnlyResource {
     @JsonProperty(value = "properties")
     private RenewCertificateOrderRequestProperties innerProperties;
 
-    /** Creates an instance of RenewCertificateOrderRequest class. */
+    /**
+     * Creates an instance of RenewCertificateOrderRequest class.
+     */
     public RenewCertificateOrderRequest() {
     }
 
     /**
      * Get the innerProperties property: RenewCertificateOrderRequest resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RenewCertificateOrderRequestProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RenewCertificateOrderRequest withKind(String kind) {
         super.withKind(kind);
@@ -39,7 +45,7 @@ public final class RenewCertificateOrderRequest extends ProxyOnlyResource {
 
     /**
      * Get the keySize property: Certificate Key Size.
-     *
+     * 
      * @return the keySize value.
      */
     public Integer keySize() {
@@ -48,7 +54,7 @@ public final class RenewCertificateOrderRequest extends ProxyOnlyResource {
 
     /**
      * Set the keySize property: Certificate Key Size.
-     *
+     * 
      * @param keySize the keySize value to set.
      * @return the RenewCertificateOrderRequest object itself.
      */
@@ -62,7 +68,7 @@ public final class RenewCertificateOrderRequest extends ProxyOnlyResource {
 
     /**
      * Get the csr property: Csr to be used for re-key operation.
-     *
+     * 
      * @return the csr value.
      */
     public String csr() {
@@ -71,7 +77,7 @@ public final class RenewCertificateOrderRequest extends ProxyOnlyResource {
 
     /**
      * Set the csr property: Csr to be used for re-key operation.
-     *
+     * 
      * @param csr the csr value to set.
      * @return the RenewCertificateOrderRequest object itself.
      */
@@ -86,7 +92,7 @@ public final class RenewCertificateOrderRequest extends ProxyOnlyResource {
     /**
      * Get the isPrivateKeyExternal property: Should we change the ASC type (from managed private key to external
      * private key and vice versa).
-     *
+     * 
      * @return the isPrivateKeyExternal value.
      */
     public Boolean isPrivateKeyExternal() {
@@ -96,7 +102,7 @@ public final class RenewCertificateOrderRequest extends ProxyOnlyResource {
     /**
      * Set the isPrivateKeyExternal property: Should we change the ASC type (from managed private key to external
      * private key and vice versa).
-     *
+     * 
      * @param isPrivateKeyExternal the isPrivateKeyExternal value to set.
      * @return the RenewCertificateOrderRequest object itself.
      */
@@ -110,7 +116,7 @@ public final class RenewCertificateOrderRequest extends ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

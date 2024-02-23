@@ -17,16 +17,10 @@ public final class DialogStateResponse {
     private String dialogId;
 
     /*
-     * Defines options for dialog.
+     * Defines dialog.
      */
-    @JsonProperty(value = "dialogOptions")
-    private DialogOptions dialogOptions;
-
-    /*
-     * Determines the type of the dialog.
-     */
-    @JsonProperty(value = "dialogInputType")
-    private DialogInputType dialogInputType;
+    @JsonProperty(value = "dialog")
+    private BaseDialog dialog;
 
     /*
      * The value to identify context of the operation.
@@ -55,42 +49,22 @@ public final class DialogStateResponse {
     }
 
     /**
-     * Get the dialogOptions property: Defines options for dialog.
+     * Get the dialog property: Defines dialog.
      *
-     * @return the dialogOptions value.
+     * @return the dialog value.
      */
-    public DialogOptions getDialogOptions() {
-        return this.dialogOptions;
+    public BaseDialog getDialog() {
+        return this.dialog;
     }
 
     /**
-     * Set the dialogOptions property: Defines options for dialog.
+     * Set the dialog property: Defines dialog.
      *
-     * @param dialogOptions the dialogOptions value to set.
+     * @param dialog the dialog value to set.
      * @return the DialogStateResponse object itself.
      */
-    public DialogStateResponse setDialogOptions(DialogOptions dialogOptions) {
-        this.dialogOptions = dialogOptions;
-        return this;
-    }
-
-    /**
-     * Get the dialogInputType property: Determines the type of the dialog.
-     *
-     * @return the dialogInputType value.
-     */
-    public DialogInputType getDialogInputType() {
-        return this.dialogInputType;
-    }
-
-    /**
-     * Set the dialogInputType property: Determines the type of the dialog.
-     *
-     * @param dialogInputType the dialogInputType value to set.
-     * @return the DialogStateResponse object itself.
-     */
-    public DialogStateResponse setDialogInputType(DialogInputType dialogInputType) {
-        this.dialogInputType = dialogInputType;
+    public DialogStateResponse setDialog(BaseDialog dialog) {
+        this.dialog = dialog;
         return this;
     }
 

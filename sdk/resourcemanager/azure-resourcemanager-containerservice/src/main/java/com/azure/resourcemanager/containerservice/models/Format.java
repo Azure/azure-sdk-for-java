@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for Format. */
+/**
+ * Defines values for Format.
+ */
 public final class Format extends ExpandableStringEnum<Format> {
-    /** Static value azure for Format. */
+    /**
+     * Static value azure for Format.
+     */
     public static final Format AZURE = fromString("azure");
 
-    /** Static value exec for Format. */
+    /**
+     * Static value exec for Format.
+     */
     public static final Format EXEC = fromString("exec");
 
     /**
      * Creates a new instance of Format value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class Format extends ExpandableStringEnum<Format> {
 
     /**
      * Creates or finds a Format from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Format.
      */
@@ -38,7 +44,7 @@ public final class Format extends ExpandableStringEnum<Format> {
 
     /**
      * Gets known Format values.
-     *
+     * 
      * @return known Format values.
      */
     public static Collection<Format> values() {

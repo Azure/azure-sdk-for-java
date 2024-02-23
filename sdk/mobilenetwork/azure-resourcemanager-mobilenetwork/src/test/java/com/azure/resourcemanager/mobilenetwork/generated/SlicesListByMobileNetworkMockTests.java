@@ -32,7 +32,7 @@ public final class SlicesListByMobileNetworkMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"snssai\":{\"sst\":1681361815,\"sd\":\"uygdjboqgr\"},\"description\":\"qjkqevadrmmwi\"},\"location\":\"wvcmj\",\"tags\":{\"zugamxzkrrcoiis\":\"iidisczskoswoqiq\"},\"id\":\"amnppcce\",\"name\":\"u\",\"type\":\"tdsbezax\"}]}";
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleted\",\"snssai\":{\"sst\":867213638,\"sd\":\"qcrj\"},\"description\":\"h\"},\"location\":\"ukvhd\",\"tags\":{\"jyixhaf\":\"yojbfqzdkf\",\"al\":\"atqxmbjroumzzn\",\"on\":\"jrhuzgf\",\"tiotzb\":\"tpusllywp\"},\"id\":\"d\",\"name\":\"ollgry\",\"type\":\"qiuasigrows\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -61,12 +61,12 @@ public final class SlicesListByMobileNetworkMockTests {
                     new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<Slice> response =
-            manager.slices().listByMobileNetwork("ollgry", "qiuasigrows", com.azure.core.util.Context.NONE);
+            manager.slices().listByMobileNetwork("zkltrfowtdvrfmv", "ih", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("wvcmj", response.iterator().next().location());
-        Assertions.assertEquals("iidisczskoswoqiq", response.iterator().next().tags().get("zugamxzkrrcoiis"));
-        Assertions.assertEquals(1681361815, response.iterator().next().snssai().sst());
-        Assertions.assertEquals("uygdjboqgr", response.iterator().next().snssai().sd());
-        Assertions.assertEquals("qjkqevadrmmwi", response.iterator().next().description());
+        Assertions.assertEquals("ukvhd", response.iterator().next().location());
+        Assertions.assertEquals("yojbfqzdkf", response.iterator().next().tags().get("jyixhaf"));
+        Assertions.assertEquals(867213638, response.iterator().next().snssai().sst());
+        Assertions.assertEquals("qcrj", response.iterator().next().snssai().sd());
+        Assertions.assertEquals("h", response.iterator().next().description());
     }
 }

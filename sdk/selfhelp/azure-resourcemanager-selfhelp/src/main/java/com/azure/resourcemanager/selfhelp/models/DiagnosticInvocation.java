@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Solution Invocation with additional params needed for invocation. */
+/**
+ * Solution Invocation with additional params needed for invocation.
+ */
 @Fluent
 public final class DiagnosticInvocation {
     /*
@@ -25,13 +27,15 @@ public final class DiagnosticInvocation {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> additionalParameters;
 
-    /** Creates an instance of DiagnosticInvocation class. */
+    /**
+     * Creates an instance of DiagnosticInvocation class.
+     */
     public DiagnosticInvocation() {
     }
 
     /**
      * Get the solutionId property: Solution Id to invoke.
-     *
+     * 
      * @return the solutionId value.
      */
     public String solutionId() {
@@ -40,7 +44,7 @@ public final class DiagnosticInvocation {
 
     /**
      * Set the solutionId property: Solution Id to invoke.
-     *
+     * 
      * @param solutionId the solutionId value to set.
      * @return the DiagnosticInvocation object itself.
      */
@@ -51,7 +55,7 @@ public final class DiagnosticInvocation {
 
     /**
      * Get the additionalParameters property: Additional parameters required to invoke the solutionId.
-     *
+     * 
      * @return the additionalParameters value.
      */
     public Map<String, String> additionalParameters() {
@@ -60,7 +64,7 @@ public final class DiagnosticInvocation {
 
     /**
      * Set the additionalParameters property: Additional parameters required to invoke the solutionId.
-     *
+     * 
      * @param additionalParameters the additionalParameters value to set.
      * @return the DiagnosticInvocation object itself.
      */
@@ -71,7 +75,7 @@ public final class DiagnosticInvocation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

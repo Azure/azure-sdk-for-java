@@ -7,7 +7,9 @@ package com.azure.resourcemanager.batch.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A set of Azure Batch account keys. */
+/**
+ * A set of Azure Batch account keys.
+ */
 @Immutable
 public final class BatchAccountKeysInner {
     /*
@@ -28,13 +30,15 @@ public final class BatchAccountKeysInner {
     @JsonProperty(value = "secondary", access = JsonProperty.Access.WRITE_ONLY)
     private String secondary;
 
-    /** Creates an instance of BatchAccountKeysInner class. */
+    /**
+     * Creates an instance of BatchAccountKeysInner class.
+     */
     public BatchAccountKeysInner() {
     }
 
     /**
      * Get the accountName property: The Batch account name.
-     *
+     * 
      * @return the accountName value.
      */
     public String accountName() {
@@ -43,7 +47,7 @@ public final class BatchAccountKeysInner {
 
     /**
      * Get the primary property: The primary key associated with the account.
-     *
+     * 
      * @return the primary value.
      */
     public String primary() {
@@ -52,7 +56,7 @@ public final class BatchAccountKeysInner {
 
     /**
      * Get the secondary property: The secondary key associated with the account.
-     *
+     * 
      * @return the secondary value.
      */
     public String secondary() {
@@ -61,7 +65,7 @@ public final class BatchAccountKeysInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -46,18 +46,20 @@ public class TestProxyUtils {
     private static final ClientLogger LOGGER = new ClientLogger(TestProxyUtils.class);
     private static final HttpHeaderName X_RECORDING_SKIP = HttpHeaderName.fromString("x-recording-skip");
 
-    private static final List<String> JSON_PROPERTIES_TO_REDACT = new ArrayList<>(
-        Arrays.asList("authHeader", "accountKey", "accessToken", "accountName", "applicationId", "apiKey",
-            "connectionString", "url", "host", "password", "userName"));
+    private static final List<String> JSON_PROPERTIES_TO_REDACT
+        = new ArrayList<>(Arrays.asList("authHeader", "accountKey", "accessToken", "accountName", "applicationId",
+            "apiKey", "connectionString", "url", "host", "password", "userName"));
 
-    private static final Map<String, String> HEADER_KEY_REGEX_TO_REDACT = new HashMap<String, String>() {{
+    private static final Map<String, String> HEADER_KEY_REGEX_TO_REDACT = new HashMap<String, String>() {
+        {
             put("Operation-Location", URL_REGEX);
             put("operation-location", URL_REGEX);
-            }};
+        }
+    };
 
     private static final String URL_REGEX = "(?<=http://|https://)([^/?]+)";
-    private static final List<String> HEADER_KEYS_TO_REDACT =
-        new ArrayList<>(Arrays.asList("Ocp-Apim-Subscription-Key", "api-key", "x-api-key", "subscription-key"));
+    private static final List<String> HEADER_KEYS_TO_REDACT
+        = new ArrayList<>(Arrays.asList("Ocp-Apim-Subscription-Key", "api-key", "x-api-key", "subscription-key"));
     private static final String REDACTED_VALUE = "REDACTED";
 
     // Redacts the following JSON properties in a request or response body:
@@ -73,21 +75,24 @@ public class TestProxyUtils {
     // - Value
     private static final String XML_BODY_PRIMARY_KEY_REDACTION = "<PrimaryKey>(?<secret>.*?)</PrimaryKey>";
     private static final String XML_BODY_SECONDARY_KEY_REDACTION = "<SecondaryKey>(?<secret>.*?)</SecondaryKey>";
-    private static final String XML_BODY_SIGNED_OID_REDACTION = "<UserDelegationKey>.*?<SignedOid>(?<secret>.*?)</SignedOid>.*?</UserDelegationKey>";
-    private static final String XML_BODY_SIGNED_TID_REDACTION = "<UserDelegationKey>.*?<SignedTid>(?<secret>.*?)</SignedTid>.*?</UserDelegationKey>";
-    private static final String XML_BODY_VALUE_REDACTION = "<UserDelegationKey>.*?<Value>(?<secret>.*?)</Value>.*?</UserDelegationKey>";
+    private static final String XML_BODY_SIGNED_OID_REDACTION
+        = "<UserDelegationKey>.*?<SignedOid>(?<secret>.*?)</SignedOid>.*?</UserDelegationKey>";
+    private static final String XML_BODY_SIGNED_TID_REDACTION
+        = "<UserDelegationKey>.*?<SignedTid>(?<secret>.*?)</SignedTid>.*?</UserDelegationKey>";
+    private static final String XML_BODY_VALUE_REDACTION
+        = "<UserDelegationKey>.*?<Value>(?<secret>.*?)</Value>.*?</UserDelegationKey>";
 
-    private static final HttpHeaderName X_RECORDING_UPSTREAM_BASE_URI =
-        HttpHeaderName.fromString("x-recording-upstream-base-uri");
+    private static final HttpHeaderName X_RECORDING_UPSTREAM_BASE_URI
+        = HttpHeaderName.fromString("x-recording-upstream-base-uri");
     private static final HttpHeaderName X_RECORDING_MODE = HttpHeaderName.fromString("x-recording-mode");
-    private static final HttpHeaderName X_REQUEST_MISMATCH_ERROR =
-        HttpHeaderName.fromString("x-request-mismatch-error");
-    private static final HttpHeaderName X_REQUEST_KNOWN_EXCEPTION_ERROR =
-        HttpHeaderName.fromString("x-request-known-exception-error");
-    private static final HttpHeaderName X_REQUEST_EXCEPTION_EXCEPTION_ERROR =
-        HttpHeaderName.fromString("x-request-exception-exception-error");
-    private static final HttpHeaderName X_ABSTRACTION_IDENTIFIER =
-        HttpHeaderName.fromString("x-abstraction-identifier");
+    private static final HttpHeaderName X_REQUEST_MISMATCH_ERROR
+        = HttpHeaderName.fromString("x-request-mismatch-error");
+    private static final HttpHeaderName X_REQUEST_KNOWN_EXCEPTION_ERROR
+        = HttpHeaderName.fromString("x-request-known-exception-error");
+    private static final HttpHeaderName X_REQUEST_EXCEPTION_EXCEPTION_ERROR
+        = HttpHeaderName.fromString("x-request-exception-exception-error");
+    private static final HttpHeaderName X_ABSTRACTION_IDENTIFIER
+        = HttpHeaderName.fromString("x-abstraction-identifier");
 
     private static volatile URL proxyUrl;
 
@@ -151,8 +156,8 @@ public class TestProxyUtils {
     }
 
     private static boolean assetJsonFileExists(Path testClassPath) {
-        return Files.exists(Paths.get(String.valueOf(TestUtils.getRepoRootResolveUntil(testClassPath, "target")),
-            "assets.json"));
+        return Files.exists(
+            Paths.get(String.valueOf(TestUtils.getRepoRootResolveUntil(testClassPath, "target")), "assets.json"));
     }
 
     /**
@@ -165,8 +170,7 @@ public class TestProxyUtils {
         HttpRequest responseRequest = response.getRequest();
         HttpHeaders requestHeaders = responseRequest.getHeaders();
         try {
-            URL originalUrl = UrlBuilder.parse(requestHeaders.getValue(X_RECORDING_UPSTREAM_BASE_URI))
-                .toUrl();
+            URL originalUrl = UrlBuilder.parse(requestHeaders.getValue(X_RECORDING_UPSTREAM_BASE_URI)).toUrl();
             UrlBuilder currentUrl = UrlBuilder.parse(responseRequest.getUrl());
             currentUrl.setScheme(originalUrl.getProtocol());
             currentUrl.setHost(originalUrl.getHost());
@@ -219,8 +223,8 @@ public class TestProxyUtils {
             error = httpResponse.getHeaderValue(X_REQUEST_EXCEPTION_EXCEPTION_ERROR);
         }
         if (error != null) {
-            throw LOGGER.logExceptionAsError(new RuntimeException("Test proxy exception: "
-                + new String(Base64.getDecoder().decode(error), StandardCharsets.UTF_8)));
+            throw LOGGER.logExceptionAsError(new RuntimeException(
+                "Test proxy exception: " + new String(Base64.getDecoder().decode(error), StandardCharsets.UTF_8)));
         }
     }
 
@@ -233,7 +237,7 @@ public class TestProxyUtils {
      */
     public static String getTestProxyVersion(Path testClassPath) {
         Path rootPath = TestUtils.getRepoRootResolveUntil(testClassPath, "eng");
-        Path versionFile =  Paths.get("eng", "common", "testproxy", "target_version.txt");
+        Path versionFile = Paths.get("eng", "common", "testproxy", "target_version.txt");
         rootPath = rootPath.resolve(versionFile);
         try {
             return Files.readAllLines(rootPath).get(0).replace(System.getProperty("line.separator"), "");
@@ -276,28 +280,26 @@ public class TestProxyUtils {
     }
 
     private static String createCustomMatcherRequestBody(CustomMatcher customMatcher) {
-        return String.format("{\"ignoredHeaders\":\"%s\",\"excludedHeaders\":\"%s\",\"compareBodies\":%s,\"ignoredQueryParameters\":\"%s\",\"ignoreQueryOrdering\":%s}",
+        return String.format(
+            "{\"ignoredHeaders\":\"%s\",\"excludedHeaders\":\"%s\",\"compareBodies\":%s,\"ignoredQueryParameters\":\"%s\",\"ignoreQueryOrdering\":%s}",
             getCommaSeperatedString(customMatcher.getHeadersKeyOnlyMatch()),
-            getCommaSeperatedString(customMatcher.getExcludedHeaders()),
-            customMatcher.isComparingBodies(),
-            getCommaSeperatedString(customMatcher.getIgnoredQueryParameters()),
-            customMatcher.isQueryOrderingIgnored());
+            getCommaSeperatedString(customMatcher.getExcludedHeaders()), customMatcher.isComparingBodies(),
+            getCommaSeperatedString(customMatcher.getIgnoredQueryParameters()), customMatcher.isQueryOrderingIgnored());
     }
 
     private static String getCommaSeperatedString(List<String> stringList) {
         if (stringList == null) {
             return null;
         }
-        return stringList.stream()
-            .filter(s -> !CoreUtils.isNullOrEmpty(s))
-            .collect(Collectors.joining(","));
+        return stringList.stream().filter(s -> !CoreUtils.isNullOrEmpty(s)).collect(Collectors.joining(","));
     }
 
     private static String createBodyJsonKeyRequestBody(String jsonKey, String regex, String redactedValue) {
         if (regex == null) {
             return String.format("{\"value\":\"%s\",\"jsonPath\":\"%s\"}", redactedValue, jsonKey);
         } else {
-            return String.format("{\"value\":\"%s\",\"jsonPath\":\"%s\",\"regex\":\"%s\"}", redactedValue, jsonKey, regex);
+            return String.format("{\"value\":\"%s\",\"jsonPath\":\"%s\",\"regex\":\"%s\"}", redactedValue, jsonKey,
+                regex);
         }
     }
 
@@ -354,8 +356,8 @@ public class TestProxyUtils {
 
                 case BODY_KEY:
                     sanitizerType = TestProxySanitizerType.BODY_KEY.getName();
-                    requestBody = createBodyJsonKeyRequestBody(testProxySanitizer.getKey(), testProxySanitizer.getRegex(),
-                        testProxySanitizer.getRedactedValue());
+                    requestBody = createBodyJsonKeyRequestBody(testProxySanitizer.getKey(),
+                        testProxySanitizer.getRegex(), testProxySanitizer.getRedactedValue());
                     return createHttpRequest(requestBody, sanitizerType, proxyUrl);
 
                 case HEADER:
@@ -364,8 +366,7 @@ public class TestProxyUtils {
                         throw new RuntimeException(
                             "Missing regexKey and/or headerKey for sanitizer type {" + sanitizerType + "}");
                     }
-                    requestBody = createRegexRequestBody(testProxySanitizer.getKey(),
-                        testProxySanitizer.getRegex(),
+                    requestBody = createRegexRequestBody(testProxySanitizer.getKey(), testProxySanitizer.getRegex(),
                         testProxySanitizer.getRedactedValue(), testProxySanitizer.getGroupForReplace());
                     return createHttpRequest(requestBody, sanitizerType, proxyUrl);
 
@@ -418,8 +419,8 @@ public class TestProxyUtils {
                         throw new RuntimeException(
                             "Missing regexKey and/or headerKey for sanitizer type {" + sanitizerType + "}");
                     }
-                    requestBody = createRegexRequestBody(sanitizer.getKey(), sanitizer.getRegex(), sanitizer.getRedactedValue(),
-                        sanitizer.getGroupForReplace());
+                    requestBody = createRegexRequestBody(sanitizer.getKey(), sanitizer.getRegex(),
+                        sanitizer.getRedactedValue(), sanitizer.getGroupForReplace());
                     break;
 
                 default:
@@ -434,8 +435,7 @@ public class TestProxyUtils {
     }
 
     private static HttpRequest createHttpRequest(String requestBody, String sanitizerType, URL proxyUrl) {
-        return new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/AddSanitizer")
-            .setBody(requestBody)
+        return new HttpRequest(HttpMethod.POST, proxyUrl + "/Admin/AddSanitizer").setBody(requestBody)
             .setHeader(X_ABSTRACTION_IDENTIFIER, sanitizerType);
     }
 
@@ -504,30 +504,35 @@ public class TestProxyUtils {
     private static List<TestProxySanitizer> addDefaultRegexSanitizers() {
         List<TestProxySanitizer> regexSanitizers = new ArrayList<>();
 
-        regexSanitizers.add(new TestProxySanitizer(JSON_BODY_REGEX_REDACTIONS, REDACTED_VALUE,
-            TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret"));
-        regexSanitizers.add(new TestProxySanitizer(XML_BODY_PRIMARY_KEY_REDACTION, REDACTED_VALUE,
-            TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret"));
-        regexSanitizers.add(new TestProxySanitizer(XML_BODY_SECONDARY_KEY_REDACTION, REDACTED_VALUE,
-            TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret"));
-        regexSanitizers.add(new TestProxySanitizer(XML_BODY_SIGNED_OID_REDACTION, REDACTED_VALUE,
-            TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret"));
-        regexSanitizers.add(new TestProxySanitizer(XML_BODY_SIGNED_TID_REDACTION, REDACTED_VALUE,
-            TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret"));
-        regexSanitizers.add(new TestProxySanitizer(XML_BODY_VALUE_REDACTION, REDACTED_VALUE,
-            TestProxySanitizerType.BODY_REGEX).setGroupForReplace("secret"));
+        regexSanitizers
+            .add(new TestProxySanitizer(JSON_BODY_REGEX_REDACTIONS, REDACTED_VALUE, TestProxySanitizerType.BODY_REGEX)
+                .setGroupForReplace("secret"));
+        regexSanitizers.add(
+            new TestProxySanitizer(XML_BODY_PRIMARY_KEY_REDACTION, REDACTED_VALUE, TestProxySanitizerType.BODY_REGEX)
+                .setGroupForReplace("secret"));
+        regexSanitizers.add(
+            new TestProxySanitizer(XML_BODY_SECONDARY_KEY_REDACTION, REDACTED_VALUE, TestProxySanitizerType.BODY_REGEX)
+                .setGroupForReplace("secret"));
+        regexSanitizers.add(
+            new TestProxySanitizer(XML_BODY_SIGNED_OID_REDACTION, REDACTED_VALUE, TestProxySanitizerType.BODY_REGEX)
+                .setGroupForReplace("secret"));
+        regexSanitizers.add(
+            new TestProxySanitizer(XML_BODY_SIGNED_TID_REDACTION, REDACTED_VALUE, TestProxySanitizerType.BODY_REGEX)
+                .setGroupForReplace("secret"));
+        regexSanitizers
+            .add(new TestProxySanitizer(XML_BODY_VALUE_REDACTION, REDACTED_VALUE, TestProxySanitizerType.BODY_REGEX)
+                .setGroupForReplace("secret"));
 
         // Add header key regexes
-        HEADER_KEY_REGEX_TO_REDACT.forEach((key, regex) ->
-            regexSanitizers.add(new TestProxySanitizer(key, regex, REDACTED_VALUE, HEADER)));
+        HEADER_KEY_REGEX_TO_REDACT
+            .forEach((key, regex) -> regexSanitizers.add(new TestProxySanitizer(key, regex, REDACTED_VALUE, HEADER)));
 
         return regexSanitizers;
     }
 
     private static List<TestProxySanitizer> addDefaultHeaderKeySanitizers() {
         return HEADER_KEYS_TO_REDACT.stream()
-            .map(headerKey ->
-                new TestProxySanitizer(headerKey, null, REDACTED_VALUE, HEADER))
+            .map(headerKey -> new TestProxySanitizer(headerKey, null, REDACTED_VALUE, HEADER))
             .collect(Collectors.toList());
     }
 }

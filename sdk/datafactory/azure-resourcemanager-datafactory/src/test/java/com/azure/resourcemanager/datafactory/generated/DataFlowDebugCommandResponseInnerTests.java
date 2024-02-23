@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DataFlowDebugCommandResponseInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataFlowDebugCommandResponseInner model =
-            BinaryData
-                .fromString("{\"status\":\"snewmozqvbub\",\"data\":\"amhsycxhxzgazt\"}")
+        DataFlowDebugCommandResponseInner model
+            = BinaryData.fromString("{\"status\":\"snewmozqvbub\",\"data\":\"amhsycxhxzgazt\"}")
                 .toObject(DataFlowDebugCommandResponseInner.class);
         Assertions.assertEquals("snewmozqvbub", model.status());
         Assertions.assertEquals("amhsycxhxzgazt", model.data());
@@ -21,8 +20,8 @@ public final class DataFlowDebugCommandResponseInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataFlowDebugCommandResponseInner model =
-            new DataFlowDebugCommandResponseInner().withStatus("snewmozqvbub").withData("amhsycxhxzgazt");
+        DataFlowDebugCommandResponseInner model
+            = new DataFlowDebugCommandResponseInner().withStatus("snewmozqvbub").withData("amhsycxhxzgazt");
         model = BinaryData.fromObject(model).toObject(DataFlowDebugCommandResponseInner.class);
         Assertions.assertEquals("snewmozqvbub", model.status());
         Assertions.assertEquals("amhsycxhxzgazt", model.data());

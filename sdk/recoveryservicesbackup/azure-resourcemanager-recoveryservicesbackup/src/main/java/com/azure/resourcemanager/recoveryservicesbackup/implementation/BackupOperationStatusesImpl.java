@@ -20,22 +20,18 @@ public final class BackupOperationStatusesImpl implements BackupOperationStatuse
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public BackupOperationStatusesImpl(
-        BackupOperationStatusesClient innerClient,
+    public BackupOperationStatusesImpl(BackupOperationStatusesClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<OperationStatus> getWithResponse(
-        String vaultName, String resourceGroupName, String operationId, Context context) {
-        Response<OperationStatusInner> inner =
-            this.serviceClient().getWithResponse(vaultName, resourceGroupName, operationId, context);
+    public Response<OperationStatus> getWithResponse(String vaultName, String resourceGroupName, String operationId,
+        Context context) {
+        Response<OperationStatusInner> inner
+            = this.serviceClient().getWithResponse(vaultName, resourceGroupName, operationId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationStatusImpl(inner.getValue(), this.manager()));
         } else {
             return null;

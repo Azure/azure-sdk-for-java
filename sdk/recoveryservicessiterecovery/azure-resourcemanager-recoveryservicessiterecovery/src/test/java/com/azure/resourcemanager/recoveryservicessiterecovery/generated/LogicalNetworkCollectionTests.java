@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class LogicalNetworkCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        LogicalNetworkCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"friendlyName\":\"j\",\"networkVirtualizationStatus\":\"dxob\",\"logicalNetworkUsage\":\"dxkqpx\",\"logicalNetworkDefinitionsStatus\":\"ajionpimexgstxg\"},\"location\":\"odgmaajrmvdjwz\",\"id\":\"lovmclwhijcoe\",\"name\":\"ctbzaq\",\"type\":\"qsycbkbfkgu\"}],\"nextLink\":\"kexxppof\"}")
-                .toObject(LogicalNetworkCollection.class);
+        LogicalNetworkCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"friendlyName\":\"j\",\"networkVirtualizationStatus\":\"dxob\",\"logicalNetworkUsage\":\"dxkqpx\",\"logicalNetworkDefinitionsStatus\":\"ajionpimexgstxg\"},\"location\":\"odgmaajrmvdjwz\",\"id\":\"lovmclwhijcoe\",\"name\":\"ctbzaq\",\"type\":\"qsycbkbfkgu\"}],\"nextLink\":\"kexxppof\"}")
+            .toObject(LogicalNetworkCollection.class);
         Assertions.assertEquals("j", model.value().get(0).properties().friendlyName());
         Assertions.assertEquals("dxob", model.value().get(0).properties().networkVirtualizationStatus());
         Assertions.assertEquals("dxkqpx", model.value().get(0).properties().logicalNetworkUsage());
@@ -29,20 +27,12 @@ public final class LogicalNetworkCollectionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        LogicalNetworkCollection model =
-            new LogicalNetworkCollection()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new LogicalNetworkInner()
-                                .withProperties(
-                                    new LogicalNetworkProperties()
-                                        .withFriendlyName("j")
-                                        .withNetworkVirtualizationStatus("dxob")
-                                        .withLogicalNetworkUsage("dxkqpx")
-                                        .withLogicalNetworkDefinitionsStatus("ajionpimexgstxg"))
-                                .withLocation("odgmaajrmvdjwz")))
-                .withNextLink("kexxppof");
+        LogicalNetworkCollection model
+            = new LogicalNetworkCollection().withValue(Arrays.asList(new LogicalNetworkInner()
+                .withProperties(
+                    new LogicalNetworkProperties().withFriendlyName("j").withNetworkVirtualizationStatus("dxob")
+                        .withLogicalNetworkUsage("dxkqpx").withLogicalNetworkDefinitionsStatus("ajionpimexgstxg"))
+                .withLocation("odgmaajrmvdjwz"))).withNextLink("kexxppof");
         model = BinaryData.fromObject(model).toObject(LogicalNetworkCollection.class);
         Assertions.assertEquals("j", model.value().get(0).properties().friendlyName());
         Assertions.assertEquals("dxob", model.value().get(0).properties().networkVirtualizationStatus());

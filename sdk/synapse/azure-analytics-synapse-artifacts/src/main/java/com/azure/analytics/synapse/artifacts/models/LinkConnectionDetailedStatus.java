@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The LinkConnectionDetailedStatus model. */
+/**
+ * The LinkConnectionDetailedStatus model.
+ */
 @Fluent
 public final class LinkConnectionDetailedStatus {
     /*
@@ -79,12 +81,15 @@ public final class LinkConnectionDetailedStatus {
     @JsonProperty(value = "landingZoneCredentialExpireTime")
     private OffsetDateTime landingZoneCredentialExpireTime;
 
-    /** Creates an instance of LinkConnectionDetailedStatus class. */
-    public LinkConnectionDetailedStatus() {}
+    /**
+     * Creates an instance of LinkConnectionDetailedStatus class.
+     */
+    public LinkConnectionDetailedStatus() {
+    }
 
     /**
      * Get the id property: Link connection id.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -93,7 +98,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Set the id property: Link connection id.
-     *
+     * 
      * @param id the id value to set.
      * @return the LinkConnectionDetailedStatus object itself.
      */
@@ -104,7 +109,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Get the name property: Link connection name.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -113,7 +118,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Set the name property: Link connection name.
-     *
+     * 
      * @param name the name value to set.
      * @return the LinkConnectionDetailedStatus object itself.
      */
@@ -124,7 +129,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Get the isApplyingChanges property: Is link connection applying changes.
-     *
+     * 
      * @return the isApplyingChanges value.
      */
     public Boolean isApplyingChanges() {
@@ -133,7 +138,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Set the isApplyingChanges property: Is link connection applying changes.
-     *
+     * 
      * @param isApplyingChanges the isApplyingChanges value to set.
      * @return the LinkConnectionDetailedStatus object itself.
      */
@@ -144,7 +149,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Get the isPartiallyFailed property: Is link connection partially failed.
-     *
+     * 
      * @return the isPartiallyFailed value.
      */
     public Boolean isPartiallyFailed() {
@@ -153,7 +158,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Set the isPartiallyFailed property: Is link connection partially failed.
-     *
+     * 
      * @param isPartiallyFailed the isPartiallyFailed value to set.
      * @return the LinkConnectionDetailedStatus object itself.
      */
@@ -164,7 +169,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Get the startTime property: Link connection start time.
-     *
+     * 
      * @return the startTime value.
      */
     public Object getStartTime() {
@@ -173,7 +178,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Set the startTime property: Link connection start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the LinkConnectionDetailedStatus object itself.
      */
@@ -184,7 +189,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Get the stopTime property: Link connection stop time.
-     *
+     * 
      * @return the stopTime value.
      */
     public Object getStopTime() {
@@ -193,7 +198,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Set the stopTime property: Link connection stop time.
-     *
+     * 
      * @param stopTime the stopTime value to set.
      * @return the LinkConnectionDetailedStatus object itself.
      */
@@ -206,7 +211,7 @@ public final class LinkConnectionDetailedStatus {
      * Get the status property: Link connection status, please refer to this
      * [articles](https://learn.microsoft.com/azure/synapse-analytics/synapse-link/sql-database-synapse-link#monitoring)
      * for details.
-     *
+     * 
      * @return the status value.
      */
     public String getStatus() {
@@ -217,7 +222,7 @@ public final class LinkConnectionDetailedStatus {
      * Set the status property: Link connection status, please refer to this
      * [articles](https://learn.microsoft.com/azure/synapse-analytics/synapse-link/sql-database-synapse-link#monitoring)
      * for details.
-     *
+     * 
      * @param status the status value to set.
      * @return the LinkConnectionDetailedStatus object itself.
      */
@@ -228,7 +233,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Get the continuousRunId property: Link connection's corresponding continuous run id.
-     *
+     * 
      * @return the continuousRunId value.
      */
     public String getContinuousRunId() {
@@ -237,7 +242,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Set the continuousRunId property: Link connection's corresponding continuous run id.
-     *
+     * 
      * @param continuousRunId the continuousRunId value to set.
      * @return the LinkConnectionDetailedStatus object itself.
      */
@@ -248,7 +253,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Get the error property: Link connection error.
-     *
+     * 
      * @return the error value.
      */
     public Object getError() {
@@ -257,7 +262,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Set the error property: Link connection error.
-     *
+     * 
      * @param error the error value to set.
      * @return the LinkConnectionDetailedStatus object itself.
      */
@@ -268,7 +273,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Get the refreshStatus property: Link connection refresh status.
-     *
+     * 
      * @return the refreshStatus value.
      */
     public LinkConnectionRefreshStatus getRefreshStatus() {
@@ -277,7 +282,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Set the refreshStatus property: Link connection refresh status.
-     *
+     * 
      * @param refreshStatus the refreshStatus value to set.
      * @return the LinkConnectionDetailedStatus object itself.
      */
@@ -288,7 +293,7 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Get the landingZoneCredentialExpireTime property: Link connection landing zone credential expire time.
-     *
+     * 
      * @return the landingZoneCredentialExpireTime value.
      */
     public OffsetDateTime getLandingZoneCredentialExpireTime() {
@@ -297,12 +302,12 @@ public final class LinkConnectionDetailedStatus {
 
     /**
      * Set the landingZoneCredentialExpireTime property: Link connection landing zone credential expire time.
-     *
+     * 
      * @param landingZoneCredentialExpireTime the landingZoneCredentialExpireTime value to set.
      * @return the LinkConnectionDetailedStatus object itself.
      */
-    public LinkConnectionDetailedStatus setLandingZoneCredentialExpireTime(
-            OffsetDateTime landingZoneCredentialExpireTime) {
+    public LinkConnectionDetailedStatus
+        setLandingZoneCredentialExpireTime(OffsetDateTime landingZoneCredentialExpireTime) {
         this.landingZoneCredentialExpireTime = landingZoneCredentialExpireTime;
         return this;
     }

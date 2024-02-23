@@ -19,7 +19,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/** Change data capture resource type. */
+/**
+ * Change data capture resource type.
+ */
 @Fluent
 public final class ChangeDataCaptureResourceInner extends SubResource {
     /*
@@ -49,15 +51,18 @@ public final class ChangeDataCaptureResourceInner extends SubResource {
     /*
      * Change data capture resource type.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of ChangeDataCaptureResourceInner class. */
+    /**
+     * Creates an instance of ChangeDataCaptureResourceInner class.
+     */
     public ChangeDataCaptureResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the change data capture.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ChangeDataCapture innerProperties() {
@@ -66,7 +71,7 @@ public final class ChangeDataCaptureResourceInner extends SubResource {
 
     /**
      * Get the name property: The resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -75,7 +80,7 @@ public final class ChangeDataCaptureResourceInner extends SubResource {
 
     /**
      * Get the type property: The resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -84,7 +89,7 @@ public final class ChangeDataCaptureResourceInner extends SubResource {
 
     /**
      * Get the etag property: Etag identifies change in the resource.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -93,7 +98,7 @@ public final class ChangeDataCaptureResourceInner extends SubResource {
 
     /**
      * Get the additionalProperties property: Change data capture resource type.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -103,7 +108,7 @@ public final class ChangeDataCaptureResourceInner extends SubResource {
 
     /**
      * Set the additionalProperties property: Change data capture resource type.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the ChangeDataCaptureResourceInner object itself.
      */
@@ -120,7 +125,9 @@ public final class ChangeDataCaptureResourceInner extends SubResource {
         additionalProperties.put(key, value);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ChangeDataCaptureResourceInner withId(String id) {
         super.withId(id);
@@ -129,7 +136,7 @@ public final class ChangeDataCaptureResourceInner extends SubResource {
 
     /**
      * Get the folder property: The folder that this CDC is in. If not specified, CDC will appear at the root level.
-     *
+     * 
      * @return the folder value.
      */
     public ChangeDataCaptureFolder folder() {
@@ -138,7 +145,7 @@ public final class ChangeDataCaptureResourceInner extends SubResource {
 
     /**
      * Set the folder property: The folder that this CDC is in. If not specified, CDC will appear at the root level.
-     *
+     * 
      * @param folder the folder value to set.
      * @return the ChangeDataCaptureResourceInner object itself.
      */
@@ -152,7 +159,7 @@ public final class ChangeDataCaptureResourceInner extends SubResource {
 
     /**
      * Get the description property: The description of the change data capture.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -161,7 +168,7 @@ public final class ChangeDataCaptureResourceInner extends SubResource {
 
     /**
      * Set the description property: The description of the change data capture.
-     *
+     * 
      * @param description the description value to set.
      * @return the ChangeDataCaptureResourceInner object itself.
      */
@@ -175,7 +182,7 @@ public final class ChangeDataCaptureResourceInner extends SubResource {
 
     /**
      * Get the sourceConnectionsInfo property: List of sources connections that can be used as sources in the CDC.
-     *
+     * 
      * @return the sourceConnectionsInfo value.
      */
     public List<MapperSourceConnectionsInfo> sourceConnectionsInfo() {
@@ -184,12 +191,12 @@ public final class ChangeDataCaptureResourceInner extends SubResource {
 
     /**
      * Set the sourceConnectionsInfo property: List of sources connections that can be used as sources in the CDC.
-     *
+     * 
      * @param sourceConnectionsInfo the sourceConnectionsInfo value to set.
      * @return the ChangeDataCaptureResourceInner object itself.
      */
-    public ChangeDataCaptureResourceInner withSourceConnectionsInfo(
-        List<MapperSourceConnectionsInfo> sourceConnectionsInfo) {
+    public ChangeDataCaptureResourceInner
+        withSourceConnectionsInfo(List<MapperSourceConnectionsInfo> sourceConnectionsInfo) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ChangeDataCapture();
         }
@@ -199,7 +206,7 @@ public final class ChangeDataCaptureResourceInner extends SubResource {
 
     /**
      * Get the targetConnectionsInfo property: List of target connections that can be used as sources in the CDC.
-     *
+     * 
      * @return the targetConnectionsInfo value.
      */
     public List<MapperTargetConnectionsInfo> targetConnectionsInfo() {
@@ -208,12 +215,12 @@ public final class ChangeDataCaptureResourceInner extends SubResource {
 
     /**
      * Set the targetConnectionsInfo property: List of target connections that can be used as sources in the CDC.
-     *
+     * 
      * @param targetConnectionsInfo the targetConnectionsInfo value to set.
      * @return the ChangeDataCaptureResourceInner object itself.
      */
-    public ChangeDataCaptureResourceInner withTargetConnectionsInfo(
-        List<MapperTargetConnectionsInfo> targetConnectionsInfo) {
+    public ChangeDataCaptureResourceInner
+        withTargetConnectionsInfo(List<MapperTargetConnectionsInfo> targetConnectionsInfo) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ChangeDataCapture();
         }
@@ -223,7 +230,7 @@ public final class ChangeDataCaptureResourceInner extends SubResource {
 
     /**
      * Get the policy property: CDC policy.
-     *
+     * 
      * @return the policy value.
      */
     public MapperPolicy policy() {
@@ -232,7 +239,7 @@ public final class ChangeDataCaptureResourceInner extends SubResource {
 
     /**
      * Set the policy property: CDC policy.
-     *
+     * 
      * @param policy the policy value to set.
      * @return the ChangeDataCaptureResourceInner object itself.
      */
@@ -246,7 +253,7 @@ public final class ChangeDataCaptureResourceInner extends SubResource {
 
     /**
      * Get the allowVNetOverride property: A boolean to determine if the vnet configuration needs to be overwritten.
-     *
+     * 
      * @return the allowVNetOverride value.
      */
     public Boolean allowVNetOverride() {
@@ -255,7 +262,7 @@ public final class ChangeDataCaptureResourceInner extends SubResource {
 
     /**
      * Set the allowVNetOverride property: A boolean to determine if the vnet configuration needs to be overwritten.
-     *
+     * 
      * @param allowVNetOverride the allowVNetOverride value to set.
      * @return the ChangeDataCaptureResourceInner object itself.
      */
@@ -269,7 +276,7 @@ public final class ChangeDataCaptureResourceInner extends SubResource {
 
     /**
      * Get the status property: Status of the CDC as to if it is running or stopped.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -278,7 +285,7 @@ public final class ChangeDataCaptureResourceInner extends SubResource {
 
     /**
      * Set the status property: Status of the CDC as to if it is running or stopped.
-     *
+     * 
      * @param status the status value to set.
      * @return the ChangeDataCaptureResourceInner object itself.
      */
@@ -292,15 +299,13 @@ public final class ChangeDataCaptureResourceInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model ChangeDataCaptureResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model ChangeDataCaptureResourceInner"));
         } else {
             innerProperties().validate();
         }

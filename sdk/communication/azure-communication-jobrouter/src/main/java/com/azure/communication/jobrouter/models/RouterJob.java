@@ -5,6 +5,7 @@ package com.azure.communication.jobrouter.models;
 
 import com.azure.communication.jobrouter.implementation.accesshelpers.RouterJobConstructorProxy;
 import com.azure.communication.jobrouter.implementation.accesshelpers.RouterValueConstructorProxy;
+import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
 import com.azure.communication.jobrouter.implementation.converters.LabelSelectorAdapter;
 import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
 import com.azure.core.annotation.Fluent;
@@ -187,7 +188,7 @@ public final class RouterJob {
         setClassificationPolicyId(internal.getClassificationPolicyId());
         setTags(internal.getTags().entrySet().stream()
             .collect(Collectors.toMap(Map.Entry::getKey, entry -> RouterValueConstructorProxy.create(entry.getValue()))));
-        setMatchingMode(internal.getMatchingMode());
+        setMatchingMode(JobAdapter.convertJobMatchingModeToPublic(internal.getMatchingMode()));
     }
 
     static {

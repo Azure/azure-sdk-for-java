@@ -71,13 +71,15 @@ public final class IdentityProviders {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, CustomOpenIdConnectProvider> customOpenIdConnectProviders;
 
-    /** Creates an instance of IdentityProviders class. */
+    /**
+     * Creates an instance of IdentityProviders class.
+     */
     public IdentityProviders() {
     }
 
     /**
      * Get the azureActiveDirectory property: The configuration settings of the Azure Active directory provider.
-     *
+     * 
      * @return the azureActiveDirectory value.
      */
     public AzureActiveDirectory azureActiveDirectory() {
@@ -86,7 +88,7 @@ public final class IdentityProviders {
 
     /**
      * Set the azureActiveDirectory property: The configuration settings of the Azure Active directory provider.
-     *
+     * 
      * @param azureActiveDirectory the azureActiveDirectory value to set.
      * @return the IdentityProviders object itself.
      */
@@ -97,7 +99,7 @@ public final class IdentityProviders {
 
     /**
      * Get the facebook property: The configuration settings of the Facebook provider.
-     *
+     * 
      * @return the facebook value.
      */
     public Facebook facebook() {
@@ -106,7 +108,7 @@ public final class IdentityProviders {
 
     /**
      * Set the facebook property: The configuration settings of the Facebook provider.
-     *
+     * 
      * @param facebook the facebook value to set.
      * @return the IdentityProviders object itself.
      */
@@ -117,7 +119,7 @@ public final class IdentityProviders {
 
     /**
      * Get the gitHub property: The configuration settings of the GitHub provider.
-     *
+     * 
      * @return the gitHub value.
      */
     public GitHub gitHub() {
@@ -126,7 +128,7 @@ public final class IdentityProviders {
 
     /**
      * Set the gitHub property: The configuration settings of the GitHub provider.
-     *
+     * 
      * @param gitHub the gitHub value to set.
      * @return the IdentityProviders object itself.
      */
@@ -137,7 +139,7 @@ public final class IdentityProviders {
 
     /**
      * Get the google property: The configuration settings of the Google provider.
-     *
+     * 
      * @return the google value.
      */
     public Google google() {
@@ -146,7 +148,7 @@ public final class IdentityProviders {
 
     /**
      * Set the google property: The configuration settings of the Google provider.
-     *
+     * 
      * @param google the google value to set.
      * @return the IdentityProviders object itself.
      */
@@ -157,7 +159,7 @@ public final class IdentityProviders {
 
     /**
      * Get the legacyMicrosoftAccount property: The configuration settings of the legacy Microsoft Account provider.
-     *
+     * 
      * @return the legacyMicrosoftAccount value.
      */
     public LegacyMicrosoftAccount legacyMicrosoftAccount() {
@@ -166,7 +168,7 @@ public final class IdentityProviders {
 
     /**
      * Set the legacyMicrosoftAccount property: The configuration settings of the legacy Microsoft Account provider.
-     *
+     * 
      * @param legacyMicrosoftAccount the legacyMicrosoftAccount value to set.
      * @return the IdentityProviders object itself.
      */
@@ -177,7 +179,7 @@ public final class IdentityProviders {
 
     /**
      * Get the twitter property: The configuration settings of the Twitter provider.
-     *
+     * 
      * @return the twitter value.
      */
     public Twitter twitter() {
@@ -186,7 +188,7 @@ public final class IdentityProviders {
 
     /**
      * Set the twitter property: The configuration settings of the Twitter provider.
-     *
+     * 
      * @param twitter the twitter value to set.
      * @return the IdentityProviders object itself.
      */
@@ -197,7 +199,7 @@ public final class IdentityProviders {
 
     /**
      * Get the apple property: The configuration settings of the Apple provider.
-     *
+     * 
      * @return the apple value.
      */
     public Apple apple() {
@@ -206,7 +208,7 @@ public final class IdentityProviders {
 
     /**
      * Set the apple property: The configuration settings of the Apple provider.
-     *
+     * 
      * @param apple the apple value to set.
      * @return the IdentityProviders object itself.
      */
@@ -217,7 +219,7 @@ public final class IdentityProviders {
 
     /**
      * Get the azureStaticWebApps property: The configuration settings of the Azure Static Web Apps provider.
-     *
+     * 
      * @return the azureStaticWebApps value.
      */
     public AzureStaticWebApps azureStaticWebApps() {
@@ -226,7 +228,7 @@ public final class IdentityProviders {
 
     /**
      * Set the azureStaticWebApps property: The configuration settings of the Azure Static Web Apps provider.
-     *
+     * 
      * @param azureStaticWebApps the azureStaticWebApps value to set.
      * @return the IdentityProviders object itself.
      */
@@ -237,8 +239,9 @@ public final class IdentityProviders {
 
     /**
      * Get the customOpenIdConnectProviders property: The map of the name of the alias of each custom Open ID Connect
-     * provider to the configuration settings of the custom Open ID Connect provider.
-     *
+     * provider to the
+     * configuration settings of the custom Open ID Connect provider.
+     * 
      * @return the customOpenIdConnectProviders value.
      */
     public Map<String, CustomOpenIdConnectProvider> customOpenIdConnectProviders() {
@@ -247,20 +250,21 @@ public final class IdentityProviders {
 
     /**
      * Set the customOpenIdConnectProviders property: The map of the name of the alias of each custom Open ID Connect
-     * provider to the configuration settings of the custom Open ID Connect provider.
-     *
+     * provider to the
+     * configuration settings of the custom Open ID Connect provider.
+     * 
      * @param customOpenIdConnectProviders the customOpenIdConnectProviders value to set.
      * @return the IdentityProviders object itself.
      */
-    public IdentityProviders withCustomOpenIdConnectProviders(
-        Map<String, CustomOpenIdConnectProvider> customOpenIdConnectProviders) {
+    public IdentityProviders
+        withCustomOpenIdConnectProviders(Map<String, CustomOpenIdConnectProvider> customOpenIdConnectProviders) {
         this.customOpenIdConnectProviders = customOpenIdConnectProviders;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -289,14 +293,11 @@ public final class IdentityProviders {
             azureStaticWebApps().validate();
         }
         if (customOpenIdConnectProviders() != null) {
-            customOpenIdConnectProviders()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            customOpenIdConnectProviders().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The BackupResourceEncryptionConfigExtended model. */
+/**
+ * The BackupResourceEncryptionConfigExtended model.
+ */
 @Fluent
 public final class BackupResourceEncryptionConfigExtended extends BackupResourceEncryptionConfig {
     /*
@@ -22,13 +24,15 @@ public final class BackupResourceEncryptionConfigExtended extends BackupResource
     @JsonProperty(value = "useSystemAssignedIdentity")
     private Boolean useSystemAssignedIdentity;
 
-    /** Creates an instance of BackupResourceEncryptionConfigExtended class. */
+    /**
+     * Creates an instance of BackupResourceEncryptionConfigExtended class.
+     */
     public BackupResourceEncryptionConfigExtended() {
     }
 
     /**
      * Get the userAssignedIdentity property: User Assigned Identity Id.
-     *
+     * 
      * @return the userAssignedIdentity value.
      */
     public String userAssignedIdentity() {
@@ -37,7 +41,7 @@ public final class BackupResourceEncryptionConfigExtended extends BackupResource
 
     /**
      * Set the userAssignedIdentity property: User Assigned Identity Id.
-     *
+     * 
      * @param userAssignedIdentity the userAssignedIdentity value to set.
      * @return the BackupResourceEncryptionConfigExtended object itself.
      */
@@ -48,7 +52,7 @@ public final class BackupResourceEncryptionConfigExtended extends BackupResource
 
     /**
      * Get the useSystemAssignedIdentity property: bool to indicate whether to use system Assigned Identity or not.
-     *
+     * 
      * @return the useSystemAssignedIdentity value.
      */
     public Boolean useSystemAssignedIdentity() {
@@ -57,7 +61,7 @@ public final class BackupResourceEncryptionConfigExtended extends BackupResource
 
     /**
      * Set the useSystemAssignedIdentity property: bool to indicate whether to use system Assigned Identity or not.
-     *
+     * 
      * @param useSystemAssignedIdentity the useSystemAssignedIdentity value to set.
      * @return the BackupResourceEncryptionConfigExtended object itself.
      */
@@ -66,45 +70,55 @@ public final class BackupResourceEncryptionConfigExtended extends BackupResource
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackupResourceEncryptionConfigExtended withEncryptionAtRestType(EncryptionAtRestType encryptionAtRestType) {
         super.withEncryptionAtRestType(encryptionAtRestType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackupResourceEncryptionConfigExtended withKeyUri(String keyUri) {
         super.withKeyUri(keyUri);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackupResourceEncryptionConfigExtended withSubscriptionId(String subscriptionId) {
         super.withSubscriptionId(subscriptionId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackupResourceEncryptionConfigExtended withLastUpdateStatus(LastUpdateStatus lastUpdateStatus) {
         super.withLastUpdateStatus(lastUpdateStatus);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public BackupResourceEncryptionConfigExtended withInfrastructureEncryptionState(
-        InfrastructureEncryptionState infrastructureEncryptionState) {
+    public BackupResourceEncryptionConfigExtended
+        withInfrastructureEncryptionState(InfrastructureEncryptionState infrastructureEncryptionState) {
         super.withInfrastructureEncryptionState(infrastructureEncryptionState);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

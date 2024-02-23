@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Deployment status collection ARM resource. */
+/**
+ * Deployment status collection ARM resource.
+ */
 @Fluent
 public final class CsmDeploymentStatusCollection {
     /*
@@ -24,13 +26,15 @@ public final class CsmDeploymentStatusCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of CsmDeploymentStatusCollection class. */
+    /**
+     * Creates an instance of CsmDeploymentStatusCollection class.
+     */
     public CsmDeploymentStatusCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<CsmDeploymentStatus> value() {
@@ -39,7 +43,7 @@ public final class CsmDeploymentStatusCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the CsmDeploymentStatusCollection object itself.
      */
@@ -50,7 +54,7 @@ public final class CsmDeploymentStatusCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,15 +63,13 @@ public final class CsmDeploymentStatusCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model CsmDeploymentStatusCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model CsmDeploymentStatusCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

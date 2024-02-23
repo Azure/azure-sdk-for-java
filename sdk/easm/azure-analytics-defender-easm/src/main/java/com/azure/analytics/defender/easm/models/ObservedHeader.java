@@ -7,7 +7,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ObservedHeader model. */
+/**
+ * The ObservedHeader model.
+ */
 @Immutable
 public final class ObservedHeader extends ObservedValue {
 
@@ -25,9 +27,12 @@ public final class ObservedHeader extends ObservedValue {
     @JsonProperty(value = "headerValue")
     private String headerValue;
 
-    /** Creates an instance of ObservedHeader class. */
+    /**
+     * Creates an instance of ObservedHeader class.
+     */
     @Generated
-    private ObservedHeader() {}
+    private ObservedHeader() {
+    }
 
     /**
      * Get the headerName property: The headerName property.

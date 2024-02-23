@@ -317,6 +317,8 @@ public class KubernetesClusterAgentPoolImpl
         agentPoolInner.withEnableFips(innerModel().enableFips());
         agentPoolInner.withGpuInstanceProfile(innerModel().gpuInstanceProfile());
         agentPoolInner.withHostGroupId(innerModel().hostGroupId());
+        agentPoolInner.withCapacityReservationGroupId(innerModel().capacityReservationGroupId());
+        agentPoolInner.withNetworkProfile(innerModel().networkProfile());
         return agentPoolInner;
     }
 

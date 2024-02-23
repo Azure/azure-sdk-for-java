@@ -15,16 +15,18 @@ import java.util.Collection;
 public final class FunctionCallPreset extends ExpandableStringEnum<FunctionCallPreset> {
 
     /**
-     * Specifies that the model may either use any of the functions provided in this chat completions request or instead
-     * return a standard chat completions response as if no functions were provided.
+     * Specifies that the model may either use any of the functions provided in this chat completions request or
+     * instead return a standard chat completions response as if no functions were provided.
      */
-    @Generated public static final FunctionCallPreset AUTO = fromString("auto");
+    @Generated
+    public static final FunctionCallPreset AUTO = fromString("auto");
 
     /**
      * Specifies that the model should not respond with a function call and should instead provide a standard chat
      * completions response. Response content may still be influenced by the provided function information.
      */
-    @Generated public static final FunctionCallPreset NONE = fromString("none");
+    @Generated
+    public static final FunctionCallPreset NONE = fromString("none");
 
     /**
      * Creates a new instance of FunctionCallPreset value.
@@ -33,7 +35,8 @@ public final class FunctionCallPreset extends ExpandableStringEnum<FunctionCallP
      */
     @Generated
     @Deprecated
-    public FunctionCallPreset() {}
+    public FunctionCallPreset() {
+    }
 
     /**
      * Creates or finds a FunctionCallPreset from its string representation.

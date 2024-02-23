@@ -18,6 +18,7 @@ import com.azure.resourcemanager.compute.models.Encryption;
 import com.azure.resourcemanager.compute.models.EncryptionSettingsCollection;
 import com.azure.resourcemanager.compute.models.EncryptionType;
 import com.azure.resourcemanager.compute.models.GrantAccessData;
+import com.azure.resourcemanager.compute.models.HyperVGeneration;
 import com.azure.resourcemanager.compute.models.OperatingSystemTypes;
 import com.azure.resourcemanager.compute.models.Snapshot;
 import com.azure.resourcemanager.compute.fluent.models.DiskInner;
@@ -145,6 +146,11 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
     @Override
     public Integer logicalSectorSizeInBytes() {
         return this.innerModel().creationData().logicalSectorSize();
+    }
+
+    @Override
+    public HyperVGeneration hyperVGeneration() {
+        return this.innerModel().hyperVGeneration();
     }
 
     @Override
@@ -461,5 +467,11 @@ class DiskImpl extends GroupableResourceImpl<Disk, DiskInner, DiskImpl, ComputeM
             return null;
         }
         return DiskSkuTypes.fromStorageAccountType(DiskStorageAccountTypes.fromString(skuType.toString()));
+    }
+
+    @Override
+    public DiskImpl withHyperVGeneration(HyperVGeneration hyperVGeneration) {
+        this.innerModel().withHyperVGeneration(hyperVGeneration);
+        return this;
     }
 }

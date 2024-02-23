@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.NetworkVirtualApplianceCo
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** NetworkVirtualApplianceConnection list. */
+/**
+ * NetworkVirtualApplianceConnection list.
+ */
 @Fluent
 public final class NetworkVirtualApplianceConnectionList {
     /*
@@ -24,13 +26,15 @@ public final class NetworkVirtualApplianceConnectionList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of NetworkVirtualApplianceConnectionList class. */
+    /**
+     * Creates an instance of NetworkVirtualApplianceConnectionList class.
+     */
     public NetworkVirtualApplianceConnectionList() {
     }
 
     /**
      * Get the value property: The list of NetworkVirtualAppliance connections.
-     *
+     * 
      * @return the value value.
      */
     public List<NetworkVirtualApplianceConnectionInner> value() {
@@ -39,7 +43,7 @@ public final class NetworkVirtualApplianceConnectionList {
 
     /**
      * Set the value property: The list of NetworkVirtualAppliance connections.
-     *
+     * 
      * @param value the value value to set.
      * @return the NetworkVirtualApplianceConnectionList object itself.
      */
@@ -50,7 +54,7 @@ public final class NetworkVirtualApplianceConnectionList {
 
     /**
      * Get the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class NetworkVirtualApplianceConnectionList {
 
     /**
      * Set the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the NetworkVirtualApplianceConnectionList object itself.
      */
@@ -70,7 +74,7 @@ public final class NetworkVirtualApplianceConnectionList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,24 +8,34 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The managed integration runtime node status. */
+/**
+ * The managed integration runtime node status.
+ */
 public final class ManagedIntegrationRuntimeNodeStatus
     extends ExpandableStringEnum<ManagedIntegrationRuntimeNodeStatus> {
-    /** Static value Starting for ManagedIntegrationRuntimeNodeStatus. */
+    /**
+     * Static value Starting for ManagedIntegrationRuntimeNodeStatus.
+     */
     public static final ManagedIntegrationRuntimeNodeStatus STARTING = fromString("Starting");
 
-    /** Static value Available for ManagedIntegrationRuntimeNodeStatus. */
+    /**
+     * Static value Available for ManagedIntegrationRuntimeNodeStatus.
+     */
     public static final ManagedIntegrationRuntimeNodeStatus AVAILABLE = fromString("Available");
 
-    /** Static value Recycling for ManagedIntegrationRuntimeNodeStatus. */
+    /**
+     * Static value Recycling for ManagedIntegrationRuntimeNodeStatus.
+     */
     public static final ManagedIntegrationRuntimeNodeStatus RECYCLING = fromString("Recycling");
 
-    /** Static value Unavailable for ManagedIntegrationRuntimeNodeStatus. */
+    /**
+     * Static value Unavailable for ManagedIntegrationRuntimeNodeStatus.
+     */
     public static final ManagedIntegrationRuntimeNodeStatus UNAVAILABLE = fromString("Unavailable");
 
     /**
      * Creates a new instance of ManagedIntegrationRuntimeNodeStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,7 +44,7 @@ public final class ManagedIntegrationRuntimeNodeStatus
 
     /**
      * Creates or finds a ManagedIntegrationRuntimeNodeStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ManagedIntegrationRuntimeNodeStatus.
      */
@@ -45,7 +55,7 @@ public final class ManagedIntegrationRuntimeNodeStatus
 
     /**
      * Gets known ManagedIntegrationRuntimeNodeStatus values.
-     *
+     * 
      * @return known ManagedIntegrationRuntimeNodeStatus values.
      */
     public static Collection<ManagedIntegrationRuntimeNodeStatus> values() {

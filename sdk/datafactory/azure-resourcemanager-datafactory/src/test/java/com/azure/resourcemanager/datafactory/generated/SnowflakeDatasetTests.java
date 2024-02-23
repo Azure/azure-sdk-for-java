@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SnowflakeDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SnowflakeDataset model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SnowflakeTable\",\"typeProperties\":{\"schema\":\"dataqjfskjva\",\"table\":\"dataxrwkns\"},\"description\":\"hypbrzwiypz\",\"structure\":\"datahkecebtpgvutb\",\"schema\":\"datasfd\",\"linkedServiceName\":{\"referenceName\":\"wq\",\"parameters\":{\"dgrcifflxqqn\":\"dataowke\",\"ujticwmlf\":\"datagtcuyuwgnyjd\"}},\"parameters\":{\"ufpvvdgnmeiomn\":{\"type\":\"Float\",\"defaultValue\":\"datafmcoxbktuaj\"},\"i\":{\"type\":\"Float\",\"defaultValue\":\"dataaibcfbfyqz\"}},\"annotations\":[\"datafgvmrkmgifmy\",\"databuhdnhhcmtslptbd\",\"dataonhbl\"],\"folder\":{\"name\":\"cnuqfpzjz\"},\"\":{\"mruawqesqsqmiekx\":\"datacwtwtrchk\",\"qchf\":\"datap\",\"cu\":\"datatykkvjjlba\"}}")
-                .toObject(SnowflakeDataset.class);
+        SnowflakeDataset model = BinaryData.fromString(
+            "{\"type\":\"SnowflakeTable\",\"typeProperties\":{\"schema\":\"dataqjfskjva\",\"table\":\"dataxrwkns\"},\"description\":\"hypbrzwiypz\",\"structure\":\"datahkecebtpgvutb\",\"schema\":\"datasfd\",\"linkedServiceName\":{\"referenceName\":\"wq\",\"parameters\":{\"dgrcifflxqqn\":\"dataowke\",\"ujticwmlf\":\"datagtcuyuwgnyjd\"}},\"parameters\":{\"ufpvvdgnmeiomn\":{\"type\":\"Float\",\"defaultValue\":\"datafmcoxbktuaj\"},\"i\":{\"type\":\"Float\",\"defaultValue\":\"dataaibcfbfyqz\"}},\"annotations\":[\"datafgvmrkmgifmy\",\"databuhdnhhcmtslptbd\",\"dataonhbl\"],\"folder\":{\"name\":\"cnuqfpzjz\"},\"\":{\"mruawqesqsqmiekx\":\"datacwtwtrchk\",\"qchf\":\"datap\",\"cu\":\"datatykkvjjlba\"}}")
+            .toObject(SnowflakeDataset.class);
         Assertions.assertEquals("hypbrzwiypz", model.description());
         Assertions.assertEquals("wq", model.linkedServiceName().referenceName());
         Assertions.assertEquals(ParameterType.FLOAT, model.parameters().get("ufpvvdgnmeiomn").type());
@@ -31,25 +29,16 @@ public final class SnowflakeDatasetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SnowflakeDataset model =
-            new SnowflakeDataset()
-                .withDescription("hypbrzwiypz")
-                .withStructure("datahkecebtpgvutb")
-                .withSchema("datasfd")
-                .withLinkedServiceName(
-                    new LinkedServiceReference()
-                        .withReferenceName("wq")
-                        .withParameters(mapOf("dgrcifflxqqn", "dataowke", "ujticwmlf", "datagtcuyuwgnyjd")))
-                .withParameters(
-                    mapOf(
-                        "ufpvvdgnmeiomn",
-                        new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datafmcoxbktuaj"),
-                        "i",
-                        new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataaibcfbfyqz")))
-                .withAnnotations(Arrays.asList("datafgvmrkmgifmy", "databuhdnhhcmtslptbd", "dataonhbl"))
-                .withFolder(new DatasetFolder().withName("cnuqfpzjz"))
-                .withSchemaTypePropertiesSchema("dataqjfskjva")
-                .withTable("dataxrwkns");
+        SnowflakeDataset model = new SnowflakeDataset().withDescription("hypbrzwiypz")
+            .withStructure("datahkecebtpgvutb").withSchema("datasfd")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("wq")
+                .withParameters(mapOf("dgrcifflxqqn", "dataowke", "ujticwmlf", "datagtcuyuwgnyjd")))
+            .withParameters(mapOf("ufpvvdgnmeiomn",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("datafmcoxbktuaj"), "i",
+                new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataaibcfbfyqz")))
+            .withAnnotations(Arrays.asList("datafgvmrkmgifmy", "databuhdnhhcmtslptbd", "dataonhbl"))
+            .withFolder(new DatasetFolder().withName("cnuqfpzjz")).withSchemaTypePropertiesSchema("dataqjfskjva")
+            .withTable("dataxrwkns");
         model = BinaryData.fromObject(model).toObject(SnowflakeDataset.class);
         Assertions.assertEquals("hypbrzwiypz", model.description());
         Assertions.assertEquals("wq", model.linkedServiceName().referenceName());

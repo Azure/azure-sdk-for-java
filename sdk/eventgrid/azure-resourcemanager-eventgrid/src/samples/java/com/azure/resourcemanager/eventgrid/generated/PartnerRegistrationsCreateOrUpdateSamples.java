@@ -7,27 +7,30 @@ package com.azure.resourcemanager.eventgrid.generated;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for PartnerRegistrations CreateOrUpdate. */
+/**
+ * Samples for PartnerRegistrations CreateOrUpdate.
+ */
 public final class PartnerRegistrationsCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-06-01-preview/examples/PartnerRegistrations_CreateOrUpdate.json
+     * x-ms-original-file:
+     * specification/eventgrid/resource-manager/Microsoft.EventGrid/preview/2023-12-15-preview/examples/
+     * PartnerRegistrations_CreateOrUpdate.json
      */
     /**
      * Sample code: PartnerRegistrations_CreateOrUpdate.
-     *
+     * 
      * @param manager Entry point to EventGridManager.
      */
-    public static void partnerRegistrationsCreateOrUpdate(
-        com.azure.resourcemanager.eventgrid.EventGridManager manager) {
-        manager
-            .partnerRegistrations()
-            .define("examplePartnerRegistrationName1")
-            .withRegion("global")
+    public static void
+        partnerRegistrationsCreateOrUpdate(com.azure.resourcemanager.eventgrid.EventGridManager manager) {
+        manager.partnerRegistrations().define("examplePartnerRegistrationName1").withRegion("global")
             .withExistingResourceGroup("examplerg")
-            .withTags(mapOf("key1", "value1", "key2", "Value2", "key3", "Value3"))
+            .withTags(
+                mapOf("key1", "fakeTokenPlaceholder", "key2", "fakeTokenPlaceholder", "key3", "fakeTokenPlaceholder"))
             .create();
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

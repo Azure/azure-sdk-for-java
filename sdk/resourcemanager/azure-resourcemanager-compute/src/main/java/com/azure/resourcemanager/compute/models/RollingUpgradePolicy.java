@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The configuration parameters used while performing a rolling upgrade. */
+/**
+ * The configuration parameters used while performing a rolling upgrade.
+ */
 @Fluent
 public final class RollingUpgradePolicy {
     /*
@@ -69,7 +71,9 @@ public final class RollingUpgradePolicy {
     @JsonProperty(value = "maxSurge")
     private Boolean maxSurge;
 
-    /** Creates an instance of RollingUpgradePolicy class. */
+    /**
+     * Creates an instance of RollingUpgradePolicy class.
+     */
     public RollingUpgradePolicy() {
     }
 
@@ -78,7 +82,7 @@ public final class RollingUpgradePolicy {
      * upgraded simultaneously by the rolling upgrade in one batch. As this is a maximum, unhealthy instances in
      * previous or future batches can cause the percentage of instances in a batch to decrease to ensure higher
      * reliability. The default value for this parameter is 20%.
-     *
+     * 
      * @return the maxBatchInstancePercent value.
      */
     public Integer maxBatchInstancePercent() {
@@ -90,7 +94,7 @@ public final class RollingUpgradePolicy {
      * upgraded simultaneously by the rolling upgrade in one batch. As this is a maximum, unhealthy instances in
      * previous or future batches can cause the percentage of instances in a batch to decrease to ensure higher
      * reliability. The default value for this parameter is 20%.
-     *
+     * 
      * @param maxBatchInstancePercent the maxBatchInstancePercent value to set.
      * @return the RollingUpgradePolicy object itself.
      */
@@ -101,10 +105,10 @@ public final class RollingUpgradePolicy {
 
     /**
      * Get the maxUnhealthyInstancePercent property: The maximum percentage of the total virtual machine instances in
-     * the scale set that can be simultaneously unhealthy, either as a result of being upgraded, or by being found in an
-     * unhealthy state by the virtual machine health checks before the rolling upgrade aborts. This constraint will be
-     * checked prior to starting any batch. The default value for this parameter is 20%.
-     *
+     * the scale set that can be simultaneously unhealthy, either as a result of being upgraded, or by being found in
+     * an unhealthy state by the virtual machine health checks before the rolling upgrade aborts. This constraint will
+     * be checked prior to starting any batch. The default value for this parameter is 20%.
+     * 
      * @return the maxUnhealthyInstancePercent value.
      */
     public Integer maxUnhealthyInstancePercent() {
@@ -113,10 +117,10 @@ public final class RollingUpgradePolicy {
 
     /**
      * Set the maxUnhealthyInstancePercent property: The maximum percentage of the total virtual machine instances in
-     * the scale set that can be simultaneously unhealthy, either as a result of being upgraded, or by being found in an
-     * unhealthy state by the virtual machine health checks before the rolling upgrade aborts. This constraint will be
-     * checked prior to starting any batch. The default value for this parameter is 20%.
-     *
+     * the scale set that can be simultaneously unhealthy, either as a result of being upgraded, or by being found in
+     * an unhealthy state by the virtual machine health checks before the rolling upgrade aborts. This constraint will
+     * be checked prior to starting any batch. The default value for this parameter is 20%.
+     * 
      * @param maxUnhealthyInstancePercent the maxUnhealthyInstancePercent value to set.
      * @return the RollingUpgradePolicy object itself.
      */
@@ -129,7 +133,7 @@ public final class RollingUpgradePolicy {
      * Get the maxUnhealthyUpgradedInstancePercent property: The maximum percentage of upgraded virtual machine
      * instances that can be found to be in an unhealthy state. This check will happen after each batch is upgraded. If
      * this percentage is ever exceeded, the rolling update aborts. The default value for this parameter is 20%.
-     *
+     * 
      * @return the maxUnhealthyUpgradedInstancePercent value.
      */
     public Integer maxUnhealthyUpgradedInstancePercent() {
@@ -140,7 +144,7 @@ public final class RollingUpgradePolicy {
      * Set the maxUnhealthyUpgradedInstancePercent property: The maximum percentage of upgraded virtual machine
      * instances that can be found to be in an unhealthy state. This check will happen after each batch is upgraded. If
      * this percentage is ever exceeded, the rolling update aborts. The default value for this parameter is 20%.
-     *
+     * 
      * @param maxUnhealthyUpgradedInstancePercent the maxUnhealthyUpgradedInstancePercent value to set.
      * @return the RollingUpgradePolicy object itself.
      */
@@ -150,10 +154,10 @@ public final class RollingUpgradePolicy {
     }
 
     /**
-     * Get the pauseTimeBetweenBatches property: The wait time between completing the update for all virtual machines in
-     * one batch and starting the next batch. The time duration should be specified in ISO 8601 format. The default
+     * Get the pauseTimeBetweenBatches property: The wait time between completing the update for all virtual machines
+     * in one batch and starting the next batch. The time duration should be specified in ISO 8601 format. The default
      * value is 0 seconds (PT0S).
-     *
+     * 
      * @return the pauseTimeBetweenBatches value.
      */
     public String pauseTimeBetweenBatches() {
@@ -161,10 +165,10 @@ public final class RollingUpgradePolicy {
     }
 
     /**
-     * Set the pauseTimeBetweenBatches property: The wait time between completing the update for all virtual machines in
-     * one batch and starting the next batch. The time duration should be specified in ISO 8601 format. The default
+     * Set the pauseTimeBetweenBatches property: The wait time between completing the update for all virtual machines
+     * in one batch and starting the next batch. The time duration should be specified in ISO 8601 format. The default
      * value is 0 seconds (PT0S).
-     *
+     * 
      * @param pauseTimeBetweenBatches the pauseTimeBetweenBatches value to set.
      * @return the RollingUpgradePolicy object itself.
      */
@@ -176,7 +180,7 @@ public final class RollingUpgradePolicy {
     /**
      * Get the enableCrossZoneUpgrade property: Allow VMSS to ignore AZ boundaries when constructing upgrade batches.
      * Take into consideration the Update Domain and maxBatchInstancePercent to determine the batch size.
-     *
+     * 
      * @return the enableCrossZoneUpgrade value.
      */
     public Boolean enableCrossZoneUpgrade() {
@@ -186,7 +190,7 @@ public final class RollingUpgradePolicy {
     /**
      * Set the enableCrossZoneUpgrade property: Allow VMSS to ignore AZ boundaries when constructing upgrade batches.
      * Take into consideration the Update Domain and maxBatchInstancePercent to determine the batch size.
-     *
+     * 
      * @param enableCrossZoneUpgrade the enableCrossZoneUpgrade value to set.
      * @return the RollingUpgradePolicy object itself.
      */
@@ -198,7 +202,7 @@ public final class RollingUpgradePolicy {
     /**
      * Get the prioritizeUnhealthyInstances property: Upgrade all unhealthy instances in a scale set before any healthy
      * instances.
-     *
+     * 
      * @return the prioritizeUnhealthyInstances value.
      */
     public Boolean prioritizeUnhealthyInstances() {
@@ -208,7 +212,7 @@ public final class RollingUpgradePolicy {
     /**
      * Set the prioritizeUnhealthyInstances property: Upgrade all unhealthy instances in a scale set before any healthy
      * instances.
-     *
+     * 
      * @param prioritizeUnhealthyInstances the prioritizeUnhealthyInstances value to set.
      * @return the RollingUpgradePolicy object itself.
      */
@@ -220,7 +224,7 @@ public final class RollingUpgradePolicy {
     /**
      * Get the rollbackFailedInstancesOnPolicyBreach property: Rollback failed instances to previous model if the
      * Rolling Upgrade policy is violated.
-     *
+     * 
      * @return the rollbackFailedInstancesOnPolicyBreach value.
      */
     public Boolean rollbackFailedInstancesOnPolicyBreach() {
@@ -230,12 +234,12 @@ public final class RollingUpgradePolicy {
     /**
      * Set the rollbackFailedInstancesOnPolicyBreach property: Rollback failed instances to previous model if the
      * Rolling Upgrade policy is violated.
-     *
+     * 
      * @param rollbackFailedInstancesOnPolicyBreach the rollbackFailedInstancesOnPolicyBreach value to set.
      * @return the RollingUpgradePolicy object itself.
      */
-    public RollingUpgradePolicy withRollbackFailedInstancesOnPolicyBreach(
-        Boolean rollbackFailedInstancesOnPolicyBreach) {
+    public RollingUpgradePolicy
+        withRollbackFailedInstancesOnPolicyBreach(Boolean rollbackFailedInstancesOnPolicyBreach) {
         this.rollbackFailedInstancesOnPolicyBreach = rollbackFailedInstancesOnPolicyBreach;
         return this;
     }
@@ -244,7 +248,7 @@ public final class RollingUpgradePolicy {
      * Get the maxSurge property: Create new virtual machines to upgrade the scale set, rather than updating the
      * existing virtual machines. Existing virtual machines will be deleted once the new virtual machines are created
      * for each batch.
-     *
+     * 
      * @return the maxSurge value.
      */
     public Boolean maxSurge() {
@@ -255,7 +259,7 @@ public final class RollingUpgradePolicy {
      * Set the maxSurge property: Create new virtual machines to upgrade the scale set, rather than updating the
      * existing virtual machines. Existing virtual machines will be deleted once the new virtual machines are created
      * for each batch.
-     *
+     * 
      * @param maxSurge the maxSurge value to set.
      * @return the RollingUpgradePolicy object itself.
      */
@@ -266,7 +270,7 @@ public final class RollingUpgradePolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

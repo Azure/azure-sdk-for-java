@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.ClientEncryptionKeyGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of a ClientEncryptionKey resource. */
+/**
+ * The properties of a ClientEncryptionKey resource.
+ */
 @Fluent
 public final class ClientEncryptionKeyGetProperties {
     /*
@@ -17,13 +19,15 @@ public final class ClientEncryptionKeyGetProperties {
     @JsonProperty(value = "resource")
     private ClientEncryptionKeyGetPropertiesResource resource;
 
-    /** Creates an instance of ClientEncryptionKeyGetProperties class. */
+    /**
+     * Creates an instance of ClientEncryptionKeyGetProperties class.
+     */
     public ClientEncryptionKeyGetProperties() {
     }
 
     /**
      * Get the resource property: The resource property.
-     *
+     * 
      * @return the resource value.
      */
     public ClientEncryptionKeyGetPropertiesResource resource() {
@@ -32,7 +36,7 @@ public final class ClientEncryptionKeyGetProperties {
 
     /**
      * Set the resource property: The resource property.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the ClientEncryptionKeyGetProperties object itself.
      */
@@ -43,7 +47,7 @@ public final class ClientEncryptionKeyGetProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

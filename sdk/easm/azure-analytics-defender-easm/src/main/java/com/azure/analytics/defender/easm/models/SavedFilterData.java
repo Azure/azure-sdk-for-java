@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A request body used to create a saved filter. */
+/**
+ * A request body used to create a saved filter.
+ */
 @Immutable
 public final class SavedFilterData {
 
@@ -34,8 +36,8 @@ public final class SavedFilterData {
      */
     @Generated
     @JsonCreator
-    public SavedFilterData(
-            @JsonProperty(value = "filter") String filter, @JsonProperty(value = "description") String description) {
+    public SavedFilterData(@JsonProperty(value = "filter") String filter,
+        @JsonProperty(value = "description") String description) {
         this.filter = filter;
         this.description = description;
     }

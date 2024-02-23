@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Properties of the partner configuration update. */
+/**
+ * Properties of the partner configuration update.
+ */
 @Fluent
 public final class PartnerConfigurationUpdateParameters {
     /*
@@ -26,13 +28,15 @@ public final class PartnerConfigurationUpdateParameters {
     @JsonProperty(value = "properties")
     private PartnerConfigurationUpdateParameterProperties innerProperties;
 
-    /** Creates an instance of PartnerConfigurationUpdateParameters class. */
+    /**
+     * Creates an instance of PartnerConfigurationUpdateParameters class.
+     */
     public PartnerConfigurationUpdateParameters() {
     }
 
     /**
      * Get the tags property: Tags of the partner configuration resource.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -41,7 +45,7 @@ public final class PartnerConfigurationUpdateParameters {
 
     /**
      * Set the tags property: Tags of the partner configuration resource.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the PartnerConfigurationUpdateParameters object itself.
      */
@@ -52,7 +56,7 @@ public final class PartnerConfigurationUpdateParameters {
 
     /**
      * Get the innerProperties property: Properties of the Topic resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PartnerConfigurationUpdateParameterProperties innerProperties() {
@@ -62,7 +66,7 @@ public final class PartnerConfigurationUpdateParameters {
     /**
      * Get the defaultMaximumExpirationTimeInDays property: The default time used to validate the maximum expiration
      * time for each authorized partners in days. Allowed values ar between 1 and 365 days.
-     *
+     * 
      * @return the defaultMaximumExpirationTimeInDays value.
      */
     public Integer defaultMaximumExpirationTimeInDays() {
@@ -72,12 +76,12 @@ public final class PartnerConfigurationUpdateParameters {
     /**
      * Set the defaultMaximumExpirationTimeInDays property: The default time used to validate the maximum expiration
      * time for each authorized partners in days. Allowed values ar between 1 and 365 days.
-     *
+     * 
      * @param defaultMaximumExpirationTimeInDays the defaultMaximumExpirationTimeInDays value to set.
      * @return the PartnerConfigurationUpdateParameters object itself.
      */
-    public PartnerConfigurationUpdateParameters withDefaultMaximumExpirationTimeInDays(
-        Integer defaultMaximumExpirationTimeInDays) {
+    public PartnerConfigurationUpdateParameters
+        withDefaultMaximumExpirationTimeInDays(Integer defaultMaximumExpirationTimeInDays) {
         if (this.innerProperties() == null) {
             this.innerProperties = new PartnerConfigurationUpdateParameterProperties();
         }
@@ -87,7 +91,7 @@ public final class PartnerConfigurationUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

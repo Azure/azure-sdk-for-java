@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Run notebook request. */
+/**
+ * Run notebook request.
+ */
 @Fluent
 public final class RunNotebookRequest {
     /*
@@ -41,12 +43,15 @@ public final class RunNotebookRequest {
     @JsonProperty(value = "parameters")
     private Map<String, RunNotebookParameter> parameters;
 
-    /** Creates an instance of RunNotebookRequest class. */
-    public RunNotebookRequest() {}
+    /**
+     * Creates an instance of RunNotebookRequest class.
+     */
+    public RunNotebookRequest() {
+    }
 
     /**
      * Get the notebook property: Notebook name.
-     *
+     * 
      * @return the notebook value.
      */
     public String getNotebook() {
@@ -55,7 +60,7 @@ public final class RunNotebookRequest {
 
     /**
      * Set the notebook property: Notebook name.
-     *
+     * 
      * @param notebook the notebook value to set.
      * @return the RunNotebookRequest object itself.
      */
@@ -66,7 +71,7 @@ public final class RunNotebookRequest {
 
     /**
      * Get the sparkPool property: SparkPool name.
-     *
+     * 
      * @return the sparkPool value.
      */
     public String getSparkPool() {
@@ -75,7 +80,7 @@ public final class RunNotebookRequest {
 
     /**
      * Set the sparkPool property: SparkPool name.
-     *
+     * 
      * @param sparkPool the sparkPool value to set.
      * @return the RunNotebookRequest object itself.
      */
@@ -86,7 +91,7 @@ public final class RunNotebookRequest {
 
     /**
      * Get the sessionOptions property: Session properties.
-     *
+     * 
      * @return the sessionOptions value.
      */
     public RunNotebookSparkSessionOptions getSessionOptions() {
@@ -95,7 +100,7 @@ public final class RunNotebookRequest {
 
     /**
      * Set the sessionOptions property: Session properties.
-     *
+     * 
      * @param sessionOptions the sessionOptions value to set.
      * @return the RunNotebookRequest object itself.
      */
@@ -106,7 +111,7 @@ public final class RunNotebookRequest {
 
     /**
      * Get the honorSessionTimeToLive property: Whether session should run till time to live after run completes.
-     *
+     * 
      * @return the honorSessionTimeToLive value.
      */
     public Boolean isHonorSessionTimeToLive() {
@@ -115,7 +120,7 @@ public final class RunNotebookRequest {
 
     /**
      * Set the honorSessionTimeToLive property: Whether session should run till time to live after run completes.
-     *
+     * 
      * @param honorSessionTimeToLive the honorSessionTimeToLive value to set.
      * @return the RunNotebookRequest object itself.
      */
@@ -126,7 +131,7 @@ public final class RunNotebookRequest {
 
     /**
      * Get the parameters property: Run notebook parameters.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, RunNotebookParameter> getParameters() {
@@ -135,7 +140,7 @@ public final class RunNotebookRequest {
 
     /**
      * Set the parameters property: Run notebook parameters.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the RunNotebookRequest object itself.
      */

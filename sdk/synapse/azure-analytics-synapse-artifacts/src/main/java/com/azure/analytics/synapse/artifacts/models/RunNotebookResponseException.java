@@ -7,11 +7,13 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpResponse;
 
-/** Exception thrown for an invalid response with RunNotebookResponse information. */
+/**
+ * Exception thrown for an invalid response with RunNotebookResponse information.
+ */
 public final class RunNotebookResponseException extends HttpResponseException {
     /**
      * Initializes a new instance of the RunNotebookResponseException class.
-     *
+     * 
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      */
@@ -21,7 +23,7 @@ public final class RunNotebookResponseException extends HttpResponseException {
 
     /**
      * Initializes a new instance of the RunNotebookResponseException class.
-     *
+     * 
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      * @param value the deserialized response value.
@@ -30,7 +32,9 @@ public final class RunNotebookResponseException extends HttpResponseException {
         super(message, response, value);
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RunNotebookResponse getValue() {
         return (RunNotebookResponse) super.getValue();

@@ -13,18 +13,24 @@ import java.util.Collection;
  * Resource.
  */
 public final class InputSchema extends ExpandableStringEnum<InputSchema> {
-    /** Static value EventGridSchema for InputSchema. */
+    /**
+     * Static value EventGridSchema for InputSchema.
+     */
     public static final InputSchema EVENT_GRID_SCHEMA = fromString("EventGridSchema");
 
-    /** Static value CustomEventSchema for InputSchema. */
+    /**
+     * Static value CustomEventSchema for InputSchema.
+     */
     public static final InputSchema CUSTOM_EVENT_SCHEMA = fromString("CustomEventSchema");
 
-    /** Static value CloudEventSchemaV1_0 for InputSchema. */
+    /**
+     * Static value CloudEventSchemaV1_0 for InputSchema.
+     */
     public static final InputSchema CLOUD_EVENT_SCHEMA_V1_0 = fromString("CloudEventSchemaV1_0");
 
     /**
      * Creates a new instance of InputSchema value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +39,7 @@ public final class InputSchema extends ExpandableStringEnum<InputSchema> {
 
     /**
      * Creates or finds a InputSchema from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding InputSchema.
      */
@@ -44,7 +50,7 @@ public final class InputSchema extends ExpandableStringEnum<InputSchema> {
 
     /**
      * Gets known InputSchema values.
-     *
+     * 
      * @return known InputSchema values.
      */
     public static Collection<InputSchema> values() {

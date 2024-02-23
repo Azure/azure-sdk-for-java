@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The workflow kind. */
+/**
+ * The workflow kind.
+ */
 public final class Kind extends ExpandableStringEnum<Kind> {
-    /** Static value Stateful for Kind. */
+    /**
+     * Static value Stateful for Kind.
+     */
     public static final Kind STATEFUL = fromString("Stateful");
 
-    /** Static value Stateless for Kind. */
+    /**
+     * Static value Stateless for Kind.
+     */
     public static final Kind STATELESS = fromString("Stateless");
 
     /**
      * Creates a new instance of Kind value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class Kind extends ExpandableStringEnum<Kind> {
 
     /**
      * Creates or finds a Kind from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding Kind.
      */
@@ -38,7 +44,7 @@ public final class Kind extends ExpandableStringEnum<Kind> {
 
     /**
      * Gets known Kind values.
-     *
+     * 
      * @return known Kind values.
      */
     public static Collection<Kind> values() {

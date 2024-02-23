@@ -8,18 +8,22 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Azure backup goal feature specific request. */
+/**
+ * Azure backup goal feature specific request.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "featureType")
 @JsonTypeName("AzureBackupGoals")
 @Immutable
 public final class AzureBackupGoalFeatureSupportRequest extends FeatureSupportRequest {
-    /** Creates an instance of AzureBackupGoalFeatureSupportRequest class. */
+    /**
+     * Creates an instance of AzureBackupGoalFeatureSupportRequest class.
+     */
     public AzureBackupGoalFeatureSupportRequest() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

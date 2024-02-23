@@ -11,7 +11,9 @@ import com.azure.resourcemanager.eventgrid.models.CaCertificateProvisioningState
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The CA Certificate resource. */
+/**
+ * The CA Certificate resource.
+ */
 @Fluent
 public final class CaCertificateInner extends ProxyResource {
     /*
@@ -26,13 +28,15 @@ public final class CaCertificateInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of CaCertificateInner class. */
+    /**
+     * Creates an instance of CaCertificateInner class.
+     */
     public CaCertificateInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of CA certificate.
-     *
+     * 
      * @return the innerProperties value.
      */
     private CaCertificateProperties innerProperties() {
@@ -41,7 +45,7 @@ public final class CaCertificateInner extends ProxyResource {
 
     /**
      * Get the systemData property: The system metadata relating to the CaCertificate resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -50,7 +54,7 @@ public final class CaCertificateInner extends ProxyResource {
 
     /**
      * Get the description property: Description for the CA Certificate resource.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -59,7 +63,7 @@ public final class CaCertificateInner extends ProxyResource {
 
     /**
      * Set the description property: Description for the CA Certificate resource.
-     *
+     * 
      * @param description the description value to set.
      * @return the CaCertificateInner object itself.
      */
@@ -73,7 +77,7 @@ public final class CaCertificateInner extends ProxyResource {
 
     /**
      * Get the encodedCertificate property: Base64 encoded PEM (Privacy Enhanced Mail) format certificate data.
-     *
+     * 
      * @return the encodedCertificate value.
      */
     public String encodedCertificate() {
@@ -82,7 +86,7 @@ public final class CaCertificateInner extends ProxyResource {
 
     /**
      * Set the encodedCertificate property: Base64 encoded PEM (Privacy Enhanced Mail) format certificate data.
-     *
+     * 
      * @param encodedCertificate the encodedCertificate value to set.
      * @return the CaCertificateInner object itself.
      */
@@ -96,7 +100,7 @@ public final class CaCertificateInner extends ProxyResource {
 
     /**
      * Get the issueTimeInUtc property: Certificate issue time in UTC. This is a read-only field.
-     *
+     * 
      * @return the issueTimeInUtc value.
      */
     public OffsetDateTime issueTimeInUtc() {
@@ -105,7 +109,7 @@ public final class CaCertificateInner extends ProxyResource {
 
     /**
      * Get the expiryTimeInUtc property: Certificate expiry time in UTC. This is a read-only field.
-     *
+     * 
      * @return the expiryTimeInUtc value.
      */
     public OffsetDateTime expiryTimeInUtc() {
@@ -114,7 +118,7 @@ public final class CaCertificateInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Provisioning state of the CA Certificate resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public CaCertificateProvisioningState provisioningState() {
@@ -123,7 +127,7 @@ public final class CaCertificateInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

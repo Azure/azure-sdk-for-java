@@ -9,29 +9,27 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.resourcemanager.quota.fluent.models.CurrentQuotaLimitBaseInner;
 
-/** Contains all response data for the get operation. */
+/**
+ * Contains all response data for the get operation.
+ */
 public final class QuotasGetResponse extends ResponseBase<QuotasGetHeaders, CurrentQuotaLimitBaseInner> {
     /**
      * Creates an instance of QuotasGetResponse.
-     *
+     * 
      * @param request the request which resulted in this QuotasGetResponse.
      * @param statusCode the status code of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param value the deserialized value of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      */
-    public QuotasGetResponse(
-        HttpRequest request,
-        int statusCode,
-        HttpHeaders rawHeaders,
-        CurrentQuotaLimitBaseInner value,
-        QuotasGetHeaders headers) {
+    public QuotasGetResponse(HttpRequest request, int statusCode, HttpHeaders rawHeaders,
+        CurrentQuotaLimitBaseInner value, QuotasGetHeaders headers) {
         super(request, statusCode, rawHeaders, value, headers);
     }
 
     /**
      * Gets the deserialized response body.
-     *
+     * 
      * @return the deserialized response body.
      */
     @Override

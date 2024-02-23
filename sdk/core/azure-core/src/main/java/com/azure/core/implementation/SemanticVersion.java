@@ -83,7 +83,7 @@ public final class SemanticVersion implements Comparable<SemanticVersion> {
 
             String prerelease = (patchEndIdx == extEndIdx) ? "" : version.substring(patchEndIdx + 1, extEndIdx);
             return new SemanticVersion(major, minor, patch, prerelease, version);
-        } catch (NumberFormatException | NullPointerException ignored) {
+        } catch (NumberFormatException ignored) {
             return createInvalid(version);
         }
     }

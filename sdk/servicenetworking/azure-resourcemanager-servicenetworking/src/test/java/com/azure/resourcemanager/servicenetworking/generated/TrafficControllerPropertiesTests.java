@@ -5,16 +5,14 @@
 package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.servicenetworking.fluent.models.TrafficControllerProperties;
+import com.azure.resourcemanager.servicenetworking.models.TrafficControllerProperties;
 
 public final class TrafficControllerPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TrafficControllerProperties model =
-            BinaryData
-                .fromString(
-                    "{\"configurationEndpoints\":[\"eqfpj\",\"jlxofpdvhpfxxyp\",\"ninmayhuyb\"],\"frontends\":[{\"id\":\"odepoogin\"},{\"id\":\"vamih\"}],\"associations\":[{\"id\":\"narxzxtheotus\"},{\"id\":\"vyevcciqi\"},{\"id\":\"nhungbw\"}],\"provisioningState\":\"Updating\"}")
-                .toObject(TrafficControllerProperties.class);
+        TrafficControllerProperties model = BinaryData.fromString(
+            "{\"configurationEndpoints\":[\"fublj\",\"fxqeof\"],\"frontends\":[{\"id\":\"qjhqjbas\"}],\"associations\":[{\"id\":\"mjqulngsn\"},{\"id\":\"nbybkzgcwrwcl\"},{\"id\":\"xwrljdouskcqvkoc\"},{\"id\":\"cjdkwtnhxbnjbi\"}],\"provisioningState\":\"Canceled\"}")
+            .toObject(TrafficControllerProperties.class);
     }
 
     @org.junit.jupiter.api.Test

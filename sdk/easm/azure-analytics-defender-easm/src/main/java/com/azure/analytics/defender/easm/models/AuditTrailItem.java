@@ -7,7 +7,9 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The history of how this asset was pulled into the workspace through the discovery process. */
+/**
+ * The history of how this asset was pulled into the workspace through the discovery process.
+ */
 @Immutable
 public final class AuditTrailItem {
 
@@ -46,9 +48,12 @@ public final class AuditTrailItem {
     @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of AuditTrailItem class. */
+    /**
+     * Creates an instance of AuditTrailItem class.
+     */
     @Generated
-    private AuditTrailItem() {}
+    private AuditTrailItem() {
+    }
 
     /**
      * Get the id property: The system generated unique id for the resource.

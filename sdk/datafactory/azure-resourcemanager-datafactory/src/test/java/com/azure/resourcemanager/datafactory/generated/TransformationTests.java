@@ -17,11 +17,9 @@ import org.junit.jupiter.api.Assertions;
 public final class TransformationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Transformation model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"xxtclhuulri\",\"description\":\"yokvjgbzsxebr\",\"dataset\":{\"referenceName\":\"ttfyhcdjwsuoard\",\"parameters\":{\"bfwxiplkys\":\"datattpufpbpgnrholhu\",\"yjprxslw\":\"datal\",\"hfvhuwzbxpcqz\":\"datadmcvhtbbz\",\"lrrskap\":\"dataihotjecohmxv\"}},\"linkedService\":{\"referenceName\":\"wie\",\"parameters\":{\"imyc\":\"datayaderltfokyks\",\"rsejegprkj\":\"datagrvkcxzznnuif\"}},\"flowlet\":{\"type\":\"DataFlowReference\",\"referenceName\":\"rjmwvvbtuqkxxi\",\"datasetParameters\":\"datagxql\",\"parameters\":{\"vjaqu\":\"dataotjgxieqfkyfhi\"},\"\":{\"mj\":\"dataynvskpajbmgeume\",\"apeqiscrpil\":\"dataxcbccwkqmt\"}}}")
-                .toObject(Transformation.class);
+        Transformation model = BinaryData.fromString(
+            "{\"name\":\"xxtclhuulri\",\"description\":\"yokvjgbzsxebr\",\"dataset\":{\"referenceName\":\"ttfyhcdjwsuoard\",\"parameters\":{\"bfwxiplkys\":\"datattpufpbpgnrholhu\",\"yjprxslw\":\"datal\",\"hfvhuwzbxpcqz\":\"datadmcvhtbbz\",\"lrrskap\":\"dataihotjecohmxv\"}},\"linkedService\":{\"referenceName\":\"wie\",\"parameters\":{\"imyc\":\"datayaderltfokyks\",\"rsejegprkj\":\"datagrvkcxzznnuif\"}},\"flowlet\":{\"type\":\"DataFlowReference\",\"referenceName\":\"rjmwvvbtuqkxxi\",\"datasetParameters\":\"datagxql\",\"parameters\":{\"vjaqu\":\"dataotjgxieqfkyfhi\"},\"\":{\"mj\":\"dataynvskpajbmgeume\",\"apeqiscrpil\":\"dataxcbccwkqmt\"}}}")
+            .toObject(Transformation.class);
         Assertions.assertEquals("xxtclhuulri", model.name());
         Assertions.assertEquals("yokvjgbzsxebr", model.description());
         Assertions.assertEquals("ttfyhcdjwsuoard", model.dataset().referenceName());
@@ -32,34 +30,15 @@ public final class TransformationTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Transformation model =
-            new Transformation()
-                .withName("xxtclhuulri")
-                .withDescription("yokvjgbzsxebr")
-                .withDataset(
-                    new DatasetReference()
-                        .withReferenceName("ttfyhcdjwsuoard")
-                        .withParameters(
-                            mapOf(
-                                "bfwxiplkys",
-                                "datattpufpbpgnrholhu",
-                                "yjprxslw",
-                                "datal",
-                                "hfvhuwzbxpcqz",
-                                "datadmcvhtbbz",
-                                "lrrskap",
-                                "dataihotjecohmxv")))
-                .withLinkedService(
-                    new LinkedServiceReference()
-                        .withReferenceName("wie")
-                        .withParameters(mapOf("imyc", "datayaderltfokyks", "rsejegprkj", "datagrvkcxzznnuif")))
-                .withFlowlet(
-                    new DataFlowReference()
-                        .withType(DataFlowReferenceType.DATA_FLOW_REFERENCE)
-                        .withReferenceName("rjmwvvbtuqkxxi")
-                        .withDatasetParameters("datagxql")
-                        .withParameters(mapOf("vjaqu", "dataotjgxieqfkyfhi"))
-                        .withAdditionalProperties(mapOf()));
+        Transformation model = new Transformation().withName("xxtclhuulri").withDescription("yokvjgbzsxebr")
+            .withDataset(new DatasetReference().withReferenceName("ttfyhcdjwsuoard")
+                .withParameters(mapOf("bfwxiplkys", "datattpufpbpgnrholhu", "yjprxslw", "datal", "hfvhuwzbxpcqz",
+                    "datadmcvhtbbz", "lrrskap", "dataihotjecohmxv")))
+            .withLinkedService(new LinkedServiceReference().withReferenceName("wie")
+                .withParameters(mapOf("imyc", "datayaderltfokyks", "rsejegprkj", "datagrvkcxzznnuif")))
+            .withFlowlet(new DataFlowReference().withType(DataFlowReferenceType.DATA_FLOW_REFERENCE)
+                .withReferenceName("rjmwvvbtuqkxxi").withDatasetParameters("datagxql")
+                .withParameters(mapOf("vjaqu", "dataotjgxieqfkyfhi")).withAdditionalProperties(mapOf()));
         model = BinaryData.fromObject(model).toObject(Transformation.class);
         Assertions.assertEquals("xxtclhuulri", model.name());
         Assertions.assertEquals("yokvjgbzsxebr", model.description());

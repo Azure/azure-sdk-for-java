@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Flag indicating whether subvolume operations are enabled on the volume. */
+/**
+ * Flag indicating whether subvolume operations are enabled on the volume.
+ */
 public final class EnableSubvolumes extends ExpandableStringEnum<EnableSubvolumes> {
-    /** Static value Enabled for EnableSubvolumes. */
+    /**
+     * Static value Enabled for EnableSubvolumes.
+     */
     public static final EnableSubvolumes ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for EnableSubvolumes. */
+    /**
+     * Static value Disabled for EnableSubvolumes.
+     */
     public static final EnableSubvolumes DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of EnableSubvolumes value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class EnableSubvolumes extends ExpandableStringEnum<EnableSubvolume
 
     /**
      * Creates or finds a EnableSubvolumes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EnableSubvolumes.
      */
@@ -38,7 +44,7 @@ public final class EnableSubvolumes extends ExpandableStringEnum<EnableSubvolume
 
     /**
      * Gets known EnableSubvolumes values.
-     *
+     * 
      * @return known EnableSubvolumes values.
      */
     public static Collection<EnableSubvolumes> values() {

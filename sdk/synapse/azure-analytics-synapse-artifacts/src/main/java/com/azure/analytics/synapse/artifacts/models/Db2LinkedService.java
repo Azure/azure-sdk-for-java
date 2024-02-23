@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Linked service for DB2 data source. */
+/**
+ * Linked service for DB2 data source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Db2")
 @JsonFlatten
@@ -81,14 +83,17 @@ public class Db2LinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of Db2LinkedService class. */
-    public Db2LinkedService() {}
+    /**
+     * Creates an instance of Db2LinkedService class.
+     */
+    public Db2LinkedService() {
+    }
 
     /**
      * Get the connectionString property: The connection string. It is mutually exclusive with server, database,
-     * authenticationType, userName, packageCollection and certificateCommonName property. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
-     *
+     * authenticationType, userName, packageCollection and certificateCommonName property. Type: string, SecureString
+     * or AzureKeyVaultSecretReference.
+     * 
      * @return the connectionString value.
      */
     public Object getConnectionString() {
@@ -97,9 +102,9 @@ public class Db2LinkedService extends LinkedService {
 
     /**
      * Set the connectionString property: The connection string. It is mutually exclusive with server, database,
-     * authenticationType, userName, packageCollection and certificateCommonName property. Type: string, SecureString or
-     * AzureKeyVaultSecretReference.
-     *
+     * authenticationType, userName, packageCollection and certificateCommonName property. Type: string, SecureString
+     * or AzureKeyVaultSecretReference.
+     * 
      * @param connectionString the connectionString value to set.
      * @return the Db2LinkedService object itself.
      */
@@ -111,7 +116,7 @@ public class Db2LinkedService extends LinkedService {
     /**
      * Get the server property: Server name for connection. It is mutually exclusive with connectionString property.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the server value.
      */
     public Object getServer() {
@@ -121,7 +126,7 @@ public class Db2LinkedService extends LinkedService {
     /**
      * Set the server property: Server name for connection. It is mutually exclusive with connectionString property.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @param server the server value to set.
      * @return the Db2LinkedService object itself.
      */
@@ -131,9 +136,9 @@ public class Db2LinkedService extends LinkedService {
     }
 
     /**
-     * Get the database property: Database name for connection. It is mutually exclusive with connectionString property.
-     * Type: string (or Expression with resultType string).
-     *
+     * Get the database property: Database name for connection. It is mutually exclusive with connectionString
+     * property. Type: string (or Expression with resultType string).
+     * 
      * @return the database value.
      */
     public Object getDatabase() {
@@ -141,9 +146,9 @@ public class Db2LinkedService extends LinkedService {
     }
 
     /**
-     * Set the database property: Database name for connection. It is mutually exclusive with connectionString property.
-     * Type: string (or Expression with resultType string).
-     *
+     * Set the database property: Database name for connection. It is mutually exclusive with connectionString
+     * property. Type: string (or Expression with resultType string).
+     * 
      * @param database the database value to set.
      * @return the Db2LinkedService object itself.
      */
@@ -155,7 +160,7 @@ public class Db2LinkedService extends LinkedService {
     /**
      * Get the authenticationType property: AuthenticationType to be used for connection. It is mutually exclusive with
      * connectionString property.
-     *
+     * 
      * @return the authenticationType value.
      */
     public Db2AuthenticationType getAuthenticationType() {
@@ -165,7 +170,7 @@ public class Db2LinkedService extends LinkedService {
     /**
      * Set the authenticationType property: AuthenticationType to be used for connection. It is mutually exclusive with
      * connectionString property.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the Db2LinkedService object itself.
      */
@@ -177,7 +182,7 @@ public class Db2LinkedService extends LinkedService {
     /**
      * Get the username property: Username for authentication. It is mutually exclusive with connectionString property.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the username value.
      */
     public Object getUsername() {
@@ -187,7 +192,7 @@ public class Db2LinkedService extends LinkedService {
     /**
      * Set the username property: Username for authentication. It is mutually exclusive with connectionString property.
      * Type: string (or Expression with resultType string).
-     *
+     * 
      * @param username the username value to set.
      * @return the Db2LinkedService object itself.
      */
@@ -198,7 +203,7 @@ public class Db2LinkedService extends LinkedService {
 
     /**
      * Get the password property: Password for authentication.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -207,7 +212,7 @@ public class Db2LinkedService extends LinkedService {
 
     /**
      * Set the password property: Password for authentication.
-     *
+     * 
      * @param password the password value to set.
      * @return the Db2LinkedService object itself.
      */
@@ -219,7 +224,7 @@ public class Db2LinkedService extends LinkedService {
     /**
      * Get the packageCollection property: Under where packages are created when querying database. It is mutually
      * exclusive with connectionString property. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the packageCollection value.
      */
     public Object getPackageCollection() {
@@ -229,7 +234,7 @@ public class Db2LinkedService extends LinkedService {
     /**
      * Set the packageCollection property: Under where packages are created when querying database. It is mutually
      * exclusive with connectionString property. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param packageCollection the packageCollection value to set.
      * @return the Db2LinkedService object itself.
      */
@@ -241,7 +246,7 @@ public class Db2LinkedService extends LinkedService {
     /**
      * Get the certificateCommonName property: Certificate Common Name when TLS is enabled. It is mutually exclusive
      * with connectionString property. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the certificateCommonName value.
      */
     public Object getCertificateCommonName() {
@@ -251,7 +256,7 @@ public class Db2LinkedService extends LinkedService {
     /**
      * Set the certificateCommonName property: Certificate Common Name when TLS is enabled. It is mutually exclusive
      * with connectionString property. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param certificateCommonName the certificateCommonName value to set.
      * @return the Db2LinkedService object itself.
      */
@@ -261,10 +266,10 @@ public class Db2LinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. It is mutually exclusive with connectionString property. Type:
-     * string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. It is mutually exclusive with connectionString
+     * property. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -272,10 +277,10 @@ public class Db2LinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. It is mutually exclusive with connectionString property. Type:
-     * string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. It is mutually exclusive with connectionString
+     * property. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the Db2LinkedService object itself.
      */
@@ -284,28 +289,36 @@ public class Db2LinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Db2LinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Db2LinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Db2LinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Db2LinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

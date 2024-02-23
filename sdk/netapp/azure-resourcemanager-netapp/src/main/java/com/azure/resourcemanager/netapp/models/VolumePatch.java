@@ -10,7 +10,9 @@ import com.azure.resourcemanager.netapp.fluent.models.VolumePatchProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Volume patch resource. */
+/**
+ * Volume patch resource.
+ */
 @Fluent
 public final class VolumePatch extends Resource {
     /*
@@ -19,27 +21,33 @@ public final class VolumePatch extends Resource {
     @JsonProperty(value = "properties")
     private VolumePatchProperties innerProperties;
 
-    /** Creates an instance of VolumePatch class. */
+    /**
+     * Creates an instance of VolumePatch class.
+     */
     public VolumePatch() {
     }
 
     /**
      * Get the innerProperties property: Patchable volume properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VolumePatchProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VolumePatch withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VolumePatch withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -48,9 +56,9 @@ public final class VolumePatch extends Resource {
 
     /**
      * Get the serviceLevel property: serviceLevel
-     *
-     * <p>The service level of the file system.
-     *
+     * 
+     * The service level of the file system.
+     * 
      * @return the serviceLevel value.
      */
     public ServiceLevel serviceLevel() {
@@ -59,9 +67,9 @@ public final class VolumePatch extends Resource {
 
     /**
      * Set the serviceLevel property: serviceLevel
-     *
-     * <p>The service level of the file system.
-     *
+     * 
+     * The service level of the file system.
+     * 
      * @param serviceLevel the serviceLevel value to set.
      * @return the VolumePatch object itself.
      */
@@ -75,11 +83,11 @@ public final class VolumePatch extends Resource {
 
     /**
      * Get the usageThreshold property: usageThreshold
-     *
-     * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
+     * 
+     * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
      * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on exceptional basis.
      * Specified in bytes.
-     *
+     * 
      * @return the usageThreshold value.
      */
     public Long usageThreshold() {
@@ -88,11 +96,11 @@ public final class VolumePatch extends Resource {
 
     /**
      * Set the usageThreshold property: usageThreshold
-     *
-     * <p>Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
+     * 
+     * Maximum storage quota allowed for a file system in bytes. This is a soft quota used for alerting only. Minimum
      * size is 100 GiB. Upper limit is 100TiB, 500Tib for LargeVolume or 2400Tib for LargeVolume on exceptional basis.
      * Specified in bytes.
-     *
+     * 
      * @param usageThreshold the usageThreshold value to set.
      * @return the VolumePatch object itself.
      */
@@ -106,9 +114,9 @@ public final class VolumePatch extends Resource {
 
     /**
      * Get the exportPolicy property: exportPolicy
-     *
-     * <p>Set of export policy rules.
-     *
+     * 
+     * Set of export policy rules.
+     * 
      * @return the exportPolicy value.
      */
     public VolumePatchPropertiesExportPolicy exportPolicy() {
@@ -117,9 +125,9 @@ public final class VolumePatch extends Resource {
 
     /**
      * Set the exportPolicy property: exportPolicy
-     *
-     * <p>Set of export policy rules.
-     *
+     * 
+     * Set of export policy rules.
+     * 
      * @param exportPolicy the exportPolicy value to set.
      * @return the VolumePatch object itself.
      */
@@ -134,7 +142,7 @@ public final class VolumePatch extends Resource {
     /**
      * Get the throughputMibps property: Maximum throughput in MiB/s that can be achieved by this volume and this will
      * be accepted as input only for manual qosType volume.
-     *
+     * 
      * @return the throughputMibps value.
      */
     public Float throughputMibps() {
@@ -144,7 +152,7 @@ public final class VolumePatch extends Resource {
     /**
      * Set the throughputMibps property: Maximum throughput in MiB/s that can be achieved by this volume and this will
      * be accepted as input only for manual qosType volume.
-     *
+     * 
      * @param throughputMibps the throughputMibps value to set.
      * @return the VolumePatch object itself.
      */
@@ -158,9 +166,9 @@ public final class VolumePatch extends Resource {
 
     /**
      * Get the dataProtection property: DataProtection
-     *
-     * <p>DataProtection type volumes include an object containing details of the replication.
-     *
+     * 
+     * DataProtection type volumes include an object containing details of the replication.
+     * 
      * @return the dataProtection value.
      */
     public VolumePatchPropertiesDataProtection dataProtection() {
@@ -169,9 +177,9 @@ public final class VolumePatch extends Resource {
 
     /**
      * Set the dataProtection property: DataProtection
-     *
-     * <p>DataProtection type volumes include an object containing details of the replication.
-     *
+     * 
+     * DataProtection type volumes include an object containing details of the replication.
+     * 
      * @param dataProtection the dataProtection value to set.
      * @return the VolumePatch object itself.
      */
@@ -185,7 +193,7 @@ public final class VolumePatch extends Resource {
 
     /**
      * Get the isDefaultQuotaEnabled property: Specifies if default quota is enabled for the volume.
-     *
+     * 
      * @return the isDefaultQuotaEnabled value.
      */
     public Boolean isDefaultQuotaEnabled() {
@@ -194,7 +202,7 @@ public final class VolumePatch extends Resource {
 
     /**
      * Set the isDefaultQuotaEnabled property: Specifies if default quota is enabled for the volume.
-     *
+     * 
      * @param isDefaultQuotaEnabled the isDefaultQuotaEnabled value to set.
      * @return the VolumePatch object itself.
      */
@@ -209,7 +217,7 @@ public final class VolumePatch extends Resource {
     /**
      * Get the defaultUserQuotaInKiBs property: Default user quota for volume in KiBs. If isDefaultQuotaEnabled is set,
      * the minimum value of 4 KiBs applies .
-     *
+     * 
      * @return the defaultUserQuotaInKiBs value.
      */
     public Long defaultUserQuotaInKiBs() {
@@ -219,7 +227,7 @@ public final class VolumePatch extends Resource {
     /**
      * Set the defaultUserQuotaInKiBs property: Default user quota for volume in KiBs. If isDefaultQuotaEnabled is set,
      * the minimum value of 4 KiBs applies .
-     *
+     * 
      * @param defaultUserQuotaInKiBs the defaultUserQuotaInKiBs value to set.
      * @return the VolumePatch object itself.
      */
@@ -234,7 +242,7 @@ public final class VolumePatch extends Resource {
     /**
      * Get the defaultGroupQuotaInKiBs property: Default group quota for volume in KiBs. If isDefaultQuotaEnabled is
      * set, the minimum value of 4 KiBs applies.
-     *
+     * 
      * @return the defaultGroupQuotaInKiBs value.
      */
     public Long defaultGroupQuotaInKiBs() {
@@ -244,7 +252,7 @@ public final class VolumePatch extends Resource {
     /**
      * Set the defaultGroupQuotaInKiBs property: Default group quota for volume in KiBs. If isDefaultQuotaEnabled is
      * set, the minimum value of 4 KiBs applies.
-     *
+     * 
      * @param defaultGroupQuotaInKiBs the defaultGroupQuotaInKiBs value to set.
      * @return the VolumePatch object itself.
      */
@@ -262,7 +270,7 @@ public final class VolumePatch extends Resource {
      * owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same
      * group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and
      * read/execute to group and other users.
-     *
+     * 
      * @return the unixPermissions value.
      */
     public String unixPermissions() {
@@ -275,7 +283,7 @@ public final class VolumePatch extends Resource {
      * owner of the file: read (4), write (2) and execute (1). Third selects permissions for other users in the same
      * group. the fourth for other users not in the group. 0755 - gives read/write/execute permissions to owner and
      * read/execute to group and other users.
-     *
+     * 
      * @param unixPermissions the unixPermissions value to set.
      * @return the VolumePatch object itself.
      */
@@ -289,7 +297,7 @@ public final class VolumePatch extends Resource {
 
     /**
      * Get the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
-     *
+     * 
      * @return the coolAccess value.
      */
     public Boolean coolAccess() {
@@ -298,7 +306,7 @@ public final class VolumePatch extends Resource {
 
     /**
      * Set the coolAccess property: Specifies whether Cool Access(tiering) is enabled for the volume.
-     *
+     * 
      * @param coolAccess the coolAccess value to set.
      * @return the VolumePatch object itself.
      */
@@ -313,7 +321,7 @@ public final class VolumePatch extends Resource {
     /**
      * Get the coolnessPeriod property: Specifies the number of days after which data that is not accessed by clients
      * will be tiered.
-     *
+     * 
      * @return the coolnessPeriod value.
      */
     public Integer coolnessPeriod() {
@@ -323,7 +331,7 @@ public final class VolumePatch extends Resource {
     /**
      * Set the coolnessPeriod property: Specifies the number of days after which data that is not accessed by clients
      * will be tiered.
-     *
+     * 
      * @param coolnessPeriod the coolnessPeriod value to set.
      * @return the VolumePatch object itself.
      */
@@ -336,12 +344,14 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Get the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior from
-     * the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible values
-     * for this field are: Default - Data will be pulled from cool tier to standard storage on random reads. This policy
-     * is the default. OnRead - All client-driven data read is pulled from cool tier to standard storage on both
-     * sequential and random reads. Never - No client-driven data is pulled from cool tier to standard storage.
-     *
+     * Get the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior
+     * from the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible
+     * values for this field are:
+     * Default - Data will be pulled from cool tier to standard storage on random reads. This policy is the default.
+     * OnRead - All client-driven data read is pulled from cool tier to standard storage on both sequential and random
+     * reads.
+     * Never - No client-driven data is pulled from cool tier to standard storage.
+     * 
      * @return the coolAccessRetrievalPolicy value.
      */
     public CoolAccessRetrievalPolicy coolAccessRetrievalPolicy() {
@@ -349,12 +359,14 @@ public final class VolumePatch extends Resource {
     }
 
     /**
-     * Set the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior from
-     * the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible values
-     * for this field are: Default - Data will be pulled from cool tier to standard storage on random reads. This policy
-     * is the default. OnRead - All client-driven data read is pulled from cool tier to standard storage on both
-     * sequential and random reads. Never - No client-driven data is pulled from cool tier to standard storage.
-     *
+     * Set the coolAccessRetrievalPolicy property: coolAccessRetrievalPolicy determines the data retrieval behavior
+     * from the cool tier to standard storage based on the read pattern for cool access enabled volumes. The possible
+     * values for this field are:
+     * Default - Data will be pulled from cool tier to standard storage on random reads. This policy is the default.
+     * OnRead - All client-driven data read is pulled from cool tier to standard storage on both sequential and random
+     * reads.
+     * Never - No client-driven data is pulled from cool tier to standard storage.
+     * 
      * @param coolAccessRetrievalPolicy the coolAccessRetrievalPolicy value to set.
      * @return the VolumePatch object itself.
      */
@@ -369,7 +381,7 @@ public final class VolumePatch extends Resource {
     /**
      * Get the snapshotDirectoryVisible property: If enabled (true) the volume will contain a read-only snapshot
      * directory which provides access to each of the volume's snapshots.
-     *
+     * 
      * @return the snapshotDirectoryVisible value.
      */
     public Boolean snapshotDirectoryVisible() {
@@ -379,7 +391,7 @@ public final class VolumePatch extends Resource {
     /**
      * Set the snapshotDirectoryVisible property: If enabled (true) the volume will contain a read-only snapshot
      * directory which provides access to each of the volume's snapshots.
-     *
+     * 
      * @param snapshotDirectoryVisible the snapshotDirectoryVisible value to set.
      * @return the VolumePatch object itself.
      */
@@ -393,9 +405,9 @@ public final class VolumePatch extends Resource {
 
     /**
      * Get the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
-     *
-     * <p>Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
-     *
+     * 
+     * Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * 
      * @return the smbAccessBasedEnumeration value.
      */
     public SmbAccessBasedEnumeration smbAccessBasedEnumeration() {
@@ -404,9 +416,9 @@ public final class VolumePatch extends Resource {
 
     /**
      * Set the smbAccessBasedEnumeration property: smbAccessBasedEnumeration
-     *
-     * <p>Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
-     *
+     * 
+     * Enables access-based enumeration share property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * 
      * @param smbAccessBasedEnumeration the smbAccessBasedEnumeration value to set.
      * @return the VolumePatch object itself.
      */
@@ -420,9 +432,9 @@ public final class VolumePatch extends Resource {
 
     /**
      * Get the smbNonBrowsable property: smbNonBrowsable
-     *
-     * <p>Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
-     *
+     * 
+     * Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * 
      * @return the smbNonBrowsable value.
      */
     public SmbNonBrowsable smbNonBrowsable() {
@@ -431,9 +443,9 @@ public final class VolumePatch extends Resource {
 
     /**
      * Set the smbNonBrowsable property: smbNonBrowsable
-     *
-     * <p>Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
-     *
+     * 
+     * Enables non-browsable property for SMB Shares. Only applicable for SMB/DualProtocol volume.
+     * 
      * @param smbNonBrowsable the smbNonBrowsable value to set.
      * @return the VolumePatch object itself.
      */
@@ -447,7 +459,7 @@ public final class VolumePatch extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

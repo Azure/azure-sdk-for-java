@@ -29,13 +29,15 @@ public final class AvailabilitySetUpdate extends UpdateResource {
     @JsonProperty(value = "sku")
     private Sku sku;
 
-    /** Creates an instance of AvailabilitySetUpdate class. */
+    /**
+     * Creates an instance of AvailabilitySetUpdate class.
+     */
     public AvailabilitySetUpdate() {
     }
 
     /**
      * Get the innerProperties property: The instance view of a resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AvailabilitySetProperties innerProperties() {
@@ -44,7 +46,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Get the sku property: Sku of the availability set.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -53,7 +55,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Set the sku property: Sku of the availability set.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the AvailabilitySetUpdate object itself.
      */
@@ -62,7 +64,9 @@ public final class AvailabilitySetUpdate extends UpdateResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AvailabilitySetUpdate withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -71,7 +75,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Get the platformUpdateDomainCount property: Update Domain count.
-     *
+     * 
      * @return the platformUpdateDomainCount value.
      */
     public Integer platformUpdateDomainCount() {
@@ -80,7 +84,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Set the platformUpdateDomainCount property: Update Domain count.
-     *
+     * 
      * @param platformUpdateDomainCount the platformUpdateDomainCount value to set.
      * @return the AvailabilitySetUpdate object itself.
      */
@@ -94,7 +98,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Get the platformFaultDomainCount property: Fault Domain count.
-     *
+     * 
      * @return the platformFaultDomainCount value.
      */
     public Integer platformFaultDomainCount() {
@@ -103,7 +107,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Set the platformFaultDomainCount property: Fault Domain count.
-     *
+     * 
      * @param platformFaultDomainCount the platformFaultDomainCount value to set.
      * @return the AvailabilitySetUpdate object itself.
      */
@@ -117,7 +121,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Get the virtualMachines property: A list of references to all virtual machines in the availability set.
-     *
+     * 
      * @return the virtualMachines value.
      */
     public List<SubResource> virtualMachines() {
@@ -126,7 +130,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Set the virtualMachines property: A list of references to all virtual machines in the availability set.
-     *
+     * 
      * @param virtualMachines the virtualMachines value to set.
      * @return the AvailabilitySetUpdate object itself.
      */
@@ -141,7 +145,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
     /**
      * Get the proximityPlacementGroup property: Specifies information about the proximity placement group that the
      * availability set should be assigned to. Minimum api-version: 2018-04-01.
-     *
+     * 
      * @return the proximityPlacementGroup value.
      */
     public SubResource proximityPlacementGroup() {
@@ -151,7 +155,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
     /**
      * Set the proximityPlacementGroup property: Specifies information about the proximity placement group that the
      * availability set should be assigned to. Minimum api-version: 2018-04-01.
-     *
+     * 
      * @param proximityPlacementGroup the proximityPlacementGroup value to set.
      * @return the AvailabilitySetUpdate object itself.
      */
@@ -165,7 +169,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Get the statuses property: The resource status information.
-     *
+     * 
      * @return the statuses value.
      */
     public List<InstanceViewStatus> statuses() {
@@ -174,7 +178,7 @@ public final class AvailabilitySetUpdate extends UpdateResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

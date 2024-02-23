@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Topic regenerate share access key request. */
+/**
+ * Topic regenerate share access key request.
+ */
 @Fluent
 public final class TopicRegenerateKeyRequest {
     /*
@@ -17,13 +19,15 @@ public final class TopicRegenerateKeyRequest {
     @JsonProperty(value = "keyName", required = true)
     private String keyName;
 
-    /** Creates an instance of TopicRegenerateKeyRequest class. */
+    /**
+     * Creates an instance of TopicRegenerateKeyRequest class.
+     */
     public TopicRegenerateKeyRequest() {
     }
 
     /**
      * Get the keyName property: Key name to regenerate key1 or key2.
-     *
+     * 
      * @return the keyName value.
      */
     public String keyName() {
@@ -32,7 +36,7 @@ public final class TopicRegenerateKeyRequest {
 
     /**
      * Set the keyName property: Key name to regenerate key1 or key2.
-     *
+     * 
      * @param keyName the keyName value to set.
      * @return the TopicRegenerateKeyRequest object itself.
      */
@@ -43,15 +47,13 @@ public final class TopicRegenerateKeyRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (keyName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property keyName in model TopicRegenerateKeyRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property keyName in model TopicRegenerateKeyRequest"));
         }
     }
 

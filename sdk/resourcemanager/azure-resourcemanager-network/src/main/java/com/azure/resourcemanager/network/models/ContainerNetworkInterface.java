@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.fluent.models.ContainerNetworkInterface
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Container network interface child resource. */
+/**
+ * Container network interface child resource.
+ */
 @Fluent
 public final class ContainerNetworkInterface extends SubResource {
     /*
@@ -37,13 +39,15 @@ public final class ContainerNetworkInterface extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of ContainerNetworkInterface class. */
+    /**
+     * Creates an instance of ContainerNetworkInterface class.
+     */
     public ContainerNetworkInterface() {
     }
 
     /**
      * Get the innerProperties property: Container network interface properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ContainerNetworkInterfacePropertiesFormat innerProperties() {
@@ -52,7 +56,7 @@ public final class ContainerNetworkInterface extends SubResource {
 
     /**
      * Get the name property: The name of the resource. This name can be used to access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -61,7 +65,7 @@ public final class ContainerNetworkInterface extends SubResource {
 
     /**
      * Set the name property: The name of the resource. This name can be used to access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the ContainerNetworkInterface object itself.
      */
@@ -72,7 +76,7 @@ public final class ContainerNetworkInterface extends SubResource {
 
     /**
      * Get the type property: Sub Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -81,14 +85,16 @@ public final class ContainerNetworkInterface extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContainerNetworkInterface withId(String id) {
         super.withId(id);
@@ -98,7 +104,7 @@ public final class ContainerNetworkInterface extends SubResource {
     /**
      * Get the containerNetworkInterfaceConfiguration property: Container network interface configuration from which
      * this container network interface is created.
-     *
+     * 
      * @return the containerNetworkInterfaceConfiguration value.
      */
     public ContainerNetworkInterfaceConfiguration containerNetworkInterfaceConfiguration() {
@@ -107,7 +113,7 @@ public final class ContainerNetworkInterface extends SubResource {
 
     /**
      * Get the container property: Reference to the container to which this container network interface is attached.
-     *
+     * 
      * @return the container value.
      */
     public Container container() {
@@ -116,7 +122,7 @@ public final class ContainerNetworkInterface extends SubResource {
 
     /**
      * Set the container property: Reference to the container to which this container network interface is attached.
-     *
+     * 
      * @param container the container value to set.
      * @return the ContainerNetworkInterface object itself.
      */
@@ -130,7 +136,7 @@ public final class ContainerNetworkInterface extends SubResource {
 
     /**
      * Get the ipConfigurations property: Reference to the ip configuration on this container nic.
-     *
+     * 
      * @return the ipConfigurations value.
      */
     public List<ContainerNetworkInterfaceIpConfiguration> ipConfigurations() {
@@ -139,7 +145,7 @@ public final class ContainerNetworkInterface extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the container network interface resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -148,7 +154,7 @@ public final class ContainerNetworkInterface extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

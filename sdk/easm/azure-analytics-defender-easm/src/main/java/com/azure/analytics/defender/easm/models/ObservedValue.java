@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Template model for observed values. */
+/**
+ * Template model for observed values.
+ */
 @Immutable
 public class ObservedValue {
 
@@ -40,9 +42,12 @@ public class ObservedValue {
     @JsonProperty(value = "recent")
     private Boolean recent;
 
-    /** Creates an instance of ObservedValue class. */
+    /**
+     * Creates an instance of ObservedValue class.
+     */
     @Generated
-    protected ObservedValue() {}
+    protected ObservedValue() {
+    }
 
     /**
      * Get the firstSeen property: The firstSeen property.

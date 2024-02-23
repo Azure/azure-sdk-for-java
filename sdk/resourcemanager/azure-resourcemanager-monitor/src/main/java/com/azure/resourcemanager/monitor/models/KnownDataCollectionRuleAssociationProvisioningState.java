@@ -8,27 +8,48 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The resource provisioning state. */
+/**
+ * The resource provisioning state.
+ */
 public final class KnownDataCollectionRuleAssociationProvisioningState
     extends ExpandableStringEnum<KnownDataCollectionRuleAssociationProvisioningState> {
-    /** Static value Creating for KnownDataCollectionRuleAssociationProvisioningState. */
+    /**
+     * Static value Creating for KnownDataCollectionRuleAssociationProvisioningState.
+     */
     public static final KnownDataCollectionRuleAssociationProvisioningState CREATING = fromString("Creating");
 
-    /** Static value Updating for KnownDataCollectionRuleAssociationProvisioningState. */
+    /**
+     * Static value Updating for KnownDataCollectionRuleAssociationProvisioningState.
+     */
     public static final KnownDataCollectionRuleAssociationProvisioningState UPDATING = fromString("Updating");
 
-    /** Static value Deleting for KnownDataCollectionRuleAssociationProvisioningState. */
+    /**
+     * Static value Deleting for KnownDataCollectionRuleAssociationProvisioningState.
+     */
     public static final KnownDataCollectionRuleAssociationProvisioningState DELETING = fromString("Deleting");
 
-    /** Static value Succeeded for KnownDataCollectionRuleAssociationProvisioningState. */
+    /**
+     * Static value Succeeded for KnownDataCollectionRuleAssociationProvisioningState.
+     */
     public static final KnownDataCollectionRuleAssociationProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for KnownDataCollectionRuleAssociationProvisioningState. */
+    /**
+     * Static value Failed for KnownDataCollectionRuleAssociationProvisioningState.
+     */
     public static final KnownDataCollectionRuleAssociationProvisioningState FAILED = fromString("Failed");
 
     /**
+     * Creates a new instance of KnownDataCollectionRuleAssociationProvisioningState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public KnownDataCollectionRuleAssociationProvisioningState() {
+    }
+
+    /**
      * Creates or finds a KnownDataCollectionRuleAssociationProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding KnownDataCollectionRuleAssociationProvisioningState.
      */
@@ -39,7 +60,7 @@ public final class KnownDataCollectionRuleAssociationProvisioningState
 
     /**
      * Gets known KnownDataCollectionRuleAssociationProvisioningState values.
-     *
+     * 
      * @return known KnownDataCollectionRuleAssociationProvisioningState values.
      */
     public static Collection<KnownDataCollectionRuleAssociationProvisioningState> values() {

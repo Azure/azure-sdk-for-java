@@ -11,8 +11,6 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Grammar-based tokenizer that is suitable for processing most European-language documents. This tokenizer is
@@ -21,11 +19,6 @@ import java.util.List;
 @Fluent
 public final class ClassicTokenizer extends LexicalTokenizer {
     /*
-     * Identifies the concrete type of the tokenizer.
-     */
-    private static final String ODATA_TYPE = "#Microsoft.Azure.Search.ClassicTokenizer";
-
-    /*
      * The maximum token length. Default is 255. Tokens longer than the maximum length are split. The maximum token
      * length that can be used is 300 characters.
      */
@@ -33,7 +26,7 @@ public final class ClassicTokenizer extends LexicalTokenizer {
 
     /**
      * Creates an instance of ClassicTokenizer class.
-     *
+     * 
      * @param name the name value to set.
      */
     public ClassicTokenizer(String name) {
@@ -43,7 +36,7 @@ public final class ClassicTokenizer extends LexicalTokenizer {
     /**
      * Get the maxTokenLength property: The maximum token length. Default is 255. Tokens longer than the maximum length
      * are split. The maximum token length that can be used is 300 characters.
-     *
+     * 
      * @return the maxTokenLength value.
      */
     public Integer getMaxTokenLength() {
@@ -53,7 +46,7 @@ public final class ClassicTokenizer extends LexicalTokenizer {
     /**
      * Set the maxTokenLength property: The maximum token length. Default is 255. Tokens longer than the maximum length
      * are split. The maximum token length that can be used is 300 characters.
-     *
+     * 
      * @param maxTokenLength the maxTokenLength value to set.
      * @return the ClassicTokenizer object itself.
      */
@@ -65,7 +58,7 @@ public final class ClassicTokenizer extends LexicalTokenizer {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("@odata.type", ODATA_TYPE);
+        jsonWriter.writeStringField("@odata.type", "#Microsoft.Azure.Search.ClassicTokenizer");
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeNumberField("maxTokenLength", this.maxTokenLength);
         return jsonWriter.writeEndObject();
@@ -73,56 +66,46 @@ public final class ClassicTokenizer extends LexicalTokenizer {
 
     /**
      * Reads an instance of ClassicTokenizer from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of ClassicTokenizer if the JsonReader was pointing to an instance of it, or null if it was
-     *     pointing to JSON null.
+     * pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     *     polymorphic discriminator.
+     * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the ClassicTokenizer.
      */
     public static ClassicTokenizer fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean nameFound = false;
-                    String name = null;
-                    Integer maxTokenLength = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            boolean nameFound = false;
+            String name = null;
+            Integer maxTokenLength = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("@odata.type".equals(fieldName)) {
-                            String odataType = reader.getString();
-                            if (!ODATA_TYPE.equals(odataType)) {
-                                throw new IllegalStateException(
-                                        "'@odata.type' was expected to be non-null and equal to '"
-                                                + ODATA_TYPE
-                                                + "'. The found '@odata.type' was '"
-                                                + odataType
-                                                + "'.");
-                            }
-                        } else if ("name".equals(fieldName)) {
-                            name = reader.getString();
-                            nameFound = true;
-                        } else if ("maxTokenLength".equals(fieldName)) {
-                            maxTokenLength = reader.getNullable(JsonReader::getInt);
-                        } else {
-                            reader.skipChildren();
-                        }
+                if ("@odata.type".equals(fieldName)) {
+                    String odataType = reader.getString();
+                    if (!"#Microsoft.Azure.Search.ClassicTokenizer".equals(odataType)) {
+                        throw new IllegalStateException(
+                            "'@odata.type' was expected to be non-null and equal to '#Microsoft.Azure.Search.ClassicTokenizer'. The found '@odata.type' was '"
+                                + odataType + "'.");
                     }
-                    if (nameFound) {
-                        ClassicTokenizer deserializedClassicTokenizer = new ClassicTokenizer(name);
-                        deserializedClassicTokenizer.maxTokenLength = maxTokenLength;
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                    nameFound = true;
+                } else if ("maxTokenLength".equals(fieldName)) {
+                    maxTokenLength = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (nameFound) {
+                ClassicTokenizer deserializedClassicTokenizer = new ClassicTokenizer(name);
+                deserializedClassicTokenizer.maxTokenLength = maxTokenLength;
 
-                        return deserializedClassicTokenizer;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!nameFound) {
-                        missingProperties.add("name");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
+                return deserializedClassicTokenizer;
+            }
+            throw new IllegalStateException("Missing required property: name");
+        });
     }
 }

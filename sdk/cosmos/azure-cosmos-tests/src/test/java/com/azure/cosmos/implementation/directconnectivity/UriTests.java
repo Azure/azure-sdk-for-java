@@ -6,6 +6,8 @@ package com.azure.cosmos.implementation.directconnectivity;
 import org.testng.annotations.Test;
 
 import java.lang.reflect.Field;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.Arrays;
@@ -21,15 +23,15 @@ import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 
 public class UriTests {
     @Test(groups = "unit")
-    public void setHealthyStatusTests() throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException {
+    public void setHealthyStatusTests() throws NoSuchFieldException, IllegalAccessException, NoSuchMethodException, URISyntaxException {
         Uri testUri = new Uri("https://127.0.0.1:8080");
 
         List<Uri.HealthStatus> statusCanBeOverwritten =
                 Arrays.asList(Unknown, Connected, UnhealthyPending);
-        AtomicReference<Uri.HealthStatus> healthStatus = ReflectionUtils.getHealthStatus(testUri);
+        AtomicReference<Uri.HealthStatusAndDiagnosticStringTuple> healthStatus = ReflectionUtils.getHealthStatus(testUri);
 
         for (Uri.HealthStatus initialStatus : statusCanBeOverwritten) {
-            healthStatus.set(initialStatus);
+            healthStatus.set(new Uri.HealthStatusAndDiagnosticStringTuple(new URI(testUri.getURIAsString()), initialStatus));
             testUri.setHealthStatus(Connected);
             assertThat(testUri.getHealthStatus()).isEqualTo(Connected);
         }
@@ -37,7 +39,7 @@ public class UriTests {
         // if the status is unhealthy, it can only be overwritten to connected after some extended time
         Field lastUnhealthyTimestampField = Uri.class.getDeclaredField("lastTransitionToUnhealthyTimestamp");
         lastUnhealthyTimestampField.setAccessible(true);
-        healthStatus.set(Unhealthy);
+        healthStatus.set(new Uri.HealthStatusAndDiagnosticStringTuple(new URI(testUri.getURIAsString()), Unhealthy));
 
         lastUnhealthyTimestampField.set(testUri, Instant.now());
         testUri.setHealthStatus(Connected);
@@ -49,7 +51,7 @@ public class UriTests {
     }
 
     @Test(groups = "unit")
-    public void setUnhealthyStatusTests() throws NoSuchFieldException, IllegalAccessException {
+    public void setUnhealthyStatusTests() throws NoSuchFieldException, IllegalAccessException, URISyntaxException {
 
         Field lastUnhealthyTimestampField = Uri.class.getDeclaredField("lastTransitionToUnhealthyTimestamp");
         lastUnhealthyTimestampField.setAccessible(true);
@@ -58,8 +60,8 @@ public class UriTests {
         for (Uri.HealthStatus initialStatus : Uri.HealthStatus.values()) {
 
             Uri testUri = new Uri("https://127.0.0.1:8080");
-            AtomicReference<Uri.HealthStatus> healthStatus = ReflectionUtils.getHealthStatus(testUri);
-            healthStatus.set(initialStatus);
+            AtomicReference<Uri.HealthStatusAndDiagnosticStringTuple> healthStatus = ReflectionUtils.getHealthStatus(testUri);
+            healthStatus.set(new Uri.HealthStatusAndDiagnosticStringTuple(new URI(testUri.getURIAsString()), initialStatus));
             Instant lastUnhealthyTimestampBefore = (Instant) lastUnhealthyTimestampField.get(testUri);
 
             testUri.setHealthStatus(Unhealthy);
@@ -71,7 +73,7 @@ public class UriTests {
     }
 
     @Test(groups = "unit")
-    public void setUnhealthyPendingStatusTests() throws NoSuchFieldException, IllegalAccessException {
+    public void setUnhealthyPendingStatusTests() throws NoSuchFieldException, IllegalAccessException, URISyntaxException {
         List<Uri.HealthStatus> statusCanBeOverwritten = Arrays.asList(UnhealthyPending, Unhealthy);
         List<Uri.HealthStatus> statusSkipped = Arrays.asList(Unknown, Connected);
 
@@ -80,9 +82,9 @@ public class UriTests {
 
         for (Uri.HealthStatus initialHealthStatus : Uri.HealthStatus.values()) {
             Uri testUri = new Uri("https://127.0.0.1:8080");
-            AtomicReference<Uri.HealthStatus> healthStatus = ReflectionUtils.getHealthStatus(testUri);
+            AtomicReference<Uri.HealthStatusAndDiagnosticStringTuple> healthStatus = ReflectionUtils.getHealthStatus(testUri);
 
-            healthStatus.set(initialHealthStatus);
+            healthStatus.set(new Uri.HealthStatusAndDiagnosticStringTuple(new URI(testUri.getURIAsString()), initialHealthStatus));
             Instant lastUnhealthyPendingTimestampBefore = (Instant) lastUnhealthyPendingTimestampField.get(testUri);
 
             testUri.setHealthStatus(UnhealthyPending);
@@ -107,9 +109,9 @@ public class UriTests {
     }
 
     @Test(groups = "unit")
-    public void setUnknownStatusTests() throws NoSuchFieldException, IllegalAccessException {
+    public void setUnknownStatusTests() throws NoSuchFieldException, IllegalAccessException, URISyntaxException {
         Uri testUri = new Uri("https://127.0.0.1:8080");
-        AtomicReference<Uri.HealthStatus> healthStatus = ReflectionUtils.getHealthStatus(testUri);
+        AtomicReference<Uri.HealthStatusAndDiagnosticStringTuple> healthStatus = ReflectionUtils.getHealthStatus(testUri);
 
         Field lastUnknownTimestampField = Uri.class.getDeclaredField("lastUnknownTimestamp");
         lastUnknownTimestampField.setAccessible(true);
@@ -117,7 +119,7 @@ public class UriTests {
         assertThat(lastUnknownTimestampField).isNotNull();
 
         for (Uri.HealthStatus initialHealthStatus : Uri.HealthStatus.values()) {
-            healthStatus.set(initialHealthStatus);
+            healthStatus.set(new Uri.HealthStatusAndDiagnosticStringTuple(new URI(testUri.getURIAsString()), initialHealthStatus));
             Instant lastUnknownTimestampBefore = (Instant) lastUnknownTimestampField.get(testUri);
 
             assertThatThrownBy(() -> testUri.setHealthStatus(Unknown))
@@ -130,7 +132,7 @@ public class UriTests {
     }
 
     @Test(groups = "unit")
-    public void setRefreshTests() throws NoSuchFieldException, IllegalAccessException {
+    public void setRefreshTests() throws NoSuchFieldException, IllegalAccessException, URISyntaxException {
 
         Field lastUnknownTimestampField = Uri.class.getDeclaredField("lastUnknownTimestamp");
         lastUnknownTimestampField.setAccessible(true);
@@ -143,8 +145,8 @@ public class UriTests {
 
         for (Uri.HealthStatus initialHealthStatus : Uri.HealthStatus.values()) {
             Uri testUri = new Uri("https://127.0.0.1:8080");
-            AtomicReference<Uri.HealthStatus> healthStatus = ReflectionUtils.getHealthStatus(testUri);
-            healthStatus.set(initialHealthStatus);
+            AtomicReference<Uri.HealthStatusAndDiagnosticStringTuple> healthStatus = ReflectionUtils.getHealthStatus(testUri);
+            healthStatus.set(new Uri.HealthStatusAndDiagnosticStringTuple(new URI(testUri.getURIAsString()), initialHealthStatus));
             Instant time = Instant.now().minusSeconds(2);
 
             lastUnknownTimestampField.set(testUri, time);
@@ -177,12 +179,12 @@ public class UriTests {
     }
 
     @Test(groups = "unit")
-    public void getEffectiveHealthStatusTest() throws NoSuchFieldException, IllegalAccessException {
+    public void getEffectiveHealthStatusTest() throws NoSuchFieldException, IllegalAccessException, URISyntaxException {
         Uri testUri = new Uri("https://127.0.0.1:8080");
-        AtomicReference<Uri.HealthStatus> healthStatus = ReflectionUtils.getHealthStatus(testUri);
+        AtomicReference<Uri.HealthStatusAndDiagnosticStringTuple> healthStatus = ReflectionUtils.getHealthStatus(testUri);
 
         for (Uri.HealthStatus initialStatus : Uri.HealthStatus.values()) {
-            healthStatus.set(initialStatus);
+            healthStatus.set(new Uri.HealthStatusAndDiagnosticStringTuple(new URI(testUri.getURIAsString()), initialStatus));
 
             switch (initialStatus) {
                 case Unhealthy:
@@ -216,12 +218,12 @@ public class UriTests {
     }
 
     @Test(groups = "unit")
-    public void shouldRefreshHealthStatusTests() throws NoSuchFieldException, IllegalAccessException {
+    public void shouldRefreshHealthStatusTests() throws NoSuchFieldException, IllegalAccessException, URISyntaxException {
         Uri testUri = new Uri("https://127.0.0.1:8080");
-        AtomicReference<Uri.HealthStatus> healthStatus = ReflectionUtils.getHealthStatus(testUri);
+        AtomicReference<Uri.HealthStatusAndDiagnosticStringTuple> healthStatus = ReflectionUtils.getHealthStatus(testUri);
 
         for (Uri.HealthStatus initialStatus : Uri.HealthStatus.values()) {
-            healthStatus.set(initialStatus);
+            healthStatus.set(new Uri.HealthStatusAndDiagnosticStringTuple(new URI(testUri.getURIAsString()), initialStatus));
 
             switch (initialStatus) {
                 case Unknown:

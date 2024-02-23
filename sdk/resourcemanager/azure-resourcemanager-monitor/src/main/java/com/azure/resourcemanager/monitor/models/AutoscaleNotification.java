@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Autoscale notification. */
+/**
+ * Autoscale notification.
+ */
 @Fluent
 public final class AutoscaleNotification {
     /*
@@ -29,14 +31,15 @@ public final class AutoscaleNotification {
     @JsonProperty(value = "webhooks")
     private List<WebhookNotification> webhooks;
 
-    /** Creates an instance of AutoscaleNotification class. */
+    /**
+     * Creates an instance of AutoscaleNotification class.
+     */
     public AutoscaleNotification() {
-        operation = "Scale";
     }
 
     /**
      * Get the operation property: the operation associated with the notification and its value must be "scale".
-     *
+     * 
      * @return the operation value.
      */
     public String operation() {
@@ -45,7 +48,7 @@ public final class AutoscaleNotification {
 
     /**
      * Set the operation property: the operation associated with the notification and its value must be "scale".
-     *
+     * 
      * @param operation the operation value to set.
      * @return the AutoscaleNotification object itself.
      */
@@ -56,7 +59,7 @@ public final class AutoscaleNotification {
 
     /**
      * Get the email property: the email notification.
-     *
+     * 
      * @return the email value.
      */
     public EmailNotification email() {
@@ -65,7 +68,7 @@ public final class AutoscaleNotification {
 
     /**
      * Set the email property: the email notification.
-     *
+     * 
      * @param email the email value to set.
      * @return the AutoscaleNotification object itself.
      */
@@ -76,7 +79,7 @@ public final class AutoscaleNotification {
 
     /**
      * Get the webhooks property: the collection of webhook notifications.
-     *
+     * 
      * @return the webhooks value.
      */
     public List<WebhookNotification> webhooks() {
@@ -85,7 +88,7 @@ public final class AutoscaleNotification {
 
     /**
      * Set the webhooks property: the collection of webhook notifications.
-     *
+     * 
      * @param webhooks the webhooks value to set.
      * @return the AutoscaleNotification object itself.
      */
@@ -96,7 +99,7 @@ public final class AutoscaleNotification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

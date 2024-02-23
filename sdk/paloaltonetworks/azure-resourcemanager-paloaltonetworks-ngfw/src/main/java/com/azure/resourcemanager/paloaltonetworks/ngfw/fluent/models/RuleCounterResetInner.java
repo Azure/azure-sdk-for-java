@@ -7,7 +7,9 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Rule counter reset. */
+/**
+ * Rule counter reset.
+ */
 @Fluent
 public final class RuleCounterResetInner {
     /*
@@ -40,13 +42,15 @@ public final class RuleCounterResetInner {
     @JsonProperty(value = "ruleName")
     private String ruleName;
 
-    /** Creates an instance of RuleCounterResetInner class. */
+    /**
+     * Creates an instance of RuleCounterResetInner class.
+     */
     public RuleCounterResetInner() {
     }
 
     /**
      * Get the priority property: priority number.
-     *
+     * 
      * @return the priority value.
      */
     public String priority() {
@@ -55,7 +59,7 @@ public final class RuleCounterResetInner {
 
     /**
      * Get the ruleStackName property: rule Stack Name.
-     *
+     * 
      * @return the ruleStackName value.
      */
     public String ruleStackName() {
@@ -64,7 +68,7 @@ public final class RuleCounterResetInner {
 
     /**
      * Set the ruleStackName property: rule Stack Name.
-     *
+     * 
      * @param ruleStackName the ruleStackName value to set.
      * @return the RuleCounterResetInner object itself.
      */
@@ -75,7 +79,7 @@ public final class RuleCounterResetInner {
 
     /**
      * Get the ruleListName property: rule list name.
-     *
+     * 
      * @return the ruleListName value.
      */
     public String ruleListName() {
@@ -84,7 +88,7 @@ public final class RuleCounterResetInner {
 
     /**
      * Set the ruleListName property: rule list name.
-     *
+     * 
      * @param ruleListName the ruleListName value to set.
      * @return the RuleCounterResetInner object itself.
      */
@@ -95,7 +99,7 @@ public final class RuleCounterResetInner {
 
     /**
      * Get the firewallName property: firewall name.
-     *
+     * 
      * @return the firewallName value.
      */
     public String firewallName() {
@@ -104,7 +108,7 @@ public final class RuleCounterResetInner {
 
     /**
      * Set the firewallName property: firewall name.
-     *
+     * 
      * @param firewallName the firewallName value to set.
      * @return the RuleCounterResetInner object itself.
      */
@@ -115,7 +119,7 @@ public final class RuleCounterResetInner {
 
     /**
      * Get the ruleName property: rule name.
-     *
+     * 
      * @return the ruleName value.
      */
     public String ruleName() {
@@ -124,7 +128,7 @@ public final class RuleCounterResetInner {
 
     /**
      * Set the ruleName property: rule name.
-     *
+     * 
      * @param ruleName the ruleName value to set.
      * @return the RuleCounterResetInner object itself.
      */
@@ -135,7 +139,7 @@ public final class RuleCounterResetInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

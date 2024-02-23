@@ -6,21 +6,29 @@ package com.azure.resourcemanager.communication.models;
 
 import com.azure.core.annotation.Fluent;
 
-/** Data POST-ed to the nameAvailability action. */
+/**
+ * Data POST-ed to the nameAvailability action.
+ */
 @Fluent
 public final class NameAvailabilityParameters extends CheckNameAvailabilityRequest {
-    /** Creates an instance of NameAvailabilityParameters class. */
+    /**
+     * Creates an instance of NameAvailabilityParameters class.
+     */
     public NameAvailabilityParameters() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NameAvailabilityParameters withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NameAvailabilityParameters withType(String type) {
         super.withType(type);
@@ -29,7 +37,7 @@ public final class NameAvailabilityParameters extends CheckNameAvailabilityReque
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

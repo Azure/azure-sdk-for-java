@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class RecoveryPlanA2AFailoverInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RecoveryPlanA2AFailoverInput model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"A2A\",\"recoveryPointType\":\"LatestApplicationConsistent\",\"cloudServiceCreationOption\":\"rtnuguefxxijteb\",\"multiVmSyncPointOption\":\"UsePerVmRecoveryPoint\"}")
-                .toObject(RecoveryPlanA2AFailoverInput.class);
+        RecoveryPlanA2AFailoverInput model = BinaryData.fromString(
+            "{\"instanceType\":\"A2A\",\"recoveryPointType\":\"LatestApplicationConsistent\",\"cloudServiceCreationOption\":\"rtnuguefxxijteb\",\"multiVmSyncPointOption\":\"UsePerVmRecoveryPoint\"}")
+            .toObject(RecoveryPlanA2AFailoverInput.class);
         Assertions.assertEquals(A2ARpRecoveryPointType.LATEST_APPLICATION_CONSISTENT, model.recoveryPointType());
         Assertions.assertEquals("rtnuguefxxijteb", model.cloudServiceCreationOption());
         Assertions.assertEquals(MultiVmSyncPointOption.USE_PER_VM_RECOVERY_POINT, model.multiVmSyncPointOption());
@@ -25,11 +23,10 @@ public final class RecoveryPlanA2AFailoverInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RecoveryPlanA2AFailoverInput model =
-            new RecoveryPlanA2AFailoverInput()
-                .withRecoveryPointType(A2ARpRecoveryPointType.LATEST_APPLICATION_CONSISTENT)
-                .withCloudServiceCreationOption("rtnuguefxxijteb")
-                .withMultiVmSyncPointOption(MultiVmSyncPointOption.USE_PER_VM_RECOVERY_POINT);
+        RecoveryPlanA2AFailoverInput model = new RecoveryPlanA2AFailoverInput()
+            .withRecoveryPointType(A2ARpRecoveryPointType.LATEST_APPLICATION_CONSISTENT)
+            .withCloudServiceCreationOption("rtnuguefxxijteb")
+            .withMultiVmSyncPointOption(MultiVmSyncPointOption.USE_PER_VM_RECOVERY_POINT);
         model = BinaryData.fromObject(model).toObject(RecoveryPlanA2AFailoverInput.class);
         Assertions.assertEquals(A2ARpRecoveryPointType.LATEST_APPLICATION_CONSISTENT, model.recoveryPointType());
         Assertions.assertEquals("rtnuguefxxijteb", model.cloudServiceCreationOption());

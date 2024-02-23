@@ -4,20 +4,52 @@
 
 package com.azure.resourcemanager.hybridnetwork.generated;
 
-import com.azure.core.util.Context;
-
-/** Samples for NetworkFunctions GetByResourceGroup. */
+/**
+ * Samples for NetworkFunctions GetByResourceGroup.
+ */
 public final class NetworkFunctionsGetByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2021-05-01/examples/NetworkFunctionGet.json
+     * x-ms-original-file:
+     * specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2023-09-01/examples/
+     * AzureOperatorNexus/VirtualNetworkFunctionGet.json
+     */
+    /**
+     * Sample code: Get virtual network function resource on AzureOperatorNexus.
+     * 
+     * @param manager Entry point to HybridNetworkManager.
+     */
+    public static void getVirtualNetworkFunctionResourceOnAzureOperatorNexus(
+        com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
+        manager.networkFunctions().getByResourceGroupWithResponse("rg", "testNf", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2023-09-01/examples/
+     * NetworkFunctionGet.json
      */
     /**
      * Sample code: Get network function resource.
-     *
+     * 
      * @param manager Entry point to HybridNetworkManager.
      */
-    public static void getNetworkFunctionResource(
+    public static void
+        getNetworkFunctionResource(com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
+        manager.networkFunctions().getByResourceGroupWithResponse("rg", "testNf", com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file:
+     * specification/hybridnetwork/resource-manager/Microsoft.HybridNetwork/stable/2023-09-01/examples/AzureCore/
+     * VirtualNetworkFunctionGet.json
+     */
+    /**
+     * Sample code: Get virtual network function resource on AzureCore.
+     * 
+     * @param manager Entry point to HybridNetworkManager.
+     */
+    public static void getVirtualNetworkFunctionResourceOnAzureCore(
         com.azure.resourcemanager.hybridnetwork.HybridNetworkManager manager) {
-        manager.networkFunctions().getByResourceGroupWithResponse("rg", "testNf", Context.NONE);
+        manager.networkFunctions().getByResourceGroupWithResponse("rg", "testNf", com.azure.core.util.Context.NONE);
     }
 }

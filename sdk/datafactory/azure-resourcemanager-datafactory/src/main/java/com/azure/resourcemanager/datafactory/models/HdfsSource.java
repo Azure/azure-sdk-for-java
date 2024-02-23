@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity HDFS source. */
+/**
+ * A copy activity HDFS source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("HdfsSource")
 @Fluent
@@ -27,14 +29,16 @@ public final class HdfsSource extends CopySource {
     @JsonProperty(value = "distcpSettings")
     private DistcpSettings distcpSettings;
 
-    /** Creates an instance of HdfsSource class. */
+    /**
+     * Creates an instance of HdfsSource class.
+     */
     public HdfsSource() {
     }
 
     /**
-     * Get the recursive property: If true, files under the folder path will be read recursively. Default is true. Type:
-     * boolean (or Expression with resultType boolean).
-     *
+     * Get the recursive property: If true, files under the folder path will be read recursively. Default is true.
+     * Type: boolean (or Expression with resultType boolean).
+     * 
      * @return the recursive value.
      */
     public Object recursive() {
@@ -42,9 +46,9 @@ public final class HdfsSource extends CopySource {
     }
 
     /**
-     * Set the recursive property: If true, files under the folder path will be read recursively. Default is true. Type:
-     * boolean (or Expression with resultType boolean).
-     *
+     * Set the recursive property: If true, files under the folder path will be read recursively. Default is true.
+     * Type: boolean (or Expression with resultType boolean).
+     * 
      * @param recursive the recursive value to set.
      * @return the HdfsSource object itself.
      */
@@ -55,7 +59,7 @@ public final class HdfsSource extends CopySource {
 
     /**
      * Get the distcpSettings property: Specifies Distcp-related settings.
-     *
+     * 
      * @return the distcpSettings value.
      */
     public DistcpSettings distcpSettings() {
@@ -64,7 +68,7 @@ public final class HdfsSource extends CopySource {
 
     /**
      * Set the distcpSettings property: Specifies Distcp-related settings.
-     *
+     * 
      * @param distcpSettings the distcpSettings value to set.
      * @return the HdfsSource object itself.
      */
@@ -73,28 +77,36 @@ public final class HdfsSource extends CopySource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HdfsSource withSourceRetryCount(Object sourceRetryCount) {
         super.withSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HdfsSource withSourceRetryWait(Object sourceRetryWait) {
         super.withSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HdfsSource withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HdfsSource withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
@@ -103,7 +115,7 @@ public final class HdfsSource extends CopySource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

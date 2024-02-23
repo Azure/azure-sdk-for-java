@@ -13,6 +13,9 @@ import com.fasterxml.jackson.databind.cfg.PackageVersion;
 
 import java.lang.reflect.Array;
 
+/**
+ * Constructs and configures {@link ObjectMapper} instances that handle XML.
+ */
 public final class XmlMapperFactory {
     private static final ClientLogger LOGGER = new ClientLogger(XmlMapperFactory.class);
 
@@ -30,6 +33,9 @@ public final class XmlMapperFactory {
     final boolean useJackson212;
     private boolean jackson212IsSafe = true;
 
+    /**
+     * XML mapper factory instance.
+     */
     public static final XmlMapperFactory INSTANCE = new XmlMapperFactory();
 
     private XmlMapperFactory() {
@@ -47,8 +53,8 @@ public final class XmlMapperFactory {
             Class<?> fromXmlParser = Class.forName(FROM_XML_PARSER, true, thisClassLoader);
             Class<?> toXmlGenerator = Class.forName(TO_XML_GENERATOR, true, thisClassLoader);
 
-            createXmlMapperBuilder = ReflectionUtils.getMethodInvoker(xmlMapper, xmlMapper.getDeclaredMethod("builder"),
-                false);
+            createXmlMapperBuilder
+                = ReflectionUtils.getMethodInvoker(xmlMapper, xmlMapper.getDeclaredMethod("builder"), false);
             defaultUseWrapper = ReflectionUtils.getMethodInvoker(xmlMapperBuilder,
                 xmlMapperBuilder.getDeclaredMethod("defaultUseWrapper", boolean.class), false);
 
@@ -62,7 +68,7 @@ public final class XmlMapperFactory {
             // Throw the Error only if it isn't a LinkageError.
             // This initialization is attempting to use classes that may not exist.
             if (ex instanceof Error && !(ex instanceof LinkageError)) {
-                throw (Error) ex;
+                throw LOGGER.logThrowableAsError((Error) ex);
             }
 
             throw LOGGER.logExceptionAsError(new IllegalStateException("Failed to retrieve invoker used to "
@@ -81,6 +87,11 @@ public final class XmlMapperFactory {
         this.useJackson212 = PackageVersion.VERSION.getMinorVersion() >= 12;
     }
 
+    /**
+     * Creates a new {@link ObjectMapper} instance that can handle XML.
+     *
+     * @return A new {@link ObjectMapper} instance that can handle XML.
+     */
     public ObjectMapper createXmlMapper() {
         ObjectMapper xmlMapper;
         try {
@@ -97,13 +108,13 @@ public final class XmlMapperFactory {
             enableEmptyElementAsNull.invokeWithArguments(xmlMapperBuilder, emptyElementAsNull);
 
             xmlMapper = xmlMapperBuilder.build();
-        }  catch (Exception exception) {
+        } catch (Exception exception) {
             if (exception instanceof RuntimeException) {
                 throw LOGGER.logExceptionAsError((RuntimeException) exception);
             }
 
-            throw LOGGER.logExceptionAsError(new IllegalStateException("Unable to create XmlMapper instance.",
-                exception));
+            throw LOGGER
+                .logExceptionAsError(new IllegalStateException("Unable to create XmlMapper instance.", exception));
         }
 
         if (useJackson212 && jackson212IsSafe) {

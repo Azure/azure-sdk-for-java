@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Details about an operation related to metrics. */
+/**
+ * Details about an operation related to metrics.
+ */
 @Fluent
 public final class OperationMetricSpecification {
     /*
@@ -71,13 +73,15 @@ public final class OperationMetricSpecification {
     @JsonProperty(value = "dimensions")
     private List<OperationMetricDimension> dimensions;
 
-    /** Creates an instance of OperationMetricSpecification class. */
+    /**
+     * Creates an instance of OperationMetricSpecification class.
+     */
     public OperationMetricSpecification() {
     }
 
     /**
      * Get the name property: The name of the metric.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -86,7 +90,7 @@ public final class OperationMetricSpecification {
 
     /**
      * Set the name property: The name of the metric.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationMetricSpecification object itself.
      */
@@ -97,7 +101,7 @@ public final class OperationMetricSpecification {
 
     /**
      * Get the displayName property: Localized display name of the metric.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -106,7 +110,7 @@ public final class OperationMetricSpecification {
 
     /**
      * Set the displayName property: Localized display name of the metric.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the OperationMetricSpecification object itself.
      */
@@ -117,7 +121,7 @@ public final class OperationMetricSpecification {
 
     /**
      * Get the displayDescription property: The description of the metric.
-     *
+     * 
      * @return the displayDescription value.
      */
     public String displayDescription() {
@@ -126,7 +130,7 @@ public final class OperationMetricSpecification {
 
     /**
      * Set the displayDescription property: The description of the metric.
-     *
+     * 
      * @param displayDescription the displayDescription value to set.
      * @return the OperationMetricSpecification object itself.
      */
@@ -137,7 +141,7 @@ public final class OperationMetricSpecification {
 
     /**
      * Get the unit property: The unit that the metric is measured in.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -146,7 +150,7 @@ public final class OperationMetricSpecification {
 
     /**
      * Set the unit property: The unit that the metric is measured in.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the OperationMetricSpecification object itself.
      */
@@ -157,7 +161,7 @@ public final class OperationMetricSpecification {
 
     /**
      * Get the aggregationType property: The type of metric aggregation.
-     *
+     * 
      * @return the aggregationType value.
      */
     public String aggregationType() {
@@ -166,7 +170,7 @@ public final class OperationMetricSpecification {
 
     /**
      * Set the aggregationType property: The type of metric aggregation.
-     *
+     * 
      * @param aggregationType the aggregationType value to set.
      * @return the OperationMetricSpecification object itself.
      */
@@ -177,7 +181,7 @@ public final class OperationMetricSpecification {
 
     /**
      * Get the enableRegionalMdmAccount property: Whether or not the service is using regional MDM accounts.
-     *
+     * 
      * @return the enableRegionalMdmAccount value.
      */
     public String enableRegionalMdmAccount() {
@@ -186,7 +190,7 @@ public final class OperationMetricSpecification {
 
     /**
      * Set the enableRegionalMdmAccount property: Whether or not the service is using regional MDM accounts.
-     *
+     * 
      * @param enableRegionalMdmAccount the enableRegionalMdmAccount value to set.
      * @return the OperationMetricSpecification object itself.
      */
@@ -197,7 +201,7 @@ public final class OperationMetricSpecification {
 
     /**
      * Get the sourceMdmAccount property: The name of the MDM account.
-     *
+     * 
      * @return the sourceMdmAccount value.
      */
     public String sourceMdmAccount() {
@@ -206,7 +210,7 @@ public final class OperationMetricSpecification {
 
     /**
      * Set the sourceMdmAccount property: The name of the MDM account.
-     *
+     * 
      * @param sourceMdmAccount the sourceMdmAccount value to set.
      * @return the OperationMetricSpecification object itself.
      */
@@ -217,7 +221,7 @@ public final class OperationMetricSpecification {
 
     /**
      * Get the sourceMdmNamespace property: The name of the MDM namespace.
-     *
+     * 
      * @return the sourceMdmNamespace value.
      */
     public String sourceMdmNamespace() {
@@ -226,7 +230,7 @@ public final class OperationMetricSpecification {
 
     /**
      * Set the sourceMdmNamespace property: The name of the MDM namespace.
-     *
+     * 
      * @param sourceMdmNamespace the sourceMdmNamespace value to set.
      * @return the OperationMetricSpecification object itself.
      */
@@ -237,7 +241,7 @@ public final class OperationMetricSpecification {
 
     /**
      * Get the availabilities property: Defines how often data for metrics becomes available.
-     *
+     * 
      * @return the availabilities value.
      */
     public List<OperationMetricAvailability> availabilities() {
@@ -246,7 +250,7 @@ public final class OperationMetricSpecification {
 
     /**
      * Set the availabilities property: Defines how often data for metrics becomes available.
-     *
+     * 
      * @param availabilities the availabilities value to set.
      * @return the OperationMetricSpecification object itself.
      */
@@ -257,7 +261,7 @@ public final class OperationMetricSpecification {
 
     /**
      * Get the dimensions property: Defines the metric dimension.
-     *
+     * 
      * @return the dimensions value.
      */
     public List<OperationMetricDimension> dimensions() {
@@ -266,7 +270,7 @@ public final class OperationMetricSpecification {
 
     /**
      * Set the dimensions property: Defines the metric dimension.
-     *
+     * 
      * @param dimensions the dimensions value to set.
      * @return the OperationMetricSpecification object itself.
      */
@@ -277,7 +281,7 @@ public final class OperationMetricSpecification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

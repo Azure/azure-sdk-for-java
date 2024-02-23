@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Defines a health policy used to evaluate the health of an application or one of its children entities. */
+/**
+ * Defines a health policy used to evaluate the health of an application or one of its children entities.
+ */
 @Fluent
 public final class ArmApplicationHealthPolicy {
     /*
@@ -26,7 +28,7 @@ public final class ArmApplicationHealthPolicy {
      * This is calculated by dividing the number of unhealthy deployed applications over the number of nodes where the
      * application is currently deployed on in the cluster.
      * The computation rounds up to tolerate one failure on small numbers of nodes. Default percentage is zero.
-     *
+     * 
      */
     @JsonProperty(value = "maxPercentUnhealthyDeployedApplications")
     private Integer maxPercentUnhealthyDeployedApplications;
@@ -44,13 +46,16 @@ public final class ArmApplicationHealthPolicy {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, ArmServiceTypeHealthPolicy> serviceTypeHealthPolicyMap;
 
-    /** Creates an instance of ArmApplicationHealthPolicy class. */
+    /**
+     * Creates an instance of ArmApplicationHealthPolicy class.
+     */
     public ArmApplicationHealthPolicy() {
     }
 
     /**
-     * Get the considerWarningAsError property: Indicates whether warnings are treated with the same severity as errors.
-     *
+     * Get the considerWarningAsError property: Indicates whether warnings are treated with the same severity as
+     * errors.
+     * 
      * @return the considerWarningAsError value.
      */
     public Boolean considerWarningAsError() {
@@ -58,8 +63,9 @@ public final class ArmApplicationHealthPolicy {
     }
 
     /**
-     * Set the considerWarningAsError property: Indicates whether warnings are treated with the same severity as errors.
-     *
+     * Set the considerWarningAsError property: Indicates whether warnings are treated with the same severity as
+     * errors.
+     * 
      * @param considerWarningAsError the considerWarningAsError value to set.
      * @return the ArmApplicationHealthPolicy object itself.
      */
@@ -70,12 +76,13 @@ public final class ArmApplicationHealthPolicy {
 
     /**
      * Get the maxPercentUnhealthyDeployedApplications property: The maximum allowed percentage of unhealthy deployed
-     * applications. Allowed values are Byte values from zero to 100. The percentage represents the maximum tolerated
-     * percentage of deployed applications that can be unhealthy before the application is considered in error. This is
-     * calculated by dividing the number of unhealthy deployed applications over the number of nodes where the
-     * application is currently deployed on in the cluster. The computation rounds up to tolerate one failure on small
-     * numbers of nodes. Default percentage is zero.
-     *
+     * applications. Allowed values are Byte values from zero to 100.
+     * The percentage represents the maximum tolerated percentage of deployed applications that can be unhealthy before
+     * the application is considered in error.
+     * This is calculated by dividing the number of unhealthy deployed applications over the number of nodes where the
+     * application is currently deployed on in the cluster.
+     * The computation rounds up to tolerate one failure on small numbers of nodes. Default percentage is zero.
+     * 
      * @return the maxPercentUnhealthyDeployedApplications value.
      */
     public Integer maxPercentUnhealthyDeployedApplications() {
@@ -84,17 +91,18 @@ public final class ArmApplicationHealthPolicy {
 
     /**
      * Set the maxPercentUnhealthyDeployedApplications property: The maximum allowed percentage of unhealthy deployed
-     * applications. Allowed values are Byte values from zero to 100. The percentage represents the maximum tolerated
-     * percentage of deployed applications that can be unhealthy before the application is considered in error. This is
-     * calculated by dividing the number of unhealthy deployed applications over the number of nodes where the
-     * application is currently deployed on in the cluster. The computation rounds up to tolerate one failure on small
-     * numbers of nodes. Default percentage is zero.
-     *
+     * applications. Allowed values are Byte values from zero to 100.
+     * The percentage represents the maximum tolerated percentage of deployed applications that can be unhealthy before
+     * the application is considered in error.
+     * This is calculated by dividing the number of unhealthy deployed applications over the number of nodes where the
+     * application is currently deployed on in the cluster.
+     * The computation rounds up to tolerate one failure on small numbers of nodes. Default percentage is zero.
+     * 
      * @param maxPercentUnhealthyDeployedApplications the maxPercentUnhealthyDeployedApplications value to set.
      * @return the ArmApplicationHealthPolicy object itself.
      */
-    public ArmApplicationHealthPolicy withMaxPercentUnhealthyDeployedApplications(
-        Integer maxPercentUnhealthyDeployedApplications) {
+    public ArmApplicationHealthPolicy
+        withMaxPercentUnhealthyDeployedApplications(Integer maxPercentUnhealthyDeployedApplications) {
         this.maxPercentUnhealthyDeployedApplications = maxPercentUnhealthyDeployedApplications;
         return this;
     }
@@ -102,7 +110,7 @@ public final class ArmApplicationHealthPolicy {
     /**
      * Get the defaultServiceTypeHealthPolicy property: The health policy used by default to evaluate the health of a
      * service type.
-     *
+     * 
      * @return the defaultServiceTypeHealthPolicy value.
      */
     public ArmServiceTypeHealthPolicy defaultServiceTypeHealthPolicy() {
@@ -112,12 +120,12 @@ public final class ArmApplicationHealthPolicy {
     /**
      * Set the defaultServiceTypeHealthPolicy property: The health policy used by default to evaluate the health of a
      * service type.
-     *
+     * 
      * @param defaultServiceTypeHealthPolicy the defaultServiceTypeHealthPolicy value to set.
      * @return the ArmApplicationHealthPolicy object itself.
      */
-    public ArmApplicationHealthPolicy withDefaultServiceTypeHealthPolicy(
-        ArmServiceTypeHealthPolicy defaultServiceTypeHealthPolicy) {
+    public ArmApplicationHealthPolicy
+        withDefaultServiceTypeHealthPolicy(ArmServiceTypeHealthPolicy defaultServiceTypeHealthPolicy) {
         this.defaultServiceTypeHealthPolicy = defaultServiceTypeHealthPolicy;
         return this;
     }
@@ -125,7 +133,7 @@ public final class ArmApplicationHealthPolicy {
     /**
      * Get the serviceTypeHealthPolicyMap property: The map with service type health policy per service type name. The
      * map is empty by default.
-     *
+     * 
      * @return the serviceTypeHealthPolicyMap value.
      */
     public Map<String, ArmServiceTypeHealthPolicy> serviceTypeHealthPolicyMap() {
@@ -135,19 +143,19 @@ public final class ArmApplicationHealthPolicy {
     /**
      * Set the serviceTypeHealthPolicyMap property: The map with service type health policy per service type name. The
      * map is empty by default.
-     *
+     * 
      * @param serviceTypeHealthPolicyMap the serviceTypeHealthPolicyMap value to set.
      * @return the ArmApplicationHealthPolicy object itself.
      */
-    public ArmApplicationHealthPolicy withServiceTypeHealthPolicyMap(
-        Map<String, ArmServiceTypeHealthPolicy> serviceTypeHealthPolicyMap) {
+    public ArmApplicationHealthPolicy
+        withServiceTypeHealthPolicyMap(Map<String, ArmServiceTypeHealthPolicy> serviceTypeHealthPolicyMap) {
         this.serviceTypeHealthPolicyMap = serviceTypeHealthPolicyMap;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -155,14 +163,11 @@ public final class ArmApplicationHealthPolicy {
             defaultServiceTypeHealthPolicy().validate();
         }
         if (serviceTypeHealthPolicyMap() != null) {
-            serviceTypeHealthPolicyMap()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            serviceTypeHealthPolicyMap().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
     }
 }

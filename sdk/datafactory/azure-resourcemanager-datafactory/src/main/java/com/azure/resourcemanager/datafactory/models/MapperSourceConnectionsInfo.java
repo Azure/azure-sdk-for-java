@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A object which contains list of tables and connection details for a source connection. */
+/**
+ * A object which contains list of tables and connection details for a source connection.
+ */
 @Fluent
 public final class MapperSourceConnectionsInfo {
     /*
@@ -23,13 +25,15 @@ public final class MapperSourceConnectionsInfo {
     @JsonProperty(value = "connection")
     private MapperConnection connection;
 
-    /** Creates an instance of MapperSourceConnectionsInfo class. */
+    /**
+     * Creates an instance of MapperSourceConnectionsInfo class.
+     */
     public MapperSourceConnectionsInfo() {
     }
 
     /**
      * Get the sourceEntities property: List of source tables for a source connection.
-     *
+     * 
      * @return the sourceEntities value.
      */
     public List<MapperTable> sourceEntities() {
@@ -38,7 +42,7 @@ public final class MapperSourceConnectionsInfo {
 
     /**
      * Set the sourceEntities property: List of source tables for a source connection.
-     *
+     * 
      * @param sourceEntities the sourceEntities value to set.
      * @return the MapperSourceConnectionsInfo object itself.
      */
@@ -49,7 +53,7 @@ public final class MapperSourceConnectionsInfo {
 
     /**
      * Get the connection property: Source connection details.
-     *
+     * 
      * @return the connection value.
      */
     public MapperConnection connection() {
@@ -58,7 +62,7 @@ public final class MapperSourceConnectionsInfo {
 
     /**
      * Set the connection property: Source connection details.
-     *
+     * 
      * @param connection the connection value to set.
      * @return the MapperSourceConnectionsInfo object itself.
      */
@@ -69,7 +73,7 @@ public final class MapperSourceConnectionsInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

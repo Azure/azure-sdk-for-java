@@ -7,11 +7,13 @@ package com.azure.resourcemanager.dataprotection.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of DataProtections. */
+/**
+ * Resource collection API of DataProtections.
+ */
 public interface DataProtections {
     /**
      * Validates if a feature is supported.
-     *
+     * 
      * @param location The location parameter.
      * @param parameters Feature support request object.
      * @param context The context to associate with this operation.
@@ -20,12 +22,12 @@ public interface DataProtections {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return base class for Backup Feature support along with {@link Response}.
      */
-    Response<FeatureValidationResponseBase> checkFeatureSupportWithResponse(
-        String location, FeatureValidationRequestBase parameters, Context context);
+    Response<FeatureValidationResponseBase> checkFeatureSupportWithResponse(String location,
+        FeatureValidationRequestBase parameters, Context context);
 
     /**
      * Validates if a feature is supported.
-     *
+     * 
      * @param location The location parameter.
      * @param parameters Feature support request object.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

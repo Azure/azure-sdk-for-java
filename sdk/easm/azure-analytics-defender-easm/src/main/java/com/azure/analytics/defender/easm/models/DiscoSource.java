@@ -7,7 +7,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Source entity used to drive discovery. */
+/**
+ * Source entity used to drive discovery.
+ */
 @Fluent
 public final class DiscoSource {
 
@@ -25,9 +27,12 @@ public final class DiscoSource {
     @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of DiscoSource class. */
+    /**
+     * Creates an instance of DiscoSource class.
+     */
     @Generated
-    public DiscoSource() {}
+    public DiscoSource() {
+    }
 
     /**
      * Get the kind property: The kind of disco source.

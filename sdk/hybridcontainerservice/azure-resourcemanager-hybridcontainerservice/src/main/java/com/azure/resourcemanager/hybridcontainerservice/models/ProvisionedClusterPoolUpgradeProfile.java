@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The list of available upgrade versions. */
+/**
+ * The list of available kubernetes versions for upgrade.
+ */
 @Fluent
 public final class ProvisionedClusterPoolUpgradeProfile {
     /*
@@ -18,31 +20,26 @@ public final class ProvisionedClusterPoolUpgradeProfile {
     private String kubernetesVersion;
 
     /*
-     * The Agent Pool name.
-     */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
-    private String name;
-
-    /*
-     * OsType - OsType to be used to specify os type. Choose from Linux and Windows. Default to Linux. Possible values
-     * include: 'Linux', 'Windows'
+     * The particular KubernetesVersion Image OS Type (Linux, Windows)
      */
     @JsonProperty(value = "osType", access = JsonProperty.Access.WRITE_ONLY)
     private OsType osType;
 
     /*
-     * List of orchestrator types and versions available for upgrade.
+     * List of available kubernetes versions for upgrade.
      */
     @JsonProperty(value = "upgrades")
     private List<ProvisionedClusterPoolUpgradeProfileProperties> upgrades;
 
-    /** Creates an instance of ProvisionedClusterPoolUpgradeProfile class. */
+    /**
+     * Creates an instance of ProvisionedClusterPoolUpgradeProfile class.
+     */
     public ProvisionedClusterPoolUpgradeProfile() {
     }
 
     /**
      * Get the kubernetesVersion property: The Kubernetes version (major.minor.patch).
-     *
+     * 
      * @return the kubernetesVersion value.
      */
     public String kubernetesVersion() {
@@ -50,18 +47,8 @@ public final class ProvisionedClusterPoolUpgradeProfile {
     }
 
     /**
-     * Get the name property: The Agent Pool name.
-     *
-     * @return the name value.
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the osType property: OsType - OsType to be used to specify os type. Choose from Linux and Windows. Default to
-     * Linux. Possible values include: 'Linux', 'Windows'.
-     *
+     * Get the osType property: The particular KubernetesVersion Image OS Type (Linux, Windows).
+     * 
      * @return the osType value.
      */
     public OsType osType() {
@@ -69,8 +56,8 @@ public final class ProvisionedClusterPoolUpgradeProfile {
     }
 
     /**
-     * Get the upgrades property: List of orchestrator types and versions available for upgrade.
-     *
+     * Get the upgrades property: List of available kubernetes versions for upgrade.
+     * 
      * @return the upgrades value.
      */
     public List<ProvisionedClusterPoolUpgradeProfileProperties> upgrades() {
@@ -78,20 +65,20 @@ public final class ProvisionedClusterPoolUpgradeProfile {
     }
 
     /**
-     * Set the upgrades property: List of orchestrator types and versions available for upgrade.
-     *
+     * Set the upgrades property: List of available kubernetes versions for upgrade.
+     * 
      * @param upgrades the upgrades value to set.
      * @return the ProvisionedClusterPoolUpgradeProfile object itself.
      */
-    public ProvisionedClusterPoolUpgradeProfile withUpgrades(
-        List<ProvisionedClusterPoolUpgradeProfileProperties> upgrades) {
+    public ProvisionedClusterPoolUpgradeProfile
+        withUpgrades(List<ProvisionedClusterPoolUpgradeProfileProperties> upgrades) {
         this.upgrades = upgrades;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

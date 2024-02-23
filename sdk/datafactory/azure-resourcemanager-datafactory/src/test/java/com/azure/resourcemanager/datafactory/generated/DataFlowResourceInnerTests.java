@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DataFlowResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataFlowResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"type\":\"DataFlow\",\"description\":\"qspkcdqzhlctd\",\"annotations\":[\"dataqn\",\"datayfp\",\"datahrqbnjjrcg\",\"datagydcw\"],\"folder\":{\"name\":\"jumvqqolihrraio\"}},\"name\":\"ubrjtl\",\"type\":\"xfuojrn\",\"etag\":\"flrzpas\",\"id\":\"biuimzdlyjdfq\"}")
-                .toObject(DataFlowResourceInner.class);
+        DataFlowResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"type\":\"DataFlow\",\"description\":\"qspkcdqzhlctd\",\"annotations\":[\"dataqn\",\"datayfp\",\"datahrqbnjjrcg\",\"datagydcw\"],\"folder\":{\"name\":\"jumvqqolihrraio\"}},\"name\":\"ubrjtl\",\"type\":\"xfuojrn\",\"etag\":\"flrzpas\",\"id\":\"biuimzdlyjdfq\"}")
+            .toObject(DataFlowResourceInner.class);
         Assertions.assertEquals("biuimzdlyjdfq", model.id());
         Assertions.assertEquals("qspkcdqzhlctd", model.properties().description());
         Assertions.assertEquals("jumvqqolihrraio", model.properties().folder().name());
@@ -26,14 +24,10 @@ public final class DataFlowResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataFlowResourceInner model =
-            new DataFlowResourceInner()
-                .withId("biuimzdlyjdfq")
-                .withProperties(
-                    new DataFlow()
-                        .withDescription("qspkcdqzhlctd")
-                        .withAnnotations(Arrays.asList("dataqn", "datayfp", "datahrqbnjjrcg", "datagydcw"))
-                        .withFolder(new DataFlowFolder().withName("jumvqqolihrraio")));
+        DataFlowResourceInner model = new DataFlowResourceInner().withId("biuimzdlyjdfq")
+            .withProperties(new DataFlow().withDescription("qspkcdqzhlctd")
+                .withAnnotations(Arrays.asList("dataqn", "datayfp", "datahrqbnjjrcg", "datagydcw"))
+                .withFolder(new DataFlowFolder().withName("jumvqqolihrraio")));
         model = BinaryData.fromObject(model).toObject(DataFlowResourceInner.class);
         Assertions.assertEquals("biuimzdlyjdfq", model.id());
         Assertions.assertEquals("qspkcdqzhlctd", model.properties().description());

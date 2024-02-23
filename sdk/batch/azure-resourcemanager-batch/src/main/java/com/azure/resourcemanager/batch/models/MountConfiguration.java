@@ -7,12 +7,14 @@ package com.azure.resourcemanager.batch.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The file system to mount on each node. */
+/**
+ * The file system to mount on each node.
+ */
 @Fluent
 public final class MountConfiguration {
     /*
      * Information used to connect to an Azure Storage Container using Blobfuse.
-     *
+     * 
      * This property is mutually exclusive with all other properties.
      */
     @JsonProperty(value = "azureBlobFileSystemConfiguration")
@@ -20,7 +22,7 @@ public final class MountConfiguration {
 
     /*
      * Information used to connect to an NFS file system.
-     *
+     * 
      * This property is mutually exclusive with all other properties.
      */
     @JsonProperty(value = "nfsMountConfiguration")
@@ -28,7 +30,7 @@ public final class MountConfiguration {
 
     /*
      * Information used to connect to a CIFS file system.
-     *
+     * 
      * This property is mutually exclusive with all other properties.
      */
     @JsonProperty(value = "cifsMountConfiguration")
@@ -36,22 +38,24 @@ public final class MountConfiguration {
 
     /*
      * Information used to connect to an Azure Fileshare.
-     *
+     * 
      * This property is mutually exclusive with all other properties.
      */
     @JsonProperty(value = "azureFileShareConfiguration")
     private AzureFileShareConfiguration azureFileShareConfiguration;
 
-    /** Creates an instance of MountConfiguration class. */
+    /**
+     * Creates an instance of MountConfiguration class.
+     */
     public MountConfiguration() {
     }
 
     /**
      * Get the azureBlobFileSystemConfiguration property: Information used to connect to an Azure Storage Container
      * using Blobfuse.
-     *
-     * <p>This property is mutually exclusive with all other properties.
-     *
+     * 
+     * This property is mutually exclusive with all other properties.
+     * 
      * @return the azureBlobFileSystemConfiguration value.
      */
     public AzureBlobFileSystemConfiguration azureBlobFileSystemConfiguration() {
@@ -61,23 +65,23 @@ public final class MountConfiguration {
     /**
      * Set the azureBlobFileSystemConfiguration property: Information used to connect to an Azure Storage Container
      * using Blobfuse.
-     *
-     * <p>This property is mutually exclusive with all other properties.
-     *
+     * 
+     * This property is mutually exclusive with all other properties.
+     * 
      * @param azureBlobFileSystemConfiguration the azureBlobFileSystemConfiguration value to set.
      * @return the MountConfiguration object itself.
      */
-    public MountConfiguration withAzureBlobFileSystemConfiguration(
-        AzureBlobFileSystemConfiguration azureBlobFileSystemConfiguration) {
+    public MountConfiguration
+        withAzureBlobFileSystemConfiguration(AzureBlobFileSystemConfiguration azureBlobFileSystemConfiguration) {
         this.azureBlobFileSystemConfiguration = azureBlobFileSystemConfiguration;
         return this;
     }
 
     /**
      * Get the nfsMountConfiguration property: Information used to connect to an NFS file system.
-     *
-     * <p>This property is mutually exclusive with all other properties.
-     *
+     * 
+     * This property is mutually exclusive with all other properties.
+     * 
      * @return the nfsMountConfiguration value.
      */
     public NfsMountConfiguration nfsMountConfiguration() {
@@ -86,9 +90,9 @@ public final class MountConfiguration {
 
     /**
      * Set the nfsMountConfiguration property: Information used to connect to an NFS file system.
-     *
-     * <p>This property is mutually exclusive with all other properties.
-     *
+     * 
+     * This property is mutually exclusive with all other properties.
+     * 
      * @param nfsMountConfiguration the nfsMountConfiguration value to set.
      * @return the MountConfiguration object itself.
      */
@@ -99,9 +103,9 @@ public final class MountConfiguration {
 
     /**
      * Get the cifsMountConfiguration property: Information used to connect to a CIFS file system.
-     *
-     * <p>This property is mutually exclusive with all other properties.
-     *
+     * 
+     * This property is mutually exclusive with all other properties.
+     * 
      * @return the cifsMountConfiguration value.
      */
     public CifsMountConfiguration cifsMountConfiguration() {
@@ -110,9 +114,9 @@ public final class MountConfiguration {
 
     /**
      * Set the cifsMountConfiguration property: Information used to connect to a CIFS file system.
-     *
-     * <p>This property is mutually exclusive with all other properties.
-     *
+     * 
+     * This property is mutually exclusive with all other properties.
+     * 
      * @param cifsMountConfiguration the cifsMountConfiguration value to set.
      * @return the MountConfiguration object itself.
      */
@@ -123,9 +127,9 @@ public final class MountConfiguration {
 
     /**
      * Get the azureFileShareConfiguration property: Information used to connect to an Azure Fileshare.
-     *
-     * <p>This property is mutually exclusive with all other properties.
-     *
+     * 
+     * This property is mutually exclusive with all other properties.
+     * 
      * @return the azureFileShareConfiguration value.
      */
     public AzureFileShareConfiguration azureFileShareConfiguration() {
@@ -134,9 +138,9 @@ public final class MountConfiguration {
 
     /**
      * Set the azureFileShareConfiguration property: Information used to connect to an Azure Fileshare.
-     *
-     * <p>This property is mutually exclusive with all other properties.
-     *
+     * 
+     * This property is mutually exclusive with all other properties.
+     * 
      * @param azureFileShareConfiguration the azureFileShareConfiguration value to set.
      * @return the MountConfiguration object itself.
      */
@@ -147,7 +151,7 @@ public final class MountConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.ProcessModuleInfoInner
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of Kudu thread information elements. */
+/**
+ * Collection of Kudu thread information elements.
+ */
 @Fluent
 public final class ProcessModuleInfoCollection {
     /*
@@ -25,13 +27,15 @@ public final class ProcessModuleInfoCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ProcessModuleInfoCollection class. */
+    /**
+     * Creates an instance of ProcessModuleInfoCollection class.
+     */
     public ProcessModuleInfoCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<ProcessModuleInfoInner> value() {
@@ -40,7 +44,7 @@ public final class ProcessModuleInfoCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the ProcessModuleInfoCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class ProcessModuleInfoCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,15 +64,13 @@ public final class ProcessModuleInfoCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model ProcessModuleInfoCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model ProcessModuleInfoCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

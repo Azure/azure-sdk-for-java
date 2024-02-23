@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class UserPropertyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UserProperty model =
-            BinaryData
-                .fromString("{\"name\":\"fmluiqtqzfavyvn\",\"value\":\"dataqybaryeua\"}")
-                .toObject(UserProperty.class);
+        UserProperty model = BinaryData.fromString("{\"name\":\"fmluiqtqzfavyvn\",\"value\":\"dataqybaryeua\"}")
+            .toObject(UserProperty.class);
         Assertions.assertEquals("fmluiqtqzfavyvn", model.name());
     }
 

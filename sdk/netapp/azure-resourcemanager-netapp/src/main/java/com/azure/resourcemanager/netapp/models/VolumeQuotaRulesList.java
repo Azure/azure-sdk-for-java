@@ -9,7 +9,9 @@ import com.azure.resourcemanager.netapp.fluent.models.VolumeQuotaRuleInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of Volume Quota Rules. */
+/**
+ * List of Volume Quota Rules.
+ */
 @Fluent
 public final class VolumeQuotaRulesList {
     /*
@@ -18,13 +20,15 @@ public final class VolumeQuotaRulesList {
     @JsonProperty(value = "value")
     private List<VolumeQuotaRuleInner> value;
 
-    /** Creates an instance of VolumeQuotaRulesList class. */
+    /**
+     * Creates an instance of VolumeQuotaRulesList class.
+     */
     public VolumeQuotaRulesList() {
     }
 
     /**
      * Get the value property: A list of Volume Quota Rules.
-     *
+     * 
      * @return the value value.
      */
     public List<VolumeQuotaRuleInner> value() {
@@ -33,7 +37,7 @@ public final class VolumeQuotaRulesList {
 
     /**
      * Set the value property: A list of Volume Quota Rules.
-     *
+     * 
      * @param value the value value to set.
      * @return the VolumeQuotaRulesList object itself.
      */
@@ -44,7 +48,7 @@ public final class VolumeQuotaRulesList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

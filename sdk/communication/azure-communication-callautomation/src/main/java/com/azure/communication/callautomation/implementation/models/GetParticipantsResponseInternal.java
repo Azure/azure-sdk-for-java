@@ -14,8 +14,8 @@ public final class GetParticipantsResponseInternal {
     /*
      * List of the current participants in the call.
      */
-    @JsonProperty(value = "values")
-    private List<CallParticipantInternal> values;
+    @JsonProperty(value = "value", required = true)
+    private List<CallParticipantInternal> value;
 
     /*
      * Continue of the list of participants
@@ -24,22 +24,22 @@ public final class GetParticipantsResponseInternal {
     private String nextLink;
 
     /**
-     * Get the values property: List of the current participants in the call.
+     * Get the value property: List of the current participants in the call.
      *
-     * @return the values value.
+     * @return the value value.
      */
-    public List<CallParticipantInternal> getValues() {
-        return this.values;
+    public List<CallParticipantInternal> getValue() {
+        return this.value;
     }
 
     /**
-     * Set the values property: List of the current participants in the call.
+     * Set the value property: List of the current participants in the call.
      *
-     * @param values the values value to set.
+     * @param value the value value to set.
      * @return the GetParticipantsResponseInternal object itself.
      */
-    public GetParticipantsResponseInternal setValues(List<CallParticipantInternal> values) {
-        this.values = values;
+    public GetParticipantsResponseInternal setValue(List<CallParticipantInternal> value) {
+        this.value = value;
         return this;
     }
 

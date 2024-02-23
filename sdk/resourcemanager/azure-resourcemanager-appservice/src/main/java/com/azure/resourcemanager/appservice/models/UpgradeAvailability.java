@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Whether an upgrade is available for this App Service Environment. */
+/**
+ * Whether an upgrade is available for this App Service Environment.
+ */
 public final class UpgradeAvailability extends ExpandableStringEnum<UpgradeAvailability> {
-    /** Static value None for UpgradeAvailability. */
+    /**
+     * Static value None for UpgradeAvailability.
+     */
     public static final UpgradeAvailability NONE = fromString("None");
 
-    /** Static value Ready for UpgradeAvailability. */
+    /**
+     * Static value Ready for UpgradeAvailability.
+     */
     public static final UpgradeAvailability READY = fromString("Ready");
 
     /**
      * Creates a new instance of UpgradeAvailability value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class UpgradeAvailability extends ExpandableStringEnum<UpgradeAvail
 
     /**
      * Creates or finds a UpgradeAvailability from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding UpgradeAvailability.
      */
@@ -38,7 +44,7 @@ public final class UpgradeAvailability extends ExpandableStringEnum<UpgradeAvail
 
     /**
      * Gets known UpgradeAvailability values.
-     *
+     * 
      * @return known UpgradeAvailability values.
      */
     public static Collection<UpgradeAvailability> values() {

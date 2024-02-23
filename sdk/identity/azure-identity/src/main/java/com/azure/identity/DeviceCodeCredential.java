@@ -157,7 +157,11 @@ public class DeviceCodeCredential implements TokenCredential {
     public AccessToken getTokenSync(TokenRequestContext request) {
         if (cachedToken.get() != null) {
             try {
-                return identitySyncClient.authenticateWithPublicClientCache(request, cachedToken.get());
+                MsalToken token = identitySyncClient.authenticateWithPublicClientCache(request, cachedToken.get());
+                if (token != null) {
+                    LoggingUtil.logTokenSuccess(LOGGER, request);
+                    return token;
+                }
             } catch (Exception e) { }
         }
         try {

@@ -8,201 +8,245 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.streamanalytics.fluent.models.FunctionInner;
 
-/** An immutable client-side representation of Function. */
+/**
+ * An immutable client-side representation of Function.
+ */
 public interface Function {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the properties property: The properties that are associated with a function.
-     *
+     * 
      * @return the properties value.
      */
     FunctionProperties properties();
 
     /**
      * Gets the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
+     * Gets the name of the resource group.
+     * 
+     * @return the name of the resource group.
+     */
+    String resourceGroupName();
+
+    /**
      * Gets the inner com.azure.resourcemanager.streamanalytics.fluent.models.FunctionInner object.
-     *
+     * 
      * @return the inner object.
      */
     FunctionInner innerModel();
 
-    /** The entirety of the Function definition. */
+    /**
+     * The entirety of the Function definition.
+     */
     interface Definition
         extends DefinitionStages.Blank, DefinitionStages.WithParentResource, DefinitionStages.WithCreate {
     }
-    /** The Function definition stages. */
+
+    /**
+     * The Function definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the Function definition. */
+        /**
+         * The first stage of the Function definition.
+         */
         interface Blank extends WithParentResource {
         }
-        /** The stage of the Function definition allowing to specify parent resource. */
+
+        /**
+         * The stage of the Function definition allowing to specify parent resource.
+         */
         interface WithParentResource {
             /**
              * Specifies resourceGroupName, jobName.
-             *
+             * 
              * @param resourceGroupName The name of the resource group. The name is case insensitive.
              * @param jobName The name of the streaming job.
              * @return the next definition stage.
              */
             WithCreate withExistingStreamingjob(String resourceGroupName, String jobName);
         }
+
         /**
          * The stage of the Function definition which contains all the minimum required properties for the resource to
          * be created, but also allows for any other optional properties to be specified.
          */
-        interface WithCreate
-            extends DefinitionStages.WithProperties,
-                DefinitionStages.WithName,
-                DefinitionStages.WithIfMatch,
-                DefinitionStages.WithIfNoneMatch {
+        interface WithCreate extends DefinitionStages.WithProperties, DefinitionStages.WithName,
+            DefinitionStages.WithIfMatch, DefinitionStages.WithIfNoneMatch {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             Function create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             Function create(Context context);
         }
-        /** The stage of the Function definition allowing to specify properties. */
+
+        /**
+         * The stage of the Function definition allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: The properties that are associated with a function..
-             *
+             * 
              * @param properties The properties that are associated with a function.
              * @return the next definition stage.
              */
             WithCreate withProperties(FunctionProperties properties);
         }
-        /** The stage of the Function definition allowing to specify name. */
+
+        /**
+         * The stage of the Function definition allowing to specify name.
+         */
         interface WithName {
             /**
              * Specifies the name property: Resource name.
-             *
+             * 
              * @param name Resource name.
              * @return the next definition stage.
              */
             WithCreate withName(String name);
         }
-        /** The stage of the Function definition allowing to specify ifMatch. */
+
+        /**
+         * The stage of the Function definition allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: The ETag of the function. Omit this value to always overwrite the current
              * function. Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes..
-             *
+             * 
              * @param ifMatch The ETag of the function. Omit this value to always overwrite the current function.
-             *     Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+             * Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes.
              * @return the next definition stage.
              */
             WithCreate withIfMatch(String ifMatch);
         }
-        /** The stage of the Function definition allowing to specify ifNoneMatch. */
+
+        /**
+         * The stage of the Function definition allowing to specify ifNoneMatch.
+         */
         interface WithIfNoneMatch {
             /**
              * Specifies the ifNoneMatch property: Set to '*' to allow a new function to be created, but to prevent
              * updating an existing function. Other values will result in a 412 Pre-condition Failed response..
-             *
+             * 
              * @param ifNoneMatch Set to '*' to allow a new function to be created, but to prevent updating an existing
-             *     function. Other values will result in a 412 Pre-condition Failed response.
+             * function. Other values will result in a 412 Pre-condition Failed response.
              * @return the next definition stage.
              */
             WithCreate withIfNoneMatch(String ifNoneMatch);
         }
     }
+
     /**
      * Begins update for the Function resource.
-     *
+     * 
      * @return the stage of resource update.
      */
     Function.Update update();
 
-    /** The template for Function update. */
+    /**
+     * The template for Function update.
+     */
     interface Update extends UpdateStages.WithProperties, UpdateStages.WithName, UpdateStages.WithIfMatch {
         /**
          * Executes the update request.
-         *
+         * 
          * @return the updated resource.
          */
         Function apply();
 
         /**
          * Executes the update request.
-         *
+         * 
          * @param context The context to associate with this operation.
          * @return the updated resource.
          */
         Function apply(Context context);
     }
-    /** The Function update stages. */
+
+    /**
+     * The Function update stages.
+     */
     interface UpdateStages {
-        /** The stage of the Function update allowing to specify properties. */
+        /**
+         * The stage of the Function update allowing to specify properties.
+         */
         interface WithProperties {
             /**
              * Specifies the properties property: The properties that are associated with a function..
-             *
+             * 
              * @param properties The properties that are associated with a function.
              * @return the next definition stage.
              */
             Update withProperties(FunctionProperties properties);
         }
-        /** The stage of the Function update allowing to specify name. */
+
+        /**
+         * The stage of the Function update allowing to specify name.
+         */
         interface WithName {
             /**
              * Specifies the name property: Resource name.
-             *
+             * 
              * @param name Resource name.
              * @return the next definition stage.
              */
             Update withName(String name);
         }
-        /** The stage of the Function update allowing to specify ifMatch. */
+
+        /**
+         * The stage of the Function update allowing to specify ifMatch.
+         */
         interface WithIfMatch {
             /**
              * Specifies the ifMatch property: The ETag of the function. Omit this value to always overwrite the current
              * function. Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes..
-             *
+             * 
              * @param ifMatch The ETag of the function. Omit this value to always overwrite the current function.
-             *     Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes.
+             * Specify the last-seen ETag value to prevent accidentally overwriting concurrent changes.
              * @return the next definition stage.
              */
             Update withIfMatch(String ifMatch);
         }
     }
+
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     Function refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -211,23 +255,7 @@ public interface Function {
     /**
      * Tests if the information provided for a function is valid. This can range from testing the connection to the
      * underlying web service behind the function or making sure the function code provided is syntactically correct.
-     *
-     * @param function If the function specified does not already exist, this parameter must contain the full function
-     *     definition intended to be tested. If the function specified already exists, this parameter can be left null
-     *     to test the existing function as is or if specified, the properties specified will overwrite the
-     *     corresponding properties in the existing function (exactly like a PATCH operation) and the resulting function
-     *     will be tested.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the status of the test operation along with error information, if applicable.
-     */
-    ResourceTestStatus test(FunctionInner function);
-
-    /**
-     * Tests if the information provided for a function is valid. This can range from testing the connection to the
-     * underlying web service behind the function or making sure the function code provided is syntactically correct.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the status of the test operation along with error information, if applicable.
@@ -237,12 +265,11 @@ public interface Function {
     /**
      * Tests if the information provided for a function is valid. This can range from testing the connection to the
      * underlying web service behind the function or making sure the function code provided is syntactically correct.
-     *
+     * 
      * @param function If the function specified does not already exist, this parameter must contain the full function
-     *     definition intended to be tested. If the function specified already exists, this parameter can be left null
-     *     to test the existing function as is or if specified, the properties specified will overwrite the
-     *     corresponding properties in the existing function (exactly like a PATCH operation) and the resulting function
-     *     will be tested.
+     * definition intended to be tested. If the function specified already exists, this parameter can be left null to
+     * test the existing function as is or if specified, the properties specified will overwrite the corresponding
+     * properties in the existing function (exactly like a PATCH operation) and the resulting function will be tested.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -253,24 +280,25 @@ public interface Function {
 
     /**
      * Retrieves the default definition of a function based on the parameters specified.
-     *
+     * 
+     * @param functionRetrieveDefaultDefinitionParameters Parameters used to specify the type of function to retrieve
+     * the default definition for.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a function object, containing all information associated with the named function along with
+     * {@link Response}.
+     */
+    Response<Function> retrieveDefaultDefinitionWithResponse(
+        FunctionRetrieveDefaultDefinitionParameters functionRetrieveDefaultDefinitionParameters, Context context);
+
+    /**
+     * Retrieves the default definition of a function based on the parameters specified.
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a function object, containing all information associated with the named function.
      */
     Function retrieveDefaultDefinition();
-
-    /**
-     * Retrieves the default definition of a function based on the parameters specified.
-     *
-     * @param functionRetrieveDefaultDefinitionParameters Parameters used to specify the type of function to retrieve
-     *     the default definition for.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a function object, containing all information associated with the named function.
-     */
-    Response<Function> retrieveDefaultDefinitionWithResponse(
-        FunctionRetrieveDefaultDefinitionParameters functionRetrieveDefaultDefinitionParameters, Context context);
 }

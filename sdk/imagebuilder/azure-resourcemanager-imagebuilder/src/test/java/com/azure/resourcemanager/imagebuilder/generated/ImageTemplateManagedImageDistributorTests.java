@@ -13,41 +13,28 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageTemplateManagedImageDistributorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageTemplateManagedImageDistributor model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"ManagedImage\",\"imageId\":\"vvdfwatkpnpul\",\"location\":\"xxbczwtr\",\"runOutputName\":\"wiqzbqjvsovmyo\",\"artifactTags\":{\"lb\":\"spkwlhzdobpxjm\",\"wzjuqk\":\"vnchrkcci\",\"iwkuofos\":\"rsa\",\"ugidyjrr\":\"ghsauuimjmvxied\"}}")
-                .toObject(ImageTemplateManagedImageDistributor.class);
-        Assertions.assertEquals("wiqzbqjvsovmyo", model.runOutputName());
-        Assertions.assertEquals("spkwlhzdobpxjm", model.artifactTags().get("lb"));
-        Assertions.assertEquals("vvdfwatkpnpul", model.imageId());
-        Assertions.assertEquals("xxbczwtr", model.location());
+        ImageTemplateManagedImageDistributor model = BinaryData.fromString(
+            "{\"type\":\"ManagedImage\",\"imageId\":\"e\",\"location\":\"csonpclhoco\",\"runOutputName\":\"slkevle\",\"artifactTags\":{\"ithlvmezyvshxm\":\"fbuhfmvfaxkffe\",\"gigr\":\"sbbzo\"}}")
+            .toObject(ImageTemplateManagedImageDistributor.class);
+        Assertions.assertEquals("slkevle", model.runOutputName());
+        Assertions.assertEquals("fbuhfmvfaxkffe", model.artifactTags().get("ithlvmezyvshxm"));
+        Assertions.assertEquals("e", model.imageId());
+        Assertions.assertEquals("csonpclhoco", model.location());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplateManagedImageDistributor model =
-            new ImageTemplateManagedImageDistributor()
-                .withRunOutputName("wiqzbqjvsovmyo")
-                .withArtifactTags(
-                    mapOf(
-                        "lb",
-                        "spkwlhzdobpxjm",
-                        "wzjuqk",
-                        "vnchrkcci",
-                        "iwkuofos",
-                        "rsa",
-                        "ugidyjrr",
-                        "ghsauuimjmvxied"))
-                .withImageId("vvdfwatkpnpul")
-                .withLocation("xxbczwtr");
+        ImageTemplateManagedImageDistributor model = new ImageTemplateManagedImageDistributor()
+            .withRunOutputName("slkevle").withArtifactTags(mapOf("ithlvmezyvshxm", "fbuhfmvfaxkffe", "gigr", "sbbzo"))
+            .withImageId("e").withLocation("csonpclhoco");
         model = BinaryData.fromObject(model).toObject(ImageTemplateManagedImageDistributor.class);
-        Assertions.assertEquals("wiqzbqjvsovmyo", model.runOutputName());
-        Assertions.assertEquals("spkwlhzdobpxjm", model.artifactTags().get("lb"));
-        Assertions.assertEquals("vvdfwatkpnpul", model.imageId());
-        Assertions.assertEquals("xxbczwtr", model.location());
+        Assertions.assertEquals("slkevle", model.runOutputName());
+        Assertions.assertEquals("fbuhfmvfaxkffe", model.artifactTags().get("ithlvmezyvshxm"));
+        Assertions.assertEquals("e", model.imageId());
+        Assertions.assertEquals("csonpclhoco", model.location());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

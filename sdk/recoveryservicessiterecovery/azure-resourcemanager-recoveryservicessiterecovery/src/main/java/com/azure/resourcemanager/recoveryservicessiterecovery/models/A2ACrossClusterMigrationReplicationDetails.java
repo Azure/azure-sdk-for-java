@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A2A provider specific settings. */
+/**
+ * A2A provider specific settings.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("A2ACrossClusterMigration")
 @Fluent
@@ -52,13 +54,15 @@ public final class A2ACrossClusterMigrationReplicationDetails extends Replicatio
     @JsonProperty(value = "lifecycleId")
     private String lifecycleId;
 
-    /** Creates an instance of A2ACrossClusterMigrationReplicationDetails class. */
+    /**
+     * Creates an instance of A2ACrossClusterMigrationReplicationDetails class.
+     */
     public A2ACrossClusterMigrationReplicationDetails() {
     }
 
     /**
      * Get the fabricObjectId property: The fabric specific object Id of the virtual machine.
-     *
+     * 
      * @return the fabricObjectId value.
      */
     public String fabricObjectId() {
@@ -67,7 +71,7 @@ public final class A2ACrossClusterMigrationReplicationDetails extends Replicatio
 
     /**
      * Set the fabricObjectId property: The fabric specific object Id of the virtual machine.
-     *
+     * 
      * @param fabricObjectId the fabricObjectId value to set.
      * @return the A2ACrossClusterMigrationReplicationDetails object itself.
      */
@@ -78,7 +82,7 @@ public final class A2ACrossClusterMigrationReplicationDetails extends Replicatio
 
     /**
      * Get the primaryFabricLocation property: Primary fabric location.
-     *
+     * 
      * @return the primaryFabricLocation value.
      */
     public String primaryFabricLocation() {
@@ -87,7 +91,7 @@ public final class A2ACrossClusterMigrationReplicationDetails extends Replicatio
 
     /**
      * Set the primaryFabricLocation property: Primary fabric location.
-     *
+     * 
      * @param primaryFabricLocation the primaryFabricLocation value to set.
      * @return the A2ACrossClusterMigrationReplicationDetails object itself.
      */
@@ -98,7 +102,7 @@ public final class A2ACrossClusterMigrationReplicationDetails extends Replicatio
 
     /**
      * Get the osType property: The type of operating system.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -107,7 +111,7 @@ public final class A2ACrossClusterMigrationReplicationDetails extends Replicatio
 
     /**
      * Set the osType property: The type of operating system.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the A2ACrossClusterMigrationReplicationDetails object itself.
      */
@@ -118,7 +122,7 @@ public final class A2ACrossClusterMigrationReplicationDetails extends Replicatio
 
     /**
      * Get the vmProtectionState property: The protection state for the vm.
-     *
+     * 
      * @return the vmProtectionState value.
      */
     public String vmProtectionState() {
@@ -127,7 +131,7 @@ public final class A2ACrossClusterMigrationReplicationDetails extends Replicatio
 
     /**
      * Set the vmProtectionState property: The protection state for the vm.
-     *
+     * 
      * @param vmProtectionState the vmProtectionState value to set.
      * @return the A2ACrossClusterMigrationReplicationDetails object itself.
      */
@@ -138,7 +142,7 @@ public final class A2ACrossClusterMigrationReplicationDetails extends Replicatio
 
     /**
      * Get the vmProtectionStateDescription property: The protection state description for the vm.
-     *
+     * 
      * @return the vmProtectionStateDescription value.
      */
     public String vmProtectionStateDescription() {
@@ -147,12 +151,12 @@ public final class A2ACrossClusterMigrationReplicationDetails extends Replicatio
 
     /**
      * Set the vmProtectionStateDescription property: The protection state description for the vm.
-     *
+     * 
      * @param vmProtectionStateDescription the vmProtectionStateDescription value to set.
      * @return the A2ACrossClusterMigrationReplicationDetails object itself.
      */
-    public A2ACrossClusterMigrationReplicationDetails withVmProtectionStateDescription(
-        String vmProtectionStateDescription) {
+    public A2ACrossClusterMigrationReplicationDetails
+        withVmProtectionStateDescription(String vmProtectionStateDescription) {
         this.vmProtectionStateDescription = vmProtectionStateDescription;
         return this;
     }
@@ -162,7 +166,7 @@ public final class A2ACrossClusterMigrationReplicationDetails extends Replicatio
      * change the backing PE/CPE objects internally.The lifecycle id gets carried forward to have a link/continuity in
      * being able to have an Id that denotes the "same" protected item even though other internal Ids/ARM Id might be
      * changing.
-     *
+     * 
      * @return the lifecycleId value.
      */
     public String lifecycleId() {
@@ -174,7 +178,7 @@ public final class A2ACrossClusterMigrationReplicationDetails extends Replicatio
      * change the backing PE/CPE objects internally.The lifecycle id gets carried forward to have a link/continuity in
      * being able to have an Id that denotes the "same" protected item even though other internal Ids/ARM Id might be
      * changing.
-     *
+     * 
      * @param lifecycleId the lifecycleId value to set.
      * @return the A2ACrossClusterMigrationReplicationDetails object itself.
      */
@@ -185,7 +189,7 @@ public final class A2ACrossClusterMigrationReplicationDetails extends Replicatio
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

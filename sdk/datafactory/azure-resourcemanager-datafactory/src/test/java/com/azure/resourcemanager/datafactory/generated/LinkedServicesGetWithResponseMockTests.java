@@ -31,44 +31,32 @@ public final class LinkedServicesGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"type\":\"LinkedService\",\"connectVia\":{\"referenceName\":\"tkzvti\",\"parameters\":{\"vfwwevyfz\":\"datarmgc\"}},\"description\":\"exivqaqztt\",\"parameters\":{\"ql\":{\"type\":\"Array\",\"defaultValue\":\"dataiznriqucolpos\"},\"ojpalnzrj\":{\"type\":\"String\",\"defaultValue\":\"datak\"},\"xjh\":{\"type\":\"Array\",\"defaultValue\":\"datahtyney\"},\"tcupo\":{\"type\":\"SecureString\",\"defaultValue\":\"datawsnqktbgudfcr\"}},\"annotations\":[\"datargcl\",\"dataqkufqjmylrtnzyos\",\"datavkqezeeeuligu\",\"dataw\"],\"\":{\"wxzxroht\":\"dataucvwz\",\"idspe\":\"datac\",\"cmcqslngmsip\":\"dataxdeaisk\"}},\"name\":\"jn\",\"type\":\"cotjdcxacge\",\"etag\":\"fpfaaahxphuplf\",\"id\":\"qgcadntzfjldnvf\"}";
+        String responseStr
+            = "{\"properties\":{\"type\":\"LinkedService\",\"connectVia\":{\"referenceName\":\"ovu\",\"parameters\":{\"jxfhsgpymzrts\":\"datacr\"}},\"description\":\"nrlpsjbnnuqsz\",\"parameters\":{\"jgddbunxufataqsf\":{\"type\":\"Object\",\"defaultValue\":\"datafrqs\"},\"cur\":{\"type\":\"Bool\",\"defaultValue\":\"datadwh\"},\"vv\":{\"type\":\"Object\",\"defaultValue\":\"dataunazl\"},\"advvgndfyelpnlpn\":{\"type\":\"Float\",\"defaultValue\":\"datacnqwisuhareqy\"}},\"annotations\":[\"dataxcj\",\"datayfxsdntukoss\",\"dataflfv\"],\"\":{\"i\":\"dataeclyrtoshk\",\"dnkgpvbvicwfrybv\":\"databjb\"}},\"name\":\"ll\",\"type\":\"ghdfusphokcchynn\",\"etag\":\"nnqii\",\"id\":\"pxxwbe\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DataFactoryManager manager =
-            DataFactoryManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        LinkedServiceResource response =
-            manager
-                .linkedServices()
-                .getWithResponse("owubkiocjn", "rnwkt", "sckcnge", "xdxuzoxmajp", com.azure.core.util.Context.NONE)
-                .getValue();
+        LinkedServiceResource response = manager.linkedServices()
+            .getWithResponse("tbwe", "tnevbkkdbhg", "rnxqiwgrj", "lieyyfqhndj", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("qgcadntzfjldnvf", response.id());
-        Assertions.assertEquals("tkzvti", response.properties().connectVia().referenceName());
-        Assertions.assertEquals("exivqaqztt", response.properties().description());
-        Assertions.assertEquals(ParameterType.ARRAY, response.properties().parameters().get("ql").type());
+        Assertions.assertEquals("pxxwbe", response.id());
+        Assertions.assertEquals("ovu", response.properties().connectVia().referenceName());
+        Assertions.assertEquals("nrlpsjbnnuqsz", response.properties().description());
+        Assertions.assertEquals(ParameterType.OBJECT,
+            response.properties().parameters().get("jgddbunxufataqsf").type());
     }
 }

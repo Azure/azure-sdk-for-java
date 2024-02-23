@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The service resource for patch operations. */
+/**
+ * The service resource for patch operations.
+ */
 @Fluent
 public final class ServiceResourceUpdate extends ProxyResource {
     /*
@@ -45,13 +47,15 @@ public final class ServiceResourceUpdate extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ServiceResourceUpdate class. */
+    /**
+     * Creates an instance of ServiceResourceUpdate class.
+     */
     public ServiceResourceUpdate() {
     }
 
     /**
      * Get the properties property: The service resource properties for patch operations.
-     *
+     * 
      * @return the properties value.
      */
     public ServiceResourceUpdateProperties properties() {
@@ -60,7 +64,7 @@ public final class ServiceResourceUpdate extends ProxyResource {
 
     /**
      * Set the properties property: The service resource properties for patch operations.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ServiceResourceUpdate object itself.
      */
@@ -71,7 +75,7 @@ public final class ServiceResourceUpdate extends ProxyResource {
 
     /**
      * Get the location property: It will be deprecated in New API, resource location depends on the parent resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -80,7 +84,7 @@ public final class ServiceResourceUpdate extends ProxyResource {
 
     /**
      * Set the location property: It will be deprecated in New API, resource location depends on the parent resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the ServiceResourceUpdate object itself.
      */
@@ -91,7 +95,7 @@ public final class ServiceResourceUpdate extends ProxyResource {
 
     /**
      * Get the tags property: Azure resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -100,7 +104,7 @@ public final class ServiceResourceUpdate extends ProxyResource {
 
     /**
      * Set the tags property: Azure resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ServiceResourceUpdate object itself.
      */
@@ -111,7 +115,7 @@ public final class ServiceResourceUpdate extends ProxyResource {
 
     /**
      * Get the etag property: Azure resource etag.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -120,7 +124,7 @@ public final class ServiceResourceUpdate extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -129,7 +133,7 @@ public final class ServiceResourceUpdate extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Get GitHub access token request definition. */
+/**
+ * Get GitHub access token request definition.
+ */
 @Fluent
 public final class GitHubAccessTokenRequest {
     /*
@@ -35,13 +37,15 @@ public final class GitHubAccessTokenRequest {
     @JsonProperty(value = "gitHubAccessTokenBaseUrl", required = true)
     private String gitHubAccessTokenBaseUrl;
 
-    /** Creates an instance of GitHubAccessTokenRequest class. */
+    /**
+     * Creates an instance of GitHubAccessTokenRequest class.
+     */
     public GitHubAccessTokenRequest() {
     }
 
     /**
      * Get the gitHubAccessCode property: GitHub access code.
-     *
+     * 
      * @return the gitHubAccessCode value.
      */
     public String gitHubAccessCode() {
@@ -50,7 +54,7 @@ public final class GitHubAccessTokenRequest {
 
     /**
      * Set the gitHubAccessCode property: GitHub access code.
-     *
+     * 
      * @param gitHubAccessCode the gitHubAccessCode value to set.
      * @return the GitHubAccessTokenRequest object itself.
      */
@@ -61,7 +65,7 @@ public final class GitHubAccessTokenRequest {
 
     /**
      * Get the gitHubClientId property: GitHub application client ID.
-     *
+     * 
      * @return the gitHubClientId value.
      */
     public String gitHubClientId() {
@@ -70,7 +74,7 @@ public final class GitHubAccessTokenRequest {
 
     /**
      * Set the gitHubClientId property: GitHub application client ID.
-     *
+     * 
      * @param gitHubClientId the gitHubClientId value to set.
      * @return the GitHubAccessTokenRequest object itself.
      */
@@ -81,7 +85,7 @@ public final class GitHubAccessTokenRequest {
 
     /**
      * Get the gitHubClientSecret property: GitHub bring your own app client secret information.
-     *
+     * 
      * @return the gitHubClientSecret value.
      */
     public GitHubClientSecret gitHubClientSecret() {
@@ -90,7 +94,7 @@ public final class GitHubAccessTokenRequest {
 
     /**
      * Set the gitHubClientSecret property: GitHub bring your own app client secret information.
-     *
+     * 
      * @param gitHubClientSecret the gitHubClientSecret value to set.
      * @return the GitHubAccessTokenRequest object itself.
      */
@@ -101,7 +105,7 @@ public final class GitHubAccessTokenRequest {
 
     /**
      * Get the gitHubAccessTokenBaseUrl property: GitHub access token base URL.
-     *
+     * 
      * @return the gitHubAccessTokenBaseUrl value.
      */
     public String gitHubAccessTokenBaseUrl() {
@@ -110,7 +114,7 @@ public final class GitHubAccessTokenRequest {
 
     /**
      * Set the gitHubAccessTokenBaseUrl property: GitHub access token base URL.
-     *
+     * 
      * @param gitHubAccessTokenBaseUrl the gitHubAccessTokenBaseUrl value to set.
      * @return the GitHubAccessTokenRequest object itself.
      */
@@ -121,24 +125,20 @@ public final class GitHubAccessTokenRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (gitHubAccessCode() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property gitHubAccessCode in model GitHubAccessTokenRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property gitHubAccessCode in model GitHubAccessTokenRequest"));
         }
         if (gitHubClientSecret() != null) {
             gitHubClientSecret().validate();
         }
         if (gitHubAccessTokenBaseUrl() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property gitHubAccessTokenBaseUrl in model GitHubAccessTokenRequest"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property gitHubAccessTokenBaseUrl in model GitHubAccessTokenRequest"));
         }
     }
 

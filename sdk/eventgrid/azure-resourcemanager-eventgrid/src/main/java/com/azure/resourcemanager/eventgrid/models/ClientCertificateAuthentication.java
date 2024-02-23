@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The certificate authentication properties for the client. */
+/**
+ * The certificate authentication properties for the client.
+ */
 @Fluent
 public final class ClientCertificateAuthentication {
     /*
@@ -24,14 +26,16 @@ public final class ClientCertificateAuthentication {
     @JsonProperty(value = "allowedThumbprints")
     private List<String> allowedThumbprints;
 
-    /** Creates an instance of ClientCertificateAuthentication class. */
+    /**
+     * Creates an instance of ClientCertificateAuthentication class.
+     */
     public ClientCertificateAuthentication() {
     }
 
     /**
      * Get the validationScheme property: The validation scheme used to authenticate the client. Default value is
      * SubjectMatchesAuthenticationName.
-     *
+     * 
      * @return the validationScheme value.
      */
     public ClientCertificateValidationScheme validationScheme() {
@@ -41,7 +45,7 @@ public final class ClientCertificateAuthentication {
     /**
      * Set the validationScheme property: The validation scheme used to authenticate the client. Default value is
      * SubjectMatchesAuthenticationName.
-     *
+     * 
      * @param validationScheme the validationScheme value to set.
      * @return the ClientCertificateAuthentication object itself.
      */
@@ -53,7 +57,7 @@ public final class ClientCertificateAuthentication {
     /**
      * Get the allowedThumbprints property: The list of thumbprints that are allowed during client authentication. This
      * property is required only if the validationScheme is 'ThumbprintMatch'.
-     *
+     * 
      * @return the allowedThumbprints value.
      */
     public List<String> allowedThumbprints() {
@@ -63,7 +67,7 @@ public final class ClientCertificateAuthentication {
     /**
      * Set the allowedThumbprints property: The list of thumbprints that are allowed during client authentication. This
      * property is required only if the validationScheme is 'ThumbprintMatch'.
-     *
+     * 
      * @param allowedThumbprints the allowedThumbprints value to set.
      * @return the ClientCertificateAuthentication object itself.
      */
@@ -74,7 +78,7 @@ public final class ClientCertificateAuthentication {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

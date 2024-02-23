@@ -6,36 +6,33 @@ package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.datafactory.models.BinarySink;
+import com.azure.resourcemanager.datafactory.models.MetadataItem;
 import com.azure.resourcemanager.datafactory.models.StoreWriteSettings;
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
 public final class BinarySinkTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BinarySink model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"BinarySink\",\"storeSettings\":{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"datax\",\"disableMetricsCollection\":\"datanmsfqntakroxkurf\",\"copyBehavior\":\"datawcmzpwkcagfqg\",\"\":{\"prdpvblonlh\":\"datamj\",\"zqavimxnhylwog\":\"datagexwjhic\",\"bgda\":\"datavl\",\"hdxlfntdclkmgg\":\"datat\"}},\"writeBatchSize\":\"datalfyxaiaf\",\"writeBatchTimeout\":\"datamxekfvycvhwduo\",\"sinkRetryCount\":\"dataapzzcxk\",\"sinkRetryWait\":\"datasbahcassqeybd\",\"maxConcurrentConnections\":\"dataeyakg\",\"disableMetricsCollection\":\"dataohfq\",\"\":{\"awctaarboxal\":\"datakicxtumqi\",\"xwevl\":\"dataoadmcvvkjnpe\",\"bo\":\"datahuahlqm\",\"xoyllx\":\"datagpmmz\"}}")
-                .toObject(BinarySink.class);
+        BinarySink model = BinaryData.fromString(
+            "{\"type\":\"BinarySink\",\"storeSettings\":{\"type\":\"StoreWriteSettings\",\"maxConcurrentConnections\":\"dataaaruvbzcqgtz\",\"disableMetricsCollection\":\"datalrmrtdznvjgovy\",\"copyBehavior\":\"datappswlept\",\"metadata\":[{\"name\":\"datakntfwxkeu\",\"value\":\"datagpcrvv\"},{\"name\":\"datadlckpznoveabwpai\",\"value\":\"datakzysdhars\"},{\"name\":\"dataqmrpdx\",\"value\":\"datadvtv\"},{\"name\":\"dataqlt\",\"value\":\"datandf\"}],\"\":{\"tsnqjcmk\":\"datasdiehrajbatgmxko\"}},\"writeBatchSize\":\"databckjrfkwclqmyowd\",\"writeBatchTimeout\":\"datatwaxobdzatqocvrd\",\"sinkRetryCount\":\"datavsclwpsteuvjdnh\",\"sinkRetryWait\":\"datayvymvnlaehit\",\"maxConcurrentConnections\":\"dataibfomohcynorhhbv\",\"disableMetricsCollection\":\"dataxtktkeuapomoof\",\"\":{\"mathiydmkyvsxc\":\"datahptraljcqpu\",\"fmkp\":\"dataivghajpddgfozn\",\"mwptdrrruy\":\"dataoesozcuhunmfz\"}}")
+            .toObject(BinarySink.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BinarySink model =
-            new BinarySink()
-                .withWriteBatchSize("datalfyxaiaf")
-                .withWriteBatchTimeout("datamxekfvycvhwduo")
-                .withSinkRetryCount("dataapzzcxk")
-                .withSinkRetryWait("datasbahcassqeybd")
-                .withMaxConcurrentConnections("dataeyakg")
-                .withDisableMetricsCollection("dataohfq")
-                .withStoreSettings(
-                    new StoreWriteSettings()
-                        .withMaxConcurrentConnections("datax")
-                        .withDisableMetricsCollection("datanmsfqntakroxkurf")
-                        .withCopyBehavior("datawcmzpwkcagfqg")
-                        .withAdditionalProperties(mapOf("type", "StoreWriteSettings")));
+        BinarySink model
+            = new BinarySink().withWriteBatchSize("databckjrfkwclqmyowd").withWriteBatchTimeout("datatwaxobdzatqocvrd")
+                .withSinkRetryCount("datavsclwpsteuvjdnh").withSinkRetryWait("datayvymvnlaehit")
+                .withMaxConcurrentConnections("dataibfomohcynorhhbv").withDisableMetricsCollection("dataxtktkeuapomoof")
+                .withStoreSettings(new StoreWriteSettings().withMaxConcurrentConnections("dataaaruvbzcqgtz")
+                    .withDisableMetricsCollection("datalrmrtdznvjgovy").withCopyBehavior("datappswlept")
+                    .withMetadata(Arrays.asList(new MetadataItem().withName("datakntfwxkeu").withValue("datagpcrvv"),
+                        new MetadataItem().withName("datadlckpznoveabwpai").withValue("datakzysdhars"),
+                        new MetadataItem().withName("dataqmrpdx").withValue("datadvtv"),
+                        new MetadataItem().withName("dataqlt").withValue("datandf")))
+                    .withAdditionalProperties(mapOf("type", "StoreWriteSettings")));
         model = BinaryData.fromObject(model).toObject(BinarySink.class);
     }
 

@@ -19,11 +19,13 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DdosCustomPoliciesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DdosCustomPoliciesClient.
+ */
 public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPolicyInner>, InnerSupportsDelete<Void> {
     /**
      * Deletes the specified DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -36,7 +38,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
 
     /**
      * Deletes the specified DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -49,7 +51,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
 
     /**
      * Deletes the specified DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -62,7 +64,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
 
     /**
      * Deletes the specified DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param context The context to associate with this operation.
@@ -72,12 +74,12 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String ddosCustomPolicyName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String ddosCustomPolicyName,
+        Context context);
 
     /**
      * Deletes the specified DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -90,7 +92,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
 
     /**
      * Deletes the specified DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -102,7 +104,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
 
     /**
      * Deletes the specified DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param context The context to associate with this operation.
@@ -115,22 +117,22 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
 
     /**
      * Gets information about the specified DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return information about the specified DDoS custom policy along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DdosCustomPolicyInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String ddosCustomPolicyName);
+    Mono<Response<DdosCustomPolicyInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String ddosCustomPolicyName);
 
     /**
      * Gets information about the specified DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -143,7 +145,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
 
     /**
      * Gets information about the specified DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param context The context to associate with this operation.
@@ -153,12 +155,12 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @return information about the specified DDoS custom policy along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DdosCustomPolicyInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String ddosCustomPolicyName, Context context);
+    Response<DdosCustomPolicyInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String ddosCustomPolicyName, Context context);
 
     /**
      * Gets information about the specified DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -171,23 +173,23 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
 
     /**
      * Creates or updates a DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param parameters Parameters supplied to the create or update operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS custom policy in a resource group along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a DDoS custom policy in a resource group along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String ddosCustomPolicyName, DdosCustomPolicyInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String ddosCustomPolicyName, DdosCustomPolicyInner parameters);
 
     /**
      * Creates or updates a DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param parameters Parameters supplied to the create or update operation.
@@ -202,7 +204,7 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
 
     /**
      * Creates or updates a DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param parameters Parameters supplied to the create or update operation.
@@ -212,12 +214,12 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @return the {@link SyncPoller} for polling of a DDoS custom policy in a resource group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DdosCustomPolicyInner>, DdosCustomPolicyInner> beginCreateOrUpdate(
-        String resourceGroupName, String ddosCustomPolicyName, DdosCustomPolicyInner parameters);
+    SyncPoller<PollResult<DdosCustomPolicyInner>, DdosCustomPolicyInner> beginCreateOrUpdate(String resourceGroupName,
+        String ddosCustomPolicyName, DdosCustomPolicyInner parameters);
 
     /**
      * Creates or updates a DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param parameters Parameters supplied to the create or update operation.
@@ -228,12 +230,12 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @return the {@link SyncPoller} for polling of a DDoS custom policy in a resource group.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<DdosCustomPolicyInner>, DdosCustomPolicyInner> beginCreateOrUpdate(
-        String resourceGroupName, String ddosCustomPolicyName, DdosCustomPolicyInner parameters, Context context);
+    SyncPoller<PollResult<DdosCustomPolicyInner>, DdosCustomPolicyInner> beginCreateOrUpdate(String resourceGroupName,
+        String ddosCustomPolicyName, DdosCustomPolicyInner parameters, Context context);
 
     /**
      * Creates or updates a DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param parameters Parameters supplied to the create or update operation.
@@ -243,12 +245,12 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @return a DDoS custom policy in a resource group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DdosCustomPolicyInner> createOrUpdateAsync(
-        String resourceGroupName, String ddosCustomPolicyName, DdosCustomPolicyInner parameters);
+    Mono<DdosCustomPolicyInner> createOrUpdateAsync(String resourceGroupName, String ddosCustomPolicyName,
+        DdosCustomPolicyInner parameters);
 
     /**
      * Creates or updates a DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param parameters Parameters supplied to the create or update operation.
@@ -258,12 +260,12 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @return a DDoS custom policy in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DdosCustomPolicyInner createOrUpdate(
-        String resourceGroupName, String ddosCustomPolicyName, DdosCustomPolicyInner parameters);
+    DdosCustomPolicyInner createOrUpdate(String resourceGroupName, String ddosCustomPolicyName,
+        DdosCustomPolicyInner parameters);
 
     /**
      * Creates or updates a DDoS custom policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param parameters Parameters supplied to the create or update operation.
@@ -274,28 +276,28 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @return a DDoS custom policy in a resource group.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    DdosCustomPolicyInner createOrUpdate(
-        String resourceGroupName, String ddosCustomPolicyName, DdosCustomPolicyInner parameters, Context context);
+    DdosCustomPolicyInner createOrUpdate(String resourceGroupName, String ddosCustomPolicyName,
+        DdosCustomPolicyInner parameters, Context context);
 
     /**
      * Update a DDoS custom policy tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param parameters Parameters supplied to update DDoS custom policy resource tags.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a DDoS custom policy in a resource group along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return a DDoS custom policy in a resource group along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<DdosCustomPolicyInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String ddosCustomPolicyName, TagsObject parameters);
+    Mono<Response<DdosCustomPolicyInner>> updateTagsWithResponseAsync(String resourceGroupName,
+        String ddosCustomPolicyName, TagsObject parameters);
 
     /**
      * Update a DDoS custom policy tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param parameters Parameters supplied to update DDoS custom policy resource tags.
@@ -305,12 +307,12 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @return a DDoS custom policy in a resource group on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<DdosCustomPolicyInner> updateTagsAsync(
-        String resourceGroupName, String ddosCustomPolicyName, TagsObject parameters);
+    Mono<DdosCustomPolicyInner> updateTagsAsync(String resourceGroupName, String ddosCustomPolicyName,
+        TagsObject parameters);
 
     /**
      * Update a DDoS custom policy tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param parameters Parameters supplied to update DDoS custom policy resource tags.
@@ -321,12 +323,12 @@ public interface DdosCustomPoliciesClient extends InnerSupportsGet<DdosCustomPol
      * @return a DDoS custom policy in a resource group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<DdosCustomPolicyInner> updateTagsWithResponse(
-        String resourceGroupName, String ddosCustomPolicyName, TagsObject parameters, Context context);
+    Response<DdosCustomPolicyInner> updateTagsWithResponse(String resourceGroupName, String ddosCustomPolicyName,
+        TagsObject parameters, Context context);
 
     /**
      * Update a DDoS custom policy tags.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param ddosCustomPolicyName The name of the DDoS custom policy.
      * @param parameters Parameters supplied to update DDoS custom policy resource tags.

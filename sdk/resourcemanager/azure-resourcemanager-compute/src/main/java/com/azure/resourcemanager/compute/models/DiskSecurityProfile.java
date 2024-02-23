@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains the security related information for the resource. */
+/**
+ * Contains the security related information for the resource.
+ */
 @Fluent
 public final class DiskSecurityProfile {
     /*
@@ -23,13 +25,15 @@ public final class DiskSecurityProfile {
     @JsonProperty(value = "secureVMDiskEncryptionSetId")
     private String secureVMDiskEncryptionSetId;
 
-    /** Creates an instance of DiskSecurityProfile class. */
+    /**
+     * Creates an instance of DiskSecurityProfile class.
+     */
     public DiskSecurityProfile() {
     }
 
     /**
      * Get the securityType property: Specifies the SecurityType of the VM. Applicable for OS disks only.
-     *
+     * 
      * @return the securityType value.
      */
     public DiskSecurityTypes securityType() {
@@ -38,7 +42,7 @@ public final class DiskSecurityProfile {
 
     /**
      * Set the securityType property: Specifies the SecurityType of the VM. Applicable for OS disks only.
-     *
+     * 
      * @param securityType the securityType value to set.
      * @return the DiskSecurityProfile object itself.
      */
@@ -48,9 +52,9 @@ public final class DiskSecurityProfile {
     }
 
     /**
-     * Get the secureVMDiskEncryptionSetId property: ResourceId of the disk encryption set associated to Confidential VM
-     * supported disk encrypted with customer managed key.
-     *
+     * Get the secureVMDiskEncryptionSetId property: ResourceId of the disk encryption set associated to Confidential
+     * VM supported disk encrypted with customer managed key.
+     * 
      * @return the secureVMDiskEncryptionSetId value.
      */
     public String secureVMDiskEncryptionSetId() {
@@ -58,9 +62,9 @@ public final class DiskSecurityProfile {
     }
 
     /**
-     * Set the secureVMDiskEncryptionSetId property: ResourceId of the disk encryption set associated to Confidential VM
-     * supported disk encrypted with customer managed key.
-     *
+     * Set the secureVMDiskEncryptionSetId property: ResourceId of the disk encryption set associated to Confidential
+     * VM supported disk encrypted with customer managed key.
+     * 
      * @param secureVMDiskEncryptionSetId the secureVMDiskEncryptionSetId value to set.
      * @return the DiskSecurityProfile object itself.
      */
@@ -71,7 +75,7 @@ public final class DiskSecurityProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

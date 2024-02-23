@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The SslServerConfig model. */
+/**
+ * The SslServerConfig model.
+ */
 @Immutable
 public final class SslServerConfig {
 
@@ -55,9 +57,12 @@ public final class SslServerConfig {
     @JsonProperty(value = "sources")
     private List<Source> sources;
 
-    /** Creates an instance of SslServerConfig class. */
+    /**
+     * Creates an instance of SslServerConfig class.
+     */
     @Generated
-    private SslServerConfig() {}
+    private SslServerConfig() {
+    }
 
     /**
      * Get the tlsVersions property: The tlsVersions property.

@@ -15,7 +15,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** The workflow run. */
+/**
+ * The workflow run.
+ */
 @Fluent
 public final class WorkflowRunInner extends SubResource {
     /*
@@ -36,13 +38,15 @@ public final class WorkflowRunInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of WorkflowRunInner class. */
+    /**
+     * Creates an instance of WorkflowRunInner class.
+     */
     public WorkflowRunInner() {
     }
 
     /**
      * Get the innerProperties property: The workflow run properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private WorkflowRunProperties innerProperties() {
@@ -51,7 +55,7 @@ public final class WorkflowRunInner extends SubResource {
 
     /**
      * Get the name property: Gets the workflow run name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -60,14 +64,16 @@ public final class WorkflowRunInner extends SubResource {
 
     /**
      * Get the type property: Gets the workflow run type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WorkflowRunInner withId(String id) {
         super.withId(id);
@@ -76,7 +82,7 @@ public final class WorkflowRunInner extends SubResource {
 
     /**
      * Get the waitEndTime property: Gets the wait end time.
-     *
+     * 
      * @return the waitEndTime value.
      */
     public OffsetDateTime waitEndTime() {
@@ -85,7 +91,7 @@ public final class WorkflowRunInner extends SubResource {
 
     /**
      * Get the startTime property: Gets the start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -94,7 +100,7 @@ public final class WorkflowRunInner extends SubResource {
 
     /**
      * Get the endTime property: Gets the end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -103,7 +109,7 @@ public final class WorkflowRunInner extends SubResource {
 
     /**
      * Get the status property: Gets the status.
-     *
+     * 
      * @return the status value.
      */
     public WorkflowStatus status() {
@@ -112,7 +118,7 @@ public final class WorkflowRunInner extends SubResource {
 
     /**
      * Get the code property: Gets the code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -121,7 +127,7 @@ public final class WorkflowRunInner extends SubResource {
 
     /**
      * Get the error property: Gets the error.
-     *
+     * 
      * @return the error value.
      */
     public Object error() {
@@ -130,7 +136,7 @@ public final class WorkflowRunInner extends SubResource {
 
     /**
      * Get the correlationId property: Gets the correlation id.
-     *
+     * 
      * @return the correlationId value.
      */
     public String correlationId() {
@@ -139,7 +145,7 @@ public final class WorkflowRunInner extends SubResource {
 
     /**
      * Get the correlation property: The run correlation.
-     *
+     * 
      * @return the correlation value.
      */
     public Correlation correlation() {
@@ -148,7 +154,7 @@ public final class WorkflowRunInner extends SubResource {
 
     /**
      * Set the correlation property: The run correlation.
-     *
+     * 
      * @param correlation the correlation value to set.
      * @return the WorkflowRunInner object itself.
      */
@@ -162,7 +168,7 @@ public final class WorkflowRunInner extends SubResource {
 
     /**
      * Get the workflow property: Gets the reference to workflow version.
-     *
+     * 
      * @return the workflow value.
      */
     public ResourceReference workflow() {
@@ -171,7 +177,7 @@ public final class WorkflowRunInner extends SubResource {
 
     /**
      * Get the trigger property: Gets the fired trigger.
-     *
+     * 
      * @return the trigger value.
      */
     public WorkflowRunTrigger trigger() {
@@ -180,7 +186,7 @@ public final class WorkflowRunInner extends SubResource {
 
     /**
      * Get the outputs property: Gets the outputs.
-     *
+     * 
      * @return the outputs value.
      */
     public Map<String, WorkflowOutputParameter> outputs() {
@@ -189,7 +195,7 @@ public final class WorkflowRunInner extends SubResource {
 
     /**
      * Get the response property: Gets the response of the flow run.
-     *
+     * 
      * @return the response value.
      */
     public WorkflowRunTrigger response() {
@@ -198,7 +204,7 @@ public final class WorkflowRunInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

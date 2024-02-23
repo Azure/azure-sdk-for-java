@@ -60,7 +60,9 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to PaloAltoNetworksNgfwManager. */
+/**
+ * Entry point to PaloAltoNetworksNgfwManager.
+ */
 public final class PaloAltoNetworksNgfwManager {
     private GlobalRulestacks globalRulestacks;
 
@@ -95,18 +97,14 @@ public final class PaloAltoNetworksNgfwManager {
     private PaloAltoNetworksNgfwManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new PaloAltoNetworksCloudngfwBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new PaloAltoNetworksCloudngfwBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint()).subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval).buildClient();
     }
 
     /**
      * Creates an instance of PaloAlto Networks Ngfw service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the PaloAlto Networks Ngfw service API instance.
@@ -119,7 +117,7 @@ public final class PaloAltoNetworksNgfwManager {
 
     /**
      * Creates an instance of PaloAlto Networks Ngfw service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the PaloAlto Networks Ngfw service API instance.
@@ -132,14 +130,16 @@ public final class PaloAltoNetworksNgfwManager {
 
     /**
      * Gets a Configurable instance that can be used to create PaloAltoNetworksNgfwManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new PaloAltoNetworksNgfwManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -211,8 +211,8 @@ public final class PaloAltoNetworksNgfwManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -229,8 +229,8 @@ public final class PaloAltoNetworksNgfwManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -250,21 +250,12 @@ public final class PaloAltoNetworksNgfwManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
-                .append("-")
-                .append("com.azure.resourcemanager.paloaltonetworks.ngfw")
-                .append("/")
-                .append("1.0.0");
+            userAgentBuilder.append("azsdk-java").append("-").append("com.azure.resourcemanager.paloaltonetworks.ngfw")
+                .append("/").append("1.1.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
-                    .append(Configuration.getGlobalConfiguration().get("java.version"))
-                    .append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.name"))
-                    .append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.version"))
-                    .append("; auto-generated)");
+                userAgentBuilder.append(" (").append(Configuration.getGlobalConfiguration().get("java.version"))
+                    .append("; ").append(Configuration.getGlobalConfiguration().get("os.name")).append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.version")).append("; auto-generated)");
             } else {
                 userAgentBuilder.append(" (auto-generated)");
             }
@@ -283,38 +274,25 @@ public final class PaloAltoNetworksNgfwManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
             return new PaloAltoNetworksNgfwManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
      * Gets the resource collection API of GlobalRulestacks.
-     *
+     * 
      * @return Resource collection API of GlobalRulestacks.
      */
     public GlobalRulestacks globalRulestacks() {
@@ -326,33 +304,33 @@ public final class PaloAltoNetworksNgfwManager {
 
     /**
      * Gets the resource collection API of CertificateObjectGlobalRulestacks.
-     *
+     * 
      * @return Resource collection API of CertificateObjectGlobalRulestacks.
      */
     public CertificateObjectGlobalRulestacks certificateObjectGlobalRulestacks() {
         if (this.certificateObjectGlobalRulestacks == null) {
-            this.certificateObjectGlobalRulestacks =
-                new CertificateObjectGlobalRulestacksImpl(clientObject.getCertificateObjectGlobalRulestacks(), this);
+            this.certificateObjectGlobalRulestacks
+                = new CertificateObjectGlobalRulestacksImpl(clientObject.getCertificateObjectGlobalRulestacks(), this);
         }
         return certificateObjectGlobalRulestacks;
     }
 
     /**
      * Gets the resource collection API of FqdnListGlobalRulestacks.
-     *
+     * 
      * @return Resource collection API of FqdnListGlobalRulestacks.
      */
     public FqdnListGlobalRulestacks fqdnListGlobalRulestacks() {
         if (this.fqdnListGlobalRulestacks == null) {
-            this.fqdnListGlobalRulestacks =
-                new FqdnListGlobalRulestacksImpl(clientObject.getFqdnListGlobalRulestacks(), this);
+            this.fqdnListGlobalRulestacks
+                = new FqdnListGlobalRulestacksImpl(clientObject.getFqdnListGlobalRulestacks(), this);
         }
         return fqdnListGlobalRulestacks;
     }
 
     /**
      * Gets the resource collection API of PostRules.
-     *
+     * 
      * @return Resource collection API of PostRules.
      */
     public PostRules postRules() {
@@ -364,20 +342,20 @@ public final class PaloAltoNetworksNgfwManager {
 
     /**
      * Gets the resource collection API of PrefixListGlobalRulestacks.
-     *
+     * 
      * @return Resource collection API of PrefixListGlobalRulestacks.
      */
     public PrefixListGlobalRulestacks prefixListGlobalRulestacks() {
         if (this.prefixListGlobalRulestacks == null) {
-            this.prefixListGlobalRulestacks =
-                new PrefixListGlobalRulestacksImpl(clientObject.getPrefixListGlobalRulestacks(), this);
+            this.prefixListGlobalRulestacks
+                = new PrefixListGlobalRulestacksImpl(clientObject.getPrefixListGlobalRulestacks(), this);
         }
         return prefixListGlobalRulestacks;
     }
 
     /**
      * Gets the resource collection API of PreRules.
-     *
+     * 
      * @return Resource collection API of PreRules.
      */
     public PreRules preRules() {
@@ -389,7 +367,7 @@ public final class PaloAltoNetworksNgfwManager {
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -401,7 +379,7 @@ public final class PaloAltoNetworksNgfwManager {
 
     /**
      * Gets the resource collection API of Firewalls. It manages FirewallResource.
-     *
+     * 
      * @return Resource collection API of Firewalls.
      */
     public Firewalls firewalls() {
@@ -413,7 +391,7 @@ public final class PaloAltoNetworksNgfwManager {
 
     /**
      * Gets the resource collection API of LocalRulestacks. It manages LocalRulestackResource.
-     *
+     * 
      * @return Resource collection API of LocalRulestacks.
      */
     public LocalRulestacks localRulestacks() {
@@ -425,7 +403,7 @@ public final class PaloAltoNetworksNgfwManager {
 
     /**
      * Gets the resource collection API of FirewallStatus.
-     *
+     * 
      * @return Resource collection API of FirewallStatus.
      */
     public FirewallStatus firewallStatus() {
@@ -438,33 +416,33 @@ public final class PaloAltoNetworksNgfwManager {
     /**
      * Gets the resource collection API of CertificateObjectLocalRulestacks. It manages
      * CertificateObjectLocalRulestackResource.
-     *
+     * 
      * @return Resource collection API of CertificateObjectLocalRulestacks.
      */
     public CertificateObjectLocalRulestacks certificateObjectLocalRulestacks() {
         if (this.certificateObjectLocalRulestacks == null) {
-            this.certificateObjectLocalRulestacks =
-                new CertificateObjectLocalRulestacksImpl(clientObject.getCertificateObjectLocalRulestacks(), this);
+            this.certificateObjectLocalRulestacks
+                = new CertificateObjectLocalRulestacksImpl(clientObject.getCertificateObjectLocalRulestacks(), this);
         }
         return certificateObjectLocalRulestacks;
     }
 
     /**
      * Gets the resource collection API of FqdnListLocalRulestacks. It manages FqdnListLocalRulestackResource.
-     *
+     * 
      * @return Resource collection API of FqdnListLocalRulestacks.
      */
     public FqdnListLocalRulestacks fqdnListLocalRulestacks() {
         if (this.fqdnListLocalRulestacks == null) {
-            this.fqdnListLocalRulestacks =
-                new FqdnListLocalRulestacksImpl(clientObject.getFqdnListLocalRulestacks(), this);
+            this.fqdnListLocalRulestacks
+                = new FqdnListLocalRulestacksImpl(clientObject.getFqdnListLocalRulestacks(), this);
         }
         return fqdnListLocalRulestacks;
     }
 
     /**
      * Gets the resource collection API of LocalRules. It manages LocalRulesResource.
-     *
+     * 
      * @return Resource collection API of LocalRules.
      */
     public LocalRules localRules() {
@@ -476,20 +454,22 @@ public final class PaloAltoNetworksNgfwManager {
 
     /**
      * Gets the resource collection API of PrefixListLocalRulestacks. It manages PrefixListResource.
-     *
+     * 
      * @return Resource collection API of PrefixListLocalRulestacks.
      */
     public PrefixListLocalRulestacks prefixListLocalRulestacks() {
         if (this.prefixListLocalRulestacks == null) {
-            this.prefixListLocalRulestacks =
-                new PrefixListLocalRulestacksImpl(clientObject.getPrefixListLocalRulestacks(), this);
+            this.prefixListLocalRulestacks
+                = new PrefixListLocalRulestacksImpl(clientObject.getPrefixListLocalRulestacks(), this);
         }
         return prefixListLocalRulestacks;
     }
 
     /**
-     * @return Wrapped service client PaloAltoNetworksCloudngfw providing direct access to the underlying auto-generated
-     *     API implementation, based on Azure REST API.
+     * Gets wrapped service client PaloAltoNetworksCloudngfw providing direct access to the underlying auto-generated
+     * API implementation, based on Azure REST API.
+     * 
+     * @return Wrapped service client PaloAltoNetworksCloudngfw.
      */
     public PaloAltoNetworksCloudngfw serviceClient() {
         return this.clientObject;

@@ -12,8 +12,7 @@ public final class DppBaseResourceImpl implements DppBaseResource {
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    DppBaseResourceImpl(
-        DppBaseResourceInner innerObject,
+    DppBaseResourceImpl(DppBaseResourceInner innerObject,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

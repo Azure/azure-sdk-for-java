@@ -9,7 +9,9 @@ package com.azure.search.documents.indexes.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** Defines the names of all character filters supported by Azure Cognitive Search. */
+/**
+ * Defines the names of all character filters supported by the search engine.
+ */
 public final class CharFilterName extends ExpandableStringEnum<CharFilterName> {
     /**
      * A character filter that attempts to strip out HTML constructs. See
@@ -19,15 +21,16 @@ public final class CharFilterName extends ExpandableStringEnum<CharFilterName> {
 
     /**
      * Creates a new instance of CharFilterName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public CharFilterName() {}
+    public CharFilterName() {
+    }
 
     /**
      * Creates or finds a CharFilterName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding CharFilterName.
      */
@@ -37,7 +40,7 @@ public final class CharFilterName extends ExpandableStringEnum<CharFilterName> {
 
     /**
      * Gets known CharFilterName values.
-     *
+     * 
      * @return known CharFilterName values.
      */
     public static Collection<CharFilterName> values() {

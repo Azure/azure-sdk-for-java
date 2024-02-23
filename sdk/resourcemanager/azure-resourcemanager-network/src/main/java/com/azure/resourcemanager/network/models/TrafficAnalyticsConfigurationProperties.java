@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters that define the configuration of traffic analytics. */
+/**
+ * Parameters that define the configuration of traffic analytics.
+ */
 @Fluent
 public final class TrafficAnalyticsConfigurationProperties {
     /*
@@ -40,13 +42,15 @@ public final class TrafficAnalyticsConfigurationProperties {
     @JsonProperty(value = "trafficAnalyticsInterval")
     private Integer trafficAnalyticsInterval;
 
-    /** Creates an instance of TrafficAnalyticsConfigurationProperties class. */
+    /**
+     * Creates an instance of TrafficAnalyticsConfigurationProperties class.
+     */
     public TrafficAnalyticsConfigurationProperties() {
     }
 
     /**
      * Get the enabled property: Flag to enable/disable traffic analytics.
-     *
+     * 
      * @return the enabled value.
      */
     public Boolean enabled() {
@@ -55,7 +59,7 @@ public final class TrafficAnalyticsConfigurationProperties {
 
     /**
      * Set the enabled property: Flag to enable/disable traffic analytics.
-     *
+     * 
      * @param enabled the enabled value to set.
      * @return the TrafficAnalyticsConfigurationProperties object itself.
      */
@@ -66,7 +70,7 @@ public final class TrafficAnalyticsConfigurationProperties {
 
     /**
      * Get the workspaceId property: The resource guid of the attached workspace.
-     *
+     * 
      * @return the workspaceId value.
      */
     public String workspaceId() {
@@ -75,7 +79,7 @@ public final class TrafficAnalyticsConfigurationProperties {
 
     /**
      * Set the workspaceId property: The resource guid of the attached workspace.
-     *
+     * 
      * @param workspaceId the workspaceId value to set.
      * @return the TrafficAnalyticsConfigurationProperties object itself.
      */
@@ -86,7 +90,7 @@ public final class TrafficAnalyticsConfigurationProperties {
 
     /**
      * Get the workspaceRegion property: The location of the attached workspace.
-     *
+     * 
      * @return the workspaceRegion value.
      */
     public String workspaceRegion() {
@@ -95,7 +99,7 @@ public final class TrafficAnalyticsConfigurationProperties {
 
     /**
      * Set the workspaceRegion property: The location of the attached workspace.
-     *
+     * 
      * @param workspaceRegion the workspaceRegion value to set.
      * @return the TrafficAnalyticsConfigurationProperties object itself.
      */
@@ -106,7 +110,7 @@ public final class TrafficAnalyticsConfigurationProperties {
 
     /**
      * Get the workspaceResourceId property: Resource Id of the attached workspace.
-     *
+     * 
      * @return the workspaceResourceId value.
      */
     public String workspaceResourceId() {
@@ -115,7 +119,7 @@ public final class TrafficAnalyticsConfigurationProperties {
 
     /**
      * Set the workspaceResourceId property: Resource Id of the attached workspace.
-     *
+     * 
      * @param workspaceResourceId the workspaceResourceId value to set.
      * @return the TrafficAnalyticsConfigurationProperties object itself.
      */
@@ -127,7 +131,7 @@ public final class TrafficAnalyticsConfigurationProperties {
     /**
      * Get the trafficAnalyticsInterval property: The interval in minutes which would decide how frequently TA service
      * should do flow analytics.
-     *
+     * 
      * @return the trafficAnalyticsInterval value.
      */
     public Integer trafficAnalyticsInterval() {
@@ -137,7 +141,7 @@ public final class TrafficAnalyticsConfigurationProperties {
     /**
      * Set the trafficAnalyticsInterval property: The interval in minutes which would decide how frequently TA service
      * should do flow analytics.
-     *
+     * 
      * @param trafficAnalyticsInterval the trafficAnalyticsInterval value to set.
      * @return the TrafficAnalyticsConfigurationProperties object itself.
      */
@@ -148,7 +152,7 @@ public final class TrafficAnalyticsConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

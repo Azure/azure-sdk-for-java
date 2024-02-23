@@ -7,25 +7,27 @@ package com.azure.resourcemanager.batch.models;
 import com.azure.resourcemanager.batch.fluent.models.OutboundEnvironmentEndpointInner;
 import java.util.List;
 
-/** An immutable client-side representation of OutboundEnvironmentEndpoint. */
+/**
+ * An immutable client-side representation of OutboundEnvironmentEndpoint.
+ */
 public interface OutboundEnvironmentEndpoint {
     /**
      * Gets the category property: The type of service that the Batch service connects to.
-     *
+     * 
      * @return the category value.
      */
     String category();
 
     /**
      * Gets the endpoints property: The endpoints for this service to which the Batch service makes outbound calls.
-     *
+     * 
      * @return the endpoints value.
      */
     List<EndpointDependency> endpoints();
 
     /**
      * Gets the inner com.azure.resourcemanager.batch.fluent.models.OutboundEnvironmentEndpointInner object.
-     *
+     * 
      * @return the inner object.
      */
     OutboundEnvironmentEndpointInner innerModel();

@@ -23,6 +23,11 @@ public final class CertificateIssuerHelper {
     }
 
     public static IssuerBundle getIssuerBundle(CertificateIssuer certificateIssuer) {
+        if (accessor == null) {
+            new CertificateIssuer("");
+        }
+
+        assert accessor != null;
         return accessor.getImpl(certificateIssuer);
     }
 

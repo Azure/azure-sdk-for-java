@@ -10,16 +10,15 @@ import com.azure.resourcemanager.datafactory.fluent.models.SnowflakeDatasetTypeP
 public final class SnowflakeDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SnowflakeDatasetTypeProperties model =
-            BinaryData
-                .fromString("{\"schema\":\"datayqokbgumuejxxpx\",\"table\":\"datazch\"}")
+        SnowflakeDatasetTypeProperties model
+            = BinaryData.fromString("{\"schema\":\"datayqokbgumuejxxpx\",\"table\":\"datazch\"}")
                 .toObject(SnowflakeDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SnowflakeDatasetTypeProperties model =
-            new SnowflakeDatasetTypeProperties().withSchema("datayqokbgumuejxxpx").withTable("datazch");
+        SnowflakeDatasetTypeProperties model
+            = new SnowflakeDatasetTypeProperties().withSchema("datayqokbgumuejxxpx").withTable("datazch");
         model = BinaryData.fromObject(model).toObject(SnowflakeDatasetTypeProperties.class);
     }
 }

@@ -16,7 +16,7 @@ import com.azure.resourcemanager.dataprotection.fluent.models.OperationResourceI
 public interface OperationStatusBackupVaultContextsClient {
     /**
      * Gets the operation status for an operation over a BackupVault's context.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param operationId The operationId parameter.
@@ -27,12 +27,12 @@ public interface OperationStatusBackupVaultContextsClient {
      * @return the operation status for an operation over a BackupVault's context along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<OperationResourceInner> getWithResponse(
-        String resourceGroupName, String vaultName, String operationId, Context context);
+    Response<OperationResourceInner> getWithResponse(String resourceGroupName, String vaultName, String operationId,
+        Context context);
 
     /**
      * Gets the operation status for an operation over a BackupVault's context.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param operationId The operationId parameter.

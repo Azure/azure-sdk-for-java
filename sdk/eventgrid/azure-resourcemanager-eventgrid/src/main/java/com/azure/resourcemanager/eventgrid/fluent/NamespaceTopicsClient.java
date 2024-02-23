@@ -16,13 +16,15 @@ import com.azure.resourcemanager.eventgrid.fluent.models.TopicSharedAccessKeysIn
 import com.azure.resourcemanager.eventgrid.models.NamespaceTopicUpdateParameters;
 import com.azure.resourcemanager.eventgrid.models.TopicRegenerateKeyRequest;
 
-/** An instance of this class provides access to all the operations defined in NamespaceTopicsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in NamespaceTopicsClient.
+ */
 public interface NamespaceTopicsClient {
     /**
      * Get a namespace topic.
-     *
-     * <p>Get properties of a namespace topic.
-     *
+     * 
+     * Get properties of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
@@ -33,14 +35,14 @@ public interface NamespaceTopicsClient {
      * @return properties of a namespace topic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NamespaceTopicInner> getWithResponse(
-        String resourceGroupName, String namespaceName, String topicName, Context context);
+    Response<NamespaceTopicInner> getWithResponse(String resourceGroupName, String namespaceName, String topicName,
+        Context context);
 
     /**
      * Get a namespace topic.
-     *
-     * <p>Get properties of a namespace topic.
-     *
+     * 
+     * Get properties of a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
@@ -54,9 +56,9 @@ public interface NamespaceTopicsClient {
 
     /**
      * Create a namespace topic.
-     *
-     * <p>Asynchronously creates a new namespace topic with the specified parameters.
-     *
+     * 
+     * Asynchronously creates a new namespace topic with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
@@ -67,14 +69,14 @@ public interface NamespaceTopicsClient {
      * @return the {@link SyncPoller} for polling of namespace topic details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NamespaceTopicInner>, NamespaceTopicInner> beginCreateOrUpdate(
-        String resourceGroupName, String namespaceName, String topicName, NamespaceTopicInner namespaceTopicInfo);
+    SyncPoller<PollResult<NamespaceTopicInner>, NamespaceTopicInner> beginCreateOrUpdate(String resourceGroupName,
+        String namespaceName, String topicName, NamespaceTopicInner namespaceTopicInfo);
 
     /**
      * Create a namespace topic.
-     *
-     * <p>Asynchronously creates a new namespace topic with the specified parameters.
-     *
+     * 
+     * Asynchronously creates a new namespace topic with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
@@ -86,18 +88,14 @@ public interface NamespaceTopicsClient {
      * @return the {@link SyncPoller} for polling of namespace topic details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NamespaceTopicInner>, NamespaceTopicInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        NamespaceTopicInner namespaceTopicInfo,
-        Context context);
+    SyncPoller<PollResult<NamespaceTopicInner>, NamespaceTopicInner> beginCreateOrUpdate(String resourceGroupName,
+        String namespaceName, String topicName, NamespaceTopicInner namespaceTopicInfo, Context context);
 
     /**
      * Create a namespace topic.
-     *
-     * <p>Asynchronously creates a new namespace topic with the specified parameters.
-     *
+     * 
+     * Asynchronously creates a new namespace topic with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
@@ -108,14 +106,14 @@ public interface NamespaceTopicsClient {
      * @return namespace topic details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NamespaceTopicInner createOrUpdate(
-        String resourceGroupName, String namespaceName, String topicName, NamespaceTopicInner namespaceTopicInfo);
+    NamespaceTopicInner createOrUpdate(String resourceGroupName, String namespaceName, String topicName,
+        NamespaceTopicInner namespaceTopicInfo);
 
     /**
      * Create a namespace topic.
-     *
-     * <p>Asynchronously creates a new namespace topic with the specified parameters.
-     *
+     * 
+     * Asynchronously creates a new namespace topic with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
@@ -127,18 +125,14 @@ public interface NamespaceTopicsClient {
      * @return namespace topic details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NamespaceTopicInner createOrUpdate(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        NamespaceTopicInner namespaceTopicInfo,
-        Context context);
+    NamespaceTopicInner createOrUpdate(String resourceGroupName, String namespaceName, String topicName,
+        NamespaceTopicInner namespaceTopicInfo, Context context);
 
     /**
      * Delete a namespace topic.
-     *
-     * <p>Delete existing namespace topic.
-     *
+     * 
+     * Delete existing namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the topic.
@@ -152,9 +146,9 @@ public interface NamespaceTopicsClient {
 
     /**
      * Delete a namespace topic.
-     *
-     * <p>Delete existing namespace topic.
-     *
+     * 
+     * Delete existing namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the topic.
@@ -165,14 +159,14 @@ public interface NamespaceTopicsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String namespaceName, String topicName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String namespaceName, String topicName,
+        Context context);
 
     /**
      * Delete a namespace topic.
-     *
-     * <p>Delete existing namespace topic.
-     *
+     * 
+     * Delete existing namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the topic.
@@ -185,9 +179,9 @@ public interface NamespaceTopicsClient {
 
     /**
      * Delete a namespace topic.
-     *
-     * <p>Delete existing namespace topic.
-     *
+     * 
+     * Delete existing namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the topic.
@@ -201,9 +195,9 @@ public interface NamespaceTopicsClient {
 
     /**
      * Update a namespace topic.
-     *
-     * <p>Asynchronously updates a namespace topic with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a namespace topic with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
@@ -214,17 +208,14 @@ public interface NamespaceTopicsClient {
      * @return the {@link SyncPoller} for polling of namespace topic details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NamespaceTopicInner>, NamespaceTopicInner> beginUpdate(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        NamespaceTopicUpdateParameters namespaceTopicUpdateParameters);
+    SyncPoller<PollResult<NamespaceTopicInner>, NamespaceTopicInner> beginUpdate(String resourceGroupName,
+        String namespaceName, String topicName, NamespaceTopicUpdateParameters namespaceTopicUpdateParameters);
 
     /**
      * Update a namespace topic.
-     *
-     * <p>Asynchronously updates a namespace topic with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a namespace topic with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
@@ -236,18 +227,15 @@ public interface NamespaceTopicsClient {
      * @return the {@link SyncPoller} for polling of namespace topic details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NamespaceTopicInner>, NamespaceTopicInner> beginUpdate(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        NamespaceTopicUpdateParameters namespaceTopicUpdateParameters,
+    SyncPoller<PollResult<NamespaceTopicInner>, NamespaceTopicInner> beginUpdate(String resourceGroupName,
+        String namespaceName, String topicName, NamespaceTopicUpdateParameters namespaceTopicUpdateParameters,
         Context context);
 
     /**
      * Update a namespace topic.
-     *
-     * <p>Asynchronously updates a namespace topic with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a namespace topic with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
@@ -258,17 +246,14 @@ public interface NamespaceTopicsClient {
      * @return namespace topic details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NamespaceTopicInner update(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
+    NamespaceTopicInner update(String resourceGroupName, String namespaceName, String topicName,
         NamespaceTopicUpdateParameters namespaceTopicUpdateParameters);
 
     /**
      * Update a namespace topic.
-     *
-     * <p>Asynchronously updates a namespace topic with the specified parameters.
-     *
+     * 
+     * Asynchronously updates a namespace topic with the specified parameters.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the namespace topic.
@@ -280,18 +265,14 @@ public interface NamespaceTopicsClient {
      * @return namespace topic details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NamespaceTopicInner update(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        NamespaceTopicUpdateParameters namespaceTopicUpdateParameters,
-        Context context);
+    NamespaceTopicInner update(String resourceGroupName, String namespaceName, String topicName,
+        NamespaceTopicUpdateParameters namespaceTopicUpdateParameters, Context context);
 
     /**
      * List namespace topics under a namespace.
-     *
-     * <p>List all the namespace topics under a namespace.
-     *
+     * 
+     * List all the namespace topics under a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -304,19 +285,18 @@ public interface NamespaceTopicsClient {
 
     /**
      * List namespace topics under a namespace.
-     *
-     * <p>List all the namespace topics under a namespace.
-     *
+     * 
+     * List all the namespace topics under a namespace.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param filter The query used to filter the search results using OData syntax. Filtering is permitted on the
-     *     'name' property only and with limited number of OData operations. These operations are: the 'contains'
-     *     function as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal).
-     *     No arithmetic operations are supported. The following is a valid filter example: $filter=contains(namE,
-     *     'PATTERN') and name ne 'PATTERN-1'. The following is not a valid filter example: $filter=location eq
-     *     'westus'.
+     * 'name' property only and with limited number of OData operations. These operations are: the 'contains' function
+     * as well as the following logical operations: not, and, or, eq (for equal), and ne (for not equal). No arithmetic
+     * operations are supported. The following is a valid filter example: $filter=contains(namE, 'PATTERN') and name ne
+     * 'PATTERN-1'. The following is not a valid filter example: $filter=location eq 'westus'.
      * @param top The number of results to return per page for the list operation. Valid range for top parameter is 1 to
-     *     100. If not specified, the default number of results to be returned is 20 items per page.
+     * 100. If not specified, the default number of results to be returned is 20 items per page.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -324,14 +304,14 @@ public interface NamespaceTopicsClient {
      * @return result of the List namespace topics operation as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NamespaceTopicInner> listByNamespace(
-        String resourceGroupName, String namespaceName, String filter, Integer top, Context context);
+    PagedIterable<NamespaceTopicInner> listByNamespace(String resourceGroupName, String namespaceName, String filter,
+        Integer top, Context context);
 
     /**
      * List keys for a namespace topic.
-     *
-     * <p>List the two keys used to publish to a namespace topic.
-     *
+     * 
+     * List the two keys used to publish to a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the topic.
@@ -342,14 +322,14 @@ public interface NamespaceTopicsClient {
      * @return shared access keys of the Topic along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<TopicSharedAccessKeysInner> listSharedAccessKeysWithResponse(
-        String resourceGroupName, String namespaceName, String topicName, Context context);
+    Response<TopicSharedAccessKeysInner> listSharedAccessKeysWithResponse(String resourceGroupName,
+        String namespaceName, String topicName, Context context);
 
     /**
      * List keys for a namespace topic.
-     *
-     * <p>List the two keys used to publish to a namespace topic.
-     *
+     * 
+     * List the two keys used to publish to a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the topic.
@@ -363,9 +343,9 @@ public interface NamespaceTopicsClient {
 
     /**
      * Regenerate key for a namespace topic.
-     *
-     * <p>Regenerate a shared access key for a namespace topic.
-     *
+     * 
+     * Regenerate a shared access key for a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the topic.
@@ -377,16 +357,14 @@ public interface NamespaceTopicsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TopicSharedAccessKeysInner>, TopicSharedAccessKeysInner> beginRegenerateKey(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
+        String resourceGroupName, String namespaceName, String topicName,
         TopicRegenerateKeyRequest regenerateKeyRequest);
 
     /**
      * Regenerate key for a namespace topic.
-     *
-     * <p>Regenerate a shared access key for a namespace topic.
-     *
+     * 
+     * Regenerate a shared access key for a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the topic.
@@ -399,17 +377,14 @@ public interface NamespaceTopicsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<TopicSharedAccessKeysInner>, TopicSharedAccessKeysInner> beginRegenerateKey(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        TopicRegenerateKeyRequest regenerateKeyRequest,
-        Context context);
+        String resourceGroupName, String namespaceName, String topicName,
+        TopicRegenerateKeyRequest regenerateKeyRequest, Context context);
 
     /**
      * Regenerate key for a namespace topic.
-     *
-     * <p>Regenerate a shared access key for a namespace topic.
-     *
+     * 
+     * Regenerate a shared access key for a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the topic.
@@ -420,17 +395,14 @@ public interface NamespaceTopicsClient {
      * @return shared access keys of the Topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TopicSharedAccessKeysInner regenerateKey(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
+    TopicSharedAccessKeysInner regenerateKey(String resourceGroupName, String namespaceName, String topicName,
         TopicRegenerateKeyRequest regenerateKeyRequest);
 
     /**
      * Regenerate key for a namespace topic.
-     *
-     * <p>Regenerate a shared access key for a namespace topic.
-     *
+     * 
+     * Regenerate a shared access key for a namespace topic.
+     * 
      * @param resourceGroupName The name of the resource group within the user's subscription.
      * @param namespaceName Name of the namespace.
      * @param topicName Name of the topic.
@@ -442,10 +414,6 @@ public interface NamespaceTopicsClient {
      * @return shared access keys of the Topic.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    TopicSharedAccessKeysInner regenerateKey(
-        String resourceGroupName,
-        String namespaceName,
-        String topicName,
-        TopicRegenerateKeyRequest regenerateKeyRequest,
-        Context context);
+    TopicSharedAccessKeysInner regenerateKey(String resourceGroupName, String namespaceName, String topicName,
+        TopicRegenerateKeyRequest regenerateKeyRequest, Context context);
 }

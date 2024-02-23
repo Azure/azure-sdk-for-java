@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of AssociationsInterfaces. */
+/**
+ * Resource collection API of AssociationsInterfaces.
+ */
 public interface AssociationsInterfaces {
     /**
      * List Association resources by TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface AssociationsInterfaces {
 
     /**
      * List Association resources by TrafficController.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param context The context to associate with this operation.
@@ -33,12 +35,12 @@ public interface AssociationsInterfaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Association list operation as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<Association> listByTrafficController(
-        String resourceGroupName, String trafficControllerName, Context context);
+    PagedIterable<Association> listByTrafficController(String resourceGroupName, String trafficControllerName,
+        Context context);
 
     /**
      * Get a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -48,12 +50,12 @@ public interface AssociationsInterfaces {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Association along with {@link Response}.
      */
-    Response<Association> getWithResponse(
-        String resourceGroupName, String trafficControllerName, String associationName, Context context);
+    Response<Association> getWithResponse(String resourceGroupName, String trafficControllerName,
+        String associationName, Context context);
 
     /**
      * Get a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -66,7 +68,7 @@ public interface AssociationsInterfaces {
 
     /**
      * Delete a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -78,7 +80,7 @@ public interface AssociationsInterfaces {
 
     /**
      * Delete a Association.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param trafficControllerName traffic controller name for path.
      * @param associationName Name of Association.
@@ -91,7 +93,7 @@ public interface AssociationsInterfaces {
 
     /**
      * Get a Association.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -102,7 +104,7 @@ public interface AssociationsInterfaces {
 
     /**
      * Get a Association.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -114,7 +116,7 @@ public interface AssociationsInterfaces {
 
     /**
      * Delete a Association.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -124,7 +126,7 @@ public interface AssociationsInterfaces {
 
     /**
      * Delete a Association.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -135,7 +137,7 @@ public interface AssociationsInterfaces {
 
     /**
      * Begins definition for a new Association resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Association definition.
      */

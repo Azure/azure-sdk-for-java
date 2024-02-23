@@ -12,18 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class AutomatedCheckResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AutomatedCheckResult model =
-            BinaryData.fromString("{\"result\":\"fluszdtm\",\"type\":\"Error\"}").toObject(AutomatedCheckResult.class);
-        Assertions.assertEquals("fluszdtm", model.result());
-        Assertions.assertEquals(AutomatedCheckResultType.ERROR, model.type());
+        AutomatedCheckResult model = BinaryData.fromString("{\"result\":\"jhwuaanozjos\",\"type\":\"Warning\"}")
+            .toObject(AutomatedCheckResult.class);
+        Assertions.assertEquals("jhwuaanozjos", model.result());
+        Assertions.assertEquals(AutomatedCheckResultType.WARNING, model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AutomatedCheckResult model =
-            new AutomatedCheckResult().withResult("fluszdtm").withType(AutomatedCheckResultType.ERROR);
+        AutomatedCheckResult model
+            = new AutomatedCheckResult().withResult("jhwuaanozjos").withType(AutomatedCheckResultType.WARNING);
         model = BinaryData.fromObject(model).toObject(AutomatedCheckResult.class);
-        Assertions.assertEquals("fluszdtm", model.result());
-        Assertions.assertEquals(AutomatedCheckResultType.ERROR, model.type());
+        Assertions.assertEquals("jhwuaanozjos", model.result());
+        Assertions.assertEquals(AutomatedCheckResultType.WARNING, model.type());
     }
 }

@@ -15,6 +15,12 @@ public final class ListMetricFeedbackOptions {
     private Integer skip;
 
     /**
+     * Create a new instance of ListMetricFeedbackOptions class.
+     */
+    public ListMetricFeedbackOptions() {
+    }
+
+    /**
      * Get the additional metric feedback filter options that can be passed for filtering the result of the
      * metric feedbacks returned by the service
      *

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The HostAsset model. */
+/**
+ * The HostAsset model.
+ */
 @Immutable
 public final class HostAsset extends InventoryAsset {
 
@@ -244,9 +246,12 @@ public final class HostAsset extends InventoryAsset {
     @JsonProperty(value = "ipv6")
     private List<ObservedBoolean> ipv6;
 
-    /** Creates an instance of HostAsset class. */
+    /**
+     * Creates an instance of HostAsset class.
+     */
     @Generated
-    private HostAsset() {}
+    private HostAsset() {
+    }
 
     /**
      * Get the host property: The host property.

@@ -5,21 +5,30 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The status of the email. Any value other than Delivered is considered failed. */
+/**
+ * The status of the email. Any value other than Delivered is considered failed.
+ */
 public final class AcsEmailDeliveryReportStatus extends ExpandableStringEnum<AcsEmailDeliveryReportStatus> {
-    /** Hard bounce detected while sending the email. */
+    /**
+     * Hard bounce detected while sending the email.
+     */
     public static final AcsEmailDeliveryReportStatus BOUNCED = fromString("Bounced");
 
-    /** The email was delivered. */
+    /**
+     * The email was delivered.
+     */
     public static final AcsEmailDeliveryReportStatus DELIVERED = fromString("Delivered");
 
-    /** The email failed to be delivered. */
+    /**
+     * The email failed to be delivered.
+     */
     public static final AcsEmailDeliveryReportStatus FAILED = fromString("Failed");
 
-    /** The message was identified spam and was rejected or blocked (not quarantined). */
+    /**
+     * The message was identified spam and was rejected or blocked (not quarantined).
+     */
     public static final AcsEmailDeliveryReportStatus FILTERED_SPAM = fromString("FilteredSpam");
 
     /**
@@ -28,31 +37,33 @@ public final class AcsEmailDeliveryReportStatus extends ExpandableStringEnum<Acs
      */
     public static final AcsEmailDeliveryReportStatus QUARANTINED = fromString("Quarantined");
 
-    /** The email was suppressed. */
+    /**
+     * The email was suppressed.
+     */
     public static final AcsEmailDeliveryReportStatus SUPPRESSED = fromString("Suppressed");
 
     /**
      * Creates a new instance of AcsEmailDeliveryReportStatus value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public AcsEmailDeliveryReportStatus() {}
+    public AcsEmailDeliveryReportStatus() {
+    }
 
     /**
      * Creates or finds a AcsEmailDeliveryReportStatus from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AcsEmailDeliveryReportStatus.
      */
-    @JsonCreator
     public static AcsEmailDeliveryReportStatus fromString(String name) {
         return fromString(name, AcsEmailDeliveryReportStatus.class);
     }
 
     /**
      * Gets known AcsEmailDeliveryReportStatus values.
-     *
+     * 
      * @return known AcsEmailDeliveryReportStatus values.
      */
     public static Collection<AcsEmailDeliveryReportStatus> values() {

@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** DiagnosticDetectorResponse resource specific properties. */
+/**
+ * DiagnosticDetectorResponse resource specific properties.
+ */
 @Fluent
 public final class DiagnosticDetectorResponseProperties {
     /*
@@ -64,13 +66,15 @@ public final class DiagnosticDetectorResponseProperties {
     @JsonProperty(value = "responseMetaData")
     private ResponseMetadata responseMetadata;
 
-    /** Creates an instance of DiagnosticDetectorResponseProperties class. */
+    /**
+     * Creates an instance of DiagnosticDetectorResponseProperties class.
+     */
     public DiagnosticDetectorResponseProperties() {
     }
 
     /**
      * Get the startTime property: Start time of the period.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -79,7 +83,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Set the startTime property: Start time of the period.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the DiagnosticDetectorResponseProperties object itself.
      */
@@ -90,7 +94,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Get the endTime property: End time of the period.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -99,7 +103,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Set the endTime property: End time of the period.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the DiagnosticDetectorResponseProperties object itself.
      */
@@ -110,7 +114,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Get the issueDetected property: Flag representing Issue was detected.
-     *
+     * 
      * @return the issueDetected value.
      */
     public Boolean issueDetected() {
@@ -119,7 +123,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Set the issueDetected property: Flag representing Issue was detected.
-     *
+     * 
      * @param issueDetected the issueDetected value to set.
      * @return the DiagnosticDetectorResponseProperties object itself.
      */
@@ -130,7 +134,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Get the detectorDefinition property: Detector's definition.
-     *
+     * 
      * @return the detectorDefinition value.
      */
     public DetectorDefinition detectorDefinition() {
@@ -139,7 +143,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Set the detectorDefinition property: Detector's definition.
-     *
+     * 
      * @param detectorDefinition the detectorDefinition value to set.
      * @return the DiagnosticDetectorResponseProperties object itself.
      */
@@ -150,7 +154,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Get the metrics property: Metrics provided by the detector.
-     *
+     * 
      * @return the metrics value.
      */
     public List<DiagnosticMetricSet> metrics() {
@@ -159,7 +163,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Set the metrics property: Metrics provided by the detector.
-     *
+     * 
      * @param metrics the metrics value to set.
      * @return the DiagnosticDetectorResponseProperties object itself.
      */
@@ -170,7 +174,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Get the abnormalTimePeriods property: List of Correlated events found by the detector.
-     *
+     * 
      * @return the abnormalTimePeriods value.
      */
     public List<DetectorAbnormalTimePeriod> abnormalTimePeriods() {
@@ -179,19 +183,19 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Set the abnormalTimePeriods property: List of Correlated events found by the detector.
-     *
+     * 
      * @param abnormalTimePeriods the abnormalTimePeriods value to set.
      * @return the DiagnosticDetectorResponseProperties object itself.
      */
-    public DiagnosticDetectorResponseProperties withAbnormalTimePeriods(
-        List<DetectorAbnormalTimePeriod> abnormalTimePeriods) {
+    public DiagnosticDetectorResponseProperties
+        withAbnormalTimePeriods(List<DetectorAbnormalTimePeriod> abnormalTimePeriods) {
         this.abnormalTimePeriods = abnormalTimePeriods;
         return this;
     }
 
     /**
      * Get the data property: Additional Data that detector wants to send.
-     *
+     * 
      * @return the data value.
      */
     public List<List<NameValuePair>> data() {
@@ -200,7 +204,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Set the data property: Additional Data that detector wants to send.
-     *
+     * 
      * @param data the data value to set.
      * @return the DiagnosticDetectorResponseProperties object itself.
      */
@@ -211,7 +215,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Get the responseMetadata property: Meta Data.
-     *
+     * 
      * @return the responseMetadata value.
      */
     public ResponseMetadata responseMetadata() {
@@ -220,7 +224,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Set the responseMetadata property: Meta Data.
-     *
+     * 
      * @param responseMetadata the responseMetadata value to set.
      * @return the DiagnosticDetectorResponseProperties object itself.
      */
@@ -231,7 +235,7 @@ public final class DiagnosticDetectorResponseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

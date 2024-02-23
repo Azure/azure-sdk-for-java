@@ -14,7 +14,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** LoadBalancer resource. */
+/**
+ * LoadBalancer resource.
+ */
 @Fluent
 public final class LoadBalancerInner extends Resource {
     /*
@@ -47,13 +49,15 @@ public final class LoadBalancerInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of LoadBalancerInner class. */
+    /**
+     * Creates an instance of LoadBalancerInner class.
+     */
     public LoadBalancerInner() {
     }
 
     /**
      * Get the extendedLocation property: The extended location of the load balancer.
-     *
+     * 
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -62,7 +66,7 @@ public final class LoadBalancerInner extends Resource {
 
     /**
      * Set the extendedLocation property: The extended location of the load balancer.
-     *
+     * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the LoadBalancerInner object itself.
      */
@@ -73,7 +77,7 @@ public final class LoadBalancerInner extends Resource {
 
     /**
      * Get the sku property: The load balancer SKU.
-     *
+     * 
      * @return the sku value.
      */
     public LoadBalancerSku sku() {
@@ -82,7 +86,7 @@ public final class LoadBalancerInner extends Resource {
 
     /**
      * Set the sku property: The load balancer SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the LoadBalancerInner object itself.
      */
@@ -93,7 +97,7 @@ public final class LoadBalancerInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of load balancer.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LoadBalancerPropertiesFormat innerProperties() {
@@ -102,7 +106,7 @@ public final class LoadBalancerInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -111,7 +115,7 @@ public final class LoadBalancerInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -120,7 +124,7 @@ public final class LoadBalancerInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the LoadBalancerInner object itself.
      */
@@ -129,14 +133,18 @@ public final class LoadBalancerInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LoadBalancerInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LoadBalancerInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -144,8 +152,9 @@ public final class LoadBalancerInner extends Resource {
     }
 
     /**
-     * Get the frontendIpConfigurations property: Object representing the frontend IPs to be used for the load balancer.
-     *
+     * Get the frontendIpConfigurations property: Object representing the frontend IPs to be used for the load
+     * balancer.
+     * 
      * @return the frontendIpConfigurations value.
      */
     public List<FrontendIpConfigurationInner> frontendIpConfigurations() {
@@ -153,8 +162,9 @@ public final class LoadBalancerInner extends Resource {
     }
 
     /**
-     * Set the frontendIpConfigurations property: Object representing the frontend IPs to be used for the load balancer.
-     *
+     * Set the frontendIpConfigurations property: Object representing the frontend IPs to be used for the load
+     * balancer.
+     * 
      * @param frontendIpConfigurations the frontendIpConfigurations value to set.
      * @return the LoadBalancerInner object itself.
      */
@@ -168,7 +178,7 @@ public final class LoadBalancerInner extends Resource {
 
     /**
      * Get the backendAddressPools property: Collection of backend address pools used by a load balancer.
-     *
+     * 
      * @return the backendAddressPools value.
      */
     public List<BackendAddressPoolInner> backendAddressPools() {
@@ -177,7 +187,7 @@ public final class LoadBalancerInner extends Resource {
 
     /**
      * Set the backendAddressPools property: Collection of backend address pools used by a load balancer.
-     *
+     * 
      * @param backendAddressPools the backendAddressPools value to set.
      * @return the LoadBalancerInner object itself.
      */
@@ -192,7 +202,7 @@ public final class LoadBalancerInner extends Resource {
     /**
      * Get the loadBalancingRules property: Object collection representing the load balancing rules Gets the
      * provisioning.
-     *
+     * 
      * @return the loadBalancingRules value.
      */
     public List<LoadBalancingRuleInner> loadBalancingRules() {
@@ -202,7 +212,7 @@ public final class LoadBalancerInner extends Resource {
     /**
      * Set the loadBalancingRules property: Object collection representing the load balancing rules Gets the
      * provisioning.
-     *
+     * 
      * @param loadBalancingRules the loadBalancingRules value to set.
      * @return the LoadBalancerInner object itself.
      */
@@ -216,7 +226,7 @@ public final class LoadBalancerInner extends Resource {
 
     /**
      * Get the probes property: Collection of probe objects used in the load balancer.
-     *
+     * 
      * @return the probes value.
      */
     public List<ProbeInner> probes() {
@@ -225,7 +235,7 @@ public final class LoadBalancerInner extends Resource {
 
     /**
      * Set the probes property: Collection of probe objects used in the load balancer.
-     *
+     * 
      * @param probes the probes value to set.
      * @return the LoadBalancerInner object itself.
      */
@@ -242,7 +252,7 @@ public final class LoadBalancerInner extends Resource {
      * rules on your load balancer is mutually exclusive with defining an inbound NAT pool. Inbound NAT pools are
      * referenced from virtual machine scale sets. NICs that are associated with individual virtual machines cannot
      * reference an Inbound NAT pool. They have to reference individual inbound NAT rules.
-     *
+     * 
      * @return the inboundNatRules value.
      */
     public List<InboundNatRuleInner> inboundNatRules() {
@@ -254,7 +264,7 @@ public final class LoadBalancerInner extends Resource {
      * rules on your load balancer is mutually exclusive with defining an inbound NAT pool. Inbound NAT pools are
      * referenced from virtual machine scale sets. NICs that are associated with individual virtual machines cannot
      * reference an Inbound NAT pool. They have to reference individual inbound NAT rules.
-     *
+     * 
      * @param inboundNatRules the inboundNatRules value to set.
      * @return the LoadBalancerInner object itself.
      */
@@ -267,13 +277,13 @@ public final class LoadBalancerInner extends Resource {
     }
 
     /**
-     * Get the inboundNatPools property: Defines an external port range for inbound NAT to a single backend port on NICs
-     * associated with a load balancer. Inbound NAT rules are created automatically for each NIC associated with the
-     * Load Balancer using an external port from this range. Defining an Inbound NAT pool on your Load Balancer is
+     * Get the inboundNatPools property: Defines an external port range for inbound NAT to a single backend port on
+     * NICs associated with a load balancer. Inbound NAT rules are created automatically for each NIC associated with
+     * the Load Balancer using an external port from this range. Defining an Inbound NAT pool on your Load Balancer is
      * mutually exclusive with defining inbound NAT rules. Inbound NAT pools are referenced from virtual machine scale
      * sets. NICs that are associated with individual virtual machines cannot reference an inbound NAT pool. They have
      * to reference individual inbound NAT rules.
-     *
+     * 
      * @return the inboundNatPools value.
      */
     public List<InboundNatPool> inboundNatPools() {
@@ -281,13 +291,13 @@ public final class LoadBalancerInner extends Resource {
     }
 
     /**
-     * Set the inboundNatPools property: Defines an external port range for inbound NAT to a single backend port on NICs
-     * associated with a load balancer. Inbound NAT rules are created automatically for each NIC associated with the
-     * Load Balancer using an external port from this range. Defining an Inbound NAT pool on your Load Balancer is
+     * Set the inboundNatPools property: Defines an external port range for inbound NAT to a single backend port on
+     * NICs associated with a load balancer. Inbound NAT rules are created automatically for each NIC associated with
+     * the Load Balancer using an external port from this range. Defining an Inbound NAT pool on your Load Balancer is
      * mutually exclusive with defining inbound NAT rules. Inbound NAT pools are referenced from virtual machine scale
      * sets. NICs that are associated with individual virtual machines cannot reference an inbound NAT pool. They have
      * to reference individual inbound NAT rules.
-     *
+     * 
      * @param inboundNatPools the inboundNatPools value to set.
      * @return the LoadBalancerInner object itself.
      */
@@ -301,7 +311,7 @@ public final class LoadBalancerInner extends Resource {
 
     /**
      * Get the outboundRules property: The outbound rules.
-     *
+     * 
      * @return the outboundRules value.
      */
     public List<OutboundRuleInner> outboundRules() {
@@ -310,7 +320,7 @@ public final class LoadBalancerInner extends Resource {
 
     /**
      * Set the outboundRules property: The outbound rules.
-     *
+     * 
      * @param outboundRules the outboundRules value to set.
      * @return the LoadBalancerInner object itself.
      */
@@ -324,7 +334,7 @@ public final class LoadBalancerInner extends Resource {
 
     /**
      * Get the resourceGuid property: The resource GUID property of the load balancer resource.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -333,7 +343,7 @@ public final class LoadBalancerInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the load balancer resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -342,7 +352,7 @@ public final class LoadBalancerInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

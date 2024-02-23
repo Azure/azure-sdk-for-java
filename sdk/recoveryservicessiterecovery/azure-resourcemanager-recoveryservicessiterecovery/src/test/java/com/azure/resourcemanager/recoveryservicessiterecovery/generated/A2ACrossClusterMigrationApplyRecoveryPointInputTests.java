@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.A2ACrossClu
 public final class A2ACrossClusterMigrationApplyRecoveryPointInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        A2ACrossClusterMigrationApplyRecoveryPointInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"A2ACrossClusterMigration\"}")
+        A2ACrossClusterMigrationApplyRecoveryPointInput model
+            = BinaryData.fromString("{\"instanceType\":\"A2ACrossClusterMigration\"}")
                 .toObject(A2ACrossClusterMigrationApplyRecoveryPointInput.class);
     }
 

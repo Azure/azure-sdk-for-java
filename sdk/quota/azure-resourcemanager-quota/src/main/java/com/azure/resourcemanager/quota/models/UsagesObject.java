@@ -7,7 +7,9 @@ package com.azure.resourcemanager.quota.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The resource usages value. */
+/**
+ * The resource usages value.
+ */
 @Fluent
 public final class UsagesObject {
     /*
@@ -22,13 +24,15 @@ public final class UsagesObject {
     @JsonProperty(value = "usagesType")
     private UsagesTypes usagesType;
 
-    /** Creates an instance of UsagesObject class. */
+    /**
+     * Creates an instance of UsagesObject class.
+     */
     public UsagesObject() {
     }
 
     /**
      * Get the value property: The usages value.
-     *
+     * 
      * @return the value value.
      */
     public int value() {
@@ -37,7 +41,7 @@ public final class UsagesObject {
 
     /**
      * Set the value property: The usages value.
-     *
+     * 
      * @param value the value value to set.
      * @return the UsagesObject object itself.
      */
@@ -48,7 +52,7 @@ public final class UsagesObject {
 
     /**
      * Get the usagesType property: The quota or usages limit types.
-     *
+     * 
      * @return the usagesType value.
      */
     public UsagesTypes usagesType() {
@@ -57,7 +61,7 @@ public final class UsagesObject {
 
     /**
      * Set the usagesType property: The quota or usages limit types.
-     *
+     * 
      * @param usagesType the usagesType value to set.
      * @return the UsagesObject object itself.
      */
@@ -68,7 +72,7 @@ public final class UsagesObject {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

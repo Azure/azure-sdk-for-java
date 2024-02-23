@@ -24,11 +24,25 @@ import com.azure.core.management.profile.AzureProfile;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.apicenter.fluent.AzureApiCenter;
+import com.azure.resourcemanager.apicenter.implementation.ApiDefinitionsImpl;
+import com.azure.resourcemanager.apicenter.implementation.ApiVersionsImpl;
+import com.azure.resourcemanager.apicenter.implementation.ApisImpl;
 import com.azure.resourcemanager.apicenter.implementation.AzureApiCenterBuilder;
+import com.azure.resourcemanager.apicenter.implementation.DeploymentsImpl;
+import com.azure.resourcemanager.apicenter.implementation.EnvironmentsImpl;
+import com.azure.resourcemanager.apicenter.implementation.MetadataSchemasImpl;
 import com.azure.resourcemanager.apicenter.implementation.OperationsImpl;
 import com.azure.resourcemanager.apicenter.implementation.ServicesImpl;
+import com.azure.resourcemanager.apicenter.implementation.WorkspacesImpl;
+import com.azure.resourcemanager.apicenter.models.ApiDefinitions;
+import com.azure.resourcemanager.apicenter.models.ApiVersions;
+import com.azure.resourcemanager.apicenter.models.Apis;
+import com.azure.resourcemanager.apicenter.models.Deployments;
+import com.azure.resourcemanager.apicenter.models.Environments;
+import com.azure.resourcemanager.apicenter.models.MetadataSchemas;
 import com.azure.resourcemanager.apicenter.models.Operations;
 import com.azure.resourcemanager.apicenter.models.Services;
+import com.azure.resourcemanager.apicenter.models.Workspaces;
 import java.time.Duration;
 import java.time.temporal.ChronoUnit;
 import java.util.ArrayList;
@@ -36,29 +50,42 @@ import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
-/** Entry point to ApiCenterManager. Azure API Center Resource Provider. */
+/**
+ * Entry point to ApiCenterManager.
+ * Azure API Center Resource Provider.
+ */
 public final class ApiCenterManager {
     private Operations operations;
 
     private Services services;
+
+    private MetadataSchemas metadataSchemas;
+
+    private Workspaces workspaces;
+
+    private Apis apis;
+
+    private Deployments deployments;
+
+    private ApiVersions apiVersions;
+
+    private ApiDefinitions apiDefinitions;
+
+    private Environments environments;
 
     private final AzureApiCenter clientObject;
 
     private ApiCenterManager(HttpPipeline httpPipeline, AzureProfile profile, Duration defaultPollInterval) {
         Objects.requireNonNull(httpPipeline, "'httpPipeline' cannot be null.");
         Objects.requireNonNull(profile, "'profile' cannot be null.");
-        this.clientObject =
-            new AzureApiCenterBuilder()
-                .pipeline(httpPipeline)
-                .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
-                .subscriptionId(profile.getSubscriptionId())
-                .defaultPollInterval(defaultPollInterval)
-                .buildClient();
+        this.clientObject = new AzureApiCenterBuilder().pipeline(httpPipeline)
+            .endpoint(profile.getEnvironment().getResourceManagerEndpoint()).subscriptionId(profile.getSubscriptionId())
+            .defaultPollInterval(defaultPollInterval).buildClient();
     }
 
     /**
      * Creates an instance of ApiCenter service API entry point.
-     *
+     * 
      * @param credential the credential to use.
      * @param profile the Azure profile for client.
      * @return the ApiCenter service API instance.
@@ -71,7 +98,7 @@ public final class ApiCenterManager {
 
     /**
      * Creates an instance of ApiCenter service API entry point.
-     *
+     * 
      * @param httpPipeline the {@link HttpPipeline} configured with Azure authentication credential.
      * @param profile the Azure profile for client.
      * @return the ApiCenter service API instance.
@@ -84,14 +111,16 @@ public final class ApiCenterManager {
 
     /**
      * Gets a Configurable instance that can be used to create ApiCenterManager with optional configuration.
-     *
+     * 
      * @return the Configurable instance allowing configurations.
      */
     public static Configurable configure() {
         return new ApiCenterManager.Configurable();
     }
 
-    /** The Configurable allowing configurations to be set. */
+    /**
+     * The Configurable allowing configurations to be set.
+     */
     public static final class Configurable {
         private static final ClientLogger LOGGER = new ClientLogger(Configurable.class);
 
@@ -163,8 +192,8 @@ public final class ApiCenterManager {
 
         /**
          * Sets the retry options for the HTTP pipeline retry policy.
-         *
-         * <p>This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
+         * <p>
+         * This setting has no effect, if retry policy is set via {@link #withRetryPolicy(RetryPolicy)}.
          *
          * @param retryOptions the retry options for the HTTP pipeline retry policy.
          * @return the configurable object itself.
@@ -181,8 +210,8 @@ public final class ApiCenterManager {
          * @return the configurable object itself.
          */
         public Configurable withDefaultPollInterval(Duration defaultPollInterval) {
-            this.defaultPollInterval =
-                Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
+            this.defaultPollInterval
+                = Objects.requireNonNull(defaultPollInterval, "'defaultPollInterval' cannot be null.");
             if (this.defaultPollInterval.isNegative()) {
                 throw LOGGER
                     .logExceptionAsError(new IllegalArgumentException("'defaultPollInterval' cannot be negative"));
@@ -202,21 +231,12 @@ public final class ApiCenterManager {
             Objects.requireNonNull(profile, "'profile' cannot be null.");
 
             StringBuilder userAgentBuilder = new StringBuilder();
-            userAgentBuilder
-                .append("azsdk-java")
-                .append("-")
-                .append("com.azure.resourcemanager.apicenter")
-                .append("/")
-                .append("1.0.0-beta.1");
+            userAgentBuilder.append("azsdk-java").append("-").append("com.azure.resourcemanager.apicenter").append("/")
+                .append("1.0.0");
             if (!Configuration.getGlobalConfiguration().get("AZURE_TELEMETRY_DISABLED", false)) {
-                userAgentBuilder
-                    .append(" (")
-                    .append(Configuration.getGlobalConfiguration().get("java.version"))
-                    .append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.name"))
-                    .append("; ")
-                    .append(Configuration.getGlobalConfiguration().get("os.version"))
-                    .append("; auto-generated)");
+                userAgentBuilder.append(" (").append(Configuration.getGlobalConfiguration().get("java.version"))
+                    .append("; ").append(Configuration.getGlobalConfiguration().get("os.name")).append("; ")
+                    .append(Configuration.getGlobalConfiguration().get("os.version")).append("; auto-generated)");
             } else {
                 userAgentBuilder.append(" (auto-generated)");
             }
@@ -235,38 +255,25 @@ public final class ApiCenterManager {
             policies.add(new UserAgentPolicy(userAgentBuilder.toString()));
             policies.add(new AddHeadersFromContextPolicy());
             policies.add(new RequestIdPolicy());
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream().filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_CALL)
+                .collect(Collectors.toList()));
             HttpPolicyProviders.addBeforeRetryPolicies(policies);
             policies.add(retryPolicy);
             policies.add(new AddDatePolicy());
             policies.add(new ArmChallengeAuthenticationPolicy(credential, scopes.toArray(new String[0])));
-            policies
-                .addAll(
-                    this
-                        .policies
-                        .stream()
-                        .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY)
-                        .collect(Collectors.toList()));
+            policies.addAll(this.policies.stream()
+                .filter(p -> p.getPipelinePosition() == HttpPipelinePosition.PER_RETRY).collect(Collectors.toList()));
             HttpPolicyProviders.addAfterRetryPolicies(policies);
             policies.add(new HttpLoggingPolicy(httpLogOptions));
-            HttpPipeline httpPipeline =
-                new HttpPipelineBuilder()
-                    .httpClient(httpClient)
-                    .policies(policies.toArray(new HttpPipelinePolicy[0]))
-                    .build();
+            HttpPipeline httpPipeline = new HttpPipelineBuilder().httpClient(httpClient)
+                .policies(policies.toArray(new HttpPipelinePolicy[0])).build();
             return new ApiCenterManager(httpPipeline, profile, defaultPollInterval);
         }
     }
 
     /**
      * Gets the resource collection API of Operations.
-     *
+     * 
      * @return Resource collection API of Operations.
      */
     public Operations operations() {
@@ -278,7 +285,7 @@ public final class ApiCenterManager {
 
     /**
      * Gets the resource collection API of Services. It manages Service.
-     *
+     * 
      * @return Resource collection API of Services.
      */
     public Services services() {
@@ -289,9 +296,93 @@ public final class ApiCenterManager {
     }
 
     /**
+     * Gets the resource collection API of MetadataSchemas. It manages MetadataSchema.
+     * 
+     * @return Resource collection API of MetadataSchemas.
+     */
+    public MetadataSchemas metadataSchemas() {
+        if (this.metadataSchemas == null) {
+            this.metadataSchemas = new MetadataSchemasImpl(clientObject.getMetadataSchemas(), this);
+        }
+        return metadataSchemas;
+    }
+
+    /**
+     * Gets the resource collection API of Workspaces. It manages Workspace.
+     * 
+     * @return Resource collection API of Workspaces.
+     */
+    public Workspaces workspaces() {
+        if (this.workspaces == null) {
+            this.workspaces = new WorkspacesImpl(clientObject.getWorkspaces(), this);
+        }
+        return workspaces;
+    }
+
+    /**
+     * Gets the resource collection API of Apis. It manages Api.
+     * 
+     * @return Resource collection API of Apis.
+     */
+    public Apis apis() {
+        if (this.apis == null) {
+            this.apis = new ApisImpl(clientObject.getApis(), this);
+        }
+        return apis;
+    }
+
+    /**
+     * Gets the resource collection API of Deployments. It manages Deployment.
+     * 
+     * @return Resource collection API of Deployments.
+     */
+    public Deployments deployments() {
+        if (this.deployments == null) {
+            this.deployments = new DeploymentsImpl(clientObject.getDeployments(), this);
+        }
+        return deployments;
+    }
+
+    /**
+     * Gets the resource collection API of ApiVersions. It manages ApiVersion.
+     * 
+     * @return Resource collection API of ApiVersions.
+     */
+    public ApiVersions apiVersions() {
+        if (this.apiVersions == null) {
+            this.apiVersions = new ApiVersionsImpl(clientObject.getApiVersions(), this);
+        }
+        return apiVersions;
+    }
+
+    /**
+     * Gets the resource collection API of ApiDefinitions. It manages ApiDefinition.
+     * 
+     * @return Resource collection API of ApiDefinitions.
+     */
+    public ApiDefinitions apiDefinitions() {
+        if (this.apiDefinitions == null) {
+            this.apiDefinitions = new ApiDefinitionsImpl(clientObject.getApiDefinitions(), this);
+        }
+        return apiDefinitions;
+    }
+
+    /**
+     * Gets the resource collection API of Environments. It manages Environment.
+     * 
+     * @return Resource collection API of Environments.
+     */
+    public Environments environments() {
+        if (this.environments == null) {
+            this.environments = new EnvironmentsImpl(clientObject.getEnvironments(), this);
+        }
+        return environments;
+    }
+
+    /**
      * Gets wrapped service client AzureApiCenter providing direct access to the underlying auto-generated API
      * implementation, based on Azure REST API.
-     *
+     * 
      * @return Wrapped service client AzureApiCenter.
      */
     public AzureApiCenter serviceClient() {

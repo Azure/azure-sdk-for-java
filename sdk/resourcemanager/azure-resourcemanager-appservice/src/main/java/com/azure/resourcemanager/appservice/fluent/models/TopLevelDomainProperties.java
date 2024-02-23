@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appservice.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** TopLevelDomain resource specific properties. */
+/**
+ * TopLevelDomain resource specific properties.
+ */
 @Fluent
 public final class TopLevelDomainProperties {
     /*
@@ -16,14 +18,16 @@ public final class TopLevelDomainProperties {
     @JsonProperty(value = "privacy")
     private Boolean privacy;
 
-    /** Creates an instance of TopLevelDomainProperties class. */
+    /**
+     * Creates an instance of TopLevelDomainProperties class.
+     */
     public TopLevelDomainProperties() {
     }
 
     /**
      * Get the privacy property: If &lt;code&gt;true&lt;/code&gt;, then the top level domain supports domain privacy;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @return the privacy value.
      */
     public Boolean privacy() {
@@ -33,7 +37,7 @@ public final class TopLevelDomainProperties {
     /**
      * Set the privacy property: If &lt;code&gt;true&lt;/code&gt;, then the top level domain supports domain privacy;
      * otherwise, &lt;code&gt;false&lt;/code&gt;.
-     *
+     * 
      * @param privacy the privacy value to set.
      * @return the TopLevelDomainProperties object itself.
      */
@@ -44,7 +48,7 @@ public final class TopLevelDomainProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

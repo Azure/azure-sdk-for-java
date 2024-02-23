@@ -7,7 +7,9 @@ package com.azure.resourcemanager.paloaltonetworks.ngfw.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** IP Address. */
+/**
+ * IP Address.
+ */
 @Fluent
 public final class IpAddress {
     /*
@@ -22,13 +24,15 @@ public final class IpAddress {
     @JsonProperty(value = "address")
     private String address;
 
-    /** Creates an instance of IpAddress class. */
+    /**
+     * Creates an instance of IpAddress class.
+     */
     public IpAddress() {
     }
 
     /**
      * Get the resourceId property: Resource Id.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -37,7 +41,7 @@ public final class IpAddress {
 
     /**
      * Set the resourceId property: Resource Id.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the IpAddress object itself.
      */
@@ -48,7 +52,7 @@ public final class IpAddress {
 
     /**
      * Get the address property: Address value.
-     *
+     * 
      * @return the address value.
      */
     public String address() {
@@ -57,7 +61,7 @@ public final class IpAddress {
 
     /**
      * Set the address property: Address value.
-     *
+     * 
      * @param address the address value to set.
      * @return the IpAddress object itself.
      */
@@ -68,7 +72,7 @@ public final class IpAddress {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

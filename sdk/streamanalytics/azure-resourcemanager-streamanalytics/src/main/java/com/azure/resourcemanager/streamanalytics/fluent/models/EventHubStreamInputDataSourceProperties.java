@@ -5,33 +5,41 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.models.AuthenticationMode;
 import com.azure.resourcemanager.streamanalytics.models.EventHubDataSourceProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties that are associated with a Event Hub input containing stream data. */
+/**
+ * The properties that are associated with a Event Hub input containing stream data.
+ */
 @Fluent
 public final class EventHubStreamInputDataSourceProperties extends EventHubDataSourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventHubStreamInputDataSourceProperties.class);
-
     /*
-     * The name of an Event Hub Consumer Group that should be used to read
-     * events from the Event Hub. Specifying distinct consumer group names for
-     * multiple inputs allows each of those inputs to receive the same events
-     * from the Event Hub. If not specified, the input uses the Event Hub’s
-     * default consumer group.
+     * The name of an Event Hub Consumer Group that should be used to read events from the Event Hub. Specifying
+     * distinct consumer group names for multiple inputs allows each of those inputs to receive the same events from
+     * the Event Hub. If not specified, the input uses the Event Hub’s default consumer group.
      */
     @JsonProperty(value = "consumerGroupName")
     private String consumerGroupName;
+
+    /*
+     * The number of messages that the message receiver can simultaneously request.
+     */
+    @JsonProperty(value = "prefetchCount")
+    private Integer prefetchCount;
+
+    /**
+     * Creates an instance of EventHubStreamInputDataSourceProperties class.
+     */
+    public EventHubStreamInputDataSourceProperties() {
+    }
 
     /**
      * Get the consumerGroupName property: The name of an Event Hub Consumer Group that should be used to read events
      * from the Event Hub. Specifying distinct consumer group names for multiple inputs allows each of those inputs to
      * receive the same events from the Event Hub. If not specified, the input uses the Event Hub’s default consumer
      * group.
-     *
+     * 
      * @return the consumerGroupName value.
      */
     public String consumerGroupName() {
@@ -43,7 +51,7 @@ public final class EventHubStreamInputDataSourceProperties extends EventHubDataS
      * from the Event Hub. Specifying distinct consumer group names for multiple inputs allows each of those inputs to
      * receive the same events from the Event Hub. If not specified, the input uses the Event Hub’s default consumer
      * group.
-     *
+     * 
      * @param consumerGroupName the consumerGroupName value to set.
      * @return the EventHubStreamInputDataSourceProperties object itself.
      */
@@ -52,35 +60,74 @@ public final class EventHubStreamInputDataSourceProperties extends EventHubDataS
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the prefetchCount property: The number of messages that the message receiver can simultaneously request.
+     * 
+     * @return the prefetchCount value.
+     */
+    public Integer prefetchCount() {
+        return this.prefetchCount;
+    }
+
+    /**
+     * Set the prefetchCount property: The number of messages that the message receiver can simultaneously request.
+     * 
+     * @param prefetchCount the prefetchCount value to set.
+     * @return the EventHubStreamInputDataSourceProperties object itself.
+     */
+    public EventHubStreamInputDataSourceProperties withPrefetchCount(Integer prefetchCount) {
+        this.prefetchCount = prefetchCount;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubStreamInputDataSourceProperties withEventHubName(String eventHubName) {
         super.withEventHubName(eventHubName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public EventHubStreamInputDataSourceProperties withPartitionCount(Integer partitionCount) {
+        super.withPartitionCount(partitionCount);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubStreamInputDataSourceProperties withServiceBusNamespace(String serviceBusNamespace) {
         super.withServiceBusNamespace(serviceBusNamespace);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubStreamInputDataSourceProperties withSharedAccessPolicyName(String sharedAccessPolicyName) {
         super.withSharedAccessPolicyName(sharedAccessPolicyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubStreamInputDataSourceProperties withSharedAccessPolicyKey(String sharedAccessPolicyKey) {
         super.withSharedAccessPolicyKey(sharedAccessPolicyKey);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubStreamInputDataSourceProperties withAuthenticationMode(AuthenticationMode authenticationMode) {
         super.withAuthenticationMode(authenticationMode);
@@ -89,7 +136,7 @@ public final class EventHubStreamInputDataSourceProperties extends EventHubDataS
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

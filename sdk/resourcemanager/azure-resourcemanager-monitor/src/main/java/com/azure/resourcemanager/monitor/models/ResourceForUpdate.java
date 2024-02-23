@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Definition of ARM tracked top level resource properties for update operation. */
+/**
+ * Definition of ARM tracked top level resource properties for update operation.
+ */
 @Fluent
 public final class ResourceForUpdate {
     /*
@@ -19,13 +21,15 @@ public final class ResourceForUpdate {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> tags;
 
-    /** Creates an instance of ResourceForUpdate class. */
+    /**
+     * Creates an instance of ResourceForUpdate class.
+     */
     public ResourceForUpdate() {
     }
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -34,7 +38,7 @@ public final class ResourceForUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ResourceForUpdate object itself.
      */
@@ -45,7 +49,7 @@ public final class ResourceForUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

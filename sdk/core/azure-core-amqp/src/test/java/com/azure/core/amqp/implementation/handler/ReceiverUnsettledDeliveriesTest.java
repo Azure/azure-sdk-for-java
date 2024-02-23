@@ -45,10 +45,10 @@ public class ReceiverUnsettledDeliveriesTest {
     private static final String HOSTNAME = "hostname";
     private static final String ENTITY_PATH = "/orders";
     private static final String RECEIVER_LINK_NAME = "orders-link";
-    private static final String DISPOSITION_ERROR_ON_CLOSE = "The receiver didn't receive the disposition "
-        + "acknowledgment due to receive link closure.";
-    private final ClientLogger logger = new ClientLogger(ReceiverUnsettledDeliveriesTest.class);
-    private final AmqpRetryOptions retryOptions = new AmqpRetryOptions();
+    private static final String DISPOSITION_ERROR_ON_CLOSE
+        = "The receiver didn't receive the disposition " + "acknowledgment due to receive link closure.";
+    private static final ClientLogger LOGGER = new ClientLogger(ReceiverUnsettledDeliveriesTest.class);
+    private static final AmqpRetryOptions RETRY_OPTIONS = new AmqpRetryOptions();
     private AutoCloseable mocksCloseable;
     @Mock
     private ReactorDispatcher reactorDispatcher;
@@ -81,13 +81,22 @@ public class ReceiverUnsettledDeliveriesTest {
     }
 
     @Test
-    public void sendDispositionErrorsForUntrackedDelivery() {
+    public void sendDispositionEmitsDeliveryNotOnLinkExceptionForUntrackedDelivery() {
         try (ReceiverUnsettledDeliveries deliveries = createUnsettledDeliveries()) {
             final UUID deliveryTag = UUID.randomUUID();
-            final Mono<Void> dispositionMono = deliveries.sendDisposition(deliveryTag.toString(), Accepted.getInstance());
-            StepVerifier.create(dispositionMono)
-                .verifyError(IllegalArgumentException.class);
+            final Mono<Void> dispositionMono
+                = deliveries.sendDisposition(deliveryTag.toString(), Accepted.getInstance());
+            StepVerifier.create(dispositionMono).verifyError(DeliveryNotOnLinkException.class);
         }
+    }
+
+    @Test
+    public void sendDispositionEmitsDeliveryNotOnLinkExceptionIfClosed() {
+        ReceiverUnsettledDeliveries deliveries = createUnsettledDeliveries();
+        deliveries.close();
+        final UUID deliveryTag = UUID.randomUUID();
+        final Mono<Void> dispositionMono = deliveries.sendDisposition(deliveryTag.toString(), Accepted.getInstance());
+        StepVerifier.create(dispositionMono).verifyError(DeliveryNotOnLinkException.class);
     }
 
     @Test
@@ -98,13 +107,13 @@ public class ReceiverUnsettledDeliveriesTest {
 
         try (ReceiverUnsettledDeliveries deliveries = createUnsettledDeliveries()) {
             deliveries.onDelivery(deliveryTag, delivery);
-            final Mono<Void> dispositionMono = deliveries.sendDisposition(deliveryTag.toString(), Accepted.getInstance());
-            StepVerifier.create(dispositionMono)
-                .verifyErrorSatisfies(error -> {
-                    Assertions.assertInstanceOf(AmqpException.class, error);
-                    Assertions.assertNotNull(error.getCause());
-                    Assertions.assertInstanceOf(IOException.class, error.getCause());
-                });
+            final Mono<Void> dispositionMono
+                = deliveries.sendDisposition(deliveryTag.toString(), Accepted.getInstance());
+            StepVerifier.create(dispositionMono).verifyErrorSatisfies(error -> {
+                Assertions.assertInstanceOf(AmqpException.class, error);
+                Assertions.assertNotNull(error.getCause());
+                Assertions.assertInstanceOf(IOException.class, error.getCause());
+            });
         }
     }
 
@@ -116,13 +125,13 @@ public class ReceiverUnsettledDeliveriesTest {
 
         try (ReceiverUnsettledDeliveries deliveries = createUnsettledDeliveries()) {
             deliveries.onDelivery(deliveryTag, delivery);
-            final Mono<Void> dispositionMono = deliveries.sendDisposition(deliveryTag.toString(), Accepted.getInstance());
-            StepVerifier.create(dispositionMono)
-                .verifyErrorSatisfies(error -> {
-                    Assertions.assertInstanceOf(AmqpException.class, error);
-                    Assertions.assertNotNull(error.getCause());
-                    Assertions.assertInstanceOf(RejectedExecutionException.class, error.getCause());
-                });
+            final Mono<Void> dispositionMono
+                = deliveries.sendDisposition(deliveryTag.toString(), Accepted.getInstance());
+            StepVerifier.create(dispositionMono).verifyErrorSatisfies(error -> {
+                Assertions.assertInstanceOf(AmqpException.class, error);
+                Assertions.assertNotNull(error.getCause());
+                Assertions.assertInstanceOf(RejectedExecutionException.class, error.getCause());
+            });
         }
     }
 
@@ -138,8 +147,7 @@ public class ReceiverUnsettledDeliveriesTest {
             final Mono<Void> dispositionMono1 = deliveries.sendDisposition(deliveryTag.toString(), desiredState);
             dispositionMono1.subscribe();
             final Mono<Void> dispositionMono2 = deliveries.sendDisposition(deliveryTag.toString(), desiredState);
-            StepVerifier.create(dispositionMono2)
-                .verifyError(AmqpException.class);
+            StepVerifier.create(dispositionMono2).verifyError(AmqpException.class);
         }
     }
 
@@ -229,7 +237,9 @@ public class ReceiverUnsettledDeliveriesTest {
 
         try (ReceiverUnsettledDeliveries deliveries = createUnsettledDeliveries()) {
             doAnswer(__ -> {
-                if (dispositionCallCount[0] != 0) {
+                final boolean firstDispositionCall = dispositionCallCount[0] == 0;
+                if (!firstDispositionCall) {
+                    // See note below on why this doAnswer skips onDispositionAck for the first disposition call.
                     deliveries.onDispositionAck(deliveryTag, delivery);
                 }
                 dispositionCallCount[0]++;
@@ -239,13 +249,23 @@ public class ReceiverUnsettledDeliveriesTest {
             deliveries.onDelivery(deliveryTag, delivery);
             final Mono<Void> dispositionMono = deliveries.sendDisposition(deliveryTag.toString(), desiredState);
             StepVerifier.create(dispositionMono)
+                // Inside sendDisposition(,) implementation, it calls delivery.disposition(state), but before the mock
+                // (above doAnswer) responds with onDispositionAck, it is required that sendDisposition(,) insert
+                // the deliveryTag into ReceiverUnsettledDeliveries::pendingDispositions Map.
+                // The ReceiverUnsettledDeliveries::onDispositionAck will look up the Map for the deliveryTag. So, if
+                // mock responds to disposition call with onDispositionAck before the Map update, the test won’t be able
+                // to validate the scenario. This is why the mock is not calling onDispositionAck when it is invoked for
+                // first disposition(state) call, instead the test let the sendDisposition to complete it execution then
+                // invoke
+                // onDispositionAck(,) below to ack the first disposition(state) call.
                 .then(() -> deliveries.onDispositionAck(deliveryTag, delivery))
                 .verifyErrorSatisfies(error -> {
                     Assertions.assertInstanceOf(AmqpException.class, error);
                     final AmqpException amqpError = (AmqpException) error;
                     Assertions.assertEquals(AmqpErrorCondition.SERVER_BUSY_ERROR, amqpError.getErrorCondition());
                 });
-            Assertions.assertEquals(retryOptions.getMaxRetries() + 1, dispositionCallCount[0]);
+            // Asserts that the retry exhausted.
+            Assertions.assertEquals(RETRY_OPTIONS.getMaxRetries() + 1, dispositionCallCount[0]);
         }
     }
 
@@ -300,11 +320,10 @@ public class ReceiverUnsettledDeliveriesTest {
                 .then(() -> deliveries.onDispositionAck(deliveryTag, delivery))
                 .verifyErrorSatisfies(error -> lastError[0] = error);
             for (int i = 0; i < 3; i++) {
-                StepVerifier.create(dispositionMono)
-                    .verifyErrorSatisfies(error -> {
-                        Assertions.assertEquals(lastError[0], error,
-                            "Expected replay of the last error object, but received a new error object.");
-                    });
+                StepVerifier.create(dispositionMono).verifyErrorSatisfies(error -> {
+                    Assertions.assertEquals(lastError[0], error,
+                        "Expected replay of the last error object, but received a new error object.");
+                });
             }
             Assertions.assertEquals(1, dispositionCallCount[0]);
         }
@@ -324,12 +343,10 @@ public class ReceiverUnsettledDeliveriesTest {
         try {
             deliveries.onDelivery(deliveryTag, delivery);
             final Mono<Void> dispositionMono = deliveries.sendDisposition(deliveryTag.toString(), desiredState);
-            StepVerifier.create(dispositionMono)
-                .then(() -> deliveries.close())
-                .verifyErrorSatisfies(error -> {
-                    Assertions.assertInstanceOf(AmqpException.class, error);
-                    Assertions.assertEquals(DISPOSITION_ERROR_ON_CLOSE, error.getMessage());
-                });
+            StepVerifier.create(dispositionMono).then(() -> deliveries.close()).verifyErrorSatisfies(error -> {
+                Assertions.assertInstanceOf(AmqpException.class, error);
+                Assertions.assertEquals(DISPOSITION_ERROR_ON_CLOSE, error.getMessage());
+            });
         } finally {
             deliveries.close();
         }
@@ -378,11 +395,10 @@ public class ReceiverUnsettledDeliveriesTest {
                 .then(() -> deliveries.onDispositionAck(deliveryTag, delivery))
                 .verifyComplete();
 
-            StepVerifier.create(dispositionMono)
-                .verifyErrorSatisfies(error -> {
-                    Assertions.assertInstanceOf(AmqpException.class, error);
-                    Assertions.assertEquals(DISPOSITION_ERROR_ON_CLOSE, error.getMessage());
-                });
+            StepVerifier.create(dispositionMono).verifyErrorSatisfies(error -> {
+                Assertions.assertInstanceOf(AmqpException.class, error);
+                Assertions.assertEquals(DISPOSITION_ERROR_ON_CLOSE, error.getMessage());
+            });
         } finally {
             deliveries.close();
         }
@@ -421,8 +437,8 @@ public class ReceiverUnsettledDeliveriesTest {
     }
 
     private ReceiverUnsettledDeliveries createUnsettledDeliveries() {
-        return new ReceiverUnsettledDeliveries(HOSTNAME, ENTITY_PATH, RECEIVER_LINK_NAME,
-            reactorDispatcher, retryOptions, DELIVERY_EMPTY_TAG, logger);
+        return new ReceiverUnsettledDeliveries(HOSTNAME, ENTITY_PATH, RECEIVER_LINK_NAME, reactorDispatcher,
+            RETRY_OPTIONS, DELIVERY_EMPTY_TAG, LOGGER);
     }
 
     private static Answer<Void> byRunningRunnable() {

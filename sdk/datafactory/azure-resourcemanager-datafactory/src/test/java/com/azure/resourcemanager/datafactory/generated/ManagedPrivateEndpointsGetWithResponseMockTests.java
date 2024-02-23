@@ -30,44 +30,30 @@ public final class ManagedPrivateEndpointsGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"connectionState\":{\"actionsRequired\":\"blomidvic\",\"description\":\"ufjahu\",\"status\":\"ebdtcklthsu\"},\"fqdns\":[\"xdhlovktrf\"],\"groupId\":\"p\",\"isReserved\":false,\"privateLinkResourceId\":\"xosbydr\",\"provisioningState\":\"svexpzsxb\",\"\":{\"uah\":\"datajjwtynpbirltz\",\"sdtysnlxw\":\"datalxcdpj\"}},\"name\":\"zezfhfjjjzcxtz\",\"type\":\"loosceuk\",\"etag\":\"oqhphjqkkacw\",\"id\":\"qmxkxfmwbrvsl\"}";
+        String responseStr
+            = "{\"properties\":{\"connectionState\":{\"actionsRequired\":\"hmzcnpsdpfwjc\",\"description\":\"bunfymbwinu\",\"status\":\"jtbmjokttqg\"},\"fqdns\":[\"ajuylkfl\"],\"groupId\":\"ofjskndwywbptvym\",\"isReserved\":true,\"privateLinkResourceId\":\"cddbeozh\",\"provisioningState\":\"lxxbmyzfayj\",\"\":{\"xtib\":\"datavowvqpncif\",\"fd\":\"dataqrhz\",\"mat\":\"datacstucswhmnsdwn\"}},\"name\":\"oerjmhtxipwvwz\",\"type\":\"gtgv\",\"etag\":\"zmkteuzeuxxtsl\",\"id\":\"cwl\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DataFactoryManager manager =
-            DataFactoryManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ManagedPrivateEndpointResource response =
-            manager
-                .managedPrivateEndpoints()
-                .getWithResponse("il", "ixwx", "aquuvb", "hgxsfeslxwlmxzo", "bi", com.azure.core.util.Context.NONE)
-                .getValue();
+        ManagedPrivateEndpointResource response = manager.managedPrivateEndpoints().getWithResponse("wugpnses",
+            "wkhkcdtofakm", "pqfzvvtifcqs", "emewfutovb", "nrfuc", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("qmxkxfmwbrvsl", response.id());
-        Assertions.assertEquals("xdhlovktrf", response.properties().fqdns().get(0));
-        Assertions.assertEquals("p", response.properties().groupId());
-        Assertions.assertEquals("xosbydr", response.properties().privateLinkResourceId());
+        Assertions.assertEquals("cwl", response.id());
+        Assertions.assertEquals("ajuylkfl", response.properties().fqdns().get(0));
+        Assertions.assertEquals("ofjskndwywbptvym", response.properties().groupId());
+        Assertions.assertEquals("cddbeozh", response.properties().privateLinkResourceId());
     }
 }

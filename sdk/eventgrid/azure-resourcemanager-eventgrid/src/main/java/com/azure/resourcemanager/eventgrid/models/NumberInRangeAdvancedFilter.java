@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** NumberInRange Advanced Filter. */
+/**
+ * NumberInRange Advanced Filter.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "operatorType")
 @JsonTypeName("NumberInRange")
 @Fluent
@@ -21,13 +23,15 @@ public final class NumberInRangeAdvancedFilter extends AdvancedFilter {
     @JsonProperty(value = "values")
     private List<List<Double>> values;
 
-    /** Creates an instance of NumberInRangeAdvancedFilter class. */
+    /**
+     * Creates an instance of NumberInRangeAdvancedFilter class.
+     */
     public NumberInRangeAdvancedFilter() {
     }
 
     /**
      * Get the values property: The set of filter values.
-     *
+     * 
      * @return the values value.
      */
     public List<List<Double>> values() {
@@ -36,7 +40,7 @@ public final class NumberInRangeAdvancedFilter extends AdvancedFilter {
 
     /**
      * Set the values property: The set of filter values.
-     *
+     * 
      * @param values the values value to set.
      * @return the NumberInRangeAdvancedFilter object itself.
      */
@@ -45,7 +49,9 @@ public final class NumberInRangeAdvancedFilter extends AdvancedFilter {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NumberInRangeAdvancedFilter withKey(String key) {
         super.withKey(key);
@@ -54,7 +60,7 @@ public final class NumberInRangeAdvancedFilter extends AdvancedFilter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

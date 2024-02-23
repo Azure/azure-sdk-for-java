@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Library response details. */
+/**
+ * Library response details.
+ */
 @Fluent
 public final class LibraryResource extends SubResource {
     /*
@@ -16,12 +18,15 @@ public final class LibraryResource extends SubResource {
     @JsonProperty(value = "properties", required = true)
     private LibraryResourceProperties properties;
 
-    /** Creates an instance of LibraryResource class. */
-    public LibraryResource() {}
+    /**
+     * Creates an instance of LibraryResource class.
+     */
+    public LibraryResource() {
+    }
 
     /**
      * Get the properties property: Library/package properties.
-     *
+     * 
      * @return the properties value.
      */
     public LibraryResourceProperties getProperties() {
@@ -30,7 +35,7 @@ public final class LibraryResource extends SubResource {
 
     /**
      * Set the properties property: Library/package properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the LibraryResource object itself.
      */

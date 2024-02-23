@@ -290,6 +290,9 @@ public interface VirtualMachine
     /** @return whether the os disk is ephemeral*/
     boolean isOSDiskEphemeral();
 
+    /** @return whether encryption at host*/
+    boolean isEncryptionAtHost();
+
     /** @return the unmanaged data disks associated with this virtual machine, indexed by LUN number */
     Map<Integer, VirtualMachineUnmanagedDataDisk> unmanagedDataDisks();
 
@@ -440,6 +443,13 @@ public interface VirtualMachine
      * @return the delete options for the network interface
      */
     DeleteOptions networkInterfaceDeleteOptions(String networkInterfaceId);
+
+    /**
+     * Gets the base64 encoded user data for the virtual machine.
+     *
+     * @return the base64 encoded user data for the virtual machine.
+     */
+    String userData();
 
     // Setters
     //
@@ -1934,6 +1944,28 @@ public interface VirtualMachine
             WithSecurityFeatures withVTpm();
         }
 
+        /** The stage of the definition allowing to specify the security profile for the virtual machine. */
+        interface WithSecurityProfile {
+
+            /**
+             * Enables the Host Encryption for the virtual machine.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withEncryptionAtHost();
+        }
+
+        /** The stage of a virtual machine definition allowing to specify user data configurations. */
+        interface WithUserData {
+            /**
+             * Specifies the user data for the virtual machine.
+             *
+             * @param base64EncodedUserData the base64 encoded user data
+             * @return the next stage of the definition
+             */
+            WithCreate withUserData(String base64EncodedUserData);
+        }
+
         /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          * but also allows for any other optional settings to be specified.
@@ -1958,7 +1990,9 @@ public interface VirtualMachine
                 DefinitionStages.WithNetworkInterfaceDeleteOptions,
                 DefinitionStages.WithEphemeralOSDisk,
                 DefinitionStages.WithScaleSet,
-                DefinitionStages.WithSecurityTypes {
+                DefinitionStages.WithSecurityTypes,
+                DefinitionStages.WithSecurityProfile,
+                DefinitionStages.WithUserData {
 
             /**
              * Begins creating the virtual machine resource.
@@ -2508,6 +2542,24 @@ public interface VirtualMachine
             Update withoutVTpm();
         }
 
+        /** The stage of the VM update allowing to change security profile. */
+        interface WithSecurityProfile {
+
+            /**
+             * Enables the Host Encryption for the virtual machine.
+             *
+             * @return the next stage of the definition
+             */
+            Update withEncryptionAtHost();
+
+            /**
+             * Disables the Host Encryption for the virtual machine.
+             *
+             * @return the next stage of the definition
+             */
+            Update withoutEncryptionAtHost();
+        }
+
         /** The stage of the VM update allowing to change delete options of resources attached to this VM . */
         interface WithDeleteOptions {
             /**
@@ -2548,6 +2600,17 @@ public interface VirtualMachine
              */
             Update withDataDisksDeleteOptions(DeleteOptions deleteOptions, Integer... luns);
         }
+
+        /** The stage of the virtual machine update allowing to user data configurations. */
+        interface WithUserData {
+            /**
+             * Specifies the user data for the virtual machine.
+             *
+             * @param base64EncodedUserData the base64 encoded user data
+             * @return the next stage of the update
+             */
+            Update withUserData(String base64EncodedUserData);
+        }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
@@ -2567,7 +2630,9 @@ public interface VirtualMachine
             UpdateStages.WithAdditionalCapacities,
             UpdateStages.WithOSDisk,
             UpdateStages.WithSecurityFeatures,
-            UpdateStages.WithDeleteOptions {
+            UpdateStages.WithDeleteOptions,
+            UpdateStages.WithSecurityProfile,
+            UpdateStages.WithUserData {
         /**
          * Specifies the encryption settings for the OS Disk.
          *

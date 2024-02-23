@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class MapperTableSchemaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        MapperTableSchema model =
-            BinaryData.fromString("{\"name\":\"nrlyxnuc\",\"dataType\":\"p\"}").toObject(MapperTableSchema.class);
+        MapperTableSchema model
+            = BinaryData.fromString("{\"name\":\"nrlyxnuc\",\"dataType\":\"p\"}").toObject(MapperTableSchema.class);
         Assertions.assertEquals("nrlyxnuc", model.name());
         Assertions.assertEquals("p", model.dataType());
     }

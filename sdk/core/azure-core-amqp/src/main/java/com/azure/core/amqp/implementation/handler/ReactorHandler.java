@@ -24,6 +24,11 @@ public class ReactorHandler extends BaseHandler {
 
     private final ClientLogger logger;
 
+    /**
+     * Creates a new instance of ReactorHandler.
+     *
+     * @param connectionId Identifier for the connection.
+     */
     public ReactorHandler(final String connectionId) {
         Objects.requireNonNull(connectionId);
         this.logger = new ClientLogger(ReactorHandler.class, createContextWithConnectionId(connectionId));
@@ -39,8 +44,6 @@ public class ReactorHandler extends BaseHandler {
 
     @Override
     public void onReactorFinal(Event e) {
-        logger.atInfo()
-            .addKeyValue("event", e)
-            .log("reactor.onReactorFinal.");
+        logger.atInfo().addKeyValue("event", e).log("reactor.onReactorFinal.");
     }
 }

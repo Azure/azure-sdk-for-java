@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** License type for bringing your own license scenario. */
+/**
+ * License type for bringing your own license scenario.
+ */
 public final class IntegrationRuntimeLicenseType extends ExpandableStringEnum<IntegrationRuntimeLicenseType> {
-    /** Static value BasePrice for IntegrationRuntimeLicenseType. */
+    /**
+     * Static value BasePrice for IntegrationRuntimeLicenseType.
+     */
     public static final IntegrationRuntimeLicenseType BASE_PRICE = fromString("BasePrice");
 
-    /** Static value LicenseIncluded for IntegrationRuntimeLicenseType. */
+    /**
+     * Static value LicenseIncluded for IntegrationRuntimeLicenseType.
+     */
     public static final IntegrationRuntimeLicenseType LICENSE_INCLUDED = fromString("LicenseIncluded");
 
     /**
      * Creates a new instance of IntegrationRuntimeLicenseType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class IntegrationRuntimeLicenseType extends ExpandableStringEnum<In
 
     /**
      * Creates or finds a IntegrationRuntimeLicenseType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IntegrationRuntimeLicenseType.
      */
@@ -38,7 +44,7 @@ public final class IntegrationRuntimeLicenseType extends ExpandableStringEnum<In
 
     /**
      * Gets known IntegrationRuntimeLicenseType values.
-     *
+     * 
      * @return known IntegrationRuntimeLicenseType values.
      */
     public static Collection<IntegrationRuntimeLicenseType> values() {

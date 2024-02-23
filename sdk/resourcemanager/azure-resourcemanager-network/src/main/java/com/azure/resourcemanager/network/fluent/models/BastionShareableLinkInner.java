@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.VM;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Bastion Shareable Link. */
+/**
+ * Bastion Shareable Link.
+ */
 @Fluent
 public final class BastionShareableLinkInner {
     /*
@@ -36,13 +38,15 @@ public final class BastionShareableLinkInner {
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of BastionShareableLinkInner class. */
+    /**
+     * Creates an instance of BastionShareableLinkInner class.
+     */
     public BastionShareableLinkInner() {
     }
 
     /**
      * Get the vm property: Reference of the virtual machine resource.
-     *
+     * 
      * @return the vm value.
      */
     public VM vm() {
@@ -51,7 +55,7 @@ public final class BastionShareableLinkInner {
 
     /**
      * Set the vm property: Reference of the virtual machine resource.
-     *
+     * 
      * @param vm the vm value to set.
      * @return the BastionShareableLinkInner object itself.
      */
@@ -62,7 +66,7 @@ public final class BastionShareableLinkInner {
 
     /**
      * Get the bsl property: The unique Bastion Shareable Link to the virtual machine.
-     *
+     * 
      * @return the bsl value.
      */
     public String bsl() {
@@ -71,7 +75,7 @@ public final class BastionShareableLinkInner {
 
     /**
      * Get the createdAt property: The time when the link was created.
-     *
+     * 
      * @return the createdAt value.
      */
     public String createdAt() {
@@ -81,7 +85,7 @@ public final class BastionShareableLinkInner {
     /**
      * Get the message property: Optional field indicating the warning or error message related to the vm in case of
      * partial failure.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -90,14 +94,13 @@ public final class BastionShareableLinkInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (vm() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property vm in model BastionShareableLinkInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property vm in model BastionShareableLinkInner"));
         } else {
             vm().validate();
         }

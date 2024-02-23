@@ -9,7 +9,9 @@ import com.azure.resourcemanager.appservice.models.ProxyOnlyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** A snapshot of a web app configuration. */
+/**
+ * A snapshot of a web app configuration.
+ */
 @Fluent
 public final class SiteConfigurationSnapshotInfoInner extends ProxyOnlyResource {
     /*
@@ -18,20 +20,24 @@ public final class SiteConfigurationSnapshotInfoInner extends ProxyOnlyResource 
     @JsonProperty(value = "properties")
     private SiteConfigurationSnapshotInfoProperties innerProperties;
 
-    /** Creates an instance of SiteConfigurationSnapshotInfoInner class. */
+    /**
+     * Creates an instance of SiteConfigurationSnapshotInfoInner class.
+     */
     public SiteConfigurationSnapshotInfoInner() {
     }
 
     /**
      * Get the innerProperties property: SiteConfigurationSnapshotInfo resource specific properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SiteConfigurationSnapshotInfoProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SiteConfigurationSnapshotInfoInner withKind(String kind) {
         super.withKind(kind);
@@ -40,7 +46,7 @@ public final class SiteConfigurationSnapshotInfoInner extends ProxyOnlyResource 
 
     /**
      * Get the time property: The time the snapshot was taken.
-     *
+     * 
      * @return the time value.
      */
     public OffsetDateTime time() {
@@ -49,7 +55,7 @@ public final class SiteConfigurationSnapshotInfoInner extends ProxyOnlyResource 
 
     /**
      * Get the snapshotId property: The id of the snapshot.
-     *
+     * 
      * @return the snapshotId value.
      */
     public Integer snapshotId() {
@@ -58,7 +64,7 @@ public final class SiteConfigurationSnapshotInfoInner extends ProxyOnlyResource 
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

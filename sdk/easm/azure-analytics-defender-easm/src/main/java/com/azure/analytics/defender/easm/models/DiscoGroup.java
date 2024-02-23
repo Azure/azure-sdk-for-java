@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The DiscoGroup model. */
+/**
+ * The DiscoGroup model.
+ */
 @Immutable
 public final class DiscoGroup {
 
@@ -97,9 +99,12 @@ public final class DiscoGroup {
     @JsonProperty(value = "templateId")
     private String templateId;
 
-    /** Creates an instance of DiscoGroup class. */
+    /**
+     * Creates an instance of DiscoGroup class.
+     */
     @Generated
-    private DiscoGroup() {}
+    private DiscoGroup() {
+    }
 
     /**
      * Get the id property: The system generated unique id for the resource.

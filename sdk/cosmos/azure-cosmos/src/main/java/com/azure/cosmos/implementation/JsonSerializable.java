@@ -143,8 +143,8 @@ public class JsonSerializable {
         } else {
             // This should rarely execute. Keeping this for sanity sake
             try {
-                return (JsonSerializable) klassType.getDeclaredConstructor(String.class)
-                                              .newInstance(Utils.toJson(Utils.getSimpleObjectMapper(), objectNode));
+                return (JsonSerializable) klassType.getDeclaredConstructor(ObjectNode.class)
+                                              .newInstance(objectNode);
             } catch (InstantiationException | IllegalAccessException | InvocationTargetException | NoSuchMethodException e) {
                 throw new IllegalArgumentException(e);
             }

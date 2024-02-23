@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The KqlScriptContentCurrentConnection model. */
+/**
+ * The KqlScriptContentCurrentConnection model.
+ */
 @Fluent
 public final class KqlScriptContentCurrentConnection {
     /*
@@ -34,12 +36,15 @@ public final class KqlScriptContentCurrentConnection {
     @JsonProperty(value = "type")
     private String type;
 
-    /** Creates an instance of KqlScriptContentCurrentConnection class. */
-    public KqlScriptContentCurrentConnection() {}
+    /**
+     * Creates an instance of KqlScriptContentCurrentConnection class.
+     */
+    public KqlScriptContentCurrentConnection() {
+    }
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -48,7 +53,7 @@ public final class KqlScriptContentCurrentConnection {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the KqlScriptContentCurrentConnection object itself.
      */
@@ -59,7 +64,7 @@ public final class KqlScriptContentCurrentConnection {
 
     /**
      * Get the poolName property: The poolName property.
-     *
+     * 
      * @return the poolName value.
      */
     public String getPoolName() {
@@ -68,7 +73,7 @@ public final class KqlScriptContentCurrentConnection {
 
     /**
      * Set the poolName property: The poolName property.
-     *
+     * 
      * @param poolName the poolName value to set.
      * @return the KqlScriptContentCurrentConnection object itself.
      */
@@ -79,7 +84,7 @@ public final class KqlScriptContentCurrentConnection {
 
     /**
      * Get the databaseName property: The databaseName property.
-     *
+     * 
      * @return the databaseName value.
      */
     public String getDatabaseName() {
@@ -88,7 +93,7 @@ public final class KqlScriptContentCurrentConnection {
 
     /**
      * Set the databaseName property: The databaseName property.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the KqlScriptContentCurrentConnection object itself.
      */
@@ -99,7 +104,7 @@ public final class KqlScriptContentCurrentConnection {
 
     /**
      * Get the type property: The type property.
-     *
+     * 
      * @return the type value.
      */
     public String getType() {
@@ -108,7 +113,7 @@ public final class KqlScriptContentCurrentConnection {
 
     /**
      * Set the type property: The type property.
-     *
+     * 
      * @param type the type value to set.
      * @return the KqlScriptContentCurrentConnection object itself.
      */

@@ -16,13 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VolumeListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VolumeList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"volumeId\":\"cocmnyyaztt\",\"creationData\":{\"createSource\":\"VolumeSnapshot\",\"sourceId\":\"qpuedckzywbiex\"},\"sizeGiB\":3417143419332668399,\"storageTarget\":{\"targetIqn\":\"eaxib\",\"targetPortalHostname\":\"jwbhqwalmuz\",\"targetPortalPort\":1532421493,\"provisioningState\":\"Canceled\",\"status\":\"Running\"},\"managedBy\":{\"resourceId\":\"jancu\"},\"provisioningState\":\"Updating\"},\"id\":\"wbavxbniwdj\",\"name\":\"wz\",\"type\":\"s\"},{\"properties\":{\"volumeId\":\"pgn\",\"creationData\":{\"createSource\":\"DiskRestorePoint\",\"sourceId\":\"pzxbz\"},\"sizeGiB\":4599278762686577783,\"storageTarget\":{\"targetIqn\":\"glcuhxwtctyqi\",\"targetPortalHostname\":\"bbovplwzbhvgyugu\",\"targetPortalPort\":230150141,\"provisioningState\":\"Pending\",\"status\":\"Invalid\"},\"managedBy\":{\"resourceId\":\"qukkfp\"},\"provisioningState\":\"Invalid\"},\"id\":\"sxnkjzkdeslpvlo\",\"name\":\"wiyighxpkdw\",\"type\":\"baiuebbaumny\"},{\"properties\":{\"volumeId\":\"ped\",\"creationData\":{\"createSource\":\"DiskSnapshot\",\"sourceId\":\"bckhsmtxpsi\"},\"sizeGiB\":2486313553409967959,\"storageTarget\":{\"targetIqn\":\"vpesapskrdqmhjjd\",\"targetPortalHostname\":\"ldwkyzxuutkn\",\"targetPortalPort\":1341187268,\"provisioningState\":\"Deleting\",\"status\":\"Stopped"
-                        + " (deallocated)\"},\"managedBy\":{\"resourceId\":\"otogtwrupqs\"},\"provisioningState\":\"Succeeded\"},\"id\":\"i\",\"name\":\"ykvceoveil\",\"type\":\"vnotyfjfcnj\"},{\"properties\":{\"volumeId\":\"cn\",\"creationData\":{\"createSource\":\"VolumeSnapshot\",\"sourceId\":\"tkphywpnvjtoqn\"},\"sizeGiB\":4139812271767683575,\"storageTarget\":{\"targetIqn\":\"fpl\",\"targetPortalHostname\":\"oxuscrpabgyepsbj\",\"targetPortalPort\":300871013,\"provisioningState\":\"Creating\",\"status\":\"Stopped"
-                        + " (deallocated)\"},\"managedBy\":{\"resourceId\":\"pmueefjzwfqk\"},\"provisioningState\":\"Deleting\"},\"id\":\"dsuyonobgla\",\"name\":\"cq\",\"type\":\"tcc\"}],\"nextLink\":\"yudxytlmoy\"}")
-                .toObject(VolumeList.class);
+        VolumeList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"volumeId\":\"cocmnyyaztt\",\"creationData\":{\"createSource\":\"VolumeSnapshot\",\"sourceId\":\"qpuedckzywbiex\"},\"sizeGiB\":3417143419332668399,\"storageTarget\":{\"targetIqn\":\"eaxib\",\"targetPortalHostname\":\"jwbhqwalmuz\",\"targetPortalPort\":1532421493,\"provisioningState\":\"Canceled\",\"status\":\"Running\"},\"managedBy\":{\"resourceId\":\"jancu\"},\"provisioningState\":\"Updating\"},\"id\":\"wbavxbniwdj\",\"name\":\"wz\",\"type\":\"s\"},{\"properties\":{\"volumeId\":\"pgn\",\"creationData\":{\"createSource\":\"DiskRestorePoint\",\"sourceId\":\"pzxbz\"},\"sizeGiB\":4599278762686577783,\"storageTarget\":{\"targetIqn\":\"glcuhxwtctyqi\",\"targetPortalHostname\":\"bbovplwzbhvgyugu\",\"targetPortalPort\":230150141,\"provisioningState\":\"Pending\",\"status\":\"Invalid\"},\"managedBy\":{\"resourceId\":\"qukkfp\"},\"provisioningState\":\"Invalid\"},\"id\":\"sxnkjzkdeslpvlo\",\"name\":\"wiyighxpkdw\",\"type\":\"baiuebbaumny\"},{\"properties\":{\"volumeId\":\"ped\",\"creationData\":{\"createSource\":\"DiskSnapshot\",\"sourceId\":\"bckhsmtxpsi\"},\"sizeGiB\":2486313553409967959,\"storageTarget\":{\"targetIqn\":\"vpesapskrdqmhjjd\",\"targetPortalHostname\":\"ldwkyzxuutkn\",\"targetPortalPort\":1341187268,\"provisioningState\":\"Deleting\",\"status\":\"Stopped (deallocated)\"},\"managedBy\":{\"resourceId\":\"otogtwrupqs\"},\"provisioningState\":\"Succeeded\"},\"id\":\"i\",\"name\":\"ykvceoveil\",\"type\":\"vnotyfjfcnj\"},{\"properties\":{\"volumeId\":\"cn\",\"creationData\":{\"createSource\":\"VolumeSnapshot\",\"sourceId\":\"tkphywpnvjtoqn\"},\"sizeGiB\":4139812271767683575,\"storageTarget\":{\"targetIqn\":\"fpl\",\"targetPortalHostname\":\"oxuscrpabgyepsbj\",\"targetPortalPort\":300871013,\"provisioningState\":\"Creating\",\"status\":\"Stopped (deallocated)\"},\"managedBy\":{\"resourceId\":\"pmueefjzwfqk\"},\"provisioningState\":\"Deleting\"},\"id\":\"dsuyonobgla\",\"name\":\"cq\",\"type\":\"tcc\"}],\"nextLink\":\"yudxytlmoy\"}")
+            .toObject(VolumeList.class);
         Assertions.assertEquals(VolumeCreateOption.VOLUME_SNAPSHOT, model.value().get(0).creationData().createSource());
         Assertions.assertEquals("qpuedckzywbiex", model.value().get(0).creationData().sourceId());
         Assertions.assertEquals(3417143419332668399L, model.value().get(0).sizeGiB());
@@ -31,39 +27,23 @@ public final class VolumeListTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VolumeList model =
-            new VolumeList()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new VolumeInner()
-                                .withCreationData(
-                                    new SourceCreationData()
-                                        .withCreateSource(VolumeCreateOption.VOLUME_SNAPSHOT)
-                                        .withSourceId("qpuedckzywbiex"))
-                                .withSizeGiB(3417143419332668399L)
-                                .withManagedBy(new ManagedByInfo().withResourceId("jancu")),
-                            new VolumeInner()
-                                .withCreationData(
-                                    new SourceCreationData()
-                                        .withCreateSource(VolumeCreateOption.DISK_RESTORE_POINT)
-                                        .withSourceId("pzxbz"))
-                                .withSizeGiB(4599278762686577783L)
-                                .withManagedBy(new ManagedByInfo().withResourceId("qukkfp")),
-                            new VolumeInner()
-                                .withCreationData(
-                                    new SourceCreationData()
-                                        .withCreateSource(VolumeCreateOption.DISK_SNAPSHOT)
-                                        .withSourceId("bckhsmtxpsi"))
-                                .withSizeGiB(2486313553409967959L)
-                                .withManagedBy(new ManagedByInfo().withResourceId("otogtwrupqs")),
-                            new VolumeInner()
-                                .withCreationData(
-                                    new SourceCreationData()
-                                        .withCreateSource(VolumeCreateOption.VOLUME_SNAPSHOT)
-                                        .withSourceId("tkphywpnvjtoqn"))
-                                .withSizeGiB(4139812271767683575L)
-                                .withManagedBy(new ManagedByInfo().withResourceId("pmueefjzwfqk"))));
+        VolumeList model = new VolumeList().withValue(Arrays.asList(
+            new VolumeInner()
+                .withCreationData(new SourceCreationData().withCreateSource(VolumeCreateOption.VOLUME_SNAPSHOT)
+                    .withSourceId("qpuedckzywbiex"))
+                .withSizeGiB(3417143419332668399L).withManagedBy(new ManagedByInfo().withResourceId("jancu")),
+            new VolumeInner()
+                .withCreationData(new SourceCreationData().withCreateSource(VolumeCreateOption.DISK_RESTORE_POINT)
+                    .withSourceId("pzxbz"))
+                .withSizeGiB(4599278762686577783L).withManagedBy(new ManagedByInfo().withResourceId("qukkfp")),
+            new VolumeInner()
+                .withCreationData(new SourceCreationData().withCreateSource(VolumeCreateOption.DISK_SNAPSHOT)
+                    .withSourceId("bckhsmtxpsi"))
+                .withSizeGiB(2486313553409967959L).withManagedBy(new ManagedByInfo().withResourceId("otogtwrupqs")),
+            new VolumeInner()
+                .withCreationData(new SourceCreationData().withCreateSource(VolumeCreateOption.VOLUME_SNAPSHOT)
+                    .withSourceId("tkphywpnvjtoqn"))
+                .withSizeGiB(4139812271767683575L).withManagedBy(new ManagedByInfo().withResourceId("pmueefjzwfqk"))));
         model = BinaryData.fromObject(model).toObject(VolumeList.class);
         Assertions.assertEquals(VolumeCreateOption.VOLUME_SNAPSHOT, model.value().get(0).creationData().createSource());
         Assertions.assertEquals("qpuedckzywbiex", model.value().get(0).creationData().sourceId());

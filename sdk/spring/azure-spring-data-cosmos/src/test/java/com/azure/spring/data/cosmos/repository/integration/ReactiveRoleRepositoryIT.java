@@ -23,6 +23,7 @@ import reactor.test.StepVerifier;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = TestRepositoryConfig.class)
@@ -36,6 +37,9 @@ public class ReactiveRoleRepositoryIT {
                                                      TestConstants.ROLE_NAME, TestConstants.LEVEL);
     private static final Role TEST_ROLE_4 = new Role(TestConstants.ID_4, true,
                                                      TestConstants.ROLE_NAME, TestConstants.LEVEL_2);
+
+    private static final Role TEST_ROLE_5 = new Role(TestConstants.ID_5, true,
+        TestConstants.ROLE_NAME_2, TestConstants.LEVEL_2);
 
     @ClassRule
     public static final IntegrationTestCollectionManager collectionManager = new IntegrationTestCollectionManager();
@@ -59,6 +63,33 @@ public class ReactiveRoleRepositoryIT {
     }
 
     @Test
+    public void testAnnotatedQueryWithOptionalParam() {
+        Mono<Role> savedMono = repository.save(TEST_ROLE_5);
+        StepVerifier.create(savedMono).thenConsumeWhile(role -> true).expectComplete().verify();
+
+        Optional<String> name = Optional.ofNullable(TestConstants.ROLE_NAME_2);
+        Flux<Role> resultFlux = repository.annotatedFindRoleByNameOptional(name);
+        StepVerifier.create(resultFlux)
+                .expectNext(TEST_ROLE_5)
+                .verifyComplete();
+    }
+
+    @Test
+    public void testAnnotatedQueryWithOptionalParamEmpty() {
+        Mono<Role> savedMono = repository.save(TEST_ROLE_5);
+        StepVerifier.create(savedMono).thenConsumeWhile(role -> true).expectComplete().verify();
+
+        Flux<Role> resultFlux = repository.annotatedFindRoleByNameOptional(Optional.empty());
+        StepVerifier.create(resultFlux)
+            .expectNext(TEST_ROLE_1)
+            .expectNext(TEST_ROLE_2)
+            .expectNext(TEST_ROLE_3)
+            .expectNext(TEST_ROLE_4)
+            .expectNext(TEST_ROLE_5)
+            .verifyComplete();
+    }
+
+    @Test
     public void testAnnotatedQueryWithSort() {
         final Flux<Role> roleAscFlux = repository.annotatedFindDeveloperByLevel(TestConstants.LEVEL, Sort.by(Sort.Direction.ASC, "id"));
         StepVerifier.create(roleAscFlux)
@@ -70,6 +101,34 @@ public class ReactiveRoleRepositoryIT {
         StepVerifier.create(roleDescFlux)
             .expectNext(TEST_ROLE_3)
             .expectNext(TEST_ROLE_1)
+            .verifyComplete();
+    }
+
+    @Test
+    public void testAnnotatedQueryWithNewLinesInQueryString() {
+        Mono<Role> savedMono = repository.save(TEST_ROLE_5);
+        StepVerifier.create(savedMono).thenConsumeWhile(role -> true).expectComplete().verify();
+
+        final Flux<Role> roleAscFlux = repository.annotatedFindRoleByNameWithSort(TestConstants.ROLE_NAME, Sort.by(Sort.Direction.ASC, "id"));
+        StepVerifier.create(roleAscFlux)
+            .expectNext(TEST_ROLE_1)
+            .expectNext(TEST_ROLE_2)
+            .expectNext(TEST_ROLE_3)
+            .expectNext(TEST_ROLE_4)
+            .verifyComplete();
+    }
+
+    @Test
+    public void testAnnotatedQueryWithNewLinesInQueryString2() {
+        Mono<Role> savedMono = repository.save(TEST_ROLE_5);
+        StepVerifier.create(savedMono).thenConsumeWhile(role -> true).expectComplete().verify();
+
+        final Flux<Role> roleAscFlux = repository.annotatedFindRoleByNameWithSort2(TestConstants.ROLE_NAME, Sort.by(Sort.Direction.ASC, "id"));
+        StepVerifier.create(roleAscFlux)
+            .expectNext(TEST_ROLE_1)
+            .expectNext(TEST_ROLE_2)
+            .expectNext(TEST_ROLE_3)
+            .expectNext(TEST_ROLE_4)
             .verifyComplete();
     }
 

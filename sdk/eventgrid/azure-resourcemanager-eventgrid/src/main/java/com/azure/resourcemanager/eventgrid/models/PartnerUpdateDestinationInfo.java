@@ -9,23 +9,27 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Properties of the corresponding partner destination of a Channel. */
+/**
+ * Properties of the corresponding partner destination of a Channel.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "endpointType",
     defaultImpl = PartnerUpdateDestinationInfo.class)
 @JsonTypeName("PartnerUpdateDestinationInfo")
-@JsonSubTypes({@JsonSubTypes.Type(name = "WebHook", value = WebhookUpdatePartnerDestinationInfo.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "WebHook", value = WebhookUpdatePartnerDestinationInfo.class) })
 @Immutable
 public class PartnerUpdateDestinationInfo {
-    /** Creates an instance of PartnerUpdateDestinationInfo class. */
+    /**
+     * Creates an instance of PartnerUpdateDestinationInfo class.
+     */
     public PartnerUpdateDestinationInfo() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

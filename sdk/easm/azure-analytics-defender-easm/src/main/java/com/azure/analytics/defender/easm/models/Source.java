@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The Source model. */
+/**
+ * The Source model.
+ */
 @Immutable
 public final class Source {
 
@@ -47,9 +49,12 @@ public final class Source {
     @JsonProperty(value = "reason")
     private String reason;
 
-    /** Creates an instance of Source class. */
+    /**
+     * Creates an instance of Source class.
+     */
     @Generated
-    private Source() {}
+    private Source() {
+    }
 
     /**
      * Get the source property: The source property.

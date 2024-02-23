@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Description of an Azure Notification Hub to link to the communication service. */
+/**
+ * Description of an Azure Notification Hub to link to the communication service.
+ */
 @Fluent
 public final class LinkNotificationHubParameters {
     /*
@@ -23,13 +25,15 @@ public final class LinkNotificationHubParameters {
     @JsonProperty(value = "connectionString", required = true)
     private String connectionString;
 
-    /** Creates an instance of LinkNotificationHubParameters class. */
+    /**
+     * Creates an instance of LinkNotificationHubParameters class.
+     */
     public LinkNotificationHubParameters() {
     }
 
     /**
      * Get the resourceId property: The resource ID of the notification hub.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -38,7 +42,7 @@ public final class LinkNotificationHubParameters {
 
     /**
      * Set the resourceId property: The resource ID of the notification hub.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the LinkNotificationHubParameters object itself.
      */
@@ -49,7 +53,7 @@ public final class LinkNotificationHubParameters {
 
     /**
      * Get the connectionString property: Connection string for the notification hub.
-     *
+     * 
      * @return the connectionString value.
      */
     public String connectionString() {
@@ -58,7 +62,7 @@ public final class LinkNotificationHubParameters {
 
     /**
      * Set the connectionString property: Connection string for the notification hub.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the LinkNotificationHubParameters object itself.
      */
@@ -69,21 +73,17 @@ public final class LinkNotificationHubParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resourceId in model LinkNotificationHubParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property resourceId in model LinkNotificationHubParameters"));
         }
         if (connectionString() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property connectionString in model LinkNotificationHubParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property connectionString in model LinkNotificationHubParameters"));
         }
     }
 

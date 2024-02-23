@@ -8,17 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for ObservedPortStateValue. */
+/**
+ * Defines values for ObservedPortStateValue.
+ */
 public final class ObservedPortStateValue extends ExpandableStringEnum<ObservedPortStateValue> {
 
-    /** Static value open for ObservedPortStateValue. */
-    @Generated public static final ObservedPortStateValue OPEN = fromString("open");
+    /**
+     * Static value open for ObservedPortStateValue.
+     */
+    @Generated
+    public static final ObservedPortStateValue OPEN = fromString("open");
 
-    /** Static value closed for ObservedPortStateValue. */
-    @Generated public static final ObservedPortStateValue CLOSED = fromString("closed");
+    /**
+     * Static value closed for ObservedPortStateValue.
+     */
+    @Generated
+    public static final ObservedPortStateValue CLOSED = fromString("closed");
 
-    /** Static value filtered for ObservedPortStateValue. */
-    @Generated public static final ObservedPortStateValue FILTERED = fromString("filtered");
+    /**
+     * Static value filtered for ObservedPortStateValue.
+     */
+    @Generated
+    public static final ObservedPortStateValue FILTERED = fromString("filtered");
 
     /**
      * Creates a new instance of ObservedPortStateValue value.
@@ -27,7 +38,8 @@ public final class ObservedPortStateValue extends ExpandableStringEnum<ObservedP
      */
     @Generated
     @Deprecated
-    public ObservedPortStateValue() {}
+    public ObservedPortStateValue() {
+    }
 
     /**
      * Creates or finds a ObservedPortStateValue from its string representation.

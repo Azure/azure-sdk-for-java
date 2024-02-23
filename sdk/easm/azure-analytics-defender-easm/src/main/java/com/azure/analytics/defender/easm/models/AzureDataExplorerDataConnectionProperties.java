@@ -7,7 +7,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The AzureDataExplorerDataConnectionProperties model. */
+/**
+ * The AzureDataExplorerDataConnectionProperties model.
+ */
 @Fluent
 public final class AzureDataExplorerDataConnectionProperties extends DataConnectionProperties {
 
@@ -32,9 +34,12 @@ public final class AzureDataExplorerDataConnectionProperties extends DataConnect
     @JsonProperty(value = "databaseName")
     private String databaseName;
 
-    /** Creates an instance of AzureDataExplorerDataConnectionProperties class. */
+    /**
+     * Creates an instance of AzureDataExplorerDataConnectionProperties class.
+     */
     @Generated
-    public AzureDataExplorerDataConnectionProperties() {}
+    public AzureDataExplorerDataConnectionProperties() {
+    }
 
     /**
      * Get the clusterName property: The azure data explorer cluster name.

@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The Salesforce object dataset. */
+/**
+ * The Salesforce object dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SalesforceObject")
 @Fluent
@@ -23,62 +25,78 @@ public final class SalesforceObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private SalesforceObjectDatasetTypeProperties innerTypeProperties;
 
-    /** Creates an instance of SalesforceObjectDataset class. */
+    /**
+     * Creates an instance of SalesforceObjectDataset class.
+     */
     public SalesforceObjectDataset() {
     }
 
     /**
      * Get the innerTypeProperties property: Salesforce object dataset properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private SalesforceObjectDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceObjectDataset withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceObjectDataset withStructure(Object structure) {
         super.withStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceObjectDataset withSchema(Object schema) {
         super.withSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceObjectDataset withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceObjectDataset withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceObjectDataset withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceObjectDataset withFolder(DatasetFolder folder) {
         super.withFolder(folder);
@@ -88,7 +106,7 @@ public final class SalesforceObjectDataset extends Dataset {
     /**
      * Get the objectApiName property: The Salesforce object API name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the objectApiName value.
      */
     public Object objectApiName() {
@@ -98,7 +116,7 @@ public final class SalesforceObjectDataset extends Dataset {
     /**
      * Set the objectApiName property: The Salesforce object API name. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param objectApiName the objectApiName value to set.
      * @return the SalesforceObjectDataset object itself.
      */
@@ -112,7 +130,7 @@ public final class SalesforceObjectDataset extends Dataset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

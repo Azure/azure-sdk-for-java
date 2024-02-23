@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Jobs are distributed in order to workers, starting with the worker that is after the last worker to receive a job.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("round-robin")
+@JsonTypeName("roundRobin")
 @Fluent
 public final class RoundRobinMode extends DistributionMode {
 

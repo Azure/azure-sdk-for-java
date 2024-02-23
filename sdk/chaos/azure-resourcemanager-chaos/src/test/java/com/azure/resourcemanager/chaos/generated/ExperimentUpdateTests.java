@@ -19,9 +19,9 @@ public final class ExperimentUpdateTests {
         ExperimentUpdate model =
             BinaryData
                 .fromString(
-                    "{\"identity\":{\"type\":\"UserAssigned\",\"userAssignedIdentities\":{\"it\":{\"principalId\":\"c1000e40-cee2-4311-b04e-e94747e05df2\",\"clientId\":\"147b9e75-fe91-49c9-b34f-5121d73c6b63\"},\"jawgqwg\":{\"principalId\":\"ab61a5da-1f68-4580-84f9-7d0dbb3c39a1\",\"clientId\":\"8744a7df-7546-485d-b3a1-c096cb036fad\"}},\"principalId\":\"ni\",\"tenantId\":\"x\"}}")
+                    "{\"identity\":{\"type\":\"None\",\"userAssignedIdentities\":{\"veual\":{\"principalId\":\"722f6d5d-a4be-49ef-859d-8e0961238354\",\"clientId\":\"a4541266-741f-439c-981a-c1cf2b17ae98\"},\"mkh\":{\"principalId\":\"54b509c6-afca-41df-a2ea-819d552cfcf1\",\"clientId\":\"9a36844d-8db6-4d0e-b5f9-c495c195c8a6\"},\"bbcswsrtjri\":{\"principalId\":\"804d3b9b-f5ae-4616-9331-d242e48040b4\",\"clientId\":\"63b3ce36-c7db-4e64-bd93-42681aab08ca\"},\"bpbewtghfgb\":{\"principalId\":\"a21c1186-61a2-47c5-b1c6-e74d4d4d9ccf\",\"clientId\":\"19babc93-1b64-4e6c-8513-919d7f32cae6\"}},\"principalId\":\"gw\",\"tenantId\":\"vlvqhjkbegi\"}}")
                 .toObject(ExperimentUpdate.class);
-        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals(ResourceIdentityType.NONE, model.identity().type());
     }
 
     @org.junit.jupiter.api.Test
@@ -30,13 +30,22 @@ public final class ExperimentUpdateTests {
             new ExperimentUpdate()
                 .withIdentity(
                     new ResourceIdentity()
-                        .withType(ResourceIdentityType.USER_ASSIGNED)
+                        .withType(ResourceIdentityType.NONE)
                         .withUserAssignedIdentities(
-                            mapOf("it", new UserAssignedIdentity(), "jawgqwg", new UserAssignedIdentity())));
+                            mapOf(
+                                "veual",
+                                new UserAssignedIdentity(),
+                                "mkh",
+                                new UserAssignedIdentity(),
+                                "bbcswsrtjri",
+                                new UserAssignedIdentity(),
+                                "bpbewtghfgb",
+                                new UserAssignedIdentity())));
         model = BinaryData.fromObject(model).toObject(ExperimentUpdate.class);
-        Assertions.assertEquals(ResourceIdentityType.USER_ASSIGNED, model.identity().type());
+        Assertions.assertEquals(ResourceIdentityType.NONE, model.identity().type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

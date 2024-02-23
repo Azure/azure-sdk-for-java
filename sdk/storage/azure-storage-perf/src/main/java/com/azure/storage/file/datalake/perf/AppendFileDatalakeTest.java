@@ -3,6 +3,7 @@
 
 package com.azure.storage.file.datalake.perf;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.perf.test.core.RepeatingInputStream;
 import com.azure.perf.test.core.TestDataCreationHelper;
@@ -13,12 +14,11 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.nio.ByteBuffer;
-import java.util.UUID;
 
 import static com.azure.perf.test.core.TestDataCreationHelper.createRandomByteBufferFlux;
 
 public class AppendFileDatalakeTest extends DirectoryTest<PerfStressOptions> {
-    private static final String FILE_NAME = "perfstress-file-" + UUID.randomUUID().toString();
+    private static final String FILE_NAME = "perfstress-file-" + CoreUtils.randomUuid();
 
     protected final DataLakeFileClient dataLakeFileClient;
     protected final DataLakeFileAsyncClient dataLakeFileAsyncClient;

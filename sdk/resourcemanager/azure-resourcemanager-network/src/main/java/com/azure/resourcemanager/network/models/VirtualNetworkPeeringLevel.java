@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The peering sync status of the virtual network peering. */
+/**
+ * The peering sync status of the virtual network peering.
+ */
 public final class VirtualNetworkPeeringLevel extends ExpandableStringEnum<VirtualNetworkPeeringLevel> {
-    /** Static value FullyInSync for VirtualNetworkPeeringLevel. */
+    /**
+     * Static value FullyInSync for VirtualNetworkPeeringLevel.
+     */
     public static final VirtualNetworkPeeringLevel FULLY_IN_SYNC = fromString("FullyInSync");
 
-    /** Static value RemoteNotInSync for VirtualNetworkPeeringLevel. */
+    /**
+     * Static value RemoteNotInSync for VirtualNetworkPeeringLevel.
+     */
     public static final VirtualNetworkPeeringLevel REMOTE_NOT_IN_SYNC = fromString("RemoteNotInSync");
 
-    /** Static value LocalNotInSync for VirtualNetworkPeeringLevel. */
+    /**
+     * Static value LocalNotInSync for VirtualNetworkPeeringLevel.
+     */
     public static final VirtualNetworkPeeringLevel LOCAL_NOT_IN_SYNC = fromString("LocalNotInSync");
 
-    /** Static value LocalAndRemoteNotInSync for VirtualNetworkPeeringLevel. */
+    /**
+     * Static value LocalAndRemoteNotInSync for VirtualNetworkPeeringLevel.
+     */
     public static final VirtualNetworkPeeringLevel LOCAL_AND_REMOTE_NOT_IN_SYNC = fromString("LocalAndRemoteNotInSync");
 
     /**
      * Creates a new instance of VirtualNetworkPeeringLevel value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class VirtualNetworkPeeringLevel extends ExpandableStringEnum<Virtu
 
     /**
      * Creates or finds a VirtualNetworkPeeringLevel from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VirtualNetworkPeeringLevel.
      */
@@ -44,7 +54,7 @@ public final class VirtualNetworkPeeringLevel extends ExpandableStringEnum<Virtu
 
     /**
      * Gets known VirtualNetworkPeeringLevel values.
-     *
+     * 
      * @return known VirtualNetworkPeeringLevel values.
      */
     public static Collection<VirtualNetworkPeeringLevel> values() {

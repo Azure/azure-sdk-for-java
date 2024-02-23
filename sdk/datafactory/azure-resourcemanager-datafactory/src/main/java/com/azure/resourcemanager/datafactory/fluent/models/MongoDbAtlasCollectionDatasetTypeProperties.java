@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** MongoDB Atlas database dataset properties. */
+/**
+ * MongoDB Atlas database dataset properties.
+ */
 @Fluent
 public final class MongoDbAtlasCollectionDatasetTypeProperties {
     /*
@@ -17,14 +19,16 @@ public final class MongoDbAtlasCollectionDatasetTypeProperties {
     @JsonProperty(value = "collection", required = true)
     private Object collection;
 
-    /** Creates an instance of MongoDbAtlasCollectionDatasetTypeProperties class. */
+    /**
+     * Creates an instance of MongoDbAtlasCollectionDatasetTypeProperties class.
+     */
     public MongoDbAtlasCollectionDatasetTypeProperties() {
     }
 
     /**
      * Get the collection property: The collection name of the MongoDB Atlas database. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the collection value.
      */
     public Object collection() {
@@ -34,7 +38,7 @@ public final class MongoDbAtlasCollectionDatasetTypeProperties {
     /**
      * Set the collection property: The collection name of the MongoDB Atlas database. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param collection the collection value to set.
      * @return the MongoDbAtlasCollectionDatasetTypeProperties object itself.
      */
@@ -45,15 +49,13 @@ public final class MongoDbAtlasCollectionDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (collection() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property collection in model MongoDbAtlasCollectionDatasetTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property collection in model MongoDbAtlasCollectionDatasetTypeProperties"));
         }
     }
 

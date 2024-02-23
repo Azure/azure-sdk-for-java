@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the revoked VPN client certificate of VpnServerConfiguration. */
+/**
+ * Properties of the revoked VPN client certificate of VpnServerConfiguration.
+ */
 @Fluent
 public final class VpnServerConfigVpnClientRevokedCertificate {
     /*
@@ -22,13 +24,15 @@ public final class VpnServerConfigVpnClientRevokedCertificate {
     @JsonProperty(value = "thumbprint")
     private String thumbprint;
 
-    /** Creates an instance of VpnServerConfigVpnClientRevokedCertificate class. */
+    /**
+     * Creates an instance of VpnServerConfigVpnClientRevokedCertificate class.
+     */
     public VpnServerConfigVpnClientRevokedCertificate() {
     }
 
     /**
      * Get the name property: The certificate name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class VpnServerConfigVpnClientRevokedCertificate {
 
     /**
      * Set the name property: The certificate name.
-     *
+     * 
      * @param name the name value to set.
      * @return the VpnServerConfigVpnClientRevokedCertificate object itself.
      */
@@ -48,7 +52,7 @@ public final class VpnServerConfigVpnClientRevokedCertificate {
 
     /**
      * Get the thumbprint property: The revoked VPN client certificate thumbprint.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -57,7 +61,7 @@ public final class VpnServerConfigVpnClientRevokedCertificate {
 
     /**
      * Set the thumbprint property: The revoked VPN client certificate thumbprint.
-     *
+     * 
      * @param thumbprint the thumbprint value to set.
      * @return the VpnServerConfigVpnClientRevokedCertificate object itself.
      */
@@ -68,7 +72,7 @@ public final class VpnServerConfigVpnClientRevokedCertificate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

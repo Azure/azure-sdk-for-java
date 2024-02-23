@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.ServiceTagInformationInne
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for Get ServiceTagInformation API service call. Retrieves the list of service tag information resources. */
+/**
+ * Response for Get ServiceTagInformation API service call. Retrieves the list of service tag information resources.
+ */
 @Fluent
 public final class ServiceTagInformationListResult {
     /*
@@ -24,13 +26,15 @@ public final class ServiceTagInformationListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ServiceTagInformationListResult class. */
+    /**
+     * Creates an instance of ServiceTagInformationListResult class.
+     */
     public ServiceTagInformationListResult() {
     }
 
     /**
      * Get the value property: The list of service tag information resources.
-     *
+     * 
      * @return the value value.
      */
     public List<ServiceTagInformationInner> value() {
@@ -39,7 +43,7 @@ public final class ServiceTagInformationListResult {
 
     /**
      * Set the value property: The list of service tag information resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the ServiceTagInformationListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class ServiceTagInformationListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ServiceTagInformationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

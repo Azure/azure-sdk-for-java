@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Quota request properties. */
+/**
+ * Quota request properties.
+ */
 @Fluent
 public final class QuotaRequestProperties {
     /*
@@ -46,13 +48,15 @@ public final class QuotaRequestProperties {
     @JsonProperty(value = "value")
     private List<SubRequest> value;
 
-    /** Creates an instance of QuotaRequestProperties class. */
+    /**
+     * Creates an instance of QuotaRequestProperties class.
+     */
     public QuotaRequestProperties() {
     }
 
     /**
      * Get the provisioningState property: The quota request status.
-     *
+     * 
      * @return the provisioningState value.
      */
     public QuotaRequestState provisioningState() {
@@ -61,7 +65,7 @@ public final class QuotaRequestProperties {
 
     /**
      * Get the message property: User-friendly status message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -70,7 +74,7 @@ public final class QuotaRequestProperties {
 
     /**
      * Get the error property: Error details of the quota request.
-     *
+     * 
      * @return the error value.
      */
     public ServiceErrorDetail error() {
@@ -79,7 +83,7 @@ public final class QuotaRequestProperties {
 
     /**
      * Set the error property: Error details of the quota request.
-     *
+     * 
      * @param error the error value to set.
      * @return the QuotaRequestProperties object itself.
      */
@@ -91,7 +95,7 @@ public final class QuotaRequestProperties {
     /**
      * Get the requestSubmitTime property: The quota request submission time. The date conforms to the following format
      * specified by the ISO 8601 standard: yyyy-MM-ddTHH:mm:ssZ.
-     *
+     * 
      * @return the requestSubmitTime value.
      */
     public OffsetDateTime requestSubmitTime() {
@@ -100,7 +104,7 @@ public final class QuotaRequestProperties {
 
     /**
      * Get the value property: Quota request details.
-     *
+     * 
      * @return the value value.
      */
     public List<SubRequest> value() {
@@ -109,7 +113,7 @@ public final class QuotaRequestProperties {
 
     /**
      * Set the value property: Quota request details.
-     *
+     * 
      * @param value the value value to set.
      * @return the QuotaRequestProperties object itself.
      */
@@ -120,7 +124,7 @@ public final class QuotaRequestProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

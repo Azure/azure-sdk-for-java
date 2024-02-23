@@ -16,8 +16,8 @@ import com.azure.core.annotation.ServiceClient;
 import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusSenderInstrumentation;
+import com.azure.messaging.servicebus.implementation.ServiceBusAmqpConnection;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
 import com.azure.messaging.servicebus.models.CreateMessageBatchOptions;
 import org.apache.qpid.proton.amqp.Binary;
@@ -234,25 +234,28 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
     private final MessagingEntityType entityType;
     private final Runnable onClientClose;
     private final String entityName;
-    private final ServiceBusConnectionProcessor connectionProcessor;
+    private final Mono<ServiceBusAmqpConnection> connectionProcessor;
+    private final String fullyQualifiedNamespace;
     private final String viaEntityName;
     private final String identifier;
     private final ServiceBusSenderInstrumentation instrumentation;
     private final ServiceBusTracer tracer;
+    private final boolean isV2;
 
     /**
      * Creates a new instance of this {@link ServiceBusSenderAsyncClient} that sends messages to a Service Bus entity.
      */
     ServiceBusSenderAsyncClient(String entityName, MessagingEntityType entityType,
-        ServiceBusConnectionProcessor connectionProcessor, AmqpRetryOptions retryOptions, ServiceBusSenderInstrumentation instrumentation,
+        ConnectionCacheWrapper connectionCacheWrapper, AmqpRetryOptions retryOptions, ServiceBusSenderInstrumentation instrumentation,
         MessageSerializer messageSerializer, Runnable onClientClose, String viaEntityName, String identifier) {
         // Caching the created link so we don't invoke another link creation.
         this.messageSerializer = Objects.requireNonNull(messageSerializer,
             "'messageSerializer' cannot be null.");
         this.retryOptions = Objects.requireNonNull(retryOptions, "'retryOptions' cannot be null.");
         this.entityName = Objects.requireNonNull(entityName, "'entityPath' cannot be null.");
-        this.connectionProcessor = Objects.requireNonNull(connectionProcessor,
-            "'connectionProcessor' cannot be null.");
+        Objects.requireNonNull(connectionCacheWrapper, "'connectionCacheWrapper' cannot be null.");
+        this.connectionProcessor = connectionCacheWrapper.getConnection();
+        this.fullyQualifiedNamespace = connectionCacheWrapper.getFullyQualifiedNamespace();
         this.instrumentation = Objects.requireNonNull(instrumentation, "'instrumentation' cannot be null.");
         this.tracer = instrumentation.getTracer();
         this.retryPolicy = getRetryPolicy(retryOptions);
@@ -260,6 +263,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         this.viaEntityName = viaEntityName;
         this.onClientClose = onClientClose;
         this.identifier = identifier;
+        this.isV2 = connectionCacheWrapper.isV2();
     }
 
     /**
@@ -268,7 +272,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
      * @return The fully qualified namespace.
      */
     public String getFullyQualifiedNamespace() {
-        return connectionProcessor.getFullyQualifiedNamespace();
+        return fullyQualifiedNamespace;
     }
 
     /**
@@ -467,7 +471,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                 ? maxSize
                 : maximumLinkSize;
 
-            return Mono.just(new ServiceBusMessageBatch(batchSize, link::getErrorContext, tracer, messageSerializer));
+            return Mono.just(new ServiceBusMessageBatch(isV2, batchSize, link::getErrorContext, tracer, messageSerializer));
         })).onErrorMap(RequestResponseChannelClosedException.class,
             e -> {
                 // When the current connection is being disposed, the connectionProcessor can produce a new connection
@@ -877,7 +881,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                     final int batchSize = size > 0 ? size : MAX_MESSAGE_LENGTH_BYTES;
                     final CreateMessageBatchOptions batchOptions = new CreateMessageBatchOptions()
                         .setMaximumSizeInBytes(batchSize);
-                    return messages.collect(new AmqpMessageCollector(batchOptions, 1,
+                    return messages.collect(new AmqpMessageCollector(isV2, batchOptions, 1,
                         link::getErrorContext, tracer, messageSerializer));
                 })
                 .flatMap(list -> sendInternalBatch(Flux.fromIterable(list), transactionContext)))
@@ -919,10 +923,11 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
         private final ErrorContextProvider contextProvider;
         private final ServiceBusTracer tracer;
         private final MessageSerializer serializer;
+        private final boolean isV2;
 
         private volatile ServiceBusMessageBatch currentBatch;
 
-        AmqpMessageCollector(CreateMessageBatchOptions options, Integer maxNumberOfBatches,
+        AmqpMessageCollector(boolean isV2, CreateMessageBatchOptions options, Integer maxNumberOfBatches,
             ErrorContextProvider contextProvider, ServiceBusTracer tracer, MessageSerializer serializer) {
             this.maxNumberOfBatches = maxNumberOfBatches;
             this.maxMessageSize = options.getMaximumSizeInBytes() > 0
@@ -931,8 +936,8 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
             this.contextProvider = contextProvider;
             this.tracer = tracer;
             this.serializer = serializer;
-
-            currentBatch = new ServiceBusMessageBatch(maxMessageSize, contextProvider, tracer, serializer);
+            this.isV2 = isV2;
+            currentBatch = new ServiceBusMessageBatch(isV2, maxMessageSize, contextProvider, tracer, serializer);
         }
 
         @Override
@@ -956,7 +961,7 @@ public final class ServiceBusSenderAsyncClient implements AutoCloseable {
                         contextProvider.getErrorContext());
                 }
 
-                currentBatch = new ServiceBusMessageBatch(maxMessageSize, contextProvider, tracer, serializer);
+                currentBatch = new ServiceBusMessageBatch(isV2, maxMessageSize, contextProvider, tracer, serializer);
                 currentBatch.tryAddMessage(event);
                 list.add(batch);
             };

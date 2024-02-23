@@ -10,16 +10,15 @@ import com.azure.resourcemanager.datafactory.fluent.models.SalesforceServiceClou
 public final class SalesforceServiceCloudObjectDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SalesforceServiceCloudObjectDatasetTypeProperties model =
-            BinaryData
-                .fromString("{\"objectApiName\":\"dataumz\"}")
+        SalesforceServiceCloudObjectDatasetTypeProperties model
+            = BinaryData.fromString("{\"objectApiName\":\"dataumz\"}")
                 .toObject(SalesforceServiceCloudObjectDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SalesforceServiceCloudObjectDatasetTypeProperties model =
-            new SalesforceServiceCloudObjectDatasetTypeProperties().withObjectApiName("dataumz");
+        SalesforceServiceCloudObjectDatasetTypeProperties model
+            = new SalesforceServiceCloudObjectDatasetTypeProperties().withObjectApiName("dataumz");
         model = BinaryData.fromObject(model).toObject(SalesforceServiceCloudObjectDatasetTypeProperties.class);
     }
 }

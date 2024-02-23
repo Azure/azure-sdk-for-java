@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** NetworkFeatures resource specific properties. */
+/**
+ * NetworkFeatures resource specific properties.
+ */
 @Immutable
 public final class NetworkFeaturesProperties {
     /*
@@ -35,13 +37,15 @@ public final class NetworkFeaturesProperties {
     @JsonProperty(value = "hybridConnectionsV2", access = JsonProperty.Access.WRITE_ONLY)
     private List<HybridConnectionInner> hybridConnectionsV2;
 
-    /** Creates an instance of NetworkFeaturesProperties class. */
+    /**
+     * Creates an instance of NetworkFeaturesProperties class.
+     */
     public NetworkFeaturesProperties() {
     }
 
     /**
      * Get the virtualNetworkName property: The Virtual Network name.
-     *
+     * 
      * @return the virtualNetworkName value.
      */
     public String virtualNetworkName() {
@@ -50,7 +54,7 @@ public final class NetworkFeaturesProperties {
 
     /**
      * Get the virtualNetworkConnection property: The Virtual Network summary view.
-     *
+     * 
      * @return the virtualNetworkConnection value.
      */
     public VnetInfo virtualNetworkConnection() {
@@ -59,7 +63,7 @@ public final class NetworkFeaturesProperties {
 
     /**
      * Get the hybridConnections property: The Hybrid Connections summary view.
-     *
+     * 
      * @return the hybridConnections value.
      */
     public List<RelayServiceConnectionEntityInner> hybridConnections() {
@@ -68,7 +72,7 @@ public final class NetworkFeaturesProperties {
 
     /**
      * Get the hybridConnectionsV2 property: The Hybrid Connection V2 (Service Bus) view.
-     *
+     * 
      * @return the hybridConnectionsV2 value.
      */
     public List<HybridConnectionInner> hybridConnectionsV2() {
@@ -77,7 +81,7 @@ public final class NetworkFeaturesProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

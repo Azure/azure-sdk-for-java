@@ -11,26 +11,20 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Objects;
 
-/** Contains the parameters specific to using an Azure Open AI service for vectorization at query time. */
+/**
+ * Specifies the Azure OpenAI resource used to vectorize a query string.
+ */
 @Fluent
 public final class AzureOpenAIVectorizer extends VectorSearchVectorizer {
     /*
-     * The name of the kind of vectorization method being configured for use with vector search.
-     */
-    private static final VectorSearchVectorizerKind KIND = VectorSearchVectorizerKind.AZURE_OPEN_AI;
-
-    /*
-     * Contains the parameters specific to Azure Open AI embedding vectorization.
+     * Contains the parameters specific to Azure OpenAI embedding vectorization.
      */
     private AzureOpenAIParameters azureOpenAIParameters;
 
     /**
      * Creates an instance of AzureOpenAIVectorizer class.
-     *
+     * 
      * @param name the name value to set.
      */
     public AzureOpenAIVectorizer(String name) {
@@ -38,9 +32,9 @@ public final class AzureOpenAIVectorizer extends VectorSearchVectorizer {
     }
 
     /**
-     * Get the azureOpenAIParameters property: Contains the parameters specific to Azure Open AI embedding
+     * Get the azureOpenAIParameters property: Contains the parameters specific to Azure OpenAI embedding
      * vectorization.
-     *
+     * 
      * @return the azureOpenAIParameters value.
      */
     public AzureOpenAIParameters getAzureOpenAIParameters() {
@@ -48,9 +42,9 @@ public final class AzureOpenAIVectorizer extends VectorSearchVectorizer {
     }
 
     /**
-     * Set the azureOpenAIParameters property: Contains the parameters specific to Azure Open AI embedding
+     * Set the azureOpenAIParameters property: Contains the parameters specific to Azure OpenAI embedding
      * vectorization.
-     *
+     * 
      * @param azureOpenAIParameters the azureOpenAIParameters value to set.
      * @return the AzureOpenAIVectorizer object itself.
      */
@@ -62,7 +56,8 @@ public final class AzureOpenAIVectorizer extends VectorSearchVectorizer {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("kind", Objects.toString(KIND, null));
+        jsonWriter.writeStringField("kind", VectorSearchVectorizerKind.AZURE_OPEN_AI == null ? null
+            : VectorSearchVectorizerKind.AZURE_OPEN_AI.toString());
         jsonWriter.writeStringField("name", getName());
         jsonWriter.writeJsonField("azureOpenAIParameters", this.azureOpenAIParameters);
         return jsonWriter.writeEndObject();
@@ -70,56 +65,46 @@ public final class AzureOpenAIVectorizer extends VectorSearchVectorizer {
 
     /**
      * Reads an instance of AzureOpenAIVectorizer from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of AzureOpenAIVectorizer if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties or the
-     *     polymorphic discriminator.
+     * polymorphic discriminator.
      * @throws IOException If an error occurs while reading the AzureOpenAIVectorizer.
      */
     public static AzureOpenAIVectorizer fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean nameFound = false;
-                    String name = null;
-                    AzureOpenAIParameters azureOpenAIParameters = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            boolean nameFound = false;
+            String name = null;
+            AzureOpenAIParameters azureOpenAIParameters = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("kind".equals(fieldName)) {
-                            String kind = reader.getString();
-                            if (!KIND.toString().equals(kind)) {
-                                throw new IllegalStateException(
-                                        "'kind' was expected to be non-null and equal to '"
-                                                + KIND
-                                                + "'. The found 'kind' was '"
-                                                + kind
-                                                + "'.");
-                            }
-                        } else if ("name".equals(fieldName)) {
-                            name = reader.getString();
-                            nameFound = true;
-                        } else if ("azureOpenAIParameters".equals(fieldName)) {
-                            azureOpenAIParameters = AzureOpenAIParameters.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
+                if ("kind".equals(fieldName)) {
+                    String kind = reader.getString();
+                    if (!"azureOpenAI".equals(kind)) {
+                        throw new IllegalStateException(
+                            "'kind' was expected to be non-null and equal to 'azureOpenAI'. The found 'kind' was '"
+                                + kind + "'.");
                     }
-                    if (nameFound) {
-                        AzureOpenAIVectorizer deserializedAzureOpenAIVectorizer = new AzureOpenAIVectorizer(name);
-                        deserializedAzureOpenAIVectorizer.azureOpenAIParameters = azureOpenAIParameters;
+                } else if ("name".equals(fieldName)) {
+                    name = reader.getString();
+                    nameFound = true;
+                } else if ("azureOpenAIParameters".equals(fieldName)) {
+                    azureOpenAIParameters = AzureOpenAIParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (nameFound) {
+                AzureOpenAIVectorizer deserializedAzureOpenAIVectorizer = new AzureOpenAIVectorizer(name);
+                deserializedAzureOpenAIVectorizer.azureOpenAIParameters = azureOpenAIParameters;
 
-                        return deserializedAzureOpenAIVectorizer;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!nameFound) {
-                        missingProperties.add("name");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
+                return deserializedAzureOpenAIVectorizer;
+            }
+            throw new IllegalStateException("Missing required property: name");
+        });
     }
 }

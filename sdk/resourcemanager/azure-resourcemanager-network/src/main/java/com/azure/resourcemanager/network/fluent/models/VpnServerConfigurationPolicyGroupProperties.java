@@ -11,7 +11,9 @@ import com.azure.resourcemanager.network.models.VpnServerConfigurationPolicyGrou
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters for VpnServerConfigurationPolicyGroup. */
+/**
+ * Parameters for VpnServerConfigurationPolicyGroup.
+ */
 @Fluent
 public final class VpnServerConfigurationPolicyGroupProperties {
     /*
@@ -44,13 +46,15 @@ public final class VpnServerConfigurationPolicyGroupProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of VpnServerConfigurationPolicyGroupProperties class. */
+    /**
+     * Creates an instance of VpnServerConfigurationPolicyGroupProperties class.
+     */
     public VpnServerConfigurationPolicyGroupProperties() {
     }
 
     /**
      * Get the isDefault property: Shows if this is a Default VpnServerConfigurationPolicyGroup or not.
-     *
+     * 
      * @return the isDefault value.
      */
     public Boolean isDefault() {
@@ -59,7 +63,7 @@ public final class VpnServerConfigurationPolicyGroupProperties {
 
     /**
      * Set the isDefault property: Shows if this is a Default VpnServerConfigurationPolicyGroup or not.
-     *
+     * 
      * @param isDefault the isDefault value to set.
      * @return the VpnServerConfigurationPolicyGroupProperties object itself.
      */
@@ -70,7 +74,7 @@ public final class VpnServerConfigurationPolicyGroupProperties {
 
     /**
      * Get the priority property: Priority for VpnServerConfigurationPolicyGroup.
-     *
+     * 
      * @return the priority value.
      */
     public Integer priority() {
@@ -79,7 +83,7 @@ public final class VpnServerConfigurationPolicyGroupProperties {
 
     /**
      * Set the priority property: Priority for VpnServerConfigurationPolicyGroup.
-     *
+     * 
      * @param priority the priority value to set.
      * @return the VpnServerConfigurationPolicyGroupProperties object itself.
      */
@@ -90,7 +94,7 @@ public final class VpnServerConfigurationPolicyGroupProperties {
 
     /**
      * Get the policyMembers property: Multiple PolicyMembers for VpnServerConfigurationPolicyGroup.
-     *
+     * 
      * @return the policyMembers value.
      */
     public List<VpnServerConfigurationPolicyGroupMember> policyMembers() {
@@ -99,19 +103,19 @@ public final class VpnServerConfigurationPolicyGroupProperties {
 
     /**
      * Set the policyMembers property: Multiple PolicyMembers for VpnServerConfigurationPolicyGroup.
-     *
+     * 
      * @param policyMembers the policyMembers value to set.
      * @return the VpnServerConfigurationPolicyGroupProperties object itself.
      */
-    public VpnServerConfigurationPolicyGroupProperties withPolicyMembers(
-        List<VpnServerConfigurationPolicyGroupMember> policyMembers) {
+    public VpnServerConfigurationPolicyGroupProperties
+        withPolicyMembers(List<VpnServerConfigurationPolicyGroupMember> policyMembers) {
         this.policyMembers = policyMembers;
         return this;
     }
 
     /**
      * Get the p2SConnectionConfigurations property: List of references to P2SConnectionConfigurations.
-     *
+     * 
      * @return the p2SConnectionConfigurations value.
      */
     public List<SubResource> p2SConnectionConfigurations() {
@@ -120,7 +124,7 @@ public final class VpnServerConfigurationPolicyGroupProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the VpnServerConfigurationPolicyGroup resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -129,7 +133,7 @@ public final class VpnServerConfigurationPolicyGroupProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

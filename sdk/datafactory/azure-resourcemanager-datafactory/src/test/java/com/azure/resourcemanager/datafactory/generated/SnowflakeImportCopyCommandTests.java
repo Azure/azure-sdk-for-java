@@ -12,28 +12,18 @@ import java.util.Map;
 public final class SnowflakeImportCopyCommandTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SnowflakeImportCopyCommand model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SnowflakeImportCopyCommand\",\"additionalCopyOptions\":{\"wpsxygrni\":\"datavllbbdfulvh\"},\"additionalFormatOptions\":{\"tyrj\":\"datapsebaz\",\"t\":\"dataoqgnsfzrrapi\",\"yymyy\":\"dataojqz\",\"dhz\":\"datahfdkjykvezsozt\"},\"\":{\"ljrnveqleoz\":\"datazldplamcc\"}}")
-                .toObject(SnowflakeImportCopyCommand.class);
+        SnowflakeImportCopyCommand model = BinaryData.fromString(
+            "{\"type\":\"SnowflakeImportCopyCommand\",\"additionalCopyOptions\":{\"amoyxdigk\":\"datayxmpmsacbamtoqs\",\"ylqhqeosxdsxil\":\"datagz\",\"ttyh\":\"datafiottdawgkaohh\",\"kxoicbxsmfvltbo\":\"datapidzjjjfcyskpn\"},\"additionalFormatOptions\":{\"g\":\"datavtpmvppvgr\",\"lgkoqbzrcla\":\"dataeg\",\"moramsh\":\"datartfmfkuvyb\",\"zvzqhvzjdsn\":\"datavkuq\"},\"\":{\"ani\":\"datab\",\"aq\":\"dataozjrc\",\"almzpfylqevwwvz\":\"datag\",\"gjl\":\"datapdxcizrop\"}}")
+            .toObject(SnowflakeImportCopyCommand.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SnowflakeImportCopyCommand model =
-            new SnowflakeImportCopyCommand()
-                .withAdditionalCopyOptions(mapOf("wpsxygrni", "datavllbbdfulvh"))
-                .withAdditionalFormatOptions(
-                    mapOf(
-                        "tyrj",
-                        "datapsebaz",
-                        "t",
-                        "dataoqgnsfzrrapi",
-                        "yymyy",
-                        "dataojqz",
-                        "dhz",
-                        "datahfdkjykvezsozt"));
+        SnowflakeImportCopyCommand model = new SnowflakeImportCopyCommand()
+            .withAdditionalCopyOptions(mapOf("amoyxdigk", "datayxmpmsacbamtoqs", "ylqhqeosxdsxil", "datagz", "ttyh",
+                "datafiottdawgkaohh", "kxoicbxsmfvltbo", "datapidzjjjfcyskpn"))
+            .withAdditionalFormatOptions(mapOf("g", "datavtpmvppvgr", "lgkoqbzrcla", "dataeg", "moramsh",
+                "datartfmfkuvyb", "zvzqhvzjdsn", "datavkuq"));
         model = BinaryData.fromObject(model).toObject(SnowflakeImportCopyCommand.class);
     }
 

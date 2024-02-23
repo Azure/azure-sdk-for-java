@@ -7,13 +7,13 @@ products:
 urlFragment: search-samples
 ---
 
-# Azure Cognitive Search Samples client library for Java
+# Azure AI Search Samples client library for Java
 This document explains samples and how to use them.
 
 ## Key concepts
 Key concepts are explained in detail [here][SDK_README_KEY_CONCEPTS].
 
-# Samples Azure Cognitive Search APIs
+# Samples Azure AI Search APIs
 This document describes how to use samples and what is done in each sample.
 
 ## Getting started
@@ -61,7 +61,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>11.6.0-beta.9</version>
+    <version>11.6.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})

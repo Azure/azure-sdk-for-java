@@ -875,6 +875,12 @@ class VirtualMachineImpl
     }
 
     @Override
+    public VirtualMachineImpl withUserData(String base64EncodedUserData) {
+        this.innerModel().withUserData(base64EncodedUserData);
+        return this;
+    }
+
+    @Override
     public VirtualMachineImpl withComputerName(String computerName) {
         this.innerModel().osProfile().withComputerName(computerName);
         return this;
@@ -1734,6 +1740,11 @@ class VirtualMachineImpl
     }
 
     @Override
+    public boolean isEncryptionAtHost() {
+        return !Objects.isNull(this.innerModel().securityProfile()) && this.innerModel().securityProfile().encryptionAtHost();
+    }
+
+    @Override
     public Map<Integer, VirtualMachineUnmanagedDataDisk> unmanagedDataDisks() {
         Map<Integer, VirtualMachineUnmanagedDataDisk> dataDisks = new HashMap<>();
         if (!isManagedDiskEnabled()) {
@@ -2035,6 +2046,11 @@ class VirtualMachineImpl
         return this.innerModel().evictionPolicy();
     }
 
+    @Override
+    public String userData() {
+        return this.innerModel().userData();
+    }
+
     // CreateUpdateTaskGroup.ResourceCreator.beforeGroupCreateOrUpdate implementation
     @Override
     public void beforeGroupCreateOrUpdate() {
@@ -2119,7 +2135,7 @@ class VirtualMachineImpl
                         .manager()
                         .serviceClient()
                         .getVirtualMachines()
-                        .createOrUpdateWithResponseAsync(resourceGroupName(), vmName, innerModel())
+                        .createOrUpdateWithResponseAsync(resourceGroupName(), vmName, innerModel(), null, null)
                         .block(),
                 inner ->
                     new VirtualMachineImpl(
@@ -2778,6 +2794,7 @@ class VirtualMachineImpl
         updateParameter.withProximityPlacementGroup(this.innerModel().proximityPlacementGroup());
         updateParameter.withPriority(this.innerModel().priority());
         updateParameter.withEvictionPolicy(this.innerModel().evictionPolicy());
+        updateParameter.withUserData(this.innerModel().userData());
     }
 
     RoleAssignmentHelper.IdProvider idProvider() {
@@ -2902,6 +2919,18 @@ class VirtualMachineImpl
             ensureSecurityProfile().withUefiSettings(uefiSettings);
         }
         return uefiSettings;
+    }
+
+    @Override
+    public VirtualMachineImpl withEncryptionAtHost() {
+        ensureSecurityProfile().withEncryptionAtHost(true);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withoutEncryptionAtHost() {
+        ensureSecurityProfile().withEncryptionAtHost(false);
+        return this;
     }
 
     /** Class to manage Data disk collection. */

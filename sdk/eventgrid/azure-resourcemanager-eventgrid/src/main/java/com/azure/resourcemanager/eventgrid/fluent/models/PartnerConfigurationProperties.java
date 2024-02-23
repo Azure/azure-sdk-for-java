@@ -9,7 +9,9 @@ import com.azure.resourcemanager.eventgrid.models.PartnerAuthorization;
 import com.azure.resourcemanager.eventgrid.models.PartnerConfigurationProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of the partner configuration. */
+/**
+ * Properties of the partner configuration.
+ */
 @Fluent
 public final class PartnerConfigurationProperties {
     /*
@@ -24,13 +26,15 @@ public final class PartnerConfigurationProperties {
     @JsonProperty(value = "provisioningState")
     private PartnerConfigurationProvisioningState provisioningState;
 
-    /** Creates an instance of PartnerConfigurationProperties class. */
+    /**
+     * Creates an instance of PartnerConfigurationProperties class.
+     */
     public PartnerConfigurationProperties() {
     }
 
     /**
      * Get the partnerAuthorization property: The details of authorized partners.
-     *
+     * 
      * @return the partnerAuthorization value.
      */
     public PartnerAuthorization partnerAuthorization() {
@@ -39,7 +43,7 @@ public final class PartnerConfigurationProperties {
 
     /**
      * Set the partnerAuthorization property: The details of authorized partners.
-     *
+     * 
      * @param partnerAuthorization the partnerAuthorization value to set.
      * @return the PartnerConfigurationProperties object itself.
      */
@@ -50,7 +54,7 @@ public final class PartnerConfigurationProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the partner configuration.
-     *
+     * 
      * @return the provisioningState value.
      */
     public PartnerConfigurationProvisioningState provisioningState() {
@@ -59,19 +63,19 @@ public final class PartnerConfigurationProperties {
 
     /**
      * Set the provisioningState property: Provisioning state of the partner configuration.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the PartnerConfigurationProperties object itself.
      */
-    public PartnerConfigurationProperties withProvisioningState(
-        PartnerConfigurationProvisioningState provisioningState) {
+    public PartnerConfigurationProperties
+        withProvisioningState(PartnerConfigurationProvisioningState provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

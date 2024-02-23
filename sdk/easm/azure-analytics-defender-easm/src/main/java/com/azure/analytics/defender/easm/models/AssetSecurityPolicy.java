@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The AssetSecurityPolicy model. */
+/**
+ * The AssetSecurityPolicy model.
+ */
 @Immutable
 public final class AssetSecurityPolicy {
 
@@ -69,9 +71,12 @@ public final class AssetSecurityPolicy {
     @JsonProperty(value = "sources")
     private List<Source> sources;
 
-    /** Creates an instance of AssetSecurityPolicy class. */
+    /**
+     * Creates an instance of AssetSecurityPolicy class.
+     */
     @Generated
-    private AssetSecurityPolicy() {}
+    private AssetSecurityPolicy() {
+    }
 
     /**
      * Get the policyName property: The policyName property.

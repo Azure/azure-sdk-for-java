@@ -15,9 +15,10 @@ import java.io.IOException;
 import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Objects;
 
-/** Represents the result of an individual indexer execution. */
+/**
+ * Represents the result of an individual indexer execution.
+ */
 @Immutable
 public final class IndexerExecutionResult implements JsonSerializable<IndexerExecutionResult> {
     /*
@@ -83,19 +84,15 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
 
     /**
      * Creates an instance of IndexerExecutionResult class.
-     *
+     * 
      * @param status the status value to set.
      * @param errors the errors value to set.
      * @param warnings the warnings value to set.
      * @param itemCount the itemCount value to set.
      * @param failedItemCount the failedItemCount value to set.
      */
-    public IndexerExecutionResult(
-            IndexerExecutionStatus status,
-            List<SearchIndexerError> errors,
-            List<SearchIndexerWarning> warnings,
-            int itemCount,
-            int failedItemCount) {
+    public IndexerExecutionResult(IndexerExecutionStatus status, List<SearchIndexerError> errors,
+        List<SearchIndexerWarning> warnings, int itemCount, int failedItemCount) {
         this.status = status;
         this.errors = errors;
         this.warnings = warnings;
@@ -105,7 +102,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
 
     /**
      * Get the status property: The outcome of this indexer execution.
-     *
+     * 
      * @return the status value.
      */
     public IndexerExecutionStatus getStatus() {
@@ -114,7 +111,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
 
     /**
      * Get the statusDetail property: The outcome of this indexer execution.
-     *
+     * 
      * @return the statusDetail value.
      */
     public IndexerExecutionStatusDetail getStatusDetail() {
@@ -123,7 +120,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
 
     /**
      * Get the currentState property: All of the state that defines and dictates the indexer's current execution.
-     *
+     * 
      * @return the currentState value.
      */
     public IndexerCurrentState getCurrentState() {
@@ -132,7 +129,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
 
     /**
      * Get the errorMessage property: The error message indicating the top-level error, if any.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String getErrorMessage() {
@@ -141,7 +138,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
 
     /**
      * Get the startTime property: The start time of this indexer execution.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime getStartTime() {
@@ -150,7 +147,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
 
     /**
      * Get the endTime property: The end time of this indexer execution, if the execution has already completed.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime getEndTime() {
@@ -159,7 +156,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
 
     /**
      * Get the errors property: The item-level indexing errors.
-     *
+     * 
      * @return the errors value.
      */
     public List<SearchIndexerError> getErrors() {
@@ -168,7 +165,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
 
     /**
      * Get the warnings property: The item-level indexing warnings.
-     *
+     * 
      * @return the warnings value.
      */
     public List<SearchIndexerWarning> getWarnings() {
@@ -178,7 +175,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
     /**
      * Get the itemCount property: The number of items that were processed during this indexer execution. This includes
      * both successfully processed items and items where indexing was attempted but failed.
-     *
+     * 
      * @return the itemCount value.
      */
     public int getItemCount() {
@@ -187,7 +184,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
 
     /**
      * Get the failedItemCount property: The number of items that failed to be indexed during this indexer execution.
-     *
+     * 
      * @return the failedItemCount value.
      */
     public int getFailedItemCount() {
@@ -196,7 +193,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
 
     /**
      * Get the initialTrackingState property: Change tracking state with which an indexer execution started.
-     *
+     * 
      * @return the initialTrackingState value.
      */
     public String getInitialTrackingState() {
@@ -205,7 +202,7 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
 
     /**
      * Get the finalTrackingState property: Change tracking state with which an indexer execution finished.
-     *
+     * 
      * @return the finalTrackingState value.
      */
     public String getFinalTrackingState() {
@@ -215,123 +212,106 @@ public final class IndexerExecutionResult implements JsonSerializable<IndexerExe
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("status", Objects.toString(this.status, null));
-        jsonWriter.writeArrayField("errors", this.errors, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeArrayField("warnings", this.warnings, (writer, element) -> writer.writeJson(element));
-        jsonWriter.writeIntField("itemsProcessed", this.itemCount);
-        jsonWriter.writeIntField("itemsFailed", this.failedItemCount);
-        jsonWriter.writeStringField("statusDetail", Objects.toString(this.statusDetail, null));
-        jsonWriter.writeJsonField("currentState", this.currentState);
-        jsonWriter.writeStringField("errorMessage", this.errorMessage);
-        jsonWriter.writeStringField("startTime", Objects.toString(this.startTime, null));
-        jsonWriter.writeStringField("endTime", Objects.toString(this.endTime, null));
-        jsonWriter.writeStringField("initialTrackingState", this.initialTrackingState);
-        jsonWriter.writeStringField("finalTrackingState", this.finalTrackingState);
         return jsonWriter.writeEndObject();
     }
 
     /**
      * Reads an instance of IndexerExecutionResult from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of IndexerExecutionResult if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
+     * was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the IndexerExecutionResult.
      */
     public static IndexerExecutionResult fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean statusFound = false;
-                    IndexerExecutionStatus status = null;
-                    boolean errorsFound = false;
-                    List<SearchIndexerError> errors = null;
-                    boolean warningsFound = false;
-                    List<SearchIndexerWarning> warnings = null;
-                    boolean itemCountFound = false;
-                    int itemCount = 0;
-                    boolean failedItemCountFound = false;
-                    int failedItemCount = 0;
-                    IndexerExecutionStatusDetail statusDetail = null;
-                    IndexerCurrentState currentState = null;
-                    String errorMessage = null;
-                    OffsetDateTime startTime = null;
-                    OffsetDateTime endTime = null;
-                    String initialTrackingState = null;
-                    String finalTrackingState = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            boolean statusFound = false;
+            IndexerExecutionStatus status = null;
+            boolean errorsFound = false;
+            List<SearchIndexerError> errors = null;
+            boolean warningsFound = false;
+            List<SearchIndexerWarning> warnings = null;
+            boolean itemCountFound = false;
+            int itemCount = 0;
+            boolean failedItemCountFound = false;
+            int failedItemCount = 0;
+            IndexerExecutionStatusDetail statusDetail = null;
+            IndexerCurrentState currentState = null;
+            String errorMessage = null;
+            OffsetDateTime startTime = null;
+            OffsetDateTime endTime = null;
+            String initialTrackingState = null;
+            String finalTrackingState = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("status".equals(fieldName)) {
-                            status = IndexerExecutionStatus.fromString(reader.getString());
-                            statusFound = true;
-                        } else if ("errors".equals(fieldName)) {
-                            errors = reader.readArray(reader1 -> SearchIndexerError.fromJson(reader1));
-                            errorsFound = true;
-                        } else if ("warnings".equals(fieldName)) {
-                            warnings = reader.readArray(reader1 -> SearchIndexerWarning.fromJson(reader1));
-                            warningsFound = true;
-                        } else if ("itemsProcessed".equals(fieldName)) {
-                            itemCount = reader.getInt();
-                            itemCountFound = true;
-                        } else if ("itemsFailed".equals(fieldName)) {
-                            failedItemCount = reader.getInt();
-                            failedItemCountFound = true;
-                        } else if ("statusDetail".equals(fieldName)) {
-                            statusDetail = IndexerExecutionStatusDetail.fromString(reader.getString());
-                        } else if ("currentState".equals(fieldName)) {
-                            currentState = IndexerCurrentState.fromJson(reader);
-                        } else if ("errorMessage".equals(fieldName)) {
-                            errorMessage = reader.getString();
-                        } else if ("startTime".equals(fieldName)) {
-                            startTime =
-                                    reader.getNullable(
-                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                        } else if ("endTime".equals(fieldName)) {
-                            endTime =
-                                    reader.getNullable(
-                                            nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
-                        } else if ("initialTrackingState".equals(fieldName)) {
-                            initialTrackingState = reader.getString();
-                        } else if ("finalTrackingState".equals(fieldName)) {
-                            finalTrackingState = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    if (statusFound && errorsFound && warningsFound && itemCountFound && failedItemCountFound) {
-                        IndexerExecutionResult deserializedIndexerExecutionResult =
-                                new IndexerExecutionResult(status, errors, warnings, itemCount, failedItemCount);
-                        deserializedIndexerExecutionResult.statusDetail = statusDetail;
-                        deserializedIndexerExecutionResult.currentState = currentState;
-                        deserializedIndexerExecutionResult.errorMessage = errorMessage;
-                        deserializedIndexerExecutionResult.startTime = startTime;
-                        deserializedIndexerExecutionResult.endTime = endTime;
-                        deserializedIndexerExecutionResult.initialTrackingState = initialTrackingState;
-                        deserializedIndexerExecutionResult.finalTrackingState = finalTrackingState;
+                if ("status".equals(fieldName)) {
+                    status = IndexerExecutionStatus.fromString(reader.getString());
+                    statusFound = true;
+                } else if ("errors".equals(fieldName)) {
+                    errors = reader.readArray(reader1 -> SearchIndexerError.fromJson(reader1));
+                    errorsFound = true;
+                } else if ("warnings".equals(fieldName)) {
+                    warnings = reader.readArray(reader1 -> SearchIndexerWarning.fromJson(reader1));
+                    warningsFound = true;
+                } else if ("itemsProcessed".equals(fieldName)) {
+                    itemCount = reader.getInt();
+                    itemCountFound = true;
+                } else if ("itemsFailed".equals(fieldName)) {
+                    failedItemCount = reader.getInt();
+                    failedItemCountFound = true;
+                } else if ("statusDetail".equals(fieldName)) {
+                    statusDetail = IndexerExecutionStatusDetail.fromString(reader.getString());
+                } else if ("currentState".equals(fieldName)) {
+                    currentState = IndexerCurrentState.fromJson(reader);
+                } else if ("errorMessage".equals(fieldName)) {
+                    errorMessage = reader.getString();
+                } else if ("startTime".equals(fieldName)) {
+                    startTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    endTime = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("initialTrackingState".equals(fieldName)) {
+                    initialTrackingState = reader.getString();
+                } else if ("finalTrackingState".equals(fieldName)) {
+                    finalTrackingState = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (statusFound && errorsFound && warningsFound && itemCountFound && failedItemCountFound) {
+                IndexerExecutionResult deserializedIndexerExecutionResult
+                    = new IndexerExecutionResult(status, errors, warnings, itemCount, failedItemCount);
+                deserializedIndexerExecutionResult.statusDetail = statusDetail;
+                deserializedIndexerExecutionResult.currentState = currentState;
+                deserializedIndexerExecutionResult.errorMessage = errorMessage;
+                deserializedIndexerExecutionResult.startTime = startTime;
+                deserializedIndexerExecutionResult.endTime = endTime;
+                deserializedIndexerExecutionResult.initialTrackingState = initialTrackingState;
+                deserializedIndexerExecutionResult.finalTrackingState = finalTrackingState;
 
-                        return deserializedIndexerExecutionResult;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!statusFound) {
-                        missingProperties.add("status");
-                    }
-                    if (!errorsFound) {
-                        missingProperties.add("errors");
-                    }
-                    if (!warningsFound) {
-                        missingProperties.add("warnings");
-                    }
-                    if (!itemCountFound) {
-                        missingProperties.add("itemsProcessed");
-                    }
-                    if (!failedItemCountFound) {
-                        missingProperties.add("itemsFailed");
-                    }
+                return deserializedIndexerExecutionResult;
+            }
+            List<String> missingProperties = new ArrayList<>();
+            if (!statusFound) {
+                missingProperties.add("status");
+            }
+            if (!errorsFound) {
+                missingProperties.add("errors");
+            }
+            if (!warningsFound) {
+                missingProperties.add("warnings");
+            }
+            if (!itemCountFound) {
+                missingProperties.add("itemsProcessed");
+            }
+            if (!failedItemCountFound) {
+                missingProperties.add("itemsFailed");
+            }
 
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
+            throw new IllegalStateException(
+                "Missing required property/properties: " + String.join(", ", missingProperties));
+        });
     }
 }

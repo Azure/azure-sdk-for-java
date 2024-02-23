@@ -7,7 +7,9 @@ package com.azure.resourcemanager.dashboard.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A collection of information about the state of the connection between service consumer and provider. */
+/**
+ * A collection of information about the state of the connection between service consumer and provider.
+ */
 @Fluent
 public final class PrivateLinkServiceConnectionState {
     /*
@@ -29,9 +31,15 @@ public final class PrivateLinkServiceConnectionState {
     private String actionsRequired;
 
     /**
+     * Creates an instance of PrivateLinkServiceConnectionState class.
+     */
+    public PrivateLinkServiceConnectionState() {
+    }
+
+    /**
      * Get the status property: Indicates whether the connection has been Approved/Rejected/Removed by the owner of the
      * service.
-     *
+     * 
      * @return the status value.
      */
     public PrivateEndpointServiceConnectionStatus status() {
@@ -41,7 +49,7 @@ public final class PrivateLinkServiceConnectionState {
     /**
      * Set the status property: Indicates whether the connection has been Approved/Rejected/Removed by the owner of the
      * service.
-     *
+     * 
      * @param status the status value to set.
      * @return the PrivateLinkServiceConnectionState object itself.
      */
@@ -52,7 +60,7 @@ public final class PrivateLinkServiceConnectionState {
 
     /**
      * Get the description property: The reason for approval/rejection of the connection.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -61,7 +69,7 @@ public final class PrivateLinkServiceConnectionState {
 
     /**
      * Set the description property: The reason for approval/rejection of the connection.
-     *
+     * 
      * @param description the description value to set.
      * @return the PrivateLinkServiceConnectionState object itself.
      */
@@ -73,7 +81,7 @@ public final class PrivateLinkServiceConnectionState {
     /**
      * Get the actionsRequired property: A message indicating if changes on the service provider require any updates on
      * the consumer.
-     *
+     * 
      * @return the actionsRequired value.
      */
     public String actionsRequired() {
@@ -83,7 +91,7 @@ public final class PrivateLinkServiceConnectionState {
     /**
      * Set the actionsRequired property: A message indicating if changes on the service provider require any updates on
      * the consumer.
-     *
+     * 
      * @param actionsRequired the actionsRequired value to set.
      * @return the PrivateLinkServiceConnectionState object itself.
      */
@@ -94,7 +102,7 @@ public final class PrivateLinkServiceConnectionState {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

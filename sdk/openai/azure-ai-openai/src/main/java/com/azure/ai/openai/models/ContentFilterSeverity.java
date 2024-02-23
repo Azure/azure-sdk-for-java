@@ -8,35 +8,43 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Ratings for the intensity and risk level of harmful content. */
+/**
+ * Ratings for the intensity and risk level of harmful content.
+ */
 public final class ContentFilterSeverity extends ExpandableStringEnum<ContentFilterSeverity> {
 
     /**
-     * Content may be related to violence, self-harm, sexual, or hate categories but the terms are used in general,
-     * journalistic, scientific, medical, and similar professional contexts, which are appropriate for most audiences.
+     * Content may be related to violence, self-harm, sexual, or hate categories but the terms
+     * are used in general, journalistic, scientific, medical, and similar professional contexts,
+     * which are appropriate for most audiences.
      */
-    @Generated public static final ContentFilterSeverity SAFE = fromString("safe");
+    @Generated
+    public static final ContentFilterSeverity SAFE = fromString("safe");
 
     /**
-     * Content that expresses prejudiced, judgmental, or opinionated views, includes offensive use of language,
-     * stereotyping, use cases exploring a fictional world (for example, gaming, literature) and depictions at low
-     * intensity.
+     * Content that expresses prejudiced, judgmental, or opinionated views, includes offensive
+     * use of language, stereotyping, use cases exploring a fictional world (for example, gaming,
+     * literature) and depictions at low intensity.
      */
-    @Generated public static final ContentFilterSeverity LOW = fromString("low");
+    @Generated
+    public static final ContentFilterSeverity LOW = fromString("low");
 
     /**
-     * Content that uses offensive, insulting, mocking, intimidating, or demeaning language towards specific identity
-     * groups, includes depictions of seeking and executing harmful instructions, fantasies, glorification, promotion of
-     * harm at medium intensity.
+     * Content that uses offensive, insulting, mocking, intimidating, or demeaning language
+     * towards specific identity groups, includes depictions of seeking and executing harmful
+     * instructions, fantasies, glorification, promotion of harm at medium intensity.
      */
-    @Generated public static final ContentFilterSeverity MEDIUM = fromString("medium");
+    @Generated
+    public static final ContentFilterSeverity MEDIUM = fromString("medium");
 
     /**
-     * Content that displays explicit and severe harmful instructions, actions, damage, or abuse; includes endorsement,
-     * glorification, or promotion of severe harmful acts, extreme or illegal forms of harm, radicalization, or
-     * non-consensual power exchange or abuse.
+     * Content that displays explicit and severe harmful instructions, actions,
+     * damage, or abuse; includes endorsement, glorification, or promotion of severe
+     * harmful acts, extreme or illegal forms of harm, radicalization, or non-consensual
+     * power exchange or abuse.
      */
-    @Generated public static final ContentFilterSeverity HIGH = fromString("high");
+    @Generated
+    public static final ContentFilterSeverity HIGH = fromString("high");
 
     /**
      * Creates a new instance of ContentFilterSeverity value.
@@ -45,7 +53,8 @@ public final class ContentFilterSeverity extends ExpandableStringEnum<ContentFil
      */
     @Generated
     @Deprecated
-    public ContentFilterSeverity() {}
+    public ContentFilterSeverity() {
+    }
 
     /**
      * Creates or finds a ContentFilterSeverity from its string representation.

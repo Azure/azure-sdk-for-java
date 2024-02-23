@@ -7,6 +7,7 @@ package com.azure.resourcemanager.postgresqlflexibleserver.implementation;
 import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
+import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.PrivateEndpointConnectionInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.ServerInner;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.AuthConfig;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Backup;
@@ -16,6 +17,8 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.DataEncryption;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.HighAvailability;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.MaintenanceWindow;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Network;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.PrivateEndpointConnection;
+import com.azure.resourcemanager.postgresqlflexibleserver.models.Replica;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ReplicationRole;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.RestartParameter;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.Server;
@@ -27,7 +30,9 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.Storage;
 import com.azure.resourcemanager.postgresqlflexibleserver.models.UserAssignedIdentity;
 import java.time.OffsetDateTime;
 import java.util.Collections;
+import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 public final class ServerImpl implements Server, Server.Definition, Server.Update {
     private ServerInner innerObject;
@@ -143,8 +148,22 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
         return this.innerModel().replicaCapacity();
     }
 
+    public Replica replica() {
+        return this.innerModel().replica();
+    }
+
     public CreateMode createMode() {
         return this.innerModel().createMode();
+    }
+
+    public List<PrivateEndpointConnection> privateEndpointConnections() {
+        List<PrivateEndpointConnectionInner> inner = this.innerModel().privateEndpointConnections();
+        if (inner != null) {
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new PrivateEndpointConnectionImpl(inner1, this.manager())).collect(Collectors.toList()));
+        } else {
+            return Collections.emptyList();
+        }
     }
 
     public Region region() {
@@ -179,20 +198,14 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public Server create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .create(resourceGroupName, serverName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getServers().create(resourceGroupName, serverName,
+            this.innerModel(), Context.NONE);
         return this;
     }
 
     public Server create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .create(resourceGroupName, serverName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getServers().create(resourceGroupName, serverName,
+            this.innerModel(), context);
         return this;
     }
 
@@ -208,48 +221,34 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
     }
 
     public Server apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .update(resourceGroupName, serverName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getServers().update(resourceGroupName, serverName,
+            updateParameters, Context.NONE);
         return this;
     }
 
     public Server apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .update(resourceGroupName, serverName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient().getServers().update(resourceGroupName, serverName,
+            updateParameters, context);
         return this;
     }
 
-    ServerImpl(
-        ServerInner innerObject, com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
+    ServerImpl(ServerInner innerObject,
+        com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serverName = Utils.getValueFromIdByName(innerObject.id(), "flexibleServers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "flexibleServers");
     }
 
     public Server refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .getByResourceGroupWithResponse(resourceGroupName, serverName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getServers()
+            .getByResourceGroupWithResponse(resourceGroupName, serverName, Context.NONE).getValue();
         return this;
     }
 
     public Server refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServers()
-                .getByResourceGroupWithResponse(resourceGroupName, serverName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getServers()
+            .getByResourceGroupWithResponse(resourceGroupName, serverName, context).getValue();
         return this;
     }
 
@@ -439,6 +438,11 @@ public final class ServerImpl implements Server, Server.Definition, Server.Updat
 
     public ServerImpl withCreateMode(CreateModeForUpdate createMode) {
         this.updateParameters.withCreateMode(createMode);
+        return this;
+    }
+
+    public ServerImpl withReplica(Replica replica) {
+        this.updateParameters.withReplica(replica);
         return this;
     }
 

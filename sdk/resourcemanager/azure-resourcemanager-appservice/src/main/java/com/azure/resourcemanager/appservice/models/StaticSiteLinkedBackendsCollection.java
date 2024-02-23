@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.StaticSiteLinkedBacken
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of static site linked backends. */
+/**
+ * Collection of static site linked backends.
+ */
 @Fluent
 public final class StaticSiteLinkedBackendsCollection {
     /*
@@ -25,13 +27,15 @@ public final class StaticSiteLinkedBackendsCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of StaticSiteLinkedBackendsCollection class. */
+    /**
+     * Creates an instance of StaticSiteLinkedBackendsCollection class.
+     */
     public StaticSiteLinkedBackendsCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<StaticSiteLinkedBackendArmResourceInner> value() {
@@ -40,7 +44,7 @@ public final class StaticSiteLinkedBackendsCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the StaticSiteLinkedBackendsCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class StaticSiteLinkedBackendsCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,15 +64,13 @@ public final class StaticSiteLinkedBackendsCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model StaticSiteLinkedBackendsCollection"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model StaticSiteLinkedBackendsCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

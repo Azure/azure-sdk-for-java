@@ -7,7 +7,9 @@ package com.azure.resourcemanager.netapp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The RegionInfoAvailabilityZoneMappingsItem model. */
+/**
+ * The RegionInfoAvailabilityZoneMappingsItem model.
+ */
 @Fluent
 public final class RegionInfoAvailabilityZoneMappingsItem {
     /*
@@ -22,13 +24,15 @@ public final class RegionInfoAvailabilityZoneMappingsItem {
     @JsonProperty(value = "isAvailable")
     private Boolean isAvailable;
 
-    /** Creates an instance of RegionInfoAvailabilityZoneMappingsItem class. */
+    /**
+     * Creates an instance of RegionInfoAvailabilityZoneMappingsItem class.
+     */
     public RegionInfoAvailabilityZoneMappingsItem() {
     }
 
     /**
      * Get the availabilityZone property: Logical availability zone.
-     *
+     * 
      * @return the availabilityZone value.
      */
     public String availabilityZone() {
@@ -37,7 +41,7 @@ public final class RegionInfoAvailabilityZoneMappingsItem {
 
     /**
      * Set the availabilityZone property: Logical availability zone.
-     *
+     * 
      * @param availabilityZone the availabilityZone value to set.
      * @return the RegionInfoAvailabilityZoneMappingsItem object itself.
      */
@@ -48,7 +52,7 @@ public final class RegionInfoAvailabilityZoneMappingsItem {
 
     /**
      * Get the isAvailable property: Available availability zone.
-     *
+     * 
      * @return the isAvailable value.
      */
     public Boolean isAvailable() {
@@ -57,7 +61,7 @@ public final class RegionInfoAvailabilityZoneMappingsItem {
 
     /**
      * Set the isAvailable property: Available availability zone.
-     *
+     * 
      * @param isAvailable the isAvailable value to set.
      * @return the RegionInfoAvailabilityZoneMappingsItem object itself.
      */
@@ -68,7 +72,7 @@ public final class RegionInfoAvailabilityZoneMappingsItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

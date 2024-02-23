@@ -6,11 +6,16 @@ package com.azure.analytics.defender.easm.models;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
 
-/** The InventoryAsset model. */
+/**
+ * The InventoryAsset model.
+ */
 @Immutable
 public class InventoryAsset {
 
-    /** Creates an instance of InventoryAsset class. */
+    /**
+     * Creates an instance of InventoryAsset class.
+     */
     @Generated
-    protected InventoryAsset() {}
+    protected InventoryAsset() {
+    }
 }

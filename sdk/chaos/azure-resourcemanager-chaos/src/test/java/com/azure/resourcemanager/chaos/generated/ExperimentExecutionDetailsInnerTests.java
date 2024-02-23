@@ -13,7 +13,7 @@ public final class ExperimentExecutionDetailsInnerTests {
         ExperimentExecutionDetailsInner model =
             BinaryData
                 .fromString(
-                    "{\"type\":\"bkdmo\",\"id\":\"postmgrcfbunrm\",\"name\":\"jhhkxbp\",\"properties\":{\"experimentId\":\"mjh\",\"status\":\"j\",\"failureReason\":\"gudivkrtswbxqz\",\"createdDateTime\":\"2021-10-26T13:42:02Z\",\"lastActionDateTime\":\"2021-01-16T06:43:01Z\",\"startDateTime\":\"2021-04-01T03:47:56Z\",\"stopDateTime\":\"2021-07-06T14:56:49Z\",\"runInformation\":{\"steps\":[{\"stepName\":\"ivetvtcq\",\"stepId\":\"tdo\",\"status\":\"cbxvwvxyslqbh\",\"branches\":[{},{},{}]},{\"stepName\":\"blytk\",\"stepId\":\"mpew\",\"status\":\"fbkrvrnsvs\",\"branches\":[{},{}]}]}}}")
+                    "{\"type\":\"xznelixhnrztf\",\"id\":\"hb\",\"name\":\"knalaulppg\",\"properties\":{\"failureReason\":\"pnapnyiropuh\",\"lastActionAt\":\"2020-12-20T18:46:56Z\",\"runInformation\":{\"steps\":[{\"stepName\":\"lgqg\",\"stepId\":\"xmedjvcsly\",\"status\":\"wwncwzzhxgk\",\"branches\":[{},{}]},{\"stepName\":\"ucnapkteoellwp\",\"stepId\":\"d\",\"status\":\"pfqbuaceopzf\",\"branches\":[{},{}]},{\"stepName\":\"uaopppcqeq\",\"stepId\":\"lzdahzxctobgbkdm\",\"status\":\"zpostmgrcfbu\",\"branches\":[{},{},{}]},{\"stepName\":\"qjhhkxbpv\",\"stepId\":\"mjh\",\"status\":\"j\",\"branches\":[{},{},{},{}]}]},\"status\":\"divkrt\",\"startedAt\":\"2021-11-23T03:43:54Z\",\"stoppedAt\":\"2021-05-30T10:12:47Z\"}}")
                 .toObject(ExperimentExecutionDetailsInner.class);
     }
 

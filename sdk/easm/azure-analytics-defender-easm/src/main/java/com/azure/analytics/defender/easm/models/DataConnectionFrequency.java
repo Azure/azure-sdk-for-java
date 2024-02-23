@@ -8,17 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The rate at which the data connection will receive updates. */
+/**
+ * The rate at which the data connection will receive updates.
+ */
 public final class DataConnectionFrequency extends ExpandableStringEnum<DataConnectionFrequency> {
 
-    /** Static value daily for DataConnectionFrequency. */
-    @Generated public static final DataConnectionFrequency DAILY = fromString("daily");
+    /**
+     * Static value daily for DataConnectionFrequency.
+     */
+    @Generated
+    public static final DataConnectionFrequency DAILY = fromString("daily");
 
-    /** Static value weekly for DataConnectionFrequency. */
-    @Generated public static final DataConnectionFrequency WEEKLY = fromString("weekly");
+    /**
+     * Static value weekly for DataConnectionFrequency.
+     */
+    @Generated
+    public static final DataConnectionFrequency WEEKLY = fromString("weekly");
 
-    /** Static value monthly for DataConnectionFrequency. */
-    @Generated public static final DataConnectionFrequency MONTHLY = fromString("monthly");
+    /**
+     * Static value monthly for DataConnectionFrequency.
+     */
+    @Generated
+    public static final DataConnectionFrequency MONTHLY = fromString("monthly");
 
     /**
      * Creates a new instance of DataConnectionFrequency value.
@@ -27,7 +38,8 @@ public final class DataConnectionFrequency extends ExpandableStringEnum<DataConn
      */
     @Generated
     @Deprecated
-    public DataConnectionFrequency() {}
+    public DataConnectionFrequency() {
+    }
 
     /**
      * Creates or finds a DataConnectionFrequency from its string representation.

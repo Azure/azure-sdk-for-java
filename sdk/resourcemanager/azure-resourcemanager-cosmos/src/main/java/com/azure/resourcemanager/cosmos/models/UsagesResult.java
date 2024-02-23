@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.UsageInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response to a list usage request. */
+/**
+ * The response to a list usage request.
+ */
 @Immutable
 public final class UsagesResult {
     /*
@@ -18,13 +20,15 @@ public final class UsagesResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<UsageInner> value;
 
-    /** Creates an instance of UsagesResult class. */
+    /**
+     * Creates an instance of UsagesResult class.
+     */
     public UsagesResult() {
     }
 
     /**
      * Get the value property: The list of usages for the database. A usage is a point in time metric.
-     *
+     * 
      * @return the value value.
      */
     public List<UsageInner> value() {
@@ -33,7 +37,7 @@ public final class UsagesResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

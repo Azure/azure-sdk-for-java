@@ -7,20 +7,19 @@ package com.azure.resourcemanager.nginx.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.nginx.models.NginxNetworkInterfaceConfiguration;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class NginxNetworkInterfaceConfigurationTests {
-    @Test
-    public void testDeserialize() {
-        NginxNetworkInterfaceConfiguration model =
-            BinaryData.fromString("{\"subnetId\":\"dj\"}").toObject(NginxNetworkInterfaceConfiguration.class);
-        Assertions.assertEquals("dj", model.subnetId());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        NginxNetworkInterfaceConfiguration model
+            = BinaryData.fromString("{\"subnetId\":\"u\"}").toObject(NginxNetworkInterfaceConfiguration.class);
+        Assertions.assertEquals("u", model.subnetId());
     }
 
-    @Test
-    public void testSerialize() {
-        NginxNetworkInterfaceConfiguration model = new NginxNetworkInterfaceConfiguration().withSubnetId("dj");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        NginxNetworkInterfaceConfiguration model = new NginxNetworkInterfaceConfiguration().withSubnetId("u");
         model = BinaryData.fromObject(model).toObject(NginxNetworkInterfaceConfiguration.class);
-        Assertions.assertEquals("dj", model.subnetId());
+        Assertions.assertEquals("u", model.subnetId());
     }
 }

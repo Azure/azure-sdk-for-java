@@ -8,19 +8,19 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.logging.ClientLogger;
+import com.azure.resourcemanager.confluent.models.LinkOrganization;
 import com.azure.resourcemanager.confluent.models.OfferDetail;
 import com.azure.resourcemanager.confluent.models.ProvisionState;
 import com.azure.resourcemanager.confluent.models.UserDetail;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Organization resource. */
+/**
+ * Organization resource.
+ */
 @Fluent
 public final class OrganizationResourceInner extends Resource {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(OrganizationResourceInner.class);
-
     /*
      * Metadata pertaining to creation and last modification of the resource
      */
@@ -34,8 +34,14 @@ public final class OrganizationResourceInner extends Resource {
     private OrganizationResourceProperties innerProperties = new OrganizationResourceProperties();
 
     /**
+     * Creates an instance of OrganizationResourceInner class.
+     */
+    public OrganizationResourceInner() {
+    }
+
+    /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -44,21 +50,25 @@ public final class OrganizationResourceInner extends Resource {
 
     /**
      * Get the innerProperties property: Organization resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private OrganizationResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OrganizationResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OrganizationResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -67,7 +77,7 @@ public final class OrganizationResourceInner extends Resource {
 
     /**
      * Get the createdTime property: The creation time of the resource.
-     *
+     * 
      * @return the createdTime value.
      */
     public OffsetDateTime createdTime() {
@@ -75,8 +85,10 @@ public final class OrganizationResourceInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: ProvisioningState Provision states for confluent RP.
-     *
+     * Get the provisioningState property: ProvisioningState
+     * 
+     * Provision states for confluent RP.
+     * 
      * @return the provisioningState value.
      */
     public ProvisionState provisioningState() {
@@ -85,7 +97,7 @@ public final class OrganizationResourceInner extends Resource {
 
     /**
      * Get the organizationId property: Id of the Confluent organization.
-     *
+     * 
      * @return the organizationId value.
      */
     public String organizationId() {
@@ -94,7 +106,7 @@ public final class OrganizationResourceInner extends Resource {
 
     /**
      * Get the ssoUrl property: SSO url for the Confluent organization.
-     *
+     * 
      * @return the ssoUrl value.
      */
     public String ssoUrl() {
@@ -103,7 +115,7 @@ public final class OrganizationResourceInner extends Resource {
 
     /**
      * Get the offerDetail property: Confluent offer detail.
-     *
+     * 
      * @return the offerDetail value.
      */
     public OfferDetail offerDetail() {
@@ -112,7 +124,7 @@ public final class OrganizationResourceInner extends Resource {
 
     /**
      * Set the offerDetail property: Confluent offer detail.
-     *
+     * 
      * @param offerDetail the offerDetail value to set.
      * @return the OrganizationResourceInner object itself.
      */
@@ -126,7 +138,7 @@ public final class OrganizationResourceInner extends Resource {
 
     /**
      * Get the userDetail property: Subscriber detail.
-     *
+     * 
      * @return the userDetail value.
      */
     public UserDetail userDetail() {
@@ -135,7 +147,7 @@ public final class OrganizationResourceInner extends Resource {
 
     /**
      * Set the userDetail property: Subscriber detail.
-     *
+     * 
      * @param userDetail the userDetail value to set.
      * @return the OrganizationResourceInner object itself.
      */
@@ -148,18 +160,41 @@ public final class OrganizationResourceInner extends Resource {
     }
 
     /**
+     * Get the linkOrganization property: Link an existing Confluent organization.
+     * 
+     * @return the linkOrganization value.
+     */
+    public LinkOrganization linkOrganization() {
+        return this.innerProperties() == null ? null : this.innerProperties().linkOrganization();
+    }
+
+    /**
+     * Set the linkOrganization property: Link an existing Confluent organization.
+     * 
+     * @param linkOrganization the linkOrganization value to set.
+     * @return the OrganizationResourceInner object itself.
+     */
+    public OrganizationResourceInner withLinkOrganization(LinkOrganization linkOrganization) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new OrganizationResourceProperties();
+        }
+        this.innerProperties().withLinkOrganization(linkOrganization);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model OrganizationResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model OrganizationResourceInner"));
         } else {
             innerProperties().validate();
         }
     }
+
+    private static final ClientLogger LOGGER = new ClientLogger(OrganizationResourceInner.class);
 }

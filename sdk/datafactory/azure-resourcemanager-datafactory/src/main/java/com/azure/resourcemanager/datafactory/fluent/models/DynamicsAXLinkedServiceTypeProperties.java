@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Dynamics AX linked service properties. */
+/**
+ * Dynamics AX linked service properties.
+ */
 @Fluent
 public final class DynamicsAXLinkedServiceTypeProperties {
     /*
@@ -52,13 +54,15 @@ public final class DynamicsAXLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
-    /** Creates an instance of DynamicsAXLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of DynamicsAXLinkedServiceTypeProperties class.
+     */
     public DynamicsAXLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the url property: The Dynamics AX (or Dynamics 365 Finance and Operations) instance OData endpoint.
-     *
+     * 
      * @return the url value.
      */
     public Object url() {
@@ -67,7 +71,7 @@ public final class DynamicsAXLinkedServiceTypeProperties {
 
     /**
      * Set the url property: The Dynamics AX (or Dynamics 365 Finance and Operations) instance OData endpoint.
-     *
+     * 
      * @param url the url value to set.
      * @return the DynamicsAXLinkedServiceTypeProperties object itself.
      */
@@ -79,7 +83,7 @@ public final class DynamicsAXLinkedServiceTypeProperties {
     /**
      * Get the servicePrincipalId property: Specify the application's client ID. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the servicePrincipalId value.
      */
     public Object servicePrincipalId() {
@@ -89,7 +93,7 @@ public final class DynamicsAXLinkedServiceTypeProperties {
     /**
      * Set the servicePrincipalId property: Specify the application's client ID. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param servicePrincipalId the servicePrincipalId value to set.
      * @return the DynamicsAXLinkedServiceTypeProperties object itself.
      */
@@ -102,7 +106,7 @@ public final class DynamicsAXLinkedServiceTypeProperties {
      * Get the servicePrincipalKey property: Specify the application's key. Mark this field as a SecureString to store
      * it securely in Data Factory, or reference a secret stored in Azure Key Vault. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the servicePrincipalKey value.
      */
     public SecretBase servicePrincipalKey() {
@@ -113,7 +117,7 @@ public final class DynamicsAXLinkedServiceTypeProperties {
      * Set the servicePrincipalKey property: Specify the application's key. Mark this field as a SecureString to store
      * it securely in Data Factory, or reference a secret stored in Azure Key Vault. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param servicePrincipalKey the servicePrincipalKey value to set.
      * @return the DynamicsAXLinkedServiceTypeProperties object itself.
      */
@@ -126,7 +130,7 @@ public final class DynamicsAXLinkedServiceTypeProperties {
      * Get the tenant property: Specify the tenant information (domain name or tenant ID) under which your application
      * resides. Retrieve it by hovering the mouse in the top-right corner of the Azure portal. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the tenant value.
      */
     public Object tenant() {
@@ -137,7 +141,7 @@ public final class DynamicsAXLinkedServiceTypeProperties {
      * Set the tenant property: Specify the tenant information (domain name or tenant ID) under which your application
      * resides. Retrieve it by hovering the mouse in the top-right corner of the Azure portal. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param tenant the tenant value to set.
      * @return the DynamicsAXLinkedServiceTypeProperties object itself.
      */
@@ -149,7 +153,7 @@ public final class DynamicsAXLinkedServiceTypeProperties {
     /**
      * Get the aadResourceId property: Specify the resource you are requesting authorization. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the aadResourceId value.
      */
     public Object aadResourceId() {
@@ -159,7 +163,7 @@ public final class DynamicsAXLinkedServiceTypeProperties {
     /**
      * Set the aadResourceId property: Specify the resource you are requesting authorization. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param aadResourceId the aadResourceId value to set.
      * @return the DynamicsAXLinkedServiceTypeProperties object itself.
      */
@@ -169,9 +173,9 @@ public final class DynamicsAXLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string.
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
     public String encryptedCredential() {
@@ -179,9 +183,9 @@ public final class DynamicsAXLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string.
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the DynamicsAXLinkedServiceTypeProperties object itself.
      */
@@ -192,42 +196,31 @@ public final class DynamicsAXLinkedServiceTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (url() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property url in model DynamicsAXLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property url in model DynamicsAXLinkedServiceTypeProperties"));
         }
         if (servicePrincipalId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property servicePrincipalId in model DynamicsAXLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property servicePrincipalId in model DynamicsAXLinkedServiceTypeProperties"));
         }
         if (servicePrincipalKey() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property servicePrincipalKey in model"
-                            + " DynamicsAXLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property servicePrincipalKey in model DynamicsAXLinkedServiceTypeProperties"));
         } else {
             servicePrincipalKey().validate();
         }
         if (tenant() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property tenant in model DynamicsAXLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property tenant in model DynamicsAXLinkedServiceTypeProperties"));
         }
         if (aadResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property aadResourceId in model DynamicsAXLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property aadResourceId in model DynamicsAXLinkedServiceTypeProperties"));
         }
     }
 

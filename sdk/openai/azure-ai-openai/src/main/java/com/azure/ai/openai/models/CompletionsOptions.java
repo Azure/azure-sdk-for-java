@@ -11,8 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 /**
- * The configuration information for a completions request. Completions support a wide variety of tasks and generate
- * text that continues from or "completes" provided prompt data.
+ * The configuration information for a completions request.
+ * Completions support a wide variety of tasks and generate text that continues from or "completes"
+ * provided prompt data.
  */
 @Fluent
 public final class CompletionsOptions {
@@ -199,8 +200,10 @@ public final class CompletionsOptions {
 
     /**
      * Get the temperature property: The sampling temperature to use that controls the apparent creativity of generated
-     * completions. Higher values will make output more random while lower values will make results more focused and
-     * deterministic. It is not recommended to modify temperature and top_p for the same completions request as the
+     * completions.
+     * Higher values will make output more random while lower values will make results more focused
+     * and deterministic.
+     * It is not recommended to modify temperature and top_p for the same completions request as the
      * interaction of these two settings is difficult to predict.
      *
      * @return the temperature value.
@@ -212,8 +215,10 @@ public final class CompletionsOptions {
 
     /**
      * Set the temperature property: The sampling temperature to use that controls the apparent creativity of generated
-     * completions. Higher values will make output more random while lower values will make results more focused and
-     * deterministic. It is not recommended to modify temperature and top_p for the same completions request as the
+     * completions.
+     * Higher values will make output more random while lower values will make results more focused
+     * and deterministic.
+     * It is not recommended to modify temperature and top_p for the same completions request as the
      * interaction of these two settings is difficult to predict.
      *
      * @param temperature the temperature value to set.
@@ -226,11 +231,13 @@ public final class CompletionsOptions {
     }
 
     /**
-     * Get the topP property: An alternative to sampling with temperature called nucleus sampling. This value causes the
-     * model to consider the results of tokens with the provided probability mass. As an example, a value of 0.15 will
-     * cause only the tokens comprising the top 15% of probability mass to be considered. It is not recommended to
-     * modify temperature and top_p for the same completions request as the interaction of these two settings is
-     * difficult to predict.
+     * Get the topP property: An alternative to sampling with temperature called nucleus sampling. This value causes
+     * the
+     * model to consider the results of tokens with the provided probability mass. As an example, a
+     * value of 0.15 will cause only the tokens comprising the top 15% of probability mass to be
+     * considered.
+     * It is not recommended to modify temperature and top_p for the same completions request as the
+     * interaction of these two settings is difficult to predict.
      *
      * @return the topP value.
      */
@@ -240,11 +247,13 @@ public final class CompletionsOptions {
     }
 
     /**
-     * Set the topP property: An alternative to sampling with temperature called nucleus sampling. This value causes the
-     * model to consider the results of tokens with the provided probability mass. As an example, a value of 0.15 will
-     * cause only the tokens comprising the top 15% of probability mass to be considered. It is not recommended to
-     * modify temperature and top_p for the same completions request as the interaction of these two settings is
-     * difficult to predict.
+     * Set the topP property: An alternative to sampling with temperature called nucleus sampling. This value causes
+     * the
+     * model to consider the results of tokens with the provided probability mass. As an example, a
+     * value of 0.15 will cause only the tokens comprising the top 15% of probability mass to be
+     * considered.
+     * It is not recommended to modify temperature and top_p for the same completions request as the
+     * interaction of these two settings is difficult to predict.
      *
      * @param topP the topP value to set.
      * @return the CompletionsOptions object itself.
@@ -257,9 +266,11 @@ public final class CompletionsOptions {
 
     /**
      * Get the logitBias property: A map between GPT token IDs and bias scores that influences the probability of
-     * specific tokens appearing in a completions response. Token IDs are computed via external tokenizer tools, while
-     * bias scores reside in the range of -100 to 100 with minimum and maximum values corresponding to a full ban or
-     * exclusive selection of a token, respectively. The exact behavior of a given bias score varies by model.
+     * specific tokens
+     * appearing in a completions response. Token IDs are computed via external tokenizer tools, while
+     * bias scores reside in the range of -100 to 100 with minimum and maximum values corresponding to
+     * a full ban or exclusive selection of a token, respectively. The exact behavior of a given bias
+     * score varies by model.
      *
      * @return the logitBias value.
      */
@@ -270,9 +281,11 @@ public final class CompletionsOptions {
 
     /**
      * Set the logitBias property: A map between GPT token IDs and bias scores that influences the probability of
-     * specific tokens appearing in a completions response. Token IDs are computed via external tokenizer tools, while
-     * bias scores reside in the range of -100 to 100 with minimum and maximum values corresponding to a full ban or
-     * exclusive selection of a token, respectively. The exact behavior of a given bias score varies by model.
+     * specific tokens
+     * appearing in a completions response. Token IDs are computed via external tokenizer tools, while
+     * bias scores reside in the range of -100 to 100 with minimum and maximum values corresponding to
+     * a full ban or exclusive selection of a token, respectively. The exact behavior of a given bias
+     * score varies by model.
      *
      * @param logitBias the logitBias value to set.
      * @return the CompletionsOptions object itself.
@@ -309,8 +322,9 @@ public final class CompletionsOptions {
 
     /**
      * Get the n property: The number of completions choices that should be generated per provided prompt as part of an
-     * overall completions response. Because this setting can generate many completions, it may quickly consume your
-     * token quota. Use carefully and ensure reasonable settings for max_tokens and stop.
+     * overall completions response.
+     * Because this setting can generate many completions, it may quickly consume your token quota.
+     * Use carefully and ensure reasonable settings for max_tokens and stop.
      *
      * @return the n value.
      */
@@ -321,8 +335,9 @@ public final class CompletionsOptions {
 
     /**
      * Set the n property: The number of completions choices that should be generated per provided prompt as part of an
-     * overall completions response. Because this setting can generate many completions, it may quickly consume your
-     * token quota. Use carefully and ensure reasonable settings for max_tokens and stop.
+     * overall completions response.
+     * Because this setting can generate many completions, it may quickly consume your token quota.
+     * Use carefully and ensure reasonable settings for max_tokens and stop.
      *
      * @param n the n value to set.
      * @return the CompletionsOptions object itself.
@@ -335,7 +350,8 @@ public final class CompletionsOptions {
 
     /**
      * Get the logprobs property: A value that controls the emission of log probabilities for the provided number of
-     * most likely tokens within a completions response.
+     * most likely
+     * tokens within a completions response.
      *
      * @return the logprobs value.
      */
@@ -346,7 +362,8 @@ public final class CompletionsOptions {
 
     /**
      * Set the logprobs property: A value that controls the emission of log probabilities for the provided number of
-     * most likely tokens within a completions response.
+     * most likely
+     * tokens within a completions response.
      *
      * @param logprobs the logprobs value to set.
      * @return the CompletionsOptions object itself.
@@ -359,7 +376,8 @@ public final class CompletionsOptions {
 
     /**
      * Get the echo property: A value specifying whether completions responses should include input prompts as prefixes
-     * to their generated output.
+     * to
+     * their generated output.
      *
      * @return the echo value.
      */
@@ -370,7 +388,8 @@ public final class CompletionsOptions {
 
     /**
      * Set the echo property: A value specifying whether completions responses should include input prompts as prefixes
-     * to their generated output.
+     * to
+     * their generated output.
      *
      * @param echo the echo value to set.
      * @return the CompletionsOptions object itself.
@@ -405,8 +424,10 @@ public final class CompletionsOptions {
 
     /**
      * Get the presencePenalty property: A value that influences the probability of generated tokens appearing based on
-     * their existing presence in generated text. Positive values will make tokens less likely to appear when they
-     * already exist and increase the model's likelihood to output new topics.
+     * their existing
+     * presence in generated text.
+     * Positive values will make tokens less likely to appear when they already exist and increase the
+     * model's likelihood to output new topics.
      *
      * @return the presencePenalty value.
      */
@@ -417,8 +438,10 @@ public final class CompletionsOptions {
 
     /**
      * Set the presencePenalty property: A value that influences the probability of generated tokens appearing based on
-     * their existing presence in generated text. Positive values will make tokens less likely to appear when they
-     * already exist and increase the model's likelihood to output new topics.
+     * their existing
+     * presence in generated text.
+     * Positive values will make tokens less likely to appear when they already exist and increase the
+     * model's likelihood to output new topics.
      *
      * @param presencePenalty the presencePenalty value to set.
      * @return the CompletionsOptions object itself.
@@ -430,9 +453,11 @@ public final class CompletionsOptions {
     }
 
     /**
-     * Get the frequencyPenalty property: A value that influences the probability of generated tokens appearing based on
-     * their cumulative frequency in generated text. Positive values will make tokens less likely to appear as their
-     * frequency increases and decrease the likelihood of the model repeating the same statements verbatim.
+     * Get the frequencyPenalty property: A value that influences the probability of generated tokens appearing based
+     * on their cumulative
+     * frequency in generated text.
+     * Positive values will make tokens less likely to appear as their frequency increases and
+     * decrease the likelihood of the model repeating the same statements verbatim.
      *
      * @return the frequencyPenalty value.
      */
@@ -442,9 +467,11 @@ public final class CompletionsOptions {
     }
 
     /**
-     * Set the frequencyPenalty property: A value that influences the probability of generated tokens appearing based on
-     * their cumulative frequency in generated text. Positive values will make tokens less likely to appear as their
-     * frequency increases and decrease the likelihood of the model repeating the same statements verbatim.
+     * Set the frequencyPenalty property: A value that influences the probability of generated tokens appearing based
+     * on their cumulative
+     * frequency in generated text.
+     * Positive values will make tokens less likely to appear as their frequency increases and
+     * decrease the likelihood of the model repeating the same statements verbatim.
      *
      * @param frequencyPenalty the frequencyPenalty value to set.
      * @return the CompletionsOptions object itself.
@@ -457,9 +484,12 @@ public final class CompletionsOptions {
 
     /**
      * Get the bestOf property: A value that controls how many completions will be internally generated prior to
-     * response formulation. When used together with n, best_of controls the number of candidate completions and must be
-     * greater than n. Because this setting can generate many completions, it may quickly consume your token quota. Use
-     * carefully and ensure reasonable settings for max_tokens and stop.
+     * response
+     * formulation.
+     * When used together with n, best_of controls the number of candidate completions and must be
+     * greater than n.
+     * Because this setting can generate many completions, it may quickly consume your token quota.
+     * Use carefully and ensure reasonable settings for max_tokens and stop.
      *
      * @return the bestOf value.
      */
@@ -470,9 +500,12 @@ public final class CompletionsOptions {
 
     /**
      * Set the bestOf property: A value that controls how many completions will be internally generated prior to
-     * response formulation. When used together with n, best_of controls the number of candidate completions and must be
-     * greater than n. Because this setting can generate many completions, it may quickly consume your token quota. Use
-     * carefully and ensure reasonable settings for max_tokens and stop.
+     * response
+     * formulation.
+     * When used together with n, best_of controls the number of candidate completions and must be
+     * greater than n.
+     * Because this setting can generate many completions, it may quickly consume your token quota.
+     * Use carefully and ensure reasonable settings for max_tokens and stop.
      *
      * @param bestOf the bestOf value to set.
      * @return the CompletionsOptions object itself.
@@ -506,8 +539,9 @@ public final class CompletionsOptions {
     }
 
     /**
-     * Get the model property: The model name to provide as part of this completions request. Not applicable to Azure
-     * OpenAI, where deployment information should be included in the Azure resource URI that's connected to.
+     * Get the model property: The model name to provide as part of this completions request.
+     * Not applicable to Azure OpenAI, where deployment information should be included in the Azure
+     * resource URI that's connected to.
      *
      * @return the model value.
      */
@@ -517,8 +551,9 @@ public final class CompletionsOptions {
     }
 
     /**
-     * Set the model property: The model name to provide as part of this completions request. Not applicable to Azure
-     * OpenAI, where deployment information should be included in the Azure resource URI that's connected to.
+     * Set the model property: The model name to provide as part of this completions request.
+     * Not applicable to Azure OpenAI, where deployment information should be included in the Azure
+     * resource URI that's connected to.
      *
      * @param model the model value to set.
      * @return the CompletionsOptions object itself.

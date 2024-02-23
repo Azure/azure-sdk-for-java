@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Spark Server dataset. */
+/**
+ * Spark Server dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SparkObject")
 @Fluent
@@ -23,62 +25,78 @@ public final class SparkObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private SparkDatasetTypeProperties innerTypeProperties;
 
-    /** Creates an instance of SparkObjectDataset class. */
+    /**
+     * Creates an instance of SparkObjectDataset class.
+     */
     public SparkObjectDataset() {
     }
 
     /**
      * Get the innerTypeProperties property: Properties specific to this dataset type.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private SparkDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SparkObjectDataset withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SparkObjectDataset withStructure(Object structure) {
         super.withStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SparkObjectDataset withSchema(Object schema) {
         super.withSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SparkObjectDataset withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SparkObjectDataset withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SparkObjectDataset withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SparkObjectDataset withFolder(DatasetFolder folder) {
         super.withFolder(folder);
@@ -88,7 +106,7 @@ public final class SparkObjectDataset extends Dataset {
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.
-     *
+     * 
      * @return the tableName value.
      */
     public Object tableName() {
@@ -98,7 +116,7 @@ public final class SparkObjectDataset extends Dataset {
     /**
      * Set the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the SparkObjectDataset object itself.
      */
@@ -112,7 +130,7 @@ public final class SparkObjectDataset extends Dataset {
 
     /**
      * Get the table property: The table name of the Spark. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the table value.
      */
     public Object table() {
@@ -121,7 +139,7 @@ public final class SparkObjectDataset extends Dataset {
 
     /**
      * Set the table property: The table name of the Spark. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param table the table value to set.
      * @return the SparkObjectDataset object itself.
      */
@@ -135,7 +153,7 @@ public final class SparkObjectDataset extends Dataset {
 
     /**
      * Get the schema property: The schema name of the Spark. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the schema value.
      */
     public Object schemaTypePropertiesSchema() {
@@ -144,7 +162,7 @@ public final class SparkObjectDataset extends Dataset {
 
     /**
      * Set the schema property: The schema name of the Spark. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param schema the schema value to set.
      * @return the SparkObjectDataset object itself.
      */
@@ -158,7 +176,7 @@ public final class SparkObjectDataset extends Dataset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

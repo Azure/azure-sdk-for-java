@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The set of data plane operations permitted through this Role Definition. */
+/**
+ * The set of data plane operations permitted through this Role Definition.
+ */
 @Fluent
 public final class Privilege {
     /*
@@ -23,13 +25,15 @@ public final class Privilege {
     @JsonProperty(value = "actions")
     private List<String> actions;
 
-    /** Creates an instance of Privilege class. */
+    /**
+     * Creates an instance of Privilege class.
+     */
     public Privilege() {
     }
 
     /**
      * Get the resource property: An Azure Cosmos DB Mongo DB Resource.
-     *
+     * 
      * @return the resource value.
      */
     public PrivilegeResource resource() {
@@ -38,7 +42,7 @@ public final class Privilege {
 
     /**
      * Set the resource property: An Azure Cosmos DB Mongo DB Resource.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the Privilege object itself.
      */
@@ -49,7 +53,7 @@ public final class Privilege {
 
     /**
      * Get the actions property: An array of actions that are allowed.
-     *
+     * 
      * @return the actions value.
      */
     public List<String> actions() {
@@ -58,7 +62,7 @@ public final class Privilege {
 
     /**
      * Set the actions property: An array of actions that are allowed.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the Privilege object itself.
      */
@@ -69,7 +73,7 @@ public final class Privilege {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

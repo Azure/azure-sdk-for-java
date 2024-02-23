@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Information about the current running state of the overall upgrade. */
+/**
+ * Information about the current running state of the overall upgrade.
+ */
 @Immutable
 public final class RollingUpgradeRunningStatus {
     /*
@@ -35,13 +37,15 @@ public final class RollingUpgradeRunningStatus {
     @JsonProperty(value = "lastActionTime", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastActionTime;
 
-    /** Creates an instance of RollingUpgradeRunningStatus class. */
+    /**
+     * Creates an instance of RollingUpgradeRunningStatus class.
+     */
     public RollingUpgradeRunningStatus() {
     }
 
     /**
      * Get the code property: Code indicating the current status of the upgrade.
-     *
+     * 
      * @return the code value.
      */
     public RollingUpgradeStatusCode code() {
@@ -50,7 +54,7 @@ public final class RollingUpgradeRunningStatus {
 
     /**
      * Get the startTime property: Start time of the upgrade.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -59,7 +63,7 @@ public final class RollingUpgradeRunningStatus {
 
     /**
      * Get the lastAction property: The last action performed on the rolling upgrade.
-     *
+     * 
      * @return the lastAction value.
      */
     public RollingUpgradeActionType lastAction() {
@@ -68,7 +72,7 @@ public final class RollingUpgradeRunningStatus {
 
     /**
      * Get the lastActionTime property: Last action time of the upgrade.
-     *
+     * 
      * @return the lastActionTime value.
      */
     public OffsetDateTime lastActionTime() {
@@ -77,7 +81,7 @@ public final class RollingUpgradeRunningStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

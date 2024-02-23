@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Response body structure for creating data flow debug session. */
+/**
+ * Response body structure for creating data flow debug session.
+ */
 @Fluent
 public final class CreateDataFlowDebugSessionResponseInner {
     /*
@@ -22,13 +24,15 @@ public final class CreateDataFlowDebugSessionResponseInner {
     @JsonProperty(value = "sessionId")
     private String sessionId;
 
-    /** Creates an instance of CreateDataFlowDebugSessionResponseInner class. */
+    /**
+     * Creates an instance of CreateDataFlowDebugSessionResponseInner class.
+     */
     public CreateDataFlowDebugSessionResponseInner() {
     }
 
     /**
      * Get the status property: The state of the debug session.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -37,7 +41,7 @@ public final class CreateDataFlowDebugSessionResponseInner {
 
     /**
      * Set the status property: The state of the debug session.
-     *
+     * 
      * @param status the status value to set.
      * @return the CreateDataFlowDebugSessionResponseInner object itself.
      */
@@ -48,7 +52,7 @@ public final class CreateDataFlowDebugSessionResponseInner {
 
     /**
      * Get the sessionId property: The ID of data flow debug session.
-     *
+     * 
      * @return the sessionId value.
      */
     public String sessionId() {
@@ -57,7 +61,7 @@ public final class CreateDataFlowDebugSessionResponseInner {
 
     /**
      * Set the sessionId property: The ID of data flow debug session.
-     *
+     * 
      * @param sessionId the sessionId value to set.
      * @return the CreateDataFlowDebugSessionResponseInner object itself.
      */
@@ -68,7 +72,7 @@ public final class CreateDataFlowDebugSessionResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

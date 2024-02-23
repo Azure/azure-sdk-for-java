@@ -5,17 +5,15 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Immutable;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.fluent.models.ClusterInner;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of clusters populated by a 'list' operation. */
+/**
+ * A list of clusters populated by a 'list' operation.
+ */
 @Immutable
 public final class ClusterListResult {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(ClusterListResult.class);
-
     /*
      * A list of clusters.
      */
@@ -29,8 +27,14 @@ public final class ClusterListResult {
     private String nextLink;
 
     /**
+     * Creates an instance of ClusterListResult class.
+     */
+    public ClusterListResult() {
+    }
+
+    /**
      * Get the value property: A list of clusters.
-     *
+     * 
      * @return the value value.
      */
     public List<ClusterInner> value() {
@@ -39,7 +43,7 @@ public final class ClusterListResult {
 
     /**
      * Get the nextLink property: The URL to fetch the next set of clusters.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class ClusterListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

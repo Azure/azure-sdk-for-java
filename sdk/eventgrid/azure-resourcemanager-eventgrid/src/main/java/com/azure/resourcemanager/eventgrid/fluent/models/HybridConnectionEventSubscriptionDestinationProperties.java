@@ -9,7 +9,9 @@ import com.azure.resourcemanager.eventgrid.models.DeliveryAttributeMapping;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The properties for a hybrid connection destination. */
+/**
+ * The properties for a hybrid connection destination.
+ */
 @Fluent
 public final class HybridConnectionEventSubscriptionDestinationProperties {
     /*
@@ -24,14 +26,16 @@ public final class HybridConnectionEventSubscriptionDestinationProperties {
     @JsonProperty(value = "deliveryAttributeMappings")
     private List<DeliveryAttributeMapping> deliveryAttributeMappings;
 
-    /** Creates an instance of HybridConnectionEventSubscriptionDestinationProperties class. */
+    /**
+     * Creates an instance of HybridConnectionEventSubscriptionDestinationProperties class.
+     */
     public HybridConnectionEventSubscriptionDestinationProperties() {
     }
 
     /**
      * Get the resourceId property: The Azure Resource ID of an hybrid connection that is the destination of an event
      * subscription.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -41,7 +45,7 @@ public final class HybridConnectionEventSubscriptionDestinationProperties {
     /**
      * Set the resourceId property: The Azure Resource ID of an hybrid connection that is the destination of an event
      * subscription.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the HybridConnectionEventSubscriptionDestinationProperties object itself.
      */
@@ -52,7 +56,7 @@ public final class HybridConnectionEventSubscriptionDestinationProperties {
 
     /**
      * Get the deliveryAttributeMappings property: Delivery attribute details.
-     *
+     * 
      * @return the deliveryAttributeMappings value.
      */
     public List<DeliveryAttributeMapping> deliveryAttributeMappings() {
@@ -61,19 +65,19 @@ public final class HybridConnectionEventSubscriptionDestinationProperties {
 
     /**
      * Set the deliveryAttributeMappings property: Delivery attribute details.
-     *
+     * 
      * @param deliveryAttributeMappings the deliveryAttributeMappings value to set.
      * @return the HybridConnectionEventSubscriptionDestinationProperties object itself.
      */
-    public HybridConnectionEventSubscriptionDestinationProperties withDeliveryAttributeMappings(
-        List<DeliveryAttributeMapping> deliveryAttributeMappings) {
+    public HybridConnectionEventSubscriptionDestinationProperties
+        withDeliveryAttributeMappings(List<DeliveryAttributeMapping> deliveryAttributeMappings) {
         this.deliveryAttributeMappings = deliveryAttributeMappings;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

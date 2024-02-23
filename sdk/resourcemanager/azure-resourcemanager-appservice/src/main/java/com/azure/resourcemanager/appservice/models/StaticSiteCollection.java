@@ -10,7 +10,9 @@ import com.azure.resourcemanager.appservice.fluent.models.StaticSiteArmResourceI
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of static sites. */
+/**
+ * Collection of static sites.
+ */
 @Fluent
 public final class StaticSiteCollection {
     /*
@@ -25,13 +27,15 @@ public final class StaticSiteCollection {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of StaticSiteCollection class. */
+    /**
+     * Creates an instance of StaticSiteCollection class.
+     */
     public StaticSiteCollection() {
     }
 
     /**
      * Get the value property: Collection of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<StaticSiteArmResourceInner> value() {
@@ -40,7 +44,7 @@ public final class StaticSiteCollection {
 
     /**
      * Set the value property: Collection of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the StaticSiteCollection object itself.
      */
@@ -51,7 +55,7 @@ public final class StaticSiteCollection {
 
     /**
      * Get the nextLink property: Link to next page of resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,14 +64,13 @@ public final class StaticSiteCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model StaticSiteCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model StaticSiteCollection"));
         } else {
             value().forEach(e -> e.validate());
         }
