@@ -98,7 +98,7 @@ public final class AiSemanticAttributes {
         AttributeKey.booleanKey("applicationinsights.internal.is_pre_aggregated");
 
     public static final AttributeKey<String> LOGGED_EXCEPTION =
-        AttributeKey.stringKey("applicationinsights.internal.exception_logged");
+        AttributeKey.stringKey("applicationinsights.internal.logged_exception");
 
     // These attributes are specific for Azure Function and are added to Application Insights traces'
     // custom dimensions. When Azure Function host starts suppressing the same logs to Application
