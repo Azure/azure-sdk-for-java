@@ -1,0 +1,30 @@
+{
+  "superDeepObjects": [
+    {
+      "layer1": [
+      {
+        "layer2": [
+          {
+            "layer3":[
+              {
+                "layer4": [
+                  1,
+                  2,
+                  3
+                ]
+              },
+              {
+                "layer4Second": [
+                  4,
+                  5,
+                  6
+                ]
+              }
+            ]
+          }
+        ]
+      }
+    ]
+    }
+  ]
+}
