@@ -9,8 +9,8 @@
 #
 # Right now this script is only used by azure-json which contains code shaded
 # from Jackson Core (https://github.com/FasterXML/jackson-core) which uses
-# an Apache-2.0 license and the shaded code exists in 
-# /sdk/core/azure-json/src/main/java/com/azure/json/implementation/jackson/core
+# an Apache-2.0 license and the shaded code exists in
+# /sdk/serialization/azure-json/src/main/java/com/azure/json/implementation/jackson/core
 # where all of these values are hardcoded into this script. In the future if
 # this script becomes generalized all these values will need to be
 # configurable, if that happens take guidance from the /eng/versioning scripts
@@ -20,7 +20,7 @@ import os
 
 def main():
     code_comment = '// Original file from https://github.com/FasterXML/jackson-core under Apache-2.0 license.'
-    
+
     walk_directory = os.path.dirname(__file__)
     walk_directory = os.path.normpath(os.path.join(walk_directory, 'src/main/java/com/azure/json/implementation/jackson/core'))
 
