@@ -83,7 +83,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-storage-common</artifactId>
-      <version>12.24.1</version> <!-- {x-version-update;com.azure:azure-storage-common;dependency} -->
+      <version>12.24.2</version> <!-- {x-version-update;com.azure:azure-storage-common;dependency} -->
       <classifier>tests</classifier>
       <type>test-jar</type>
       <scope>test</scope>
