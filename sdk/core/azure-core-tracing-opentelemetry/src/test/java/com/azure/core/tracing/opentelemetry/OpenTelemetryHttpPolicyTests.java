@@ -368,12 +368,9 @@ public class OpenTelemetryHttpPolicyTests {
                 .addData("az.namespace", "foo");
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), tracingContext)
-                .flatMap(r -> r.getBody().collectList().thenReturn(r))
-            )
-            .assertNext(response -> {
+            .flatMap(r -> r.getBody().collectList().thenReturn(r))).assertNext(response -> {
                 assertEquals(200, response.getStatusCode());
-            })
-            .verifyComplete();
+            }).verifyComplete();
 
         List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
         assertEquals(2, exportedSpans.size());
@@ -400,11 +397,8 @@ public class OpenTelemetryHttpPolicyTests {
             .tracer(azTracer)
             .build();
 
-        StepVerifier.create(pipeline
-                .send(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), Context.NONE)
-                .flatMap(response -> response.getBodyAsInputStream()))
-            .expectError(IOException.class)
-            .verify();
+        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), Context.NONE)
+            .flatMap(response -> response.getBodyAsInputStream())).expectError(IOException.class).verify();
 
         List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
         assertEquals(1, exportedSpans.size());
