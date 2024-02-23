@@ -6,8 +6,8 @@ package com.azure.identity.recorded;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
-import com.azure.identity.ClientSecretCredential;
-import com.azure.identity.ClientSecretCredentialBuilder;
+import com.azure.identity.ClientAssertionCredential;
+import com.azure.identity.ClientAssertionCredentialBuilder;
 import org.junit.jupiter.api.condition.EnabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -16,16 +16,16 @@ import reactor.test.StepVerifier;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
-public class ClientSecretCredentialTest extends IdentityTestBase {
+public class ClientAssertionCredentialTest extends IdentityTestBase {
 
     private static final String DISPLAY_NAME_WITH_ARGUMENTS = "{displayName} with [{arguments}]";
-    private ClientSecretCredential credential;
+    private ClientAssertionCredential credential;
 
     private void initializeClient(HttpClient httpClient) {
-        credential = new ClientSecretCredentialBuilder()
+        credential = new ClientAssertionCredentialBuilder()
             .clientId(isPlaybackMode() ? "Dummy-Id" : getClientId())
             .tenantId(isPlaybackMode() ? "Dummy-Id" : getTenantId())
-            .clientSecret(isPlaybackMode() ? "Dummy-Secret" : getClientSecret())
+            .clientAssertion(() -> isPlaybackMode() ? INVALID_DUMMY_CLIENT_ASSERTION : getClientAssertion())
             .pipeline(super.getHttpPipeline(httpClient))
             .build();
     }
