@@ -109,7 +109,7 @@ parameters:
   default: false
 
 stages:
-  - template: /eng/pipelines/stages/archetype-sdk-tests-isolated.yml@self
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml@self
     parameters:
       TestName: ${{ parameters.TestName }}
       AdditionalPlatforms: ${{ parameters.AdditionalPlatforms }}
