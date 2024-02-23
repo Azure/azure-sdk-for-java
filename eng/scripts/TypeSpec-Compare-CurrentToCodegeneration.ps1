@@ -49,7 +49,7 @@ foreach ($tspLocationPath in (Get-ChildItem -Path $Directory -Filter "tsp-locati
   Pop-Location
 }
 
-if ($failedSdk.Length -ge 0) {
+if ($failedSdk.Length -gt 0) {
   Write-Host "
 Generate code failed for following modules:
 $failedSdk
