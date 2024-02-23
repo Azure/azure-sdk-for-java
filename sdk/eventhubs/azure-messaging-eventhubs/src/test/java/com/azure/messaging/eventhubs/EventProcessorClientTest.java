@@ -276,7 +276,7 @@ public class EventProcessorClientTest {
 
         when(tracer.makeSpanCurrent(any())).thenReturn(() -> { });
         // processor span ends after TestPartitionProcessor latch counts down
-        CountDownLatch latch = new CountDownLatch(1);
+        CountDownLatch latch = new CountDownLatch(2);
         doAnswer(invocation -> {
             latch.countDown();
             return null;
@@ -307,7 +307,6 @@ public class EventProcessorClientTest {
         verify(tracer, times(1)).extractContext(any());
         verify(tracer, times(1)).start(eq(expectedProcessSpanName), any(), any(Context.class));
         verify(tracer, times(1)).start(eq(expectedSettleSpanName), any(), any(Context.class));
-        verify(tracer, times(2)).end(isNull(), isNull(), any());
 
         assertProcessMetrics(meter, 1, null);
     }
