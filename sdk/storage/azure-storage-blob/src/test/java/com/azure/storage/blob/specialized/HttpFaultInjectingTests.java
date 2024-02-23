@@ -47,6 +47,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
+import java.util.UUID;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -119,7 +120,7 @@ public class HttpFaultInjectingTests {
 
         List<File> files = new ArrayList<>(500);
         for (int i = 0; i < 500; i++) {
-            File file = File.createTempFile(CoreUtils.randomUuid().toString() + i, ".txt");
+            File file = File.createTempFile(UUID.randomUUID().toString() + i, ".txt");
             file.deleteOnExit();
             files.add(file);
         }

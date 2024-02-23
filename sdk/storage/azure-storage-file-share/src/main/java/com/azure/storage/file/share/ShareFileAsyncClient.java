@@ -3052,7 +3052,7 @@ public class ShareFileAsyncClient {
         ShareFileHttpHeaders headers = options.getContentType() == null ? null
             : new ShareFileHttpHeaders().setContentType(options.getContentType());
 
-        String renameSource = Utility.encodeUrlPath(this.getFileUrl());
+        String renameSource = this.getFileUrl();
 
         renameSource = this.sasToken != null ? renameSource + "?" + this.sasToken.getSignature() : renameSource;
 

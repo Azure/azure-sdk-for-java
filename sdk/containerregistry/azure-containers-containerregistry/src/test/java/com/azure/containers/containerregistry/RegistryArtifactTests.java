@@ -20,6 +20,7 @@ import java.util.Arrays;
 import static com.azure.containers.containerregistry.TestUtils.ALPINE_REPOSITORY_NAME;
 import static com.azure.containers.containerregistry.TestUtils.HTTP_STATUS_CODE_202;
 import static com.azure.containers.containerregistry.TestUtils.LATEST_TAG_NAME;
+import static com.azure.containers.containerregistry.TestUtils.SKIP_AUTH_TOKEN_REQUEST_FUNCTION;
 import static com.azure.containers.containerregistry.TestUtils.V1_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V2_TAG_NAME;
 import static com.azure.containers.containerregistry.TestUtils.V3_TAG_NAME;
@@ -76,24 +77,26 @@ public class RegistryArtifactTests extends ContainerRegistryClientsTestBase {
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest(SKIP_AUTH_TOKEN_REQUEST_FUNCTION)
             .assertAsync()
             .build();
     }
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
         return new AssertingHttpClientBuilder(httpClient)
+            .skipRequest(SKIP_AUTH_TOKEN_REQUEST_FUNCTION)
             .assertSync()
             .build();
     }
 
     private RegistryArtifactAsync getRegistryArtifactAsyncClient(String digest) {
-        return getContainerRegistryBuilder(buildAsyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient))
+        return getContainerRegistryBuilder(buildAsyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient))
             .buildAsyncClient()
             .getArtifact(repositoryName, digest);
     }
 
     private RegistryArtifact getRegistryArtifactClient(String digest) {
-        return getContainerRegistryBuilder(buildSyncAssertingClient(interceptorManager.isPlaybackMode() ? interceptorManager.getPlaybackClient() : httpClient))
+        return getContainerRegistryBuilder(buildSyncAssertingClient(httpClient == null ? interceptorManager.getPlaybackClient() : httpClient))
             .buildClient()
             .getArtifact(repositoryName, digest);
     }
