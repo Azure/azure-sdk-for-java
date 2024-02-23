@@ -381,6 +381,42 @@ public interface StorageAccount
              * @return the next stage of storage account definition
              */
             WithCreate withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion);
+
+            /**
+             * Specifies the KeyVault key to be used as key for encryption and the user-assigned identity to access the KeyVault.
+             * If the provided user-assigned identity is null, this method is equivalent to {@link WithEncryption#withEncryptionKeyFromKeyVault(String, String, String)},
+             * meaning it'll use the system-assigned identity to access the KeyVault.
+             *
+             * This requires managed service identity on storage account
+             * (via {@link UpdateStages.WithManagedServiceIdentity#withSystemAssignedManagedServiceIdentity()} or
+             * {@link DefinitionStages.WithUserAssignedManagedServiceIdentity#withExistingUserAssignedManagedServiceIdentity(Identity)}),
+             * and GET, WRAP_KEY, UNWRAP_KEY access policy on key vault for the managed service identity.
+             *
+             * @param keyVaultUri the uri to KeyVault
+             * @param keyName the KeyVault key name
+             * @param keyVersion the KeyVault key version
+             * @param userAssignedIdentity user-assigned identity to access the KeyVault
+             * @return the next stage of storage account update
+             */
+            WithCreate withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion, Identity userAssignedIdentity);
+
+            /**
+             * Specifies the KeyVault key to be used as key for encryption and the user-assigned identity to access the KeyVault.
+             * If the provided user-assigned identity is null, this method is equivalent to {@link WithEncryption#withEncryptionKeyFromKeyVault(String, String, String)},
+             * meaning it'll use the system-assigned identity to access the KeyVault.
+             *
+             * This requires managed service identity on storage account
+             * (via {@link UpdateStages.WithManagedServiceIdentity#withSystemAssignedManagedServiceIdentity()} or
+             * {@link DefinitionStages.WithUserAssignedManagedServiceIdentity#withExistingUserAssignedManagedServiceIdentity(Identity)}),
+             * and GET, WRAP_KEY, UNWRAP_KEY access policy on key vault for the managed service identity.
+             *
+             * @param keyVaultUri the uri to KeyVault
+             * @param keyName the KeyVault key name
+             * @param keyVersion the KeyVault key version
+             * @param userAssignedIdentityId ID of the user-assigned identity to access the KeyVault
+             * @return the next stage of storage account update
+             */
+            WithCreate withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion, String userAssignedIdentityId);
         }
 
         /** The stage of a storage account definition allowing to associate custom domain with the account. */
@@ -442,6 +478,14 @@ public interface StorageAccount
              * @return the next stage of the storage account definition
              */
             WithCreate withExistingUserAssignedManagedServiceIdentity(Identity identity);
+
+            /**
+             * Specifies an existing user assigned identity to be associated with the storage account.
+             *
+             * @param identityId ID of the identity
+             * @return the next stage of the storage account definition
+             */
+            WithCreate withExistingUserAssignedManagedServiceIdentity(String identityId);
         }
 
         /** The stage of storage account definition allowing to restrict access protocol. */
@@ -746,6 +790,42 @@ public interface StorageAccount
              * @return the next stage of storage account update
              */
             Update withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion);
+
+            /**
+             * Specifies the KeyVault key to be used as key for encryption and the user-assigned identity to access the KeyVault.
+             * If the provided user-assigned identity is null, this method is equivalent to {@link WithEncryption#withEncryptionKeyFromKeyVault(String, String, String)},
+             * meaning it'll use the system-assigned identity to access the KeyVault.
+             *
+             * This requires managed service identity on storage account
+             * (via {@link WithManagedServiceIdentity#withSystemAssignedManagedServiceIdentity()} or
+             * {@link DefinitionStages.WithUserAssignedManagedServiceIdentity#withExistingUserAssignedManagedServiceIdentity(Identity)}),
+             * and GET, WRAP_KEY, UNWRAP_KEY access policy on key vault for the managed service identity.
+             *
+             * @param keyVaultUri the uri to KeyVault
+             * @param keyName the KeyVault key name
+             * @param keyVersion the KeyVault key version
+             * @param userAssignedIdentity user-assigned identity to access the KeyVault
+             * @return the next stage of storage account update
+             */
+            Update withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion, Identity userAssignedIdentity);
+
+            /**
+             * Specifies the KeyVault key to be used as key for encryption and the user-assigned identity to access the KeyVault.
+             * If the provided user-assigned identity is null, this method is equivalent to {@link WithEncryption#withEncryptionKeyFromKeyVault(String, String, String)},
+             * meaning it'll use the system-assigned identity to access the KeyVault.
+             *
+             * This requires managed service identity on storage account
+             * (via {@link WithManagedServiceIdentity#withSystemAssignedManagedServiceIdentity()} or
+             * {@link DefinitionStages.WithUserAssignedManagedServiceIdentity#withExistingUserAssignedManagedServiceIdentity(Identity)}),
+             * and GET, WRAP_KEY, UNWRAP_KEY access policy on key vault for the managed service identity.
+             *
+             * @param keyVaultUri the uri to KeyVault
+             * @param keyName the KeyVault key name
+             * @param keyVersion the KeyVault key version
+             * @param userAssignedIdentityId ID of the user-assigned identity to access the KeyVault
+             * @return the next stage of storage account update
+             */
+            Update withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion, String userAssignedIdentityId);
         }
 
         /** A blob storage account update stage allowing access tier to be specified. */
@@ -800,6 +880,14 @@ public interface StorageAccount
              * @return the next stage of the storage account update
              */
             Update withExistingUserAssignedManagedServiceIdentity(Identity identity);
+
+            /**
+             * Specifies an existing user assigned identity to be associated with the storage account.
+             *
+             * @param identityId ID of the identity
+             * @return the next stage of the storage account update
+             */
+            Update withExistingUserAssignedManagedServiceIdentity(String identityId);
 
             /**
              * Specifies that an user assigned identity associated with the storage account should be removed.
