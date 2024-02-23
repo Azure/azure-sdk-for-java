@@ -65,12 +65,6 @@ public final class HandleItem {
     @JsonProperty(value = "LastReconnectTime")
     private DateTimeRfc1123 lastReconnectTime;
 
-    /*
-     * Name of the client machine where the share is being mounted
-     */
-    @JsonProperty(value = "ClientName", required = true)
-    private String clientName;
-
     private static final class AccessRightListWrapper {
         @JacksonXmlProperty(localName = "AccessRight")
         private final List<ShareFileHandleAccessRights> items;
@@ -286,26 +280,6 @@ public final class HandleItem {
      */
     public HandleItem setAccessRights(List<ShareFileHandleAccessRights> accessRights) {
         this.accessRights = new AccessRightListWrapper(accessRights);
-        return this;
-    }
-
-    /**
-     * Get the clientName property: Name of the client machine where the share is being mounted.
-     *
-     * @return the clientName value.
-     */
-    private String getClientName() {
-        return this.clientName;
-    }
-
-    /**
-     * Set the clientName property: Name of the client machine where the share is being mounted.
-     *
-     * @param clientName the clientName value to set.
-     * @return the HandleItem object itself.
-     */
-    private HandleItem setClientName(String clientName) {
-        this.clientName = clientName;
         return this;
     }
 }

@@ -7,9 +7,7 @@ package com.azure.communication.phonenumbers.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** 
- * The PhoneNumberAreaCode model. 
- */
+/** The PhoneNumberAreaCode model. */
 @Immutable
 public final class PhoneNumberAreaCode {
     /*

@@ -3,11 +3,11 @@
 
 package com.azure.storage.queue;
 
-import com.azure.core.util.CoreUtils;
+import java.util.UUID;
 
 class SampleHelper {
     static String generateRandomName(String prefix, int length) {
         int len = length > prefix.length() ? length - prefix.length() : 0;
-        return prefix + CoreUtils.randomUuid().toString().substring(0, len);
+        return prefix + UUID.randomUUID().toString().substring(0, len);
     }
 }

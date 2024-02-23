@@ -5,6 +5,8 @@ package com.azure.storage.blob.nio;
 
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.netty.NettyAsyncHttpClientBuilder;
+import com.azure.core.http.okhttp.OkHttpAsyncHttpClientBuilder;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
@@ -12,7 +14,7 @@ import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.models.CustomMatcher;
 import com.azure.core.test.models.TestProxySanitizer;
 import com.azure.core.test.models.TestProxySanitizerType;
-import com.azure.core.util.CoreUtils;
+import com.azure.core.util.ServiceVersion;
 import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.BlobContainerAsyncClient;
 import com.azure.storage.blob.BlobContainerClient;
@@ -26,18 +28,21 @@ import com.azure.storage.blob.specialized.BlobClientBase;
 import com.azure.storage.blob.specialized.BlockBlobClient;
 import com.azure.storage.common.StorageSharedKeyCredential;
 import com.azure.storage.common.implementation.Constants;
-import com.azure.storage.common.test.shared.StorageCommonTestUtils;
+import com.azure.storage.common.test.shared.ServiceVersionValidationPolicy;
 import com.azure.storage.common.test.shared.TestAccount;
 import com.azure.storage.common.test.shared.TestDataFactory;
 import com.azure.storage.common.test.shared.TestEnvironment;
+import okhttp3.ConnectionPool;
 
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.UncheckedIOException;
+import java.lang.reflect.Method;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileSystem;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -49,7 +54,12 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
+import java.util.Random;
+import java.util.UUID;
+import java.util.concurrent.TimeUnit;
+import java.util.zip.CRC32;
 
 import static com.azure.core.test.utils.TestUtils.assertArraysEqual;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -58,6 +68,10 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class BlobNioTestBase extends TestProxyTestBase {
     protected static final TestEnvironment ENV = TestEnvironment.getInstance();
     protected static final TestDataFactory DATA = TestDataFactory.getInstance();
+    private static final HttpClient NETTY_HTTP_CLIENT = new NettyAsyncHttpClientBuilder().build();
+    private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncHttpClientBuilder()
+        .connectionPool(new ConnectionPool(50, 5, TimeUnit.MINUTES))
+        .build();
 
     // Used to generate stable container names for recording tests requiring multiple containers.
     private int entityNo = 0;
@@ -83,7 +97,7 @@ public class BlobNioTestBase extends TestProxyTestBase {
     @Override
     protected void beforeTest() {
         super.beforeTest();
-        prefix = StorageCommonTestUtils.getCrc32(testContextManager.getTestPlaybackRecordingName());
+        prefix = getCrc32(testContextManager.getTestPlaybackRecordingName());
 
         primaryBlobServiceClient = getServiceClient(ENV.getPrimaryAccount());
         primaryBlobServiceAsyncClient = getServiceAsyncClient(ENV.getPrimaryAccount());
@@ -210,14 +224,18 @@ public class BlobNioTestBase extends TestProxyTestBase {
     }
 
     protected byte[] getRandomByteArray(int size) {
-        return StorageCommonTestUtils.getRandomByteArray(size, testResourceNamer);
+        long seed = UUID.fromString(testResourceNamer.randomUuid()).getMostSignificantBits() & Long.MAX_VALUE;
+        Random rand = new Random(seed);
+        byte[] data = new byte[size];
+        rand.nextBytes(data);
+        return data;
     }
 
     /*
      Size must be an int because ByteBuffer sizes can only be an int. Long is not supported.
      */
     protected ByteBuffer getRandomData(int size) {
-        return StorageCommonTestUtils.getRandomData(size, testResourceNamer);
+        return ByteBuffer.wrap(getRandomByteArray(size));
     }
 
     /*
@@ -225,7 +243,7 @@ public class BlobNioTestBase extends TestProxyTestBase {
      */
     protected File getRandomFile(byte[] bytes) {
         try {
-            File file = File.createTempFile(CoreUtils.randomUuid().toString(), ".txt");
+            File file = File.createTempFile(UUID.randomUUID().toString(), ".txt");
             file.deleteOnExit();
             Files.write(file.toPath(), bytes);
 
@@ -338,12 +356,60 @@ public class BlobNioTestBase extends TestProxyTestBase {
         }
     }
 
+    private static String getCrc32(String input) {
+        CRC32 crc32 = new CRC32();
+        crc32.update(input.getBytes(StandardCharsets.UTF_8));
+        return String.format(Locale.US, "%08X", crc32.getValue()).toLowerCase();
+    }
+
+    @SuppressWarnings("unchecked")
     protected <T extends HttpTrait<T>, E extends Enum<E>> T instrument(T builder) {
-        return StorageCommonTestUtils.instrument(builder, BlobServiceClientBuilder.getDefaultHttpLogOptions(),
-            interceptorManager);
+        builder.httpClient(getHttpClient());
+        if (getTestMode() == TestMode.RECORD) {
+            builder.addPolicy(interceptorManager.getRecordPolicy());
+        }
+
+
+        if (ENV.getServiceVersion() != null) {
+            try {
+                Method serviceVersionMethod = Arrays.stream(builder.getClass().getDeclaredMethods())
+                    .filter(method -> "serviceVersion".equals(method.getName())
+                        && method.getParameterCount() == 1
+                        && ServiceVersion.class.isAssignableFrom(method.getParameterTypes()[0]))
+                    .findFirst()
+                    .orElseThrow(() -> new RuntimeException("Unable to find serviceVersion method for builder: "
+                        + builder.getClass()));
+                Class<E> serviceVersionClass = (Class<E>) serviceVersionMethod.getParameterTypes()[0];
+                ServiceVersion serviceVersion = (ServiceVersion) Enum.valueOf(serviceVersionClass,
+                    ENV.getServiceVersion());
+                serviceVersionMethod.invoke(builder, serviceVersion);
+                builder.addPolicy(new ServiceVersionValidationPolicy(serviceVersion.getVersion()));
+            } catch (ReflectiveOperationException ex) {
+                throw new RuntimeException(ex);
+            }
+        }
+
+        builder.httpLogOptions(BlobServiceClientBuilder.getDefaultHttpLogOptions());
+
+        return builder;
     }
 
     protected HttpClient getHttpClient() {
-        return StorageCommonTestUtils.getHttpClient(interceptorManager);
+        if (getTestMode() != TestMode.PLAYBACK) {
+            switch (ENV.getHttpClientType()) {
+                case NETTY:
+                    return NETTY_HTTP_CLIENT;
+                case OK_HTTP:
+                    return OK_HTTP_CLIENT;
+                default:
+                    throw new IllegalArgumentException("Unknown http client type: " + ENV.getHttpClientType());
+            }
+        } else {
+            return interceptorManager.getPlaybackClient();
+        }
+    }
+
+    public static boolean liveOnly() {
+        return ENV.getTestMode() == TestMode.LIVE;
     }
 }

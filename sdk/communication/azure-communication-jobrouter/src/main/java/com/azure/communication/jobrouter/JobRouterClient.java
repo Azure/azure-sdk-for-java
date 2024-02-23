@@ -1958,8 +1958,7 @@ public final class JobRouterClient {
     public RouterWorker getWorker(String workerId) {
         // Generated convenience method for getWorkerWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return RouterWorkerConstructorProxy
-            .create(getWorkerWithResponse(workerId, requestOptions).getValue().toObject(RouterWorkerInternal.class));
+        return getWorkerWithResponse(workerId, requestOptions).getValue().toObject(RouterWorker.class);
     }
 
     /**

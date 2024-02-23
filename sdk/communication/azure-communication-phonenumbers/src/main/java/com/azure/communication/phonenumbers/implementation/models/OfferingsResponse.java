@@ -4,7 +4,6 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
-import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.communication.phonenumbers.models.PhoneNumberOffering;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -12,7 +11,6 @@ import java.util.List;
 
 /** The OfferingsResponse model. */
 @Immutable
-@Generated
 public final class OfferingsResponse {
     /*
      * Represents the underlying list of offerings.
