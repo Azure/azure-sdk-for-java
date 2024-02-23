@@ -88,10 +88,6 @@ public class EventHubsTracer {
                 InstrumentationScope::close);
     }
 
-    //TODO:
-    // changelog
-    // run stress before/after
-
     /**
      * Used in ServiceBusMessageBatch.tryAddMessage() to start tracing for to-be-sent out messages.
      */
