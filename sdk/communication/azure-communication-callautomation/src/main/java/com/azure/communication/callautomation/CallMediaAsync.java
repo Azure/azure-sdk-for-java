@@ -305,6 +305,7 @@ public final class CallMediaAsync {
 
         throw logger.logExceptionAsError(new IllegalArgumentException(options.getPlaySources().getClass().getCanonicalName()));
     }
+    
     PlayRequest getPlayToAllRequest(PlayToAllOptions options) {
         List<PlaySourceInternal> playSourcesInternal = new ArrayList<>();
         for (PlaySource source: options.getPlaySources()) {

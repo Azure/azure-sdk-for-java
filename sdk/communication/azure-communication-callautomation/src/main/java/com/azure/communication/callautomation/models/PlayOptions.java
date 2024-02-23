@@ -3,7 +3,6 @@
 
 package com.azure.communication.callautomation.models;
 
-
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.core.annotation.Fluent;
 
@@ -40,8 +39,6 @@ public final class PlayOptions {
      */
     private String operationCallbackUrl;
   
- 
-
     /**
      * Constructor
      * @param playSources A List of {@link PlaySource} representing the sources to play.
@@ -141,8 +138,4 @@ public final class PlayOptions {
         this.operationCallbackUrl = operationCallbackUrl;
         return this;
     }
-
- 
-
- 
 }

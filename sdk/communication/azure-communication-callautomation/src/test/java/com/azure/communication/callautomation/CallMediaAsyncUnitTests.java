@@ -80,18 +80,6 @@ public class CallMediaAsyncUnitTests {
     }
 
     @Test
-    public void playFileWithBargeInWithResponseTest() {
-        playOptions = new PlayOptions(playFileSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
-            .setLoop(false)
-            .setOperationContext("operationContext");
-
-        StepVerifier.create(
-            callMedia.playWithResponse(playOptions))
-            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
-            .verifyComplete();
-    }
-
-    @Test
     public void playFileToAllWithResponseTest() {
         playToAllOptions = new PlayToAllOptions(playFileSource)
             .setLoop(false)
@@ -101,6 +89,7 @@ public class CallMediaAsyncUnitTests {
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
+
     @Test
     public void playFileToAllWithBargeInWithResponseTest() {
         playToAllOptions = new PlayToAllOptions(playFileSource)
@@ -112,18 +101,9 @@ public class CallMediaAsyncUnitTests {
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
+
     @Test
     public void playTextWithResponseTest() {
-        playOptions = new PlayOptions(playTextSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
-            .setLoop(false)
-            .setOperationContext("operationContext");
-        StepVerifier.create(
-            callMedia.playWithResponse(playOptions))
-            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
-            .verifyComplete();
-    }
-    @Test
-    public void playTextWithBargeInWithResponseTest() {
         playOptions = new PlayOptions(playTextSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
             .setLoop(false)
             .setOperationContext("operationContext");
@@ -166,18 +146,7 @@ public class CallMediaAsyncUnitTests {
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
             .verifyComplete();
     }
-
-    @Test
-    public void playSsmlWithBargeInWithResponseTest() {
-        playOptions = new PlayOptions(playSsmlSource, Collections.singletonList(new CommunicationUserIdentifier("id")))
-            .setLoop(false)
-            .setOperationContext("operationContext");
-        StepVerifier.create(
-            callMedia.playWithResponse(playOptions))
-            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
-            .verifyComplete();
-    }
-
+    
     @Test
     public void playSsmlToAllWithResponseTest() {
         playToAllOptions = new PlayToAllOptions(playSsmlSource)
