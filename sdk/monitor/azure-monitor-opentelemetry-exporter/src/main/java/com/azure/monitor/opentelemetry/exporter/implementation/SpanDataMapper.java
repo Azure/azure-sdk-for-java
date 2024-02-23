@@ -3,7 +3,6 @@
 
 package com.azure.monitor.opentelemetry.exporter.implementation;
 
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.AbstractTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.ExceptionTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.Exceptions;
@@ -765,9 +764,9 @@ public final class SpanDataMapper {
                     // TODO (trask) map OpenTelemetry exception to Application Insights exception better
                     String stacktrace = event.getAttributes().get(SemanticAttributes.EXCEPTION_STACKTRACE);
                     if (stacktrace != null && !shouldSuppress.test(span, event)) {
-                        String exceptionLogged = event.getAttributes().get(AiSemanticAttributes.EXCEPTION_LOGGED);
-                        if (exceptionLogged == null || !exceptionLogged.equals(stacktrace)) {
-                            consumer.accept(createExceptionTelemetryItem(stacktrace, span, operationName, itemCount));
+                        String exceptionLogged = span.getAttributes().get(AiSemanticAttributes.EXCEPTION_LOGGED);
+                        if (!stacktrace.equals(exceptionLogged)) {
+                            consumer.accept(createExceptionTelemetryItem(event.getAttributes().get(SemanticAttributes.EXCEPTION_STACKTRACE), span, operationName, itemCount));
                         }
                     }
                 }
