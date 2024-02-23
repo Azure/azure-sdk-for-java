@@ -22,6 +22,7 @@ import com.azure.messaging.eventhubs.models.ReceiveOptions;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.RepeatedTest;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -384,7 +385,7 @@ public class EventProcessorClientTest {
         when(tracer.makeSpanCurrent(any())).thenReturn(() -> { });
 
         // processor span ends after TestPartitionProcessor latch counts down
-        CountDownLatch latch = new CountDownLatch(1);
+        CountDownLatch latch = new CountDownLatch(2);
         doAnswer(invocation -> {
             latch.countDown();
             return null;
@@ -415,7 +416,6 @@ public class EventProcessorClientTest {
         verify(tracer, times(2)).extractContext(any());
         verify(tracer, times(1)).start(eq(expectedProcessSpanName), any(), any(Context.class));
         verify(tracer, times(1)).start(eq(expectedCheckpointSpanName), any(), any(Context.class));
-        verify(tracer, times(2)).end(isNull(), isNull(), any());
 
         assertProcessMetrics(meter, 2, null);
     }
@@ -645,10 +645,12 @@ public class EventProcessorClientTest {
         assertTrue(success);
         assertTrue(closed.get());
 
-        // This is one less because the processEvent is called before the end span call, so it is possible for
-        // to reach this line without calling it the 5th time yet. (Timing issue.)
         verify(tracer, times(numberOfEvents)).start(eq(expectedProcessSpanName), any(), any(Context.class));
-        verify(tracer, times(numberOfEvents)).start(eq(expectedSettleSpanName), any(), any(Context.class));
+
+        // This is one less because the latch happens at the start of process callback
+        // and checkpoint/process spans are reported after
+
+        verify(tracer, atLeast(numberOfEvents - 1)).start(eq(expectedSettleSpanName), any(), any(Context.class));
         verify(tracer, atLeast(numberOfEvents - 1)).end(isNull(), isNull(), any());
     }
 

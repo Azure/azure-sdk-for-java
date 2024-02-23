@@ -54,7 +54,6 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
     private static final String SERVER_PORT = "server.port";
     private static final ClientLogger LOGGER = new ClientLogger(InstrumentationPolicy.class);
 
-
     // magic OpenTelemetry string that represents unknown error.
     private static final String OTHER_ERROR_TYPE = "_OTHER";
     private Tracer tracer;
@@ -170,6 +169,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
     private final class TraceableResponse extends HttpResponse {
         private final HttpResponse response;
         private final Context span;
+
         TraceableResponse(HttpResponse response, Context span) {
             super(response.getRequest());
             this.response = response;
@@ -199,8 +199,7 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
 
         @Override
         public Flux<ByteBuffer> getBody() {
-            return Flux.using(
-                () -> span,
+            return Flux.using(() -> span,
                 s -> response.getBody()
                     .doOnError(e -> tracer.end(null, e, s))
                     .doOnCancel(() -> tracer.end(CANCELLED_ERROR_TYPE, null, s)),
@@ -246,12 +245,8 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
         }
 
         private <T> Mono<T> endSpanWhen(Mono<T> publisher) {
-            return Mono.using(
-                () -> span,
-                s -> publisher
-                    .doOnError(e -> tracer.end(null, e, s))
-                    .doOnCancel(() -> tracer.end(CANCELLED_ERROR_TYPE, null, s)),
-                s -> endNoError());
+            return Mono.using(() -> span, s -> publisher.doOnError(e -> tracer.end(null, e, s))
+                .doOnCancel(() -> tracer.end(CANCELLED_ERROR_TYPE, null, s)), s -> endNoError());
         }
 
         private void endNoError() {
