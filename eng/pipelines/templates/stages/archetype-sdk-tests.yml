@@ -1,162 +1,199 @@
-parameters:
-- name: TestName
-  type: string
-  default: 'LiveTest'
-- name: AdditionalPlatforms
-  type: object
-  default: {}
-- name: Clouds
-  type: string
-  default: 'Public'
-- name: SupportedClouds
-  type: string
-  default: 'Public'
-- name: UnsupportedClouds
-  type: string
-  default: ''
-- name: Artifacts
-  type: object
-  default: []
-- name: AdditionalModules
-  type: object
-  default: []
-- name: TestResultsFiles
-  type: object
-  default: ''
-- name: DisableAzureResourceCreation
-  type: boolean
-  default: false
-- name: PreSteps
-  type: object
-  default: []
-- name: PostSteps
-  type: object
-  default: []
-- name: EnvVars
-  type: object
-  default: {}
-- name: MaxParallel
-  type: number
-  default: 0
-- name: BuildInParallel
-  type: boolean
-  default: true
-- name: TimeoutInMinutes
-  type: number
-  default: 60
-- name: Location
-  type: string
-  default: ''
-- name: ServiceDirectory
-  type: string
-  default: not-specified
-- name: TestResourceDirectories
-  type: object
-  default:
-- name: TestSetupSteps
-  type: stepList
-  default: []
-- name: TestMode
-  type: string
-  default: 'LIVE'
-- name: TestVersionSupport
-  type: boolean
-  default: false
-- name: CloudConfig
-  type: object
-  default:
-    Public:
-      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-    Preview:
-      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
-    Canary:
-      SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
-      Location: 'centraluseuap'
-    UsGov:
-      SubscriptionConfiguration: $(sub-config-gov-test-resources)
-    China:
-      SubscriptionConfiguration: $(sub-config-cn-test-resources)
-- name: MatrixConfigs
-  type: object
-  default:
-    - Name: Java_live_test_base
-      Path: eng/pipelines/templates/stages/platform-matrix.json
-      Selection: sparse
-      GenerateVMJobs: true
-- name: AdditionalMatrixConfigs
-  type: object
-  default: []
-- name: MatrixFilters
-  type: object
-  default: []
-- name: MatrixReplace
-  type: object
-  default: []
-- name: PlatformPreSteps
-  type: object
-  default: []
-- name: PlatformPostSteps
-  type: object
-  default: []
-- name: TestGoals
-  type: string
-  default: $(TestGoals)
-- name: TestOptions
-  type: string
-  default: $(TestOptions)
-- name: UseHttpFaultInjector
-  type: boolean
-  default: false
+resources:
+  repositories:
+    - repository: 1ESPipelineTemplates
+      type: git
+      name: 1ESPipelineTemplates/1ESPipelineTemplates
+      ref: refs/tags/release
 
-stages:
-  - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml@self
-    parameters:
-      TestName: ${{ parameters.TestName }}
-      AdditionalPlatforms: ${{ parameters.AdditionalPlatforms }}
-      Clouds: ${{ parameters.Clouds }}
-      SupportedClouds: ${{ parameters.SupportedClouds }}
-      UnsupportedClouds: ${{ parameters.UnsupportedClouds }}
-      Artifacts:
-        - ${{ each artifact in parameters.Artifacts }}:
-          - ${{ artifact }}
-      AdditionalModules:
-        - ${{ each module in parameters.AdditionalModules }}:
-          - ${{ module }}
-      TestResultsFiles: ${{ parameters.TestResultsFiles }}
-      DisableAzureResourceCreation: ${{ parameters.DisableAzureResourceCreation }}
-      PreSteps:
-        - ${{ parameters.PreSteps }}
-      PostSteps:
-        - ${{ parameters.PostSteps }}
-      EnvVars:
-        - ${{ parameters.EnvVars }}
-      MaxParallel: ${{ parameters.MaxParallel }}
-      BuildInParallel: ${{ parameters.BuildInParallel }}
-      TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
-      Location: ${{ parameters.Location }}
-      ServiceDirectory: ${{ parameters.ServiceDirectory }}
-      TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
-      TestSetupSteps:
-        - ${{ parameters.TestSetupSteps}}
-      TestMode: ${{ parameters.TestMode }}
-      TestVersionSupport: ${{ parameters.TestVersionSupport }}
-      CloudConfig: ${{ parameters.CloudConfig }}
-      MatrixConfigs:
-        - ${{ each config in parameters.MatrixConfigs }}:
-          - ${{ config }}
-      AdditionalMatrixConfigs:
-        - ${{ each config in parameters.AdditionalMatrixConfigs }}:
-          - ${{ config }}
-      MatrixFilters:
-        - ${{ each config in parameters.MatrixFilters }}:
-          - ${{ config }}
-      MatrixReplace:
-        - ${{ each config in parameters.MatrixReplace }}:
-          - ${{ config }}
-      PlatformPreSteps:
-        - ${{ parameters.PlatformPreSteps }}
-      PlatformPostSteps:
-        - ${{ parameters.PlatformPostSteps }}
-      TestGoals: ${{ parameters.TestGoals }}
-      TestOptions: ${{ parameters.TestOptions }}
-      UseHttpFaultInjector: ${{ parameters.UseHttpFaultInjector }}
+parameters:
+  - name: TestName
+    type: string
+    default: 'LiveTest'
+  - name: AdditionalPlatforms
+    type: object
+    default: {}
+  - name: Clouds
+    type: string
+    default: 'Public'
+  - name: SupportedClouds
+    type: string
+    default: 'Public'
+  - name: UnsupportedClouds
+    type: string
+    default: ''
+  - name: Artifacts
+    type: object
+    default: []
+  - name: AdditionalModules
+    type: object
+    default: []
+  - name: TestResultsFiles
+    type: object
+    default: ''
+  - name: DisableAzureResourceCreation
+    type: boolean
+    default: false
+  - name: PreSteps
+    type: object
+    default: []
+  - name: PostSteps
+    type: object
+    default: []
+  - name: EnvVars
+    type: object
+    default: {}
+  - name: MaxParallel
+    type: number
+    default: 0
+  - name: BuildInParallel
+    type: boolean
+    default: true
+  - name: TimeoutInMinutes
+    type: number
+    default: 60
+  - name: Location
+    type: string
+    default: ''
+  - name: ServiceDirectory
+    type: string
+    default: not-specified
+  - name: TestResourceDirectories
+    type: object
+    default:
+  - name: TestSetupSteps
+    type: stepList
+    default: []
+  - name: TestMode
+    type: string
+    default: 'LIVE'
+  - name: TestVersionSupport
+    type: boolean
+    default: false
+  - name: CloudConfig
+    type: object
+    default:
+      Public:
+        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+      Preview:
+        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)
+      Canary:
+        SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources)
+        Location: 'centraluseuap'
+      UsGov:
+        SubscriptionConfiguration: $(sub-config-gov-test-resources)
+      China:
+        SubscriptionConfiguration: $(sub-config-cn-test-resources)
+  - name: MatrixConfigs
+    type: object
+    default:
+      - Name: Java_live_test_base
+        Path: eng/pipelines/templates/stages/platform-matrix.json
+        Selection: sparse
+        GenerateVMJobs: true
+  - name: AdditionalMatrixConfigs
+    type: object
+    default: []
+  - name: MatrixFilters
+    type: object
+    default: []
+  - name: MatrixReplace
+    type: object
+    default: []
+  - name: PlatformPreSteps
+    type: object
+    default: []
+  - name: PlatformPostSteps
+    type: object
+    default: []
+  - name: TestGoals
+    type: string
+    default: $(TestGoals)
+  - name: TestOptions
+    type: string
+    default: $(TestOptions)
+  - name: UseHttpFaultInjector
+    type: boolean
+    default: false
+
+extends:
+  ${{ if eq(variables['System.TeamProject'], 'internal') }}:
+    template: v1/1ES.Official.PipelineTemplate.yml@1ESPipelineTemplates
+  ${{ else }}:
+    template: v1/1ES.Unofficial.PipelineTemplate.yml@1ESPipelineTemplates
+  parameters:
+    ${{ if eq(variables['System.TeamProject'], 'internal') }}:
+      sdl:
+        sourceAnalysisPool:
+          name: azsdk-pool-mms-win-2022-1es-pt
+          image: azsdk-pool-mms-win-2022-1espt
+          os: windows
+        eslint:
+          enabled: false
+          justificationForDisabling: 'ESLint injected task has failures because it uses an old version of mkdirp. We should not fail for tools not controlled by the repo. See: https://dev.azure.com/azure-sdk/internal/_build/results?buildId=3499746'
+        codeql:
+          compiled:
+            enabled: false
+            justificationForDisabling: CodeQL times our pipelines out by running for 2+ hours before being force canceled.
+        psscriptanalyzer:
+          compiled: true
+          break: true
+        policy: M365
+        credscan:
+          suppressionsFile: $(Build.SourcesDirectory)/eng/CredScanSuppression.json
+          scanFolder: $(Build.SourcesDirectory)/credscan.tsv
+          toolVersion: 2.3.12.23
+          baselineFiles: $(Build.SourcesDirectory)/eng/<language>.gdnbaselines
+
+    stages:
+      - template: /eng/pipelines/templates/stages/archetype-sdk-tests-isolated.yml@self
+        parameters:
+          TestName: ${{ parameters.TestName }}
+          AdditionalPlatforms: ${{ parameters.AdditionalPlatforms }}
+          Clouds: ${{ parameters.Clouds }}
+          SupportedClouds: ${{ parameters.SupportedClouds }}
+          UnsupportedClouds: ${{ parameters.UnsupportedClouds }}
+          Artifacts:
+            - ${{ each artifact in parameters.Artifacts }}:
+                - ${{ artifact }}
+          AdditionalModules:
+            - ${{ each module in parameters.AdditionalModules }}:
+                - ${{ module }}
+          TestResultsFiles: ${{ parameters.TestResultsFiles }}
+          DisableAzureResourceCreation: ${{ parameters.DisableAzureResourceCreation }}
+          PreSteps:
+            - ${{ parameters.PreSteps }}
+          PostSteps:
+            - ${{ parameters.PostSteps }}
+          EnvVars:
+            - ${{ parameters.EnvVars }}
+          MaxParallel: ${{ parameters.MaxParallel }}
+          BuildInParallel: ${{ parameters.BuildInParallel }}
+          TimeoutInMinutes: ${{ parameters.TimeoutInMinutes }}
+          Location: ${{ parameters.Location }}
+          ServiceDirectory: ${{ parameters.ServiceDirectory }}
+          TestResourceDirectories: ${{ parameters.TestResourceDirectories }}
+          TestSetupSteps:
+            - ${{ parameters.TestSetupSteps}}
+          TestMode: ${{ parameters.TestMode }}
+          TestVersionSupport: ${{ parameters.TestVersionSupport }}
+          CloudConfig: ${{ parameters.CloudConfig }}
+          MatrixConfigs:
+            - ${{ each config in parameters.MatrixConfigs }}:
+                - ${{ config }}
+          AdditionalMatrixConfigs:
+            - ${{ each config in parameters.AdditionalMatrixConfigs }}:
+                - ${{ config }}
+          MatrixFilters:
+            - ${{ each config in parameters.MatrixFilters }}:
+                - ${{ config }}
+          MatrixReplace:
+            - ${{ each config in parameters.MatrixReplace }}:
+                - ${{ config }}
+          PlatformPreSteps:
+            - ${{ parameters.PlatformPreSteps }}
+          PlatformPostSteps:
+            - ${{ parameters.PlatformPostSteps }}
+          TestGoals: ${{ parameters.TestGoals }}
+          TestOptions: ${{ parameters.TestOptions }}
+          UseHttpFaultInjector: ${{ parameters.UseHttpFaultInjector }}
+
