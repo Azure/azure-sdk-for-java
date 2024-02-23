@@ -1,3 +1,46 @@
+
+# Upgrading to 7.15.x
+
+It’s strongly recommended to upgrade to 7.15.x version of Service Bus SDK. The 7.15.x line is a major redesign, resolving long standing performance and reliability concerns. 
+
+The 7.15.x line reduces thread hopping, removes locks and optimizes code in hot path, and reduces memory allocations, overall resulting in up to **x45-50 throughput gain** on ServiceBusProcessor client. 
+
+The 7.15.x also comes with various **reliability improvements** – it addresses several race conditions (e.g. prefetch, credit calculations) and improved error handling resulting in a better reliability in presence of transient issues across various client types.
+
+## Using 7.15.x
+
+The new underlying framework in 7.15.x with improvements is called V2-Stack. The 7.15.x composes both the previous generation of the underlying stack (The stack 7.14.x uses) and the new V2-Stack.
+ 
+Some of the features by default use V2-Stack, while other features require V2-Stack opt-in. The opt-in or opt-out of a specific Stack (V2 vs previous generation) for a feature is accomplished by providing `com.azure.core.util.Configuration` at the time of building the Client.
+
+For example, V2-Stack based Session Receive with ProcessorClient requires opt-in as shown below,
+
+```java
+ServiceBusProcessorClient sessionProcessor = new ServiceBusClientBuilder()
+    .connectionString(Config.CONNECTION_STRING)
+    .configuration(new com.azure.core.util.ConfigurationBuilder()
+        .putProperty("com.azure.messaging.servicebus.session.processor.asyncReceive.v2", "true") // 'false' by default, opt-in for V2-Stack.
+        .build())
+    .sessionProcessor()
+        .....
+```
+
+The following table lists the client types, corresponding configuration names and indicates if Client is enabled by default in V2-Stack or not. For a client that is not on V2-Stack by default, the example shown above can followed to opt-in.
+
+
+|  Client Type    | Configuration-Name  | Is on V2-Stack By default? | 
+| -------- | ---------------------------- |---------------------------- |
+|  Sender and management Client. |  com.azure.messaging.servicebus.sendAndManageRules.v2 |YES |
+|  Non-Session Processor and Reactor Receiver Client. |  com.azure.messaging.servicebus.nonSession.asyncReceive.v2 |YES |
+|  Non-Session Synchronous Receiver Client. |  com.azure.messaging.servicebus.nonSession.syncReceive.v2 |NO |
+|  Session Processor Receiver Client. |  com.azure.messaging.servicebus.session.processor.asyncReceive.v2 |NO |
+|  Session Reactor Receiver Client. |  com.azure.messaging.servicebus.session.reactor.asyncReceive.v2 |NO |
+|  Session Synchronous Receiver Client. |  com.azure.messaging.servicebus.session.syncReceive.v2 |NO |
+
+In addition to using ` com.azure.core.util.Configuration`, the opt-in (and opt-out) can be done by setting same same configuration names using environment variable or system property. 
+
+In the coming months, all features will be on V2-stack by defaults.
+
 # Troubleshooting Service Bus issues
 
 This troubleshooting guide covers failure investigation techniques, common errors for the credential types in the Azure Service Bus Java client library, and mitigation steps to resolve these errors.
@@ -15,7 +58,7 @@ This troubleshooting guide covers failure investigation techniques, common error
   - [Get additional help](#get-additional-help)
     - [Filing GitHub issues](#filing-github-issues)
 
-## Implicit prefetch issue in ServiceBusReceiverClient
+## Implicit prefetch in ServiceBusReceiverClient
 Even after the application disables prefetch in the client builder, the `receiveMessages` API in 
 `ServiceBusReceiverClient` can re-enable prefetch implicitly, which may not be obvious.
 
