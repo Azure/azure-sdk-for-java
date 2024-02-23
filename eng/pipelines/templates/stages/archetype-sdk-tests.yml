@@ -176,9 +176,7 @@ extends:
             - ${{ parameters.TestSetupSteps}}
           TestMode: ${{ parameters.TestMode }}
           TestVersionSupport: ${{ parameters.TestVersionSupport }}
-          CloudConfig: 
-            - ${{ each config in parameters.CloudConfig }}:
-                - ${{ config }}
+          CloudConfig: ${{ parameters.CloudConfig }}
           MatrixConfigs:
             - ${{ each config in parameters.MatrixConfigs }}:
                 - ${{ config }}
