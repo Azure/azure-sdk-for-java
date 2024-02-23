@@ -112,7 +112,7 @@ public class OpenTelemetryHttpPolicyTests {
         request.setHeader(HttpHeaderName.USER_AGENT, "user-agent");
 
         try (Scope scope = parentSpan.makeCurrent()) {
-            createHttpPipeline(azTracer).send(request, tracingContext).block().close();
+            createHttpPipeline(azTracer).send(request, tracingContext).block().getBodyAsBinaryData();
         }
         // Assert
         List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
@@ -181,8 +181,9 @@ public class OpenTelemetryHttpPolicyTests {
     public void clientRequestIdIsStamped() {
         try (Scope scope = tracer.spanBuilder("test").startSpan().makeCurrent()) {
             HttpRequest request = new HttpRequest(HttpMethod.PUT, "https://httpbin.org/hello?there#otel");
-            HttpResponse response = createHttpPipeline(azTracer, new RequestIdPolicy()).send(request).block();
-            response.close();
+            HttpResponse response = createHttpPipeline(azTracer, new RequestIdPolicy()).send(request)
+                .flatMap(r -> r.getBodyAsByteArray().thenReturn(r))
+                .block();
 
             // Assert
             List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
@@ -293,8 +294,8 @@ public class OpenTelemetryHttpPolicyTests {
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/hello")))
             .assertNext(response -> {
+                response.getBodyAsByteArray().block();
                 assertEquals(statusCode, response.getStatusCode());
-                response.close();
             })
             .verifyComplete();
 
@@ -366,10 +367,11 @@ public class OpenTelemetryHttpPolicyTests {
             = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root().with(parentSpan))
                 .addData("az.namespace", "foo");
 
-        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), tracingContext))
+        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), tracingContext)
+                .flatMap(r -> r.getBody().collectList().thenReturn(r))
+            )
             .assertNext(response -> {
                 assertEquals(200, response.getStatusCode());
-                response.close();
             })
             .verifyComplete();
 
@@ -398,9 +400,9 @@ public class OpenTelemetryHttpPolicyTests {
             .tracer(azTracer)
             .build();
 
-        StepVerifier
-            .create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), Context.NONE)
-                .flatMap(response -> response.getBodyAsInputStream().doFinally(i -> response.close())))
+        StepVerifier.create(pipeline
+                .send(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), Context.NONE)
+                .flatMap(response -> response.getBodyAsInputStream()))
             .expectError(IOException.class)
             .verify();
 

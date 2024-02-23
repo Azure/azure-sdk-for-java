@@ -78,7 +78,7 @@ public class EventHubsConsumerInstrumentation {
             return events;
         }
 
-        StartSpanOptions startOptions = tracer.isEnabled() ? tracer.createStartOption(CONSUMER, RECEIVE, partitionId) : null;
+        StartSpanOptions startOptions = tracer.isEnabled() ? tracer.createStartOptions(CONSUMER, RECEIVE, partitionId) : null;
         Integer[] receivedCount = new Integer[]{0};
 
         return Flux.using(

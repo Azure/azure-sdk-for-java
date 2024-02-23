@@ -227,7 +227,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
             .expectComplete()
             .verify(DEFAULT_TIMEOUT);
 
-        assertTrue(latch.await(10, TimeUnit.SECONDS));
+        assertTrue(latch.await(30, TimeUnit.SECONDS));
 
         List<ReadableSpan> spans = customSpanProcessor.getEndedSpans();
 
@@ -282,6 +282,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
 
         EventHubBufferedProducerAsyncClient bufferedProducer = toClose(new EventHubBufferedProducerClientBuilder()
             .connectionString(getConnectionString())
+            .eventHubName(getEventHubName())
             .onSendBatchFailed(failed -> fail("Exception occurred while sending messages." + failed.getThrowable()))
             .maxEventBufferLengthPerPartition(2)
             .maxWaitTime(Duration.ofSeconds(5))
@@ -634,7 +635,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     private void assertMessageSpan(ReadableSpan actual, EventData message) {
         assertEquals(SpanKind.PRODUCER, actual.getKind());
         assertEquals(StatusCode.UNSET, actual.toSpanData().getStatus().getStatusCode());
-        assertEquals(OperationName.CREATE.toString(), actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
+        assertEquals(OperationName.CREATE.getAttributeValue(), actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
         String traceparent = "00-" + actual.getSpanContext().getTraceId() + "-" + actual.getSpanContext().getSpanId() + "-01";
         assertEquals(message.getProperties().get("Diagnostic-Id"), traceparent);
         assertEquals(message.getProperties().get("traceparent"), traceparent);
@@ -729,7 +730,7 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     private void assertCheckpointSpan(ReadableSpan actual, SpanContext parent) {
         assertEquals(SpanKind.INTERNAL, actual.getKind());
         assertEquals(StatusCode.UNSET, actual.toSpanData().getStatus().getStatusCode());
-        assertEquals(OperationName.SETTLE.toString(), actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
+        assertEquals(OperationName.SETTLE.getAttributeValue(), actual.getAttribute(AttributeKey.stringKey("messaging.operation")));
 
         assertEquals(parent.getTraceId(), actual.getSpanContext().getTraceId());
         assertEquals(parent.getSpanId(), actual.getParentSpanContext().getSpanId());
@@ -739,13 +740,13 @@ public class TracingIntegrationTests extends IntegrationTestBase {
     }
 
     private List<ReadableSpan> findSpans(List<ReadableSpan> spans, OperationName operationName) {
-        String spanName = String.format("%s %s", getEventHubName(), operationName);
+        String spanName = String.format("%s %s", getEventHubName(), operationName.getFriendlyName());
         return spans.stream()
             .filter(s -> s.getName().equals(spanName))
             .collect(toList());
     }
 
     private boolean hasOperationName(ReadableSpan span, OperationName operationName) {
-        return operationName.toString().equals(span.getAttribute(AttributeKey.stringKey("messaging.operation")));
+        return operationName.getAttributeValue().equals(span.getAttribute(AttributeKey.stringKey("messaging.operation")));
     }
 }

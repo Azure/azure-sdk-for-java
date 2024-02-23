@@ -55,7 +55,7 @@ class EventHubsProducerInstrumentation {
             return context;
         }
 
-        StartSpanOptions startOptions = tracer.createStartOption(SpanKind.CLIENT, OperationName.PUBLISH, null);
+        StartSpanOptions startOptions = tracer.createStartOptions(SpanKind.CLIENT, OperationName.PUBLISH, null);
         if (batch != null) {
             startOptions.setAttribute(MESSAGING_BATCH_MESSAGE_COUNT, batch.getCount());
             if (batch.getPartitionId() != null) {

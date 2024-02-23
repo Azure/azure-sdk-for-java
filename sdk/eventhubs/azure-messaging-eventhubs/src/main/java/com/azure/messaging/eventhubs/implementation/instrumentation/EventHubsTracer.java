@@ -79,7 +79,7 @@ public class EventHubsTracer {
         return Mono.using(
                 () -> new InstrumentationScope(this, null, null)
                             .setSpan(tracer.start(getSpanName(operationName),
-                                            createStartOption(SpanKind.CLIENT, operationName, partitionId),
+                                    createStartOptions(SpanKind.CLIENT, operationName, partitionId),
                                             Context.NONE)),
                 scope -> publisher
                         .doOnError(scope::setError)
@@ -108,7 +108,7 @@ public class EventHubsTracer {
         }
 
         // Starting the span makes the sampling decision (nothing is logged at this time)
-        StartSpanOptions startOptions = createStartOption(SpanKind.PRODUCER, CREATE, null);
+        StartSpanOptions startOptions = createStartOptions(SpanKind.PRODUCER, CREATE, null);
 
         Context eventSpanContext = tracer.start(getSpanName(CREATE), startOptions, eventContext);
 
@@ -194,7 +194,7 @@ public class EventHubsTracer {
     Context startProcessSpan(Map<String, Object> applicationProperties, Instant enqueuedTime, String partitionId, Context parent) {
         if (isEnabled()) {
             Context remoteContext = extractContext(applicationProperties);
-            StartSpanOptions startOptions = createStartOption(SpanKind.CONSUMER, PROCESS, partitionId)
+            StartSpanOptions startOptions = createStartOptions(SpanKind.CONSUMER, PROCESS, partitionId)
                 .addLink(createLink(remoteContext, null))
                 .setRemoteParent(remoteContext);
 
@@ -211,7 +211,7 @@ public class EventHubsTracer {
 
     Context startProcessSpan(EventBatchContext batchContext, Context parent) {
         if (isEnabled() && batchContext != null && !CoreUtils.isNullOrEmpty(batchContext.getEvents())) {
-            StartSpanOptions startOptions = createStartOption(SpanKind.CONSUMER, PROCESS,
+            StartSpanOptions startOptions = createStartOptions(SpanKind.CONSUMER, PROCESS,
                     batchContext.getPartitionContext().getPartitionId());
             startOptions.setAttribute(MESSAGING_BATCH_MESSAGE_COUNT, batchContext.getEvents().size());
 
@@ -225,12 +225,12 @@ public class EventHubsTracer {
         return parent;
     }
 
-    public StartSpanOptions createStartOption(SpanKind kind, OperationName operationName, String partitionId) {
+    public StartSpanOptions createStartOptions(SpanKind kind, OperationName operationName, String partitionId) {
         StartSpanOptions startOptions = new StartSpanOptions(kind)
                 .setAttribute(MESSAGING_SYSTEM, MESSAGING_SYSTEM_VALUE)
                 .setAttribute(MESSAGING_DESTINATION_NAME, entityName)
                 .setAttribute(SERVER_ADDRESS, fullyQualifiedName)
-                .setAttribute(MESSAGING_OPERATION, operationName.toString());
+                .setAttribute(MESSAGING_OPERATION, operationName.getAttributeValue());
 
         if (consumerGroup != null) {
             startOptions.setAttribute(MESSAGING_EVENTHUBS_CONSUMER_GROUP, consumerGroup);
@@ -271,7 +271,7 @@ public class EventHubsTracer {
     }
 
     private String getSpanName(OperationName operationName) {
-        return entityName + " " + operationName;
+        return entityName + " " + operationName.getFriendlyName();
     }
 
     private static boolean canModifyApplicationProperties(Map<String, Object> applicationProperties) {

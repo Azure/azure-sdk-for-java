@@ -50,6 +50,7 @@ import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.util.context.ContextView;
 
 import java.nio.charset.StandardCharsets;
 import java.time.Duration;
@@ -58,6 +59,8 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -72,6 +75,7 @@ import static com.azure.messaging.eventhubs.implementation.instrumentation.Opera
 import static io.opentelemetry.api.trace.SpanKind.CONSUMER;
 import static io.opentelemetry.api.trace.SpanKind.INTERNAL;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertSame;
@@ -438,19 +442,12 @@ public class EventHubsConsumerInstrumentationTests {
 
         String partitionId = "0";
 
-        CheckpointStore sample = new SampleCheckpointStore();
-        CheckpointStore store = InstrumentedCheckpointStore.create(error == null ? sample : new ThrowingCheckpointStore(sample, error),
+        CheckpointStore store = InstrumentedCheckpointStore.create(
+                new TestCheckpointStore(i -> error == null ? i : Mono.error(error)),
                 instrumentation);
-        Checkpoint checkpoint = new Checkpoint()
-                .setFullyQualifiedNamespace(FQDN)
-                .setEventHubName(ENTITY_NAME)
-                .setSequenceNumber(1L)
-                .setPartitionId(partitionId)
-                .setOffset(2L)
-                .setConsumerGroup(CONSUMER_GROUP);
 
         StepVerifier.FirstStep<Void> stepVerifier =
-                StepVerifier.create(store.updateCheckpoint(checkpoint));
+                StepVerifier.create(store.updateCheckpoint(createCheckpoint(partitionId)));
 
         if (cancel) {
             stepVerifier.thenCancel().verify();
@@ -464,6 +461,47 @@ public class EventHubsConsumerInstrumentationTests {
         assertCheckpointSpan(partitionId, expectedErrorType, spanDescription);
     }
 
+    @Test
+    @SuppressWarnings("try")
+    public void checkpointPassesContextToDownstream() {
+        EventHubsConsumerInstrumentation instrumentation = new EventHubsConsumerInstrumentation(tracer, meter,
+                FQDN, ENTITY_NAME, CONSUMER_GROUP, false);
+
+        String partitionId = "0";
+
+        AtomicReference<ContextView> capturedContext = new AtomicReference<>();
+
+        CheckpointStore store = InstrumentedCheckpointStore.create(
+                new TestCheckpointStore(inner -> Mono.deferContextual(ctx -> {
+                    capturedContext.set(ctx);
+                    return inner;
+                })),
+                instrumentation);
+
+        StepVerifier.create(store.updateCheckpoint(createCheckpoint(partitionId))
+                        .contextWrite(ctx -> ctx.put("foo", "bar")))
+            .expectComplete()
+            .verify();
+
+        // testing internal details - we should have trace-context key with otel span in the context
+        // and also client-method-call-flag set by azure-core OtelTracer used to suppress nested spans
+        assertTrue((Boolean) capturedContext.get().get("client-method-call-flag"));
+        assertInstanceOf(io.opentelemetry.context.Context.class, capturedContext.get().get("trace-context"));
+        assertEquals("bar", capturedContext.get().get("foo"));
+
+        assertCheckpointDuration(partitionId, null);
+        assertCheckpointSpan(partitionId, null, null);
+    }
+
+    private static Checkpoint createCheckpoint(String partitionId) {
+        return new Checkpoint()
+                .setFullyQualifiedNamespace(FQDN)
+                .setEventHubName(ENTITY_NAME)
+                .setSequenceNumber(1L)
+                .setPartitionId(partitionId)
+                .setOffset(2L)
+                .setConsumerGroup(CONSUMER_GROUP);
+    }
     private static Message createMessage(Instant enqueuedTime) {
         Message message = Message.Factory.create();
         message.setMessageAnnotations(new MessageAnnotations(Collections.singletonMap(Symbol.getSymbol(ENQUEUED_TIME_UTC_ANNOTATION_NAME.getValue()), enqueuedTime)));
@@ -591,12 +629,17 @@ public class EventHubsConsumerInstrumentationTests {
         return duration.toNanos() / 1_000_000_000.0;
     }
 
-    private static class ThrowingCheckpointStore implements CheckpointStore {
+    private static class TestCheckpointStore implements CheckpointStore {
         private final CheckpointStore inner;
-        private final Throwable exception;
-        ThrowingCheckpointStore(CheckpointStore inner, Throwable exception) {
-            this.exception = exception;
+        private final Function<Mono<Void>, Mono<Void>> onUpdateCheckpoint;
+
+        TestCheckpointStore(CheckpointStore inner, Function<Mono<Void>, Mono<Void>> onUpdateCheckpoint) {
+            this.onUpdateCheckpoint = onUpdateCheckpoint;
             this.inner = inner;
+        }
+
+        TestCheckpointStore(Function<Mono<Void>, Mono<Void>> onCheckpoint) {
+            this(new SampleCheckpointStore(), onCheckpoint);
         }
 
         @Override
@@ -616,7 +659,7 @@ public class EventHubsConsumerInstrumentationTests {
 
         @Override
         public Mono<Void> updateCheckpoint(Checkpoint checkpoint) {
-            return Mono.defer(() -> Mono.error(exception));
+            return onUpdateCheckpoint.apply(inner.updateCheckpoint(checkpoint));
         }
     }
 }
