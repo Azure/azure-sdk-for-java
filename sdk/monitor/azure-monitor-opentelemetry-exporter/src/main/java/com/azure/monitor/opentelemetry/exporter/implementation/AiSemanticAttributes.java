@@ -97,7 +97,7 @@ public final class AiSemanticAttributes {
     public static final AttributeKey<Boolean> IS_PRE_AGGREGATED =
         AttributeKey.booleanKey("applicationinsights.internal.is_pre_aggregated");
 
-    public static final AttributeKey<String> EXCEPTION_LOGGED =
+    public static final AttributeKey<String> LOGGED_EXCEPTION =
         AttributeKey.stringKey("applicationinsights.internal.exception_logged");
 
     // These attributes are specific for Azure Function and are added to Application Insights traces'

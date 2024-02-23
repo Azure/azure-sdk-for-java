@@ -764,7 +764,7 @@ public final class SpanDataMapper {
                     // TODO (trask) map OpenTelemetry exception to Application Insights exception better
                     String stacktrace = event.getAttributes().get(SemanticAttributes.EXCEPTION_STACKTRACE);
                     if (stacktrace != null && !shouldSuppress.test(span, event)) {
-                        String exceptionLogged = span.getAttributes().get(AiSemanticAttributes.EXCEPTION_LOGGED);
+                        String exceptionLogged = span.getAttributes().get(AiSemanticAttributes.LOGGED_EXCEPTION);
                         if (!stacktrace.equals(exceptionLogged)) {
                             consumer.accept(createExceptionTelemetryItem(event.getAttributes().get(SemanticAttributes.EXCEPTION_STACKTRACE), span, operationName, itemCount));
                         }
