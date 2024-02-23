@@ -1,9 +1,9 @@
 
 # Upgrading to 7.15.x
 
-It’s strongly recommended to upgrade to 7.15.x version of Service Bus SDK. The 7.15.x line is a major redesign, resolving long standing performance and reliability concerns. 
+Any issue encountered should first be attempted to be solved by upgrading to 7.15.x version of Service Bus SDK. The 7.15.x line is a major redesign, resolving long standing performance and reliability concerns. 
 
-The 7.15.x line reduces thread hopping, removes locks and optimizes code in hot path, and reduces memory allocations, overall resulting in up to **x45-50 throughput gain** on ServiceBusProcessor client. 
+The 7.15.x line reduces thread hopping, removes locks and optimizes code in hot paths, and reduces memory allocations, overall resulting in up to **x45-50 throughput gain** on ServiceBusProcessor client. 
 
 The 7.15.x also comes with various **reliability improvements** – it addresses several race conditions (e.g. prefetch, credit calculations) and improved error handling resulting in a better reliability in presence of transient issues across various client types.
 
