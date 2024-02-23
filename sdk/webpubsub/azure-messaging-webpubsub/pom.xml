@@ -46,7 +46,7 @@
     <dependency>
       <groupId>com.nimbusds</groupId>
       <artifactId>nimbus-jose-jwt</artifactId>
-      <version>9.31</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
+      <version>9.37.3</version> <!-- {x-version-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
     </dependency>
 
     <!-- Test dependencies -->
@@ -129,7 +129,7 @@
           <rules>
             <bannedDependencies>
               <includes>
-                <include>com.nimbusds:nimbus-jose-jwt:[9.31]</include> <!-- {x-include-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
+                <include>com.nimbusds:nimbus-jose-jwt:[9.37.3]</include> <!-- {x-include-update;com.nimbusds:nimbus-jose-jwt;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
