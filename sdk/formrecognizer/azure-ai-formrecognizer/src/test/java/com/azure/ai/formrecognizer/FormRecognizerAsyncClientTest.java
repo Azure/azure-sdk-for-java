@@ -765,37 +765,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         }, CONTENT_FORM_JPG);
     }
 
-    /**
-     * Verify that custom form with damaged PDF file.
-     */
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeCustomFormDamagedPdf(HttpClient httpClient,
-                                              FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        damagedPdfDataRunner((data, dataLength) ->
-            beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
-                    getFormTrainingAsyncClient(httpClient, serviceVersion)
-                        .beginTraining(trainingFilesUrl, useTrainingLabels)
-                            .setPollInterval(durationTestMode)
-                            .getSyncPoller();
-                trainingPoller.waitForCompletion();
-
-                HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-                    () -> client.beginRecognizeCustomForms(trainingPoller.getFinalResult().getModelId(),
-                        toFluxByteBuffer(data),
-                        dataLength,
-                        new RecognizeCustomFormsOptions().setFieldElementsIncluded(true))
-                            .setPollInterval(durationTestMode)
-                            .getSyncPoller().getFinalResult());
-
-                FormRecognizerErrorInformation errorInformation =
-                    (FormRecognizerErrorInformation) httpResponseException.getValue();
-                assertEquals("Invalid input file.", errorInformation.getMessage());
-            }));
-    }
-
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeCustomFormUrlLabeledDataWithSelectionMark(HttpClient httpClient,

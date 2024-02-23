@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.FormContentType;
@@ -8,26 +11,16 @@ import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpPipeline;
-import com.azure.core.http.HttpPipelineBuilder;
-import com.azure.core.http.HttpRequest;
-import com.azure.core.http.HttpResponse;
-import com.azure.core.test.http.MockHttpResponse;
-import com.azure.core.test.http.NoOpHttpClient;
 import com.azure.core.util.polling.SyncPoller;
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.MethodOrderer;
 import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
-import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
 
 import java.time.Duration;
-import java.util.Collections;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicReference;
 
 import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.CONTENT_FORM_JPG;
@@ -487,6 +480,30 @@ public class CustomModelFormAsyncTest extends FormRecognizerClientTestBase {
             syncPoller.waitForCompletion();
             validateJpegCustomForm(syncPoller.getFinalResult(), true, 1, false);
         }, CONTENT_FORM_JPG);
+    }
+
+    /**
+     * Verify that custom form with damaged PDF file.
+     */
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeCustomFormDamagedPdf(HttpClient httpClient,
+                                              FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildAsyncClient();
+        damagedPdfDataRunner((data, dataLength) -> {
+
+            HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
+                () -> client.beginRecognizeCustomForms(unLabeledModelId[0],
+                        toFluxByteBuffer(data),
+                        dataLength,
+                        new RecognizeCustomFormsOptions().setFieldElementsIncluded(true))
+                    .setPollInterval(durationTestMode)
+                    .getSyncPoller().getFinalResult());
+
+            FormRecognizerErrorInformation errorInformation =
+                (FormRecognizerErrorInformation) httpResponseException.getValue();
+            assertEquals("Invalid input file.", errorInformation.getMessage());
+        });
     }
 
     private String getPreComputedMultipageUnlabeledModelId(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {

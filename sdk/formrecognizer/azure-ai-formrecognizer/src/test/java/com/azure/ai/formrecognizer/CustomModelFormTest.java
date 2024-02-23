@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.ai.formrecognizer;
 
 import com.azure.ai.formrecognizer.models.CreateComposedModelOptions;
@@ -293,7 +296,6 @@ public class CustomModelFormTest extends FormRecognizerClientTestBase {
                                                                  FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();
         dataRunner((data, dataLength) -> {
-
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
                 = client.beginRecognizeCustomForms(
                     labeledModelId[0],

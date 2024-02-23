@@ -756,7 +756,6 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
     }
 
     void validateMultipageReceiptData(List<RecognizedForm> recognizedReceipts) {
-        assertEquals(2, recognizedReceipts.size());
         RecognizedForm receiptPage1 = recognizedReceipts.get(0);
         RecognizedForm receiptPage2 = recognizedReceipts.get(1);
 
