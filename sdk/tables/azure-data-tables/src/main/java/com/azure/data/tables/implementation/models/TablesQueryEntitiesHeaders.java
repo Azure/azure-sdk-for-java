@@ -53,8 +53,6 @@ public final class TablesQueryEntitiesHeaders {
     private static final HttpHeaderName X_MS_CONTINUATION_NEXT_ROW_KEY
         = HttpHeaderName.fromString("x-ms-continuation-NextRowKey");
 
-    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
-
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of TablesQueryEntitiesHeaders class.
@@ -65,7 +63,7 @@ public final class TablesQueryEntitiesHeaders {
         this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
         this.xMsContinuationNextPartitionKey = rawHeaders.getValue(X_MS_CONTINUATION_NEXT_PARTITION_KEY);
         this.xMsContinuationNextRowKey = rawHeaders.getValue(X_MS_CONTINUATION_NEXT_ROW_KEY);
-        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        this.xMsRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_REQUEST_ID);
         this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
         String date = rawHeaders.getValue(HttpHeaderName.DATE);
         if (date != null) {

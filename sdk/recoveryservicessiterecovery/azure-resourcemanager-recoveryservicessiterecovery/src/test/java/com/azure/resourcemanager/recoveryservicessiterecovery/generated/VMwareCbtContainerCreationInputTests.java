@@ -10,8 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.VMwareCbtCo
 public final class VMwareCbtContainerCreationInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VMwareCbtContainerCreationInput model =
-            BinaryData.fromString("{\"instanceType\":\"VMwareCbt\"}").toObject(VMwareCbtContainerCreationInput.class);
+        VMwareCbtContainerCreationInput model
+            = BinaryData.fromString("{\"instanceType\":\"VMwareCbt\"}").toObject(VMwareCbtContainerCreationInput.class);
     }
 
     @org.junit.jupiter.api.Test

@@ -10,11 +10,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.CriticalJob
 public final class CriticalJobHistoryDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CriticalJobHistoryDetails model =
-            BinaryData
-                .fromString(
-                    "{\"jobName\":\"iplrbpbewtghfgb\",\"jobId\":\"gw\",\"startTime\":\"2021-01-14T04:37:45Z\",\"jobStatus\":\"v\"}")
-                .toObject(CriticalJobHistoryDetails.class);
+        CriticalJobHistoryDetails model = BinaryData.fromString(
+            "{\"jobName\":\"iplrbpbewtghfgb\",\"jobId\":\"gw\",\"startTime\":\"2021-01-14T04:37:45Z\",\"jobStatus\":\"v\"}")
+            .toObject(CriticalJobHistoryDetails.class);
     }
 
     @org.junit.jupiter.api.Test

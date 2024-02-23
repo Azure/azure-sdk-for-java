@@ -17,6 +17,7 @@ module com.azure.core.experimental {
     opens com.azure.core.experimental.util.polling.implementation to com.azure.core, com.fasterxml.jackson.databind;
 
     uses com.azure.core.experimental.serializer.AvroSerializerProvider;
+
     provides com.azure.core.util.tracing.TracerProvider
         with com.azure.core.experimental.util.tracing.LoggingTracerProvider;
 }

@@ -100,6 +100,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
     private final AtomicReference<SynchronousMessageSubscriber> synchronousMessageSubscriber = new AtomicReference<>();
     /* To ensure synchronousMessageSubscriber is subscribed only once. */
     private final ReentrantLock createSubscriberLock = new ReentrantLock();
+    private final boolean isV2;
+    private final SynchronousReceiver syncReceiver;
 
     private final ServiceBusTracer tracer;
     /**
@@ -115,6 +117,8 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
         this.asyncClient = Objects.requireNonNull(asyncClient, "'asyncClient' cannot be null.");
         this.operationTimeout = Objects.requireNonNull(operationTimeout, "'operationTimeout' cannot be null.");
         this.isPrefetchDisabled = isPrefetchDisabled;
+        this.isV2 = asyncClient.isV2();
+        this.syncReceiver = new SynchronousReceiver(LOGGER, asyncClient);
         this.tracer = asyncClient.getInstrumentation().getTracer();
     }
 
@@ -559,6 +563,10 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
                 new IllegalArgumentException("'maxWaitTime' cannot be zero or less. maxWaitTime: " + maxWaitTime));
         }
 
+        if (isV2) {
+            return syncReceiver.receive(maxMessages, maxWaitTime);
+        }
+
         // There are two subscribers to this emitter. One is the timeout between messages subscription in
         // SynchronousReceiverWork.start() and the other is the IterableStream(emitter.asFlux());
         // Since the subscriptions may happen at different times, we want to replay results to downstream subscribers.
@@ -812,6 +820,9 @@ public final class ServiceBusReceiverClient implements AutoCloseable {
      */
     @Override
     public void close() {
+        if (isV2) {
+            syncReceiver.dispose();
+        }
         SynchronousMessageSubscriber messageSubscriber = synchronousMessageSubscriber.get();
         if (messageSubscriber != null && !messageSubscriber.isDisposed()) {
             messageSubscriber.dispose();

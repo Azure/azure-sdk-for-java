@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Wrapper model for OSVersion to include version and service pack info. */
+/**
+ * Wrapper model for OSVersion to include version and service pack info.
+ */
 @Fluent
 public final class OSVersionWrapper {
     /*
@@ -22,13 +24,15 @@ public final class OSVersionWrapper {
     @JsonProperty(value = "servicePack")
     private String servicePack;
 
-    /** Creates an instance of OSVersionWrapper class. */
+    /**
+     * Creates an instance of OSVersionWrapper class.
+     */
     public OSVersionWrapper() {
     }
 
     /**
      * Get the version property: The version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -37,7 +41,7 @@ public final class OSVersionWrapper {
 
     /**
      * Set the version property: The version.
-     *
+     * 
      * @param version the version value to set.
      * @return the OSVersionWrapper object itself.
      */
@@ -48,7 +52,7 @@ public final class OSVersionWrapper {
 
     /**
      * Get the servicePack property: The service pack.
-     *
+     * 
      * @return the servicePack value.
      */
     public String servicePack() {
@@ -57,7 +61,7 @@ public final class OSVersionWrapper {
 
     /**
      * Set the servicePack property: The service pack.
-     *
+     * 
      * @param servicePack the servicePack value to set.
      * @return the OSVersionWrapper object itself.
      */
@@ -68,7 +72,7 @@ public final class OSVersionWrapper {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

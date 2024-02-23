@@ -33,26 +33,21 @@ public class AddHeadersFromContextPolicyTest {
         headers.set(HttpHeaderName.REFERER, "my-header1-value");
         headers.set(HttpHeaderName.LOCATION, "my-header2-value");
 
-        final HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new NoOpHttpClient() {
-                @Override
-                public Mono<HttpResponse> send(HttpRequest request) {
-                    Assertions.assertEquals(request.getHeaders().getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID),
-                        customRequestId);
-                    Assertions.assertEquals(request.getHeaders().getValue(HttpHeaderName.REFERER), "my-header1-value");
-                    Assertions.assertEquals(request.getHeaders().getValue(HttpHeaderName.LOCATION), "my-header2-value");
-                    return Mono.just(mockResponse);
-                }
-            })
-            .policies(new RequestIdPolicy())
-            .policies(new AddHeadersFromContextPolicy())
-            .build();
+        final HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(new NoOpHttpClient() {
+            @Override
+            public Mono<HttpResponse> send(HttpRequest request) {
+                Assertions.assertEquals(request.getHeaders().getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID),
+                    customRequestId);
+                Assertions.assertEquals(request.getHeaders().getValue(HttpHeaderName.REFERER), "my-header1-value");
+                Assertions.assertEquals(request.getHeaders().getValue(HttpHeaderName.LOCATION), "my-header2-value");
+                return Mono.just(mockResponse);
+            }
+        }).policies(new RequestIdPolicy()).policies(new AddHeadersFromContextPolicy()).build();
 
         SyncAsyncExtension.execute(
             () -> pipeline.sendSync(new HttpRequest(HttpMethod.GET, createUrl("http://localhost/")),
                 new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers)),
             () -> pipeline.send(new HttpRequest(HttpMethod.GET, createUrl("http://localhost/")),
-                new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers))
-        );
+                new Context(AddHeadersFromContextPolicy.AZURE_REQUEST_HTTP_HEADERS_KEY, headers)));
     }
 }

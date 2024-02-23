@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Input for remove disk(s) operation. */
+/**
+ * Input for remove disk(s) operation.
+ */
 @Fluent
 public final class RemoveDisksInput {
     /*
@@ -16,13 +18,15 @@ public final class RemoveDisksInput {
     @JsonProperty(value = "properties")
     private RemoveDisksInputProperties properties;
 
-    /** Creates an instance of RemoveDisksInput class. */
+    /**
+     * Creates an instance of RemoveDisksInput class.
+     */
     public RemoveDisksInput() {
     }
 
     /**
      * Get the properties property: Remove disk input properties.
-     *
+     * 
      * @return the properties value.
      */
     public RemoveDisksInputProperties properties() {
@@ -31,7 +35,7 @@ public final class RemoveDisksInput {
 
     /**
      * Set the properties property: Remove disk input properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the RemoveDisksInput object itself.
      */
@@ -42,7 +46,7 @@ public final class RemoveDisksInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

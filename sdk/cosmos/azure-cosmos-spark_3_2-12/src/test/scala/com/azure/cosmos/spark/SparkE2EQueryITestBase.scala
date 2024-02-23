@@ -2,12 +2,16 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.CosmosAsyncClient
 import com.azure.cosmos.implementation.{SparkBridgeImplementationInternal, TestConfigurations, Utils}
-import com.azure.cosmos.models.{CosmosContainerProperties, CosmosItemRequestOptions, PartitionKey, PartitionKeyDefinition, PartitionKeyDefinitionVersion, PartitionKind, ThroughputProperties}
+import com.azure.cosmos.models.{CosmosContainerProperties, CosmosItemIdentity, CosmosItemRequestOptions, PartitionKey, PartitionKeyDefinition, PartitionKeyDefinitionVersion, PartitionKind, ThroughputProperties}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.udf.{GetCosmosItemIdentityValue, GetFeedRangeForPartitionKeyValue}
-import com.fasterxml.jackson.databind.ObjectMapper
+import com.fasterxml.jackson.core.JsonParser
+import com.fasterxml.jackson.databind.{DeserializationFeature, ObjectMapper, SerializationFeature}
 import com.fasterxml.jackson.databind.node.ObjectNode
+import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.fasterxml.jackson.module.scala.DefaultScalaModule
 import org.apache.spark.sql.functions.expr
 import org.apache.spark.sql.types.StringType
 
@@ -97,7 +101,50 @@ abstract class SparkE2EQueryITestBase
     // assertMetrics(meterRegistry, "cosmos.client.rntbd.addressResolution", expectedToFind = true)
   }
 
-  private def insertDummyValue() : Unit = {
+  "cosmos client" can "be retrieved from cache" in {
+    val cosmosEndpoint = TestConfigurations.HOST
+    val cosmosMasterKey = TestConfigurations.MASTER_KEY
+
+    val cfg = Map("spark.cosmos.accountEndpoint" -> cosmosEndpoint,
+      "spark.cosmos.accountKey" -> cosmosMasterKey,
+      "spark.cosmos.database" -> cosmosDatabase,
+      "spark.cosmos.container" -> cosmosContainer,
+    )
+    val clientFromCache = com.azure.cosmos.spark.udf.CosmosAsyncClientCache
+      .getCosmosClientFromCache(cfg)
+      .getClient
+      .asInstanceOf[CosmosAsyncClient]
+    val dbResponse = clientFromCache.getDatabase(cosmosDatabase).read().block()
+
+    dbResponse.getProperties.getId shouldEqual cosmosDatabase
+
+    val idOfTestDoc = insertDummyValue()
+    val itemIdentities = new util.ArrayList[CosmosItemIdentity]()
+    itemIdentities.add(new CosmosItemIdentity(new PartitionKey(idOfTestDoc), idOfTestDoc))
+    val response = clientFromCache
+      .getDatabase(cosmosDatabase)
+      .getContainer(cosmosContainer)
+      .readMany(itemIdentities, classOf[ObjectNode])
+      .block()
+
+    val customObjectMapper = new com.fasterxml.jackson.databind.ObjectMapper()
+    customObjectMapper.registerModule(new JavaTimeModule())
+    customObjectMapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
+    customObjectMapper.registerModule(new DefaultScalaModule())
+    customObjectMapper.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+    customObjectMapper.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+
+    val returnValues = response.getResults.asScala.map(shadedObjectNode => {
+      val json: String = shadedObjectNode.toString();
+      customObjectMapper.readValue(json, classOf[TestScalaDoc]);
+    })
+
+    returnValues.size shouldEqual 1
+
+    clientFromCache.close()
+  }
+
+  private def insertDummyValue() : String = {
     val id = UUID.randomUUID().toString
 
     val rawItem = s"""
@@ -114,6 +161,8 @@ abstract class SparkE2EQueryITestBase
 
     val container = cosmosClient.getDatabase(cosmosDatabase).getContainer(cosmosContainer)
     container.createItem(objectNode).block()
+
+    id
   }
 
   "spark query" can "support StringStartsWith" in {

@@ -9,7 +9,8 @@ import com.azure.core.util.TelemetryAttributes;
 /**
  * A counter instrument that records {@code long} values.
  *
- * <p>Counters only allow adding positive values, and guarantee the resulting metrics will be
+ * <p>
+ * Counters only allow adding positive values, and guarantee the resulting metrics will be
  * always-increasing monotonic sums.
  */
 public interface LongCounter {
@@ -21,7 +22,6 @@ public interface LongCounter {
      * @param context The explicit context to associate with this measurement.
      */
     void add(long value, TelemetryAttributes attributes, Context context);
-
 
     /**
      * Flag indicating if metric implementation is detected and functional, use it to minimize performance impact associated with metrics,

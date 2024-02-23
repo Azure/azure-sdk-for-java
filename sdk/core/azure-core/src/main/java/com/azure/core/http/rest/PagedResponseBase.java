@@ -35,7 +35,7 @@ public class PagedResponseBase<H, T> implements PagedResponse<T> {
      */
     @SuppressWarnings("deprecation")
     public PagedResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, Page<T> page,
-                             H deserializedHeaders) {
+        H deserializedHeaders) {
         this(request, statusCode, headers, page.getItems(), page.getContinuationToken(), deserializedHeaders);
     }
 
@@ -51,7 +51,7 @@ public class PagedResponseBase<H, T> implements PagedResponse<T> {
      * @param deserializedHeaders The headers, deserialized into an instance of type H.
      */
     public PagedResponseBase(HttpRequest request, int statusCode, HttpHeaders headers, List<T> items,
-                             String continuationToken, H deserializedHeaders) {
+        String continuationToken, H deserializedHeaders) {
         this.request = request;
         this.statusCode = statusCode;
         this.headers = headers;

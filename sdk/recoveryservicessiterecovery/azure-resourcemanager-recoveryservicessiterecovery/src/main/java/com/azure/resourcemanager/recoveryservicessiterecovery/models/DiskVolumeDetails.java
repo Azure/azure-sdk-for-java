@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Volume details. */
+/**
+ * Volume details.
+ */
 @Fluent
 public final class DiskVolumeDetails {
     /*
@@ -22,13 +24,15 @@ public final class DiskVolumeDetails {
     @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of DiskVolumeDetails class. */
+    /**
+     * Creates an instance of DiskVolumeDetails class.
+     */
     public DiskVolumeDetails() {
     }
 
     /**
      * Get the label property: The volume label.
-     *
+     * 
      * @return the label value.
      */
     public String label() {
@@ -37,7 +41,7 @@ public final class DiskVolumeDetails {
 
     /**
      * Set the label property: The volume label.
-     *
+     * 
      * @param label the label value to set.
      * @return the DiskVolumeDetails object itself.
      */
@@ -48,7 +52,7 @@ public final class DiskVolumeDetails {
 
     /**
      * Get the name property: The volume name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -57,7 +61,7 @@ public final class DiskVolumeDetails {
 
     /**
      * Set the name property: The volume name.
-     *
+     * 
      * @param name the name value to set.
      * @return the DiskVolumeDetails object itself.
      */
@@ -68,7 +72,7 @@ public final class DiskVolumeDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

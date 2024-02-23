@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Request to failover a process server. */
+/**
+ * Request to failover a process server.
+ */
 @Fluent
 public final class FailoverProcessServerRequest {
     /*
@@ -16,13 +18,15 @@ public final class FailoverProcessServerRequest {
     @JsonProperty(value = "properties")
     private FailoverProcessServerRequestProperties properties;
 
-    /** Creates an instance of FailoverProcessServerRequest class. */
+    /**
+     * Creates an instance of FailoverProcessServerRequest class.
+     */
     public FailoverProcessServerRequest() {
     }
 
     /**
      * Get the properties property: The properties of the PS Failover request.
-     *
+     * 
      * @return the properties value.
      */
     public FailoverProcessServerRequestProperties properties() {
@@ -31,7 +35,7 @@ public final class FailoverProcessServerRequest {
 
     /**
      * Set the properties property: The properties of the PS Failover request.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the FailoverProcessServerRequest object itself.
      */
@@ -42,7 +46,7 @@ public final class FailoverProcessServerRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

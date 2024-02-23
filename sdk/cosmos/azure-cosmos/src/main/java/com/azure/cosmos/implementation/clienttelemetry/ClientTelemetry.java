@@ -98,9 +98,6 @@ public class ClientTelemetry {
     private final CosmosClientTelemetryConfig clientTelemetryConfig;
     private final HttpClient httpClient;
     private final HttpClient metadataHttpClient;
-    private final ScheduledThreadPoolExecutor scheduledExecutorService = new ScheduledThreadPoolExecutor(1,
-        new CosmosDaemonThreadFactory("ClientTelemetry-" + instanceCount.incrementAndGet()));
-    private final Scheduler scheduler = Schedulers.fromExecutor(scheduledExecutorService);
     private static final Logger logger = LoggerFactory.getLogger(ClientTelemetry.class);
     private volatile boolean isClosed;
 
@@ -223,7 +220,6 @@ public class ClientTelemetry {
 
     public void close() {
         this.isClosed = true;
-        this.scheduledExecutorService.shutdown();
         logger.debug("GlobalEndpointManager closed.");
     }
 
@@ -346,7 +342,7 @@ public class ClientTelemetry {
                     ". Exception: ", ex);
                 clearDataForNextRun();
                 return this.sendClientTelemetry();
-            }).subscribeOn(scheduler);
+            }).subscribeOn(CosmosSchedulers.CLIENT_TELEMETRY_BOUNDED_ELASTIC);
     }
 
     private void populateAzureVmMetaData(AzureVMMetadata azureVMMetadata) {

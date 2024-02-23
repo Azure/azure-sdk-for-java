@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.FabricSpeci
 public final class FabricSpecificCreateNetworkMappingInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FabricSpecificCreateNetworkMappingInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"FabricSpecificCreateNetworkMappingInput\"}")
+        FabricSpecificCreateNetworkMappingInput model
+            = BinaryData.fromString("{\"instanceType\":\"FabricSpecificCreateNetworkMappingInput\"}")
                 .toObject(FabricSpecificCreateNetworkMappingInput.class);
     }
 

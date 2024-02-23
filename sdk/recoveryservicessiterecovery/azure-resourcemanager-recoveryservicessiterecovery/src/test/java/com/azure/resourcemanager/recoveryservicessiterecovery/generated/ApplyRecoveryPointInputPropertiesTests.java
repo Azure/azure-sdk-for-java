@@ -12,20 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplyRecoveryPointInputPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplyRecoveryPointInputProperties model =
-            BinaryData
-                .fromString(
-                    "{\"recoveryPointId\":\"rddh\",\"providerSpecificDetails\":{\"instanceType\":\"ApplyRecoveryPointProviderSpecificInput\"}}")
-                .toObject(ApplyRecoveryPointInputProperties.class);
+        ApplyRecoveryPointInputProperties model = BinaryData.fromString(
+            "{\"recoveryPointId\":\"rddh\",\"providerSpecificDetails\":{\"instanceType\":\"ApplyRecoveryPointProviderSpecificInput\"}}")
+            .toObject(ApplyRecoveryPointInputProperties.class);
         Assertions.assertEquals("rddh", model.recoveryPointId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplyRecoveryPointInputProperties model =
-            new ApplyRecoveryPointInputProperties()
-                .withRecoveryPointId("rddh")
-                .withProviderSpecificDetails(new ApplyRecoveryPointProviderSpecificInput());
+        ApplyRecoveryPointInputProperties model = new ApplyRecoveryPointInputProperties().withRecoveryPointId("rddh")
+            .withProviderSpecificDetails(new ApplyRecoveryPointProviderSpecificInput());
         model = BinaryData.fromObject(model).toObject(ApplyRecoveryPointInputProperties.class);
         Assertions.assertEquals("rddh", model.recoveryPointId());
     }

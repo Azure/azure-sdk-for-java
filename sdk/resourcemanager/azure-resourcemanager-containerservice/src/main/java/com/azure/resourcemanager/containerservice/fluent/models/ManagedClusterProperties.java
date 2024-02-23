@@ -16,6 +16,7 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServer
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAutoUpgradeProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAzureMonitorProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterHttpProxyConfig;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterIngressProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterOidcIssuerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPodIdentityProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
@@ -278,6 +279,12 @@ public final class ManagedClusterProperties {
      */
     @JsonProperty(value = "storageProfile")
     private ManagedClusterStorageProfile storageProfile;
+
+    /*
+     * Ingress profile for the managed cluster.
+     */
+    @JsonProperty(value = "ingressProfile")
+    private ManagedClusterIngressProfile ingressProfile;
 
     /*
      * PublicNetworkAccess of the managedCluster
@@ -993,6 +1000,26 @@ public final class ManagedClusterProperties {
     }
 
     /**
+     * Get the ingressProfile property: Ingress profile for the managed cluster.
+     * 
+     * @return the ingressProfile value.
+     */
+    public ManagedClusterIngressProfile ingressProfile() {
+        return this.ingressProfile;
+    }
+
+    /**
+     * Set the ingressProfile property: Ingress profile for the managed cluster.
+     * 
+     * @param ingressProfile the ingressProfile value to set.
+     * @return the ManagedClusterProperties object itself.
+     */
+    public ManagedClusterProperties withIngressProfile(ManagedClusterIngressProfile ingressProfile) {
+        this.ingressProfile = ingressProfile;
+        return this;
+    }
+
+    /**
      * Get the publicNetworkAccess property: PublicNetworkAccess of the managedCluster
      * 
      * Allow or deny public network access for AKS.
@@ -1157,6 +1184,9 @@ public final class ManagedClusterProperties {
         }
         if (storageProfile() != null) {
             storageProfile().validate();
+        }
+        if (ingressProfile() != null) {
+            ingressProfile().validate();
         }
         if (workloadAutoScalerProfile() != null) {
             workloadAutoScalerProfile().validate();

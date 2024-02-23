@@ -11,42 +11,32 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPla
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.RecoveryPlanProtectedItem;
 import java.util.Arrays;
 
-/** Samples for ReplicationRecoveryPlans Create. */
+/**
+ * Samples for ReplicationRecoveryPlans Create.
+ */
 public final class ReplicationRecoveryPlansCreateSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/ReplicationRecoveryPlans_Create.json
+     * x-ms-original-file:
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * /ReplicationRecoveryPlans_Create.json
      */
     /**
      * Sample code: Creates a recovery plan with the given details.
-     *
+     * 
      * @param manager Entry point to SiteRecoveryManager.
      */
     public static void createsARecoveryPlanWithTheGivenDetails(
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager manager) {
-        manager
-            .replicationRecoveryPlans()
-            .define("RPtest1")
-            .withExistingVault("vault1", "resourceGroupPS1")
-            .withProperties(
-                new CreateRecoveryPlanInputProperties()
-                    .withPrimaryFabricId(
-                        "/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1")
-                    .withRecoveryFabricId("Microsoft Azure")
-                    .withFailoverDeploymentModel(FailoverDeploymentModel.RESOURCE_MANAGER)
-                    .withGroups(
-                        Arrays
-                            .asList(
-                                new RecoveryPlanGroup()
-                                    .withGroupType(RecoveryPlanGroupType.BOOT)
-                                    .withReplicationProtectedItems(
-                                        Arrays
-                                            .asList(
-                                                new RecoveryPlanProtectedItem()
-                                                    .withId(
-                                                        "/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b")
-                                                    .withVirtualMachineId("f8491e4f-817a-40dd-a90c-af773978c75b")))
-                                    .withStartGroupActions(Arrays.asList())
-                                    .withEndGroupActions(Arrays.asList()))))
+        manager.replicationRecoveryPlans().define("RPtest1").withExistingVault("vault1", "resourceGroupPS1")
+            .withProperties(new CreateRecoveryPlanInputProperties().withPrimaryFabricId(
+                "/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1")
+                .withRecoveryFabricId("Microsoft Azure")
+                .withFailoverDeploymentModel(FailoverDeploymentModel.RESOURCE_MANAGER)
+                .withGroups(Arrays.asList(new RecoveryPlanGroup().withGroupType(RecoveryPlanGroupType.BOOT)
+                    .withReplicationProtectedItems(Arrays.asList(new RecoveryPlanProtectedItem().withId(
+                        "/Subscriptions/c183865e-6077-46f2-a3b1-deb0f4f4650a/resourceGroups/resourceGroupPS1/providers/Microsoft.RecoveryServices/vaults/vault1/replicationFabrics/cloud1/replicationProtectionContainers/cloud_6d224fc6-f326-5d35-96de-fbf51efb3179/replicationProtectedItems/f8491e4f-817a-40dd-a90c-af773978c75b")
+                        .withVirtualMachineId("f8491e4f-817a-40dd-a90c-af773978c75b")))
+                    .withStartGroupActions(Arrays.asList()).withEndGroupActions(Arrays.asList()))))
             .create();
     }
 }

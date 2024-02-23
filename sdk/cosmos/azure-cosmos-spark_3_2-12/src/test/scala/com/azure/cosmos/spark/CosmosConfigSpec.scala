@@ -3,8 +3,11 @@
 package com.azure.cosmos.spark
 
 import com.azure.core.management.AzureEnvironment
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants
+import com.azure.cosmos.models.CosmosContainerIdentity
 import com.azure.cosmos.spark.CosmosPatchOperationTypes.Increment
+import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.utils.CosmosPatchTestHelper
 import org.apache.spark.sql.types.{NumericType, StructType}
 
@@ -14,7 +17,7 @@ import java.util.UUID
 import scala.collection.mutable.ListBuffer
 import scala.util.Random
 
-class CosmosConfigSpec extends UnitSpec {
+class CosmosConfigSpec extends UnitSpec with BasicLoggingTrait {
 //scalastyle:off multiple.string.literals
 
   private val sampleProdEndpoint = "https://boson-test.documents.azure.com:443/"
@@ -1154,6 +1157,100 @@ class CosmosConfigSpec extends UnitSpec {
                   }
           }
       })
+  }
+
+  "CosmosAccountConfig" should "parse proactiveInitializationConfig config correctly" in {
+    val identityAccessor = ImplementationBridgeHelpers
+      .CosmosContainerIdentityHelper
+      .getCosmosContainerIdentityAccessor
+    var userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.proactiveConnectionInitialization" -> "Database/Container",
+      "spark.cosmos.proactiveConnectionInitializationDurationInSeconds" -> "120"
+    )
+
+    var endpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+
+    endpointConfig.endpoint shouldEqual sampleProdEndpoint
+    endpointConfig.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual "xyz"
+    endpointConfig.useGatewayMode shouldEqual false
+    endpointConfig.preferredRegionsList.isDefined shouldEqual false
+    endpointConfig.proactiveConnectionInitialization.isDefined shouldEqual true
+    var containerList = CosmosAccountConfig.parseProactiveConnectionInitConfigs(
+      endpointConfig.proactiveConnectionInitialization.get)
+    containerList.size() shouldEqual 1
+    identityAccessor.getDatabaseName(containerList.get(0)) shouldEqual "Database"
+    identityAccessor.getContainerName(containerList.get(0)) shouldEqual "Container"
+    containerList.get(0) shouldEqual new CosmosContainerIdentity("Database", "Container")
+    endpointConfig.proactiveConnectionInitializationDurationInSeconds shouldEqual 120
+
+    userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.proactiveConnectionInitialization" -> "Database  / Container"
+    )
+
+    endpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+
+    endpointConfig.endpoint shouldEqual sampleProdEndpoint
+    endpointConfig.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual "xyz"
+    endpointConfig.useGatewayMode shouldEqual false
+    endpointConfig.preferredRegionsList.isDefined shouldEqual false
+    endpointConfig.proactiveConnectionInitialization.isDefined shouldEqual true
+    containerList = CosmosAccountConfig.parseProactiveConnectionInitConfigs(
+      endpointConfig.proactiveConnectionInitialization.get)
+    containerList.size() shouldEqual 1
+    identityAccessor.getDatabaseName(containerList.get(0)) shouldEqual "Database"
+    identityAccessor.getContainerName(containerList.get(0)) shouldEqual "Container"
+    containerList.get(0) shouldEqual new CosmosContainerIdentity("Database", "Container")
+    endpointConfig.proactiveConnectionInitializationDurationInSeconds shouldEqual 120
+
+    userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.proactiveConnectionInitialization" -> "Database  / Container;Db2/C2",
+      "spark.cosmos.proactiveConnectionInitializationDurationInSeconds" -> "23"
+    )
+
+    endpointConfig = CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+
+    endpointConfig.endpoint shouldEqual sampleProdEndpoint
+    endpointConfig.authConfig.asInstanceOf[CosmosMasterKeyAuthConfig].accountKey shouldEqual "xyz"
+    endpointConfig.useGatewayMode shouldEqual false
+    endpointConfig.preferredRegionsList.isDefined shouldEqual false
+    endpointConfig.proactiveConnectionInitialization.isDefined shouldEqual true
+    containerList = CosmosAccountConfig.parseProactiveConnectionInitConfigs(
+      endpointConfig.proactiveConnectionInitialization.get)
+    containerList.size() shouldEqual 2
+    identityAccessor.getDatabaseName(containerList.get(0)) shouldEqual "Database"
+    identityAccessor.getContainerName(containerList.get(0)) shouldEqual "Container"
+    identityAccessor.getDatabaseName(containerList.get(1)) shouldEqual "Db2"
+    identityAccessor.getContainerName(containerList.get(1)) shouldEqual "C2"
+    containerList.get(0) shouldEqual new CosmosContainerIdentity("Database", "Container")
+    containerList.get(1) shouldEqual new CosmosContainerIdentity("Db2", "C2")
+    endpointConfig.proactiveConnectionInitializationDurationInSeconds shouldEqual 23
+
+    userConfig = Map(
+      "spark.cosmos.accountEndpoint" -> "https://boson-test.documents.azure.com:443/",
+      "spark.cosmos.accountKey" -> "xyz",
+      "spark.cosmos.proactiveConnectionInitialization" -> "Invalid\\ConfigText;"
+    )
+
+    try {
+      CosmosAccountConfig.parseCosmosAccountConfig(userConfig)
+      fail("Should have thrown error")
+    }
+    catch {
+      case e: RuntimeException =>
+        if (e.getCause.isInstanceOf[IllegalArgumentException]) {
+          logInfo("Expected exception", e.getCause)
+        } else {
+          logError("Unexpected exception", e)
+
+          throw e
+        }
+    }
   }
 
   private case class PatchColumnConfigParameterTest

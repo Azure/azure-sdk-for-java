@@ -12,7 +12,8 @@ import com.azure.core.http.HttpPipelineNextSyncPolicy;
 public final class HttpPipelineNextSyncPolicyHelper {
     private static HttpPipelineNextSyncPolicyAccessor accessor;
 
-    private HttpPipelineNextSyncPolicyHelper() { }
+    private HttpPipelineNextSyncPolicyHelper() {
+    }
 
     /**
      * Type defining the methods to set the non-public properties of an {@link HttpPipelineNextPolicy} instance.

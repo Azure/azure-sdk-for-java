@@ -13,22 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class PlannedFailoverInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PlannedFailoverInput model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"failoverDirection\":\"tizzronasxif\",\"providerSpecificDetails\":{\"instanceType\":\"PlannedFailoverProviderSpecificFailoverInput\"}}}")
-                .toObject(PlannedFailoverInput.class);
+        PlannedFailoverInput model = BinaryData.fromString(
+            "{\"properties\":{\"failoverDirection\":\"tizzronasxif\",\"providerSpecificDetails\":{\"instanceType\":\"PlannedFailoverProviderSpecificFailoverInput\"}}}")
+            .toObject(PlannedFailoverInput.class);
         Assertions.assertEquals("tizzronasxif", model.properties().failoverDirection());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PlannedFailoverInput model =
-            new PlannedFailoverInput()
-                .withProperties(
-                    new PlannedFailoverInputProperties()
-                        .withFailoverDirection("tizzronasxif")
-                        .withProviderSpecificDetails(new PlannedFailoverProviderSpecificFailoverInput()));
+        PlannedFailoverInput model = new PlannedFailoverInput()
+            .withProperties(new PlannedFailoverInputProperties().withFailoverDirection("tizzronasxif")
+                .withProviderSpecificDetails(new PlannedFailoverProviderSpecificFailoverInput()));
         model = BinaryData.fromObject(model).toObject(PlannedFailoverInput.class);
         Assertions.assertEquals("tizzronasxif", model.properties().failoverDirection());
     }

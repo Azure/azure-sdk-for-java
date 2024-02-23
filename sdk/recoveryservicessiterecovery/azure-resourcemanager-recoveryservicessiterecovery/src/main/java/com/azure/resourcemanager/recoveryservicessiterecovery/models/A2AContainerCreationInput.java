@@ -8,18 +8,22 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A2A cloud creation input. */
+/**
+ * A2A cloud creation input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("A2A")
 @Immutable
 public final class A2AContainerCreationInput extends ReplicationProviderSpecificContainerCreationInput {
-    /** Creates an instance of A2AContainerCreationInput class. */
+    /**
+     * Creates an instance of A2AContainerCreationInput class.
+     */
     public A2AContainerCreationInput() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

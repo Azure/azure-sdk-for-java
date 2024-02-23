@@ -44,8 +44,7 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
      */
     public VertxRequestWriteSubscriber(HttpClientRequest request, MonoSink<HttpResponse> emitter,
         ProgressReporter progressReporter) {
-        this.request = request.exceptionHandler(this::onError)
-            .drainHandler(ignored -> requestNext());
+        this.request = request.exceptionHandler(this::onError).drainHandler(ignored -> requestNext());
         this.emitter = emitter;
         this.progressReporter = progressReporter;
     }
@@ -163,10 +162,7 @@ public final class VertxRequestWriteSubscriber implements Subscriber<ByteBuffer>
     }
 
     private enum State {
-        UNINITIALIZED(0),
-        WRITING(1),
-        COMPLETE(2),
-        ERROR(3);
+        UNINITIALIZED(0), WRITING(1), COMPLETE(2), ERROR(3);
 
         private final int code;
 
