@@ -177,6 +177,7 @@
     <module>sdk/securitydevops</module>
     <module>sdk/securityinsights</module>
     <module>sdk/selfhelp</module>
+    <module>sdk/serialization</module>
     <module>sdk/servicebus</module>
     <module>sdk/servicefabric</module>
     <module>sdk/servicelinker</module>
