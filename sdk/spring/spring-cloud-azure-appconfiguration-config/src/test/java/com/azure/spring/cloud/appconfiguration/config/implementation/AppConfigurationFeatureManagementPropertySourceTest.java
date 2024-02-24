@@ -13,6 +13,7 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.Test
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.FEATURE_VALUE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.FEATURE_VALUE_PARAMETERS;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.FEATURE_VALUE_TARGETING;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.FEATURE_VALUE_TELEMETRY;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_CONN_STRING;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestConstants.TEST_STORE_NAME;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.TestUtils.createItemFeatureFlag;
@@ -28,6 +29,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.FeatureTelemetry;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
@@ -70,6 +72,10 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         ".appconfig.featureflag/", "Gamma",
         FEATURE_VALUE_PARAMETERS, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
 
+    private static final FeatureFlagConfigurationSetting FEATURE_ITEM_4 = createItemFeatureFlag(
+        ".appconfig.featureflag/", "Delta",
+        FEATURE_VALUE_TELEMETRY, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
+
     private static final FeatureFlagConfigurationSetting FEATURE_ITEM_NULL = createItemFeatureFlag(
         ".appconfig.featureflag/", "Alpha",
         FEATURE_VALUE,
@@ -99,6 +105,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         FEATURE_ITEMS.add(FEATURE_ITEM);
         FEATURE_ITEMS.add(FEATURE_ITEM_2);
         FEATURE_ITEMS.add(FEATURE_ITEM_3);
+        FEATURE_ITEMS.add(FEATURE_ITEM_4);
 
         FEATURE_ITEMS_TARGETING.add(FEATURE_ITEM_TARGETING);
     }
@@ -151,7 +158,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         assertEquals(gamma.getKey(),
             ((Feature) propertySourceOverride.getProperty(FEATURE_MANAGEMENT_KEY + "Gamma")).getKey());
     }
-    
+
     @Test
     public void testFeatureFlagCanBeInitedAndQueried() {
         when(featureListMock.iterator()).thenReturn(FEATURE_ITEMS.iterator());
@@ -259,5 +266,38 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         assertNotNull(filter);
         assertEquals("targetingFilter", filter.getName());
         assertEquals(parameters.size(), filter.getParameters().size());
+    }
+
+    @Test
+    public void testFeatureFlagTelemetry() {
+        when(featureListMock.iterator()).thenReturn(FEATURE_ITEMS.iterator());
+        when(clientMock.listSettings(Mockito.any()))
+            .thenReturn(featureListMock).thenReturn(featureListMock);
+        when(clientMock.getTracingInfo()).thenReturn(new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
+        when(clientMock.getEndpoint()).thenReturn("https://test.azconfig.io");
+        featureFlagStore.setEnabled(true);
+
+        propertySource.initProperties(null);
+
+        Feature delta = new Feature();
+        delta.setKey("Delta");
+        HashMap<Integer, FeatureFlagFilter> filters = new HashMap<>();
+        FeatureFlagFilter ffec = new FeatureFlagFilter("TestFilter");
+        LinkedHashMap<String, Object> parameters = new LinkedHashMap<>();
+        parameters.put("key", "value");
+        ffec.setParameters(parameters);
+        filters.put(0, ffec);
+        delta.setEnabledFor(filters);
+        FeatureTelemetry featureTelemetry = new FeatureTelemetry();
+        featureTelemetry.setEnabled(true);
+        Map<String, String> metadata = new HashMap<>();
+        metadata.put("key", "value");
+        featureTelemetry.setMetadata(metadata);
+        delta.setTelemetry(featureTelemetry);
+
+        Feature featureTest = ((Feature) propertySource.getProperty(FEATURE_MANAGEMENT_KEY + "Delta"));
+        assertEquals(delta.getKey(), featureTest.getKey());
+        // todo - yuwe add telemetry equals check
+        System.out.println(featureTest.getTelemetry().getMetadata().toString());
     }
 }

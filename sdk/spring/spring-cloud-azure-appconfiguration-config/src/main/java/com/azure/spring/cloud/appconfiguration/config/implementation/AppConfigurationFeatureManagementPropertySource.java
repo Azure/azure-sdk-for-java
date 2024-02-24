@@ -125,7 +125,7 @@ class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPr
 
         updateTelemetry(featureFlag, tracing);
 
-        properties.put(configName, createFeature(featureFlag, this.source.getEndpoint()));
+        properties.put(configName, createFeature(featureFlag, this.replicaClient.getEndpoint()));
     }
 
     /**

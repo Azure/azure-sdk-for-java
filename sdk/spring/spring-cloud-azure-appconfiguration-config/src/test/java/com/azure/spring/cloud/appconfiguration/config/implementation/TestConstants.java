@@ -49,6 +49,9 @@ public final class TestConstants {
         + "\"conditions\":{\"client_filters\":[{\"Name\":\"targetingFilter\",\"Parameters\":{\"Users\":[\"Jeff\","
         + "\"Alicia\"],\"Groups\":[{\"name\":\"Ring0\",\"rolloutPercentage\":100},{\"name\":\"Ring1\","
         + "\"rolloutPercentage\":100}],\"DefaultRolloutPercentage\":50}}]}}]}}";
+    public static final String FEATURE_VALUE_TELEMETRY = "{\"id\":\"Delta\",\"description\":\"\",\"enabled\":true,"
+        + "\"conditions\":{\"client_filters\":[{\"Name\":\"TestFilter\",\"Parameters\":{\"key\":\"value\"}}]},"
+        + "\"telemetry\":{\"enabled\":true,\"metadata\":{\"key\":\"value\"}}}";
     public static final String FEATURE_LABEL = "";
     public static final String TEST_SLASH_KEY = "slash/key";
     public static final String TEST_SLASH_VALUE = "prop value for slashed key name";

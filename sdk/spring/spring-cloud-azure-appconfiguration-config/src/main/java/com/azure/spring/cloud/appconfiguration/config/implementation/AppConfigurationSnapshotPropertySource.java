@@ -59,6 +59,6 @@ final class AppConfigurationSnapshotPropertySource extends AppConfigurationAppli
 
         AppConfigurationFeatureManagementPropertySource.updateTelemetry(featureFlag, tracing);
 
-        properties.put(configName, AppConfigurationFeatureManagementPropertySource.createFeature(featureFlag, this.source.getEndpoint()));
+        properties.put(configName, AppConfigurationFeatureManagementPropertySource.createFeature(featureFlag, this.replicaClient.getEndpoint()));
     }
 }
