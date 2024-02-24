@@ -139,6 +139,7 @@ public final class SpanDataMapper {
             consumer);
     }
 
+    // TODO looks like this method can be private
     public TelemetryItem map(SpanData span, long itemCount) {
         if (RequestChecker.isRequest(span)) {
             return exportRequest(span, itemCount);
