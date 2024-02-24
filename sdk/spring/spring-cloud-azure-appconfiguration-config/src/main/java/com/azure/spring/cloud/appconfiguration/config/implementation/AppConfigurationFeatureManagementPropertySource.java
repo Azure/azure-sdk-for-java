@@ -237,11 +237,14 @@ class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPr
     /**
      * @param key the key of feature flag
      * @param label the label of feature flag. If label is whitespace, treat as null
-     * @return b64_url(SHA256(utf8_bytes("${key}\n${label}")))
+     * @return base64_url(SHA256(utf8_bytes("${key}\n${label}"))).replace('+', '-').replace('/', '_').trimEnd('=')
+     * trimEnd() means trims everything after the first occurrence of the '='
      * */
     private static String calculateFeatureFlagId(String key, String label) {
         final String data = String.format("%s\n%s", key, label.isEmpty() ? null : label);
         final SHA256.Digest digest = new SHA256.Digest();
-        return Base64URL.encode(digest.digest(data.getBytes(StandardCharsets.UTF_8))).toString();
+        final String beforeTrim = Base64URL.encode(digest.digest(data.getBytes(StandardCharsets.UTF_8)))
+            .toString().replace('+', '-').replace('/', '_');
+        return beforeTrim.substring(0, beforeTrim.indexOf('='));
     }
 }
