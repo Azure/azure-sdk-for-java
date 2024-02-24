@@ -14,6 +14,7 @@ import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 /**
  * Common Configuration for Cosmos DB Kafka source connector.
@@ -21,75 +22,75 @@ import java.util.Map;
 public class CosmosSourceConfig extends CosmosConfig {
 
     // configuration only targets to source connector
-    private static final String SOURCE_CONFIG_PREFIX = "kafka.connect.cosmos.source.";
+    private static final String SOURCE_CONF_PREFIX = "kafka.connect.cosmos.source.";
 
     // database name
-    private static final String DATABASE_NAME_CONF = SOURCE_CONFIG_PREFIX + "database.name";
+    private static final String DATABASE_NAME_CONF = SOURCE_CONF_PREFIX + "database.name";
     private static final String DATABASE_NAME_CONF_DOC = "Cosmos DB database name.";
     private static final String DATABASE_NAME_CONF_DISPLAY = "Cosmos DB database name.";
 
     // Source containers config
-    private static final String CONTAINERS_INCLUDE_ALL_CONFIG = SOURCE_CONFIG_PREFIX + "containers.includeAll";
-    private static final String CONTAINERS_INCLUDE_ALL_CONFIG_DOC = "Flag to indicate whether reading from all containers.";
-    private static final String CONTAINERS_INCLUDE_ALL_CONFIG_DISPLAY = "Include all containers.";
+    private static final String CONTAINERS_INCLUDE_ALL_CONF = SOURCE_CONF_PREFIX + "containers.includeAll";
+    private static final String CONTAINERS_INCLUDE_ALL_CONF_DOC = "Flag to indicate whether reading from all containers.";
+    private static final String CONTAINERS_INCLUDE_ALL_CONF_DISPLAY = "Include all containers.";
     private static final boolean DEFAULT_CONTAINERS_INCLUDE_ALL = false;
 
-    private static final String CONTAINERS_INCLUDED_LIST_CONFIG = SOURCE_CONFIG_PREFIX + "containers.includedList";
-    private static final String CONTAINERS_INCLUDED_LIST_CONFIG_DOC =
+    private static final String CONTAINERS_INCLUDED_LIST_CONF = SOURCE_CONF_PREFIX + "containers.includedList";
+    private static final String CONTAINERS_INCLUDED_LIST_CONF_DOC =
         "Containers included. This config will be ignored if kafka.connect.cosmos.source.includeAllContainers is true.";
-    private static final String CONTAINERS_INCLUDED_LIST_CONFIG_DISPLAY = "Containers included.";
+    private static final String CONTAINERS_INCLUDED_LIST_CONF_DISPLAY = "Containers included.";
 
-    private static final String CONTAINERS_TOPIC_MAP_CONFIG = SOURCE_CONFIG_PREFIX + "containers.topicMap";
-    private static final String CONTAINERS_TOPIC_MAP_CONFIG_DOC =
+    private static final String CONTAINERS_TOPIC_MAP_CONF = SOURCE_CONF_PREFIX + "containers.topicMap";
+    private static final String CONTAINERS_TOPIC_MAP_CONF_DOC =
         "A comma delimited list of Kafka topics mapped to Cosmos containers. For example: topic1#con1,topic2#con2. "
             + "By default, container name is used as the name of the kafka topic to publish data to, "
             + "can use this property to override the default config ";
-    private static final String CONTAINERS_TOPIC_MAP_CONFIG_DISPLAY = "Cosmos container topic map.";
+    private static final String CONTAINERS_TOPIC_MAP_CONF_DISPLAY = "Cosmos container topic map.";
 
     // changeFeed config
-    private static final String CHANGE_FEED_START_FROM_CONFIG = SOURCE_CONFIG_PREFIX + "changeFeed.startFrom";
-    private static final String CHANGE_FEED_START_FROM_CONFIG_DOC = "ChangeFeed Start from settings (Now, Beginning "
+    private static final String CHANGE_FEED_START_FROM_CONF = SOURCE_CONF_PREFIX + "changeFeed.startFrom";
+    private static final String CHANGE_FEED_START_FROM_CONF_DOC = "ChangeFeed Start from settings (Now, Beginning "
         + "or a certain point in time (UTC) for example 2020-02-10T14:15:03) - the default value is 'Beginning'. ";
-    private static final String CHANGE_FEED_START_FROM_CONFIG_DISPLAY = "Change feed start from.";
+    private static final String CHANGE_FEED_START_FROM_CONF_DISPLAY = "Change feed start from.";
     private static final String DEFAULT_CHANGE_FEED_START_FROM = CosmosChangeFeedStartFromModes.BEGINNING.getName();
 
-    private static final String CHANGE_FEED_MODE_CONFIG = SOURCE_CONFIG_PREFIX + "changeFeed.mode";
-    private static final String CHANGE_FEED_MODE_CONFIG_DOC = "ChangeFeed mode (LatestVersion or AllVersionsAndDeletes)";
-    private static final String CHANGE_FEED_MODE_CONFIG_DISPLAY = "ChangeFeed mode (LatestVersion or AllVersionsAndDeletes)";
+    private static final String CHANGE_FEED_MODE_CONF = SOURCE_CONF_PREFIX + "changeFeed.mode";
+    private static final String CHANGE_FEED_MODE_CONF_DOC = "ChangeFeed mode (LatestVersion or AllVersionsAndDeletes)";
+    private static final String CHANGE_FEED_MODE_CONF_DISPLAY = "ChangeFeed mode (LatestVersion or AllVersionsAndDeletes)";
     private static final String DEFAULT_CHANGE_FEED_MODE = CosmosChangeFeedModes.LATEST_VERSION.getName();
 
-    private static final String CHANGE_FEED_MAX_ITEM_COUNT_CONFIG = SOURCE_CONFIG_PREFIX + "changeFeed.maxItemCountHint";
-    private static final String CHANGE_FEED_MAX_ITEM_COUNT_CONFIG_DOC =
+    private static final String CHANGE_FEED_MAX_ITEM_COUNT_CONF = SOURCE_CONF_PREFIX + "changeFeed.maxItemCountHint";
+    private static final String CHANGE_FEED_MAX_ITEM_COUNT_CONF_DOC =
         "The maximum number of documents returned in a single change feed request."
             + " But the number of items received might be higher than the specified value if multiple items are changed by the same transaction."
             + " The default is 1000.";
-    private static final String CHANGE_FEED_MAX_ITEM_COUNT_CONFIG_DISPLAY = "The maximum number hint of documents returned in a single request. ";
+    private static final String CHANGE_FEED_MAX_ITEM_COUNT_CONF_DISPLAY = "The maximum number hint of documents returned in a single request. ";
     private static final int DEFAULT_CHANGE_FEED_MAX_ITEM_COUNT = 1000;
 
     // Metadata config
-    private static final String METADATA_POLL_DELAY_MS_CONFIG = SOURCE_CONFIG_PREFIX + "metadata.poll.delay.ms";
-    private static final String METADATA_POLL_DELAY_MS_CONFIG_DOC =
+    private static final String METADATA_POLL_DELAY_MS_CONF = SOURCE_CONF_PREFIX + "metadata.poll.delay.ms";
+    private static final String METADATA_POLL_DELAY_MS_CONF_DOC =
         "Indicates how often to check the metadata changes (including container split/merge, adding/removing/recreated containers). "
             + "When changes are detected, it will reconfigure the tasks. Default is 5 minutes.";
-    private static final String METADATA_POLL_DELAY_MS_CONFIG_DISPLAY = "Metadata polling delay in ms.";
+    private static final String METADATA_POLL_DELAY_MS_CONF_DISPLAY = "Metadata polling delay in ms.";
     private static final int DEFAULT_METADATA_POLL_DELAY_MS = 5 * 60 * 1000; // default is every 5 minutes
 
-    private static final String METADATA_STORAGE_TOPIC_CONFIG = SOURCE_CONFIG_PREFIX + "metadata.storage.topic";
-    private static final String METADATA_STORAGE_TOPIC_CONFIG_DOC = "The name of the topic where the metadata are stored. "
+    private static final String METADATA_STORAGE_TOPIC_CONF = SOURCE_CONF_PREFIX + "metadata.storage.topic";
+    private static final String METADATA_STORAGE_TOPIC_CONF_DOC = "The name of the topic where the metadata are stored. "
         + "The metadata topic will be created if it does not already exist, else it will use the pre-created topic.";
-    private static final String METADATA_STORAGE_TOPIC_CONFIG_DISPLAY = "Metadata storage topic.";
+    private static final String METADATA_STORAGE_TOPIC_CONF_DISPLAY = "Metadata storage topic.";
     private static final String DEFAULT_METADATA_STORAGE_TOPIC = "_cosmos.metadata.topic";
 
     // messageKey
-    private static final String MESSAGE_KEY_ENABLED_CONF = SOURCE_CONFIG_PREFIX + "messageKey.enabled";
+    private static final String MESSAGE_KEY_ENABLED_CONF = SOURCE_CONF_PREFIX + "messageKey.enabled";
     private static final String MESSAGE_KEY_ENABLED_CONF_DOC = "Whether to set the kafka record message key.";
     private static final String MESSAGE_KEY_ENABLED_CONF_DISPLAY = "Kafka record message key enabled.";
     private static final boolean DEFAULT_MESSAGE_KEY_ENABLED = true;
 
-    private static final String MESSAGE_KEY_FIELD_CONFIG = SOURCE_CONFIG_PREFIX + "messageKey.field";
-    private static final String MESSAGE_KEY_FIELD_CONFIG_DOC = "The field to use as the message key.";
-    private static final String MESSAGE_KEY_FIELD_CONFIG_DISPLAY = "Kafka message key field.";
-    private static final String DEFAULT_MESSAGE_KEY_FIELD = "id"; // TODO: should we use pk instead?
+    private static final String MESSAGE_KEY_FIELD_CONF = SOURCE_CONF_PREFIX + "messageKey.field";
+    private static final String MESSAGE_KEY_FIELD_CONF_DOC = "The field to use as the message key.";
+    private static final String MESSAGE_KEY_FIELD_CONF_DISPLAY = "Kafka message key field.";
+    private static final String DEFAULT_MESSAGE_KEY_FIELD = "id";
 
     private final CosmosSourceContainersConfig containersConfig;
     private final CosmosMetadataConfig metadataConfig;
@@ -137,38 +138,38 @@ public class CosmosSourceConfig extends CosmosConfig {
                 DATABASE_NAME_CONF_DISPLAY
             )
             .define(
-                CONTAINERS_INCLUDE_ALL_CONFIG,
+                CONTAINERS_INCLUDE_ALL_CONF,
                 ConfigDef.Type.BOOLEAN,
                 DEFAULT_CONTAINERS_INCLUDE_ALL,
                 ConfigDef.Importance.HIGH,
-                CONTAINERS_INCLUDE_ALL_CONFIG_DOC,
+                CONTAINERS_INCLUDE_ALL_CONF_DOC,
                 containersGroupName,
                 containersGroupOrder++,
                 ConfigDef.Width.MEDIUM,
-                CONTAINERS_INCLUDE_ALL_CONFIG_DISPLAY
+                CONTAINERS_INCLUDE_ALL_CONF_DISPLAY
             )
             .define(
-                CONTAINERS_INCLUDED_LIST_CONFIG,
+                CONTAINERS_INCLUDED_LIST_CONF,
                 ConfigDef.Type.STRING,
                 Strings.Emtpy,
                 ConfigDef.Importance.MEDIUM,
-                CONTAINERS_INCLUDED_LIST_CONFIG_DOC,
+                CONTAINERS_INCLUDED_LIST_CONF_DOC,
                 containersGroupName,
                 containersGroupOrder++,
                 ConfigDef.Width.LONG,
-                CONTAINERS_INCLUDED_LIST_CONFIG_DISPLAY
+                CONTAINERS_INCLUDED_LIST_CONF_DISPLAY
             )
             .define(
-                CONTAINERS_TOPIC_MAP_CONFIG,
+                CONTAINERS_TOPIC_MAP_CONF,
                 ConfigDef.Type.STRING,
                 Strings.Emtpy,
                 new ContainersTopicMapValidator(),
                 ConfigDef.Importance.MEDIUM,
-                CONTAINERS_TOPIC_MAP_CONFIG_DOC,
+                CONTAINERS_TOPIC_MAP_CONF_DOC,
                 containersGroupName,
                 containersGroupOrder++,
                 ConfigDef.Width.LONG,
-                CONTAINERS_TOPIC_MAP_CONFIG_DISPLAY
+                CONTAINERS_TOPIC_MAP_CONF_DISPLAY
             );
     }
 
@@ -178,28 +179,28 @@ public class CosmosSourceConfig extends CosmosConfig {
 
         result
             .define(
-                METADATA_POLL_DELAY_MS_CONFIG,
+                METADATA_POLL_DELAY_MS_CONF,
                 ConfigDef.Type.INT,
                 DEFAULT_METADATA_POLL_DELAY_MS,
                 new PositiveValueValidator(),
                 ConfigDef.Importance.MEDIUM,
-                METADATA_POLL_DELAY_MS_CONFIG_DOC,
+                METADATA_POLL_DELAY_MS_CONF_DOC,
                 metadataGroupName,
                 metadataGroupOrder++,
                 ConfigDef.Width.MEDIUM,
-                METADATA_POLL_DELAY_MS_CONFIG_DISPLAY
+                METADATA_POLL_DELAY_MS_CONF_DISPLAY
             )
             .define(
-                METADATA_STORAGE_TOPIC_CONFIG,
+                METADATA_STORAGE_TOPIC_CONF,
                 ConfigDef.Type.STRING,
                 DEFAULT_METADATA_STORAGE_TOPIC,
                 NON_EMPTY_STRING,
                 ConfigDef.Importance.HIGH,
-                METADATA_STORAGE_TOPIC_CONFIG_DOC,
+                METADATA_STORAGE_TOPIC_CONF_DOC,
                 metadataGroupName,
                 metadataGroupOrder++,
                 ConfigDef.Width.LONG,
-                METADATA_STORAGE_TOPIC_CONFIG_DISPLAY
+                METADATA_STORAGE_TOPIC_CONF_DISPLAY
             );
     }
 
@@ -209,40 +210,40 @@ public class CosmosSourceConfig extends CosmosConfig {
 
         result
             .define(
-                CHANGE_FEED_MODE_CONFIG,
+                CHANGE_FEED_MODE_CONF,
                 ConfigDef.Type.STRING,
                 DEFAULT_CHANGE_FEED_MODE,
                 new ChangeFeedModeValidator(),
                 ConfigDef.Importance.HIGH,
-                CHANGE_FEED_MODE_CONFIG_DOC,
+                CHANGE_FEED_MODE_CONF_DOC,
                 changeFeedGroupName,
                 changeFeedGroupOrder++,
                 ConfigDef.Width.MEDIUM,
-                CHANGE_FEED_MODE_CONFIG_DISPLAY
+                CHANGE_FEED_MODE_CONF_DISPLAY
             )
             .define(
-                CHANGE_FEED_START_FROM_CONFIG,
+                CHANGE_FEED_START_FROM_CONF,
                 ConfigDef.Type.STRING,
                 DEFAULT_CHANGE_FEED_START_FROM,
                 new ChangeFeedStartFromValidator(),
                 ConfigDef.Importance.HIGH,
-                CHANGE_FEED_START_FROM_CONFIG_DOC,
+                CHANGE_FEED_START_FROM_CONF_DOC,
                 changeFeedGroupName,
                 changeFeedGroupOrder++,
                 ConfigDef.Width.MEDIUM,
-                CHANGE_FEED_START_FROM_CONFIG_DISPLAY
+                CHANGE_FEED_START_FROM_CONF_DISPLAY
             )
             .define(
-                CHANGE_FEED_MAX_ITEM_COUNT_CONFIG,
+                CHANGE_FEED_MAX_ITEM_COUNT_CONF,
                 ConfigDef.Type.INT,
                 DEFAULT_CHANGE_FEED_MAX_ITEM_COUNT,
                 new PositiveValueValidator(),
                 ConfigDef.Importance.MEDIUM,
-                CHANGE_FEED_MAX_ITEM_COUNT_CONFIG_DOC,
+                CHANGE_FEED_MAX_ITEM_COUNT_CONF_DOC,
                 changeFeedGroupName,
                 changeFeedGroupOrder++,
                 ConfigDef.Width.MEDIUM,
-                CHANGE_FEED_MAX_ITEM_COUNT_CONFIG_DISPLAY
+                CHANGE_FEED_MAX_ITEM_COUNT_CONF_DISPLAY
             );
     }
 
@@ -263,23 +264,23 @@ public class CosmosSourceConfig extends CosmosConfig {
                 MESSAGE_KEY_ENABLED_CONF_DISPLAY
             )
             .define(
-                MESSAGE_KEY_FIELD_CONFIG,
+                MESSAGE_KEY_FIELD_CONF,
                 ConfigDef.Type.STRING,
                 DEFAULT_MESSAGE_KEY_FIELD,
                 ConfigDef.Importance.HIGH,
-                MESSAGE_KEY_FIELD_CONFIG_DOC,
+                MESSAGE_KEY_FIELD_CONF_DOC,
                 messageGroupName,
                 messageGroupOrder++,
                 ConfigDef.Width.MEDIUM,
-                MESSAGE_KEY_FIELD_CONFIG_DISPLAY
+                MESSAGE_KEY_FIELD_CONF_DISPLAY
             );
     }
 
     private CosmosSourceContainersConfig parseContainersConfig() {
         String databaseName = this.getString(DATABASE_NAME_CONF);
-        boolean includeAllContainers = this.getBoolean(CONTAINERS_INCLUDE_ALL_CONFIG);
+        boolean includeAllContainers = this.getBoolean(CONTAINERS_INCLUDE_ALL_CONF);
         List<String> containersIncludedList = this.getContainersIncludedList();
-        List<String> containersTopicMap = this.getContainersTopicMap();
+        Map<String, String> containersTopicMap = this.getContainerToTopicMap();
 
         return new CosmosSourceContainersConfig(
             databaseName,
@@ -290,16 +291,23 @@ public class CosmosSourceConfig extends CosmosConfig {
     }
 
     private List<String> getContainersIncludedList() {
-        return convertToList(this.getString(CONTAINERS_INCLUDED_LIST_CONFIG));
+        return convertToList(this.getString(CONTAINERS_INCLUDED_LIST_CONF));
     }
 
-    private List<String> getContainersTopicMap() {
-        return convertToList(this.getString(CONTAINERS_TOPIC_MAP_CONFIG));
+    private Map<String, String> getContainerToTopicMap() {
+        List<String> containerTopicMapList = convertToList(this.getString(CONTAINERS_TOPIC_MAP_CONF));
+        return containerTopicMapList
+            .stream()
+            .map(containerTopicMapString -> containerTopicMapString.split("#"))
+            .collect(
+                Collectors.toMap(
+                    containerTopicMapArray -> containerTopicMapArray[1],
+                    containerTopicMapArray -> containerTopicMapArray[0]));
     }
 
     private CosmosMetadataConfig parseMetadataConfig() {
-        int metadataPollDelayInMs = this.getInt(METADATA_POLL_DELAY_MS_CONFIG);
-        String metadataTopicName = this.getString(METADATA_STORAGE_TOPIC_CONFIG);
+        int metadataPollDelayInMs = this.getInt(METADATA_POLL_DELAY_MS_CONF);
+        String metadataTopicName = this.getString(METADATA_STORAGE_TOPIC_CONF);
 
         return new CosmosMetadataConfig(metadataPollDelayInMs, metadataTopicName);
     }
@@ -308,7 +316,7 @@ public class CosmosSourceConfig extends CosmosConfig {
         CosmosChangeFeedModes changeFeedModes = this.parseChangeFeedMode();
         CosmosChangeFeedStartFromModes changeFeedStartFromMode = this.parseChangeFeedStartFromMode();
         Instant changeFeedStartFrom = this.parseChangeFeedStartFrom(changeFeedStartFromMode);
-        Integer changeFeedMaxItemCountHint = this.getInt(CHANGE_FEED_MAX_ITEM_COUNT_CONFIG);
+        Integer changeFeedMaxItemCountHint = this.getInt(CHANGE_FEED_MAX_ITEM_COUNT_CONF);
 
         return new CosmosSourceChangeFeedConfig(
             changeFeedModes,
@@ -319,12 +327,12 @@ public class CosmosSourceConfig extends CosmosConfig {
 
     private CosmosSourceMessageKeyConfig parseMessageKeyConfig() {
         boolean messageKeyEnabled = this.getBoolean(MESSAGE_KEY_ENABLED_CONF);
-        String messageKeyField = this.getString(MESSAGE_KEY_FIELD_CONFIG);
+        String messageKeyField = this.getString(MESSAGE_KEY_FIELD_CONF);
 
         return new CosmosSourceMessageKeyConfig(messageKeyEnabled, messageKeyField);
     }
     private CosmosChangeFeedStartFromModes parseChangeFeedStartFromMode() {
-        String changeFeedStartFrom = this.getString(CHANGE_FEED_START_FROM_CONFIG);
+        String changeFeedStartFrom = this.getString(CHANGE_FEED_START_FROM_CONF);
         if (changeFeedStartFrom.equalsIgnoreCase(CosmosChangeFeedStartFromModes.BEGINNING.getName())) {
             return CosmosChangeFeedStartFromModes.BEGINNING;
         }
@@ -338,7 +346,7 @@ public class CosmosSourceConfig extends CosmosConfig {
 
     private Instant parseChangeFeedStartFrom(CosmosChangeFeedStartFromModes startFromMode) {
         if (startFromMode == CosmosChangeFeedStartFromModes.POINT_IN_TIME) {
-            String changeFeedStartFrom = this.getString(CHANGE_FEED_START_FROM_CONFIG);
+            String changeFeedStartFrom = this.getString(CHANGE_FEED_START_FROM_CONF);
             return Instant.from(DateTimeFormatter.ISO_INSTANT.parse(changeFeedStartFrom.trim()));
         }
 
@@ -346,7 +354,7 @@ public class CosmosSourceConfig extends CosmosConfig {
     }
 
     private CosmosChangeFeedModes parseChangeFeedMode() {
-        String changeFeedMode = this.getString(CHANGE_FEED_MODE_CONFIG);
+        String changeFeedMode = this.getString(CHANGE_FEED_MODE_CONF);
         return CosmosChangeFeedModes.fromName(changeFeedMode);
     }
 
@@ -364,42 +372,6 @@ public class CosmosSourceConfig extends CosmosConfig {
 
     public CosmosSourceMessageKeyConfig getMessageKeyConfig() {
         return messageKeyConfig;
-    }
-
-    public static class ContainersTopicMapValidator implements ConfigDef.Validator {
-        private static final String INVALID_TOPIC_MAP_FORMAT =
-            "Invalid entry for topic-container map. The topic-container map should be a comma-delimited "
-                + "list of Kafka topic to Cosmos containers. Each mapping should be a pair of Kafka "
-                + "topic and Cosmos container separated by '#'. For example: topic1#con1,topic2#con2.";
-
-        @Override
-        @SuppressWarnings("unchecked")
-        public void ensureValid(String name, Object o) {
-            String configValue = (String) o;
-            if (StringUtils.isEmpty(configValue)) {
-                return;
-            }
-
-            List<String> containerTopicMapList = convertToList(configValue);
-
-            // validate each item should be in topic#container format
-            boolean invalidFormatExists =
-                containerTopicMapList
-                    .stream()
-                    .anyMatch(containerTopicMap ->
-                        containerTopicMap
-                            .split(CosmosSourceContainersConfig.CONTAINER_TOPIC_MAP_SEPARATOR)
-                            .length != 2);
-
-            if (invalidFormatExists) {
-                throw new ConfigException(name, o, INVALID_TOPIC_MAP_FORMAT);
-            }
-        }
-
-        @Override
-        public String toString() {
-            return "Containers topic map";
-        }
     }
 
     public static class ChangeFeedModeValidator implements ConfigDef.Validator {

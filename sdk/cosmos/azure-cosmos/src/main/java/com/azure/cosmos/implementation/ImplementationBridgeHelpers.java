@@ -965,6 +965,8 @@ public class ImplementationBridgeHelpers {
                 CosmosAsyncContainer cosmosAsyncContainer,
                 FeedRange feedRange,
                 int targetedCountAfterSplit);
+
+            String getLinkWithoutTrailingSlash(CosmosAsyncContainer cosmosAsyncContainer);
         }
     }
 

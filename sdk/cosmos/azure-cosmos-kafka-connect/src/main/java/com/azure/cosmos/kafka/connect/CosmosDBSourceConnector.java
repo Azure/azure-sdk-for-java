@@ -14,7 +14,7 @@ import com.azure.cosmos.implementation.feedranges.FeedRangeInternal;
 import com.azure.cosmos.implementation.query.CompositeContinuationToken;
 import com.azure.cosmos.implementation.routing.Range;
 import com.azure.cosmos.kafka.connect.implementation.CosmosClientStore;
-import com.azure.cosmos.kafka.connect.implementation.CosmosConstants;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosConstants;
 import com.azure.cosmos.kafka.connect.implementation.CosmosExceptionsHelper;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceConfig;
 import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceOffsetStorageReader;
@@ -102,7 +102,7 @@ public class CosmosDBSourceConnector extends SourceConnector {
 
     @Override
     public String version() {
-        return CosmosConstants.CURRENT_VERSION;
+        return KafkaCosmosConstants.CURRENT_VERSION;
     } // TODO[public preview]: how this is being used
 
     private List<Map<String, String>> getTaskConfigs(int maxTasks) {
@@ -324,15 +324,7 @@ public class CosmosDBSourceConnector extends SourceConnector {
     }
 
     private Map<String, String> getContainersTopicMap(List<CosmosContainerProperties> allContainers) {
-        Map<String, String> topicMapFromConfig =
-            this.config.getContainersConfig().getContainersTopicMap()
-                .stream()
-                .map(containerTopicMapString -> containerTopicMapString.split("#"))
-                .collect(
-                    Collectors.toMap(
-                        containerTopicMapArray -> containerTopicMapArray[1],
-                        containerTopicMapArray -> containerTopicMapArray[0]));
-
+        Map<String, String> topicMapFromConfig = this.config.getContainersConfig().getContainersTopicMap();
         Map<String, String> effectiveContainersTopicMap = new HashMap<>();
         allContainers.forEach(containerProperties -> {
             // by default, we are using container id as the topic name as well unless customer override through containers.topicMap 

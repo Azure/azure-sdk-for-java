@@ -49,4 +49,28 @@ public class CosmosExceptionsHelper {
 
         return new ConnectException(message, throwable);
     }
+
+    public static boolean isResourceExistsException(Throwable throwable) {
+        if (throwable instanceof CosmosException) {
+            return ((CosmosException) throwable).getStatusCode() == HttpConstants.StatusCodes.CONFLICT;
+        }
+
+        return false;
+    }
+
+    public static boolean isNotFoundException(Throwable throwable) {
+        if (throwable instanceof CosmosException) {
+            return ((CosmosException) throwable).getStatusCode() == HttpConstants.StatusCodes.NOTFOUND;
+        }
+
+        return false;
+    }
+
+    public static boolean isPreconditionFailedException(Throwable throwable) {
+        if (throwable instanceof CosmosException) {
+            return ((CosmosException) throwable).getStatusCode() == HttpConstants.StatusCodes.PRECONDITION_FAILED;
+        }
+
+        return false;
+    }
 }

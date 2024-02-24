@@ -5,6 +5,7 @@ package com.azure.cosmos.kafka.connect.implementation;
 
 import com.azure.cosmos.implementation.Strings;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.kafka.connect.implementation.source.CosmosSourceContainersConfig;
 import org.apache.kafka.common.config.AbstractConfig;
 import org.apache.kafka.common.config.ConfigDef;
 import org.apache.kafka.common.config.ConfigException;
@@ -151,6 +152,18 @@ public class CosmosConfig extends AbstractConfig {
         return accountConfig;
     }
 
+    protected static List<String> convertToList(String configValue) {
+        if (StringUtils.isNotEmpty(configValue)) {
+            if (configValue.startsWith("[") && configValue.endsWith("]")) {
+                configValue = configValue.substring(1, configValue.length() - 1);
+            }
+
+            return Arrays.stream(configValue.split(",")).map(String::trim).collect(Collectors.toList());
+        }
+
+        return new ArrayList<>();
+    }
+
     public static class AccountEndpointValidator implements ConfigDef.Validator {
         @Override
         @SuppressWarnings("unchecked")
@@ -173,15 +186,39 @@ public class CosmosConfig extends AbstractConfig {
         }
     }
 
-    protected static List<String> convertToList(String configValue) {
-        if (StringUtils.isNotEmpty(configValue)) {
-            if (configValue.startsWith("[") && configValue.endsWith("]")) {
-                configValue = configValue.substring(1, configValue.length() - 1);
+    public static class ContainersTopicMapValidator implements ConfigDef.Validator {
+        private static final String INVALID_TOPIC_MAP_FORMAT =
+            "Invalid entry for topic-container map. The topic-container map should be a comma-delimited "
+                + "list of Kafka topic to Cosmos containers. Each mapping should be a pair of Kafka "
+                + "topic and Cosmos container separated by '#'. For example: topic1#con1,topic2#con2.";
+
+        @Override
+        @SuppressWarnings("unchecked")
+        public void ensureValid(String name, Object o) {
+            String configValue = (String) o;
+            if (StringUtils.isEmpty(configValue)) {
+                return;
             }
 
-            return Arrays.stream(configValue.split(",")).map(String::trim).collect(Collectors.toList());
+            List<String> containerTopicMapList = convertToList(configValue);
+
+            // validate each item should be in topic#container format
+            boolean invalidFormatExists =
+                containerTopicMapList
+                    .stream()
+                    .anyMatch(containerTopicMap ->
+                        containerTopicMap
+                            .split(CosmosSourceContainersConfig.CONTAINER_TOPIC_MAP_SEPARATOR)
+                            .length != 2);
+
+            if (invalidFormatExists) {
+                throw new ConfigException(name, o, INVALID_TOPIC_MAP_FORMAT);
+            }
         }
 
-        return new ArrayList<>();
+        @Override
+        public String toString() {
+            return "Containers topic map";
+        }
     }
 }
