@@ -6,8 +6,11 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.AppC
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_REQUIREMENT_TYPE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_ROLLOUT_PERCENTAGE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_ROLLOUT_PERCENTAGE_CAPS;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.E_TAG;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_ID;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_PREFIX;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_REFERENCE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.GROUPS;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.GROUPS_CAPS;
@@ -19,12 +22,16 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.AppC
 import static java.util.Collections.emptyList;
 import static java.util.stream.Collectors.toMap;
 
+import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.IntStream;
 
+import com.azure.spring.cloud.appconfiguration.config.implementation.feature.entity.FeatureTelemetry;
+import com.nimbusds.jose.util.Base64URL;
+import org.bouncycastle.jcajce.provider.digest.SHA256;
 import org.springframework.util.StringUtils;
 
 import com.azure.data.appconfiguration.models.ConfigurationSetting;
@@ -104,7 +111,7 @@ class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPr
             }
         }
     }
-    
+
     List<ConfigurationSetting> getFeatureFlagSettings() {
         return featureConfigurationSettings;
     }
@@ -118,7 +125,7 @@ class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPr
 
         updateTelemetry(featureFlag, tracing);
 
-        properties.put(configName, createFeature(featureFlag));
+        properties.put(configName, createFeature(featureFlag, this.source.getEndpoint()));
     }
 
     /**
@@ -128,7 +135,7 @@ class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPr
      * @return Feature created from KeyValueItem
      */
     @SuppressWarnings("unchecked")
-    protected static Object createFeature(FeatureFlagConfigurationSetting item) {
+    protected static Object createFeature(FeatureFlagConfigurationSetting item, String originEndpoint) {
         String key = getFeatureSimpleName(item);
         String requirementType = DEFAULT_REQUIREMENT_TYPE;
         try {
@@ -180,12 +187,24 @@ class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPr
             feature.setEnabledFor(featureEnabledFor);
 
         }
+        if (feature.getTelemetry() != null) {
+            final FeatureTelemetry featureTelemetry = feature.getTelemetry();
+            if (featureTelemetry.isEnabled()) {
+                final Map<String, String> originMetadata = featureTelemetry.getMetadata();
+                originMetadata.put(FEATURE_FLAG_ID, calculateFeatureFlagId(item.getKey(), item.getLabel()));
+                originMetadata.put(E_TAG, item.getETag());
+                if (!originEndpoint.isEmpty()) {
+                    final String labelPart = item.getLabel().isEmpty() ? "" : String.format("?label=%s", item.getLabel());
+                    originMetadata.put(FEATURE_FLAG_REFERENCE, String.format("%s/kv/%s%s", originEndpoint, item.getKey(), labelPart));
+                }
+            }
+        }
         return feature;
     }
 
     /**
      * Looks at each filter used in a Feature Flag to check what types it is using.
-     * 
+     *
      * @param featureFlag FeatureFlagConfigurationSetting
      * @param tracing The TracingInfo for this store.
      */
@@ -198,7 +217,7 @@ class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPr
     private static String getFeatureSimpleName(ConfigurationSetting setting) {
         return setting.getKey().trim().substring(FEATURE_FLAG_PREFIX.length());
     }
-    
+
     @SuppressWarnings("null")
     private static Map<String, Object> mapValuesByIndex(List<Object> users) {
         return IntStream.range(0, users.size()).boxed().collect(toMap(String::valueOf, users::get));
@@ -213,5 +232,16 @@ class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPr
         List<Object> listObjects =
             CASE_INSENSITIVE_MAPPER.convertValue(parameters.get(key), new TypeReference<List<Object>>() {});
         return listObjects == null ? emptyList() : listObjects;
+    }
+
+    /**
+     * @param key the key of feature flag
+     * @param label the label of feature flag. If label is whitespace, treat as null
+     * @return b64_url(SHA256(utf8_bytes("${key}\n${label}")))
+     * */
+    private static String calculateFeatureFlagId(String key, String label) {
+        final String data = String.format("%s\n%s", key, label.isEmpty() ? null : label);
+        final SHA256.Digest digest = new SHA256.Digest();
+        return Base64URL.encode(digest.digest(data.getBytes(StandardCharsets.UTF_8))).toString();
     }
 }

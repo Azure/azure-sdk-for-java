@@ -8,6 +8,7 @@ package com.azure.spring.cloud.appconfiguration.config.implementation.feature.en
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import java.util.HashMap;
 import java.util.Map;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -16,7 +17,7 @@ public class FeatureTelemetry {
     private boolean enabled;
 
     @JsonProperty("metadata")
-    private Map<String, String> metadata;
+    private Map<String, String> metadata = new HashMap<>();
 
     /**
      * @param enabled the enabled property to set
