@@ -52,11 +52,11 @@ public final class TestUtils {
     static FeatureFlagConfigurationSetting createItemFeatureFlag(String prefix, String key, String value, String label,
         String contentType, String eTag) {
         FeatureFlagConfigurationSetting item = new FeatureFlagConfigurationSetting(key, true);
+        item.setValue(value);
         item.setClientFilters(new ArrayList<>());
         item.setKey(prefix + key);
         item.setLabel(label);
         item.setContentType(contentType);
-        item.setValue(value);
         item.setETag(eTag);
 
         try {

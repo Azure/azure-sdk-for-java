@@ -202,7 +202,7 @@ class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPr
                 final Map<String, String> originMetadata = telemetry.getMetadata();
                 originMetadata.put(FEATURE_FLAG_ID, calculateFeatureFlagId(item.getKey(), item.getLabel()));
                 originMetadata.put(E_TAG, item.getETag());
-                if (!originEndpoint.isEmpty()) {
+                if (originEndpoint != null && !originEndpoint.isEmpty()) {
                     final String labelPart = item.getLabel().isEmpty() ? "" : String.format("?label=%s", item.getLabel());
                     originMetadata.put(FEATURE_FLAG_REFERENCE, String.format("%s/kv/%s%s", originEndpoint, item.getKey(), labelPart));
                 }
