@@ -4,7 +4,10 @@ package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_ROLLOUT_PERCENTAGE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.EMPTY_LABEL;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.E_TAG;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_CONTENT_TYPE;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_ID;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_FLAG_REFERENCE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.FEATURE_MANAGEMENT_KEY;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.GROUPS;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.USERS;
@@ -60,6 +63,10 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
 
     private static final String KEY_FILTER = "/foo/";
 
+    private static final String TEST_E_TAG = "4f6dd610dd5e4deebc7fbaef685fb903";
+
+    private static final String TEST_ENDPOINT = "https://test.azconfig.io";
+
     private static final FeatureFlagConfigurationSetting FEATURE_ITEM = createItemFeatureFlag(".appconfig.featureflag/",
         "Alpha",
         FEATURE_VALUE, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
@@ -74,7 +81,7 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
 
     private static final FeatureFlagConfigurationSetting FEATURE_ITEM_4 = createItemFeatureFlag(
         ".appconfig.featureflag/", "Delta",
-        FEATURE_VALUE_TELEMETRY, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE);
+        FEATURE_VALUE_TELEMETRY, FEATURE_LABEL, FEATURE_FLAG_CONTENT_TYPE, TEST_E_TAG);
 
     private static final FeatureFlagConfigurationSetting FEATURE_ITEM_NULL = createItemFeatureFlag(
         ".appconfig.featureflag/", "Alpha",
@@ -274,30 +281,17 @@ public class AppConfigurationFeatureManagementPropertySourceTest {
         when(clientMock.listSettings(Mockito.any()))
             .thenReturn(featureListMock).thenReturn(featureListMock);
         when(clientMock.getTracingInfo()).thenReturn(new TracingInfo(false, false, 0, Configuration.getGlobalConfiguration()));
-        when(clientMock.getEndpoint()).thenReturn("https://test.azconfig.io");
+        when(clientMock.getEndpoint()).thenReturn(TEST_ENDPOINT);
         featureFlagStore.setEnabled(true);
 
         propertySource.initProperties(null);
 
-        Feature delta = new Feature();
-        delta.setKey("Delta");
-        HashMap<Integer, FeatureFlagFilter> filters = new HashMap<>();
-        FeatureFlagFilter ffec = new FeatureFlagFilter("TestFilter");
-        LinkedHashMap<String, Object> parameters = new LinkedHashMap<>();
-        parameters.put("key", "value");
-        ffec.setParameters(parameters);
-        filters.put(0, ffec);
-        delta.setEnabledFor(filters);
-        FeatureTelemetry featureTelemetry = new FeatureTelemetry();
-        featureTelemetry.setEnabled(true);
-        Map<String, String> metadata = new HashMap<>();
-        metadata.put("key", "value");
-        featureTelemetry.setMetadata(metadata);
-        delta.setTelemetry(featureTelemetry);
+        String featureFlagId = "yON6V7DTGfVgOKfnPtue_2hS-CFVV5ecv-dcjqCFQt4";
+        String featureFlagReference = String.format("%s/kv/%s", TEST_ENDPOINT, ".appconfig.featureflag/Delta");
 
         Feature featureTest = ((Feature) propertySource.getProperty(FEATURE_MANAGEMENT_KEY + "Delta"));
-        assertEquals(delta.getKey(), featureTest.getKey());
-        // todo - yuwe add telemetry equals check
-        System.out.println(featureTest.getTelemetry().getMetadata().toString());
+        assertEquals(featureFlagId, featureTest.getTelemetry().getMetadata().get(FEATURE_FLAG_ID));
+        assertEquals(featureFlagReference, featureTest.getTelemetry().getMetadata().get(FEATURE_FLAG_REFERENCE));
+        assertEquals(TEST_E_TAG, featureTest.getTelemetry().getMetadata().get(E_TAG));
     }
 }

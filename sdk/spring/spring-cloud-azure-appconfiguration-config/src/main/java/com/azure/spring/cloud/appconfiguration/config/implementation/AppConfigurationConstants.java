@@ -67,6 +67,10 @@ public class AppConfigurationConstants {
      */
     public static final String EMPTY_LABEL = "\0";
 
+    public static final String CONDITIONS = "conditions";
+
+    public static final String TELEMETRY = "telemetry";
+
     public static final String USERS = "users";
 
     public static final String USERS_CAPS = "Users";

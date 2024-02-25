@@ -44,7 +44,7 @@ public final class Feature {
      * @param key Name of the Feature Flag
      * @param featureItem Configurations of the Feature Flag.
      */
-    public Feature(String key, FeatureFlagConfigurationSetting featureItem, String requirementType) {
+    public Feature(String key, FeatureFlagConfigurationSetting featureItem, String requirementType, FeatureTelemetry telemetry) {
         this.key = key;
         List<FeatureFlagFilter> filterMapper = featureItem.getClientFilters();
 
@@ -54,6 +54,7 @@ public final class Feature {
             enabledFor.put(i, filterMapper.get(i));
         }
         this.requirementType = requirementType;
+        this.setTelemetry(telemetry);
     }
 
     /**

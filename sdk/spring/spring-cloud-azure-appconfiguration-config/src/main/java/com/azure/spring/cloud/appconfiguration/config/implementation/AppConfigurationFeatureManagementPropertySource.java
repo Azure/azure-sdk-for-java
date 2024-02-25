@@ -3,6 +3,7 @@
 package com.azure.spring.cloud.appconfiguration.config.implementation;
 
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.AUDIENCE;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.CONDITIONS;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_REQUIREMENT_TYPE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_ROLLOUT_PERCENTAGE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.DEFAULT_ROLLOUT_PERCENTAGE_CAPS;
@@ -17,6 +18,7 @@ import static com.azure.spring.cloud.appconfiguration.config.implementation.AppC
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.REQUIREMENT_TYPE_SERVICE;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.SELECT_ALL_FEATURE_FLAGS;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.TARGETING_FILTER;
+import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.TELEMETRY;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.USERS;
 import static com.azure.spring.cloud.appconfiguration.config.implementation.AppConfigurationConstants.USERS_CAPS;
 import static java.util.Collections.emptyList;
@@ -138,16 +140,23 @@ class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPr
     protected static Object createFeature(FeatureFlagConfigurationSetting item, String originEndpoint) {
         String key = getFeatureSimpleName(item);
         String requirementType = DEFAULT_REQUIREMENT_TYPE;
+        FeatureTelemetry featureTelemetry = new FeatureTelemetry();
         try {
             JsonNode node = CASE_INSENSITIVE_MAPPER.readTree(item.getValue());
-            JsonNode conditions = node.get("conditions");
+            JsonNode conditions = node.get(CONDITIONS);
             if (conditions != null && conditions.get(REQUIREMENT_TYPE_SERVICE) != null) {
                 requirementType = conditions.get(REQUIREMENT_TYPE_SERVICE).asText();
+            }
+            JsonNode telemetryNode = node.get(TELEMETRY);
+            if (telemetryNode != null) {
+                ObjectMapper objectMapper = JsonMapper.builder()
+                    .configure(MapperFeature.ACCEPT_CASE_INSENSITIVE_PROPERTIES, true).build();
+                featureTelemetry = objectMapper.convertValue(telemetryNode, FeatureTelemetry.class);
             }
         } catch (JsonProcessingException e) {
 
         }
-        Feature feature = new Feature(key, item, requirementType);
+        Feature feature = new Feature(key, item, requirementType, featureTelemetry);
         Map<Integer, FeatureFlagFilter> featureEnabledFor = feature.getEnabledFor();
 
         // Setting Enabled For to null, but enabled = true will result in the feature
@@ -188,9 +197,9 @@ class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPr
 
         }
         if (feature.getTelemetry() != null) {
-            final FeatureTelemetry featureTelemetry = feature.getTelemetry();
-            if (featureTelemetry.isEnabled()) {
-                final Map<String, String> originMetadata = featureTelemetry.getMetadata();
+            final FeatureTelemetry telemetry = feature.getTelemetry();
+            if (telemetry.isEnabled()) {
+                final Map<String, String> originMetadata = telemetry.getMetadata();
                 originMetadata.put(FEATURE_FLAG_ID, calculateFeatureFlagId(item.getKey(), item.getLabel()));
                 originMetadata.put(E_TAG, item.getETag());
                 if (!originEndpoint.isEmpty()) {
@@ -245,6 +254,7 @@ class AppConfigurationFeatureManagementPropertySource extends AppConfigurationPr
         final SHA256.Digest digest = new SHA256.Digest();
         final String beforeTrim = Base64URL.encode(digest.digest(data.getBytes(StandardCharsets.UTF_8)))
             .toString().replace('+', '-').replace('/', '_');
-        return beforeTrim.substring(0, beforeTrim.indexOf('='));
+        final int index = beforeTrim.indexOf('=');
+        return beforeTrim.substring(0, index > -1 ? index : beforeTrim.length());
     }
 }

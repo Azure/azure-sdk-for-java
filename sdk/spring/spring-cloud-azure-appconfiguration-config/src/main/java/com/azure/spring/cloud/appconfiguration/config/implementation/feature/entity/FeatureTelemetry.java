@@ -14,7 +14,7 @@ import java.util.Map;
 @JsonIgnoreProperties(ignoreUnknown = true)
 public class FeatureTelemetry {
     @JsonProperty("enabled")
-    private boolean enabled;
+    private boolean enabled = false;
 
     @JsonProperty("metadata")
     private Map<String, String> metadata = new HashMap<>();
