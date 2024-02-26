@@ -646,7 +646,7 @@ public final class CoreUtils {
      * {@link Runtime#addShutdownHook(Thread) shutdown hook}.
      * @return The {@link Thread} that was passed in.
      */
-    @SuppressWarnings({"deprecation", "removal"})
+    @SuppressWarnings({ "deprecation", "removal" })
     public static Thread addShutdownHookSafely(Thread shutdownThread) {
         if (shutdownThread == null) {
             return null;

@@ -625,7 +625,7 @@ public class CoreUtilsTests {
     }
 
     @Test
-    public void addRuntimeShutdownHookSafelyWithNullThreadDoesNothing() {
+    public void addShutdownHookSafelyWithNullThreadDoesNothing() {
         assertNull(CoreUtils.addShutdownHookSafely(null));
     }
 }
