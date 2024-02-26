@@ -49,11 +49,12 @@ import static org.junit.jupiter.api.Assertions.fail;
 @TestMethodOrder(MethodOrderer.OrderAnnotation.class)
 public class CustomModelFormTest extends FormRecognizerClientTestBase {
     private FormRecognizerClient client;
-    static String[] labeledModelId = {null};
-    static String[] multipageLabeledModelId = {null};
+    private final static String[] labeledModelId = {null};
+    private final static String[] multipageLabeledModelId = {null};
 
-    static String[] multipageUnlabeledModelId = {null};
-    static String[] unLabeledModelId = {null};
+    private final static String[] multipageUnlabeledModelId = {null};
+    private final static String[] unLabeledModelId = {null};
+    private final static String[] selectionMarkTrainedModelId = {null};
 
     /**
      * Verifies custom form data for a document using source as input stream data and valid labeled model Id.
@@ -459,7 +460,7 @@ public class CustomModelFormTest extends FormRecognizerClientTestBase {
     public void recognizeCustomFormMultiPageLabeled(HttpClient httpClient,
                                                     FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();
-        dataRunner((data, dataLength) ->  {
+        dataRunner((data, dataLength) -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
                 = client.beginRecognizeCustomForms(
                     multipageLabeledModelId[0],
@@ -529,30 +530,6 @@ public class CustomModelFormTest extends FormRecognizerClientTestBase {
                 = (FormRecognizerErrorInformation) httpResponseException.getValue();
             assertEquals("Invalid input file.", errorInformation.getMessage());
         });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeCustomFormUrlLabeledDataWithSelectionMark(HttpClient httpClient,
-                                                                   FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();
-        urlRunner(fileUrl -> beginSelectionMarkTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller
-                = getFormTrainingClientBuilder(httpClient, serviceVersion).buildClient()
-                .beginTraining(trainingFilesUrl, useTrainingLabels)
-                .setPollInterval(durationTestMode);
-            trainingPoller.waitForCompletion();
-
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
-                = client.beginRecognizeCustomFormsFromUrl(trainingPoller.getFinalResult().getModelId(),
-                    fileUrl,
-                    new RecognizeCustomFormsOptions().setFieldElementsIncluded(true),
-                    Context.NONE)
-                .setPollInterval(durationTestMode);
-            syncPoller.waitForCompletion();
-            validateCustomFormWithSelectionMarks(syncPoller.getFinalResult(), true, 1);
-        }), SELECTION_MARK_PDF);
     }
 
     /**
@@ -844,6 +821,42 @@ public class CustomModelFormTest extends FormRecognizerClientTestBase {
         }, CONTENT_FORM_JPG);
     }
 
+    @Order(5)
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeCustomFormLabeledDataWithSelectionMark(HttpClient httpClient,
+                                                                FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();
+        dataRunner((data, dataLength) -> {
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeCustomForms(getPreComputedSelectionMarkTrainedModelId(httpClient, serviceVersion),
+                    data,
+                    dataLength,
+                    new RecognizeCustomFormsOptions().setContentType(APPLICATION_PDF).setFieldElementsIncluded(true),
+                    Context.NONE)
+                .setPollInterval(durationTestMode);
+            syncPoller.waitForCompletion();
+            validateCustomFormWithSelectionMarks(syncPoller.getFinalResult(), true, 1);
+        }, SELECTION_MARK_PDF);
+    }
+
+    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
+    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
+    public void recognizeCustomFormUrlLabeledDataWithSelectionMark(HttpClient httpClient,
+                                                                   FormRecognizerServiceVersion serviceVersion) {
+        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();
+        urlRunner(fileUrl -> {
+            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
+                = client.beginRecognizeCustomFormsFromUrl(selectionMarkTrainedModelId[0],
+                    fileUrl,
+                    new RecognizeCustomFormsOptions().setFieldElementsIncluded(true),
+                    Context.NONE)
+                .setPollInterval(durationTestMode);
+            syncPoller.waitForCompletion();
+            validateCustomFormWithSelectionMarks(syncPoller.getFinalResult(), true, 1);
+        }, SELECTION_MARK_PDF);
+    }
+
     private String getPreComputedMultipageUnlabeledModelId(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         if (multipageUnlabeledModelId != null) {
             beginTrainingMultipageRunner((trainingFilesUrl) -> {
@@ -908,4 +921,15 @@ public class CustomModelFormTest extends FormRecognizerClientTestBase {
         return unLabeledModelId[0];
     }
 
+    private String getPreComputedSelectionMarkTrainedModelId(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
+        beginSelectionMarkTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
+            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller
+                = getFormTrainingClientBuilder(httpClient, serviceVersion).buildClient()
+                .beginTraining(trainingFilesUrl, useTrainingLabels)
+                .setPollInterval(durationTestMode);
+            trainingPoller.waitForCompletion();
+            selectionMarkTrainedModelId[0] = trainingPoller.getFinalResult().getModelId();
+        });
+        return selectionMarkTrainedModelId[0];
+    }
 }

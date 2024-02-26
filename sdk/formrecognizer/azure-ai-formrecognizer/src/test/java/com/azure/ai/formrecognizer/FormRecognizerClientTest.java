@@ -3,7 +3,6 @@
 
 package com.azure.ai.formrecognizer;
 
-import com.azure.ai.formrecognizer.models.CreateComposedModelOptions;
 import com.azure.ai.formrecognizer.models.FormContentType;
 import com.azure.ai.formrecognizer.models.FormField;
 import com.azure.ai.formrecognizer.models.FormPage;
@@ -21,17 +20,13 @@ import com.azure.ai.formrecognizer.models.RecognizedForm;
 import com.azure.ai.formrecognizer.models.TextStyleName;
 import com.azure.ai.formrecognizer.training.FormTrainingClient;
 import com.azure.ai.formrecognizer.training.models.CustomFormModel;
-import com.azure.ai.formrecognizer.training.models.CustomFormSubmodel;
-import com.azure.ai.formrecognizer.training.models.TrainingOptions;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.util.Context;
 import com.azure.core.util.polling.SyncPoller;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
 
-import java.io.InputStream;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -41,8 +36,6 @@ import static com.azure.ai.formrecognizer.TestUtils.BLANK_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.CONTENT_FORM_JPG;
 import static com.azure.ai.formrecognizer.TestUtils.CONTENT_GERMAN_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.DISPLAY_NAME_WITH_ARGUMENTS;
-import static com.azure.ai.formrecognizer.TestUtils.INVALID_URL;
-import static com.azure.ai.formrecognizer.TestUtils.NON_EXIST_MODEL_ID;
 import static com.azure.ai.formrecognizer.TestUtils.SELECTION_MARK_PDF;
 import static com.azure.ai.formrecognizer.TestUtils.getContentDetectionFileData;
 import static com.azure.ai.formrecognizer.TestUtils.validateExceptionSource;
@@ -50,11 +43,8 @@ import static com.azure.ai.formrecognizer.models.FormContentType.APPLICATION_PDF
 import static com.azure.ai.formrecognizer.models.FormContentType.IMAGE_JPEG;
 import static com.azure.ai.formrecognizer.models.FormContentType.IMAGE_PNG;
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
-import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.junit.jupiter.api.Assertions.fail;
 
 public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
 
@@ -644,31 +634,6 @@ public class FormRecognizerClientTest extends FormRecognizerClientTestBase {
         }, CONTENT_GERMAN_PDF);
     }
 
-    // Custom form recognition
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeCustomFormLabeledDataWithSelectionMark(HttpClient httpClient,
-                                                                FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerClient(httpClient, serviceVersion);
-        dataRunner((data, dataLength) ->
-            beginSelectionMarkTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller
-                    = getFormTrainingClient(httpClient, serviceVersion)
-                    .beginTraining(trainingFilesUrl, useTrainingLabels)
-                        .setPollInterval(durationTestMode);
-                trainingPoller.waitForCompletion();
-
-                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
-                    = client.beginRecognizeCustomForms(trainingPoller.getFinalResult().getModelId(),
-                        data,
-                        dataLength,
-                        new RecognizeCustomFormsOptions().setContentType(APPLICATION_PDF).setFieldElementsIncluded(true),
-                        Context.NONE)
-                        .setPollInterval(durationTestMode);
-                syncPoller.waitForCompletion();
-                validateCustomFormWithSelectionMarks(syncPoller.getFinalResult(), true, 1);
-            }), SELECTION_MARK_PDF);
-    }
     // Business card recognition
 
     // Business card - non-URL

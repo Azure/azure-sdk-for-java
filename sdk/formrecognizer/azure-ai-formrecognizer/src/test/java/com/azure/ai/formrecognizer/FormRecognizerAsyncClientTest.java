@@ -316,7 +316,7 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
                 = client.beginRecognizeReceiptsFromUrl(fileUrl).setPollInterval(durationTestMode).getSyncPoller();
             syncPoller.waitForCompletion();
             validateMultipageReceiptData(syncPoller.getFinalResult());
-        }, MULTIPAGE_INVOICE_PDF);
+        }, MULTIPAGE_RECEIPT_PDF);
     }
 
     /**
@@ -696,34 +696,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
         }, CONTENT_GERMAN_PDF);
     }
 
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeCustomFormLabeledDataWithSelectionMark(HttpClient httpClient,
-                                                                FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        dataRunner((data, dataLength) ->
-            beginSelectionMarkTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-                SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller =
-                    getFormTrainingAsyncClient(httpClient, serviceVersion)
-                        .beginTraining(trainingFilesUrl, useTrainingLabels)
-                            .setPollInterval(durationTestMode)
-                            .getSyncPoller();
-                trainingPoller.waitForCompletion();
-
-                SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
-                    = client.beginRecognizeCustomForms(trainingPoller.getFinalResult().getModelId(),
-                        toFluxByteBuffer(data),
-                        dataLength,
-                        new RecognizeCustomFormsOptions()
-                            .setContentType(FormContentType.APPLICATION_PDF)
-                            .setFieldElementsIncluded(true))
-                        .setPollInterval(durationTestMode)
-                        .getSyncPoller();
-                syncPoller.waitForCompletion();
-                validateCustomFormWithSelectionMarks(syncPoller.getFinalResult(), true, 1);
-            }), SELECTION_MARK_PDF);
-    }
-
     /**
      * Verifies encoded blank url must stay same when sent to service for a document using invalid source url with \
      * encoded blank space as input data to recognize a custom form from url API.
@@ -760,31 +732,6 @@ public class FormRecognizerAsyncClientTest extends FormRecognizerClientTestBase 
             assertEquals(INVALID_MODEL_ID_ERROR_CODE, errorInformation.getErrorCode());
         }, CONTENT_FORM_JPG);
     }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
-    public void recognizeCustomFormUrlLabeledDataWithSelectionMark(HttpClient httpClient,
-                                                                   FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerAsyncClient(httpClient, serviceVersion);
-        urlRunner(fileUrl -> beginSelectionMarkTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
-            SyncPoller<FormRecognizerOperationResult, CustomFormModel> trainingPoller
-                = getFormTrainingAsyncClient(httpClient, serviceVersion)
-                .beginTraining(trainingFilesUrl, useTrainingLabels)
-                    .setPollInterval(durationTestMode)
-                    .getSyncPoller();
-            trainingPoller.waitForCompletion();
-
-            SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
-                = client.beginRecognizeCustomFormsFromUrl(trainingPoller.getFinalResult().getModelId(), fileUrl,
-                    new RecognizeCustomFormsOptions().setFieldElementsIncluded(true))
-                    .setPollInterval(durationTestMode)
-                    .getSyncPoller();
-            syncPoller.waitForCompletion();
-            validateCustomFormWithSelectionMarks(syncPoller.getFinalResult(), true, 1);
-        }), SELECTION_MARK_PDF);
-    }
-
-
 
     // Business Card Recognition
 
