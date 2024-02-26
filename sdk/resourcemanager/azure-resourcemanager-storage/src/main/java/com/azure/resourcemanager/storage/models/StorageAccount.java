@@ -226,6 +226,27 @@ public interface StorageAccount
      */
     boolean isDefaultToOAuthAuthentication();
 
+    /**
+     * Type of the Managed Service Identity used to access KeyVault for encryption.
+     * <p>This property only makes sense when the storage account is encrypted using Customer-managed keys, meaning
+     * {@link StorageAccount#encryptionKeySource()} is {@link StorageAccountEncryptionKeySource#MICROSOFT_KEYVAULT}.</p>
+     *
+     * @return type of the Managed Service Identity used to access KeyVault for encryption,
+     *         null if {@link StorageAccount#encryptionKeySource()} is {@link StorageAccountEncryptionKeySource#MICROSOFT_STORAGE}
+     */
+    IdentityType identityTypeForKeyVault();
+
+    /**
+     * User-assigned Managed Service Identity ID to access the KeyVault for encryption.
+     * <p>This property only makes sense when the storage account is encrypted using Customer-managed keys, meaning
+     * {@link StorageAccount#encryptionKeySource()} is {@link StorageAccountEncryptionKeySource#MICROSOFT_KEYVAULT} and
+     * {@link StorageAccount#identityTypeForKeyVault()} is {@link IdentityType#USER_ASSIGNED}. </p>
+     * @return user-assigned identity ID used to access KeyVault for encryption,
+     *         null if {@link StorageAccount#encryptionKeySource()} is {@link StorageAccountEncryptionKeySource#MICROSOFT_STORAGE} or
+     *         {@link StorageAccount#identityTypeForKeyVault()} is not {@link IdentityType#USER_ASSIGNED}
+     */
+    String userAssignedIdentityIdForKeyVault();
+
     /** Container interface for all the definitions that need to be implemented. */
     interface Definition
         extends DefinitionStages.Blank,
@@ -370,8 +391,8 @@ public interface StorageAccount
             WithCreate withQueueAccountScopedEncryptionKey();
 
             /**
-             * Specifies the KeyVault key to be used as encryption key.
-             *
+             * Specifies the KeyVault key to be used as key for encryption and the system-assigned identity to access the KeyVault,
+             * meaning this Storage Account will be encrypted with Customer-managed keys.
              * This requires managed service identity on storage account
              * and GET, WRAP_KEY, UNWRAP_KEY access policy on key vault for the managed service identity.
              *
@@ -383,7 +404,8 @@ public interface StorageAccount
             WithCreate withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion);
 
             /**
-             * Specifies the KeyVault key to be used as key for encryption and the user-assigned identity to access the KeyVault.
+             * Specifies the KeyVault key to be used as key for encryption and the user-assigned identity to access the KeyVault,
+             * meaning this Storage Account will be encrypted with Customer-managed keys.
              * If the provided user-assigned identity is null, this method is equivalent to {@link WithEncryption#withEncryptionKeyFromKeyVault(String, String, String)},
              * meaning it'll use the system-assigned identity to access the KeyVault.
              *
@@ -401,7 +423,8 @@ public interface StorageAccount
             WithCreate withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion, Identity userAssignedIdentity);
 
             /**
-             * Specifies the KeyVault key to be used as key for encryption and the user-assigned identity to access the KeyVault.
+             * Specifies the KeyVault key to be used as key for encryption and the user-assigned identity to access the KeyVault,
+             * meaning this Storage Account will be encrypted with Customer-managed keys.
              * If the provided user-assigned identity is null, this method is equivalent to {@link WithEncryption#withEncryptionKeyFromKeyVault(String, String, String)},
              * meaning it'll use the system-assigned identity to access the KeyVault.
              *
@@ -778,7 +801,8 @@ public interface StorageAccount
             Update withoutFileEncryption();
 
             /**
-             * Specifies the KeyVault key to be used as key for encryption.
+             * Specifies the KeyVault key to be used as key for encryption and the system-assigned identity to access the KeyVault,
+             * meaning this Storage Account will be encrypted with Customer-managed keys.
              *
              * This requires managed service identity on storage account
              * (via {@link WithManagedServiceIdentity#withSystemAssignedManagedServiceIdentity()}),
@@ -792,9 +816,10 @@ public interface StorageAccount
             Update withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion);
 
             /**
-             * Specifies the KeyVault key to be used as key for encryption and the user-assigned identity to access the KeyVault.
+             * Specifies the KeyVault key to be used as key for encryption and the user-assigned identity to access the KeyVault,
+             * meaning this Storage Account will be encrypted with Customer-managed keys.
              * If the provided user-assigned identity is null, this method is equivalent to {@link WithEncryption#withEncryptionKeyFromKeyVault(String, String, String)},
-             * meaning it'll use the system-assigned identity to access the KeyVault.
+             * meaning system-assigned identity will be used to access the KeyVault.
              *
              * This requires managed service identity on storage account
              * (via {@link WithManagedServiceIdentity#withSystemAssignedManagedServiceIdentity()} or
@@ -810,9 +835,10 @@ public interface StorageAccount
             Update withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion, Identity userAssignedIdentity);
 
             /**
-             * Specifies the KeyVault key to be used as key for encryption and the user-assigned identity to access the KeyVault.
+             * Specifies the KeyVault key to be used as key for encryption and the user-assigned identity to access the KeyVault,
+             * meaning this Storage Account will be encrypted with Customer-managed keys.
              * If the provided user-assigned identity is null, this method is equivalent to {@link WithEncryption#withEncryptionKeyFromKeyVault(String, String, String)},
-             * meaning it'll use the system-assigned identity to access the KeyVault.
+             * meaning system-assigned identity will be used to access the KeyVault.
              *
              * This requires managed service identity on storage account
              * (via {@link WithManagedServiceIdentity#withSystemAssignedManagedServiceIdentity()} or
@@ -826,6 +852,13 @@ public interface StorageAccount
              * @return the next stage of storage account update
              */
             Update withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion, String userAssignedIdentityId);
+
+            /**
+             * Specifies the Microsoft-managed key to be used as key for encryption. This is the default encryption type.
+             *
+             * @return the next stage of storage account update
+             */
+            Update withEncryptionKeyFromStorage();
         }
 
         /** A blob storage account update stage allowing access tier to be specified. */

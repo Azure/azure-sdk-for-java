@@ -18,6 +18,8 @@ import com.azure.resourcemanager.keyvault.models.Vault;
 import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.fluentcore.utils.HttpPipelineProvider;
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
+import com.azure.resourcemanager.storage.models.IdentityType;
+import com.azure.resourcemanager.storage.models.KeySource;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.resourcemanager.test.ResourceManagerTestProxyTestBase;
@@ -79,6 +81,7 @@ public class StorageAccountCmkTests extends ResourceManagerTestProxyTestBase {
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withEmptyAccessPolicy()
+                .withPurgeProtectionEnabled() // CMK requires purge protection enabled
                 .create();
             // create two MSIs
             Identity identity1 = azureResourceManager.identities()
@@ -91,11 +94,6 @@ public class StorageAccountCmkTests extends ResourceManagerTestProxyTestBase {
                 .withRegion(region)
                 .withExistingResourceGroup(rgName)
                 .create();
-            // create key vault key
-            Key key = vault.keys().define("key1")
-                .withKeyTypeToCreate(KeyType.RSA)
-                .withKeySize(4096)
-                .create();
 
             // create Storage Account with default MMK
             StorageAccount storageAccount = azureResourceManager.storageAccounts()
@@ -106,6 +104,11 @@ public class StorageAccountCmkTests extends ResourceManagerTestProxyTestBase {
                 .withSku(StorageAccountSkuType.STANDARD_RAGRS)
                 .withSystemAssignedManagedServiceIdentity()
                 .create();
+
+            Assertions.assertNull(storageAccount.identityTypeForKeyVault());
+            Assertions.assertNull(storageAccount.userAssignedIdentityIdForKeyVault());
+
+            Assertions.assertEquals(KeySource.MICROSOFT_STORAGE.toString(), storageAccount.encryptionKeySource().toString());
 
             // assign access policy to the three MSIs
             vault.update()
@@ -118,36 +121,61 @@ public class StorageAccountCmkTests extends ResourceManagerTestProxyTestBase {
                     .allowKeyPermissions(KeyPermissions.GET, KeyPermissions.WRAP_KEY, KeyPermissions.UNWRAP_KEY)
                     .attach()
                 .defineAccessPolicy()
-                    .forObjectId(identity1.id())
+                    .forObjectId(identity1.principalId())
                     .allowKeyPermissions(KeyPermissions.GET, KeyPermissions.WRAP_KEY, KeyPermissions.UNWRAP_KEY)
                     .attach()
                 .defineAccessPolicy()
-                    .forObjectId(identity2.id())
+                    .forObjectId(identity2.principalId())
                     .allowKeyPermissions(KeyPermissions.GET, KeyPermissions.WRAP_KEY, KeyPermissions.UNWRAP_KEY)
                     .attach()
                 .apply();
+
+            // create key vault key
+            Key key = vault.keys().define("key1")
+                .withKeyTypeToCreate(KeyType.RSA)
+                .withKeySize(4096)
+                .create();
+
             // update Storage Account to CMK with system-assigned MSI
             storageAccount.update()
                 .withEncryptionKeyFromKeyVault(vault.vaultUri(), key.name(), "")
                 .apply();
+            Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, storageAccount.identityTypeForKeyVault());
+            Assertions.assertEquals(KeySource.MICROSOFT_KEYVAULT.toString(), storageAccount.encryptionKeySource().toString());
+
             // update Storage Account to CMK with user-assigned MSI
             storageAccount.update()
                 .withExistingUserAssignedManagedServiceIdentity(identity1.id())
                 .withEncryptionKeyFromKeyVault(vault.vaultUri(), key.name(), "", identity1.id())
                 .apply();
+
+            Assertions.assertEquals(IdentityType.USER_ASSIGNED, storageAccount.identityTypeForKeyVault());
+
             // update Storage Account to CMK with another user-assigned MSI
             storageAccount.update()
                 .withoutUserAssignedManagedServiceIdentity(identity1.id())
                 .withExistingUserAssignedManagedServiceIdentity(identity2.id())
                 .withEncryptionKeyFromKeyVault(vault.vaultUri(), key.name(), "", identity2.id())
                 .apply();
+
+            Assertions.assertEquals(identity2.id(), storageAccount.userAssignedIdentityIdForKeyVault());
+
             // update Storage Account to CMK with system-assigned MSI
             storageAccount.update()
                 .withEncryptionKeyFromKeyVault(vault.vaultUri(), key.name(), "")
                 .apply();
+            Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, storageAccount.identityTypeForKeyVault());
+            Assertions.assertNull(storageAccount.identityTypeForKeyVault());
+            Assertions.assertNull(storageAccount.userAssignedIdentityIdForKeyVault());
 
+            // update Storage Account to MMK
+            storageAccount.update()
+                .withEncryptionKeyFromStorage()
+                .apply();
+            Assertions.assertEquals(KeySource.MICROSOFT_STORAGE.toString(), storageAccount.encryptionKeySource().toString());
+            Assertions.assertNull(storageAccount.identityTypeForKeyVault());
         } finally {
-            azureResourceManager.resourceGroups().deleteByName(rgName);
+            azureResourceManager.resourceGroups().beginDeleteByName(rgName);
         }
     }
 }

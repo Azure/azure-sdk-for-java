@@ -22,11 +22,13 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.storage.StorageManager;
 import com.azure.resourcemanager.storage.fluent.StorageAccountsClient;
 import com.azure.resourcemanager.storage.fluent.models.PrivateEndpointConnectionInner;
+import com.azure.resourcemanager.storage.fluent.models.StorageAccountInner;
 import com.azure.resourcemanager.storage.models.AccessTier;
 import com.azure.resourcemanager.storage.models.AccountStatuses;
 import com.azure.resourcemanager.storage.models.AzureFilesIdentityBasedAuthentication;
 import com.azure.resourcemanager.storage.models.CustomDomain;
 import com.azure.resourcemanager.storage.models.DirectoryServiceOptions;
+import com.azure.resourcemanager.storage.models.IdentityType;
 import com.azure.resourcemanager.storage.models.Kind;
 import com.azure.resourcemanager.storage.models.LargeFileSharesState;
 import com.azure.resourcemanager.storage.models.MinimumTlsVersion;
@@ -44,7 +46,7 @@ import com.azure.resourcemanager.storage.models.StorageAccountRegenerateKeyParam
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
 import com.azure.resourcemanager.storage.models.StorageAccountUpdateParameters;
 import com.azure.resourcemanager.storage.models.StorageService;
-import com.azure.resourcemanager.storage.fluent.models.StorageAccountInner;
+import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
 import java.util.Collections;
@@ -53,8 +55,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.stream.Collectors;
-
-import reactor.core.publisher.Mono;
 
 /** Implementation for {@link StorageAccount}. */
 class StorageAccountImpl
@@ -272,6 +272,16 @@ class StorageAccountImpl
     }
 
     @Override
+    public IdentityType identityTypeForKeyVault() {
+        return this.encryptionHelper.identityTypeForKeyVault(this.innerModel());
+    }
+
+    @Override
+    public String userAssignedIdentityIdForKeyVault() {
+        return this.encryptionHelper.userAssignedIdentityIdForKeyVault(this.innerModel());
+    }
+
+    @Override
     public List<StorageAccountKey> getKeys() {
         return this.getKeysAsync().block();
     }
@@ -451,6 +461,12 @@ class StorageAccountImpl
     @Override
     public StorageAccountImpl withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion, String userAssignedIdentityId) {
         this.encryptionHelper.withEncryptionKeyFromKeyVault(keyVaultUri, keyName, keyVersion, userAssignedIdentityId);
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl withEncryptionKeyFromStorage() {
+        this.encryptionHelper.withEncryptionKeyFromStorage();
         return this;
     }
 
