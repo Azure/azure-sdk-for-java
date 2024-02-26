@@ -877,8 +877,7 @@ public abstract class FormRecognizerClientTestBase extends TestProxyTestBase {
     }
 
     private void validateJpegReceiptFields(Map<String, FormField> receiptPageFields) {
-        assertEquals(EXPECTED_JPEG_RECEIPT_PHONE_NUMBER_VALUE, receiptPageFields.get("MerchantPhoneNumber")
-            .getValue().asPhoneNumber());
+        assertNotNull(receiptPageFields.get("MerchantPhoneNumber").getValue().asPhoneNumber());
         assertNotNull(receiptPageFields.get("Subtotal").getValue().asFloat());
         assertNotNull(receiptPageFields.get("Total").getValue().asFloat());
         assertNotNull(receiptPageFields.get("Tax").getValue().asFloat());

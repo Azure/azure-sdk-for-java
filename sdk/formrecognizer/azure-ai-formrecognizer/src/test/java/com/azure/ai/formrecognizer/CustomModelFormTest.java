@@ -62,7 +62,7 @@ public class CustomModelFormTest extends FormRecognizerClientTestBase {
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeCustomFormUnlabeledData(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();;
+        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();
         dataRunner((data, dataLength) -> {
 
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
@@ -85,7 +85,7 @@ public class CustomModelFormTest extends FormRecognizerClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeCustomFormUnlabeledDataIncludeFieldElements(HttpClient httpClient,
                                                                      FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();;
+        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();
 
         dataRunner((data, dataLength) -> {
 
@@ -107,7 +107,7 @@ public class CustomModelFormTest extends FormRecognizerClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeCustomFormMultiPageUnlabeled(HttpClient httpClient,
                                                       FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();;
+        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();
         dataRunner((data, dataLength) -> {
 
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
@@ -130,7 +130,7 @@ public class CustomModelFormTest extends FormRecognizerClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeCustomFormUnlabeledDataWithJpgContentType(HttpClient httpClient,
                                                                    FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();;
+        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();
         dataRunner((data, dataLength) -> {
 
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
@@ -153,7 +153,7 @@ public class CustomModelFormTest extends FormRecognizerClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeCustomFormUnlabeledDataWithBlankPdfContentType(HttpClient httpClient,
                                                                         FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();;
+        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();
         dataRunner((data, dataLength) -> {
 
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
@@ -178,7 +178,7 @@ public class CustomModelFormTest extends FormRecognizerClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeCustomFormUrlUnlabeledData(HttpClient httpClient,
                                                     FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();;
+        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();
         urlRunner(fileUrl -> {
 
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
@@ -198,7 +198,7 @@ public class CustomModelFormTest extends FormRecognizerClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeCustomFormUrlUnlabeledDataIncludeFieldElements(HttpClient httpClient,
                                                                         FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();;
+        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();
         urlRunner(fileUrl -> {
 
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
@@ -217,7 +217,7 @@ public class CustomModelFormTest extends FormRecognizerClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeCustomFormUrlMultiPageUnlabeled(HttpClient httpClient,
                                                          FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();;
+        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();
         testingContainerUrlRunner(fileUrl -> {
 
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
@@ -306,7 +306,7 @@ public class CustomModelFormTest extends FormRecognizerClientTestBase {
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateJpegCustomForm(syncPoller.getFinalResult(), false, 1, true);
-            }, CONTENT_FORM_JPG);
+        }, CONTENT_FORM_JPG);
     }
 
     /**
@@ -317,7 +317,7 @@ public class CustomModelFormTest extends FormRecognizerClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeCustomFormUrlMultiPageLabeled(HttpClient httpClient,
                                                        FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();;
+        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();
         urlRunner(fileUrl -> {
             String modelId = getPreComputedMultipageLabeledModelId(httpClient, serviceVersion);
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
@@ -346,7 +346,7 @@ public class CustomModelFormTest extends FormRecognizerClientTestBase {
                 .setPollInterval(durationTestMode);
             syncPoller.waitForCompletion();
             validateJpegCustomForm(syncPoller.getFinalResult(), true, 1, true);
-            }, CONTENT_FORM_JPG);
+        }, CONTENT_FORM_JPG);
     }
 
     /**
@@ -380,7 +380,7 @@ public class CustomModelFormTest extends FormRecognizerClientTestBase {
     public void recognizeCustomFormLabeledDataExcludeFieldElements(HttpClient httpClient,
                                                                    FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();
-    dataRunner((data, dataLength) -> {
+        dataRunner((data, dataLength) -> {
             SyncPoller<FormRecognizerOperationResult, List<RecognizedForm>> syncPoller
                 = client.beginRecognizeCustomForms(
                     labeledModelId[0],
@@ -419,17 +419,17 @@ public class CustomModelFormTest extends FormRecognizerClientTestBase {
     public void recognizeCustomFormInvalidStatus(HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
         client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();
         invalidSourceUrlRunner((invalidSourceUrl) -> {
-                HttpResponseException httpResponseException
-                    = assertThrows(HttpResponseException.class,
-                    () -> client.beginRecognizeCustomFormsFromUrl(
-                            labeledModelId[0],
-                            invalidSourceUrl)
-                        .setPollInterval(durationTestMode)
-                        .getFinalResult());
-                FormRecognizerErrorInformation errorInformation
-                    = (FormRecognizerErrorInformation) httpResponseException.getValue();
-                assertEquals(INVALID_SOURCE_URL_EXCEPTION_MESSAGE, errorInformation.getMessage());
-            });
+            HttpResponseException httpResponseException
+                = assertThrows(HttpResponseException.class,
+                () -> client.beginRecognizeCustomFormsFromUrl(
+                        labeledModelId[0],
+                        invalidSourceUrl)
+                    .setPollInterval(durationTestMode)
+                    .getFinalResult());
+            FormRecognizerErrorInformation errorInformation
+                = (FormRecognizerErrorInformation) httpResponseException.getValue();
+            assertEquals(INVALID_SOURCE_URL_EXCEPTION_MESSAGE, errorInformation.getMessage());
+        });
     }
 
     /**
@@ -481,7 +481,7 @@ public class CustomModelFormTest extends FormRecognizerClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeCustomFormFromUrlWithEncodedBlankSpaceSourceUrl(HttpClient httpClient,
                                                                          FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();;
+        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();
         encodedBlankSpaceSourceUrlRunner(sourceUrl -> {
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
                 () -> client.beginRecognizeCustomFormsFromUrl(NON_EXIST_MODEL_ID, sourceUrl));
@@ -496,7 +496,7 @@ public class CustomModelFormTest extends FormRecognizerClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeCustomFormUrlNonExistModelId(HttpClient httpClient,
                                                       FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();;
+        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();
         urlRunner(fileUrl -> {
             HttpResponseException errorResponseException = assertThrows(HttpResponseException.class,
                 () -> client.beginRecognizeCustomFormsFromUrl(NON_EXIST_MODEL_ID, fileUrl));
@@ -513,7 +513,7 @@ public class CustomModelFormTest extends FormRecognizerClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void recognizeCustomFormDamagedPdf(HttpClient httpClient,
                                               FormRecognizerServiceVersion serviceVersion) {
-        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();;
+        client = getFormRecognizerClientBuilder(httpClient, serviceVersion).buildClient();
         damagedPdfDataRunner((data, dataLength) -> {
 
             HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
@@ -604,7 +604,7 @@ public class CustomModelFormTest extends FormRecognizerClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void checkRecognizedFormTypeLabeledModel(
         HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        final FormTrainingClient formTrainingClient = getFormTrainingClientBuilder(httpClient, serviceVersion).buildClient();;
+        final FormTrainingClient formTrainingClient = getFormTrainingClientBuilder(httpClient, serviceVersion).buildClient();
         dataRunner((data, dataLength) -> {
             beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
                 SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
@@ -643,7 +643,7 @@ public class CustomModelFormTest extends FormRecognizerClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void checkRecognizedFormTypeUnlabeledModel(
         HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        final FormTrainingClient formTrainingClient = getFormTrainingClientBuilder(httpClient, serviceVersion).buildClient();;
+        final FormTrainingClient formTrainingClient = getFormTrainingClientBuilder(httpClient, serviceVersion).buildClient();
         dataRunner((data, dataLength) -> {
             beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
                 SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
@@ -681,7 +681,7 @@ public class CustomModelFormTest extends FormRecognizerClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void checkRecognizedFormTypeUnlabeledModelWithModelName(
         HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        final FormTrainingClient formTrainingClient = getFormTrainingClientBuilder(httpClient, serviceVersion).buildClient();;
+        final FormTrainingClient formTrainingClient = getFormTrainingClientBuilder(httpClient, serviceVersion).buildClient();
         dataRunner((data, dataLength) -> {
             beginTrainingUnlabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
                 SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
@@ -723,7 +723,7 @@ public class CustomModelFormTest extends FormRecognizerClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void checkRecognizeFormTypeComposedModel(
         HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        final FormTrainingClient formTrainingClient = getFormTrainingClientBuilder(httpClient, serviceVersion).buildClient();;
+        final FormTrainingClient formTrainingClient = getFormTrainingClientBuilder(httpClient, serviceVersion).buildClient();
         dataRunner((data, dataLength) -> {
             beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
                 SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
@@ -789,7 +789,7 @@ public class CustomModelFormTest extends FormRecognizerClientTestBase {
     @MethodSource("com.azure.ai.formrecognizer.TestUtils#getTestParameters")
     public void checkRecognizeFormTypeComposedModelWithModelName(
         HttpClient httpClient, FormRecognizerServiceVersion serviceVersion) {
-        final FormTrainingClient formTrainingClient = getFormTrainingClientBuilder(httpClient, serviceVersion).buildClient();;
+        final FormTrainingClient formTrainingClient = getFormTrainingClientBuilder(httpClient, serviceVersion).buildClient();
         dataRunner((data, dataLength) -> {
             beginTrainingLabeledRunner((trainingFilesUrl, useTrainingLabels) -> {
                 SyncPoller<FormRecognizerOperationResult, CustomFormModel> syncPoller
