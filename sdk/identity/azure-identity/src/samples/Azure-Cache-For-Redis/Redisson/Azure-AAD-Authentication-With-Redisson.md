@@ -16,13 +16,13 @@
     <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-identity</artifactId>
-        <version>1.8.2</version>
+        <version>1.8.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
     
     <dependency>
         <groupId>org.redisson</groupId>
         <artifactId>redisson</artifactId>
-        <version>3.20.1</version>
+        <version>3.20.1</version> <!-- {x-version-update;org.redisson:redisson;external_dependency} -->
     </dependency>
    ```
 

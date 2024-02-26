@@ -113,9 +113,9 @@ org.postgresql:postgresql;42.3.8
 org.slf4j:slf4j-api;1.7.36
 org.slf4j:slf4j-nop;1.7.36
 org.slf4j:slf4j-simple;1.7.36
-redis.clients:jedis;4.3.1
-io.lettuce:lettuce-core;6.2.0.RELEASE
-org.redisson:redisson;3.17.0
+redis.clients:jedis;5.1.0
+io.lettuce:lettuce-core;6.3.1.RELEASE
+org.redisson:redisson;3.27.0
 net.bytebuddy:byte-buddy;1.12.23
 testdep_net.bytebuddy:byte-buddy;1.14.8
 testdep_net.bytebuddy:byte-buddy-agent;1.14.8

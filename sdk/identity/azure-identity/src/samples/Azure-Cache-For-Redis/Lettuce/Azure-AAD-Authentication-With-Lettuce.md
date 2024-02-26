@@ -17,13 +17,13 @@
     <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-identity</artifactId>
-        <version>1.8.2</version>
+        <version>1.8.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
     
     <dependency>
         <groupId>io.lettuce</groupId>
-        <artifactId>lettuce-core</artifactId>
-        <version>6.2.4.RELEASE</version>
+        <artifactId>lettuce-core</artifactId> 
+        <version>6.2.4.RELEASE</version> <!-- {x-version-update;io.lettuce:lettuce-core;external_dependency} -->
     </dependency>
    ```
 
@@ -69,7 +69,7 @@ Integrate the logic in your application code to fetch a Microsoft Entra access t
 <dependency>
     <groupId>io.lettuce</groupId>
     <artifactId>lettuce-core</artifactId>
-    <version>6.2.4.RELEASE</version>
+    <version>6.2.4.RELEASE</version> <!-- {x-version-update;io.lettuce:lettuce-core;external_dependency} -->
 </dependency>
 ```
 
@@ -220,7 +220,7 @@ Integrate the logic in your application code to fetch a Microsoft Entra access t
 <dependency>
     <groupId>io.lettuce</groupId>
     <artifactId>lettuce-core</artifactId>
-    <version>6.2.4.RELEASE</version>
+    <version>6.2.4.RELEASE</version> <!-- {x-version-update;io.lettuce:lettuce-core;external_dependency} -->
 </dependency>
 ```
 
@@ -426,7 +426,7 @@ Integrate the logic in your application code to fetch a Microsoft Entra access t
 <dependency>
   <groupId>io.lettuce</groupId>
   <artifactId>lettuce-core</artifactId>
-  <version>6.2.4.RELEASE</version>
+  <version>6.2.4.RELEASE</version> <!-- {x-version-update;io.lettuce:lettuce-core;external_dependency} -->
 </dependency>
 ```
 
