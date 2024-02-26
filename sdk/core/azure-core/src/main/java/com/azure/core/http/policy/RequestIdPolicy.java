@@ -15,7 +15,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
-
 /**
  * The {@code RequestIdPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy is
  * used to add a unique identifier to each {@link HttpRequest} in the form of a UUID in the request header. Azure

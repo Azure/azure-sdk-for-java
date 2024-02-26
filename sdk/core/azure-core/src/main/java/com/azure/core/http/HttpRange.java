@@ -8,7 +8,6 @@ import com.azure.core.util.logging.ClientLogger;
 
 import java.util.Objects;
 
-
 /**
  * <p>Represents a range of bytes within an HTTP resource.</p>
  *

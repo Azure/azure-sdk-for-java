@@ -6,7 +6,6 @@ package com.azure.core.http;
 import com.azure.core.http.policy.HttpPipelinePolicy;
 import com.azure.core.http.policy.RetryPolicy;
 
-
 /**
  * Enum representing the position in an {@link HttpPipeline} to place an {@link HttpPipelinePolicy}.
  *

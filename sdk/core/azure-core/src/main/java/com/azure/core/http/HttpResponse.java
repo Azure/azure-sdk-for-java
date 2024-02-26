@@ -22,7 +22,6 @@ import java.nio.channels.WritableByteChannel;
 import java.nio.charset.Charset;
 import java.util.Objects;
 
-
 /**
  * <p>Represents an incoming HTTP response.</p>
  *

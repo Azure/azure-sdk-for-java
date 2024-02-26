@@ -3,7 +3,6 @@
 
 package com.azure.core.exception;
 
-
 /**
  * <p>The {@code UnexpectedLengthException} represents an exception thrown when the specified input length doesn't
  * match the actual data length.</p>

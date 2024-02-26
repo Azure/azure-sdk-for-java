@@ -5,7 +5,6 @@ package com.azure.core.exception;
 
 import com.azure.core.http.HttpResponse;
 
-
 /**
  * <p>The {@code DecodeException} represents an exception thrown when the HTTP response could not be decoded during
  * the deserialization process.</p>

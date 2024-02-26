@@ -5,7 +5,6 @@ package com.azure.core.exception;
 
 import com.azure.core.http.HttpResponse;
 
-
 /**
  * <p>The {@code ResourceExistsException} represents an exception thrown when an HTTP request attempts to create a
  * resource that already exists.</p>

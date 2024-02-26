@@ -6,7 +6,6 @@ package com.azure.core.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.util.BinaryData;
 
-
 /**
  * <p>Represents a message with a specific content type and data.</p>
  *

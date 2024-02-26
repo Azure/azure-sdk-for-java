@@ -15,7 +15,6 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
 
-
 /**
  * <p>Represents a JSON Patch operation.</p>
  *

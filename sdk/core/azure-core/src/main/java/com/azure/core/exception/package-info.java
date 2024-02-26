@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-
 /**
  * <p>This package contains the core exception classes used throughout the Azure SDKs.</p>
  *

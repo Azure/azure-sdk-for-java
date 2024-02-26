@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-
 /**
  * <p>This package contains utility classes and interfaces for handling long-running operations in the
  * Azure client libraries.</p>

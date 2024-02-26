@@ -5,7 +5,6 @@ package com.azure.core.models;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-
 /**
  * <p>Represents the kind of operation in a JSON Patch document.</p>
  *

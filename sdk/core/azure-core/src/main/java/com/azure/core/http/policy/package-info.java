@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-
 /**
  * This package contains the HttpPipelinePolicy interface and its implementations. These policies are used to form an
  * HTTP pipeline, which is a series of policies that are invoked to handle an HTTP request.

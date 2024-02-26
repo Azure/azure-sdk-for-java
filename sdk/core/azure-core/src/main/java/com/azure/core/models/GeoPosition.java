@@ -14,7 +14,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Objects;
 
-
 /**
  * <p>Represents a geographic position in GeoJSON format.</p>
  *

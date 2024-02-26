@@ -1,7 +1,6 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-
 /**
  * <p>This package contains annotations for client-side methods that map to REST APIs in the Azure SDK.</p>
  *

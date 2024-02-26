@@ -16,7 +16,6 @@ import reactor.core.publisher.Mono;
 
 import java.util.Objects;
 
-
 /**
  * The {@code KeyCredentialPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy
  * uses a {@link KeyCredential} to set the authorization key for a request in the form of a header.

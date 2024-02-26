@@ -5,7 +5,6 @@ package com.azure.core.exception;
 
 import com.azure.core.http.HttpResponse;
 
-
 /**
  * <p>The {@code HttpResponseException} represents an exception thrown when an unsuccessful HTTP response is received
  * from a service request.</p>

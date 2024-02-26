@@ -5,7 +5,6 @@ package com.azure.core.exception;
 
 import com.azure.core.http.HttpResponse;
 
-
 /**
  * <p>The {@code ResourceModifiedException} represents an exception thrown when an HTTP request attempts to modify a
  * resource in a way that is not allowed.</p>

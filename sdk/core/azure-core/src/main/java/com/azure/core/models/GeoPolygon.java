@@ -17,7 +17,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 
-
 /**
  * <p>Represents a geometric polygon in GeoJSON format.</p>
  *

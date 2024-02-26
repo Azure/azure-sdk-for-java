@@ -3,7 +3,6 @@
 
 package com.azure.core.exception;
 
-
 /**
  * <p>The {@code ServiceResponseException} represents an exception thrown when the client fails to understand the
  * service response or the connection times out.</p>

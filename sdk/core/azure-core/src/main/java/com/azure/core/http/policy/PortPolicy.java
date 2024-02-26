@@ -14,7 +14,6 @@ import reactor.core.publisher.Mono;
 
 import java.net.MalformedURLException;
 
-
 /**
  * The {@code PortPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy is used
  * to add a specific port to each {@link HttpRequest}.
