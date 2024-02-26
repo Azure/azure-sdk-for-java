@@ -110,8 +110,8 @@ import java.util.function.Consumer;
  *         &#47;&#47; may already be set if request is created from a client
  *         .setUrl&#40;&quot;https:&#47;&#47;petstore.example.com&#47;pet&quot;&#41;
  *         .setHttpMethod&#40;HttpMethod.POST&#41;
- *         .setBody&#40;requestBodyStr&#41;
- *         .setHeader&#40;HeaderName.CONTENT_TYPE, &quot;application&#47;json&quot;&#41;&#41;;
+ *         .setBody&#40;BinaryData.fromString&#40;requestBodyStr&#41;&#41;
+ *         .getHeaders&#40;&#41;.set&#40;HeaderName.CONTENT_TYPE, &quot;application&#47;json&quot;&#41;&#41;;
  * </pre>
  * <!-- end com.generic.core.http.rest.requestoptions.postrequest -->
  */

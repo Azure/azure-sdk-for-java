@@ -90,4 +90,9 @@ public final class ByteBufferBinaryData extends BinaryData {
 
         return bytes;
     }
+
+    @Override
+    public void close() throws IOException {
+        // no-op
+    }
 }

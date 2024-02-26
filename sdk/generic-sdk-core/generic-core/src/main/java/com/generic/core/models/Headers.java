@@ -43,8 +43,10 @@ public class Headers implements Iterable<Header> {
 
     /**
      * Create a {@link Headers} instance with the provided initial {@link Headers}.
+     * <p>
+     * This constructor is a deep copy of the provided {@link Headers}.
      *
-     * @param headers The collection of initial {@link Headers}.
+     * @param headers The initial {@link Headers} to copy.
      */
     public Headers(Headers headers) {
         this.headers = new HashMap<>((int) (headers.headers.size() / 0.75f));

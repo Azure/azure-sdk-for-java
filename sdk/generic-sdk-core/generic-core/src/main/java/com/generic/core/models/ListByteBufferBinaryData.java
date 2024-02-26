@@ -124,4 +124,9 @@ public final class ListByteBufferBinaryData extends BinaryData {
 
         return bytes;
     }
+
+    @Override
+    public void close() throws IOException {
+        // no-op
+    }
 }

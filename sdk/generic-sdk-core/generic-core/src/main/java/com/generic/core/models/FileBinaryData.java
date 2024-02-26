@@ -230,4 +230,9 @@ public class FileBinaryData extends BinaryData {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(exception));
         }
     }
+
+    @Override
+    public void close() throws IOException {
+        // Since this uses a Path, there is nothing to close, therefore no-op.
+    }
 }

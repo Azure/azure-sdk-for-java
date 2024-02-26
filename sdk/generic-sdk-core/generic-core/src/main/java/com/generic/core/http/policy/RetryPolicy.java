@@ -11,7 +11,6 @@ import com.generic.core.http.pipeline.HttpPipelinePolicy;
 import com.generic.core.implementation.http.policy.ExponentialBackoffDelay;
 import com.generic.core.implementation.util.ImplUtils;
 import com.generic.core.implementation.util.LoggingKeys;
-import com.generic.core.models.Header;
 import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.configuration.Configuration;
@@ -25,7 +24,6 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Objects;
 import java.util.concurrent.TimeoutException;
-import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Function;
 import java.util.function.Supplier;
 
@@ -38,9 +36,9 @@ import static com.generic.core.util.configuration.Configuration.PROPERTY_REQUEST
 public class RetryPolicy implements HttpPipelinePolicy {
     // RetryPolicy is a commonly used policy, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(RetryPolicy.class);
-    private int maxRetries;
-    private RetryStrategy retryStrategy;
-    private final Function<Header, Duration> delayFromHeaders;
+    private final int maxRetries;
+    private final RetryStrategy retryStrategy;
+    private final Function<Headers, Duration> delayFromHeaders;
 
     private static final int DEFAULT_MAX_RETRIES;
 
@@ -55,8 +53,9 @@ public class RetryPolicy implements HttpPipelinePolicy {
                     defaultMaxRetries = 3;
                 }
             } catch (NumberFormatException ignored) {
-                LOGGER.log(ClientLogger.LogLevel.VERBOSE, () -> PROPERTY_REQUEST_RETRY_COUNT + " was loaded but is an invalid "
-                    + "number. Using 3 retries as the maximum.");
+                LOGGER.log(ClientLogger.LogLevel.VERBOSE,
+                    () -> PROPERTY_REQUEST_RETRY_COUNT + " was loaded but is an invalid "
+                        + "number. Using 3 retries as the maximum.");
             }
         }
 
@@ -78,7 +77,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * @throws NullPointerException If {@code retryOptions} is null.
      */
     RetryPolicy(RetryOptions retryOptions) {
-        this(ImplUtils.getRetryStrategyFromOptions(retryOptions), retryOptions.getMaxRetries(), retryOptions.getDelayFromHeaders());
+        this(ImplUtils.getRetryStrategyFromOptions(retryOptions), retryOptions.getMaxRetries(),
+            retryOptions.getDelayFromHeaders());
     }
 
     /**
@@ -92,7 +92,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * @throws NullPointerException If {@code retryStrategy} is null or when {@code retryAfterTimeUnit} is null and
      * {@code retryAfterHeader} is not null.
      */
-    RetryPolicy(RetryStrategy retryStrategy, int maxRetries, Function<Header, Duration> delayFromHeaders) {
+    RetryPolicy(RetryStrategy retryStrategy, int maxRetries, Function<Headers, Duration> delayFromHeaders) {
         this.maxRetries = maxRetries;
         this.retryStrategy = Objects.requireNonNull(retryStrategy, "'retryStrategy' cannot be null.");
         this.delayFromHeaders = delayFromHeaders;
@@ -107,7 +107,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * Determines the delay duration that should be waited before retrying using the well-known retry headers.
      */
     static Duration getWellKnownRetryDelay(Headers responseHeaders, int tryCount, RetryStrategy retryStrategy,
-                                                  Supplier<OffsetDateTime> nowSupplier) {
+        Supplier<OffsetDateTime> nowSupplier) {
         Duration retryDelay = ImplUtils.getRetryAfterFromHeaders(responseHeaders, nowSupplier);
         if (retryDelay != null) {
             return retryDelay;
@@ -131,21 +131,25 @@ public class RetryPolicy implements HttpPipelinePolicy {
          */
         Duration calculateRetryDelay(int retryAttempts);
 
+        /**
+         * Determines if a request should be retried based on the provided {@link RequestRetryCondition}.
+         *
+         * @param requestRetryCondition The condition to determine if the request should be retried.
+         * @return Whether the request should be retried.
+         */
         default boolean shouldRetryCondition(RequestRetryCondition requestRetryCondition) {
             if (requestRetryCondition.getResponse() != null) {
                 int code = requestRetryCondition.getResponse().getStatusCode();
-                return (code == HttpURLConnection.HTTP_CLIENT_TIMEOUT
-                    || (code >= HttpURLConnection.HTTP_INTERNAL_ERROR
-                    && code != HttpURLConnection.HTTP_NOT_IMPLEMENTED
-                    && code != HttpURLConnection.HTTP_VERSION));
+                return (code == HttpURLConnection.HTTP_CLIENT_TIMEOUT || (code >= HttpURLConnection.HTTP_INTERNAL_ERROR
+                    && code != HttpURLConnection.HTTP_NOT_IMPLEMENTED && code != HttpURLConnection.HTTP_VERSION));
             } else {
                 return requestRetryCondition.getException() instanceof Exception;
             }
         }
     }
 
-    private HttpResponse attempt(final HttpRequest httpRequest, final HttpPipelineNextPolicy next,
-                                 final int tryCount, final List<Exception> suppressed) {
+    private HttpResponse attempt(final HttpRequest httpRequest, final HttpPipelineNextPolicy next, final int tryCount,
+        final List<Exception> suppressed) {
         httpRequest.getMetadata().setRetryCount(tryCount + 1);
 
         HttpResponse httpResponse;
@@ -179,8 +183,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
         }
 
         if (shouldRetryResponse(retryStrategy, httpResponse, tryCount, suppressed)) {
-            final Duration delayDuration =
-                determineDelayDuration(httpResponse, tryCount, retryStrategy, delayFromHeaders);
+            final Duration delayDuration = determineDelayDuration(httpResponse, tryCount, retryStrategy,
+                delayFromHeaders);
 
             logRetry(tryCount, delayDuration);
 
@@ -210,38 +214,29 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * Determines the delay duration that should be waited before retrying.
      */
     private static Duration determineDelayDuration(HttpResponse response, int tryCount, RetryStrategy retryStrategy,
-                                                   Function<Header, Duration> delayFromHeaders) {
+        Function<Headers, Duration> delayFromHeaders) {
         // If the retry after header hasn't been configured, attempt to look up the well-known headers.
         if (delayFromHeaders == null) {
             return getWellKnownRetryDelay(response.getHeaders(), tryCount, retryStrategy, OffsetDateTime::now);
         }
-        AtomicReference<Duration> retryHeaderValue = new AtomicReference<>();
-        for (Header header : response.getHeaders()) {
-            Duration duration = delayFromHeaders.apply(header);
-            if (duration != null) {
-                retryHeaderValue.set(duration);
-                break;
-            }
+
+        Duration delay = delayFromHeaders.apply(response.getHeaders());
+        if (delay != null) {
+            return delay;
         }
 
         // Retry header is missing or empty, return the default delay duration.
-        if (retryHeaderValue.get() != null) {
-            return retryStrategy.calculateRetryDelay(tryCount);
-        }
-
-        // Use the response delay duration, the server returned it for a reason.
-        return retryHeaderValue.get();
+        return retryStrategy.calculateRetryDelay(tryCount);
     }
 
-
     private boolean shouldRetryResponse(RetryStrategy retryStrategy, HttpResponse response, int tryCount,
-                                       List<Exception> retriedExceptions) {
+        List<Exception> retriedExceptions) {
         return tryCount < maxRetries && retryStrategy.shouldRetryCondition(
             new RequestRetryCondition(response, null, tryCount, retriedExceptions));
     }
 
     private boolean shouldRetryException(RetryStrategy retryStrategy, Exception exception, int tryCount,
-                                                List<Exception> retriedExceptions) {
+        List<Exception> retriedExceptions) {
         // Check if there are any retry attempts still available.
         if (tryCount >= maxRetries) {
             return false;
@@ -273,15 +268,11 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     private static void logRetryExhausted(int tryCount) {
-        LOGGER.atInfo()
-            .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
-            .log("Retry attempts have been exhausted.");
+        LOGGER.atInfo().addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount).log("Retry attempts have been exhausted.");
     }
 
-    private static void logRetryWithError(ClientLogger.LoggingEventBuilder loggingEventBuilder, int tryCount, String format,
-                                          Throwable throwable) {
-        loggingEventBuilder
-            .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
-            .log(format, throwable);
+    private static void logRetryWithError(ClientLogger.LoggingEventBuilder loggingEventBuilder, int tryCount,
+        String format, Throwable throwable) {
+        loggingEventBuilder.addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount).log(format, throwable);
     }
 }

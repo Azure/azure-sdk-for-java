@@ -48,6 +48,8 @@ public final class ServerSentEvent {
      * <p>
      * Contains value of SSE {@code "data"} field. This field is optional and may return {@code null}, if the event
      * data is not specified.
+     *
+     * @return event data.
      */
     public List<String> getData() {
         return this.data;
@@ -124,6 +126,7 @@ public final class ServerSentEvent {
             public void setId(ServerSentEvent serverSentEvent, Long id) {
                 serverSentEvent.setId(id);
             }
+
             @Override
             public void setEvent(ServerSentEvent serverSentEvent, String event) {
                 serverSentEvent.setEvent(event);

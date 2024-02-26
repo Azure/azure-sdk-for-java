@@ -14,7 +14,6 @@ import com.generic.core.implementation.http.serializer.HttpResponseDecoder;
 import com.generic.core.implementation.util.Base64Url;
 import com.generic.core.models.BinaryData;
 import com.generic.core.util.serializer.ObjectSerializer;
-import com.generic.json.JsonSerializable;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -24,8 +23,6 @@ import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.util.EnumSet;
 import java.util.function.Consumer;
-
-import static com.generic.core.implementation.ReflectionSerializable.serializeJsonSerializableToBytes;
 
 public class RestProxyImpl extends RestProxyBase {
 
@@ -221,8 +218,7 @@ public class RestProxyImpl extends RestProxyBase {
         return result;
     }
 
-    public void updateRequest(RequestDataConfiguration requestDataConfiguration, ObjectSerializer serializerAdapter)
-        throws IOException {
+    public void updateRequest(RequestDataConfiguration requestDataConfiguration, ObjectSerializer serializerAdapter) {
 
         boolean isJson = requestDataConfiguration.isJson();
         HttpRequest request = requestDataConfiguration.getHttpRequest();
@@ -234,21 +230,16 @@ public class RestProxyImpl extends RestProxyBase {
 
         // Attempt to use JsonSerializable or XmlSerializable in a separate block.
         if (supportsJsonSerializable(bodyContentObject.getClass())) {
-            request.setBody(BinaryData.fromBytes(serializeJsonSerializableToBytes((JsonSerializable<?>) bodyContentObject)));
-
+            request.setBody(BinaryData.fromObject(bodyContentObject));
             return;
         }
 
         if (isJson) {
-            request.setBody(BinaryData.fromBytes(serializerAdapter.serializeToBytes(bodyContentObject)));
+            request.setBody(BinaryData.fromObject(bodyContentObject, serializerAdapter));
         } else if (bodyContentObject instanceof byte[]) {
             request.setBody(BinaryData.fromBytes((byte[]) bodyContentObject));
         } else if (bodyContentObject instanceof String) {
-            final String bodyContentString = (String) bodyContentObject;
-
-            if (!bodyContentString.isEmpty()) {
-                request.setBody(BinaryData.fromString(bodyContentString));
-            }
+            request.setBody(BinaryData.fromString((String) bodyContentObject));
         } else if (bodyContentObject instanceof ByteBuffer) {
             if (((ByteBuffer) bodyContentObject).hasArray()) {
                 request.setBody(BinaryData.fromBytes(((ByteBuffer) bodyContentObject).array()));
@@ -259,7 +250,7 @@ public class RestProxyImpl extends RestProxyBase {
                 request.setBody(BinaryData.fromBytes(array));
             }
         } else {
-            request.setBody(BinaryData.fromBytes(serializerAdapter.serializeToBytes(bodyContentObject)));
+            request.setBody(BinaryData.fromObject(bodyContentObject, serializerAdapter));
         }
     }
 }

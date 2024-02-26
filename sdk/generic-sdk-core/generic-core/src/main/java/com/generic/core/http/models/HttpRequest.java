@@ -171,15 +171,12 @@ public class HttpRequest {
     public HttpRequest setBody(BinaryData content) {
         this.body = content;
 
+        // TODO (alzimmer): should the Content-Length header be removed if content is null?
         if (content != null && content.getLength() != null) {
-            setContentLength(content.getLength());
+            headers.set(HeaderName.CONTENT_LENGTH, String.valueOf(content.getLength()));
         }
 
         return this;
-    }
-
-    private void setContentLength(long contentLength) {
-        headers.set(HeaderName.CONTENT_LENGTH, String.valueOf(contentLength));
     }
 
     /**
@@ -212,10 +209,8 @@ public class HttpRequest {
      * @return A new HTTP request instance with cloned instances of all mutable properties.
      */
     public HttpRequest copy() {
-        final Headers bufferedHeaders = new Headers(headers);
-
         return new HttpRequest(httpMethod, url)
-            .setHeaders(bufferedHeaders)
+            .setHeaders(new Headers(headers))
             .setBody(body)
             .setMetadata(metadata.copy());
     }
