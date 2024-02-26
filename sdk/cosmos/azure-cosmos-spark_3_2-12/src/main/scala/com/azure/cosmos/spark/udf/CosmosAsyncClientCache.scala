@@ -11,7 +11,7 @@ import org.apache.spark.sql.SparkSession
 object CosmosAsyncClientCache {
   /**
    * This API can be used by Spark apps to retrieve the same CosmosAsyncClient instance that
-   * the Cosmos DB Spark connector is usng internally as well. It can help avoiding the need
+   * the Cosmos DB Spark connector is using internally as well. It can help avoiding the need
    * to instantiate one additional CosmosAsyncClient in the app for the same configuration
    * the Spark connector internally also uses.
    * NOTE: The returned client is from the shaded package - so `azure_cosmos_spark.com.azure.CosmosAsyncClient`
@@ -25,21 +25,19 @@ object CosmosAsyncClientCache {
       useEventualConsistency = false,
       CosmosClientConfiguration.getSparkEnvironmentInfo(SparkSession.getActiveSession))
 
-    // delay getting the client from cache here to allow this to be executed on executors
-    // as well - not just on the driver
     new CosmosAsyncClientCacheItem(
       CosmosClientCache(cosmosClientConfig, None, "CosmosAsyncClientCache.getCosmosClientFromCache"))
   }
 
   /**
-   * This API can be used by Spark apps to retrieve the same CosmosAsyncClient instance that
-   * the Cosmos DB Spark connector is usng internally as well. It can help avoiding the need
-   * to instantiate one additional CosmosAsyncClient in the app for the same configuration
-   * the Spark connector internally also uses.
+   * This API can be used by Spark apps to retrieve a function that allows getting the
+   * same CosmosAsyncClient instance that the Cosmos DB Spark connector is using internally as well.
+   * To use the client on an executor, please ensure that the function is only invoked on the
+   * executor.
    * NOTE: The returned client is from the shaded package - so `azure_cosmos_spark.com.azure.CosmosAsyncClient`
    *
    * @param userProvidedConfig the configuration dictionary also used in Spark APIs to authenticate
-   * @return the shaded CosmosAsyncClient that is also used internally by the Spark connector
+   * @return the function returning the shaded CosmosAsyncClient that is also used internally by the Spark connector
    */
   def getCosmosClientFuncFromCache(userProvidedConfig: Map[String, String]): () => CosmosAsyncClientCacheItem = {
     val effectiveUserConfig = CosmosConfig.getEffectiveConfig(None, None, userProvidedConfig)
