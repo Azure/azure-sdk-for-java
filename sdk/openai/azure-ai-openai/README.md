@@ -414,7 +414,9 @@ SpeechGenerationOptions options = new SpeechGenerationOptions(
         "Today is a wonderful day to build something people love!",
         SpeechVoice.ALLOY);
 BinaryData speech = client.generateSpeechFromText(deploymentOrModelId, options);
-System.out.println("Speech: " + speech);
+// Checkout your generated speech in the file system.
+Path path = Paths.get("{your-local-file-path}/speech.wav");
+Files.write(path, speech.toBytes());
 ```
 For a complete sample example, see sample [Text to Speech][sample_text_to_speech].
 Please refer to the service documentation for a conceptual discussion of [Text to Speech][microsoft_docs_text_to_speech].

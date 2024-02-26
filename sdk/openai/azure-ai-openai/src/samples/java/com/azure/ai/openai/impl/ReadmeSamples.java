@@ -50,7 +50,9 @@ import com.azure.core.util.HttpClientOptions;
 import com.azure.core.util.IterableStream;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 
+import java.io.IOException;
 import java.net.InetSocketAddress;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -338,14 +340,16 @@ public final class ReadmeSamples {
         // END: readme-sample-toolCalls
     }
 
-    public void textToSpeech() {
+    public void textToSpeech() throws IOException {
         // BEGIN: readme-sample-textToSpeech
         String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
         SpeechGenerationOptions options = new SpeechGenerationOptions(
                 "Today is a wonderful day to build something people love!",
                 SpeechVoice.ALLOY);
         BinaryData speech = client.generateSpeechFromText(deploymentOrModelId, options);
-        System.out.println("Speech: " + speech);
+        // Checkout your generated speech in the file system.
+        Path path = Paths.get("{your-local-file-path}/speech.wav");
+        Files.write(path, speech.toBytes());
         // END: readme-sample-textToSpeech
     }
 }
