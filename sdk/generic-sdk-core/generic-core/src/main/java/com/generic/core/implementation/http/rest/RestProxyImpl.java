@@ -17,6 +17,7 @@ import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
@@ -121,7 +122,11 @@ public class RestProxyImpl extends RestProxyBase {
             final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
 
             if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
-                response.getSourceResponse().close();
+                try {
+                    response.getSourceResponse().close();
+                } catch (IOException e) {
+                    throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+                }
 
                 return createResponse(response, entityType, null);
             } else {
@@ -197,7 +202,11 @@ public class RestProxyImpl extends RestProxyBase {
         if (TypeUtil.isTypeOrSubTypeOf(returnType, void.class) || TypeUtil.isTypeOrSubTypeOf(returnType,
             Void.class)) {
             // ProxyMethod ReturnType: Void
-            expectedResponse.close();
+            try {
+                expectedResponse.close();
+            } catch (IOException e) {
+                throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+            }
 
             result = null;
         } else {
@@ -209,8 +218,7 @@ public class RestProxyImpl extends RestProxyBase {
         return result;
     }
 
-    public void updateRequest(RequestDataConfiguration requestDataConfiguration, ObjectSerializer serializerAdapter)
-        throws IOException {
+    public void updateRequest(RequestDataConfiguration requestDataConfiguration, ObjectSerializer serializerAdapter) {
 
         boolean isJson = requestDataConfiguration.isJson();
         HttpRequest request = requestDataConfiguration.getHttpRequest();
@@ -223,7 +231,6 @@ public class RestProxyImpl extends RestProxyBase {
         // Attempt to use JsonSerializable or XmlSerializable in a separate block.
         if (supportsJsonSerializable(bodyContentObject.getClass())) {
             request.setBody(BinaryData.fromObject(bodyContentObject));
-
             return;
         }
 
@@ -234,7 +241,14 @@ public class RestProxyImpl extends RestProxyBase {
         } else if (bodyContentObject instanceof String) {
             request.setBody(BinaryData.fromString((String) bodyContentObject));
         } else if (bodyContentObject instanceof ByteBuffer) {
-            request.setBody(BinaryData.fromByteBuffer((ByteBuffer) bodyContentObject));
+            if (((ByteBuffer) bodyContentObject).hasArray()) {
+                request.setBody(BinaryData.fromBytes(((ByteBuffer) bodyContentObject).array()));
+            } else {
+                byte[] array = new byte[((ByteBuffer) bodyContentObject).remaining()];
+
+                ((ByteBuffer) bodyContentObject).get(array);
+                request.setBody(BinaryData.fromBytes(array));
+            }
         } else {
             request.setBody(BinaryData.fromObject(bodyContentObject, serializerAdapter));
         }

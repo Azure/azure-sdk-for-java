@@ -16,6 +16,7 @@ import com.generic.core.util.ClientLogger;
 import com.generic.core.util.configuration.Configuration;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.net.HttpURLConnection;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -187,7 +188,11 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
             logRetry(tryCount, delayDuration);
 
-            httpResponse.close();
+            try {
+                httpResponse.close();
+            } catch (IOException e) {
+                throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+            }
 
             try {
                 Thread.sleep(retryStrategy.calculateRetryDelay(tryCount).toMillis());

@@ -146,7 +146,7 @@ public class DefaultHttpClientTest {
     }
 
     @Test
-    public void testFlowableWhenServerReturnsBodyAndNoErrorsWhenHttp500Returned() {
+    public void testFlowableWhenServerReturnsBodyAndNoErrorsWhenHttp500Returned() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
         try (HttpResponse response = doRequest(client, "/error")) {
@@ -180,7 +180,7 @@ public class DefaultHttpClientTest {
     }
 
     @Test
-    public void validateHeadersReturnAsIs() {
+    public void validateHeadersReturnAsIs() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
         HeaderName singleValueHeaderName = HeaderName.fromString("singleValue");
@@ -211,7 +211,7 @@ public class DefaultHttpClientTest {
     }
 
     @Test
-    public void testBufferedResponse() {
+    public void testBufferedResponse() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
         try (HttpResponse response = getResponse(client, "/short", Context.NONE)) {
@@ -220,7 +220,7 @@ public class DefaultHttpClientTest {
     }
 
     @Test
-    public void testEmptyBufferResponse() {
+    public void testEmptyBufferResponse() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
         try (HttpResponse response = getResponse(client, "/empty", Context.NONE)) {
@@ -229,7 +229,7 @@ public class DefaultHttpClientTest {
     }
 
     @Test
-    public void testRequestBodyPost() {
+    public void testRequestBodyPost() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
         String contentChunk = "abcdefgh";
         int repetitions = 1000;

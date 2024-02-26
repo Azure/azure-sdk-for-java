@@ -3,11 +3,10 @@
 
 package com.generic.core.implementation.http.rest;
 
-import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.models.BinaryData;
-import com.generic.core.models.Headers;
+import com.generic.core.models.HeaderName;
 import org.junit.jupiter.api.Named;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
@@ -91,29 +90,30 @@ public class RestProxyUtilsTests {
         Path file = Files.createTempFile(RestProxyUtils.class.getSimpleName(), null);
         file.toFile().deleteOnExit();
         Files.write(file, EXPECTED);
+
         return Stream.of(
             Arguments.of(
-                Named.of("bytes", new HttpRequest(HttpMethod.GET, "http://localhost")
-                    .setBody(BinaryData.fromBytes(EXPECTED))
-                    .setHeaders(new Headers().set(HeaderName.CONTENT_LENGTH, String.valueOf(contentLength))))
+                Named.of("bytes", createHttpRequest("http://localhost", BinaryData.fromBytes(EXPECTED), contentLength))
             ),
             Arguments.of(
-                Named.of("string", new HttpRequest(HttpMethod.GET, "http://localhost")
-                    .setBody(BinaryData.fromString(SAMPLE))
-                    .setHeaders(new Headers().set(HeaderName.CONTENT_LENGTH, String.valueOf(contentLength))))
+                Named.of("string", createHttpRequest("http://localhost", BinaryData.fromString(SAMPLE), contentLength))
             ),
             Arguments.of(
-                Named.of("stream", new HttpRequest(HttpMethod.GET, "http://localhost")
-                    .setBody(BinaryData.fromStream(new ByteArrayInputStream(EXPECTED), (long) EXPECTED.length))
-                    .setHeaders(new Headers().set(HeaderName.CONTENT_LENGTH, String.valueOf(contentLength))))
+                Named.of("stream", createHttpRequest("http://localhost", BinaryData.fromFile(file), contentLength))
             ),
             Arguments.of(
-                Named.of("file", new HttpRequest(HttpMethod.GET, "http://localhost")
-                    .setBody(BinaryData.fromFile(file))
-                    .setHeaders(new Headers().set(HeaderName.CONTENT_LENGTH, String.valueOf(contentLength))))
+                Named.of("file", createHttpRequest("http://localhost", BinaryData.fromFile(file), contentLength))
             )
         );
     }
+
+    private static HttpRequest createHttpRequest(String url, BinaryData body, int contentLength) {
+        HttpRequest httpRequest = new HttpRequest(HttpMethod.GET, url)
+            .setBody(body);
+        httpRequest.getHeaders().set(HeaderName.CONTENT_LENGTH, String.valueOf(contentLength));
+        return httpRequest;
+    }
+
 
     @Test
     public void userProvidedLengthShouldNotBeTrustedTooLarge() throws IOException {
