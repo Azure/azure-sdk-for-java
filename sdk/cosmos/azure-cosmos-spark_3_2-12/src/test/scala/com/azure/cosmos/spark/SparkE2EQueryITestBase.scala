@@ -110,11 +110,19 @@ abstract class SparkE2EQueryITestBase
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
     )
-    val clientFromCache = com.azure.cosmos.spark.udf.CosmosAsyncClientCache
-      .getCosmosClientFromCache(cfg)()
+    var clientFromCache = com.azure.cosmos.spark.udf.CosmosAsyncClientCache
+      .getCosmosClientFromCache(cfg)
       .getClient
       .asInstanceOf[CosmosAsyncClient]
-    val dbResponse = clientFromCache.getDatabase(cosmosDatabase).read().block()
+    var dbResponse = clientFromCache.getDatabase(cosmosDatabase).read().block()
+
+    dbResponse.getProperties.getId shouldEqual cosmosDatabase
+
+    clientFromCache = com.azure.cosmos.spark.udf.CosmosAsyncClientCache
+      .getCosmosClientFuncFromCache(cfg)()
+      .getClient
+      .asInstanceOf[CosmosAsyncClient]
+    dbResponse = clientFromCache.getDatabase(cosmosDatabase).read().block()
 
     dbResponse.getProperties.getId shouldEqual cosmosDatabase
 

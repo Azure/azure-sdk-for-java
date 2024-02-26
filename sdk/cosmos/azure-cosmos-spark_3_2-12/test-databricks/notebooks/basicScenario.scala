@@ -43,7 +43,7 @@ spark.sql(s"ALTER TABLE cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerNam
 
 // read database with client retrieved from cache on the driver
 val clientFromCache = com.azure.cosmos.spark.udf.CosmosAsyncClientCache
-  .getCosmosClientFromCache(cfg)()
+  .getCosmosClientFromCache(cfg)
   .getClient
   .asInstanceOf[azure_cosmos_spark.com.azure.cosmos.CosmosAsyncClient]
 val dbResponse = clientFromCache.getDatabase(cosmosDatabaseName).read().block()
@@ -53,7 +53,7 @@ clientFromCache.close
 
 // read database with client retrieved from cache on the executor
 val clientFromCacheFunc = com.azure.cosmos.spark.udf.CosmosAsyncClientCache
-  .getCosmosClientFromCache(cfg)
+  .getCosmosClientFuncFromCache(cfg)
 
 spark.parallelize(Seq.empt[String]).foreachPartition(x => {
   val clientFromCacheOnExecutor = clientFromCacheFunc()
