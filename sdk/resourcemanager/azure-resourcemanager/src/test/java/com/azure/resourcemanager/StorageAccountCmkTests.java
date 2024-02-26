@@ -165,7 +165,6 @@ public class StorageAccountCmkTests extends ResourceManagerTestProxyTestBase {
                 .withEncryptionKeyFromKeyVault(vault.vaultUri(), key.name(), "")
                 .apply();
             Assertions.assertEquals(IdentityType.SYSTEM_ASSIGNED, storageAccount.identityTypeForKeyVault());
-            Assertions.assertNull(storageAccount.identityTypeForKeyVault());
             Assertions.assertNull(storageAccount.userAssignedIdentityIdForKeyVault());
 
             // update Storage Account to MMK

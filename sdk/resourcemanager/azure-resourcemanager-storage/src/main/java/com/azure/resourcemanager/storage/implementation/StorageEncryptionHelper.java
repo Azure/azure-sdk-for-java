@@ -199,7 +199,7 @@ final class StorageEncryptionHelper {
         Encryption encryption = getEncryptionConfig(true);
         encryption.withKeySource(KeySource.MICROSOFT_KEYVAULT);
         encryption
-            .withEncryptionIdentity(identityId == null ? null : new EncryptionIdentity().withEncryptionUserAssignedIdentity(identityId))
+            .withEncryptionIdentity(new EncryptionIdentity().withEncryptionUserAssignedIdentity(identityId))
             .withKeyVaultProperties(
                 new KeyVaultProperties().withKeyVaultUri(keyVaultUri).withKeyName(keyName).withKeyVersion(keyVersion));
         return this;
