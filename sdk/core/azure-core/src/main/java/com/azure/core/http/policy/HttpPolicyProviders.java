@@ -20,9 +20,8 @@ import java.util.ServiceLoader;
  *
  * <p>In this example, an empty list of policies is created. Then, the
  * {@code HttpPolicyProviders.addBeforeRetryPolicies} method is used to add policies that should be executed before
- * the retry policy. The retry policy is added to the list. The {@code HttpPolicyProviders.addAfterRetryPolicies}
- * method is used to add policies that should be executed after the retry policy. The list of policies can then be used
- * to build an HTTP pipeline.</p>
+ * the retry policy. The {@code HttpPolicyProviders.addAfterRetryPolicies} method is used to add policies that should
+ * be executed after the retry policy. The list of policies can then be used to build an HTTP pipeline.</p>
  *
  * <!-- src_embed com.azure.core.http.policy.HttpPolicyProviders.usage -->
  * <pre>

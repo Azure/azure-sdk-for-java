@@ -25,7 +25,7 @@ import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RETRY_COU
  * <p><strong>Code sample:</strong></p>
  *
  * <p>In this example, an {@code ExponentialBackoff} is created and used in a {@code RetryPolicy} which can be added to
- * a pipeline. For a request sent by the pipeline, If the server responds with a transient error, the request will be
+ * a pipeline. For a request sent by the pipeline, if the server responds with a transient error, the request will be
  * retried with an exponentially increasing delay.</p>
  *
  * <!-- src_embed com.azure.core.http.policy.ExponentialBackoff.constructor -->

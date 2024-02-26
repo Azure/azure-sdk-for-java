@@ -28,7 +28,7 @@ import java.util.Objects;
  * <p><strong>Code sample:</strong></p>
  *
  * <p>In this example, a {@code BearerTokenAuthenticationPolicy} is created with a {@link TokenCredential} and a scope.
- * The policy can then added to the pipeline. The request sent via the pipeline  will then include the
+ * The policy can then added to the pipeline. The request sent via the pipeline will then include the
  * Authorization header with the bearer token.</p>
  *
  * <!-- src_embed com.azure.core.http.policy.BearerTokenAuthenticationPolicy.constructor -->

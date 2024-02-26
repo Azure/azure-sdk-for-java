@@ -20,7 +20,7 @@ import java.time.Duration;
  *
  * <p>In this example, an {@code ExponentialBackoffOptions} is created and used to configure an
  * {@code ExponentialBackoff} retry strategy. The strategy is then used in a {@code RetryPolicy} which can then be added to
- * a pipeline. For a request then sent by the pipeline, If the server responds with a transient error, the request
+ * a pipeline. For a request then sent by the pipeline, if the server responds with a transient error, the request
  * will be retried with an exponentially increasing delay.</p>
  *
  * <!-- src_embed com.azure.core.http.policy.ExponentialBackoffOptions.constructor -->

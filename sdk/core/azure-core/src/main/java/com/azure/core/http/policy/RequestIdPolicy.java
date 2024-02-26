@@ -26,9 +26,8 @@ import java.util.Objects;
  *
  * <p><strong>Code sample:</strong></p>
  *
- * <p>In this example, a {@code RequestIdPolicy} is created with a custom header name. The policy can then be added to
- * the pipeline. The request sent by the pipeline will then have its request id set in the 'x-ms-my-custom-request-id'
- * header by the {@code RequestIdPolicy}.</p>
+ * <p>In this example, a {@code RequestIdPolicy} is created with a custom header name. Once added to the pipeline
+ * requests will have their request id set in the 'x-ms-my-custom-request-id' header by the {@code RequestIdPolicy}.</p>
  *
  * <!-- src_embed com.azure.core.http.policy.RequestIdPolicy.constructor -->
  * <pre>

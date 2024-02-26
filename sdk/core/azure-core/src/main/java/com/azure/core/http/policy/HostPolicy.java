@@ -22,9 +22,8 @@ import java.net.MalformedURLException;
  *
  * <p><strong>Code sample:</strong></p>
  *
- * <p>In this example, a {@code HostPolicy} is created with a host of "www.example.com". The policy can then be added to
- * the pipeline. For a request sent by the pipeline will then have its host set to "www.example.com" by the
- * {@code HostPolicy}.</p>
+ * <p>In this example, a {@code HostPolicy} is created with a host of "www.example.com". Once added to the pipeline,
+ * all requests will have their host set to "www.example.com" by the {@code HostPolicy}.</p>
  *
  * <!-- src_embed com.azure.core.http.policy.HostPolicy.constructor -->
  * <pre>

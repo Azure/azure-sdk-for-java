@@ -25,8 +25,8 @@ import java.net.MalformedURLException;
  * <p><strong>Code sample:</strong></p>
  *
  * <p>In this example, a {@code PortPolicy} is created with a port of 8080 and an overwrite flag set to true. The
- * policy can then be added to the pipeline. The request sent by the pipeline will have its port set to 8080 by the
- * {@code PortPolicy}.</p>
+ * policy can then be added to the pipeline. Once added to the pipeline, all requests will have their port set to 8080
+ * by the {@code PortPolicy}.</p>
  *
  * <!-- src_embed com.azure.core.http.policy.PortPolicy.constructor -->
  * <pre>

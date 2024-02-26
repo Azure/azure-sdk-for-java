@@ -29,7 +29,7 @@ import java.util.Set;
  * <p>In this example, a {@code DefaultRedirectStrategy} is created with a maximum of 3 redirect attempts,
  * "Location" as the header name to locate the redirect URL, and GET and HEAD as the allowed methods for performing
  * the redirect. The strategy is then used in a {@code RedirectPolicy} which can be added to the pipeline. For a request
- * sent by the pipeline, If the server responds with a redirect status code and provides a "Location" header,
+ * sent by the pipeline, if the server responds with a redirect status code and provides a "Location" header,
  * the request will be redirected up to 3 times as needed.</p>
  *
  * <!-- src_embed com.azure.core.http.policy.DefaultRedirectStrategy.constructor -->

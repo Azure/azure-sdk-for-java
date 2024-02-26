@@ -23,8 +23,8 @@ import java.net.MalformedURLException;
  * <p><strong>Code sample:</strong></p>
  *
  * <p>In this example, a {@code ProtocolPolicy} is created with a protocol of "https" and an overwrite flag set to
- * true. The policy can then be added to the pipeline. The request sent the by the pipeline will then have its
- * protocol set to "https" by the {@code ProtocolPolicy}.</p>
+ * true. The policy can then be added to the pipeline. Once added to the pipeline, requests have their protocol set to
+ * "https" by the {@code ProtocolPolicy}.</p>
  *
  * <!-- src_embed com.azure.core.http.policy.ProtocolPolicy.constructor -->
  * <pre>

@@ -6,9 +6,9 @@
  * This package contains the HttpPipelinePolicy interface and its implementations. These policies are used to form an
  * HTTP pipeline, which is a series of policies that are invoked to handle an HTTP request.
  *
- * <p>The HttpPipelinePolicy interface defines a single method, process, which transforms an HTTP request into
- * a Mono of HttpResponse. Implementations of this interface can modify the request, pass it to the next policy, and
- * then modify the response.</p>
+ * <p>The HttpPipelinePolicy interface defines process and processSync methods. These
+ * methods transform an HTTP request into an HttpResponse asynchronously and synchronously respectively.
+ * Implementations of this interface can modify the request, pass it to the next policy, and then modify the response.</p>
  *
  * <p><strong>Code Sample:</strong></p>
  *

@@ -20,10 +20,6 @@ import java.util.Locale;
  * <p>The {@code AddDatePolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy is
  * used to add a "Date" header in RFC 1123 format when sending an HTTP request.</p>
  *
- * <p>The "Date" header is a standard HTTP header that represents the date and time at which the message was
- * originated. By adding this header to the request, we can provide information about when the request was sent to
- * the server.</p>
- *
  * @see com.azure.core.http.policy
  * @see com.azure.core.http.policy.HttpPipelinePolicy
  * @see com.azure.core.http.HttpPipeline

@@ -27,7 +27,7 @@ import java.util.Set;
  * <p><strong>Code sample:</strong></p>
  *
  * <p>In this example, a {@code RedirectPolicy} is constructed and can be added to a pipeline. For a request sent by the
- * pipeline, If the server responds with a redirect status code, the request will be redirected according
+ * pipeline, if the server responds with a redirect status code, the request will be redirected according
  * to the {@link RedirectStrategy} used by the {@code RedirectPolicy}.</p>
  *
  * <!-- src_embed com.azure.core.http.policy.RedirectPolicy.constructor -->

@@ -38,7 +38,7 @@ import static com.azure.core.util.CoreUtils.isNullOrEmpty;
  * <p><strong>Code sample:</strong></p>
  *
  * <p>In this example, a {@code RetryPolicy} is created which can then be added to the pipeline. For the request then
- * sent by the pipeline, If the server responds with a status code that indicates a transient error, the request will be
+ * sent by the pipeline, if the server responds with a status code that indicates a transient error, the request will be
  * retried according to the {@link RetryStrategy} used by the {@code RetryPolicy}.</p>
  *
  * <!-- src_embed com.azure.core.http.policy.RetryPolicy.constructor -->

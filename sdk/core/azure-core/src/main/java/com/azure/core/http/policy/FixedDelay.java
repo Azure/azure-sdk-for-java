@@ -18,7 +18,7 @@ import java.util.Objects;
  *
  * <p>In this example, a {@code FixedDelay} is created with a maximum of 3 retry attempts and a delay of 1 second
  * between each attempt. The strategy is then used in a {@code RetryPolicy} which can then be added to the pipeline.
- * For a request then sent by the pipeline, If the server responds with a transient error, the request will be retried
+ * For a request then sent by the pipeline, if the server responds with a transient error, the request will be retried
  * with a fixed delay of 1 second between each attempt.</p>
  *
  * <!-- src_embed com.azure.core.http.policy.FixedDelay.constructor -->

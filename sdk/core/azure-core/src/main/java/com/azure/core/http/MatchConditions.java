@@ -14,8 +14,6 @@ import com.azure.core.annotation.Fluent;
  * you can use it to create a GET request that only retrieves the resource if it has not been modified (based on the ETag), or a
  * PUT request that only updates the resource if it has not been modified by another client (based on the ETag).</p>
  *
- * <p>Note: This class is fluent, so you can chain the setter methods.</p>
- *
  * @see HttpRequest
  */
 @Fluent

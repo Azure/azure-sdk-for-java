@@ -25,8 +25,8 @@ import reactor.core.publisher.Mono;
  *
  * <p><strong>Code sample:</strong></p>
  *
- * <p>In this example, a {@code UserAgentPolicy} is created with a "User-Agent" header value of "MyApp/1.0". The policy
- * can then be added to the pipeline. The request will have its "User-Agent" header set to "MyApp/1.0" by the
+ * <p>In this example, a {@code UserAgentPolicy} is created with a "User-Agent" header value of "MyApp/1.0".
+ * Once added to the pipeline, requests will have their "User-Agent" header set to "MyApp/1.0" by the
  * {@code UserAgentPolicy}.</p>
  *
  * <!-- src_embed com.azure.core.http.policy.UserAgentPolicy.constructor -->
