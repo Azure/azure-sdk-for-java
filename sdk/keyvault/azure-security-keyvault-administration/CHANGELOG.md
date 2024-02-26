@@ -1,5 +1,15 @@
 # Release History
 
+## 4.6.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 4.5.0 (2024-02-22)
 Changes when compared to the last stable release (`4.4.3`) include:
 
