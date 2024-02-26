@@ -18,13 +18,13 @@
     <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-identity</artifactId>
-        <version>1.8.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+        <version>1.11.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
     
     <dependency>
         <groupId>redis.clients</groupId>
         <artifactId>jedis</artifactId>
-        <version>4.3.2</version>  <!-- {x-version-update;redis.clients:jedis;external_dependency} -->
+        <version>5.1.0</version>  <!-- {x-version-update;redis.clients:jedis;external_dependency} -->
     </dependency>
     ```
 
