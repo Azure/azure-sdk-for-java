@@ -16,9 +16,6 @@
  *     {@link Stream} and {@link Iterable} interfaces.</li>
  *     <li>{@link com.azure.core.http.rest.PagedFlux}: Provides utility to iterate over {@link PagedResponse} using
  *     {@link Flux} and {@link Iterable} interfaces.</li>
- *     <li>{@link com.azure.core.http.rest.PagedFluxBase}: The base class for {@link PagedFlux}.</li>
- *     <li>{@link com.azure.core.http.rest.PagedIterableBase}: The base class for {@link PagedIterable}.</li>
- *     <li>{@link com.azure.core.http.rest.PagedResponseBase}: The base class for {@link PagedResponse}.</li>
  *     <li>{@link com.azure.core.http.rest.SimpleResponse}: Represents a REST response with a strongly-typed content
  *     deserialized from the response body.</li>
  * </ul>

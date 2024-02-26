@@ -27,8 +27,6 @@ import java.util.Objects;
  * <p>This class is useful when you want to work with a geographic position in a geographic context. For example,
  * you can use it to represent a location on a map or a point in a geographic dataset.</p>
  *
- * <p>Note: This class is immutable, so once an instance is created, it cannot be modified.</p>
- *
  * @see JsonSerializable
  */
 @Immutable

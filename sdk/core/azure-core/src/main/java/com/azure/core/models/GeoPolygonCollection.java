@@ -29,9 +29,8 @@ import java.util.Objects;
  * <p>This class is useful when you want to work with a collection of polygons in a geographic context. For example,
  * you can use it to represent a complex geographic area on a map that is composed of multiple polygons.</p>
  *
- * <p>Note: This class is immutable, so once an instance is created, it cannot be modified. Also, a polygon collection
- * requires at least one ring for each polygon, and each ring requires at least 4 coordinates (with the first and last
- * coordinates being the same to form a closed loop).</p>
+ * <p>Note: A polygon collection requires at least one ring for each polygon, and each ring requires at least
+ * 4 coordinates (with the first and last coordinates being the same to form a closed loop).</p>
  *
  * @see GeoPolygon
  * @see GeoLinearRing

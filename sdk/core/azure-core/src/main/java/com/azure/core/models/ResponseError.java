@@ -22,9 +22,6 @@ import java.util.List;
  * <p>This class also provides a {@link #toJson(JsonWriter)} method to serialize the error details to JSON, and
  * a {@link #fromJson(JsonReader)} method to deserialize the error details from JSON.</p>
  *
- * <p>This class is useful when you want to work with the error details of an HTTP response. For example, you can use
- * it to get detailed information about an error that occurred while processing an HTTP request.</p>
- *
  * @see JsonSerializable
  * @see JsonReader
  * @see JsonWriter

@@ -27,8 +27,7 @@ import java.util.Objects;
  * <p>This class is useful when you want to work with a collection of line strings in a geographic context.
  * For example, you can use it to represent a complex route on a map that is composed of multiple line strings.</p>
  *
- * <p>Note: This class is immutable, so once an instance is created, it cannot be modified. Also, a line string
- * collection requires at least 2 coordinates for each line string.</p>
+ * <p>Note: A line string collection requires at least 2 coordinates for each line string.</p>
  *
  * @see GeoLineString
  * @see GeoObject

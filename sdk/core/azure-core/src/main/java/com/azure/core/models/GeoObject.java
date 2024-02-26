@@ -28,12 +28,6 @@ import java.util.Objects;
  * <p>This class also provides a {@link #toJson(JsonWriter)} method to serialize the geometric object to JSON,
  * and a {@link #fromJson(JsonReader)} method to deserialize a geometric object from JSON.</p>
  *
- * <p>This class serves as the base class for specific types of geometric objects, such as {@link GeoPoint},
- * {@link GeoLineString}, {@link GeoPolygon}, {@link GeoPointCollection}, {@link GeoLineStringCollection},
- * {@link GeoPolygonCollection}, and {@link GeoCollection}.</p>
- *
- * <p>Note: This class is immutable, so once an instance is created, it cannot be modified.</p>
- *
  * @see GeoBoundingBox
  * @see GeoPosition
  * @see GeoPoint

@@ -23,11 +23,6 @@ import java.util.Objects;
  * <p>This class also provides a {@link #toJson(JsonWriter)} method to serialize the geometric point to JSON, and
  * a {@link #fromJson(JsonReader)} method to deserialize a geometric point from JSON.</p>
  *
- * <p>This class is useful when you want to work with a point in a geographic context. For example, you can use it
- * to represent a location on a map.</p>
- *
- * <p>Note: This class is immutable, so once an instance is created, it cannot be modified.</p>
- *
  * @see GeoPosition
  * @see GeoObject
  * @see JsonSerializable

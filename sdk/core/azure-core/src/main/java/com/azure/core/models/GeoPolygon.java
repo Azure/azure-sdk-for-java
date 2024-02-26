@@ -30,9 +30,8 @@ import java.util.Objects;
  * <p>This class is useful when you want to work with a polygon in a geographic context. For example, you can use it
  * to represent a geographic area on a map.</p>
  *
- * <p>Note: This class is immutable, so once an instance is created, it cannot be modified. Also, a polygon requires
- * at least one ring, and each ring requires at least 4 coordinates (with the first and last coordinates being the
- * same to form a closed loop).</p>
+ * <p>Note: A polygon requires at least one ring, and each ring requires at least 4 coordinates
+ * (with the first and last coordinates being the same to form a closed loop).</p>
  *
  * @see GeoLinearRing
  * @see GeoPosition

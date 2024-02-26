@@ -26,8 +26,6 @@ import java.util.Objects;
  * example, you can use it to represent a complex geographic feature that is composed of multiple simple geographic
  * features.</p>
  *
- * <p>Note: This class is immutable, so once an instance is created, it cannot be modified.</p>
- *
  * @see GeoObject
  * @see GeoBoundingBox
  */

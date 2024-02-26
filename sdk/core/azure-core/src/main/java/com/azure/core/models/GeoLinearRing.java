@@ -23,8 +23,7 @@ import java.util.Objects;
  * <p>This class is useful when you want to work with a linear ring in a geographic context. For example, you can
  * use it to define the boundary of a geographic area in a {@link GeoPolygon}.</p>
  *
- * <p>Note: This class is immutable, so once an instance is created, it cannot be modified. Also, a linear ring
- * requires at least 4 coordinates, and the first and last coordinates must be the same.</p>
+ * <p>Note: A linear ring requires at least 4 coordinates, and the first and last coordinates must be the same.</p>
  *
  * @see GeoPosition
  * @see GeoPolygon

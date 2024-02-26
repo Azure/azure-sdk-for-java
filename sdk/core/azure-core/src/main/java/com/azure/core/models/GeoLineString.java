@@ -25,8 +25,7 @@ import java.util.Objects;
  * <p>This class is useful when you want to work with a line string in a geographic context. For example, you can use
  * it to represent a route on a map or the shape of a geographic feature.</p>
  *
- * <p>Note: This class is immutable, so once an instance is created, it cannot be modified. Also, a line string
- * requires at least 2 coordinates.</p>
+ * <p>Note: A line string requires at least 2 coordinates.</p>
  *
  * @see GeoPosition
  * @see GeoObject

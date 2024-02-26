@@ -21,10 +21,6 @@ import java.io.IOException;
  * <p>This class also provides a {@link #toJson(JsonWriter)} method to serialize the inner error details to JSON,
  * and a {@link #fromJson(JsonReader)} method to deserialize the inner error details from JSON.</p>
  *
- * <p>This class is useful when you want to work with the inner error details of a {@link ResponseError}.
- * For example, you can use it to get detailed information about an inner error that occurred while processing
- * an HTTP request.</p>
- *
  * @see ResponseError
  * @see JsonSerializable
  * @see JsonReader

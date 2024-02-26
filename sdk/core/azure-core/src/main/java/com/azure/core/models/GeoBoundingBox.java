@@ -23,8 +23,6 @@ import java.util.Objects;
  * <p>This class is useful when you want to work with a bounding box in a geographic context. For example, you can use
  * it to define the area of interest for a map view, or to specify the spatial extent of a geographic dataset.</p>
  *
- * <p>Note: This class is immutable, so once an instance is created, it cannot be modified.</p>
- *
  * @see JsonSerializable
  */
 @Immutable

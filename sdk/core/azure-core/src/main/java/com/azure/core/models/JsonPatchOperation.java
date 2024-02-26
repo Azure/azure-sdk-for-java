@@ -15,9 +15,6 @@ import java.io.IOException;
 import java.util.Objects;
 import java.util.Optional;
 
-/**
- * Represents a JSON Patch operation.
- */
 
 /**
  * <p>Represents a JSON Patch operation.</p>
@@ -32,8 +29,6 @@ import java.util.Optional;
  * <p>This class is useful when you want to create a JSON Patch operation to be included in a JSON Patch document.
  * For example, you can use it to represent an operation that adds a new property to a JSON object, replaces the
  * value of a property, or removes a property.</p>
- *
- * <p>Note: This class is immutable, so once an instance is created, it cannot be modified.</p>
  *
  * @see JsonPatchOperationKind
  * @see JsonSerializable

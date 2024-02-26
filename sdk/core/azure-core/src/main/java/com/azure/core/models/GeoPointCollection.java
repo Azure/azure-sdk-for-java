@@ -27,11 +27,7 @@ import java.util.Objects;
  * <p>This class also provides a {@link #toJson(JsonWriter)} method to serialize the collection of points to JSON,
  * and a {@link #fromJson(JsonReader)} method to deserialize a collection of points from JSON.</p>
  *
- * <p>This class is useful when you want to work with a collection of points in a geographic context. For example,
- * you can use it to represent multiple locations on a map.</p>
- *
- * <p>Note: This class is immutable, so once an instance is created, it cannot be modified. Also, a point collection
- * requires at least 2 coordinates for each point.</p>
+ * <p>Note:A point collection requires at least 2 coordinates for each point.</p>
  *
  * @see GeoPoint
  * @see GeoPosition

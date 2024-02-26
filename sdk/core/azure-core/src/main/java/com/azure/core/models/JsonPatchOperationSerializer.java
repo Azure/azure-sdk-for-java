@@ -25,8 +25,6 @@ import java.io.IOException;
  * <p>This class is useful when you want to serialize a {@link JsonPatchOperation} to JSON. For example, you can use
  * it when you want to send a JSON Patch document as part of an HTTP request.</p>
  *
- * <p>Note: This class is final and cannot be subclassed.</p>
- *
  * @see JsonPatchOperation
  * @see JsonSerializer
  * @see JsonGenerator

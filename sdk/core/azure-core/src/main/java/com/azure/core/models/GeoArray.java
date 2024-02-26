@@ -20,10 +20,6 @@ import java.util.function.UnaryOperator;
  * <p>This class encapsulates a list of geometry coordinates and provides methods to access these coordinates.
  * The coordinates can be of any type {@code T}.</p>
  *
- * <p>This class is useful when you want to work with a list of geometry coordinates in a read-only manner.</p>
- *
- * <p>Note: This class is immutable, so once an instance is created, it cannot be modified.</p>
- *
  * @param <T> The type of geometry coordinates.
  */
 @Immutable
