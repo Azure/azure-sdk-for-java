@@ -349,7 +349,6 @@ public class IdentityClient extends IdentityClientBase {
                 ? LoggingUtil.logCredentialUnavailableException(LOGGER, options, (CredentialUnavailableException) e)
                 : LOGGER.logExceptionAsError(e));
         }
-
     }
 
     /**
@@ -946,7 +945,7 @@ public class IdentityClient extends IdentityClientBase {
                 String secretKeyPath = realm.substring(separatorIndex + 1);
                 secretKey = new String(Files.readAllBytes(Paths.get(secretKeyPath)), StandardCharsets.UTF_8);
 
-            
+
                 if (connection != null) {
                     connection.disconnect();
                 }
