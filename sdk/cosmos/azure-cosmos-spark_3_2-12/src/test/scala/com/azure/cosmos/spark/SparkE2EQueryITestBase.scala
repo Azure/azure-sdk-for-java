@@ -111,7 +111,7 @@ abstract class SparkE2EQueryITestBase
       "spark.cosmos.container" -> cosmosContainer,
     )
     val clientFromCache = com.azure.cosmos.spark.udf.CosmosAsyncClientCache
-      .getCosmosClientFromCache(cfg)
+      .getCosmosClientFromCache(cfg)()
       .getClient
       .asInstanceOf[CosmosAsyncClient]
     val dbResponse = clientFromCache.getDatabase(cosmosDatabase).read().block()
