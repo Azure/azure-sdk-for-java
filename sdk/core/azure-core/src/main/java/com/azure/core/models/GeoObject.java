@@ -20,7 +20,24 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * An abstract geo object.
+ * Represents an abstract geometric object in GeoJSON format.
+ *
+ * <p>This class encapsulates the common properties of a geometric object, including the bounding box and additional
+ * custom properties. It provides methods to access these properties.</p>
+ *
+ * <p>This class also provides a {@link #toJson(JsonWriter)} method to serialize the geometric object to JSON,
+ * and a {@link #fromJson(JsonReader)} method to deserialize a geometric object from JSON.</p>
+ *
+ * @see GeoBoundingBox
+ * @see GeoPosition
+ * @see GeoPoint
+ * @see GeoLineString
+ * @see GeoPolygon
+ * @see GeoPointCollection
+ * @see GeoLineStringCollection
+ * @see GeoPolygonCollection
+ * @see GeoCollection
+ * @see JsonSerializable
  */
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Point", value = GeoPoint.class),

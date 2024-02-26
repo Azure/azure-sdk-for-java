@@ -118,7 +118,6 @@ private object CosmosTableSchemaInferrer
         throughputControlClientCacheItemOpt)
 
     if (cosmosInferenceConfig.inferSchemaEnabled) {
-      SparkUtils.safeOpenConnectionInitCaches(sourceContainer, (msg, e) => logWarning(msg, e))
       val queryOptions = new CosmosQueryRequestOptions()
       queryOptions.setMaxBufferedItemCount(cosmosInferenceConfig.inferSchemaSamplingSize)
       queryOptions.setDedicatedGatewayRequestOptions(cosmosReadConfig.dedicatedGatewayRequestOptions)

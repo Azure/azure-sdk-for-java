@@ -11,16 +11,15 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdatePolic
 public final class UpdatePolicyInputPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdatePolicyInputProperties model =
-            BinaryData
-                .fromString("{\"replicationProviderSettings\":{\"instanceType\":\"PolicyProviderSpecificInput\"}}")
-                .toObject(UpdatePolicyInputProperties.class);
+        UpdatePolicyInputProperties model = BinaryData
+            .fromString("{\"replicationProviderSettings\":{\"instanceType\":\"PolicyProviderSpecificInput\"}}")
+            .toObject(UpdatePolicyInputProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdatePolicyInputProperties model =
-            new UpdatePolicyInputProperties().withReplicationProviderSettings(new PolicyProviderSpecificInput());
+        UpdatePolicyInputProperties model
+            = new UpdatePolicyInputProperties().withReplicationProviderSettings(new PolicyProviderSpecificInput());
         model = BinaryData.fromObject(model).toObject(UpdatePolicyInputProperties.class);
     }
 }

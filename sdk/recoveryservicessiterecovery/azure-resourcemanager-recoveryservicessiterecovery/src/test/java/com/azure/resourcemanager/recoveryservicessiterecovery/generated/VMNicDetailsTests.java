@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VMNicDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VMNicDetails model =
-            BinaryData
-                .fromString(
-                    "{\"nicId\":\"cbhhez\",\"replicaNicId\":\"u\",\"sourceNicArmId\":\"sqxutr\",\"vMNetworkName\":\"rruyuu\",\"recoveryVMNetworkId\":\"vlm\",\"ipConfigs\":[{\"name\":\"ol\",\"isPrimary\":false,\"subnetName\":\"b\",\"staticIPAddress\":\"tpc\",\"ipAddressType\":\"hprzrvxhmtfho\",\"isSeletedForFailover\":true,\"recoverySubnetName\":\"cmj\",\"recoveryStaticIPAddress\":\"gxnoqrxtdis\",\"recoveryIPAddressType\":\"evhdlmydid\",\"recoveryPublicIPAddressId\":\"epfwwt\",\"recoveryLBBackendAddressPoolIds\":[\"o\",\"sxxh\",\"wcdbckyoik\"],\"tfoSubnetName\":\"xhn\",\"tfoStaticIPAddress\":\"knjz\",\"tfoPublicIPAddressId\":\"h\",\"tfoLBBackendAddressPoolIds\":[\"plvukaobrlbpg\"]},{\"name\":\"bagn\",\"isPrimary\":false,\"subnetName\":\"g\",\"staticIPAddress\":\"uowakyw\",\"ipAddressType\":\"hjym\",\"isSeletedForFailover\":false,\"recoverySubnetName\":\"tagdrc\",\"recoveryStaticIPAddress\":\"soljome\",\"recoveryIPAddressType\":\"fycnlb\",\"recoveryPublicIPAddressId\":\"jcodkkgjiiytssi\",\"recoveryLBBackendAddressPoolIds\":[\"bcufqbvntn\"],\"tfoSubnetName\":\"mqso\",\"tfoStaticIPAddress\":\"cekxgnly\",\"tfoPublicIPAddressId\":\"xcpwzvmdok\",\"tfoLBBackendAddressPoolIds\":[\"tiwlwxlboncqb\"]}],\"selectionType\":\"qicqchygt\",\"recoveryNetworkSecurityGroupId\":\"byjanep\",\"enableAcceleratedNetworkingOnRecovery\":false,\"tfoVMNetworkId\":\"kxyqvgxiaodetv\",\"tfoNetworkSecurityGroupId\":\"kxdxuwsaifmcwn\",\"enableAcceleratedNetworkingOnTfo\":false,\"recoveryNicName\":\"lehgcvkbc\",\"recoveryNicResourceGroupName\":\"jolgjyyxpvels\",\"reuseExistingNic\":false,\"tfoRecoveryNicName\":\"zevxoqein\",\"tfoRecoveryNicResourceGroupName\":\"waljglzoblqwaaf\",\"tfoReuseExistingNic\":false,\"targetNicName\":\"hmzyqbhdvafjrqpj\"}")
-                .toObject(VMNicDetails.class);
+        VMNicDetails model = BinaryData.fromString(
+            "{\"nicId\":\"cbhhez\",\"replicaNicId\":\"u\",\"sourceNicArmId\":\"sqxutr\",\"vMNetworkName\":\"rruyuu\",\"recoveryVMNetworkId\":\"vlm\",\"ipConfigs\":[{\"name\":\"ol\",\"isPrimary\":false,\"subnetName\":\"b\",\"staticIPAddress\":\"tpc\",\"ipAddressType\":\"hprzrvxhmtfho\",\"isSeletedForFailover\":true,\"recoverySubnetName\":\"cmj\",\"recoveryStaticIPAddress\":\"gxnoqrxtdis\",\"recoveryIPAddressType\":\"evhdlmydid\",\"recoveryPublicIPAddressId\":\"epfwwt\",\"recoveryLBBackendAddressPoolIds\":[\"o\",\"sxxh\",\"wcdbckyoik\"],\"tfoSubnetName\":\"xhn\",\"tfoStaticIPAddress\":\"knjz\",\"tfoPublicIPAddressId\":\"h\",\"tfoLBBackendAddressPoolIds\":[\"plvukaobrlbpg\"]},{\"name\":\"bagn\",\"isPrimary\":false,\"subnetName\":\"g\",\"staticIPAddress\":\"uowakyw\",\"ipAddressType\":\"hjym\",\"isSeletedForFailover\":false,\"recoverySubnetName\":\"tagdrc\",\"recoveryStaticIPAddress\":\"soljome\",\"recoveryIPAddressType\":\"fycnlb\",\"recoveryPublicIPAddressId\":\"jcodkkgjiiytssi\",\"recoveryLBBackendAddressPoolIds\":[\"bcufqbvntn\"],\"tfoSubnetName\":\"mqso\",\"tfoStaticIPAddress\":\"cekxgnly\",\"tfoPublicIPAddressId\":\"xcpwzvmdok\",\"tfoLBBackendAddressPoolIds\":[\"tiwlwxlboncqb\"]}],\"selectionType\":\"qicqchygt\",\"recoveryNetworkSecurityGroupId\":\"byjanep\",\"enableAcceleratedNetworkingOnRecovery\":false,\"tfoVMNetworkId\":\"kxyqvgxiaodetv\",\"tfoNetworkSecurityGroupId\":\"kxdxuwsaifmcwn\",\"enableAcceleratedNetworkingOnTfo\":false,\"recoveryNicName\":\"lehgcvkbc\",\"recoveryNicResourceGroupName\":\"jolgjyyxpvels\",\"reuseExistingNic\":false,\"tfoRecoveryNicName\":\"zevxoqein\",\"tfoRecoveryNicResourceGroupName\":\"waljglzoblqwaaf\",\"tfoReuseExistingNic\":false,\"targetNicName\":\"hmzyqbhdvafjrqpj\"}")
+            .toObject(VMNicDetails.class);
         Assertions.assertEquals("cbhhez", model.nicId());
         Assertions.assertEquals("u", model.replicaNicId());
         Assertions.assertEquals("sqxutr", model.sourceNicArmId());
@@ -55,60 +53,32 @@ public final class VMNicDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMNicDetails model =
-            new VMNicDetails()
-                .withNicId("cbhhez")
-                .withReplicaNicId("u")
-                .withSourceNicArmId("sqxutr")
-                .withVMNetworkName("rruyuu")
-                .withRecoveryVMNetworkId("vlm")
-                .withIpConfigs(
-                    Arrays
-                        .asList(
-                            new IpConfigDetails()
-                                .withName("ol")
-                                .withIsPrimary(false)
-                                .withSubnetName("b")
-                                .withStaticIpAddress("tpc")
-                                .withIpAddressType("hprzrvxhmtfho")
-                                .withIsSeletedForFailover(true)
-                                .withRecoverySubnetName("cmj")
-                                .withRecoveryStaticIpAddress("gxnoqrxtdis")
-                                .withRecoveryIpAddressType("evhdlmydid")
-                                .withRecoveryPublicIpAddressId("epfwwt")
-                                .withRecoveryLBBackendAddressPoolIds(Arrays.asList("o", "sxxh", "wcdbckyoik"))
-                                .withTfoSubnetName("xhn")
-                                .withTfoStaticIpAddress("knjz")
-                                .withTfoPublicIpAddressId("h")
-                                .withTfoLBBackendAddressPoolIds(Arrays.asList("plvukaobrlbpg")),
-                            new IpConfigDetails()
-                                .withName("bagn")
-                                .withIsPrimary(false)
-                                .withSubnetName("g")
-                                .withStaticIpAddress("uowakyw")
-                                .withIpAddressType("hjym")
-                                .withIsSeletedForFailover(false)
-                                .withRecoverySubnetName("tagdrc")
-                                .withRecoveryStaticIpAddress("soljome")
-                                .withRecoveryIpAddressType("fycnlb")
-                                .withRecoveryPublicIpAddressId("jcodkkgjiiytssi")
-                                .withRecoveryLBBackendAddressPoolIds(Arrays.asList("bcufqbvntn"))
-                                .withTfoSubnetName("mqso")
-                                .withTfoStaticIpAddress("cekxgnly")
-                                .withTfoPublicIpAddressId("xcpwzvmdok")
-                                .withTfoLBBackendAddressPoolIds(Arrays.asList("tiwlwxlboncqb"))))
-                .withSelectionType("qicqchygt")
-                .withRecoveryNetworkSecurityGroupId("byjanep")
-                .withEnableAcceleratedNetworkingOnRecovery(false)
-                .withTfoVMNetworkId("kxyqvgxiaodetv")
-                .withTfoNetworkSecurityGroupId("kxdxuwsaifmcwn")
-                .withEnableAcceleratedNetworkingOnTfo(false)
-                .withRecoveryNicName("lehgcvkbc")
-                .withRecoveryNicResourceGroupName("jolgjyyxpvels")
-                .withReuseExistingNic(false)
-                .withTfoRecoveryNicName("zevxoqein")
-                .withTfoRecoveryNicResourceGroupName("waljglzoblqwaaf")
-                .withTfoReuseExistingNic(false)
+        VMNicDetails model
+            = new VMNicDetails()
+                .withNicId("cbhhez").withReplicaNicId("u").withSourceNicArmId(
+                    "sqxutr")
+                .withVMNetworkName("rruyuu").withRecoveryVMNetworkId("vlm")
+                .withIpConfigs(Arrays.asList(
+                    new IpConfigDetails().withName("ol").withIsPrimary(false).withSubnetName("b")
+                        .withStaticIpAddress("tpc").withIpAddressType("hprzrvxhmtfho").withIsSeletedForFailover(true)
+                        .withRecoverySubnetName("cmj").withRecoveryStaticIpAddress("gxnoqrxtdis")
+                        .withRecoveryIpAddressType("evhdlmydid").withRecoveryPublicIpAddressId("epfwwt")
+                        .withRecoveryLBBackendAddressPoolIds(Arrays.asList("o", "sxxh", "wcdbckyoik"))
+                        .withTfoSubnetName("xhn").withTfoStaticIpAddress("knjz").withTfoPublicIpAddressId("h")
+                        .withTfoLBBackendAddressPoolIds(Arrays.asList("plvukaobrlbpg")),
+                    new IpConfigDetails().withName("bagn").withIsPrimary(false).withSubnetName("g")
+                        .withStaticIpAddress("uowakyw").withIpAddressType("hjym").withIsSeletedForFailover(false)
+                        .withRecoverySubnetName("tagdrc").withRecoveryStaticIpAddress("soljome")
+                        .withRecoveryIpAddressType("fycnlb").withRecoveryPublicIpAddressId("jcodkkgjiiytssi")
+                        .withRecoveryLBBackendAddressPoolIds(Arrays.asList("bcufqbvntn")).withTfoSubnetName("mqso")
+                        .withTfoStaticIpAddress("cekxgnly").withTfoPublicIpAddressId("xcpwzvmdok")
+                        .withTfoLBBackendAddressPoolIds(Arrays.asList("tiwlwxlboncqb"))))
+                .withSelectionType("qicqchygt").withRecoveryNetworkSecurityGroupId("byjanep")
+                .withEnableAcceleratedNetworkingOnRecovery(false).withTfoVMNetworkId("kxyqvgxiaodetv")
+                .withTfoNetworkSecurityGroupId("kxdxuwsaifmcwn").withEnableAcceleratedNetworkingOnTfo(false)
+                .withRecoveryNicName("lehgcvkbc").withRecoveryNicResourceGroupName("jolgjyyxpvels")
+                .withReuseExistingNic(false).withTfoRecoveryNicName("zevxoqein")
+                .withTfoRecoveryNicResourceGroupName("waljglzoblqwaaf").withTfoReuseExistingNic(false)
                 .withTargetNicName("hmzyqbhdvafjrqpj");
         model = BinaryData.fromObject(model).toObject(VMNicDetails.class);
         Assertions.assertEquals("cbhhez", model.nicId());

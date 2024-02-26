@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.AddDisksPro
 public final class AddDisksProviderSpecificInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AddDisksProviderSpecificInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"AddDisksProviderSpecificInput\"}")
+        AddDisksProviderSpecificInput model
+            = BinaryData.fromString("{\"instanceType\":\"AddDisksProviderSpecificInput\"}")
                 .toObject(AddDisksProviderSpecificInput.class);
     }
 

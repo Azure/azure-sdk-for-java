@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** A2A provider specific settings. */
+/**
+ * A2A provider specific settings.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("A2A")
 @Fluent
@@ -148,13 +150,15 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
     @JsonProperty(value = "automationAccountAuthenticationType")
     private AutomationAccountAuthenticationType automationAccountAuthenticationType;
 
-    /** Creates an instance of A2AReplicationIntentDetails class. */
+    /**
+     * Creates an instance of A2AReplicationIntentDetails class.
+     */
     public A2AReplicationIntentDetails() {
     }
 
     /**
      * Get the fabricObjectId property: The fabric specific object Id of the virtual machine.
-     *
+     * 
      * @return the fabricObjectId value.
      */
     public String fabricObjectId() {
@@ -163,7 +167,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the fabricObjectId property: The fabric specific object Id of the virtual machine.
-     *
+     * 
      * @param fabricObjectId the fabricObjectId value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -174,7 +178,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the primaryLocation property: The primary location for the virtual machine.
-     *
+     * 
      * @return the primaryLocation value.
      */
     public String primaryLocation() {
@@ -183,7 +187,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the primaryLocation property: The primary location for the virtual machine.
-     *
+     * 
      * @param primaryLocation the primaryLocation value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -194,7 +198,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the recoveryLocation property: The recovery location for the virtual machine.
-     *
+     * 
      * @return the recoveryLocation value.
      */
     public String recoveryLocation() {
@@ -203,7 +207,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the recoveryLocation property: The recovery location for the virtual machine.
-     *
+     * 
      * @param recoveryLocation the recoveryLocation value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -214,7 +218,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the recoverySubscriptionId property: The recovery subscription Id of the virtual machine.
-     *
+     * 
      * @return the recoverySubscriptionId value.
      */
     public String recoverySubscriptionId() {
@@ -223,7 +227,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the recoverySubscriptionId property: The recovery subscription Id of the virtual machine.
-     *
+     * 
      * @param recoverySubscriptionId the recoverySubscriptionId value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -234,7 +238,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the vmDisks property: The list of vm disk details.
-     *
+     * 
      * @return the vmDisks value.
      */
     public List<A2AProtectionIntentDiskInputDetails> vmDisks() {
@@ -243,7 +247,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the vmDisks property: The list of vm disk details.
-     *
+     * 
      * @param vmDisks the vmDisks value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -254,7 +258,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the vmManagedDisks property: The list of vm managed disk details.
-     *
+     * 
      * @return the vmManagedDisks value.
      */
     public List<A2AProtectionIntentManagedDiskInputDetails> vmManagedDisks() {
@@ -263,19 +267,19 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the vmManagedDisks property: The list of vm managed disk details.
-     *
+     * 
      * @param vmManagedDisks the vmManagedDisks value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
-    public A2AReplicationIntentDetails withVmManagedDisks(
-        List<A2AProtectionIntentManagedDiskInputDetails> vmManagedDisks) {
+    public A2AReplicationIntentDetails
+        withVmManagedDisks(List<A2AProtectionIntentManagedDiskInputDetails> vmManagedDisks) {
         this.vmManagedDisks = vmManagedDisks;
         return this;
     }
 
     /**
      * Get the recoveryResourceGroupId property: The recovery resource group id.
-     *
+     * 
      * @return the recoveryResourceGroupId value.
      */
     public String recoveryResourceGroupId() {
@@ -284,7 +288,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the recoveryResourceGroupId property: The recovery resource group id.
-     *
+     * 
      * @param recoveryResourceGroupId the recoveryResourceGroupId value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -295,7 +299,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the protectionProfile property: The protection profile custom details.
-     *
+     * 
      * @return the protectionProfile value.
      */
     public ProtectionProfileCustomDetails protectionProfile() {
@@ -304,7 +308,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the protectionProfile property: The protection profile custom details.
-     *
+     * 
      * @param protectionProfile the protectionProfile value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -315,7 +319,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the primaryStagingStorageAccount property: The primary staging storage account details.
-     *
+     * 
      * @return the primaryStagingStorageAccount value.
      */
     public StorageAccountCustomDetails primaryStagingStorageAccount() {
@@ -324,19 +328,19 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the primaryStagingStorageAccount property: The primary staging storage account details.
-     *
+     * 
      * @param primaryStagingStorageAccount the primaryStagingStorageAccount value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
-    public A2AReplicationIntentDetails withPrimaryStagingStorageAccount(
-        StorageAccountCustomDetails primaryStagingStorageAccount) {
+    public A2AReplicationIntentDetails
+        withPrimaryStagingStorageAccount(StorageAccountCustomDetails primaryStagingStorageAccount) {
         this.primaryStagingStorageAccount = primaryStagingStorageAccount;
         return this;
     }
 
     /**
      * Get the recoveryAvailabilitySet property: The recovery availability set details.
-     *
+     * 
      * @return the recoveryAvailabilitySet value.
      */
     public RecoveryAvailabilitySetCustomDetails recoveryAvailabilitySet() {
@@ -345,19 +349,19 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the recoveryAvailabilitySet property: The recovery availability set details.
-     *
+     * 
      * @param recoveryAvailabilitySet the recoveryAvailabilitySet value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
-    public A2AReplicationIntentDetails withRecoveryAvailabilitySet(
-        RecoveryAvailabilitySetCustomDetails recoveryAvailabilitySet) {
+    public A2AReplicationIntentDetails
+        withRecoveryAvailabilitySet(RecoveryAvailabilitySetCustomDetails recoveryAvailabilitySet) {
         this.recoveryAvailabilitySet = recoveryAvailabilitySet;
         return this;
     }
 
     /**
      * Get the recoveryVirtualNetwork property: The recovery virtual network details.
-     *
+     * 
      * @return the recoveryVirtualNetwork value.
      */
     public RecoveryVirtualNetworkCustomDetails recoveryVirtualNetwork() {
@@ -366,19 +370,19 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the recoveryVirtualNetwork property: The recovery virtual network details.
-     *
+     * 
      * @param recoveryVirtualNetwork the recoveryVirtualNetwork value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
-    public A2AReplicationIntentDetails withRecoveryVirtualNetwork(
-        RecoveryVirtualNetworkCustomDetails recoveryVirtualNetwork) {
+    public A2AReplicationIntentDetails
+        withRecoveryVirtualNetwork(RecoveryVirtualNetworkCustomDetails recoveryVirtualNetwork) {
         this.recoveryVirtualNetwork = recoveryVirtualNetwork;
         return this;
     }
 
     /**
      * Get the recoveryProximityPlacementGroup property: The recovery proximity placement group custom details.
-     *
+     * 
      * @return the recoveryProximityPlacementGroup value.
      */
     public RecoveryProximityPlacementGroupCustomDetails recoveryProximityPlacementGroup() {
@@ -387,7 +391,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the recoveryProximityPlacementGroup property: The recovery proximity placement group custom details.
-     *
+     * 
      * @param recoveryProximityPlacementGroup the recoveryProximityPlacementGroup value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -399,7 +403,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the autoProtectionOfDataDisk property: A value indicating whether the auto protection is enabled.
-     *
+     * 
      * @return the autoProtectionOfDataDisk value.
      */
     public AutoProtectionOfDataDisk autoProtectionOfDataDisk() {
@@ -408,7 +412,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the autoProtectionOfDataDisk property: A value indicating whether the auto protection is enabled.
-     *
+     * 
      * @param autoProtectionOfDataDisk the autoProtectionOfDataDisk value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -419,7 +423,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the multiVmGroupName property: The multi vm group name.
-     *
+     * 
      * @return the multiVmGroupName value.
      */
     public String multiVmGroupName() {
@@ -428,7 +432,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the multiVmGroupName property: The multi vm group name.
-     *
+     * 
      * @param multiVmGroupName the multiVmGroupName value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -439,7 +443,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the multiVmGroupId property: The multi vm group id.
-     *
+     * 
      * @return the multiVmGroupId value.
      */
     public String multiVmGroupId() {
@@ -448,7 +452,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the multiVmGroupId property: The multi vm group id.
-     *
+     * 
      * @param multiVmGroupId the multiVmGroupId value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -459,7 +463,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the recoveryBootDiagStorageAccount property: The boot diagnostic storage account.
-     *
+     * 
      * @return the recoveryBootDiagStorageAccount value.
      */
     public StorageAccountCustomDetails recoveryBootDiagStorageAccount() {
@@ -468,19 +472,19 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the recoveryBootDiagStorageAccount property: The boot diagnostic storage account.
-     *
+     * 
      * @param recoveryBootDiagStorageAccount the recoveryBootDiagStorageAccount value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
-    public A2AReplicationIntentDetails withRecoveryBootDiagStorageAccount(
-        StorageAccountCustomDetails recoveryBootDiagStorageAccount) {
+    public A2AReplicationIntentDetails
+        withRecoveryBootDiagStorageAccount(StorageAccountCustomDetails recoveryBootDiagStorageAccount) {
         this.recoveryBootDiagStorageAccount = recoveryBootDiagStorageAccount;
         return this;
     }
 
     /**
      * Get the diskEncryptionInfo property: The recovery disk encryption information (for two pass flows).
-     *
+     * 
      * @return the diskEncryptionInfo value.
      */
     public DiskEncryptionInfo diskEncryptionInfo() {
@@ -489,7 +493,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the diskEncryptionInfo property: The recovery disk encryption information (for two pass flows).
-     *
+     * 
      * @param diskEncryptionInfo the diskEncryptionInfo value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -500,7 +504,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the recoveryAvailabilityZone property: The recovery availability zone.
-     *
+     * 
      * @return the recoveryAvailabilityZone value.
      */
     public String recoveryAvailabilityZone() {
@@ -509,7 +513,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the recoveryAvailabilityZone property: The recovery availability zone.
-     *
+     * 
      * @param recoveryAvailabilityZone the recoveryAvailabilityZone value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -520,7 +524,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the recoveryAvailabilityType property: The recovery availability type of the virtual machine.
-     *
+     * 
      * @return the recoveryAvailabilityType value.
      */
     public String recoveryAvailabilityType() {
@@ -529,7 +533,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the recoveryAvailabilityType property: The recovery availability type of the virtual machine.
-     *
+     * 
      * @param recoveryAvailabilityType the recoveryAvailabilityType value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -540,7 +544,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the agentAutoUpdateStatus property: A value indicating whether the auto update is enabled.
-     *
+     * 
      * @return the agentAutoUpdateStatus value.
      */
     public AgentAutoUpdateStatus agentAutoUpdateStatus() {
@@ -549,7 +553,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the agentAutoUpdateStatus property: A value indicating whether the auto update is enabled.
-     *
+     * 
      * @param agentAutoUpdateStatus the agentAutoUpdateStatus value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -560,7 +564,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Get the automationAccountArmId property: The automation account arm id.
-     *
+     * 
      * @return the automationAccountArmId value.
      */
     public String automationAccountArmId() {
@@ -569,7 +573,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Set the automationAccountArmId property: The automation account arm id.
-     *
+     * 
      * @param automationAccountArmId the automationAccountArmId value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -581,7 +585,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
     /**
      * Get the automationAccountAuthenticationType property: A value indicating the type authentication to use for
      * automation Account.
-     *
+     * 
      * @return the automationAccountAuthenticationType value.
      */
     public AutomationAccountAuthenticationType automationAccountAuthenticationType() {
@@ -591,7 +595,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
     /**
      * Set the automationAccountAuthenticationType property: A value indicating the type authentication to use for
      * automation Account.
-     *
+     * 
      * @param automationAccountAuthenticationType the automationAccountAuthenticationType value to set.
      * @return the A2AReplicationIntentDetails object itself.
      */
@@ -603,7 +607,7 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
@@ -637,10 +641,8 @@ public final class A2AReplicationIntentDetails extends ReplicationProtectionInte
             diskEncryptionInfo().validate();
         }
         if (recoveryAvailabilityType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoveryAvailabilityType in model A2AReplicationIntentDetails"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property recoveryAvailabilityType in model A2AReplicationIntentDetails"));
         }
     }
 

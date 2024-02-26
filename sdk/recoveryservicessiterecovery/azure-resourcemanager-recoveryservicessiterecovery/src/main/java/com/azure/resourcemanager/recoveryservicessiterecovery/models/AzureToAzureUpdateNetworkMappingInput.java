@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Updates network mappings input. */
+/**
+ * Updates network mappings input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("AzureToAzure")
 @Fluent
@@ -20,13 +22,15 @@ public final class AzureToAzureUpdateNetworkMappingInput extends FabricSpecificU
     @JsonProperty(value = "primaryNetworkId")
     private String primaryNetworkId;
 
-    /** Creates an instance of AzureToAzureUpdateNetworkMappingInput class. */
+    /**
+     * Creates an instance of AzureToAzureUpdateNetworkMappingInput class.
+     */
     public AzureToAzureUpdateNetworkMappingInput() {
     }
 
     /**
      * Get the primaryNetworkId property: The primary azure vnet Id.
-     *
+     * 
      * @return the primaryNetworkId value.
      */
     public String primaryNetworkId() {
@@ -35,7 +39,7 @@ public final class AzureToAzureUpdateNetworkMappingInput extends FabricSpecificU
 
     /**
      * Set the primaryNetworkId property: The primary azure vnet Id.
-     *
+     * 
      * @param primaryNetworkId the primaryNetworkId value to set.
      * @return the AzureToAzureUpdateNetworkMappingInput object itself.
      */
@@ -46,7 +50,7 @@ public final class AzureToAzureUpdateNetworkMappingInput extends FabricSpecificU
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

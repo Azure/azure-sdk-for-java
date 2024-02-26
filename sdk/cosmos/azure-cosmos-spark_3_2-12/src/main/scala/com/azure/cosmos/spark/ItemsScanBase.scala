@@ -119,7 +119,6 @@ private[spark] abstract class ItemsScanBase(session: SparkSession,
               containerConfig,
               clientCacheItems(0).get,
               clientCacheItems(1))
-          SparkUtils.safeOpenConnectionInitCaches(container, log)
 
           val cosmosInputPartitions = CosmosPartitionPlanner
             .createInputPartitions(

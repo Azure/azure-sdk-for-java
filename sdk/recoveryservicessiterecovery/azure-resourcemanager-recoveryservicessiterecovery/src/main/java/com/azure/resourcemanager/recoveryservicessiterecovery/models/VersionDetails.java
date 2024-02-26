@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Version related details. */
+/**
+ * Version related details.
+ */
 @Fluent
 public final class VersionDetails {
     /*
@@ -29,13 +31,15 @@ public final class VersionDetails {
     @JsonProperty(value = "status")
     private AgentVersionStatus status;
 
-    /** Creates an instance of VersionDetails class. */
+    /**
+     * Creates an instance of VersionDetails class.
+     */
     public VersionDetails() {
     }
 
     /**
      * Get the version property: The agent version.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -44,7 +48,7 @@ public final class VersionDetails {
 
     /**
      * Set the version property: The agent version.
-     *
+     * 
      * @param version the version value to set.
      * @return the VersionDetails object itself.
      */
@@ -55,7 +59,7 @@ public final class VersionDetails {
 
     /**
      * Get the expiryDate property: Version expiry date.
-     *
+     * 
      * @return the expiryDate value.
      */
     public OffsetDateTime expiryDate() {
@@ -64,7 +68,7 @@ public final class VersionDetails {
 
     /**
      * Set the expiryDate property: Version expiry date.
-     *
+     * 
      * @param expiryDate the expiryDate value to set.
      * @return the VersionDetails object itself.
      */
@@ -75,7 +79,7 @@ public final class VersionDetails {
 
     /**
      * Get the status property: A value indicating whether security update required.
-     *
+     * 
      * @return the status value.
      */
     public AgentVersionStatus status() {
@@ -84,7 +88,7 @@ public final class VersionDetails {
 
     /**
      * Set the status property: A value indicating whether security update required.
-     *
+     * 
      * @param status the status value to set.
      * @return the VersionDetails object itself.
      */
@@ -95,7 +99,7 @@ public final class VersionDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
