@@ -18,14 +18,16 @@ object CosmosAsyncClientCache {
    * @param userProvidedConfig the configuration dictionary also used in Spark APIs to authenticate
    * @return the shaded CosmosAsyncClient that is also used internally by the Spark connector
    */
-  def getCosmosClientFromCache(userProvidedConfig: Map[String, String]): CosmosAsyncClientCacheItem = {
+  def getCosmosClientFromCache(userProvidedConfig: Map[String, String]): () => CosmosAsyncClientCacheItem = {
     val effectiveUserConfig = CosmosConfig.getEffectiveConfig(None, None, userProvidedConfig)
     val cosmosClientConfig = CosmosClientConfiguration(
       effectiveUserConfig,
       useEventualConsistency = false,
       CosmosClientConfiguration.getSparkEnvironmentInfo(SparkSession.getActiveSession))
 
-    new CosmosAsyncClientCacheItem(
+    // delay getting the client from cache here to allow this to be executed on executors
+    // as well - not just on the driver
+    () => new CosmosAsyncClientCacheItem(
       CosmosClientCache(cosmosClientConfig, None, "CosmosAsyncClientCache.getCosmosClientFromCache"))
   }
 }
