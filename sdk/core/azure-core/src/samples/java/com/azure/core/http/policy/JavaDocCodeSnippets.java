@@ -12,6 +12,7 @@ public class JavaDocCodeSnippets {
     /**
      * Code snippets for using {@link AddHeadersPolicy}.
      */
+    @SuppressWarnings("deprecation")
     public void createAddHeaderPolicy() {
 
         // BEGIN: com.azure.core.http.policy.AddHeaderPolicy.constructor
