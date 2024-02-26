@@ -87,10 +87,10 @@ These settings apply only when `--tag=searchindex` is specified on the command l
 ``` yaml $(tag) == 'searchindex'
 namespace: com.azure.search.documents
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/58e92dd03733bc175e6a9540f4bc53703b57fcc9/specification/search/data-plane/Azure.Search/preview/2023-10-01-Preview/searchindex.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a0151afd7cd14913fc86cb793bde49c71122eb1e/specification/search/data-plane/Azure.Search/preview/2024-03-01-Preview/searchindex.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
-custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchError,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult,VectorQueryKind
+custom-types: AutocompleteRequest,IndexAction,IndexBatch,RequestOptions,SearchDocumentsResult,SearchErrorException,SearchOptions,SearchRequest,SearchResult,SuggestDocumentsResult,SuggestRequest,SuggestResult,VectorQueryKind
 customization-class: src/main/java/SearchIndexCustomizations.java
 directive:
     - rename-model:
@@ -105,10 +105,10 @@ These settings apply only when `--tag=searchservice` is specified on the command
 ``` yaml $(tag) == 'searchservice'
 namespace: com.azure.search.documents.indexes
 input-file:
-- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/58e92dd03733bc175e6a9540f4bc53703b57fcc9/specification/search/data-plane/Azure.Search/preview/2023-10-01-Preview/searchservice.json
+- https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a0151afd7cd14913fc86cb793bde49c71122eb1e/specification/search/data-plane/Azure.Search/preview/2024-03-01-Preview/searchservice.json
 models-subpackage: models
 custom-types-subpackage: implementation.models
-custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchError,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames,VectorSearchAlgorithmKind
+custom-types: AnalyzeRequest,AnalyzeResult,AzureActiveDirectoryApplicationCredentials,DataSourceCredentials,DocumentKeysOrIds,EdgeNGramTokenFilterV1,EdgeNGramTokenFilterV2,EntityRecognitionSkillV1,EntityRecognitionSkillV3,KeywordTokenizerV1,KeywordTokenizerV2,ListAliasesResult,ListDataSourcesResult,ListIndexersResult,ListIndexesResult,ListSkillsetsResult,ListSynonymMapsResult,LuceneStandardTokenizerV1,LuceneStandardTokenizerV2,NGramTokenFilterV1,NGramTokenFilterV2,RequestOptions,SearchErrorException,SentimentSkillV1,SentimentSkillV3,SkillNames,VectorSearchAlgorithmKind
 customization-class: src/main/java/SearchServiceCustomizations.java
 directive:
     - rename-model:
