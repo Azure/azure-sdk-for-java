@@ -5,6 +5,7 @@ package com.azure.resourcemanager.storage.implementation;
 
 import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils;
 import com.azure.resourcemanager.storage.models.Encryption;
+import com.azure.resourcemanager.storage.models.EncryptionIdentity;
 import com.azure.resourcemanager.storage.models.EncryptionService;
 import com.azure.resourcemanager.storage.models.EncryptionServices;
 import com.azure.resourcemanager.storage.models.KeySource;
@@ -178,6 +179,16 @@ final class StorageEncryptionHelper {
         Encryption encryption = getEncryptionConfig(true);
         encryption.withKeySource(KeySource.MICROSOFT_KEYVAULT);
         encryption
+            .withKeyVaultProperties(
+                new KeyVaultProperties().withKeyVaultUri(keyVaultUri).withKeyName(keyName).withKeyVersion(keyVersion));
+        return this;
+    }
+
+    public StorageEncryptionHelper withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion, String identityId) {
+        Encryption encryption = getEncryptionConfig(true);
+        encryption.withKeySource(KeySource.MICROSOFT_KEYVAULT);
+        encryption
+            .withEncryptionIdentity(new EncryptionIdentity().withEncryptionUserAssignedIdentity(identityId))
             .withKeyVaultProperties(
                 new KeyVaultProperties().withKeyVaultUri(keyVaultUri).withKeyName(keyName).withKeyVersion(keyVersion));
         return this;

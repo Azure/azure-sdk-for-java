@@ -10,6 +10,7 @@ import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
+import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpoint;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.PrivateEndpointConnectionProvisioningState;
@@ -442,6 +443,18 @@ class StorageAccountImpl
     }
 
     @Override
+    public StorageAccountImpl withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion, Identity userAssignedIdentity) {
+        this.encryptionHelper.withEncryptionKeyFromKeyVault(keyVaultUri, keyName, keyVersion, userAssignedIdentity == null ? null : userAssignedIdentity.id());
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion, String userAssignedIdentityId) {
+        this.encryptionHelper.withEncryptionKeyFromKeyVault(keyVaultUri, keyName, keyVersion, userAssignedIdentityId);
+        return this;
+    }
+
+    @Override
     public StorageAccountImpl withoutBlobEncryption() {
         this.encryptionHelper.withoutBlobEncryption();
         return this;
@@ -821,6 +834,12 @@ class StorageAccountImpl
     @Override
     public StorageAccountImpl withExistingUserAssignedManagedServiceIdentity(com.azure.resourcemanager.msi.models.Identity identity) {
         this.storageAccountMsiHandler.withExistingExternalManagedServiceIdentity(identity);
+        return this;
+    }
+
+    @Override
+    public StorageAccountImpl withExistingUserAssignedManagedServiceIdentity(String identityId) {
+        this.storageAccountMsiHandler.withExistingExternalManagedServiceIdentity(identityId);
         return this;
     }
 
