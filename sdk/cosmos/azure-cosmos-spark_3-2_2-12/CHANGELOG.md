@@ -1,15 +1,9 @@
 ## Release History
 
-### 4.28.0-beta.1 (Unreleased)
+### 4.28.0 (2024-02-26)
 
 #### Features Added
 * Added UDF `CosmosAsyncClientCache.getCosmosClientFuncFromCache` to allow Spark applications to reuse the same instance instead of having to instantiate their own `CosmsoAsyncClient` when also using the Cosmos Java SDK besides the Spark connector even on executors. - See [PR 38939](https://github.com/Azure/azure-sdk-for-java/pull/38939)
-
-#### Breaking Changes
-
-#### Bugs Fixed
-
-#### Other Changes
 
 ### 4.27.1 (2024-02-23)
 

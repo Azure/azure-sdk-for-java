@@ -55,7 +55,7 @@ clientFromCache.close
 val clientFromCacheFunc = com.azure.cosmos.spark.udf.CosmosAsyncClientCache
   .getCosmosClientFuncFromCache(cfg)
 
-spark.parallelize(Seq.empt[String]).foreachPartition(x => {
+spark.parallelize(Seq.empty[String]).foreachPartition(x => {
   val clientFromCacheOnExecutor = clientFromCacheFunc()
     .getClient
     .asInstanceOf[azure_cosmos_spark.com.azure.cosmos.CosmosAsyncClient]
