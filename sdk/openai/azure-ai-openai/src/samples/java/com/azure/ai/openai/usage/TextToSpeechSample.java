@@ -9,6 +9,12 @@ import com.azure.ai.openai.models.SpeechGenerationOptions;
 import com.azure.ai.openai.models.SpeechVoice;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.Configuration;
+
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 
 /**
  * A sample demonstrates how to generate speech from a given text, text-to-speech.
@@ -19,10 +25,10 @@ public class TextToSpeechSample {
      *
      * @param args Unused. Arguments to the program.
      */
-    public static void main(String[] args) {
-        String azureOpenaiKey = "{azure-open-ai-key}";
-        String endpoint = "{azure-open-ai-endpoint}";
-        String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
+    public static void main(String[] args) throws IOException {
+        String azureOpenaiKey =  Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY");
+        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT");
+        String deploymentOrModelId = "tts";
 
         OpenAIClient client = new OpenAIClientBuilder()
                 .endpoint(endpoint)
@@ -34,7 +40,8 @@ public class TextToSpeechSample {
                 SpeechVoice.ALLOY);
 
         BinaryData speech = client.generateSpeechFromText(deploymentOrModelId, options);
-
-        System.out.println("Speech: " + speech);
+        // Checkout your generated speech in the file system.
+        Path path = Paths.get("./azure-ai-openai/src/samples/java/com/azure/ai/openai/resources/speech.wav");
+        Files.write(path, speech.toBytes());
     }
 }

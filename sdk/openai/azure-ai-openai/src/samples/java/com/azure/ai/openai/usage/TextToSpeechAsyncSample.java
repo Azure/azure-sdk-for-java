@@ -8,7 +8,12 @@ import com.azure.ai.openai.OpenAIClientBuilder;
 import com.azure.ai.openai.models.SpeechGenerationOptions;
 import com.azure.ai.openai.models.SpeechVoice;
 import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.util.Configuration;
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -21,9 +26,9 @@ public class TextToSpeechAsyncSample {
      * @param args Unused. Arguments to the program.
      */
     public static void main(String[] args) throws InterruptedException {
-        String azureOpenaiKey = "{azure-open-ai-key}";
-        String endpoint = "{azure-open-ai-endpoint}";
-        String deploymentOrModelId = "{azure-open-ai-deployment-model-id}";
+        String azureOpenaiKey =  Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY");
+        String endpoint = Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT");
+        String deploymentOrModelId = "tts";
 
         OpenAIAsyncClient client = new OpenAIClientBuilder()
                 .endpoint(endpoint)
@@ -36,7 +41,12 @@ public class TextToSpeechAsyncSample {
 
         client.generateSpeechFromText(deploymentOrModelId, options)
                 .subscribe(speech -> {
-                    System.out.println("Speech: " + speech);
+                    // Checkout your generated speech in the file system.
+                    Path path = Paths.get("./azure-ai-openai/src/samples/java/com/azure/ai/openai/resources/speech.wav");
+                    try {
+                        Files.write(path, speech.toBytes());
+                    } catch (IOException ignored) {
+                    }
                 });
 
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
