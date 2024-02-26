@@ -223,8 +223,9 @@ public class DocumentModelAdminClientJavaDocCodeSnippets {
         CopyAuthorization documentModelCopyAuthorization
             = documentIntelligenceAdministrationClient.authorizeModelCopy(new AuthorizeCopyRequest(copyModelId));
         // Start copy operation from the source client
+        String existedModelId = "existedModelId";
         DocumentModelDetails documentModelDetails
-            = documentIntelligenceAdministrationClient.beginCopyModelTo(copyModelId, documentModelCopyAuthorization)
+            = documentIntelligenceAdministrationClient.beginCopyModelTo(existedModelId, documentModelCopyAuthorization)
             .getFinalResult();
         System.out.printf("Copied model has model ID: %s, was created on: %s.%n,",
             documentModelDetails.getModelId(),
