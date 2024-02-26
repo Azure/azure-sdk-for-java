@@ -77,9 +77,9 @@ public final class ReflectionSerializable {
     }
 
     private static <T> T serializeJsonSerializableWithReturn(JsonSerializable<?> jsonSerializable,
-                                                             Function<AccessibleByteArrayOutputStream, T> returner) throws IOException {
+        Function<AccessibleByteArrayOutputStream, T> returner) throws IOException {
         try (AccessibleByteArrayOutputStream outputStream = new AccessibleByteArrayOutputStream();
-             JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
+            JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
             jsonWriter.writeJson(jsonSerializable).flush();
 
             return returner.apply(outputStream);
@@ -94,7 +94,7 @@ public final class ReflectionSerializable {
      * @throws IOException If an error occurs during serialization.
      */
     public static void serializeJsonSerializableIntoOutputStream(JsonSerializable<?> jsonSerializable,
-                                                                 OutputStream outputStream) throws IOException {
+        OutputStream outputStream) throws IOException {
         try (JsonWriter jsonWriter = JsonProviders.createWriter(outputStream)) {
             jsonWriter.writeJson(jsonSerializable).flush();
         }

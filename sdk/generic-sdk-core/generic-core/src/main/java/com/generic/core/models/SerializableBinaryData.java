@@ -6,6 +6,7 @@ package com.generic.core.models;
 import com.generic.core.util.serializer.ObjectSerializer;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
@@ -78,5 +79,10 @@ public final class SerializableBinaryData extends BinaryData {
 
     private byte[] getBytes() {
         return serializer.serializeToBytes(content);
+    }
+
+    @Override
+    public void close() throws IOException {
+        // no-op
     }
 }

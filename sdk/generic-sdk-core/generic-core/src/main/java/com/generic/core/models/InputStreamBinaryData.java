@@ -202,4 +202,9 @@ public final class InputStreamBinaryData extends BinaryData {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(ex));
         }
     }
+
+    @Override
+    public void close() throws IOException {
+        content.get().close();
+    }
 }

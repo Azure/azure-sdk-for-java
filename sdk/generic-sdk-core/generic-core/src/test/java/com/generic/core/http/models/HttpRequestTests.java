@@ -92,7 +92,7 @@ public class HttpRequestTests {
     public void testSetBodyAsString() {
         final HttpRequest request = new HttpRequest(HttpMethod.POST, "http://request.url");
 
-        request.setBody(BODY);
+        request.setBody(BinaryData.fromString(BODY));
 
         assertEquals(BODY_LENGTH, getContentLength(request));
         assertEquals(BODY, request.getBody().toString());
@@ -103,7 +103,7 @@ public class HttpRequestTests {
     public void testSetBodyAsByteArray() {
         final HttpRequest request = new HttpRequest(HttpMethod.POST, "http://request.url");
 
-        request.setBody(BODY_BYTES);
+        request.setBody(BinaryData.fromBytes(BODY_BYTES));
 
         assertEquals(BODY_LENGTH, getContentLength(request));
         assertEquals(BODY, request.getBody().toString());

@@ -76,7 +76,7 @@
     <compiler.failondeprecatedstatus/>
 
     <javadoc.excludePackageNames>
-      com.generic.json,com.azure.json,com.azure.xml,com.azure.core*1
+      com.generic.json,com.azure.json,com.azure.xml,com.azure.core*
     </javadoc.excludePackageNames>
   </properties>
 

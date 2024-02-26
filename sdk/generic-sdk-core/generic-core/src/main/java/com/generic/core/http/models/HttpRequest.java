@@ -148,53 +148,12 @@ public class HttpRequest {
     }
 
     /**
-     * Set a request header, replacing any existing value. A null for {@code value} will remove the header if one with
-     * matching name exists.
-     *
-     * @param headerName The header name.
-     * @param value The header value.
-     *
-     * @return This HttpRequest.
-     */
-    public HttpRequest setHeader(HeaderName headerName, String value) {
-        headers.set(headerName, value);
-
-        return this;
-    }
-
-    /**
      * Get the request content.
      *
      * @return The content to be sent.
      */
     public BinaryData getBody() {
         return body;
-    }
-
-    /**
-     * Set the request content.
-     * <p>
-     * The Content-Length header will be set based on the given content's length.
-     *
-     * @param content The request content.
-     *
-     * @return This HttpRequest.
-     */
-    public HttpRequest setBody(String content) {
-        return setBody(BinaryData.fromString(content));
-    }
-
-    /**
-     * Set the request content.
-     * <p>
-     * The Content-Length header will be set based on the given content's length.
-     *
-     * @param content The request content.
-     *
-     * @return This HttpRequest.
-     */
-    public HttpRequest setBody(byte[] content) {
-        return setBody(BinaryData.fromBytes(content));
     }
 
     /**
@@ -212,15 +171,12 @@ public class HttpRequest {
     public HttpRequest setBody(BinaryData content) {
         this.body = content;
 
+        // TODO (alzimmer): should the Content-Length header be removed if content is null?
         if (content != null && content.getLength() != null) {
-            setContentLength(content.getLength());
+            headers.set(HeaderName.CONTENT_LENGTH, String.valueOf(content.getLength()));
         }
 
         return this;
-    }
-
-    private void setContentLength(long contentLength) {
-        headers.set(HeaderName.CONTENT_LENGTH, String.valueOf(contentLength));
     }
 
     /**
@@ -253,10 +209,8 @@ public class HttpRequest {
      * @return A new HTTP request instance with cloned instances of all mutable properties.
      */
     public HttpRequest copy() {
-        final Headers bufferedHeaders = new Headers(headers);
-
         return new HttpRequest(httpMethod, url)
-            .setHeaders(bufferedHeaders)
+            .setHeaders(new Headers(headers))
             .setBody(body)
             .setMetadata(metadata.copy());
     }
