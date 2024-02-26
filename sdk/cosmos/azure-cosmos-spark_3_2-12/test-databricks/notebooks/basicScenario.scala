@@ -41,7 +41,7 @@ spark.sql(s"CREATE TABLE IF NOT EXISTS cosmosCatalog.${cosmosDatabaseName}.${cos
 spark.sql(s"ALTER TABLE cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerName} " +
   s"SET TBLPROPERTIES('manualThroughput' = '1100')")
 
-// read database with client retrieved from cache
+// read database with client retrieved from cache on the driver
 val clientFromCache = com.azure.cosmos.spark.udf.CosmosAsyncClientCache
   .getCosmosClientFromCache(cfg)
   .getClient
@@ -50,6 +50,20 @@ val dbResponse = clientFromCache.getDatabase(cosmosDatabaseName).read().block()
 
 assert(dbResponse.getProperties.getId.equals(cosmosDatabaseName))
 clientFromCache.close
+
+// read database with client retrieved from cache on the executor
+val clientFromCacheFunc = com.azure.cosmos.spark.udf.CosmosAsyncClientCache
+  .getCosmosClientFuncFromCache(cfg)
+
+sc.parallelize(Seq.empty[String]).foreachPartition(x => {
+  val clientFromCacheOnExecutor = clientFromCacheFunc()
+    .getClient
+    .asInstanceOf[azure_cosmos_spark.com.azure.cosmos.CosmosAsyncClient]
+  val dbResponse = clientFromCacheOnExecutor.getDatabase(cosmosDatabaseName).read().block()
+
+  assert(dbResponse.getProperties.getId.equals(cosmosDatabaseName))
+  clientFromCacheOnExecutor.close
+})
 
 // COMMAND ----------
 
