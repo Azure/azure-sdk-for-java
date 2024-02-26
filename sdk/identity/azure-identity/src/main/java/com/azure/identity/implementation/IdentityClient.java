@@ -635,7 +635,6 @@ public class IdentityClient extends IdentityClientBase {
         if (request.isCaeEnabled() && request.getClaims() != null) {
             ClaimsRequest customClaimRequest = CustomClaimRequest.formatAsClaimsRequest(request.getClaims());
             parametersBuilder.claims(customClaimRequest);
-            parametersBuilder.forceRefresh(true);
         }
         if (account != null) {
             parametersBuilder = parametersBuilder.account(account);
