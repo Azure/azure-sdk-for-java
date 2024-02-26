@@ -22,7 +22,7 @@ import java.util.stream.Stream;
  * headers.</p>
  *
  * <p>Each header is represented by an {@link HttpHeader} instance, which encapsulates the name and value(s) of a header.
- * If multiple values are associated with the same header name, they are stored in a single HttpHeader instance,
+ * If multiple values are associated with the same header name, they are stored in a single HttpHeader instance
  * with values separated by commas.</p>
  *
  * <p>Note: Header names are case-insensitive.</p>

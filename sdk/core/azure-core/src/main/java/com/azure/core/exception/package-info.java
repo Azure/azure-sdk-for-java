@@ -6,7 +6,7 @@
  * <p>This package contains the core exception classes used throughout the Azure SDKs.</p>
  *
  * <p>These exceptions are typically thrown in response to errors that occur when interacting with Azure services.
- * For example, if a network request to an Azure service fails, an exception from this package might be thrown.
+ * For example, if a network request to an Azure service fails an exception from this package is thrown.
  * The specific exception that is thrown depends on the nature of the error.</p>
  *
  * <p>Here are some of the key exceptions included in this package:</p>
@@ -26,6 +26,6 @@
  *     request attempts to access a resource that does not exist.</li>
  * </ul>
  *
- * <p>Each exception provides useful information about the error, such as a message and, in some cases, the HTTP request or response that led to the exception.</p>
+ * <p>Some exceptions (noted in their documentation) include the HTTP request or response that led to the exception.</p>
  */
 package com.azure.core.exception;

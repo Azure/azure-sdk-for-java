@@ -11,7 +11,7 @@ import java.util.List;
  * Represents a single header within an HTTP request or response.
  *
  * <p>This class encapsulates the name and value(s) of an HTTP header. If multiple values are associated with the same
- * header name, they are stored in a single HttpHeader instance, with values separated by commas.</p>
+ * header name, they are stored in a single HttpHeader instance with values separated by commas.</p>
  *
  * <p>It provides constructors to create an HttpHeader instance with a single value {@link #HttpHeader(String, String)}
  * or multiple values {@link #HttpHeader(String, List)}.</p>

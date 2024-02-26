@@ -16,8 +16,5 @@
  *     <li>{@link com.azure.core.annotation.QueryParam}: Annotation for query parameters to be appended to a REST API
  *     Request URI.</li>
  * </ul>
- *
- * <p>Each annotation provides useful information about the HTTP request, such as the relative path, the HTTP method,
- * and the parameters.</p>
  */
 package com.azure.core.annotation;

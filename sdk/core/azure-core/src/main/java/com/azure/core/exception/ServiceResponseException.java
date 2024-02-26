@@ -5,8 +5,8 @@ package com.azure.core.exception;
 
 
 /**
- * <p>The {@code ServiceResponseException} class is a subclass of {@code AzureException} that represents an
- * exception thrown when the client fails to understand the service response or the connection times out.</p>
+ * <p>The {@code ServiceResponseException} represents an exception thrown when the client fails to understand the
+ * service response or the connection times out.</p>
  *
  * <p>This exception is typically thrown in the following scenarios:</p>
  *

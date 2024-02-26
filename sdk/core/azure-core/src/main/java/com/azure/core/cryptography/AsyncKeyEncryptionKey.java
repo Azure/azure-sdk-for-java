@@ -6,7 +6,7 @@ package com.azure.core.cryptography;
 import reactor.core.publisher.Mono;
 
 /**
- * The AsyncKeyEncryptionKey defines the asynchronous methods for encrypting and decrypting keys, also
+ * The AsyncKeyEncryptionKey defines asynchronous methods for encrypting and decrypting keys, also
  * known as key wrapping and unwrapping. It also supports signing and verifying data using the configured key.
  */
 public interface AsyncKeyEncryptionKey {

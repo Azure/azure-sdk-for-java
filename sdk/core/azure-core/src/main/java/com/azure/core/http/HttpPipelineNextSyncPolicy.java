@@ -18,8 +18,6 @@ import com.azure.core.implementation.http.HttpPipelineNextSyncPolicyHelper;
  * <p>This class is useful when you want to send an HTTP request through the HTTP pipeline and need to process the
  * next policy in the pipeline in a synchronous manner.</p>
  *
- * <p>Note: This class is final and cannot be subclassed.</p>
- *
  * @see HttpPipelinePolicy
  * @see HttpPipelineCallState
  */

@@ -25,8 +25,6 @@ import java.util.Objects;
  * <p>This class is useful when you want to send an HTTP request and apply a set of policies to the request and
  * response.</p>
  *
- * <p>Note: This class is final and cannot be subclassed.</p>
- *
  * @see HttpPipelinePolicy
  * @see HttpClient
  */

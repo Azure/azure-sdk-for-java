@@ -20,8 +20,6 @@ import java.util.Optional;
  * <p>This class is useful when you want to send an HTTP request through the HTTP pipeline and need to associate
  * additional data with the request.</p>
  *
- * <p>Note: This class is final and cannot be subclassed.</p>
- *
  * @see HttpRequest
  * @see Context
  */

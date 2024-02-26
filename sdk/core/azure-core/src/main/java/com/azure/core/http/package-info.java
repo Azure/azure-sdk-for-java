@@ -29,7 +29,7 @@
  * <p>This package is crucial for the communication between Azure SDK client libraries and Azure services.
  * It provides a layer of abstraction over the HTTP protocol, allowing client libraries to focus on service-specific
  * logic. Custom pipelines can be helpful when you want to customize the behavior of HTTP requests and responses in
- * some way, for example, to add a custom header to all requests.</p>
+ * some way, such as, to add a custom header to all requests.</p>
  *
  * @see com.azure.core.http.HttpClient
  * @see com.azure.core.http.HttpRequest

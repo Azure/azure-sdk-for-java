@@ -6,8 +6,8 @@ package com.azure.core.exception;
 import com.azure.core.http.HttpResponse;
 
 /**
- * <p>The {@code ClientAuthenticationException} class is a subclass of {@code HttpResponseException} that represents an
- * exception thrown when client authentication fails with a status code of 4XX, typically 401 unauthorized.</p>
+ * <p>The {@code ClientAuthenticationException} represents an exception thrown when client authentication fails with
+ * a status code of 4XX, typically 401 unauthorized.</p>
  *
  * <p>This exception is thrown in the following scenarios:</p>
  *

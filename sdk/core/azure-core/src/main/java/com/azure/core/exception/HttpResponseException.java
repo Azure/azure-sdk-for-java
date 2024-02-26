@@ -7,8 +7,8 @@ import com.azure.core.http.HttpResponse;
 
 
 /**
- * <p>The {@code HttpResponseException} class is a subclass of {@code AzureException} that represents an
- * exception thrown when an unsuccessful HTTP response is received from a service request.</p>
+ * <p>The {@code HttpResponseException} represents an exception thrown when an unsuccessful HTTP response is received
+ * from a service request.</p>
  *
  * <p>This exception is typically thrown when the service responds with a non-success status code
  * (e.g., 3XX, 4XX, 5XX).</p>

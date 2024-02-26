@@ -4,7 +4,7 @@
 package com.azure.core.cryptography;
 
 /**
- * A KeyEncryptionKey defines the synchronous methods for encrypting and decrypting keys, also
+ * A KeyEncryptionKey defines synchronous methods for encrypting and decrypting keys, also
  * known as key wrapping and unwrapping. It also supports signing and verifying data using the configured key.
  */
 public interface KeyEncryptionKey {

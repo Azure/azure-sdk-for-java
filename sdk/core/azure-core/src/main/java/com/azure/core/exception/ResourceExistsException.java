@@ -7,8 +7,8 @@ import com.azure.core.http.HttpResponse;
 
 
 /**
- * <p>The {@code ResourceExistsException} class is a subclass of {@code HttpResponseException} that represents an
- * exception thrown when an HTTP request attempts to create a resource that already exists.</p>
+ * <p>The {@code ResourceExistsException} represents an exception thrown when an HTTP request attempts to create a
+ * resource that already exists.</p>
  *
  * <p>This exception is typically thrown when the service responds with a status code of 4XX,
  * typically 412 conflict.</p>

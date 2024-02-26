@@ -4,14 +4,6 @@
 package com.azure.core.exception;
 
 /**
- * The base Azure exception.
- *
- * @see HttpRequestException
- * @see ServiceResponseException
- * @see HttpResponseException
- */
-
-/**
  * <p>The {@code AzureException} class is the base class for all exceptions thrown by Azure SDKs.
  * This class extends the {@code RuntimeException} class, which means that it is an unchecked exception.</p>
  *
