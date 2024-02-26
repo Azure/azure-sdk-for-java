@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the load balancer configuration. */
+/**
+ * Describes the load balancer configuration.
+ */
 @Fluent
 public final class LoadBalancerConfiguration {
     /*
@@ -29,13 +31,15 @@ public final class LoadBalancerConfiguration {
     @JsonProperty(value = "properties", required = true)
     private LoadBalancerConfigurationProperties properties;
 
-    /** Creates an instance of LoadBalancerConfiguration class. */
+    /**
+     * Creates an instance of LoadBalancerConfiguration class.
+     */
     public LoadBalancerConfiguration() {
     }
 
     /**
      * Get the id property: Resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -44,7 +48,7 @@ public final class LoadBalancerConfiguration {
 
     /**
      * Set the id property: Resource Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the LoadBalancerConfiguration object itself.
      */
@@ -55,7 +59,7 @@ public final class LoadBalancerConfiguration {
 
     /**
      * Get the name property: The name of the Load balancer.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -64,7 +68,7 @@ public final class LoadBalancerConfiguration {
 
     /**
      * Set the name property: The name of the Load balancer.
-     *
+     * 
      * @param name the name value to set.
      * @return the LoadBalancerConfiguration object itself.
      */
@@ -75,7 +79,7 @@ public final class LoadBalancerConfiguration {
 
     /**
      * Get the properties property: Properties of the load balancer configuration.
-     *
+     * 
      * @return the properties value.
      */
     public LoadBalancerConfigurationProperties properties() {
@@ -84,7 +88,7 @@ public final class LoadBalancerConfiguration {
 
     /**
      * Set the properties property: Properties of the load balancer configuration.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the LoadBalancerConfiguration object itself.
      */
@@ -95,20 +99,17 @@ public final class LoadBalancerConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model LoadBalancerConfiguration"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model LoadBalancerConfiguration"));
         }
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model LoadBalancerConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property properties in model LoadBalancerConfiguration"));
         } else {
             properties().validate();
         }

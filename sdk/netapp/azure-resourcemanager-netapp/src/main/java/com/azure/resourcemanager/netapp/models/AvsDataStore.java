@@ -10,19 +10,23 @@ import java.util.Collection;
 
 /**
  * avsDataStore
- *
- * <p>Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose.
+ * 
+ * Specifies whether the volume is enabled for Azure VMware Solution (AVS) datastore purpose.
  */
 public final class AvsDataStore extends ExpandableStringEnum<AvsDataStore> {
-    /** Static value Enabled for AvsDataStore. */
+    /**
+     * Static value Enabled for AvsDataStore.
+     */
     public static final AvsDataStore ENABLED = fromString("Enabled");
 
-    /** Static value Disabled for AvsDataStore. */
+    /**
+     * Static value Disabled for AvsDataStore.
+     */
     public static final AvsDataStore DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of AvsDataStore value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,7 +35,7 @@ public final class AvsDataStore extends ExpandableStringEnum<AvsDataStore> {
 
     /**
      * Creates or finds a AvsDataStore from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AvsDataStore.
      */
@@ -42,7 +46,7 @@ public final class AvsDataStore extends ExpandableStringEnum<AvsDataStore> {
 
     /**
      * Gets known AvsDataStore values.
-     *
+     * 
      * @return known AvsDataStore values.
      */
     public static Collection<AvsDataStore> values() {

@@ -30,23 +30,28 @@ import com.azure.resourcemanager.cosmos.fluent.models.RestorableGremlinGraphGetR
 import com.azure.resourcemanager.cosmos.models.RestorableGremlinGraphsListResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RestorableGremlinGraphsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RestorableGremlinGraphsClient.
+ */
 public final class RestorableGremlinGraphsClientImpl implements RestorableGremlinGraphsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final RestorableGremlinGraphsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final CosmosDBManagementClientImpl client;
 
     /**
      * Initializes an instance of RestorableGremlinGraphsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     RestorableGremlinGraphsClientImpl(CosmosDBManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(RestorableGremlinGraphsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(RestorableGremlinGraphsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -57,29 +62,23 @@ public final class RestorableGremlinGraphsClientImpl implements RestorableGremli
     @Host("{$host}")
     @ServiceInterface(name = "CosmosDBManagementCl")
     public interface RestorableGremlinGraphsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableGraphs")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DocumentDB/locations/{location}/restorableDatabaseAccounts/{instanceId}/restorableGraphs")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RestorableGremlinGraphsListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("location") String location,
-            @PathParam("instanceId") String instanceId,
+        Mono<Response<RestorableGremlinGraphsListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("location") String location, @PathParam("instanceId") String instanceId,
             @QueryParam("restorableGremlinDatabaseRid") String restorableGremlinDatabaseRid,
-            @QueryParam("startTime") String startTime,
-            @QueryParam("endTime") String endTime,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @QueryParam("startTime") String startTime, @QueryParam("endTime") String endTime,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Show the event feed of all mutations done on all the Azure Cosmos DB Gremlin graphs under a specific database.
      * This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableGremlinDatabaseRid The resource ID of the Gremlin database.
@@ -89,22 +88,18 @@ public final class RestorableGremlinGraphsClientImpl implements RestorableGremli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the Gremlin graph events and their properties along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RestorableGremlinGraphGetResultInner>> listSinglePageAsync(
-        String location, String instanceId, String restorableGremlinDatabaseRid, String startTime, String endTime) {
+    private Mono<PagedResponse<RestorableGremlinGraphGetResultInner>> listSinglePageAsync(String location,
+        String instanceId, String restorableGremlinDatabaseRid, String startTime, String endTime) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -114,24 +109,11 @@ public final class RestorableGremlinGraphsClientImpl implements RestorableGremli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            location,
-                            instanceId,
-                            restorableGremlinDatabaseRid,
-                            startTime,
-                            endTime,
-                            accept,
-                            context))
-            .<PagedResponse<RestorableGremlinGraphGetResultInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), location, instanceId, restorableGremlinDatabaseRid, startTime, endTime,
+                accept, context))
+            .<PagedResponse<RestorableGremlinGraphGetResultInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
@@ -139,7 +121,7 @@ public final class RestorableGremlinGraphsClientImpl implements RestorableGremli
      * Show the event feed of all mutations done on all the Azure Cosmos DB Gremlin graphs under a specific database.
      * This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableGremlinDatabaseRid The resource ID of the Gremlin database.
@@ -150,27 +132,18 @@ public final class RestorableGremlinGraphsClientImpl implements RestorableGremli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the Gremlin graph events and their properties along with
-     *     {@link PagedResponse} on successful completion of {@link Mono}.
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<RestorableGremlinGraphGetResultInner>> listSinglePageAsync(
-        String location,
-        String instanceId,
-        String restorableGremlinDatabaseRid,
-        String startTime,
-        String endTime,
-        Context context) {
+    private Mono<PagedResponse<RestorableGremlinGraphGetResultInner>> listSinglePageAsync(String location,
+        String instanceId, String restorableGremlinDatabaseRid, String startTime, String endTime, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (location == null) {
             return Mono.error(new IllegalArgumentException("Parameter location is required and cannot be null."));
@@ -181,28 +154,17 @@ public final class RestorableGremlinGraphsClientImpl implements RestorableGremli
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                location,
-                instanceId,
-                restorableGremlinDatabaseRid,
-                startTime,
-                endTime,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(), location,
+                instanceId, restorableGremlinDatabaseRid, startTime, endTime, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Show the event feed of all mutations done on all the Azure Cosmos DB Gremlin graphs under a specific database.
      * This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableGremlinDatabaseRid The resource ID of the Gremlin database.
@@ -212,11 +174,11 @@ public final class RestorableGremlinGraphsClientImpl implements RestorableGremli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the Gremlin graph events and their properties as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<RestorableGremlinGraphGetResultInner> listAsync(
-        String location, String instanceId, String restorableGremlinDatabaseRid, String startTime, String endTime) {
+    public PagedFlux<RestorableGremlinGraphGetResultInner> listAsync(String location, String instanceId,
+        String restorableGremlinDatabaseRid, String startTime, String endTime) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(location, instanceId, restorableGremlinDatabaseRid, startTime, endTime));
     }
@@ -225,14 +187,14 @@ public final class RestorableGremlinGraphsClientImpl implements RestorableGremli
      * Show the event feed of all mutations done on all the Azure Cosmos DB Gremlin graphs under a specific database.
      * This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the Gremlin graph events and their properties as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedFlux<RestorableGremlinGraphGetResultInner> listAsync(String location, String instanceId) {
@@ -247,7 +209,7 @@ public final class RestorableGremlinGraphsClientImpl implements RestorableGremli
      * Show the event feed of all mutations done on all the Azure Cosmos DB Gremlin graphs under a specific database.
      * This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableGremlinDatabaseRid The resource ID of the Gremlin database.
@@ -258,16 +220,11 @@ public final class RestorableGremlinGraphsClientImpl implements RestorableGremli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the Gremlin graph events and their properties as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<RestorableGremlinGraphGetResultInner> listAsync(
-        String location,
-        String instanceId,
-        String restorableGremlinDatabaseRid,
-        String startTime,
-        String endTime,
-        Context context) {
+    private PagedFlux<RestorableGremlinGraphGetResultInner> listAsync(String location, String instanceId,
+        String restorableGremlinDatabaseRid, String startTime, String endTime, Context context) {
         return new PagedFlux<>(
             () -> listSinglePageAsync(location, instanceId, restorableGremlinDatabaseRid, startTime, endTime, context));
     }
@@ -276,14 +233,14 @@ public final class RestorableGremlinGraphsClientImpl implements RestorableGremli
      * Show the event feed of all mutations done on all the Azure Cosmos DB Gremlin graphs under a specific database.
      * This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the Gremlin graph events and their properties as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<RestorableGremlinGraphGetResultInner> list(String location, String instanceId) {
@@ -297,7 +254,7 @@ public final class RestorableGremlinGraphsClientImpl implements RestorableGremli
      * Show the event feed of all mutations done on all the Azure Cosmos DB Gremlin graphs under a specific database.
      * This helps in scenario where container was accidentally deleted. This API requires
      * 'Microsoft.DocumentDB/locations/restorableDatabaseAccounts/.../read' permission.
-     *
+     * 
      * @param location Cosmos DB region, with spaces between words and each word capitalized.
      * @param instanceId The instanceId GUID of a restorable database account.
      * @param restorableGremlinDatabaseRid The resource ID of the Gremlin database.
@@ -308,16 +265,11 @@ public final class RestorableGremlinGraphsClientImpl implements RestorableGremli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the List operation response, that contains the Gremlin graph events and their properties as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<RestorableGremlinGraphGetResultInner> list(
-        String location,
-        String instanceId,
-        String restorableGremlinDatabaseRid,
-        String startTime,
-        String endTime,
-        Context context) {
+    public PagedIterable<RestorableGremlinGraphGetResultInner> list(String location, String instanceId,
+        String restorableGremlinDatabaseRid, String startTime, String endTime, Context context) {
         return new PagedIterable<>(
             listAsync(location, instanceId, restorableGremlinDatabaseRid, startTime, endTime, context));
     }

@@ -8,22 +8,31 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The location of SFTP dataset. */
+/**
+ * The location of SFTP dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SftpLocation")
 @Fluent
 public final class SftpLocation extends DatasetLocation {
-    /** Creates an instance of SftpLocation class. */
-    public SftpLocation() {}
+    /**
+     * Creates an instance of SftpLocation class.
+     */
+    public SftpLocation() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SftpLocation setFolderPath(Object folderPath) {
         super.setFolderPath(folderPath);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SftpLocation setFileName(Object fileName) {
         super.setFileName(fileName);

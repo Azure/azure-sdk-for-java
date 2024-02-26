@@ -38,4 +38,3 @@
  * @see com.azure.core.http.policy.UserAgentPolicy
  */
 package com.azure.core.http.policy;
-

@@ -9,10 +9,13 @@ import com.azure.search.documents.indexes.models.SearchIndexerDataContainer;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceConnection;
 import com.azure.search.documents.indexes.models.SearchIndexerDataSourceType;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 
 /**
  * Unit Test DataSources utility class
  */
+@Execution(ExecutionMode.CONCURRENT)
 public class DataSourcesTest {
 
     @Test

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Secret store based authentication credentials. */
+/**
+ * Secret store based authentication credentials.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("SecretStoreBasedAuthCredentials")
 @Fluent
@@ -20,13 +22,15 @@ public final class SecretStoreBasedAuthCredentials extends AuthCredentials {
     @JsonProperty(value = "secretStoreResource")
     private SecretStoreResource secretStoreResource;
 
-    /** Creates an instance of SecretStoreBasedAuthCredentials class. */
+    /**
+     * Creates an instance of SecretStoreBasedAuthCredentials class.
+     */
     public SecretStoreBasedAuthCredentials() {
     }
 
     /**
      * Get the secretStoreResource property: Secret store resource.
-     *
+     * 
      * @return the secretStoreResource value.
      */
     public SecretStoreResource secretStoreResource() {
@@ -35,7 +39,7 @@ public final class SecretStoreBasedAuthCredentials extends AuthCredentials {
 
     /**
      * Set the secretStoreResource property: Secret store resource.
-     *
+     * 
      * @param secretStoreResource the secretStoreResource value to set.
      * @return the SecretStoreBasedAuthCredentials object itself.
      */
@@ -46,7 +50,7 @@ public final class SecretStoreBasedAuthCredentials extends AuthCredentials {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

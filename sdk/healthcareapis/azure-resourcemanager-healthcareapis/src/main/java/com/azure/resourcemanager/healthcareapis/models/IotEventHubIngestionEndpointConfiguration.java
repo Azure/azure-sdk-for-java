@@ -7,7 +7,9 @@ package com.azure.resourcemanager.healthcareapis.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Event Hub ingestion endpoint configuration. */
+/**
+ * Event Hub ingestion endpoint configuration.
+ */
 @Fluent
 public final class IotEventHubIngestionEndpointConfiguration {
     /*
@@ -29,8 +31,14 @@ public final class IotEventHubIngestionEndpointConfiguration {
     private String fullyQualifiedEventHubNamespace;
 
     /**
+     * Creates an instance of IotEventHubIngestionEndpointConfiguration class.
+     */
+    public IotEventHubIngestionEndpointConfiguration() {
+    }
+
+    /**
      * Get the eventHubName property: Event Hub name to connect to.
-     *
+     * 
      * @return the eventHubName value.
      */
     public String eventHubName() {
@@ -39,7 +47,7 @@ public final class IotEventHubIngestionEndpointConfiguration {
 
     /**
      * Set the eventHubName property: Event Hub name to connect to.
-     *
+     * 
      * @param eventHubName the eventHubName value to set.
      * @return the IotEventHubIngestionEndpointConfiguration object itself.
      */
@@ -50,7 +58,7 @@ public final class IotEventHubIngestionEndpointConfiguration {
 
     /**
      * Get the consumerGroup property: Consumer group of the event hub to connected to.
-     *
+     * 
      * @return the consumerGroup value.
      */
     public String consumerGroup() {
@@ -59,7 +67,7 @@ public final class IotEventHubIngestionEndpointConfiguration {
 
     /**
      * Set the consumerGroup property: Consumer group of the event hub to connected to.
-     *
+     * 
      * @param consumerGroup the consumerGroup value to set.
      * @return the IotEventHubIngestionEndpointConfiguration object itself.
      */
@@ -70,7 +78,7 @@ public final class IotEventHubIngestionEndpointConfiguration {
 
     /**
      * Get the fullyQualifiedEventHubNamespace property: Fully qualified namespace of the Event Hub to connect to.
-     *
+     * 
      * @return the fullyQualifiedEventHubNamespace value.
      */
     public String fullyQualifiedEventHubNamespace() {
@@ -79,19 +87,19 @@ public final class IotEventHubIngestionEndpointConfiguration {
 
     /**
      * Set the fullyQualifiedEventHubNamespace property: Fully qualified namespace of the Event Hub to connect to.
-     *
+     * 
      * @param fullyQualifiedEventHubNamespace the fullyQualifiedEventHubNamespace value to set.
      * @return the IotEventHubIngestionEndpointConfiguration object itself.
      */
-    public IotEventHubIngestionEndpointConfiguration withFullyQualifiedEventHubNamespace(
-        String fullyQualifiedEventHubNamespace) {
+    public IotEventHubIngestionEndpointConfiguration
+        withFullyQualifiedEventHubNamespace(String fullyQualifiedEventHubNamespace) {
         this.fullyQualifiedEventHubNamespace = fullyQualifiedEventHubNamespace;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

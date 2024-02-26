@@ -17,15 +17,14 @@ public final class JobCancellationsImpl implements JobCancellations {
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public JobCancellationsImpl(
-        JobCancellationsClient innerClient,
+    public JobCancellationsImpl(JobCancellationsClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<Void> triggerWithResponse(
-        String vaultName, String resourceGroupName, String jobName, Context context) {
+    public Response<Void> triggerWithResponse(String vaultName, String resourceGroupName, String jobName,
+        Context context) {
         return this.serviceClient().triggerWithResponse(vaultName, resourceGroupName, jobName, context);
     }
 

@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation.directconnectivity;
 
 import com.azure.cosmos.implementation.HttpConstants;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.assertj.core.api.Condition;
 
 import java.util.ArrayList;
@@ -15,12 +16,12 @@ public interface StoreResponseValidator {
 
     void validate(StoreResponse storeResponse);
 
-    public static Builder create() {
+    static Builder create() {
         return new Builder();
     }
 
-    public class Builder {
-        private List<StoreResponseValidator> validators = new ArrayList<>();
+    class Builder {
+        private final List<StoreResponseValidator> validators = new ArrayList<>();
 
         public StoreResponseValidator build() {
             return new StoreResponseValidator() {
@@ -81,12 +82,15 @@ public interface StoreResponseValidator {
             return this;
         }
 
-        public Builder withContent(byte[] content) {
+        public Builder withContent(ObjectNode content) {
 
             validators.add(new StoreResponseValidator() {
                 @Override
                 public void validate(StoreResponse resp) {
-                    assertThat(content).isEqualTo(resp.getResponseBody());
+                    assertThat(content == null).isEqualTo(resp.getResponseBodyAsJson() == null);
+                    if (content != null) {
+                        assertThat(content.toString()).isEqualTo(resp.getResponseBodyAsJson().toString());
+                    }
                 }
             });
             return this;
@@ -162,7 +166,7 @@ public interface StoreResponseValidator {
         public Builder withBELSNGreaterThanOrEqualTo(long minLSN) {
             Condition<String> condition = new Condition<>(value -> {
                 try {
-                    Long valueAsLong = Long.parseLong(value);
+                    long valueAsLong = Long.parseLong(value);
                     return valueAsLong > minLSN;
                 } catch (Exception e) {
                     return false;
@@ -175,7 +179,7 @@ public interface StoreResponseValidator {
         public Builder withBEGlobalLSNGreaterThanOrEqualTo(long minLSN) {
             Condition<String> condition = new Condition<>(value -> {
                 try {
-                    Long valueAsLong = Long.parseLong(value);
+                    long valueAsLong = Long.parseLong(value);
                     return valueAsLong > minLSN;
                 } catch (Exception e) {
                     return false;

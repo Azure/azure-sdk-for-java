@@ -6,6 +6,9 @@ package com.azure.core.implementation.http.rest;
 import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 
+/**
+ * A substitution that will replace a placeholder in a URL with a value from the method's argument.
+ */
 public final class HeaderSubstitution extends Substitution {
     private final HttpHeaderName headerName;
 

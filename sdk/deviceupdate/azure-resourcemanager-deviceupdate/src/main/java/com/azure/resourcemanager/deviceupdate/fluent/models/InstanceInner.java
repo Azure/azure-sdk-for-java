@@ -15,7 +15,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Device Update instance details. */
+/**
+ * Device Update instance details.
+ */
 @Fluent
 public final class InstanceInner extends Resource {
     /*
@@ -31,8 +33,14 @@ public final class InstanceInner extends Resource {
     private SystemData systemData;
 
     /**
+     * Creates an instance of InstanceInner class.
+     */
+    public InstanceInner() {
+    }
+
+    /**
      * Get the innerProperties property: Device Update instance properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private InstanceProperties innerProperties() {
@@ -41,21 +49,25 @@ public final class InstanceInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InstanceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InstanceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -64,7 +76,7 @@ public final class InstanceInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -73,7 +85,7 @@ public final class InstanceInner extends Resource {
 
     /**
      * Get the accountName property: Parent Device Update Account name which Instance belongs to.
-     *
+     * 
      * @return the accountName value.
      */
     public String accountName() {
@@ -82,7 +94,7 @@ public final class InstanceInner extends Resource {
 
     /**
      * Get the iotHubs property: List of IoT Hubs associated with the account.
-     *
+     * 
      * @return the iotHubs value.
      */
     public List<IotHubSettings> iotHubs() {
@@ -91,7 +103,7 @@ public final class InstanceInner extends Resource {
 
     /**
      * Set the iotHubs property: List of IoT Hubs associated with the account.
-     *
+     * 
      * @param iotHubs the iotHubs value to set.
      * @return the InstanceInner object itself.
      */
@@ -105,7 +117,7 @@ public final class InstanceInner extends Resource {
 
     /**
      * Get the enableDiagnostics property: Enables or Disables the diagnostic logs collection.
-     *
+     * 
      * @return the enableDiagnostics value.
      */
     public Boolean enableDiagnostics() {
@@ -114,7 +126,7 @@ public final class InstanceInner extends Resource {
 
     /**
      * Set the enableDiagnostics property: Enables or Disables the diagnostic logs collection.
-     *
+     * 
      * @param enableDiagnostics the enableDiagnostics value to set.
      * @return the InstanceInner object itself.
      */
@@ -128,7 +140,7 @@ public final class InstanceInner extends Resource {
 
     /**
      * Get the diagnosticStorageProperties property: Customer-initiated diagnostic log collection storage properties.
-     *
+     * 
      * @return the diagnosticStorageProperties value.
      */
     public DiagnosticStorageProperties diagnosticStorageProperties() {
@@ -137,7 +149,7 @@ public final class InstanceInner extends Resource {
 
     /**
      * Set the diagnosticStorageProperties property: Customer-initiated diagnostic log collection storage properties.
-     *
+     * 
      * @param diagnosticStorageProperties the diagnosticStorageProperties value to set.
      * @return the InstanceInner object itself.
      */
@@ -151,14 +163,13 @@ public final class InstanceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property innerProperties in model InstanceInner"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerProperties in model InstanceInner"));
         } else {
             innerProperties().validate();
         }

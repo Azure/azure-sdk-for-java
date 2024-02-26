@@ -14,7 +14,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Diagnostic resource. */
+/**
+ * Diagnostic resource.
+ */
 @Fluent
 public final class DiagnosticResourceInner extends ProxyResource {
     /*
@@ -29,13 +31,15 @@ public final class DiagnosticResourceInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of DiagnosticResourceInner class. */
+    /**
+     * Creates an instance of DiagnosticResourceInner class.
+     */
     public DiagnosticResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Diagnostic Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DiagnosticResourceProperties innerProperties() {
@@ -44,7 +48,7 @@ public final class DiagnosticResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -52,8 +56,9 @@ public final class DiagnosticResourceInner extends ProxyResource {
     }
 
     /**
-     * Get the globalParameters property: Global parameters that can be passed to all solutionIds.
-     *
+     * Get the globalParameters property: Global parameters is an optional map which can be used to add key and value
+     * to request body to improve the diagnostics results.
+     * 
      * @return the globalParameters value.
      */
     public Map<String, String> globalParameters() {
@@ -61,8 +66,9 @@ public final class DiagnosticResourceInner extends ProxyResource {
     }
 
     /**
-     * Set the globalParameters property: Global parameters that can be passed to all solutionIds.
-     *
+     * Set the globalParameters property: Global parameters is an optional map which can be used to add key and value
+     * to request body to improve the diagnostics results.
+     * 
      * @param globalParameters the globalParameters value to set.
      * @return the DiagnosticResourceInner object itself.
      */
@@ -76,7 +82,7 @@ public final class DiagnosticResourceInner extends ProxyResource {
 
     /**
      * Get the insights property: SolutionIds that are needed to be invoked.
-     *
+     * 
      * @return the insights value.
      */
     public List<DiagnosticInvocation> insights() {
@@ -85,7 +91,7 @@ public final class DiagnosticResourceInner extends ProxyResource {
 
     /**
      * Set the insights property: SolutionIds that are needed to be invoked.
-     *
+     * 
      * @param insights the insights value to set.
      * @return the DiagnosticResourceInner object itself.
      */
@@ -99,7 +105,7 @@ public final class DiagnosticResourceInner extends ProxyResource {
 
     /**
      * Get the acceptedAt property: Diagnostic Request Accepted time.
-     *
+     * 
      * @return the acceptedAt value.
      */
     public String acceptedAt() {
@@ -108,7 +114,7 @@ public final class DiagnosticResourceInner extends ProxyResource {
 
     /**
      * Get the provisioningState property: Status of diagnostic provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
     public DiagnosticProvisioningState provisioningState() {
@@ -117,7 +123,7 @@ public final class DiagnosticResourceInner extends ProxyResource {
 
     /**
      * Get the diagnostics property: Array of Diagnostics.
-     *
+     * 
      * @return the diagnostics value.
      */
     public List<Diagnostic> diagnostics() {
@@ -126,7 +132,7 @@ public final class DiagnosticResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

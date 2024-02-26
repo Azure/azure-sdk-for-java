@@ -9,7 +9,9 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The TroubleshootersRestartHeaders model. */
+/**
+ * The TroubleshootersRestartHeaders model.
+ */
 @Fluent
 public final class TroubleshootersRestartHeaders {
     /*
@@ -21,7 +23,7 @@ public final class TroubleshootersRestartHeaders {
     // HttpHeaders containing the raw property values.
     /**
      * Creates an instance of TroubleshootersRestartHeaders class.
-     *
+     * 
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public TroubleshootersRestartHeaders(HttpHeaders rawHeaders) {
@@ -30,7 +32,7 @@ public final class TroubleshootersRestartHeaders {
 
     /**
      * Get the location property: The Location property.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -39,7 +41,7 @@ public final class TroubleshootersRestartHeaders {
 
     /**
      * Set the location property: The Location property.
-     *
+     * 
      * @param location the location value to set.
      * @return the TroubleshootersRestartHeaders object itself.
      */
@@ -50,7 +52,7 @@ public final class TroubleshootersRestartHeaders {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

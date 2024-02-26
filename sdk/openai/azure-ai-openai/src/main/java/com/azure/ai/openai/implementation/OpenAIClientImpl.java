@@ -361,20 +361,6 @@ public final class OpenAIClientImpl {
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
      * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: byte[] (Required)
-     *     filename: String (Optional)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     language: String (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     model: String (Optional)
-     * }
-     * }</pre>
-     * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
@@ -405,20 +391,6 @@ public final class OpenAIClientImpl {
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
      * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: byte[] (Required)
-     *     filename: String (Optional)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     language: String (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     model: String (Optional)
-     * }
-     * }</pre>
-     * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
@@ -446,20 +418,6 @@ public final class OpenAIClientImpl {
     /**
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: byte[] (Required)
-     *     filename: String (Optional)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     language: String (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     model: String (Optional)
-     * }
-     * }</pre>
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -513,20 +471,6 @@ public final class OpenAIClientImpl {
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
      * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: byte[] (Required)
-     *     filename: String (Optional)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     language: String (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     model: String (Optional)
-     * }
-     * }</pre>
-     * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
@@ -577,19 +521,6 @@ public final class OpenAIClientImpl {
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
      * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: byte[] (Required)
-     *     filename: String (Optional)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     model: String (Optional)
-     * }
-     * }</pre>
-     * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
@@ -619,19 +550,6 @@ public final class OpenAIClientImpl {
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
      * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: byte[] (Required)
-     *     filename: String (Optional)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     model: String (Optional)
-     * }
-     * }</pre>
-     * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
@@ -659,19 +577,6 @@ public final class OpenAIClientImpl {
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: byte[] (Required)
-     *     filename: String (Optional)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     model: String (Optional)
-     * }
-     * }</pre>
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -723,19 +628,6 @@ public final class OpenAIClientImpl {
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: byte[] (Required)
-     *     filename: String (Optional)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     model: String (Optional)
-     * }
-     * }</pre>
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -801,7 +693,7 @@ public final class OpenAIClientImpl {
      *     temperature: Double (Optional)
      *     top_p: Double (Optional)
      *     logit_bias (Optional): {
-     *         String: int (Optional)
+     *         String: int (Required)
      *     }
      *     user: String (Optional)
      *     n: Integer (Optional)
@@ -892,7 +784,7 @@ public final class OpenAIClientImpl {
      *                 ]
      *                 top_logprobs (Required): [
      *                      (Required){
-     *                         String: double (Required)
+     *                         String: Double (Optional)
      *                     }
      *                 ]
      *                 text_offset (Required): [
@@ -949,7 +841,7 @@ public final class OpenAIClientImpl {
      *     temperature: Double (Optional)
      *     top_p: Double (Optional)
      *     logit_bias (Optional): {
-     *         String: int (Optional)
+     *         String: int (Required)
      *     }
      *     user: String (Optional)
      *     n: Integer (Optional)
@@ -1040,7 +932,7 @@ public final class OpenAIClientImpl {
      *                 ]
      *                 top_logprobs (Required): [
      *                      (Required){
-     *                         String: double (Required)
+     *                         String: Double (Optional)
      *                     }
      *                 ]
      *                 text_offset (Required): [
@@ -1105,7 +997,7 @@ public final class OpenAIClientImpl {
      *     temperature: Double (Optional)
      *     top_p: Double (Optional)
      *     logit_bias (Optional): {
-     *         String: int (Optional)
+     *         String: int (Required)
      *     }
      *     user: String (Optional)
      *     n: Integer (Optional)
@@ -1249,7 +1141,7 @@ public final class OpenAIClientImpl {
      *             }
      *         }
      *     ]
-     *     system_fingerprint: String (Required)
+     *     system_fingerprint: String (Optional)
      *     usage (Required): {
      *         completion_tokens: int (Required)
      *         prompt_tokens: int (Required)
@@ -1306,7 +1198,7 @@ public final class OpenAIClientImpl {
      *     temperature: Double (Optional)
      *     top_p: Double (Optional)
      *     logit_bias (Optional): {
-     *         String: int (Optional)
+     *         String: int (Required)
      *     }
      *     user: String (Optional)
      *     n: Integer (Optional)
@@ -1450,7 +1342,7 @@ public final class OpenAIClientImpl {
      *             }
      *         }
      *     ]
-     *     system_fingerprint: String (Required)
+     *     system_fingerprint: String (Optional)
      *     usage (Required): {
      *         completion_tokens: int (Required)
      *         prompt_tokens: int (Required)
@@ -1506,7 +1398,7 @@ public final class OpenAIClientImpl {
      *     temperature: Double (Optional)
      *     top_p: Double (Optional)
      *     logit_bias (Optional): {
-     *         String: int (Optional)
+     *         String: int (Required)
      *     }
      *     user: String (Optional)
      *     n: Integer (Optional)
@@ -1650,7 +1542,7 @@ public final class OpenAIClientImpl {
      *             }
      *         }
      *     ]
-     *     system_fingerprint: String (Required)
+     *     system_fingerprint: String (Optional)
      *     usage (Required): {
      *         completion_tokens: int (Required)
      *         prompt_tokens: int (Required)
@@ -1708,7 +1600,7 @@ public final class OpenAIClientImpl {
      *     temperature: Double (Optional)
      *     top_p: Double (Optional)
      *     logit_bias (Optional): {
-     *         String: int (Optional)
+     *         String: int (Required)
      *     }
      *     user: String (Optional)
      *     n: Integer (Optional)
@@ -1852,7 +1744,7 @@ public final class OpenAIClientImpl {
      *             }
      *         }
      *     ]
-     *     system_fingerprint: String (Required)
+     *     system_fingerprint: String (Optional)
      *     usage (Required): {
      *         completion_tokens: int (Required)
      *         prompt_tokens: int (Required)

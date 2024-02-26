@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Individual port mappings for inbound NAT rule created for backend pool. */
+/**
+ * Individual port mappings for inbound NAT rule created for backend pool.
+ */
 @Fluent
 public final class NatRulePortMapping {
     /*
@@ -28,13 +30,15 @@ public final class NatRulePortMapping {
     @JsonProperty(value = "backendPort")
     private Integer backendPort;
 
-    /** Creates an instance of NatRulePortMapping class. */
+    /**
+     * Creates an instance of NatRulePortMapping class.
+     */
     public NatRulePortMapping() {
     }
 
     /**
      * Get the inboundNatRuleName property: Name of inbound NAT rule.
-     *
+     * 
      * @return the inboundNatRuleName value.
      */
     public String inboundNatRuleName() {
@@ -43,7 +47,7 @@ public final class NatRulePortMapping {
 
     /**
      * Set the inboundNatRuleName property: Name of inbound NAT rule.
-     *
+     * 
      * @param inboundNatRuleName the inboundNatRuleName value to set.
      * @return the NatRulePortMapping object itself.
      */
@@ -54,7 +58,7 @@ public final class NatRulePortMapping {
 
     /**
      * Get the frontendPort property: Frontend port.
-     *
+     * 
      * @return the frontendPort value.
      */
     public Integer frontendPort() {
@@ -63,7 +67,7 @@ public final class NatRulePortMapping {
 
     /**
      * Set the frontendPort property: Frontend port.
-     *
+     * 
      * @param frontendPort the frontendPort value to set.
      * @return the NatRulePortMapping object itself.
      */
@@ -74,7 +78,7 @@ public final class NatRulePortMapping {
 
     /**
      * Get the backendPort property: Backend port.
-     *
+     * 
      * @return the backendPort value.
      */
     public Integer backendPort() {
@@ -83,7 +87,7 @@ public final class NatRulePortMapping {
 
     /**
      * Set the backendPort property: Backend port.
-     *
+     * 
      * @param backendPort the backendPort value to set.
      * @return the NatRulePortMapping object itself.
      */
@@ -94,7 +98,7 @@ public final class NatRulePortMapping {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

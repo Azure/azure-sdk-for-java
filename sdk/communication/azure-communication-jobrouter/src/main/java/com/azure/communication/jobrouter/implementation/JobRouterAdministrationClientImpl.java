@@ -2308,7 +2308,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2323,7 +2323,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2385,7 +2385,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2400,7 +2400,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2436,7 +2436,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2470,7 +2470,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2522,7 +2522,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2577,7 +2577,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2650,7 +2650,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -2703,7 +2703,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -3068,7 +3068,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }
@@ -3110,7 +3110,7 @@ public final class JobRouterAdministrationClientImpl {
      *     name: String (Optional)
      *     distributionPolicyId: String (Optional)
      *     labels (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     exceptionPolicyId: String (Optional)
      * }

@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of DppResourceGuardProxies. */
+/**
+ * Resource collection API of DppResourceGuardProxies.
+ */
 public interface DppResourceGuardProxies {
     /**
      * Returns the list of ResourceGuardProxies associated with the vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface DppResourceGuardProxies {
 
     /**
      * Returns the list of ResourceGuardProxies associated with the vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
@@ -37,7 +39,7 @@ public interface DppResourceGuardProxies {
 
     /**
      * Returns the ResourceGuardProxy object associated with the vault, and that matches the name in the request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -46,14 +48,14 @@ public interface DppResourceGuardProxies {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resourceGuardProxyBaseResource object, used for response and request bodies for ResourceGuardProxy APIs
-     *     along with {@link Response}.
+     * along with {@link Response}.
      */
-    Response<ResourceGuardProxyBaseResource> getWithResponse(
-        String resourceGroupName, String vaultName, String resourceGuardProxyName, Context context);
+    Response<ResourceGuardProxyBaseResource> getWithResponse(String resourceGroupName, String vaultName,
+        String resourceGuardProxyName, Context context);
 
     /**
      * Returns the ResourceGuardProxy object associated with the vault, and that matches the name in the request.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -66,7 +68,7 @@ public interface DppResourceGuardProxies {
 
     /**
      * Deletes the ResourceGuardProxy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -76,12 +78,12 @@ public interface DppResourceGuardProxies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String vaultName, String resourceGuardProxyName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String vaultName, String resourceGuardProxyName,
+        Context context);
 
     /**
      * Deletes the ResourceGuardProxy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -93,7 +95,7 @@ public interface DppResourceGuardProxies {
 
     /**
      * UnlockDelete call for ResourceGuardProxy, executed before one can delete it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -104,16 +106,12 @@ public interface DppResourceGuardProxies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of Unlock Delete API along with {@link Response}.
      */
-    Response<UnlockDeleteResponse> unlockDeleteWithResponse(
-        String resourceGroupName,
-        String vaultName,
-        String resourceGuardProxyName,
-        UnlockDeleteRequest parameters,
-        Context context);
+    Response<UnlockDeleteResponse> unlockDeleteWithResponse(String resourceGroupName, String vaultName,
+        String resourceGuardProxyName, UnlockDeleteRequest parameters, Context context);
 
     /**
      * UnlockDelete call for ResourceGuardProxy, executed before one can delete it.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param resourceGuardProxyName name of the resource guard proxy.
@@ -123,37 +121,37 @@ public interface DppResourceGuardProxies {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return response of Unlock Delete API.
      */
-    UnlockDeleteResponse unlockDelete(
-        String resourceGroupName, String vaultName, String resourceGuardProxyName, UnlockDeleteRequest parameters);
+    UnlockDeleteResponse unlockDelete(String resourceGroupName, String vaultName, String resourceGuardProxyName,
+        UnlockDeleteRequest parameters);
 
     /**
      * Returns the ResourceGuardProxy object associated with the vault, and that matches the name in the request.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resourceGuardProxyBaseResource object, used for response and request bodies for ResourceGuardProxy APIs
-     *     along with {@link Response}.
+     * along with {@link Response}.
      */
     ResourceGuardProxyBaseResource getById(String id);
 
     /**
      * Returns the ResourceGuardProxy object associated with the vault, and that matches the name in the request.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return resourceGuardProxyBaseResource object, used for response and request bodies for ResourceGuardProxy APIs
-     *     along with {@link Response}.
+     * along with {@link Response}.
      */
     Response<ResourceGuardProxyBaseResource> getByIdWithResponse(String id, Context context);
 
     /**
      * Deletes the ResourceGuardProxy.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -163,7 +161,7 @@ public interface DppResourceGuardProxies {
 
     /**
      * Deletes the ResourceGuardProxy.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -175,7 +173,7 @@ public interface DppResourceGuardProxies {
 
     /**
      * Begins definition for a new ResourceGuardProxyBaseResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new ResourceGuardProxyBaseResource definition.
      */

@@ -9,7 +9,9 @@ import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.fluent.models.ApplicationGatewayFrontendPortPropertiesFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Frontend port of an application gateway. */
+/**
+ * Frontend port of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayFrontendPort extends SubResource {
     /*
@@ -36,13 +38,15 @@ public final class ApplicationGatewayFrontendPort extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ApplicationGatewayFrontendPort class. */
+    /**
+     * Creates an instance of ApplicationGatewayFrontendPort class.
+     */
     public ApplicationGatewayFrontendPort() {
     }
 
     /**
      * Get the innerProperties property: Properties of the application gateway frontend port.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGatewayFrontendPortPropertiesFormat innerProperties() {
@@ -51,7 +55,7 @@ public final class ApplicationGatewayFrontendPort extends SubResource {
 
     /**
      * Get the name property: Name of the frontend port that is unique within an Application Gateway.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -60,7 +64,7 @@ public final class ApplicationGatewayFrontendPort extends SubResource {
 
     /**
      * Set the name property: Name of the frontend port that is unique within an Application Gateway.
-     *
+     * 
      * @param name the name value to set.
      * @return the ApplicationGatewayFrontendPort object itself.
      */
@@ -71,7 +75,7 @@ public final class ApplicationGatewayFrontendPort extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -80,14 +84,16 @@ public final class ApplicationGatewayFrontendPort extends SubResource {
 
     /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayFrontendPort withId(String id) {
         super.withId(id);
@@ -96,7 +102,7 @@ public final class ApplicationGatewayFrontendPort extends SubResource {
 
     /**
      * Get the port property: Frontend port.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -105,7 +111,7 @@ public final class ApplicationGatewayFrontendPort extends SubResource {
 
     /**
      * Set the port property: Frontend port.
-     *
+     * 
      * @param port the port value to set.
      * @return the ApplicationGatewayFrontendPort object itself.
      */
@@ -119,7 +125,7 @@ public final class ApplicationGatewayFrontendPort extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the frontend port resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -128,7 +134,7 @@ public final class ApplicationGatewayFrontendPort extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

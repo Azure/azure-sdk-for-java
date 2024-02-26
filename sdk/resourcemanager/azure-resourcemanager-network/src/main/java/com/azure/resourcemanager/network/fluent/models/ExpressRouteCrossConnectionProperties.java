@@ -11,7 +11,9 @@ import com.azure.resourcemanager.network.models.ServiceProviderProvisioningState
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of ExpressRouteCrossConnection. */
+/**
+ * Properties of ExpressRouteCrossConnection.
+ */
 @Fluent
 public final class ExpressRouteCrossConnectionProperties {
     /*
@@ -74,13 +76,15 @@ public final class ExpressRouteCrossConnectionProperties {
     @JsonProperty(value = "peerings")
     private List<ExpressRouteCrossConnectionPeeringInner> peerings;
 
-    /** Creates an instance of ExpressRouteCrossConnectionProperties class. */
+    /**
+     * Creates an instance of ExpressRouteCrossConnectionProperties class.
+     */
     public ExpressRouteCrossConnectionProperties() {
     }
 
     /**
      * Get the primaryAzurePort property: The name of the primary port.
-     *
+     * 
      * @return the primaryAzurePort value.
      */
     public String primaryAzurePort() {
@@ -89,7 +93,7 @@ public final class ExpressRouteCrossConnectionProperties {
 
     /**
      * Get the secondaryAzurePort property: The name of the secondary port.
-     *
+     * 
      * @return the secondaryAzurePort value.
      */
     public String secondaryAzurePort() {
@@ -98,7 +102,7 @@ public final class ExpressRouteCrossConnectionProperties {
 
     /**
      * Get the stag property: The identifier of the circuit traffic.
-     *
+     * 
      * @return the stag value.
      */
     public Integer stag() {
@@ -107,7 +111,7 @@ public final class ExpressRouteCrossConnectionProperties {
 
     /**
      * Get the peeringLocation property: The peering location of the ExpressRoute circuit.
-     *
+     * 
      * @return the peeringLocation value.
      */
     public String peeringLocation() {
@@ -116,7 +120,7 @@ public final class ExpressRouteCrossConnectionProperties {
 
     /**
      * Get the bandwidthInMbps property: The circuit bandwidth In Mbps.
-     *
+     * 
      * @return the bandwidthInMbps value.
      */
     public Integer bandwidthInMbps() {
@@ -125,7 +129,7 @@ public final class ExpressRouteCrossConnectionProperties {
 
     /**
      * Get the expressRouteCircuit property: The ExpressRouteCircuit.
-     *
+     * 
      * @return the expressRouteCircuit value.
      */
     public ExpressRouteCircuitReference expressRouteCircuit() {
@@ -134,12 +138,12 @@ public final class ExpressRouteCrossConnectionProperties {
 
     /**
      * Set the expressRouteCircuit property: The ExpressRouteCircuit.
-     *
+     * 
      * @param expressRouteCircuit the expressRouteCircuit value to set.
      * @return the ExpressRouteCrossConnectionProperties object itself.
      */
-    public ExpressRouteCrossConnectionProperties withExpressRouteCircuit(
-        ExpressRouteCircuitReference expressRouteCircuit) {
+    public ExpressRouteCrossConnectionProperties
+        withExpressRouteCircuit(ExpressRouteCircuitReference expressRouteCircuit) {
         this.expressRouteCircuit = expressRouteCircuit;
         return this;
     }
@@ -147,7 +151,7 @@ public final class ExpressRouteCrossConnectionProperties {
     /**
      * Get the serviceProviderProvisioningState property: The provisioning state of the circuit in the connectivity
      * provider system.
-     *
+     * 
      * @return the serviceProviderProvisioningState value.
      */
     public ServiceProviderProvisioningState serviceProviderProvisioningState() {
@@ -157,19 +161,19 @@ public final class ExpressRouteCrossConnectionProperties {
     /**
      * Set the serviceProviderProvisioningState property: The provisioning state of the circuit in the connectivity
      * provider system.
-     *
+     * 
      * @param serviceProviderProvisioningState the serviceProviderProvisioningState value to set.
      * @return the ExpressRouteCrossConnectionProperties object itself.
      */
-    public ExpressRouteCrossConnectionProperties withServiceProviderProvisioningState(
-        ServiceProviderProvisioningState serviceProviderProvisioningState) {
+    public ExpressRouteCrossConnectionProperties
+        withServiceProviderProvisioningState(ServiceProviderProvisioningState serviceProviderProvisioningState) {
         this.serviceProviderProvisioningState = serviceProviderProvisioningState;
         return this;
     }
 
     /**
      * Get the serviceProviderNotes property: Additional read only notes set by the connectivity provider.
-     *
+     * 
      * @return the serviceProviderNotes value.
      */
     public String serviceProviderNotes() {
@@ -178,7 +182,7 @@ public final class ExpressRouteCrossConnectionProperties {
 
     /**
      * Set the serviceProviderNotes property: Additional read only notes set by the connectivity provider.
-     *
+     * 
      * @param serviceProviderNotes the serviceProviderNotes value to set.
      * @return the ExpressRouteCrossConnectionProperties object itself.
      */
@@ -189,7 +193,7 @@ public final class ExpressRouteCrossConnectionProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the express route cross connection resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -198,7 +202,7 @@ public final class ExpressRouteCrossConnectionProperties {
 
     /**
      * Get the peerings property: The list of peerings.
-     *
+     * 
      * @return the peerings value.
      */
     public List<ExpressRouteCrossConnectionPeeringInner> peerings() {
@@ -207,7 +211,7 @@ public final class ExpressRouteCrossConnectionProperties {
 
     /**
      * Set the peerings property: The list of peerings.
-     *
+     * 
      * @param peerings the peerings value to set.
      * @return the ExpressRouteCrossConnectionProperties object itself.
      */
@@ -218,7 +222,7 @@ public final class ExpressRouteCrossConnectionProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

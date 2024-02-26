@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.healthcareapis.models.ServiceNameUnavailabilityReason;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties indicating whether a given service name is available. */
+/**
+ * The properties indicating whether a given service name is available.
+ */
 @Fluent
 public final class ServicesNameAvailabilityInfoInner {
     /*
@@ -30,8 +32,14 @@ public final class ServicesNameAvailabilityInfoInner {
     private String message;
 
     /**
+     * Creates an instance of ServicesNameAvailabilityInfoInner class.
+     */
+    public ServicesNameAvailabilityInfoInner() {
+    }
+
+    /**
      * Get the nameAvailable property: The value which indicates whether the provided name is available.
-     *
+     * 
      * @return the nameAvailable value.
      */
     public Boolean nameAvailable() {
@@ -40,7 +48,7 @@ public final class ServicesNameAvailabilityInfoInner {
 
     /**
      * Get the reason property: The reason for unavailability.
-     *
+     * 
      * @return the reason value.
      */
     public ServiceNameUnavailabilityReason reason() {
@@ -49,7 +57,7 @@ public final class ServicesNameAvailabilityInfoInner {
 
     /**
      * Get the message property: The detailed reason message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -58,7 +66,7 @@ public final class ServicesNameAvailabilityInfoInner {
 
     /**
      * Set the message property: The detailed reason message.
-     *
+     * 
      * @param message the message value to set.
      * @return the ServicesNameAvailabilityInfoInner object itself.
      */
@@ -69,7 +77,7 @@ public final class ServicesNameAvailabilityInfoInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

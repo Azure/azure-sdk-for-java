@@ -7,7 +7,9 @@ package com.azure.resourcemanager.selfhelp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Only for AutomatedStep type. */
+/**
+ * Only for AutomatedStep type.
+ */
 @Fluent
 public final class AutomatedCheckResult {
     /*
@@ -22,13 +24,15 @@ public final class AutomatedCheckResult {
     @JsonProperty(value = "type")
     private AutomatedCheckResultType type;
 
-    /** Creates an instance of AutomatedCheckResult class. */
+    /**
+     * Creates an instance of AutomatedCheckResult class.
+     */
     public AutomatedCheckResult() {
     }
 
     /**
      * Get the result property: Insight Article Content.
-     *
+     * 
      * @return the result value.
      */
     public String result() {
@@ -37,7 +41,7 @@ public final class AutomatedCheckResult {
 
     /**
      * Set the result property: Insight Article Content.
-     *
+     * 
      * @param result the result value to set.
      * @return the AutomatedCheckResult object itself.
      */
@@ -48,7 +52,7 @@ public final class AutomatedCheckResult {
 
     /**
      * Get the type property: Type of Result.
-     *
+     * 
      * @return the type value.
      */
     public AutomatedCheckResultType type() {
@@ -57,7 +61,7 @@ public final class AutomatedCheckResult {
 
     /**
      * Set the type property: Type of Result.
-     *
+     * 
      * @param type the type value to set.
      * @return the AutomatedCheckResult object itself.
      */
@@ -68,7 +72,7 @@ public final class AutomatedCheckResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

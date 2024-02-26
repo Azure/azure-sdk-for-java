@@ -18,11 +18,13 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RoutingIntentsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RoutingIntentsClient.
+ */
 public interface RoutingIntentsClient {
     /**
      * Creates a RoutingIntent resource if it doesn't exist else updates the existing RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the per VirtualHub singleton Routing Intent resource.
@@ -31,18 +33,15 @@ public interface RoutingIntentsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the routing intent child resource of a Virtual hub along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String virtualHubName,
-        String routingIntentName,
-        RoutingIntentInner routingIntentParameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String virtualHubName,
+        String routingIntentName, RoutingIntentInner routingIntentParameters);
 
     /**
      * Creates a RoutingIntent resource if it doesn't exist else updates the existing RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the per VirtualHub singleton Routing Intent resource.
@@ -53,15 +52,12 @@ public interface RoutingIntentsClient {
      * @return the {@link PollerFlux} for polling of the routing intent child resource of a Virtual hub.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<RoutingIntentInner>, RoutingIntentInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String virtualHubName,
-        String routingIntentName,
-        RoutingIntentInner routingIntentParameters);
+    PollerFlux<PollResult<RoutingIntentInner>, RoutingIntentInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String virtualHubName, String routingIntentName, RoutingIntentInner routingIntentParameters);
 
     /**
      * Creates a RoutingIntent resource if it doesn't exist else updates the existing RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the per VirtualHub singleton Routing Intent resource.
@@ -72,15 +68,12 @@ public interface RoutingIntentsClient {
      * @return the {@link SyncPoller} for polling of the routing intent child resource of a Virtual hub.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RoutingIntentInner>, RoutingIntentInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String virtualHubName,
-        String routingIntentName,
-        RoutingIntentInner routingIntentParameters);
+    SyncPoller<PollResult<RoutingIntentInner>, RoutingIntentInner> beginCreateOrUpdate(String resourceGroupName,
+        String virtualHubName, String routingIntentName, RoutingIntentInner routingIntentParameters);
 
     /**
      * Creates a RoutingIntent resource if it doesn't exist else updates the existing RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the per VirtualHub singleton Routing Intent resource.
@@ -92,16 +85,12 @@ public interface RoutingIntentsClient {
      * @return the {@link SyncPoller} for polling of the routing intent child resource of a Virtual hub.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RoutingIntentInner>, RoutingIntentInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String virtualHubName,
-        String routingIntentName,
-        RoutingIntentInner routingIntentParameters,
-        Context context);
+    SyncPoller<PollResult<RoutingIntentInner>, RoutingIntentInner> beginCreateOrUpdate(String resourceGroupName,
+        String virtualHubName, String routingIntentName, RoutingIntentInner routingIntentParameters, Context context);
 
     /**
      * Creates a RoutingIntent resource if it doesn't exist else updates the existing RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the per VirtualHub singleton Routing Intent resource.
@@ -112,15 +101,12 @@ public interface RoutingIntentsClient {
      * @return the routing intent child resource of a Virtual hub on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RoutingIntentInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String virtualHubName,
-        String routingIntentName,
-        RoutingIntentInner routingIntentParameters);
+    Mono<RoutingIntentInner> createOrUpdateAsync(String resourceGroupName, String virtualHubName,
+        String routingIntentName, RoutingIntentInner routingIntentParameters);
 
     /**
      * Creates a RoutingIntent resource if it doesn't exist else updates the existing RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the per VirtualHub singleton Routing Intent resource.
@@ -131,15 +117,12 @@ public interface RoutingIntentsClient {
      * @return the routing intent child resource of a Virtual hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RoutingIntentInner createOrUpdate(
-        String resourceGroupName,
-        String virtualHubName,
-        String routingIntentName,
+    RoutingIntentInner createOrUpdate(String resourceGroupName, String virtualHubName, String routingIntentName,
         RoutingIntentInner routingIntentParameters);
 
     /**
      * Creates a RoutingIntent resource if it doesn't exist else updates the existing RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the per VirtualHub singleton Routing Intent resource.
@@ -151,16 +134,12 @@ public interface RoutingIntentsClient {
      * @return the routing intent child resource of a Virtual hub.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RoutingIntentInner createOrUpdate(
-        String resourceGroupName,
-        String virtualHubName,
-        String routingIntentName,
-        RoutingIntentInner routingIntentParameters,
-        Context context);
+    RoutingIntentInner createOrUpdate(String resourceGroupName, String virtualHubName, String routingIntentName,
+        RoutingIntentInner routingIntentParameters, Context context);
 
     /**
      * Retrieves the details of a RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the RoutingIntent.
@@ -168,15 +147,15 @@ public interface RoutingIntentsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the routing intent child resource of a Virtual hub along with {@link Response} on successful completion
-     *     of {@link Mono}.
+     * of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<RoutingIntentInner>> getWithResponseAsync(
-        String resourceGroupName, String virtualHubName, String routingIntentName);
+    Mono<Response<RoutingIntentInner>> getWithResponseAsync(String resourceGroupName, String virtualHubName,
+        String routingIntentName);
 
     /**
      * Retrieves the details of a RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the RoutingIntent.
@@ -190,7 +169,7 @@ public interface RoutingIntentsClient {
 
     /**
      * Retrieves the details of a RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the RoutingIntent.
@@ -201,12 +180,12 @@ public interface RoutingIntentsClient {
      * @return the routing intent child resource of a Virtual hub along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RoutingIntentInner> getWithResponse(
-        String resourceGroupName, String virtualHubName, String routingIntentName, Context context);
+    Response<RoutingIntentInner> getWithResponse(String resourceGroupName, String virtualHubName,
+        String routingIntentName, Context context);
 
     /**
      * Retrieves the details of a RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the RoutingIntent.
@@ -220,7 +199,7 @@ public interface RoutingIntentsClient {
 
     /**
      * Deletes a RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the RoutingIntent.
@@ -230,12 +209,12 @@ public interface RoutingIntentsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String virtualHubName, String routingIntentName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String virtualHubName,
+        String routingIntentName);
 
     /**
      * Deletes a RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the RoutingIntent.
@@ -245,12 +224,12 @@ public interface RoutingIntentsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String virtualHubName, String routingIntentName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String virtualHubName,
+        String routingIntentName);
 
     /**
      * Deletes a RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the RoutingIntent.
@@ -260,12 +239,12 @@ public interface RoutingIntentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualHubName, String routingIntentName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName,
+        String routingIntentName);
 
     /**
      * Deletes a RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the RoutingIntent.
@@ -276,12 +255,12 @@ public interface RoutingIntentsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String virtualHubName, String routingIntentName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String virtualHubName,
+        String routingIntentName, Context context);
 
     /**
      * Deletes a RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the RoutingIntent.
@@ -295,7 +274,7 @@ public interface RoutingIntentsClient {
 
     /**
      * Deletes a RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the RoutingIntent.
@@ -308,7 +287,7 @@ public interface RoutingIntentsClient {
 
     /**
      * Deletes a RoutingIntent.
-     *
+     * 
      * @param resourceGroupName The resource group name of the RoutingIntent.
      * @param virtualHubName The name of the VirtualHub.
      * @param routingIntentName The name of the RoutingIntent.
@@ -322,35 +301,35 @@ public interface RoutingIntentsClient {
 
     /**
      * Retrieves the details of all RoutingIntent child resources of the VirtualHub.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of the routing intent result and a URL nextLink to get the next set of results as paginated response
-     *     with {@link PagedFlux}.
+     * with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedFlux<RoutingIntentInner> listAsync(String resourceGroupName, String virtualHubName);
 
     /**
      * Retrieves the details of all RoutingIntent child resources of the VirtualHub.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of the routing intent result and a URL nextLink to get the next set of results as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RoutingIntentInner> list(String resourceGroupName, String virtualHubName);
 
     /**
      * Retrieves the details of all RoutingIntent child resources of the VirtualHub.
-     *
+     * 
      * @param resourceGroupName The resource group name of the VirtualHub.
      * @param virtualHubName The name of the VirtualHub.
      * @param context The context to associate with this operation.
@@ -358,7 +337,7 @@ public interface RoutingIntentsClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of the routing intent result and a URL nextLink to get the next set of results as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<RoutingIntentInner> list(String resourceGroupName, String virtualHubName, Context context);

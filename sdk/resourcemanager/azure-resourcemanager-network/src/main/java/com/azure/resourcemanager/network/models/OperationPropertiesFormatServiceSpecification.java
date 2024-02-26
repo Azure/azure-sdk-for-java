@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Specification of the service. */
+/**
+ * Specification of the service.
+ */
 @Fluent
 public final class OperationPropertiesFormatServiceSpecification {
     /*
@@ -23,13 +25,15 @@ public final class OperationPropertiesFormatServiceSpecification {
     @JsonProperty(value = "logSpecifications")
     private List<LogSpecification> logSpecifications;
 
-    /** Creates an instance of OperationPropertiesFormatServiceSpecification class. */
+    /**
+     * Creates an instance of OperationPropertiesFormatServiceSpecification class.
+     */
     public OperationPropertiesFormatServiceSpecification() {
     }
 
     /**
      * Get the metricSpecifications property: Operation service specification.
-     *
+     * 
      * @return the metricSpecifications value.
      */
     public List<MetricSpecification> metricSpecifications() {
@@ -38,19 +42,19 @@ public final class OperationPropertiesFormatServiceSpecification {
 
     /**
      * Set the metricSpecifications property: Operation service specification.
-     *
+     * 
      * @param metricSpecifications the metricSpecifications value to set.
      * @return the OperationPropertiesFormatServiceSpecification object itself.
      */
-    public OperationPropertiesFormatServiceSpecification withMetricSpecifications(
-        List<MetricSpecification> metricSpecifications) {
+    public OperationPropertiesFormatServiceSpecification
+        withMetricSpecifications(List<MetricSpecification> metricSpecifications) {
         this.metricSpecifications = metricSpecifications;
         return this;
     }
 
     /**
      * Get the logSpecifications property: Operation log specification.
-     *
+     * 
      * @return the logSpecifications value.
      */
     public List<LogSpecification> logSpecifications() {
@@ -59,19 +63,19 @@ public final class OperationPropertiesFormatServiceSpecification {
 
     /**
      * Set the logSpecifications property: Operation log specification.
-     *
+     * 
      * @param logSpecifications the logSpecifications value to set.
      * @return the OperationPropertiesFormatServiceSpecification object itself.
      */
-    public OperationPropertiesFormatServiceSpecification withLogSpecifications(
-        List<LogSpecification> logSpecifications) {
+    public OperationPropertiesFormatServiceSpecification
+        withLogSpecifications(List<LogSpecification> logSpecifications) {
         this.logSpecifications = logSpecifications;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

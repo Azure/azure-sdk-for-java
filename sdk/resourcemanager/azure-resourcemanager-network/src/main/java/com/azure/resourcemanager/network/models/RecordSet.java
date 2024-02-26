@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A collective group of information about the record set information. */
+/**
+ * A collective group of information about the record set information.
+ */
 @Fluent
 public final class RecordSet {
     /*
@@ -47,13 +49,15 @@ public final class RecordSet {
     @JsonProperty(value = "ipAddresses")
     private List<String> ipAddresses;
 
-    /** Creates an instance of RecordSet class. */
+    /**
+     * Creates an instance of RecordSet class.
+     */
     public RecordSet() {
     }
 
     /**
      * Get the recordType property: Resource record type.
-     *
+     * 
      * @return the recordType value.
      */
     public String recordType() {
@@ -62,7 +66,7 @@ public final class RecordSet {
 
     /**
      * Set the recordType property: Resource record type.
-     *
+     * 
      * @param recordType the recordType value to set.
      * @return the RecordSet object itself.
      */
@@ -73,7 +77,7 @@ public final class RecordSet {
 
     /**
      * Get the recordSetName property: Recordset name.
-     *
+     * 
      * @return the recordSetName value.
      */
     public String recordSetName() {
@@ -82,7 +86,7 @@ public final class RecordSet {
 
     /**
      * Set the recordSetName property: Recordset name.
-     *
+     * 
      * @param recordSetName the recordSetName value to set.
      * @return the RecordSet object itself.
      */
@@ -93,7 +97,7 @@ public final class RecordSet {
 
     /**
      * Get the fqdn property: Fqdn that resolves to private endpoint ip address.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -102,7 +106,7 @@ public final class RecordSet {
 
     /**
      * Set the fqdn property: Fqdn that resolves to private endpoint ip address.
-     *
+     * 
      * @param fqdn the fqdn value to set.
      * @return the RecordSet object itself.
      */
@@ -113,7 +117,7 @@ public final class RecordSet {
 
     /**
      * Get the provisioningState property: The provisioning state of the recordset.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -122,7 +126,7 @@ public final class RecordSet {
 
     /**
      * Get the ttl property: Recordset time to live.
-     *
+     * 
      * @return the ttl value.
      */
     public Integer ttl() {
@@ -131,7 +135,7 @@ public final class RecordSet {
 
     /**
      * Set the ttl property: Recordset time to live.
-     *
+     * 
      * @param ttl the ttl value to set.
      * @return the RecordSet object itself.
      */
@@ -142,7 +146,7 @@ public final class RecordSet {
 
     /**
      * Get the ipAddresses property: The private ip address of the private endpoint.
-     *
+     * 
      * @return the ipAddresses value.
      */
     public List<String> ipAddresses() {
@@ -151,7 +155,7 @@ public final class RecordSet {
 
     /**
      * Set the ipAddresses property: The private ip address of the private endpoint.
-     *
+     * 
      * @param ipAddresses the ipAddresses value to set.
      * @return the RecordSet object itself.
      */
@@ -162,7 +166,7 @@ public final class RecordSet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

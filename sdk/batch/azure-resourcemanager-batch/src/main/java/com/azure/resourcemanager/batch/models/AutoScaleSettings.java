@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 
-/** AutoScale settings for the pool. */
+/**
+ * AutoScale settings for the pool.
+ */
 @Fluent
 public final class AutoScaleSettings {
     /*
@@ -20,19 +22,21 @@ public final class AutoScaleSettings {
 
     /*
      * The time interval at which to automatically adjust the pool size according to the autoscale formula.
-     *
+     * 
      * If omitted, the default value is 15 minutes (PT15M).
      */
     @JsonProperty(value = "evaluationInterval")
     private Duration evaluationInterval;
 
-    /** Creates an instance of AutoScaleSettings class. */
+    /**
+     * Creates an instance of AutoScaleSettings class.
+     */
     public AutoScaleSettings() {
     }
 
     /**
      * Get the formula property: A formula for the desired number of compute nodes in the pool.
-     *
+     * 
      * @return the formula value.
      */
     public String formula() {
@@ -41,7 +45,7 @@ public final class AutoScaleSettings {
 
     /**
      * Set the formula property: A formula for the desired number of compute nodes in the pool.
-     *
+     * 
      * @param formula the formula value to set.
      * @return the AutoScaleSettings object itself.
      */
@@ -53,9 +57,9 @@ public final class AutoScaleSettings {
     /**
      * Get the evaluationInterval property: The time interval at which to automatically adjust the pool size according
      * to the autoscale formula.
-     *
-     * <p>If omitted, the default value is 15 minutes (PT15M).
-     *
+     * 
+     * If omitted, the default value is 15 minutes (PT15M).
+     * 
      * @return the evaluationInterval value.
      */
     public Duration evaluationInterval() {
@@ -65,9 +69,9 @@ public final class AutoScaleSettings {
     /**
      * Set the evaluationInterval property: The time interval at which to automatically adjust the pool size according
      * to the autoscale formula.
-     *
-     * <p>If omitted, the default value is 15 minutes (PT15M).
-     *
+     * 
+     * If omitted, the default value is 15 minutes (PT15M).
+     * 
      * @param evaluationInterval the evaluationInterval value to set.
      * @return the AutoScaleSettings object itself.
      */
@@ -78,14 +82,13 @@ public final class AutoScaleSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (formula() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property formula in model AutoScaleSettings"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property formula in model AutoScaleSettings"));
         }
     }
 

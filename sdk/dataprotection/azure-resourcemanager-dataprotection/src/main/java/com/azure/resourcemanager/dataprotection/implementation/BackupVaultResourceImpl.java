@@ -95,25 +95,19 @@ public final class BackupVaultResourceImpl
     }
 
     public BackupVaultResource create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackupVaults()
-                .createOrUpdate(resourceGroupName, vaultName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getBackupVaults().createOrUpdate(resourceGroupName, vaultName,
+            this.innerModel(), Context.NONE);
         return this;
     }
 
     public BackupVaultResource create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackupVaults()
-                .createOrUpdate(resourceGroupName, vaultName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getBackupVaults().createOrUpdate(resourceGroupName, vaultName,
+            this.innerModel(), context);
         return this;
     }
 
-    BackupVaultResourceImpl(
-        String name, com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
+    BackupVaultResourceImpl(String name,
+        com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerObject = new BackupVaultResourceInner();
         this.serviceManager = serviceManager;
         this.vaultName = name;
@@ -125,25 +119,18 @@ public final class BackupVaultResourceImpl
     }
 
     public BackupVaultResource apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackupVaults()
-                .update(resourceGroupName, vaultName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getBackupVaults().update(resourceGroupName, vaultName,
+            updateParameters, Context.NONE);
         return this;
     }
 
     public BackupVaultResource apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackupVaults()
-                .update(resourceGroupName, vaultName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient().getBackupVaults().update(resourceGroupName, vaultName,
+            updateParameters, context);
         return this;
     }
 
-    BackupVaultResourceImpl(
-        BackupVaultResourceInner innerObject,
+    BackupVaultResourceImpl(BackupVaultResourceInner innerObject,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -152,22 +139,14 @@ public final class BackupVaultResourceImpl
     }
 
     public BackupVaultResource refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackupVaults()
-                .getByResourceGroupWithResponse(resourceGroupName, vaultName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getBackupVaults()
+            .getByResourceGroupWithResponse(resourceGroupName, vaultName, Context.NONE).getValue();
         return this;
     }
 
     public BackupVaultResource refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackupVaults()
-                .getByResourceGroupWithResponse(resourceGroupName, vaultName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getBackupVaults()
+            .getByResourceGroupWithResponse(resourceGroupName, vaultName, context).getValue();
         return this;
     }
 

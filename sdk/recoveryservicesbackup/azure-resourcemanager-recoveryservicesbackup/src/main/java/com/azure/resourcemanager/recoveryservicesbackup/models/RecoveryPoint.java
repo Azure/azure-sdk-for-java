@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Base class for backup copies. Workload-specific backup copies are derived from this class. */
+/**
+ * Base class for backup copies. Workload-specific backup copies are derived from this class.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -20,17 +22,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "AzureFileShareRecoveryPoint", value = AzureFileShareRecoveryPoint.class),
     @JsonSubTypes.Type(name = "AzureWorkloadRecoveryPoint", value = AzureWorkloadRecoveryPoint.class),
     @JsonSubTypes.Type(name = "GenericRecoveryPoint", value = GenericRecoveryPoint.class),
-    @JsonSubTypes.Type(name = "IaasVMRecoveryPoint", value = IaasVMRecoveryPoint.class)
-})
+    @JsonSubTypes.Type(name = "IaasVMRecoveryPoint", value = IaasVMRecoveryPoint.class) })
 @Immutable
 public class RecoveryPoint {
-    /** Creates an instance of RecoveryPoint class. */
+    /**
+     * Creates an instance of RecoveryPoint class.
+     */
     public RecoveryPoint() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

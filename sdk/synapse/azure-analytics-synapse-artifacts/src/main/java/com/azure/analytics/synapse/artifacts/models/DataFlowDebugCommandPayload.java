@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Structure of command payload. */
+/**
+ * Structure of command payload.
+ */
 @Fluent
 public final class DataFlowDebugCommandPayload {
     /*
@@ -35,12 +37,15 @@ public final class DataFlowDebugCommandPayload {
     @JsonProperty(value = "expression")
     private String expression;
 
-    /** Creates an instance of DataFlowDebugCommandPayload class. */
-    public DataFlowDebugCommandPayload() {}
+    /**
+     * Creates an instance of DataFlowDebugCommandPayload class.
+     */
+    public DataFlowDebugCommandPayload() {
+    }
 
     /**
      * Get the streamName property: The stream name which is used for preview.
-     *
+     * 
      * @return the streamName value.
      */
     public String getStreamName() {
@@ -49,7 +54,7 @@ public final class DataFlowDebugCommandPayload {
 
     /**
      * Set the streamName property: The stream name which is used for preview.
-     *
+     * 
      * @param streamName the streamName value to set.
      * @return the DataFlowDebugCommandPayload object itself.
      */
@@ -60,7 +65,7 @@ public final class DataFlowDebugCommandPayload {
 
     /**
      * Get the rowLimits property: Row limits for preview response.
-     *
+     * 
      * @return the rowLimits value.
      */
     public Integer getRowLimits() {
@@ -69,7 +74,7 @@ public final class DataFlowDebugCommandPayload {
 
     /**
      * Set the rowLimits property: Row limits for preview response.
-     *
+     * 
      * @param rowLimits the rowLimits value to set.
      * @return the DataFlowDebugCommandPayload object itself.
      */
@@ -80,7 +85,7 @@ public final class DataFlowDebugCommandPayload {
 
     /**
      * Get the columns property: Array of column names.
-     *
+     * 
      * @return the columns value.
      */
     public List<String> getColumns() {
@@ -89,7 +94,7 @@ public final class DataFlowDebugCommandPayload {
 
     /**
      * Set the columns property: Array of column names.
-     *
+     * 
      * @param columns the columns value to set.
      * @return the DataFlowDebugCommandPayload object itself.
      */
@@ -100,7 +105,7 @@ public final class DataFlowDebugCommandPayload {
 
     /**
      * Get the expression property: The expression which is used for preview.
-     *
+     * 
      * @return the expression value.
      */
     public String getExpression() {
@@ -109,7 +114,7 @@ public final class DataFlowDebugCommandPayload {
 
     /**
      * Set the expression property: The expression which is used for preview.
-     *
+     * 
      * @param expression the expression value to set.
      * @return the DataFlowDebugCommandPayload object itself.
      */

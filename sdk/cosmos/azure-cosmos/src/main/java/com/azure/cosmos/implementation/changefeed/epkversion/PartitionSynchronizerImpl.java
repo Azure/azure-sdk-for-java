@@ -72,7 +72,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
 
     @Override
     public Mono<Void> createMissingLeases() {
-        return this.documentClient.getOverlappingRanges(PartitionKeyInternalHelper.FullRange)
+        return this.documentClient.getOverlappingRanges(PartitionKeyInternalHelper.FullRange, true)
                 .flatMap(pkRangeList -> this.createLeases(pkRangeList).then())
                 .onErrorResume(throwable -> {
                     logger.error("Create lease failed", throwable);
@@ -82,7 +82,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
 
     @Override
     public Mono<Void> createMissingLeases(List<Lease> pkRangeIdVersionLeases) {
-        return this.documentClient.getOverlappingRanges(PartitionKeyInternalHelper.FullRange)
+        return this.documentClient.getOverlappingRanges(PartitionKeyInternalHelper.FullRange, true)
             .flatMap(pkRangeList -> this.createLeases(pkRangeList, pkRangeIdVersionLeases).then())
             .doOnError(throwable -> logger.error("Create missing leases from pkRangeIdVersion leases failed", throwable));
     }
@@ -98,7 +98,7 @@ class PartitionSynchronizerImpl implements PartitionSynchronizer {
                 leaseToken,
                 lastContinuationToken);
 
-        return this.documentClient.getOverlappingRanges(((FeedRangeEpkImpl)lease.getFeedRange()).getRange())
+        return this.documentClient.getOverlappingRanges(((FeedRangeEpkImpl)lease.getFeedRange()).getRange(), true)
                 .flatMap(pkRangeList -> {
                     if (pkRangeList.size() == 0) {
                         logger.error("Lease with token {} is gone but we failed to find at least one child range", leaseToken);

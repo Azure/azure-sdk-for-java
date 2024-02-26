@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Distribute via Azure Compute Gallery. */
+/**
+ * Distribute via Azure Compute Gallery.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SharedImage")
 @Fluent
@@ -58,13 +60,15 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
     @JsonProperty(value = "versioning")
     private DistributeVersioner versioning;
 
-    /** Creates an instance of ImageTemplateSharedImageDistributor class. */
+    /**
+     * Creates an instance of ImageTemplateSharedImageDistributor class.
+     */
     public ImageTemplateSharedImageDistributor() {
     }
 
     /**
      * Get the galleryImageId property: Resource Id of the Azure Compute Gallery image.
-     *
+     * 
      * @return the galleryImageId value.
      */
     public String galleryImageId() {
@@ -73,7 +77,7 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
 
     /**
      * Set the galleryImageId property: Resource Id of the Azure Compute Gallery image.
-     *
+     * 
      * @param galleryImageId the galleryImageId value to set.
      * @return the ImageTemplateSharedImageDistributor object itself.
      */
@@ -86,7 +90,7 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
      * Get the replicationRegions property: [Deprecated] A list of regions that the image will be replicated to. This
      * list can be specified only if targetRegions is not specified. This field is deprecated - use targetRegions
      * instead.
-     *
+     * 
      * @return the replicationRegions value.
      */
     public List<String> replicationRegions() {
@@ -97,7 +101,7 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
      * Set the replicationRegions property: [Deprecated] A list of regions that the image will be replicated to. This
      * list can be specified only if targetRegions is not specified. This field is deprecated - use targetRegions
      * instead.
-     *
+     * 
      * @param replicationRegions the replicationRegions value to set.
      * @return the ImageTemplateSharedImageDistributor object itself.
      */
@@ -109,7 +113,7 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
     /**
      * Get the excludeFromLatest property: Flag that indicates whether created image version should be excluded from
      * latest. Omit to use the default (false).
-     *
+     * 
      * @return the excludeFromLatest value.
      */
     public Boolean excludeFromLatest() {
@@ -119,7 +123,7 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
     /**
      * Set the excludeFromLatest property: Flag that indicates whether created image version should be excluded from
      * latest. Omit to use the default (false).
-     *
+     * 
      * @param excludeFromLatest the excludeFromLatest value to set.
      * @return the ImageTemplateSharedImageDistributor object itself.
      */
@@ -129,10 +133,10 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
     }
 
     /**
-     * Get the storageAccountType property: [Deprecated] Storage account type to be used to store the shared image. Omit
-     * to use the default (Standard_LRS). This field can be specified only if replicationRegions is specified. This
-     * field is deprecated - use targetRegions instead.
-     *
+     * Get the storageAccountType property: [Deprecated] Storage account type to be used to store the shared image.
+     * Omit to use the default (Standard_LRS). This field can be specified only if replicationRegions is specified.
+     * This field is deprecated - use targetRegions instead.
+     * 
      * @return the storageAccountType value.
      */
     public SharedImageStorageAccountType storageAccountType() {
@@ -140,15 +144,15 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
     }
 
     /**
-     * Set the storageAccountType property: [Deprecated] Storage account type to be used to store the shared image. Omit
-     * to use the default (Standard_LRS). This field can be specified only if replicationRegions is specified. This
-     * field is deprecated - use targetRegions instead.
-     *
+     * Set the storageAccountType property: [Deprecated] Storage account type to be used to store the shared image.
+     * Omit to use the default (Standard_LRS). This field can be specified only if replicationRegions is specified.
+     * This field is deprecated - use targetRegions instead.
+     * 
      * @param storageAccountType the storageAccountType value to set.
      * @return the ImageTemplateSharedImageDistributor object itself.
      */
-    public ImageTemplateSharedImageDistributor withStorageAccountType(
-        SharedImageStorageAccountType storageAccountType) {
+    public ImageTemplateSharedImageDistributor
+        withStorageAccountType(SharedImageStorageAccountType storageAccountType) {
         this.storageAccountType = storageAccountType;
         return this;
     }
@@ -156,7 +160,7 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
     /**
      * Get the targetRegions property: The target regions where the distributed Image Version is going to be replicated
      * to. This object supersedes replicationRegions and can be specified only if replicationRegions is not specified.
-     *
+     * 
      * @return the targetRegions value.
      */
     public List<TargetRegion> targetRegions() {
@@ -166,7 +170,7 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
     /**
      * Set the targetRegions property: The target regions where the distributed Image Version is going to be replicated
      * to. This object supersedes replicationRegions and can be specified only if replicationRegions is not specified.
-     *
+     * 
      * @param targetRegions the targetRegions value to set.
      * @return the ImageTemplateSharedImageDistributor object itself.
      */
@@ -177,7 +181,7 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
 
     /**
      * Get the versioning property: Describes how to generate new x.y.z version number for distribution.
-     *
+     * 
      * @return the versioning value.
      */
     public DistributeVersioner versioning() {
@@ -186,7 +190,7 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
 
     /**
      * Set the versioning property: Describes how to generate new x.y.z version number for distribution.
-     *
+     * 
      * @param versioning the versioning value to set.
      * @return the ImageTemplateSharedImageDistributor object itself.
      */
@@ -195,14 +199,18 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageTemplateSharedImageDistributor withRunOutputName(String runOutputName) {
         super.withRunOutputName(runOutputName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageTemplateSharedImageDistributor withArtifactTags(Map<String, String> artifactTags) {
         super.withArtifactTags(artifactTags);
@@ -211,17 +219,15 @@ public final class ImageTemplateSharedImageDistributor extends ImageTemplateDist
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (galleryImageId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property galleryImageId in model ImageTemplateSharedImageDistributor"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property galleryImageId in model ImageTemplateSharedImageDistributor"));
         }
         if (targetRegions() != null) {
             targetRegions().forEach(e -> e.validate());

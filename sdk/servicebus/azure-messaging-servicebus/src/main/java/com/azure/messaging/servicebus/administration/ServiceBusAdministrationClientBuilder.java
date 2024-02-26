@@ -39,7 +39,6 @@ import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
 import com.azure.messaging.servicebus.ServiceBusServiceVersion;
 import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImpl;
-import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementClientImplBuilder;
 import com.azure.messaging.servicebus.administration.implementation.ServiceBusManagementSerializer;
 import com.azure.messaging.servicebus.implementation.ServiceBusConstants;
 import com.azure.messaging.servicebus.implementation.ServiceBusSharedKeyCredential;
@@ -160,7 +159,7 @@ public final class ServiceBusAdministrationClientBuilder implements
     }
 
     private static final ClientLogger LOGGER = new ClientLogger(ServiceBusAdministrationClientBuilder.class);
-    private final ServiceBusManagementSerializer serializer = new ServiceBusManagementSerializer();
+    private static final ServiceBusManagementSerializer SERIALIZER = new ServiceBusManagementSerializer();
 
     private final List<HttpPipelinePolicy> perCallPolicies = new ArrayList<>();
     private final List<HttpPipelinePolicy> perRetryPolicies = new ArrayList<>();
@@ -202,9 +201,7 @@ public final class ServiceBusAdministrationClientBuilder implements
      * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ServiceBusAdministrationAsyncClient buildAsyncClient() {
-        final ServiceBusManagementClientImpl client = getServiceBusManagementClient();
-
-        return new ServiceBusAdministrationAsyncClient(client, serializer);
+        return new ServiceBusAdministrationAsyncClient(getServiceBusManagementClient());
     }
 
     private ServiceBusManagementClientImpl getServiceBusManagementClient() {
@@ -216,13 +213,7 @@ public final class ServiceBusAdministrationClientBuilder implements
             ? ServiceBusServiceVersion.getLatest()
             : serviceVersion;
         final HttpPipeline httpPipeline = createPipeline();
-        final ServiceBusManagementClientImpl client = new ServiceBusManagementClientImplBuilder()
-            .pipeline(httpPipeline)
-            .serializerAdapter(serializer)
-            .endpoint(endpoint)
-            .apiVersion(apiVersion.getVersion())
-            .buildClient();
-        return client;
+        return new ServiceBusManagementClientImpl(httpPipeline, SERIALIZER, endpoint, apiVersion.getVersion());
     }
 
     /**
@@ -243,7 +234,7 @@ public final class ServiceBusAdministrationClientBuilder implements
      * and {@link #retryPolicy(HttpPipelinePolicy)} have been set.
      */
     public ServiceBusAdministrationClient buildClient() {
-        return new ServiceBusAdministrationClient(getServiceBusManagementClient(), serializer);
+        return new ServiceBusAdministrationClient(getServiceBusManagementClient());
     }
 
     /**

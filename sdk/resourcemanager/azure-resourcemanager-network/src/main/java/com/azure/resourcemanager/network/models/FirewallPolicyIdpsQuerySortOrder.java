@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes if results should be in ascending/descending order. */
+/**
+ * Describes if results should be in ascending/descending order.
+ */
 public final class FirewallPolicyIdpsQuerySortOrder extends ExpandableStringEnum<FirewallPolicyIdpsQuerySortOrder> {
-    /** Static value Ascending for FirewallPolicyIdpsQuerySortOrder. */
+    /**
+     * Static value Ascending for FirewallPolicyIdpsQuerySortOrder.
+     */
     public static final FirewallPolicyIdpsQuerySortOrder ASCENDING = fromString("Ascending");
 
-    /** Static value Descending for FirewallPolicyIdpsQuerySortOrder. */
+    /**
+     * Static value Descending for FirewallPolicyIdpsQuerySortOrder.
+     */
     public static final FirewallPolicyIdpsQuerySortOrder DESCENDING = fromString("Descending");
 
     /**
      * Creates a new instance of FirewallPolicyIdpsQuerySortOrder value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class FirewallPolicyIdpsQuerySortOrder extends ExpandableStringEnum
 
     /**
      * Creates or finds a FirewallPolicyIdpsQuerySortOrder from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FirewallPolicyIdpsQuerySortOrder.
      */
@@ -38,7 +44,7 @@ public final class FirewallPolicyIdpsQuerySortOrder extends ExpandableStringEnum
 
     /**
      * Gets known FirewallPolicyIdpsQuerySortOrder values.
-     *
+     * 
      * @return known FirewallPolicyIdpsQuerySortOrder values.
      */
     public static Collection<FirewallPolicyIdpsQuerySortOrder> values() {

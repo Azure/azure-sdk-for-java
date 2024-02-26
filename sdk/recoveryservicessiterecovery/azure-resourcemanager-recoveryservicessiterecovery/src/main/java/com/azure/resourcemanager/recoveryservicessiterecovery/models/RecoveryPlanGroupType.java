@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The group type. */
+/**
+ * The group type.
+ */
 public final class RecoveryPlanGroupType extends ExpandableStringEnum<RecoveryPlanGroupType> {
-    /** Static value Shutdown for RecoveryPlanGroupType. */
+    /**
+     * Static value Shutdown for RecoveryPlanGroupType.
+     */
     public static final RecoveryPlanGroupType SHUTDOWN = fromString("Shutdown");
 
-    /** Static value Boot for RecoveryPlanGroupType. */
+    /**
+     * Static value Boot for RecoveryPlanGroupType.
+     */
     public static final RecoveryPlanGroupType BOOT = fromString("Boot");
 
-    /** Static value Failover for RecoveryPlanGroupType. */
+    /**
+     * Static value Failover for RecoveryPlanGroupType.
+     */
     public static final RecoveryPlanGroupType FAILOVER = fromString("Failover");
 
     /**
      * Creates a new instance of RecoveryPlanGroupType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class RecoveryPlanGroupType extends ExpandableStringEnum<RecoveryPl
 
     /**
      * Creates or finds a RecoveryPlanGroupType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding RecoveryPlanGroupType.
      */
@@ -41,7 +49,7 @@ public final class RecoveryPlanGroupType extends ExpandableStringEnum<RecoveryPl
 
     /**
      * Gets known RecoveryPlanGroupType values.
-     *
+     * 
      * @return known RecoveryPlanGroupType values.
      */
     public static Collection<RecoveryPlanGroupType> values() {

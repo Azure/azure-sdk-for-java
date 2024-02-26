@@ -9,17 +9,23 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * The disks to encrypt on each compute node.
- *
- * <p>If omitted, no disks on the compute nodes in the pool will be encrypted.
+ * 
+ * If omitted, no disks on the compute nodes in the pool will be encrypted.
  */
 public enum DiskEncryptionTarget {
-    /** Enum value OsDisk. */
+    /**
+     * Enum value OsDisk.
+     */
     OS_DISK("OsDisk"),
 
-    /** Enum value TemporaryDisk. */
+    /**
+     * Enum value TemporaryDisk.
+     */
     TEMPORARY_DISK("TemporaryDisk");
 
-    /** The actual serialized value for a DiskEncryptionTarget instance. */
+    /**
+     * The actual serialized value for a DiskEncryptionTarget instance.
+     */
     private final String value;
 
     DiskEncryptionTarget(String value) {
@@ -28,7 +34,7 @@ public enum DiskEncryptionTarget {
 
     /**
      * Parses a serialized value to a DiskEncryptionTarget instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed DiskEncryptionTarget object, or null if unable to parse.
      */
@@ -46,7 +52,9 @@ public enum DiskEncryptionTarget {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

@@ -12,10 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class TriggerCriterionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TriggerCriterion model =
-            BinaryData
-                .fromString("{\"name\":\"ProblemClassificationId\",\"value\":\"cr\"}")
-                .toObject(TriggerCriterion.class);
+        TriggerCriterion model = BinaryData.fromString("{\"name\":\"ProblemClassificationId\",\"value\":\"cr\"}")
+            .toObject(TriggerCriterion.class);
         Assertions.assertEquals(Name.PROBLEM_CLASSIFICATION_ID, model.name());
         Assertions.assertEquals("cr", model.value());
     }

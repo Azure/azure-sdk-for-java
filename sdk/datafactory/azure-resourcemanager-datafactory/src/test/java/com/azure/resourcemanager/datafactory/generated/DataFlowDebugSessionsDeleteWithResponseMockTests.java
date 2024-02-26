@@ -46,8 +46,8 @@ public final class DataFlowDebugSessionsDeleteWithResponseMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.dataFlowDebugSessions().deleteWithResponse("iutzuriqlks", "ay",
-            new DeleteDataFlowDebugSessionRequest().withSessionId("tiqzjrxhelqh"), com.azure.core.util.Context.NONE);
+        manager.dataFlowDebugSessions().deleteWithResponse("qcwpgipttpsedt", "tu",
+            new DeleteDataFlowDebugSessionRequest().withSessionId("huusr"), com.azure.core.util.Context.NONE);
 
     }
 }

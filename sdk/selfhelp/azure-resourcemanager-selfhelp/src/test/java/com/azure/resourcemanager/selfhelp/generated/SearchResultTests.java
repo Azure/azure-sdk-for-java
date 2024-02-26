@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SearchResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SearchResult model =
-            BinaryData
-                .fromString(
-                    "{\"solutionId\":\"noae\",\"content\":\"fhyhltrpmopjmcma\",\"title\":\"okth\",\"confidence\":\"Medium\",\"source\":\"aodsfcpkv\",\"resultType\":\"Community\",\"rank\":1276916323,\"link\":\"zmyzydagf\"}")
-                .toObject(SearchResult.class);
+        SearchResult model = BinaryData.fromString(
+            "{\"solutionId\":\"noae\",\"content\":\"fhyhltrpmopjmcma\",\"title\":\"okth\",\"confidence\":\"Medium\",\"source\":\"aodsfcpkv\",\"resultType\":\"Community\",\"rank\":1276916323,\"link\":\"zmyzydagf\"}")
+            .toObject(SearchResult.class);
         Assertions.assertEquals("noae", model.solutionId());
         Assertions.assertEquals("fhyhltrpmopjmcma", model.content());
         Assertions.assertEquals("okth", model.title());
@@ -30,16 +28,9 @@ public final class SearchResultTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SearchResult model =
-            new SearchResult()
-                .withSolutionId("noae")
-                .withContent("fhyhltrpmopjmcma")
-                .withTitle("okth")
-                .withConfidence(Confidence.MEDIUM)
-                .withSource("aodsfcpkv")
-                .withResultType(ResultType.COMMUNITY)
-                .withRank(1276916323)
-                .withLink("zmyzydagf");
+        SearchResult model = new SearchResult().withSolutionId("noae").withContent("fhyhltrpmopjmcma").withTitle("okth")
+            .withConfidence(Confidence.MEDIUM).withSource("aodsfcpkv").withResultType(ResultType.COMMUNITY)
+            .withRank(1276916323).withLink("zmyzydagf");
         model = BinaryData.fromObject(model).toObject(SearchResult.class);
         Assertions.assertEquals("noae", model.solutionId());
         Assertions.assertEquals("fhyhltrpmopjmcma", model.content());

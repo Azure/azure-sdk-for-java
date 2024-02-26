@@ -18,11 +18,13 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in InboundNatRulesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in InboundNatRulesClient.
+ */
 public interface InboundNatRulesClient {
     /**
      * Gets all the inbound NAT rules in a load balancer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -35,7 +37,7 @@ public interface InboundNatRulesClient {
 
     /**
      * Gets all the inbound NAT rules in a load balancer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -48,7 +50,7 @@ public interface InboundNatRulesClient {
 
     /**
      * Gets all the inbound NAT rules in a load balancer.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param context The context to associate with this operation.
@@ -62,7 +64,7 @@ public interface InboundNatRulesClient {
 
     /**
      * Deletes the specified load balancer inbound NAT rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound NAT rule.
@@ -72,12 +74,12 @@ public interface InboundNatRulesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String loadBalancerName, String inboundNatRuleName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String loadBalancerName,
+        String inboundNatRuleName);
 
     /**
      * Deletes the specified load balancer inbound NAT rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound NAT rule.
@@ -87,12 +89,12 @@ public interface InboundNatRulesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String loadBalancerName, String inboundNatRuleName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String loadBalancerName,
+        String inboundNatRuleName);
 
     /**
      * Deletes the specified load balancer inbound NAT rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound NAT rule.
@@ -102,12 +104,12 @@ public interface InboundNatRulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String loadBalancerName, String inboundNatRuleName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String loadBalancerName,
+        String inboundNatRuleName);
 
     /**
      * Deletes the specified load balancer inbound NAT rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound NAT rule.
@@ -118,12 +120,12 @@ public interface InboundNatRulesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String loadBalancerName, String inboundNatRuleName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String loadBalancerName,
+        String inboundNatRuleName, Context context);
 
     /**
      * Deletes the specified load balancer inbound NAT rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound NAT rule.
@@ -137,7 +139,7 @@ public interface InboundNatRulesClient {
 
     /**
      * Deletes the specified load balancer inbound NAT rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound NAT rule.
@@ -150,7 +152,7 @@ public interface InboundNatRulesClient {
 
     /**
      * Deletes the specified load balancer inbound NAT rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound NAT rule.
@@ -164,7 +166,7 @@ public interface InboundNatRulesClient {
 
     /**
      * Gets the specified load balancer inbound NAT rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound NAT rule.
@@ -173,15 +175,15 @@ public interface InboundNatRulesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified load balancer inbound NAT rule along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<InboundNatRuleInner>> getWithResponseAsync(
-        String resourceGroupName, String loadBalancerName, String inboundNatRuleName, String expand);
+    Mono<Response<InboundNatRuleInner>> getWithResponseAsync(String resourceGroupName, String loadBalancerName,
+        String inboundNatRuleName, String expand);
 
     /**
      * Gets the specified load balancer inbound NAT rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound NAT rule.
@@ -195,7 +197,7 @@ public interface InboundNatRulesClient {
 
     /**
      * Gets the specified load balancer inbound NAT rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound NAT rule.
@@ -207,12 +209,12 @@ public interface InboundNatRulesClient {
      * @return the specified load balancer inbound NAT rule along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<InboundNatRuleInner> getWithResponse(
-        String resourceGroupName, String loadBalancerName, String inboundNatRuleName, String expand, Context context);
+    Response<InboundNatRuleInner> getWithResponse(String resourceGroupName, String loadBalancerName,
+        String inboundNatRuleName, String expand, Context context);
 
     /**
      * Gets the specified load balancer inbound NAT rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound NAT rule.
@@ -226,7 +228,7 @@ public interface InboundNatRulesClient {
 
     /**
      * Creates or updates a load balancer inbound NAT rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound NAT rule.
@@ -234,19 +236,16 @@ public interface InboundNatRulesClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return inbound NAT rule of the load balancer along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return inbound NAT rule of the load balancer along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String loadBalancerName,
-        String inboundNatRuleName,
-        InboundNatRuleInner inboundNatRuleParameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String loadBalancerName,
+        String inboundNatRuleName, InboundNatRuleInner inboundNatRuleParameters);
 
     /**
      * Creates or updates a load balancer inbound NAT rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound NAT rule.
@@ -257,15 +256,12 @@ public interface InboundNatRulesClient {
      * @return the {@link PollerFlux} for polling of inbound NAT rule of the load balancer.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<InboundNatRuleInner>, InboundNatRuleInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String loadBalancerName,
-        String inboundNatRuleName,
-        InboundNatRuleInner inboundNatRuleParameters);
+    PollerFlux<PollResult<InboundNatRuleInner>, InboundNatRuleInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String loadBalancerName, String inboundNatRuleName, InboundNatRuleInner inboundNatRuleParameters);
 
     /**
      * Creates or updates a load balancer inbound NAT rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound NAT rule.
@@ -276,15 +272,12 @@ public interface InboundNatRulesClient {
      * @return the {@link SyncPoller} for polling of inbound NAT rule of the load balancer.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InboundNatRuleInner>, InboundNatRuleInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String loadBalancerName,
-        String inboundNatRuleName,
-        InboundNatRuleInner inboundNatRuleParameters);
+    SyncPoller<PollResult<InboundNatRuleInner>, InboundNatRuleInner> beginCreateOrUpdate(String resourceGroupName,
+        String loadBalancerName, String inboundNatRuleName, InboundNatRuleInner inboundNatRuleParameters);
 
     /**
      * Creates or updates a load balancer inbound NAT rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound NAT rule.
@@ -296,16 +289,13 @@ public interface InboundNatRulesClient {
      * @return the {@link SyncPoller} for polling of inbound NAT rule of the load balancer.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<InboundNatRuleInner>, InboundNatRuleInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String loadBalancerName,
-        String inboundNatRuleName,
-        InboundNatRuleInner inboundNatRuleParameters,
+    SyncPoller<PollResult<InboundNatRuleInner>, InboundNatRuleInner> beginCreateOrUpdate(String resourceGroupName,
+        String loadBalancerName, String inboundNatRuleName, InboundNatRuleInner inboundNatRuleParameters,
         Context context);
 
     /**
      * Creates or updates a load balancer inbound NAT rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound NAT rule.
@@ -316,15 +306,12 @@ public interface InboundNatRulesClient {
      * @return inbound NAT rule of the load balancer on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<InboundNatRuleInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String loadBalancerName,
-        String inboundNatRuleName,
-        InboundNatRuleInner inboundNatRuleParameters);
+    Mono<InboundNatRuleInner> createOrUpdateAsync(String resourceGroupName, String loadBalancerName,
+        String inboundNatRuleName, InboundNatRuleInner inboundNatRuleParameters);
 
     /**
      * Creates or updates a load balancer inbound NAT rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound NAT rule.
@@ -335,15 +322,12 @@ public interface InboundNatRulesClient {
      * @return inbound NAT rule of the load balancer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    InboundNatRuleInner createOrUpdate(
-        String resourceGroupName,
-        String loadBalancerName,
-        String inboundNatRuleName,
+    InboundNatRuleInner createOrUpdate(String resourceGroupName, String loadBalancerName, String inboundNatRuleName,
         InboundNatRuleInner inboundNatRuleParameters);
 
     /**
      * Creates or updates a load balancer inbound NAT rule.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param inboundNatRuleName The name of the inbound NAT rule.
@@ -355,10 +339,6 @@ public interface InboundNatRulesClient {
      * @return inbound NAT rule of the load balancer.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    InboundNatRuleInner createOrUpdate(
-        String resourceGroupName,
-        String loadBalancerName,
-        String inboundNatRuleName,
-        InboundNatRuleInner inboundNatRuleParameters,
-        Context context);
+    InboundNatRuleInner createOrUpdate(String resourceGroupName, String loadBalancerName, String inboundNatRuleName,
+        InboundNatRuleInner inboundNatRuleParameters, Context context);
 }

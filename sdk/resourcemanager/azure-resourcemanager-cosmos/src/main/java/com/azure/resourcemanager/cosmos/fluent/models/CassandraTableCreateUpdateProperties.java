@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmos.models.CassandraTableResource;
 import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties to create and update Azure Cosmos DB Cassandra table. */
+/**
+ * Properties to create and update Azure Cosmos DB Cassandra table.
+ */
 @Fluent
 public final class CassandraTableCreateUpdateProperties {
     /*
@@ -26,13 +28,15 @@ public final class CassandraTableCreateUpdateProperties {
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
 
-    /** Creates an instance of CassandraTableCreateUpdateProperties class. */
+    /**
+     * Creates an instance of CassandraTableCreateUpdateProperties class.
+     */
     public CassandraTableCreateUpdateProperties() {
     }
 
     /**
      * Get the resource property: The standard JSON format of a Cassandra table.
-     *
+     * 
      * @return the resource value.
      */
     public CassandraTableResource resource() {
@@ -41,7 +45,7 @@ public final class CassandraTableCreateUpdateProperties {
 
     /**
      * Set the resource property: The standard JSON format of a Cassandra table.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the CassandraTableCreateUpdateProperties object itself.
      */
@@ -53,7 +57,7 @@ public final class CassandraTableCreateUpdateProperties {
     /**
      * Get the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @return the options value.
      */
     public CreateUpdateOptions options() {
@@ -63,7 +67,7 @@ public final class CassandraTableCreateUpdateProperties {
     /**
      * Set the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @param options the options value to set.
      * @return the CassandraTableCreateUpdateProperties object itself.
      */
@@ -74,15 +78,13 @@ public final class CassandraTableCreateUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resource() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resource in model CassandraTableCreateUpdateProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property resource in model CassandraTableCreateUpdateProperties"));
         } else {
             resource().validate();
         }

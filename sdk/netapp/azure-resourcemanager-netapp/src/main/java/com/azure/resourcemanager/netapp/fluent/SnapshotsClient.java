@@ -14,13 +14,15 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.models.SnapshotInner;
 import com.azure.resourcemanager.netapp.models.SnapshotRestoreFiles;
 
-/** An instance of this class provides access to all the operations defined in SnapshotsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SnapshotsClient.
+ */
 public interface SnapshotsClient {
     /**
      * Describe all snapshots
-     *
-     * <p>List all snapshots associated with the volume.
-     *
+     * 
+     * List all snapshots associated with the volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -35,9 +37,9 @@ public interface SnapshotsClient {
 
     /**
      * Describe all snapshots
-     *
-     * <p>List all snapshots associated with the volume.
-     *
+     * 
+     * List all snapshots associated with the volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -49,14 +51,14 @@ public interface SnapshotsClient {
      * @return list of Snapshots as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<SnapshotInner> list(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context);
+    PagedIterable<SnapshotInner> list(String resourceGroupName, String accountName, String poolName, String volumeName,
+        Context context);
 
     /**
      * Describe a snapshot
-     *
-     * <p>Get details of the specified snapshot.
-     *
+     * 
+     * Get details of the specified snapshot.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -69,19 +71,14 @@ public interface SnapshotsClient {
      * @return details of the specified snapshot along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SnapshotInner> getWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String snapshotName,
-        Context context);
+    Response<SnapshotInner> getWithResponse(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String snapshotName, Context context);
 
     /**
      * Describe a snapshot
-     *
-     * <p>Get details of the specified snapshot.
-     *
+     * 
+     * Get details of the specified snapshot.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -93,14 +90,14 @@ public interface SnapshotsClient {
      * @return details of the specified snapshot.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SnapshotInner get(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String snapshotName);
+    SnapshotInner get(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String snapshotName);
 
     /**
      * Create a snapshot
-     *
-     * <p>Create the specified snapshot within the given volume.
-     *
+     * 
+     * Create the specified snapshot within the given volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -113,19 +110,14 @@ public interface SnapshotsClient {
      * @return the {@link SyncPoller} for polling of snapshot of a Volume.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginCreate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String snapshotName,
-        SnapshotInner body);
+    SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginCreate(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String snapshotName, SnapshotInner body);
 
     /**
      * Create a snapshot
-     *
-     * <p>Create the specified snapshot within the given volume.
-     *
+     * 
+     * Create the specified snapshot within the given volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -139,20 +131,14 @@ public interface SnapshotsClient {
      * @return the {@link SyncPoller} for polling of snapshot of a Volume.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginCreate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String snapshotName,
-        SnapshotInner body,
-        Context context);
+    SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginCreate(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String snapshotName, SnapshotInner body, Context context);
 
     /**
      * Create a snapshot
-     *
-     * <p>Create the specified snapshot within the given volume.
-     *
+     * 
+     * Create the specified snapshot within the given volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -165,19 +151,14 @@ public interface SnapshotsClient {
      * @return snapshot of a Volume.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SnapshotInner create(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String snapshotName,
-        SnapshotInner body);
+    SnapshotInner create(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String snapshotName, SnapshotInner body);
 
     /**
      * Create a snapshot
-     *
-     * <p>Create the specified snapshot within the given volume.
-     *
+     * 
+     * Create the specified snapshot within the given volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -191,20 +172,14 @@ public interface SnapshotsClient {
      * @return snapshot of a Volume.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SnapshotInner create(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String snapshotName,
-        SnapshotInner body,
-        Context context);
+    SnapshotInner create(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String snapshotName, SnapshotInner body, Context context);
 
     /**
      * Update a snapshot
-     *
-     * <p>Patch a snapshot.
-     *
+     * 
+     * Patch a snapshot.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -217,19 +192,14 @@ public interface SnapshotsClient {
      * @return the {@link SyncPoller} for polling of snapshot of a Volume.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginUpdate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String snapshotName,
-        Object body);
+    SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginUpdate(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String snapshotName, Object body);
 
     /**
      * Update a snapshot
-     *
-     * <p>Patch a snapshot.
-     *
+     * 
+     * Patch a snapshot.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -243,20 +213,14 @@ public interface SnapshotsClient {
      * @return the {@link SyncPoller} for polling of snapshot of a Volume.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginUpdate(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String snapshotName,
-        Object body,
-        Context context);
+    SyncPoller<PollResult<SnapshotInner>, SnapshotInner> beginUpdate(String resourceGroupName, String accountName,
+        String poolName, String volumeName, String snapshotName, Object body, Context context);
 
     /**
      * Update a snapshot
-     *
-     * <p>Patch a snapshot.
-     *
+     * 
+     * Patch a snapshot.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -269,19 +233,14 @@ public interface SnapshotsClient {
      * @return snapshot of a Volume.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SnapshotInner update(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String snapshotName,
-        Object body);
+    SnapshotInner update(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String snapshotName, Object body);
 
     /**
      * Update a snapshot
-     *
-     * <p>Patch a snapshot.
-     *
+     * 
+     * Patch a snapshot.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -295,20 +254,14 @@ public interface SnapshotsClient {
      * @return snapshot of a Volume.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SnapshotInner update(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String snapshotName,
-        Object body,
-        Context context);
+    SnapshotInner update(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String snapshotName, Object body, Context context);
 
     /**
      * Delete a snapshot
-     *
-     * <p>Delete snapshot.
-     *
+     * 
+     * Delete snapshot.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -320,14 +273,14 @@ public interface SnapshotsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String poolName, String volumeName, String snapshotName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String snapshotName);
 
     /**
      * Delete a snapshot
-     *
-     * <p>Delete snapshot.
-     *
+     * 
+     * Delete snapshot.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -340,19 +293,14 @@ public interface SnapshotsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String snapshotName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String snapshotName, Context context);
 
     /**
      * Delete a snapshot
-     *
-     * <p>Delete snapshot.
-     *
+     * 
+     * Delete snapshot.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -367,9 +315,9 @@ public interface SnapshotsClient {
 
     /**
      * Delete a snapshot
-     *
-     * <p>Delete snapshot.
-     *
+     * 
+     * Delete snapshot.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -381,19 +329,14 @@ public interface SnapshotsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String snapshotName,
+    void delete(String resourceGroupName, String accountName, String poolName, String volumeName, String snapshotName,
         Context context);
 
     /**
      * Create a new Snapshot Restore Files request
-     *
-     * <p>Restore the specified files from the specified snapshot to the active filesystem.
-     *
+     * 
+     * Restore the specified files from the specified snapshot to the active filesystem.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -406,19 +349,14 @@ public interface SnapshotsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRestoreFiles(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String snapshotName,
-        SnapshotRestoreFiles body);
+    SyncPoller<PollResult<Void>, Void> beginRestoreFiles(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String snapshotName, SnapshotRestoreFiles body);
 
     /**
      * Create a new Snapshot Restore Files request
-     *
-     * <p>Restore the specified files from the specified snapshot to the active filesystem.
-     *
+     * 
+     * Restore the specified files from the specified snapshot to the active filesystem.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -432,20 +370,14 @@ public interface SnapshotsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginRestoreFiles(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String snapshotName,
-        SnapshotRestoreFiles body,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginRestoreFiles(String resourceGroupName, String accountName, String poolName,
+        String volumeName, String snapshotName, SnapshotRestoreFiles body, Context context);
 
     /**
      * Create a new Snapshot Restore Files request
-     *
-     * <p>Restore the specified files from the specified snapshot to the active filesystem.
-     *
+     * 
+     * Restore the specified files from the specified snapshot to the active filesystem.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -457,19 +389,14 @@ public interface SnapshotsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void restoreFiles(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String snapshotName,
-        SnapshotRestoreFiles body);
+    void restoreFiles(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String snapshotName, SnapshotRestoreFiles body);
 
     /**
      * Create a new Snapshot Restore Files request
-     *
-     * <p>Restore the specified files from the specified snapshot to the active filesystem.
-     *
+     * 
+     * Restore the specified files from the specified snapshot to the active filesystem.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -482,12 +409,6 @@ public interface SnapshotsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void restoreFiles(
-        String resourceGroupName,
-        String accountName,
-        String poolName,
-        String volumeName,
-        String snapshotName,
-        SnapshotRestoreFiles body,
-        Context context);
+    void restoreFiles(String resourceGroupName, String accountName, String poolName, String volumeName,
+        String snapshotName, SnapshotRestoreFiles body, Context context);
 }

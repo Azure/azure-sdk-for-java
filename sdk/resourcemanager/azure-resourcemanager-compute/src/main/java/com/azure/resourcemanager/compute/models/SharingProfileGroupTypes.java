@@ -9,19 +9,23 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * This property allows you to specify the type of sharing group. &lt;br&gt;&lt;br&gt; Possible values are:
- * &lt;br&gt;&lt;br&gt; **Subscriptions** &lt;br&gt;&lt;br&gt; **AADTenants**.
+ * This property allows you to specify the type of sharing group. Possible values are: **Subscriptions,**
+ * **AADTenants.**.
  */
 public final class SharingProfileGroupTypes extends ExpandableStringEnum<SharingProfileGroupTypes> {
-    /** Static value Subscriptions for SharingProfileGroupTypes. */
+    /**
+     * Static value Subscriptions for SharingProfileGroupTypes.
+     */
     public static final SharingProfileGroupTypes SUBSCRIPTIONS = fromString("Subscriptions");
 
-    /** Static value AADTenants for SharingProfileGroupTypes. */
+    /**
+     * Static value AADTenants for SharingProfileGroupTypes.
+     */
     public static final SharingProfileGroupTypes AADTENANTS = fromString("AADTenants");
 
     /**
      * Creates a new instance of SharingProfileGroupTypes value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +34,7 @@ public final class SharingProfileGroupTypes extends ExpandableStringEnum<Sharing
 
     /**
      * Creates or finds a SharingProfileGroupTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SharingProfileGroupTypes.
      */
@@ -41,7 +45,7 @@ public final class SharingProfileGroupTypes extends ExpandableStringEnum<Sharing
 
     /**
      * Gets known SharingProfileGroupTypes values.
-     *
+     * 
      * @return known SharingProfileGroupTypes values.
      */
     public static Collection<SharingProfileGroupTypes> values() {

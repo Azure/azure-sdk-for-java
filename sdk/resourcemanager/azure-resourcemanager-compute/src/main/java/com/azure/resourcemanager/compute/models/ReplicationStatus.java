@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** This is the replication status of the gallery image version. */
+/**
+ * This is the replication status of the gallery image version.
+ */
 @Immutable
 public final class ReplicationStatus {
     /*
@@ -23,14 +25,16 @@ public final class ReplicationStatus {
     @JsonProperty(value = "summary", access = JsonProperty.Access.WRITE_ONLY)
     private List<RegionalReplicationStatus> summary;
 
-    /** Creates an instance of ReplicationStatus class. */
+    /**
+     * Creates an instance of ReplicationStatus class.
+     */
     public ReplicationStatus() {
     }
 
     /**
-     * Get the aggregatedState property: This is the aggregated replication status based on all the regional replication
-     * status flags.
-     *
+     * Get the aggregatedState property: This is the aggregated replication status based on all the regional
+     * replication status flags.
+     * 
      * @return the aggregatedState value.
      */
     public AggregatedReplicationState aggregatedState() {
@@ -39,7 +43,7 @@ public final class ReplicationStatus {
 
     /**
      * Get the summary property: This is a summary of replication status for each region.
-     *
+     * 
      * @return the summary value.
      */
     public List<RegionalReplicationStatus> summary() {
@@ -48,7 +52,7 @@ public final class ReplicationStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

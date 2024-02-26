@@ -7,24 +7,28 @@ package com.azure.resourcemanager.servicefabric.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents the health policy used to evaluate the health of services belonging to a service type. */
+/**
+ * Represents the health policy used to evaluate the health of services belonging to a service type.
+ */
 @Fluent
 public final class ServiceTypeHealthPolicy {
     /*
      * The maximum percentage of services allowed to be unhealthy before your application is considered in error.
-     *
+     * 
      */
     @JsonProperty(value = "maxPercentUnhealthyServices")
     private Integer maxPercentUnhealthyServices;
 
-    /** Creates an instance of ServiceTypeHealthPolicy class. */
+    /**
+     * Creates an instance of ServiceTypeHealthPolicy class.
+     */
     public ServiceTypeHealthPolicy() {
     }
 
     /**
      * Get the maxPercentUnhealthyServices property: The maximum percentage of services allowed to be unhealthy before
      * your application is considered in error.
-     *
+     * 
      * @return the maxPercentUnhealthyServices value.
      */
     public Integer maxPercentUnhealthyServices() {
@@ -34,7 +38,7 @@ public final class ServiceTypeHealthPolicy {
     /**
      * Set the maxPercentUnhealthyServices property: The maximum percentage of services allowed to be unhealthy before
      * your application is considered in error.
-     *
+     * 
      * @param maxPercentUnhealthyServices the maxPercentUnhealthyServices value to set.
      * @return the ServiceTypeHealthPolicy object itself.
      */
@@ -45,7 +49,7 @@ public final class ServiceTypeHealthPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

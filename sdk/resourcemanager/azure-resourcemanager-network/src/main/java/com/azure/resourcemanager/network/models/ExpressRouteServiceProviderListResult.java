@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.ExpressRouteServiceProvid
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for the ListExpressRouteServiceProvider API service call. */
+/**
+ * Response for the ListExpressRouteServiceProvider API service call.
+ */
 @Fluent
 public final class ExpressRouteServiceProviderListResult {
     /*
@@ -24,13 +26,15 @@ public final class ExpressRouteServiceProviderListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ExpressRouteServiceProviderListResult class. */
+    /**
+     * Creates an instance of ExpressRouteServiceProviderListResult class.
+     */
     public ExpressRouteServiceProviderListResult() {
     }
 
     /**
      * Get the value property: A list of ExpressRouteResourceProvider resources.
-     *
+     * 
      * @return the value value.
      */
     public List<ExpressRouteServiceProviderInner> value() {
@@ -39,7 +43,7 @@ public final class ExpressRouteServiceProviderListResult {
 
     /**
      * Set the value property: A list of ExpressRouteResourceProvider resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the ExpressRouteServiceProviderListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class ExpressRouteServiceProviderListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ExpressRouteServiceProviderListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ExpressRouteServiceProviderListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class ExpressRouteServiceProviderListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

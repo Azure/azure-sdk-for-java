@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Name of an Azure Firewall SKU. */
+/**
+ * Name of an Azure Firewall SKU.
+ */
 public final class AzureFirewallSkuName extends ExpandableStringEnum<AzureFirewallSkuName> {
-    /** Static value AZFW_VNet for AzureFirewallSkuName. */
+    /**
+     * Static value AZFW_VNet for AzureFirewallSkuName.
+     */
     public static final AzureFirewallSkuName AZFW_VNET = fromString("AZFW_VNet");
 
-    /** Static value AZFW_Hub for AzureFirewallSkuName. */
+    /**
+     * Static value AZFW_Hub for AzureFirewallSkuName.
+     */
     public static final AzureFirewallSkuName AZFW_HUB = fromString("AZFW_Hub");
 
     /**
      * Creates a new instance of AzureFirewallSkuName value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class AzureFirewallSkuName extends ExpandableStringEnum<AzureFirewa
 
     /**
      * Creates or finds a AzureFirewallSkuName from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AzureFirewallSkuName.
      */
@@ -38,7 +44,7 @@ public final class AzureFirewallSkuName extends ExpandableStringEnum<AzureFirewa
 
     /**
      * Gets known AzureFirewallSkuName values.
-     *
+     * 
      * @return known AzureFirewallSkuName values.
      */
     public static Collection<AzureFirewallSkuName> values() {

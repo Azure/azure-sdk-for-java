@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The DppWorkerRequest model. */
+/**
+ * The DppWorkerRequest model.
+ */
 @Fluent
 public class DppWorkerRequest {
     /*
@@ -57,13 +59,15 @@ public class DppWorkerRequest {
     @JsonProperty(value = "httpMethod")
     private String httpMethod;
 
-    /** Creates an instance of DppWorkerRequest class. */
+    /**
+     * Creates an instance of DppWorkerRequest class.
+     */
     public DppWorkerRequest() {
     }
 
     /**
      * Get the subscriptionId property: The subscriptionId property.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -72,7 +76,7 @@ public class DppWorkerRequest {
 
     /**
      * Set the subscriptionId property: The subscriptionId property.
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the DppWorkerRequest object itself.
      */
@@ -83,7 +87,7 @@ public class DppWorkerRequest {
 
     /**
      * Get the uri property: The uri property.
-     *
+     * 
      * @return the uri value.
      */
     public String uri() {
@@ -92,7 +96,7 @@ public class DppWorkerRequest {
 
     /**
      * Set the uri property: The uri property.
-     *
+     * 
      * @param uri the uri value to set.
      * @return the DppWorkerRequest object itself.
      */
@@ -104,7 +108,7 @@ public class DppWorkerRequest {
     /**
      * Get the headers property: Dictionary of
      * &lt;components·ikn5y4·schemas·dppworkerrequest·properties·headers·additionalproperties&gt;.
-     *
+     * 
      * @return the headers value.
      */
     public Map<String, List<String>> headers() {
@@ -114,7 +118,7 @@ public class DppWorkerRequest {
     /**
      * Set the headers property: Dictionary of
      * &lt;components·ikn5y4·schemas·dppworkerrequest·properties·headers·additionalproperties&gt;.
-     *
+     * 
      * @param headers the headers value to set.
      * @return the DppWorkerRequest object itself.
      */
@@ -125,7 +129,7 @@ public class DppWorkerRequest {
 
     /**
      * Get the supportedGroupVersions property: The supportedGroupVersions property.
-     *
+     * 
      * @return the supportedGroupVersions value.
      */
     public List<String> supportedGroupVersions() {
@@ -134,7 +138,7 @@ public class DppWorkerRequest {
 
     /**
      * Set the supportedGroupVersions property: The supportedGroupVersions property.
-     *
+     * 
      * @param supportedGroupVersions the supportedGroupVersions value to set.
      * @return the DppWorkerRequest object itself.
      */
@@ -145,7 +149,7 @@ public class DppWorkerRequest {
 
     /**
      * Get the cultureInfo property: The cultureInfo property.
-     *
+     * 
      * @return the cultureInfo value.
      */
     public String cultureInfo() {
@@ -154,7 +158,7 @@ public class DppWorkerRequest {
 
     /**
      * Set the cultureInfo property: The cultureInfo property.
-     *
+     * 
      * @param cultureInfo the cultureInfo value to set.
      * @return the DppWorkerRequest object itself.
      */
@@ -165,7 +169,7 @@ public class DppWorkerRequest {
 
     /**
      * Get the parameters property: Dictionary of &lt;string&gt;.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
@@ -174,7 +178,7 @@ public class DppWorkerRequest {
 
     /**
      * Set the parameters property: Dictionary of &lt;string&gt;.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DppWorkerRequest object itself.
      */
@@ -185,7 +189,7 @@ public class DppWorkerRequest {
 
     /**
      * Get the httpMethod property: The httpMethod property.
-     *
+     * 
      * @return the httpMethod value.
      */
     public String httpMethod() {
@@ -194,7 +198,7 @@ public class DppWorkerRequest {
 
     /**
      * Set the httpMethod property: The httpMethod property.
-     *
+     * 
      * @param httpMethod the httpMethod value to set.
      * @return the DppWorkerRequest object itself.
      */
@@ -205,7 +209,7 @@ public class DppWorkerRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

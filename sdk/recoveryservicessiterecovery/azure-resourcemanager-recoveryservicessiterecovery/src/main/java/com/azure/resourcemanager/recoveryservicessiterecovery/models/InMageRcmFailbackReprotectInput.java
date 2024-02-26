@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** InMageRcmFailback specific provider input. */
+/**
+ * InMageRcmFailback specific provider input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMageRcmFailback")
 @Fluent
@@ -33,13 +35,15 @@ public final class InMageRcmFailbackReprotectInput extends ReverseReplicationPro
     @JsonProperty(value = "policyId", required = true)
     private String policyId;
 
-    /** Creates an instance of InMageRcmFailbackReprotectInput class. */
+    /**
+     * Creates an instance of InMageRcmFailbackReprotectInput class.
+     */
     public InMageRcmFailbackReprotectInput() {
     }
 
     /**
      * Get the processServerId property: The process server Id.
-     *
+     * 
      * @return the processServerId value.
      */
     public String processServerId() {
@@ -48,7 +52,7 @@ public final class InMageRcmFailbackReprotectInput extends ReverseReplicationPro
 
     /**
      * Set the processServerId property: The process server Id.
-     *
+     * 
      * @param processServerId the processServerId value to set.
      * @return the InMageRcmFailbackReprotectInput object itself.
      */
@@ -59,7 +63,7 @@ public final class InMageRcmFailbackReprotectInput extends ReverseReplicationPro
 
     /**
      * Get the runAsAccountId property: The run as account Id.
-     *
+     * 
      * @return the runAsAccountId value.
      */
     public String runAsAccountId() {
@@ -68,7 +72,7 @@ public final class InMageRcmFailbackReprotectInput extends ReverseReplicationPro
 
     /**
      * Set the runAsAccountId property: The run as account Id.
-     *
+     * 
      * @param runAsAccountId the runAsAccountId value to set.
      * @return the InMageRcmFailbackReprotectInput object itself.
      */
@@ -79,7 +83,7 @@ public final class InMageRcmFailbackReprotectInput extends ReverseReplicationPro
 
     /**
      * Get the policyId property: The Policy Id.
-     *
+     * 
      * @return the policyId value.
      */
     public String policyId() {
@@ -88,7 +92,7 @@ public final class InMageRcmFailbackReprotectInput extends ReverseReplicationPro
 
     /**
      * Set the policyId property: The Policy Id.
-     *
+     * 
      * @param policyId the policyId value to set.
      * @return the InMageRcmFailbackReprotectInput object itself.
      */
@@ -99,23 +103,19 @@ public final class InMageRcmFailbackReprotectInput extends ReverseReplicationPro
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (processServerId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property processServerId in model InMageRcmFailbackReprotectInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property processServerId in model InMageRcmFailbackReprotectInput"));
         }
         if (policyId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property policyId in model InMageRcmFailbackReprotectInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property policyId in model InMageRcmFailbackReprotectInput"));
         }
     }
 

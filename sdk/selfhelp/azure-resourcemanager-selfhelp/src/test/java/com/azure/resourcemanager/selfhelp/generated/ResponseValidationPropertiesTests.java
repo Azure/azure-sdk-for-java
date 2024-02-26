@@ -11,29 +11,23 @@ import org.junit.jupiter.api.Assertions;
 public final class ResponseValidationPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResponseValidationProperties model =
-            BinaryData
-                .fromString(
-                    "{\"regex\":\"ibrhosxsdqr\",\"isRequired\":false,\"validationErrorMessage\":\"m\",\"maxLength\":102542890126801084}")
-                .toObject(ResponseValidationProperties.class);
-        Assertions.assertEquals("ibrhosxsdqr", model.regex());
-        Assertions.assertEquals(false, model.isRequired());
-        Assertions.assertEquals("m", model.validationErrorMessage());
-        Assertions.assertEquals(102542890126801084L, model.maxLength());
+        ResponseValidationProperties model = BinaryData.fromString(
+            "{\"regex\":\"a\",\"isRequired\":true,\"validationErrorMessage\":\"czelpcirel\",\"maxLength\":2411008459227076557}")
+            .toObject(ResponseValidationProperties.class);
+        Assertions.assertEquals("a", model.regex());
+        Assertions.assertEquals(true, model.isRequired());
+        Assertions.assertEquals("czelpcirel", model.validationErrorMessage());
+        Assertions.assertEquals(2411008459227076557L, model.maxLength());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ResponseValidationProperties model =
-            new ResponseValidationProperties()
-                .withRegex("ibrhosxsdqr")
-                .withIsRequired(false)
-                .withValidationErrorMessage("m")
-                .withMaxLength(102542890126801084L);
+        ResponseValidationProperties model = new ResponseValidationProperties().withRegex("a").withIsRequired(true)
+            .withValidationErrorMessage("czelpcirel").withMaxLength(2411008459227076557L);
         model = BinaryData.fromObject(model).toObject(ResponseValidationProperties.class);
-        Assertions.assertEquals("ibrhosxsdqr", model.regex());
-        Assertions.assertEquals(false, model.isRequired());
-        Assertions.assertEquals("m", model.validationErrorMessage());
-        Assertions.assertEquals(102542890126801084L, model.maxLength());
+        Assertions.assertEquals("a", model.regex());
+        Assertions.assertEquals(true, model.isRequired());
+        Assertions.assertEquals("czelpcirel", model.validationErrorMessage());
+        Assertions.assertEquals(2411008459227076557L, model.maxLength());
     }
 }

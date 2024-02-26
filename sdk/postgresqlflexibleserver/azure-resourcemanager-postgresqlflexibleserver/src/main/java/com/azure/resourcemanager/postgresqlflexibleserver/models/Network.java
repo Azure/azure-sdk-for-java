@@ -7,7 +7,9 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Network properties of a server. */
+/**
+ * Network properties of a server.
+ */
 @Fluent
 public final class Network {
     /*
@@ -32,13 +34,15 @@ public final class Network {
     @JsonProperty(value = "privateDnsZoneArmResourceId")
     private String privateDnsZoneArmResourceId;
 
-    /** Creates an instance of Network class. */
+    /**
+     * Creates an instance of Network class.
+     */
     public Network() {
     }
 
     /**
      * Get the publicNetworkAccess property: public network access is enabled or not.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public ServerPublicNetworkAccessState publicNetworkAccess() {
@@ -47,7 +51,7 @@ public final class Network {
 
     /**
      * Set the publicNetworkAccess property: public network access is enabled or not.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the Network object itself.
      */
@@ -60,7 +64,7 @@ public final class Network {
      * Get the delegatedSubnetResourceId property: Delegated subnet arm resource id. This is required to be passed
      * during create, in case we want the server to be VNET injected, i.e. Private access server. During update, pass
      * this only if we want to update the value for Private DNS zone.
-     *
+     * 
      * @return the delegatedSubnetResourceId value.
      */
     public String delegatedSubnetResourceId() {
@@ -71,7 +75,7 @@ public final class Network {
      * Set the delegatedSubnetResourceId property: Delegated subnet arm resource id. This is required to be passed
      * during create, in case we want the server to be VNET injected, i.e. Private access server. During update, pass
      * this only if we want to update the value for Private DNS zone.
-     *
+     * 
      * @param delegatedSubnetResourceId the delegatedSubnetResourceId value to set.
      * @return the Network object itself.
      */
@@ -84,7 +88,7 @@ public final class Network {
      * Get the privateDnsZoneArmResourceId property: Private dns zone arm resource id. This is required to be passed
      * during create, in case we want the server to be VNET injected, i.e. Private access server. During update, pass
      * this only if we want to update the value for Private DNS zone.
-     *
+     * 
      * @return the privateDnsZoneArmResourceId value.
      */
     public String privateDnsZoneArmResourceId() {
@@ -95,7 +99,7 @@ public final class Network {
      * Set the privateDnsZoneArmResourceId property: Private dns zone arm resource id. This is required to be passed
      * during create, in case we want the server to be VNET injected, i.e. Private access server. During update, pass
      * this only if we want to update the value for Private DNS zone.
-     *
+     * 
      * @param privateDnsZoneArmResourceId the privateDnsZoneArmResourceId value to set.
      * @return the Network object itself.
      */
@@ -106,7 +110,7 @@ public final class Network {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

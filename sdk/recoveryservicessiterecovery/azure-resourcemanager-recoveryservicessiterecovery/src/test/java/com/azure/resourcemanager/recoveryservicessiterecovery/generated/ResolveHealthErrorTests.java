@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ResolveHealthErrorTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResolveHealthError model =
-            BinaryData.fromString("{\"healthErrorId\":\"txifqj\"}").toObject(ResolveHealthError.class);
+        ResolveHealthError model
+            = BinaryData.fromString("{\"healthErrorId\":\"txifqj\"}").toObject(ResolveHealthError.class);
         Assertions.assertEquals("txifqj", model.healthErrorId());
     }
 

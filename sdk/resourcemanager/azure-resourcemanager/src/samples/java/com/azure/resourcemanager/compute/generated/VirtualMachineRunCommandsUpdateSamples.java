@@ -10,44 +10,33 @@ import com.azure.resourcemanager.compute.models.VirtualMachineRunCommandScriptSo
 import com.azure.resourcemanager.compute.models.VirtualMachineRunCommandUpdate;
 import java.util.Arrays;
 
-/** Samples for VirtualMachineRunCommands Update. */
+/**
+ * Samples for VirtualMachineRunCommands Update.
+ */
 public final class VirtualMachineRunCommandsUpdateSamples {
     /*
-     * x-ms-original-file: specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-07-01/examples/runCommandExamples/VirtualMachineRunCommand_Update.json
+     * x-ms-original-file:
+     * specification/compute/resource-manager/Microsoft.Compute/ComputeRP/stable/2023-09-01/examples/runCommandExamples/
+     * VirtualMachineRunCommand_Update.json
      */
     /**
      * Sample code: Update a run command.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateARunCommand(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .virtualMachines()
-            .manager()
-            .serviceClient()
-            .getVirtualMachineRunCommands()
-            .update(
-                "myResourceGroup",
-                "myVM",
-                "myRunCommand",
-                new VirtualMachineRunCommandUpdate()
-                    .withSource(
-                        new VirtualMachineRunCommandScriptSource()
-                            .withScript("Write-Host Hello World! ; Remove-Item C:\test\testFile.txt"))
-                    .withParameters(
-                        Arrays
-                            .asList(
-                                new RunCommandInputParameter().withName("param1").withValue("value1"),
-                                new RunCommandInputParameter().withName("param2").withValue("value2")))
-                    .withAsyncExecution(false)
-                    .withRunAsUser("user1")
-                    .withRunAsPassword("fakeTokenPlaceholder")
-                    .withTimeoutInSeconds(3600)
-                    .withOutputBlobUri(
-                        "https://mystorageaccount.blob.core.windows.net/myscriptoutputcontainer/outputUri")
-                    .withErrorBlobUri("https://mystorageaccount.blob.core.windows.net/mycontainer/MyScriptError.txt")
-                    .withErrorBlobManagedIdentity(
-                        new RunCommandManagedIdentity().withObjectId("4231e4d2-33e4-4e23-96b2-17888afa6072")),
+        azure.virtualMachines().manager().serviceClient().getVirtualMachineRunCommands()
+            .update("myResourceGroup", "myVM", "myRunCommand", new VirtualMachineRunCommandUpdate()
+                .withSource(new VirtualMachineRunCommandScriptSource()
+                    .withScript("Write-Host Hello World! ; Remove-Item C:\test\testFile.txt"))
+                .withParameters(Arrays.asList(new RunCommandInputParameter().withName("param1").withValue("value1"),
+                    new RunCommandInputParameter().withName("param2").withValue("value2")))
+                .withAsyncExecution(false).withRunAsUser("user1").withRunAsPassword("fakeTokenPlaceholder")
+                .withTimeoutInSeconds(3600)
+                .withOutputBlobUri("https://mystorageaccount.blob.core.windows.net/myscriptoutputcontainer/outputUri")
+                .withErrorBlobUri("https://mystorageaccount.blob.core.windows.net/mycontainer/MyScriptError.txt")
+                .withErrorBlobManagedIdentity(
+                    new RunCommandManagedIdentity().withObjectId("4231e4d2-33e4-4e23-96b2-17888afa6072")),
                 com.azure.core.util.Context.NONE);
     }
 }

@@ -9,17 +9,23 @@ import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * The placement policy for allocating nodes in the pool.
- *
- * <p>The default value is regional.
+ * 
+ * The default value is regional.
  */
 public enum NodePlacementPolicyType {
-    /** Enum value Regional. */
+    /**
+     * Enum value Regional.
+     */
     REGIONAL("Regional"),
 
-    /** Enum value Zonal. */
+    /**
+     * Enum value Zonal.
+     */
     ZONAL("Zonal");
 
-    /** The actual serialized value for a NodePlacementPolicyType instance. */
+    /**
+     * The actual serialized value for a NodePlacementPolicyType instance.
+     */
     private final String value;
 
     NodePlacementPolicyType(String value) {
@@ -28,7 +34,7 @@ public enum NodePlacementPolicyType {
 
     /**
      * Parses a serialized value to a NodePlacementPolicyType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed NodePlacementPolicyType object, or null if unable to parse.
      */
@@ -46,7 +52,9 @@ public enum NodePlacementPolicyType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

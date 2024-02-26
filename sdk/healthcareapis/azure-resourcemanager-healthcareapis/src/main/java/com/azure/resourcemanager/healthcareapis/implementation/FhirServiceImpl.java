@@ -8,14 +8,16 @@ import com.azure.core.management.Region;
 import com.azure.core.management.SystemData;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.healthcareapis.fluent.models.FhirServiceInner;
+import com.azure.resourcemanager.healthcareapis.models.Encryption;
 import com.azure.resourcemanager.healthcareapis.models.FhirService;
-import com.azure.resourcemanager.healthcareapis.models.FhirServiceAccessPolicyEntry;
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceAcrConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceAuthenticationConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceCorsConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceExportConfiguration;
+import com.azure.resourcemanager.healthcareapis.models.FhirServiceImportConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.FhirServiceKind;
 import com.azure.resourcemanager.healthcareapis.models.FhirServicePatchResource;
+import com.azure.resourcemanager.healthcareapis.models.ImplementationGuidesConfiguration;
 import com.azure.resourcemanager.healthcareapis.models.PrivateEndpointConnection;
 import com.azure.resourcemanager.healthcareapis.models.ProvisioningState;
 import com.azure.resourcemanager.healthcareapis.models.PublicNetworkAccess;
@@ -76,15 +78,6 @@ public final class FhirServiceImpl implements FhirService, FhirService.Definitio
         return this.innerModel().provisioningState();
     }
 
-    public List<FhirServiceAccessPolicyEntry> accessPolicies() {
-        List<FhirServiceAccessPolicyEntry> inner = this.innerModel().accessPolicies();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
-    }
-
     public FhirServiceAcrConfiguration acrConfiguration() {
         return this.innerModel().acrConfiguration();
     }
@@ -122,12 +115,28 @@ public final class FhirServiceImpl implements FhirService, FhirService.Definitio
         return this.innerModel().resourceVersionPolicyConfiguration();
     }
 
+    public FhirServiceImportConfiguration importConfiguration() {
+        return this.innerModel().importConfiguration();
+    }
+
+    public ImplementationGuidesConfiguration implementationGuidesConfiguration() {
+        return this.innerModel().implementationGuidesConfiguration();
+    }
+
+    public Encryption encryption() {
+        return this.innerModel().encryption();
+    }
+
     public Region region() {
         return Region.fromName(this.regionName());
     }
 
     public String regionName() {
         return this.location();
+    }
+
+    public String resourceGroupName() {
+        return resourceGroupName;
     }
 
     public FhirServiceInner innerModel() {
@@ -153,20 +162,14 @@ public final class FhirServiceImpl implements FhirService, FhirService.Definitio
     }
 
     public FhirService create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFhirServices()
-                .createOrUpdate(resourceGroupName, workspaceName, fhirServiceName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getFhirServices().createOrUpdate(resourceGroupName,
+            workspaceName, fhirServiceName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public FhirService create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFhirServices()
-                .createOrUpdate(resourceGroupName, workspaceName, fhirServiceName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getFhirServices().createOrUpdate(resourceGroupName,
+            workspaceName, fhirServiceName, this.innerModel(), context);
         return this;
     }
 
@@ -182,26 +185,19 @@ public final class FhirServiceImpl implements FhirService, FhirService.Definitio
     }
 
     public FhirService apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFhirServices()
-                .update(
-                    resourceGroupName, fhirServiceName, workspaceName, updateFhirservicePatchResource, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getFhirServices().update(resourceGroupName, fhirServiceName,
+            workspaceName, updateFhirservicePatchResource, Context.NONE);
         return this;
     }
 
     public FhirService apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFhirServices()
-                .update(resourceGroupName, fhirServiceName, workspaceName, updateFhirservicePatchResource, context);
+        this.innerObject = serviceManager.serviceClient().getFhirServices().update(resourceGroupName, fhirServiceName,
+            workspaceName, updateFhirservicePatchResource, context);
         return this;
     }
 
-    FhirServiceImpl(
-        FhirServiceInner innerObject, com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager) {
+    FhirServiceImpl(FhirServiceInner innerObject,
+        com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -210,22 +206,14 @@ public final class FhirServiceImpl implements FhirService, FhirService.Definitio
     }
 
     public FhirService refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFhirServices()
-                .getWithResponse(resourceGroupName, workspaceName, fhirServiceName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getFhirServices()
+            .getWithResponse(resourceGroupName, workspaceName, fhirServiceName, Context.NONE).getValue();
         return this;
     }
 
     public FhirService refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getFhirServices()
-                .getWithResponse(resourceGroupName, workspaceName, fhirServiceName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getFhirServices()
+            .getWithResponse(resourceGroupName, workspaceName, fhirServiceName, context).getValue();
         return this;
     }
 
@@ -269,18 +257,13 @@ public final class FhirServiceImpl implements FhirService, FhirService.Definitio
         }
     }
 
-    public FhirServiceImpl withAccessPolicies(List<FhirServiceAccessPolicyEntry> accessPolicies) {
-        this.innerModel().withAccessPolicies(accessPolicies);
-        return this;
-    }
-
     public FhirServiceImpl withAcrConfiguration(FhirServiceAcrConfiguration acrConfiguration) {
         this.innerModel().withAcrConfiguration(acrConfiguration);
         return this;
     }
 
-    public FhirServiceImpl withAuthenticationConfiguration(
-        FhirServiceAuthenticationConfiguration authenticationConfiguration) {
+    public FhirServiceImpl
+        withAuthenticationConfiguration(FhirServiceAuthenticationConfiguration authenticationConfiguration) {
         this.innerModel().withAuthenticationConfiguration(authenticationConfiguration);
         return this;
     }
@@ -300,9 +283,25 @@ public final class FhirServiceImpl implements FhirService, FhirService.Definitio
         return this;
     }
 
-    public FhirServiceImpl withResourceVersionPolicyConfiguration(
-        ResourceVersionPolicyConfiguration resourceVersionPolicyConfiguration) {
+    public FhirServiceImpl
+        withResourceVersionPolicyConfiguration(ResourceVersionPolicyConfiguration resourceVersionPolicyConfiguration) {
         this.innerModel().withResourceVersionPolicyConfiguration(resourceVersionPolicyConfiguration);
+        return this;
+    }
+
+    public FhirServiceImpl withImportConfiguration(FhirServiceImportConfiguration importConfiguration) {
+        this.innerModel().withImportConfiguration(importConfiguration);
+        return this;
+    }
+
+    public FhirServiceImpl
+        withImplementationGuidesConfiguration(ImplementationGuidesConfiguration implementationGuidesConfiguration) {
+        this.innerModel().withImplementationGuidesConfiguration(implementationGuidesConfiguration);
+        return this;
+    }
+
+    public FhirServiceImpl withEncryption(Encryption encryption) {
+        this.innerModel().withEncryption(encryption);
         return this;
     }
 

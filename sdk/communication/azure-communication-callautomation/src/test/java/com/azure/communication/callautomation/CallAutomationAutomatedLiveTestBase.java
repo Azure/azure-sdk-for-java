@@ -23,14 +23,15 @@ import com.azure.messaging.servicebus.ServiceBusReceivedMessage;
 import com.azure.messaging.servicebus.ServiceBusReceivedMessageContext;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+
 
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.lang.reflect.Type;
+import java.nio.charset.StandardCharsets;
 import java.time.Duration;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -58,7 +59,6 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
             "REDACTED-bedb-REDACTED-b8c6-REDACTED");
 
     @Override
-    @SuppressWarnings("unchecked")
     protected void beforeTest() {
         super.beforeTest();
         processorStore = new ConcurrentHashMap<>();
@@ -69,33 +69,40 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         // Load persisted events back to memory when in playback mode
         if (getTestMode() == TestMode.PLAYBACK) {
             try {
-                String fileName = "./src/test/resources/session-records/" + testContextManager.getTestName();
-                ObjectInputStream objectInputStream = new ObjectInputStream(new FileInputStream(fileName));
-                ArrayList<String> persistedEvents = (ArrayList<String>) objectInputStream.readObject();
+                String fileName = "./src/test/resources/session-records/" + testContextManager.getTestName() + ".json";
+                FileInputStream fileInputStream = new FileInputStream(fileName);
+                byte[] jsonData = new byte[fileInputStream.available()];
+                fileInputStream.read(jsonData);
+                fileInputStream.close();
+                String jsonString = new String(jsonData, StandardCharsets.UTF_8);
+                ObjectMapper objectMapper = new ObjectMapper();
+                List<String> persistedEvents = objectMapper.readValue(jsonString, new TypeReference<List<String>>() {});
                 persistedEvents.forEach(this::messageBodyHandler);
-                objectInputStream.close();
-            } catch (IOException | ClassNotFoundException e) {
+            } catch (IOException e) {
                 throw new RuntimeException(e);
             }
         }
-
     }
 
     @Override
     protected void afterTest() {
         super.afterTest();
-        processorStore.forEach((key, value) -> value.close());
+        if (processorStore != null) {
+            processorStore.forEach((key, value) -> value.close());
+        }
 
         // In recording mode, manually store events from event dispatcher into local disk as the callAutomationClient doesn't do so
         if (getTestMode() == TestMode.RECORD) {
             try {
-                String fileName = "./src/test/resources/session-records/" + testContextManager.getTestName();
+                String fileName = "./src/test/resources/session-records/" + testContextManager.getTestName() + ".json";
+
+                ObjectMapper objectMapper = new ObjectMapper();
+                String jsonString = objectMapper.writeValueAsString(eventsToPersist);
                 new FileOutputStream(fileName).close();
                 FileOutputStream fileOutputStream = new FileOutputStream(fileName, false);
-                ObjectOutputStream objectOutputStream = new ObjectOutputStream(fileOutputStream);
-                objectOutputStream.writeObject(eventsToPersist);
-                objectOutputStream.flush();
-                objectOutputStream.close();
+                fileOutputStream.write(jsonString.getBytes());
+                fileOutputStream.flush();
+                fileOutputStream.close();
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -112,25 +119,25 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         String callerId = parseIdsFromIdentifier(caller);
         String receiverId = parseIdsFromIdentifier(receiver);
         String uniqueId = callerId + receiverId;
+        if (getTestMode() != TestMode.PLAYBACK) {
+            // subscribe
+            HttpClient httpClient = HttpClient.createDefault();
+            String dispatcherUrl = DISPATCHER_ENDPOINT + String.format("/api/servicebuscallback/subscribe?q=%s", uniqueId);
+            HttpRequest request = new HttpRequest(HttpMethod.POST, dispatcherUrl);
+            HttpResponse response = httpClient.send(request).block();
+            assert response != null;
 
-        // subscribe
-        HttpClient httpClient = HttpClient.createDefault();
-        String dispatcherUrl = DISPATCHER_ENDPOINT + String.format("/api/servicebuscallback/subscribe?q=%s", uniqueId);
-        HttpRequest request = new HttpRequest(HttpMethod.POST, dispatcherUrl);
-        HttpResponse response = httpClient.send(request).block();
-        assert response != null;
-        System.out.println(String.format("Subscription to dispatcher of %s: ", uniqueId) + response.getStatusCode());
+            // create a service bus processor
+            ServiceBusProcessorClient serviceBusProcessorClient = createServiceBusClientBuilderWithConnectionString()
+                .processor()
+                .queueName(uniqueId)
+                .processMessage(this::messageHandler)
+                .processError(serviceBusErrorContext -> errorHandler(serviceBusErrorContext, new CountDownLatch(1)))
+                .buildProcessorClient();
 
-        // create a service bus processor
-        ServiceBusProcessorClient serviceBusProcessorClient = createServiceBusClientBuilderWithConnectionString()
-            .processor()
-            .queueName(uniqueId)
-            .processMessage(this::messageHandler)
-            .processError(serviceBusErrorContext -> errorHandler(serviceBusErrorContext, new CountDownLatch(1)))
-            .buildProcessorClient();
-
-        serviceBusProcessorClient.start();
-        processorStore.put(uniqueId, serviceBusProcessorClient);
+            serviceBusProcessorClient.start();
+            processorStore.put(uniqueId, serviceBusProcessorClient);
+        }
         return uniqueId;
     }
 
@@ -138,7 +145,6 @@ public class CallAutomationAutomatedLiveTestBase extends CallAutomationLiveTestB
         // receive message from dispatcher
         ServiceBusReceivedMessage message = context.getMessage();
         String body = message.getBody().toString();
-        System.out.println(body);
 
         // When in recording mode, save incoming events into memory for future use
         if (getTestMode() == TestMode.RECORD) {

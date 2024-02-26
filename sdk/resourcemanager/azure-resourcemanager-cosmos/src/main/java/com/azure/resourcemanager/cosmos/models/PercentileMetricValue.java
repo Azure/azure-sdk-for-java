@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents percentile metrics values. */
+/**
+ * Represents percentile metrics values.
+ */
 @Immutable
 public final class PercentileMetricValue extends MetricValue {
     /*
@@ -52,13 +54,15 @@ public final class PercentileMetricValue extends MetricValue {
     @JsonProperty(value = "P99", access = JsonProperty.Access.WRITE_ONLY)
     private Double p99;
 
-    /** Creates an instance of PercentileMetricValue class. */
+    /**
+     * Creates an instance of PercentileMetricValue class.
+     */
     public PercentileMetricValue() {
     }
 
     /**
      * Get the p10 property: The 10th percentile value for the metric.
-     *
+     * 
      * @return the p10 value.
      */
     public Double p10() {
@@ -67,7 +71,7 @@ public final class PercentileMetricValue extends MetricValue {
 
     /**
      * Get the p25 property: The 25th percentile value for the metric.
-     *
+     * 
      * @return the p25 value.
      */
     public Double p25() {
@@ -76,7 +80,7 @@ public final class PercentileMetricValue extends MetricValue {
 
     /**
      * Get the p50 property: The 50th percentile value for the metric.
-     *
+     * 
      * @return the p50 value.
      */
     public Double p50() {
@@ -85,7 +89,7 @@ public final class PercentileMetricValue extends MetricValue {
 
     /**
      * Get the p75 property: The 75th percentile value for the metric.
-     *
+     * 
      * @return the p75 value.
      */
     public Double p75() {
@@ -94,7 +98,7 @@ public final class PercentileMetricValue extends MetricValue {
 
     /**
      * Get the p90 property: The 90th percentile value for the metric.
-     *
+     * 
      * @return the p90 value.
      */
     public Double p90() {
@@ -103,7 +107,7 @@ public final class PercentileMetricValue extends MetricValue {
 
     /**
      * Get the p95 property: The 95th percentile value for the metric.
-     *
+     * 
      * @return the p95 value.
      */
     public Double p95() {
@@ -112,7 +116,7 @@ public final class PercentileMetricValue extends MetricValue {
 
     /**
      * Get the p99 property: The 99th percentile value for the metric.
-     *
+     * 
      * @return the p99 value.
      */
     public Double p99() {
@@ -121,7 +125,7 @@ public final class PercentileMetricValue extends MetricValue {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

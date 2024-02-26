@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Start packet capture parameters on virtual network gateway. */
+/**
+ * Start packet capture parameters on virtual network gateway.
+ */
 @Fluent
 public final class VpnPacketCaptureStartParameters {
     /*
@@ -16,13 +18,15 @@ public final class VpnPacketCaptureStartParameters {
     @JsonProperty(value = "filterData")
     private String filterData;
 
-    /** Creates an instance of VpnPacketCaptureStartParameters class. */
+    /**
+     * Creates an instance of VpnPacketCaptureStartParameters class.
+     */
     public VpnPacketCaptureStartParameters() {
     }
 
     /**
      * Get the filterData property: Start Packet capture parameters.
-     *
+     * 
      * @return the filterData value.
      */
     public String filterData() {
@@ -31,7 +35,7 @@ public final class VpnPacketCaptureStartParameters {
 
     /**
      * Set the filterData property: Start Packet capture parameters.
-     *
+     * 
      * @param filterData the filterData value to set.
      * @return the VpnPacketCaptureStartParameters object itself.
      */
@@ -42,7 +46,7 @@ public final class VpnPacketCaptureStartParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

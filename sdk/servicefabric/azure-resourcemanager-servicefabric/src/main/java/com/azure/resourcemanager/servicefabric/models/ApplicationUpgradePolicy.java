@@ -7,7 +7,9 @@ package com.azure.resourcemanager.servicefabric.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the policy for a monitored application upgrade. */
+/**
+ * Describes the policy for a monitored application upgrade.
+ */
 @Fluent
 public final class ApplicationUpgradePolicy {
     /*
@@ -34,7 +36,7 @@ public final class ApplicationUpgradePolicy {
 
     /*
      * Defines a health policy used to evaluate the health of an application or one of its children entities.
-     *
+     * 
      */
     @JsonProperty(value = "applicationHealthPolicy")
     private ArmApplicationHealthPolicy applicationHealthPolicy;
@@ -53,7 +55,9 @@ public final class ApplicationUpgradePolicy {
     @JsonProperty(value = "recreateApplication")
     private Boolean recreateApplication;
 
-    /** Creates an instance of ApplicationUpgradePolicy class. */
+    /**
+     * Creates an instance of ApplicationUpgradePolicy class.
+     */
     public ApplicationUpgradePolicy() {
     }
 
@@ -62,7 +66,7 @@ public final class ApplicationUpgradePolicy {
      * domain and prevent loss of availability when there are unexpected issues. When this timeout expires, processing
      * of the upgrade domain will proceed regardless of availability loss issues. The timeout is reset at the start of
      * each upgrade domain. Valid values are between 0 and 42949672925 inclusive. (unsigned 32-bit integer).
-     *
+     * 
      * @return the upgradeReplicaSetCheckTimeout value.
      */
     public String upgradeReplicaSetCheckTimeout() {
@@ -74,7 +78,7 @@ public final class ApplicationUpgradePolicy {
      * domain and prevent loss of availability when there are unexpected issues. When this timeout expires, processing
      * of the upgrade domain will proceed regardless of availability loss issues. The timeout is reset at the start of
      * each upgrade domain. Valid values are between 0 and 42949672925 inclusive. (unsigned 32-bit integer).
-     *
+     * 
      * @param upgradeReplicaSetCheckTimeout the upgradeReplicaSetCheckTimeout value to set.
      * @return the ApplicationUpgradePolicy object itself.
      */
@@ -84,9 +88,9 @@ public final class ApplicationUpgradePolicy {
     }
 
     /**
-     * Get the forceRestart property: If true, then processes are forcefully restarted during upgrade even when the code
-     * version has not changed (the upgrade only changes configuration or data).
-     *
+     * Get the forceRestart property: If true, then processes are forcefully restarted during upgrade even when the
+     * code version has not changed (the upgrade only changes configuration or data).
+     * 
      * @return the forceRestart value.
      */
     public Boolean forceRestart() {
@@ -94,9 +98,9 @@ public final class ApplicationUpgradePolicy {
     }
 
     /**
-     * Set the forceRestart property: If true, then processes are forcefully restarted during upgrade even when the code
-     * version has not changed (the upgrade only changes configuration or data).
-     *
+     * Set the forceRestart property: If true, then processes are forcefully restarted during upgrade even when the
+     * code version has not changed (the upgrade only changes configuration or data).
+     * 
      * @param forceRestart the forceRestart value to set.
      * @return the ApplicationUpgradePolicy object itself.
      */
@@ -107,7 +111,7 @@ public final class ApplicationUpgradePolicy {
 
     /**
      * Get the rollingUpgradeMonitoringPolicy property: The policy used for monitoring the application upgrade.
-     *
+     * 
      * @return the rollingUpgradeMonitoringPolicy value.
      */
     public ArmRollingUpgradeMonitoringPolicy rollingUpgradeMonitoringPolicy() {
@@ -116,12 +120,12 @@ public final class ApplicationUpgradePolicy {
 
     /**
      * Set the rollingUpgradeMonitoringPolicy property: The policy used for monitoring the application upgrade.
-     *
+     * 
      * @param rollingUpgradeMonitoringPolicy the rollingUpgradeMonitoringPolicy value to set.
      * @return the ApplicationUpgradePolicy object itself.
      */
-    public ApplicationUpgradePolicy withRollingUpgradeMonitoringPolicy(
-        ArmRollingUpgradeMonitoringPolicy rollingUpgradeMonitoringPolicy) {
+    public ApplicationUpgradePolicy
+        withRollingUpgradeMonitoringPolicy(ArmRollingUpgradeMonitoringPolicy rollingUpgradeMonitoringPolicy) {
         this.rollingUpgradeMonitoringPolicy = rollingUpgradeMonitoringPolicy;
         return this;
     }
@@ -129,7 +133,7 @@ public final class ApplicationUpgradePolicy {
     /**
      * Get the applicationHealthPolicy property: Defines a health policy used to evaluate the health of an application
      * or one of its children entities.
-     *
+     * 
      * @return the applicationHealthPolicy value.
      */
     public ArmApplicationHealthPolicy applicationHealthPolicy() {
@@ -139,7 +143,7 @@ public final class ApplicationUpgradePolicy {
     /**
      * Set the applicationHealthPolicy property: Defines a health policy used to evaluate the health of an application
      * or one of its children entities.
-     *
+     * 
      * @param applicationHealthPolicy the applicationHealthPolicy value to set.
      * @return the ApplicationUpgradePolicy object itself.
      */
@@ -151,7 +155,7 @@ public final class ApplicationUpgradePolicy {
     /**
      * Get the upgradeMode property: The mode used to monitor health during a rolling upgrade. The values are
      * UnmonitoredAuto, UnmonitoredManual, and Monitored.
-     *
+     * 
      * @return the upgradeMode value.
      */
     public RollingUpgradeMode upgradeMode() {
@@ -161,7 +165,7 @@ public final class ApplicationUpgradePolicy {
     /**
      * Set the upgradeMode property: The mode used to monitor health during a rolling upgrade. The values are
      * UnmonitoredAuto, UnmonitoredManual, and Monitored.
-     *
+     * 
      * @param upgradeMode the upgradeMode value to set.
      * @return the ApplicationUpgradePolicy object itself.
      */
@@ -173,7 +177,7 @@ public final class ApplicationUpgradePolicy {
     /**
      * Get the recreateApplication property: Determines whether the application should be recreated on update. If
      * value=true, the rest of the upgrade policy parameters are not allowed and it will result in availability loss.
-     *
+     * 
      * @return the recreateApplication value.
      */
     public Boolean recreateApplication() {
@@ -183,7 +187,7 @@ public final class ApplicationUpgradePolicy {
     /**
      * Set the recreateApplication property: Determines whether the application should be recreated on update. If
      * value=true, the rest of the upgrade policy parameters are not allowed and it will result in availability loss.
-     *
+     * 
      * @param recreateApplication the recreateApplication value to set.
      * @return the ApplicationUpgradePolicy object itself.
      */
@@ -194,7 +198,7 @@ public final class ApplicationUpgradePolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

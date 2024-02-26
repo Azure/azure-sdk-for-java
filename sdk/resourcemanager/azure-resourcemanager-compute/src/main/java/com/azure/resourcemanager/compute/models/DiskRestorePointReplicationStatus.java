@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The instance view of a disk restore point. */
+/**
+ * The instance view of a disk restore point.
+ */
 @Fluent
 public final class DiskRestorePointReplicationStatus {
     /*
@@ -22,13 +24,15 @@ public final class DiskRestorePointReplicationStatus {
     @JsonProperty(value = "completionPercent")
     private Integer completionPercent;
 
-    /** Creates an instance of DiskRestorePointReplicationStatus class. */
+    /**
+     * Creates an instance of DiskRestorePointReplicationStatus class.
+     */
     public DiskRestorePointReplicationStatus() {
     }
 
     /**
      * Get the status property: The resource status information.
-     *
+     * 
      * @return the status value.
      */
     public InstanceViewStatus status() {
@@ -37,7 +41,7 @@ public final class DiskRestorePointReplicationStatus {
 
     /**
      * Set the status property: The resource status information.
-     *
+     * 
      * @param status the status value to set.
      * @return the DiskRestorePointReplicationStatus object itself.
      */
@@ -48,7 +52,7 @@ public final class DiskRestorePointReplicationStatus {
 
     /**
      * Get the completionPercent property: Replication completion percentage.
-     *
+     * 
      * @return the completionPercent value.
      */
     public Integer completionPercent() {
@@ -57,7 +61,7 @@ public final class DiskRestorePointReplicationStatus {
 
     /**
      * Set the completionPercent property: Replication completion percentage.
-     *
+     * 
      * @param completionPercent the completionPercent value to set.
      * @return the DiskRestorePointReplicationStatus object itself.
      */
@@ -68,7 +72,7 @@ public final class DiskRestorePointReplicationStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

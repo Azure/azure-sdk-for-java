@@ -20,6 +20,7 @@ import java.time.OffsetDateTime;
 import java.util.Map;
 import java.util.Objects;
 
+import static com.azure.core.util.CoreUtils.bytesToHexString;
 import static com.azure.security.keyvault.certificates.implementation.CertificatesUtils.getIdMetadata;
 
 /**
@@ -73,12 +74,10 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
     private final OffsetDateTime updatedOn;
 
     /**
-     * Reflects the deletion recovery level currently in effect for certificates in
-     * the current vault. If it contains 'Purgeable', the certificate can be
-     * permanently deleted by a privileged user; otherwise, only the system can
-     * purge the certificate, at the end of the retention interval. Possible values
-     * include: 'Purgeable', 'Recoverable+Purgeable', 'Recoverable',
-     * 'Recoverable+ProtectedSubscription'.
+     * Reflects the deletion recovery level currently in effect for certificates in the current vault. If it contains
+     * 'Purgeable', the certificate can be permanently deleted by a privileged user; otherwise, only the system can
+     * purge the certificate, at the end of the retention interval. Possible values include: 'Purgeable',
+     * 'Recoverable+Purgeable', 'Recoverable', 'Recoverable+ProtectedSubscription'.
      */
     private final String recoveryLevel;
 
@@ -93,7 +92,7 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
     private Map<String, String> tags;
 
     /**
-     * Thumbprint of the certificate. Read Only
+     * Thumbprint of the certificate. Read-only.
      */
     private final Base64Url x509Thumbprint;
 
@@ -117,7 +116,7 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
     }
 
     CertificateProperties(String id, CertificateAttributes attributes, Map<String, String> tags,
-        byte[] wireThumbprint, Integer recoverableDays) {
+                          byte[] wireThumbprint, Integer recoverableDays) {
         IdMetadata idMetadata = getIdMetadata(id, 1, 2, 3, LOGGER);
         this.id = idMetadata.getId();
         this.vaultUrl = idMetadata.getVaultUrl();
@@ -153,7 +152,7 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
     /**
      * Get the certificate identifier.
      *
-     * @return the certificate identifier
+     * @return The certificate identifier
      */
     public String getId() {
         return this.id;
@@ -162,7 +161,7 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
     /**
      * Get the notBefore UTC time.
      *
-     * @return the notBefore UTC time.
+     * @return The notBefore UTC time.
      */
     public OffsetDateTime getNotBefore() {
         return notBefore;
@@ -170,7 +169,8 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
 
     /**
      * Gets the number of days a key is retained before being deleted for a soft delete-enabled Key Vault.
-     * @return the recoverable days.
+     *
+     * @return The recoverable days.
      */
     public Integer getRecoverableDays() {
         return recoverableDays;
@@ -179,7 +179,7 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
     /**
      * Get the Certificate Expiry time in UTC.
      *
-     * @return the expires UTC time.
+     * @return The expires UTC time.
      */
     public OffsetDateTime getExpiresOn() {
         return this.expiresOn;
@@ -188,7 +188,7 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
     /**
      * Get the UTC time at which certificate was created.
      *
-     * @return the created UTC time.
+     * @return The created UTC time.
      */
     public OffsetDateTime getCreatedOn() {
         return createdOn;
@@ -197,7 +197,7 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
     /**
      * Get the UTC time at which certificate was last updated.
      *
-     * @return the last updated UTC time.
+     * @return The last updated UTC time.
      */
     public OffsetDateTime getUpdatedOn() {
         return updatedOn;
@@ -207,7 +207,7 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
     /**
      * Get the tags associated with the certificate.
      *
-     * @return the value of the tags.
+     * @return The value of the tags.
      */
     public Map<String, String> getTags() {
         return this.tags;
@@ -216,7 +216,7 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
     /**
      * Get the URL for the Azure KeyVault service.
      *
-     * @return the value of the URL for the Azure KeyVault service.
+     * @return The value of the URL for the Azure KeyVault service.
      */
     public String getVaultUrl() {
         return this.vaultUrl;
@@ -225,18 +225,20 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
     /**
      * Set the tags to be associated with the certificate.
      *
-     * @param tags The tags to set
-     * @return the CertificateProperties object itself.
+     * @param tags The tags to set.
+     *
+     * @return The updated {@link CertificateProperties} object.
      */
     public CertificateProperties setTags(Map<String, String> tags) {
         this.tags = tags;
+
         return this;
     }
 
     /**
      * Get the version of the certificate.
      *
-     * @return the version of the certificate.
+     * @return The version of the certificate.
      */
     public String getVersion() {
         return this.version;
@@ -245,7 +247,7 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
     /**
      * Get the certificate name.
      *
-     * @return the name of the certificate.
+     * @return The name of the certificate.
      */
     public String getName() {
         return this.name;
@@ -254,7 +256,7 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
     /**
      * Get the recovery level of the certificate.
 
-     * @return the recoveryLevel of the certificate.
+     * @return The recovery level of the certificate.
      */
     public String getRecoveryLevel() {
         return recoveryLevel;
@@ -263,7 +265,7 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
     /**
      * Get the enabled status.
      *
-     * @return the enabled status
+     * @return The enabled status.
      */
     public Boolean isEnabled() {
         return this.enabled;
@@ -271,23 +273,33 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
 
     /**
      * Set the enabled status.
+     *
      * @param enabled The enabled status to set.
-     * @return the CertificateProperties object itself.
+     *
+     * @return The updated {@link CertificateProperties} object.
      */
     public CertificateProperties setEnabled(Boolean enabled) {
         this.enabled = enabled;
+
         return this;
     }
 
     /**
-     *  Get the X509 Thumbprint of the certificate.
-     * @return the x509Thumbprint.
+     * Get the X509 Thumbprint of the certificate.
+     *
+     * @return The x509Thumbprint.
      */
     public byte[] getX509Thumbprint() {
-        if (x509Thumbprint != null) {
-            return this.x509Thumbprint.decodedBytes();
-        }
-        return null;
+        return x509Thumbprint != null ? x509Thumbprint.decodedBytes() : null;
+    }
+
+    /**
+     * Gets the thumbprint of the certificate as a hex string which can be used to uniquely identify it.
+     *
+     * @return The thumbprint of the certificate as a hex string.
+     */
+    public String getX509ThumbprintAsString() {
+        return bytesToHexString(getX509Thumbprint());
     }
 
     @Override
@@ -301,7 +313,9 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
      * Reads a JSON stream into a {@link CertificateProperties}.
      *
      * @param jsonReader The {@link JsonReader} being read.
-     * @return The {@link CertificateProperties} that the JSON stream represented, may return null.
+     *
+     * @return The {@link CertificateProperties} that the JSON stream represented, may return {@code null}.
+     *
      * @throws IOException If a {@link CertificateProperties} fails to be read from the {@code jsonReader}.
      */
     public static CertificateProperties fromJson(JsonReader jsonReader) throws IOException {
@@ -314,6 +328,7 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
 
             while (reader.nextToken() != JsonToken.END_OBJECT) {
                 String fieldName = reader.getFieldName();
+
                 reader.nextToken();
 
                 if ("id".equals(fieldName)) {
@@ -336,4 +351,3 @@ public class CertificateProperties implements JsonSerializable<CertificateProper
         });
     }
 }
-

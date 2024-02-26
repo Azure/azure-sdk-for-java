@@ -16,17 +16,15 @@ import com.azure.resourcemanager.streamanalytics.models.StartStreamingJobParamet
 import com.azure.resourcemanager.streamanalytics.models.StreamingJob;
 import com.azure.resourcemanager.streamanalytics.models.StreamingJobs;
 import com.azure.resourcemanager.streamanalytics.models.StreamingJobsGetByResourceGroupResponse;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 public final class StreamingJobsImpl implements StreamingJobs {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(StreamingJobsImpl.class);
+    private static final ClientLogger LOGGER = new ClientLogger(StreamingJobsImpl.class);
 
     private final StreamingJobsClient innerClient;
 
     private final com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager serviceManager;
 
-    public StreamingJobsImpl(
-        StreamingJobsClient innerClient,
+    public StreamingJobsImpl(StreamingJobsClient innerClient,
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -40,6 +38,18 @@ public final class StreamingJobsImpl implements StreamingJobs {
         this.serviceClient().delete(resourceGroupName, jobName, context);
     }
 
+    public Response<StreamingJob> getByResourceGroupWithResponse(String resourceGroupName, String jobName,
+        String expand, Context context) {
+        StreamingJobsGetByResourceGroupResponse inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, jobName, expand, context);
+        if (inner != null) {
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
+                new StreamingJobImpl(inner.getValue(), this.manager()));
+        } else {
+            return null;
+        }
+    }
+
     public StreamingJob getByResourceGroup(String resourceGroupName, String jobName) {
         StreamingJobInner inner = this.serviceClient().getByResourceGroup(resourceGroupName, jobName);
         if (inner != null) {
@@ -49,52 +59,33 @@ public final class StreamingJobsImpl implements StreamingJobs {
         }
     }
 
-    public Response<StreamingJob> getByResourceGroupWithResponse(
-        String resourceGroupName, String jobName, String expand, Context context) {
-        StreamingJobsGetByResourceGroupResponse inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, jobName, expand, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
-                new StreamingJobImpl(inner.getValue(), this.manager()));
-        } else {
-            return null;
-        }
-    }
-
     public PagedIterable<StreamingJob> listByResourceGroup(String resourceGroupName) {
         PagedIterable<StreamingJobInner> inner = this.serviceClient().listByResourceGroup(resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new StreamingJobImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StreamingJobImpl(inner1, this.manager()));
     }
 
     public PagedIterable<StreamingJob> listByResourceGroup(String resourceGroupName, String expand, Context context) {
-        PagedIterable<StreamingJobInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, expand, context);
-        return Utils.mapPage(inner, inner1 -> new StreamingJobImpl(inner1, this.manager()));
+        PagedIterable<StreamingJobInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, expand, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StreamingJobImpl(inner1, this.manager()));
     }
 
     public PagedIterable<StreamingJob> list() {
         PagedIterable<StreamingJobInner> inner = this.serviceClient().list();
-        return Utils.mapPage(inner, inner1 -> new StreamingJobImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StreamingJobImpl(inner1, this.manager()));
     }
 
     public PagedIterable<StreamingJob> list(String expand, Context context) {
         PagedIterable<StreamingJobInner> inner = this.serviceClient().list(expand, context);
-        return Utils.mapPage(inner, inner1 -> new StreamingJobImpl(inner1, this.manager()));
-    }
-
-    public void start(String resourceGroupName, String jobName, StartStreamingJobParameters startJobParameters) {
-        this.serviceClient().start(resourceGroupName, jobName, startJobParameters);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StreamingJobImpl(inner1, this.manager()));
     }
 
     public void start(String resourceGroupName, String jobName) {
         this.serviceClient().start(resourceGroupName, jobName);
     }
 
-    public void start(
-        String resourceGroupName, String jobName, StartStreamingJobParameters startJobParameters, Context context) {
+    public void start(String resourceGroupName, String jobName, StartStreamingJobParameters startJobParameters,
+        Context context) {
         this.serviceClient().start(resourceGroupName, jobName, startJobParameters, context);
     }
 
@@ -106,92 +97,68 @@ public final class StreamingJobsImpl implements StreamingJobs {
         this.serviceClient().stop(resourceGroupName, jobName, context);
     }
 
-    public void scale(String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters) {
-        this.serviceClient().scale(resourceGroupName, jobName, scaleJobParameters);
-    }
-
     public void scale(String resourceGroupName, String jobName) {
         this.serviceClient().scale(resourceGroupName, jobName);
     }
 
-    public void scale(
-        String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters, Context context) {
+    public void scale(String resourceGroupName, String jobName, ScaleStreamingJobParameters scaleJobParameters,
+        Context context) {
         this.serviceClient().scale(resourceGroupName, jobName, scaleJobParameters, context);
     }
 
     public StreamingJob getById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String jobName = Utils.getValueFromIdByName(id, "streamingjobs");
+        String jobName = ResourceManagerUtils.getValueFromIdByName(id, "streamingjobs");
         if (jobName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'streamingjobs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'streamingjobs'.", id)));
         }
         String localExpand = null;
         return this.getByResourceGroupWithResponse(resourceGroupName, jobName, localExpand, Context.NONE).getValue();
     }
 
     public Response<StreamingJob> getByIdWithResponse(String id, String expand, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String jobName = Utils.getValueFromIdByName(id, "streamingjobs");
+        String jobName = ResourceManagerUtils.getValueFromIdByName(id, "streamingjobs");
         if (jobName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'streamingjobs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'streamingjobs'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, jobName, expand, context);
     }
 
     public void deleteById(String id) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String jobName = Utils.getValueFromIdByName(id, "streamingjobs");
+        String jobName = ResourceManagerUtils.getValueFromIdByName(id, "streamingjobs");
         if (jobName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'streamingjobs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'streamingjobs'.", id)));
         }
         this.delete(resourceGroupName, jobName, Context.NONE);
     }
 
     public void deleteByIdWithResponse(String id, Context context) {
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourcegroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourcegroups");
         if (resourceGroupName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourcegroups'.", id)));
         }
-        String jobName = Utils.getValueFromIdByName(id, "streamingjobs");
+        String jobName = ResourceManagerUtils.getValueFromIdByName(id, "streamingjobs");
         if (jobName == null) {
-            throw logger
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'streamingjobs'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'streamingjobs'.", id)));
         }
         this.delete(resourceGroupName, jobName, context);
     }

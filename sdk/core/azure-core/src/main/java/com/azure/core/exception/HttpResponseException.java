@@ -127,5 +127,3 @@ public class HttpResponseException extends AzureException {
         return value;
     }
 }
-
-

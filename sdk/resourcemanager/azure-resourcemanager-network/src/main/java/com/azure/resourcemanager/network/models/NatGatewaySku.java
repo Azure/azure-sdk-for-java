@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SKU of nat gateway. */
+/**
+ * SKU of nat gateway.
+ */
 @Fluent
 public final class NatGatewaySku {
     /*
@@ -16,13 +18,15 @@ public final class NatGatewaySku {
     @JsonProperty(value = "name")
     private NatGatewaySkuName name;
 
-    /** Creates an instance of NatGatewaySku class. */
+    /**
+     * Creates an instance of NatGatewaySku class.
+     */
     public NatGatewaySku() {
     }
 
     /**
      * Get the name property: Name of Nat Gateway SKU.
-     *
+     * 
      * @return the name value.
      */
     public NatGatewaySkuName name() {
@@ -31,7 +35,7 @@ public final class NatGatewaySku {
 
     /**
      * Set the name property: Name of Nat Gateway SKU.
-     *
+     * 
      * @param name the name value to set.
      * @return the NatGatewaySku object itself.
      */
@@ -42,7 +46,7 @@ public final class NatGatewaySku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

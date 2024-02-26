@@ -8,18 +8,24 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** State of the log scrubbing config. Default value is Enabled. */
+/**
+ * State of the log scrubbing config. Default value is Enabled.
+ */
 public final class WebApplicationFirewallScrubbingState
     extends ExpandableStringEnum<WebApplicationFirewallScrubbingState> {
-    /** Static value Disabled for WebApplicationFirewallScrubbingState. */
+    /**
+     * Static value Disabled for WebApplicationFirewallScrubbingState.
+     */
     public static final WebApplicationFirewallScrubbingState DISABLED = fromString("Disabled");
 
-    /** Static value Enabled for WebApplicationFirewallScrubbingState. */
+    /**
+     * Static value Enabled for WebApplicationFirewallScrubbingState.
+     */
     public static final WebApplicationFirewallScrubbingState ENABLED = fromString("Enabled");
 
     /**
      * Creates a new instance of WebApplicationFirewallScrubbingState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -28,7 +34,7 @@ public final class WebApplicationFirewallScrubbingState
 
     /**
      * Creates or finds a WebApplicationFirewallScrubbingState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding WebApplicationFirewallScrubbingState.
      */
@@ -39,7 +45,7 @@ public final class WebApplicationFirewallScrubbingState
 
     /**
      * Gets known WebApplicationFirewallScrubbingState values.
-     *
+     * 
      * @return known WebApplicationFirewallScrubbingState values.
      */
     public static Collection<WebApplicationFirewallScrubbingState> values() {

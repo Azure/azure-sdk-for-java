@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * List Resource
- *
- * <p>ListResource.
+ * 
+ * ListResource.
  */
 @Fluent
 public class DppResourceList {
@@ -20,14 +20,16 @@ public class DppResourceList {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of DppResourceList class. */
+    /**
+     * Creates an instance of DppResourceList class.
+     */
     public DppResourceList() {
     }
 
     /**
      * Get the nextLink property: The uri to fetch the next page of resources. Call ListNext() fetches next page of
      * resources.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -37,7 +39,7 @@ public class DppResourceList {
     /**
      * Set the nextLink property: The uri to fetch the next page of resources. Call ListNext() fetches next page of
      * resources.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the DppResourceList object itself.
      */
@@ -48,7 +50,7 @@ public class DppResourceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

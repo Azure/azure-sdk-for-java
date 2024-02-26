@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Trigger that runs every time the selected Blob container changes. */
+/**
+ * Trigger that runs every time the selected Blob container changes.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("BlobTrigger")
 @JsonFlatten
@@ -35,12 +37,15 @@ public class BlobTrigger extends MultiplePipelineTrigger {
     @JsonProperty(value = "typeProperties.linkedService", required = true)
     private LinkedServiceReference linkedService;
 
-    /** Creates an instance of BlobTrigger class. */
-    public BlobTrigger() {}
+    /**
+     * Creates an instance of BlobTrigger class.
+     */
+    public BlobTrigger() {
+    }
 
     /**
      * Get the folderPath property: The path of the container/folder that will trigger the pipeline.
-     *
+     * 
      * @return the folderPath value.
      */
     public String getFolderPath() {
@@ -49,7 +54,7 @@ public class BlobTrigger extends MultiplePipelineTrigger {
 
     /**
      * Set the folderPath property: The path of the container/folder that will trigger the pipeline.
-     *
+     * 
      * @param folderPath the folderPath value to set.
      * @return the BlobTrigger object itself.
      */
@@ -60,7 +65,7 @@ public class BlobTrigger extends MultiplePipelineTrigger {
 
     /**
      * Get the maxConcurrency property: The max number of parallel files to handle when it is triggered.
-     *
+     * 
      * @return the maxConcurrency value.
      */
     public int getMaxConcurrency() {
@@ -69,7 +74,7 @@ public class BlobTrigger extends MultiplePipelineTrigger {
 
     /**
      * Set the maxConcurrency property: The max number of parallel files to handle when it is triggered.
-     *
+     * 
      * @param maxConcurrency the maxConcurrency value to set.
      * @return the BlobTrigger object itself.
      */
@@ -80,7 +85,7 @@ public class BlobTrigger extends MultiplePipelineTrigger {
 
     /**
      * Get the linkedService property: The Azure Storage linked service reference.
-     *
+     * 
      * @return the linkedService value.
      */
     public LinkedServiceReference getLinkedService() {
@@ -89,7 +94,7 @@ public class BlobTrigger extends MultiplePipelineTrigger {
 
     /**
      * Set the linkedService property: The Azure Storage linked service reference.
-     *
+     * 
      * @param linkedService the linkedService value to set.
      * @return the BlobTrigger object itself.
      */
@@ -98,21 +103,27 @@ public class BlobTrigger extends MultiplePipelineTrigger {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BlobTrigger setPipelines(List<TriggerPipelineReference> pipelines) {
         super.setPipelines(pipelines);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BlobTrigger setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BlobTrigger setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

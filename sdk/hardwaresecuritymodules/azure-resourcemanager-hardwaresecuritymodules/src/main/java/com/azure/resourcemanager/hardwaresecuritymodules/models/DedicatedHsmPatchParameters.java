@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Patchable properties of the dedicated HSM. */
+/**
+ * Patchable properties of the dedicated HSM.
+ */
 @Fluent
 public final class DedicatedHsmPatchParameters {
     /*
@@ -20,8 +22,14 @@ public final class DedicatedHsmPatchParameters {
     private Map<String, String> tags;
 
     /**
+     * Creates an instance of DedicatedHsmPatchParameters class.
+     */
+    public DedicatedHsmPatchParameters() {
+    }
+
+    /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -30,7 +38,7 @@ public final class DedicatedHsmPatchParameters {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the DedicatedHsmPatchParameters object itself.
      */
@@ -41,7 +49,7 @@ public final class DedicatedHsmPatchParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

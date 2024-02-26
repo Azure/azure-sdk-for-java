@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Network manager security group item. */
+/**
+ * Network manager security group item.
+ */
 @Fluent
 public final class NetworkManagerSecurityGroupItem {
     /*
@@ -17,13 +19,15 @@ public final class NetworkManagerSecurityGroupItem {
     @JsonProperty(value = "networkGroupId", required = true)
     private String networkGroupId;
 
-    /** Creates an instance of NetworkManagerSecurityGroupItem class. */
+    /**
+     * Creates an instance of NetworkManagerSecurityGroupItem class.
+     */
     public NetworkManagerSecurityGroupItem() {
     }
 
     /**
      * Get the networkGroupId property: Network manager group Id.
-     *
+     * 
      * @return the networkGroupId value.
      */
     public String networkGroupId() {
@@ -32,7 +36,7 @@ public final class NetworkManagerSecurityGroupItem {
 
     /**
      * Set the networkGroupId property: Network manager group Id.
-     *
+     * 
      * @param networkGroupId the networkGroupId value to set.
      * @return the NetworkManagerSecurityGroupItem object itself.
      */
@@ -43,15 +47,13 @@ public final class NetworkManagerSecurityGroupItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (networkGroupId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkGroupId in model NetworkManagerSecurityGroupItem"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property networkGroupId in model NetworkManagerSecurityGroupItem"));
         }
     }
 

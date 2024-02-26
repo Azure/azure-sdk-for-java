@@ -13,24 +13,34 @@ import java.util.Collection;
  * when Kubernetes &lt;= 1.24 or Windows2022 when Kubernetes &gt;= 1.25 if OSType is Windows.
  */
 public final class OSSku extends ExpandableStringEnum<OSSku> {
-    /** Static value Ubuntu for OSSku. */
+    /**
+     * Static value Ubuntu for OSSku.
+     */
     public static final OSSku UBUNTU = fromString("Ubuntu");
 
-    /** Static value AzureLinux for OSSku. */
+    /**
+     * Static value AzureLinux for OSSku.
+     */
     public static final OSSku AZURE_LINUX = fromString("AzureLinux");
 
-    /** Static value CBLMariner for OSSku. */
+    /**
+     * Static value CBLMariner for OSSku.
+     */
     public static final OSSku CBLMARINER = fromString("CBLMariner");
 
-    /** Static value Windows2019 for OSSku. */
+    /**
+     * Static value Windows2019 for OSSku.
+     */
     public static final OSSku WINDOWS2019 = fromString("Windows2019");
 
-    /** Static value Windows2022 for OSSku. */
+    /**
+     * Static value Windows2022 for OSSku.
+     */
     public static final OSSku WINDOWS2022 = fromString("Windows2022");
 
     /**
      * Creates a new instance of OSSku value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -39,7 +49,7 @@ public final class OSSku extends ExpandableStringEnum<OSSku> {
 
     /**
      * Creates or finds a OSSku from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding OSSku.
      */
@@ -50,7 +60,7 @@ public final class OSSku extends ExpandableStringEnum<OSSku> {
 
     /**
      * Gets known OSSku values.
-     *
+     * 
      * @return known OSSku values.
      */
     public static Collection<OSSku> values() {

@@ -5,6 +5,10 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -13,20 +17,69 @@ import java.util.Map;
  */
 @Fluent
 public final class MediaJobOutputScheduledEventData extends MediaJobOutputStateChangeEventData {
-    /** Creates an instance of MediaJobOutputScheduledEventData class. */
-    public MediaJobOutputScheduledEventData() {}
+    /**
+     * Creates an instance of MediaJobOutputScheduledEventData class.
+     */
+    public MediaJobOutputScheduledEventData() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MediaJobOutputScheduledEventData setOutput(MediaJobOutput output) {
         super.setOutput(output);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MediaJobOutputScheduledEventData setJobCorrelationData(Map<String, String> jobCorrelationData) {
         super.setJobCorrelationData(jobCorrelationData);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("output", getOutput());
+        jsonWriter.writeMapField("jobCorrelationData", getJobCorrelationData(),
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MediaJobOutputScheduledEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MediaJobOutputScheduledEventData if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MediaJobOutputScheduledEventData.
+     */
+    public static MediaJobOutputScheduledEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MediaJobOutputScheduledEventData deserializedMediaJobOutputScheduledEventData
+                = new MediaJobOutputScheduledEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("previousState".equals(fieldName)) {
+                    deserializedMediaJobOutputScheduledEventData
+                        .setPreviousState(MediaJobState.fromString(reader.getString()));
+                } else if ("output".equals(fieldName)) {
+                    deserializedMediaJobOutputScheduledEventData.setOutput(MediaJobOutput.fromJson(reader));
+                } else if ("jobCorrelationData".equals(fieldName)) {
+                    Map<String, String> jobCorrelationData = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMediaJobOutputScheduledEventData.setJobCorrelationData(jobCorrelationData);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMediaJobOutputScheduledEventData;
+        });
     }
 }

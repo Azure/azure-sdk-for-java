@@ -5,39 +5,44 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of engagement user have with email. */
+/**
+ * The type of engagement user have with email.
+ */
 public final class AcsUserEngagement extends ExpandableStringEnum<AcsUserEngagement> {
-    /** Static value view for AcsUserEngagement. */
+    /**
+     * Static value view for AcsUserEngagement.
+     */
     public static final AcsUserEngagement VIEW = fromString("view");
 
-    /** Static value click for AcsUserEngagement. */
+    /**
+     * Static value click for AcsUserEngagement.
+     */
     public static final AcsUserEngagement CLICK = fromString("click");
 
     /**
      * Creates a new instance of AcsUserEngagement value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public AcsUserEngagement() {}
+    public AcsUserEngagement() {
+    }
 
     /**
      * Creates or finds a AcsUserEngagement from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AcsUserEngagement.
      */
-    @JsonCreator
     public static AcsUserEngagement fromString(String name) {
         return fromString(name, AcsUserEngagement.class);
     }
 
     /**
      * Gets known AcsUserEngagement values.
-     *
+     * 
      * @return known AcsUserEngagement values.
      */
     public static Collection<AcsUserEngagement> values() {

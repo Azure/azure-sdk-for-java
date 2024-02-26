@@ -46,13 +46,15 @@ public final class LinuxConfiguration {
     @JsonProperty(value = "enableVMAgentPlatformUpdates")
     private Boolean enableVMAgentPlatformUpdates;
 
-    /** Creates an instance of LinuxConfiguration class. */
+    /**
+     * Creates an instance of LinuxConfiguration class.
+     */
     public LinuxConfiguration() {
     }
 
     /**
      * Get the disablePasswordAuthentication property: Specifies whether password authentication should be disabled.
-     *
+     * 
      * @return the disablePasswordAuthentication value.
      */
     public Boolean disablePasswordAuthentication() {
@@ -61,7 +63,7 @@ public final class LinuxConfiguration {
 
     /**
      * Set the disablePasswordAuthentication property: Specifies whether password authentication should be disabled.
-     *
+     * 
      * @param disablePasswordAuthentication the disablePasswordAuthentication value to set.
      * @return the LinuxConfiguration object itself.
      */
@@ -72,7 +74,7 @@ public final class LinuxConfiguration {
 
     /**
      * Get the ssh property: Specifies the ssh key configuration for a Linux OS.
-     *
+     * 
      * @return the ssh value.
      */
     public SshConfiguration ssh() {
@@ -81,7 +83,7 @@ public final class LinuxConfiguration {
 
     /**
      * Set the ssh property: Specifies the ssh key configuration for a Linux OS.
-     *
+     * 
      * @param ssh the ssh value to set.
      * @return the LinuxConfiguration object itself.
      */
@@ -94,7 +96,7 @@ public final class LinuxConfiguration {
      * Get the provisionVMAgent property: Indicates whether virtual machine agent should be provisioned on the virtual
      * machine. When this property is not specified in the request body, default behavior is to set it to true. This
      * will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later.
-     *
+     * 
      * @return the provisionVMAgent value.
      */
     public Boolean provisionVMAgent() {
@@ -105,7 +107,7 @@ public final class LinuxConfiguration {
      * Set the provisionVMAgent property: Indicates whether virtual machine agent should be provisioned on the virtual
      * machine. When this property is not specified in the request body, default behavior is to set it to true. This
      * will ensure that VM Agent is installed on the VM so that extensions can be added to the VM later.
-     *
+     * 
      * @param provisionVMAgent the provisionVMAgent value to set.
      * @return the LinuxConfiguration object itself.
      */
@@ -116,7 +118,7 @@ public final class LinuxConfiguration {
 
     /**
      * Get the patchSettings property: [Preview Feature] Specifies settings related to VM Guest Patching on Linux.
-     *
+     * 
      * @return the patchSettings value.
      */
     public LinuxPatchSettings patchSettings() {
@@ -125,7 +127,7 @@ public final class LinuxConfiguration {
 
     /**
      * Set the patchSettings property: [Preview Feature] Specifies settings related to VM Guest Patching on Linux.
-     *
+     * 
      * @param patchSettings the patchSettings value to set.
      * @return the LinuxConfiguration object itself.
      */
@@ -137,7 +139,7 @@ public final class LinuxConfiguration {
     /**
      * Get the enableVMAgentPlatformUpdates property: Indicates whether VMAgent Platform Updates is enabled for the
      * Linux virtual machine. Default value is false.
-     *
+     * 
      * @return the enableVMAgentPlatformUpdates value.
      */
     public Boolean enableVMAgentPlatformUpdates() {
@@ -147,7 +149,7 @@ public final class LinuxConfiguration {
     /**
      * Set the enableVMAgentPlatformUpdates property: Indicates whether VMAgent Platform Updates is enabled for the
      * Linux virtual machine. Default value is false.
-     *
+     * 
      * @param enableVMAgentPlatformUpdates the enableVMAgentPlatformUpdates value to set.
      * @return the LinuxConfiguration object itself.
      */
@@ -158,7 +160,7 @@ public final class LinuxConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

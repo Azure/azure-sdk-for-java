@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The SeedNode model. */
+/**
+ * The SeedNode model.
+ */
 @Fluent
 public final class SeedNode {
     /*
@@ -16,13 +18,15 @@ public final class SeedNode {
     @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
-    /** Creates an instance of SeedNode class. */
+    /**
+     * Creates an instance of SeedNode class.
+     */
     public SeedNode() {
     }
 
     /**
      * Get the ipAddress property: IP address of this seed node.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -31,7 +35,7 @@ public final class SeedNode {
 
     /**
      * Set the ipAddress property: IP address of this seed node.
-     *
+     * 
      * @param ipAddress the ipAddress value to set.
      * @return the SeedNode object itself.
      */
@@ -42,7 +46,7 @@ public final class SeedNode {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

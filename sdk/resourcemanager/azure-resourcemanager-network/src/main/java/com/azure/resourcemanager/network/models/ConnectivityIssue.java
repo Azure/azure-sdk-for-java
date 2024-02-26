@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Information about an issue encountered in the process of checking for connectivity. */
+/**
+ * Information about an issue encountered in the process of checking for connectivity.
+ */
 @Immutable
 public final class ConnectivityIssue {
     /*
@@ -36,13 +38,15 @@ public final class ConnectivityIssue {
     @JsonProperty(value = "context", access = JsonProperty.Access.WRITE_ONLY)
     private List<Map<String, String>> context;
 
-    /** Creates an instance of ConnectivityIssue class. */
+    /**
+     * Creates an instance of ConnectivityIssue class.
+     */
     public ConnectivityIssue() {
     }
 
     /**
      * Get the origin property: The origin of the issue.
-     *
+     * 
      * @return the origin value.
      */
     public Origin origin() {
@@ -51,7 +55,7 @@ public final class ConnectivityIssue {
 
     /**
      * Get the severity property: The severity of the issue.
-     *
+     * 
      * @return the severity value.
      */
     public Severity severity() {
@@ -60,7 +64,7 @@ public final class ConnectivityIssue {
 
     /**
      * Get the type property: The type of issue.
-     *
+     * 
      * @return the type value.
      */
     public IssueType type() {
@@ -69,7 +73,7 @@ public final class ConnectivityIssue {
 
     /**
      * Get the context property: Provides additional context on the issue.
-     *
+     * 
      * @return the context value.
      */
     public List<Map<String, String>> context() {
@@ -78,7 +82,7 @@ public final class ConnectivityIssue {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

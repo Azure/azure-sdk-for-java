@@ -7,55 +7,60 @@ package com.azure.ai.metricsadvisor.implementation.models;
 import com.azure.ai.metricsadvisor.models.FeedbackQueryTimeMode;
 import com.azure.ai.metricsadvisor.models.FeedbackType;
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.Objects;
 import java.util.UUID;
 
-/** The MetricFeedbackFilter model. */
+/**
+ * The MetricFeedbackFilter model.
+ */
 @Fluent
-public final class MetricFeedbackFilter {
+public final class MetricFeedbackFilter implements JsonSerializable<MetricFeedbackFilter> {
     /*
      * filter feedbacks by metric id
      */
-    @JsonProperty(value = "metricId", required = true)
     private UUID metricId;
 
     /*
      * The dimensionFilter property.
      */
-    @JsonProperty(value = "dimensionFilter")
     private FeedbackDimensionFilter dimensionFilter;
 
     /*
      * filter feedbacks by type
      */
-    @JsonProperty(value = "feedbackType")
     private FeedbackType feedbackType;
 
     /*
      * start time filter under chosen time mode
      */
-    @JsonProperty(value = "startTime")
     private OffsetDateTime startTime;
 
     /*
      * end time filter under chosen time mode
      */
-    @JsonProperty(value = "endTime")
     private OffsetDateTime endTime;
 
     /*
      * time mode to filter feedback
      */
-    @JsonProperty(value = "timeMode")
     private FeedbackQueryTimeMode timeMode;
 
-    /** Creates an instance of MetricFeedbackFilter class. */
-    public MetricFeedbackFilter() {}
+    /**
+     * Creates an instance of MetricFeedbackFilter class.
+     */
+    public MetricFeedbackFilter() {
+    }
 
     /**
      * Get the metricId property: filter feedbacks by metric id.
-     *
+     * 
      * @return the metricId value.
      */
     public UUID getMetricId() {
@@ -64,7 +69,7 @@ public final class MetricFeedbackFilter {
 
     /**
      * Set the metricId property: filter feedbacks by metric id.
-     *
+     * 
      * @param metricId the metricId value to set.
      * @return the MetricFeedbackFilter object itself.
      */
@@ -75,7 +80,7 @@ public final class MetricFeedbackFilter {
 
     /**
      * Get the dimensionFilter property: The dimensionFilter property.
-     *
+     * 
      * @return the dimensionFilter value.
      */
     public FeedbackDimensionFilter getDimensionFilter() {
@@ -84,7 +89,7 @@ public final class MetricFeedbackFilter {
 
     /**
      * Set the dimensionFilter property: The dimensionFilter property.
-     *
+     * 
      * @param dimensionFilter the dimensionFilter value to set.
      * @return the MetricFeedbackFilter object itself.
      */
@@ -95,7 +100,7 @@ public final class MetricFeedbackFilter {
 
     /**
      * Get the feedbackType property: filter feedbacks by type.
-     *
+     * 
      * @return the feedbackType value.
      */
     public FeedbackType getFeedbackType() {
@@ -104,7 +109,7 @@ public final class MetricFeedbackFilter {
 
     /**
      * Set the feedbackType property: filter feedbacks by type.
-     *
+     * 
      * @param feedbackType the feedbackType value to set.
      * @return the MetricFeedbackFilter object itself.
      */
@@ -115,7 +120,7 @@ public final class MetricFeedbackFilter {
 
     /**
      * Get the startTime property: start time filter under chosen time mode.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime getStartTime() {
@@ -124,7 +129,7 @@ public final class MetricFeedbackFilter {
 
     /**
      * Set the startTime property: start time filter under chosen time mode.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the MetricFeedbackFilter object itself.
      */
@@ -135,7 +140,7 @@ public final class MetricFeedbackFilter {
 
     /**
      * Get the endTime property: end time filter under chosen time mode.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime getEndTime() {
@@ -144,7 +149,7 @@ public final class MetricFeedbackFilter {
 
     /**
      * Set the endTime property: end time filter under chosen time mode.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the MetricFeedbackFilter object itself.
      */
@@ -155,7 +160,7 @@ public final class MetricFeedbackFilter {
 
     /**
      * Get the timeMode property: time mode to filter feedback.
-     *
+     * 
      * @return the timeMode value.
      */
     public FeedbackQueryTimeMode getTimeMode() {
@@ -164,12 +169,66 @@ public final class MetricFeedbackFilter {
 
     /**
      * Set the timeMode property: time mode to filter feedback.
-     *
+     * 
      * @param timeMode the timeMode value to set.
      * @return the MetricFeedbackFilter object itself.
      */
     public MetricFeedbackFilter setTimeMode(FeedbackQueryTimeMode timeMode) {
         this.timeMode = timeMode;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("metricId", Objects.toString(this.metricId, null));
+        jsonWriter.writeJsonField("dimensionFilter", this.dimensionFilter);
+        jsonWriter.writeStringField("feedbackType", this.feedbackType == null ? null : this.feedbackType.toString());
+        jsonWriter.writeStringField("startTime",
+            this.startTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.startTime));
+        jsonWriter.writeStringField("endTime",
+            this.endTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.endTime));
+        jsonWriter.writeStringField("timeMode", this.timeMode == null ? null : this.timeMode.toString());
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MetricFeedbackFilter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MetricFeedbackFilter if the JsonReader was pointing to an instance of it, or null if it
+     * was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MetricFeedbackFilter.
+     */
+    public static MetricFeedbackFilter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MetricFeedbackFilter deserializedMetricFeedbackFilter = new MetricFeedbackFilter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("metricId".equals(fieldName)) {
+                    deserializedMetricFeedbackFilter.metricId
+                        = reader.getNullable(nonNullReader -> UUID.fromString(nonNullReader.getString()));
+                } else if ("dimensionFilter".equals(fieldName)) {
+                    deserializedMetricFeedbackFilter.dimensionFilter = FeedbackDimensionFilter.fromJson(reader);
+                } else if ("feedbackType".equals(fieldName)) {
+                    deserializedMetricFeedbackFilter.feedbackType = FeedbackType.fromString(reader.getString());
+                } else if ("startTime".equals(fieldName)) {
+                    deserializedMetricFeedbackFilter.startTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("endTime".equals(fieldName)) {
+                    deserializedMetricFeedbackFilter.endTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("timeMode".equals(fieldName)) {
+                    deserializedMetricFeedbackFilter.timeMode = FeedbackQueryTimeMode.fromString(reader.getString());
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMetricFeedbackFilter;
+        });
     }
 }

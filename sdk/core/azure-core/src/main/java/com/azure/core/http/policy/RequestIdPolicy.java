@@ -55,8 +55,8 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
      * @param requestIdHeaderName to be used to set in {@link HttpRequest}.
      */
     public RequestIdPolicy(String requestIdHeaderName) {
-        this.requestIdHeaderName = HttpHeaderName.fromString(Objects.requireNonNull(requestIdHeaderName,
-            "requestIdHeaderName can not be null."));
+        this.requestIdHeaderName = HttpHeaderName
+            .fromString(Objects.requireNonNull(requestIdHeaderName, "requestIdHeaderName can not be null."));
     }
 
     /**
@@ -71,6 +71,7 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
         setRequestIdHeader(context.getHttpRequest(), requestIdHeaderName);
         return next.process();
     }
+
     @Override
     public HttpResponse processSync(HttpPipelineCallContext context, HttpPipelineNextSyncPolicy next) {
         setRequestIdHeader(context.getHttpRequest(), requestIdHeaderName);
@@ -85,4 +86,3 @@ public class RequestIdPolicy implements HttpPipelinePolicy {
         }
     }
 }
-

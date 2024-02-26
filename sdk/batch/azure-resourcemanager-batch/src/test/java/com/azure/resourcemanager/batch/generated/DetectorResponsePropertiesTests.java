@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class DetectorResponsePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DetectorResponseProperties model =
-            BinaryData.fromString("{\"value\":\"z\"}").toObject(DetectorResponseProperties.class);
+        DetectorResponseProperties model
+            = BinaryData.fromString("{\"value\":\"z\"}").toObject(DetectorResponseProperties.class);
         Assertions.assertEquals("z", model.value());
     }
 

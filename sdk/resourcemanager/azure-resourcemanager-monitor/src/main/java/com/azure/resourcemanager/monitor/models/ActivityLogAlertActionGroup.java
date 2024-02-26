@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** A pointer to an Azure Action Group. */
+/**
+ * A pointer to an Azure Action Group.
+ */
 @Fluent
 public final class ActivityLogAlertActionGroup {
     /*
@@ -27,13 +29,15 @@ public final class ActivityLogAlertActionGroup {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> webhookProperties;
 
-    /** Creates an instance of ActivityLogAlertActionGroup class. */
+    /**
+     * Creates an instance of ActivityLogAlertActionGroup class.
+     */
     public ActivityLogAlertActionGroup() {
     }
 
     /**
      * Get the actionGroupId property: The resource ID of the Action Group. This cannot be null or empty.
-     *
+     * 
      * @return the actionGroupId value.
      */
     public String actionGroupId() {
@@ -42,7 +46,7 @@ public final class ActivityLogAlertActionGroup {
 
     /**
      * Set the actionGroupId property: The resource ID of the Action Group. This cannot be null or empty.
-     *
+     * 
      * @param actionGroupId the actionGroupId value to set.
      * @return the ActivityLogAlertActionGroup object itself.
      */
@@ -52,9 +56,9 @@ public final class ActivityLogAlertActionGroup {
     }
 
     /**
-     * Get the webhookProperties property: the dictionary of custom properties to include with the post operation. These
-     * data are appended to the webhook payload.
-     *
+     * Get the webhookProperties property: the dictionary of custom properties to include with the post operation.
+     * These data are appended to the webhook payload.
+     * 
      * @return the webhookProperties value.
      */
     public Map<String, String> webhookProperties() {
@@ -62,9 +66,9 @@ public final class ActivityLogAlertActionGroup {
     }
 
     /**
-     * Set the webhookProperties property: the dictionary of custom properties to include with the post operation. These
-     * data are appended to the webhook payload.
-     *
+     * Set the webhookProperties property: the dictionary of custom properties to include with the post operation.
+     * These data are appended to the webhook payload.
+     * 
      * @param webhookProperties the webhookProperties value to set.
      * @return the ActivityLogAlertActionGroup object itself.
      */
@@ -75,15 +79,13 @@ public final class ActivityLogAlertActionGroup {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (actionGroupId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property actionGroupId in model ActivityLogAlertActionGroup"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property actionGroupId in model ActivityLogAlertActionGroup"));
         }
     }
 

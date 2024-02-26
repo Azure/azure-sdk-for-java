@@ -4,6 +4,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosDiagnostics;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -91,30 +92,13 @@ public final class StoredProcedureResponse {
     }
 
     /**
-     * Gets the headers associated with the response.
-     *
-     * @return the response headers.
-     */
-    public Map<String, String> getResponseHeaders() {
-        return this.response.getResponseHeaders();
-    }
-
-    /**
-     * Gets the response of a stored procedure, serialized into a document.
-     *
-     * @return the response as a document.
-     */
-    public Document getResponseAsDocument() {
-        return this.response.getResource(Document.class);
-    }
-
-    /**
      * Gets the response of a stored procedure as a string.
      *
      * @return the response as a string.
      */
     public String getResponseAsString() {
-        return this.response.getResponseBodyAsString();
+        JsonNode json =  this.response.getResponseBody();
+        return json.toString();
     }
 
     /**

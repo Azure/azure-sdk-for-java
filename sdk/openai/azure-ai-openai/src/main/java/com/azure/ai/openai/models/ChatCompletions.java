@@ -138,35 +138,6 @@ public final class ChatCompletions {
     private String systemFingerprint;
 
     /**
-     * Creates an instance of ChatCompletions class.
-     *
-     * @param id the id value to set.
-     * @param createdAt the createdAt value to set.
-     * @param choices the choices value to set.
-     * @param systemFingerprint the systemFingerprint value to set.
-     * @param usage the usage value to set.
-     */
-    @Generated
-    private ChatCompletions(String id, OffsetDateTime createdAt, List<ChatChoice> choices, String systemFingerprint,
-        CompletionsUsage usage) {
-        this.id = id;
-        this.createdAt = createdAt.toEpochSecond();
-        this.choices = choices;
-        this.systemFingerprint = systemFingerprint;
-        this.usage = usage;
-    }
-
-    @Generated
-    @JsonCreator
-    private ChatCompletions(@JsonProperty(value = "id") String id, @JsonProperty(value = "created") long createdAt,
-        @JsonProperty(value = "choices") List<ChatChoice> choices,
-        @JsonProperty(value = "system_fingerprint") String systemFingerprint,
-        @JsonProperty(value = "usage") CompletionsUsage usage) {
-        this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), choices, systemFingerprint,
-            usage);
-    }
-
-    /**
      * Get the systemFingerprint property: Can be used in conjunction with the `seed` request parameter to understand
      * when backend changes have been made that
      * might impact determinism.
@@ -176,5 +147,29 @@ public final class ChatCompletions {
     @Generated
     public String getSystemFingerprint() {
         return this.systemFingerprint;
+    }
+
+    /**
+     * Creates an instance of ChatCompletions class.
+     *
+     * @param id the id value to set.
+     * @param createdAt the createdAt value to set.
+     * @param choices the choices value to set.
+     * @param usage the usage value to set.
+     */
+    @Generated
+    private ChatCompletions(String id, OffsetDateTime createdAt, List<ChatChoice> choices, CompletionsUsage usage) {
+        this.id = id;
+        this.createdAt = createdAt.toEpochSecond();
+        this.choices = choices;
+        this.usage = usage;
+    }
+
+    @Generated
+    @JsonCreator
+    private ChatCompletions(@JsonProperty(value = "id") String id, @JsonProperty(value = "created") long createdAt,
+        @JsonProperty(value = "choices") List<ChatChoice> choices,
+        @JsonProperty(value = "usage") CompletionsUsage usage) {
+        this(id, OffsetDateTime.ofInstant(Instant.ofEpochSecond(createdAt), ZoneOffset.UTC), choices, usage);
     }
 }

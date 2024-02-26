@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.models.TableGetPropertiesOptions;
 import com.azure.resourcemanager.cosmos.models.TableGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties of an Azure Cosmos Table. */
+/**
+ * The properties of an Azure Cosmos Table.
+ */
 @Fluent
 public final class TableGetProperties {
     /*
@@ -24,13 +26,15 @@ public final class TableGetProperties {
     @JsonProperty(value = "options")
     private TableGetPropertiesOptions options;
 
-    /** Creates an instance of TableGetProperties class. */
+    /**
+     * Creates an instance of TableGetProperties class.
+     */
     public TableGetProperties() {
     }
 
     /**
      * Get the resource property: The resource property.
-     *
+     * 
      * @return the resource value.
      */
     public TableGetPropertiesResource resource() {
@@ -39,7 +43,7 @@ public final class TableGetProperties {
 
     /**
      * Set the resource property: The resource property.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the TableGetProperties object itself.
      */
@@ -50,7 +54,7 @@ public final class TableGetProperties {
 
     /**
      * Get the options property: The options property.
-     *
+     * 
      * @return the options value.
      */
     public TableGetPropertiesOptions options() {
@@ -59,7 +63,7 @@ public final class TableGetProperties {
 
     /**
      * Set the options property: The options property.
-     *
+     * 
      * @param options the options value to set.
      * @return the TableGetProperties object itself.
      */
@@ -70,7 +74,7 @@ public final class TableGetProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.imagebuilder.fluent.models.ImageTemplateInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The result of List image templates operation. */
+/**
+ * The result of List image templates operation.
+ */
 @Fluent
 public final class ImageTemplateListResult {
     /*
@@ -24,13 +26,15 @@ public final class ImageTemplateListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ImageTemplateListResult class. */
+    /**
+     * Creates an instance of ImageTemplateListResult class.
+     */
     public ImageTemplateListResult() {
     }
 
     /**
      * Get the value property: An array of image templates.
-     *
+     * 
      * @return the value value.
      */
     public List<ImageTemplateInner> value() {
@@ -39,7 +43,7 @@ public final class ImageTemplateListResult {
 
     /**
      * Set the value property: An array of image templates.
-     *
+     * 
      * @param value the value value to set.
      * @return the ImageTemplateListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class ImageTemplateListResult {
 
     /**
      * Get the nextLink property: The continuation token.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ImageTemplateListResult {
 
     /**
      * Set the nextLink property: The continuation token.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ImageTemplateListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class ImageTemplateListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

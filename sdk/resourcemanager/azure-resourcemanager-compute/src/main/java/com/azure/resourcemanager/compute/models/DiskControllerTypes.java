@@ -17,15 +17,19 @@ import java.util.Collection;
  * supported please refer to https://aka.ms/azure-diskcontrollertypes.
  */
 public final class DiskControllerTypes extends ExpandableStringEnum<DiskControllerTypes> {
-    /** Static value SCSI for DiskControllerTypes. */
+    /**
+     * Static value SCSI for DiskControllerTypes.
+     */
     public static final DiskControllerTypes SCSI = fromString("SCSI");
 
-    /** Static value NVMe for DiskControllerTypes. */
+    /**
+     * Static value NVMe for DiskControllerTypes.
+     */
     public static final DiskControllerTypes NVME = fromString("NVMe");
 
     /**
      * Creates a new instance of DiskControllerTypes value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,7 +38,7 @@ public final class DiskControllerTypes extends ExpandableStringEnum<DiskControll
 
     /**
      * Creates or finds a DiskControllerTypes from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DiskControllerTypes.
      */
@@ -45,7 +49,7 @@ public final class DiskControllerTypes extends ExpandableStringEnum<DiskControll
 
     /**
      * Gets known DiskControllerTypes values.
-     *
+     * 
      * @return known DiskControllerTypes values.
      */
     public static Collection<DiskControllerTypes> values() {

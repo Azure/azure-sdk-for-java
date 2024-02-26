@@ -10,7 +10,9 @@ import com.azure.resourcemanager.compute.fluent.models.VirtualMachineRunCommandI
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List run command operation response. */
+/**
+ * The List run command operation response.
+ */
 @Fluent
 public final class VirtualMachineRunCommandsListResult {
     /*
@@ -25,13 +27,15 @@ public final class VirtualMachineRunCommandsListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of VirtualMachineRunCommandsListResult class. */
+    /**
+     * Creates an instance of VirtualMachineRunCommandsListResult class.
+     */
     public VirtualMachineRunCommandsListResult() {
     }
 
     /**
      * Get the value property: The list of run commands.
-     *
+     * 
      * @return the value value.
      */
     public List<VirtualMachineRunCommandInner> value() {
@@ -40,7 +44,7 @@ public final class VirtualMachineRunCommandsListResult {
 
     /**
      * Set the value property: The list of run commands.
-     *
+     * 
      * @param value the value value to set.
      * @return the VirtualMachineRunCommandsListResult object itself.
      */
@@ -51,7 +55,7 @@ public final class VirtualMachineRunCommandsListResult {
 
     /**
      * Get the nextLink property: The uri to fetch the next page of run commands.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class VirtualMachineRunCommandsListResult {
 
     /**
      * Set the nextLink property: The uri to fetch the next page of run commands.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the VirtualMachineRunCommandsListResult object itself.
      */
@@ -71,15 +75,13 @@ public final class VirtualMachineRunCommandsListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model VirtualMachineRunCommandsListResult"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model VirtualMachineRunCommandsListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

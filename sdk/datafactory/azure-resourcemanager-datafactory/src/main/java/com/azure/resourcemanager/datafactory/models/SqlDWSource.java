@@ -46,7 +46,7 @@ public final class SqlDWSource extends TabularSource {
 
     /*
      * The partition mechanism that will be used for Sql read in parallel. Possible values include: "None",
-     * "PhysicalPartitionsOfTable", "DynamicRange".
+     * "PhysicalPartitionsOfTable", "DynamicRange". Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "partitionOption")
     private Object partitionOption;
@@ -157,7 +157,8 @@ public final class SqlDWSource extends TabularSource {
 
     /**
      * Get the partitionOption property: The partition mechanism that will be used for Sql read in parallel. Possible
-     * values include: "None", "PhysicalPartitionsOfTable", "DynamicRange".
+     * values include: "None", "PhysicalPartitionsOfTable", "DynamicRange". Type: string (or Expression with resultType
+     * string).
      * 
      * @return the partitionOption value.
      */
@@ -167,7 +168,8 @@ public final class SqlDWSource extends TabularSource {
 
     /**
      * Set the partitionOption property: The partition mechanism that will be used for Sql read in parallel. Possible
-     * values include: "None", "PhysicalPartitionsOfTable", "DynamicRange".
+     * values include: "None", "PhysicalPartitionsOfTable", "DynamicRange". Type: string (or Expression with resultType
+     * string).
      * 
      * @param partitionOption the partitionOption value to set.
      * @return the SqlDWSource object itself.

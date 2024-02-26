@@ -6,7 +6,9 @@
 
 package com.azure.search.documents.models;
 
-/** The operation to perform on a document in an indexing batch. */
+/**
+ * The operation to perform on a document in an indexing batch.
+ */
 public enum IndexActionType {
     /**
      * Inserts the document into the index if it is new and updates it if it exists. All fields are replaced in the
@@ -34,7 +36,9 @@ public enum IndexActionType {
      */
     DELETE("delete");
 
-    /** The actual serialized value for a IndexActionType instance. */
+    /**
+     * The actual serialized value for a IndexActionType instance.
+     */
     private final String value;
 
     IndexActionType(String value) {
@@ -43,7 +47,7 @@ public enum IndexActionType {
 
     /**
      * Parses a serialized value to a IndexActionType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed IndexActionType object, or null if unable to parse.
      */
@@ -60,7 +64,9 @@ public enum IndexActionType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public String toString() {
         return this.value;

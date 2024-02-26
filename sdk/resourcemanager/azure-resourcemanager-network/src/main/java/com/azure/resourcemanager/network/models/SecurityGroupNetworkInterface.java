@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Network interface and all its associated security rules. */
+/**
+ * Network interface and all its associated security rules.
+ */
 @Fluent
 public final class SecurityGroupNetworkInterface {
     /*
@@ -22,13 +24,15 @@ public final class SecurityGroupNetworkInterface {
     @JsonProperty(value = "securityRuleAssociations")
     private SecurityRuleAssociations securityRuleAssociations;
 
-    /** Creates an instance of SecurityGroupNetworkInterface class. */
+    /**
+     * Creates an instance of SecurityGroupNetworkInterface class.
+     */
     public SecurityGroupNetworkInterface() {
     }
 
     /**
      * Get the id property: ID of the network interface.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -37,7 +41,7 @@ public final class SecurityGroupNetworkInterface {
 
     /**
      * Set the id property: ID of the network interface.
-     *
+     * 
      * @param id the id value to set.
      * @return the SecurityGroupNetworkInterface object itself.
      */
@@ -48,7 +52,7 @@ public final class SecurityGroupNetworkInterface {
 
     /**
      * Get the securityRuleAssociations property: All security rules associated with the network interface.
-     *
+     * 
      * @return the securityRuleAssociations value.
      */
     public SecurityRuleAssociations securityRuleAssociations() {
@@ -57,19 +61,19 @@ public final class SecurityGroupNetworkInterface {
 
     /**
      * Set the securityRuleAssociations property: All security rules associated with the network interface.
-     *
+     * 
      * @param securityRuleAssociations the securityRuleAssociations value to set.
      * @return the SecurityGroupNetworkInterface object itself.
      */
-    public SecurityGroupNetworkInterface withSecurityRuleAssociations(
-        SecurityRuleAssociations securityRuleAssociations) {
+    public SecurityGroupNetworkInterface
+        withSecurityRuleAssociations(SecurityRuleAssociations securityRuleAssociations) {
         this.securityRuleAssociations = securityRuleAssociations;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

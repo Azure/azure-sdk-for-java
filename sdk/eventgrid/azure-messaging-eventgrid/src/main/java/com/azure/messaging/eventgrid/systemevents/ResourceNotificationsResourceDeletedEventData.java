@@ -5,29 +5,37 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Describes the schema of the common properties across all ARN system topic delete events. */
+/**
+ * Describes the schema of the common properties across all ARN system topic delete events.
+ */
 @Fluent
-public class ResourceNotificationsResourceDeletedEventData {
+public class ResourceNotificationsResourceDeletedEventData
+    implements JsonSerializable<ResourceNotificationsResourceDeletedEventData> {
     /*
      * resourceInfo details for delete event
      */
-    @JsonProperty(value = "resourceInfo")
     private ResourceNotificationsResourceDeletedDetails resourceDetails;
 
     /*
      * details about operational info
      */
-    @JsonProperty(value = "operationalInfo")
     private ResourceNotificationsOperationalDetails operationalDetails;
 
-    /** Creates an instance of ResourceNotificationsResourceDeletedEventData class. */
-    public ResourceNotificationsResourceDeletedEventData() {}
+    /**
+     * Creates an instance of ResourceNotificationsResourceDeletedEventData class.
+     */
+    public ResourceNotificationsResourceDeletedEventData() {
+    }
 
     /**
      * Get the resourceDetails property: resourceInfo details for delete event.
-     *
+     * 
      * @return the resourceDetails value.
      */
     public ResourceNotificationsResourceDeletedDetails getResourceDetails() {
@@ -36,19 +44,19 @@ public class ResourceNotificationsResourceDeletedEventData {
 
     /**
      * Set the resourceDetails property: resourceInfo details for delete event.
-     *
+     * 
      * @param resourceDetails the resourceDetails value to set.
      * @return the ResourceNotificationsResourceDeletedEventData object itself.
      */
-    public ResourceNotificationsResourceDeletedEventData setResourceDetails(
-            ResourceNotificationsResourceDeletedDetails resourceDetails) {
+    public ResourceNotificationsResourceDeletedEventData
+        setResourceDetails(ResourceNotificationsResourceDeletedDetails resourceDetails) {
         this.resourceDetails = resourceDetails;
         return this;
     }
 
     /**
      * Get the operationalDetails property: details about operational info.
-     *
+     * 
      * @return the operationalDetails value.
      */
     public ResourceNotificationsOperationalDetails getOperationalDetails() {
@@ -57,13 +65,52 @@ public class ResourceNotificationsResourceDeletedEventData {
 
     /**
      * Set the operationalDetails property: details about operational info.
-     *
+     * 
      * @param operationalDetails the operationalDetails value to set.
      * @return the ResourceNotificationsResourceDeletedEventData object itself.
      */
-    public ResourceNotificationsResourceDeletedEventData setOperationalDetails(
-            ResourceNotificationsOperationalDetails operationalDetails) {
+    public ResourceNotificationsResourceDeletedEventData
+        setOperationalDetails(ResourceNotificationsOperationalDetails operationalDetails) {
         this.operationalDetails = operationalDetails;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("resourceInfo", this.resourceDetails);
+        jsonWriter.writeJsonField("operationalInfo", this.operationalDetails);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ResourceNotificationsResourceDeletedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ResourceNotificationsResourceDeletedEventData if the JsonReader was pointing to an
+     * instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ResourceNotificationsResourceDeletedEventData.
+     */
+    public static ResourceNotificationsResourceDeletedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ResourceNotificationsResourceDeletedEventData deserializedResourceNotificationsResourceDeletedEventData
+                = new ResourceNotificationsResourceDeletedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceInfo".equals(fieldName)) {
+                    deserializedResourceNotificationsResourceDeletedEventData.resourceDetails
+                        = ResourceNotificationsResourceDeletedDetails.fromJson(reader);
+                } else if ("operationalInfo".equals(fieldName)) {
+                    deserializedResourceNotificationsResourceDeletedEventData.operationalDetails
+                        = ResourceNotificationsOperationalDetails.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedResourceNotificationsResourceDeletedEventData;
+        });
     }
 }

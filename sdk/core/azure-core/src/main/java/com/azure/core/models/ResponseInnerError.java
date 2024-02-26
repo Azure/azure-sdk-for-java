@@ -3,7 +3,6 @@
 
 package com.azure.core.models;
 
-
 import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;

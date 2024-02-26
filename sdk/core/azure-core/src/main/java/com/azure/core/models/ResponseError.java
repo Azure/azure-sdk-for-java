@@ -217,8 +217,7 @@ public final class ResponseError implements JsonSerializable<ResponseError> {
                 throw new IllegalStateException("Missing required property: message");
             }
 
-            return new ResponseError(code, message)
-                .setTarget(target)
+            return new ResponseError(code, message).setTarget(target)
                 .setInnerError(innerError)
                 .setErrorDetails(errorDetails);
         });

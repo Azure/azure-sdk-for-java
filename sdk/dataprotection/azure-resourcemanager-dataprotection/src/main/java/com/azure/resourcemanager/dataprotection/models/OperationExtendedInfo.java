@@ -12,8 +12,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * OperationExtendedInfo
- *
- * <p>Operation Extended Info.
+ * 
+ * Operation Extended Info.
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -21,16 +21,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     property = "objectType",
     defaultImpl = OperationExtendedInfo.class)
 @JsonTypeName("OperationExtendedInfo")
-@JsonSubTypes({@JsonSubTypes.Type(name = "OperationJobExtendedInfo", value = OperationJobExtendedInfoInner.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "OperationJobExtendedInfo", value = OperationJobExtendedInfoInner.class) })
 @Immutable
 public class OperationExtendedInfo {
-    /** Creates an instance of OperationExtendedInfo class. */
+    /**
+     * Creates an instance of OperationExtendedInfo class.
+     */
     public OperationExtendedInfo() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

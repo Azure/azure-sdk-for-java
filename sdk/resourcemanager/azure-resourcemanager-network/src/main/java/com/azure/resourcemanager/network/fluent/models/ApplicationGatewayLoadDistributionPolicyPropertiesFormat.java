@@ -11,7 +11,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of Load Distribution Policy of an application gateway. */
+/**
+ * Properties of Load Distribution Policy of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayLoadDistributionPolicyPropertiesFormat {
     /*
@@ -32,13 +34,15 @@ public final class ApplicationGatewayLoadDistributionPolicyPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ApplicationGatewayLoadDistributionPolicyPropertiesFormat class. */
+    /**
+     * Creates an instance of ApplicationGatewayLoadDistributionPolicyPropertiesFormat class.
+     */
     public ApplicationGatewayLoadDistributionPolicyPropertiesFormat() {
     }
 
     /**
      * Get the loadDistributionTargets property: Load Distribution Targets resource of an application gateway.
-     *
+     * 
      * @return the loadDistributionTargets value.
      */
     public List<ApplicationGatewayLoadDistributionTarget> loadDistributionTargets() {
@@ -47,19 +51,19 @@ public final class ApplicationGatewayLoadDistributionPolicyPropertiesFormat {
 
     /**
      * Set the loadDistributionTargets property: Load Distribution Targets resource of an application gateway.
-     *
+     * 
      * @param loadDistributionTargets the loadDistributionTargets value to set.
      * @return the ApplicationGatewayLoadDistributionPolicyPropertiesFormat object itself.
      */
-    public ApplicationGatewayLoadDistributionPolicyPropertiesFormat withLoadDistributionTargets(
-        List<ApplicationGatewayLoadDistributionTarget> loadDistributionTargets) {
+    public ApplicationGatewayLoadDistributionPolicyPropertiesFormat
+        withLoadDistributionTargets(List<ApplicationGatewayLoadDistributionTarget> loadDistributionTargets) {
         this.loadDistributionTargets = loadDistributionTargets;
         return this;
     }
 
     /**
      * Get the loadDistributionAlgorithm property: Load Distribution Targets resource of an application gateway.
-     *
+     * 
      * @return the loadDistributionAlgorithm value.
      */
     public ApplicationGatewayLoadDistributionAlgorithm loadDistributionAlgorithm() {
@@ -68,19 +72,19 @@ public final class ApplicationGatewayLoadDistributionPolicyPropertiesFormat {
 
     /**
      * Set the loadDistributionAlgorithm property: Load Distribution Targets resource of an application gateway.
-     *
+     * 
      * @param loadDistributionAlgorithm the loadDistributionAlgorithm value to set.
      * @return the ApplicationGatewayLoadDistributionPolicyPropertiesFormat object itself.
      */
-    public ApplicationGatewayLoadDistributionPolicyPropertiesFormat withLoadDistributionAlgorithm(
-        ApplicationGatewayLoadDistributionAlgorithm loadDistributionAlgorithm) {
+    public ApplicationGatewayLoadDistributionPolicyPropertiesFormat
+        withLoadDistributionAlgorithm(ApplicationGatewayLoadDistributionAlgorithm loadDistributionAlgorithm) {
         this.loadDistributionAlgorithm = loadDistributionAlgorithm;
         return this;
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the Load Distribution Policy resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -89,7 +93,7 @@ public final class ApplicationGatewayLoadDistributionPolicyPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

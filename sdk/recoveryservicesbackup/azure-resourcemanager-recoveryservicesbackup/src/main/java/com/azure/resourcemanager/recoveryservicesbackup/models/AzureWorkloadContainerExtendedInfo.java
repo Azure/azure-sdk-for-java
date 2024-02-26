@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Extended information of the container. */
+/**
+ * Extended information of the container.
+ */
 @Fluent
 public final class AzureWorkloadContainerExtendedInfo {
     /*
@@ -29,14 +31,16 @@ public final class AzureWorkloadContainerExtendedInfo {
     @JsonProperty(value = "nodesList")
     private List<DistributedNodesInfo> nodesList;
 
-    /** Creates an instance of AzureWorkloadContainerExtendedInfo class. */
+    /**
+     * Creates an instance of AzureWorkloadContainerExtendedInfo class.
+     */
     public AzureWorkloadContainerExtendedInfo() {
     }
 
     /**
      * Get the hostServerName property: Host Os Name in case of Stand Alone and Cluster Name in case of distributed
      * container.
-     *
+     * 
      * @return the hostServerName value.
      */
     public String hostServerName() {
@@ -46,7 +50,7 @@ public final class AzureWorkloadContainerExtendedInfo {
     /**
      * Set the hostServerName property: Host Os Name in case of Stand Alone and Cluster Name in case of distributed
      * container.
-     *
+     * 
      * @param hostServerName the hostServerName value to set.
      * @return the AzureWorkloadContainerExtendedInfo object itself.
      */
@@ -57,7 +61,7 @@ public final class AzureWorkloadContainerExtendedInfo {
 
     /**
      * Get the inquiryInfo property: Inquiry Status for the container.
-     *
+     * 
      * @return the inquiryInfo value.
      */
     public InquiryInfo inquiryInfo() {
@@ -66,7 +70,7 @@ public final class AzureWorkloadContainerExtendedInfo {
 
     /**
      * Set the inquiryInfo property: Inquiry Status for the container.
-     *
+     * 
      * @param inquiryInfo the inquiryInfo value to set.
      * @return the AzureWorkloadContainerExtendedInfo object itself.
      */
@@ -77,7 +81,7 @@ public final class AzureWorkloadContainerExtendedInfo {
 
     /**
      * Get the nodesList property: List of the nodes in case of distributed container.
-     *
+     * 
      * @return the nodesList value.
      */
     public List<DistributedNodesInfo> nodesList() {
@@ -86,7 +90,7 @@ public final class AzureWorkloadContainerExtendedInfo {
 
     /**
      * Set the nodesList property: List of the nodes in case of distributed container.
-     *
+     * 
      * @param nodesList the nodesList value to set.
      * @return the AzureWorkloadContainerExtendedInfo object itself.
      */
@@ -97,7 +101,7 @@ public final class AzureWorkloadContainerExtendedInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

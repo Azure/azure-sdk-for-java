@@ -22,14 +22,14 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in SecurityPartnerProvidersClient. */
-public interface SecurityPartnerProvidersClient
-    extends InnerSupportsGet<SecurityPartnerProviderInner>,
-        InnerSupportsListing<SecurityPartnerProviderInner>,
-        InnerSupportsDelete<Void> {
+/**
+ * An instance of this class provides access to all the operations defined in SecurityPartnerProvidersClient.
+ */
+public interface SecurityPartnerProvidersClient extends InnerSupportsGet<SecurityPartnerProviderInner>,
+    InnerSupportsListing<SecurityPartnerProviderInner>, InnerSupportsDelete<Void> {
     /**
      * Deletes the specified Security Partner Provider.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -38,12 +38,12 @@ public interface SecurityPartnerProvidersClient
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String securityPartnerProviderName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String securityPartnerProviderName);
 
     /**
      * Deletes the specified Security Partner Provider.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -56,7 +56,7 @@ public interface SecurityPartnerProvidersClient
 
     /**
      * Deletes the specified Security Partner Provider.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -69,7 +69,7 @@ public interface SecurityPartnerProvidersClient
 
     /**
      * Deletes the specified Security Partner Provider.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param context The context to associate with this operation.
@@ -79,12 +79,12 @@ public interface SecurityPartnerProvidersClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String securityPartnerProviderName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String securityPartnerProviderName,
+        Context context);
 
     /**
      * Deletes the specified Security Partner Provider.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -97,7 +97,7 @@ public interface SecurityPartnerProvidersClient
 
     /**
      * Deletes the specified Security Partner Provider.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -109,7 +109,7 @@ public interface SecurityPartnerProvidersClient
 
     /**
      * Deletes the specified Security Partner Provider.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param context The context to associate with this operation.
@@ -122,22 +122,22 @@ public interface SecurityPartnerProvidersClient
 
     /**
      * Gets the specified Security Partner Provider.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Security Partner Provider along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the specified Security Partner Provider along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SecurityPartnerProviderInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String securityPartnerProviderName);
+    Mono<Response<SecurityPartnerProviderInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String securityPartnerProviderName);
 
     /**
      * Gets the specified Security Partner Provider.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -146,12 +146,12 @@ public interface SecurityPartnerProvidersClient
      * @return the specified Security Partner Provider on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SecurityPartnerProviderInner> getByResourceGroupAsync(
-        String resourceGroupName, String securityPartnerProviderName);
+    Mono<SecurityPartnerProviderInner> getByResourceGroupAsync(String resourceGroupName,
+        String securityPartnerProviderName);
 
     /**
      * Gets the specified Security Partner Provider.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param context The context to associate with this operation.
@@ -161,12 +161,12 @@ public interface SecurityPartnerProvidersClient
      * @return the specified Security Partner Provider along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SecurityPartnerProviderInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String securityPartnerProviderName, Context context);
+    Response<SecurityPartnerProviderInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String securityPartnerProviderName, Context context);
 
     /**
      * Gets the specified Security Partner Provider.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -179,7 +179,7 @@ public interface SecurityPartnerProvidersClient
 
     /**
      * Creates or updates the specified Security Partner Provider.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param parameters Parameters supplied to the create or update Security Partner Provider operation.
@@ -189,12 +189,12 @@ public interface SecurityPartnerProvidersClient
      * @return security Partner Provider resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String securityPartnerProviderName, SecurityPartnerProviderInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String securityPartnerProviderName, SecurityPartnerProviderInner parameters);
 
     /**
      * Creates or updates the specified Security Partner Provider.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param parameters Parameters supplied to the create or update Security Partner Provider operation.
@@ -209,7 +209,7 @@ public interface SecurityPartnerProvidersClient
 
     /**
      * Creates or updates the specified Security Partner Provider.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param parameters Parameters supplied to the create or update Security Partner Provider operation.
@@ -224,7 +224,7 @@ public interface SecurityPartnerProvidersClient
 
     /**
      * Creates or updates the specified Security Partner Provider.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param parameters Parameters supplied to the create or update Security Partner Provider operation.
@@ -236,14 +236,12 @@ public interface SecurityPartnerProvidersClient
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<SecurityPartnerProviderInner>, SecurityPartnerProviderInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String securityPartnerProviderName,
-        SecurityPartnerProviderInner parameters,
+        String resourceGroupName, String securityPartnerProviderName, SecurityPartnerProviderInner parameters,
         Context context);
 
     /**
      * Creates or updates the specified Security Partner Provider.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param parameters Parameters supplied to the create or update Security Partner Provider operation.
@@ -253,12 +251,12 @@ public interface SecurityPartnerProvidersClient
      * @return security Partner Provider resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SecurityPartnerProviderInner> createOrUpdateAsync(
-        String resourceGroupName, String securityPartnerProviderName, SecurityPartnerProviderInner parameters);
+    Mono<SecurityPartnerProviderInner> createOrUpdateAsync(String resourceGroupName, String securityPartnerProviderName,
+        SecurityPartnerProviderInner parameters);
 
     /**
      * Creates or updates the specified Security Partner Provider.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param parameters Parameters supplied to the create or update Security Partner Provider operation.
@@ -268,12 +266,12 @@ public interface SecurityPartnerProvidersClient
      * @return security Partner Provider resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityPartnerProviderInner createOrUpdate(
-        String resourceGroupName, String securityPartnerProviderName, SecurityPartnerProviderInner parameters);
+    SecurityPartnerProviderInner createOrUpdate(String resourceGroupName, String securityPartnerProviderName,
+        SecurityPartnerProviderInner parameters);
 
     /**
      * Creates or updates the specified Security Partner Provider.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param parameters Parameters supplied to the create or update Security Partner Provider operation.
@@ -284,15 +282,12 @@ public interface SecurityPartnerProvidersClient
      * @return security Partner Provider resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityPartnerProviderInner createOrUpdate(
-        String resourceGroupName,
-        String securityPartnerProviderName,
-        SecurityPartnerProviderInner parameters,
-        Context context);
+    SecurityPartnerProviderInner createOrUpdate(String resourceGroupName, String securityPartnerProviderName,
+        SecurityPartnerProviderInner parameters, Context context);
 
     /**
      * Updates tags of a Security Partner Provider resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param parameters Parameters supplied to update Security Partner Provider tags.
@@ -302,12 +297,12 @@ public interface SecurityPartnerProvidersClient
      * @return security Partner Provider resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SecurityPartnerProviderInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String securityPartnerProviderName, TagsObject parameters);
+    Mono<Response<SecurityPartnerProviderInner>> updateTagsWithResponseAsync(String resourceGroupName,
+        String securityPartnerProviderName, TagsObject parameters);
 
     /**
      * Updates tags of a Security Partner Provider resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param parameters Parameters supplied to update Security Partner Provider tags.
@@ -317,12 +312,12 @@ public interface SecurityPartnerProvidersClient
      * @return security Partner Provider resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SecurityPartnerProviderInner> updateTagsAsync(
-        String resourceGroupName, String securityPartnerProviderName, TagsObject parameters);
+    Mono<SecurityPartnerProviderInner> updateTagsAsync(String resourceGroupName, String securityPartnerProviderName,
+        TagsObject parameters);
 
     /**
      * Updates tags of a Security Partner Provider resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param parameters Parameters supplied to update Security Partner Provider tags.
@@ -333,12 +328,12 @@ public interface SecurityPartnerProvidersClient
      * @return security Partner Provider resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SecurityPartnerProviderInner> updateTagsWithResponse(
-        String resourceGroupName, String securityPartnerProviderName, TagsObject parameters, Context context);
+    Response<SecurityPartnerProviderInner> updateTagsWithResponse(String resourceGroupName,
+        String securityPartnerProviderName, TagsObject parameters, Context context);
 
     /**
      * Updates tags of a Security Partner Provider resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param securityPartnerProviderName The name of the Security Partner Provider.
      * @param parameters Parameters supplied to update Security Partner Provider tags.
@@ -348,12 +343,12 @@ public interface SecurityPartnerProvidersClient
      * @return security Partner Provider resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SecurityPartnerProviderInner updateTags(
-        String resourceGroupName, String securityPartnerProviderName, TagsObject parameters);
+    SecurityPartnerProviderInner updateTags(String resourceGroupName, String securityPartnerProviderName,
+        TagsObject parameters);
 
     /**
      * Lists all Security Partner Providers in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -365,34 +360,34 @@ public interface SecurityPartnerProvidersClient
 
     /**
      * Lists all Security Partner Providers in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListSecurityPartnerProviders API service call as paginated response with {@link
-     *     PagedIterable}.
+     * @return response for ListSecurityPartnerProviders API service call as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecurityPartnerProviderInner> listByResourceGroup(String resourceGroupName);
 
     /**
      * Lists all Security Partner Providers in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response for ListSecurityPartnerProviders API service call as paginated response with {@link
-     *     PagedIterable}.
+     * @return response for ListSecurityPartnerProviders API service call as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     PagedIterable<SecurityPartnerProviderInner> listByResourceGroup(String resourceGroupName, Context context);
 
     /**
      * Gets all the Security Partner Providers in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Security Partner Providers in a subscription as paginated response with {@link PagedFlux}.
@@ -402,7 +397,7 @@ public interface SecurityPartnerProvidersClient
 
     /**
      * Gets all the Security Partner Providers in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Security Partner Providers in a subscription as paginated response with {@link PagedIterable}.
@@ -412,7 +407,7 @@ public interface SecurityPartnerProvidersClient
 
     /**
      * Gets all the Security Partner Providers in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

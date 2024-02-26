@@ -21,57 +21,42 @@ public final class RecoveryPointsImpl implements RecoveryPoints {
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    public RecoveryPointsImpl(
-        RecoveryPointsClient innerClient,
+    public RecoveryPointsImpl(RecoveryPointsClient innerClient,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<AzureBackupRecoveryPointResource> list(
-        String resourceGroupName, String vaultName, String backupInstanceName) {
-        PagedIterable<AzureBackupRecoveryPointResourceInner> inner =
-            this.serviceClient().list(resourceGroupName, vaultName, backupInstanceName);
+    public PagedIterable<AzureBackupRecoveryPointResource> list(String resourceGroupName, String vaultName,
+        String backupInstanceName) {
+        PagedIterable<AzureBackupRecoveryPointResourceInner> inner
+            = this.serviceClient().list(resourceGroupName, vaultName, backupInstanceName);
         return Utils.mapPage(inner, inner1 -> new AzureBackupRecoveryPointResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<AzureBackupRecoveryPointResource> list(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        String filter,
-        String skipToken,
-        Context context) {
-        PagedIterable<AzureBackupRecoveryPointResourceInner> inner =
-            this.serviceClient().list(resourceGroupName, vaultName, backupInstanceName, filter, skipToken, context);
+    public PagedIterable<AzureBackupRecoveryPointResource> list(String resourceGroupName, String vaultName,
+        String backupInstanceName, String filter, String skipToken, Context context) {
+        PagedIterable<AzureBackupRecoveryPointResourceInner> inner
+            = this.serviceClient().list(resourceGroupName, vaultName, backupInstanceName, filter, skipToken, context);
         return Utils.mapPage(inner, inner1 -> new AzureBackupRecoveryPointResourceImpl(inner1, this.manager()));
     }
 
-    public Response<AzureBackupRecoveryPointResource> getWithResponse(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        String recoveryPointId,
-        Context context) {
-        Response<AzureBackupRecoveryPointResourceInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, vaultName, backupInstanceName, recoveryPointId, context);
+    public Response<AzureBackupRecoveryPointResource> getWithResponse(String resourceGroupName, String vaultName,
+        String backupInstanceName, String recoveryPointId, Context context) {
+        Response<AzureBackupRecoveryPointResourceInner> inner = this.serviceClient().getWithResponse(resourceGroupName,
+            vaultName, backupInstanceName, recoveryPointId, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new AzureBackupRecoveryPointResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public AzureBackupRecoveryPointResource get(
-        String resourceGroupName, String vaultName, String backupInstanceName, String recoveryPointId) {
-        AzureBackupRecoveryPointResourceInner inner =
-            this.serviceClient().get(resourceGroupName, vaultName, backupInstanceName, recoveryPointId);
+    public AzureBackupRecoveryPointResource get(String resourceGroupName, String vaultName, String backupInstanceName,
+        String recoveryPointId) {
+        AzureBackupRecoveryPointResourceInner inner
+            = this.serviceClient().get(resourceGroupName, vaultName, backupInstanceName, recoveryPointId);
         if (inner != null) {
             return new AzureBackupRecoveryPointResourceImpl(inner, this.manager());
         } else {

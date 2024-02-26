@@ -674,7 +674,7 @@ public final class OpenAIClient {
         } else {
             return getChatCompletionsWithAzureExtensionsWithResponse(deploymentOrModelName,
                 BinaryData.fromObject(chatCompletionsOptions), requestOptions).getValue()
-                    .toObject(ChatCompletions.class);
+                .toObject(ChatCompletions.class);
         }
     }
 
@@ -738,7 +738,7 @@ public final class OpenAIClient {
      *     temperature: Double (Optional)
      *     top_p: Double (Optional)
      *     logit_bias (Optional): {
-     *         String: int (Optional)
+     *         String: int (Required)
      *     }
      *     user: String (Optional)
      *     n: Integer (Optional)
@@ -882,7 +882,7 @@ public final class OpenAIClient {
      *             }
      *         }
      *     ]
-     *     system_fingerprint: String (Required)
+     *     system_fingerprint: String (Optional)
      *     usage (Required): {
      *         completion_tokens: int (Required)
      *         prompt_tokens: int (Required)
@@ -1177,20 +1177,6 @@ public final class OpenAIClient {
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
      * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: byte[] (Required)
-     *     filename: String (Optional)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     language: String (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     model: String (Optional)
-     * }
-     * }</pre>
-     * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
@@ -1242,20 +1228,6 @@ public final class OpenAIClient {
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
      * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: byte[] (Required)
-     *     filename: String (Optional)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     language: String (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     model: String (Optional)
-     * }
-     * }</pre>
-     * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
@@ -1282,19 +1254,6 @@ public final class OpenAIClient {
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: byte[] (Required)
-     *     filename: String (Optional)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     model: String (Optional)
-     * }
-     * }</pre>
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -1347,19 +1306,6 @@ public final class OpenAIClient {
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
      * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: byte[] (Required)
-     *     filename: String (Optional)
-     *     response_format: String(json/verbose_json/text/srt/vtt) (Optional)
-     *     prompt: String (Optional)
-     *     temperature: Double (Optional)
-     *     model: String (Optional)
-     * }
-     * }</pre>
-     * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
@@ -1400,11 +1346,9 @@ public final class OpenAIClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return transcribed text and associated metadata from provided spoken audio data.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String getAudioTranscriptionAsPlainText(String deploymentOrModelName,
         AudioTranscriptionOptions audioTranscriptionOptions) {
-        // Generated convenience method for getAudioTranscriptionAsPlainTextWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getAudioTranscriptionAsPlainTextWithResponse(deploymentOrModelName,
             BinaryData.fromObject(audioTranscriptionOptions), requestOptions).getValue().toObject(String.class);
@@ -1424,11 +1368,9 @@ public final class OpenAIClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return english language transcribed text and associated metadata from provided spoken audio data.
      */
-    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public String getAudioTranslationAsPlainText(String deploymentOrModelName,
         AudioTranslationOptions audioTranslationOptions) {
-        // Generated convenience method for getAudioTranslationAsPlainTextWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getAudioTranslationAsPlainTextWithResponse(deploymentOrModelName,
             BinaryData.fromObject(audioTranslationOptions), requestOptions).getValue().toObject(String.class);
@@ -1560,5 +1502,46 @@ public final class OpenAIClient {
         RequestOptions requestOptions = new RequestOptions();
         return getImageGenerationsWithResponse(deploymentOrModelName, BinaryData.fromObject(imageGenerationOptions),
             requestOptions).getValue().toObject(ImageGenerations.class);
+    }
+
+    /**
+     * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
+     * written language corresponding to the language it was spoken in.
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
+     * @param audioTranscriptionOptions The configuration information for an audio transcription request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return transcribed text and associated metadata from provided spoken audio data.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AudioTranscription getAudioTranscriptionAsResponseObject(String deploymentOrModelName,
+        AudioTranscriptionOptions audioTranscriptionOptions) {
+        return getAudioTranscription(deploymentOrModelName, "filename", audioTranscriptionOptions);
+    }
+
+    /**
+     * Gets English language transcribed text and associated metadata from provided spoken audio data.
+     *
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
+     * @param audioTranslationOptions The configuration information for an audio translation request.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return english language transcribed text and associated metadata from provided spoken audio data.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    AudioTranslation getAudioTranslationAsResponseObject(String deploymentOrModelName,
+        AudioTranslationOptions audioTranslationOptions) {
+        return getAudioTranslation(deploymentOrModelName, "filename", audioTranslationOptions);
     }
 }

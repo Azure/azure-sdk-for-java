@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.ProxyResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains information about an application in a Batch account. */
+/**
+ * Contains information about an application in a Batch account.
+ */
 @Fluent
 public final class ApplicationInner extends ProxyResource {
     /*
@@ -23,13 +25,15 @@ public final class ApplicationInner extends ProxyResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of ApplicationInner class. */
+    /**
+     * Creates an instance of ApplicationInner class.
+     */
     public ApplicationInner() {
     }
 
     /**
      * Get the innerProperties property: The properties associated with the Application.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationProperties innerProperties() {
@@ -38,7 +42,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Get the etag property: The ETag of the resource, used for concurrency statements.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -47,7 +51,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Get the displayName property: The display name for the application.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -56,7 +60,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Set the displayName property: The display name for the application.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the ApplicationInner object itself.
      */
@@ -71,7 +75,7 @@ public final class ApplicationInner extends ProxyResource {
     /**
      * Get the allowUpdates property: A value indicating whether packages within the application may be overwritten
      * using the same version string.
-     *
+     * 
      * @return the allowUpdates value.
      */
     public Boolean allowUpdates() {
@@ -81,7 +85,7 @@ public final class ApplicationInner extends ProxyResource {
     /**
      * Set the allowUpdates property: A value indicating whether packages within the application may be overwritten
      * using the same version string.
-     *
+     * 
      * @param allowUpdates the allowUpdates value to set.
      * @return the ApplicationInner object itself.
      */
@@ -96,7 +100,7 @@ public final class ApplicationInner extends ProxyResource {
     /**
      * Get the defaultVersion property: The package to use if a client requests the application but does not specify a
      * version. This property can only be set to the name of an existing package.
-     *
+     * 
      * @return the defaultVersion value.
      */
     public String defaultVersion() {
@@ -106,7 +110,7 @@ public final class ApplicationInner extends ProxyResource {
     /**
      * Set the defaultVersion property: The package to use if a client requests the application but does not specify a
      * version. This property can only be set to the name of an existing package.
-     *
+     * 
      * @param defaultVersion the defaultVersion value to set.
      * @return the ApplicationInner object itself.
      */
@@ -120,7 +124,7 @@ public final class ApplicationInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

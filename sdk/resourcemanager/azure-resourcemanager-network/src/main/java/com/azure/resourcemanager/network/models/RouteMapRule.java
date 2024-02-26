@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A RouteMap Rule. */
+/**
+ * A RouteMap Rule.
+ */
 @Fluent
 public final class RouteMapRule {
     /*
@@ -35,13 +37,15 @@ public final class RouteMapRule {
     @JsonProperty(value = "nextStepIfMatched")
     private NextStep nextStepIfMatched;
 
-    /** Creates an instance of RouteMapRule class. */
+    /**
+     * Creates an instance of RouteMapRule class.
+     */
     public RouteMapRule() {
     }
 
     /**
      * Get the name property: The unique name for the rule.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -50,7 +54,7 @@ public final class RouteMapRule {
 
     /**
      * Set the name property: The unique name for the rule.
-     *
+     * 
      * @param name the name value to set.
      * @return the RouteMapRule object itself.
      */
@@ -61,7 +65,7 @@ public final class RouteMapRule {
 
     /**
      * Get the matchCriteria property: List of matching criterion which will be applied to traffic.
-     *
+     * 
      * @return the matchCriteria value.
      */
     public List<Criterion> matchCriteria() {
@@ -70,7 +74,7 @@ public final class RouteMapRule {
 
     /**
      * Set the matchCriteria property: List of matching criterion which will be applied to traffic.
-     *
+     * 
      * @param matchCriteria the matchCriteria value to set.
      * @return the RouteMapRule object itself.
      */
@@ -81,7 +85,7 @@ public final class RouteMapRule {
 
     /**
      * Get the actions property: List of actions which will be applied on a match.
-     *
+     * 
      * @return the actions value.
      */
     public List<Action> actions() {
@@ -90,7 +94,7 @@ public final class RouteMapRule {
 
     /**
      * Set the actions property: List of actions which will be applied on a match.
-     *
+     * 
      * @param actions the actions value to set.
      * @return the RouteMapRule object itself.
      */
@@ -102,7 +106,7 @@ public final class RouteMapRule {
     /**
      * Get the nextStepIfMatched property: Next step after rule is evaluated. Current supported behaviors are
      * 'Continue'(to next rule) and 'Terminate'.
-     *
+     * 
      * @return the nextStepIfMatched value.
      */
     public NextStep nextStepIfMatched() {
@@ -112,7 +116,7 @@ public final class RouteMapRule {
     /**
      * Set the nextStepIfMatched property: Next step after rule is evaluated. Current supported behaviors are
      * 'Continue'(to next rule) and 'Terminate'.
-     *
+     * 
      * @param nextStepIfMatched the nextStepIfMatched value to set.
      * @return the RouteMapRule object itself.
      */
@@ -123,7 +127,7 @@ public final class RouteMapRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

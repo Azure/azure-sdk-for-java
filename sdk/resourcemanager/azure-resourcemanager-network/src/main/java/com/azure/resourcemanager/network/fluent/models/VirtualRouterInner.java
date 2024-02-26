@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** VirtualRouter Resource. */
+/**
+ * VirtualRouter Resource.
+ */
 @Fluent
 public final class VirtualRouterInner extends Resource {
     /*
@@ -33,13 +35,15 @@ public final class VirtualRouterInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of VirtualRouterInner class. */
+    /**
+     * Creates an instance of VirtualRouterInner class.
+     */
     public VirtualRouterInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the Virtual Router.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VirtualRouterPropertiesFormat innerProperties() {
@@ -48,7 +52,7 @@ public final class VirtualRouterInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -57,7 +61,7 @@ public final class VirtualRouterInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -66,7 +70,7 @@ public final class VirtualRouterInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the VirtualRouterInner object itself.
      */
@@ -75,14 +79,18 @@ public final class VirtualRouterInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualRouterInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualRouterInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -91,7 +99,7 @@ public final class VirtualRouterInner extends Resource {
 
     /**
      * Get the virtualRouterAsn property: VirtualRouter ASN.
-     *
+     * 
      * @return the virtualRouterAsn value.
      */
     public Long virtualRouterAsn() {
@@ -100,7 +108,7 @@ public final class VirtualRouterInner extends Resource {
 
     /**
      * Set the virtualRouterAsn property: VirtualRouter ASN.
-     *
+     * 
      * @param virtualRouterAsn the virtualRouterAsn value to set.
      * @return the VirtualRouterInner object itself.
      */
@@ -114,7 +122,7 @@ public final class VirtualRouterInner extends Resource {
 
     /**
      * Get the virtualRouterIps property: VirtualRouter IPs.
-     *
+     * 
      * @return the virtualRouterIps value.
      */
     public List<String> virtualRouterIps() {
@@ -123,7 +131,7 @@ public final class VirtualRouterInner extends Resource {
 
     /**
      * Set the virtualRouterIps property: VirtualRouter IPs.
-     *
+     * 
      * @param virtualRouterIps the virtualRouterIps value to set.
      * @return the VirtualRouterInner object itself.
      */
@@ -137,7 +145,7 @@ public final class VirtualRouterInner extends Resource {
 
     /**
      * Get the hostedSubnet property: The Subnet on which VirtualRouter is hosted.
-     *
+     * 
      * @return the hostedSubnet value.
      */
     public SubResource hostedSubnet() {
@@ -146,7 +154,7 @@ public final class VirtualRouterInner extends Resource {
 
     /**
      * Set the hostedSubnet property: The Subnet on which VirtualRouter is hosted.
-     *
+     * 
      * @param hostedSubnet the hostedSubnet value to set.
      * @return the VirtualRouterInner object itself.
      */
@@ -160,7 +168,7 @@ public final class VirtualRouterInner extends Resource {
 
     /**
      * Get the hostedGateway property: The Gateway on which VirtualRouter is hosted.
-     *
+     * 
      * @return the hostedGateway value.
      */
     public SubResource hostedGateway() {
@@ -169,7 +177,7 @@ public final class VirtualRouterInner extends Resource {
 
     /**
      * Set the hostedGateway property: The Gateway on which VirtualRouter is hosted.
-     *
+     * 
      * @param hostedGateway the hostedGateway value to set.
      * @return the VirtualRouterInner object itself.
      */
@@ -183,7 +191,7 @@ public final class VirtualRouterInner extends Resource {
 
     /**
      * Get the peerings property: List of references to VirtualRouterPeerings.
-     *
+     * 
      * @return the peerings value.
      */
     public List<SubResource> peerings() {
@@ -192,7 +200,7 @@ public final class VirtualRouterInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -201,7 +209,7 @@ public final class VirtualRouterInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

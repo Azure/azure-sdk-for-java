@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.BackendAddressPoolInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListBackendAddressPool API service call. */
+/**
+ * Response for ListBackendAddressPool API service call.
+ */
 @Fluent
 public final class LoadBalancerBackendAddressPoolListResult {
     /*
@@ -24,13 +26,15 @@ public final class LoadBalancerBackendAddressPoolListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of LoadBalancerBackendAddressPoolListResult class. */
+    /**
+     * Creates an instance of LoadBalancerBackendAddressPoolListResult class.
+     */
     public LoadBalancerBackendAddressPoolListResult() {
     }
 
     /**
      * Get the value property: A list of backend address pools in a load balancer.
-     *
+     * 
      * @return the value value.
      */
     public List<BackendAddressPoolInner> value() {
@@ -39,7 +43,7 @@ public final class LoadBalancerBackendAddressPoolListResult {
 
     /**
      * Set the value property: A list of backend address pools in a load balancer.
-     *
+     * 
      * @param value the value value to set.
      * @return the LoadBalancerBackendAddressPoolListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class LoadBalancerBackendAddressPoolListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class LoadBalancerBackendAddressPoolListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

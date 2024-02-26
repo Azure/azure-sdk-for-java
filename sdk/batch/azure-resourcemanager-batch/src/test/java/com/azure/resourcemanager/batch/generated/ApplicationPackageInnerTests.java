@@ -10,11 +10,9 @@ import com.azure.resourcemanager.batch.fluent.models.ApplicationPackageInner;
 public final class ApplicationPackageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationPackageInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"state\":\"Pending\",\"format\":\"zevndhkrwpdappds\",\"storageUrl\":\"kvwrwjfeu\",\"storageUrlExpiry\":\"2021-11-14T12:39:29Z\",\"lastActivationTime\":\"2021-01-02T14:30:26Z\"},\"etag\":\"eltmrldhugjzzdat\",\"id\":\"xhocdgeablgphuti\",\"name\":\"ndv\",\"type\":\"aozwyiftyhxhu\"}")
-                .toObject(ApplicationPackageInner.class);
+        ApplicationPackageInner model = BinaryData.fromString(
+            "{\"properties\":{\"state\":\"Pending\",\"format\":\"zevndhkrwpdappds\",\"storageUrl\":\"kvwrwjfeu\",\"storageUrlExpiry\":\"2021-11-14T12:39:29Z\",\"lastActivationTime\":\"2021-01-02T14:30:26Z\"},\"etag\":\"eltmrldhugjzzdat\",\"id\":\"xhocdgeablgphuti\",\"name\":\"ndv\",\"type\":\"aozwyiftyhxhu\"}")
+            .toObject(ApplicationPackageInner.class);
     }
 
     @org.junit.jupiter.api.Test

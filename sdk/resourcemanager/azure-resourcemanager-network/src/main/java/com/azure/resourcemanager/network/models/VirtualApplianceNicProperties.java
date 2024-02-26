@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Network Virtual Appliance NIC properties. */
+/**
+ * Network Virtual Appliance NIC properties.
+ */
 @Immutable
 public final class VirtualApplianceNicProperties {
     /*
@@ -34,13 +36,15 @@ public final class VirtualApplianceNicProperties {
     @JsonProperty(value = "instanceName", access = JsonProperty.Access.WRITE_ONLY)
     private String instanceName;
 
-    /** Creates an instance of VirtualApplianceNicProperties class. */
+    /**
+     * Creates an instance of VirtualApplianceNicProperties class.
+     */
     public VirtualApplianceNicProperties() {
     }
 
     /**
      * Get the name property: NIC name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -49,7 +53,7 @@ public final class VirtualApplianceNicProperties {
 
     /**
      * Get the publicIpAddress property: Public IP address.
-     *
+     * 
      * @return the publicIpAddress value.
      */
     public String publicIpAddress() {
@@ -58,7 +62,7 @@ public final class VirtualApplianceNicProperties {
 
     /**
      * Get the privateIpAddress property: Private IP address.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -67,7 +71,7 @@ public final class VirtualApplianceNicProperties {
 
     /**
      * Get the instanceName property: Instance on which nic is attached.
-     *
+     * 
      * @return the instanceName value.
      */
     public String instanceName() {
@@ -76,7 +80,7 @@ public final class VirtualApplianceNicProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

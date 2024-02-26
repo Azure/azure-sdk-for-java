@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The LinkConnectionListResponse model. */
+/**
+ * The LinkConnectionListResponse model.
+ */
 @Fluent
 public final class LinkConnectionListResponse {
     /*
@@ -23,12 +25,15 @@ public final class LinkConnectionListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of LinkConnectionListResponse class. */
-    public LinkConnectionListResponse() {}
+    /**
+     * Creates an instance of LinkConnectionListResponse class.
+     */
+    public LinkConnectionListResponse() {
+    }
 
     /**
      * Get the value property: List link connection value.
-     *
+     * 
      * @return the value value.
      */
     public List<LinkConnectionResource> getValue() {
@@ -37,7 +42,7 @@ public final class LinkConnectionListResponse {
 
     /**
      * Set the value property: List link connection value.
-     *
+     * 
      * @param value the value value to set.
      * @return the LinkConnectionListResponse object itself.
      */
@@ -48,7 +53,7 @@ public final class LinkConnectionListResponse {
 
     /**
      * Get the nextLink property: List link connections next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -57,7 +62,7 @@ public final class LinkConnectionListResponse {
 
     /**
      * Set the nextLink property: List link connections next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the LinkConnectionListResponse object itself.
      */

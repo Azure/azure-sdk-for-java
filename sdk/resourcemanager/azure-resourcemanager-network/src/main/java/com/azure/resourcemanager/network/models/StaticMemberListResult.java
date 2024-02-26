@@ -27,13 +27,15 @@ public final class StaticMemberListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of StaticMemberListResult class. */
+    /**
+     * Creates an instance of StaticMemberListResult class.
+     */
     public StaticMemberListResult() {
     }
 
     /**
      * Get the value property: Gets a page of StaticMember.
-     *
+     * 
      * @return the value value.
      */
     public List<StaticMemberInner> value() {
@@ -42,7 +44,7 @@ public final class StaticMemberListResult {
 
     /**
      * Set the value property: Gets a page of StaticMember.
-     *
+     * 
      * @param value the value value to set.
      * @return the StaticMemberListResult object itself.
      */
@@ -53,7 +55,7 @@ public final class StaticMemberListResult {
 
     /**
      * Get the nextLink property: Gets the URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +64,7 @@ public final class StaticMemberListResult {
 
     /**
      * Set the nextLink property: Gets the URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the StaticMemberListResult object itself.
      */
@@ -73,7 +75,7 @@ public final class StaticMemberListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

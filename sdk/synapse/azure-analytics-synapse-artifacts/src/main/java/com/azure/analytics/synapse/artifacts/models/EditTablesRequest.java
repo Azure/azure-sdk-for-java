@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The EditTablesRequest model. */
+/**
+ * The EditTablesRequest model.
+ */
 @Fluent
 public final class EditTablesRequest {
     /*
@@ -17,12 +19,15 @@ public final class EditTablesRequest {
     @JsonProperty(value = "linkTables")
     private List<LinkTableRequest> linkTables;
 
-    /** Creates an instance of EditTablesRequest class. */
-    public EditTablesRequest() {}
+    /**
+     * Creates an instance of EditTablesRequest class.
+     */
+    public EditTablesRequest() {
+    }
 
     /**
      * Get the linkTables property: Edit link tables request.
-     *
+     * 
      * @return the linkTables value.
      */
     public List<LinkTableRequest> getLinkTables() {
@@ -31,7 +36,7 @@ public final class EditTablesRequest {
 
     /**
      * Set the linkTables property: Edit link tables request.
-     *
+     * 
      * @param linkTables the linkTables value to set.
      * @return the EditTablesRequest object itself.
      */

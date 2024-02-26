@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 
-/** AzureWorkload workload-specific backup request. */
+/**
+ * AzureWorkload workload-specific backup request.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("AzureWorkloadBackupRequest")
 @Fluent
@@ -33,13 +35,15 @@ public final class AzureWorkloadBackupRequest extends BackupRequest {
     @JsonProperty(value = "recoveryPointExpiryTimeInUTC")
     private OffsetDateTime recoveryPointExpiryTimeInUtc;
 
-    /** Creates an instance of AzureWorkloadBackupRequest class. */
+    /**
+     * Creates an instance of AzureWorkloadBackupRequest class.
+     */
     public AzureWorkloadBackupRequest() {
     }
 
     /**
      * Get the backupType property: Type of backup, viz. Full, Differential, Log or CopyOnlyFull.
-     *
+     * 
      * @return the backupType value.
      */
     public BackupType backupType() {
@@ -48,7 +52,7 @@ public final class AzureWorkloadBackupRequest extends BackupRequest {
 
     /**
      * Set the backupType property: Type of backup, viz. Full, Differential, Log or CopyOnlyFull.
-     *
+     * 
      * @param backupType the backupType value to set.
      * @return the AzureWorkloadBackupRequest object itself.
      */
@@ -59,7 +63,7 @@ public final class AzureWorkloadBackupRequest extends BackupRequest {
 
     /**
      * Get the enableCompression property: Bool for Compression setting.
-     *
+     * 
      * @return the enableCompression value.
      */
     public Boolean enableCompression() {
@@ -68,7 +72,7 @@ public final class AzureWorkloadBackupRequest extends BackupRequest {
 
     /**
      * Set the enableCompression property: Bool for Compression setting.
-     *
+     * 
      * @param enableCompression the enableCompression value to set.
      * @return the AzureWorkloadBackupRequest object itself.
      */
@@ -79,7 +83,7 @@ public final class AzureWorkloadBackupRequest extends BackupRequest {
 
     /**
      * Get the recoveryPointExpiryTimeInUtc property: Backup copy will expire after the time specified (UTC).
-     *
+     * 
      * @return the recoveryPointExpiryTimeInUtc value.
      */
     public OffsetDateTime recoveryPointExpiryTimeInUtc() {
@@ -88,7 +92,7 @@ public final class AzureWorkloadBackupRequest extends BackupRequest {
 
     /**
      * Set the recoveryPointExpiryTimeInUtc property: Backup copy will expire after the time specified (UTC).
-     *
+     * 
      * @param recoveryPointExpiryTimeInUtc the recoveryPointExpiryTimeInUtc value to set.
      * @return the AzureWorkloadBackupRequest object itself.
      */
@@ -99,7 +103,7 @@ public final class AzureWorkloadBackupRequest extends BackupRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

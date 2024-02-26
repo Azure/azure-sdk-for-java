@@ -10,7 +10,6 @@ import com.azure.core.test.utils.metrics.TestMeter;
 import com.azure.core.util.MetricsOptions;
 import com.azure.core.util.metrics.Meter;
 import com.azure.messaging.eventhubs.models.Checkpoint;
-import com.azure.storage.blob.models.BlobItem;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
@@ -18,7 +17,6 @@ import org.junit.jupiter.api.parallel.Isolated;
 
 import java.time.Instant;
 import java.time.temporal.ChronoUnit;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -120,14 +118,14 @@ public class MetricsHelperTests {
 
         TestMeasurement<Long> seqNoMeasurement = subs.getMeasurements().get(0);
         assertEquals(2L, seqNoMeasurement.getValue());
-        assertCommonAttributes(checkpoint, seqNoMeasurement.getAttributes());
+        assertAttributes(checkpoint, null, seqNoMeasurement.getAttributes());
 
         assertTrue(meter.getHistograms().containsKey("messaging.eventhubs.checkpoint.duration"));
         TestHistogram checkpointDuration = meter.getHistograms().get("messaging.eventhubs.checkpoint.duration");
         assertEquals(1, checkpointDuration.getMeasurements().size());
         TestMeasurement<Double> durationMeasurements = checkpointDuration.getMeasurements().get(0);
         assertEquals(10000d, durationMeasurements.getValue(), 1000d);
-        assertStatusAttributes(checkpoint, "ok", durationMeasurements.getAttributes());
+        assertAttributes(checkpoint, null, durationMeasurements.getAttributes());
     }
 
     @Test
@@ -151,7 +149,7 @@ public class MetricsHelperTests {
         TestHistogram checkpointDuration = meter.getHistograms().get("messaging.eventhubs.checkpoint.duration");
         TestMeasurement<Double> durationMeasurements = checkpointDuration.getMeasurements().get(0);
         assertEquals(1000d, durationMeasurements.getValue(), 1000d);
-        assertStatusAttributes(checkpoint, "error", durationMeasurements.getAttributes());
+        assertAttributes(checkpoint, "error", durationMeasurements.getAttributes());
     }
 
     @Test
@@ -173,7 +171,7 @@ public class MetricsHelperTests {
         TestHistogram checkpointDuration = meter.getHistograms().get("messaging.eventhubs.checkpoint.duration");
         TestMeasurement<Double> durationMeasurements = checkpointDuration.getMeasurements().get(0);
         assertEquals(0d, durationMeasurements.getValue(), 1000d);
-        assertStatusAttributes(checkpoint, "ok", durationMeasurements.getAttributes());
+        assertAttributes(checkpoint, null, durationMeasurements.getAttributes());
     }
 
     @Test
@@ -201,7 +199,7 @@ public class MetricsHelperTests {
             assertEquals(1, subs.getMeasurements().size());
             TestMeasurement<Long> seqNoMeasurement = subs.getMeasurements().get(0);
             assertEquals(i[0], seqNoMeasurement.getValue());
-            assertCommonAttributes(checkpoints.get(i[0]), seqNoMeasurement.getAttributes());
+            assertAttributes(checkpoints.get(i[0]), null,  seqNoMeasurement.getAttributes());
             i[0]++;
         });
 
@@ -211,7 +209,7 @@ public class MetricsHelperTests {
         final int[] k = {0};
         durationHistogram.getMeasurements().forEach(m -> {
             assertEquals(0d, m.getValue(), 1000d);
-            assertStatusAttributes(checkpoints.get(k[0]), "ok", m.getAttributes());
+            assertAttributes(checkpoints.get(k[0]), null, m.getAttributes());
             k[0]++;
         });
     }
@@ -251,7 +249,7 @@ public class MetricsHelperTests {
 
         assertEquals(10000d, duration.getMeasurements().get(0).getValue(), 1000d);
         assertEquals(0d, duration.getMeasurements().get(1).getValue(), 1000d);
-        assertStatusAttributes(checkpoint2, "ok", duration.getMeasurements().get(1).getAttributes());
+        assertAttributes(checkpoint2, null, duration.getMeasurements().get(1).getAttributes());
     }
 
     @Test
@@ -287,45 +285,33 @@ public class MetricsHelperTests {
 
         TestMeasurement<Long> seqNoMeasurement1 = subs1.getMeasurements().get(0);
         assertEquals(2L, seqNoMeasurement1.getValue());
-        assertCommonAttributes(checkpoint1, seqNoMeasurement1.getAttributes());
+        assertAttributes(checkpoint1, null, seqNoMeasurement1.getAttributes());
 
         TestMeasurement<Long> seqNoMeasurement2 = subs2.getMeasurements().get(0);
         assertEquals(42L, seqNoMeasurement2.getValue());
-        assertCommonAttributes(checkpoint2, seqNoMeasurement2.getAttributes());
+        assertAttributes(checkpoint2, null, seqNoMeasurement2.getAttributes());
 
         TestHistogram duration = meter.getHistograms().get("messaging.eventhubs.checkpoint.duration");
         assertEquals(2, duration.getMeasurements().size());
 
         assertEquals(0d, duration.getMeasurements().get(0).getValue(), 1000d);
-        assertStatusAttributes(checkpoint1, "ok", duration.getMeasurements().get(0).getAttributes());
+        assertAttributes(checkpoint1, null, duration.getMeasurements().get(0).getAttributes());
         assertEquals(0d, duration.getMeasurements().get(1).getValue(), 1000d);
-        assertStatusAttributes(checkpoint2, "ok", duration.getMeasurements().get(1).getAttributes());
+        assertAttributes(checkpoint2, null, duration.getMeasurements().get(1).getAttributes());
     }
 
 
-    private void assertStatusAttributes(Checkpoint checkpoint, String expectedStatus, Map<String, Object> attributes) {
-        assertEquals(5, attributes.size());
+    private void assertAttributes(Checkpoint checkpoint, String expectedStatus, Map<String, Object> attributes) {
+        if (expectedStatus == null) {
+            assertEquals(4, attributes.size());
+        } else {
+            assertEquals(5, attributes.size());
+        }
+
         assertEquals(checkpoint.getFullyQualifiedNamespace(), attributes.get("hostName"));
         assertEquals(checkpoint.getEventHubName(), attributes.get("entityName"));
         assertEquals(checkpoint.getPartitionId(), attributes.get("partitionId"));
         assertEquals(checkpoint.getConsumerGroup(), attributes.get("consumerGroup"));
         assertEquals(expectedStatus, attributes.get("status"));
-    }
-
-    private void assertCommonAttributes(Checkpoint checkpoint, Map<String, Object> attributes) {
-        assertEquals(4, attributes.size());
-        assertEquals(checkpoint.getFullyQualifiedNamespace(), attributes.get("hostName"));
-        assertEquals(checkpoint.getEventHubName(), attributes.get("entityName"));
-        assertEquals(checkpoint.getPartitionId(), attributes.get("partitionId"));
-        assertEquals(checkpoint.getConsumerGroup(), attributes.get("consumerGroup"));
-    }
-
-    private BlobItem getCheckpointBlobItem(String offset, String sequenceNumber, String blobName) {
-        Map<String, String> metadata = new HashMap<>();
-        metadata.put("sequencenumber", sequenceNumber);
-        metadata.put("offset", offset);
-        return new BlobItem()
-            .setName(blobName)
-            .setMetadata(metadata);
     }
 }

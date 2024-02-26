@@ -15,7 +15,9 @@ import com.azure.resourcemanager.network.models.VirtualRouterAutoScaleConfigurat
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters for VirtualHub. */
+/**
+ * Parameters for VirtualHub.
+ */
 @Fluent
 public final class VirtualHubProperties {
     /*
@@ -150,13 +152,15 @@ public final class VirtualHubProperties {
     @JsonProperty(value = "virtualRouterAutoScaleConfiguration")
     private VirtualRouterAutoScaleConfiguration virtualRouterAutoScaleConfiguration;
 
-    /** Creates an instance of VirtualHubProperties class. */
+    /**
+     * Creates an instance of VirtualHubProperties class.
+     */
     public VirtualHubProperties() {
     }
 
     /**
      * Get the virtualWan property: The VirtualWAN to which the VirtualHub belongs.
-     *
+     * 
      * @return the virtualWan value.
      */
     public SubResource virtualWan() {
@@ -165,7 +169,7 @@ public final class VirtualHubProperties {
 
     /**
      * Set the virtualWan property: The VirtualWAN to which the VirtualHub belongs.
-     *
+     * 
      * @param virtualWan the virtualWan value to set.
      * @return the VirtualHubProperties object itself.
      */
@@ -176,7 +180,7 @@ public final class VirtualHubProperties {
 
     /**
      * Get the vpnGateway property: The VpnGateway associated with this VirtualHub.
-     *
+     * 
      * @return the vpnGateway value.
      */
     public SubResource vpnGateway() {
@@ -185,7 +189,7 @@ public final class VirtualHubProperties {
 
     /**
      * Set the vpnGateway property: The VpnGateway associated with this VirtualHub.
-     *
+     * 
      * @param vpnGateway the vpnGateway value to set.
      * @return the VirtualHubProperties object itself.
      */
@@ -196,7 +200,7 @@ public final class VirtualHubProperties {
 
     /**
      * Get the p2SVpnGateway property: The P2SVpnGateway associated with this VirtualHub.
-     *
+     * 
      * @return the p2SVpnGateway value.
      */
     public SubResource p2SVpnGateway() {
@@ -205,7 +209,7 @@ public final class VirtualHubProperties {
 
     /**
      * Set the p2SVpnGateway property: The P2SVpnGateway associated with this VirtualHub.
-     *
+     * 
      * @param p2SVpnGateway the p2SVpnGateway value to set.
      * @return the VirtualHubProperties object itself.
      */
@@ -216,7 +220,7 @@ public final class VirtualHubProperties {
 
     /**
      * Get the expressRouteGateway property: The expressRouteGateway associated with this VirtualHub.
-     *
+     * 
      * @return the expressRouteGateway value.
      */
     public SubResource expressRouteGateway() {
@@ -225,7 +229,7 @@ public final class VirtualHubProperties {
 
     /**
      * Set the expressRouteGateway property: The expressRouteGateway associated with this VirtualHub.
-     *
+     * 
      * @param expressRouteGateway the expressRouteGateway value to set.
      * @return the VirtualHubProperties object itself.
      */
@@ -236,7 +240,7 @@ public final class VirtualHubProperties {
 
     /**
      * Get the azureFirewall property: The azureFirewall associated with this VirtualHub.
-     *
+     * 
      * @return the azureFirewall value.
      */
     public SubResource azureFirewall() {
@@ -245,7 +249,7 @@ public final class VirtualHubProperties {
 
     /**
      * Set the azureFirewall property: The azureFirewall associated with this VirtualHub.
-     *
+     * 
      * @param azureFirewall the azureFirewall value to set.
      * @return the VirtualHubProperties object itself.
      */
@@ -256,7 +260,7 @@ public final class VirtualHubProperties {
 
     /**
      * Get the securityPartnerProvider property: The securityPartnerProvider associated with this VirtualHub.
-     *
+     * 
      * @return the securityPartnerProvider value.
      */
     public SubResource securityPartnerProvider() {
@@ -265,7 +269,7 @@ public final class VirtualHubProperties {
 
     /**
      * Set the securityPartnerProvider property: The securityPartnerProvider associated with this VirtualHub.
-     *
+     * 
      * @param securityPartnerProvider the securityPartnerProvider value to set.
      * @return the VirtualHubProperties object itself.
      */
@@ -276,7 +280,7 @@ public final class VirtualHubProperties {
 
     /**
      * Get the addressPrefix property: Address-prefix for this VirtualHub.
-     *
+     * 
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
@@ -285,7 +289,7 @@ public final class VirtualHubProperties {
 
     /**
      * Set the addressPrefix property: Address-prefix for this VirtualHub.
-     *
+     * 
      * @param addressPrefix the addressPrefix value to set.
      * @return the VirtualHubProperties object itself.
      */
@@ -296,7 +300,7 @@ public final class VirtualHubProperties {
 
     /**
      * Get the routeTable property: The routeTable associated with this virtual hub.
-     *
+     * 
      * @return the routeTable value.
      */
     public VirtualHubRouteTable routeTable() {
@@ -305,7 +309,7 @@ public final class VirtualHubProperties {
 
     /**
      * Set the routeTable property: The routeTable associated with this virtual hub.
-     *
+     * 
      * @param routeTable the routeTable value to set.
      * @return the VirtualHubProperties object itself.
      */
@@ -316,7 +320,7 @@ public final class VirtualHubProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the virtual hub resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -325,7 +329,7 @@ public final class VirtualHubProperties {
 
     /**
      * Get the securityProviderName property: The Security Provider name.
-     *
+     * 
      * @return the securityProviderName value.
      */
     public String securityProviderName() {
@@ -334,7 +338,7 @@ public final class VirtualHubProperties {
 
     /**
      * Set the securityProviderName property: The Security Provider name.
-     *
+     * 
      * @param securityProviderName the securityProviderName value to set.
      * @return the VirtualHubProperties object itself.
      */
@@ -346,7 +350,7 @@ public final class VirtualHubProperties {
     /**
      * Get the virtualHubRouteTableV2S property: List of all virtual hub route table v2s associated with this
      * VirtualHub.
-     *
+     * 
      * @return the virtualHubRouteTableV2S value.
      */
     public List<VirtualHubRouteTableV2Inner> virtualHubRouteTableV2S() {
@@ -356,7 +360,7 @@ public final class VirtualHubProperties {
     /**
      * Set the virtualHubRouteTableV2S property: List of all virtual hub route table v2s associated with this
      * VirtualHub.
-     *
+     * 
      * @param virtualHubRouteTableV2S the virtualHubRouteTableV2S value to set.
      * @return the VirtualHubProperties object itself.
      */
@@ -367,7 +371,7 @@ public final class VirtualHubProperties {
 
     /**
      * Get the sku property: The sku of this VirtualHub.
-     *
+     * 
      * @return the sku value.
      */
     public String sku() {
@@ -376,7 +380,7 @@ public final class VirtualHubProperties {
 
     /**
      * Set the sku property: The sku of this VirtualHub.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the VirtualHubProperties object itself.
      */
@@ -387,7 +391,7 @@ public final class VirtualHubProperties {
 
     /**
      * Get the routingState property: The routing state.
-     *
+     * 
      * @return the routingState value.
      */
     public RoutingState routingState() {
@@ -396,7 +400,7 @@ public final class VirtualHubProperties {
 
     /**
      * Get the bgpConnections property: List of references to Bgp Connections.
-     *
+     * 
      * @return the bgpConnections value.
      */
     public List<SubResource> bgpConnections() {
@@ -405,7 +409,7 @@ public final class VirtualHubProperties {
 
     /**
      * Get the ipConfigurations property: List of references to IpConfigurations.
-     *
+     * 
      * @return the ipConfigurations value.
      */
     public List<SubResource> ipConfigurations() {
@@ -414,7 +418,7 @@ public final class VirtualHubProperties {
 
     /**
      * Get the routeMaps property: List of references to RouteMaps.
-     *
+     * 
      * @return the routeMaps value.
      */
     public List<SubResource> routeMaps() {
@@ -423,7 +427,7 @@ public final class VirtualHubProperties {
 
     /**
      * Get the virtualRouterAsn property: VirtualRouter ASN.
-     *
+     * 
      * @return the virtualRouterAsn value.
      */
     public Long virtualRouterAsn() {
@@ -432,7 +436,7 @@ public final class VirtualHubProperties {
 
     /**
      * Set the virtualRouterAsn property: VirtualRouter ASN.
-     *
+     * 
      * @param virtualRouterAsn the virtualRouterAsn value to set.
      * @return the VirtualHubProperties object itself.
      */
@@ -443,7 +447,7 @@ public final class VirtualHubProperties {
 
     /**
      * Get the virtualRouterIps property: VirtualRouter IPs.
-     *
+     * 
      * @return the virtualRouterIps value.
      */
     public List<String> virtualRouterIps() {
@@ -452,7 +456,7 @@ public final class VirtualHubProperties {
 
     /**
      * Set the virtualRouterIps property: VirtualRouter IPs.
-     *
+     * 
      * @param virtualRouterIps the virtualRouterIps value to set.
      * @return the VirtualHubProperties object itself.
      */
@@ -463,7 +467,7 @@ public final class VirtualHubProperties {
 
     /**
      * Get the allowBranchToBranchTraffic property: Flag to control transit for VirtualRouter hub.
-     *
+     * 
      * @return the allowBranchToBranchTraffic value.
      */
     public Boolean allowBranchToBranchTraffic() {
@@ -472,7 +476,7 @@ public final class VirtualHubProperties {
 
     /**
      * Set the allowBranchToBranchTraffic property: Flag to control transit for VirtualRouter hub.
-     *
+     * 
      * @param allowBranchToBranchTraffic the allowBranchToBranchTraffic value to set.
      * @return the VirtualHubProperties object itself.
      */
@@ -483,7 +487,7 @@ public final class VirtualHubProperties {
 
     /**
      * Get the preferredRoutingGateway property: The preferred gateway to route on-prem traffic.
-     *
+     * 
      * @return the preferredRoutingGateway value.
      */
     public PreferredRoutingGateway preferredRoutingGateway() {
@@ -492,7 +496,7 @@ public final class VirtualHubProperties {
 
     /**
      * Set the preferredRoutingGateway property: The preferred gateway to route on-prem traffic.
-     *
+     * 
      * @param preferredRoutingGateway the preferredRoutingGateway value to set.
      * @return the VirtualHubProperties object itself.
      */
@@ -503,7 +507,7 @@ public final class VirtualHubProperties {
 
     /**
      * Get the hubRoutingPreference property: The hubRoutingPreference of this VirtualHub.
-     *
+     * 
      * @return the hubRoutingPreference value.
      */
     public HubRoutingPreference hubRoutingPreference() {
@@ -512,7 +516,7 @@ public final class VirtualHubProperties {
 
     /**
      * Set the hubRoutingPreference property: The hubRoutingPreference of this VirtualHub.
-     *
+     * 
      * @param hubRoutingPreference the hubRoutingPreference value to set.
      * @return the VirtualHubProperties object itself.
      */
@@ -523,7 +527,7 @@ public final class VirtualHubProperties {
 
     /**
      * Get the virtualRouterAutoScaleConfiguration property: The VirtualHub Router autoscale configuration.
-     *
+     * 
      * @return the virtualRouterAutoScaleConfiguration value.
      */
     public VirtualRouterAutoScaleConfiguration virtualRouterAutoScaleConfiguration() {
@@ -532,7 +536,7 @@ public final class VirtualHubProperties {
 
     /**
      * Set the virtualRouterAutoScaleConfiguration property: The VirtualHub Router autoscale configuration.
-     *
+     * 
      * @param virtualRouterAutoScaleConfiguration the virtualRouterAutoScaleConfiguration value to set.
      * @return the VirtualHubProperties object itself.
      */
@@ -544,7 +548,7 @@ public final class VirtualHubProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

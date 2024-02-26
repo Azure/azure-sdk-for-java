@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The resource storage details. */
+/**
+ * The resource storage details.
+ */
 @Fluent
 public final class BackupResourceConfig {
     /*
@@ -46,13 +48,15 @@ public final class BackupResourceConfig {
     @JsonProperty(value = "xcoolState")
     private XcoolState xcoolState;
 
-    /** Creates an instance of BackupResourceConfig class. */
+    /**
+     * Creates an instance of BackupResourceConfig class.
+     */
     public BackupResourceConfig() {
     }
 
     /**
      * Get the storageModelType property: Storage type.
-     *
+     * 
      * @return the storageModelType value.
      */
     public StorageType storageModelType() {
@@ -61,7 +65,7 @@ public final class BackupResourceConfig {
 
     /**
      * Set the storageModelType property: Storage type.
-     *
+     * 
      * @param storageModelType the storageModelType value to set.
      * @return the BackupResourceConfig object itself.
      */
@@ -72,7 +76,7 @@ public final class BackupResourceConfig {
 
     /**
      * Get the storageType property: Storage type.
-     *
+     * 
      * @return the storageType value.
      */
     public StorageType storageType() {
@@ -81,7 +85,7 @@ public final class BackupResourceConfig {
 
     /**
      * Set the storageType property: Storage type.
-     *
+     * 
      * @param storageType the storageType value to set.
      * @return the BackupResourceConfig object itself.
      */
@@ -93,7 +97,7 @@ public final class BackupResourceConfig {
     /**
      * Get the storageTypeState property: Locked or Unlocked. Once a machine is registered against a resource, the
      * storageTypeState is always Locked.
-     *
+     * 
      * @return the storageTypeState value.
      */
     public StorageTypeState storageTypeState() {
@@ -103,7 +107,7 @@ public final class BackupResourceConfig {
     /**
      * Set the storageTypeState property: Locked or Unlocked. Once a machine is registered against a resource, the
      * storageTypeState is always Locked.
-     *
+     * 
      * @param storageTypeState the storageTypeState value to set.
      * @return the BackupResourceConfig object itself.
      */
@@ -114,7 +118,7 @@ public final class BackupResourceConfig {
 
     /**
      * Get the crossRegionRestoreFlag property: Opt in details of Cross Region Restore feature.
-     *
+     * 
      * @return the crossRegionRestoreFlag value.
      */
     public Boolean crossRegionRestoreFlag() {
@@ -123,7 +127,7 @@ public final class BackupResourceConfig {
 
     /**
      * Set the crossRegionRestoreFlag property: Opt in details of Cross Region Restore feature.
-     *
+     * 
      * @param crossRegionRestoreFlag the crossRegionRestoreFlag value to set.
      * @return the BackupResourceConfig object itself.
      */
@@ -134,7 +138,7 @@ public final class BackupResourceConfig {
 
     /**
      * Get the dedupState property: Vault Dedup state.
-     *
+     * 
      * @return the dedupState value.
      */
     public DedupState dedupState() {
@@ -143,7 +147,7 @@ public final class BackupResourceConfig {
 
     /**
      * Set the dedupState property: Vault Dedup state.
-     *
+     * 
      * @param dedupState the dedupState value to set.
      * @return the BackupResourceConfig object itself.
      */
@@ -154,7 +158,7 @@ public final class BackupResourceConfig {
 
     /**
      * Get the xcoolState property: Vault x-cool state.
-     *
+     * 
      * @return the xcoolState value.
      */
     public XcoolState xcoolState() {
@@ -163,7 +167,7 @@ public final class BackupResourceConfig {
 
     /**
      * Set the xcoolState property: Vault x-cool state.
-     *
+     * 
      * @param xcoolState the xcoolState value to set.
      * @return the BackupResourceConfig object itself.
      */
@@ -174,7 +178,7 @@ public final class BackupResourceConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

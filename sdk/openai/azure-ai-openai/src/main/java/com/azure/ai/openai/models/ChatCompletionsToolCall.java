@@ -54,7 +54,7 @@ public class ChatCompletionsToolCall {
 
     /**
      * Creates an instance of ChatCompletionsToolCall class.
-     * 
+     *
      * @param id the id value to set.
      * @param type the type value to set.
      */

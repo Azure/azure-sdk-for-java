@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The request for a QueryInboundNatRulePortMapping API. Either IpConfiguration or IpAddress should be set. */
+/**
+ * The request for a QueryInboundNatRulePortMapping API. Either IpConfiguration or IpAddress should be set.
+ */
 @Fluent
 public final class QueryInboundNatRulePortMappingRequest {
     /*
@@ -23,13 +25,15 @@ public final class QueryInboundNatRulePortMappingRequest {
     @JsonProperty(value = "ipAddress")
     private String ipAddress;
 
-    /** Creates an instance of QueryInboundNatRulePortMappingRequest class. */
+    /**
+     * Creates an instance of QueryInboundNatRulePortMappingRequest class.
+     */
     public QueryInboundNatRulePortMappingRequest() {
     }
 
     /**
      * Get the ipConfiguration property: NetworkInterfaceIPConfiguration set in load balancer backend address.
-     *
+     * 
      * @return the ipConfiguration value.
      */
     public SubResource ipConfiguration() {
@@ -38,7 +42,7 @@ public final class QueryInboundNatRulePortMappingRequest {
 
     /**
      * Set the ipConfiguration property: NetworkInterfaceIPConfiguration set in load balancer backend address.
-     *
+     * 
      * @param ipConfiguration the ipConfiguration value to set.
      * @return the QueryInboundNatRulePortMappingRequest object itself.
      */
@@ -49,7 +53,7 @@ public final class QueryInboundNatRulePortMappingRequest {
 
     /**
      * Get the ipAddress property: IP address set in load balancer backend address.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -58,7 +62,7 @@ public final class QueryInboundNatRulePortMappingRequest {
 
     /**
      * Set the ipAddress property: IP address set in load balancer backend address.
-     *
+     * 
      * @param ipAddress the ipAddress value to set.
      * @return the QueryInboundNatRulePortMappingRequest object itself.
      */
@@ -69,7 +73,7 @@ public final class QueryInboundNatRulePortMappingRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

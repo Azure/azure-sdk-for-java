@@ -5,39 +5,45 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Schema of the Data property of an EventGridEvent for a device life cycle event (DeviceCreated, DeviceDeleted). */
+/**
+ * Schema of the Data property of an EventGridEvent for a device life cycle event (DeviceCreated, DeviceDeleted).
+ */
 @Fluent
-public class DeviceLifeCycleEventProperties {
+public class DeviceLifeCycleEventProperties implements JsonSerializable<DeviceLifeCycleEventProperties> {
     /*
      * The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports
      * ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ &#35; * ? ! ( ) , = @ ; $
      * '.
      */
-    @JsonProperty(value = "deviceId")
     private String deviceId;
 
     /*
      * Name of the IoT Hub where the device was created or deleted.
      */
-    @JsonProperty(value = "hubName")
     private String hubName;
 
     /*
      * Information about the device twin, which is the cloud representation of application device metadata.
      */
-    @JsonProperty(value = "twin")
     private DeviceTwinInfo twin;
 
-    /** Creates an instance of DeviceLifeCycleEventProperties class. */
-    public DeviceLifeCycleEventProperties() {}
+    /**
+     * Creates an instance of DeviceLifeCycleEventProperties class.
+     */
+    public DeviceLifeCycleEventProperties() {
+    }
 
     /**
      * Get the deviceId property: The unique identifier of the device. This case-sensitive string can be up to 128
      * characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . +
      * % _ &amp;#35; * ? ! ( ) , = @ ; $ '.
-     *
+     * 
      * @return the deviceId value.
      */
     public String getDeviceId() {
@@ -48,7 +54,7 @@ public class DeviceLifeCycleEventProperties {
      * Set the deviceId property: The unique identifier of the device. This case-sensitive string can be up to 128
      * characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . +
      * % _ &amp;#35; * ? ! ( ) , = @ ; $ '.
-     *
+     * 
      * @param deviceId the deviceId value to set.
      * @return the DeviceLifeCycleEventProperties object itself.
      */
@@ -59,7 +65,7 @@ public class DeviceLifeCycleEventProperties {
 
     /**
      * Get the hubName property: Name of the IoT Hub where the device was created or deleted.
-     *
+     * 
      * @return the hubName value.
      */
     public String getHubName() {
@@ -68,7 +74,7 @@ public class DeviceLifeCycleEventProperties {
 
     /**
      * Set the hubName property: Name of the IoT Hub where the device was created or deleted.
-     *
+     * 
      * @param hubName the hubName value to set.
      * @return the DeviceLifeCycleEventProperties object itself.
      */
@@ -78,9 +84,9 @@ public class DeviceLifeCycleEventProperties {
     }
 
     /**
-     * Get the twin property: Information about the device twin, which is the cloud representation of application device
-     * metadata.
-     *
+     * Get the twin property: Information about the device twin, which is the cloud representation of application
+     * device metadata.
+     * 
      * @return the twin value.
      */
     public DeviceTwinInfo getTwin() {
@@ -88,14 +94,54 @@ public class DeviceLifeCycleEventProperties {
     }
 
     /**
-     * Set the twin property: Information about the device twin, which is the cloud representation of application device
-     * metadata.
-     *
+     * Set the twin property: Information about the device twin, which is the cloud representation of application
+     * device metadata.
+     * 
      * @param twin the twin value to set.
      * @return the DeviceLifeCycleEventProperties object itself.
      */
     public DeviceLifeCycleEventProperties setTwin(DeviceTwinInfo twin) {
         this.twin = twin;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("deviceId", this.deviceId);
+        jsonWriter.writeStringField("hubName", this.hubName);
+        jsonWriter.writeJsonField("twin", this.twin);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeviceLifeCycleEventProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeviceLifeCycleEventProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeviceLifeCycleEventProperties.
+     */
+    public static DeviceLifeCycleEventProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeviceLifeCycleEventProperties deserializedDeviceLifeCycleEventProperties
+                = new DeviceLifeCycleEventProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("deviceId".equals(fieldName)) {
+                    deserializedDeviceLifeCycleEventProperties.deviceId = reader.getString();
+                } else if ("hubName".equals(fieldName)) {
+                    deserializedDeviceLifeCycleEventProperties.hubName = reader.getString();
+                } else if ("twin".equals(fieldName)) {
+                    deserializedDeviceLifeCycleEventProperties.twin = DeviceTwinInfo.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeviceLifeCycleEventProperties;
+        });
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Quality of Service defines the traffic configuration between endpoints. Mandatory to have one marking. */
+/**
+ * Quality of Service defines the traffic configuration between endpoints. Mandatory to have one marking.
+ */
 @Fluent
 public final class QosDefinition {
     /*
@@ -47,13 +49,15 @@ public final class QosDefinition {
     @JsonProperty(value = "protocol")
     private ProtocolType protocol;
 
-    /** Creates an instance of QosDefinition class. */
+    /**
+     * Creates an instance of QosDefinition class.
+     */
     public QosDefinition() {
     }
 
     /**
      * Get the markings property: List of markings to be used in the configuration.
-     *
+     * 
      * @return the markings value.
      */
     public List<Integer> markings() {
@@ -62,7 +66,7 @@ public final class QosDefinition {
 
     /**
      * Set the markings property: List of markings to be used in the configuration.
-     *
+     * 
      * @param markings the markings value to set.
      * @return the QosDefinition object itself.
      */
@@ -73,7 +77,7 @@ public final class QosDefinition {
 
     /**
      * Get the sourceIpRanges property: Source IP ranges.
-     *
+     * 
      * @return the sourceIpRanges value.
      */
     public List<QosIpRange> sourceIpRanges() {
@@ -82,7 +86,7 @@ public final class QosDefinition {
 
     /**
      * Set the sourceIpRanges property: Source IP ranges.
-     *
+     * 
      * @param sourceIpRanges the sourceIpRanges value to set.
      * @return the QosDefinition object itself.
      */
@@ -93,7 +97,7 @@ public final class QosDefinition {
 
     /**
      * Get the destinationIpRanges property: Destination IP ranges.
-     *
+     * 
      * @return the destinationIpRanges value.
      */
     public List<QosIpRange> destinationIpRanges() {
@@ -102,7 +106,7 @@ public final class QosDefinition {
 
     /**
      * Set the destinationIpRanges property: Destination IP ranges.
-     *
+     * 
      * @param destinationIpRanges the destinationIpRanges value to set.
      * @return the QosDefinition object itself.
      */
@@ -113,7 +117,7 @@ public final class QosDefinition {
 
     /**
      * Get the sourcePortRanges property: Sources port ranges.
-     *
+     * 
      * @return the sourcePortRanges value.
      */
     public List<QosPortRange> sourcePortRanges() {
@@ -122,7 +126,7 @@ public final class QosDefinition {
 
     /**
      * Set the sourcePortRanges property: Sources port ranges.
-     *
+     * 
      * @param sourcePortRanges the sourcePortRanges value to set.
      * @return the QosDefinition object itself.
      */
@@ -133,7 +137,7 @@ public final class QosDefinition {
 
     /**
      * Get the destinationPortRanges property: Destination port ranges.
-     *
+     * 
      * @return the destinationPortRanges value.
      */
     public List<QosPortRange> destinationPortRanges() {
@@ -142,7 +146,7 @@ public final class QosDefinition {
 
     /**
      * Set the destinationPortRanges property: Destination port ranges.
-     *
+     * 
      * @param destinationPortRanges the destinationPortRanges value to set.
      * @return the QosDefinition object itself.
      */
@@ -153,7 +157,7 @@ public final class QosDefinition {
 
     /**
      * Get the protocol property: RNM supported protocol types.
-     *
+     * 
      * @return the protocol value.
      */
     public ProtocolType protocol() {
@@ -162,7 +166,7 @@ public final class QosDefinition {
 
     /**
      * Set the protocol property: RNM supported protocol types.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the QosDefinition object itself.
      */
@@ -173,7 +177,7 @@ public final class QosDefinition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

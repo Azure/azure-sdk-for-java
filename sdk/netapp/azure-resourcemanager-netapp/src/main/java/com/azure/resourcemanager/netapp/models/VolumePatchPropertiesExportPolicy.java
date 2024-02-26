@@ -10,8 +10,8 @@ import java.util.List;
 
 /**
  * exportPolicy
- *
- * <p>Set of export policy rules.
+ * 
+ * Set of export policy rules.
  */
 @Fluent
 public final class VolumePatchPropertiesExportPolicy {
@@ -21,13 +21,15 @@ public final class VolumePatchPropertiesExportPolicy {
     @JsonProperty(value = "rules")
     private List<ExportPolicyRule> rules;
 
-    /** Creates an instance of VolumePatchPropertiesExportPolicy class. */
+    /**
+     * Creates an instance of VolumePatchPropertiesExportPolicy class.
+     */
     public VolumePatchPropertiesExportPolicy() {
     }
 
     /**
      * Get the rules property: Export policy rule.
-     *
+     * 
      * @return the rules value.
      */
     public List<ExportPolicyRule> rules() {
@@ -36,7 +38,7 @@ public final class VolumePatchPropertiesExportPolicy {
 
     /**
      * Set the rules property: Export policy rule.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the VolumePatchPropertiesExportPolicy object itself.
      */
@@ -47,7 +49,7 @@ public final class VolumePatchPropertiesExportPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

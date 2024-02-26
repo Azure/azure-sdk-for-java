@@ -27,10 +27,8 @@ import java.util.Locale;
  * @see com.azure.core.http.HttpResponse
  */
 public class AddDatePolicy implements HttpPipelinePolicy {
-    private static final DateTimeFormatter FORMATTER = DateTimeFormatter
-            .ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'")
-            .withZone(ZoneOffset.UTC)
-            .withLocale(Locale.US);
+    private static final DateTimeFormatter FORMATTER
+        = DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'").withZone(ZoneOffset.UTC).withLocale(Locale.US);
 
     /**
      * Creates a new instance of {@link AddDatePolicy}.

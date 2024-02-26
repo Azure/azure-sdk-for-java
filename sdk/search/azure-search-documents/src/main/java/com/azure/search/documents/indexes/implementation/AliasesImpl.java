@@ -36,17 +36,23 @@ import com.azure.search.documents.indexes.models.SearchAlias;
 import java.util.UUID;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in Aliases. */
+/**
+ * An instance of this class provides access to all the operations defined in Aliases.
+ */
 public final class AliasesImpl {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final AliasesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SearchServiceClientImpl client;
 
     /**
      * Initializes an instance of AliasesImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     AliasesImpl(SearchServiceClientImpl client) {
@@ -55,143 +61,101 @@ public final class AliasesImpl {
     }
 
     /**
-     * The interface defining all the services for SearchServiceClientAliases to be used by the proxy service to perform
-     * REST calls.
+     * The interface defining all the services for SearchServiceClientAliases to be used by the proxy service to
+     * perform REST calls.
      */
     @Host("{endpoint}")
     @ServiceInterface(name = "SearchServiceClientA")
     public interface AliasesService {
         @Post("/aliases")
-        @ExpectedResponses({201})
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<SearchAlias>> create(
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                @BodyParam("application/json") SearchAlias alias,
-                Context context);
+        Mono<Response<SearchAlias>> create(@HostParam("endpoint") String endpoint,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SearchAlias alias, Context context);
 
         @Post("/aliases")
-        @ExpectedResponses({201})
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Response<SearchAlias> createSync(
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                @BodyParam("application/json") SearchAlias alias,
-                Context context);
+        Response<SearchAlias> createSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") SearchAlias alias, Context context);
 
         @Get("/aliases")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<ListAliasesResult>> list(
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<ListAliasesResult>> list(@HostParam("endpoint") String endpoint,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/aliases")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Response<ListAliasesResult> listSync(
-                @HostParam("endpoint") String endpoint,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<ListAliasesResult> listSync(@HostParam("endpoint") String endpoint,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Put("/aliases('{aliasName}')")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<SearchAlias>> createOrUpdate(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("aliasName") String aliasName,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @HeaderParam("Prefer") String prefer,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                @BodyParam("application/json") SearchAlias alias,
-                Context context);
+        Mono<Response<SearchAlias>> createOrUpdate(@HostParam("endpoint") String endpoint,
+            @PathParam("aliasName") String aliasName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("Prefer") String prefer, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") SearchAlias alias, Context context);
 
         @Put("/aliases('{aliasName}')")
-        @ExpectedResponses({200, 201})
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Response<SearchAlias> createOrUpdateSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("aliasName") String aliasName,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @HeaderParam("Prefer") String prefer,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                @BodyParam("application/json") SearchAlias alias,
-                Context context);
+        Response<SearchAlias> createOrUpdateSync(@HostParam("endpoint") String endpoint,
+            @PathParam("aliasName") String aliasName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @HeaderParam("If-Match") String ifMatch, @HeaderParam("If-None-Match") String ifNoneMatch,
+            @HeaderParam("Prefer") String prefer, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, @BodyParam("application/json") SearchAlias alias, Context context);
 
         @Delete("/aliases('{aliasName}')")
-        @ExpectedResponses({204, 404})
+        @ExpectedResponses({ 204, 404 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<Void>> delete(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("aliasName") String aliasName,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<Void>> delete(@HostParam("endpoint") String endpoint, @PathParam("aliasName") String aliasName,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Delete("/aliases('{aliasName}')")
-        @ExpectedResponses({204, 404})
+        @ExpectedResponses({ 204, 404 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Response<Void> deleteSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("aliasName") String aliasName,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @HeaderParam("If-Match") String ifMatch,
-                @HeaderParam("If-None-Match") String ifNoneMatch,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<Void> deleteSync(@HostParam("endpoint") String endpoint, @PathParam("aliasName") String aliasName,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId, @HeaderParam("If-Match") String ifMatch,
+            @HeaderParam("If-None-Match") String ifNoneMatch, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
         @Get("/aliases('{aliasName}')")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Mono<Response<SearchAlias>> get(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("aliasName") String aliasName,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Mono<Response<SearchAlias>> get(@HostParam("endpoint") String endpoint,
+            @PathParam("aliasName") String aliasName, @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
 
         @Get("/aliases('{aliasName}')")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(SearchErrorException.class)
-        Response<SearchAlias> getSync(
-                @HostParam("endpoint") String endpoint,
-                @PathParam("aliasName") String aliasName,
-                @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
-                @QueryParam("api-version") String apiVersion,
-                @HeaderParam("Accept") String accept,
-                Context context);
+        Response<SearchAlias> getSync(@HostParam("endpoint") String endpoint, @PathParam("aliasName") String aliasName,
+            @HeaderParam("x-ms-client-request-id") UUID xMsClientRequestId,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Creates a new search alias.
-     *
+     * 
      * @param alias The definition of the alias to create.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an index alias, which describes a mapping from the alias name to an index along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return represents an index alias, which describes a mapping from the alias name to an index along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchAlias>> createWithResponseAsync(SearchAlias alias, RequestOptions requestOptions) {
@@ -201,52 +165,45 @@ public final class AliasesImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(
-                context ->
-                        service.create(
-                                this.client.getEndpoint(),
-                                xMsClientRequestId,
-                                this.client.getApiVersion(),
-                                accept,
-                                alias,
-                                context));
+        return FluxUtil.withContext(context -> service.create(this.client.getEndpoint(), xMsClientRequestId,
+            this.client.getApiVersion(), accept, alias, context));
     }
 
     /**
      * Creates a new search alias.
-     *
+     * 
      * @param alias The definition of the alias to create.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an index alias, which describes a mapping from the alias name to an index along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return represents an index alias, which describes a mapping from the alias name to an index along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAlias>> createWithResponseAsync(
-            SearchAlias alias, RequestOptions requestOptions, Context context) {
+    public Mono<Response<SearchAlias>> createWithResponseAsync(SearchAlias alias, RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.create(
-                this.client.getEndpoint(), xMsClientRequestId, this.client.getApiVersion(), accept, alias, context);
+        return service.create(this.client.getEndpoint(), xMsClientRequestId, this.client.getApiVersion(), accept, alias,
+            context);
     }
 
     /**
      * Creates a new search alias.
-     *
+     * 
      * @param alias The definition of the alias to create.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an index alias, which describes a mapping from the alias name to an index on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchAlias> createAsync(SearchAlias alias, RequestOptions requestOptions) {
@@ -255,7 +212,7 @@ public final class AliasesImpl {
 
     /**
      * Creates a new search alias.
-     *
+     * 
      * @param alias The definition of the alias to create.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -263,7 +220,7 @@ public final class AliasesImpl {
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an index alias, which describes a mapping from the alias name to an index on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchAlias> createAsync(SearchAlias alias, RequestOptions requestOptions, Context context) {
@@ -272,15 +229,15 @@ public final class AliasesImpl {
 
     /**
      * Creates a new search alias.
-     *
+     * 
      * @param alias The definition of the alias to create.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an index alias, which describes a mapping from the alias name to an index along with {@link
-     *     Response}.
+     * @return represents an index alias, which describes a mapping from the alias name to an index along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchAlias> createWithResponse(SearchAlias alias, RequestOptions requestOptions, Context context) {
@@ -290,13 +247,13 @@ public final class AliasesImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.createSync(
-                this.client.getEndpoint(), xMsClientRequestId, this.client.getApiVersion(), accept, alias, context);
+        return service.createSync(this.client.getEndpoint(), xMsClientRequestId, this.client.getApiVersion(), accept,
+            alias, context);
     }
 
     /**
      * Creates a new search alias.
-     *
+     * 
      * @param alias The definition of the alias to create.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -311,13 +268,13 @@ public final class AliasesImpl {
 
     /**
      * Lists all aliases available for a search service.
-     *
+     * 
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Aliases request along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return response from a List Aliases request along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SearchAlias>> listSinglePageAsync(RequestOptions requestOptions) {
@@ -327,35 +284,23 @@ public final class AliasesImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(
-                        context ->
-                                service.list(
-                                        this.client.getEndpoint(),
-                                        xMsClientRequestId,
-                                        this.client.getApiVersion(),
-                                        accept,
-                                        context))
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getAliases(),
-                                        null,
-                                        null));
+        return FluxUtil
+            .withContext(context -> service.list(this.client.getEndpoint(), xMsClientRequestId,
+                this.client.getApiVersion(), accept, context))
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getAliases(), null, null));
     }
 
     /**
      * Lists all aliases available for a search service.
-     *
+     * 
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response from a List Aliases request along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return response from a List Aliases request along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<PagedResponse<SearchAlias>> listSinglePageAsync(RequestOptions requestOptions, Context context) {
@@ -366,20 +311,13 @@ public final class AliasesImpl {
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
         return service.list(this.client.getEndpoint(), xMsClientRequestId, this.client.getApiVersion(), accept, context)
-                .map(
-                        res ->
-                                new PagedResponseBase<>(
-                                        res.getRequest(),
-                                        res.getStatusCode(),
-                                        res.getHeaders(),
-                                        res.getValue().getAliases(),
-                                        null,
-                                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().getAliases(), null, null));
     }
 
     /**
      * Lists all aliases available for a search service.
-     *
+     * 
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
@@ -393,7 +331,7 @@ public final class AliasesImpl {
 
     /**
      * Lists all aliases available for a search service.
-     *
+     * 
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -408,7 +346,7 @@ public final class AliasesImpl {
 
     /**
      * Lists all aliases available for a search service.
-     *
+     * 
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
@@ -423,20 +361,15 @@ public final class AliasesImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        Response<ListAliasesResult> res =
-                service.listSync(
-                        this.client.getEndpoint(),
-                        xMsClientRequestId,
-                        this.client.getApiVersion(),
-                        accept,
-                        Context.NONE);
-        return new PagedResponseBase<>(
-                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getAliases(), null, null);
+        Response<ListAliasesResult> res = service.listSync(this.client.getEndpoint(), xMsClientRequestId,
+            this.client.getApiVersion(), accept, Context.NONE);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getAliases(), null, null);
     }
 
     /**
      * Lists all aliases available for a search service.
-     *
+     * 
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -452,16 +385,15 @@ public final class AliasesImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        Response<ListAliasesResult> res =
-                service.listSync(
-                        this.client.getEndpoint(), xMsClientRequestId, this.client.getApiVersion(), accept, context);
-        return new PagedResponseBase<>(
-                res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().getAliases(), null, null);
+        Response<ListAliasesResult> res = service.listSync(this.client.getEndpoint(), xMsClientRequestId,
+            this.client.getApiVersion(), accept, context);
+        return new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+            res.getValue().getAliases(), null, null);
     }
 
     /**
      * Lists all aliases available for a search service.
-     *
+     * 
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
@@ -475,7 +407,7 @@ public final class AliasesImpl {
 
     /**
      * Lists all aliases available for a search service.
-     *
+     * 
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -490,23 +422,23 @@ public final class AliasesImpl {
 
     /**
      * Creates a new search alias or updates an alias if it already exists.
-     *
+     * 
      * @param aliasName The definition of the alias to create or update.
      * @param alias The definition of the alias to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     *     matches this value.
+     * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     *     server does not match this value.
+     * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an index alias, which describes a mapping from the alias name to an index along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return represents an index alias, which describes a mapping from the alias name to an index along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAlias>> createOrUpdateWithResponseAsync(
-            String aliasName, SearchAlias alias, String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
+    public Mono<Response<SearchAlias>> createOrUpdateWithResponseAsync(String aliasName, SearchAlias alias,
+        String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
         final String prefer = "return=representation";
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -514,46 +446,30 @@ public final class AliasesImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(
-                context ->
-                        service.createOrUpdate(
-                                this.client.getEndpoint(),
-                                aliasName,
-                                xMsClientRequestId,
-                                ifMatch,
-                                ifNoneMatch,
-                                prefer,
-                                this.client.getApiVersion(),
-                                accept,
-                                alias,
-                                context));
+        return FluxUtil.withContext(context -> service.createOrUpdate(this.client.getEndpoint(), aliasName,
+            xMsClientRequestId, ifMatch, ifNoneMatch, prefer, this.client.getApiVersion(), accept, alias, context));
     }
 
     /**
      * Creates a new search alias or updates an alias if it already exists.
-     *
+     * 
      * @param aliasName The definition of the alias to create or update.
      * @param alias The definition of the alias to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     *     matches this value.
+     * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     *     server does not match this value.
+     * server does not match this value.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an index alias, which describes a mapping from the alias name to an index along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return represents an index alias, which describes a mapping from the alias name to an index along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAlias>> createOrUpdateWithResponseAsync(
-            String aliasName,
-            SearchAlias alias,
-            String ifMatch,
-            String ifNoneMatch,
-            RequestOptions requestOptions,
-            Context context) {
+    public Mono<Response<SearchAlias>> createOrUpdateWithResponseAsync(String aliasName, SearchAlias alias,
+        String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
         final String prefer = "return=representation";
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -561,96 +477,77 @@ public final class AliasesImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.createOrUpdate(
-                this.client.getEndpoint(),
-                aliasName,
-                xMsClientRequestId,
-                ifMatch,
-                ifNoneMatch,
-                prefer,
-                this.client.getApiVersion(),
-                accept,
-                alias,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), aliasName, xMsClientRequestId, ifMatch, ifNoneMatch,
+            prefer, this.client.getApiVersion(), accept, alias, context);
     }
 
     /**
      * Creates a new search alias or updates an alias if it already exists.
-     *
+     * 
      * @param aliasName The definition of the alias to create or update.
      * @param alias The definition of the alias to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     *     matches this value.
+     * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     *     server does not match this value.
+     * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an index alias, which describes a mapping from the alias name to an index on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAlias> createOrUpdateAsync(
-            String aliasName, SearchAlias alias, String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
+    public Mono<SearchAlias> createOrUpdateAsync(String aliasName, SearchAlias alias, String ifMatch,
+        String ifNoneMatch, RequestOptions requestOptions) {
         return createOrUpdateWithResponseAsync(aliasName, alias, ifMatch, ifNoneMatch, requestOptions)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates a new search alias or updates an alias if it already exists.
-     *
+     * 
      * @param aliasName The definition of the alias to create or update.
      * @param alias The definition of the alias to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     *     matches this value.
+     * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     *     server does not match this value.
+     * server does not match this value.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an index alias, which describes a mapping from the alias name to an index on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<SearchAlias> createOrUpdateAsync(
-            String aliasName,
-            SearchAlias alias,
-            String ifMatch,
-            String ifNoneMatch,
-            RequestOptions requestOptions,
-            Context context) {
+    public Mono<SearchAlias> createOrUpdateAsync(String aliasName, SearchAlias alias, String ifMatch,
+        String ifNoneMatch, RequestOptions requestOptions, Context context) {
         return createOrUpdateWithResponseAsync(aliasName, alias, ifMatch, ifNoneMatch, requestOptions, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates a new search alias or updates an alias if it already exists.
-     *
+     * 
      * @param aliasName The definition of the alias to create or update.
      * @param alias The definition of the alias to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     *     matches this value.
+     * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     *     server does not match this value.
+     * server does not match this value.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an index alias, which describes a mapping from the alias name to an index along with {@link
-     *     Response}.
+     * @return represents an index alias, which describes a mapping from the alias name to an index along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<SearchAlias> createOrUpdateWithResponse(
-            String aliasName,
-            SearchAlias alias,
-            String ifMatch,
-            String ifNoneMatch,
-            RequestOptions requestOptions,
-            Context context) {
+    public Response<SearchAlias> createOrUpdateWithResponse(String aliasName, SearchAlias alias, String ifMatch,
+        String ifNoneMatch, RequestOptions requestOptions, Context context) {
         final String prefer = "return=representation";
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
@@ -658,28 +555,19 @@ public final class AliasesImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.createOrUpdateSync(
-                this.client.getEndpoint(),
-                aliasName,
-                xMsClientRequestId,
-                ifMatch,
-                ifNoneMatch,
-                prefer,
-                this.client.getApiVersion(),
-                accept,
-                alias,
-                context);
+        return service.createOrUpdateSync(this.client.getEndpoint(), aliasName, xMsClientRequestId, ifMatch,
+            ifNoneMatch, prefer, this.client.getApiVersion(), accept, alias, context);
     }
 
     /**
      * Creates a new search alias or updates an alias if it already exists.
-     *
+     * 
      * @param aliasName The definition of the alias to create or update.
      * @param alias The definition of the alias to create or update.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     *     matches this value.
+     * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     *     server does not match this value.
+     * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
@@ -687,21 +575,21 @@ public final class AliasesImpl {
      * @return represents an index alias, which describes a mapping from the alias name to an index.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SearchAlias createOrUpdate(
-            String aliasName, SearchAlias alias, String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
+    public SearchAlias createOrUpdate(String aliasName, SearchAlias alias, String ifMatch, String ifNoneMatch,
+        RequestOptions requestOptions) {
         return createOrUpdateWithResponse(aliasName, alias, ifMatch, ifNoneMatch, requestOptions, Context.NONE)
-                .getValue();
+            .getValue();
     }
 
     /**
      * Deletes a search alias and its associated mapping to an index. This operation is permanent, with no recovery
      * option. The mapped index is untouched by this operation.
-     *
+     * 
      * @param aliasName The name of the alias to delete.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     *     matches this value.
+     * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     *     server does not match this value.
+     * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
@@ -709,36 +597,27 @@ public final class AliasesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-            String aliasName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
+    public Mono<Response<Void>> deleteWithResponseAsync(String aliasName, String ifMatch, String ifNoneMatch,
+        RequestOptions requestOptions) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(
-                context ->
-                        service.delete(
-                                this.client.getEndpoint(),
-                                aliasName,
-                                xMsClientRequestId,
-                                ifMatch,
-                                ifNoneMatch,
-                                this.client.getApiVersion(),
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.delete(this.client.getEndpoint(), aliasName, xMsClientRequestId,
+            ifMatch, ifNoneMatch, this.client.getApiVersion(), accept, context));
     }
 
     /**
      * Deletes a search alias and its associated mapping to an index. This operation is permanent, with no recovery
      * option. The mapped index is untouched by this operation.
-     *
+     * 
      * @param aliasName The name of the alias to delete.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     *     matches this value.
+     * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     *     server does not match this value.
+     * server does not match this value.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -747,34 +626,27 @@ public final class AliasesImpl {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<Void>> deleteWithResponseAsync(
-            String aliasName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
+    public Mono<Response<Void>> deleteWithResponseAsync(String aliasName, String ifMatch, String ifNoneMatch,
+        RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.delete(
-                this.client.getEndpoint(),
-                aliasName,
-                xMsClientRequestId,
-                ifMatch,
-                ifNoneMatch,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), aliasName, xMsClientRequestId, ifMatch, ifNoneMatch,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes a search alias and its associated mapping to an index. This operation is permanent, with no recovery
      * option. The mapped index is untouched by this operation.
-     *
+     * 
      * @param aliasName The name of the alias to delete.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     *     matches this value.
+     * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     *     server does not match this value.
+     * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
@@ -784,18 +656,18 @@ public final class AliasesImpl {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> deleteAsync(String aliasName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions) {
         return deleteWithResponseAsync(aliasName, ifMatch, ifNoneMatch, requestOptions)
-                .flatMap(ignored -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes a search alias and its associated mapping to an index. This operation is permanent, with no recovery
      * option. The mapped index is untouched by this operation.
-     *
+     * 
      * @param aliasName The name of the alias to delete.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     *     matches this value.
+     * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     *     server does not match this value.
+     * server does not match this value.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -804,21 +676,21 @@ public final class AliasesImpl {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Void> deleteAsync(
-            String aliasName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
+    public Mono<Void> deleteAsync(String aliasName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions,
+        Context context) {
         return deleteWithResponseAsync(aliasName, ifMatch, ifNoneMatch, requestOptions, context)
-                .flatMap(ignored -> Mono.empty());
+            .flatMap(ignored -> Mono.empty());
     }
 
     /**
      * Deletes a search alias and its associated mapping to an index. This operation is permanent, with no recovery
      * option. The mapped index is untouched by this operation.
-     *
+     * 
      * @param aliasName The name of the alias to delete.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     *     matches this value.
+     * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     *     server does not match this value.
+     * server does not match this value.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -827,34 +699,27 @@ public final class AliasesImpl {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> deleteWithResponse(
-            String aliasName, String ifMatch, String ifNoneMatch, RequestOptions requestOptions, Context context) {
+    public Response<Void> deleteWithResponse(String aliasName, String ifMatch, String ifNoneMatch,
+        RequestOptions requestOptions, Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.deleteSync(
-                this.client.getEndpoint(),
-                aliasName,
-                xMsClientRequestId,
-                ifMatch,
-                ifNoneMatch,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.deleteSync(this.client.getEndpoint(), aliasName, xMsClientRequestId, ifMatch, ifNoneMatch,
+            this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes a search alias and its associated mapping to an index. This operation is permanent, with no recovery
      * option. The mapped index is untouched by this operation.
-     *
+     * 
      * @param aliasName The name of the alias to delete.
      * @param ifMatch Defines the If-Match condition. The operation will be performed only if the ETag on the server
-     *     matches this value.
+     * matches this value.
      * @param ifNoneMatch Defines the If-None-Match condition. The operation will be performed only if the ETag on the
-     *     server does not match this value.
+     * server does not match this value.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
@@ -867,14 +732,14 @@ public final class AliasesImpl {
 
     /**
      * Retrieves an alias definition.
-     *
+     * 
      * @param aliasName The name of the alias to retrieve.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an index alias, which describes a mapping from the alias name to an index along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return represents an index alias, which describes a mapping from the alias name to an index along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<SearchAlias>> getWithResponseAsync(String aliasName, RequestOptions requestOptions) {
@@ -884,52 +749,45 @@ public final class AliasesImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return FluxUtil.withContext(
-                context ->
-                        service.get(
-                                this.client.getEndpoint(),
-                                aliasName,
-                                xMsClientRequestId,
-                                this.client.getApiVersion(),
-                                accept,
-                                context));
+        return FluxUtil.withContext(context -> service.get(this.client.getEndpoint(), aliasName, xMsClientRequestId,
+            this.client.getApiVersion(), accept, context));
     }
 
     /**
      * Retrieves an alias definition.
-     *
+     * 
      * @param aliasName The name of the alias to retrieve.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an index alias, which describes a mapping from the alias name to an index along with {@link
-     *     Response} on successful completion of {@link Mono}.
+     * @return represents an index alias, which describes a mapping from the alias name to an index along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<SearchAlias>> getWithResponseAsync(
-            String aliasName, RequestOptions requestOptions, Context context) {
+    public Mono<Response<SearchAlias>> getWithResponseAsync(String aliasName, RequestOptions requestOptions,
+        Context context) {
         final String accept = "application/json; odata.metadata=minimal";
         UUID xMsClientRequestIdInternal = null;
         if (requestOptions != null) {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.get(
-                this.client.getEndpoint(), aliasName, xMsClientRequestId, this.client.getApiVersion(), accept, context);
+        return service.get(this.client.getEndpoint(), aliasName, xMsClientRequestId, this.client.getApiVersion(),
+            accept, context);
     }
 
     /**
      * Retrieves an alias definition.
-     *
+     * 
      * @param aliasName The name of the alias to retrieve.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an index alias, which describes a mapping from the alias name to an index on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchAlias> getAsync(String aliasName, RequestOptions requestOptions) {
@@ -938,7 +796,7 @@ public final class AliasesImpl {
 
     /**
      * Retrieves an alias definition.
-     *
+     * 
      * @param aliasName The name of the alias to retrieve.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
@@ -946,25 +804,25 @@ public final class AliasesImpl {
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return represents an index alias, which describes a mapping from the alias name to an index on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<SearchAlias> getAsync(String aliasName, RequestOptions requestOptions, Context context) {
         return getWithResponseAsync(aliasName, requestOptions, context)
-                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Retrieves an alias definition.
-     *
+     * 
      * @param aliasName The name of the alias to retrieve.
      * @param requestOptions Parameter group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws SearchErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return represents an index alias, which describes a mapping from the alias name to an index along with {@link
-     *     Response}.
+     * @return represents an index alias, which describes a mapping from the alias name to an index along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<SearchAlias> getWithResponse(String aliasName, RequestOptions requestOptions, Context context) {
@@ -974,13 +832,13 @@ public final class AliasesImpl {
             xMsClientRequestIdInternal = requestOptions.getXMsClientRequestId();
         }
         UUID xMsClientRequestId = xMsClientRequestIdInternal;
-        return service.getSync(
-                this.client.getEndpoint(), aliasName, xMsClientRequestId, this.client.getApiVersion(), accept, context);
+        return service.getSync(this.client.getEndpoint(), aliasName, xMsClientRequestId, this.client.getApiVersion(),
+            accept, context);
     }
 
     /**
      * Retrieves an alias definition.
-     *
+     * 
      * @param aliasName The name of the alias to retrieve.
      * @param requestOptions Parameter group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

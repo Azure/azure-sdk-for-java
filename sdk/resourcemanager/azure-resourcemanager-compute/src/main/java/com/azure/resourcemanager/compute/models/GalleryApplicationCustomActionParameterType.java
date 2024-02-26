@@ -12,16 +12,24 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * LogOutputBlob.
  */
 public enum GalleryApplicationCustomActionParameterType {
-    /** Enum value String. */
+    /**
+     * Enum value String.
+     */
     STRING("String"),
 
-    /** Enum value ConfigurationDataBlob. */
+    /**
+     * Enum value ConfigurationDataBlob.
+     */
     CONFIGURATION_DATA_BLOB("ConfigurationDataBlob"),
 
-    /** Enum value LogOutputBlob. */
+    /**
+     * Enum value LogOutputBlob.
+     */
     LOG_OUTPUT_BLOB("LogOutputBlob");
 
-    /** The actual serialized value for a GalleryApplicationCustomActionParameterType instance. */
+    /**
+     * The actual serialized value for a GalleryApplicationCustomActionParameterType instance.
+     */
     private final String value;
 
     GalleryApplicationCustomActionParameterType(String value) {
@@ -30,7 +38,7 @@ public enum GalleryApplicationCustomActionParameterType {
 
     /**
      * Parses a serialized value to a GalleryApplicationCustomActionParameterType instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed GalleryApplicationCustomActionParameterType object, or null if unable to parse.
      */
@@ -48,7 +56,9 @@ public enum GalleryApplicationCustomActionParameterType {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

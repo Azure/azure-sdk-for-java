@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Error object used by layers that have access to localized content, and propagate that to user. */
+/**
+ * Error object used by layers that have access to localized content, and propagate that to user.
+ */
 @Fluent
 public final class UserFacingError {
     /*
@@ -27,7 +29,7 @@ public final class UserFacingError {
 
     /*
      * InnerError
-     *
+     * 
      * Inner Error
      */
     @JsonProperty(value = "innerError")
@@ -70,13 +72,15 @@ public final class UserFacingError {
     @JsonProperty(value = "target")
     private String target;
 
-    /** Creates an instance of UserFacingError class. */
+    /**
+     * Creates an instance of UserFacingError class.
+     */
     public UserFacingError() {
     }
 
     /**
      * Get the code property: Unique code for this error.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -85,7 +89,7 @@ public final class UserFacingError {
 
     /**
      * Set the code property: Unique code for this error.
-     *
+     * 
      * @param code the code value to set.
      * @return the UserFacingError object itself.
      */
@@ -96,7 +100,7 @@ public final class UserFacingError {
 
     /**
      * Get the details property: Additional related Errors.
-     *
+     * 
      * @return the details value.
      */
     public List<UserFacingError> details() {
@@ -105,7 +109,7 @@ public final class UserFacingError {
 
     /**
      * Set the details property: Additional related Errors.
-     *
+     * 
      * @param details the details value to set.
      * @return the UserFacingError object itself.
      */
@@ -116,9 +120,9 @@ public final class UserFacingError {
 
     /**
      * Get the innerError property: InnerError
-     *
-     * <p>Inner Error.
-     *
+     * 
+     * Inner Error.
+     * 
      * @return the innerError value.
      */
     public InnerError innerError() {
@@ -127,9 +131,9 @@ public final class UserFacingError {
 
     /**
      * Set the innerError property: InnerError
-     *
-     * <p>Inner Error.
-     *
+     * 
+     * Inner Error.
+     * 
      * @param innerError the innerError value to set.
      * @return the UserFacingError object itself.
      */
@@ -140,7 +144,7 @@ public final class UserFacingError {
 
     /**
      * Get the isRetryable property: Whether the operation will be retryable or not.
-     *
+     * 
      * @return the isRetryable value.
      */
     public Boolean isRetryable() {
@@ -149,7 +153,7 @@ public final class UserFacingError {
 
     /**
      * Set the isRetryable property: Whether the operation will be retryable or not.
-     *
+     * 
      * @param isRetryable the isRetryable value to set.
      * @return the UserFacingError object itself.
      */
@@ -160,7 +164,7 @@ public final class UserFacingError {
 
     /**
      * Get the isUserError property: Whether the operation is due to a user error or service error.
-     *
+     * 
      * @return the isUserError value.
      */
     public Boolean isUserError() {
@@ -169,7 +173,7 @@ public final class UserFacingError {
 
     /**
      * Set the isUserError property: Whether the operation is due to a user error or service error.
-     *
+     * 
      * @param isUserError the isUserError value to set.
      * @return the UserFacingError object itself.
      */
@@ -180,7 +184,7 @@ public final class UserFacingError {
 
     /**
      * Get the properties property: Any key value pairs that can be injected inside error object.
-     *
+     * 
      * @return the properties value.
      */
     public Map<String, String> properties() {
@@ -189,7 +193,7 @@ public final class UserFacingError {
 
     /**
      * Set the properties property: Any key value pairs that can be injected inside error object.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the UserFacingError object itself.
      */
@@ -200,7 +204,7 @@ public final class UserFacingError {
 
     /**
      * Get the message property: The message property.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -209,7 +213,7 @@ public final class UserFacingError {
 
     /**
      * Set the message property: The message property.
-     *
+     * 
      * @param message the message value to set.
      * @return the UserFacingError object itself.
      */
@@ -220,7 +224,7 @@ public final class UserFacingError {
 
     /**
      * Get the recommendedAction property: RecommendedAction � localized.
-     *
+     * 
      * @return the recommendedAction value.
      */
     public List<String> recommendedAction() {
@@ -229,7 +233,7 @@ public final class UserFacingError {
 
     /**
      * Set the recommendedAction property: RecommendedAction � localized.
-     *
+     * 
      * @param recommendedAction the recommendedAction value to set.
      * @return the UserFacingError object itself.
      */
@@ -240,7 +244,7 @@ public final class UserFacingError {
 
     /**
      * Get the target property: Target of the error.
-     *
+     * 
      * @return the target value.
      */
     public String target() {
@@ -249,7 +253,7 @@ public final class UserFacingError {
 
     /**
      * Set the target property: Target of the error.
-     *
+     * 
      * @param target the target value to set.
      * @return the UserFacingError object itself.
      */
@@ -260,7 +264,7 @@ public final class UserFacingError {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

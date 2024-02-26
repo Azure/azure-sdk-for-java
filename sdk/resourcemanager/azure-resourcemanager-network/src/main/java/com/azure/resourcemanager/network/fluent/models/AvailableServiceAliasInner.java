@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The available service alias. */
+/**
+ * The available service alias.
+ */
 @Fluent
 public final class AvailableServiceAliasInner {
     /*
@@ -34,13 +36,15 @@ public final class AvailableServiceAliasInner {
     @JsonProperty(value = "resourceName")
     private String resourceName;
 
-    /** Creates an instance of AvailableServiceAliasInner class. */
+    /**
+     * Creates an instance of AvailableServiceAliasInner class.
+     */
     public AvailableServiceAliasInner() {
     }
 
     /**
      * Get the name property: The name of the service alias.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -49,7 +53,7 @@ public final class AvailableServiceAliasInner {
 
     /**
      * Set the name property: The name of the service alias.
-     *
+     * 
      * @param name the name value to set.
      * @return the AvailableServiceAliasInner object itself.
      */
@@ -60,7 +64,7 @@ public final class AvailableServiceAliasInner {
 
     /**
      * Get the id property: The ID of the service alias.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -69,7 +73,7 @@ public final class AvailableServiceAliasInner {
 
     /**
      * Set the id property: The ID of the service alias.
-     *
+     * 
      * @param id the id value to set.
      * @return the AvailableServiceAliasInner object itself.
      */
@@ -80,7 +84,7 @@ public final class AvailableServiceAliasInner {
 
     /**
      * Get the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -89,7 +93,7 @@ public final class AvailableServiceAliasInner {
 
     /**
      * Set the type property: The type of the resource.
-     *
+     * 
      * @param type the type value to set.
      * @return the AvailableServiceAliasInner object itself.
      */
@@ -100,7 +104,7 @@ public final class AvailableServiceAliasInner {
 
     /**
      * Get the resourceName property: The resource name of the service alias.
-     *
+     * 
      * @return the resourceName value.
      */
     public String resourceName() {
@@ -109,7 +113,7 @@ public final class AvailableServiceAliasInner {
 
     /**
      * Set the resourceName property: The resource name of the service alias.
-     *
+     * 
      * @param resourceName the resourceName value to set.
      * @return the AvailableServiceAliasInner object itself.
      */
@@ -120,7 +124,7 @@ public final class AvailableServiceAliasInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

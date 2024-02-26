@@ -60,8 +60,7 @@ public final class SqlServerSink extends CopySink {
     private Object sqlWriterUseTableLock;
 
     /*
-     * Write behavior when copying data into sql server. Type: SqlWriteBehaviorEnum (or Expression with resultType
-     * SqlWriteBehaviorEnum)
+     * Write behavior when copying data into sql server. Type: string (or Expression with resultType string).
      */
     @JsonProperty(value = "writeBehavior")
     private Object writeBehavior;
@@ -227,8 +226,8 @@ public final class SqlServerSink extends CopySink {
     }
 
     /**
-     * Get the writeBehavior property: Write behavior when copying data into sql server. Type: SqlWriteBehaviorEnum (or
-     * Expression with resultType SqlWriteBehaviorEnum).
+     * Get the writeBehavior property: Write behavior when copying data into sql server. Type: string (or Expression
+     * with resultType string).
      * 
      * @return the writeBehavior value.
      */
@@ -237,8 +236,8 @@ public final class SqlServerSink extends CopySink {
     }
 
     /**
-     * Set the writeBehavior property: Write behavior when copying data into sql server. Type: SqlWriteBehaviorEnum (or
-     * Expression with resultType SqlWriteBehaviorEnum).
+     * Set the writeBehavior property: Write behavior when copying data into sql server. Type: string (or Expression
+     * with resultType string).
      * 
      * @param writeBehavior the writeBehavior value to set.
      * @return the SqlServerSink object itself.

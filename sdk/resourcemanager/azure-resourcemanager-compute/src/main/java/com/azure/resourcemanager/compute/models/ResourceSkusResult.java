@@ -10,7 +10,9 @@ import com.azure.resourcemanager.compute.fluent.models.ResourceSkuInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List Resource Skus operation response. */
+/**
+ * The List Resource Skus operation response.
+ */
 @Fluent
 public final class ResourceSkusResult {
     /*
@@ -26,13 +28,15 @@ public final class ResourceSkusResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ResourceSkusResult class. */
+    /**
+     * Creates an instance of ResourceSkusResult class.
+     */
     public ResourceSkusResult() {
     }
 
     /**
      * Get the value property: The list of skus available for the subscription.
-     *
+     * 
      * @return the value value.
      */
     public List<ResourceSkuInner> value() {
@@ -41,7 +45,7 @@ public final class ResourceSkusResult {
 
     /**
      * Set the value property: The list of skus available for the subscription.
-     *
+     * 
      * @param value the value value to set.
      * @return the ResourceSkusResult object itself.
      */
@@ -53,7 +57,7 @@ public final class ResourceSkusResult {
     /**
      * Get the nextLink property: The URI to fetch the next page of Resource Skus. Call ListNext() with this URI to
      * fetch the next page of Resource Skus.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +67,7 @@ public final class ResourceSkusResult {
     /**
      * Set the nextLink property: The URI to fetch the next page of Resource Skus. Call ListNext() with this URI to
      * fetch the next page of Resource Skus.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ResourceSkusResult object itself.
      */
@@ -74,14 +78,13 @@ public final class ResourceSkusResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model ResourceSkusResult"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model ResourceSkusResult"));
         } else {
             value().forEach(e -> e.validate());
         }

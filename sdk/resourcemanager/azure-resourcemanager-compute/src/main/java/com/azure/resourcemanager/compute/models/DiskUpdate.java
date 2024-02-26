@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Disk update resource. */
+/**
+ * Disk update resource.
+ */
 @Fluent
 public final class DiskUpdate {
     /*
@@ -33,13 +35,15 @@ public final class DiskUpdate {
     @JsonProperty(value = "sku")
     private DiskSku sku;
 
-    /** Creates an instance of DiskUpdate class. */
+    /**
+     * Creates an instance of DiskUpdate class.
+     */
     public DiskUpdate() {
     }
 
     /**
      * Get the innerProperties property: Disk resource update properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DiskUpdateProperties innerProperties() {
@@ -48,7 +52,7 @@ public final class DiskUpdate {
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -57,7 +61,7 @@ public final class DiskUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the DiskUpdate object itself.
      */
@@ -69,7 +73,7 @@ public final class DiskUpdate {
     /**
      * Get the sku property: The disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS, UltraSSD_LRS,
      * Premium_ZRS, StandardSSD_ZRS, or PremiumV2_LRS.
-     *
+     * 
      * @return the sku value.
      */
     public DiskSku sku() {
@@ -79,7 +83,7 @@ public final class DiskUpdate {
     /**
      * Set the sku property: The disks sku name. Can be Standard_LRS, Premium_LRS, StandardSSD_LRS, UltraSSD_LRS,
      * Premium_ZRS, StandardSSD_ZRS, or PremiumV2_LRS.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the DiskUpdate object itself.
      */
@@ -90,7 +94,7 @@ public final class DiskUpdate {
 
     /**
      * Get the osType property: the Operating System type.
-     *
+     * 
      * @return the osType value.
      */
     public OperatingSystemTypes osType() {
@@ -99,7 +103,7 @@ public final class DiskUpdate {
 
     /**
      * Set the osType property: the Operating System type.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the DiskUpdate object itself.
      */
@@ -116,7 +120,7 @@ public final class DiskUpdate {
      * size of the disk to create. If this field is present for updates or creation with other options, it indicates a
      * resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's
      * size.
-     *
+     * 
      * @return the diskSizeGB value.
      */
     public Integer diskSizeGB() {
@@ -128,7 +132,7 @@ public final class DiskUpdate {
      * size of the disk to create. If this field is present for updates or creation with other options, it indicates a
      * resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's
      * size.
-     *
+     * 
      * @param diskSizeGB the diskSizeGB value to set.
      * @return the DiskUpdate object itself.
      */
@@ -143,7 +147,7 @@ public final class DiskUpdate {
     /**
      * Get the encryptionSettingsCollection property: Encryption settings collection used be Azure Disk Encryption, can
      * contain multiple encryption settings per disk or snapshot.
-     *
+     * 
      * @return the encryptionSettingsCollection value.
      */
     public EncryptionSettingsCollection encryptionSettingsCollection() {
@@ -153,7 +157,7 @@ public final class DiskUpdate {
     /**
      * Set the encryptionSettingsCollection property: Encryption settings collection used be Azure Disk Encryption, can
      * contain multiple encryption settings per disk or snapshot.
-     *
+     * 
      * @param encryptionSettingsCollection the encryptionSettingsCollection value to set.
      * @return the DiskUpdate object itself.
      */
@@ -168,7 +172,7 @@ public final class DiskUpdate {
     /**
      * Get the diskIopsReadWrite property: The number of IOPS allowed for this disk; only settable for UltraSSD disks.
      * One operation can transfer between 4k and 256k bytes.
-     *
+     * 
      * @return the diskIopsReadWrite value.
      */
     public Long diskIopsReadWrite() {
@@ -178,7 +182,7 @@ public final class DiskUpdate {
     /**
      * Set the diskIopsReadWrite property: The number of IOPS allowed for this disk; only settable for UltraSSD disks.
      * One operation can transfer between 4k and 256k bytes.
-     *
+     * 
      * @param diskIopsReadWrite the diskIopsReadWrite value to set.
      * @return the DiskUpdate object itself.
      */
@@ -193,7 +197,7 @@ public final class DiskUpdate {
     /**
      * Get the diskMBpsReadWrite property: The bandwidth allowed for this disk; only settable for UltraSSD disks. MBps
      * means millions of bytes per second - MB here uses the ISO notation, of powers of 10.
-     *
+     * 
      * @return the diskMBpsReadWrite value.
      */
     public Long diskMBpsReadWrite() {
@@ -203,7 +207,7 @@ public final class DiskUpdate {
     /**
      * Set the diskMBpsReadWrite property: The bandwidth allowed for this disk; only settable for UltraSSD disks. MBps
      * means millions of bytes per second - MB here uses the ISO notation, of powers of 10.
-     *
+     * 
      * @param diskMBpsReadWrite the diskMBpsReadWrite value to set.
      * @return the DiskUpdate object itself.
      */
@@ -218,7 +222,7 @@ public final class DiskUpdate {
     /**
      * Get the diskIopsReadOnly property: The total number of IOPS that will be allowed across all VMs mounting the
      * shared disk as ReadOnly. One operation can transfer between 4k and 256k bytes.
-     *
+     * 
      * @return the diskIopsReadOnly value.
      */
     public Long diskIopsReadOnly() {
@@ -228,7 +232,7 @@ public final class DiskUpdate {
     /**
      * Set the diskIopsReadOnly property: The total number of IOPS that will be allowed across all VMs mounting the
      * shared disk as ReadOnly. One operation can transfer between 4k and 256k bytes.
-     *
+     * 
      * @param diskIopsReadOnly the diskIopsReadOnly value to set.
      * @return the DiskUpdate object itself.
      */
@@ -244,7 +248,7 @@ public final class DiskUpdate {
      * Get the diskMBpsReadOnly property: The total throughput (MBps) that will be allowed across all VMs mounting the
      * shared disk as ReadOnly. MBps means millions of bytes per second - MB here uses the ISO notation, of powers of
      * 10.
-     *
+     * 
      * @return the diskMBpsReadOnly value.
      */
     public Long diskMBpsReadOnly() {
@@ -255,7 +259,7 @@ public final class DiskUpdate {
      * Set the diskMBpsReadOnly property: The total throughput (MBps) that will be allowed across all VMs mounting the
      * shared disk as ReadOnly. MBps means millions of bytes per second - MB here uses the ISO notation, of powers of
      * 10.
-     *
+     * 
      * @param diskMBpsReadOnly the diskMBpsReadOnly value to set.
      * @return the DiskUpdate object itself.
      */
@@ -268,9 +272,9 @@ public final class DiskUpdate {
     }
 
     /**
-     * Get the maxShares property: The maximum number of VMs that can attach to the disk at the same time. Value greater
-     * than one indicates a disk that can be mounted on multiple VMs at the same time.
-     *
+     * Get the maxShares property: The maximum number of VMs that can attach to the disk at the same time. Value
+     * greater than one indicates a disk that can be mounted on multiple VMs at the same time.
+     * 
      * @return the maxShares value.
      */
     public Integer maxShares() {
@@ -278,9 +282,9 @@ public final class DiskUpdate {
     }
 
     /**
-     * Set the maxShares property: The maximum number of VMs that can attach to the disk at the same time. Value greater
-     * than one indicates a disk that can be mounted on multiple VMs at the same time.
-     *
+     * Set the maxShares property: The maximum number of VMs that can attach to the disk at the same time. Value
+     * greater than one indicates a disk that can be mounted on multiple VMs at the same time.
+     * 
      * @param maxShares the maxShares value to set.
      * @return the DiskUpdate object itself.
      */
@@ -295,7 +299,7 @@ public final class DiskUpdate {
     /**
      * Get the encryption property: Encryption property can be used to encrypt data at rest with customer managed keys
      * or platform managed keys.
-     *
+     * 
      * @return the encryption value.
      */
     public Encryption encryption() {
@@ -305,7 +309,7 @@ public final class DiskUpdate {
     /**
      * Set the encryption property: Encryption property can be used to encrypt data at rest with customer managed keys
      * or platform managed keys.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the DiskUpdate object itself.
      */
@@ -319,7 +323,7 @@ public final class DiskUpdate {
 
     /**
      * Get the networkAccessPolicy property: Policy for accessing the disk via network.
-     *
+     * 
      * @return the networkAccessPolicy value.
      */
     public NetworkAccessPolicy networkAccessPolicy() {
@@ -328,7 +332,7 @@ public final class DiskUpdate {
 
     /**
      * Set the networkAccessPolicy property: Policy for accessing the disk via network.
-     *
+     * 
      * @param networkAccessPolicy the networkAccessPolicy value to set.
      * @return the DiskUpdate object itself.
      */
@@ -342,7 +346,7 @@ public final class DiskUpdate {
 
     /**
      * Get the diskAccessId property: ARM id of the DiskAccess resource for using private endpoints on disks.
-     *
+     * 
      * @return the diskAccessId value.
      */
     public String diskAccessId() {
@@ -351,7 +355,7 @@ public final class DiskUpdate {
 
     /**
      * Set the diskAccessId property: ARM id of the DiskAccess resource for using private endpoints on disks.
-     *
+     * 
      * @param diskAccessId the diskAccessId value to set.
      * @return the DiskUpdate object itself.
      */
@@ -366,7 +370,7 @@ public final class DiskUpdate {
     /**
      * Get the tier property: Performance tier of the disk (e.g, P4, S10) as described here:
      * https://azure.microsoft.com/en-us/pricing/details/managed-disks/. Does not apply to Ultra disks.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -376,7 +380,7 @@ public final class DiskUpdate {
     /**
      * Set the tier property: Performance tier of the disk (e.g, P4, S10) as described here:
      * https://azure.microsoft.com/en-us/pricing/details/managed-disks/. Does not apply to Ultra disks.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the DiskUpdate object itself.
      */
@@ -389,9 +393,9 @@ public final class DiskUpdate {
     }
 
     /**
-     * Get the burstingEnabled property: Set to true to enable bursting beyond the provisioned performance target of the
-     * disk. Bursting is disabled by default. Does not apply to Ultra disks.
-     *
+     * Get the burstingEnabled property: Set to true to enable bursting beyond the provisioned performance target of
+     * the disk. Bursting is disabled by default. Does not apply to Ultra disks.
+     * 
      * @return the burstingEnabled value.
      */
     public Boolean burstingEnabled() {
@@ -399,9 +403,9 @@ public final class DiskUpdate {
     }
 
     /**
-     * Set the burstingEnabled property: Set to true to enable bursting beyond the provisioned performance target of the
-     * disk. Bursting is disabled by default. Does not apply to Ultra disks.
-     *
+     * Set the burstingEnabled property: Set to true to enable bursting beyond the provisioned performance target of
+     * the disk. Bursting is disabled by default. Does not apply to Ultra disks.
+     * 
      * @param burstingEnabled the burstingEnabled value to set.
      * @return the DiskUpdate object itself.
      */
@@ -415,7 +419,7 @@ public final class DiskUpdate {
 
     /**
      * Get the purchasePlan property: Purchase plan information to be added on the OS disk.
-     *
+     * 
      * @return the purchasePlan value.
      */
     public PurchasePlanAutoGenerated purchasePlan() {
@@ -424,7 +428,7 @@ public final class DiskUpdate {
 
     /**
      * Set the purchasePlan property: Purchase plan information to be added on the OS disk.
-     *
+     * 
      * @param purchasePlan the purchasePlan value to set.
      * @return the DiskUpdate object itself.
      */
@@ -438,7 +442,7 @@ public final class DiskUpdate {
 
     /**
      * Get the supportedCapabilities property: List of supported capabilities to be added on the OS disk.
-     *
+     * 
      * @return the supportedCapabilities value.
      */
     public SupportedCapabilities supportedCapabilities() {
@@ -447,7 +451,7 @@ public final class DiskUpdate {
 
     /**
      * Set the supportedCapabilities property: List of supported capabilities to be added on the OS disk.
-     *
+     * 
      * @param supportedCapabilities the supportedCapabilities value to set.
      * @return the DiskUpdate object itself.
      */
@@ -461,7 +465,7 @@ public final class DiskUpdate {
 
     /**
      * Get the propertyUpdatesInProgress property: Properties of the disk for which update is pending.
-     *
+     * 
      * @return the propertyUpdatesInProgress value.
      */
     public PropertyUpdatesInProgress propertyUpdatesInProgress() {
@@ -470,7 +474,7 @@ public final class DiskUpdate {
 
     /**
      * Get the supportsHibernation property: Indicates the OS on a disk supports hibernation.
-     *
+     * 
      * @return the supportsHibernation value.
      */
     public Boolean supportsHibernation() {
@@ -479,7 +483,7 @@ public final class DiskUpdate {
 
     /**
      * Set the supportsHibernation property: Indicates the OS on a disk supports hibernation.
-     *
+     * 
      * @param supportsHibernation the supportsHibernation value to set.
      * @return the DiskUpdate object itself.
      */
@@ -493,7 +497,7 @@ public final class DiskUpdate {
 
     /**
      * Get the publicNetworkAccess property: Policy for controlling export on the disk.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -502,7 +506,7 @@ public final class DiskUpdate {
 
     /**
      * Set the publicNetworkAccess property: Policy for controlling export on the disk.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the DiskUpdate object itself.
      */
@@ -515,9 +519,9 @@ public final class DiskUpdate {
     }
 
     /**
-     * Get the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
-     * or snapshot.
-     *
+     * Get the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a
+     * disk or snapshot.
+     * 
      * @return the dataAccessAuthMode value.
      */
     public DataAccessAuthMode dataAccessAuthMode() {
@@ -525,9 +529,9 @@ public final class DiskUpdate {
     }
 
     /**
-     * Set the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
-     * or snapshot.
-     *
+     * Set the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a
+     * disk or snapshot.
+     * 
      * @param dataAccessAuthMode the dataAccessAuthMode value to set.
      * @return the DiskUpdate object itself.
      */
@@ -542,9 +546,9 @@ public final class DiskUpdate {
     /**
      * Get the optimizedForFrequentAttach property: Setting this property to true improves reliability and performance
      * of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to
-     * another. This property should not be set for disks that are not detached and attached frequently as it causes the
-     * disks to not align with the fault domain of the virtual machine.
-     *
+     * another. This property should not be set for disks that are not detached and attached frequently as it causes
+     * the disks to not align with the fault domain of the virtual machine.
+     * 
      * @return the optimizedForFrequentAttach value.
      */
     public Boolean optimizedForFrequentAttach() {
@@ -554,9 +558,9 @@ public final class DiskUpdate {
     /**
      * Set the optimizedForFrequentAttach property: Setting this property to true improves reliability and performance
      * of data disks that are frequently (more than 5 times a day) by detached from one virtual machine and attached to
-     * another. This property should not be set for disks that are not detached and attached frequently as it causes the
-     * disks to not align with the fault domain of the virtual machine.
-     *
+     * another. This property should not be set for disks that are not detached and attached frequently as it causes
+     * the disks to not align with the fault domain of the virtual machine.
+     * 
      * @param optimizedForFrequentAttach the optimizedForFrequentAttach value to set.
      * @return the DiskUpdate object itself.
      */
@@ -570,7 +574,7 @@ public final class DiskUpdate {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

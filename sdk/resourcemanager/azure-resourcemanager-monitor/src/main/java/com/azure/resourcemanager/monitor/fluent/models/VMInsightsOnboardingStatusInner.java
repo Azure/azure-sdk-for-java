@@ -12,7 +12,9 @@ import com.azure.resourcemanager.monitor.models.OnboardingStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** VM Insights onboarding status for a resource. */
+/**
+ * VM Insights onboarding status for a resource.
+ */
 @Fluent
 public final class VMInsightsOnboardingStatusInner extends ProxyResource {
     /*
@@ -21,13 +23,15 @@ public final class VMInsightsOnboardingStatusInner extends ProxyResource {
     @JsonProperty(value = "properties")
     private VMInsightsOnboardingStatusProperties innerProperties;
 
-    /** Creates an instance of VMInsightsOnboardingStatusInner class. */
+    /**
+     * Creates an instance of VMInsightsOnboardingStatusInner class.
+     */
     public VMInsightsOnboardingStatusInner() {
     }
 
     /**
      * Get the innerProperties property: Resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VMInsightsOnboardingStatusProperties innerProperties() {
@@ -37,7 +41,7 @@ public final class VMInsightsOnboardingStatusInner extends ProxyResource {
     /**
      * Get the resourceId property: Azure Resource Manager identifier of the resource whose onboarding status is being
      * represented.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -47,7 +51,7 @@ public final class VMInsightsOnboardingStatusInner extends ProxyResource {
     /**
      * Set the resourceId property: Azure Resource Manager identifier of the resource whose onboarding status is being
      * represented.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the VMInsightsOnboardingStatusInner object itself.
      */
@@ -60,9 +64,9 @@ public final class VMInsightsOnboardingStatusInner extends ProxyResource {
     }
 
     /**
-     * Get the onboardingStatus property: The onboarding status for the resource. Note that, a higher level scope, e.g.,
-     * resource group or subscription, is considered onboarded if at least one resource under it is onboarded.
-     *
+     * Get the onboardingStatus property: The onboarding status for the resource. Note that, a higher level scope,
+     * e.g., resource group or subscription, is considered onboarded if at least one resource under it is onboarded.
+     * 
      * @return the onboardingStatus value.
      */
     public OnboardingStatus onboardingStatus() {
@@ -70,9 +74,9 @@ public final class VMInsightsOnboardingStatusInner extends ProxyResource {
     }
 
     /**
-     * Set the onboardingStatus property: The onboarding status for the resource. Note that, a higher level scope, e.g.,
-     * resource group or subscription, is considered onboarded if at least one resource under it is onboarded.
-     *
+     * Set the onboardingStatus property: The onboarding status for the resource. Note that, a higher level scope,
+     * e.g., resource group or subscription, is considered onboarded if at least one resource under it is onboarded.
+     * 
      * @param onboardingStatus the onboardingStatus value to set.
      * @return the VMInsightsOnboardingStatusInner object itself.
      */
@@ -88,7 +92,7 @@ public final class VMInsightsOnboardingStatusInner extends ProxyResource {
      * Get the dataStatus property: The status of VM Insights data from the resource. When reported as `present` the
      * data array will contain information about the data containers to which data for the specified resource is being
      * routed.
-     *
+     * 
      * @return the dataStatus value.
      */
     public DataStatus dataStatus() {
@@ -99,7 +103,7 @@ public final class VMInsightsOnboardingStatusInner extends ProxyResource {
      * Set the dataStatus property: The status of VM Insights data from the resource. When reported as `present` the
      * data array will contain information about the data containers to which data for the specified resource is being
      * routed.
-     *
+     * 
      * @param dataStatus the dataStatus value to set.
      * @return the VMInsightsOnboardingStatusInner object itself.
      */
@@ -113,7 +117,7 @@ public final class VMInsightsOnboardingStatusInner extends ProxyResource {
 
     /**
      * Get the data property: Containers that currently store VM Insights data for the specified resource.
-     *
+     * 
      * @return the data value.
      */
     public List<DataContainer> data() {
@@ -122,7 +126,7 @@ public final class VMInsightsOnboardingStatusInner extends ProxyResource {
 
     /**
      * Set the data property: Containers that currently store VM Insights data for the specified resource.
-     *
+     * 
      * @param data the data value to set.
      * @return the VMInsightsOnboardingStatusInner object itself.
      */
@@ -136,7 +140,7 @@ public final class VMInsightsOnboardingStatusInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

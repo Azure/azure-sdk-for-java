@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * AdhocBackupTriggerOption
- *
- * <p>Adhoc backup trigger option.
+ * 
+ * Adhoc backup trigger option.
  */
 @Fluent
 public final class AdhocBackupTriggerOption {
@@ -20,13 +20,15 @@ public final class AdhocBackupTriggerOption {
     @JsonProperty(value = "retentionTagOverride")
     private String retentionTagOverride;
 
-    /** Creates an instance of AdhocBackupTriggerOption class. */
+    /**
+     * Creates an instance of AdhocBackupTriggerOption class.
+     */
     public AdhocBackupTriggerOption() {
     }
 
     /**
      * Get the retentionTagOverride property: The retentionTagOverride property.
-     *
+     * 
      * @return the retentionTagOverride value.
      */
     public String retentionTagOverride() {
@@ -35,7 +37,7 @@ public final class AdhocBackupTriggerOption {
 
     /**
      * Set the retentionTagOverride property: The retentionTagOverride property.
-     *
+     * 
      * @param retentionTagOverride the retentionTagOverride value to set.
      * @return the AdhocBackupTriggerOption object itself.
      */
@@ -46,7 +48,7 @@ public final class AdhocBackupTriggerOption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

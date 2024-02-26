@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of a managed Cassandra cluster. */
+/**
+ * Properties of a managed Cassandra cluster.
+ */
 @Fluent
 public final class ClusterResourceProperties {
     /*
@@ -137,13 +139,15 @@ public final class ClusterResourceProperties {
     @JsonProperty(value = "provisionError")
     private CassandraError provisionError;
 
-    /** Creates an instance of ClusterResourceProperties class. */
+    /**
+     * Creates an instance of ClusterResourceProperties class.
+     */
     public ClusterResourceProperties() {
     }
 
     /**
      * Get the provisioningState property: The status of the resource at the time the operation was called.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ManagedCassandraProvisioningState provisioningState() {
@@ -152,7 +156,7 @@ public final class ClusterResourceProperties {
 
     /**
      * Set the provisioningState property: The status of the resource at the time the operation was called.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the ClusterResourceProperties object itself.
      */
@@ -162,9 +166,9 @@ public final class ClusterResourceProperties {
     }
 
     /**
-     * Get the restoreFromBackupId property: To create an empty cluster, omit this field or set it to null. To restore a
-     * backup into a new cluster, set this field to the resource id of the backup.
-     *
+     * Get the restoreFromBackupId property: To create an empty cluster, omit this field or set it to null. To restore
+     * a backup into a new cluster, set this field to the resource id of the backup.
+     * 
      * @return the restoreFromBackupId value.
      */
     public String restoreFromBackupId() {
@@ -172,9 +176,9 @@ public final class ClusterResourceProperties {
     }
 
     /**
-     * Set the restoreFromBackupId property: To create an empty cluster, omit this field or set it to null. To restore a
-     * backup into a new cluster, set this field to the resource id of the backup.
-     *
+     * Set the restoreFromBackupId property: To create an empty cluster, omit this field or set it to null. To restore
+     * a backup into a new cluster, set this field to the resource id of the backup.
+     * 
      * @param restoreFromBackupId the restoreFromBackupId value to set.
      * @return the ClusterResourceProperties object itself.
      */
@@ -189,7 +193,7 @@ public final class ClusterResourceProperties {
      * to data centers. The resource id must be of the form '/subscriptions/&lt;subscription
      * id&gt;/resourceGroups/&lt;resource group&gt;/providers/Microsoft.Network/virtualNetworks/&lt;virtual
      * network&gt;/subnets/&lt;subnet&gt;'.
-     *
+     * 
      * @return the delegatedManagementSubnetId value.
      */
     public String delegatedManagementSubnetId() {
@@ -202,7 +206,7 @@ public final class ClusterResourceProperties {
      * to data centers. The resource id must be of the form '/subscriptions/&lt;subscription
      * id&gt;/resourceGroups/&lt;resource group&gt;/providers/Microsoft.Network/virtualNetworks/&lt;virtual
      * network&gt;/subnets/&lt;subnet&gt;'.
-     *
+     * 
      * @param delegatedManagementSubnetId the delegatedManagementSubnetId value to set.
      * @return the ClusterResourceProperties object itself.
      */
@@ -214,7 +218,7 @@ public final class ClusterResourceProperties {
     /**
      * Get the cassandraVersion property: Which version of Cassandra should this cluster converge to running (e.g.,
      * 3.11). When updated, the cluster may take some time to migrate to the new version.
-     *
+     * 
      * @return the cassandraVersion value.
      */
     public String cassandraVersion() {
@@ -224,7 +228,7 @@ public final class ClusterResourceProperties {
     /**
      * Set the cassandraVersion property: Which version of Cassandra should this cluster converge to running (e.g.,
      * 3.11). When updated, the cluster may take some time to migrate to the new version.
-     *
+     * 
      * @param cassandraVersion the cassandraVersion value to set.
      * @return the ClusterResourceProperties object itself.
      */
@@ -236,7 +240,7 @@ public final class ClusterResourceProperties {
     /**
      * Get the clusterNameOverride property: If you need to set the clusterName property in cassandra.yaml to something
      * besides the resource name of the cluster, set the value to use on this property.
-     *
+     * 
      * @return the clusterNameOverride value.
      */
     public String clusterNameOverride() {
@@ -246,7 +250,7 @@ public final class ClusterResourceProperties {
     /**
      * Set the clusterNameOverride property: If you need to set the clusterName property in cassandra.yaml to something
      * besides the resource name of the cluster, set the value to use on this property.
-     *
+     * 
      * @param clusterNameOverride the clusterNameOverride value to set.
      * @return the ClusterResourceProperties object itself.
      */
@@ -257,9 +261,9 @@ public final class ClusterResourceProperties {
 
     /**
      * Get the authenticationMethod property: Which authentication method Cassandra should use to authenticate clients.
-     * 'None' turns off authentication, so should not be used except in emergencies. 'Cassandra' is the default password
-     * based authentication. The default is 'Cassandra'.
-     *
+     * 'None' turns off authentication, so should not be used except in emergencies. 'Cassandra' is the default
+     * password based authentication. The default is 'Cassandra'.
+     * 
      * @return the authenticationMethod value.
      */
     public AuthenticationMethod authenticationMethod() {
@@ -268,9 +272,9 @@ public final class ClusterResourceProperties {
 
     /**
      * Set the authenticationMethod property: Which authentication method Cassandra should use to authenticate clients.
-     * 'None' turns off authentication, so should not be used except in emergencies. 'Cassandra' is the default password
-     * based authentication. The default is 'Cassandra'.
-     *
+     * 'None' turns off authentication, so should not be used except in emergencies. 'Cassandra' is the default
+     * password based authentication. The default is 'Cassandra'.
+     * 
      * @param authenticationMethod the authenticationMethod value to set.
      * @return the ClusterResourceProperties object itself.
      */
@@ -283,7 +287,7 @@ public final class ClusterResourceProperties {
      * Get the initialCassandraAdminPassword property: Initial password for clients connecting as admin to the cluster.
      * Should be changed after cluster creation. Returns null on GET. This field only applies when the
      * authenticationMethod field is 'Cassandra'.
-     *
+     * 
      * @return the initialCassandraAdminPassword value.
      */
     public String initialCassandraAdminPassword() {
@@ -294,7 +298,7 @@ public final class ClusterResourceProperties {
      * Set the initialCassandraAdminPassword property: Initial password for clients connecting as admin to the cluster.
      * Should be changed after cluster creation. Returns null on GET. This field only applies when the
      * authenticationMethod field is 'Cassandra'.
-     *
+     * 
      * @param initialCassandraAdminPassword the initialCassandraAdminPassword value to set.
      * @return the ClusterResourceProperties object itself.
      */
@@ -306,7 +310,7 @@ public final class ClusterResourceProperties {
     /**
      * Get the prometheusEndpoint property: Hostname or IP address where the Prometheus endpoint containing data about
      * the managed Cassandra nodes can be reached.
-     *
+     * 
      * @return the prometheusEndpoint value.
      */
     public SeedNode prometheusEndpoint() {
@@ -316,7 +320,7 @@ public final class ClusterResourceProperties {
     /**
      * Set the prometheusEndpoint property: Hostname or IP address where the Prometheus endpoint containing data about
      * the managed Cassandra nodes can be reached.
-     *
+     * 
      * @param prometheusEndpoint the prometheusEndpoint value to set.
      * @return the ClusterResourceProperties object itself.
      */
@@ -328,7 +332,7 @@ public final class ClusterResourceProperties {
     /**
      * Get the repairEnabled property: Should automatic repairs run on this cluster? If omitted, this is true, and
      * should stay true unless you are running a hybrid cluster where you are already doing your own repairs.
-     *
+     * 
      * @return the repairEnabled value.
      */
     public Boolean repairEnabled() {
@@ -338,7 +342,7 @@ public final class ClusterResourceProperties {
     /**
      * Set the repairEnabled property: Should automatic repairs run on this cluster? If omitted, this is true, and
      * should stay true unless you are running a hybrid cluster where you are already doing your own repairs.
-     *
+     * 
      * @param repairEnabled the repairEnabled value to set.
      * @return the ClusterResourceProperties object itself.
      */
@@ -349,10 +353,10 @@ public final class ClusterResourceProperties {
 
     /**
      * Get the clientCertificates property: List of TLS certificates used to authorize clients connecting to the
-     * cluster. All connections are TLS encrypted whether clientCertificates is set or not, but if clientCertificates is
-     * set, the managed Cassandra cluster will reject all connections not bearing a TLS client certificate that can be
-     * validated from one or more of the public certificates in this property.
-     *
+     * cluster. All connections are TLS encrypted whether clientCertificates is set or not, but if clientCertificates
+     * is set, the managed Cassandra cluster will reject all connections not bearing a TLS client certificate that can
+     * be validated from one or more of the public certificates in this property.
+     * 
      * @return the clientCertificates value.
      */
     public List<Certificate> clientCertificates() {
@@ -361,10 +365,10 @@ public final class ClusterResourceProperties {
 
     /**
      * Set the clientCertificates property: List of TLS certificates used to authorize clients connecting to the
-     * cluster. All connections are TLS encrypted whether clientCertificates is set or not, but if clientCertificates is
-     * set, the managed Cassandra cluster will reject all connections not bearing a TLS client certificate that can be
-     * validated from one or more of the public certificates in this property.
-     *
+     * cluster. All connections are TLS encrypted whether clientCertificates is set or not, but if clientCertificates
+     * is set, the managed Cassandra cluster will reject all connections not bearing a TLS client certificate that can
+     * be validated from one or more of the public certificates in this property.
+     * 
      * @param clientCertificates the clientCertificates value to set.
      * @return the ClusterResourceProperties object itself.
      */
@@ -377,7 +381,7 @@ public final class ClusterResourceProperties {
      * Get the externalGossipCertificates property: List of TLS certificates used to authorize gossip from unmanaged
      * data centers. The TLS certificates of all nodes in unmanaged data centers must be verifiable using one of the
      * certificates provided in this property.
-     *
+     * 
      * @return the externalGossipCertificates value.
      */
     public List<Certificate> externalGossipCertificates() {
@@ -388,7 +392,7 @@ public final class ClusterResourceProperties {
      * Set the externalGossipCertificates property: List of TLS certificates used to authorize gossip from unmanaged
      * data centers. The TLS certificates of all nodes in unmanaged data centers must be verifiable using one of the
      * certificates provided in this property.
-     *
+     * 
      * @param externalGossipCertificates the externalGossipCertificates value to set.
      * @return the ClusterResourceProperties object itself.
      */
@@ -401,7 +405,7 @@ public final class ClusterResourceProperties {
      * Get the gossipCertificates property: List of TLS certificates that unmanaged nodes must trust for gossip with
      * managed nodes. All managed nodes will present TLS client certificates that are verifiable using one of the
      * certificates provided in this property.
-     *
+     * 
      * @return the gossipCertificates value.
      */
     public List<Certificate> gossipCertificates() {
@@ -411,7 +415,7 @@ public final class ClusterResourceProperties {
     /**
      * Get the externalSeedNodes property: List of IP addresses of seed nodes in unmanaged data centers. These will be
      * added to the seed node lists of all managed nodes.
-     *
+     * 
      * @return the externalSeedNodes value.
      */
     public List<SeedNode> externalSeedNodes() {
@@ -421,7 +425,7 @@ public final class ClusterResourceProperties {
     /**
      * Set the externalSeedNodes property: List of IP addresses of seed nodes in unmanaged data centers. These will be
      * added to the seed node lists of all managed nodes.
-     *
+     * 
      * @param externalSeedNodes the externalSeedNodes value to set.
      * @return the ClusterResourceProperties object itself.
      */
@@ -431,9 +435,9 @@ public final class ClusterResourceProperties {
     }
 
     /**
-     * Get the seedNodes property: List of IP addresses of seed nodes in the managed data centers. These should be added
-     * to the seed node lists of all unmanaged nodes.
-     *
+     * Get the seedNodes property: List of IP addresses of seed nodes in the managed data centers. These should be
+     * added to the seed node lists of all unmanaged nodes.
+     * 
      * @return the seedNodes value.
      */
     public List<SeedNode> seedNodes() {
@@ -443,7 +447,7 @@ public final class ClusterResourceProperties {
     /**
      * Get the hoursBetweenBackups property: (Deprecated) Number of hours to wait between taking a backup of the
      * cluster.
-     *
+     * 
      * @return the hoursBetweenBackups value.
      */
     public Integer hoursBetweenBackups() {
@@ -453,7 +457,7 @@ public final class ClusterResourceProperties {
     /**
      * Set the hoursBetweenBackups property: (Deprecated) Number of hours to wait between taking a backup of the
      * cluster.
-     *
+     * 
      * @param hoursBetweenBackups the hoursBetweenBackups value to set.
      * @return the ClusterResourceProperties object itself.
      */
@@ -464,7 +468,7 @@ public final class ClusterResourceProperties {
 
     /**
      * Get the deallocated property: Whether the cluster and associated data centers has been deallocated.
-     *
+     * 
      * @return the deallocated value.
      */
     public Boolean deallocated() {
@@ -473,7 +477,7 @@ public final class ClusterResourceProperties {
 
     /**
      * Set the deallocated property: Whether the cluster and associated data centers has been deallocated.
-     *
+     * 
      * @param deallocated the deallocated value to set.
      * @return the ClusterResourceProperties object itself.
      */
@@ -484,7 +488,7 @@ public final class ClusterResourceProperties {
 
     /**
      * Get the cassandraAuditLoggingEnabled property: Whether Cassandra audit logging is enabled.
-     *
+     * 
      * @return the cassandraAuditLoggingEnabled value.
      */
     public Boolean cassandraAuditLoggingEnabled() {
@@ -493,7 +497,7 @@ public final class ClusterResourceProperties {
 
     /**
      * Set the cassandraAuditLoggingEnabled property: Whether Cassandra audit logging is enabled.
-     *
+     * 
      * @param cassandraAuditLoggingEnabled the cassandraAuditLoggingEnabled value to set.
      * @return the ClusterResourceProperties object itself.
      */
@@ -504,7 +508,7 @@ public final class ClusterResourceProperties {
 
     /**
      * Get the provisionError property: Error related to resource provisioning.
-     *
+     * 
      * @return the provisionError value.
      */
     public CassandraError provisionError() {
@@ -513,7 +517,7 @@ public final class ClusterResourceProperties {
 
     /**
      * Set the provisionError property: Error related to resource provisioning.
-     *
+     * 
      * @param provisionError the provisionError value to set.
      * @return the ClusterResourceProperties object itself.
      */
@@ -524,7 +528,7 @@ public final class ClusterResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

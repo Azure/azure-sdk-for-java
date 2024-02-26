@@ -12,7 +12,9 @@ import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
-/** The publishing profile of a gallery image version. */
+/**
+ * The publishing profile of a gallery image version.
+ */
 @Fluent
 public final class GalleryApplicationVersionPublishingProfile extends GalleryArtifactPublishingProfileBase {
     /*
@@ -53,13 +55,15 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
     @JsonProperty(value = "customActions")
     private List<GalleryApplicationCustomAction> customActions;
 
-    /** Creates an instance of GalleryApplicationVersionPublishingProfile class. */
+    /**
+     * Creates an instance of GalleryApplicationVersionPublishingProfile class.
+     */
     public GalleryApplicationVersionPublishingProfile() {
     }
 
     /**
      * Get the source property: The source image from which the Image Version is going to be created.
-     *
+     * 
      * @return the source value.
      */
     public UserArtifactSource source() {
@@ -68,7 +72,7 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
 
     /**
      * Set the source property: The source image from which the Image Version is going to be created.
-     *
+     * 
      * @param source the source value to set.
      * @return the GalleryApplicationVersionPublishingProfile object itself.
      */
@@ -79,7 +83,7 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
 
     /**
      * Get the manageActions property: The manageActions property.
-     *
+     * 
      * @return the manageActions value.
      */
     public UserArtifactManage manageActions() {
@@ -88,7 +92,7 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
 
     /**
      * Set the manageActions property: The manageActions property.
-     *
+     * 
      * @param manageActions the manageActions value to set.
      * @return the GalleryApplicationVersionPublishingProfile object itself.
      */
@@ -100,7 +104,7 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
     /**
      * Get the settings property: Additional settings for the VM app that contains the target package and config file
      * name when it is deployed to target VM or VM scale set.
-     *
+     * 
      * @return the settings value.
      */
     public UserArtifactSettings settings() {
@@ -110,7 +114,7 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
     /**
      * Set the settings property: Additional settings for the VM app that contains the target package and config file
      * name when it is deployed to target VM or VM scale set.
-     *
+     * 
      * @param settings the settings value to set.
      * @return the GalleryApplicationVersionPublishingProfile object itself.
      */
@@ -120,9 +124,9 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
     }
 
     /**
-     * Get the advancedSettings property: Optional. Additional settings to pass to the vm-application-manager extension.
-     * For advanced use only.
-     *
+     * Get the advancedSettings property: Optional. Additional settings to pass to the vm-application-manager
+     * extension. For advanced use only.
+     * 
      * @return the advancedSettings value.
      */
     public Map<String, String> advancedSettings() {
@@ -130,9 +134,9 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
     }
 
     /**
-     * Set the advancedSettings property: Optional. Additional settings to pass to the vm-application-manager extension.
-     * For advanced use only.
-     *
+     * Set the advancedSettings property: Optional. Additional settings to pass to the vm-application-manager
+     * extension. For advanced use only.
+     * 
      * @param advancedSettings the advancedSettings value to set.
      * @return the GalleryApplicationVersionPublishingProfile object itself.
      */
@@ -143,7 +147,7 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
 
     /**
      * Get the enableHealthCheck property: Optional. Whether or not this application reports health.
-     *
+     * 
      * @return the enableHealthCheck value.
      */
     public Boolean enableHealthCheck() {
@@ -152,7 +156,7 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
 
     /**
      * Set the enableHealthCheck property: Optional. Whether or not this application reports health.
-     *
+     * 
      * @param enableHealthCheck the enableHealthCheck value to set.
      * @return the GalleryApplicationVersionPublishingProfile object itself.
      */
@@ -164,7 +168,7 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
     /**
      * Get the customActions property: A list of custom actions that can be performed with this Gallery Application
      * Version.
-     *
+     * 
      * @return the customActions value.
      */
     public List<GalleryApplicationCustomAction> customActions() {
@@ -174,79 +178,91 @@ public final class GalleryApplicationVersionPublishingProfile extends GalleryArt
     /**
      * Set the customActions property: A list of custom actions that can be performed with this Gallery Application
      * Version.
-     *
+     * 
      * @param customActions the customActions value to set.
      * @return the GalleryApplicationVersionPublishingProfile object itself.
      */
-    public GalleryApplicationVersionPublishingProfile withCustomActions(
-        List<GalleryApplicationCustomAction> customActions) {
+    public GalleryApplicationVersionPublishingProfile
+        withCustomActions(List<GalleryApplicationCustomAction> customActions) {
         this.customActions = customActions;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryApplicationVersionPublishingProfile withTargetRegions(List<TargetRegion> targetRegions) {
         super.withTargetRegions(targetRegions);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryApplicationVersionPublishingProfile withReplicaCount(Integer replicaCount) {
         super.withReplicaCount(replicaCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryApplicationVersionPublishingProfile withExcludeFromLatest(Boolean excludeFromLatest) {
         super.withExcludeFromLatest(excludeFromLatest);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryApplicationVersionPublishingProfile withEndOfLifeDate(OffsetDateTime endOfLifeDate) {
         super.withEndOfLifeDate(endOfLifeDate);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryApplicationVersionPublishingProfile withStorageAccountType(StorageAccountType storageAccountType) {
         super.withStorageAccountType(storageAccountType);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public GalleryApplicationVersionPublishingProfile withReplicationMode(ReplicationMode replicationMode) {
         super.withReplicationMode(replicationMode);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public GalleryApplicationVersionPublishingProfile withTargetExtendedLocations(
-        List<GalleryTargetExtendedLocation> targetExtendedLocations) {
+    public GalleryApplicationVersionPublishingProfile
+        withTargetExtendedLocations(List<GalleryTargetExtendedLocation> targetExtendedLocations) {
         super.withTargetExtendedLocations(targetExtendedLocations);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (source() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property source in model GalleryApplicationVersionPublishingProfile"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property source in model GalleryApplicationVersionPublishingProfile"));
         } else {
             source().validate();
         }

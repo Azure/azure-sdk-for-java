@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.MongoDBDatabaseCreateUpdat
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Parameters to create and update Cosmos DB MongoDB database. */
+/**
+ * Parameters to create and update Cosmos DB MongoDB database.
+ */
 @Fluent
 public final class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProperties {
     /*
@@ -19,27 +21,33 @@ public final class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProp
     @JsonProperty(value = "properties", required = true)
     private MongoDBDatabaseCreateUpdateProperties innerProperties = new MongoDBDatabaseCreateUpdateProperties();
 
-    /** Creates an instance of MongoDBDatabaseCreateUpdateParameters class. */
+    /**
+     * Creates an instance of MongoDBDatabaseCreateUpdateParameters class.
+     */
     public MongoDBDatabaseCreateUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: Properties to create and update Azure Cosmos DB MongoDB database.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MongoDBDatabaseCreateUpdateProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDBDatabaseCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDBDatabaseCreateUpdateParameters withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -48,7 +56,7 @@ public final class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProp
 
     /**
      * Get the resource property: The standard JSON format of a MongoDB database.
-     *
+     * 
      * @return the resource value.
      */
     public MongoDBDatabaseResource resource() {
@@ -57,7 +65,7 @@ public final class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProp
 
     /**
      * Set the resource property: The standard JSON format of a MongoDB database.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the MongoDBDatabaseCreateUpdateParameters object itself.
      */
@@ -72,7 +80,7 @@ public final class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProp
     /**
      * Get the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @return the options value.
      */
     public CreateUpdateOptions options() {
@@ -82,7 +90,7 @@ public final class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProp
     /**
      * Set the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @param options the options value to set.
      * @return the MongoDBDatabaseCreateUpdateParameters object itself.
      */
@@ -96,17 +104,15 @@ public final class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProp
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model MongoDBDatabaseCreateUpdateParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model MongoDBDatabaseCreateUpdateParameters"));
         } else {
             innerProperties().validate();
         }

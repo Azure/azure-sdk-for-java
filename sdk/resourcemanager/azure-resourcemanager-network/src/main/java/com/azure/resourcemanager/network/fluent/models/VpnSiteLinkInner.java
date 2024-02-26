@@ -11,7 +11,9 @@ import com.azure.resourcemanager.network.models.VpnLinkBgpSettings;
 import com.azure.resourcemanager.network.models.VpnLinkProviderProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** VpnSiteLink Resource. */
+/**
+ * VpnSiteLink Resource.
+ */
 @Fluent
 public final class VpnSiteLinkInner extends SubResource {
     /*
@@ -38,13 +40,15 @@ public final class VpnSiteLinkInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of VpnSiteLinkInner class. */
+    /**
+     * Creates an instance of VpnSiteLinkInner class.
+     */
     public VpnSiteLinkInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the VPN site link.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VpnSiteLinkProperties innerProperties() {
@@ -53,7 +57,7 @@ public final class VpnSiteLinkInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -63,7 +67,7 @@ public final class VpnSiteLinkInner extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -73,7 +77,7 @@ public final class VpnSiteLinkInner extends SubResource {
     /**
      * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the VpnSiteLinkInner object itself.
      */
@@ -84,14 +88,16 @@ public final class VpnSiteLinkInner extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VpnSiteLinkInner withId(String id) {
         super.withId(id);
@@ -100,7 +106,7 @@ public final class VpnSiteLinkInner extends SubResource {
 
     /**
      * Get the linkProperties property: The link provider properties.
-     *
+     * 
      * @return the linkProperties value.
      */
     public VpnLinkProviderProperties linkProperties() {
@@ -109,7 +115,7 @@ public final class VpnSiteLinkInner extends SubResource {
 
     /**
      * Set the linkProperties property: The link provider properties.
-     *
+     * 
      * @param linkProperties the linkProperties value to set.
      * @return the VpnSiteLinkInner object itself.
      */
@@ -123,7 +129,7 @@ public final class VpnSiteLinkInner extends SubResource {
 
     /**
      * Get the ipAddress property: The ip-address for the vpn-site-link.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -132,7 +138,7 @@ public final class VpnSiteLinkInner extends SubResource {
 
     /**
      * Set the ipAddress property: The ip-address for the vpn-site-link.
-     *
+     * 
      * @param ipAddress the ipAddress value to set.
      * @return the VpnSiteLinkInner object itself.
      */
@@ -146,7 +152,7 @@ public final class VpnSiteLinkInner extends SubResource {
 
     /**
      * Get the fqdn property: FQDN of vpn-site-link.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -155,7 +161,7 @@ public final class VpnSiteLinkInner extends SubResource {
 
     /**
      * Set the fqdn property: FQDN of vpn-site-link.
-     *
+     * 
      * @param fqdn the fqdn value to set.
      * @return the VpnSiteLinkInner object itself.
      */
@@ -169,7 +175,7 @@ public final class VpnSiteLinkInner extends SubResource {
 
     /**
      * Get the bgpProperties property: The set of bgp properties.
-     *
+     * 
      * @return the bgpProperties value.
      */
     public VpnLinkBgpSettings bgpProperties() {
@@ -178,7 +184,7 @@ public final class VpnSiteLinkInner extends SubResource {
 
     /**
      * Set the bgpProperties property: The set of bgp properties.
-     *
+     * 
      * @param bgpProperties the bgpProperties value to set.
      * @return the VpnSiteLinkInner object itself.
      */
@@ -192,7 +198,7 @@ public final class VpnSiteLinkInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the VPN site link resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -201,7 +207,7 @@ public final class VpnSiteLinkInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,61 +5,65 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.Duration;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RecordingFileStatusUpdated event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RecordingFileStatusUpdated event.
+ */
 @Fluent
-public final class AcsRecordingFileStatusUpdatedEventData {
+public final class AcsRecordingFileStatusUpdatedEventData
+    implements JsonSerializable<AcsRecordingFileStatusUpdatedEventData> {
     /*
      * The details of recording storage information
      */
-    @JsonProperty(value = "recordingStorageInfo")
     private AcsRecordingStorageInfoProperties recordingStorageInfo;
 
     /*
      * The time at which the recording started
      */
-    @JsonProperty(value = "recordingStartTime")
     private OffsetDateTime recordingStartTime;
 
     /*
      * The recording duration in milliseconds
      */
-    @JsonProperty(value = "recordingDurationMs")
     private Long recordingDurationMs;
 
     /*
      * The recording content type- AudioVideo, or Audio
      */
-    @JsonProperty(value = "recordingContentType")
     private RecordingContentType recordingContentType;
 
     /*
-     * The recording  channel type - Mixed, Unmixed
+     * The recording channel type - Mixed, Unmixed
      */
-    @JsonProperty(value = "recordingChannelType")
     private RecordingChannelType recordingChannelType;
 
     /*
      * The recording format type - Mp4, Mp3, Wav
      */
-    @JsonProperty(value = "recordingFormatType")
     private RecordingFormatType recordingFormatType;
 
     /*
      * The reason for ending recording session
      */
-    @JsonProperty(value = "sessionEndReason")
     private String sessionEndReason;
 
-    /** Creates an instance of AcsRecordingFileStatusUpdatedEventData class. */
-    public AcsRecordingFileStatusUpdatedEventData() {}
+    /**
+     * Creates an instance of AcsRecordingFileStatusUpdatedEventData class.
+     */
+    public AcsRecordingFileStatusUpdatedEventData() {
+    }
 
     /**
      * Get the recordingStorageInfo property: The details of recording storage information.
-     *
+     * 
      * @return the recordingStorageInfo value.
      */
     public AcsRecordingStorageInfoProperties getRecordingStorageInfo() {
@@ -68,19 +72,19 @@ public final class AcsRecordingFileStatusUpdatedEventData {
 
     /**
      * Set the recordingStorageInfo property: The details of recording storage information.
-     *
+     * 
      * @param recordingStorageInfo the recordingStorageInfo value to set.
      * @return the AcsRecordingFileStatusUpdatedEventData object itself.
      */
-    public AcsRecordingFileStatusUpdatedEventData setRecordingStorageInfo(
-            AcsRecordingStorageInfoProperties recordingStorageInfo) {
+    public AcsRecordingFileStatusUpdatedEventData
+        setRecordingStorageInfo(AcsRecordingStorageInfoProperties recordingStorageInfo) {
         this.recordingStorageInfo = recordingStorageInfo;
         return this;
     }
 
     /**
      * Get the recordingStartTime property: The time at which the recording started.
-     *
+     * 
      * @return the recordingStartTime value.
      */
     public OffsetDateTime getRecordingStartTime() {
@@ -89,7 +93,7 @@ public final class AcsRecordingFileStatusUpdatedEventData {
 
     /**
      * Set the recordingStartTime property: The time at which the recording started.
-     *
+     * 
      * @param recordingStartTime the recordingStartTime value to set.
      * @return the AcsRecordingFileStatusUpdatedEventData object itself.
      */
@@ -100,7 +104,7 @@ public final class AcsRecordingFileStatusUpdatedEventData {
 
     /**
      * Get the recordingDuration property: The recording duration.
-     *
+     * 
      * @return the recordingDuration value.
      */
     public Duration getRecordingDuration() {
@@ -112,7 +116,7 @@ public final class AcsRecordingFileStatusUpdatedEventData {
 
     /**
      * Set the recordingDuration property: The recording duration.
-     *
+     * 
      * @param recordingDuration the recordingDuration value to set.
      * @return the AcsRecordingFileStatusUpdatedEventData object itself.
      */
@@ -127,7 +131,7 @@ public final class AcsRecordingFileStatusUpdatedEventData {
 
     /**
      * Get the recordingContentType property: The recording content type- AudioVideo, or Audio.
-     *
+     * 
      * @return the recordingContentType value.
      */
     public RecordingContentType getRecordingContentType() {
@@ -136,7 +140,7 @@ public final class AcsRecordingFileStatusUpdatedEventData {
 
     /**
      * Set the recordingContentType property: The recording content type- AudioVideo, or Audio.
-     *
+     * 
      * @param recordingContentType the recordingContentType value to set.
      * @return the AcsRecordingFileStatusUpdatedEventData object itself.
      */
@@ -147,7 +151,7 @@ public final class AcsRecordingFileStatusUpdatedEventData {
 
     /**
      * Get the recordingChannelType property: The recording channel type - Mixed, Unmixed.
-     *
+     * 
      * @return the recordingChannelType value.
      */
     public RecordingChannelType getRecordingChannelType() {
@@ -156,7 +160,7 @@ public final class AcsRecordingFileStatusUpdatedEventData {
 
     /**
      * Set the recordingChannelType property: The recording channel type - Mixed, Unmixed.
-     *
+     * 
      * @param recordingChannelType the recordingChannelType value to set.
      * @return the AcsRecordingFileStatusUpdatedEventData object itself.
      */
@@ -167,7 +171,7 @@ public final class AcsRecordingFileStatusUpdatedEventData {
 
     /**
      * Get the recordingFormatType property: The recording format type - Mp4, Mp3, Wav.
-     *
+     * 
      * @return the recordingFormatType value.
      */
     public RecordingFormatType getRecordingFormatType() {
@@ -176,7 +180,7 @@ public final class AcsRecordingFileStatusUpdatedEventData {
 
     /**
      * Set the recordingFormatType property: The recording format type - Mp4, Mp3, Wav.
-     *
+     * 
      * @param recordingFormatType the recordingFormatType value to set.
      * @return the AcsRecordingFileStatusUpdatedEventData object itself.
      */
@@ -187,7 +191,7 @@ public final class AcsRecordingFileStatusUpdatedEventData {
 
     /**
      * Get the sessionEndReason property: The reason for ending recording session.
-     *
+     * 
      * @return the sessionEndReason value.
      */
     public String getSessionEndReason() {
@@ -196,12 +200,74 @@ public final class AcsRecordingFileStatusUpdatedEventData {
 
     /**
      * Set the sessionEndReason property: The reason for ending recording session.
-     *
+     * 
      * @param sessionEndReason the sessionEndReason value to set.
      * @return the AcsRecordingFileStatusUpdatedEventData object itself.
      */
     public AcsRecordingFileStatusUpdatedEventData setSessionEndReason(String sessionEndReason) {
         this.sessionEndReason = sessionEndReason;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("recordingStorageInfo", this.recordingStorageInfo);
+        jsonWriter.writeStringField("recordingStartTime", this.recordingStartTime == null ? null
+            : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.recordingStartTime));
+        jsonWriter.writeNumberField("recordingDurationMs", this.recordingDurationMs);
+        jsonWriter.writeStringField("recordingContentType",
+            this.recordingContentType == null ? null : this.recordingContentType.toString());
+        jsonWriter.writeStringField("recordingChannelType",
+            this.recordingChannelType == null ? null : this.recordingChannelType.toString());
+        jsonWriter.writeStringField("recordingFormatType",
+            this.recordingFormatType == null ? null : this.recordingFormatType.toString());
+        jsonWriter.writeStringField("sessionEndReason", this.sessionEndReason);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsRecordingFileStatusUpdatedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsRecordingFileStatusUpdatedEventData if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsRecordingFileStatusUpdatedEventData.
+     */
+    public static AcsRecordingFileStatusUpdatedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsRecordingFileStatusUpdatedEventData deserializedAcsRecordingFileStatusUpdatedEventData
+                = new AcsRecordingFileStatusUpdatedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("recordingStorageInfo".equals(fieldName)) {
+                    deserializedAcsRecordingFileStatusUpdatedEventData.recordingStorageInfo
+                        = AcsRecordingStorageInfoProperties.fromJson(reader);
+                } else if ("recordingStartTime".equals(fieldName)) {
+                    deserializedAcsRecordingFileStatusUpdatedEventData.recordingStartTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("recordingDurationMs".equals(fieldName)) {
+                    deserializedAcsRecordingFileStatusUpdatedEventData.recordingDurationMs
+                        = reader.getNullable(JsonReader::getLong);
+                } else if ("recordingContentType".equals(fieldName)) {
+                    deserializedAcsRecordingFileStatusUpdatedEventData.recordingContentType
+                        = RecordingContentType.fromString(reader.getString());
+                } else if ("recordingChannelType".equals(fieldName)) {
+                    deserializedAcsRecordingFileStatusUpdatedEventData.recordingChannelType
+                        = RecordingChannelType.fromString(reader.getString());
+                } else if ("recordingFormatType".equals(fieldName)) {
+                    deserializedAcsRecordingFileStatusUpdatedEventData.recordingFormatType
+                        = RecordingFormatType.fromString(reader.getString());
+                } else if ("sessionEndReason".equals(fieldName)) {
+                    deserializedAcsRecordingFileStatusUpdatedEventData.sessionEndReason = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsRecordingFileStatusUpdatedEventData;
+        });
     }
 }

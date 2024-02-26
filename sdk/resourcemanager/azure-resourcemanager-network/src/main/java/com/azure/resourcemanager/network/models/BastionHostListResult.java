@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.BastionHostInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListBastionHosts API service call. */
+/**
+ * Response for ListBastionHosts API service call.
+ */
 @Fluent
 public final class BastionHostListResult {
     /*
@@ -24,13 +26,15 @@ public final class BastionHostListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of BastionHostListResult class. */
+    /**
+     * Creates an instance of BastionHostListResult class.
+     */
     public BastionHostListResult() {
     }
 
     /**
      * Get the value property: List of Bastion Hosts in a resource group.
-     *
+     * 
      * @return the value value.
      */
     public List<BastionHostInner> value() {
@@ -39,7 +43,7 @@ public final class BastionHostListResult {
 
     /**
      * Set the value property: List of Bastion Hosts in a resource group.
-     *
+     * 
      * @param value the value value to set.
      * @return the BastionHostListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class BastionHostListResult {
 
     /**
      * Get the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class BastionHostListResult {
 
     /**
      * Set the nextLink property: URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the BastionHostListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class BastionHostListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

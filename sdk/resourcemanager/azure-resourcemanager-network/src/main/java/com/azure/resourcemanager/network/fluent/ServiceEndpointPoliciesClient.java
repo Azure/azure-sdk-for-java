@@ -22,14 +22,14 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ServiceEndpointPoliciesClient. */
-public interface ServiceEndpointPoliciesClient
-    extends InnerSupportsGet<ServiceEndpointPolicyInner>,
-        InnerSupportsListing<ServiceEndpointPolicyInner>,
-        InnerSupportsDelete<Void> {
+/**
+ * An instance of this class provides access to all the operations defined in ServiceEndpointPoliciesClient.
+ */
+public interface ServiceEndpointPoliciesClient extends InnerSupportsGet<ServiceEndpointPolicyInner>,
+    InnerSupportsListing<ServiceEndpointPolicyInner>, InnerSupportsDelete<Void> {
     /**
      * Deletes the specified service endpoint policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -38,12 +38,12 @@ public interface ServiceEndpointPoliciesClient
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String serviceEndpointPolicyName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName,
+        String serviceEndpointPolicyName);
 
     /**
      * Deletes the specified service endpoint policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -56,7 +56,7 @@ public interface ServiceEndpointPoliciesClient
 
     /**
      * Deletes the specified service endpoint policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -69,7 +69,7 @@ public interface ServiceEndpointPoliciesClient
 
     /**
      * Deletes the specified service endpoint policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param context The context to associate with this operation.
@@ -79,12 +79,12 @@ public interface ServiceEndpointPoliciesClient
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String serviceEndpointPolicyName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String serviceEndpointPolicyName,
+        Context context);
 
     /**
      * Deletes the specified service endpoint policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -97,7 +97,7 @@ public interface ServiceEndpointPoliciesClient
 
     /**
      * Deletes the specified service endpoint policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -109,7 +109,7 @@ public interface ServiceEndpointPoliciesClient
 
     /**
      * Deletes the specified service endpoint policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param context The context to associate with this operation.
@@ -122,7 +122,7 @@ public interface ServiceEndpointPoliciesClient
 
     /**
      * Gets the specified service Endpoint Policies in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param expand Expands referenced resources.
@@ -130,30 +130,30 @@ public interface ServiceEndpointPoliciesClient
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the specified service Endpoint Policies in a specified resource group along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ServiceEndpointPolicyInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String serviceEndpointPolicyName, String expand);
+    Mono<Response<ServiceEndpointPolicyInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String serviceEndpointPolicyName, String expand);
 
     /**
      * Gets the specified service Endpoint Policies in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified service Endpoint Policies in a specified resource group on successful completion of {@link
-     *     Mono}.
+     * @return the specified service Endpoint Policies in a specified resource group on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ServiceEndpointPolicyInner> getByResourceGroupAsync(
-        String resourceGroupName, String serviceEndpointPolicyName);
+    Mono<ServiceEndpointPolicyInner> getByResourceGroupAsync(String resourceGroupName,
+        String serviceEndpointPolicyName);
 
     /**
      * Gets the specified service Endpoint Policies in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param expand Expands referenced resources.
@@ -164,12 +164,12 @@ public interface ServiceEndpointPoliciesClient
      * @return the specified service Endpoint Policies in a specified resource group along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServiceEndpointPolicyInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String serviceEndpointPolicyName, String expand, Context context);
+    Response<ServiceEndpointPolicyInner> getByResourceGroupWithResponse(String resourceGroupName,
+        String serviceEndpointPolicyName, String expand, Context context);
 
     /**
      * Gets the specified service Endpoint Policies in a specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -182,7 +182,7 @@ public interface ServiceEndpointPoliciesClient
 
     /**
      * Creates or updates a service Endpoint Policies.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param parameters Parameters supplied to the create or update service endpoint policy operation.
@@ -192,12 +192,12 @@ public interface ServiceEndpointPoliciesClient
      * @return service End point policy resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String serviceEndpointPolicyName, ServiceEndpointPolicyInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String serviceEndpointPolicyName, ServiceEndpointPolicyInner parameters);
 
     /**
      * Creates or updates a service Endpoint Policies.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param parameters Parameters supplied to the create or update service endpoint policy operation.
@@ -212,7 +212,7 @@ public interface ServiceEndpointPoliciesClient
 
     /**
      * Creates or updates a service Endpoint Policies.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param parameters Parameters supplied to the create or update service endpoint policy operation.
@@ -227,7 +227,7 @@ public interface ServiceEndpointPoliciesClient
 
     /**
      * Creates or updates a service Endpoint Policies.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param parameters Parameters supplied to the create or update service endpoint policy operation.
@@ -239,14 +239,12 @@ public interface ServiceEndpointPoliciesClient
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<ServiceEndpointPolicyInner>, ServiceEndpointPolicyInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String serviceEndpointPolicyName,
-        ServiceEndpointPolicyInner parameters,
+        String resourceGroupName, String serviceEndpointPolicyName, ServiceEndpointPolicyInner parameters,
         Context context);
 
     /**
      * Creates or updates a service Endpoint Policies.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param parameters Parameters supplied to the create or update service endpoint policy operation.
@@ -256,12 +254,12 @@ public interface ServiceEndpointPoliciesClient
      * @return service End point policy resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ServiceEndpointPolicyInner> createOrUpdateAsync(
-        String resourceGroupName, String serviceEndpointPolicyName, ServiceEndpointPolicyInner parameters);
+    Mono<ServiceEndpointPolicyInner> createOrUpdateAsync(String resourceGroupName, String serviceEndpointPolicyName,
+        ServiceEndpointPolicyInner parameters);
 
     /**
      * Creates or updates a service Endpoint Policies.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param parameters Parameters supplied to the create or update service endpoint policy operation.
@@ -271,12 +269,12 @@ public interface ServiceEndpointPoliciesClient
      * @return service End point policy resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceEndpointPolicyInner createOrUpdate(
-        String resourceGroupName, String serviceEndpointPolicyName, ServiceEndpointPolicyInner parameters);
+    ServiceEndpointPolicyInner createOrUpdate(String resourceGroupName, String serviceEndpointPolicyName,
+        ServiceEndpointPolicyInner parameters);
 
     /**
      * Creates or updates a service Endpoint Policies.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param parameters Parameters supplied to the create or update service endpoint policy operation.
@@ -287,15 +285,12 @@ public interface ServiceEndpointPoliciesClient
      * @return service End point policy resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceEndpointPolicyInner createOrUpdate(
-        String resourceGroupName,
-        String serviceEndpointPolicyName,
-        ServiceEndpointPolicyInner parameters,
-        Context context);
+    ServiceEndpointPolicyInner createOrUpdate(String resourceGroupName, String serviceEndpointPolicyName,
+        ServiceEndpointPolicyInner parameters, Context context);
 
     /**
      * Updates tags of a service endpoint policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param parameters Parameters supplied to update service endpoint policy tags.
@@ -305,12 +300,12 @@ public interface ServiceEndpointPoliciesClient
      * @return service End point policy resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<ServiceEndpointPolicyInner>> updateTagsWithResponseAsync(
-        String resourceGroupName, String serviceEndpointPolicyName, TagsObject parameters);
+    Mono<Response<ServiceEndpointPolicyInner>> updateTagsWithResponseAsync(String resourceGroupName,
+        String serviceEndpointPolicyName, TagsObject parameters);
 
     /**
      * Updates tags of a service endpoint policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param parameters Parameters supplied to update service endpoint policy tags.
@@ -320,12 +315,12 @@ public interface ServiceEndpointPoliciesClient
      * @return service End point policy resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<ServiceEndpointPolicyInner> updateTagsAsync(
-        String resourceGroupName, String serviceEndpointPolicyName, TagsObject parameters);
+    Mono<ServiceEndpointPolicyInner> updateTagsAsync(String resourceGroupName, String serviceEndpointPolicyName,
+        TagsObject parameters);
 
     /**
      * Updates tags of a service endpoint policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param parameters Parameters supplied to update service endpoint policy tags.
@@ -336,12 +331,12 @@ public interface ServiceEndpointPoliciesClient
      * @return service End point policy resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<ServiceEndpointPolicyInner> updateTagsWithResponse(
-        String resourceGroupName, String serviceEndpointPolicyName, TagsObject parameters, Context context);
+    Response<ServiceEndpointPolicyInner> updateTagsWithResponse(String resourceGroupName,
+        String serviceEndpointPolicyName, TagsObject parameters, Context context);
 
     /**
      * Updates tags of a service endpoint policy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param serviceEndpointPolicyName The name of the service endpoint policy.
      * @param parameters Parameters supplied to update service endpoint policy tags.
@@ -351,12 +346,12 @@ public interface ServiceEndpointPoliciesClient
      * @return service End point policy resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    ServiceEndpointPolicyInner updateTags(
-        String resourceGroupName, String serviceEndpointPolicyName, TagsObject parameters);
+    ServiceEndpointPolicyInner updateTags(String resourceGroupName, String serviceEndpointPolicyName,
+        TagsObject parameters);
 
     /**
      * Gets all the service endpoint policies in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the service endpoint policies in a subscription as paginated response with {@link PagedFlux}.
@@ -366,7 +361,7 @@ public interface ServiceEndpointPoliciesClient
 
     /**
      * Gets all the service endpoint policies in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the service endpoint policies in a subscription as paginated response with {@link PagedIterable}.
@@ -376,7 +371,7 @@ public interface ServiceEndpointPoliciesClient
 
     /**
      * Gets all the service endpoint policies in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -388,7 +383,7 @@ public interface ServiceEndpointPoliciesClient
 
     /**
      * Gets all service endpoint Policies in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -400,7 +395,7 @@ public interface ServiceEndpointPoliciesClient
 
     /**
      * Gets all service endpoint Policies in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -412,7 +407,7 @@ public interface ServiceEndpointPoliciesClient
 
     /**
      * Gets all service endpoint Policies in a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

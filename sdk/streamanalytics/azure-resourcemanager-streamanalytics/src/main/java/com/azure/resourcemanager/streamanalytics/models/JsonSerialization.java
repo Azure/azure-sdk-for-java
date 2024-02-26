@@ -5,9 +5,7 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.fluent.models.JsonSerializationProperties;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
@@ -19,19 +17,22 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("Json")
 @Fluent
 public final class JsonSerialization extends Serialization {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(JsonSerialization.class);
-
     /*
-     * The properties that are associated with the JSON serialization type.
-     * Required on PUT (CreateOrReplace) requests.
+     * The properties that are associated with the JSON serialization type. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "properties")
     private JsonSerializationProperties innerProperties;
 
     /**
+     * Creates an instance of JsonSerialization class.
+     */
+    public JsonSerialization() {
+    }
+
+    /**
      * Get the innerProperties property: The properties that are associated with the JSON serialization type. Required
      * on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the innerProperties value.
      */
     private JsonSerializationProperties innerProperties() {
@@ -41,7 +42,7 @@ public final class JsonSerialization extends Serialization {
     /**
      * Get the encoding property: Specifies the encoding of the incoming data in the case of input and the encoding of
      * outgoing data in the case of output. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the encoding value.
      */
     public Encoding encoding() {
@@ -51,7 +52,7 @@ public final class JsonSerialization extends Serialization {
     /**
      * Set the encoding property: Specifies the encoding of the incoming data in the case of input and the encoding of
      * outgoing data in the case of output. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param encoding the encoding value to set.
      * @return the JsonSerialization object itself.
      */
@@ -69,7 +70,7 @@ public final class JsonSerialization extends Serialization {
      * values are 'lineSeparated' indicating the output will be formatted by having each JSON object separated by a new
      * line and 'array' indicating the output will be formatted as an array of JSON objects. Default value is
      * 'lineSeparated' if left null.
-     *
+     * 
      * @return the format value.
      */
     public JsonOutputSerializationFormat format() {
@@ -82,7 +83,7 @@ public final class JsonSerialization extends Serialization {
      * values are 'lineSeparated' indicating the output will be formatted by having each JSON object separated by a new
      * line and 'array' indicating the output will be formatted as an array of JSON objects. Default value is
      * 'lineSeparated' if left null.
-     *
+     * 
      * @param format the format value to set.
      * @return the JsonSerialization object itself.
      */
@@ -96,7 +97,7 @@ public final class JsonSerialization extends Serialization {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

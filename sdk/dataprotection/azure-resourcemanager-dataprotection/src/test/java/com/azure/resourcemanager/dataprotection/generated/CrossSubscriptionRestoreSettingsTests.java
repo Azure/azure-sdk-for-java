@@ -12,18 +12,16 @@ import org.junit.jupiter.api.Assertions;
 public final class CrossSubscriptionRestoreSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CrossSubscriptionRestoreSettings model =
-            BinaryData
-                .fromString("{\"state\":\"PermanentlyDisabled\"}")
-                .toObject(CrossSubscriptionRestoreSettings.class);
-        Assertions.assertEquals(CrossSubscriptionRestoreState.PERMANENTLY_DISABLED, model.state());
+        CrossSubscriptionRestoreSettings model
+            = BinaryData.fromString("{\"state\":\"Disabled\"}").toObject(CrossSubscriptionRestoreSettings.class);
+        Assertions.assertEquals(CrossSubscriptionRestoreState.DISABLED, model.state());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CrossSubscriptionRestoreSettings model =
-            new CrossSubscriptionRestoreSettings().withState(CrossSubscriptionRestoreState.PERMANENTLY_DISABLED);
+        CrossSubscriptionRestoreSettings model
+            = new CrossSubscriptionRestoreSettings().withState(CrossSubscriptionRestoreState.DISABLED);
         model = BinaryData.fromObject(model).toObject(CrossSubscriptionRestoreSettings.class);
-        Assertions.assertEquals(CrossSubscriptionRestoreState.PERMANENTLY_DISABLED, model.state());
+        Assertions.assertEquals(CrossSubscriptionRestoreState.DISABLED, model.state());
     }
 }

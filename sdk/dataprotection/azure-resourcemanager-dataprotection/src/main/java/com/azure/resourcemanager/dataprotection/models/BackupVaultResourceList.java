@@ -11,8 +11,8 @@ import java.util.List;
 
 /**
  * BackupVaultResourceList
- *
- * <p>List of BackupVault resources.
+ * 
+ * List of BackupVault resources.
  */
 @Fluent
 public final class BackupVaultResourceList extends DppResourceList {
@@ -22,13 +22,15 @@ public final class BackupVaultResourceList extends DppResourceList {
     @JsonProperty(value = "value")
     private List<BackupVaultResourceInner> value;
 
-    /** Creates an instance of BackupVaultResourceList class. */
+    /**
+     * Creates an instance of BackupVaultResourceList class.
+     */
     public BackupVaultResourceList() {
     }
 
     /**
      * Get the value property: List of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<BackupVaultResourceInner> value() {
@@ -37,7 +39,7 @@ public final class BackupVaultResourceList extends DppResourceList {
 
     /**
      * Set the value property: List of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the BackupVaultResourceList object itself.
      */
@@ -46,7 +48,9 @@ public final class BackupVaultResourceList extends DppResourceList {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackupVaultResourceList withNextLink(String nextLink) {
         super.withNextLink(nextLink);
@@ -55,7 +59,7 @@ public final class BackupVaultResourceList extends DppResourceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

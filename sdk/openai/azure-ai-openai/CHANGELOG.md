@@ -1,6 +1,18 @@
 # Release History
 
-## 1.0.0-beta.6 (Unreleased)
+## 1.0.0-beta.7 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+- Fixed `ChatRequestUserMessage` deserialization issue. [#38183](https://github.com/Azure/azure-sdk-for-java/issues/38183)
+- Made the `getContent` method in `ChatRequestUserMessage` class public.
+
+### Other Changes
+
+## 1.0.0-beta.6 (2023-12-11)
 
 ### Features Added
 
@@ -34,8 +46,6 @@ Use `getAudioTranslation` or `getAudioTranslationWithResponse` convenience metho
 
 - Azure OpenAI now uses `dall-e-3` model deployments for its image generation API and such a valid deployment must
   be provided into the options for the `getImageGenerations()` method to receive results.
-
-### Bugs Fixed
 
 ### Other Changes
 

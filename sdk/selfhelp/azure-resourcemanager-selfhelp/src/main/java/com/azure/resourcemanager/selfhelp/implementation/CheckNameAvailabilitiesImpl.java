@@ -21,21 +21,18 @@ public final class CheckNameAvailabilitiesImpl implements CheckNameAvailabilitie
 
     private final com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager;
 
-    public CheckNameAvailabilitiesImpl(
-        CheckNameAvailabilitiesClient innerClient, com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager) {
+    public CheckNameAvailabilitiesImpl(CheckNameAvailabilitiesClient innerClient,
+        com.azure.resourcemanager.selfhelp.SelfHelpManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<CheckNameAvailabilityResponse> postWithResponse(
-        String scope, CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
-        Response<CheckNameAvailabilityResponseInner> inner =
-            this.serviceClient().postWithResponse(scope, checkNameAvailabilityRequest, context);
+    public Response<CheckNameAvailabilityResponse> postWithResponse(String scope,
+        CheckNameAvailabilityRequest checkNameAvailabilityRequest, Context context) {
+        Response<CheckNameAvailabilityResponseInner> inner
+            = this.serviceClient().postWithResponse(scope, checkNameAvailabilityRequest, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CheckNameAvailabilityResponseImpl(inner.getValue(), this.manager()));
         } else {
             return null;

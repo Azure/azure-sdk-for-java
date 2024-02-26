@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Network Virtual Appliance Sku Properties. */
+/**
+ * Network Virtual Appliance Sku Properties.
+ */
 @Fluent
 public final class VirtualApplianceSkuProperties {
     /*
@@ -28,13 +30,15 @@ public final class VirtualApplianceSkuProperties {
     @JsonProperty(value = "marketPlaceVersion")
     private String marketPlaceVersion;
 
-    /** Creates an instance of VirtualApplianceSkuProperties class. */
+    /**
+     * Creates an instance of VirtualApplianceSkuProperties class.
+     */
     public VirtualApplianceSkuProperties() {
     }
 
     /**
      * Get the vendor property: Virtual Appliance Vendor.
-     *
+     * 
      * @return the vendor value.
      */
     public String vendor() {
@@ -43,7 +47,7 @@ public final class VirtualApplianceSkuProperties {
 
     /**
      * Set the vendor property: Virtual Appliance Vendor.
-     *
+     * 
      * @param vendor the vendor value to set.
      * @return the VirtualApplianceSkuProperties object itself.
      */
@@ -54,7 +58,7 @@ public final class VirtualApplianceSkuProperties {
 
     /**
      * Get the bundledScaleUnit property: Virtual Appliance Scale Unit.
-     *
+     * 
      * @return the bundledScaleUnit value.
      */
     public String bundledScaleUnit() {
@@ -63,7 +67,7 @@ public final class VirtualApplianceSkuProperties {
 
     /**
      * Set the bundledScaleUnit property: Virtual Appliance Scale Unit.
-     *
+     * 
      * @param bundledScaleUnit the bundledScaleUnit value to set.
      * @return the VirtualApplianceSkuProperties object itself.
      */
@@ -74,7 +78,7 @@ public final class VirtualApplianceSkuProperties {
 
     /**
      * Get the marketPlaceVersion property: Virtual Appliance Version.
-     *
+     * 
      * @return the marketPlaceVersion value.
      */
     public String marketPlaceVersion() {
@@ -83,7 +87,7 @@ public final class VirtualApplianceSkuProperties {
 
     /**
      * Set the marketPlaceVersion property: Virtual Appliance Version.
-     *
+     * 
      * @param marketPlaceVersion the marketPlaceVersion value to set.
      * @return the VirtualApplianceSkuProperties object itself.
      */
@@ -94,7 +98,7 @@ public final class VirtualApplianceSkuProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

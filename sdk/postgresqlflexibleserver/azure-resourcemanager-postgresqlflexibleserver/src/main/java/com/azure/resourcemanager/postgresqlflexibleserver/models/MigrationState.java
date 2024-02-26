@@ -8,32 +8,48 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Migration state. */
+/**
+ * Migration state.
+ */
 public final class MigrationState extends ExpandableStringEnum<MigrationState> {
-    /** Static value InProgress for MigrationState. */
+    /**
+     * Static value InProgress for MigrationState.
+     */
     public static final MigrationState IN_PROGRESS = fromString("InProgress");
 
-    /** Static value WaitingForUserAction for MigrationState. */
+    /**
+     * Static value WaitingForUserAction for MigrationState.
+     */
     public static final MigrationState WAITING_FOR_USER_ACTION = fromString("WaitingForUserAction");
 
-    /** Static value Canceled for MigrationState. */
+    /**
+     * Static value Canceled for MigrationState.
+     */
     public static final MigrationState CANCELED = fromString("Canceled");
 
-    /** Static value Failed for MigrationState. */
+    /**
+     * Static value Failed for MigrationState.
+     */
     public static final MigrationState FAILED = fromString("Failed");
 
-    /** Static value Succeeded for MigrationState. */
+    /**
+     * Static value Succeeded for MigrationState.
+     */
     public static final MigrationState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value ValidationFailed for MigrationState. */
+    /**
+     * Static value ValidationFailed for MigrationState.
+     */
     public static final MigrationState VALIDATION_FAILED = fromString("ValidationFailed");
 
-    /** Static value CleaningUp for MigrationState. */
+    /**
+     * Static value CleaningUp for MigrationState.
+     */
     public static final MigrationState CLEANING_UP = fromString("CleaningUp");
 
     /**
      * Creates a new instance of MigrationState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -42,7 +58,7 @@ public final class MigrationState extends ExpandableStringEnum<MigrationState> {
 
     /**
      * Creates or finds a MigrationState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MigrationState.
      */
@@ -53,7 +69,7 @@ public final class MigrationState extends ExpandableStringEnum<MigrationState> {
 
     /**
      * Gets known MigrationState values.
-     *
+     * 
      * @return known MigrationState values.
      */
     public static Collection<MigrationState> values() {

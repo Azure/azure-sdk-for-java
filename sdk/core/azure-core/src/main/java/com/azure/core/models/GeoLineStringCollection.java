@@ -144,8 +144,8 @@ public final class GeoLineStringCollection extends GeoObject {
                             + "'MultiLineString'. The found 'type' was '" + type + "'.");
                     }
                 } else if ("coordinates".equals(fieldName)) {
-                    List<List<GeoPosition>> positionList = reader.readArray(reader2 ->
-                        reader2.readArray(GeoPosition::fromJson));
+                    List<List<GeoPosition>> positionList
+                        = reader.readArray(reader2 -> reader2.readArray(GeoPosition::fromJson));
                     lines = new ArrayList<>(positionList.size());
                     for (List<GeoPosition> positions : positionList) {
                         lines.add(new GeoLineString(positions));

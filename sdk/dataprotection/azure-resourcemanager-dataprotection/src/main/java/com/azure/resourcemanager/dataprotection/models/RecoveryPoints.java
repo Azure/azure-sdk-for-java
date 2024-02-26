@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of RecoveryPoints. */
+/**
+ * Resource collection API of RecoveryPoints.
+ */
 public interface RecoveryPoints {
     /**
      * Returns a list of Recovery Points for a DataSource in a vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -21,12 +23,12 @@ public interface RecoveryPoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azureBackupRecoveryPointResourceList as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<AzureBackupRecoveryPointResource> list(
-        String resourceGroupName, String vaultName, String backupInstanceName);
+    PagedIterable<AzureBackupRecoveryPointResource> list(String resourceGroupName, String vaultName,
+        String backupInstanceName);
 
     /**
      * Returns a list of Recovery Points for a DataSource in a vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -38,17 +40,12 @@ public interface RecoveryPoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return azureBackupRecoveryPointResourceList as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<AzureBackupRecoveryPointResource> list(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        String filter,
-        String skipToken,
-        Context context);
+    PagedIterable<AzureBackupRecoveryPointResource> list(String resourceGroupName, String vaultName,
+        String backupInstanceName, String filter, String skipToken, Context context);
 
     /**
      * Gets a Recovery Point using recoveryPointId for a Datasource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -59,12 +56,12 @@ public interface RecoveryPoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Recovery Point using recoveryPointId for a Datasource along with {@link Response}.
      */
-    Response<AzureBackupRecoveryPointResource> getWithResponse(
-        String resourceGroupName, String vaultName, String backupInstanceName, String recoveryPointId, Context context);
+    Response<AzureBackupRecoveryPointResource> getWithResponse(String resourceGroupName, String vaultName,
+        String backupInstanceName, String recoveryPointId, Context context);
 
     /**
      * Gets a Recovery Point using recoveryPointId for a Datasource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -74,6 +71,6 @@ public interface RecoveryPoints {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Recovery Point using recoveryPointId for a Datasource.
      */
-    AzureBackupRecoveryPointResource get(
-        String resourceGroupName, String vaultName, String backupInstanceName, String recoveryPointId);
+    AzureBackupRecoveryPointResource get(String resourceGroupName, String vaultName, String backupInstanceName,
+        String recoveryPointId);
 }

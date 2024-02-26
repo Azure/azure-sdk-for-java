@@ -8,20 +8,37 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The provisioning state of private link group ID. */
+/**
+ * The provisioning state of private link group ID.
+ */
 public final class GroupIdProvisioningState extends ExpandableStringEnum<GroupIdProvisioningState> {
-    /** Static value Succeeded for GroupIdProvisioningState. */
+    /**
+     * Static value Succeeded for GroupIdProvisioningState.
+     */
     public static final GroupIdProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for GroupIdProvisioningState. */
+    /**
+     * Static value Failed for GroupIdProvisioningState.
+     */
     public static final GroupIdProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Canceled for GroupIdProvisioningState. */
+    /**
+     * Static value Canceled for GroupIdProvisioningState.
+     */
     public static final GroupIdProvisioningState CANCELED = fromString("Canceled");
 
     /**
+     * Creates a new instance of GroupIdProvisioningState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public GroupIdProvisioningState() {
+    }
+
+    /**
      * Creates or finds a GroupIdProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding GroupIdProvisioningState.
      */
@@ -32,7 +49,7 @@ public final class GroupIdProvisioningState extends ExpandableStringEnum<GroupId
 
     /**
      * Gets known GroupIdProvisioningState values.
-     *
+     * 
      * @return known GroupIdProvisioningState values.
      */
     public static Collection<GroupIdProvisioningState> values() {

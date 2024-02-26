@@ -34,49 +34,35 @@ public final class BackupResourceStorageConfigsNonCrrsGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"storageModelType\":\"Invalid\",\"storageType\":\"Invalid\",\"storageTypeState\":\"Invalid\",\"crossRegionRestoreFlag\":false,\"dedupState\":\"Enabled\",\"xcoolState\":\"Enabled\"},\"eTag\":\"naz\",\"location\":\"r\",\"tags\":{\"a\":\"rs\"},\"id\":\"sxkdnwqapfgsdpc\",\"name\":\"essmzhhku\",\"type\":\"ip\"}";
+        String responseStr
+            = "{\"properties\":{\"storageModelType\":\"Invalid\",\"storageType\":\"ReadAccessGeoZoneRedundant\",\"storageTypeState\":\"Locked\",\"crossRegionRestoreFlag\":true,\"dedupState\":\"Disabled\",\"xcoolState\":\"Invalid\"},\"eTag\":\"kemyil\",\"location\":\"udxjascowv\",\"tags\":{\"snmgzvyfi\":\"kpdxphlk\",\"qnwsithuqolyah\":\"dkz\",\"hyqezvqq\":\"uqwqulsutrjbhxyk\",\"rftb\":\"g\"},\"id\":\"ve\",\"name\":\"reuquowtljvf\",\"type\":\"hreagk\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        RecoveryServicesBackupManager manager =
-            RecoveryServicesBackupManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        BackupResourceConfigResource response =
-            manager
-                .backupResourceStorageConfigsNonCrrs()
-                .getWithResponse("ryshwddkvbxgk", "usybwptdaca", com.azure.core.util.Context.NONE)
-                .getValue();
+        BackupResourceConfigResource response = manager.backupResourceStorageConfigsNonCrrs()
+            .getWithResponse("aonwivkcqhrxh", "knlccrmmkyup", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("r", response.location());
-        Assertions.assertEquals("rs", response.tags().get("a"));
+        Assertions.assertEquals("udxjascowv", response.location());
+        Assertions.assertEquals("kpdxphlk", response.tags().get("snmgzvyfi"));
         Assertions.assertEquals(StorageType.INVALID, response.properties().storageModelType());
-        Assertions.assertEquals(StorageType.INVALID, response.properties().storageType());
-        Assertions.assertEquals(StorageTypeState.INVALID, response.properties().storageTypeState());
-        Assertions.assertEquals(false, response.properties().crossRegionRestoreFlag());
-        Assertions.assertEquals(DedupState.ENABLED, response.properties().dedupState());
-        Assertions.assertEquals(XcoolState.ENABLED, response.properties().xcoolState());
-        Assertions.assertEquals("naz", response.etag());
+        Assertions.assertEquals(StorageType.READ_ACCESS_GEO_ZONE_REDUNDANT, response.properties().storageType());
+        Assertions.assertEquals(StorageTypeState.LOCKED, response.properties().storageTypeState());
+        Assertions.assertEquals(true, response.properties().crossRegionRestoreFlag());
+        Assertions.assertEquals(DedupState.DISABLED, response.properties().dedupState());
+        Assertions.assertEquals(XcoolState.INVALID, response.properties().xcoolState());
+        Assertions.assertEquals("kemyil", response.etag());
     }
 }

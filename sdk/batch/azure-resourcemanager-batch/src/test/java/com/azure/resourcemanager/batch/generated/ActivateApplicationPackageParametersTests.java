@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ActivateApplicationPackageParametersTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ActivateApplicationPackageParameters model =
-            BinaryData.fromString("{\"format\":\"yqduujit\"}").toObject(ActivateApplicationPackageParameters.class);
+        ActivateApplicationPackageParameters model
+            = BinaryData.fromString("{\"format\":\"yqduujit\"}").toObject(ActivateApplicationPackageParameters.class);
         Assertions.assertEquals("yqduujit", model.format());
     }
 

@@ -16,7 +16,9 @@ import com.azure.resourcemanager.compute.models.VirtualMachineHealthStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The instance view of a virtual machine scale set VM. */
+/**
+ * The instance view of a virtual machine scale set VM.
+ */
 @Fluent
 public final class VirtualMachineScaleSetVMInstanceViewInner {
     /*
@@ -99,7 +101,8 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
      * Specifies the host OS name of the virtual machine. <br><br> This name cannot be updated after the VM is created.
      * <br><br> **Max-length (Windows):** 15 characters <br><br> **Max-length (Linux):** 64 characters. <br><br> For
      * naming conventions and restrictions see [Azure infrastructure services implementation
-     * guidelines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-infrastructure-subscription-accounts-guidelines?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json#1-naming-conventions).
+     * guidelines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-infrastructure-subscription-
+     * accounts-guidelines?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json#1-naming-conventions).
      */
     @JsonProperty(value = "computerName")
     private String computerName;
@@ -122,13 +125,15 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
     @JsonProperty(value = "hyperVGeneration")
     private HyperVGeneration hyperVGeneration;
 
-    /** Creates an instance of VirtualMachineScaleSetVMInstanceViewInner class. */
+    /**
+     * Creates an instance of VirtualMachineScaleSetVMInstanceViewInner class.
+     */
     public VirtualMachineScaleSetVMInstanceViewInner() {
     }
 
     /**
      * Get the platformUpdateDomain property: The Update Domain count.
-     *
+     * 
      * @return the platformUpdateDomain value.
      */
     public Integer platformUpdateDomain() {
@@ -137,7 +142,7 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
 
     /**
      * Set the platformUpdateDomain property: The Update Domain count.
-     *
+     * 
      * @param platformUpdateDomain the platformUpdateDomain value to set.
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
      */
@@ -148,7 +153,7 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
 
     /**
      * Get the platformFaultDomain property: The Fault Domain count.
-     *
+     * 
      * @return the platformFaultDomain value.
      */
     public Integer platformFaultDomain() {
@@ -157,7 +162,7 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
 
     /**
      * Set the platformFaultDomain property: The Fault Domain count.
-     *
+     * 
      * @param platformFaultDomain the platformFaultDomain value to set.
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
      */
@@ -168,7 +173,7 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
 
     /**
      * Get the rdpThumbPrint property: The Remote desktop certificate thumbprint.
-     *
+     * 
      * @return the rdpThumbPrint value.
      */
     public String rdpThumbPrint() {
@@ -177,7 +182,7 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
 
     /**
      * Set the rdpThumbPrint property: The Remote desktop certificate thumbprint.
-     *
+     * 
      * @param rdpThumbPrint the rdpThumbPrint value to set.
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
      */
@@ -188,7 +193,7 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
 
     /**
      * Get the vmAgent property: The VM Agent running on the virtual machine.
-     *
+     * 
      * @return the vmAgent value.
      */
     public VirtualMachineAgentInstanceView vmAgent() {
@@ -197,7 +202,7 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
 
     /**
      * Set the vmAgent property: The VM Agent running on the virtual machine.
-     *
+     * 
      * @param vmAgent the vmAgent value to set.
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
      */
@@ -208,7 +213,7 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
 
     /**
      * Get the maintenanceRedeployStatus property: The Maintenance Operation status on the virtual machine.
-     *
+     * 
      * @return the maintenanceRedeployStatus value.
      */
     public MaintenanceRedeployStatus maintenanceRedeployStatus() {
@@ -217,19 +222,19 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
 
     /**
      * Set the maintenanceRedeployStatus property: The Maintenance Operation status on the virtual machine.
-     *
+     * 
      * @param maintenanceRedeployStatus the maintenanceRedeployStatus value to set.
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
      */
-    public VirtualMachineScaleSetVMInstanceViewInner withMaintenanceRedeployStatus(
-        MaintenanceRedeployStatus maintenanceRedeployStatus) {
+    public VirtualMachineScaleSetVMInstanceViewInner
+        withMaintenanceRedeployStatus(MaintenanceRedeployStatus maintenanceRedeployStatus) {
         this.maintenanceRedeployStatus = maintenanceRedeployStatus;
         return this;
     }
 
     /**
      * Get the disks property: The disks information.
-     *
+     * 
      * @return the disks value.
      */
     public List<DiskInstanceView> disks() {
@@ -238,7 +243,7 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
 
     /**
      * Set the disks property: The disks information.
-     *
+     * 
      * @param disks the disks value to set.
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
      */
@@ -249,7 +254,7 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
 
     /**
      * Get the extensions property: The extensions information.
-     *
+     * 
      * @return the extensions value.
      */
     public List<VirtualMachineExtensionInstanceView> extensions() {
@@ -258,19 +263,19 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
 
     /**
      * Set the extensions property: The extensions information.
-     *
+     * 
      * @param extensions the extensions value to set.
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
      */
-    public VirtualMachineScaleSetVMInstanceViewInner withExtensions(
-        List<VirtualMachineExtensionInstanceView> extensions) {
+    public VirtualMachineScaleSetVMInstanceViewInner
+        withExtensions(List<VirtualMachineExtensionInstanceView> extensions) {
         this.extensions = extensions;
         return this;
     }
 
     /**
      * Get the vmHealth property: The health status for the VM.
-     *
+     * 
      * @return the vmHealth value.
      */
     public VirtualMachineHealthStatus vmHealth() {
@@ -278,10 +283,10 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
     }
 
     /**
-     * Get the bootDiagnostics property: Boot Diagnostics is a debugging feature which allows you to view Console Output
-     * and Screenshot to diagnose VM status. You can easily view the output of your console log. Azure also enables you
-     * to see a screenshot of the VM from the hypervisor.
-     *
+     * Get the bootDiagnostics property: Boot Diagnostics is a debugging feature which allows you to view Console
+     * Output and Screenshot to diagnose VM status. You can easily view the output of your console log. Azure also
+     * enables you to see a screenshot of the VM from the hypervisor.
+     * 
      * @return the bootDiagnostics value.
      */
     public BootDiagnosticsInstanceView bootDiagnostics() {
@@ -289,10 +294,10 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
     }
 
     /**
-     * Set the bootDiagnostics property: Boot Diagnostics is a debugging feature which allows you to view Console Output
-     * and Screenshot to diagnose VM status. You can easily view the output of your console log. Azure also enables you
-     * to see a screenshot of the VM from the hypervisor.
-     *
+     * Set the bootDiagnostics property: Boot Diagnostics is a debugging feature which allows you to view Console
+     * Output and Screenshot to diagnose VM status. You can easily view the output of your console log. Azure also
+     * enables you to see a screenshot of the VM from the hypervisor.
+     * 
      * @param bootDiagnostics the bootDiagnostics value to set.
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
      */
@@ -303,7 +308,7 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
 
     /**
      * Get the statuses property: The resource status information.
-     *
+     * 
      * @return the statuses value.
      */
     public List<InstanceViewStatus> statuses() {
@@ -312,7 +317,7 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
 
     /**
      * Set the statuses property: The resource status information.
-     *
+     * 
      * @param statuses the statuses value to set.
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
      */
@@ -325,7 +330,7 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
      * Get the assignedHost property: Resource id of the dedicated host, on which the virtual machine is allocated
      * through automatic placement, when the virtual machine is associated with a dedicated host group that has
      * automatic placement enabled. Minimum api-version: 2020-06-01.
-     *
+     * 
      * @return the assignedHost value.
      */
     public String assignedHost() {
@@ -335,7 +340,7 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
     /**
      * Get the placementGroupId property: The placement group in which the VM is running. If the VM is deallocated it
      * will not have a placementGroupId.
-     *
+     * 
      * @return the placementGroupId value.
      */
     public String placementGroupId() {
@@ -345,7 +350,7 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
     /**
      * Set the placementGroupId property: The placement group in which the VM is running. If the VM is deallocated it
      * will not have a placementGroupId.
-     *
+     * 
      * @param placementGroupId the placementGroupId value to set.
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
      */
@@ -360,7 +365,7 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
      * &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 64 characters. &lt;br&gt;&lt;br&gt; For naming conventions and
      * restrictions see [Azure infrastructure services implementation
      * guidelines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-infrastructure-subscription-accounts-guidelines?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json#1-naming-conventions).
-     *
+     * 
      * @return the computerName value.
      */
     public String computerName() {
@@ -373,7 +378,7 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
      * &lt;br&gt;&lt;br&gt; **Max-length (Linux):** 64 characters. &lt;br&gt;&lt;br&gt; For naming conventions and
      * restrictions see [Azure infrastructure services implementation
      * guidelines](https://docs.microsoft.com/azure/virtual-machines/virtual-machines-linux-infrastructure-subscription-accounts-guidelines?toc=%2fazure%2fvirtual-machines%2flinux%2ftoc.json#1-naming-conventions).
-     *
+     * 
      * @param computerName the computerName value to set.
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
      */
@@ -384,7 +389,7 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
 
     /**
      * Get the osName property: The Operating System running on the hybrid machine.
-     *
+     * 
      * @return the osName value.
      */
     public String osName() {
@@ -393,7 +398,7 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
 
     /**
      * Set the osName property: The Operating System running on the hybrid machine.
-     *
+     * 
      * @param osName the osName value to set.
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
      */
@@ -404,7 +409,7 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
 
     /**
      * Get the osVersion property: The version of Operating System running on the hybrid machine.
-     *
+     * 
      * @return the osVersion value.
      */
     public String osVersion() {
@@ -413,7 +418,7 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
 
     /**
      * Set the osVersion property: The version of Operating System running on the hybrid machine.
-     *
+     * 
      * @param osVersion the osVersion value to set.
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
      */
@@ -424,7 +429,7 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
 
     /**
      * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine [V1, V2].
-     *
+     * 
      * @return the hyperVGeneration value.
      */
     public HyperVGeneration hyperVGeneration() {
@@ -433,7 +438,7 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
 
     /**
      * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine [V1, V2].
-     *
+     * 
      * @param hyperVGeneration the hyperVGeneration value to set.
      * @return the VirtualMachineScaleSetVMInstanceViewInner object itself.
      */
@@ -444,7 +449,7 @@ public final class VirtualMachineScaleSetVMInstanceViewInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

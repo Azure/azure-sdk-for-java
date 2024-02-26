@@ -26,13 +26,15 @@ public final class PacketCaptureMachineScope {
     @JsonProperty(value = "exclude")
     private List<String> exclude;
 
-    /** Creates an instance of PacketCaptureMachineScope class. */
+    /**
+     * Creates an instance of PacketCaptureMachineScope class.
+     */
     public PacketCaptureMachineScope() {
     }
 
     /**
      * Get the include property: List of AzureVMSS instances to run packet capture on.
-     *
+     * 
      * @return the include value.
      */
     public List<String> include() {
@@ -41,7 +43,7 @@ public final class PacketCaptureMachineScope {
 
     /**
      * Set the include property: List of AzureVMSS instances to run packet capture on.
-     *
+     * 
      * @param include the include value to set.
      * @return the PacketCaptureMachineScope object itself.
      */
@@ -53,7 +55,7 @@ public final class PacketCaptureMachineScope {
     /**
      * Get the exclude property: List of AzureVMSS instances which has to be excluded from the AzureVMSS from running
      * packet capture.
-     *
+     * 
      * @return the exclude value.
      */
     public List<String> exclude() {
@@ -63,7 +65,7 @@ public final class PacketCaptureMachineScope {
     /**
      * Set the exclude property: List of AzureVMSS instances which has to be excluded from the AzureVMSS from running
      * packet capture.
-     *
+     * 
      * @param exclude the exclude value to set.
      * @return the PacketCaptureMachineScope object itself.
      */
@@ -74,7 +76,7 @@ public final class PacketCaptureMachineScope {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

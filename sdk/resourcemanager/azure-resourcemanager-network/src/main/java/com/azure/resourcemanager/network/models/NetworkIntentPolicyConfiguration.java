@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details of NetworkIntentPolicyConfiguration for PrepareNetworkPoliciesRequest. */
+/**
+ * Details of NetworkIntentPolicyConfiguration for PrepareNetworkPoliciesRequest.
+ */
 @Fluent
 public final class NetworkIntentPolicyConfiguration {
     /*
@@ -22,14 +24,16 @@ public final class NetworkIntentPolicyConfiguration {
     @JsonProperty(value = "sourceNetworkIntentPolicy")
     private NetworkIntentPolicy sourceNetworkIntentPolicy;
 
-    /** Creates an instance of NetworkIntentPolicyConfiguration class. */
+    /**
+     * Creates an instance of NetworkIntentPolicyConfiguration class.
+     */
     public NetworkIntentPolicyConfiguration() {
     }
 
     /**
      * Get the networkIntentPolicyName property: The name of the Network Intent Policy for storing in target
      * subscription.
-     *
+     * 
      * @return the networkIntentPolicyName value.
      */
     public String networkIntentPolicyName() {
@@ -39,7 +43,7 @@ public final class NetworkIntentPolicyConfiguration {
     /**
      * Set the networkIntentPolicyName property: The name of the Network Intent Policy for storing in target
      * subscription.
-     *
+     * 
      * @param networkIntentPolicyName the networkIntentPolicyName value to set.
      * @return the NetworkIntentPolicyConfiguration object itself.
      */
@@ -50,7 +54,7 @@ public final class NetworkIntentPolicyConfiguration {
 
     /**
      * Get the sourceNetworkIntentPolicy property: Source network intent policy.
-     *
+     * 
      * @return the sourceNetworkIntentPolicy value.
      */
     public NetworkIntentPolicy sourceNetworkIntentPolicy() {
@@ -59,19 +63,19 @@ public final class NetworkIntentPolicyConfiguration {
 
     /**
      * Set the sourceNetworkIntentPolicy property: Source network intent policy.
-     *
+     * 
      * @param sourceNetworkIntentPolicy the sourceNetworkIntentPolicy value to set.
      * @return the NetworkIntentPolicyConfiguration object itself.
      */
-    public NetworkIntentPolicyConfiguration withSourceNetworkIntentPolicy(
-        NetworkIntentPolicy sourceNetworkIntentPolicy) {
+    public NetworkIntentPolicyConfiguration
+        withSourceNetworkIntentPolicy(NetworkIntentPolicy sourceNetworkIntentPolicy) {
         this.sourceNetworkIntentPolicy = sourceNetworkIntentPolicy;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

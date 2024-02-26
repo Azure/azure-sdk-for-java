@@ -11,7 +11,9 @@ import com.azure.resourcemanager.network.models.RouteMapRule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The RouteMap child resource of a Virtual hub. */
+/**
+ * The RouteMap child resource of a Virtual hub.
+ */
 @Fluent
 public final class RouteMapInner extends SubResource {
     /*
@@ -38,13 +40,15 @@ public final class RouteMapInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of RouteMapInner class. */
+    /**
+     * Creates an instance of RouteMapInner class.
+     */
     public RouteMapInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the RouteMap resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RouteMapProperties innerProperties() {
@@ -54,7 +58,7 @@ public final class RouteMapInner extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -63,7 +67,7 @@ public final class RouteMapInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -72,14 +76,16 @@ public final class RouteMapInner extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RouteMapInner withId(String id) {
         super.withId(id);
@@ -87,9 +93,9 @@ public final class RouteMapInner extends SubResource {
     }
 
     /**
-     * Get the associatedInboundConnections property: List of connections which have this RoutMap associated for inbound
-     * traffic.
-     *
+     * Get the associatedInboundConnections property: List of connections which have this RoutMap associated for
+     * inbound traffic.
+     * 
      * @return the associatedInboundConnections value.
      */
     public List<String> associatedInboundConnections() {
@@ -97,9 +103,9 @@ public final class RouteMapInner extends SubResource {
     }
 
     /**
-     * Set the associatedInboundConnections property: List of connections which have this RoutMap associated for inbound
-     * traffic.
-     *
+     * Set the associatedInboundConnections property: List of connections which have this RoutMap associated for
+     * inbound traffic.
+     * 
      * @param associatedInboundConnections the associatedInboundConnections value to set.
      * @return the RouteMapInner object itself.
      */
@@ -114,7 +120,7 @@ public final class RouteMapInner extends SubResource {
     /**
      * Get the associatedOutboundConnections property: List of connections which have this RoutMap associated for
      * outbound traffic.
-     *
+     * 
      * @return the associatedOutboundConnections value.
      */
     public List<String> associatedOutboundConnections() {
@@ -124,7 +130,7 @@ public final class RouteMapInner extends SubResource {
     /**
      * Set the associatedOutboundConnections property: List of connections which have this RoutMap associated for
      * outbound traffic.
-     *
+     * 
      * @param associatedOutboundConnections the associatedOutboundConnections value to set.
      * @return the RouteMapInner object itself.
      */
@@ -138,7 +144,7 @@ public final class RouteMapInner extends SubResource {
 
     /**
      * Get the rules property: List of RouteMap rules to be applied.
-     *
+     * 
      * @return the rules value.
      */
     public List<RouteMapRule> rules() {
@@ -147,7 +153,7 @@ public final class RouteMapInner extends SubResource {
 
     /**
      * Set the rules property: List of RouteMap rules to be applied.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the RouteMapInner object itself.
      */
@@ -161,7 +167,7 @@ public final class RouteMapInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the RouteMap resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -170,7 +176,7 @@ public final class RouteMapInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

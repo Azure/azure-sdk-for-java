@@ -6,19 +6,21 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.resourcemanager.batch.fluent.models.BatchLocationQuotaInner;
 
-/** An immutable client-side representation of BatchLocationQuota. */
+/**
+ * An immutable client-side representation of BatchLocationQuota.
+ */
 public interface BatchLocationQuota {
     /**
      * Gets the accountQuota property: The number of Batch accounts that may be created under the subscription in the
      * specified region.
-     *
+     * 
      * @return the accountQuota value.
      */
     Integer accountQuota();
 
     /**
      * Gets the inner com.azure.resourcemanager.batch.fluent.models.BatchLocationQuotaInner object.
-     *
+     * 
      * @return the inner object.
      */
     BatchLocationQuotaInner innerModel();

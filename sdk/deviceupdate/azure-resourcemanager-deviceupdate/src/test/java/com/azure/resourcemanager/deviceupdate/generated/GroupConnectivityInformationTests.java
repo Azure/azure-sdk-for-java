@@ -8,31 +8,26 @@ import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceupdate.models.GroupConnectivityInformation;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class GroupConnectivityInformationTests {
-    @Test
-    public void testDeserialize() {
-        GroupConnectivityInformation model =
-            BinaryData
-                .fromString(
-                    "{\"groupId\":\"dauwhvylwzbtd\",\"memberName\":\"ujznb\",\"customerVisibleFqdns\":[\"wuwprzqlv\"],\"internalFqdn\":\"alupjm\",\"redirectMapId\":\"fxobbcsws\",\"privateLinkServiceArmRegion\":\"jriplrbpbewtghf\"}")
-                .toObject(GroupConnectivityInformation.class);
-        Assertions.assertEquals("wuwprzqlv", model.customerVisibleFqdns().get(0));
-        Assertions.assertEquals("fxobbcsws", model.redirectMapId());
-        Assertions.assertEquals("jriplrbpbewtghf", model.privateLinkServiceArmRegion());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        GroupConnectivityInformation model = BinaryData.fromString(
+            "{\"groupId\":\"cckwyfzqwhxxbu\",\"memberName\":\"a\",\"customerVisibleFqdns\":[\"eqz\",\"ppriol\",\"or\"],\"internalFqdn\":\"lt\",\"redirectMapId\":\"mncwsobqwcsdb\",\"privateLinkServiceArmRegion\":\"dcfhucqdpf\"}")
+            .toObject(GroupConnectivityInformation.class);
+        Assertions.assertEquals("eqz", model.customerVisibleFqdns().get(0));
+        Assertions.assertEquals("mncwsobqwcsdb", model.redirectMapId());
+        Assertions.assertEquals("dcfhucqdpf", model.privateLinkServiceArmRegion());
     }
 
-    @Test
-    public void testSerialize() {
-        GroupConnectivityInformation model =
-            new GroupConnectivityInformation()
-                .withCustomerVisibleFqdns(Arrays.asList("wuwprzqlv"))
-                .withRedirectMapId("fxobbcsws")
-                .withPrivateLinkServiceArmRegion("jriplrbpbewtghf");
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        GroupConnectivityInformation model
+            = new GroupConnectivityInformation().withCustomerVisibleFqdns(Arrays.asList("eqz", "ppriol", "or"))
+                .withRedirectMapId("mncwsobqwcsdb").withPrivateLinkServiceArmRegion("dcfhucqdpf");
         model = BinaryData.fromObject(model).toObject(GroupConnectivityInformation.class);
-        Assertions.assertEquals("wuwprzqlv", model.customerVisibleFqdns().get(0));
-        Assertions.assertEquals("fxobbcsws", model.redirectMapId());
-        Assertions.assertEquals("jriplrbpbewtghf", model.privateLinkServiceArmRegion());
+        Assertions.assertEquals("eqz", model.customerVisibleFqdns().get(0));
+        Assertions.assertEquals("mncwsobqwcsdb", model.redirectMapId());
+        Assertions.assertEquals("dcfhucqdpf", model.privateLinkServiceArmRegion());
     }
 }

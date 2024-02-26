@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.models.ServiceSize;
 import com.azure.resourcemanager.cosmos.models.ServiceType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties in ServiceResourceCreateUpdateParameters. */
+/**
+ * Properties in ServiceResourceCreateUpdateParameters.
+ */
 @Fluent
 public final class ServiceResourceCreateUpdateProperties {
     /*
@@ -30,13 +32,15 @@ public final class ServiceResourceCreateUpdateProperties {
     @JsonProperty(value = "serviceType")
     private ServiceType serviceType;
 
-    /** Creates an instance of ServiceResourceCreateUpdateProperties class. */
+    /**
+     * Creates an instance of ServiceResourceCreateUpdateProperties class.
+     */
     public ServiceResourceCreateUpdateProperties() {
     }
 
     /**
      * Get the instanceSize property: Instance type for the service.
-     *
+     * 
      * @return the instanceSize value.
      */
     public ServiceSize instanceSize() {
@@ -45,7 +49,7 @@ public final class ServiceResourceCreateUpdateProperties {
 
     /**
      * Set the instanceSize property: Instance type for the service.
-     *
+     * 
      * @param instanceSize the instanceSize value to set.
      * @return the ServiceResourceCreateUpdateProperties object itself.
      */
@@ -56,7 +60,7 @@ public final class ServiceResourceCreateUpdateProperties {
 
     /**
      * Get the instanceCount property: Instance count for the service.
-     *
+     * 
      * @return the instanceCount value.
      */
     public Integer instanceCount() {
@@ -65,7 +69,7 @@ public final class ServiceResourceCreateUpdateProperties {
 
     /**
      * Set the instanceCount property: Instance count for the service.
-     *
+     * 
      * @param instanceCount the instanceCount value to set.
      * @return the ServiceResourceCreateUpdateProperties object itself.
      */
@@ -76,7 +80,7 @@ public final class ServiceResourceCreateUpdateProperties {
 
     /**
      * Get the serviceType property: ServiceType for the service.
-     *
+     * 
      * @return the serviceType value.
      */
     public ServiceType serviceType() {
@@ -85,7 +89,7 @@ public final class ServiceResourceCreateUpdateProperties {
 
     /**
      * Set the serviceType property: ServiceType for the service.
-     *
+     * 
      * @param serviceType the serviceType value to set.
      * @return the ServiceResourceCreateUpdateProperties object itself.
      */
@@ -96,7 +100,7 @@ public final class ServiceResourceCreateUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

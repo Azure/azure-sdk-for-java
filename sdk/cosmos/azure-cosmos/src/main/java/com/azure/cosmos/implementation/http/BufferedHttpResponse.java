@@ -4,10 +4,9 @@ package com.azure.cosmos.implementation.http;
 
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import reactor.core.publisher.Flux;
+import io.netty.util.IllegalReferenceCountException;
 import reactor.core.publisher.Mono;
 
-import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -22,9 +21,20 @@ public class BufferedHttpResponse extends HttpResponse {
      *
      * @param innerHttpResponse The HTTP response to buffer
      */
-    public BufferedHttpResponse(HttpResponse innerHttpResponse) {
+    BufferedHttpResponse(HttpResponse innerHttpResponse) {
         this.innerHttpResponse = innerHttpResponse;
-        this.cachedBody = innerHttpResponse.bodyAsByteArray().cache();
+        Mono<byte[]> bodyAsByteArrayMono = innerHttpResponse
+            .body()
+            .handle((bb, sink) -> {
+                try {
+                    byte[] bytes = new byte[bb.readableBytes()];
+                    bb.readBytes(bytes);
+                    sink.next(bytes);
+                } catch (IllegalReferenceCountException var3) {
+                    sink.complete();
+                }
+            });
+        this.cachedBody = bodyAsByteArrayMono.cache();
         this.withRequest(innerHttpResponse.request());
     }
 
@@ -44,25 +54,15 @@ public class BufferedHttpResponse extends HttpResponse {
     }
 
     @Override
-    public Mono<byte[]> bodyAsByteArray() {
-        return cachedBody;
-    }
-
-    @Override
-    public Flux<ByteBuf> body() {
-        return bodyAsByteArray().flatMapMany(bytes -> Flux.just(Unpooled.wrappedBuffer(bytes)));
+    public Mono<ByteBuf> body() {
+        return this.cachedBody
+            .map(actualCachedByteArray -> Unpooled.wrappedBuffer(actualCachedByteArray));
     }
 
     @Override
     public Mono<String> bodyAsString() {
-        return bodyAsByteArray()
-                .map(bytes -> bytes == null ? null : new String(bytes, StandardCharsets.UTF_8));
-    }
-
-    @Override
-    public Mono<String> bodyAsString(Charset charset) {
-        return bodyAsByteArray()
-                .map(bytes -> bytes == null ? null : new String(bytes, charset));
+        return body()
+                .map(buffer -> buffer == null ? null : buffer.toString(StandardCharsets.UTF_8));
     }
 
     @Override

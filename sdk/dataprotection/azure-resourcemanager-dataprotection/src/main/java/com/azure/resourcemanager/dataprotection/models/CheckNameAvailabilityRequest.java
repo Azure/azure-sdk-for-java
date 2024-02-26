@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * CheckNameAvailabilityRequest
- *
- * <p>CheckNameAvailability Request.
+ * 
+ * CheckNameAvailability Request.
  */
 @Fluent
 public final class CheckNameAvailabilityRequest {
@@ -26,13 +26,15 @@ public final class CheckNameAvailabilityRequest {
     @JsonProperty(value = "type")
     private String type;
 
-    /** Creates an instance of CheckNameAvailabilityRequest class. */
+    /**
+     * Creates an instance of CheckNameAvailabilityRequest class.
+     */
     public CheckNameAvailabilityRequest() {
     }
 
     /**
      * Get the name property: Resource name for which availability needs to be checked.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -41,7 +43,7 @@ public final class CheckNameAvailabilityRequest {
 
     /**
      * Set the name property: Resource name for which availability needs to be checked.
-     *
+     * 
      * @param name the name value to set.
      * @return the CheckNameAvailabilityRequest object itself.
      */
@@ -52,7 +54,7 @@ public final class CheckNameAvailabilityRequest {
 
     /**
      * Get the type property: Describes the Resource type: Microsoft.DataProtection/BackupVaults.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -61,7 +63,7 @@ public final class CheckNameAvailabilityRequest {
 
     /**
      * Set the type property: Describes the Resource type: Microsoft.DataProtection/BackupVaults.
-     *
+     * 
      * @param type the type value to set.
      * @return the CheckNameAvailabilityRequest object itself.
      */
@@ -72,7 +74,7 @@ public final class CheckNameAvailabilityRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.batch.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The list of associated user identities. */
+/**
+ * The list of associated user identities.
+ */
 @Immutable
 public final class UserAssignedIdentities {
     /*
@@ -22,13 +24,15 @@ public final class UserAssignedIdentities {
     @JsonProperty(value = "clientId", access = JsonProperty.Access.WRITE_ONLY)
     private String clientId;
 
-    /** Creates an instance of UserAssignedIdentities class. */
+    /**
+     * Creates an instance of UserAssignedIdentities class.
+     */
     public UserAssignedIdentities() {
     }
 
     /**
      * Get the principalId property: The principal id of user assigned identity.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -37,7 +41,7 @@ public final class UserAssignedIdentities {
 
     /**
      * Get the clientId property: The client id of user assigned identity.
-     *
+     * 
      * @return the clientId value.
      */
     public String clientId() {
@@ -46,7 +50,7 @@ public final class UserAssignedIdentities {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

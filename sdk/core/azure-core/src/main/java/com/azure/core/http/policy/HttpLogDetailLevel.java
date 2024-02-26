@@ -49,6 +49,7 @@ public enum HttpLogDetailLevel {
 
     /**
      * Logs everything in BASIC, plus all the request and response headers.
+     * Values of the headers will be logged only for allowed headers. See {@link HttpLogOptions#getAllowedHeaderNames()}.
      */
     HEADERS,
 
@@ -61,6 +62,7 @@ public enum HttpLogDetailLevel {
 
     /**
      * Logs everything in HEADERS and BODY.
+     * Values of the headers will be logged only for allowed headers. See {@link HttpLogOptions#getAllowedHeaderNames()}.
      */
     BODY_AND_HEADERS;
 

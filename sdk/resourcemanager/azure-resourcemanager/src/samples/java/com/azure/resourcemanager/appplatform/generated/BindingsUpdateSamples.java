@@ -4,41 +4,33 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.fluent.models.BindingResourceInner;
 import com.azure.resourcemanager.appplatform.models.BindingResourceProperties;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Bindings Update. */
+/**
+ * Samples for Bindings Update.
+ */
 public final class BindingsUpdateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Bindings_Update.json
+     * x-ms-original-file:
+     * specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Bindings_Update.json
      */
     /**
      * Sample code: Bindings_Update.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void bindingsUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .springServices()
-            .manager()
-            .serviceClient()
-            .getBindings()
-            .update(
-                "myResourceGroup",
-                "myservice",
-                "myapp",
-                "mybinding",
-                new BindingResourceInner()
-                    .withProperties(
-                        new BindingResourceProperties()
-                            .withKey("xxxx")
-                            .withBindingParameters(mapOf("apiType", "SQL", "databaseName", "db1"))),
-                Context.NONE);
+        azure.springServices().manager().serviceClient().getBindings().update("myResourceGroup", "myservice", "myapp",
+            "mybinding",
+            new BindingResourceInner().withProperties(new BindingResourceProperties().withKey("fakeTokenPlaceholder")
+                .withBindingParameters(mapOf("apiType", "SQL", "databaseName", "db1"))),
+            com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity Common Data Service for Apps source. */
+/**
+ * A copy activity Common Data Service for Apps source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("CommonDataServiceForAppsSource")
 @Fluent
@@ -28,13 +30,16 @@ public final class CommonDataServiceForAppsSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
-    /** Creates an instance of CommonDataServiceForAppsSource class. */
-    public CommonDataServiceForAppsSource() {}
+    /**
+     * Creates an instance of CommonDataServiceForAppsSource class.
+     */
+    public CommonDataServiceForAppsSource() {
+    }
 
     /**
      * Get the query property: FetchXML is a proprietary query language that is used in Microsoft Common Data Service
      * for Apps (online &amp; on-premises). Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the query value.
      */
     public Object getQuery() {
@@ -44,7 +49,7 @@ public final class CommonDataServiceForAppsSource extends CopySource {
     /**
      * Set the query property: FetchXML is a proprietary query language that is used in Microsoft Common Data Service
      * for Apps (online &amp; on-premises). Type: string (or Expression with resultType string).
-     *
+     * 
      * @param query the query value to set.
      * @return the CommonDataServiceForAppsSource object itself.
      */
@@ -56,7 +61,7 @@ public final class CommonDataServiceForAppsSource extends CopySource {
     /**
      * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @return the additionalColumns value.
      */
     public Object getAdditionalColumns() {
@@ -66,7 +71,7 @@ public final class CommonDataServiceForAppsSource extends CopySource {
     /**
      * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @param additionalColumns the additionalColumns value to set.
      * @return the CommonDataServiceForAppsSource object itself.
      */
@@ -75,21 +80,27 @@ public final class CommonDataServiceForAppsSource extends CopySource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommonDataServiceForAppsSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommonDataServiceForAppsSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CommonDataServiceForAppsSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

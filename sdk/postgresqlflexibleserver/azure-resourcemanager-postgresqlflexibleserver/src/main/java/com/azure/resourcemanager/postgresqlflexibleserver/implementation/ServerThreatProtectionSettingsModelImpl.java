@@ -12,10 +12,8 @@ import com.azure.resourcemanager.postgresqlflexibleserver.models.ThreatProtectio
 import com.azure.resourcemanager.postgresqlflexibleserver.models.ThreatProtectionState;
 import java.time.OffsetDateTime;
 
-public final class ServerThreatProtectionSettingsModelImpl
-    implements ServerThreatProtectionSettingsModel,
-        ServerThreatProtectionSettingsModel.Definition,
-        ServerThreatProtectionSettingsModel.Update {
+public final class ServerThreatProtectionSettingsModelImpl implements ServerThreatProtectionSettingsModel,
+    ServerThreatProtectionSettingsModel.Definition, ServerThreatProtectionSettingsModel.Update {
     private ServerThreatProtectionSettingsModelInner innerObject;
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
@@ -62,33 +60,26 @@ public final class ServerThreatProtectionSettingsModelImpl
 
     private ThreatProtectionName threatProtectionName;
 
-    public ServerThreatProtectionSettingsModelImpl withExistingFlexibleServer(
-        String resourceGroupName, String serverName) {
+    public ServerThreatProtectionSettingsModelImpl withExistingFlexibleServer(String resourceGroupName,
+        String serverName) {
         this.resourceGroupName = resourceGroupName;
         this.serverName = serverName;
         return this;
     }
 
     public ServerThreatProtectionSettingsModel create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServerThreatProtectionSettings()
-                .createOrUpdate(resourceGroupName, serverName, threatProtectionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getServerThreatProtectionSettings()
+            .createOrUpdate(resourceGroupName, serverName, threatProtectionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ServerThreatProtectionSettingsModel create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServerThreatProtectionSettings()
-                .createOrUpdate(resourceGroupName, serverName, threatProtectionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getServerThreatProtectionSettings()
+            .createOrUpdate(resourceGroupName, serverName, threatProtectionName, this.innerModel(), context);
         return this;
     }
 
-    ServerThreatProtectionSettingsModelImpl(
-        ThreatProtectionName name,
+    ServerThreatProtectionSettingsModelImpl(ThreatProtectionName name,
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerObject = new ServerThreatProtectionSettingsModelInner();
         this.serviceManager = serviceManager;
@@ -100,52 +91,36 @@ public final class ServerThreatProtectionSettingsModelImpl
     }
 
     public ServerThreatProtectionSettingsModel apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServerThreatProtectionSettings()
-                .createOrUpdate(resourceGroupName, serverName, threatProtectionName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getServerThreatProtectionSettings()
+            .createOrUpdate(resourceGroupName, serverName, threatProtectionName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public ServerThreatProtectionSettingsModel apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServerThreatProtectionSettings()
-                .createOrUpdate(resourceGroupName, serverName, threatProtectionName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getServerThreatProtectionSettings()
+            .createOrUpdate(resourceGroupName, serverName, threatProtectionName, this.innerModel(), context);
         return this;
     }
 
-    ServerThreatProtectionSettingsModelImpl(
-        ServerThreatProtectionSettingsModelInner innerObject,
+    ServerThreatProtectionSettingsModelImpl(ServerThreatProtectionSettingsModelInner innerObject,
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.serverName = Utils.getValueFromIdByName(innerObject.id(), "flexibleServers");
-        this.threatProtectionName =
-            ThreatProtectionName
-                .fromString(Utils.getValueFromIdByName(innerObject.id(), "advancedThreatProtectionSettings"));
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.serverName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "flexibleServers");
+        this.threatProtectionName = ThreatProtectionName.fromString(
+            ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "advancedThreatProtectionSettings"));
     }
 
     public ServerThreatProtectionSettingsModel refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServerThreatProtectionSettings()
-                .getWithResponse(resourceGroupName, serverName, threatProtectionName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getServerThreatProtectionSettings()
+            .getWithResponse(resourceGroupName, serverName, threatProtectionName, Context.NONE).getValue();
         return this;
     }
 
     public ServerThreatProtectionSettingsModel refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getServerThreatProtectionSettings()
-                .getWithResponse(resourceGroupName, serverName, threatProtectionName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getServerThreatProtectionSettings()
+            .getWithResponse(resourceGroupName, serverName, threatProtectionName, context).getValue();
         return this;
     }
 

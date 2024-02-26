@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters that define the configuration of traffic analytics. */
+/**
+ * Parameters that define the configuration of traffic analytics.
+ */
 @Fluent
 public final class TrafficAnalyticsProperties {
     /*
@@ -16,14 +18,16 @@ public final class TrafficAnalyticsProperties {
     @JsonProperty(value = "networkWatcherFlowAnalyticsConfiguration")
     private TrafficAnalyticsConfigurationProperties networkWatcherFlowAnalyticsConfiguration;
 
-    /** Creates an instance of TrafficAnalyticsProperties class. */
+    /**
+     * Creates an instance of TrafficAnalyticsProperties class.
+     */
     public TrafficAnalyticsProperties() {
     }
 
     /**
      * Get the networkWatcherFlowAnalyticsConfiguration property: Parameters that define the configuration of traffic
      * analytics.
-     *
+     * 
      * @return the networkWatcherFlowAnalyticsConfiguration value.
      */
     public TrafficAnalyticsConfigurationProperties networkWatcherFlowAnalyticsConfiguration() {
@@ -33,7 +37,7 @@ public final class TrafficAnalyticsProperties {
     /**
      * Set the networkWatcherFlowAnalyticsConfiguration property: Parameters that define the configuration of traffic
      * analytics.
-     *
+     * 
      * @param networkWatcherFlowAnalyticsConfiguration the networkWatcherFlowAnalyticsConfiguration value to set.
      * @return the TrafficAnalyticsProperties object itself.
      */
@@ -45,7 +49,7 @@ public final class TrafficAnalyticsProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

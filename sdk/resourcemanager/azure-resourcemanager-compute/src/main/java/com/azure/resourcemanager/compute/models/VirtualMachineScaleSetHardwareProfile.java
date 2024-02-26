@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Specifies the hardware settings for the virtual machine scale set. */
+/**
+ * Specifies the hardware settings for the virtual machine scale set.
+ */
 @Fluent
 public final class VirtualMachineScaleSetHardwareProfile {
     /*
@@ -17,7 +19,9 @@ public final class VirtualMachineScaleSetHardwareProfile {
     @JsonProperty(value = "vmSizeProperties")
     private VMSizeProperties vmSizeProperties;
 
-    /** Creates an instance of VirtualMachineScaleSetHardwareProfile class. */
+    /**
+     * Creates an instance of VirtualMachineScaleSetHardwareProfile class.
+     */
     public VirtualMachineScaleSetHardwareProfile() {
     }
 
@@ -25,7 +29,7 @@ public final class VirtualMachineScaleSetHardwareProfile {
      * Get the vmSizeProperties property: Specifies the properties for customizing the size of the virtual machine.
      * Minimum api-version: 2021-11-01. Please follow the instructions in [VM
      * Customization](https://aka.ms/vmcustomization) for more details.
-     *
+     * 
      * @return the vmSizeProperties value.
      */
     public VMSizeProperties vmSizeProperties() {
@@ -36,7 +40,7 @@ public final class VirtualMachineScaleSetHardwareProfile {
      * Set the vmSizeProperties property: Specifies the properties for customizing the size of the virtual machine.
      * Minimum api-version: 2021-11-01. Please follow the instructions in [VM
      * Customization](https://aka.ms/vmcustomization) for more details.
-     *
+     * 
      * @param vmSizeProperties the vmSizeProperties value to set.
      * @return the VirtualMachineScaleSetHardwareProfile object itself.
      */
@@ -47,7 +51,7 @@ public final class VirtualMachineScaleSetHardwareProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

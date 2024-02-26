@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains the IpTag associated with the object. */
+/**
+ * Contains the IpTag associated with the object.
+ */
 @Fluent
 public final class IpTag {
     /*
@@ -22,13 +24,15 @@ public final class IpTag {
     @JsonProperty(value = "tag")
     private String tag;
 
-    /** Creates an instance of IpTag class. */
+    /**
+     * Creates an instance of IpTag class.
+     */
     public IpTag() {
     }
 
     /**
      * Get the ipTagType property: The IP tag type. Example: FirstPartyUsage.
-     *
+     * 
      * @return the ipTagType value.
      */
     public String ipTagType() {
@@ -37,7 +41,7 @@ public final class IpTag {
 
     /**
      * Set the ipTagType property: The IP tag type. Example: FirstPartyUsage.
-     *
+     * 
      * @param ipTagType the ipTagType value to set.
      * @return the IpTag object itself.
      */
@@ -48,7 +52,7 @@ public final class IpTag {
 
     /**
      * Get the tag property: The value of the IP tag associated with the public IP. Example: SQL.
-     *
+     * 
      * @return the tag value.
      */
     public String tag() {
@@ -57,7 +61,7 @@ public final class IpTag {
 
     /**
      * Set the tag property: The value of the IP tag associated with the public IP. Example: SQL.
-     *
+     * 
      * @param tag the tag value to set.
      * @return the IpTag object itself.
      */
@@ -68,7 +72,7 @@ public final class IpTag {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

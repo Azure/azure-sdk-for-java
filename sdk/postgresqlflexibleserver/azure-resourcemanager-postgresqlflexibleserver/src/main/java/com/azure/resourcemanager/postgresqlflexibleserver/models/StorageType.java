@@ -13,15 +13,19 @@ import java.util.Collection;
  * specified.
  */
 public final class StorageType extends ExpandableStringEnum<StorageType> {
-    /** Static value Premium_LRS for StorageType. */
+    /**
+     * Static value Premium_LRS for StorageType.
+     */
     public static final StorageType PREMIUM_LRS = fromString("Premium_LRS");
 
-    /** Static value PremiumV2_LRS for StorageType. */
+    /**
+     * Static value PremiumV2_LRS for StorageType.
+     */
     public static final StorageType PREMIUM_V2_LRS = fromString("PremiumV2_LRS");
 
     /**
      * Creates a new instance of StorageType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +34,7 @@ public final class StorageType extends ExpandableStringEnum<StorageType> {
 
     /**
      * Creates or finds a StorageType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding StorageType.
      */
@@ -41,7 +45,7 @@ public final class StorageType extends ExpandableStringEnum<StorageType> {
 
     /**
      * Gets known StorageType values.
-     *
+     * 
      * @return known StorageType values.
      */
     public static Collection<StorageType> values() {

@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.imagebuilder.models.TriggerProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents a trigger that can invoke an image template build. */
+/**
+ * Represents a trigger that can invoke an image template build.
+ */
 @Fluent
 public final class TriggerInner extends ProxyResource {
     /*
@@ -25,13 +27,15 @@ public final class TriggerInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of TriggerInner class. */
+    /**
+     * Creates an instance of TriggerInner class.
+     */
     public TriggerInner() {
     }
 
     /**
      * Get the properties property: The properties of a trigger.
-     *
+     * 
      * @return the properties value.
      */
     public TriggerProperties properties() {
@@ -40,7 +44,7 @@ public final class TriggerInner extends ProxyResource {
 
     /**
      * Set the properties property: The properties of a trigger.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the TriggerInner object itself.
      */
@@ -51,7 +55,7 @@ public final class TriggerInner extends ProxyResource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -60,7 +64,7 @@ public final class TriggerInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

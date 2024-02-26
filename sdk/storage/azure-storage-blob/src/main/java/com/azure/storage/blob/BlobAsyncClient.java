@@ -9,6 +9,7 @@ import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Contexts;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.ProgressListener;
 import com.azure.core.util.ProgressReporter;
@@ -54,7 +55,6 @@ import java.util.List;
 import java.util.Map;
 import java.util.SortedMap;
 import java.util.TreeMap;
-import java.util.UUID;
 import java.util.function.BiFunction;
 import java.util.function.Function;
 import java.util.stream.Collectors;
@@ -778,7 +778,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
             .flatMapSequential(bufferAggregator -> {
                 Flux<ByteBuffer> chunkData = bufferAggregator.asFlux();
 
-                final String blockId = Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(UTF_8));
+                String blockId = Base64.getEncoder().encodeToString(CoreUtils.randomUuid().toString().getBytes(UTF_8));
                 return UploadUtils.computeMd5(chunkData, computeMd5, LOGGER)
                     .flatMap(fluxMd5Wrapper -> {
                         Mono<Response<Void>> responseMono = blockBlobAsyncClient.stageBlockWithResponse(blockId,
@@ -1055,7 +1055,7 @@ public class BlobAsyncClient extends BlobAsyncClientBase {
     }
 
     private String getBlockID() {
-        return Base64.getEncoder().encodeToString(UUID.randomUUID().toString().getBytes(StandardCharsets.UTF_8));
+        return Base64.getEncoder().encodeToString(CoreUtils.randomUuid().toString().getBytes(StandardCharsets.UTF_8));
     }
 
     private List<BlobRange> sliceFile(long fileSize, Long originalBlockSize, long blockSize) {

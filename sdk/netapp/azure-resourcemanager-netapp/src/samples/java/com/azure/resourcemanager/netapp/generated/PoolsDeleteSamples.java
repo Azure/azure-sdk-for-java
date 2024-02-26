@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
-/** Samples for Pools Delete. */
+/**
+ * Samples for Pools Delete.
+ */
 public final class PoolsDeleteSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-05-01/examples/Pools_Delete.json
+     * x-ms-original-file:
+     * specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/Pools_Delete.json
      */
     /**
      * Sample code: Pools_Delete.
-     *
+     * 
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void poolsDelete(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {

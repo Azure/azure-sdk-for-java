@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The resource of an Azure Cosmos DB MongoDB database event. */
+/**
+ * The resource of an Azure Cosmos DB MongoDB database event.
+ */
 @Immutable
 public final class RestorableMongodbDatabasePropertiesResource {
     /*
@@ -21,6 +23,18 @@ public final class RestorableMongodbDatabasePropertiesResource {
      */
     @JsonProperty(value = "operationType", access = JsonProperty.Access.WRITE_ONLY)
     private OperationType operationType;
+
+    /*
+     * A state of this database to identify if this database is restorable in same account.
+     */
+    @JsonProperty(value = "canUndelete", access = JsonProperty.Access.WRITE_ONLY)
+    private String canUndelete;
+
+    /*
+     * The reason why this database can not be restored in same account.
+     */
+    @JsonProperty(value = "canUndeleteReason", access = JsonProperty.Access.WRITE_ONLY)
+    private String canUndeleteReason;
 
     /*
      * The time when this database event happened.
@@ -40,13 +54,15 @@ public final class RestorableMongodbDatabasePropertiesResource {
     @JsonProperty(value = "ownerResourceId", access = JsonProperty.Access.WRITE_ONLY)
     private String ownerResourceId;
 
-    /** Creates an instance of RestorableMongodbDatabasePropertiesResource class. */
+    /**
+     * Creates an instance of RestorableMongodbDatabasePropertiesResource class.
+     */
     public RestorableMongodbDatabasePropertiesResource() {
     }
 
     /**
      * Get the rid property: A system generated property. A unique identifier.
-     *
+     * 
      * @return the rid value.
      */
     public String rid() {
@@ -55,7 +71,7 @@ public final class RestorableMongodbDatabasePropertiesResource {
 
     /**
      * Get the operationType property: The operation type of this database event.
-     *
+     * 
      * @return the operationType value.
      */
     public OperationType operationType() {
@@ -63,8 +79,27 @@ public final class RestorableMongodbDatabasePropertiesResource {
     }
 
     /**
+     * Get the canUndelete property: A state of this database to identify if this database is restorable in same
+     * account.
+     * 
+     * @return the canUndelete value.
+     */
+    public String canUndelete() {
+        return this.canUndelete;
+    }
+
+    /**
+     * Get the canUndeleteReason property: The reason why this database can not be restored in same account.
+     * 
+     * @return the canUndeleteReason value.
+     */
+    public String canUndeleteReason() {
+        return this.canUndeleteReason;
+    }
+
+    /**
      * Get the eventTimestamp property: The time when this database event happened.
-     *
+     * 
      * @return the eventTimestamp value.
      */
     public String eventTimestamp() {
@@ -73,7 +108,7 @@ public final class RestorableMongodbDatabasePropertiesResource {
 
     /**
      * Get the ownerId property: The name of this MongoDB database.
-     *
+     * 
      * @return the ownerId value.
      */
     public String ownerId() {
@@ -82,7 +117,7 @@ public final class RestorableMongodbDatabasePropertiesResource {
 
     /**
      * Get the ownerResourceId property: The resource ID of this MongoDB database.
-     *
+     * 
      * @return the ownerResourceId value.
      */
     public String ownerResourceId() {
@@ -91,7 +126,7 @@ public final class RestorableMongodbDatabasePropertiesResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

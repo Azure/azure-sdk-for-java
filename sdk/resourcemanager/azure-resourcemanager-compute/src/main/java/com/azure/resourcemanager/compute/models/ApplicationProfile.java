@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Contains the list of gallery applications that should be made available to the VM/VMSS. */
+/**
+ * Contains the list of gallery applications that should be made available to the VM/VMSS.
+ */
 @Fluent
 public final class ApplicationProfile {
     /*
@@ -17,14 +19,16 @@ public final class ApplicationProfile {
     @JsonProperty(value = "galleryApplications")
     private List<VMGalleryApplication> galleryApplications;
 
-    /** Creates an instance of ApplicationProfile class. */
+    /**
+     * Creates an instance of ApplicationProfile class.
+     */
     public ApplicationProfile() {
     }
 
     /**
      * Get the galleryApplications property: Specifies the gallery applications that should be made available to the
      * VM/VMSS.
-     *
+     * 
      * @return the galleryApplications value.
      */
     public List<VMGalleryApplication> galleryApplications() {
@@ -34,7 +38,7 @@ public final class ApplicationProfile {
     /**
      * Set the galleryApplications property: Specifies the gallery applications that should be made available to the
      * VM/VMSS.
-     *
+     * 
      * @param galleryApplications the galleryApplications value to set.
      * @return the ApplicationProfile object itself.
      */
@@ -45,7 +49,7 @@ public final class ApplicationProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

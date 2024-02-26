@@ -5,30 +5,37 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Schema of common properties of all chat thread events. */
+/**
+ * Schema of common properties of all chat thread events.
+ */
 @Fluent
 public class AcsChatThreadEventInThreadBaseProperties extends AcsChatEventInThreadBaseProperties {
     /*
      * The original creation time of the thread
      */
-    @JsonProperty(value = "createTime")
     private OffsetDateTime createTime;
 
     /*
      * The version of the thread
      */
-    @JsonProperty(value = "version")
     private Long version;
 
-    /** Creates an instance of AcsChatThreadEventInThreadBaseProperties class. */
-    public AcsChatThreadEventInThreadBaseProperties() {}
+    /**
+     * Creates an instance of AcsChatThreadEventInThreadBaseProperties class.
+     */
+    public AcsChatThreadEventInThreadBaseProperties() {
+    }
 
     /**
      * Get the createTime property: The original creation time of the thread.
-     *
+     * 
      * @return the createTime value.
      */
     public OffsetDateTime getCreateTime() {
@@ -37,7 +44,7 @@ public class AcsChatThreadEventInThreadBaseProperties extends AcsChatEventInThre
 
     /**
      * Set the createTime property: The original creation time of the thread.
-     *
+     * 
      * @param createTime the createTime value to set.
      * @return the AcsChatThreadEventInThreadBaseProperties object itself.
      */
@@ -48,7 +55,7 @@ public class AcsChatThreadEventInThreadBaseProperties extends AcsChatEventInThre
 
     /**
      * Get the version property: The version of the thread.
-     *
+     * 
      * @return the version value.
      */
     public Long getVersion() {
@@ -57,7 +64,7 @@ public class AcsChatThreadEventInThreadBaseProperties extends AcsChatEventInThre
 
     /**
      * Set the version property: The version of the thread.
-     *
+     * 
      * @param version the version value to set.
      * @return the AcsChatThreadEventInThreadBaseProperties object itself.
      */
@@ -66,17 +73,67 @@ public class AcsChatThreadEventInThreadBaseProperties extends AcsChatEventInThre
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatThreadEventInThreadBaseProperties setTransactionId(String transactionId) {
         super.setTransactionId(transactionId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatThreadEventInThreadBaseProperties setThreadId(String threadId) {
         super.setThreadId(threadId);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("transactionId", getTransactionId());
+        jsonWriter.writeStringField("threadId", getThreadId());
+        jsonWriter.writeStringField("createTime",
+            this.createTime == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.createTime));
+        jsonWriter.writeNumberField("version", this.version);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsChatThreadEventInThreadBaseProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsChatThreadEventInThreadBaseProperties if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsChatThreadEventInThreadBaseProperties.
+     */
+    public static AcsChatThreadEventInThreadBaseProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsChatThreadEventInThreadBaseProperties deserializedAcsChatThreadEventInThreadBaseProperties
+                = new AcsChatThreadEventInThreadBaseProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("transactionId".equals(fieldName)) {
+                    deserializedAcsChatThreadEventInThreadBaseProperties.setTransactionId(reader.getString());
+                } else if ("threadId".equals(fieldName)) {
+                    deserializedAcsChatThreadEventInThreadBaseProperties.setThreadId(reader.getString());
+                } else if ("createTime".equals(fieldName)) {
+                    deserializedAcsChatThreadEventInThreadBaseProperties.createTime
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("version".equals(fieldName)) {
+                    deserializedAcsChatThreadEventInThreadBaseProperties.version
+                        = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsChatThreadEventInThreadBaseProperties;
+        });
     }
 }

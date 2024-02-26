@@ -11,7 +11,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters for VirtualWAN. */
+/**
+ * Parameters for VirtualWAN.
+ */
 @Fluent
 public final class VirtualWanProperties {
     /*
@@ -62,13 +64,15 @@ public final class VirtualWanProperties {
     @JsonProperty(value = "type")
     private String type;
 
-    /** Creates an instance of VirtualWanProperties class. */
+    /**
+     * Creates an instance of VirtualWanProperties class.
+     */
     public VirtualWanProperties() {
     }
 
     /**
      * Get the disableVpnEncryption property: Vpn encryption to be disabled or not.
-     *
+     * 
      * @return the disableVpnEncryption value.
      */
     public Boolean disableVpnEncryption() {
@@ -77,7 +81,7 @@ public final class VirtualWanProperties {
 
     /**
      * Set the disableVpnEncryption property: Vpn encryption to be disabled or not.
-     *
+     * 
      * @param disableVpnEncryption the disableVpnEncryption value to set.
      * @return the VirtualWanProperties object itself.
      */
@@ -88,7 +92,7 @@ public final class VirtualWanProperties {
 
     /**
      * Get the virtualHubs property: List of VirtualHubs in the VirtualWAN.
-     *
+     * 
      * @return the virtualHubs value.
      */
     public List<SubResource> virtualHubs() {
@@ -97,7 +101,7 @@ public final class VirtualWanProperties {
 
     /**
      * Get the vpnSites property: List of VpnSites in the VirtualWAN.
-     *
+     * 
      * @return the vpnSites value.
      */
     public List<SubResource> vpnSites() {
@@ -106,7 +110,7 @@ public final class VirtualWanProperties {
 
     /**
      * Get the allowBranchToBranchTraffic property: True if branch to branch traffic is allowed.
-     *
+     * 
      * @return the allowBranchToBranchTraffic value.
      */
     public Boolean allowBranchToBranchTraffic() {
@@ -115,7 +119,7 @@ public final class VirtualWanProperties {
 
     /**
      * Set the allowBranchToBranchTraffic property: True if branch to branch traffic is allowed.
-     *
+     * 
      * @param allowBranchToBranchTraffic the allowBranchToBranchTraffic value to set.
      * @return the VirtualWanProperties object itself.
      */
@@ -126,7 +130,7 @@ public final class VirtualWanProperties {
 
     /**
      * Get the allowVnetToVnetTraffic property: True if Vnet to Vnet traffic is allowed.
-     *
+     * 
      * @return the allowVnetToVnetTraffic value.
      */
     public Boolean allowVnetToVnetTraffic() {
@@ -135,7 +139,7 @@ public final class VirtualWanProperties {
 
     /**
      * Set the allowVnetToVnetTraffic property: True if Vnet to Vnet traffic is allowed.
-     *
+     * 
      * @param allowVnetToVnetTraffic the allowVnetToVnetTraffic value to set.
      * @return the VirtualWanProperties object itself.
      */
@@ -146,7 +150,7 @@ public final class VirtualWanProperties {
 
     /**
      * Get the office365LocalBreakoutCategory property: The office local breakout category.
-     *
+     * 
      * @return the office365LocalBreakoutCategory value.
      */
     public OfficeTrafficCategory office365LocalBreakoutCategory() {
@@ -155,7 +159,7 @@ public final class VirtualWanProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the virtual WAN resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -164,7 +168,7 @@ public final class VirtualWanProperties {
 
     /**
      * Get the type property: The type of the VirtualWAN.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -173,7 +177,7 @@ public final class VirtualWanProperties {
 
     /**
      * Set the type property: The type of the VirtualWAN.
-     *
+     * 
      * @param type the type value to set.
      * @return the VirtualWanProperties object itself.
      */
@@ -184,7 +188,7 @@ public final class VirtualWanProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

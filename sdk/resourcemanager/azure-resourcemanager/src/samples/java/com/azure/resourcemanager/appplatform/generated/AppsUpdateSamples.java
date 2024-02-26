@@ -4,7 +4,6 @@
 
 package com.azure.resourcemanager.appplatform.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.appplatform.fluent.models.AppResourceInner;
 import com.azure.resourcemanager.appplatform.models.AppResourceProperties;
 import com.azure.resourcemanager.appplatform.models.AppVNetAddons;
@@ -19,107 +18,73 @@ import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Apps Update. */
+/**
+ * Samples for Apps Update.
+ */
 public final class AppsUpdateSamples {
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Apps_Update_VNetInjection.json
+     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/
+     * Apps_Update_VNetInjection.json
      */
     /**
      * Sample code: Apps_Update_VNetInjection.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void appsUpdateVNetInjection(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .springServices()
-            .manager()
-            .serviceClient()
-            .getApps()
-            .update(
-                "myResourceGroup",
-                "myservice",
-                "myapp",
-                new AppResourceInner()
-                    .withProperties(
-                        new AppResourceProperties()
-                            .withPublicProperty(true)
-                            .withHttpsOnly(false)
-                            .withTemporaryDisk(new TemporaryDisk().withSizeInGB(2).withMountPath("/mytemporarydisk"))
-                            .withPersistentDisk(new PersistentDisk().withSizeInGB(2).withMountPath("/mypersistentdisk"))
-                            .withCustomPersistentDisks(
-                                Arrays
-                                    .asList(
-                                        new CustomPersistentDiskResource()
-                                            .withCustomPersistentDiskProperties(
-                                                new AzureFileVolume()
-                                                    .withMountPath("/mypath1/mypath2")
-                                                    .withMountOptions(Arrays.asList())
-                                                    .withShareName("myFileShare"))
-                                            .withStorageId("myASCStorageID")))
-                            .withEnableEndToEndTls(false)
-                            .withVnetAddons(new AppVNetAddons().withPublicEndpoint(true)))
-                    .withIdentity(
-                        new ManagedIdentityProperties()
-                            .withType(ManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                            .withUserAssignedIdentities(
-                                mapOf(
-                                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1",
-                                    new UserAssignedManagedIdentity(),
-                                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2",
-                                    new UserAssignedManagedIdentity())))
-                    .withLocation("eastus"),
-                Context.NONE);
+        azure.springServices().manager().serviceClient().getApps().update("myResourceGroup", "myservice", "myapp",
+            new AppResourceInner()
+                .withProperties(new AppResourceProperties().withPublicProperty(true).withHttpsOnly(false)
+                    .withTemporaryDisk(new TemporaryDisk().withSizeInGB(2).withMountPath("/mytemporarydisk"))
+                    .withPersistentDisk(new PersistentDisk().withSizeInGB(2).withMountPath("/mypersistentdisk"))
+                    .withCustomPersistentDisks(Arrays.asList(new CustomPersistentDiskResource()
+                        .withCustomPersistentDiskProperties(new AzureFileVolume().withMountPath("/mypath1/mypath2")
+                            .withMountOptions(Arrays.asList()).withShareName("myFileShare"))
+                        .withStorageId("myASCStorageID")))
+                    .withEnableEndToEndTls(false).withVnetAddons(new AppVNetAddons().withPublicEndpoint(true)))
+                .withIdentity(new ManagedIdentityProperties()
+                    .withType(ManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1",
+                        new UserAssignedManagedIdentity(),
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2",
+                        new UserAssignedManagedIdentity())))
+                .withLocation("eastus"),
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2022-12-01/examples/Apps_Update.json
+     * x-ms-original-file:
+     * specification/appplatform/resource-manager/Microsoft.AppPlatform/stable/2023-12-01/examples/Apps_Update.json
      */
     /**
      * Sample code: Apps_Update.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void appsUpdate(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .springServices()
-            .manager()
-            .serviceClient()
-            .getApps()
-            .update(
-                "myResourceGroup",
-                "myservice",
-                "myapp",
-                new AppResourceInner()
-                    .withProperties(
-                        new AppResourceProperties()
-                            .withPublicProperty(true)
-                            .withHttpsOnly(false)
-                            .withTemporaryDisk(new TemporaryDisk().withSizeInGB(2).withMountPath("/mytemporarydisk"))
-                            .withPersistentDisk(new PersistentDisk().withSizeInGB(2).withMountPath("/mypersistentdisk"))
-                            .withCustomPersistentDisks(
-                                Arrays
-                                    .asList(
-                                        new CustomPersistentDiskResource()
-                                            .withCustomPersistentDiskProperties(
-                                                new AzureFileVolume()
-                                                    .withMountPath("/mypath1/mypath2")
-                                                    .withMountOptions(Arrays.asList())
-                                                    .withShareName("myFileShare"))
-                                            .withStorageId("myASCStorageID")))
-                            .withEnableEndToEndTls(false))
-                    .withIdentity(
-                        new ManagedIdentityProperties()
-                            .withType(ManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
-                            .withUserAssignedIdentities(
-                                mapOf(
-                                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1",
-                                    new UserAssignedManagedIdentity(),
-                                    "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2",
-                                    new UserAssignedManagedIdentity())))
-                    .withLocation("eastus"),
-                Context.NONE);
+        azure.springServices().manager().serviceClient().getApps().update("myResourceGroup", "myservice", "myapp",
+            new AppResourceInner()
+                .withProperties(new AppResourceProperties().withPublicProperty(true).withHttpsOnly(false)
+                    .withTemporaryDisk(new TemporaryDisk().withSizeInGB(2).withMountPath("/mytemporarydisk"))
+                    .withPersistentDisk(new PersistentDisk().withSizeInGB(2).withMountPath("/mypersistentdisk"))
+                    .withCustomPersistentDisks(Arrays.asList(new CustomPersistentDiskResource()
+                        .withCustomPersistentDiskProperties(new AzureFileVolume().withMountPath("/mypath1/mypath2")
+                            .withMountOptions(Arrays.asList()).withShareName("myFileShare"))
+                        .withStorageId("myASCStorageID")))
+                    .withEnableEndToEndTls(false))
+                .withIdentity(new ManagedIdentityProperties()
+                    .withType(ManagedIdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id1",
+                        new UserAssignedManagedIdentity(),
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourceGroups/samplegroup/providers/Microsoft.ManagedIdentity/userAssignedIdentities/id2",
+                        new UserAssignedManagedIdentity())))
+                .withLocation("eastus"),
+            com.azure.core.util.Context.NONE);
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

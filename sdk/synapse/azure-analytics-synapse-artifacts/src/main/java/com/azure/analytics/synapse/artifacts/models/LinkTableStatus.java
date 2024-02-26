@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The LinkTableStatus model. */
+/**
+ * The LinkTableStatus model.
+ */
 @Fluent
 public final class LinkTableStatus {
     /*
@@ -67,12 +69,15 @@ public final class LinkTableStatus {
     @JsonProperty(value = "lastTransactionCommitTime")
     private OffsetDateTime lastTransactionCommitTime;
 
-    /** Creates an instance of LinkTableStatus class. */
-    public LinkTableStatus() {}
+    /**
+     * Creates an instance of LinkTableStatus class.
+     */
+    public LinkTableStatus() {
+    }
 
     /**
      * Get the id property: ID provided by the client.
-     *
+     * 
      * @return the id value.
      */
     public String getId() {
@@ -81,7 +86,7 @@ public final class LinkTableStatus {
 
     /**
      * Set the id property: ID provided by the client.
-     *
+     * 
      * @param id the id value to set.
      * @return the LinkTableStatus object itself.
      */
@@ -94,7 +99,7 @@ public final class LinkTableStatus {
      * Get the status property: Link table status, please refer to this
      * [articles](https://learn.microsoft.com/azure/synapse-analytics/synapse-link/sql-database-synapse-link#monitoring)
      * for details.
-     *
+     * 
      * @return the status value.
      */
     public String getStatus() {
@@ -105,7 +110,7 @@ public final class LinkTableStatus {
      * Set the status property: Link table status, please refer to this
      * [articles](https://learn.microsoft.com/azure/synapse-analytics/synapse-link/sql-database-synapse-link#monitoring)
      * for details.
-     *
+     * 
      * @param status the status value to set.
      * @return the LinkTableStatus object itself.
      */
@@ -116,7 +121,7 @@ public final class LinkTableStatus {
 
     /**
      * Get the errorMessage property: Link table error message.
-     *
+     * 
      * @return the errorMessage value.
      */
     public String getErrorMessage() {
@@ -125,7 +130,7 @@ public final class LinkTableStatus {
 
     /**
      * Set the errorMessage property: Link table error message.
-     *
+     * 
      * @param errorMessage the errorMessage value to set.
      * @return the LinkTableStatus object itself.
      */
@@ -136,7 +141,7 @@ public final class LinkTableStatus {
 
     /**
      * Get the startTime property: Link table start time.
-     *
+     * 
      * @return the startTime value.
      */
     public Object getStartTime() {
@@ -145,7 +150,7 @@ public final class LinkTableStatus {
 
     /**
      * Set the startTime property: Link table start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the LinkTableStatus object itself.
      */
@@ -156,7 +161,7 @@ public final class LinkTableStatus {
 
     /**
      * Get the stopTime property: Link table stop time.
-     *
+     * 
      * @return the stopTime value.
      */
     public Object getStopTime() {
@@ -165,7 +170,7 @@ public final class LinkTableStatus {
 
     /**
      * Set the stopTime property: Link table stop time.
-     *
+     * 
      * @param stopTime the stopTime value to set.
      * @return the LinkTableStatus object itself.
      */
@@ -176,7 +181,7 @@ public final class LinkTableStatus {
 
     /**
      * Get the linkTableId property: Link table ID.
-     *
+     * 
      * @return the linkTableId value.
      */
     public String getLinkTableId() {
@@ -185,7 +190,7 @@ public final class LinkTableStatus {
 
     /**
      * Set the linkTableId property: Link table ID.
-     *
+     * 
      * @param linkTableId the linkTableId value to set.
      * @return the LinkTableStatus object itself.
      */
@@ -196,7 +201,7 @@ public final class LinkTableStatus {
 
     /**
      * Get the errorCode property: Link table error code.
-     *
+     * 
      * @return the errorCode value.
      */
     public String getErrorCode() {
@@ -205,7 +210,7 @@ public final class LinkTableStatus {
 
     /**
      * Set the errorCode property: Link table error code.
-     *
+     * 
      * @param errorCode the errorCode value to set.
      * @return the LinkTableStatus object itself.
      */
@@ -216,7 +221,7 @@ public final class LinkTableStatus {
 
     /**
      * Get the lastProcessedData property: Link table last processed data time.
-     *
+     * 
      * @return the lastProcessedData value.
      */
     public OffsetDateTime getLastProcessedData() {
@@ -225,7 +230,7 @@ public final class LinkTableStatus {
 
     /**
      * Set the lastProcessedData property: Link table last processed data time.
-     *
+     * 
      * @param lastProcessedData the lastProcessedData value to set.
      * @return the LinkTableStatus object itself.
      */
@@ -236,7 +241,7 @@ public final class LinkTableStatus {
 
     /**
      * Get the lastTransactionCommitTime property: Link table last transaction commit time.
-     *
+     * 
      * @return the lastTransactionCommitTime value.
      */
     public OffsetDateTime getLastTransactionCommitTime() {
@@ -245,7 +250,7 @@ public final class LinkTableStatus {
 
     /**
      * Set the lastTransactionCommitTime property: Link table last transaction commit time.
-     *
+     * 
      * @param lastTransactionCommitTime the lastTransactionCommitTime value to set.
      * @return the LinkTableStatus object itself.
      */

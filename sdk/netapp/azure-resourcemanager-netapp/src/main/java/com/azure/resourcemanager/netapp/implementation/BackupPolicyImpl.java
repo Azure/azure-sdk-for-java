@@ -125,20 +125,14 @@ public final class BackupPolicyImpl implements BackupPolicy, BackupPolicy.Defini
     }
 
     public BackupPolicy create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackupPolicies()
-                .create(resourceGroupName, accountName, backupPolicyName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getBackupPolicies().create(resourceGroupName, accountName,
+            backupPolicyName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public BackupPolicy create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackupPolicies()
-                .create(resourceGroupName, accountName, backupPolicyName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getBackupPolicies().create(resourceGroupName, accountName,
+            backupPolicyName, this.innerModel(), context);
         return this;
     }
 
@@ -154,25 +148,19 @@ public final class BackupPolicyImpl implements BackupPolicy, BackupPolicy.Defini
     }
 
     public BackupPolicy apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackupPolicies()
-                .update(resourceGroupName, accountName, backupPolicyName, updateBody, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getBackupPolicies().update(resourceGroupName, accountName,
+            backupPolicyName, updateBody, Context.NONE);
         return this;
     }
 
     public BackupPolicy apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackupPolicies()
-                .update(resourceGroupName, accountName, backupPolicyName, updateBody, context);
+        this.innerObject = serviceManager.serviceClient().getBackupPolicies().update(resourceGroupName, accountName,
+            backupPolicyName, updateBody, context);
         return this;
     }
 
-    BackupPolicyImpl(
-        BackupPolicyInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
+    BackupPolicyImpl(BackupPolicyInner innerObject,
+        com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
         this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
@@ -181,22 +169,14 @@ public final class BackupPolicyImpl implements BackupPolicy, BackupPolicy.Defini
     }
 
     public BackupPolicy refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackupPolicies()
-                .getWithResponse(resourceGroupName, accountName, backupPolicyName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getBackupPolicies()
+            .getWithResponse(resourceGroupName, accountName, backupPolicyName, Context.NONE).getValue();
         return this;
     }
 
     public BackupPolicy refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getBackupPolicies()
-                .getWithResponse(resourceGroupName, accountName, backupPolicyName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getBackupPolicies()
+            .getWithResponse(resourceGroupName, accountName, backupPolicyName, context).getValue();
         return this;
     }
 

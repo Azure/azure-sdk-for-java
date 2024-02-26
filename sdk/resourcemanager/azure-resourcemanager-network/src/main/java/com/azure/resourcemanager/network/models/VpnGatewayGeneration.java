@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The generation for this VirtualNetworkGateway. Must be None if gatewayType is not VPN. */
+/**
+ * The generation for this VirtualNetworkGateway. Must be None if gatewayType is not VPN.
+ */
 public final class VpnGatewayGeneration extends ExpandableStringEnum<VpnGatewayGeneration> {
-    /** Static value None for VpnGatewayGeneration. */
+    /**
+     * Static value None for VpnGatewayGeneration.
+     */
     public static final VpnGatewayGeneration NONE = fromString("None");
 
-    /** Static value Generation1 for VpnGatewayGeneration. */
+    /**
+     * Static value Generation1 for VpnGatewayGeneration.
+     */
     public static final VpnGatewayGeneration GENERATION1 = fromString("Generation1");
 
-    /** Static value Generation2 for VpnGatewayGeneration. */
+    /**
+     * Static value Generation2 for VpnGatewayGeneration.
+     */
     public static final VpnGatewayGeneration GENERATION2 = fromString("Generation2");
 
     /**
      * Creates a new instance of VpnGatewayGeneration value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class VpnGatewayGeneration extends ExpandableStringEnum<VpnGatewayG
 
     /**
      * Creates or finds a VpnGatewayGeneration from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VpnGatewayGeneration.
      */
@@ -41,7 +49,7 @@ public final class VpnGatewayGeneration extends ExpandableStringEnum<VpnGatewayG
 
     /**
      * Gets known VpnGatewayGeneration values.
-     *
+     * 
      * @return known VpnGatewayGeneration values.
      */
     public static Collection<VpnGatewayGeneration> values() {

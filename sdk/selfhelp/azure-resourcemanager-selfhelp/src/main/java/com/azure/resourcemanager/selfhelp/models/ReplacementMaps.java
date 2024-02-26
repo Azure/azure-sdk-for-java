@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Solution replacement maps. */
+/**
+ * Solution replacement maps.
+ */
 @Fluent
 public final class ReplacementMaps {
     /*
@@ -47,13 +49,15 @@ public final class ReplacementMaps {
     @JsonProperty(value = "videoGroups")
     private List<VideoGroup> videoGroups;
 
-    /** Creates an instance of ReplacementMaps class. */
+    /**
+     * Creates an instance of ReplacementMaps class.
+     */
     public ReplacementMaps() {
     }
 
     /**
      * Get the webResults property: Solution AzureKB results.
-     *
+     * 
      * @return the webResults value.
      */
     public List<WebResult> webResults() {
@@ -62,7 +66,7 @@ public final class ReplacementMaps {
 
     /**
      * Set the webResults property: Solution AzureKB results.
-     *
+     * 
      * @param webResults the webResults value to set.
      * @return the ReplacementMaps object itself.
      */
@@ -73,7 +77,7 @@ public final class ReplacementMaps {
 
     /**
      * Get the diagnostics property: Solution diagnostics results.
-     *
+     * 
      * @return the diagnostics value.
      */
     public List<SolutionsDiagnostic> diagnostics() {
@@ -82,7 +86,7 @@ public final class ReplacementMaps {
 
     /**
      * Set the diagnostics property: Solution diagnostics results.
-     *
+     * 
      * @param diagnostics the diagnostics value to set.
      * @return the ReplacementMaps object itself.
      */
@@ -93,7 +97,7 @@ public final class ReplacementMaps {
 
     /**
      * Get the troubleshooters property: Solutions Troubleshooters.
-     *
+     * 
      * @return the troubleshooters value.
      */
     public List<SolutionsTroubleshooters> troubleshooters() {
@@ -102,7 +106,7 @@ public final class ReplacementMaps {
 
     /**
      * Set the troubleshooters property: Solutions Troubleshooters.
-     *
+     * 
      * @param troubleshooters the troubleshooters value to set.
      * @return the ReplacementMaps object itself.
      */
@@ -113,7 +117,7 @@ public final class ReplacementMaps {
 
     /**
      * Get the metricsBasedCharts property: Solution metrics based charts.
-     *
+     * 
      * @return the metricsBasedCharts value.
      */
     public List<MetricsBasedChart> metricsBasedCharts() {
@@ -122,7 +126,7 @@ public final class ReplacementMaps {
 
     /**
      * Set the metricsBasedCharts property: Solution metrics based charts.
-     *
+     * 
      * @param metricsBasedCharts the metricsBasedCharts value to set.
      * @return the ReplacementMaps object itself.
      */
@@ -134,7 +138,7 @@ public final class ReplacementMaps {
     /**
      * Get the videos property: Video solutions, which have the power to engage the customer by stimulating their
      * senses.
-     *
+     * 
      * @return the videos value.
      */
     public List<Video> videos() {
@@ -144,7 +148,7 @@ public final class ReplacementMaps {
     /**
      * Set the videos property: Video solutions, which have the power to engage the customer by stimulating their
      * senses.
-     *
+     * 
      * @param videos the videos value to set.
      * @return the ReplacementMaps object itself.
      */
@@ -155,7 +159,7 @@ public final class ReplacementMaps {
 
     /**
      * Get the videoGroups property: Group of Videos.
-     *
+     * 
      * @return the videoGroups value.
      */
     public List<VideoGroup> videoGroups() {
@@ -164,7 +168,7 @@ public final class ReplacementMaps {
 
     /**
      * Set the videoGroups property: Group of Videos.
-     *
+     * 
      * @param videoGroups the videoGroups value to set.
      * @return the ReplacementMaps object itself.
      */
@@ -175,7 +179,7 @@ public final class ReplacementMaps {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

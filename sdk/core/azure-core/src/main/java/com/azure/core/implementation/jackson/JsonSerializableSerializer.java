@@ -14,8 +14,8 @@ import java.io.IOException;
 
 @SuppressWarnings("rawtypes")
 final class JsonSerializableSerializer extends JsonSerializer<JsonSerializable> {
-    private static final Module MODULE = new SimpleModule()
-        .addSerializer(JsonSerializable.class, new JsonSerializableSerializer());
+    private static final Module MODULE
+        = new SimpleModule().addSerializer(JsonSerializable.class, new JsonSerializableSerializer());
 
     /**
      * Gets a module wrapping this serializer as an adapter for the Jackson ObjectMapper.

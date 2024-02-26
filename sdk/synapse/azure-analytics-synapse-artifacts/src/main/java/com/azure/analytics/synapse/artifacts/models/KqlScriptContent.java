@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The KqlScriptContent model. */
+/**
+ * The KqlScriptContent model.
+ */
 @Fluent
 public final class KqlScriptContent {
     /*
@@ -28,12 +30,15 @@ public final class KqlScriptContent {
     @JsonProperty(value = "currentConnection")
     private KqlScriptContentCurrentConnection currentConnection;
 
-    /** Creates an instance of KqlScriptContent class. */
-    public KqlScriptContent() {}
+    /**
+     * Creates an instance of KqlScriptContent class.
+     */
+    public KqlScriptContent() {
+    }
 
     /**
      * Get the query property: The query property.
-     *
+     * 
      * @return the query value.
      */
     public String getQuery() {
@@ -42,7 +47,7 @@ public final class KqlScriptContent {
 
     /**
      * Set the query property: The query property.
-     *
+     * 
      * @param query the query value to set.
      * @return the KqlScriptContent object itself.
      */
@@ -53,7 +58,7 @@ public final class KqlScriptContent {
 
     /**
      * Get the metadata property: The metadata property.
-     *
+     * 
      * @return the metadata value.
      */
     public KqlScriptContentMetadata getMetadata() {
@@ -62,7 +67,7 @@ public final class KqlScriptContent {
 
     /**
      * Set the metadata property: The metadata property.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the KqlScriptContent object itself.
      */
@@ -73,7 +78,7 @@ public final class KqlScriptContent {
 
     /**
      * Get the currentConnection property: The currentConnection property.
-     *
+     * 
      * @return the currentConnection value.
      */
     public KqlScriptContentCurrentConnection getCurrentConnection() {
@@ -82,7 +87,7 @@ public final class KqlScriptContent {
 
     /**
      * Set the currentConnection property: The currentConnection property.
-     *
+     * 
      * @param currentConnection the currentConnection value to set.
      * @return the KqlScriptContent object itself.
      */

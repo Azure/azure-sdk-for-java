@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents key wrap metadata that a key wrapping provider can use to wrap/unwrap a client encryption key. */
+/**
+ * Represents key wrap metadata that a key wrapping provider can use to wrap/unwrap a client encryption key.
+ */
 @Fluent
 public final class KeyWrapMetadata {
     /*
@@ -34,13 +36,15 @@ public final class KeyWrapMetadata {
     @JsonProperty(value = "algorithm")
     private String algorithm;
 
-    /** Creates an instance of KeyWrapMetadata class. */
+    /**
+     * Creates an instance of KeyWrapMetadata class.
+     */
     public KeyWrapMetadata() {
     }
 
     /**
      * Get the name property: The name of associated KeyEncryptionKey (aka CustomerManagedKey).
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -49,7 +53,7 @@ public final class KeyWrapMetadata {
 
     /**
      * Set the name property: The name of associated KeyEncryptionKey (aka CustomerManagedKey).
-     *
+     * 
      * @param name the name value to set.
      * @return the KeyWrapMetadata object itself.
      */
@@ -60,7 +64,7 @@ public final class KeyWrapMetadata {
 
     /**
      * Get the type property: ProviderName of KeyStoreProvider.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -69,7 +73,7 @@ public final class KeyWrapMetadata {
 
     /**
      * Set the type property: ProviderName of KeyStoreProvider.
-     *
+     * 
      * @param type the type value to set.
      * @return the KeyWrapMetadata object itself.
      */
@@ -80,7 +84,7 @@ public final class KeyWrapMetadata {
 
     /**
      * Get the value property: Reference / link to the KeyEncryptionKey.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -89,7 +93,7 @@ public final class KeyWrapMetadata {
 
     /**
      * Set the value property: Reference / link to the KeyEncryptionKey.
-     *
+     * 
      * @param value the value value to set.
      * @return the KeyWrapMetadata object itself.
      */
@@ -100,7 +104,7 @@ public final class KeyWrapMetadata {
 
     /**
      * Get the algorithm property: Algorithm used in wrapping and unwrapping of the data encryption key.
-     *
+     * 
      * @return the algorithm value.
      */
     public String algorithm() {
@@ -109,7 +113,7 @@ public final class KeyWrapMetadata {
 
     /**
      * Set the algorithm property: Algorithm used in wrapping and unwrapping of the data encryption key.
-     *
+     * 
      * @param algorithm the algorithm value to set.
      * @return the KeyWrapMetadata object itself.
      */
@@ -120,7 +124,7 @@ public final class KeyWrapMetadata {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

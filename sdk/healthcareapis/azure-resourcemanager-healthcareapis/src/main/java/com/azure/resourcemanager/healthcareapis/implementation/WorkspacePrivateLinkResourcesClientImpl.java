@@ -30,26 +30,28 @@ import com.azure.resourcemanager.healthcareapis.fluent.models.PrivateLinkResourc
 import com.azure.resourcemanager.healthcareapis.fluent.models.PrivateLinkResourceListResultDescriptionInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WorkspacePrivateLinkResourcesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WorkspacePrivateLinkResourcesClient.
+ */
 public final class WorkspacePrivateLinkResourcesClientImpl implements WorkspacePrivateLinkResourcesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final WorkspacePrivateLinkResourcesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final HealthcareApisManagementClientImpl client;
 
     /**
      * Initializes an instance of WorkspacePrivateLinkResourcesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     WorkspacePrivateLinkResourcesClientImpl(HealthcareApisManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    WorkspacePrivateLinkResourcesService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(WorkspacePrivateLinkResourcesService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -59,64 +61,48 @@ public final class WorkspacePrivateLinkResourcesClientImpl implements WorkspaceP
      */
     @Host("{$host}")
     @ServiceInterface(name = "HealthcareApisManage")
-    private interface WorkspacePrivateLinkResourcesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis"
-                + "/workspaces/{workspaceName}/privateLinkResources")
-        @ExpectedResponses({200})
+    public interface WorkspacePrivateLinkResourcesService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/privateLinkResources")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<PrivateLinkResourceListResultDescriptionInner>> listByWorkspace(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis"
-                + "/workspaces/{workspaceName}/privateLinkResources/{groupName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/privateLinkResources/{groupName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<PrivateLinkResourceDescriptionInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("groupName") String groupName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<PrivateLinkResourceDescriptionInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("workspaceName") String workspaceName,
+            @PathParam("groupName") String groupName, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the private link resources that need to be created for a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private link resources that need to be created for a workspace along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateLinkResourceDescriptionInner>> listByWorkspaceSinglePageAsync(
-        String resourceGroupName, String workspaceName) {
+    private Mono<PagedResponse<PrivateLinkResourceDescriptionInner>>
+        listByWorkspaceSinglePageAsync(String resourceGroupName, String workspaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -127,27 +113,16 @@ public final class WorkspacePrivateLinkResourcesClientImpl implements WorkspaceP
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByWorkspace(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            accept,
-                            context))
-            .<PagedResponse<PrivateLinkResourceDescriptionInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
+            .withContext(context -> service.listByWorkspace(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, accept, context))
+            .<PagedResponse<PrivateLinkResourceDescriptionInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the private link resources that need to be created for a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param context The context to associate with this operation.
@@ -155,22 +130,18 @@ public final class WorkspacePrivateLinkResourcesClientImpl implements WorkspaceP
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the private link resources that need to be created for a workspace along with {@link PagedResponse} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<PrivateLinkResourceDescriptionInner>> listByWorkspaceSinglePageAsync(
-        String resourceGroupName, String workspaceName, Context context) {
+    private Mono<PagedResponse<PrivateLinkResourceDescriptionInner>>
+        listByWorkspaceSinglePageAsync(String resourceGroupName, String workspaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -182,93 +153,85 @@ public final class WorkspacePrivateLinkResourcesClientImpl implements WorkspaceP
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByWorkspace(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(), res.getStatusCode(), res.getHeaders(), res.getValue().value(), null, null));
+            .listByWorkspace(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+                resourceGroupName, workspaceName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), null, null));
     }
 
     /**
      * Gets the private link resources that need to be created for a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a workspace as paginated response with {@link
-     *     PagedFlux}.
+     * @return the private link resources that need to be created for a workspace as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateLinkResourceDescriptionInner> listByWorkspaceAsync(
-        String resourceGroupName, String workspaceName) {
+    private PagedFlux<PrivateLinkResourceDescriptionInner> listByWorkspaceAsync(String resourceGroupName,
+        String workspaceName) {
         return new PagedFlux<>(() -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName));
     }
 
     /**
      * Gets the private link resources that need to be created for a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a workspace as paginated response with {@link
-     *     PagedFlux}.
+     * @return the private link resources that need to be created for a workspace as paginated response with
+     * {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<PrivateLinkResourceDescriptionInner> listByWorkspaceAsync(
-        String resourceGroupName, String workspaceName, Context context) {
+    private PagedFlux<PrivateLinkResourceDescriptionInner> listByWorkspaceAsync(String resourceGroupName,
+        String workspaceName, Context context) {
         return new PagedFlux<>(() -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, context));
     }
 
     /**
      * Gets the private link resources that need to be created for a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a workspace as paginated response with {@link
-     *     PagedIterable}.
+     * @return the private link resources that need to be created for a workspace as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateLinkResourceDescriptionInner> listByWorkspace(
-        String resourceGroupName, String workspaceName) {
+    public PagedIterable<PrivateLinkResourceDescriptionInner> listByWorkspace(String resourceGroupName,
+        String workspaceName) {
         return new PagedIterable<>(listByWorkspaceAsync(resourceGroupName, workspaceName));
     }
 
     /**
      * Gets the private link resources that need to be created for a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the private link resources that need to be created for a workspace as paginated response with {@link
-     *     PagedIterable}.
+     * @return the private link resources that need to be created for a workspace as paginated response with
+     * {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<PrivateLinkResourceDescriptionInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context) {
+    public PagedIterable<PrivateLinkResourceDescriptionInner> listByWorkspace(String resourceGroupName,
+        String workspaceName, Context context) {
         return new PagedIterable<>(listByWorkspaceAsync(resourceGroupName, workspaceName, context));
     }
 
     /**
      * Gets a private link resource that need to be created for a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param groupName The name of the private link resource group.
@@ -276,22 +239,18 @@ public final class WorkspacePrivateLinkResourcesClientImpl implements WorkspaceP
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private link resource that need to be created for a workspace along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateLinkResourceDescriptionInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String groupName) {
+    private Mono<Response<PrivateLinkResourceDescriptionInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName, String groupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -305,24 +264,14 @@ public final class WorkspacePrivateLinkResourcesClientImpl implements WorkspaceP
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            workspaceName,
-                            groupName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, workspaceName, groupName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a private link resource that need to be created for a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param groupName The name of the private link resource group.
@@ -331,22 +280,18 @@ public final class WorkspacePrivateLinkResourcesClientImpl implements WorkspaceP
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a private link resource that need to be created for a workspace along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<PrivateLinkResourceDescriptionInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String groupName, Context context) {
+    private Mono<Response<PrivateLinkResourceDescriptionInner>> getWithResponseAsync(String resourceGroupName,
+        String workspaceName, String groupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -360,21 +305,13 @@ public final class WorkspacePrivateLinkResourcesClientImpl implements WorkspaceP
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                workspaceName,
-                groupName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, workspaceName, groupName, accept, context);
     }
 
     /**
      * Gets a private link resource that need to be created for a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param groupName The name of the private link resource group.
@@ -384,38 +321,15 @@ public final class WorkspacePrivateLinkResourcesClientImpl implements WorkspaceP
      * @return a private link resource that need to be created for a workspace on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PrivateLinkResourceDescriptionInner> getAsync(
-        String resourceGroupName, String workspaceName, String groupName) {
+    private Mono<PrivateLinkResourceDescriptionInner> getAsync(String resourceGroupName, String workspaceName,
+        String groupName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, groupName)
-            .flatMap(
-                (Response<PrivateLinkResourceDescriptionInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a private link resource that need to be created for a workspace.
-     *
-     * @param resourceGroupName The name of the resource group that contains the service instance.
-     * @param workspaceName The name of workspace resource.
-     * @param groupName The name of the private link resource group.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a private link resource that need to be created for a workspace.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public PrivateLinkResourceDescriptionInner get(String resourceGroupName, String workspaceName, String groupName) {
-        return getAsync(resourceGroupName, workspaceName, groupName).block();
-    }
-
-    /**
-     * Gets a private link resource that need to be created for a workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param groupName The name of the private link resource group.
@@ -426,8 +340,24 @@ public final class WorkspacePrivateLinkResourcesClientImpl implements WorkspaceP
      * @return a private link resource that need to be created for a workspace along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<PrivateLinkResourceDescriptionInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String groupName, Context context) {
+    public Response<PrivateLinkResourceDescriptionInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String groupName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, groupName, context).block();
+    }
+
+    /**
+     * Gets a private link resource that need to be created for a workspace.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the service instance.
+     * @param workspaceName The name of workspace resource.
+     * @param groupName The name of the private link resource group.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a private link resource that need to be created for a workspace.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public PrivateLinkResourceDescriptionInner get(String resourceGroupName, String workspaceName, String groupName) {
+        return getWithResponse(resourceGroupName, workspaceName, groupName, Context.NONE).getValue();
     }
 }

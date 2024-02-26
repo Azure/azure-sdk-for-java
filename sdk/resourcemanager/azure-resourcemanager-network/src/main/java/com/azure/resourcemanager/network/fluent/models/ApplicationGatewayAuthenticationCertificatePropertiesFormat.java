@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Authentication certificates properties of an application gateway. */
+/**
+ * Authentication certificates properties of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayAuthenticationCertificatePropertiesFormat {
     /*
@@ -23,13 +25,15 @@ public final class ApplicationGatewayAuthenticationCertificatePropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ApplicationGatewayAuthenticationCertificatePropertiesFormat class. */
+    /**
+     * Creates an instance of ApplicationGatewayAuthenticationCertificatePropertiesFormat class.
+     */
     public ApplicationGatewayAuthenticationCertificatePropertiesFormat() {
     }
 
     /**
      * Get the data property: Certificate public data.
-     *
+     * 
      * @return the data value.
      */
     public String data() {
@@ -38,7 +42,7 @@ public final class ApplicationGatewayAuthenticationCertificatePropertiesFormat {
 
     /**
      * Set the data property: Certificate public data.
-     *
+     * 
      * @param data the data value to set.
      * @return the ApplicationGatewayAuthenticationCertificatePropertiesFormat object itself.
      */
@@ -49,7 +53,7 @@ public final class ApplicationGatewayAuthenticationCertificatePropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the authentication certificate resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -58,7 +62,7 @@ public final class ApplicationGatewayAuthenticationCertificatePropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

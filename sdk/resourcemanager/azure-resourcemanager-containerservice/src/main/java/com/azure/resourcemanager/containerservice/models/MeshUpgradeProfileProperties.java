@@ -7,28 +7,38 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import java.util.List;
 
-/** Mesh upgrade profile properties for a major.minor release. */
+/**
+ * Mesh upgrade profile properties for a major.minor release.
+ */
 @Fluent
 public final class MeshUpgradeProfileProperties extends MeshRevision {
-    /** Creates an instance of MeshUpgradeProfileProperties class. */
+    /**
+     * Creates an instance of MeshUpgradeProfileProperties class.
+     */
     public MeshUpgradeProfileProperties() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MeshUpgradeProfileProperties withRevision(String revision) {
         super.withRevision(revision);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MeshUpgradeProfileProperties withUpgrades(List<String> upgrades) {
         super.withUpgrades(upgrades);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MeshUpgradeProfileProperties withCompatibleWith(List<CompatibleVersions> compatibleWith) {
         super.withCompatibleWith(compatibleWith);
@@ -37,7 +47,7 @@ public final class MeshUpgradeProfileProperties extends MeshRevision {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

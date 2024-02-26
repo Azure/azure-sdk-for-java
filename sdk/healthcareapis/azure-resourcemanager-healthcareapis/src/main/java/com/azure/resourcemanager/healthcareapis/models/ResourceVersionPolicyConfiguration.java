@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The settings for history tracking for FHIR resources. */
+/**
+ * The settings for history tracking for FHIR resources.
+ */
 @Fluent
 public final class ResourceVersionPolicyConfiguration {
     /*
@@ -26,8 +28,14 @@ public final class ResourceVersionPolicyConfiguration {
     private Map<String, FhirResourceVersionPolicy> resourceTypeOverrides;
 
     /**
+     * Creates an instance of ResourceVersionPolicyConfiguration class.
+     */
+    public ResourceVersionPolicyConfiguration() {
+    }
+
+    /**
      * Get the defaultProperty property: The default value for tracking history across all resources.
-     *
+     * 
      * @return the defaultProperty value.
      */
     public FhirResourceVersionPolicy defaultProperty() {
@@ -36,7 +44,7 @@ public final class ResourceVersionPolicyConfiguration {
 
     /**
      * Set the defaultProperty property: The default value for tracking history across all resources.
-     *
+     * 
      * @param defaultProperty the defaultProperty value to set.
      * @return the ResourceVersionPolicyConfiguration object itself.
      */
@@ -47,7 +55,7 @@ public final class ResourceVersionPolicyConfiguration {
 
     /**
      * Get the resourceTypeOverrides property: A list of FHIR Resources and their version policy overrides.
-     *
+     * 
      * @return the resourceTypeOverrides value.
      */
     public Map<String, FhirResourceVersionPolicy> resourceTypeOverrides() {
@@ -56,19 +64,19 @@ public final class ResourceVersionPolicyConfiguration {
 
     /**
      * Set the resourceTypeOverrides property: A list of FHIR Resources and their version policy overrides.
-     *
+     * 
      * @param resourceTypeOverrides the resourceTypeOverrides value to set.
      * @return the ResourceVersionPolicyConfiguration object itself.
      */
-    public ResourceVersionPolicyConfiguration withResourceTypeOverrides(
-        Map<String, FhirResourceVersionPolicy> resourceTypeOverrides) {
+    public ResourceVersionPolicyConfiguration
+        withResourceTypeOverrides(Map<String, FhirResourceVersionPolicy> resourceTypeOverrides) {
         this.resourceTypeOverrides = resourceTypeOverrides;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

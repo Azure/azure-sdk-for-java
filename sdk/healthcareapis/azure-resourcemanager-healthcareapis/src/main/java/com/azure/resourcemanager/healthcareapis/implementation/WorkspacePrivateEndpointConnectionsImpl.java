@@ -21,64 +21,42 @@ public final class WorkspacePrivateEndpointConnectionsImpl implements WorkspaceP
 
     private final com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager;
 
-    public WorkspacePrivateEndpointConnectionsImpl(
-        WorkspacePrivateEndpointConnectionsClient innerClient,
+    public WorkspacePrivateEndpointConnectionsImpl(WorkspacePrivateEndpointConnectionsClient innerClient,
         com.azure.resourcemanager.healthcareapis.HealthcareApisManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<PrivateEndpointConnectionDescription> listByWorkspace(
-        String resourceGroupName, String workspaceName) {
-        PagedIterable<PrivateEndpointConnectionDescriptionInner> inner =
-            this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
+    public PagedIterable<PrivateEndpointConnectionDescription> listByWorkspace(String resourceGroupName,
+        String workspaceName) {
+        PagedIterable<PrivateEndpointConnectionDescriptionInner> inner
+            = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName);
         return Utils.mapPage(inner, inner1 -> new PrivateEndpointConnectionDescriptionImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<PrivateEndpointConnectionDescription> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context) {
-        PagedIterable<PrivateEndpointConnectionDescriptionInner> inner =
-            this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
+    public PagedIterable<PrivateEndpointConnectionDescription> listByWorkspace(String resourceGroupName,
+        String workspaceName, Context context) {
+        PagedIterable<PrivateEndpointConnectionDescriptionInner> inner
+            = this.serviceClient().listByWorkspace(resourceGroupName, workspaceName, context);
         return Utils.mapPage(inner, inner1 -> new PrivateEndpointConnectionDescriptionImpl(inner1, this.manager()));
     }
 
-    public PrivateEndpointConnectionDescription get(
-        String resourceGroupName, String workspaceName, String privateEndpointConnectionName) {
-        PrivateEndpointConnectionDescriptionInner inner =
-            this.serviceClient().get(resourceGroupName, workspaceName, privateEndpointConnectionName);
+    public Response<PrivateEndpointConnectionDescription> getWithResponse(String resourceGroupName,
+        String workspaceName, String privateEndpointConnectionName, Context context) {
+        Response<PrivateEndpointConnectionDescriptionInner> inner = this.serviceClient()
+            .getWithResponse(resourceGroupName, workspaceName, privateEndpointConnectionName, context);
         if (inner != null) {
-            return new PrivateEndpointConnectionDescriptionImpl(inner, this.manager());
-        } else {
-            return null;
-        }
-    }
-
-    public Response<PrivateEndpointConnectionDescription> getWithResponse(
-        String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context) {
-        Response<PrivateEndpointConnectionDescriptionInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceGroupName, workspaceName, privateEndpointConnectionName, context);
-        if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new PrivateEndpointConnectionDescriptionImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public PrivateEndpointConnectionDescription createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionDescriptionInner properties) {
-        PrivateEndpointConnectionDescriptionInner inner =
-            this
-                .serviceClient()
-                .createOrUpdate(resourceGroupName, workspaceName, privateEndpointConnectionName, properties);
+    public PrivateEndpointConnectionDescription get(String resourceGroupName, String workspaceName,
+        String privateEndpointConnectionName) {
+        PrivateEndpointConnectionDescriptionInner inner
+            = this.serviceClient().get(resourceGroupName, workspaceName, privateEndpointConnectionName);
         if (inner != null) {
             return new PrivateEndpointConnectionDescriptionImpl(inner, this.manager());
         } else {
@@ -86,16 +64,21 @@ public final class WorkspacePrivateEndpointConnectionsImpl implements WorkspaceP
         }
     }
 
-    public PrivateEndpointConnectionDescription createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String privateEndpointConnectionName,
-        PrivateEndpointConnectionDescriptionInner properties,
-        Context context) {
-        PrivateEndpointConnectionDescriptionInner inner =
-            this
-                .serviceClient()
-                .createOrUpdate(resourceGroupName, workspaceName, privateEndpointConnectionName, properties, context);
+    public PrivateEndpointConnectionDescription createOrUpdate(String resourceGroupName, String workspaceName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionDescriptionInner properties) {
+        PrivateEndpointConnectionDescriptionInner inner = this.serviceClient().createOrUpdate(resourceGroupName,
+            workspaceName, privateEndpointConnectionName, properties);
+        if (inner != null) {
+            return new PrivateEndpointConnectionDescriptionImpl(inner, this.manager());
+        } else {
+            return null;
+        }
+    }
+
+    public PrivateEndpointConnectionDescription createOrUpdate(String resourceGroupName, String workspaceName,
+        String privateEndpointConnectionName, PrivateEndpointConnectionDescriptionInner properties, Context context) {
+        PrivateEndpointConnectionDescriptionInner inner = this.serviceClient().createOrUpdate(resourceGroupName,
+            workspaceName, privateEndpointConnectionName, properties, context);
         if (inner != null) {
             return new PrivateEndpointConnectionDescriptionImpl(inner, this.manager());
         } else {
@@ -107,8 +90,8 @@ public final class WorkspacePrivateEndpointConnectionsImpl implements WorkspaceP
         this.serviceClient().delete(resourceGroupName, workspaceName, privateEndpointConnectionName);
     }
 
-    public void delete(
-        String resourceGroupName, String workspaceName, String privateEndpointConnectionName, Context context) {
+    public void delete(String resourceGroupName, String workspaceName, String privateEndpointConnectionName,
+        Context context) {
         this.serviceClient().delete(resourceGroupName, workspaceName, privateEndpointConnectionName, context);
     }
 

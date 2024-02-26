@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.ReplicationApplianceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Replication appliance definition. */
+/**
+ * Replication appliance definition.
+ */
 @Fluent
 public final class ReplicationApplianceInner {
     /*
@@ -17,13 +19,15 @@ public final class ReplicationApplianceInner {
     @JsonProperty(value = "properties")
     private ReplicationApplianceProperties properties;
 
-    /** Creates an instance of ReplicationApplianceInner class. */
+    /**
+     * Creates an instance of ReplicationApplianceInner class.
+     */
     public ReplicationApplianceInner() {
     }
 
     /**
      * Get the properties property: Appliance related data.
-     *
+     * 
      * @return the properties value.
      */
     public ReplicationApplianceProperties properties() {
@@ -32,7 +36,7 @@ public final class ReplicationApplianceInner {
 
     /**
      * Set the properties property: Appliance related data.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ReplicationApplianceInner object itself.
      */
@@ -43,7 +47,7 @@ public final class ReplicationApplianceInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

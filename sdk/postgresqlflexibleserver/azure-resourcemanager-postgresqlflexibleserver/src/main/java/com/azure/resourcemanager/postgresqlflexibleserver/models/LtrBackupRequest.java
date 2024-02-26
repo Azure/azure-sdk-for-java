@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The request that is made for a long term retention backup. */
+/**
+ * The request that is made for a long term retention backup.
+ */
 @Fluent
 public final class LtrBackupRequest extends BackupRequestBase {
     /*
@@ -17,13 +19,15 @@ public final class LtrBackupRequest extends BackupRequestBase {
     @JsonProperty(value = "targetDetails", required = true)
     private BackupStoreDetails targetDetails;
 
-    /** Creates an instance of LtrBackupRequest class. */
+    /**
+     * Creates an instance of LtrBackupRequest class.
+     */
     public LtrBackupRequest() {
     }
 
     /**
      * Get the targetDetails property: Backup store detail for target server.
-     *
+     * 
      * @return the targetDetails value.
      */
     public BackupStoreDetails targetDetails() {
@@ -32,7 +36,7 @@ public final class LtrBackupRequest extends BackupRequestBase {
 
     /**
      * Set the targetDetails property: Backup store detail for target server.
-     *
+     * 
      * @param targetDetails the targetDetails value to set.
      * @return the LtrBackupRequest object itself.
      */
@@ -41,7 +45,9 @@ public final class LtrBackupRequest extends BackupRequestBase {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LtrBackupRequest withBackupSettings(BackupSettings backupSettings) {
         super.withBackupSettings(backupSettings);
@@ -50,16 +56,15 @@ public final class LtrBackupRequest extends BackupRequestBase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (targetDetails() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property targetDetails in model LtrBackupRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property targetDetails in model LtrBackupRequest"));
         } else {
             targetDetails().validate();
         }

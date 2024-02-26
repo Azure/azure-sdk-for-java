@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The object representing continuous mode backup policy. */
+/**
+ * The object representing continuous mode backup policy.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Continuous")
 @Fluent
@@ -20,13 +22,15 @@ public final class ContinuousModeBackupPolicy extends BackupPolicy {
     @JsonProperty(value = "continuousModeProperties")
     private ContinuousModeProperties continuousModeProperties;
 
-    /** Creates an instance of ContinuousModeBackupPolicy class. */
+    /**
+     * Creates an instance of ContinuousModeBackupPolicy class.
+     */
     public ContinuousModeBackupPolicy() {
     }
 
     /**
      * Get the continuousModeProperties property: Configuration values for continuous mode backup.
-     *
+     * 
      * @return the continuousModeProperties value.
      */
     public ContinuousModeProperties continuousModeProperties() {
@@ -35,7 +39,7 @@ public final class ContinuousModeBackupPolicy extends BackupPolicy {
 
     /**
      * Set the continuousModeProperties property: Configuration values for continuous mode backup.
-     *
+     * 
      * @param continuousModeProperties the continuousModeProperties value to set.
      * @return the ContinuousModeBackupPolicy object itself.
      */
@@ -44,7 +48,9 @@ public final class ContinuousModeBackupPolicy extends BackupPolicy {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ContinuousModeBackupPolicy withMigrationState(BackupPolicyMigrationState migrationState) {
         super.withMigrationState(migrationState);
@@ -53,7 +59,7 @@ public final class ContinuousModeBackupPolicy extends BackupPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

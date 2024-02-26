@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class VideoGroupVideoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VideoGroupVideo model =
-            BinaryData.fromString("{\"src\":\"nkoukn\",\"title\":\"dwtiukbldngkp\"}").toObject(VideoGroupVideo.class);
+        VideoGroupVideo model
+            = BinaryData.fromString("{\"src\":\"nkoukn\",\"title\":\"dwtiukbldngkp\"}").toObject(VideoGroupVideo.class);
         Assertions.assertEquals("nkoukn", model.src());
         Assertions.assertEquals("dwtiukbldngkp", model.title());
     }

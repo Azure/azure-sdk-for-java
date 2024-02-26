@@ -3,6 +3,7 @@
 
 package com.azure.core.http;
 
+import com.azure.core.implementation.util.HttpHeadersAccessHelper;
 import com.azure.core.util.CoreUtils;
 
 import java.util.Collections;
@@ -30,6 +31,10 @@ import java.util.stream.Stream;
 public class HttpHeaders implements Iterable<HttpHeader> {
     // This map is a case-insensitive key (i.e. lower-cased), but the returned HttpHeader key will be as-provided to us
     private final Map<String, HttpHeader> headers;
+
+    static {
+        HttpHeadersAccessHelper.setAccessor(headers -> headers.headers);
+    }
 
     /**
      * Create an empty HttpHeaders instance.
@@ -62,8 +67,8 @@ public class HttpHeaders implements Iterable<HttpHeader> {
 
     HttpHeaders(HttpHeaders headers) {
         this.headers = new HashMap<>((int) (headers.headers.size() / 0.75f));
-        headers.headers.forEach((key, value) ->
-            this.headers.put(key, new HttpHeader(value.getName(), value.getValuesList())));
+        headers.headers
+            .forEach((key, value) -> this.headers.put(key, new HttpHeader(value.getName(), value.getValuesList())));
     }
 
     /**
@@ -256,8 +261,8 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      */
     public HttpHeaders setAllHttpHeaders(HttpHeaders headers) {
         if (headers != null) {
-            headers.headers.forEach((headerName, header) ->
-                setInternal(headerName, header.getName(), header.getValuesList()));
+            headers.headers
+                .forEach((headerName, header) -> setInternal(headerName, header.getName(), header.getValuesList()));
         }
 
         return this;

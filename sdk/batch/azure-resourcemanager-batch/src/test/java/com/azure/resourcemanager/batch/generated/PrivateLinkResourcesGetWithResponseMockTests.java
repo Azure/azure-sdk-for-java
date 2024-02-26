@@ -29,39 +29,26 @@ public final class PrivateLinkResourcesGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"groupId\":\"ojgcyzt\",\"requiredMembers\":[\"z\",\"baeqphc\",\"qnrnrpxehuwryk\"],\"requiredZoneNames\":[\"ifmviklbydvk\",\"bejdznxcv\"]},\"etag\":\"rhnj\",\"id\":\"volvtn\",\"name\":\"v\",\"type\":\"fzg\"}";
+        String responseStr
+            = "{\"properties\":{\"groupId\":\"m\",\"requiredMembers\":[\"mguaadraufa\",\"tkahzo\",\"ajjziuxxpshne\",\"kulfg\"],\"requiredZoneNames\":[\"ubkwdle\",\"rds\"]},\"etag\":\"ujbazpjuohminyfl\",\"id\":\"orwmduvwpklv\",\"name\":\"w\",\"type\":\"ygdxpgpqchis\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        BatchManager manager =
-            BatchManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        BatchManager manager = BatchManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PrivateLinkResource response =
-            manager
-                .privateLinkResources()
-                .getWithResponse("t", "mrtwna", "jslb", com.azure.core.util.Context.NONE)
-                .getValue();
+        PrivateLinkResource response = manager.privateLinkResources()
+            .getWithResponse("uffkmrqemvvh", "xtdr", "futacoebjvewzc", com.azure.core.util.Context.NONE).getValue();
+
     }
 }

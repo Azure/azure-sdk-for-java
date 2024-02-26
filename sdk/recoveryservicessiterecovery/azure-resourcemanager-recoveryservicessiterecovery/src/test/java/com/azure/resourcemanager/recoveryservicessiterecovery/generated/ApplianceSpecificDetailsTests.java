@@ -10,10 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.ApplianceSp
 public final class ApplianceSpecificDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplianceSpecificDetails model =
-            BinaryData
-                .fromString("{\"instanceType\":\"ApplianceSpecificDetails\"}")
-                .toObject(ApplianceSpecificDetails.class);
+        ApplianceSpecificDetails model = BinaryData.fromString("{\"instanceType\":\"ApplianceSpecificDetails\"}")
+            .toObject(ApplianceSpecificDetails.class);
     }
 
     @org.junit.jupiter.api.Test

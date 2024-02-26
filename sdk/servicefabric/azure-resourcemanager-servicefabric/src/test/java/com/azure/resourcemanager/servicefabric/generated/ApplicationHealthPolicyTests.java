@@ -14,34 +14,32 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationHealthPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationHealthPolicy model =
-            BinaryData
-                .fromString(
-                    "{\"defaultServiceTypeHealthPolicy\":{\"maxPercentUnhealthyServices\":578472109},\"serviceTypeHealthPolicies\":{\"bpf\":{\"maxPercentUnhealthyServices\":607055364},\"inzgvfcj\":{\"maxPercentUnhealthyServices\":257181558},\"oxxjtfelluwf\":{\"maxPercentUnhealthyServices\":1821850933}}}")
-                .toObject(ApplicationHealthPolicy.class);
-        Assertions.assertEquals(578472109, model.defaultServiceTypeHealthPolicy().maxPercentUnhealthyServices());
-        Assertions.assertEquals(607055364, model.serviceTypeHealthPolicies().get("bpf").maxPercentUnhealthyServices());
+        ApplicationHealthPolicy model = BinaryData.fromString(
+            "{\"defaultServiceTypeHealthPolicy\":{\"maxPercentUnhealthyServices\":186594005},\"serviceTypeHealthPolicies\":{\"bkzgcwrwclx\":{\"maxPercentUnhealthyServices\":2049117618},\"ljdousk\":{\"maxPercentUnhealthyServices\":562899344},\"kocrcjdkwtnhx\":{\"maxPercentUnhealthyServices\":874345897},\"biksq\":{\"maxPercentUnhealthyServices\":1299495603}}}")
+            .toObject(ApplicationHealthPolicy.class);
+        Assertions.assertEquals(186594005, model.defaultServiceTypeHealthPolicy().maxPercentUnhealthyServices());
+        Assertions.assertEquals(2049117618,
+            model.serviceTypeHealthPolicies().get("bkzgcwrwclx").maxPercentUnhealthyServices());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationHealthPolicy model =
-            new ApplicationHealthPolicy()
+        ApplicationHealthPolicy model
+            = new ApplicationHealthPolicy()
                 .withDefaultServiceTypeHealthPolicy(
-                    new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(578472109))
+                    new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(186594005))
                 .withServiceTypeHealthPolicies(
-                    mapOf(
-                        "bpf",
-                        new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(607055364),
-                        "inzgvfcj",
-                        new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(257181558),
-                        "oxxjtfelluwf",
-                        new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(1821850933)));
+                    mapOf("bkzgcwrwclx", new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(2049117618),
+                        "ljdousk", new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(562899344),
+                        "kocrcjdkwtnhx", new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(874345897),
+                        "biksq", new ServiceTypeHealthPolicy().withMaxPercentUnhealthyServices(1299495603)));
         model = BinaryData.fromObject(model).toObject(ApplicationHealthPolicy.class);
-        Assertions.assertEquals(578472109, model.defaultServiceTypeHealthPolicy().maxPercentUnhealthyServices());
-        Assertions.assertEquals(607055364, model.serviceTypeHealthPolicies().get("bpf").maxPercentUnhealthyServices());
+        Assertions.assertEquals(186594005, model.defaultServiceTypeHealthPolicy().maxPercentUnhealthyServices());
+        Assertions.assertEquals(2049117618,
+            model.serviceTypeHealthPolicies().get("bkzgcwrwclx").maxPercentUnhealthyServices());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

@@ -11,17 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateMobilityServiceRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateMobilityServiceRequestProperties model =
-            BinaryData
-                .fromString("{\"runAsAccountId\":\"tsttktlahbq\"}")
-                .toObject(UpdateMobilityServiceRequestProperties.class);
+        UpdateMobilityServiceRequestProperties model = BinaryData.fromString("{\"runAsAccountId\":\"tsttktlahbq\"}")
+            .toObject(UpdateMobilityServiceRequestProperties.class);
         Assertions.assertEquals("tsttktlahbq", model.runAsAccountId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateMobilityServiceRequestProperties model =
-            new UpdateMobilityServiceRequestProperties().withRunAsAccountId("tsttktlahbq");
+        UpdateMobilityServiceRequestProperties model
+            = new UpdateMobilityServiceRequestProperties().withRunAsAccountId("tsttktlahbq");
         model = BinaryData.fromObject(model).toObject(UpdateMobilityServiceRequestProperties.class);
         Assertions.assertEquals("tsttktlahbq", model.runAsAccountId());
     }

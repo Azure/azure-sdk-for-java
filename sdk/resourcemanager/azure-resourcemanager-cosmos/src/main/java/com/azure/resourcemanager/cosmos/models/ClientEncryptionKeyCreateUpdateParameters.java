@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.cosmos.fluent.models.ClientEncryptionKeyCreateUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Parameters to create and update ClientEncryptionKey. */
+/**
+ * Parameters to create and update ClientEncryptionKey.
+ */
 @Fluent
 public final class ClientEncryptionKeyCreateUpdateParameters {
     /*
@@ -18,13 +20,15 @@ public final class ClientEncryptionKeyCreateUpdateParameters {
     @JsonProperty(value = "properties", required = true)
     private ClientEncryptionKeyCreateUpdateProperties innerProperties = new ClientEncryptionKeyCreateUpdateProperties();
 
-    /** Creates an instance of ClientEncryptionKeyCreateUpdateParameters class. */
+    /**
+     * Creates an instance of ClientEncryptionKeyCreateUpdateParameters class.
+     */
     public ClientEncryptionKeyCreateUpdateParameters() {
     }
 
     /**
      * Get the innerProperties property: Properties to create and update ClientEncryptionKey.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ClientEncryptionKeyCreateUpdateProperties innerProperties() {
@@ -33,7 +37,7 @@ public final class ClientEncryptionKeyCreateUpdateParameters {
 
     /**
      * Get the resource property: The standard JSON format of a ClientEncryptionKey.
-     *
+     * 
      * @return the resource value.
      */
     public ClientEncryptionKeyResource resource() {
@@ -42,7 +46,7 @@ public final class ClientEncryptionKeyCreateUpdateParameters {
 
     /**
      * Set the resource property: The standard JSON format of a ClientEncryptionKey.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the ClientEncryptionKeyCreateUpdateParameters object itself.
      */
@@ -56,16 +60,13 @@ public final class ClientEncryptionKeyCreateUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model"
-                            + " ClientEncryptionKeyCreateUpdateParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model ClientEncryptionKeyCreateUpdateParameters"));
         } else {
             innerProperties().validate();
         }

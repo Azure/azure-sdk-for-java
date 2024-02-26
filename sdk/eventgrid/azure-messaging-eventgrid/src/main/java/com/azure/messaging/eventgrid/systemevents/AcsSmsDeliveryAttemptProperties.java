@@ -5,36 +5,43 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 
-/** Schema for details of a delivery attempt. */
+/**
+ * Schema for details of a delivery attempt.
+ */
 @Fluent
-public final class AcsSmsDeliveryAttemptProperties {
+public final class AcsSmsDeliveryAttemptProperties implements JsonSerializable<AcsSmsDeliveryAttemptProperties> {
     /*
      * TimeStamp when delivery was attempted
      */
-    @JsonProperty(value = "timestamp")
     private OffsetDateTime timestamp;
 
     /*
      * Number of segments that were successfully delivered
      */
-    @JsonProperty(value = "segmentsSucceeded")
     private Integer segmentsSucceeded;
 
     /*
      * Number of segments whose delivery failed
      */
-    @JsonProperty(value = "segmentsFailed")
     private Integer segmentsFailed;
 
-    /** Creates an instance of AcsSmsDeliveryAttemptProperties class. */
-    public AcsSmsDeliveryAttemptProperties() {}
+    /**
+     * Creates an instance of AcsSmsDeliveryAttemptProperties class.
+     */
+    public AcsSmsDeliveryAttemptProperties() {
+    }
 
     /**
      * Get the timestamp property: TimeStamp when delivery was attempted.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime getTimestamp() {
@@ -43,7 +50,7 @@ public final class AcsSmsDeliveryAttemptProperties {
 
     /**
      * Set the timestamp property: TimeStamp when delivery was attempted.
-     *
+     * 
      * @param timestamp the timestamp value to set.
      * @return the AcsSmsDeliveryAttemptProperties object itself.
      */
@@ -54,7 +61,7 @@ public final class AcsSmsDeliveryAttemptProperties {
 
     /**
      * Get the segmentsSucceeded property: Number of segments that were successfully delivered.
-     *
+     * 
      * @return the segmentsSucceeded value.
      */
     public Integer getSegmentsSucceeded() {
@@ -63,7 +70,7 @@ public final class AcsSmsDeliveryAttemptProperties {
 
     /**
      * Set the segmentsSucceeded property: Number of segments that were successfully delivered.
-     *
+     * 
      * @param segmentsSucceeded the segmentsSucceeded value to set.
      * @return the AcsSmsDeliveryAttemptProperties object itself.
      */
@@ -74,7 +81,7 @@ public final class AcsSmsDeliveryAttemptProperties {
 
     /**
      * Get the segmentsFailed property: Number of segments whose delivery failed.
-     *
+     * 
      * @return the segmentsFailed value.
      */
     public Integer getSegmentsFailed() {
@@ -83,12 +90,55 @@ public final class AcsSmsDeliveryAttemptProperties {
 
     /**
      * Set the segmentsFailed property: Number of segments whose delivery failed.
-     *
+     * 
      * @param segmentsFailed the segmentsFailed value to set.
      * @return the AcsSmsDeliveryAttemptProperties object itself.
      */
     public AcsSmsDeliveryAttemptProperties setSegmentsFailed(Integer segmentsFailed) {
         this.segmentsFailed = segmentsFailed;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("timestamp",
+            this.timestamp == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(this.timestamp));
+        jsonWriter.writeNumberField("segmentsSucceeded", this.segmentsSucceeded);
+        jsonWriter.writeNumberField("segmentsFailed", this.segmentsFailed);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsSmsDeliveryAttemptProperties from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsSmsDeliveryAttemptProperties if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsSmsDeliveryAttemptProperties.
+     */
+    public static AcsSmsDeliveryAttemptProperties fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsSmsDeliveryAttemptProperties deserializedAcsSmsDeliveryAttemptProperties
+                = new AcsSmsDeliveryAttemptProperties();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("timestamp".equals(fieldName)) {
+                    deserializedAcsSmsDeliveryAttemptProperties.timestamp
+                        = reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString()));
+                } else if ("segmentsSucceeded".equals(fieldName)) {
+                    deserializedAcsSmsDeliveryAttemptProperties.segmentsSucceeded
+                        = reader.getNullable(JsonReader::getInt);
+                } else if ("segmentsFailed".equals(fieldName)) {
+                    deserializedAcsSmsDeliveryAttemptProperties.segmentsFailed = reader.getNullable(JsonReader::getInt);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsSmsDeliveryAttemptProperties;
+        });
     }
 }

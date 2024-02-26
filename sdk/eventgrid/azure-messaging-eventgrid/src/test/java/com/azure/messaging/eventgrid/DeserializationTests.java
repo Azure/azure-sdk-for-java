@@ -7,6 +7,9 @@ import com.azure.core.models.CloudEvent;
 import com.azure.core.models.ResponseError;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.serializer.TypeReference;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonWriter;
 import com.azure.messaging.eventgrid.implementation.models.ContosoItemReceivedEventData;
 import com.azure.messaging.eventgrid.implementation.models.ContosoItemSentEventData;
 import com.azure.messaging.eventgrid.implementation.models.DroneShippingInfo;
@@ -104,7 +107,11 @@ import com.fasterxml.jackson.databind.JsonDeserializer;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
+import org.junit.jupiter.params.provider.MethodSource;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.time.Duration;
@@ -112,7 +119,9 @@ import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Stream;
 
+import static org.junit.jupiter.api.Assertions.assertArrayEquals;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertNotEquals;
@@ -135,6 +144,38 @@ public class DeserializationTests {
                 .toObject(TypeReference.createInstance(SystemEventNames.getSystemEventMappings().get(eventType)));
         }
         return null;
+    }
+
+    @ParameterizedTest
+    @MethodSource("getObjectsForRoundTrip")
+    public void testEventGridRoundTripStreamSerialization(BinaryData payload) {
+        EventGridEvent eventGridEvent = new EventGridEvent("subject", "eventType", payload,
+            "dataVersion");
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+        try {
+            JsonWriter writer = JsonProviders.createWriter(stream);
+            eventGridEvent.toJson(writer);
+            writer.flush();
+            try (JsonReader reader = JsonProviders.createReader(stream.toByteArray())) {
+                EventGridEvent deserializedEvent = EventGridEvent.fromJson(reader);
+                assertEquals(eventGridEvent.getSubject(), deserializedEvent.getSubject());
+                assertEquals(eventGridEvent.getEventType(), deserializedEvent.getEventType());
+                assertArrayEquals(eventGridEvent.getData().toBytes(), deserializedEvent.getData().toBytes());
+                assertEquals(eventGridEvent.getDataVersion(), deserializedEvent.getDataVersion());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private static Stream<Arguments> getObjectsForRoundTrip() {
+        return Stream.of(
+            Arguments.of(BinaryData.fromObject(1)),
+            Arguments.of(BinaryData.fromObject("data")),
+            Arguments.of(BinaryData.fromString("{\"data\":\"data\"}")),
+            Arguments.of(BinaryData.fromObject(null)),
+            Arguments.of(BinaryData.fromObject(true))
+        );
     }
 
     // just test to see if these events can be deserialized

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of ServiceAssociationLink. */
+/**
+ * Properties of ServiceAssociationLink.
+ */
 @Fluent
 public final class ServiceAssociationLinkPropertiesFormat {
     /*
@@ -42,13 +44,15 @@ public final class ServiceAssociationLinkPropertiesFormat {
     @JsonProperty(value = "locations")
     private List<String> locations;
 
-    /** Creates an instance of ServiceAssociationLinkPropertiesFormat class. */
+    /**
+     * Creates an instance of ServiceAssociationLinkPropertiesFormat class.
+     */
     public ServiceAssociationLinkPropertiesFormat() {
     }
 
     /**
      * Get the linkedResourceType property: Resource type of the linked resource.
-     *
+     * 
      * @return the linkedResourceType value.
      */
     public String linkedResourceType() {
@@ -57,7 +61,7 @@ public final class ServiceAssociationLinkPropertiesFormat {
 
     /**
      * Set the linkedResourceType property: Resource type of the linked resource.
-     *
+     * 
      * @param linkedResourceType the linkedResourceType value to set.
      * @return the ServiceAssociationLinkPropertiesFormat object itself.
      */
@@ -68,7 +72,7 @@ public final class ServiceAssociationLinkPropertiesFormat {
 
     /**
      * Get the link property: Link to the external resource.
-     *
+     * 
      * @return the link value.
      */
     public String link() {
@@ -77,7 +81,7 @@ public final class ServiceAssociationLinkPropertiesFormat {
 
     /**
      * Set the link property: Link to the external resource.
-     *
+     * 
      * @param link the link value to set.
      * @return the ServiceAssociationLinkPropertiesFormat object itself.
      */
@@ -88,7 +92,7 @@ public final class ServiceAssociationLinkPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the service association link resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -97,7 +101,7 @@ public final class ServiceAssociationLinkPropertiesFormat {
 
     /**
      * Get the allowDelete property: If true, the resource can be deleted.
-     *
+     * 
      * @return the allowDelete value.
      */
     public Boolean allowDelete() {
@@ -106,7 +110,7 @@ public final class ServiceAssociationLinkPropertiesFormat {
 
     /**
      * Set the allowDelete property: If true, the resource can be deleted.
-     *
+     * 
      * @param allowDelete the allowDelete value to set.
      * @return the ServiceAssociationLinkPropertiesFormat object itself.
      */
@@ -117,7 +121,7 @@ public final class ServiceAssociationLinkPropertiesFormat {
 
     /**
      * Get the locations property: A list of locations.
-     *
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -126,7 +130,7 @@ public final class ServiceAssociationLinkPropertiesFormat {
 
     /**
      * Set the locations property: A list of locations.
-     *
+     * 
      * @param locations the locations value to set.
      * @return the ServiceAssociationLinkPropertiesFormat object itself.
      */
@@ -137,7 +141,7 @@ public final class ServiceAssociationLinkPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

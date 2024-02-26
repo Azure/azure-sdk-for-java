@@ -6,46 +6,48 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.resourcemanager.batch.fluent.models.DetectorResponseInner;
 
-/** An immutable client-side representation of DetectorResponse. */
+/**
+ * An immutable client-side representation of DetectorResponse.
+ */
 public interface DetectorResponse {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the etag property: The ETag of the resource, used for concurrency statements.
-     *
+     * 
      * @return the etag value.
      */
     String etag();
 
     /**
      * Gets the value property: A base64 encoded string that represents the content of a detector.
-     *
+     * 
      * @return the value value.
      */
     String value();
 
     /**
      * Gets the inner com.azure.resourcemanager.batch.fluent.models.DetectorResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     DetectorResponseInner innerModel();

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.servicefabric.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The settings to enable AAD authentication on the cluster. */
+/**
+ * The settings to enable AAD authentication on the cluster.
+ */
 @Fluent
 public final class AzureActiveDirectory {
     /*
@@ -28,13 +30,15 @@ public final class AzureActiveDirectory {
     @JsonProperty(value = "clientApplication")
     private String clientApplication;
 
-    /** Creates an instance of AzureActiveDirectory class. */
+    /**
+     * Creates an instance of AzureActiveDirectory class.
+     */
     public AzureActiveDirectory() {
     }
 
     /**
      * Get the tenantId property: Azure active directory tenant id.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -43,7 +47,7 @@ public final class AzureActiveDirectory {
 
     /**
      * Set the tenantId property: Azure active directory tenant id.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the AzureActiveDirectory object itself.
      */
@@ -54,7 +58,7 @@ public final class AzureActiveDirectory {
 
     /**
      * Get the clusterApplication property: Azure active directory cluster application id.
-     *
+     * 
      * @return the clusterApplication value.
      */
     public String clusterApplication() {
@@ -63,7 +67,7 @@ public final class AzureActiveDirectory {
 
     /**
      * Set the clusterApplication property: Azure active directory cluster application id.
-     *
+     * 
      * @param clusterApplication the clusterApplication value to set.
      * @return the AzureActiveDirectory object itself.
      */
@@ -74,7 +78,7 @@ public final class AzureActiveDirectory {
 
     /**
      * Get the clientApplication property: Azure active directory client application id.
-     *
+     * 
      * @return the clientApplication value.
      */
     public String clientApplication() {
@@ -83,7 +87,7 @@ public final class AzureActiveDirectory {
 
     /**
      * Set the clientApplication property: Azure active directory client application id.
-     *
+     * 
      * @param clientApplication the clientApplication value to set.
      * @return the AzureActiveDirectory object itself.
      */
@@ -94,7 +98,7 @@ public final class AzureActiveDirectory {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

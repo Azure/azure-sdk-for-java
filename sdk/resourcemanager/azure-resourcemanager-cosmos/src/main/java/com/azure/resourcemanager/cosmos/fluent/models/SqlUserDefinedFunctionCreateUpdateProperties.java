@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmos.models.CreateUpdateOptions;
 import com.azure.resourcemanager.cosmos.models.SqlUserDefinedFunctionResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties to create and update Azure Cosmos DB userDefinedFunction. */
+/**
+ * Properties to create and update Azure Cosmos DB userDefinedFunction.
+ */
 @Fluent
 public final class SqlUserDefinedFunctionCreateUpdateProperties {
     /*
@@ -26,13 +28,15 @@ public final class SqlUserDefinedFunctionCreateUpdateProperties {
     @JsonProperty(value = "options")
     private CreateUpdateOptions options;
 
-    /** Creates an instance of SqlUserDefinedFunctionCreateUpdateProperties class. */
+    /**
+     * Creates an instance of SqlUserDefinedFunctionCreateUpdateProperties class.
+     */
     public SqlUserDefinedFunctionCreateUpdateProperties() {
     }
 
     /**
      * Get the resource property: The standard JSON format of a userDefinedFunction.
-     *
+     * 
      * @return the resource value.
      */
     public SqlUserDefinedFunctionResource resource() {
@@ -41,7 +45,7 @@ public final class SqlUserDefinedFunctionCreateUpdateProperties {
 
     /**
      * Set the resource property: The standard JSON format of a userDefinedFunction.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the SqlUserDefinedFunctionCreateUpdateProperties object itself.
      */
@@ -53,7 +57,7 @@ public final class SqlUserDefinedFunctionCreateUpdateProperties {
     /**
      * Get the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @return the options value.
      */
     public CreateUpdateOptions options() {
@@ -63,7 +67,7 @@ public final class SqlUserDefinedFunctionCreateUpdateProperties {
     /**
      * Set the options property: A key-value pair of options to be applied for the request. This corresponds to the
      * headers sent with the request.
-     *
+     * 
      * @param options the options value to set.
      * @return the SqlUserDefinedFunctionCreateUpdateProperties object itself.
      */
@@ -74,15 +78,13 @@ public final class SqlUserDefinedFunctionCreateUpdateProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (resource() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property resource in model SqlUserDefinedFunctionCreateUpdateProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property resource in model SqlUserDefinedFunctionCreateUpdateProperties"));
         } else {
             resource().validate();
         }

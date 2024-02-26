@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Properties for DataTransferServiceResource. */
+/**
+ * Properties for DataTransferServiceResource.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "serviceType")
 @JsonTypeName("DataTransfer")
 @Fluent
@@ -21,27 +23,33 @@ public final class DataTransferServiceResourceProperties extends ServiceResource
     @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<DataTransferRegionalServiceResource> locations;
 
-    /** Creates an instance of DataTransferServiceResourceProperties class. */
+    /**
+     * Creates an instance of DataTransferServiceResourceProperties class.
+     */
     public DataTransferServiceResourceProperties() {
     }
 
     /**
      * Get the locations property: An array that contains all of the locations for the service.
-     *
+     * 
      * @return the locations value.
      */
     public List<DataTransferRegionalServiceResource> locations() {
         return this.locations;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataTransferServiceResourceProperties withInstanceSize(ServiceSize instanceSize) {
         super.withInstanceSize(instanceSize);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DataTransferServiceResourceProperties withInstanceCount(Integer instanceCount) {
         super.withInstanceCount(instanceCount);
@@ -50,7 +58,7 @@ public final class DataTransferServiceResourceProperties extends ServiceResource
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

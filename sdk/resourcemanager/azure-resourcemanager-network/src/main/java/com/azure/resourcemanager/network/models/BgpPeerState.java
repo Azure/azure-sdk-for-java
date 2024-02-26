@@ -8,26 +8,38 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The BGP peer state. */
+/**
+ * The BGP peer state.
+ */
 public final class BgpPeerState extends ExpandableStringEnum<BgpPeerState> {
-    /** Static value Unknown for BgpPeerState. */
+    /**
+     * Static value Unknown for BgpPeerState.
+     */
     public static final BgpPeerState UNKNOWN = fromString("Unknown");
 
-    /** Static value Stopped for BgpPeerState. */
+    /**
+     * Static value Stopped for BgpPeerState.
+     */
     public static final BgpPeerState STOPPED = fromString("Stopped");
 
-    /** Static value Idle for BgpPeerState. */
+    /**
+     * Static value Idle for BgpPeerState.
+     */
     public static final BgpPeerState IDLE = fromString("Idle");
 
-    /** Static value Connecting for BgpPeerState. */
+    /**
+     * Static value Connecting for BgpPeerState.
+     */
     public static final BgpPeerState CONNECTING = fromString("Connecting");
 
-    /** Static value Connected for BgpPeerState. */
+    /**
+     * Static value Connected for BgpPeerState.
+     */
     public static final BgpPeerState CONNECTED = fromString("Connected");
 
     /**
      * Creates a new instance of BgpPeerState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -36,7 +48,7 @@ public final class BgpPeerState extends ExpandableStringEnum<BgpPeerState> {
 
     /**
      * Creates or finds a BgpPeerState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding BgpPeerState.
      */
@@ -47,7 +59,7 @@ public final class BgpPeerState extends ExpandableStringEnum<BgpPeerState> {
 
     /**
      * Gets known BgpPeerState values.
-     *
+     * 
      * @return known BgpPeerState values.
      */
     public static Collection<BgpPeerState> values() {

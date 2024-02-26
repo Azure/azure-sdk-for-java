@@ -5,38 +5,34 @@ package com.azure.storage.common.test.shared.extensions;
 
 import com.azure.core.test.TestMode;
 import com.azure.storage.common.test.shared.TestEnvironment;
-import org.spockframework.runtime.extension.IAnnotationDrivenExtension;
-import org.spockframework.runtime.model.FeatureInfo;
-import org.spockframework.runtime.model.SpecInfo;
+import org.junit.jupiter.api.extension.ConditionEvaluationResult;
+import org.junit.jupiter.api.extension.ExecutionCondition;
+import org.junit.jupiter.api.extension.ExtensionContext;
 
 import java.time.LocalDate;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
 
-public class PlaybackOnlyExtension implements IAnnotationDrivenExtension<PlaybackOnly> {
+import static org.junit.platform.commons.util.AnnotationUtils.findAnnotation;
 
+/**
+ * Extension to mark tests that should only be run in PLAYBACK test mode.
+ */
+public class PlaybackOnlyExtension implements ExecutionCondition {
     @Override
-    public void visitFeatureAnnotation(PlaybackOnly annotation, FeatureInfo feature) {
-        validateExpiryTime(annotation);
+    public ConditionEvaluationResult evaluateExecutionCondition(ExtensionContext context) {
+        // Check for the PlaybackOnly annotation on the test method.
+        // If it exists, check if the expiry time has passed.
+        findAnnotation(context.getElement(), PlaybackOnly.class).ifPresent(PlaybackOnlyExtension::validateExpiryTime);
 
         TestMode testMode = TestEnvironment.getInstance().getTestMode();
-        if (testMode != TestMode.PLAYBACK) {
-            feature.skip(String.format("Test ignored in %s mode", testMode));
-        }
+        return (testMode != TestMode.PLAYBACK)
+            ? ConditionEvaluationResult.disabled("Test ignored in " + testMode + " mode")
+            : ConditionEvaluationResult.enabled("Test enabled in " + testMode + " mode");
     }
 
-    @Override
-    public void visitSpecAnnotation(PlaybackOnly annotation, SpecInfo spec) {
-        validateExpiryTime(annotation);
-
-        TestMode testMode = TestEnvironment.getInstance().getTestMode();
-        if (testMode != TestMode.PLAYBACK) {
-            spec.skip(String.format("Test ignored in %s mode", testMode));
-        }
-    }
-
-    private void validateExpiryTime(PlaybackOnly annotation) {
+    private static void validateExpiryTime(PlaybackOnly annotation) {
         String expiryStr = annotation.expiryTime();
         if ("".equals(expiryStr)) {
             return;
@@ -45,7 +41,9 @@ public class PlaybackOnlyExtension implements IAnnotationDrivenExtension<Playbac
             .atZone(ZoneId.of(ZoneId.SHORT_IDS.get("PST"))).toOffsetDateTime();
         OffsetDateTime now = OffsetDateTime.now(ZoneId.of(ZoneId.SHORT_IDS.get("PST")));
         if (now.isAfter(expiry)) {
-            throw new RuntimeException("PlaybackOnly has expired. Test must be reenabled");
+            throw new RuntimeException("PlaybackOnly has expired. Test must be re-enabled");
         }
     }
+
+
 }

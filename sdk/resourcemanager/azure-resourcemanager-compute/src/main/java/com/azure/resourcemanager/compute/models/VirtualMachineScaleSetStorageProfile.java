@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Describes a virtual machine scale set storage profile. */
+/**
+ * Describes a virtual machine scale set storage profile.
+ */
 @Fluent
 public final class VirtualMachineScaleSetStorageProfile {
     /*
@@ -41,7 +43,9 @@ public final class VirtualMachineScaleSetStorageProfile {
     @JsonProperty(value = "diskControllerType")
     private String diskControllerType;
 
-    /** Creates an instance of VirtualMachineScaleSetStorageProfile class. */
+    /**
+     * Creates an instance of VirtualMachineScaleSetStorageProfile class.
+     */
     public VirtualMachineScaleSetStorageProfile() {
     }
 
@@ -49,7 +53,7 @@ public final class VirtualMachineScaleSetStorageProfile {
      * Get the imageReference property: Specifies information about the image to use. You can specify information about
      * platform images, marketplace images, or virtual machine images. This element is required when you want to use a
      * platform image, marketplace image, or virtual machine image, but is not used in other creation operations.
-     *
+     * 
      * @return the imageReference value.
      */
     public ImageReference imageReference() {
@@ -60,7 +64,7 @@ public final class VirtualMachineScaleSetStorageProfile {
      * Set the imageReference property: Specifies information about the image to use. You can specify information about
      * platform images, marketplace images, or virtual machine images. This element is required when you want to use a
      * platform image, marketplace image, or virtual machine image, but is not used in other creation operations.
-     *
+     * 
      * @param imageReference the imageReference value to set.
      * @return the VirtualMachineScaleSetStorageProfile object itself.
      */
@@ -73,7 +77,7 @@ public final class VirtualMachineScaleSetStorageProfile {
      * Get the osDisk property: Specifies information about the operating system disk used by the virtual machines in
      * the scale set. For more information about disks, see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
-     *
+     * 
      * @return the osDisk value.
      */
     public VirtualMachineScaleSetOSDisk osDisk() {
@@ -84,7 +88,7 @@ public final class VirtualMachineScaleSetStorageProfile {
      * Set the osDisk property: Specifies information about the operating system disk used by the virtual machines in
      * the scale set. For more information about disks, see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
-     *
+     * 
      * @param osDisk the osDisk value to set.
      * @return the VirtualMachineScaleSetStorageProfile object itself.
      */
@@ -97,7 +101,7 @@ public final class VirtualMachineScaleSetStorageProfile {
      * Get the dataDisks property: Specifies the parameters that are used to add data disks to the virtual machines in
      * the scale set. For more information about disks, see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
-     *
+     * 
      * @return the dataDisks value.
      */
     public List<VirtualMachineScaleSetDataDisk> dataDisks() {
@@ -108,7 +112,7 @@ public final class VirtualMachineScaleSetStorageProfile {
      * Set the dataDisks property: Specifies the parameters that are used to add data disks to the virtual machines in
      * the scale set. For more information about disks, see [About disks and VHDs for Azure virtual
      * machines](https://docs.microsoft.com/azure/virtual-machines/managed-disks-overview).
-     *
+     * 
      * @param dataDisks the dataDisks value to set.
      * @return the VirtualMachineScaleSetStorageProfile object itself.
      */
@@ -119,7 +123,7 @@ public final class VirtualMachineScaleSetStorageProfile {
 
     /**
      * Get the diskControllerType property: The diskControllerType property.
-     *
+     * 
      * @return the diskControllerType value.
      */
     public String diskControllerType() {
@@ -128,7 +132,7 @@ public final class VirtualMachineScaleSetStorageProfile {
 
     /**
      * Set the diskControllerType property: The diskControllerType property.
-     *
+     * 
      * @param diskControllerType the diskControllerType value to set.
      * @return the VirtualMachineScaleSetStorageProfile object itself.
      */
@@ -139,7 +143,7 @@ public final class VirtualMachineScaleSetStorageProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
