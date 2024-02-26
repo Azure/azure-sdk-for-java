@@ -54,17 +54,25 @@ import java.util.Objects;
 import java.util.function.BiFunction;
 
 /**
- * <p>The NettyAsyncHttpClient class is an implementation of the {@link HttpClient} interface using the
+ * <p>
+ * The NettyAsyncHttpClient class is an implementation of the {@link HttpClient} interface using the
  * Reactor Netty library. This class is designed to handle HTTP requests and responses asynchronously, leveraging
- * the non-blocking and backpressure-ready nature of Reactor Netty.</p>
+ * the non-blocking and backpressure-ready nature of Reactor Netty.
+ * </p>
  *
- * <p>This class is typically instantiated using the {@link NettyAsyncHttpClientBuilder} class, which provides a
+ * <p>
+ * This class is typically instantiated using the {@link NettyAsyncHttpClientBuilder} class, which provides a
  * fluent API for configuring various aspects of the HTTP client, such as the port, whether to enable wiretapping, and
- * proxy configuration.</p>
+ * proxy configuration.
+ * </p>
  *
- * <p><strong>Sample: Construct NettyAsyncHttpClient with Default Configuration</strong></p>
+ * <p>
+ * <strong>Sample: Construct NettyAsyncHttpClient with Default Configuration</strong>
+ * </p>
  *
- * <p>The following code sample demonstrates the creation of a Netty HttpClient that uses port 80 and has no proxy.</p>
+ * <p>
+ * The following code sample demonstrates the creation of a Netty HttpClient that uses port 80 and has no proxy.
+ * </p>
  *
  * <!-- src_embed com.azure.core.http.netty.instantiation-simple -->
  * <pre>
@@ -75,7 +83,9 @@ import java.util.function.BiFunction;
  * </pre>
  * <!-- end com.azure.core.http.netty.instantiation-simple -->
  *
- * <p>For more ways to instantiate NettyAsyncHttpClient, refer to {@link NettyAsyncHttpClientBuilder}.</p>
+ * <p>
+ * For more ways to instantiate NettyAsyncHttpClient, refer to {@link NettyAsyncHttpClientBuilder}.
+ * </p>
  *
  * @see com.azure.core.http.netty
  * @see NettyAsyncHttpClientBuilder
@@ -139,38 +149,37 @@ class NettyAsyncHttpClient implements HttpClient {
     private Mono<HttpResponse> attemptAsync(HttpRequest request, boolean eagerlyReadResponse,
         boolean ignoreResponseBody, boolean headersEagerlyConverted, Long responseTimeout,
         ProgressReporter progressReporter, boolean proxyRetry) {
-        Flux<Tuple2<HttpResponse, HttpHeaders>> nettyRequest = nettyClient
-            .request(toReactorNettyHttpMethod(request.getHttpMethod()))
-            .uri(request.getUrl().toString())
-            .send(bodySendDelegate(request))
-            .responseConnection(responseDelegate(request, disableBufferCopy, eagerlyReadResponse, ignoreResponseBody,
-                headersEagerlyConverted));
+        Flux<Tuple2<HttpResponse, HttpHeaders>> nettyRequest
+            = nettyClient.request(toReactorNettyHttpMethod(request.getHttpMethod()))
+                .uri(request.getUrl().toString())
+                .send(bodySendDelegate(request))
+                .responseConnection(responseDelegate(request, disableBufferCopy, eagerlyReadResponse,
+                    ignoreResponseBody, headersEagerlyConverted));
 
         if (responseTimeout != null || progressReporter != null) {
             nettyRequest = nettyRequest.contextWrite(ctx -> ctx.put(AzureNettyHttpClientContext.KEY,
                 new AzureNettyHttpClientContext(responseTimeout, progressReporter)));
         }
 
-        return nettyRequest.single()
-            .flatMap(responseAndHeaders -> {
-                HttpResponse response = responseAndHeaders.getT1();
-                if (addProxyHandler && response.getStatusCode() == 407) {
-                    if (proxyRetry) {
-                        // Exhausted retry attempt return an error.
-                        return Mono.error(new HttpProxyHandler.HttpProxyConnectException(
-                            "Failed to connect to proxy. Status: 407", responseAndHeaders.getT2()));
-                    } else {
-                        // Retry the request.
-                        return attemptAsync(request, eagerlyReadResponse, ignoreResponseBody, headersEagerlyConverted,
-                            responseTimeout, progressReporter, true);
-                    }
+        return nettyRequest.single().flatMap(responseAndHeaders -> {
+            HttpResponse response = responseAndHeaders.getT1();
+            if (addProxyHandler && response.getStatusCode() == 407) {
+                if (proxyRetry) {
+                    // Exhausted retry attempt return an error.
+                    return Mono.error(new HttpProxyHandler.HttpProxyConnectException(
+                        "Failed to connect to proxy. Status: 407", responseAndHeaders.getT2()));
                 } else {
-                    return Mono.just(response);
+                    // Retry the request.
+                    return attemptAsync(request, eagerlyReadResponse, ignoreResponseBody, headersEagerlyConverted,
+                        responseTimeout, progressReporter, true);
                 }
-            })
+            } else {
+                return Mono.just(response);
+            }
+        })
             .onErrorResume(throwable -> shouldRetryProxyError(proxyRetry, throwable)
                 ? attemptAsync(request, eagerlyReadResponse, ignoreResponseBody, headersEagerlyConverted,
-                        responseTimeout, progressReporter, true)
+                    responseTimeout, progressReporter, true)
                 : Mono.error(throwable));
     }
 
@@ -180,8 +189,8 @@ class NettyAsyncHttpClient implements HttpClient {
         // Sometimes connecting to the proxy may return an SSLException that wraps the ProxyConnectException, this
         // generally happens if the proxy is using SSL.
         return !proxyRetry
-               && (throwable instanceof ProxyConnectException
-                   || (throwable instanceof SSLException && throwable.getCause() instanceof ProxyConnectException));
+            && (throwable instanceof ProxyConnectException
+                || (throwable instanceof SSLException && throwable.getCause() instanceof ProxyConnectException));
     }
 
     @Override
@@ -206,8 +215,8 @@ class NettyAsyncHttpClient implements HttpClient {
      * @param restRequest the Rest request contains the body to be sent
      * @return a delegate upon invocation sets the request body in reactor-netty outbound object
      */
-    private static BiFunction<HttpClientRequest, NettyOutbound, Publisher<Void>> bodySendDelegate(
-        final HttpRequest restRequest) {
+    private static BiFunction<HttpClientRequest, NettyOutbound, Publisher<Void>>
+        bodySendDelegate(final HttpRequest restRequest) {
         return (reactorNettyRequest, reactorNettyOutbound) -> {
             for (HttpHeader hdr : restRequest.getHeaders()) {
                 // Get the Netty headers from Reactor Netty and work with the Netty headers directly. This removes the
@@ -227,11 +236,10 @@ class NettyAsyncHttpClient implements HttpClient {
                     // adds extra operators to achieve same result.
                     // The bytes are in memory at this time anyway and Unpooled.wrappedBuffer is lightweight.
                     return reactorNettyOutbound.send(Mono.just(Unpooled.wrappedBuffer(bodyContent.toBytes())));
-                } else if (bodyContent instanceof StringContent
-                    || bodyContent instanceof SerializableContent) {
+                } else if (bodyContent instanceof StringContent || bodyContent instanceof SerializableContent) {
                     // This defers encoding final bytes until emission happens.
-                    return reactorNettyOutbound.send(
-                        Mono.fromSupplier(() -> Unpooled.wrappedBuffer(bodyContent.toBytes())));
+                    return reactorNettyOutbound
+                        .send(Mono.fromSupplier(() -> Unpooled.wrappedBuffer(bodyContent.toBytes())));
                 } else if (bodyContent instanceof FileContent) {
                     return sendFile(restRequest, reactorNettyOutbound, (FileContent) bodyContent);
                 } else if (bodyContent instanceof InputStreamContent) {
@@ -246,8 +254,8 @@ class NettyAsyncHttpClient implements HttpClient {
         };
     }
 
-    private static NettyOutbound sendFile(
-        HttpRequest restRequest, NettyOutbound reactorNettyOutbound, FileContent fileContent) {
+    private static NettyOutbound sendFile(HttpRequest restRequest, NettyOutbound reactorNettyOutbound,
+        FileContent fileContent) {
         // NettyOutbound uses such logic internally for ssl connections but with smaller buffer of 1KB.
         // We use simplified check here to handle https instead of original check that Netty uses
         // as other corner cases are not existent (i.e. different protocols using ssl).
@@ -257,21 +265,19 @@ class NettyAsyncHttpClient implements HttpClient {
             // Send an empty file using send byte array as there is less overhead.
             return reactorNettyOutbound.sendByteArray(Flux.just(EMPTY_BYTES));
         } else if (restRequest.getUrl().getProtocol().equals("https")) {
-            return reactorNettyOutbound.sendUsing(
-                () -> FileChannel.open(fileContent.getFile(), StandardOpenOption.READ),
-                (c, fc) -> {
+            return reactorNettyOutbound
+                .sendUsing(() -> FileChannel.open(fileContent.getFile(), StandardOpenOption.READ), (c, fc) -> {
                     if (c.channel().pipeline().get(ChunkedWriteHandler.class) == null) {
                         c.addHandlerLast(NettyPipeline.ChunkedWriter, new ChunkedWriteHandler());
                     }
 
                     try {
-                        return new ChunkedNioFile(
-                            fc, fileContent.getPosition(), fileContent.getLength(), fileContent.getChunkSize());
+                        return new ChunkedNioFile(fc, fileContent.getPosition(), fileContent.getLength(),
+                            fileContent.getChunkSize());
                     } catch (IOException e) {
                         throw LOGGER.logExceptionAsError(new UncheckedIOException(e));
                     }
-                },
-                (fc) -> {
+                }, (fc) -> {
                     try {
                         fc.close();
                     } catch (IOException e) {
@@ -281,24 +287,21 @@ class NettyAsyncHttpClient implements HttpClient {
         } else {
             // Beware of NettyOutbound.sendFile(Path) it involves extra file length lookup.
             // This is going to use zero-copy transfer if there's no ssl
-            return reactorNettyOutbound.sendFile(
-                fileContent.getFile(), fileContent.getPosition(), fileContent.getLength());
+            return reactorNettyOutbound.sendFile(fileContent.getFile(), fileContent.getPosition(),
+                fileContent.getLength());
         }
     }
 
     private static NettyOutbound sendInputStream(NettyOutbound reactorNettyOutbound, InputStreamContent bodyContent) {
-        return reactorNettyOutbound.sendUsing(
-            bodyContent::toStream,
-            (c, stream) -> {
-                if (c.channel().pipeline().get(ChunkedWriteHandler.class) == null) {
-                    c.addHandlerLast(NettyPipeline.ChunkedWriter, new ChunkedWriteHandler());
-                }
+        return reactorNettyOutbound.sendUsing(bodyContent::toStream, (c, stream) -> {
+            if (c.channel().pipeline().get(ChunkedWriteHandler.class) == null) {
+                c.addHandlerLast(NettyPipeline.ChunkedWriter, new ChunkedWriteHandler());
+            }
 
-                return new ChunkedStream(stream);
-            },
-            (stream) -> {
-                // NO-OP. We don't close streams passed to our APIs.
-            });
+            return new ChunkedStream(stream);
+        }, (stream) -> {
+            // NO-OP. We don't close streams passed to our APIs.
+        });
     }
 
     /**
@@ -317,19 +320,19 @@ class NettyAsyncHttpClient implements HttpClient {
         boolean headersEagerlyConverted) {
         return (reactorNettyResponse, reactorNettyConnection) -> {
             // For now, eagerlyReadResponse and ignoreResponseBody works the same.
-//            if (ignoreResponseBody) {
-//                AtomicBoolean firstNext = new AtomicBoolean(true);
-//                return Mono.using(() -> reactorNettyConnection, connection -> connection.inbound().receive()
-//                    .doOnNext(ignored -> {
-//                        if (!firstNext.compareAndSet(true, false)) {
-//                            LOGGER.log(LogLevel.WARNING, () -> "Received HTTP response body when one wasn't expected. "
-//                                + "Response body will be ignored as directed.");
-//                        }
-//                    })
-//                    .ignoreElements(), Utility::closeConnection)
-//                    .then(Mono.fromSupplier(() -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest,
-//                        EMPTY_BYTES, headersEagerlyConverted)));
-//            }
+            // if (ignoreResponseBody) {
+            // AtomicBoolean firstNext = new AtomicBoolean(true);
+            // return Mono.using(() -> reactorNettyConnection, connection -> connection.inbound().receive()
+            // .doOnNext(ignored -> {
+            // if (!firstNext.compareAndSet(true, false)) {
+            // LOGGER.log(LogLevel.WARNING, () -> "Received HTTP response body when one wasn't expected. "
+            // + "Response body will be ignored as directed.");
+            // }
+            // })
+            // .ignoreElements(), Utility::closeConnection)
+            // .then(Mono.fromSupplier(() -> new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest,
+            // EMPTY_BYTES, headersEagerlyConverted)));
+            // }
 
             /*
              * If the response is being eagerly read into memory the flag for buffer copying can be ignored as the
@@ -337,11 +340,15 @@ class NettyAsyncHttpClient implements HttpClient {
              */
             if (eagerlyReadResponse || ignoreResponseBody) {
                 // Set up the body flux and dispose the connection once it has been received.
-                return Mono.using(() -> reactorNettyConnection, connection -> connection.inbound().receive()
-                    .aggregate().asByteArray()
-                    .switchIfEmpty(Mono.just(EMPTY_BYTES))
-                    .map(bytes -> Tuples.of(new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest, bytes,
-                        headersEagerlyConverted), reactorNettyResponse.responseHeaders())), Utility::closeConnection);
+                return Mono.using(() -> reactorNettyConnection,
+                    connection -> connection.inbound()
+                        .receive()
+                        .aggregate()
+                        .asByteArray()
+                        .switchIfEmpty(Mono.just(EMPTY_BYTES))
+                        .map(bytes -> Tuples.of(new NettyAsyncHttpBufferedResponse(reactorNettyResponse, restRequest,
+                            bytes, headersEagerlyConverted), reactorNettyResponse.responseHeaders())),
+                    Utility::closeConnection);
             } else {
                 return Mono.just(Tuples.of(new NettyAsyncHttpResponse(reactorNettyResponse, reactorNettyConnection,
                     restRequest, disableBufferCopy, headersEagerlyConverted), reactorNettyResponse.responseHeaders()));
@@ -351,17 +358,38 @@ class NettyAsyncHttpClient implements HttpClient {
 
     private static HttpMethod toReactorNettyHttpMethod(com.azure.core.http.HttpMethod azureHttpMethod) {
         switch (azureHttpMethod) {
-            case GET: return HttpMethod.GET;
-            case PUT: return HttpMethod.PUT;
-            case HEAD: return HttpMethod.HEAD;
-            case POST: return HttpMethod.POST;
-            case DELETE: return  HttpMethod.DELETE;
-            case PATCH: return HttpMethod.PATCH;
-            case TRACE: return HttpMethod.TRACE;
-            case CONNECT: return HttpMethod.CONNECT;
-            case OPTIONS: return HttpMethod.OPTIONS;
-            default: throw LOGGER.logExceptionAsError(
-                new IllegalStateException("Unknown HttpMethod '" + azureHttpMethod + "'.")); // Should never happen
+            case GET:
+                return HttpMethod.GET;
+
+            case PUT:
+                return HttpMethod.PUT;
+
+            case HEAD:
+                return HttpMethod.HEAD;
+
+            case POST:
+                return HttpMethod.POST;
+
+            case DELETE:
+                return HttpMethod.DELETE;
+
+            case PATCH:
+                return HttpMethod.PATCH;
+
+            case TRACE:
+                return HttpMethod.TRACE;
+
+            case CONNECT:
+                return HttpMethod.CONNECT;
+
+            case OPTIONS:
+                return HttpMethod.OPTIONS;
+
+            default:
+                throw LOGGER
+                    .logExceptionAsError(new IllegalStateException("Unknown HttpMethod '" + azureHttpMethod + "'.")); // Should
+                                                                                                                                 // never
+                                                                                                                                 // happen
         }
     }
 }

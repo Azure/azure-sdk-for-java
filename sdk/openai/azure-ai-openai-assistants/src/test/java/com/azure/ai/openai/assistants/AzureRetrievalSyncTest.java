@@ -10,7 +10,7 @@ import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.MessageTextContent;
 import com.azure.ai.openai.assistants.models.OpenAIFile;
-import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadMessage;
+import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
@@ -71,7 +71,7 @@ public class AzureRetrievalSyncTest extends AssistantsClientTestBase {
             assertEquals(assistant.getId(), run.getAssistantId());
 
             // List messages from the thread
-            OpenAIPageableListOfThreadMessage messageList = client.listMessages(thread.getId());
+            PageableList<ThreadMessage> messageList = client.listMessages(thread.getId());
 
             assertEquals(2, messageList.getData().size());
             ThreadMessage firstMessage = messageList.getData().get(0);

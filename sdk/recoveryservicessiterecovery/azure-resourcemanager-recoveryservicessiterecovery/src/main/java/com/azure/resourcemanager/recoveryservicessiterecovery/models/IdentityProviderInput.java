@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Identity provider input. */
+/**
+ * Identity provider input.
+ */
 @Fluent
 public final class IdentityProviderInput {
     /*
@@ -45,14 +47,16 @@ public final class IdentityProviderInput {
     @JsonProperty(value = "aadAuthority", required = true)
     private String aadAuthority;
 
-    /** Creates an instance of IdentityProviderInput class. */
+    /**
+     * Creates an instance of IdentityProviderInput class.
+     */
     public IdentityProviderInput() {
     }
 
     /**
      * Get the tenantId property: The tenant Id for the service principal with which the on-premise management/data
      * plane components would communicate with our Azure services.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -62,7 +66,7 @@ public final class IdentityProviderInput {
     /**
      * Set the tenantId property: The tenant Id for the service principal with which the on-premise management/data
      * plane components would communicate with our Azure services.
-     *
+     * 
      * @param tenantId the tenantId value to set.
      * @return the IdentityProviderInput object itself.
      */
@@ -74,7 +78,7 @@ public final class IdentityProviderInput {
     /**
      * Get the applicationId property: The application/client Id for the service principal with which the on-premise
      * management/data plane components would communicate with our Azure services.
-     *
+     * 
      * @return the applicationId value.
      */
     public String applicationId() {
@@ -84,7 +88,7 @@ public final class IdentityProviderInput {
     /**
      * Set the applicationId property: The application/client Id for the service principal with which the on-premise
      * management/data plane components would communicate with our Azure services.
-     *
+     * 
      * @param applicationId the applicationId value to set.
      * @return the IdentityProviderInput object itself.
      */
@@ -94,9 +98,9 @@ public final class IdentityProviderInput {
     }
 
     /**
-     * Get the objectId property: The object Id of the service principal with which the on-premise management/data plane
-     * components would communicate with our Azure services.
-     *
+     * Get the objectId property: The object Id of the service principal with which the on-premise management/data
+     * plane components would communicate with our Azure services.
+     * 
      * @return the objectId value.
      */
     public String objectId() {
@@ -104,9 +108,9 @@ public final class IdentityProviderInput {
     }
 
     /**
-     * Set the objectId property: The object Id of the service principal with which the on-premise management/data plane
-     * components would communicate with our Azure services.
-     *
+     * Set the objectId property: The object Id of the service principal with which the on-premise management/data
+     * plane components would communicate with our Azure services.
+     * 
      * @param objectId the objectId value to set.
      * @return the IdentityProviderInput object itself.
      */
@@ -118,7 +122,7 @@ public final class IdentityProviderInput {
     /**
      * Get the audience property: The intended Audience of the service principal with which the on-premise
      * management/data plane components would communicate with our Azure services.
-     *
+     * 
      * @return the audience value.
      */
     public String audience() {
@@ -128,7 +132,7 @@ public final class IdentityProviderInput {
     /**
      * Set the audience property: The intended Audience of the service principal with which the on-premise
      * management/data plane components would communicate with our Azure services.
-     *
+     * 
      * @param audience the audience value to set.
      * @return the IdentityProviderInput object itself.
      */
@@ -139,7 +143,7 @@ public final class IdentityProviderInput {
 
     /**
      * Get the aadAuthority property: The base authority for Azure Active Directory authentication.
-     *
+     * 
      * @return the aadAuthority value.
      */
     public String aadAuthority() {
@@ -148,7 +152,7 @@ public final class IdentityProviderInput {
 
     /**
      * Set the aadAuthority property: The base authority for Azure Active Directory authentication.
-     *
+     * 
      * @param aadAuthority the aadAuthority value to set.
      * @return the IdentityProviderInput object itself.
      */
@@ -159,36 +163,29 @@ public final class IdentityProviderInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (tenantId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property tenantId in model IdentityProviderInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property tenantId in model IdentityProviderInput"));
         }
         if (applicationId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property applicationId in model IdentityProviderInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property applicationId in model IdentityProviderInput"));
         }
         if (objectId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property objectId in model IdentityProviderInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property objectId in model IdentityProviderInput"));
         }
         if (audience() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property audience in model IdentityProviderInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property audience in model IdentityProviderInput"));
         }
         if (aadAuthority() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property aadAuthority in model IdentityProviderInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property aadAuthority in model IdentityProviderInput"));
         }
     }
 

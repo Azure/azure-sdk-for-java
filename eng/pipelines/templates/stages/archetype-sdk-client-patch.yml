@@ -27,10 +27,12 @@ parameters:
 - name: JavaBuildVersion
   type: string
   default: $(JavaBuildVersion)
+- name: JavadocSafeJavaBuildVersion
+  type: string
+  default: $(JavadocSafeJavaBuildVersion)
 - name: TestPipeline
   type: boolean
   default: false
-
 
 stages:
   - stage: Build
@@ -46,8 +48,8 @@ stages:
         name: azsdk-pool-mms-ubuntu-2004-general
 
       steps:
-        # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories
-        # as we require the github service connection to be loaded.
+        # Skip sparse checkout for the `azure-sdk-for-<lang>-pr` private mirrored repositories as we require the GitHub
+        # service connection to be loaded.
         - ${{ if not(contains(variables['Build.DefinitionName'], 'java-pr')) }}:
           - template: /eng/common/pipelines/templates/steps/sparse-checkout.yml
             parameters:
@@ -103,8 +105,9 @@ stages:
           displayName: 'pip install markdown2 and BeautifulSoup4'
 
         # Save the Package Properties
-        # ServiceDirectories variable is a plain, comma separated list of ServiceDirectories that is
-        # output by the generate_from_source_pom script above.
+        #
+        # ServiceDirectories variable is a plain, comma separated list of ServiceDirectories that is output by the
+        # generate_from_source_pom script above.
         - pwsh: |
             $ServiceDirs = '$(ServiceDirectories)'
             foreach($ServiceDir in $ServiceDirs.Split(',')) {
@@ -113,25 +116,24 @@ stages:
           workingDirectory: $(Pipeline.Workspace)
           displayName: "Save Package Properties"
 
-        # Why is this necessary? Normal build and release jobs don't install reporting tools prior
-        # to building however they're still able to find the the build tools through the root aggregate
-        # pom file. The ClientFromSourcePom only contains what is necessary for the list of libraries
-        # and needs to have them installed explicitly otherwise the checkstyle plugin will fail to find
-        # com.azure:sdk-build-tools which is a dependency. It does this in spite of the fact that we're
-        # not running actually running checkstyle, it loads it to skip it...well done.
+        # Why is this necessary? Normal build and release jobs don't install reporting tools prior to building however
+        # they're still able to find the build tools through the root aggregate pom file. The ClientFromSourcePom only
+        # contains what is necessary for the list of libraries and needs to have them installed explicitly otherwise the
+        # checkstyle plugin will fail to find com.azure:sdk-build-tools which is a dependency. It does this in spite of
+        # the fact that we're not running actually running checkstyle, it loads it to skip it...well done.
         - template: ../steps/install-reporting-tools.yml
           parameters:
             JdkVersion: ${{ parameters.JavaBuildVersion }}
 
         - task: Maven@3
-          displayName: 'Build From Source and Package, JDK Version: ${{ parameters.JavaBuildVersion }}'
+          displayName: 'Build From Source and Package, JDK Version: ${{ parameters.JavadocSafeJavaBuildVersion }}'
           inputs:
             mavenPomFile: ClientFromSourcePom.xml
             goals: 'deploy'
-            options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module so we ensure it always builds in CI
+            options: '$(DefaultOptions) -T ${{parameters.BuildParallelization}} -DskipTests -Dgenerate-overview -Dspotbugs.skip=true -Dcheckstyle.skip=true -Drevapi.skip=true -Dspotless.apply.skip=true -pl $(ProjectList) -am -DaltDeploymentRepository=id::default::file://$(System.DefaultWorkingDirectory)/build' # We include template-module, so we ensure it always builds in CI.
             mavenOptions: '$(MemoryOptions) $(LoggingOptions)'
             javaHomeOption: 'JDKVersion'
-            jdkVersionOption: ${{ parameters.JavaBuildVersion }}
+            jdkVersionOption: ${{ parameters.JavadocSafeJavaBuildVersion }}
             jdkArchitectureOption: 'x64'
             publishJUnitResults: false
 
@@ -250,7 +252,7 @@ stages:
             filePath: eng/versioning/pom_file_version_scanner.ps1
             arguments: -Debug:$$(IsDebug)
 
-        # Do all the verifications for all the artifacts after the sparse-checkout
+        # Do all the verifications for all the artifacts after the sparse-checkout.
         - pwsh: |
             $ArtifactsList = $('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId)
             $ArtifactsList | Format-Table -Property GroupId, Name | Out-String | Write-Host
@@ -260,11 +262,12 @@ stages:
             }
           displayName: 'Verify artifact versions for release'
 
-        # Uber JARs release a flattened POM, as dependencies are incorporated into the JAR circumnavigating the
-        # need to list dependencies in the POM. The flattened POM is generated and won't comply with our versioning
-        # validation, so omit uberJars from the artifacts list to verify.
+        # Uber JARs release a flattened POM, as dependencies are incorporated into the JAR circumnavigating the need to
+        # list dependencies in the POM. The flattened POM is generated and won't comply with our versioning validation,
+        # so omit uberJars from the artifacts list to verify.
+        #
         # Note: This is different from the Batch release verification step because the ServiceDirectory, for this
-        # pipeline, is attached to each Artifact. It needs to be in the query so it can be passed into the script
+        # pipeline, is attached to each Artifact. It needs to be in the query, so it can be passed into the script.
         - pwsh: |
             $ArtifactsList = $('${{ convertToJson(parameters.Artifacts) }}' | ConvertFrom-Json | Select-Object name, groupId, ServiceDirectory, uberJar | Where-Object -Not "uberJar")
             $ArtifactsList | Format-Table -Property GroupId, Name, ServiceDirectory | Out-String | Write-Host
@@ -275,8 +278,8 @@ stages:
 
         - template: /eng/common/pipelines/templates/steps/verify-readme.yml
           parameters:
-            # For the moment, ServiceDirectories is JSON which may change to a comma delimited list instead of
-            # what's going on below
+            # For the moment, ServiceDirectories is JSON which may change to a comma delimited list instead of what's
+            # going on below
             ScanPaths: $(ServiceDirectoriesFullPath)
 
         - template: /eng/common/pipelines/templates/steps/verify-samples.yml
@@ -289,10 +292,9 @@ stages:
             SourceDirectory: $(Build.SourcesDirectory)
             BasePathLength: 38
 
-        # Verify changelog, the way it currently works would
-        # require a complete overhaul in order to be able to deal with multiple artifacts and
-        # multiple service directories. Even ignoring this, there's still the fact that each artifact's
-        # metadata can cause this step to be skipped so we still need to loop over this.
+        # Verify changelog, the way it currently works would require a complete overhaul in order to be able to deal
+        # with multiple artifacts and multiple service directories. Even ignoring this, there's still the fact that each
+        # artifact's metadata can cause this step to be skipped, so we still need to loop over this.
         - ${{if ne(parameters.SDKType, 'data')}}:
           - ${{ each artifact in parameters.Artifacts }}:
             - ${{if ne(artifact.skipVerifyChangelog, 'true')}}:
@@ -300,14 +302,14 @@ stages:
                 parameters:
                   PackageName: ${{artifact.name}}
                   ServiceName: ${{artifact.ServiceDirectory}}
-                  # Note, for the patch release pipeline there's no point in verifying the non-release
-                  # changelog since the only time this pipeline should run is for a patch release.
+                  # Note: For the patch release pipeline there's no point in verifying the non-release changelog since
+                  # the only time this pipeline should run is for a patch release.
                   ForRelease: true
 
         - template: /eng/common/pipelines/templates/steps/eng-common-workflow-enforcer.yml
 
-  # This pipeline should never get kicked off outside of an internal, manual run. Put the checks here
-  # so the pipeline never gets to the signing/release portions unless this is the case.
+  # This pipeline should never get kicked off outside an internal, manual run. Put the checks here so the pipeline never
+  # gets to the signing/release portions unless this is the case.
   - ${{if and(in(variables['Build.Reason'], 'Manual', ''), eq(variables['System.TeamProject'], 'internal'))}}:
     - template: archetype-java-release-patch.yml
       parameters:

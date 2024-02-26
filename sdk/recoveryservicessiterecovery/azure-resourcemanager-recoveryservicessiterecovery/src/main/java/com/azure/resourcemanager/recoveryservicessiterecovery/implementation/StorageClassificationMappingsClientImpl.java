@@ -39,26 +39,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in StorageClassificationMappingsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in StorageClassificationMappingsClient.
+ */
 public final class StorageClassificationMappingsClientImpl implements StorageClassificationMappingsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final StorageClassificationMappingsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SiteRecoveryManagementClientImpl client;
 
     /**
      * Initializes an instance of StorageClassificationMappingsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     StorageClassificationMappingsClientImpl(SiteRecoveryManagementClientImpl client) {
-        this.service =
-            RestProxy
-                .create(
-                    StorageClassificationMappingsService.class,
-                    client.getHttpPipeline(),
-                    client.getSerializerAdapter());
+        this.service = RestProxy.create(StorageClassificationMappingsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -69,113 +71,84 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
     @Host("{$host}")
     @ServiceInterface(name = "SiteRecoveryManageme")
     public interface StorageClassificationMappingsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StorageClassificationMappingCollection>> listByReplicationStorageClassifications(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
+            @HostParam("$host") String endpoint, @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceName") String resourceName, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
             @PathParam("storageClassificationName") String storageClassificationName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StorageClassificationMappingInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<StorageClassificationMappingInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
             @PathParam("storageClassificationName") String storageClassificationName,
             @PathParam("storageClassificationMappingName") String storageClassificationMappingName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
             @PathParam("storageClassificationName") String storageClassificationName,
             @PathParam("storageClassificationMappingName") String storageClassificationMappingName,
             @BodyParam("application/json") StorageClassificationMappingInput pairingInput,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/replicationStorageClassifications/{storageClassificationName}/replicationStorageClassificationMappings/{storageClassificationMappingName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
             @PathParam("storageClassificationName") String storageClassificationName,
-            @PathParam("storageClassificationMappingName") String storageClassificationMappingName,
-            Context context);
+            @PathParam("storageClassificationMappingName") String storageClassificationMappingName, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationStorageClassificationMappings")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationStorageClassificationMappings")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<StorageClassificationMappingCollection>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<StorageClassificationMappingCollection>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StorageClassificationMappingCollection>> listByReplicationStorageClassificationsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<StorageClassificationMappingCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the list of storage classification mappings objects under a storage.
-     *
-     * <p>Lists the storage classification mappings for the fabric.
-     *
+     * 
+     * Lists the storage classification mappings for the fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -183,18 +156,16 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of storage mapping details along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of storage mapping details along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageClassificationMappingInner>>
-        listByReplicationStorageClassificationsSinglePageAsync(
-            String resourceName, String resourceGroupName, String fabricName, String storageClassificationName) {
+        listByReplicationStorageClassificationsSinglePageAsync(String resourceName, String resourceGroupName,
+            String fabricName, String storageClassificationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -204,52 +175,31 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         if (storageClassificationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter storageClassificationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter storageClassificationName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByReplicationStorageClassifications(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            storageClassificationName,
-                            accept,
-                            context))
-            .<PagedResponse<StorageClassificationMappingInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByReplicationStorageClassifications(this.client.getEndpoint(),
+                this.client.getApiVersion(), resourceName, resourceGroupName, this.client.getSubscriptionId(),
+                fabricName, storageClassificationName, accept, context))
+            .<PagedResponse<StorageClassificationMappingInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the list of storage classification mappings objects under a storage.
-     *
-     * <p>Lists the storage classification mappings for the fabric.
-     *
+     * 
+     * Lists the storage classification mappings for the fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -258,22 +208,16 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of storage mapping details along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of storage mapping details along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageClassificationMappingInner>>
-        listByReplicationStorageClassificationsSinglePageAsync(
-            String resourceName,
-            String resourceGroupName,
-            String fabricName,
-            String storageClassificationName,
-            Context context) {
+        listByReplicationStorageClassificationsSinglePageAsync(String resourceName, String resourceGroupName,
+            String fabricName, String storageClassificationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -283,49 +227,31 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         if (storageClassificationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter storageClassificationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter storageClassificationName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByReplicationStorageClassifications(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                storageClassificationName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByReplicationStorageClassifications(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceName, resourceGroupName, this.client.getSubscriptionId(), fabricName, storageClassificationName,
+                accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets the list of storage classification mappings objects under a storage.
-     *
-     * <p>Lists the storage classification mappings for the fabric.
-     *
+     * 
+     * Lists the storage classification mappings for the fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -339,17 +265,16 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
     private PagedFlux<StorageClassificationMappingInner> listByReplicationStorageClassificationsAsync(
         String resourceName, String resourceGroupName, String fabricName, String storageClassificationName) {
         return new PagedFlux<>(
-            () ->
-                listByReplicationStorageClassificationsSinglePageAsync(
-                    resourceName, resourceGroupName, fabricName, storageClassificationName),
+            () -> listByReplicationStorageClassificationsSinglePageAsync(resourceName, resourceGroupName, fabricName,
+                storageClassificationName),
             nextLink -> listByReplicationStorageClassificationsNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets the list of storage classification mappings objects under a storage.
-     *
-     * <p>Lists the storage classification mappings for the fabric.
-     *
+     * 
+     * Lists the storage classification mappings for the fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -362,23 +287,19 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageClassificationMappingInner> listByReplicationStorageClassificationsAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String storageClassificationName,
+        String resourceName, String resourceGroupName, String fabricName, String storageClassificationName,
         Context context) {
         return new PagedFlux<>(
-            () ->
-                listByReplicationStorageClassificationsSinglePageAsync(
-                    resourceName, resourceGroupName, fabricName, storageClassificationName, context),
+            () -> listByReplicationStorageClassificationsSinglePageAsync(resourceName, resourceGroupName, fabricName,
+                storageClassificationName, context),
             nextLink -> listByReplicationStorageClassificationsNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets the list of storage classification mappings objects under a storage.
-     *
-     * <p>Lists the storage classification mappings for the fabric.
-     *
+     * 
+     * Lists the storage classification mappings for the fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -389,18 +310,17 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      * @return collection of storage mapping details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StorageClassificationMappingInner> listByReplicationStorageClassifications(
-        String resourceName, String resourceGroupName, String fabricName, String storageClassificationName) {
-        return new PagedIterable<>(
-            listByReplicationStorageClassificationsAsync(
-                resourceName, resourceGroupName, fabricName, storageClassificationName));
+    public PagedIterable<StorageClassificationMappingInner> listByReplicationStorageClassifications(String resourceName,
+        String resourceGroupName, String fabricName, String storageClassificationName) {
+        return new PagedIterable<>(listByReplicationStorageClassificationsAsync(resourceName, resourceGroupName,
+            fabricName, storageClassificationName));
     }
 
     /**
      * Gets the list of storage classification mappings objects under a storage.
-     *
-     * <p>Lists the storage classification mappings for the fabric.
-     *
+     * 
+     * Lists the storage classification mappings for the fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -412,22 +332,17 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      * @return collection of storage mapping details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StorageClassificationMappingInner> listByReplicationStorageClassifications(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String storageClassificationName,
-        Context context) {
-        return new PagedIterable<>(
-            listByReplicationStorageClassificationsAsync(
-                resourceName, resourceGroupName, fabricName, storageClassificationName, context));
+    public PagedIterable<StorageClassificationMappingInner> listByReplicationStorageClassifications(String resourceName,
+        String resourceGroupName, String fabricName, String storageClassificationName, Context context) {
+        return new PagedIterable<>(listByReplicationStorageClassificationsAsync(resourceName, resourceGroupName,
+            fabricName, storageClassificationName, context));
     }
 
     /**
      * Gets the details of a storage classification mapping.
-     *
-     * <p>Gets the details of the specified storage classification mapping.
-     *
+     * 
+     * Gets the details of the specified storage classification mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -437,20 +352,15 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the specified storage classification mapping along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StorageClassificationMappingInner>> getWithResponseAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String storageClassificationName,
+    private Mono<Response<StorageClassificationMappingInner>> getWithResponseAsync(String resourceName,
+        String resourceGroupName, String fabricName, String storageClassificationName,
         String storageClassificationMappingName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -460,50 +370,33 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         if (storageClassificationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter storageClassificationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter storageClassificationName is required and cannot be null."));
         }
         if (storageClassificationMappingName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter storageClassificationMappingName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter storageClassificationMappingName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            storageClassificationName,
-                            storageClassificationMappingName,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
+                resourceGroupName, this.client.getSubscriptionId(), fabricName, storageClassificationName,
+                storageClassificationMappingName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the details of a storage classification mapping.
-     *
-     * <p>Gets the details of the specified storage classification mapping.
-     *
+     * 
+     * Gets the details of the specified storage classification mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -514,21 +407,15 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the specified storage classification mapping along with {@link Response} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<StorageClassificationMappingInner>> getWithResponseAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String storageClassificationName,
-        String storageClassificationMappingName,
-        Context context) {
+    private Mono<Response<StorageClassificationMappingInner>> getWithResponseAsync(String resourceName,
+        String resourceGroupName, String fabricName, String storageClassificationName,
+        String storageClassificationMappingName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -538,47 +425,32 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         if (storageClassificationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter storageClassificationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter storageClassificationName is required and cannot be null."));
         }
         if (storageClassificationMappingName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter storageClassificationMappingName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter storageClassificationMappingName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                storageClassificationName,
-                storageClassificationMappingName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+            this.client.getSubscriptionId(), fabricName, storageClassificationName, storageClassificationMappingName,
+            accept, context);
     }
 
     /**
      * Gets the details of a storage classification mapping.
-     *
-     * <p>Gets the details of the specified storage classification mapping.
-     *
+     * 
+     * Gets the details of the specified storage classification mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -590,26 +462,17 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      * @return the details of the specified storage classification mapping on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StorageClassificationMappingInner> getAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String storageClassificationName,
-        String storageClassificationMappingName) {
-        return getWithResponseAsync(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                storageClassificationName,
-                storageClassificationMappingName)
-            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    private Mono<StorageClassificationMappingInner> getAsync(String resourceName, String resourceGroupName,
+        String fabricName, String storageClassificationName, String storageClassificationMappingName) {
+        return getWithResponseAsync(resourceName, resourceGroupName, fabricName, storageClassificationName,
+            storageClassificationMappingName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the details of a storage classification mapping.
-     *
-     * <p>Gets the details of the specified storage classification mapping.
-     *
+     * 
+     * Gets the details of the specified storage classification mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -622,28 +485,17 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      * @return the details of the specified storage classification mapping along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<StorageClassificationMappingInner> getWithResponse(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String storageClassificationName,
-        String storageClassificationMappingName,
-        Context context) {
-        return getWithResponseAsync(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                storageClassificationName,
-                storageClassificationMappingName,
-                context)
-            .block();
+    public Response<StorageClassificationMappingInner> getWithResponse(String resourceName, String resourceGroupName,
+        String fabricName, String storageClassificationName, String storageClassificationMappingName, Context context) {
+        return getWithResponseAsync(resourceName, resourceGroupName, fabricName, storageClassificationName,
+            storageClassificationMappingName, context).block();
     }
 
     /**
      * Gets the details of a storage classification mapping.
-     *
-     * <p>Gets the details of the specified storage classification mapping.
-     *
+     * 
+     * Gets the details of the specified storage classification mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -655,27 +507,17 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      * @return the details of the specified storage classification mapping.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StorageClassificationMappingInner get(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String storageClassificationName,
-        String storageClassificationMappingName) {
-        return getWithResponse(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                storageClassificationName,
-                storageClassificationMappingName,
-                Context.NONE)
-            .getValue();
+    public StorageClassificationMappingInner get(String resourceName, String resourceGroupName, String fabricName,
+        String storageClassificationName, String storageClassificationMappingName) {
+        return getWithResponse(resourceName, resourceGroupName, fabricName, storageClassificationName,
+            storageClassificationMappingName, Context.NONE).getValue();
     }
 
     /**
      * Create storage classification mapping.
-     *
-     * <p>The operation to create a storage classification mapping.
-     *
+     * 
+     * The operation to create a storage classification mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -688,18 +530,12 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      * @return storage mapping object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String storageClassificationName,
-        String storageClassificationMappingName,
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName, String storageClassificationName, String storageClassificationMappingName,
         StorageClassificationMappingInput pairingInput) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -709,25 +545,19 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         if (storageClassificationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter storageClassificationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter storageClassificationName is required and cannot be null."));
         }
         if (storageClassificationMappingName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter storageClassificationMappingName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter storageClassificationMappingName is required and cannot be null."));
         }
         if (pairingInput == null) {
             return Mono.error(new IllegalArgumentException("Parameter pairingInput is required and cannot be null."));
@@ -736,29 +566,17 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            storageClassificationName,
-                            storageClassificationMappingName,
-                            pairingInput,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
+                resourceGroupName, this.client.getSubscriptionId(), fabricName, storageClassificationName,
+                storageClassificationMappingName, pairingInput, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create storage classification mapping.
-     *
-     * <p>The operation to create a storage classification mapping.
-     *
+     * 
+     * The operation to create a storage classification mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -772,19 +590,12 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      * @return storage mapping object along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String storageClassificationName,
-        String storageClassificationMappingName,
-        StorageClassificationMappingInput pairingInput,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName, String storageClassificationName, String storageClassificationMappingName,
+        StorageClassificationMappingInput pairingInput, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -794,25 +605,19 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         if (storageClassificationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter storageClassificationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter storageClassificationName is required and cannot be null."));
         }
         if (storageClassificationMappingName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter storageClassificationMappingName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter storageClassificationMappingName is required and cannot be null."));
         }
         if (pairingInput == null) {
             return Mono.error(new IllegalArgumentException("Parameter pairingInput is required and cannot be null."));
@@ -821,26 +626,16 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                storageClassificationName,
-                storageClassificationMappingName,
-                pairingInput,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+            this.client.getSubscriptionId(), fabricName, storageClassificationName, storageClassificationMappingName,
+            pairingInput, accept, context);
     }
 
     /**
      * Create storage classification mapping.
-     *
-     * <p>The operation to create a storage classification mapping.
-     *
+     * 
+     * The operation to create a storage classification mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -854,36 +649,21 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StorageClassificationMappingInner>, StorageClassificationMappingInner>
-        beginCreateAsync(
-            String resourceName,
-            String resourceGroupName,
-            String fabricName,
-            String storageClassificationName,
-            String storageClassificationMappingName,
+        beginCreateAsync(String resourceName, String resourceGroupName, String fabricName,
+            String storageClassificationName, String storageClassificationMappingName,
             StorageClassificationMappingInput pairingInput) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                storageClassificationName,
-                storageClassificationMappingName,
-                pairingInput);
-        return this
-            .client
-            .<StorageClassificationMappingInner, StorageClassificationMappingInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                StorageClassificationMappingInner.class,
-                StorageClassificationMappingInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceName, resourceGroupName, fabricName,
+            storageClassificationName, storageClassificationMappingName, pairingInput);
+        return this.client.<StorageClassificationMappingInner, StorageClassificationMappingInner>getLroResult(mono,
+            this.client.getHttpPipeline(), StorageClassificationMappingInner.class,
+            StorageClassificationMappingInner.class, this.client.getContext());
     }
 
     /**
      * Create storage classification mapping.
-     *
-     * <p>The operation to create a storage classification mapping.
-     *
+     * 
+     * The operation to create a storage classification mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -898,39 +678,22 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<StorageClassificationMappingInner>, StorageClassificationMappingInner>
-        beginCreateAsync(
-            String resourceName,
-            String resourceGroupName,
-            String fabricName,
-            String storageClassificationName,
-            String storageClassificationMappingName,
-            StorageClassificationMappingInput pairingInput,
-            Context context) {
+        beginCreateAsync(String resourceName, String resourceGroupName, String fabricName,
+            String storageClassificationName, String storageClassificationMappingName,
+            StorageClassificationMappingInput pairingInput, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                storageClassificationName,
-                storageClassificationMappingName,
-                pairingInput,
-                context);
-        return this
-            .client
-            .<StorageClassificationMappingInner, StorageClassificationMappingInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                StorageClassificationMappingInner.class,
-                StorageClassificationMappingInner.class,
-                context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createWithResponseAsync(resourceName, resourceGroupName, fabricName,
+            storageClassificationName, storageClassificationMappingName, pairingInput, context);
+        return this.client.<StorageClassificationMappingInner, StorageClassificationMappingInner>getLroResult(mono,
+            this.client.getHttpPipeline(), StorageClassificationMappingInner.class,
+            StorageClassificationMappingInner.class, context);
     }
 
     /**
      * Create storage classification mapping.
-     *
-     * <p>The operation to create a storage classification mapping.
-     *
+     * 
+     * The operation to create a storage classification mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -944,28 +707,17 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageClassificationMappingInner>, StorageClassificationMappingInner> beginCreate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String storageClassificationName,
-        String storageClassificationMappingName,
-        StorageClassificationMappingInput pairingInput) {
-        return this
-            .beginCreateAsync(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                storageClassificationName,
-                storageClassificationMappingName,
-                pairingInput)
-            .getSyncPoller();
+        String resourceName, String resourceGroupName, String fabricName, String storageClassificationName,
+        String storageClassificationMappingName, StorageClassificationMappingInput pairingInput) {
+        return this.beginCreateAsync(resourceName, resourceGroupName, fabricName, storageClassificationName,
+            storageClassificationMappingName, pairingInput).getSyncPoller();
     }
 
     /**
      * Create storage classification mapping.
-     *
-     * <p>The operation to create a storage classification mapping.
-     *
+     * 
+     * The operation to create a storage classification mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -980,30 +732,17 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<StorageClassificationMappingInner>, StorageClassificationMappingInner> beginCreate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String storageClassificationName,
-        String storageClassificationMappingName,
-        StorageClassificationMappingInput pairingInput,
-        Context context) {
-        return this
-            .beginCreateAsync(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                storageClassificationName,
-                storageClassificationMappingName,
-                pairingInput,
-                context)
-            .getSyncPoller();
+        String resourceName, String resourceGroupName, String fabricName, String storageClassificationName,
+        String storageClassificationMappingName, StorageClassificationMappingInput pairingInput, Context context) {
+        return this.beginCreateAsync(resourceName, resourceGroupName, fabricName, storageClassificationName,
+            storageClassificationMappingName, pairingInput, context).getSyncPoller();
     }
 
     /**
      * Create storage classification mapping.
-     *
-     * <p>The operation to create a storage classification mapping.
-     *
+     * 
+     * The operation to create a storage classification mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1016,29 +755,18 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      * @return storage mapping object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StorageClassificationMappingInner> createAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String storageClassificationName,
-        String storageClassificationMappingName,
+    private Mono<StorageClassificationMappingInner> createAsync(String resourceName, String resourceGroupName,
+        String fabricName, String storageClassificationName, String storageClassificationMappingName,
         StorageClassificationMappingInput pairingInput) {
-        return beginCreateAsync(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                storageClassificationName,
-                storageClassificationMappingName,
-                pairingInput)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+        return beginCreateAsync(resourceName, resourceGroupName, fabricName, storageClassificationName,
+            storageClassificationMappingName, pairingInput).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create storage classification mapping.
-     *
-     * <p>The operation to create a storage classification mapping.
-     *
+     * 
+     * The operation to create a storage classification mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1052,31 +780,19 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      * @return storage mapping object on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<StorageClassificationMappingInner> createAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String storageClassificationName,
-        String storageClassificationMappingName,
-        StorageClassificationMappingInput pairingInput,
-        Context context) {
-        return beginCreateAsync(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                storageClassificationName,
-                storageClassificationMappingName,
-                pairingInput,
-                context)
-            .last()
+    private Mono<StorageClassificationMappingInner> createAsync(String resourceName, String resourceGroupName,
+        String fabricName, String storageClassificationName, String storageClassificationMappingName,
+        StorageClassificationMappingInput pairingInput, Context context) {
+        return beginCreateAsync(resourceName, resourceGroupName, fabricName, storageClassificationName,
+            storageClassificationMappingName, pairingInput, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create storage classification mapping.
-     *
-     * <p>The operation to create a storage classification mapping.
-     *
+     * 
+     * The operation to create a storage classification mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1089,28 +805,18 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      * @return storage mapping object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StorageClassificationMappingInner create(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String storageClassificationName,
-        String storageClassificationMappingName,
+    public StorageClassificationMappingInner create(String resourceName, String resourceGroupName, String fabricName,
+        String storageClassificationName, String storageClassificationMappingName,
         StorageClassificationMappingInput pairingInput) {
-        return createAsync(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                storageClassificationName,
-                storageClassificationMappingName,
-                pairingInput)
-            .block();
+        return createAsync(resourceName, resourceGroupName, fabricName, storageClassificationName,
+            storageClassificationMappingName, pairingInput).block();
     }
 
     /**
      * Create storage classification mapping.
-     *
-     * <p>The operation to create a storage classification mapping.
-     *
+     * 
+     * The operation to create a storage classification mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1124,30 +830,18 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      * @return storage mapping object.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public StorageClassificationMappingInner create(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String storageClassificationName,
-        String storageClassificationMappingName,
-        StorageClassificationMappingInput pairingInput,
-        Context context) {
-        return createAsync(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                storageClassificationName,
-                storageClassificationMappingName,
-                pairingInput,
-                context)
-            .block();
+    public StorageClassificationMappingInner create(String resourceName, String resourceGroupName, String fabricName,
+        String storageClassificationName, String storageClassificationMappingName,
+        StorageClassificationMappingInput pairingInput, Context context) {
+        return createAsync(resourceName, resourceGroupName, fabricName, storageClassificationName,
+            storageClassificationMappingName, pairingInput, context).block();
     }
 
     /**
      * Delete a storage classification mapping.
-     *
-     * <p>The operation to delete a storage classification mapping.
-     *
+     * 
+     * The operation to delete a storage classification mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1159,17 +853,11 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String storageClassificationName,
-        String storageClassificationMappingName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName, String storageClassificationName, String storageClassificationMappingName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1179,48 +867,32 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         if (storageClassificationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter storageClassificationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter storageClassificationName is required and cannot be null."));
         }
         if (storageClassificationMappingName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter storageClassificationMappingName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter storageClassificationMappingName is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            storageClassificationName,
-                            storageClassificationMappingName,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
+                resourceGroupName, this.client.getSubscriptionId(), fabricName, storageClassificationName,
+                storageClassificationMappingName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Delete a storage classification mapping.
-     *
-     * <p>The operation to delete a storage classification mapping.
-     *
+     * 
+     * The operation to delete a storage classification mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1233,18 +905,11 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String storageClassificationName,
-        String storageClassificationMappingName,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName, String storageClassificationName, String storageClassificationMappingName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1254,45 +919,31 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         if (storageClassificationName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter storageClassificationName is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter storageClassificationName is required and cannot be null."));
         }
         if (storageClassificationMappingName == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter storageClassificationMappingName is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter storageClassificationMappingName is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                storageClassificationName,
-                storageClassificationMappingName,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+            this.client.getSubscriptionId(), fabricName, storageClassificationName, storageClassificationMappingName,
+            context);
     }
 
     /**
      * Delete a storage classification mapping.
-     *
-     * <p>The operation to delete a storage classification mapping.
-     *
+     * 
+     * The operation to delete a storage classification mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1304,30 +955,19 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String storageClassificationName,
-        String storageClassificationMappingName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                storageClassificationName,
-                storageClassificationMappingName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceName, String resourceGroupName,
+        String fabricName, String storageClassificationName, String storageClassificationMappingName) {
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceName, resourceGroupName, fabricName,
+            storageClassificationName, storageClassificationMappingName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Delete a storage classification mapping.
-     *
-     * <p>The operation to delete a storage classification mapping.
-     *
+     * 
+     * The operation to delete a storage classification mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1340,32 +980,20 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String storageClassificationName,
-        String storageClassificationMappingName,
-        Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceName, String resourceGroupName,
+        String fabricName, String storageClassificationName, String storageClassificationMappingName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                storageClassificationName,
-                storageClassificationMappingName,
-                context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceName, resourceGroupName, fabricName,
+            storageClassificationName, storageClassificationMappingName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Delete a storage classification mapping.
-     *
-     * <p>The operation to delete a storage classification mapping.
-     *
+     * 
+     * The operation to delete a storage classification mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1377,27 +1005,17 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String storageClassificationName,
-        String storageClassificationMappingName) {
-        return this
-            .beginDeleteAsync(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                storageClassificationName,
-                storageClassificationMappingName)
-            .getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName,
+        String fabricName, String storageClassificationName, String storageClassificationMappingName) {
+        return this.beginDeleteAsync(resourceName, resourceGroupName, fabricName, storageClassificationName,
+            storageClassificationMappingName).getSyncPoller();
     }
 
     /**
      * Delete a storage classification mapping.
-     *
-     * <p>The operation to delete a storage classification mapping.
-     *
+     * 
+     * The operation to delete a storage classification mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1410,29 +1028,17 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String storageClassificationName,
-        String storageClassificationMappingName,
-        Context context) {
-        return this
-            .beginDeleteAsync(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                storageClassificationName,
-                storageClassificationMappingName,
-                context)
-            .getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName,
+        String fabricName, String storageClassificationName, String storageClassificationMappingName, Context context) {
+        return this.beginDeleteAsync(resourceName, resourceGroupName, fabricName, storageClassificationName,
+            storageClassificationMappingName, context).getSyncPoller();
     }
 
     /**
      * Delete a storage classification mapping.
-     *
-     * <p>The operation to delete a storage classification mapping.
-     *
+     * 
+     * The operation to delete a storage classification mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1444,27 +1050,17 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String storageClassificationName,
-        String storageClassificationMappingName) {
-        return beginDeleteAsync(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                storageClassificationName,
-                storageClassificationMappingName)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<Void> deleteAsync(String resourceName, String resourceGroupName, String fabricName,
+        String storageClassificationName, String storageClassificationMappingName) {
+        return beginDeleteAsync(resourceName, resourceGroupName, fabricName, storageClassificationName,
+            storageClassificationMappingName).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a storage classification mapping.
-     *
-     * <p>The operation to delete a storage classification mapping.
-     *
+     * 
+     * The operation to delete a storage classification mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1477,29 +1073,17 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String storageClassificationName,
-        String storageClassificationMappingName,
-        Context context) {
-        return beginDeleteAsync(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                storageClassificationName,
-                storageClassificationMappingName,
-                context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<Void> deleteAsync(String resourceName, String resourceGroupName, String fabricName,
+        String storageClassificationName, String storageClassificationMappingName, Context context) {
+        return beginDeleteAsync(resourceName, resourceGroupName, fabricName, storageClassificationName,
+            storageClassificationMappingName, context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Delete a storage classification mapping.
-     *
-     * <p>The operation to delete a storage classification mapping.
-     *
+     * 
+     * The operation to delete a storage classification mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1510,26 +1094,17 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String storageClassificationName,
-        String storageClassificationMappingName) {
-        deleteAsync(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                storageClassificationName,
-                storageClassificationMappingName)
-            .block();
+    public void delete(String resourceName, String resourceGroupName, String fabricName,
+        String storageClassificationName, String storageClassificationMappingName) {
+        deleteAsync(resourceName, resourceGroupName, fabricName, storageClassificationName,
+            storageClassificationMappingName).block();
     }
 
     /**
      * Delete a storage classification mapping.
-     *
-     * <p>The operation to delete a storage classification mapping.
-     *
+     * 
+     * The operation to delete a storage classification mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1541,44 +1116,31 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public void delete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String storageClassificationName,
-        String storageClassificationMappingName,
-        Context context) {
-        deleteAsync(
-                resourceName,
-                resourceGroupName,
-                fabricName,
-                storageClassificationName,
-                storageClassificationMappingName,
-                context)
-            .block();
+    public void delete(String resourceName, String resourceGroupName, String fabricName,
+        String storageClassificationName, String storageClassificationMappingName, Context context) {
+        deleteAsync(resourceName, resourceGroupName, fabricName, storageClassificationName,
+            storageClassificationMappingName, context).block();
     }
 
     /**
      * Gets the list of storage classification mappings objects under a vault.
-     *
-     * <p>Lists the storage classification mappings in the vault.
-     *
+     * 
+     * Lists the storage classification mappings in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of storage mapping details along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of storage mapping details along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StorageClassificationMappingInner>> listSinglePageAsync(
-        String resourceName, String resourceGroupName) {
+    private Mono<PagedResponse<StorageClassificationMappingInner>> listSinglePageAsync(String resourceName,
+        String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1588,58 +1150,38 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<StorageClassificationMappingInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
+                resourceGroupName, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<StorageClassificationMappingInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the list of storage classification mappings objects under a vault.
-     *
-     * <p>Lists the storage classification mappings in the vault.
-     *
+     * 
+     * Lists the storage classification mappings in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of storage mapping details along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of storage mapping details along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StorageClassificationMappingInner>> listSinglePageAsync(
-        String resourceName, String resourceGroupName, Context context) {
+    private Mono<PagedResponse<StorageClassificationMappingInner>> listSinglePageAsync(String resourceName,
+        String resourceGroupName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1649,38 +1191,23 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets the list of storage classification mappings objects under a vault.
-     *
-     * <p>Lists the storage classification mappings in the vault.
-     *
+     * 
+     * Lists the storage classification mappings in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1690,15 +1217,15 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<StorageClassificationMappingInner> listAsync(String resourceName, String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceName, resourceGroupName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets the list of storage classification mappings objects under a vault.
-     *
-     * <p>Lists the storage classification mappings in the vault.
-     *
+     * 
+     * Lists the storage classification mappings in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
@@ -1708,18 +1235,17 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      * @return collection of storage mapping details as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<StorageClassificationMappingInner> listAsync(
-        String resourceName, String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceName, resourceGroupName, context),
+    private PagedFlux<StorageClassificationMappingInner> listAsync(String resourceName, String resourceGroupName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets the list of storage classification mappings objects under a vault.
-     *
-     * <p>Lists the storage classification mappings in the vault.
-     *
+     * 
+     * Lists the storage classification mappings in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1734,9 +1260,9 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
 
     /**
      * Gets the list of storage classification mappings objects under a vault.
-     *
-     * <p>Lists the storage classification mappings in the vault.
-     *
+     * 
+     * Lists the storage classification mappings in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
@@ -1746,21 +1272,22 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
      * @return collection of storage mapping details as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<StorageClassificationMappingInner> list(
-        String resourceName, String resourceGroupName, Context context) {
+    public PagedIterable<StorageClassificationMappingInner> list(String resourceName, String resourceGroupName,
+        Context context) {
         return new PagedIterable<>(listAsync(resourceName, resourceGroupName, context));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of storage mapping details along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of storage mapping details along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageClassificationMappingInner>>
@@ -1769,41 +1296,30 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByReplicationStorageClassificationsNext(
-                            nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<StorageClassificationMappingInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByReplicationStorageClassificationsNext(nextLink,
+                this.client.getEndpoint(), accept, context))
+            .<PagedResponse<StorageClassificationMappingInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of storage mapping details along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of storage mapping details along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageClassificationMappingInner>>
@@ -1812,36 +1328,27 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByReplicationStorageClassificationsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByReplicationStorageClassificationsNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of storage mapping details along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of storage mapping details along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<StorageClassificationMappingInner>> listNextSinglePageAsync(String nextLink) {
@@ -1849,62 +1356,43 @@ public final class StorageClassificationMappingsClientImpl implements StorageCla
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<StorageClassificationMappingInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<StorageClassificationMappingInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return collection of storage mapping details along with {@link PagedResponse} on successful completion of {@link
-     *     Mono}.
+     * @return collection of storage mapping details along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<StorageClassificationMappingInner>> listNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<StorageClassificationMappingInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

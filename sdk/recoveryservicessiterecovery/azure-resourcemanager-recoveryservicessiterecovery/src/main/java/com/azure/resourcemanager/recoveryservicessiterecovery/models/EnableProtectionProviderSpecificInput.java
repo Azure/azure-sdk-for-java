@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Enable protection provider specific input. */
+/**
+ * Enable protection provider specific input.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -22,17 +24,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     @JsonSubTypes.Type(name = "HyperVReplicaAzure", value = HyperVReplicaAzureEnableProtectionInput.class),
     @JsonSubTypes.Type(name = "InMageAzureV2", value = InMageAzureV2EnableProtectionInput.class),
     @JsonSubTypes.Type(name = "InMage", value = InMageEnableProtectionInput.class),
-    @JsonSubTypes.Type(name = "InMageRcm", value = InMageRcmEnableProtectionInput.class)
-})
+    @JsonSubTypes.Type(name = "InMageRcm", value = InMageRcmEnableProtectionInput.class) })
 @Immutable
 public class EnableProtectionProviderSpecificInput {
-    /** Creates an instance of EnableProtectionProviderSpecificInput class. */
+    /**
+     * Creates an instance of EnableProtectionProviderSpecificInput class.
+     */
     public EnableProtectionProviderSpecificInput() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

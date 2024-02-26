@@ -66,7 +66,8 @@ public class ReactorProvider {
             }
 
             if (maxFrameSize <= 0) {
-                throw LOGGER.logExceptionAsError(new IllegalArgumentException("'maxFrameSize' must be a positive number."));
+                throw LOGGER
+                    .logExceptionAsError(new IllegalArgumentException("'maxFrameSize' must be a positive number."));
             }
 
             final ReactorOptions reactorOptions = new ReactorOptions();
@@ -112,8 +113,7 @@ public class ReactorProvider {
         // connection's long disposed.
         final Scheduler scheduler = Schedulers.newSingle("reactor-executor");
 
-        return new ReactorExecutor(reactor, scheduler, connectionId,
-            reactorExceptionHandler, pendingTasksDuration,
+        return new ReactorExecutor(reactor, scheduler, connectionId, reactorExceptionHandler, pendingTasksDuration,
             fullyQualifiedNamespace);
     }
 }

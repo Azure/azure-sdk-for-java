@@ -44,16 +44,18 @@ final class BinaryDataSerializer extends JsonSerializer<BinaryData> {
         }
 
         BinaryDataContent content = BinaryDataHelper.getContent(value);
-        if (content instanceof ByteArrayContent || content instanceof FileContent
-            || content instanceof FluxByteBufferContent || content instanceof InputStreamContent) {
+        if (content instanceof ByteArrayContent
+            || content instanceof FileContent
+            || content instanceof FluxByteBufferContent
+            || content instanceof InputStreamContent) {
             gen.writeBinary(content.toBytes());
         } else if (content instanceof SerializableContent) {
             gen.writeRawValue(content.toString());
         } else if (content instanceof StringContent) {
             gen.writeString(content.toString());
         } else {
-            throw LOGGER.logExceptionAsError(new IllegalStateException(
-                "Unsupported BinaryData content type: " + content.getClass().getName()));
+            throw LOGGER.logExceptionAsError(
+                new IllegalStateException("Unsupported BinaryData content type: " + content.getClass().getName()));
         }
     }
 }

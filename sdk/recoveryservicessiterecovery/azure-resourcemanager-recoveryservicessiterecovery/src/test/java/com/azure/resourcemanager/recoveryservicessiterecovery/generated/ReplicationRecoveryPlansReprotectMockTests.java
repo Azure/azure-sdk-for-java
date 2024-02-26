@@ -31,37 +31,26 @@ public final class ReplicationRecoveryPlansReprotectMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"friendlyName\":\"pwnyfjcypazwiimd\",\"primaryFabricId\":\"gkooagr\",\"primaryFabricFriendlyName\":\"pamesi\",\"recoveryFabricId\":\"qadewhuwxk\",\"recoveryFabricFriendlyName\":\"iatfamrnaifllxcc\",\"failoverDeploymentModel\":\"kiyfo\",\"replicationProviders\":[\"omy\",\"xgtu\"],\"allowedOperations\":[\"fquzihirqvv\",\"e\"],\"lastPlannedFailoverTime\":\"2021-08-16T07:33:38Z\",\"lastUnplannedFailoverTime\":\"2021-05-16T08:15:32Z\",\"lastTestFailoverTime\":\"2020-12-21T05:22:34Z\",\"currentScenario\":{\"scenarioName\":\"ssgvq\",\"jobId\":\"rxrmhrraqgbbjlv\",\"startTime\":\"2021-10-25T17:42:29Z\"},\"currentScenarioStatus\":\"rxsiyzsyiumtit\",\"currentScenarioStatusDescription\":\"ycfvernnkq\",\"groups\":[{\"groupType\":\"Boot\",\"replicationProtectedItems\":[{},{},{}],\"startGroupActions\":[{\"actionName\":\"igdrqgzetboyz\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"gnmuxp\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"wpcfmgr\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}],\"endGroupActions\":[{\"actionName\":\"whzbbdwrjencof\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"ii\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"wibdtpljo\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}]},{\"groupType\":\"Shutdown\",\"replicationProtectedItems\":[{}],\"startGroupActions\":[{\"actionName\":\"bxxcdkhxjwtkftg\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"ljuepme\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}],\"endGroupActions\":[{\"actionName\":\"pgbmlbxjhgvtepvr\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"nudmakkshrna\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}]}],\"providerSpecificDetails\":[{\"instanceType\":\"RecoveryPlanProviderSpecificDetails\"},{\"instanceType\":\"RecoveryPlanProviderSpecificDetails\"},{\"instanceType\":\"RecoveryPlanProviderSpecificDetails\"},{\"instanceType\":\"RecoveryPlanProviderSpecificDetails\"}]},\"location\":\"kwohdig\",\"id\":\"yuo\",\"name\":\"ftsamo\",\"type\":\"wqbak\"}";
+        String responseStr
+            = "{\"properties\":{\"friendlyName\":\"pwnyfjcypazwiimd\",\"primaryFabricId\":\"gkooagr\",\"primaryFabricFriendlyName\":\"pamesi\",\"recoveryFabricId\":\"qadewhuwxk\",\"recoveryFabricFriendlyName\":\"iatfamrnaifllxcc\",\"failoverDeploymentModel\":\"kiyfo\",\"replicationProviders\":[\"omy\",\"xgtu\"],\"allowedOperations\":[\"fquzihirqvv\",\"e\"],\"lastPlannedFailoverTime\":\"2021-08-16T07:33:38Z\",\"lastUnplannedFailoverTime\":\"2021-05-16T08:15:32Z\",\"lastTestFailoverTime\":\"2020-12-21T05:22:34Z\",\"currentScenario\":{\"scenarioName\":\"ssgvq\",\"jobId\":\"rxrmhrraqgbbjlv\",\"startTime\":\"2021-10-25T17:42:29Z\"},\"currentScenarioStatus\":\"rxsiyzsyiumtit\",\"currentScenarioStatusDescription\":\"ycfvernnkq\",\"groups\":[{\"groupType\":\"Boot\",\"replicationProtectedItems\":[{},{},{}],\"startGroupActions\":[{\"actionName\":\"igdrqgzetboyz\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"gnmuxp\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"wpcfmgr\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}],\"endGroupActions\":[{\"actionName\":\"whzbbdwrjencof\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"ii\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"wibdtpljo\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}]},{\"groupType\":\"Shutdown\",\"replicationProtectedItems\":[{}],\"startGroupActions\":[{\"actionName\":\"bxxcdkhxjwtkftg\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"ljuepme\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}],\"endGroupActions\":[{\"actionName\":\"pgbmlbxjhgvtepvr\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}},{\"actionName\":\"nudmakkshrna\",\"failoverTypes\":[],\"failoverDirections\":[],\"customDetails\":{\"instanceType\":\"RecoveryPlanActionDetails\"}}]}],\"providerSpecificDetails\":[{\"instanceType\":\"RecoveryPlanProviderSpecificDetails\"},{\"instanceType\":\"RecoveryPlanProviderSpecificDetails\"},{\"instanceType\":\"RecoveryPlanProviderSpecificDetails\"},{\"instanceType\":\"RecoveryPlanProviderSpecificDetails\"}]},\"location\":\"kwohdig\",\"id\":\"yuo\",\"name\":\"ftsamo\",\"type\":\"wqbak\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        SiteRecoveryManager manager =
-            SiteRecoveryManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        SiteRecoveryManager manager = SiteRecoveryManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        RecoveryPlan response =
-            manager.replicationRecoveryPlans().reprotect("dq", "dawe", "gavfyihu", com.azure.core.util.Context.NONE);
+        RecoveryPlan response
+            = manager.replicationRecoveryPlans().reprotect("dq", "dawe", "gavfyihu", com.azure.core.util.Context.NONE);
 
         Assertions.assertEquals("pwnyfjcypazwiimd", response.properties().friendlyName());
         Assertions.assertEquals("gkooagr", response.properties().primaryFabricId());
@@ -71,28 +60,23 @@ public final class ReplicationRecoveryPlansReprotectMockTests {
         Assertions.assertEquals("kiyfo", response.properties().failoverDeploymentModel());
         Assertions.assertEquals("omy", response.properties().replicationProviders().get(0));
         Assertions.assertEquals("fquzihirqvv", response.properties().allowedOperations().get(0));
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-08-16T07:33:38Z"), response.properties().lastPlannedFailoverTime());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-05-16T08:15:32Z"), response.properties().lastUnplannedFailoverTime());
-        Assertions
-            .assertEquals(OffsetDateTime.parse("2020-12-21T05:22:34Z"), response.properties().lastTestFailoverTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-08-16T07:33:38Z"),
+            response.properties().lastPlannedFailoverTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-05-16T08:15:32Z"),
+            response.properties().lastUnplannedFailoverTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2020-12-21T05:22:34Z"),
+            response.properties().lastTestFailoverTime());
         Assertions.assertEquals("ssgvq", response.properties().currentScenario().scenarioName());
         Assertions.assertEquals("rxrmhrraqgbbjlv", response.properties().currentScenario().jobId());
-        Assertions
-            .assertEquals(
-                OffsetDateTime.parse("2021-10-25T17:42:29Z"), response.properties().currentScenario().startTime());
+        Assertions.assertEquals(OffsetDateTime.parse("2021-10-25T17:42:29Z"),
+            response.properties().currentScenario().startTime());
         Assertions.assertEquals("rxsiyzsyiumtit", response.properties().currentScenarioStatus());
         Assertions.assertEquals("ycfvernnkq", response.properties().currentScenarioStatusDescription());
         Assertions.assertEquals(RecoveryPlanGroupType.BOOT, response.properties().groups().get(0).groupType());
-        Assertions
-            .assertEquals(
-                "igdrqgzetboyz", response.properties().groups().get(0).startGroupActions().get(0).actionName());
-        Assertions
-            .assertEquals(
-                "whzbbdwrjencof", response.properties().groups().get(0).endGroupActions().get(0).actionName());
+        Assertions.assertEquals("igdrqgzetboyz",
+            response.properties().groups().get(0).startGroupActions().get(0).actionName());
+        Assertions.assertEquals("whzbbdwrjencof",
+            response.properties().groups().get(0).endGroupActions().get(0).actionName());
         Assertions.assertEquals("kwohdig", response.location());
     }
 }

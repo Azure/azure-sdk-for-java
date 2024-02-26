@@ -20,7 +20,7 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
 
     // This is the current limitation of https://github.com/Azure/qpid-proton-j-extensions.
     // Once this library enables larger frames - this property can be removed.
-    static final int MAX_FRAME_SIZE =  4 * 1024;
+    static final int MAX_FRAME_SIZE = 4 * 1024;
 
     private static final String SOCKET_PATH = "/$servicebus/websocket";
     private static final String PROTOCOL = "AMQPWSB10";
@@ -59,20 +59,11 @@ public class WebSocketsConnectionHandler extends ConnectionHandler {
     protected void addTransportLayers(final Event event, final TransportInternal transport) {
         logger.info("Adding web socket layer");
         final WebSocketImpl webSocket = new WebSocketImpl();
-        webSocket.configure(
-            hostname,
-            SOCKET_PATH,
-            "",
-            0,
-            PROTOCOL,
-            null,
-            null);
+        webSocket.configure(hostname, SOCKET_PATH, "", 0, PROTOCOL, null, null);
 
         transport.addTransportLayer(webSocket);
 
-        logger.atVerbose()
-            .addKeyValue(HOSTNAME_KEY, hostname)
-            .log("Adding web sockets transport layer.");
+        logger.atVerbose().addKeyValue(HOSTNAME_KEY, hostname).log("Adding web sockets transport layer.");
 
         super.addTransportLayers(event, transport);
     }

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** InMageRcm fabric provider specific settings. */
+/**
+ * InMageRcm fabric provider specific settings.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMageRcm")
 @Fluent
@@ -33,13 +35,15 @@ public final class InMageRcmFabricCreationInput extends FabricSpecificCreationIn
     @JsonProperty(value = "sourceAgentIdentity", required = true)
     private IdentityProviderInput sourceAgentIdentity;
 
-    /** Creates an instance of InMageRcmFabricCreationInput class. */
+    /**
+     * Creates an instance of InMageRcmFabricCreationInput class.
+     */
     public InMageRcmFabricCreationInput() {
     }
 
     /**
      * Get the vmwareSiteId property: The ARM Id of the VMware site.
-     *
+     * 
      * @return the vmwareSiteId value.
      */
     public String vmwareSiteId() {
@@ -48,7 +52,7 @@ public final class InMageRcmFabricCreationInput extends FabricSpecificCreationIn
 
     /**
      * Set the vmwareSiteId property: The ARM Id of the VMware site.
-     *
+     * 
      * @param vmwareSiteId the vmwareSiteId value to set.
      * @return the InMageRcmFabricCreationInput object itself.
      */
@@ -59,7 +63,7 @@ public final class InMageRcmFabricCreationInput extends FabricSpecificCreationIn
 
     /**
      * Get the physicalSiteId property: The ARM Id of the physical site.
-     *
+     * 
      * @return the physicalSiteId value.
      */
     public String physicalSiteId() {
@@ -68,7 +72,7 @@ public final class InMageRcmFabricCreationInput extends FabricSpecificCreationIn
 
     /**
      * Set the physicalSiteId property: The ARM Id of the physical site.
-     *
+     * 
      * @param physicalSiteId the physicalSiteId value to set.
      * @return the InMageRcmFabricCreationInput object itself.
      */
@@ -79,7 +83,7 @@ public final class InMageRcmFabricCreationInput extends FabricSpecificCreationIn
 
     /**
      * Get the sourceAgentIdentity property: The identity provider input for source agent authentication.
-     *
+     * 
      * @return the sourceAgentIdentity value.
      */
     public IdentityProviderInput sourceAgentIdentity() {
@@ -88,7 +92,7 @@ public final class InMageRcmFabricCreationInput extends FabricSpecificCreationIn
 
     /**
      * Set the sourceAgentIdentity property: The identity provider input for source agent authentication.
-     *
+     * 
      * @param sourceAgentIdentity the sourceAgentIdentity value to set.
      * @return the InMageRcmFabricCreationInput object itself.
      */
@@ -99,29 +103,23 @@ public final class InMageRcmFabricCreationInput extends FabricSpecificCreationIn
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (vmwareSiteId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property vmwareSiteId in model InMageRcmFabricCreationInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property vmwareSiteId in model InMageRcmFabricCreationInput"));
         }
         if (physicalSiteId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property physicalSiteId in model InMageRcmFabricCreationInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property physicalSiteId in model InMageRcmFabricCreationInput"));
         }
         if (sourceAgentIdentity() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property sourceAgentIdentity in model InMageRcmFabricCreationInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property sourceAgentIdentity in model InMageRcmFabricCreationInput"));
         } else {
             sourceAgentIdentity().validate();
         }

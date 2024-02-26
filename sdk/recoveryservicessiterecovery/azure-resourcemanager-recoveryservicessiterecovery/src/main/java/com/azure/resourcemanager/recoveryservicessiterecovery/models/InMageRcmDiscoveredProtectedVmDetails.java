@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** InMageRcm discovered protected VM details. */
+/**
+ * InMageRcm discovered protected VM details.
+ */
 @Immutable
 public final class InMageRcmDiscoveredProtectedVmDetails {
     /*
@@ -84,13 +86,15 @@ public final class InMageRcmDiscoveredProtectedVmDetails {
     @JsonProperty(value = "lastDiscoveryTimeInUtc", access = JsonProperty.Access.WRITE_ONLY)
     private OffsetDateTime lastDiscoveryTimeInUtc;
 
-    /** Creates an instance of InMageRcmDiscoveredProtectedVmDetails class. */
+    /**
+     * Creates an instance of InMageRcmDiscoveredProtectedVmDetails class.
+     */
     public InMageRcmDiscoveredProtectedVmDetails() {
     }
 
     /**
      * Get the vCenterId property: The VCenter Id.
-     *
+     * 
      * @return the vCenterId value.
      */
     public String vCenterId() {
@@ -99,7 +103,7 @@ public final class InMageRcmDiscoveredProtectedVmDetails {
 
     /**
      * Get the vCenterFqdn property: The VCenter fqdn.
-     *
+     * 
      * @return the vCenterFqdn value.
      */
     public String vCenterFqdn() {
@@ -108,7 +112,7 @@ public final class InMageRcmDiscoveredProtectedVmDetails {
 
     /**
      * Get the datastores property: The list of datastores.
-     *
+     * 
      * @return the datastores value.
      */
     public List<String> datastores() {
@@ -117,7 +121,7 @@ public final class InMageRcmDiscoveredProtectedVmDetails {
 
     /**
      * Get the ipAddresses property: The list of IP addresses.
-     *
+     * 
      * @return the ipAddresses value.
      */
     public List<String> ipAddresses() {
@@ -126,7 +130,7 @@ public final class InMageRcmDiscoveredProtectedVmDetails {
 
     /**
      * Get the vmwareToolsStatus property: The VMware tools status.
-     *
+     * 
      * @return the vmwareToolsStatus value.
      */
     public String vmwareToolsStatus() {
@@ -135,7 +139,7 @@ public final class InMageRcmDiscoveredProtectedVmDetails {
 
     /**
      * Get the powerStatus property: The VM power status.
-     *
+     * 
      * @return the powerStatus value.
      */
     public String powerStatus() {
@@ -144,7 +148,7 @@ public final class InMageRcmDiscoveredProtectedVmDetails {
 
     /**
      * Get the vmFqdn property: The VM fqdn.
-     *
+     * 
      * @return the vmFqdn value.
      */
     public String vmFqdn() {
@@ -153,7 +157,7 @@ public final class InMageRcmDiscoveredProtectedVmDetails {
 
     /**
      * Get the osName property: The VM's OS name.
-     *
+     * 
      * @return the osName value.
      */
     public String osName() {
@@ -162,7 +166,7 @@ public final class InMageRcmDiscoveredProtectedVmDetails {
 
     /**
      * Get the createdTimestamp property: The SDS created timestamp.
-     *
+     * 
      * @return the createdTimestamp value.
      */
     public OffsetDateTime createdTimestamp() {
@@ -171,7 +175,7 @@ public final class InMageRcmDiscoveredProtectedVmDetails {
 
     /**
      * Get the updatedTimestamp property: The SDS updated timestamp.
-     *
+     * 
      * @return the updatedTimestamp value.
      */
     public OffsetDateTime updatedTimestamp() {
@@ -180,7 +184,7 @@ public final class InMageRcmDiscoveredProtectedVmDetails {
 
     /**
      * Get the isDeleted property: A value indicating whether the VM is deleted.
-     *
+     * 
      * @return the isDeleted value.
      */
     public Boolean isDeleted() {
@@ -189,7 +193,7 @@ public final class InMageRcmDiscoveredProtectedVmDetails {
 
     /**
      * Get the lastDiscoveryTimeInUtc property: The last time when SDS information discovered in SRS.
-     *
+     * 
      * @return the lastDiscoveryTimeInUtc value.
      */
     public OffsetDateTime lastDiscoveryTimeInUtc() {
@@ -198,7 +202,7 @@ public final class InMageRcmDiscoveredProtectedVmDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

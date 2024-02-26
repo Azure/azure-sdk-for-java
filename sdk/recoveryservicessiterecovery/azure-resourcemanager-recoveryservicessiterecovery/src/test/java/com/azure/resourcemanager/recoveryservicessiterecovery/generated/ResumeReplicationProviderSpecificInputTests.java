@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.ResumeRepli
 public final class ResumeReplicationProviderSpecificInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResumeReplicationProviderSpecificInput model =
-            BinaryData
-                .fromString("{\"instanceType\":\"ResumeReplicationProviderSpecificInput\"}")
+        ResumeReplicationProviderSpecificInput model
+            = BinaryData.fromString("{\"instanceType\":\"ResumeReplicationProviderSpecificInput\"}")
                 .toObject(ResumeReplicationProviderSpecificInput.class);
     }
 

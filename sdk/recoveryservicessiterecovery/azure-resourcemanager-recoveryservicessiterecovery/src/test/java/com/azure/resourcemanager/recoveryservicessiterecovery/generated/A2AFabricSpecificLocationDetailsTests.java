@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class A2AFabricSpecificLocationDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        A2AFabricSpecificLocationDetails model =
-            BinaryData
-                .fromString(
-                    "{\"initialPrimaryZone\":\"eatkdbmwnrdj\",\"initialRecoveryZone\":\"bqbnaomhjrmkuh\",\"initialPrimaryExtendedLocation\":{\"name\":\"xljalfihc\",\"type\":\"EdgeZone\"},\"initialRecoveryExtendedLocation\":{\"name\":\"bc\",\"type\":\"EdgeZone\"},\"initialPrimaryFabricLocation\":\"de\",\"initialRecoveryFabricLocation\":\"qcwgaxfgvaknokz\",\"primaryZone\":\"jzrltixldzy\",\"recoveryZone\":\"ytpqsixymmpujiv\",\"primaryExtendedLocation\":{\"name\":\"lkjuvsmbmslzoyov\",\"type\":\"EdgeZone\"},\"recoveryExtendedLocation\":{\"name\":\"bpqvybefg\",\"type\":\"EdgeZone\"},\"primaryFabricLocation\":\"nokcv\",\"recoveryFabricLocation\":\"ubseskvcuartr\"}")
-                .toObject(A2AFabricSpecificLocationDetails.class);
+        A2AFabricSpecificLocationDetails model = BinaryData.fromString(
+            "{\"initialPrimaryZone\":\"eatkdbmwnrdj\",\"initialRecoveryZone\":\"bqbnaomhjrmkuh\",\"initialPrimaryExtendedLocation\":{\"name\":\"xljalfihc\",\"type\":\"EdgeZone\"},\"initialRecoveryExtendedLocation\":{\"name\":\"bc\",\"type\":\"EdgeZone\"},\"initialPrimaryFabricLocation\":\"de\",\"initialRecoveryFabricLocation\":\"qcwgaxfgvaknokz\",\"primaryZone\":\"jzrltixldzy\",\"recoveryZone\":\"ytpqsixymmpujiv\",\"primaryExtendedLocation\":{\"name\":\"lkjuvsmbmslzoyov\",\"type\":\"EdgeZone\"},\"recoveryExtendedLocation\":{\"name\":\"bpqvybefg\",\"type\":\"EdgeZone\"},\"primaryFabricLocation\":\"nokcv\",\"recoveryFabricLocation\":\"ubseskvcuartr\"}")
+            .toObject(A2AFabricSpecificLocationDetails.class);
         Assertions.assertEquals("eatkdbmwnrdj", model.initialPrimaryZone());
         Assertions.assertEquals("bqbnaomhjrmkuh", model.initialRecoveryZone());
         Assertions.assertEquals("xljalfihc", model.initialPrimaryExtendedLocation().name());
@@ -38,24 +36,19 @@ public final class A2AFabricSpecificLocationDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        A2AFabricSpecificLocationDetails model =
-            new A2AFabricSpecificLocationDetails()
-                .withInitialPrimaryZone("eatkdbmwnrdj")
-                .withInitialRecoveryZone("bqbnaomhjrmkuh")
-                .withInitialPrimaryExtendedLocation(
-                    new ExtendedLocation().withName("xljalfihc").withType(ExtendedLocationType.EDGE_ZONE))
-                .withInitialRecoveryExtendedLocation(
-                    new ExtendedLocation().withName("bc").withType(ExtendedLocationType.EDGE_ZONE))
-                .withInitialPrimaryFabricLocation("de")
-                .withInitialRecoveryFabricLocation("qcwgaxfgvaknokz")
-                .withPrimaryZone("jzrltixldzy")
-                .withRecoveryZone("ytpqsixymmpujiv")
-                .withPrimaryExtendedLocation(
-                    new ExtendedLocation().withName("lkjuvsmbmslzoyov").withType(ExtendedLocationType.EDGE_ZONE))
-                .withRecoveryExtendedLocation(
-                    new ExtendedLocation().withName("bpqvybefg").withType(ExtendedLocationType.EDGE_ZONE))
-                .withPrimaryFabricLocation("nokcv")
-                .withRecoveryFabricLocation("ubseskvcuartr");
+        A2AFabricSpecificLocationDetails model = new A2AFabricSpecificLocationDetails()
+            .withInitialPrimaryZone("eatkdbmwnrdj").withInitialRecoveryZone("bqbnaomhjrmkuh")
+            .withInitialPrimaryExtendedLocation(
+                new ExtendedLocation().withName("xljalfihc").withType(ExtendedLocationType.EDGE_ZONE))
+            .withInitialRecoveryExtendedLocation(
+                new ExtendedLocation().withName("bc").withType(ExtendedLocationType.EDGE_ZONE))
+            .withInitialPrimaryFabricLocation("de").withInitialRecoveryFabricLocation("qcwgaxfgvaknokz")
+            .withPrimaryZone("jzrltixldzy").withRecoveryZone("ytpqsixymmpujiv")
+            .withPrimaryExtendedLocation(
+                new ExtendedLocation().withName("lkjuvsmbmslzoyov").withType(ExtendedLocationType.EDGE_ZONE))
+            .withRecoveryExtendedLocation(
+                new ExtendedLocation().withName("bpqvybefg").withType(ExtendedLocationType.EDGE_ZONE))
+            .withPrimaryFabricLocation("nokcv").withRecoveryFabricLocation("ubseskvcuartr");
         model = BinaryData.fromObject(model).toObject(A2AFabricSpecificLocationDetails.class);
         Assertions.assertEquals("eatkdbmwnrdj", model.initialPrimaryZone());
         Assertions.assertEquals("bqbnaomhjrmkuh", model.initialRecoveryZone());

@@ -9,7 +9,7 @@ import com.azure.ai.openai.assistants.models.AssistantThreadCreationOptions;
 import com.azure.ai.openai.assistants.models.FilePurpose;
 import com.azure.ai.openai.assistants.models.MessageRole;
 import com.azure.ai.openai.assistants.models.MessageTextContent;
-import com.azure.ai.openai.assistants.models.OpenAIPageableListOfThreadMessage;
+import com.azure.ai.openai.assistants.models.PageableList;
 import com.azure.ai.openai.assistants.models.RunStatus;
 import com.azure.ai.openai.assistants.models.ThreadMessage;
 import com.azure.ai.openai.assistants.models.ThreadRun;
@@ -86,7 +86,7 @@ public class RetrievalAsyncTest extends AssistantsClientTestBase {
 
                     return client.listMessages(cleanUp.getThread().getId()).zipWith(Mono.just(cleanUp));
                 }).map(tuple -> {
-                    OpenAIPageableListOfThreadMessage messageList = tuple.getT1();
+                    PageableList<ThreadMessage> messageList = tuple.getT1();
                     AsyncUtils cleanUp = tuple.getT2();
 
                     assertEquals(2, messageList.getData().size());
