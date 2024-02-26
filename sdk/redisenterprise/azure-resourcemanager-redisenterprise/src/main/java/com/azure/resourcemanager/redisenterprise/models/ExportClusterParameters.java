@@ -10,24 +10,26 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Export an RDB file into a target database
- *
- * <p>Parameters for a Redis Enterprise export operation.
+ * 
+ * Parameters for a Redis Enterprise export operation.
  */
 @Fluent
 public final class ExportClusterParameters {
     /*
      * SAS URI for the target directory to export to
      */
-    @JsonProperty(value = "sasUri", required = true)
+    @JsonProperty(value = "sasUri")
     private String sasUri;
 
-    /** Creates an instance of ExportClusterParameters class. */
+    /**
+     * Creates an instance of ExportClusterParameters class.
+     */
     public ExportClusterParameters() {
     }
 
     /**
      * Get the sasUri property: SAS URI for the target directory to export to.
-     *
+     * 
      * @return the sasUri value.
      */
     public String sasUri() {
@@ -36,7 +38,7 @@ public final class ExportClusterParameters {
 
     /**
      * Set the sasUri property: SAS URI for the target directory to export to.
-     *
+     * 
      * @param sasUri the sasUri value to set.
      * @return the ExportClusterParameters object itself.
      */
@@ -47,14 +49,13 @@ public final class ExportClusterParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (sasUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property sasUri in model ExportClusterParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property sasUri in model ExportClusterParameters"));
         }
     }
 

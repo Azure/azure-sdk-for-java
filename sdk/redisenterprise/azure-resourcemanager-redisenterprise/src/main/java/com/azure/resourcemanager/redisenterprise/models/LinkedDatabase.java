@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Linked Database
- *
- * <p>Specifies details of a linked database resource.
+ * 
+ * Specifies details of a linked database resource.
  */
 @Fluent
 public final class LinkedDatabase {
@@ -26,13 +26,15 @@ public final class LinkedDatabase {
     @JsonProperty(value = "state", access = JsonProperty.Access.WRITE_ONLY)
     private LinkState state;
 
-    /** Creates an instance of LinkedDatabase class. */
+    /**
+     * Creates an instance of LinkedDatabase class.
+     */
     public LinkedDatabase() {
     }
 
     /**
      * Get the id property: Resource ID of a database resource to link with this database.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -41,7 +43,7 @@ public final class LinkedDatabase {
 
     /**
      * Set the id property: Resource ID of a database resource to link with this database.
-     *
+     * 
      * @param id the id value to set.
      * @return the LinkedDatabase object itself.
      */
@@ -52,7 +54,7 @@ public final class LinkedDatabase {
 
     /**
      * Get the state property: State of the link between the database resources.
-     *
+     * 
      * @return the state value.
      */
     public LinkState state() {
@@ -61,7 +63,7 @@ public final class LinkedDatabase {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

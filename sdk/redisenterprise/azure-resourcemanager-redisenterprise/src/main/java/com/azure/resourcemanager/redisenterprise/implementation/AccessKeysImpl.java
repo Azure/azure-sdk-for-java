@@ -12,8 +12,8 @@ public final class AccessKeysImpl implements AccessKeys {
 
     private final com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager;
 
-    AccessKeysImpl(
-        AccessKeysInner innerObject, com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager) {
+    AccessKeysImpl(AccessKeysInner innerObject,
+        com.azure.resourcemanager.redisenterprise.RedisEnterpriseManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

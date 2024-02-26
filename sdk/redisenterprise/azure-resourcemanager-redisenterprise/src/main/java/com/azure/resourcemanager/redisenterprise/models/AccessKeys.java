@@ -6,25 +6,27 @@ package com.azure.resourcemanager.redisenterprise.models;
 
 import com.azure.resourcemanager.redisenterprise.fluent.models.AccessKeysInner;
 
-/** An immutable client-side representation of AccessKeys. */
+/**
+ * An immutable client-side representation of AccessKeys.
+ */
 public interface AccessKeys {
     /**
      * Gets the primaryKey property: The current primary key that clients can use to authenticate.
-     *
+     * 
      * @return the primaryKey value.
      */
     String primaryKey();
 
     /**
      * Gets the secondaryKey property: The current secondary key that clients can use to authenticate.
-     *
+     * 
      * @return the secondaryKey value.
      */
     String secondaryKey();
 
     /**
      * Gets the inner com.azure.resourcemanager.redisenterprise.fluent.models.AccessKeysInner object.
-     *
+     * 
      * @return the inner object.
      */
     AccessKeysInner innerModel();

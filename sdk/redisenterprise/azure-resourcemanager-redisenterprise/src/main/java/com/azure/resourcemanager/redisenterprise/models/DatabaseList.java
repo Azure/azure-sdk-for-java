@@ -9,7 +9,9 @@ import com.azure.resourcemanager.redisenterprise.fluent.models.DatabaseInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response of a list-all operation. */
+/**
+ * The response of a list-all operation.
+ */
 @Fluent
 public final class DatabaseList {
     /*
@@ -24,13 +26,15 @@ public final class DatabaseList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of DatabaseList class. */
+    /**
+     * Creates an instance of DatabaseList class.
+     */
     public DatabaseList() {
     }
 
     /**
      * Get the value property: List of databases.
-     *
+     * 
      * @return the value value.
      */
     public List<DatabaseInner> value() {
@@ -39,7 +43,7 @@ public final class DatabaseList {
 
     /**
      * Set the value property: List of databases.
-     *
+     * 
      * @param value the value value to set.
      * @return the DatabaseList object itself.
      */
@@ -50,7 +54,7 @@ public final class DatabaseList {
 
     /**
      * Get the nextLink property: The URI to fetch the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class DatabaseList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
