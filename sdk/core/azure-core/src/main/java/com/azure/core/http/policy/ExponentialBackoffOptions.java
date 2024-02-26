@@ -25,8 +25,7 @@ import java.time.Duration;
  *
  * <!-- src_embed com.azure.core.http.policy.ExponentialBackoffOptions.constructor -->
  * <pre>
- * ExponentialBackoffOptions options = new ExponentialBackoffOptions&#40;&#41;
- *     .setMaxRetries&#40;5&#41;
+ * ExponentialBackoffOptions options = new ExponentialBackoffOptions&#40;&#41;.setMaxRetries&#40;5&#41;
  *     .setBaseDelay&#40;Duration.ofSeconds&#40;1&#41;&#41;
  *     .setMaxDelay&#40;Duration.ofSeconds&#40;10&#41;&#41;;
  *

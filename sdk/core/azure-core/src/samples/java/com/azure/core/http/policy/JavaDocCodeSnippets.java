@@ -1,12 +1,24 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.core.http.policy;
 
-import com.azure.core.credential.*;
+import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.AzureSasCredential;
+import com.azure.core.credential.BasicAuthenticationCredential;
+import com.azure.core.credential.KeyCredential;
+import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 
 import java.time.Duration;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.EnumSet;
+import java.util.HashSet;
+import java.util.List;
 
+@SuppressWarnings("unused")
 public class JavaDocCodeSnippets {
 
     /**
@@ -27,7 +39,7 @@ public class JavaDocCodeSnippets {
     /**
      * Code snippets for using {@link AzureKeyCredentialPolicy}.
      */
-    public void createAzureKeyCredentialrPolicy() {
+    public void createAzureKeyCredentialPolicy() {
 
         // BEGIN: com.azure.core.http.policy.AzureKeyCredentialPolicy.constructor
         AzureKeyCredential credential = new AzureKeyCredential("my_key");
@@ -38,7 +50,7 @@ public class JavaDocCodeSnippets {
     /**
      * Code snippets for using {@link AzureSasCredentialPolicy}.
      */
-    public void createAzureSasCredentialrPolicy() {
+    public void createAzureSasCredentialPolicy() {
 
         // BEGIN: com.azure.core.http.policy.AzureSasCredentialPolicy.constructor
         AzureSasCredential credential = new AzureSasCredential("my_sas");
@@ -107,8 +119,7 @@ public class JavaDocCodeSnippets {
     public void createExponentialBackoffOptions() {
 
         // BEGIN: com.azure.core.http.policy.ExponentialBackoffOptions.constructor
-        ExponentialBackoffOptions options = new ExponentialBackoffOptions()
-            .setMaxRetries(5)
+        ExponentialBackoffOptions options = new ExponentialBackoffOptions().setMaxRetries(5)
             .setBaseDelay(Duration.ofSeconds(1))
             .setMaxDelay(Duration.ofSeconds(10));
 

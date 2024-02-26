@@ -4,6 +4,9 @@
 
 ### Features Added
 
+- Added `CoreUtils.addShutdownHookSafely(Thread)` which is a more generic version of 
+  `CoreUtils.addShutdownHookSafely(ExecutorService, Duration)`. ([#38730](https://github.com/Azure/azure-sdk-for-java/pull/38730))
+
 ### Breaking Changes
 
 ### Bugs Fixed
