@@ -2235,7 +2235,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
                 null))
             .assertNext(r -> {
                 DataLakeDirectoryAsyncClient renamedClient = r.getValue();
-                assertDoesNotThrow(renamedClient::getProperties);
+                assertDoesNotThrow(() -> renamedClient.getProperties());
             })
             .verifyComplete();
 
@@ -2251,7 +2251,7 @@ public class DirectoryAsyncApiTests extends DataLakeTestBase {
             generatePathName(), null, null))
             .assertNext(r -> {
                 DataLakeDirectoryAsyncClient renamedClient = r.getValue();
-                assertDoesNotThrow(renamedClient::getProperties);
+                assertDoesNotThrow(() -> renamedClient.getProperties());
             })
             .verifyComplete();
 

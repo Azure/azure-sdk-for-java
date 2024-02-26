@@ -25,8 +25,7 @@ public class ReadToFileOptions {
     private DataLakeRequestConditions dataLakeRequestConditions;
     private boolean rangeGetContentMd5;
     private Set<OpenOption> openOptions;
-    private Boolean upn;
-
+    private Boolean userPrincipalName;
 
     /**
      * @return A {@link String} representing the filePath where the downloaded data will be written.
@@ -146,16 +145,16 @@ public class ReadToFileOptions {
     /**
      * @return The value for the x-ms-upn header.
      */
-    public Boolean isUpn() {
-        return upn;
+    public Boolean isUserPrincipalName() {
+        return userPrincipalName;
     }
 
     /**
-     * @param upn The value for the x-ms-upn header.
+     * @param userPrincipalName The value for the x-ms-upn header.
      * @return The updated options.
      */
-    public ReadToFileOptions setUpn(Boolean upn) {
-        this.upn = upn;
+    public ReadToFileOptions setUserPrincipalName(Boolean userPrincipalName) {
+        this.userPrincipalName = userPrincipalName;
         return this;
     }
 }

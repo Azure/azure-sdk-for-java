@@ -74,7 +74,7 @@ public class ShareFileListRangesDiffOptions {
      * @return Whether the changed ranges for a file that has been renamed or moved between the target snapshot
      * (or the live file) and the previous snapshot should be listed.
      */
-    public Boolean isRenameSupported() {
+    public Boolean isRenameIncluded() {
         return supportRename;
     }
 
@@ -82,12 +82,12 @@ public class ShareFileListRangesDiffOptions {
      * Sets the value for whether the changed ranges for a file that has been renamed or moved should appear in the
      * snapshot dif.
      *
-     * @param renameSupported Whether the changed ranges for a file that has been renamed or moved between the target
+     * @param renameIncluded Whether the changed ranges for a file that has been renamed or moved between the target
      * snapshot (or the live file) and the previous snapshot should be listed.
      * @return The updated options.
      */
-    public ShareFileListRangesDiffOptions setRenameSupported(Boolean renameSupported) {
-        this.supportRename = renameSupported;
+    public ShareFileListRangesDiffOptions setRenameIncluded(Boolean renameIncluded) {
+        this.supportRename = renameIncluded;
         return this;
     }
 }

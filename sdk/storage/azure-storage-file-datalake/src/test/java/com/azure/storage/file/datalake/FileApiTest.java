@@ -203,7 +203,7 @@ public class FileApiTest extends DataLakeTestBase {
             .setContentType(contentType);
         fc = dataLakeFileSystemClient.getFileClient(generatePathName());
         fc.createWithResponse(null, null, headers, null, null, null, null);
-        Response<PathProperties> response = fc.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null);
+        Response<PathProperties> response = fc.getPropertiesWithResponse(null, null, null);
 
         // If the value isn't set the service will automatically set it
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
@@ -506,7 +506,7 @@ public class FileApiTest extends DataLakeTestBase {
         fc = dataLakeFileSystemClient.getFileClient(generatePathName());
 
         fc.createIfNotExistsWithResponse(new DataLakePathCreateOptions().setPathHttpHeaders(headers), null, null);
-        Response<PathProperties> response = fc.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null);
+        Response<PathProperties> response = fc.getPropertiesWithResponse(null, null, null);
 
         // If the value isn't set the service will automatically set it
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
@@ -714,7 +714,7 @@ public class FileApiTest extends DataLakeTestBase {
         fc.deleteWithResponse(null, null, null);
 
         DataLakeStorageException e = assertThrows(DataLakeStorageException.class,
-            () -> fc.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null));
+            () -> fc.getPropertiesWithResponse(null, null, null));
 
         assertEquals(404, e.getResponse().getStatusCode());
         assertEquals(BlobErrorCode.BLOB_NOT_FOUND.toString(), e.getErrorCode());
@@ -762,7 +762,7 @@ public class FileApiTest extends DataLakeTestBase {
     @Test
     public void deleteIfExistsFileDoesNotExistAnymore() {
         assertEquals(200, fc.deleteIfExistsWithResponse(null, null, null).getStatusCode());
-        assertThrows(DataLakeStorageException.class, () -> fc.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null));
+        assertThrows(DataLakeStorageException.class, () -> fc.getPropertiesWithResponse(null, null, null));
     }
 
     @Test
@@ -994,7 +994,7 @@ public class FileApiTest extends DataLakeTestBase {
 
     @Test
     public void getPropertiesDefault() {
-        Response<PathProperties> response = fc.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null);
+        Response<PathProperties> response = fc.getPropertiesWithResponse(null, null, null);
         HttpHeaders headers = response.getHeaders();
         PathProperties properties = response.getValue();
 
@@ -1031,7 +1031,7 @@ public class FileApiTest extends DataLakeTestBase {
 
     @Test
     public void getPropertiesMin() {
-        assertEquals(200, fc.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null).getStatusCode());
+        assertEquals(200, fc.getPropertiesWithResponse(null, null, null).getStatusCode());
     }
 
     @ParameterizedTest
@@ -1111,7 +1111,7 @@ public class FileApiTest extends DataLakeTestBase {
 
         fc.setHttpHeaders(putHeaders);
 
-        validatePathProperties(fc.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null), cacheControl, contentDisposition,
+        validatePathProperties(fc.getPropertiesWithResponse(null, null, null), cacheControl, contentDisposition,
             contentEncoding, contentLanguage, contentMD5, contentType);
     }
 
@@ -1838,7 +1838,7 @@ public class FileApiTest extends DataLakeTestBase {
         Response<DataLakeFileClient> response = fc.renameWithResponse(null, generatePathName() + destination, null, null, null, null);
 
         assertEquals(201, response.getStatusCode());
-        assertEquals(200,  response.getValue().getPropertiesWithResponse((DataLakeRequestConditions) null, null, null).getStatusCode());
+        assertEquals(200,  response.getValue().getPropertiesWithResponse(null, null, null).getStatusCode());
     }
 
     @ParameterizedTest
@@ -2223,7 +2223,7 @@ public class FileApiTest extends DataLakeTestBase {
             .setContentType(contentType);
 
         fc.flushWithResponse(DATA.getDefaultDataSizeLong(), false, false, headers, null, null, null);
-        Response<PathProperties> response = fc.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null);
+        Response<PathProperties> response = fc.getPropertiesWithResponse(null, null, null);
 
         // If the value isn't set the service will automatically set it
         contentType = (contentType == null) ? "application/octet-stream" : contentType;
@@ -3354,7 +3354,7 @@ public class FileApiTest extends DataLakeTestBase {
             .buildFileClient();
 
         // blob endpoint
-        assertEquals("2019-02-02", fileClient.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null).getHeaders()
+        assertEquals("2019-02-02", fileClient.getPropertiesWithResponse(null, null, null).getHeaders()
             .getValue(X_MS_VERSION));
 
         // dfs endpoint
@@ -3463,13 +3463,10 @@ public class FileApiTest extends DataLakeTestBase {
         fc.createWithResponse(options, null, Context.NONE);
 
         //getProperties
-        PathGetPropertiesOptions propertiesOptions = new PathGetPropertiesOptions().setUpn(upnHeader);
+        PathGetPropertiesOptions propertiesOptions = new PathGetPropertiesOptions().setUserPrincipalName(upnHeader);
 
         PathProperties getPropertiesResponse = fc.getProperties(propertiesOptions);
         assertNotNull(getPropertiesResponse.getAccessControlList());
-
-        Response<PathProperties> getPropertiesWithResponse = fc.getPropertiesWithResponse(propertiesOptions, null, null);
-        assertNotNull(getPropertiesWithResponse.getValue().getAccessControlList());
 
         //readToFile
         File outFile = new File(testResourceNamer.randomName("", 60) + ".txt");
@@ -3480,21 +3477,12 @@ public class FileApiTest extends DataLakeTestBase {
             assertTrue(outFile.delete());
         }
         ReadToFileOptions readToFileOptions = new ReadToFileOptions();
-        readToFileOptions.setUpn(upnHeader).setFilePath(outFile.getPath()).setRange(null)
+        readToFileOptions.setUserPrincipalName(upnHeader).setFilePath(outFile.getPath()).setRange(null)
             .setParallelTransferOptions(null).setDownloadRetryOptions(null).setDataLakeRequestConditions(null)
             .setRangeGetContentMd5(false).setOpenOptions(null);
 
-        PathProperties readToFileResponse1 = fc.readToFile(readToFileOptions);
-        assertNotNull(readToFileResponse1.getAccessControlList());
-
-        PathProperties readToFileBoolResponse2 = fc.readToFile(readToFileOptions, true);
-        assertNotNull(readToFileBoolResponse2.getAccessControlList());
-
-        if (outFile.exists()) {
-            assertTrue(outFile.delete());
-        }
-        PathProperties readToFileBoolResponse3 = fc.readToFile(readToFileOptions, false);
-        assertNotNull(readToFileBoolResponse3.getAccessControlList());
+        PathProperties readToFileResponse = fc.readToFile(readToFileOptions);
+        assertNotNull(readToFileResponse.getAccessControlList());
 
         if (outFile.exists()) {
             assertTrue(outFile.delete());
@@ -3503,7 +3491,7 @@ public class FileApiTest extends DataLakeTestBase {
         assertNotNull(readToFileWithResponse.getValue().getAccessControlList());
 
         //openInputStream
-        DataLakeFileInputStreamOptions openInputStreamOptions = new DataLakeFileInputStreamOptions().setUpn(upnHeader);
+        DataLakeFileInputStreamOptions openInputStreamOptions = new DataLakeFileInputStreamOptions().setUserPrincipalName(upnHeader);
 
         DataLakeFileOpenInputStreamResult openInputStreamResponse = fc.openInputStream(openInputStreamOptions);
         //no way to pull acl from properties in openInputStream
@@ -3516,6 +3504,4 @@ public class FileApiTest extends DataLakeTestBase {
             Arguments.of(true),
             Arguments.of((Boolean) null));
     }
-
-
 }

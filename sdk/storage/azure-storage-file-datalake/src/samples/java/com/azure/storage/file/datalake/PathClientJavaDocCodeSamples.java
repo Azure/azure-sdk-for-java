@@ -175,7 +175,7 @@ public class PathClientJavaDocCodeSamples {
         // END: com.azure.storage.file.datalake.DataLakePathClient.getProperties
 
         // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.getProperties#PathGetPropertiesOptions
-        PathGetPropertiesOptions options = new PathGetPropertiesOptions().setUpn(true);
+        PathGetPropertiesOptions options = new PathGetPropertiesOptions().setUserPrincipalName(true);
 
         System.out.printf("Creation Time: %s, Size: %d%n", client.getProperties(options).getCreationTime(),
             client.getProperties(options).getFileSize());
@@ -185,7 +185,6 @@ public class PathClientJavaDocCodeSamples {
 
     /**
      * Code snippets for {@link DataLakePathClient#getPropertiesWithResponse(DataLakeRequestConditions, Duration, Context)}
-     * and {@link DataLakePathClient#getPropertiesWithResponse(PathGetPropertiesOptions, Duration, Context)}
      */
     public void getPropertiesWithResponseCodeSnippets() {
         // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.getPropertiesWithResponse#DataLakeRequestConditions-Duration-Context
@@ -197,18 +196,6 @@ public class PathClientJavaDocCodeSamples {
         System.out.printf("Creation Time: %s, Size: %d%n", response.getValue().getCreationTime(),
             response.getValue().getFileSize());
         // END: com.azure.storage.file.datalake.DataLakePathClient.getPropertiesWithResponse#DataLakeRequestConditions-Duration-Context
-
-        // BEGIN: com.azure.storage.file.datalake.DataLakePathClient.getPropertiesWithResponse#PathGetPropertiesOptions-Duration-Context
-        PathGetPropertiesOptions options = new PathGetPropertiesOptions().setUpn(true);
-
-        Response<PathProperties> response2 = client.getPropertiesWithResponse(options, timeout,
-            new Context(key2, value2));
-
-        System.out.printf("Creation Time: %s, Size: %d%n", response2.getValue().getCreationTime(),
-            response2.getValue().getFileSize());
-        // END: com.azure.storage.file.datalake.DataLakePathClient.getPropertiesWithResponse#PathGetPropertiesOptions-Duration-Context
-
-
     }
 
     /**

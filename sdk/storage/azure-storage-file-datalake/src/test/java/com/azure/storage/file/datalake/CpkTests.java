@@ -4,7 +4,6 @@ package com.azure.storage.file.datalake;
 
 import com.azure.core.http.rest.Response;
 import com.azure.storage.file.datalake.models.CustomerProvidedKey;
-import com.azure.storage.file.datalake.models.DataLakeRequestConditions;
 import com.azure.storage.file.datalake.models.PathInfo;
 import com.azure.storage.file.datalake.models.PathProperties;
 import org.junit.jupiter.api.BeforeEach;
@@ -58,7 +57,7 @@ public class CpkTests extends DataLakeTestBase {
     public void pathGetProperties() {
         cpkFile.create();
 
-        Response<PathProperties> response = cpkFile.getPropertiesWithResponse((DataLakeRequestConditions) null, null, null);
+        Response<PathProperties> response = cpkFile.getPropertiesWithResponse(null, null, null);
 
         assertEquals(200, response.getStatusCode());
         assertTrue(response.getValue().isServerEncrypted());
