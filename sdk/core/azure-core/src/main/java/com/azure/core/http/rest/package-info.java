@@ -12,10 +12,11 @@
  *
  * <ul>
  *     <li>{@link com.azure.core.http.rest.ResponseBase}: The base class for all responses of a REST request.</li>
- *     <li>{@link com.azure.core.http.rest.PagedIterable}: Provides utility to iterate over {@link PagedResponse} using
- *     {@link Stream} and {@link Iterable} interfaces.</li>
- *     <li>{@link com.azure.core.http.rest.PagedFlux}: Provides utility to iterate over {@link PagedResponse} using
- *     {@link Flux} and {@link Iterable} interfaces.</li>
+ *     <li>{@link com.azure.core.http.rest.PagedIterable}: Provides utility to iterate over
+ *     {@link com.azure.core.http.rest.PagedResponse} using
+ *     {@link java.util.stream.Stream} and {@link java.lang.Iterable} interfaces.</li>
+ *     <li>{@link com.azure.core.http.rest.PagedFlux}: Provides utility to iterate over {@link com.azure.core.http.rest.PagedResponse} using
+ *     {@link reactor.core.publisher.Flux} and {@link java.lang.Iterable} interfaces.</li>
  *     <li>{@link com.azure.core.http.rest.SimpleResponse}: Represents a REST response with a strongly-typed content
  *     deserialized from the response body.</li>
  * </ul>

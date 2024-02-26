@@ -34,7 +34,6 @@ import static com.azure.core.util.Configuration.getGlobalConfiguration;
  * @see com.azure.core.http.HttpPipeline
  * @see com.azure.core.http.HttpRequest
  * @see com.azure.core.http.HttpResponse
- * @see com.azure.core.http.HttpLogOptions
  */
 public enum HttpLogDetailLevel {
     /**

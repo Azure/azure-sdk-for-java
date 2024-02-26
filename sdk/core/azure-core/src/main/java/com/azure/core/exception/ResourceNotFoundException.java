@@ -6,7 +6,7 @@ package com.azure.core.exception;
 import com.azure.core.http.HttpResponse;
 
 /**
- * </p>The {@code ResourceNotFoundException} represents an exception thrown when an HTTP request attempts to access a
+ * <p>The {@code ResourceNotFoundException} represents an exception thrown when an HTTP request attempts to access a
  * resource that does not exist.</p>
  *
  * <p>This exception is typically thrown when the service responds with a status code of 4XX,
