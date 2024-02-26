@@ -626,7 +626,7 @@ public final class CoreUtils {
             }
         });
 
-        CoreUtils.addRuntimeShutdownHookSafely(shutdownThread);
+        CoreUtils.addShutdownHookSafely(shutdownThread);
 
         return executorService;
     }
@@ -647,7 +647,7 @@ public final class CoreUtils {
      * @return The {@link Thread} that was passed in.
      */
     @SuppressWarnings({"deprecation", "removal"})
-    public static Thread addRuntimeShutdownHookSafely(Thread shutdownThread) {
+    public static Thread addShutdownHookSafely(Thread shutdownThread) {
         if (shutdownThread == null) {
             return null;
         }
