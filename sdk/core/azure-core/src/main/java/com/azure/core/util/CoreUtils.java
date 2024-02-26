@@ -191,7 +191,6 @@ public final class CoreUtils {
         return Flux.fromIterable(page.getElements()).concatWith(content.apply(nextPageLink, context));
     }
 
-
     /**
      * Helper method that returns an immutable {@link Map} of properties defined in {@code propertiesFileName}.
      *
@@ -203,9 +202,9 @@ public final class CoreUtils {
             if (inputStream != null) {
                 Properties properties = new Properties();
                 properties.load(inputStream);
-                return Collections.unmodifiableMap(properties.entrySet().stream()
-                    .collect(Collectors.toMap(entry -> (String) entry.getKey(),
-                        entry -> (String) entry.getValue())));
+                return Collections.unmodifiableMap(properties.entrySet()
+                    .stream()
+                    .collect(Collectors.toMap(entry -> (String) entry.getKey(), entry -> (String) entry.getValue())));
             }
         } catch (IOException ex) {
             LOGGER.log(LogLevel.WARNING, () -> "Failed to get properties from " + propertiesFileName, ex);
@@ -384,36 +383,47 @@ public final class CoreUtils {
         switch (count) {
             case 0:
                 return "";
+
             case 1:
                 return values.get(0);
+
             case 2:
                 return values.get(0) + delimiter + values.get(1);
+
             case 3:
                 return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2);
+
             case 4:
                 return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
                     + values.get(3);
+
             case 5:
-                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                    + values.get(3) + delimiter + values.get(4);
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4);
+
             case 6:
-                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                    + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5);
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4) + delimiter + values.get(5);
+
             case 7:
-                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                    + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6);
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6);
+
             case 8:
-                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                    + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
-                    + delimiter + values.get(7);
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6) + delimiter
+                    + values.get(7);
+
             case 9:
-                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                    + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
-                    + delimiter + values.get(7) + delimiter + values.get(8);
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6) + delimiter
+                    + values.get(7) + delimiter + values.get(8);
+
             case 10:
-                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter
-                    + values.get(3) + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6)
-                    + delimiter + values.get(7) + delimiter + values.get(8) + delimiter + values.get(9);
+                return values.get(0) + delimiter + values.get(1) + delimiter + values.get(2) + delimiter + values.get(3)
+                    + delimiter + values.get(4) + delimiter + values.get(5) + delimiter + values.get(6) + delimiter
+                    + values.get(7) + delimiter + values.get(8) + delimiter + values.get(9);
+
             default:
                 return String.join(delimiter, values);
         }
@@ -592,7 +602,7 @@ public final class CoreUtils {
      * @throws NullPointerException If {@code shutdownTimeout} is null.
      * @throws IllegalArgumentException If {@code shutdownTimeout} is zero or negative.
      */
-    @SuppressWarnings({"deprecation", "removal"})
+    @SuppressWarnings({ "deprecation", "removal" })
     public static ExecutorService addShutdownHookSafely(ExecutorService executorService, Duration shutdownTimeout) {
         if (executorService == null) {
             return null;
@@ -763,8 +773,8 @@ public final class CoreUtils {
         private static boolean shutdownHookAccessHelper;
 
         static {
-            shutdownHookAccessHelper = Boolean.parseBoolean(Configuration.getGlobalConfiguration()
-                .get("AZURE_ENABLE_SHUTDOWN_HOOK_WITH_PRIVILEGE"));
+            shutdownHookAccessHelper = Boolean
+                .parseBoolean(Configuration.getGlobalConfiguration().get("AZURE_ENABLE_SHUTDOWN_HOOK_WITH_PRIVILEGE"));
         }
     }
 

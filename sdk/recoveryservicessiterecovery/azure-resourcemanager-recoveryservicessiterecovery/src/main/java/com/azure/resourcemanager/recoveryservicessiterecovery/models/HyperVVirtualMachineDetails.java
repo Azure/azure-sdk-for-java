@@ -11,14 +11,16 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Single Host fabric provider specific VM settings. */
+/**
+ * Single Host fabric provider specific VM settings.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "instanceType",
     defaultImpl = HyperVVirtualMachineDetails.class)
 @JsonTypeName("HyperVVirtualMachine")
-@JsonSubTypes({@JsonSubTypes.Type(name = "VmmVirtualMachine", value = VmmVirtualMachineDetails.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "VmmVirtualMachine", value = VmmVirtualMachineDetails.class) })
 @Fluent
 public class HyperVVirtualMachineDetails extends ConfigurationSettings {
     /*
@@ -72,13 +74,15 @@ public class HyperVVirtualMachineDetails extends ConfigurationSettings {
     @JsonProperty(value = "hyperVHostId")
     private String hyperVHostId;
 
-    /** Creates an instance of HyperVVirtualMachineDetails class. */
+    /**
+     * Creates an instance of HyperVVirtualMachineDetails class.
+     */
     public HyperVVirtualMachineDetails() {
     }
 
     /**
      * Get the sourceItemId property: The source id of the object.
-     *
+     * 
      * @return the sourceItemId value.
      */
     public String sourceItemId() {
@@ -87,7 +91,7 @@ public class HyperVVirtualMachineDetails extends ConfigurationSettings {
 
     /**
      * Set the sourceItemId property: The source id of the object.
-     *
+     * 
      * @param sourceItemId the sourceItemId value to set.
      * @return the HyperVVirtualMachineDetails object itself.
      */
@@ -98,7 +102,7 @@ public class HyperVVirtualMachineDetails extends ConfigurationSettings {
 
     /**
      * Get the generation property: The id of the object in fabric.
-     *
+     * 
      * @return the generation value.
      */
     public String generation() {
@@ -107,7 +111,7 @@ public class HyperVVirtualMachineDetails extends ConfigurationSettings {
 
     /**
      * Set the generation property: The id of the object in fabric.
-     *
+     * 
      * @param generation the generation value to set.
      * @return the HyperVVirtualMachineDetails object itself.
      */
@@ -118,7 +122,7 @@ public class HyperVVirtualMachineDetails extends ConfigurationSettings {
 
     /**
      * Get the osDetails property: The Last replication time.
-     *
+     * 
      * @return the osDetails value.
      */
     public OSDetails osDetails() {
@@ -127,7 +131,7 @@ public class HyperVVirtualMachineDetails extends ConfigurationSettings {
 
     /**
      * Set the osDetails property: The Last replication time.
-     *
+     * 
      * @param osDetails the osDetails value to set.
      * @return the HyperVVirtualMachineDetails object itself.
      */
@@ -138,7 +142,7 @@ public class HyperVVirtualMachineDetails extends ConfigurationSettings {
 
     /**
      * Get the diskDetails property: The Last successful failover time.
-     *
+     * 
      * @return the diskDetails value.
      */
     public List<DiskDetails> diskDetails() {
@@ -147,7 +151,7 @@ public class HyperVVirtualMachineDetails extends ConfigurationSettings {
 
     /**
      * Set the diskDetails property: The Last successful failover time.
-     *
+     * 
      * @param diskDetails the diskDetails value to set.
      * @return the HyperVVirtualMachineDetails object itself.
      */
@@ -157,9 +161,9 @@ public class HyperVVirtualMachineDetails extends ConfigurationSettings {
     }
 
     /**
-     * Get the hasPhysicalDisk property: A value indicating whether the VM has a physical disk attached. String value of
-     * SrsDataContract.PresenceStatus enum.
-     *
+     * Get the hasPhysicalDisk property: A value indicating whether the VM has a physical disk attached. String value
+     * of SrsDataContract.PresenceStatus enum.
+     * 
      * @return the hasPhysicalDisk value.
      */
     public PresenceStatus hasPhysicalDisk() {
@@ -167,9 +171,9 @@ public class HyperVVirtualMachineDetails extends ConfigurationSettings {
     }
 
     /**
-     * Set the hasPhysicalDisk property: A value indicating whether the VM has a physical disk attached. String value of
-     * SrsDataContract.PresenceStatus enum.
-     *
+     * Set the hasPhysicalDisk property: A value indicating whether the VM has a physical disk attached. String value
+     * of SrsDataContract.PresenceStatus enum.
+     * 
      * @param hasPhysicalDisk the hasPhysicalDisk value to set.
      * @return the HyperVVirtualMachineDetails object itself.
      */
@@ -181,7 +185,7 @@ public class HyperVVirtualMachineDetails extends ConfigurationSettings {
     /**
      * Get the hasFibreChannelAdapter property: A value indicating whether the VM has a fibre channel adapter attached.
      * String value of SrsDataContract.PresenceStatus enum.
-     *
+     * 
      * @return the hasFibreChannelAdapter value.
      */
     public PresenceStatus hasFibreChannelAdapter() {
@@ -191,7 +195,7 @@ public class HyperVVirtualMachineDetails extends ConfigurationSettings {
     /**
      * Set the hasFibreChannelAdapter property: A value indicating whether the VM has a fibre channel adapter attached.
      * String value of SrsDataContract.PresenceStatus enum.
-     *
+     * 
      * @param hasFibreChannelAdapter the hasFibreChannelAdapter value to set.
      * @return the HyperVVirtualMachineDetails object itself.
      */
@@ -203,7 +207,7 @@ public class HyperVVirtualMachineDetails extends ConfigurationSettings {
     /**
      * Get the hasSharedVhd property: A value indicating whether the VM has a shared VHD attached. String value of
      * SrsDataContract.PresenceStatus enum.
-     *
+     * 
      * @return the hasSharedVhd value.
      */
     public PresenceStatus hasSharedVhd() {
@@ -213,7 +217,7 @@ public class HyperVVirtualMachineDetails extends ConfigurationSettings {
     /**
      * Set the hasSharedVhd property: A value indicating whether the VM has a shared VHD attached. String value of
      * SrsDataContract.PresenceStatus enum.
-     *
+     * 
      * @param hasSharedVhd the hasSharedVhd value to set.
      * @return the HyperVVirtualMachineDetails object itself.
      */
@@ -224,7 +228,7 @@ public class HyperVVirtualMachineDetails extends ConfigurationSettings {
 
     /**
      * Get the hyperVHostId property: The Id of the hyper-v host in fabric.
-     *
+     * 
      * @return the hyperVHostId value.
      */
     public String hyperVHostId() {
@@ -233,7 +237,7 @@ public class HyperVVirtualMachineDetails extends ConfigurationSettings {
 
     /**
      * Set the hyperVHostId property: The Id of the hyper-v host in fabric.
-     *
+     * 
      * @param hyperVHostId the hyperVHostId value to set.
      * @return the HyperVVirtualMachineDetails object itself.
      */
@@ -244,7 +248,7 @@ public class HyperVVirtualMachineDetails extends ConfigurationSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

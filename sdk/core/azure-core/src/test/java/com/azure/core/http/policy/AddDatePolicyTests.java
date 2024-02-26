@@ -36,8 +36,8 @@ public class AddDatePolicyTests {
 
     @Test
     public void dateIsRefreshedOnRetrySync() {
-        try (HttpResponse response = getPipeline().sendSync(new HttpRequest(HttpMethod.GET, "https://azure.com"),
-            Context.NONE)) {
+        try (HttpResponse response
+            = getPipeline().sendSync(new HttpRequest(HttpMethod.GET, "https://azure.com"), Context.NONE)) {
             assertEquals(200, response.getStatusCode());
         }
     }

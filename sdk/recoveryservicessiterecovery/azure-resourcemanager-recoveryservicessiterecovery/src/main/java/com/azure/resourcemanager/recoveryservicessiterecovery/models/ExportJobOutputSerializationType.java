@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The output type of the jobs. */
+/**
+ * The output type of the jobs.
+ */
 public final class ExportJobOutputSerializationType extends ExpandableStringEnum<ExportJobOutputSerializationType> {
-    /** Static value Json for ExportJobOutputSerializationType. */
+    /**
+     * Static value Json for ExportJobOutputSerializationType.
+     */
     public static final ExportJobOutputSerializationType JSON = fromString("Json");
 
-    /** Static value Xml for ExportJobOutputSerializationType. */
+    /**
+     * Static value Xml for ExportJobOutputSerializationType.
+     */
     public static final ExportJobOutputSerializationType XML = fromString("Xml");
 
-    /** Static value Excel for ExportJobOutputSerializationType. */
+    /**
+     * Static value Excel for ExportJobOutputSerializationType.
+     */
     public static final ExportJobOutputSerializationType EXCEL = fromString("Excel");
 
     /**
      * Creates a new instance of ExportJobOutputSerializationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class ExportJobOutputSerializationType extends ExpandableStringEnum
 
     /**
      * Creates or finds a ExportJobOutputSerializationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ExportJobOutputSerializationType.
      */
@@ -41,7 +49,7 @@ public final class ExportJobOutputSerializationType extends ExpandableStringEnum
 
     /**
      * Gets known ExportJobOutputSerializationType values.
-     *
+     * 
      * @return known ExportJobOutputSerializationType values.
      */
     public static Collection<ExportJobOutputSerializationType> values() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Update recovery plan input class. */
+/**
+ * Update recovery plan input class.
+ */
 @Fluent
 public final class UpdateRecoveryPlanInput {
     /*
@@ -16,13 +18,15 @@ public final class UpdateRecoveryPlanInput {
     @JsonProperty(value = "properties")
     private UpdateRecoveryPlanInputProperties properties;
 
-    /** Creates an instance of UpdateRecoveryPlanInput class. */
+    /**
+     * Creates an instance of UpdateRecoveryPlanInput class.
+     */
     public UpdateRecoveryPlanInput() {
     }
 
     /**
      * Get the properties property: Recovery plan update properties.
-     *
+     * 
      * @return the properties value.
      */
     public UpdateRecoveryPlanInputProperties properties() {
@@ -31,7 +35,7 @@ public final class UpdateRecoveryPlanInput {
 
     /**
      * Set the properties property: Recovery plan update properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the UpdateRecoveryPlanInput object itself.
      */
@@ -42,7 +46,7 @@ public final class UpdateRecoveryPlanInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

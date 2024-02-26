@@ -86,11 +86,8 @@ final class LocationData {
                 }
             } catch (Util.MalformedUrlException mue) {
                 this.provisioningState = ProvisioningState.FAILED;
-                this.pollError = new Error(
-                    "Long running operation contains a malformed Location header.",
-                    pollResponseStatusCode,
-                    pollResponseHeaders.toMap(),
-                    pollResponseBody);
+                this.pollError = new Error("Long running operation contains a malformed Location header.",
+                    pollResponseStatusCode, pollResponseHeaders.toMap(), pollResponseBody);
             }
         } else if (pollResponseStatusCode == 200 || pollResponseStatusCode == 201 || pollResponseStatusCode == 204) {
             this.provisioningState = ProvisioningState.SUCCEEDED;
@@ -100,9 +97,7 @@ final class LocationData {
         } else {
             this.provisioningState = ProvisioningState.FAILED;
             this.pollError = new Error("Polling failed with status code:" + pollResponseStatusCode,
-                pollResponseStatusCode,
-                pollResponseHeaders.toMap(),
-                pollResponseBody);
+                pollResponseStatusCode, pollResponseHeaders.toMap(), pollResponseBody);
         }
     }
 }

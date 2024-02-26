@@ -502,6 +502,59 @@ class EventHubProducerAsyncClientTest {
     }
 
     /**
+     * Verifies that getPartitionProperties and getEventHubProperties retry transient errors
+     */
+    @Test
+    void getPropertiesWithRetries() {
+        // Arrange
+        final AmqpRetryOptions lowDelayOptions = new AmqpRetryOptions()
+            .setDelay(Duration.ofMillis(200))
+            .setMode(AmqpRetryMode.FIXED)
+            .setTryTimeout(Duration.ofMillis(100));
+
+        final EventHubProducerAsyncClient asyncProducer = new EventHubProducerAsyncClient(HOSTNAME, EVENT_HUB_NAME,
+            connectionProcessor, lowDelayOptions, messageSerializer, Schedulers.parallel(),
+            false, onClientClosed, CLIENT_IDENTIFIER, DEFAULT_INSTRUMENTATION);
+
+        final EventHubProperties ehProperties = new EventHubProperties(EVENT_HUB_NAME, Instant.now(), new String[]{"0"});
+        PartitionProperties partitionProperties = new PartitionProperties(EVENT_HUB_NAME, "0",
+            1L, 2L, OffsetDateTime.now().toString(), Instant.now(), false);
+        EventHubManagementNode managementNode = mock(EventHubManagementNode.class);
+
+        AtomicInteger tryCount = new AtomicInteger();
+        when(connection.getManagementNode()).thenAnswer(invocation -> {
+            int count = tryCount.getAndIncrement();
+            if (count == 0) {
+                return Mono.error(new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "Test-message",
+                    new AmqpErrorContext("test-namespace")));
+            } else if (count == 1) {
+                // Simulate a timeout on the second attempt, test should never wait for it to end anyway.
+                return Mono.delay(Duration.ofSeconds(100)).then(Mono.error(new RuntimeException("should never happen")));
+            } else {
+                return Mono.just(managementNode);
+            }
+        });
+        when(managementNode.getPartitionProperties(anyString())).thenReturn(Mono.just(partitionProperties));
+        when(managementNode.getEventHubProperties()).thenReturn(Mono.just(ehProperties));
+
+        // Assert
+        tryCount.set(0);
+        StepVerifier.create(asyncProducer.getPartitionProperties("0"))
+            .consumeNextWith(p -> assertSame(partitionProperties, p))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+        assertEquals(3, tryCount.get());
+
+        tryCount.set(0);
+        StepVerifier.create(asyncProducer.getEventHubProperties())
+            .consumeNextWith(eh -> assertSame(ehProperties, eh))
+            .expectComplete()
+            .verify(DEFAULT_TIMEOUT);
+
+        assertEquals(3, tryCount.get());
+    }
+
+    /**
      * Verifies send, message and addLink spans are only invoked once even for multiple retry attempts to send the
      * message.
      */

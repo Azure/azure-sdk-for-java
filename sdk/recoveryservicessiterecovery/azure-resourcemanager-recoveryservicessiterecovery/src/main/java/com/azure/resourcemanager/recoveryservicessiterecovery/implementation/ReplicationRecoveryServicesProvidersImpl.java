@@ -21,46 +21,42 @@ public final class ReplicationRecoveryServicesProvidersImpl implements Replicati
 
     private final com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager;
 
-    public ReplicationRecoveryServicesProvidersImpl(
-        ReplicationRecoveryServicesProvidersClient innerClient,
+    public ReplicationRecoveryServicesProvidersImpl(ReplicationRecoveryServicesProvidersClient innerClient,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<RecoveryServicesProvider> listByReplicationFabrics(
-        String resourceName, String resourceGroupName, String fabricName) {
-        PagedIterable<RecoveryServicesProviderInner> inner =
-            this.serviceClient().listByReplicationFabrics(resourceName, resourceGroupName, fabricName);
-        return Utils.mapPage(inner, inner1 -> new RecoveryServicesProviderImpl(inner1, this.manager()));
+    public PagedIterable<RecoveryServicesProvider> listByReplicationFabrics(String resourceName,
+        String resourceGroupName, String fabricName) {
+        PagedIterable<RecoveryServicesProviderInner> inner
+            = this.serviceClient().listByReplicationFabrics(resourceName, resourceGroupName, fabricName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RecoveryServicesProviderImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<RecoveryServicesProvider> listByReplicationFabrics(
-        String resourceName, String resourceGroupName, String fabricName, Context context) {
-        PagedIterable<RecoveryServicesProviderInner> inner =
-            this.serviceClient().listByReplicationFabrics(resourceName, resourceGroupName, fabricName, context);
-        return Utils.mapPage(inner, inner1 -> new RecoveryServicesProviderImpl(inner1, this.manager()));
+    public PagedIterable<RecoveryServicesProvider> listByReplicationFabrics(String resourceName,
+        String resourceGroupName, String fabricName, Context context) {
+        PagedIterable<RecoveryServicesProviderInner> inner
+            = this.serviceClient().listByReplicationFabrics(resourceName, resourceGroupName, fabricName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RecoveryServicesProviderImpl(inner1, this.manager()));
     }
 
-    public Response<RecoveryServicesProvider> getWithResponse(
-        String resourceName, String resourceGroupName, String fabricName, String providerName, Context context) {
-        Response<RecoveryServicesProviderInner> inner =
-            this.serviceClient().getWithResponse(resourceName, resourceGroupName, fabricName, providerName, context);
+    public Response<RecoveryServicesProvider> getWithResponse(String resourceName, String resourceGroupName,
+        String fabricName, String providerName, Context context) {
+        Response<RecoveryServicesProviderInner> inner
+            = this.serviceClient().getWithResponse(resourceName, resourceGroupName, fabricName, providerName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new RecoveryServicesProviderImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public RecoveryServicesProvider get(
-        String resourceName, String resourceGroupName, String fabricName, String providerName) {
-        RecoveryServicesProviderInner inner =
-            this.serviceClient().get(resourceName, resourceGroupName, fabricName, providerName);
+    public RecoveryServicesProvider get(String resourceName, String resourceGroupName, String fabricName,
+        String providerName) {
+        RecoveryServicesProviderInner inner
+            = this.serviceClient().get(resourceName, resourceGroupName, fabricName, providerName);
         if (inner != null) {
             return new RecoveryServicesProviderImpl(inner, this.manager());
         } else {
@@ -72,15 +68,15 @@ public final class ReplicationRecoveryServicesProvidersImpl implements Replicati
         this.serviceClient().purge(resourceName, resourceGroupName, fabricName, providerName);
     }
 
-    public void purge(
-        String resourceName, String resourceGroupName, String fabricName, String providerName, Context context) {
+    public void purge(String resourceName, String resourceGroupName, String fabricName, String providerName,
+        Context context) {
         this.serviceClient().purge(resourceName, resourceGroupName, fabricName, providerName, context);
     }
 
-    public RecoveryServicesProvider refreshProvider(
-        String resourceName, String resourceGroupName, String fabricName, String providerName) {
-        RecoveryServicesProviderInner inner =
-            this.serviceClient().refreshProvider(resourceName, resourceGroupName, fabricName, providerName);
+    public RecoveryServicesProvider refreshProvider(String resourceName, String resourceGroupName, String fabricName,
+        String providerName) {
+        RecoveryServicesProviderInner inner
+            = this.serviceClient().refreshProvider(resourceName, resourceGroupName, fabricName, providerName);
         if (inner != null) {
             return new RecoveryServicesProviderImpl(inner, this.manager());
         } else {
@@ -88,10 +84,10 @@ public final class ReplicationRecoveryServicesProvidersImpl implements Replicati
         }
     }
 
-    public RecoveryServicesProvider refreshProvider(
-        String resourceName, String resourceGroupName, String fabricName, String providerName, Context context) {
-        RecoveryServicesProviderInner inner =
-            this.serviceClient().refreshProvider(resourceName, resourceGroupName, fabricName, providerName, context);
+    public RecoveryServicesProvider refreshProvider(String resourceName, String resourceGroupName, String fabricName,
+        String providerName, Context context) {
+        RecoveryServicesProviderInner inner
+            = this.serviceClient().refreshProvider(resourceName, resourceGroupName, fabricName, providerName, context);
         if (inner != null) {
             return new RecoveryServicesProviderImpl(inner, this.manager());
         } else {
@@ -103,97 +99,69 @@ public final class ReplicationRecoveryServicesProvidersImpl implements Replicati
         this.serviceClient().delete(resourceName, resourceGroupName, fabricName, providerName);
     }
 
-    public void delete(
-        String resourceName, String resourceGroupName, String fabricName, String providerName, Context context) {
+    public void delete(String resourceName, String resourceGroupName, String fabricName, String providerName,
+        Context context) {
         this.serviceClient().delete(resourceName, resourceGroupName, fabricName, providerName, context);
     }
 
     public PagedIterable<RecoveryServicesProvider> list(String resourceName, String resourceGroupName) {
         PagedIterable<RecoveryServicesProviderInner> inner = this.serviceClient().list(resourceName, resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new RecoveryServicesProviderImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RecoveryServicesProviderImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<RecoveryServicesProvider> list(
-        String resourceName, String resourceGroupName, Context context) {
-        PagedIterable<RecoveryServicesProviderInner> inner =
-            this.serviceClient().list(resourceName, resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new RecoveryServicesProviderImpl(inner1, this.manager()));
+    public PagedIterable<RecoveryServicesProvider> list(String resourceName, String resourceGroupName,
+        Context context) {
+        PagedIterable<RecoveryServicesProviderInner> inner
+            = this.serviceClient().list(resourceName, resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new RecoveryServicesProviderImpl(inner1, this.manager()));
     }
 
     public RecoveryServicesProvider getById(String id) {
-        String resourceName = Utils.getValueFromIdByName(id, "vaults");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String fabricName = Utils.getValueFromIdByName(id, "replicationFabrics");
+        String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "replicationFabrics");
         if (fabricName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
         }
-        String providerName = Utils.getValueFromIdByName(id, "replicationRecoveryServicesProviders");
+        String providerName = ResourceManagerUtils.getValueFromIdByName(id, "replicationRecoveryServicesProviders");
         if (providerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'replicationRecoveryServicesProviders'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'replicationRecoveryServicesProviders'.",
+                id)));
         }
         return this.getWithResponse(resourceName, resourceGroupName, fabricName, providerName, Context.NONE).getValue();
     }
 
     public Response<RecoveryServicesProvider> getByIdWithResponse(String id, Context context) {
-        String resourceName = Utils.getValueFromIdByName(id, "vaults");
+        String resourceName = ResourceManagerUtils.getValueFromIdByName(id, "vaults");
         if (resourceName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'vaults'.", id)));
         }
-        String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
+        String resourceGroupName = ResourceManagerUtils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
-        String fabricName = Utils.getValueFromIdByName(id, "replicationFabrics");
+        String fabricName = ResourceManagerUtils.getValueFromIdByName(id, "replicationFabrics");
         if (fabricName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'replicationFabrics'.", id)));
         }
-        String providerName = Utils.getValueFromIdByName(id, "replicationRecoveryServicesProviders");
+        String providerName = ResourceManagerUtils.getValueFromIdByName(id, "replicationRecoveryServicesProviders");
         if (providerName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format(
-                                "The resource ID '%s' is not valid. Missing path segment"
-                                    + " 'replicationRecoveryServicesProviders'.",
-                                id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
+                "The resource ID '%s' is not valid. Missing path segment 'replicationRecoveryServicesProviders'.",
+                id)));
         }
         return this.getWithResponse(resourceName, resourceGroupName, fabricName, providerName, context);
     }

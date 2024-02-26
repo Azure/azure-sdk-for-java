@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A2A disk input details. */
+/**
+ * A2A disk input details.
+ */
 @Fluent
 public final class A2AVmDiskInputDetails {
     /*
@@ -29,13 +31,15 @@ public final class A2AVmDiskInputDetails {
     @JsonProperty(value = "primaryStagingAzureStorageAccountId", required = true)
     private String primaryStagingAzureStorageAccountId;
 
-    /** Creates an instance of A2AVmDiskInputDetails class. */
+    /**
+     * Creates an instance of A2AVmDiskInputDetails class.
+     */
     public A2AVmDiskInputDetails() {
     }
 
     /**
      * Get the diskUri property: The disk Uri.
-     *
+     * 
      * @return the diskUri value.
      */
     public String diskUri() {
@@ -44,7 +48,7 @@ public final class A2AVmDiskInputDetails {
 
     /**
      * Set the diskUri property: The disk Uri.
-     *
+     * 
      * @param diskUri the diskUri value to set.
      * @return the A2AVmDiskInputDetails object itself.
      */
@@ -55,7 +59,7 @@ public final class A2AVmDiskInputDetails {
 
     /**
      * Get the recoveryAzureStorageAccountId property: The recovery VHD storage account Id.
-     *
+     * 
      * @return the recoveryAzureStorageAccountId value.
      */
     public String recoveryAzureStorageAccountId() {
@@ -64,7 +68,7 @@ public final class A2AVmDiskInputDetails {
 
     /**
      * Set the recoveryAzureStorageAccountId property: The recovery VHD storage account Id.
-     *
+     * 
      * @param recoveryAzureStorageAccountId the recoveryAzureStorageAccountId value to set.
      * @return the A2AVmDiskInputDetails object itself.
      */
@@ -75,7 +79,7 @@ public final class A2AVmDiskInputDetails {
 
     /**
      * Get the primaryStagingAzureStorageAccountId property: The primary staging storage account Id.
-     *
+     * 
      * @return the primaryStagingAzureStorageAccountId value.
      */
     public String primaryStagingAzureStorageAccountId() {
@@ -84,7 +88,7 @@ public final class A2AVmDiskInputDetails {
 
     /**
      * Set the primaryStagingAzureStorageAccountId property: The primary staging storage account Id.
-     *
+     * 
      * @param primaryStagingAzureStorageAccountId the primaryStagingAzureStorageAccountId value to set.
      * @return the A2AVmDiskInputDetails object itself.
      */
@@ -95,27 +99,21 @@ public final class A2AVmDiskInputDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (diskUri() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property diskUri in model A2AVmDiskInputDetails"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property diskUri in model A2AVmDiskInputDetails"));
         }
         if (recoveryAzureStorageAccountId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoveryAzureStorageAccountId in model A2AVmDiskInputDetails"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property recoveryAzureStorageAccountId in model A2AVmDiskInputDetails"));
         }
         if (primaryStagingAzureStorageAccountId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property primaryStagingAzureStorageAccountId in model"
-                            + " A2AVmDiskInputDetails"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property primaryStagingAzureStorageAccountId in model A2AVmDiskInputDetails"));
         }
     }
 

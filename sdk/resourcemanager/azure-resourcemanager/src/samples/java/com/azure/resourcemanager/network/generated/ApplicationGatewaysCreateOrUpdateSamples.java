@@ -49,7 +49,7 @@ import java.util.Map;
 public final class ApplicationGatewaysCreateOrUpdateSamples {
     /*
      * x-ms-original-file:
-     * specification/network/resource-manager/Microsoft.Network/stable/2023-06-01/examples/ApplicationGatewayCreate.json
+     * specification/network/resource-manager/Microsoft.Network/stable/2023-09-01/examples/ApplicationGatewayCreate.json
      */
     /**
      * Sample code: Create Application Gateway.

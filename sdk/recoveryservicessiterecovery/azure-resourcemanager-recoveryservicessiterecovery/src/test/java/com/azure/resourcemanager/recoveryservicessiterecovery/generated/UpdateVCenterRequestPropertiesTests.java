@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateVCenterRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateVCenterRequestProperties model =
-            BinaryData
-                .fromString(
-                    "{\"friendlyName\":\"whryvycytdcl\",\"ipAddress\":\"ccknfnwmbtmvp\",\"processServerId\":\"jdhttzaefedxi\",\"port\":\"hrphkmcrjdqn\",\"runAsAccountId\":\"fzpbgtgkyl\"}")
-                .toObject(UpdateVCenterRequestProperties.class);
+        UpdateVCenterRequestProperties model = BinaryData.fromString(
+            "{\"friendlyName\":\"whryvycytdcl\",\"ipAddress\":\"ccknfnwmbtmvp\",\"processServerId\":\"jdhttzaefedxi\",\"port\":\"hrphkmcrjdqn\",\"runAsAccountId\":\"fzpbgtgkyl\"}")
+            .toObject(UpdateVCenterRequestProperties.class);
         Assertions.assertEquals("whryvycytdcl", model.friendlyName());
         Assertions.assertEquals("ccknfnwmbtmvp", model.ipAddress());
         Assertions.assertEquals("jdhttzaefedxi", model.processServerId());
@@ -25,13 +23,9 @@ public final class UpdateVCenterRequestPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateVCenterRequestProperties model =
-            new UpdateVCenterRequestProperties()
-                .withFriendlyName("whryvycytdcl")
-                .withIpAddress("ccknfnwmbtmvp")
-                .withProcessServerId("jdhttzaefedxi")
-                .withPort("hrphkmcrjdqn")
-                .withRunAsAccountId("fzpbgtgkyl");
+        UpdateVCenterRequestProperties model
+            = new UpdateVCenterRequestProperties().withFriendlyName("whryvycytdcl").withIpAddress("ccknfnwmbtmvp")
+                .withProcessServerId("jdhttzaefedxi").withPort("hrphkmcrjdqn").withRunAsAccountId("fzpbgtgkyl");
         model = BinaryData.fromObject(model).toObject(UpdateVCenterRequestProperties.class);
         Assertions.assertEquals("whryvycytdcl", model.friendlyName());
         Assertions.assertEquals("ccknfnwmbtmvp", model.ipAddress());

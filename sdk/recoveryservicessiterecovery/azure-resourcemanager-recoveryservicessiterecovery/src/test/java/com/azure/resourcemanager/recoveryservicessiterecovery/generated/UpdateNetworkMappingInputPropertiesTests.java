@@ -12,22 +12,18 @@ import org.junit.jupiter.api.Assertions;
 public final class UpdateNetworkMappingInputPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateNetworkMappingInputProperties model =
-            BinaryData
-                .fromString(
-                    "{\"recoveryFabricName\":\"fbishcbkha\",\"recoveryNetworkId\":\"eyeam\",\"fabricSpecificDetails\":{\"instanceType\":\"FabricSpecificUpdateNetworkMappingInput\"}}")
-                .toObject(UpdateNetworkMappingInputProperties.class);
+        UpdateNetworkMappingInputProperties model = BinaryData.fromString(
+            "{\"recoveryFabricName\":\"fbishcbkha\",\"recoveryNetworkId\":\"eyeam\",\"fabricSpecificDetails\":{\"instanceType\":\"FabricSpecificUpdateNetworkMappingInput\"}}")
+            .toObject(UpdateNetworkMappingInputProperties.class);
         Assertions.assertEquals("fbishcbkha", model.recoveryFabricName());
         Assertions.assertEquals("eyeam", model.recoveryNetworkId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateNetworkMappingInputProperties model =
-            new UpdateNetworkMappingInputProperties()
-                .withRecoveryFabricName("fbishcbkha")
-                .withRecoveryNetworkId("eyeam")
-                .withFabricSpecificDetails(new FabricSpecificUpdateNetworkMappingInput());
+        UpdateNetworkMappingInputProperties model = new UpdateNetworkMappingInputProperties()
+            .withRecoveryFabricName("fbishcbkha").withRecoveryNetworkId("eyeam")
+            .withFabricSpecificDetails(new FabricSpecificUpdateNetworkMappingInput());
         model = BinaryData.fromObject(model).toObject(UpdateNetworkMappingInputProperties.class);
         Assertions.assertEquals("fbishcbkha", model.recoveryFabricName());
         Assertions.assertEquals("eyeam", model.recoveryNetworkId());

@@ -30,7 +30,6 @@ import static com.azure.core.amqp.implementation.ClientConstants.EMIT_RESULT_KEY
 import static com.azure.core.amqp.implementation.ClientConstants.ENTITY_PATH_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.LINK_NAME_KEY;
 
-
 /**
  * Handler that receives events from its corresponding {@link Receiver}. Handlers must be associated to a
  * {@link Receiver} to receive its events.
@@ -134,9 +133,8 @@ public class ReceiveLinkHandler extends LinkHandler {
             return;
         }
 
-        LoggingEventBuilder logBuilder =  logger.atInfo()
-            .addKeyValue(ENTITY_PATH_KEY, entityPath)
-            .addKeyValue(LINK_NAME_KEY, link.getName());
+        LoggingEventBuilder logBuilder
+            = logger.atInfo().addKeyValue(ENTITY_PATH_KEY, entityPath).addKeyValue(LINK_NAME_KEY, link.getName());
 
         if (link.getRemoteSource() != null) {
             logBuilder.addKeyValue("remoteSource", link.getRemoteSource());
@@ -145,8 +143,7 @@ public class ReceiveLinkHandler extends LinkHandler {
                 onNext(EndpointState.ACTIVE);
             }
         } else {
-            logBuilder
-                .addKeyValue("action", "waitingForError");
+            logBuilder.addKeyValue("action", "waitingForError");
         }
 
         logBuilder.log("onLinkRemoteOpen");
@@ -220,8 +217,7 @@ public class ReceiveLinkHandler extends LinkHandler {
 
         if (link != null) {
             final ErrorCondition condition = link.getRemoteCondition();
-            addErrorCondition(logger.atVerbose(), condition)
-                .addKeyValue(ENTITY_PATH_KEY, entityPath)
+            addErrorCondition(logger.atVerbose(), condition).addKeyValue(ENTITY_PATH_KEY, entityPath)
                 .addKeyValue(LINK_NAME_KEY, linkName)
                 .addKeyValue("updatedLinkCredit", link.getCredit())
                 .addKeyValue("remoteCredit", link.getRemoteCredit())

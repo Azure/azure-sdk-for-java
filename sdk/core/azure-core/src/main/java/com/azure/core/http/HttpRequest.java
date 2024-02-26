@@ -15,8 +15,17 @@ import java.net.URL;
 import java.nio.ByteBuffer;
 
 /**
- * The outgoing Http request. It provides ways to construct {@link HttpRequest} with {@link HttpMethod}, {@link URL},
- * {@link HttpHeader} and request body.
+ * Represents an outgoing HTTP request.
+ *
+ * <p>This class encapsulates an HTTP request, including the HTTP method, URL, headers, and body. It provides methods
+ * to set and get these properties.</p>
+ *
+ * <p>This class is useful when you want to create an HTTP request to send to a server. For example, you can use it to
+ * create a GET request to retrieve a resource, a POST request to create a resource, a PUT request to update a resource,
+ * or a DELETE request to delete a resource.</p>
+ *
+ * <p>Note: This class provides a {@link #copy()} method to create a copy of the HTTP request. This is useful when you
+ * want to modify the HTTP request without affecting the original request.</p>
  */
 public class HttpRequest {
     // HttpRequest is a highly used, short-lived class, use a static logger.
@@ -251,7 +260,7 @@ public class HttpRequest {
     public HttpRequest setBody(Flux<ByteBuffer> content) {
         if (content != null) {
             this.body = BinaryDataHelper.createBinaryData(new FluxByteBufferContent(content));
-        } else  {
+        } else {
             this.body = null;
         }
         return this;

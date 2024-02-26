@@ -42,22 +42,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ReplicationFabricsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReplicationFabricsClient.
+ */
 public final class ReplicationFabricsClientImpl implements ReplicationFabricsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ReplicationFabricsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final SiteRecoveryManagementClientImpl client;
 
     /**
      * Initializes an instance of ReplicationFabricsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ReplicationFabricsClientImpl(SiteRecoveryManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ReplicationFabricsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service = RestProxy.create(ReplicationFabricsService.class, client.getHttpPipeline(),
+            client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -68,172 +74,133 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
     @Host("{$host}")
     @ServiceInterface(name = "SiteRecoveryManageme")
     public interface ReplicationFabricsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FabricCollection>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<FabricCollection>> list(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<FabricInner>> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @QueryParam("$filter") String filter, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @BodyParam("application/json") FabricCreationInput input, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}")
-        @ExpectedResponses({200})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FabricInner>> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<Flux<ByteBuffer>>> purge(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
-            @QueryParam("$filter") String filter,
-            @HeaderParam("Accept") String accept,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/checkConsistency")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<Flux<ByteBuffer>>> checkConsistency(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
-            @BodyParam("application/json") FabricCreationInput input,
-            @HeaderParam("Accept") String accept,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/migratetoaad")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> migrateToAad(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
+            @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
             Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/reassociateGateway")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> purge(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<Flux<ByteBuffer>>> reassociateGateway(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/checkConsistency")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> checkConsistency(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/migratetoaad")
-        @ExpectedResponses({202, 204})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> migrateToAad(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/reassociateGateway")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> reassociateGateway(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
             @BodyParam("application/json") FailoverProcessServerRequest failoverProcessServerRequest,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Accept: application/json;q=0.9", "Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/remove")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Accept: application/json;q=0.9", "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/remove")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/renewCertificate")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/renewCertificate")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> renewCertificate(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("resourceName") String resourceName,
+        Mono<Response<Flux<ByteBuffer>>> renewCertificate(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceName") String resourceName,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("fabricName") String fabricName,
-            @BodyParam("application/json") RenewCertificateInput renewCertificate,
-            @HeaderParam("Accept") String accept,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("fabricName") String fabricName,
+            @BodyParam("application/json") RenewCertificateInput renewCertificate, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.RecoveryServices/vaults/{resourceName}/replicationFabrics/{fabricName}/removeInfra")
+        @ExpectedResponses({ 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> removeInfra(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("resourceName") String resourceName,
+            @PathParam("fabricName") String fabricName, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<FabricCollection>> listNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<FabricCollection>> listNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the list of ASR fabrics.
-     *
-     * <p>Gets a list of the Azure Site Recovery fabrics in the vault.
-     *
+     * 
+     * Gets a list of the Azure Site Recovery fabrics in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of the Azure Site Recovery fabrics in the vault along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<FabricInner>> listSinglePageAsync(String resourceName, String resourceGroupName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -243,41 +210,23 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<FabricInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
+                resourceGroupName, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<FabricInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the list of ASR fabrics.
-     *
-     * <p>Gets a list of the Azure Site Recovery fabrics in the vault.
-     *
+     * 
+     * Gets a list of the Azure Site Recovery fabrics in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
@@ -285,16 +234,14 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of the Azure Site Recovery fabrics in the vault along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<FabricInner>> listSinglePageAsync(
-        String resourceName, String resourceGroupName, Context context) {
+    private Mono<PagedResponse<FabricInner>> listSinglePageAsync(String resourceName, String resourceGroupName,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -304,38 +251,23 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets the list of ASR fabrics.
-     *
-     * <p>Gets a list of the Azure Site Recovery fabrics in the vault.
-     *
+     * 
+     * Gets a list of the Azure Site Recovery fabrics in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -345,15 +277,15 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FabricInner> listAsync(String resourceName, String resourceGroupName) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceName, resourceGroupName), nextLink -> listNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets the list of ASR fabrics.
-     *
-     * <p>Gets a list of the Azure Site Recovery fabrics in the vault.
-     *
+     * 
+     * Gets a list of the Azure Site Recovery fabrics in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
@@ -364,16 +296,15 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<FabricInner> listAsync(String resourceName, String resourceGroupName, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(resourceName, resourceGroupName, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceName, resourceGroupName, context),
             nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets the list of ASR fabrics.
-     *
-     * <p>Gets a list of the Azure Site Recovery fabrics in the vault.
-     *
+     * 
+     * Gets a list of the Azure Site Recovery fabrics in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -388,9 +319,9 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
 
     /**
      * Gets the list of ASR fabrics.
-     *
-     * <p>Gets a list of the Azure Site Recovery fabrics in the vault.
-     *
+     * 
+     * Gets a list of the Azure Site Recovery fabrics in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.
@@ -406,9 +337,9 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
 
     /**
      * Gets the details of an ASR fabric.
-     *
-     * <p>Gets the details of an Azure Site Recovery fabric.
-     *
+     * 
+     * Gets the details of an Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -417,16 +348,14 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of an Azure Site Recovery fabric along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FabricInner>> getWithResponseAsync(
-        String resourceName, String resourceGroupName, String fabricName, String filter) {
+    private Mono<Response<FabricInner>> getWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -436,37 +365,24 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            filter,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
+                resourceGroupName, this.client.getSubscriptionId(), fabricName, filter, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the details of an ASR fabric.
-     *
-     * <p>Gets the details of an Azure Site Recovery fabric.
-     *
+     * 
+     * Gets the details of an Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -476,16 +392,14 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of an Azure Site Recovery fabric along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<FabricInner>> getWithResponseAsync(
-        String resourceName, String resourceGroupName, String fabricName, String filter, Context context) {
+    private Mono<Response<FabricInner>> getWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -495,34 +409,23 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                filter,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+            this.client.getSubscriptionId(), fabricName, filter, accept, context);
     }
 
     /**
      * Gets the details of an ASR fabric.
-     *
-     * <p>Gets the details of an Azure Site Recovery fabric.
-     *
+     * 
+     * Gets the details of an Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -540,9 +443,9 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
 
     /**
      * Gets the details of an ASR fabric.
-     *
-     * <p>Gets the details of an Azure Site Recovery fabric.
-     *
+     * 
+     * Gets the details of an Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -554,16 +457,16 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the details of an Azure Site Recovery fabric along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<FabricInner> getWithResponse(
-        String resourceName, String resourceGroupName, String fabricName, String filter, Context context) {
+    public Response<FabricInner> getWithResponse(String resourceName, String resourceGroupName, String fabricName,
+        String filter, Context context) {
         return getWithResponseAsync(resourceName, resourceGroupName, fabricName, filter, context).block();
     }
 
     /**
      * Gets the details of an ASR fabric.
-     *
-     * <p>Gets the details of an Azure Site Recovery fabric.
-     *
+     * 
+     * Gets the details of an Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -580,9 +483,9 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
 
     /**
      * Creates an Azure Site Recovery fabric.
-     *
-     * <p>The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
-     *
+     * 
+     * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Name of the ASR fabric.
@@ -593,13 +496,11 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return fabric definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceName, String resourceGroupName, String fabricName, FabricCreationInput input) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName, FabricCreationInput input) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -609,10 +510,8 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -624,27 +523,16 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            input,
-                            accept,
-                            context))
+            .withContext(context -> service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
+                resourceGroupName, this.client.getSubscriptionId(), fabricName, input, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates an Azure Site Recovery fabric.
-     *
-     * <p>The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
-     *
+     * 
+     * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Name of the ASR fabric.
@@ -656,13 +544,11 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return fabric definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceName, String resourceGroupName, String fabricName, FabricCreationInput input, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName, FabricCreationInput input, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -672,10 +558,8 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -687,24 +571,15 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                input,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+            this.client.getSubscriptionId(), fabricName, input, accept, context);
     }
 
     /**
      * Creates an Azure Site Recovery fabric.
-     *
-     * <p>The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
-     *
+     * 
+     * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Name of the ASR fabric.
@@ -715,21 +590,19 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link PollerFlux} for polling of fabric definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<FabricInner>, FabricInner> beginCreateAsync(
-        String resourceName, String resourceGroupName, String fabricName, FabricCreationInput input) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceName, resourceGroupName, fabricName, input);
-        return this
-            .client
-            .<FabricInner, FabricInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FabricInner.class, FabricInner.class, this.client.getContext());
+    private PollerFlux<PollResult<FabricInner>, FabricInner> beginCreateAsync(String resourceName,
+        String resourceGroupName, String fabricName, FabricCreationInput input) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceName, resourceGroupName, fabricName, input);
+        return this.client.<FabricInner, FabricInner>getLroResult(mono, this.client.getHttpPipeline(),
+            FabricInner.class, FabricInner.class, this.client.getContext());
     }
 
     /**
      * Creates an Azure Site Recovery fabric.
-     *
-     * <p>The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
-     *
+     * 
+     * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Name of the ASR fabric.
@@ -741,22 +614,20 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link PollerFlux} for polling of fabric definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<FabricInner>, FabricInner> beginCreateAsync(
-        String resourceName, String resourceGroupName, String fabricName, FabricCreationInput input, Context context) {
+    private PollerFlux<PollResult<FabricInner>, FabricInner> beginCreateAsync(String resourceName,
+        String resourceGroupName, String fabricName, FabricCreationInput input, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceName, resourceGroupName, fabricName, input, context);
-        return this
-            .client
-            .<FabricInner, FabricInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FabricInner.class, FabricInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceName, resourceGroupName, fabricName, input, context);
+        return this.client.<FabricInner, FabricInner>getLroResult(mono, this.client.getHttpPipeline(),
+            FabricInner.class, FabricInner.class, context);
     }
 
     /**
      * Creates an Azure Site Recovery fabric.
-     *
-     * <p>The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
-     *
+     * 
+     * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Name of the ASR fabric.
@@ -767,16 +638,16 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link SyncPoller} for polling of fabric definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<FabricInner>, FabricInner> beginCreate(
-        String resourceName, String resourceGroupName, String fabricName, FabricCreationInput input) {
+    public SyncPoller<PollResult<FabricInner>, FabricInner> beginCreate(String resourceName, String resourceGroupName,
+        String fabricName, FabricCreationInput input) {
         return this.beginCreateAsync(resourceName, resourceGroupName, fabricName, input).getSyncPoller();
     }
 
     /**
      * Creates an Azure Site Recovery fabric.
-     *
-     * <p>The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
-     *
+     * 
+     * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Name of the ASR fabric.
@@ -788,16 +659,16 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link SyncPoller} for polling of fabric definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<FabricInner>, FabricInner> beginCreate(
-        String resourceName, String resourceGroupName, String fabricName, FabricCreationInput input, Context context) {
+    public SyncPoller<PollResult<FabricInner>, FabricInner> beginCreate(String resourceName, String resourceGroupName,
+        String fabricName, FabricCreationInput input, Context context) {
         return this.beginCreateAsync(resourceName, resourceGroupName, fabricName, input, context).getSyncPoller();
     }
 
     /**
      * Creates an Azure Site Recovery fabric.
-     *
-     * <p>The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
-     *
+     * 
+     * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Name of the ASR fabric.
@@ -808,18 +679,17 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return fabric definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FabricInner> createAsync(
-        String resourceName, String resourceGroupName, String fabricName, FabricCreationInput input) {
-        return beginCreateAsync(resourceName, resourceGroupName, fabricName, input)
-            .last()
+    private Mono<FabricInner> createAsync(String resourceName, String resourceGroupName, String fabricName,
+        FabricCreationInput input) {
+        return beginCreateAsync(resourceName, resourceGroupName, fabricName, input).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates an Azure Site Recovery fabric.
-     *
-     * <p>The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
-     *
+     * 
+     * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Name of the ASR fabric.
@@ -831,18 +701,17 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return fabric definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FabricInner> createAsync(
-        String resourceName, String resourceGroupName, String fabricName, FabricCreationInput input, Context context) {
-        return beginCreateAsync(resourceName, resourceGroupName, fabricName, input, context)
-            .last()
+    private Mono<FabricInner> createAsync(String resourceName, String resourceGroupName, String fabricName,
+        FabricCreationInput input, Context context) {
+        return beginCreateAsync(resourceName, resourceGroupName, fabricName, input, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates an Azure Site Recovery fabric.
-     *
-     * <p>The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
-     *
+     * 
+     * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Name of the ASR fabric.
@@ -853,16 +722,16 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return fabric definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FabricInner create(
-        String resourceName, String resourceGroupName, String fabricName, FabricCreationInput input) {
+    public FabricInner create(String resourceName, String resourceGroupName, String fabricName,
+        FabricCreationInput input) {
         return createAsync(resourceName, resourceGroupName, fabricName, input).block();
     }
 
     /**
      * Creates an Azure Site Recovery fabric.
-     *
-     * <p>The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
-     *
+     * 
+     * The operation to create an Azure Site Recovery fabric (for e.g. Hyper-V site).
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Name of the ASR fabric.
@@ -874,16 +743,16 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return fabric definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FabricInner create(
-        String resourceName, String resourceGroupName, String fabricName, FabricCreationInput input, Context context) {
+    public FabricInner create(String resourceName, String resourceGroupName, String fabricName,
+        FabricCreationInput input, Context context) {
         return createAsync(resourceName, resourceGroupName, fabricName, input, context).block();
     }
 
     /**
      * Purges the site.
-     *
-     * <p>The operation to purge(force delete) an Azure Site Recovery fabric.
-     *
+     * 
+     * The operation to purge(force delete) an Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to purge.
@@ -893,13 +762,11 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> purgeWithResponseAsync(
-        String resourceName, String resourceGroupName, String fabricName) {
+    private Mono<Response<Flux<ByteBuffer>>> purgeWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -909,34 +776,23 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .purge(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            context))
+            .withContext(context -> service.purge(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
+                resourceGroupName, this.client.getSubscriptionId(), fabricName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Purges the site.
-     *
-     * <p>The operation to purge(force delete) an Azure Site Recovery fabric.
-     *
+     * 
+     * The operation to purge(force delete) an Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to purge.
@@ -947,13 +803,11 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> purgeWithResponseAsync(
-        String resourceName, String resourceGroupName, String fabricName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> purgeWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -963,31 +817,22 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .purge(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                context);
+        return service.purge(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+            this.client.getSubscriptionId(), fabricName, context);
     }
 
     /**
      * Purges the site.
-     *
-     * <p>The operation to purge(force delete) an Azure Site Recovery fabric.
-     *
+     * 
+     * The operation to purge(force delete) an Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to purge.
@@ -997,20 +842,18 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginPurgeAsync(
-        String resourceName, String resourceGroupName, String fabricName) {
+    private PollerFlux<PollResult<Void>, Void> beginPurgeAsync(String resourceName, String resourceGroupName,
+        String fabricName) {
         Mono<Response<Flux<ByteBuffer>>> mono = purgeWithResponseAsync(resourceName, resourceGroupName, fabricName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Purges the site.
-     *
-     * <p>The operation to purge(force delete) an Azure Site Recovery fabric.
-     *
+     * 
+     * The operation to purge(force delete) an Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to purge.
@@ -1021,21 +864,20 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginPurgeAsync(
-        String resourceName, String resourceGroupName, String fabricName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginPurgeAsync(String resourceName, String resourceGroupName,
+        String fabricName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            purgeWithResponseAsync(resourceName, resourceGroupName, fabricName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = purgeWithResponseAsync(resourceName, resourceGroupName, fabricName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Purges the site.
-     *
-     * <p>The operation to purge(force delete) an Azure Site Recovery fabric.
-     *
+     * 
+     * The operation to purge(force delete) an Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to purge.
@@ -1045,16 +887,16 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginPurge(
-        String resourceName, String resourceGroupName, String fabricName) {
+    public SyncPoller<PollResult<Void>, Void> beginPurge(String resourceName, String resourceGroupName,
+        String fabricName) {
         return this.beginPurgeAsync(resourceName, resourceGroupName, fabricName).getSyncPoller();
     }
 
     /**
      * Purges the site.
-     *
-     * <p>The operation to purge(force delete) an Azure Site Recovery fabric.
-     *
+     * 
+     * The operation to purge(force delete) an Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to purge.
@@ -1065,16 +907,16 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginPurge(
-        String resourceName, String resourceGroupName, String fabricName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginPurge(String resourceName, String resourceGroupName,
+        String fabricName, Context context) {
         return this.beginPurgeAsync(resourceName, resourceGroupName, fabricName, context).getSyncPoller();
     }
 
     /**
      * Purges the site.
-     *
-     * <p>The operation to purge(force delete) an Azure Site Recovery fabric.
-     *
+     * 
+     * The operation to purge(force delete) an Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to purge.
@@ -1085,16 +927,15 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> purgeAsync(String resourceName, String resourceGroupName, String fabricName) {
-        return beginPurgeAsync(resourceName, resourceGroupName, fabricName)
-            .last()
+        return beginPurgeAsync(resourceName, resourceGroupName, fabricName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Purges the site.
-     *
-     * <p>The operation to purge(force delete) an Azure Site Recovery fabric.
-     *
+     * 
+     * The operation to purge(force delete) an Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to purge.
@@ -1106,16 +947,15 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> purgeAsync(String resourceName, String resourceGroupName, String fabricName, Context context) {
-        return beginPurgeAsync(resourceName, resourceGroupName, fabricName, context)
-            .last()
+        return beginPurgeAsync(resourceName, resourceGroupName, fabricName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Purges the site.
-     *
-     * <p>The operation to purge(force delete) an Azure Site Recovery fabric.
-     *
+     * 
+     * The operation to purge(force delete) an Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to purge.
@@ -1130,9 +970,9 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
 
     /**
      * Purges the site.
-     *
-     * <p>The operation to purge(force delete) an Azure Site Recovery fabric.
-     *
+     * 
+     * The operation to purge(force delete) an Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to purge.
@@ -1148,9 +988,9 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
 
     /**
      * Checks the consistency of the ASR fabric.
-     *
-     * <p>The operation to perform a consistency check on the fabric.
-     *
+     * 
+     * The operation to perform a consistency check on the fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1160,13 +1000,11 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return fabric definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> checkConsistencyWithResponseAsync(
-        String resourceName, String resourceGroupName, String fabricName) {
+    private Mono<Response<Flux<ByteBuffer>>> checkConsistencyWithResponseAsync(String resourceName,
+        String resourceGroupName, String fabricName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1176,36 +1014,24 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkConsistency(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            accept,
-                            context))
+            .withContext(context -> service.checkConsistency(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceName, resourceGroupName, this.client.getSubscriptionId(), fabricName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Checks the consistency of the ASR fabric.
-     *
-     * <p>The operation to perform a consistency check on the fabric.
-     *
+     * 
+     * The operation to perform a consistency check on the fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1216,13 +1042,11 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return fabric definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> checkConsistencyWithResponseAsync(
-        String resourceName, String resourceGroupName, String fabricName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> checkConsistencyWithResponseAsync(String resourceName,
+        String resourceGroupName, String fabricName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1232,33 +1056,23 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkConsistency(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                accept,
-                context);
+        return service.checkConsistency(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
+            resourceGroupName, this.client.getSubscriptionId(), fabricName, accept, context);
     }
 
     /**
      * Checks the consistency of the ASR fabric.
-     *
-     * <p>The operation to perform a consistency check on the fabric.
-     *
+     * 
+     * The operation to perform a consistency check on the fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1268,21 +1082,19 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link PollerFlux} for polling of fabric definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<FabricInner>, FabricInner> beginCheckConsistencyAsync(
-        String resourceName, String resourceGroupName, String fabricName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            checkConsistencyWithResponseAsync(resourceName, resourceGroupName, fabricName);
-        return this
-            .client
-            .<FabricInner, FabricInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FabricInner.class, FabricInner.class, this.client.getContext());
+    private PollerFlux<PollResult<FabricInner>, FabricInner> beginCheckConsistencyAsync(String resourceName,
+        String resourceGroupName, String fabricName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = checkConsistencyWithResponseAsync(resourceName, resourceGroupName, fabricName);
+        return this.client.<FabricInner, FabricInner>getLroResult(mono, this.client.getHttpPipeline(),
+            FabricInner.class, FabricInner.class, this.client.getContext());
     }
 
     /**
      * Checks the consistency of the ASR fabric.
-     *
-     * <p>The operation to perform a consistency check on the fabric.
-     *
+     * 
+     * The operation to perform a consistency check on the fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1293,22 +1105,20 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link PollerFlux} for polling of fabric definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<FabricInner>, FabricInner> beginCheckConsistencyAsync(
-        String resourceName, String resourceGroupName, String fabricName, Context context) {
+    private PollerFlux<PollResult<FabricInner>, FabricInner> beginCheckConsistencyAsync(String resourceName,
+        String resourceGroupName, String fabricName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            checkConsistencyWithResponseAsync(resourceName, resourceGroupName, fabricName, context);
-        return this
-            .client
-            .<FabricInner, FabricInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FabricInner.class, FabricInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = checkConsistencyWithResponseAsync(resourceName, resourceGroupName, fabricName, context);
+        return this.client.<FabricInner, FabricInner>getLroResult(mono, this.client.getHttpPipeline(),
+            FabricInner.class, FabricInner.class, context);
     }
 
     /**
      * Checks the consistency of the ASR fabric.
-     *
-     * <p>The operation to perform a consistency check on the fabric.
-     *
+     * 
+     * The operation to perform a consistency check on the fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1318,16 +1128,16 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link SyncPoller} for polling of fabric definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<FabricInner>, FabricInner> beginCheckConsistency(
-        String resourceName, String resourceGroupName, String fabricName) {
+    public SyncPoller<PollResult<FabricInner>, FabricInner> beginCheckConsistency(String resourceName,
+        String resourceGroupName, String fabricName) {
         return this.beginCheckConsistencyAsync(resourceName, resourceGroupName, fabricName).getSyncPoller();
     }
 
     /**
      * Checks the consistency of the ASR fabric.
-     *
-     * <p>The operation to perform a consistency check on the fabric.
-     *
+     * 
+     * The operation to perform a consistency check on the fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1338,16 +1148,16 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link SyncPoller} for polling of fabric definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<FabricInner>, FabricInner> beginCheckConsistency(
-        String resourceName, String resourceGroupName, String fabricName, Context context) {
+    public SyncPoller<PollResult<FabricInner>, FabricInner> beginCheckConsistency(String resourceName,
+        String resourceGroupName, String fabricName, Context context) {
         return this.beginCheckConsistencyAsync(resourceName, resourceGroupName, fabricName, context).getSyncPoller();
     }
 
     /**
      * Checks the consistency of the ASR fabric.
-     *
-     * <p>The operation to perform a consistency check on the fabric.
-     *
+     * 
+     * The operation to perform a consistency check on the fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1358,16 +1168,15 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<FabricInner> checkConsistencyAsync(String resourceName, String resourceGroupName, String fabricName) {
-        return beginCheckConsistencyAsync(resourceName, resourceGroupName, fabricName)
-            .last()
+        return beginCheckConsistencyAsync(resourceName, resourceGroupName, fabricName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Checks the consistency of the ASR fabric.
-     *
-     * <p>The operation to perform a consistency check on the fabric.
-     *
+     * 
+     * The operation to perform a consistency check on the fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1378,18 +1187,17 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return fabric definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FabricInner> checkConsistencyAsync(
-        String resourceName, String resourceGroupName, String fabricName, Context context) {
-        return beginCheckConsistencyAsync(resourceName, resourceGroupName, fabricName, context)
-            .last()
+    private Mono<FabricInner> checkConsistencyAsync(String resourceName, String resourceGroupName, String fabricName,
+        Context context) {
+        return beginCheckConsistencyAsync(resourceName, resourceGroupName, fabricName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Checks the consistency of the ASR fabric.
-     *
-     * <p>The operation to perform a consistency check on the fabric.
-     *
+     * 
+     * The operation to perform a consistency check on the fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1405,9 +1213,9 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
 
     /**
      * Checks the consistency of the ASR fabric.
-     *
-     * <p>The operation to perform a consistency check on the fabric.
-     *
+     * 
+     * The operation to perform a consistency check on the fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -1418,16 +1226,16 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return fabric definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FabricInner checkConsistency(
-        String resourceName, String resourceGroupName, String fabricName, Context context) {
+    public FabricInner checkConsistency(String resourceName, String resourceGroupName, String fabricName,
+        Context context) {
         return checkConsistencyAsync(resourceName, resourceGroupName, fabricName, context).block();
     }
 
     /**
      * Migrates the site to AAD.
-     *
-     * <p>The operation to migrate an Azure Site Recovery fabric to AAD.
-     *
+     * 
+     * The operation to migrate an Azure Site Recovery fabric to AAD.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to migrate.
@@ -1437,13 +1245,11 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> migrateToAadWithResponseAsync(
-        String resourceName, String resourceGroupName, String fabricName) {
+    private Mono<Response<Flux<ByteBuffer>>> migrateToAadWithResponseAsync(String resourceName,
+        String resourceGroupName, String fabricName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1453,34 +1259,23 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .migrateToAad(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            context))
+            .withContext(context -> service.migrateToAad(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceName, resourceGroupName, this.client.getSubscriptionId(), fabricName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Migrates the site to AAD.
-     *
-     * <p>The operation to migrate an Azure Site Recovery fabric to AAD.
-     *
+     * 
+     * The operation to migrate an Azure Site Recovery fabric to AAD.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to migrate.
@@ -1491,13 +1286,11 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> migrateToAadWithResponseAsync(
-        String resourceName, String resourceGroupName, String fabricName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> migrateToAadWithResponseAsync(String resourceName,
+        String resourceGroupName, String fabricName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1507,31 +1300,22 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .migrateToAad(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                context);
+        return service.migrateToAad(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
+            resourceGroupName, this.client.getSubscriptionId(), fabricName, context);
     }
 
     /**
      * Migrates the site to AAD.
-     *
-     * <p>The operation to migrate an Azure Site Recovery fabric to AAD.
-     *
+     * 
+     * The operation to migrate an Azure Site Recovery fabric to AAD.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to migrate.
@@ -1541,21 +1325,19 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginMigrateToAadAsync(
-        String resourceName, String resourceGroupName, String fabricName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            migrateToAadWithResponseAsync(resourceName, resourceGroupName, fabricName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginMigrateToAadAsync(String resourceName, String resourceGroupName,
+        String fabricName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = migrateToAadWithResponseAsync(resourceName, resourceGroupName, fabricName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Migrates the site to AAD.
-     *
-     * <p>The operation to migrate an Azure Site Recovery fabric to AAD.
-     *
+     * 
+     * The operation to migrate an Azure Site Recovery fabric to AAD.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to migrate.
@@ -1566,21 +1348,20 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginMigrateToAadAsync(
-        String resourceName, String resourceGroupName, String fabricName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginMigrateToAadAsync(String resourceName, String resourceGroupName,
+        String fabricName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            migrateToAadWithResponseAsync(resourceName, resourceGroupName, fabricName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = migrateToAadWithResponseAsync(resourceName, resourceGroupName, fabricName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Migrates the site to AAD.
-     *
-     * <p>The operation to migrate an Azure Site Recovery fabric to AAD.
-     *
+     * 
+     * The operation to migrate an Azure Site Recovery fabric to AAD.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to migrate.
@@ -1590,16 +1371,16 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginMigrateToAad(
-        String resourceName, String resourceGroupName, String fabricName) {
+    public SyncPoller<PollResult<Void>, Void> beginMigrateToAad(String resourceName, String resourceGroupName,
+        String fabricName) {
         return this.beginMigrateToAadAsync(resourceName, resourceGroupName, fabricName).getSyncPoller();
     }
 
     /**
      * Migrates the site to AAD.
-     *
-     * <p>The operation to migrate an Azure Site Recovery fabric to AAD.
-     *
+     * 
+     * The operation to migrate an Azure Site Recovery fabric to AAD.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to migrate.
@@ -1610,16 +1391,16 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginMigrateToAad(
-        String resourceName, String resourceGroupName, String fabricName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginMigrateToAad(String resourceName, String resourceGroupName,
+        String fabricName, Context context) {
         return this.beginMigrateToAadAsync(resourceName, resourceGroupName, fabricName, context).getSyncPoller();
     }
 
     /**
      * Migrates the site to AAD.
-     *
-     * <p>The operation to migrate an Azure Site Recovery fabric to AAD.
-     *
+     * 
+     * The operation to migrate an Azure Site Recovery fabric to AAD.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to migrate.
@@ -1630,16 +1411,15 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> migrateToAadAsync(String resourceName, String resourceGroupName, String fabricName) {
-        return beginMigrateToAadAsync(resourceName, resourceGroupName, fabricName)
-            .last()
+        return beginMigrateToAadAsync(resourceName, resourceGroupName, fabricName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Migrates the site to AAD.
-     *
-     * <p>The operation to migrate an Azure Site Recovery fabric to AAD.
-     *
+     * 
+     * The operation to migrate an Azure Site Recovery fabric to AAD.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to migrate.
@@ -1650,18 +1430,17 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> migrateToAadAsync(
-        String resourceName, String resourceGroupName, String fabricName, Context context) {
-        return beginMigrateToAadAsync(resourceName, resourceGroupName, fabricName, context)
-            .last()
+    private Mono<Void> migrateToAadAsync(String resourceName, String resourceGroupName, String fabricName,
+        Context context) {
+        return beginMigrateToAadAsync(resourceName, resourceGroupName, fabricName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Migrates the site to AAD.
-     *
-     * <p>The operation to migrate an Azure Site Recovery fabric to AAD.
-     *
+     * 
+     * The operation to migrate an Azure Site Recovery fabric to AAD.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to migrate.
@@ -1676,9 +1455,9 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
 
     /**
      * Migrates the site to AAD.
-     *
-     * <p>The operation to migrate an Azure Site Recovery fabric to AAD.
-     *
+     * 
+     * The operation to migrate an Azure Site Recovery fabric to AAD.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to migrate.
@@ -1694,9 +1473,9 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
 
     /**
      * Perform failover of the process server.
-     *
-     * <p>The operation to move replications from a process server to another process server.
-     *
+     * 
+     * The operation to move replications from a process server to another process server.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The name of the fabric containing the process server.
@@ -1707,16 +1486,11 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return fabric definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> reassociateGatewayWithResponseAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        FailoverProcessServerRequest failoverProcessServerRequest) {
+    private Mono<Response<Flux<ByteBuffer>>> reassociateGatewayWithResponseAsync(String resourceName,
+        String resourceGroupName, String fabricName, FailoverProcessServerRequest failoverProcessServerRequest) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1726,45 +1500,31 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         if (failoverProcessServerRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter failoverProcessServerRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter failoverProcessServerRequest is required and cannot be null."));
         } else {
             failoverProcessServerRequest.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .reassociateGateway(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            failoverProcessServerRequest,
-                            accept,
-                            context))
+            .withContext(context -> service.reassociateGateway(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceName, resourceGroupName, this.client.getSubscriptionId(), fabricName,
+                failoverProcessServerRequest, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Perform failover of the process server.
-     *
-     * <p>The operation to move replications from a process server to another process server.
-     *
+     * 
+     * The operation to move replications from a process server to another process server.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The name of the fabric containing the process server.
@@ -1776,17 +1536,12 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return fabric definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> reassociateGatewayWithResponseAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        FailoverProcessServerRequest failoverProcessServerRequest,
+    private Mono<Response<Flux<ByteBuffer>>> reassociateGatewayWithResponseAsync(String resourceName,
+        String resourceGroupName, String fabricName, FailoverProcessServerRequest failoverProcessServerRequest,
         Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -1796,42 +1551,30 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         if (failoverProcessServerRequest == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter failoverProcessServerRequest is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter failoverProcessServerRequest is required and cannot be null."));
         } else {
             failoverProcessServerRequest.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .reassociateGateway(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                failoverProcessServerRequest,
-                accept,
-                context);
+        return service.reassociateGateway(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
+            resourceGroupName, this.client.getSubscriptionId(), fabricName, failoverProcessServerRequest, accept,
+            context);
     }
 
     /**
      * Perform failover of the process server.
-     *
-     * <p>The operation to move replications from a process server to another process server.
-     *
+     * 
+     * The operation to move replications from a process server to another process server.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The name of the fabric containing the process server.
@@ -1842,25 +1585,19 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link PollerFlux} for polling of fabric definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<FabricInner>, FabricInner> beginReassociateGatewayAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        FailoverProcessServerRequest failoverProcessServerRequest) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            reassociateGatewayWithResponseAsync(
-                resourceName, resourceGroupName, fabricName, failoverProcessServerRequest);
-        return this
-            .client
-            .<FabricInner, FabricInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FabricInner.class, FabricInner.class, this.client.getContext());
+    private PollerFlux<PollResult<FabricInner>, FabricInner> beginReassociateGatewayAsync(String resourceName,
+        String resourceGroupName, String fabricName, FailoverProcessServerRequest failoverProcessServerRequest) {
+        Mono<Response<Flux<ByteBuffer>>> mono = reassociateGatewayWithResponseAsync(resourceName, resourceGroupName,
+            fabricName, failoverProcessServerRequest);
+        return this.client.<FabricInner, FabricInner>getLroResult(mono, this.client.getHttpPipeline(),
+            FabricInner.class, FabricInner.class, this.client.getContext());
     }
 
     /**
      * Perform failover of the process server.
-     *
-     * <p>The operation to move replications from a process server to another process server.
-     *
+     * 
+     * The operation to move replications from a process server to another process server.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The name of the fabric containing the process server.
@@ -1872,27 +1609,21 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link PollerFlux} for polling of fabric definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<FabricInner>, FabricInner> beginReassociateGatewayAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        FailoverProcessServerRequest failoverProcessServerRequest,
+    private PollerFlux<PollResult<FabricInner>, FabricInner> beginReassociateGatewayAsync(String resourceName,
+        String resourceGroupName, String fabricName, FailoverProcessServerRequest failoverProcessServerRequest,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            reassociateGatewayWithResponseAsync(
-                resourceName, resourceGroupName, fabricName, failoverProcessServerRequest, context);
-        return this
-            .client
-            .<FabricInner, FabricInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FabricInner.class, FabricInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = reassociateGatewayWithResponseAsync(resourceName, resourceGroupName,
+            fabricName, failoverProcessServerRequest, context);
+        return this.client.<FabricInner, FabricInner>getLroResult(mono, this.client.getHttpPipeline(),
+            FabricInner.class, FabricInner.class, context);
     }
 
     /**
      * Perform failover of the process server.
-     *
-     * <p>The operation to move replications from a process server to another process server.
-     *
+     * 
+     * The operation to move replications from a process server to another process server.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The name of the fabric containing the process server.
@@ -1903,11 +1634,8 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link SyncPoller} for polling of fabric definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<FabricInner>, FabricInner> beginReassociateGateway(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        FailoverProcessServerRequest failoverProcessServerRequest) {
+    public SyncPoller<PollResult<FabricInner>, FabricInner> beginReassociateGateway(String resourceName,
+        String resourceGroupName, String fabricName, FailoverProcessServerRequest failoverProcessServerRequest) {
         return this
             .beginReassociateGatewayAsync(resourceName, resourceGroupName, fabricName, failoverProcessServerRequest)
             .getSyncPoller();
@@ -1915,9 +1643,9 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
 
     /**
      * Perform failover of the process server.
-     *
-     * <p>The operation to move replications from a process server to another process server.
-     *
+     * 
+     * The operation to move replications from a process server to another process server.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The name of the fabric containing the process server.
@@ -1929,23 +1657,18 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link SyncPoller} for polling of fabric definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<FabricInner>, FabricInner> beginReassociateGateway(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        FailoverProcessServerRequest failoverProcessServerRequest,
+    public SyncPoller<PollResult<FabricInner>, FabricInner> beginReassociateGateway(String resourceName,
+        String resourceGroupName, String fabricName, FailoverProcessServerRequest failoverProcessServerRequest,
         Context context) {
-        return this
-            .beginReassociateGatewayAsync(
-                resourceName, resourceGroupName, fabricName, failoverProcessServerRequest, context)
-            .getSyncPoller();
+        return this.beginReassociateGatewayAsync(resourceName, resourceGroupName, fabricName,
+            failoverProcessServerRequest, context).getSyncPoller();
     }
 
     /**
      * Perform failover of the process server.
-     *
-     * <p>The operation to move replications from a process server to another process server.
-     *
+     * 
+     * The operation to move replications from a process server to another process server.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The name of the fabric containing the process server.
@@ -1956,21 +1679,17 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return fabric definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FabricInner> reassociateGatewayAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
+    private Mono<FabricInner> reassociateGatewayAsync(String resourceName, String resourceGroupName, String fabricName,
         FailoverProcessServerRequest failoverProcessServerRequest) {
         return beginReassociateGatewayAsync(resourceName, resourceGroupName, fabricName, failoverProcessServerRequest)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Perform failover of the process server.
-     *
-     * <p>The operation to move replications from a process server to another process server.
-     *
+     * 
+     * The operation to move replications from a process server to another process server.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The name of the fabric containing the process server.
@@ -1982,23 +1701,17 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return fabric definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FabricInner> reassociateGatewayAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        FailoverProcessServerRequest failoverProcessServerRequest,
-        Context context) {
-        return beginReassociateGatewayAsync(
-                resourceName, resourceGroupName, fabricName, failoverProcessServerRequest, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+    private Mono<FabricInner> reassociateGatewayAsync(String resourceName, String resourceGroupName, String fabricName,
+        FailoverProcessServerRequest failoverProcessServerRequest, Context context) {
+        return beginReassociateGatewayAsync(resourceName, resourceGroupName, fabricName, failoverProcessServerRequest,
+            context).last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Perform failover of the process server.
-     *
-     * <p>The operation to move replications from a process server to another process server.
-     *
+     * 
+     * The operation to move replications from a process server to another process server.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The name of the fabric containing the process server.
@@ -2009,10 +1722,7 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return fabric definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FabricInner reassociateGateway(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
+    public FabricInner reassociateGateway(String resourceName, String resourceGroupName, String fabricName,
         FailoverProcessServerRequest failoverProcessServerRequest) {
         return reassociateGatewayAsync(resourceName, resourceGroupName, fabricName, failoverProcessServerRequest)
             .block();
@@ -2020,9 +1730,9 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
 
     /**
      * Perform failover of the process server.
-     *
-     * <p>The operation to move replications from a process server to another process server.
-     *
+     * 
+     * The operation to move replications from a process server to another process server.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName The name of the fabric containing the process server.
@@ -2034,22 +1744,17 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return fabric definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FabricInner reassociateGateway(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        FailoverProcessServerRequest failoverProcessServerRequest,
-        Context context) {
-        return reassociateGatewayAsync(
-                resourceName, resourceGroupName, fabricName, failoverProcessServerRequest, context)
-            .block();
+    public FabricInner reassociateGateway(String resourceName, String resourceGroupName, String fabricName,
+        FailoverProcessServerRequest failoverProcessServerRequest, Context context) {
+        return reassociateGatewayAsync(resourceName, resourceGroupName, fabricName, failoverProcessServerRequest,
+            context).block();
     }
 
     /**
      * Deletes the site.
-     *
-     * <p>The operation to delete or remove an Azure Site Recovery fabric.
-     *
+     * 
+     * The operation to delete or remove an Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to delete.
@@ -2059,13 +1764,11 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceName, String resourceGroupName, String fabricName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -2075,34 +1778,23 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
+                resourceGroupName, this.client.getSubscriptionId(), fabricName, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the site.
-     *
-     * <p>The operation to delete or remove an Azure Site Recovery fabric.
-     *
+     * 
+     * The operation to delete or remove an Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to delete.
@@ -2113,13 +1805,11 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceName, String resourceGroupName, String fabricName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceName, String resourceGroupName,
+        String fabricName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -2129,31 +1819,22 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
         }
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), resourceName, resourceGroupName,
+            this.client.getSubscriptionId(), fabricName, context);
     }
 
     /**
      * Deletes the site.
-     *
-     * <p>The operation to delete or remove an Azure Site Recovery fabric.
-     *
+     * 
+     * The operation to delete or remove an Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to delete.
@@ -2163,20 +1844,18 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceName, String resourceGroupName, String fabricName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceName, String resourceGroupName,
+        String fabricName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceName, resourceGroupName, fabricName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the site.
-     *
-     * <p>The operation to delete or remove an Azure Site Recovery fabric.
-     *
+     * 
+     * The operation to delete or remove an Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to delete.
@@ -2187,21 +1866,20 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceName, String resourceGroupName, String fabricName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceName, String resourceGroupName,
+        String fabricName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceName, resourceGroupName, fabricName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceName, resourceGroupName, fabricName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the site.
-     *
-     * <p>The operation to delete or remove an Azure Site Recovery fabric.
-     *
+     * 
+     * The operation to delete or remove an Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to delete.
@@ -2211,16 +1889,16 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceName, String resourceGroupName, String fabricName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName,
+        String fabricName) {
         return this.beginDeleteAsync(resourceName, resourceGroupName, fabricName).getSyncPoller();
     }
 
     /**
      * Deletes the site.
-     *
-     * <p>The operation to delete or remove an Azure Site Recovery fabric.
-     *
+     * 
+     * The operation to delete or remove an Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to delete.
@@ -2231,16 +1909,16 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceName, String resourceGroupName, String fabricName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName,
+        String fabricName, Context context) {
         return this.beginDeleteAsync(resourceName, resourceGroupName, fabricName, context).getSyncPoller();
     }
 
     /**
      * Deletes the site.
-     *
-     * <p>The operation to delete or remove an Azure Site Recovery fabric.
-     *
+     * 
+     * The operation to delete or remove an Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to delete.
@@ -2251,16 +1929,15 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceName, String resourceGroupName, String fabricName) {
-        return beginDeleteAsync(resourceName, resourceGroupName, fabricName)
-            .last()
+        return beginDeleteAsync(resourceName, resourceGroupName, fabricName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the site.
-     *
-     * <p>The operation to delete or remove an Azure Site Recovery fabric.
-     *
+     * 
+     * The operation to delete or remove an Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to delete.
@@ -2272,16 +1949,15 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceName, String resourceGroupName, String fabricName, Context context) {
-        return beginDeleteAsync(resourceName, resourceGroupName, fabricName, context)
-            .last()
+        return beginDeleteAsync(resourceName, resourceGroupName, fabricName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes the site.
-     *
-     * <p>The operation to delete or remove an Azure Site Recovery fabric.
-     *
+     * 
+     * The operation to delete or remove an Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to delete.
@@ -2296,9 +1972,9 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
 
     /**
      * Deletes the site.
-     *
-     * <p>The operation to delete or remove an Azure Site Recovery fabric.
-     *
+     * 
+     * The operation to delete or remove an Azure Site Recovery fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName ASR fabric to delete.
@@ -2314,9 +1990,9 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
 
     /**
      * Renews certificate for the fabric.
-     *
-     * <p>Renews the connection certificate for the ASR replication fabric.
-     *
+     * 
+     * Renews the connection certificate for the ASR replication fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName fabric name to renew certs for.
@@ -2327,13 +2003,11 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return fabric definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> renewCertificateWithResponseAsync(
-        String resourceName, String resourceGroupName, String fabricName, RenewCertificateInput renewCertificate) {
+    private Mono<Response<Flux<ByteBuffer>>> renewCertificateWithResponseAsync(String resourceName,
+        String resourceGroupName, String fabricName, RenewCertificateInput renewCertificate) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -2343,10 +2017,8 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -2359,27 +2031,17 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .renewCertificate(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            resourceName,
-                            resourceGroupName,
-                            this.client.getSubscriptionId(),
-                            fabricName,
-                            renewCertificate,
-                            accept,
-                            context))
+            .withContext(context -> service.renewCertificate(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceName, resourceGroupName, this.client.getSubscriptionId(), fabricName, renewCertificate, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Renews certificate for the fabric.
-     *
-     * <p>Renews the connection certificate for the ASR replication fabric.
-     *
+     * 
+     * Renews the connection certificate for the ASR replication fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName fabric name to renew certs for.
@@ -2391,17 +2053,11 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return fabric definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> renewCertificateWithResponseAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        RenewCertificateInput renewCertificate,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> renewCertificateWithResponseAsync(String resourceName,
+        String resourceGroupName, String fabricName, RenewCertificateInput renewCertificate, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
@@ -2411,10 +2067,8 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (fabricName == null) {
             return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
@@ -2427,24 +2081,15 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .renewCertificate(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                resourceName,
-                resourceGroupName,
-                this.client.getSubscriptionId(),
-                fabricName,
-                renewCertificate,
-                accept,
-                context);
+        return service.renewCertificate(this.client.getEndpoint(), this.client.getApiVersion(), resourceName,
+            resourceGroupName, this.client.getSubscriptionId(), fabricName, renewCertificate, accept, context);
     }
 
     /**
      * Renews certificate for the fabric.
-     *
-     * <p>Renews the connection certificate for the ASR replication fabric.
-     *
+     * 
+     * Renews the connection certificate for the ASR replication fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName fabric name to renew certs for.
@@ -2455,21 +2100,19 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link PollerFlux} for polling of fabric definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<FabricInner>, FabricInner> beginRenewCertificateAsync(
-        String resourceName, String resourceGroupName, String fabricName, RenewCertificateInput renewCertificate) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            renewCertificateWithResponseAsync(resourceName, resourceGroupName, fabricName, renewCertificate);
-        return this
-            .client
-            .<FabricInner, FabricInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FabricInner.class, FabricInner.class, this.client.getContext());
+    private PollerFlux<PollResult<FabricInner>, FabricInner> beginRenewCertificateAsync(String resourceName,
+        String resourceGroupName, String fabricName, RenewCertificateInput renewCertificate) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = renewCertificateWithResponseAsync(resourceName, resourceGroupName, fabricName, renewCertificate);
+        return this.client.<FabricInner, FabricInner>getLroResult(mono, this.client.getHttpPipeline(),
+            FabricInner.class, FabricInner.class, this.client.getContext());
     }
 
     /**
      * Renews certificate for the fabric.
-     *
-     * <p>Renews the connection certificate for the ASR replication fabric.
-     *
+     * 
+     * Renews the connection certificate for the ASR replication fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName fabric name to renew certs for.
@@ -2481,26 +2124,20 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link PollerFlux} for polling of fabric definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<FabricInner>, FabricInner> beginRenewCertificateAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        RenewCertificateInput renewCertificate,
-        Context context) {
+    private PollerFlux<PollResult<FabricInner>, FabricInner> beginRenewCertificateAsync(String resourceName,
+        String resourceGroupName, String fabricName, RenewCertificateInput renewCertificate, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            renewCertificateWithResponseAsync(resourceName, resourceGroupName, fabricName, renewCertificate, context);
-        return this
-            .client
-            .<FabricInner, FabricInner>getLroResult(
-                mono, this.client.getHttpPipeline(), FabricInner.class, FabricInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = renewCertificateWithResponseAsync(resourceName, resourceGroupName, fabricName, renewCertificate, context);
+        return this.client.<FabricInner, FabricInner>getLroResult(mono, this.client.getHttpPipeline(),
+            FabricInner.class, FabricInner.class, context);
     }
 
     /**
      * Renews certificate for the fabric.
-     *
-     * <p>Renews the connection certificate for the ASR replication fabric.
-     *
+     * 
+     * Renews the connection certificate for the ASR replication fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName fabric name to renew certs for.
@@ -2511,18 +2148,17 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link SyncPoller} for polling of fabric definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<FabricInner>, FabricInner> beginRenewCertificate(
-        String resourceName, String resourceGroupName, String fabricName, RenewCertificateInput renewCertificate) {
-        return this
-            .beginRenewCertificateAsync(resourceName, resourceGroupName, fabricName, renewCertificate)
+    public SyncPoller<PollResult<FabricInner>, FabricInner> beginRenewCertificate(String resourceName,
+        String resourceGroupName, String fabricName, RenewCertificateInput renewCertificate) {
+        return this.beginRenewCertificateAsync(resourceName, resourceGroupName, fabricName, renewCertificate)
             .getSyncPoller();
     }
 
     /**
      * Renews certificate for the fabric.
-     *
-     * <p>Renews the connection certificate for the ASR replication fabric.
-     *
+     * 
+     * Renews the connection certificate for the ASR replication fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName fabric name to renew certs for.
@@ -2534,22 +2170,17 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return the {@link SyncPoller} for polling of fabric definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<FabricInner>, FabricInner> beginRenewCertificate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        RenewCertificateInput renewCertificate,
-        Context context) {
-        return this
-            .beginRenewCertificateAsync(resourceName, resourceGroupName, fabricName, renewCertificate, context)
+    public SyncPoller<PollResult<FabricInner>, FabricInner> beginRenewCertificate(String resourceName,
+        String resourceGroupName, String fabricName, RenewCertificateInput renewCertificate, Context context) {
+        return this.beginRenewCertificateAsync(resourceName, resourceGroupName, fabricName, renewCertificate, context)
             .getSyncPoller();
     }
 
     /**
      * Renews certificate for the fabric.
-     *
-     * <p>Renews the connection certificate for the ASR replication fabric.
-     *
+     * 
+     * Renews the connection certificate for the ASR replication fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName fabric name to renew certs for.
@@ -2560,18 +2191,17 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return fabric definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FabricInner> renewCertificateAsync(
-        String resourceName, String resourceGroupName, String fabricName, RenewCertificateInput renewCertificate) {
-        return beginRenewCertificateAsync(resourceName, resourceGroupName, fabricName, renewCertificate)
-            .last()
+    private Mono<FabricInner> renewCertificateAsync(String resourceName, String resourceGroupName, String fabricName,
+        RenewCertificateInput renewCertificate) {
+        return beginRenewCertificateAsync(resourceName, resourceGroupName, fabricName, renewCertificate).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Renews certificate for the fabric.
-     *
-     * <p>Renews the connection certificate for the ASR replication fabric.
-     *
+     * 
+     * Renews the connection certificate for the ASR replication fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName fabric name to renew certs for.
@@ -2583,22 +2213,17 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return fabric definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<FabricInner> renewCertificateAsync(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        RenewCertificateInput renewCertificate,
-        Context context) {
-        return beginRenewCertificateAsync(resourceName, resourceGroupName, fabricName, renewCertificate, context)
-            .last()
+    private Mono<FabricInner> renewCertificateAsync(String resourceName, String resourceGroupName, String fabricName,
+        RenewCertificateInput renewCertificate, Context context) {
+        return beginRenewCertificateAsync(resourceName, resourceGroupName, fabricName, renewCertificate, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Renews certificate for the fabric.
-     *
-     * <p>Renews the connection certificate for the ASR replication fabric.
-     *
+     * 
+     * Renews the connection certificate for the ASR replication fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName fabric name to renew certs for.
@@ -2609,16 +2234,16 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return fabric definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FabricInner renewCertificate(
-        String resourceName, String resourceGroupName, String fabricName, RenewCertificateInput renewCertificate) {
+    public FabricInner renewCertificate(String resourceName, String resourceGroupName, String fabricName,
+        RenewCertificateInput renewCertificate) {
         return renewCertificateAsync(resourceName, resourceGroupName, fabricName, renewCertificate).block();
     }
 
     /**
      * Renews certificate for the fabric.
-     *
-     * <p>Renews the connection certificate for the ASR replication fabric.
-     *
+     * 
+     * Renews the connection certificate for the ASR replication fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName fabric name to renew certs for.
@@ -2630,20 +2255,239 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
      * @return fabric definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public FabricInner renewCertificate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        RenewCertificateInput renewCertificate,
-        Context context) {
+    public FabricInner renewCertificate(String resourceName, String resourceGroupName, String fabricName,
+        RenewCertificateInput renewCertificate, Context context) {
         return renewCertificateAsync(resourceName, resourceGroupName, fabricName, renewCertificate, context).block();
     }
 
     /**
+     * Removes the appliance's infrastructure under the fabric.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName Resource name.
+     * @param fabricName Fabric name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> removeInfraWithResponseAsync(String resourceGroupName, String resourceName,
+        String fabricName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (fabricName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.removeInfra(this.client.getEndpoint(), this.client.getApiVersion(),
+                resourceGroupName, this.client.getSubscriptionId(), resourceName, fabricName, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Removes the appliance's infrastructure under the fabric.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName Resource name.
+     * @param fabricName Fabric name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> removeInfraWithResponseAsync(String resourceGroupName, String resourceName,
+        String fabricName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter resourceName is required and cannot be null."));
+        }
+        if (fabricName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter fabricName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.removeInfra(this.client.getEndpoint(), this.client.getApiVersion(), resourceGroupName,
+            this.client.getSubscriptionId(), resourceName, fabricName, accept, context);
+    }
+
+    /**
+     * Removes the appliance's infrastructure under the fabric.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName Resource name.
+     * @param fabricName Fabric name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginRemoveInfraAsync(String resourceGroupName, String resourceName,
+        String fabricName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = removeInfraWithResponseAsync(resourceGroupName, resourceName, fabricName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Removes the appliance's infrastructure under the fabric.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName Resource name.
+     * @param fabricName Fabric name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginRemoveInfraAsync(String resourceGroupName, String resourceName,
+        String fabricName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = removeInfraWithResponseAsync(resourceGroupName, resourceName, fabricName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Removes the appliance's infrastructure under the fabric.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName Resource name.
+     * @param fabricName Fabric name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRemoveInfra(String resourceGroupName, String resourceName,
+        String fabricName) {
+        return this.beginRemoveInfraAsync(resourceGroupName, resourceName, fabricName).getSyncPoller();
+    }
+
+    /**
+     * Removes the appliance's infrastructure under the fabric.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName Resource name.
+     * @param fabricName Fabric name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginRemoveInfra(String resourceGroupName, String resourceName,
+        String fabricName, Context context) {
+        return this.beginRemoveInfraAsync(resourceGroupName, resourceName, fabricName, context).getSyncPoller();
+    }
+
+    /**
+     * Removes the appliance's infrastructure under the fabric.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName Resource name.
+     * @param fabricName Fabric name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> removeInfraAsync(String resourceGroupName, String resourceName, String fabricName) {
+        return beginRemoveInfraAsync(resourceGroupName, resourceName, fabricName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Removes the appliance's infrastructure under the fabric.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName Resource name.
+     * @param fabricName Fabric name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> removeInfraAsync(String resourceGroupName, String resourceName, String fabricName,
+        Context context) {
+        return beginRemoveInfraAsync(resourceGroupName, resourceName, fabricName, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Removes the appliance's infrastructure under the fabric.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName Resource name.
+     * @param fabricName Fabric name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void removeInfra(String resourceGroupName, String resourceName, String fabricName) {
+        removeInfraAsync(resourceGroupName, resourceName, fabricName).block();
+    }
+
+    /**
+     * Removes the appliance's infrastructure under the fabric.
+     * 
+     * @param resourceGroupName The name of the resource group where the recovery services vault is present.
+     * @param resourceName Resource name.
+     * @param fabricName Fabric name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void removeInfra(String resourceGroupName, String resourceName, String fabricName, Context context) {
+        removeInfraAsync(resourceGroupName, resourceName, fabricName, context).block();
+    }
+
+    /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -2655,31 +2499,22 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<FabricInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<FabricInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -2692,23 +2527,13 @@ public final class ReplicationFabricsClientImpl implements ReplicationFabricsCli
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }
