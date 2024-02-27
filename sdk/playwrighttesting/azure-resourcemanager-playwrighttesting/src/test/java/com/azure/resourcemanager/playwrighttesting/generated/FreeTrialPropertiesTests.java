@@ -10,11 +10,9 @@ import com.azure.resourcemanager.playwrighttesting.models.FreeTrialProperties;
 public final class FreeTrialPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FreeTrialProperties model =
-            BinaryData
-                .fromString(
-                    "{\"accountId\":\"qjbasvms\",\"createdAt\":\"2021-01-21T06:57:24Z\",\"expiryAt\":\"2021-08-09T10:57:51Z\",\"allocatedValue\":2070892597,\"usedValue\":2084272233,\"state\":\"Expired\"}")
-                .toObject(FreeTrialProperties.class);
+        FreeTrialProperties model = BinaryData.fromString(
+            "{\"accountId\":\"qjbasvms\",\"createdAt\":\"2021-01-21T06:57:24Z\",\"expiryAt\":\"2021-08-09T10:57:51Z\",\"allocatedValue\":2070892597,\"usedValue\":2084272233,\"state\":\"Expired\"}")
+            .toObject(FreeTrialProperties.class);
     }
 
     @org.junit.jupiter.api.Test
