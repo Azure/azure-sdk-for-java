@@ -6,8 +6,4 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- The first beta release for Purview DataMap
