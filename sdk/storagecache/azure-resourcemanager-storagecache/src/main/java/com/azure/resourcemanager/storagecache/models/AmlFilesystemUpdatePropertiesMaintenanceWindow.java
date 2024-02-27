@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storagecache.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Start time of a 30-minute weekly maintenance window. */
+/**
+ * Start time of a 30-minute weekly maintenance window.
+ */
 @Fluent
 public final class AmlFilesystemUpdatePropertiesMaintenanceWindow {
     /*
@@ -22,13 +24,15 @@ public final class AmlFilesystemUpdatePropertiesMaintenanceWindow {
     @JsonProperty(value = "timeOfDayUTC")
     private String timeOfDayUtc;
 
-    /** Creates an instance of AmlFilesystemUpdatePropertiesMaintenanceWindow class. */
+    /**
+     * Creates an instance of AmlFilesystemUpdatePropertiesMaintenanceWindow class.
+     */
     public AmlFilesystemUpdatePropertiesMaintenanceWindow() {
     }
 
     /**
      * Get the dayOfWeek property: Day of the week on which the maintenance window will occur.
-     *
+     * 
      * @return the dayOfWeek value.
      */
     public MaintenanceDayOfWeekType dayOfWeek() {
@@ -37,7 +41,7 @@ public final class AmlFilesystemUpdatePropertiesMaintenanceWindow {
 
     /**
      * Set the dayOfWeek property: Day of the week on which the maintenance window will occur.
-     *
+     * 
      * @param dayOfWeek the dayOfWeek value to set.
      * @return the AmlFilesystemUpdatePropertiesMaintenanceWindow object itself.
      */
@@ -48,7 +52,7 @@ public final class AmlFilesystemUpdatePropertiesMaintenanceWindow {
 
     /**
      * Get the timeOfDayUtc property: The time of day (in UTC) to start the maintenance window.
-     *
+     * 
      * @return the timeOfDayUtc value.
      */
     public String timeOfDayUtc() {
@@ -57,7 +61,7 @@ public final class AmlFilesystemUpdatePropertiesMaintenanceWindow {
 
     /**
      * Set the timeOfDayUtc property: The time of day (in UTC) to start the maintenance window.
-     *
+     * 
      * @param timeOfDayUtc the timeOfDayUtc value to set.
      * @return the AmlFilesystemUpdatePropertiesMaintenanceWindow object itself.
      */
@@ -68,7 +72,7 @@ public final class AmlFilesystemUpdatePropertiesMaintenanceWindow {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -170,7 +170,7 @@ currently released version and a lower version is resolved. -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity-extensions</artifactId>
-      <version>1.1.12</version> <!-- {x-version-update;com.azure:azure-identity-extensions;dependency} -->
+      <version>1.1.13</version> <!-- {x-version-update;com.azure:azure-identity-extensions;dependency} -->
     </dependency>
   </dependencies>
 
