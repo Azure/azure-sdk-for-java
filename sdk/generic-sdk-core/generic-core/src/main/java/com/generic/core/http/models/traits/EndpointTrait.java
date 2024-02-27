@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.client.trait;
+package com.generic.core.http.models.traits;
 
 /**
  * An {@link com.generic.core.client.trait SDK for Java trait} providing a consistent interface for setting service

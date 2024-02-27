@@ -11,9 +11,9 @@ module com.generic.core {
     exports com.generic.core.http;
     exports com.generic.core.http.annotation;
     exports com.generic.core.http.client;
-    exports com.generic.core.http.client.trait;
     exports com.generic.core.http.exception;
     exports com.generic.core.http.models;
+    exports com.generic.core.http.models.traits;
     exports com.generic.core.http.pipeline;
     exports com.generic.core.http.policy;
     exports com.generic.core.models;

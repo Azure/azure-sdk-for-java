@@ -14,4 +14,4 @@
  * appropriately for its requirements, or else runtime failures may occur when the builder is asked to create the
  * associated client.</p>
  */
-package com.generic.core.http.client.trait;
+package com.generic.core.http.models.traits;
