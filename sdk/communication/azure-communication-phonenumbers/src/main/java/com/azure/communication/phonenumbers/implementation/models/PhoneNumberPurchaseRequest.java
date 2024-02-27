@@ -8,7 +8,7 @@ import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The PhoneNumberPurchaseRequest model. */
+/** The phone number search purchase request. */
 @Fluent
 @Generated
 public final class PhoneNumberPurchaseRequest {
@@ -17,6 +17,12 @@ public final class PhoneNumberPurchaseRequest {
      */
     @JsonProperty(value = "searchId")
     private String searchId;
+
+    /*
+     * The consent to not resell numbers.
+     */
+    @JsonProperty(value = "consentToNotResellNumbers")
+    private Boolean consentToNotResellNumbers;
 
     /**
      * Get the searchId property: The search id.
@@ -35,6 +41,26 @@ public final class PhoneNumberPurchaseRequest {
      */
     public PhoneNumberPurchaseRequest setSearchId(String searchId) {
         this.searchId = searchId;
+        return this;
+    }
+
+    /**
+     * Get the consentToNotResellNumbers property: The consent to not resell numbers.
+     *
+     * @return the consentToNotResellNumbers value.
+     */
+    public Boolean isConsentToNotResellNumbers() {
+        return this.consentToNotResellNumbers;
+    }
+
+    /**
+     * Set the consentToNotResellNumbers property: The consent to not resell numbers.
+     *
+     * @param consentToNotResellNumbers the consentToNotResellNumbers value to set.
+     * @return the PhoneNumberPurchaseRequest object itself.
+     */
+    public PhoneNumberPurchaseRequest setConsentToNotResellNumbers(Boolean consentToNotResellNumbers) {
+        this.consentToNotResellNumbers = consentToNotResellNumbers;
         return this;
     }
 }

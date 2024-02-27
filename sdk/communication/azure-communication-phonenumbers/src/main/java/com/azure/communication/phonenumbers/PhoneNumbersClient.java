@@ -2,10 +2,13 @@
 // Licensed under the MIT License.
 package com.azure.communication.phonenumbers;
 
+import java.util.List;
 import java.util.Objects;
 
 import com.azure.communication.phonenumbers.implementation.PhoneNumberAdminClientImpl;
 import com.azure.communication.phonenumbers.implementation.PhoneNumbersImpl;
+import com.azure.communication.phonenumbers.implementation.models.OperatorInformationRequest;
+import com.azure.communication.phonenumbers.models.OperatorInformationResult;
 import com.azure.communication.phonenumbers.models.PhoneNumberAreaCode;
 import com.azure.communication.phonenumbers.models.PhoneNumberAssignmentType;
 import com.azure.communication.phonenumbers.models.PhoneNumberCapabilities;
@@ -104,7 +107,7 @@ public final class PhoneNumbersClient {
      *
      * <!-- src_embed
      * com.azure.communication.phonenumbers.client.getPurchasedWithResponse -->
-     * 
+     *
      * <pre>
      * Response&lt;PurchasedPhoneNumber&gt; response = phoneNumberClient
      *         .getPurchasedPhoneNumberWithResponse&#40;&quot;+18001234567&quot;, Context.NONE&#41;;
@@ -112,7 +115,7 @@ public final class PhoneNumbersClient {
      * System.out.println&#40;&quot;Phone Number Value: &quot; + phoneNumber.getPhoneNumber&#40;&#41;&#41;;
      * System.out.println&#40;&quot;Phone Number Country Code: &quot; + phoneNumber.getCountryCode&#40;&#41;&#41;;
      * </pre>
-     * 
+     *
      * <!-- end com.azure.communication.phonenumbers.client.getPurchasedWithResponse
      * -->
      *
@@ -164,14 +167,14 @@ public final class PhoneNumbersClient {
      *
      * <!-- src_embed
      * com.azure.communication.phonenumbers.client.listPurchasedWithContext -->
-     * 
+     *
      * <pre>
      * PagedIterable&lt;PurchasedPhoneNumber&gt; phoneNumbers = phoneNumberClient.listPurchasedPhoneNumbers&#40;Context.NONE&#41;;
      * PurchasedPhoneNumber phoneNumber = phoneNumbers.iterator&#40;&#41;.next&#40;&#41;;
      * System.out.println&#40;&quot;Phone Number Value: &quot; + phoneNumber.getPhoneNumber&#40;&#41;&#41;;
      * System.out.println&#40;&quot;Phone Number Country Code: &quot; + phoneNumber.getCountryCode&#40;&#41;&#41;;
      * </pre>
-     * 
+     *
      * <!-- end com.azure.communication.phonenumbers.client.listPurchasedWithContext
      * -->
      *
@@ -198,7 +201,7 @@ public final class PhoneNumbersClient {
      *
      * <!-- src_embed
      * com.azure.communication.phonenumbers.client.beginSearchAvailable -->
-     * 
+     *
      * <pre>
      * PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities&#40;&#41;
      *         .setCalling&#40;PhoneNumberCapabilityType.INBOUND&#41;
@@ -218,7 +221,7 @@ public final class PhoneNumbersClient {
      *     System.out.println&#40;&quot;Phone number costs:&quot; + searchResult.getCost&#40;&#41;.getAmount&#40;&#41;&#41;;
      * &#125;
      * </pre>
-     * 
+     *
      * <!-- end com.azure.communication.phonenumbers.client.beginSearchAvailable -->
      *
      * @param countryCode The ISO 3166-2 country code.
@@ -253,7 +256,7 @@ public final class PhoneNumbersClient {
      * <!-- src_embed
      * com.azure.communication.phonenumbers.client.beginSearchAvailableWithOptions
      * -->
-     * 
+     *
      * <pre>
      * PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities&#40;&#41;
      *         .setCalling&#40;PhoneNumberCapabilityType.INBOUND&#41;
@@ -274,7 +277,7 @@ public final class PhoneNumbersClient {
      *     System.out.println&#40;&quot;Phone number costs:&quot; + searchResult.getCost&#40;&#41;.getAmount&#40;&#41;&#41;;
      * &#125;
      * </pre>
-     * 
+     *
      * <!-- end
      * com.azure.communication.phonenumbers.client.beginSearchAvailableWithOptions
      * -->
@@ -325,8 +328,40 @@ public final class PhoneNumbersClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public SyncPoller<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId) {
-        return asyncClient.beginPurchasePhoneNumbers(searchId).getSyncPoller();
+        return asyncClient.beginPurchasePhoneNumbers(searchId, false).getSyncPoller();
     }
+
+    /**
+     * Starts the purchase of the phone number(s) in the search result associated
+     * with a given id.
+     *
+     * This function returns a Long Running Operation poller that allows you to wait
+     * indefinitely until the
+     * operation is complete.
+     *
+     * <p>
+     * <strong>Code Samples</strong>
+     * </p>
+     *
+     * <!-- src_embed com.azure.communication.phonenumbers.client.beginPurchase -->
+     * <pre>
+     * PollResponse&lt;PhoneNumberOperation&gt; purchaseResponse =
+     *     phoneNumberClient.beginPurchasePhoneNumbers&#40;searchId&#41;.waitForCompletion&#40;&#41;;
+     * System.out.println&#40;&quot;Purchase phone numbers is complete: &quot; + purchaseResponse.getStatus&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.communication.phonenumbers.client.beginPurchase -->
+     *
+     * @param searchId ID of the search
+     * @param consentToNotResellNumbers consent bring provided for not reselling PhoneNumbers.
+     * @return A {@link SyncPoller} object with PurchasePhoneNumbersResult.
+     * @throws NullPointerException if {@code searchId} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId, Boolean consentToNotResellNumbers) {
+        return asyncClient.beginPurchasePhoneNumbers(searchId, consentToNotResellNumbers).getSyncPoller();
+    }
+
+
 
     /**
      * Starts the purchase of the phone number(s) in the search result associated
@@ -353,14 +388,51 @@ public final class PhoneNumbersClient {
      * -->
      *
      * @param searchId ID of the search
+     * @param consentToNotResellNumbers consent bring provided for not reselling PhoneNumbers.
      * @param context A {@link Context} representing the request context.
      * @return A {@link SyncPoller} object with PurchasePhoneNumbersResult.
      * @throws NullPointerException if {@code searchId} is null.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public SyncPoller<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId,
+    public SyncPoller<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId, 
+            Boolean consentToNotResellNumbers,
             Context context) {
-        return asyncClient.beginPurchasePhoneNumbers(searchId, context).getSyncPoller();
+        return asyncClient.beginPurchasePhoneNumbers(searchId, consentToNotResellNumbers, context).getSyncPoller();
+    }
+
+    /**
+     * Starts the purchase of the phone number(s) in the search result associated
+     * with a given id.
+     *
+     * This function returns a Long Running Operation poller that allows you to wait
+     * indefinitely until the
+     * operation is complete.
+     *
+     * <p>
+     * <strong>Code Samples</strong>
+     * </p>
+     *
+     * <!-- src_embed
+     * com.azure.communication.phonenumbers.client.beginPurchaseWithContext -->
+     *
+     * <pre>
+     * PollResponse&lt;PhoneNumberOperation&gt; purchaseResponse = phoneNumberClient
+     *         .beginPurchasePhoneNumbers&#40;searchId, Context.NONE&#41;.waitForCompletion&#40;&#41;;
+     * System.out.println&#40;&quot;Purchase phone numbers is complete: &quot; + purchaseResponse.getStatus&#40;&#41;&#41;;
+     * </pre>
+     *
+     * <!-- end com.azure.communication.phonenumbers.client.beginPurchaseWithContext
+     * -->
+     *
+     * @param searchId ID of the search
+     * @param context A {@link Context} representing the request context.
+     * @return A {@link SyncPoller} object with PurchasePhoneNumbersResult.
+     * @throws NullPointerException if {@code searchId} is null.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public SyncPoller<PhoneNumberOperation, PurchasePhoneNumbersResult> beginPurchasePhoneNumbers(String searchId, 
+            Context context) {
+        return asyncClient.beginPurchasePhoneNumbers(searchId, false, context).getSyncPoller();
     }
 
     /**
@@ -406,13 +478,13 @@ public final class PhoneNumbersClient {
      *
      * <!-- src_embed
      * com.azure.communication.phonenumbers.client.beginReleaseWithContext -->
-     * 
+     *
      * <pre>
      * PollResponse&lt;PhoneNumberOperation&gt; releaseResponse = phoneNumberClient
      *         .beginReleasePhoneNumber&#40;&quot;+18001234567&quot;, Context.NONE&#41;.waitForCompletion&#40;&#41;;
      * System.out.println&#40;&quot;Release phone number is complete: &quot; + releaseResponse.getStatus&#40;&#41;&#41;;
      * </pre>
-     * 
+     *
      * <!-- end com.azure.communication.phonenumbers.client.beginReleaseWithContext
      * -->
      *
@@ -442,7 +514,7 @@ public final class PhoneNumbersClient {
      *
      * <!-- src_embed
      * com.azure.communication.phonenumbers.client.beginUpdateCapabilities -->
-     * 
+     *
      * <pre>
      * PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities&#40;&#41;;
      * capabilities
@@ -459,7 +531,7 @@ public final class PhoneNumbersClient {
      *     System.out.println&#40;&quot;Phone Number SMS capabilities: &quot; + phoneNumber.getCapabilities&#40;&#41;.getSms&#40;&#41;&#41;;
      * &#125;
      * </pre>
-     * 
+     *
      * <!-- end com.azure.communication.phonenumbers.client.beginUpdateCapabilities
      * -->
      *
@@ -491,7 +563,7 @@ public final class PhoneNumbersClient {
      * <!-- src_embed
      * com.azure.communication.phonenumbers.client.beginUpdateCapabilitiesWithContext
      * -->
-     * 
+     *
      * <pre>
      * PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities&#40;&#41;;
      * capabilities
@@ -508,7 +580,7 @@ public final class PhoneNumbersClient {
      *     System.out.println&#40;&quot;Phone Number SMS capabilities: &quot; + phoneNumber.getCapabilities&#40;&#41;.getSms&#40;&#41;&#41;;
      * &#125;
      * </pre>
-     * 
+     *
      * <!-- end
      * com.azure.communication.phonenumbers.client.beginUpdateCapabilitiesWithContext
      * -->
@@ -694,5 +766,19 @@ public final class PhoneNumbersClient {
             PhoneNumberType phoneNumberType, PhoneNumberAssignmentType assignmentType, Context context) {
         context = context == null ? Context.NONE : context;
         return client.listOfferings(countryCode, null, null, phoneNumberType, assignmentType, acceptLanguage, context);
+    }
+
+    /**
+     * Searches for operator information for a given list of phone numbers.
+     *
+     * @param phoneNumbers The phone number(s) whose operator information should be searched.
+     *
+     * @return A {@link OperatorInformationResult} which contains the results of the search.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public OperatorInformationResult searchOperatorInformation(List<String> phoneNumbers) {
+        OperatorInformationRequest request = new OperatorInformationRequest();
+        request.setPhoneNumbers(phoneNumbers);
+        return client.operatorInformationSearch(request);
     }
 }

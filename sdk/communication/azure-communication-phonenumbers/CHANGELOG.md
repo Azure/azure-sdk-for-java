@@ -1,6 +1,6 @@
 # Release History
 
-## 1.2.0-beta.1 (Unreleased)
+## 1.2.0-beta.3 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,13 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.2.0-beta.2 (2024-01-29)
+
+### Features Added
+- Added support for API version `2023-10-01-preview`, This gives us functionality for Do Not Resell Consent Changes.
+- Users will now be able to purchase from countries like `IT`, `AT`, `FR`, `NO`, `PT`. They can do so by agreeing not to resell phone numbers by setting consentToNotResellNumbers to true.
+- Added support for 10DLC changes.
 
 ## 1.1.9 (2023-12-04)
 
@@ -27,6 +34,12 @@
 
 - Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
 - Upgraded `azure-communication-common` from `1.2.13` to version `1.2.14`.
+
+## 1.2.0-beta.1 (2023-09-07)
+
+### Features Added
+- Number Lookup API public preview
+- API version `2023-05-01-preview` is the default
 
 ## 1.1.7 (2023-10-20)
 

@@ -23,10 +23,10 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.2
 
 ### Code generation settings
 ``` yaml
-tag: package-phonenumber-2022-12-01
-require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/edf1d7365a436f0b124c0cecbefd63499e049af0/specification/communication/data-plane/PhoneNumbers/readme.md
+tag: package-phonenumber-2023-10-01-preview
+require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/bd44f2d98fdc14c674b542cc64ce7df33ddfaf76/specification/communication/data-plane/PhoneNumbers/readme.md
 override-client-name: PhoneNumberAdminClient
-custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability,PhoneNumberAdministrativeDivision,PhoneNumberCountry,PhoneNumberLocality,PhoneNumberOffering,AreaCodeResult,AreaCodes,PhoneNumberAreaCode
+custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability,PhoneNumberAdministrativeDivision,PhoneNumberCountry,PhoneNumberLocality,PhoneNumberOffering,AreaCodeResult,AreaCodes,PhoneNumberAreaCode,PhoneNumberSearchResultError,OperatorDetails,OperatorInformation,OperatorInformationResult,OperatorNumberType
 custom-types-subpackage: models
 models-subpackage: implementation.models
 java: true
@@ -65,7 +65,6 @@ directive:
       $["properties"]["currencyCode"].readOnly = true;
       $["properties"]["billingFrequency"].readOnly = true;
 ```
-
 
 ### Add readonly attribute to PhoneNumberSearchResult properties
 ```yaml
@@ -149,7 +148,6 @@ directive:
       $["properties"]["localizedName"].readOnly = true;
 ```
 
-
 ### Add readonly attribute to PhoneNumberLocalities properties
 ```yaml
 directive:
@@ -190,4 +188,74 @@ directive:
     transform: >
       $["properties"]["localizedName"].readOnly = true;
       $["properties"]["countryCode"].readOnly = true;
+```
+
+### Add readonly attribute to OperatorDetails properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.OperatorDetails
+    transform: >
+      $["properties"]["name"].readOnly = true;
+      $["properties"]["mobileNetworkCode"].readOnly = true;
+      $["properties"]["mobileCountryCode"].readOnly = true;
+```
+
+### Add readonly attribute to OperatorInformation properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.OperatorInformation
+    transform: >
+      $["properties"]["phoneNumber"].readOnly = true;
+      $["properties"]["numberType"].readOnly = true;
+      $["properties"]["isoCountryCode"].readOnly = true;
+      $["properties"]["operatorDetails"].readOnly = true;
+```
+
+### Add readonly attribute to OperatorInformationResult properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.OperatorInformationResult
+    transform: >
+      $["properties"]["values"].readOnly = true;
+```
+
+``` yaml
+directive:
+  from: swagger-document
+  where: $.definitions.PhoneNumberSearchResult.properties.error.x-ms-enum
+  transform: >
+    $["name"] = "PhoneNumberSearchResultError";
+```
+
+``` yaml
+directive:
+  from: swagger-document
+  where: $.parameters.Endpoint
+  transform: >
+    $["format"] = "";
+```
+
+### Removed Property phoneNumberSource from PurchasedPhoneNumber
+``` yaml
+directive:
+  where-model: PurchasedPhoneNumber
+  remove-property: phoneNumberSource
+```
+
+# Removed Models
+``` yaml
+directive:
+  - remove-operation-match: /.*Reservation.*/i
+  - remove-operation: PhoneNumbers_BrowseAvailableNumbers
+  - remove-model: PhoneNumbersReservation
+  - remove-model: PhoneNumbersReservations
+  - remove-model: PhoneNumbersBrowseRequest
+  - remove-model: PhoneNumbersBrowseResult
+  - remove-model: PhoneNumberBrowseCapabilitiesRequest
+  - remove-model: PhoneNumbersReservationPurchaseRequest
+  - remove-model: AvailablePhoneNumber
+  - remove-model: AvailablePhoneNumberCost
 ```

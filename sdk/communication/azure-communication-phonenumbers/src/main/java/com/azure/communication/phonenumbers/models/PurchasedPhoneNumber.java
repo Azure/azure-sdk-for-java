@@ -4,12 +4,12 @@
 
 package com.azure.communication.phonenumbers.models;
 
-import com.azure.core.annotation.Immutable;
+import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
 /** The PurchasedPhoneNumber model. */
-@Immutable
+@Fluent
 public final class PurchasedPhoneNumber {
     /*
      * The id of the phone number, e.g. 11234567890.
@@ -59,6 +59,18 @@ public final class PurchasedPhoneNumber {
      */
     @JsonProperty(value = "cost", required = true, access = JsonProperty.Access.WRITE_ONLY)
     private PhoneNumberCost cost;
+
+    /*
+     * Id of the operator that provided the number
+     */
+    @JsonProperty(value = "operatorId")
+    private String operatorId;
+
+    /*
+     * Name of the operator that provided the number
+     */
+    @JsonProperty(value = "operatorName")
+    private String operatorName;
 
     /**
      * Get the id property: The id of the phone number, e.g. 11234567890.
@@ -131,5 +143,45 @@ public final class PurchasedPhoneNumber {
      */
     public PhoneNumberCost getCost() {
         return this.cost;
+    }
+
+    /**
+     * Get the operatorId property: Id of the operator that provided the number.
+     *
+     * @return the operatorId value.
+     */
+    public String getOperatorId() {
+        return this.operatorId;
+    }
+
+    /**
+     * Set the operatorId property: Id of the operator that provided the number.
+     *
+     * @param operatorId the operatorId value to set.
+     * @return the PurchasedPhoneNumber object itself.
+     */
+    public PurchasedPhoneNumber setOperatorId(String operatorId) {
+        this.operatorId = operatorId;
+        return this;
+    }
+
+    /**
+     * Get the operatorName property: Name of the operator that provided the number.
+     *
+     * @return the operatorName value.
+     */
+    public String getOperatorName() {
+        return this.operatorName;
+    }
+
+    /**
+     * Set the operatorName property: Name of the operator that provided the number.
+     *
+     * @param operatorName the operatorName value to set.
+     * @return the PurchasedPhoneNumber object itself.
+     */
+    public PurchasedPhoneNumber setOperatorName(String operatorName) {
+        this.operatorName = operatorName;
+        return this;
     }
 }
