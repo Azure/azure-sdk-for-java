@@ -238,21 +238,6 @@ directive:
     $["format"] = "";
 ```
 
-
-### Removed Property error from PhoneNumberSearchResult
-``` yaml
-directive:
-  where-model: PhoneNumberSearchResult
-  remove-property: error
-```
-
-### Removed Property errorCode from PhoneNumberSearchResult
-``` yaml
-directive:
-  where-model: PhoneNumberSearchResult
-  remove-property: errorCode
-```
-
 ### Removed Property phoneNumberSource from PurchasedPhoneNumber
 ``` yaml
 directive:
@@ -271,7 +256,6 @@ directive:
   - remove-model: PhoneNumbersBrowseResult
   - remove-model: PhoneNumberBrowseCapabilitiesRequest
   - remove-model: PhoneNumbersReservationPurchaseRequest
-  - remove-model: Error
   - remove-model: AvailablePhoneNumber
   - remove-model: AvailablePhoneNumberCost
 ```
