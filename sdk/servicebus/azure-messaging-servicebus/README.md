@@ -441,7 +441,7 @@ The best option for receiving messages in most common cases is 'ServiceBusProces
 
 The low-level client, 'ServiceBusReceiverAsyncClient', is for advanced users who want more control and flexibility over their Reactive application at the expense of more complexity in the application. Unlike the processor, the low-level 'ServiceBusReceiverAsyncClient' does not have automatic recovery built into it. The reactive application using this client needs to deal with terminal events and choose the operators (to add recovery, manage backpressure, threading) in the Reactor chain. As stated earlier, for common asynchronous receive situations, the 'ServiceBusProcessorClient' should be the first choice.
 
-Use 'ServiceBusReceiverClient', if you want to receive messages synchronously, usually in a loop that calls `receiveMessages` on 'ServiceBusReceiverClient' instance, process the message(s) and then repeat this sequential receive pattern. For high-throughput and parallel message processing use cases, use 'ServiceBusProcessorClient'.
+Use 'ServiceBusReceiverClient', if you want to receive messages synchronously, usually in a loop that calls `receiveMessages` on 'ServiceBusReceiverClient' instance, process the message(s) and then repeat this sequential receive pattern. 'ServiceBusReceiverClient' usage is discouraged unless you want to have pull semantics or want to migrate existing code base that uses synchronous receiver approach. For high-throughput and parallel message processing use cases, use 'ServiceBusProcessorClient'.
 
 ## Troubleshooting
 
