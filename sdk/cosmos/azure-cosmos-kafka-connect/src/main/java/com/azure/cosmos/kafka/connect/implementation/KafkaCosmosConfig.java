@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
 /**
  * Common Configuration for Cosmos DB Kafka source connector and sink connector.
  */
-public class CosmosConfig extends AbstractConfig {
+public class KafkaCosmosConfig extends AbstractConfig {
     protected static final ConfigDef.Validator NON_EMPTY_STRING = new ConfigDef.NonEmptyString();
     private static final String CONFIG_PREFIX = "kafka.connect.cosmos.";
 
@@ -52,7 +52,7 @@ public class CosmosConfig extends AbstractConfig {
 
     private final CosmosAccountConfig accountConfig;
 
-    public CosmosConfig(ConfigDef config, Map<String, ?> parsedConfig) {
+    public KafkaCosmosConfig(ConfigDef config, Map<String, ?> parsedConfig) {
         super(config, parsedConfig);
         this.accountConfig = this.parseAccountConfig();
     }

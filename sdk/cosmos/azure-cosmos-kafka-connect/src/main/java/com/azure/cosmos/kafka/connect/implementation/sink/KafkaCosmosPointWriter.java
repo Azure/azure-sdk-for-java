@@ -7,12 +7,12 @@ import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.guava25.base.Function;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosSchedulers;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import org.apache.kafka.connect.sink.ErrantRecordReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Mono;
-import reactor.core.scheduler.Schedulers;
 
 import java.util.List;
 
@@ -172,8 +172,8 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
             })
             .repeat(() -> !sinkOperation.isCompleted())
             .then()
-            .subscribeOn(Schedulers.boundedElastic())
-            .block();// TODO[This PR]: use customized schedulers
+            .subscribeOn(KafkaCosmosSchedulers.SINK_BOUNDED_ELASTIC)
+            .block();
     }
 }
 

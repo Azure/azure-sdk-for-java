@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosSchedulers;
 import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkItemRequestOptions;
 import com.azure.cosmos.models.CosmosBulkItemResponse;
@@ -68,9 +69,12 @@ public class KafkaCosmosBulkWriter extends KafkaCosmosWriterBase {
             .flatMapMany(itemOperations -> {
 
                 Flux<CosmosBulkOperationResponse<Object>> cosmosBulkOperationResponseFlux =
-                    container.executeBulkOperations(
-                        Flux.fromIterable(itemOperations).mergeWith(bulkRetryEmitter.asFlux()),
-                        bulkExecutionOptions);
+                    container
+                        .executeBulkOperations(
+                            Flux.fromIterable(itemOperations)
+                                .mergeWith(bulkRetryEmitter.asFlux())
+                                .publishOn(KafkaCosmosSchedulers.SINK_BOUNDED_ELASTIC),
+                            bulkExecutionOptions);
                 return cosmosBulkOperationResponseFlux;
             })
             .flatMap(itemResponse -> {
@@ -111,7 +115,8 @@ public class KafkaCosmosBulkWriter extends KafkaCosmosWriterBase {
 
                 return Mono.empty();
             })
-            .blockLast(); // TODO[This PR]: using customized schedulers
+            .subscribeOn(KafkaCosmosSchedulers.SINK_BOUNDED_ELASTIC)
+            .blockLast();
     }
 
     private CosmosBulkExecutionOptions getBulkExecutionOperations() {
