@@ -136,7 +136,7 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
         Mono.just(this)
             .flatMap(data -> {
                 if (sinkOperation.getRetryCount() > 0) {
-                    LOGGER.debug("Retry attempted for sinkRecord {}", sinkOperation.getSinkRecord().key());
+                    LOGGER.debug("Retry for sinkRecord {}", sinkOperation.getSinkRecord().key());
                 }
                 return execution.apply(sinkOperation);
             })
@@ -173,7 +173,7 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
             .repeat(() -> !sinkOperation.isCompleted())
             .then()
             .subscribeOn(Schedulers.boundedElastic())
-            .block();// TODO: use customized schedulers
+            .block();// TODO[This PR]: use customized schedulers
     }
 }
 

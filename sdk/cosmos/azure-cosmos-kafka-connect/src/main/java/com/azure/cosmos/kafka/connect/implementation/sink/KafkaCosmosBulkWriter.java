@@ -111,7 +111,7 @@ public class KafkaCosmosBulkWriter extends KafkaCosmosWriterBase {
 
                 return Mono.empty();
             })
-            .blockLast();
+            .blockLast(); // TODO[This PR]: using customized schedulers
     }
 
     private CosmosBulkExecutionOptions getBulkExecutionOperations() {

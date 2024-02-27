@@ -19,6 +19,7 @@ public class CosmosSinkWriteConfig {
         ItemWriteStrategy itemWriteStrategy,
         int maxRetryCount,
         ToleranceOnErrorLevel toleranceOnErrorLevel) {
+
         this.bulkEnabled = bulkEnabled;
         this.bulkMaxConcurrentCosmosPartitions = bulkMaxConcurrentCosmosPartitions;
         this.bulkInitialBatchSize = bulkInitialBatchSize;

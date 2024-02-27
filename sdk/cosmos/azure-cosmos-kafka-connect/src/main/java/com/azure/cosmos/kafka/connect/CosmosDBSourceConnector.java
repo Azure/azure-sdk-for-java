@@ -103,7 +103,7 @@ public class CosmosDBSourceConnector extends SourceConnector {
     @Override
     public String version() {
         return KafkaCosmosConstants.CURRENT_VERSION;
-    } // TODO[public preview]: how this is being used
+    }
 
     private List<Map<String, String>> getTaskConfigs(int maxTasks) {
         Pair<MetadataTaskUnit, List<FeedRangeTaskUnit>> taskUnits = this.getAllTaskUnits();

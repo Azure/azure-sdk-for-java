@@ -391,11 +391,9 @@ cosmos_org.scalastyle:scalastyle-maven-plugin;1.0.0
 ## Cosmos Kafka connector under sdk\cosmos\azure-cosmos-kafka-connect\pom.xml
 # Cosmos Kafka connector runtime dependencies
 cosmos_org.apache.kafka:connect-api;3.6.0
+cosmos_org.com.jayway.jsonpath:json-path;2.9.0
 # Cosmos Kafka connector tests only
 cosmos_org.apache.kafka:connect-runtime;3.6.0
-cosmos_org.testcontainers:testcontainers;1.19.5
-cosmos_org.testcontainers:kafka;1.19.5
-cosmos_org.sourcelab:kafka-connect-client;4.0.4
 # Maven Tools for Cosmos Kafka connector only
 cosmos_io.confluent:kafka-connect-maven-plugin;0.12.0
 
