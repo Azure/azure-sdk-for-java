@@ -1,18 +1,15 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.file.datalake.stress.utils;
-// Copyright (c) Microsoft Corporation. All rights reserved.
-// Licensed under the MIT License.
+package com.azure.storage.file.share.stress.utils;
 
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.tracing.Tracer;
 import com.azure.core.util.tracing.TracerProvider;
-import com.azure.storage.blob.BlobAsyncClient;
 import com.azure.storage.common.ParallelTransferOptions;
-import com.azure.storage.file.datalake.DataLakeFileAsyncClient;
+import com.azure.storage.file.share.ShareFileAsyncClient;
 import com.azure.storage.stress.ContentInfo;
 import com.azure.storage.stress.CrcInputStream;
 import reactor.core.publisher.Flux;
@@ -36,21 +33,21 @@ public class OriginalContent {
     private long dataChecksum = -1;
     private long fileSize = 0;
 
-    public Mono<Void> setupFile(DataLakeFileAsyncClient fileAsyncClient, long fileSize) {
+    public Mono<Void> setupFile(ShareFileAsyncClient fileAsyncClient, long fileSize) {
         if (dataChecksum != -1) {
             throw LOGGER.logExceptionAsError(new IllegalStateException("setupFile can't be called again"));
         }
         this.fileSize = fileSize;
-        return Mono.using(
-                () -> new CrcInputStream(FILE_CONTENT_HEAD, fileSize),
-                data -> fileAsyncClient
-                    .upload(toFluxByteBuffer(data, 8192),
-                        new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * 1024 * 1024L).setMaxConcurrency(1))
-                    .then(data.getContentInfo()),
-                CrcInputStream::close)
+
+        return fileAsyncClient.create(fileSize)
+            .flatMap(ignored ->
+                Mono.using(
+                    () -> new CrcInputStream(FILE_CONTENT_HEAD, fileSize),
+                    data -> fileAsyncClient.upload(toFluxByteBuffer(data, 8192),
+                            new ParallelTransferOptions().setMaxSingleUploadSizeLong(4 * 1024 * 1024L).setMaxConcurrency(1))
+                        .then(data.getContentInfo()), CrcInputStream::close))
             .map(info -> dataChecksum = info.getCrc())
             .then();
-
     }
 
     public Mono<Void> checkMatch(BinaryData data, Context span) {

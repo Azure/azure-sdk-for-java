@@ -1,0 +1,61 @@
+matrix:
+  scenarios:
+    # this test downloads 1KB (1024 bytes), small file, no chunking
+    download-small-file-test:
+      testScenario: downloadtofile
+      sync: true
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test downloads 1KB (1024 bytes), small file, no chunking with async client
+    download-small-file-async-test:
+      testScenario: downloadtofile
+      sync: false
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test downloads 1KB (1024 bytes), no chunking
+    download-small-test:
+      testScenario: download
+      sync: true
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test downloads 1KB (1024 bytes), no chunking with async client
+    download-small-async-test:
+      testScenario: download
+      sync: false
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+#   this test downloads 1KB (1024 bytes) to open input stream, no chunking
+    openinputstream-small-test:
+      testScenario: openinputstream
+      sync: true
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+#   this test downloads 1KB (1024 bytes) to seekablebytechannel, no chunking
+    seekablebytechannel-small-test:
+      testScenario: getfileseekablebytechannelread
+      sync: true
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."

@@ -15,7 +15,7 @@
   </root>
 
 <!--  this is the category used by HTTP logging policy, add more/adjust as needed-->
-  <logger name="com.azure.storage.file.datalake.stress" level="INFO">
+  <logger name="com.azure.storage.file.share.stress" level="INFO">
     <appender-ref ref="STDOUT" />
   </logger>
   <logger name="com.azure.storage.stress" level="INFO">
