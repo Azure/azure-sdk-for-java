@@ -313,7 +313,7 @@ public class NotificationMessageSample {
         SendMessageResult result = client.send(
             new TextNotificationContent(CHANNEL_ID, TO_LIST, "Hello from ACS messaging"));
 
-        result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:"+ r.getMessageId()));
+        result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
     }
 
     /*
