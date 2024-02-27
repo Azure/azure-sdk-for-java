@@ -19,30 +19,31 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 public final class ChatCompletionsNamedFunctionToolSelection extends ChatCompletionsNamedToolSelection {
 
     /*
-     * The name of the function that should be called.
+     * The function that should be called.
      */
     @Generated
-    @JsonProperty(value = "name")
-    private String name;
-
-    /**
-     * Get the name property: The name of the function that should be called.
-     *
-     * @return the name value.
-     */
-    @Generated
-    public String getName() {
-        return this.name;
-    }
+    @JsonProperty(value = "function")
+    private ChatCompletionsFunctionToolSelection function;
 
     /**
      * Creates an instance of ChatCompletionsNamedFunctionToolSelection class.
      *
-     * @param name the name value to set.
+     * @param function the function value to set.
      */
     @Generated
     @JsonCreator
-    public ChatCompletionsNamedFunctionToolSelection(@JsonProperty(value = "name") String name) {
-        this.name = name;
+    public ChatCompletionsNamedFunctionToolSelection(
+        @JsonProperty(value = "function") ChatCompletionsFunctionToolSelection function) {
+        this.function = function;
+    }
+
+    /**
+     * Get the function property: The function that should be called.
+     *
+     * @return the function value.
+     */
+    @Generated
+    public ChatCompletionsFunctionToolSelection getFunction() {
+        return this.function;
     }
 }

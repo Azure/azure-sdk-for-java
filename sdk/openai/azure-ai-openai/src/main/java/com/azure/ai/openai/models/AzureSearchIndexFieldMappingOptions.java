@@ -9,44 +9,65 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Optional settings to control how fields are processed when using a configured Azure Cognitive Search resource.
+ * Optional settings to control how fields are processed when using a configured Azure Search resource.
  */
 @Fluent
-public final class AzureCognitiveSearchIndexFieldMappingOptions {
+public final class AzureSearchIndexFieldMappingOptions {
 
     /*
      * The name of the index field to use as a title.
      */
     @Generated
-    @JsonProperty(value = "titleField")
+    @JsonProperty(value = "title_field")
     private String titleField;
 
     /*
      * The name of the index field to use as a URL.
      */
     @Generated
-    @JsonProperty(value = "urlField")
+    @JsonProperty(value = "url_field")
     private String urlField;
 
     /*
      * The name of the index field to use as a filepath.
      */
     @Generated
-    @JsonProperty(value = "filepathField")
+    @JsonProperty(value = "filepath_field")
     private String filepathField;
+
+    /*
+     * The names of index fields that should be treated as content.
+     */
+    @Generated
+    @JsonProperty(value = "content_fields")
+    private List<String> contentFields;
+
+    /*
+     * The separator pattern that content fields should use.
+     */
+    @Generated
+    @JsonProperty(value = "content_fields_separator")
+    private String contentFieldsSeparator;
 
     /*
      * The names of fields that represent vector data.
      */
     @Generated
-    @JsonProperty(value = "vectorFields")
+    @JsonProperty(value = "vector_fields")
     private List<String> vectorFields;
 
-    /**
-     * Creates an instance of AzureCognitiveSearchIndexFieldMappingOptions class.
+    /*
+     * The names of fields that represent image vector data.
      */
     @Generated
-    public AzureCognitiveSearchIndexFieldMappingOptions() {
+    @JsonProperty(value = "image_vector_fields")
+    private List<String> imageVectorFields;
+
+    /**
+     * Creates an instance of AzureSearchIndexFieldMappingOptions class.
+     */
+    @Generated
+    public AzureSearchIndexFieldMappingOptions() {
     }
 
     /**
@@ -63,10 +84,10 @@ public final class AzureCognitiveSearchIndexFieldMappingOptions {
      * Set the titleField property: The name of the index field to use as a title.
      *
      * @param titleField the titleField value to set.
-     * @return the AzureCognitiveSearchIndexFieldMappingOptions object itself.
+     * @return the AzureSearchIndexFieldMappingOptions object itself.
      */
     @Generated
-    public AzureCognitiveSearchIndexFieldMappingOptions setTitleField(String titleField) {
+    public AzureSearchIndexFieldMappingOptions setTitleField(String titleField) {
         this.titleField = titleField;
         return this;
     }
@@ -85,10 +106,10 @@ public final class AzureCognitiveSearchIndexFieldMappingOptions {
      * Set the urlField property: The name of the index field to use as a URL.
      *
      * @param urlField the urlField value to set.
-     * @return the AzureCognitiveSearchIndexFieldMappingOptions object itself.
+     * @return the AzureSearchIndexFieldMappingOptions object itself.
      */
     @Generated
-    public AzureCognitiveSearchIndexFieldMappingOptions setUrlField(String urlField) {
+    public AzureSearchIndexFieldMappingOptions setUrlField(String urlField) {
         this.urlField = urlField;
         return this;
     }
@@ -107,56 +128,13 @@ public final class AzureCognitiveSearchIndexFieldMappingOptions {
      * Set the filepathField property: The name of the index field to use as a filepath.
      *
      * @param filepathField the filepathField value to set.
-     * @return the AzureCognitiveSearchIndexFieldMappingOptions object itself.
+     * @return the AzureSearchIndexFieldMappingOptions object itself.
      */
     @Generated
-    public AzureCognitiveSearchIndexFieldMappingOptions setFilepathField(String filepathField) {
+    public AzureSearchIndexFieldMappingOptions setFilepathField(String filepathField) {
         this.filepathField = filepathField;
         return this;
     }
-
-    /**
-     * Get the vectorFields property: The names of fields that represent vector data.
-     *
-     * @return the vectorFields value.
-     */
-    @Generated
-    public List<String> getVectorFields() {
-        return this.vectorFields;
-    }
-
-    /**
-     * Set the vectorFields property: The names of fields that represent vector data.
-     *
-     * @param vectorFields the vectorFields value to set.
-     * @return the AzureCognitiveSearchIndexFieldMappingOptions object itself.
-     */
-    @Generated
-    public AzureCognitiveSearchIndexFieldMappingOptions setVectorFields(List<String> vectorFields) {
-        this.vectorFields = vectorFields;
-        return this;
-    }
-
-    /*
-     * The names of index fields that should be treated as content.
-     */
-    @Generated
-    @JsonProperty(value = "contentFields")
-    private List<String> contentFields;
-
-    /*
-     * The separator pattern that content fields should use.
-     */
-    @Generated
-    @JsonProperty(value = "contentFieldsSeparator")
-    private String contentFieldsSeparator;
-
-    /*
-     * The names of fields that represent image vector data.
-     */
-    @Generated
-    @JsonProperty(value = "imageVectorFields")
-    private List<String> imageVectorFields;
 
     /**
      * Get the contentFields property: The names of index fields that should be treated as content.
@@ -172,10 +150,10 @@ public final class AzureCognitiveSearchIndexFieldMappingOptions {
      * Set the contentFields property: The names of index fields that should be treated as content.
      *
      * @param contentFields the contentFields value to set.
-     * @return the AzureCognitiveSearchIndexFieldMappingOptions object itself.
+     * @return the AzureSearchIndexFieldMappingOptions object itself.
      */
     @Generated
-    public AzureCognitiveSearchIndexFieldMappingOptions setContentFields(List<String> contentFields) {
+    public AzureSearchIndexFieldMappingOptions setContentFields(List<String> contentFields) {
         this.contentFields = contentFields;
         return this;
     }
@@ -194,11 +172,33 @@ public final class AzureCognitiveSearchIndexFieldMappingOptions {
      * Set the contentFieldsSeparator property: The separator pattern that content fields should use.
      *
      * @param contentFieldsSeparator the contentFieldsSeparator value to set.
-     * @return the AzureCognitiveSearchIndexFieldMappingOptions object itself.
+     * @return the AzureSearchIndexFieldMappingOptions object itself.
      */
     @Generated
-    public AzureCognitiveSearchIndexFieldMappingOptions setContentFieldsSeparator(String contentFieldsSeparator) {
+    public AzureSearchIndexFieldMappingOptions setContentFieldsSeparator(String contentFieldsSeparator) {
         this.contentFieldsSeparator = contentFieldsSeparator;
+        return this;
+    }
+
+    /**
+     * Get the vectorFields property: The names of fields that represent vector data.
+     *
+     * @return the vectorFields value.
+     */
+    @Generated
+    public List<String> getVectorFields() {
+        return this.vectorFields;
+    }
+
+    /**
+     * Set the vectorFields property: The names of fields that represent vector data.
+     *
+     * @param vectorFields the vectorFields value to set.
+     * @return the AzureSearchIndexFieldMappingOptions object itself.
+     */
+    @Generated
+    public AzureSearchIndexFieldMappingOptions setVectorFields(List<String> vectorFields) {
+        this.vectorFields = vectorFields;
         return this;
     }
 
@@ -216,10 +216,10 @@ public final class AzureCognitiveSearchIndexFieldMappingOptions {
      * Set the imageVectorFields property: The names of fields that represent image vector data.
      *
      * @param imageVectorFields the imageVectorFields value to set.
-     * @return the AzureCognitiveSearchIndexFieldMappingOptions object itself.
+     * @return the AzureSearchIndexFieldMappingOptions object itself.
      */
     @Generated
-    public AzureCognitiveSearchIndexFieldMappingOptions setImageVectorFields(List<String> imageVectorFields) {
+    public AzureSearchIndexFieldMappingOptions setImageVectorFields(List<String> imageVectorFields) {
         this.imageVectorFields = imageVectorFields;
         return this;
     }

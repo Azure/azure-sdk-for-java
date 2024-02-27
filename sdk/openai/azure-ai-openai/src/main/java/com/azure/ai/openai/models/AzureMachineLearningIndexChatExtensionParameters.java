@@ -9,7 +9,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters for the Azure Machine Learning vector index chat extension.
+ * Parameters for the Azure Machine Learning vector index chat extension. The supported authentication types are
+ * AccessToken, SystemAssignedManagedIdentity and UserAssignedManagedIdentity.
  */
 @Fluent
 public final class AzureMachineLearningIndexChatExtensionParameters {
@@ -30,14 +31,14 @@ public final class AzureMachineLearningIndexChatExtensionParameters {
      * The configured top number of documents to feature for the configured query.
      */
     @Generated
-    @JsonProperty(value = "topNDocuments")
+    @JsonProperty(value = "top_n_documents")
     private Integer topNDocuments;
 
     /*
      * Whether queries should be restricted to use of indexed data.
      */
     @Generated
-    @JsonProperty(value = "inScope")
+    @JsonProperty(value = "in_scope")
     private Boolean inScope;
 
     /*
@@ -54,14 +55,14 @@ public final class AzureMachineLearningIndexChatExtensionParameters {
      * limit for it, and it counts against the overall token limit.
      */
     @Generated
-    @JsonProperty(value = "roleInformation")
+    @JsonProperty(value = "role_information")
     private String roleInformation;
 
     /*
      * The resource ID of the Azure Machine Learning project.
      */
     @Generated
-    @JsonProperty(value = "projectResourceId")
+    @JsonProperty(value = "project_resource_id")
     private String projectResourceId;
 
     /*
@@ -95,8 +96,8 @@ public final class AzureMachineLearningIndexChatExtensionParameters {
     @Generated
     @JsonCreator
     public AzureMachineLearningIndexChatExtensionParameters(
-        @JsonProperty(value = "projectResourceId") String projectResourceId, @JsonProperty(value = "name") String name,
-        @JsonProperty(value = "version") String version) {
+        @JsonProperty(value = "project_resource_id") String projectResourceId,
+        @JsonProperty(value = "name") String name, @JsonProperty(value = "version") String version) {
         this.projectResourceId = projectResourceId;
         this.name = name;
         this.version = version;

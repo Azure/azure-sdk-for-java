@@ -9,7 +9,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters to use when configuring Elasticsearch® as an Azure OpenAI chat extension.
+ * Parameters to use when configuring Elasticsearch® as an Azure OpenAI chat extension. The supported authentication
+ * types are KeyAndKeyId and EncodedAPIKey.
  */
 @Fluent
 public final class ElasticsearchChatExtensionParameters {
@@ -30,14 +31,14 @@ public final class ElasticsearchChatExtensionParameters {
      * The configured top number of documents to feature for the configured query.
      */
     @Generated
-    @JsonProperty(value = "topNDocuments")
+    @JsonProperty(value = "top_n_documents")
     private Integer topNDocuments;
 
     /*
      * Whether queries should be restricted to use of indexed data.
      */
     @Generated
-    @JsonProperty(value = "inScope")
+    @JsonProperty(value = "in_scope")
     private Boolean inScope;
 
     /*
@@ -54,7 +55,7 @@ public final class ElasticsearchChatExtensionParameters {
      * limit for it, and it counts against the overall token limit.
      */
     @Generated
-    @JsonProperty(value = "roleInformation")
+    @JsonProperty(value = "role_information")
     private String roleInformation;
 
     /*
@@ -68,28 +69,28 @@ public final class ElasticsearchChatExtensionParameters {
      * The index name of Elasticsearch®.
      */
     @Generated
-    @JsonProperty(value = "indexName")
+    @JsonProperty(value = "index_name")
     private String indexName;
 
     /*
      * The index field mapping options of Elasticsearch®.
      */
     @Generated
-    @JsonProperty(value = "fieldsMapping")
+    @JsonProperty(value = "fields_mapping")
     private ElasticsearchIndexFieldMappingOptions fieldsMapping;
 
     /*
      * The query type of Elasticsearch®.
      */
     @Generated
-    @JsonProperty(value = "queryType")
+    @JsonProperty(value = "query_type")
     private ElasticsearchQueryType queryType;
 
     /*
      * The embedding dependency for vector search.
      */
     @Generated
-    @JsonProperty(value = "embeddingDependency")
+    @JsonProperty(value = "embedding_dependency")
     private OnYourDataVectorizationSource embeddingDependency;
 
     /**
@@ -101,7 +102,7 @@ public final class ElasticsearchChatExtensionParameters {
     @Generated
     @JsonCreator
     public ElasticsearchChatExtensionParameters(@JsonProperty(value = "endpoint") String endpoint,
-        @JsonProperty(value = "indexName") String indexName) {
+        @JsonProperty(value = "index_name") String indexName) {
         this.endpoint = endpoint;
         this.indexName = indexName;
     }

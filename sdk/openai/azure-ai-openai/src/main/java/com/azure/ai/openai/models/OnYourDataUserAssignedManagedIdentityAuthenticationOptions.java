@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * The authentication options for Azure OpenAI On Your Data when using a user-assigned managed identity.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("UserAssignedManagedIdentity")
+@JsonTypeName("user_assigned_managed_identity")
 @Immutable
 public final class OnYourDataUserAssignedManagedIdentityAuthenticationOptions extends OnYourDataAuthenticationOptions {
 
@@ -22,7 +22,7 @@ public final class OnYourDataUserAssignedManagedIdentityAuthenticationOptions ex
      * The resource ID of the user-assigned managed identity to use for authentication.
      */
     @Generated
-    @JsonProperty(value = "managedIdentityResourceId")
+    @JsonProperty(value = "managed_identity_resource_id")
     private String managedIdentityResourceId;
 
     /**
@@ -33,7 +33,7 @@ public final class OnYourDataUserAssignedManagedIdentityAuthenticationOptions ex
     @Generated
     @JsonCreator
     public OnYourDataUserAssignedManagedIdentityAuthenticationOptions(
-        @JsonProperty(value = "managedIdentityResourceId") String managedIdentityResourceId) {
+        @JsonProperty(value = "managed_identity_resource_id") String managedIdentityResourceId) {
         this.managedIdentityResourceId = managedIdentityResourceId;
     }
 
