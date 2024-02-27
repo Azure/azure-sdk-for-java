@@ -272,12 +272,12 @@ class StorageAccountImpl
     }
 
     @Override
-    public IdentityType identityTypeForKeyVault() {
+    public IdentityType identityTypeForCustomerEncryptionKey() {
         return this.encryptionHelper.identityTypeForKeyVault(this.innerModel());
     }
 
     @Override
-    public String userAssignedIdentityIdForKeyVault() {
+    public String userAssignedIdentityIdForCustomerEncryptionKey() {
         return this.encryptionHelper.userAssignedIdentityIdForKeyVault(this.innerModel());
     }
 
@@ -465,7 +465,7 @@ class StorageAccountImpl
     }
 
     @Override
-    public StorageAccountImpl withEncryptionKeyFromStorage() {
+    public StorageAccountImpl withMicrosoftManagedEncryptionKey() {
         this.encryptionHelper.withEncryptionKeyFromStorage();
         return this;
     }

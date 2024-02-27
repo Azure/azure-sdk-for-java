@@ -234,18 +234,18 @@ public interface StorageAccount
      * @return type of the Managed Service Identity used to access KeyVault for encryption,
      *         null if {@link StorageAccount#encryptionKeySource()} is {@link StorageAccountEncryptionKeySource#MICROSOFT_STORAGE}
      */
-    IdentityType identityTypeForKeyVault();
+    IdentityType identityTypeForCustomerEncryptionKey();
 
     /**
      * User-assigned Managed Service Identity ID to access the KeyVault for encryption.
      * <p>This property only makes sense when the storage account is encrypted using Customer-managed keys, meaning
      * {@link StorageAccount#encryptionKeySource()} is {@link StorageAccountEncryptionKeySource#MICROSOFT_KEYVAULT} and
-     * {@link StorageAccount#identityTypeForKeyVault()} is {@link IdentityType#USER_ASSIGNED}. </p>
+     * {@link StorageAccount#identityTypeForCustomerEncryptionKey()} is {@link IdentityType#USER_ASSIGNED}. </p>
      * @return user-assigned identity ID used to access KeyVault for encryption,
      *         null if {@link StorageAccount#encryptionKeySource()} is {@link StorageAccountEncryptionKeySource#MICROSOFT_STORAGE} or
-     *         {@link StorageAccount#identityTypeForKeyVault()} is not {@link IdentityType#USER_ASSIGNED}
+     *         {@link StorageAccount#identityTypeForCustomerEncryptionKey()} is not {@link IdentityType#USER_ASSIGNED}
      */
-    String userAssignedIdentityIdForKeyVault();
+    String userAssignedIdentityIdForCustomerEncryptionKey();
 
     /** Container interface for all the definitions that need to be implemented. */
     interface Definition
@@ -505,7 +505,7 @@ public interface StorageAccount
             /**
              * Specifies an existing user assigned identity to be associated with the storage account.
              *
-             * @param identityId ID of the identity
+             * @param identityId the resource ID of the user-assigned Managed Service Identity
              * @return the next stage of the storage account definition
              */
             WithCreate withExistingUserAssignedManagedServiceIdentity(String identityId);
@@ -858,7 +858,7 @@ public interface StorageAccount
              *
              * @return the next stage of storage account update
              */
-            Update withEncryptionKeyFromStorage();
+            Update withMicrosoftManagedEncryptionKey();
         }
 
         /** A blob storage account update stage allowing access tier to be specified. */
