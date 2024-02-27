@@ -11,6 +11,8 @@ authorization:
   suffix: generated
 azure-kusto:
   service: kusto
+azurelargeinstance:
+  service: largeinstance
 cdn:
   suffix: generated
 compute:
