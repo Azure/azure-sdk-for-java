@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Uploads files to VMs (Linux, Windows). Corresponds to Packer file provisioner. */
+/**
+ * Uploads files to VMs (Linux, Windows). Corresponds to Packer file provisioner.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("File")
 @Fluent
@@ -34,14 +36,16 @@ public final class ImageTemplateFileCustomizer extends ImageTemplateCustomizer {
     @JsonProperty(value = "destination")
     private String destination;
 
-    /** Creates an instance of ImageTemplateFileCustomizer class. */
+    /**
+     * Creates an instance of ImageTemplateFileCustomizer class.
+     */
     public ImageTemplateFileCustomizer() {
     }
 
     /**
      * Get the sourceUri property: The URI of the file to be uploaded for customizing the VM. It can be a github link,
      * SAS URI for Azure Storage, etc.
-     *
+     * 
      * @return the sourceUri value.
      */
     public String sourceUri() {
@@ -51,7 +55,7 @@ public final class ImageTemplateFileCustomizer extends ImageTemplateCustomizer {
     /**
      * Set the sourceUri property: The URI of the file to be uploaded for customizing the VM. It can be a github link,
      * SAS URI for Azure Storage, etc.
-     *
+     * 
      * @param sourceUri the sourceUri value to set.
      * @return the ImageTemplateFileCustomizer object itself.
      */
@@ -62,7 +66,7 @@ public final class ImageTemplateFileCustomizer extends ImageTemplateCustomizer {
 
     /**
      * Get the sha256Checksum property: SHA256 checksum of the file provided in the sourceUri field above.
-     *
+     * 
      * @return the sha256Checksum value.
      */
     public String sha256Checksum() {
@@ -71,7 +75,7 @@ public final class ImageTemplateFileCustomizer extends ImageTemplateCustomizer {
 
     /**
      * Set the sha256Checksum property: SHA256 checksum of the file provided in the sourceUri field above.
-     *
+     * 
      * @param sha256Checksum the sha256Checksum value to set.
      * @return the ImageTemplateFileCustomizer object itself.
      */
@@ -83,7 +87,7 @@ public final class ImageTemplateFileCustomizer extends ImageTemplateCustomizer {
     /**
      * Get the destination property: The absolute path to a file (with nested directory structures already created)
      * where the file (from sourceUri) will be uploaded to in the VM.
-     *
+     * 
      * @return the destination value.
      */
     public String destination() {
@@ -93,7 +97,7 @@ public final class ImageTemplateFileCustomizer extends ImageTemplateCustomizer {
     /**
      * Set the destination property: The absolute path to a file (with nested directory structures already created)
      * where the file (from sourceUri) will be uploaded to in the VM.
-     *
+     * 
      * @param destination the destination value to set.
      * @return the ImageTemplateFileCustomizer object itself.
      */
@@ -102,7 +106,9 @@ public final class ImageTemplateFileCustomizer extends ImageTemplateCustomizer {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageTemplateFileCustomizer withName(String name) {
         super.withName(name);
@@ -111,7 +117,7 @@ public final class ImageTemplateFileCustomizer extends ImageTemplateCustomizer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

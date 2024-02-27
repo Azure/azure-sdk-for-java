@@ -42,187 +42,145 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in DedicatedHsmsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in DedicatedHsmsClient.
+ */
 public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final DedicatedHsmsService service;
 
-    /** The service client containing this operation class. */
-    private final AzureDedicatedHsmResourceProviderImpl client;
+    /**
+     * The service client containing this operation class.
+     */
+    private final AzureHsmResourceProviderImpl client;
 
     /**
      * Initializes an instance of DedicatedHsmsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
-    DedicatedHsmsClientImpl(AzureDedicatedHsmResourceProviderImpl client) {
-        this.service =
-            RestProxy.create(DedicatedHsmsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+    DedicatedHsmsClientImpl(AzureHsmResourceProviderImpl client) {
+        this.service
+            = RestProxy.create(DedicatedHsmsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for AzureDedicatedHsmResourceProviderDedicatedHsms to be used by the
-     * proxy service to perform REST calls.
+     * The interface defining all the services for AzureHsmResourceProviderDedicatedHsms to be used by the proxy
+     * service to perform REST calls.
      */
     @Host("{$host}")
-    @ServiceInterface(name = "AzureDedicatedHsmRes")
-    private interface DedicatedHsmsService {
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.HardwareSecurityModules/dedicatedHSMs/{name}")
-        @ExpectedResponses({200, 201})
+    @ServiceInterface(name = "AzureHsmResourceProv")
+    public interface DedicatedHsmsService {
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/{name}")
+        @ExpectedResponses({ 200, 201 })
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") DedicatedHsmInner parameters,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") DedicatedHsmInner parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.HardwareSecurityModules/dedicatedHSMs/{name}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/{name}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @BodyParam("application/json") DedicatedHsmPatchParameters parameters,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @BodyParam("application/json") DedicatedHsmPatchParameters parameters, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.HardwareSecurityModules/dedicatedHSMs/{name}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/{name}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.HardwareSecurityModules/dedicatedHSMs/{name}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/{name}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<DedicatedHsmInner>> getByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DedicatedHsmInner>> getByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("name") String name,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.HardwareSecurityModules/dedicatedHSMs")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<DedicatedHsmListResult>> listByResourceGroup(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("$top") Integer top,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DedicatedHsmListResult>> listByResourceGroup(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("$top") Integer top,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorException.class)
-        Mono<Response<DedicatedHsmListResult>> list(
-            @HostParam("$host") String endpoint,
-            @QueryParam("$top") Integer top,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<DedicatedHsmListResult>> list(@HostParam("$host") String endpoint,
+            @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers"
-                + "/Microsoft.HardwareSecurityModules/dedicatedHSMs/{name}/outboundNetworkDependenciesEndpoints")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HardwareSecurityModules/dedicatedHSMs/{name}/outboundNetworkDependenciesEndpoints")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<Response<OutboundEnvironmentEndpointCollection>> listOutboundNetworkDependenciesEndpoints(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("name") String name,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HostParam("$host") String endpoint, @PathParam("resourceGroupName") String resourceGroupName,
+            @PathParam("name") String name, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<Response<DedicatedHsmListResult>> listByResourceGroupNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<Response<DedicatedHsmListResult>> listBySubscriptionNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ErrorException.class)
         Mono<Response<OutboundEnvironmentEndpointCollection>> listOutboundNetworkDependenciesEndpointsNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Create or Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param name Name of the dedicated Hsm.
      * @param parameters Parameters to create or update the dedicated hsm.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return resource information with extended details along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String name, DedicatedHsmInner parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String name,
+        DedicatedHsmInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -232,36 +190,25 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, name,
+                apiVersion, this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Create or Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param name Name of the dedicated Hsm.
      * @param parameters Parameters to create or update the dedicated hsm.
@@ -269,17 +216,15 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return resource information with extended details along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String name, DedicatedHsmInner parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String name,
+        DedicatedHsmInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -289,33 +234,24 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, name, apiVersion,
+            this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Create or Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param name Name of the dedicated Hsm.
      * @param parameters Parameters to create or update the dedicated hsm.
@@ -325,22 +261,16 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @return the {@link PollerFlux} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DedicatedHsmInner>, DedicatedHsmInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String name, DedicatedHsmInner parameters) {
+    private PollerFlux<PollResult<DedicatedHsmInner>, DedicatedHsmInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String name, DedicatedHsmInner parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, name, parameters);
-        return this
-            .client
-            .<DedicatedHsmInner, DedicatedHsmInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DedicatedHsmInner.class,
-                DedicatedHsmInner.class,
-                this.client.getContext());
+        return this.client.<DedicatedHsmInner, DedicatedHsmInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DedicatedHsmInner.class, DedicatedHsmInner.class, this.client.getContext());
     }
 
     /**
      * Create or Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param name Name of the dedicated Hsm.
      * @param parameters Parameters to create or update the dedicated hsm.
@@ -351,20 +281,18 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @return the {@link PollerFlux} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DedicatedHsmInner>, DedicatedHsmInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String name, DedicatedHsmInner parameters, Context context) {
+    private PollerFlux<PollResult<DedicatedHsmInner>, DedicatedHsmInner>
+        beginCreateOrUpdateAsync(String resourceGroupName, String name, DedicatedHsmInner parameters, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, name, parameters, context);
-        return this
-            .client
-            .<DedicatedHsmInner, DedicatedHsmInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DedicatedHsmInner.class, DedicatedHsmInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, name, parameters, context);
+        return this.client.<DedicatedHsmInner, DedicatedHsmInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DedicatedHsmInner.class, DedicatedHsmInner.class, context);
     }
 
     /**
      * Create or Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param name Name of the dedicated Hsm.
      * @param parameters Parameters to create or update the dedicated hsm.
@@ -374,14 +302,14 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @return the {@link SyncPoller} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DedicatedHsmInner>, DedicatedHsmInner> beginCreateOrUpdate(
-        String resourceGroupName, String name, DedicatedHsmInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, name, parameters).getSyncPoller();
+    public SyncPoller<PollResult<DedicatedHsmInner>, DedicatedHsmInner> beginCreateOrUpdate(String resourceGroupName,
+        String name, DedicatedHsmInner parameters) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, name, parameters).getSyncPoller();
     }
 
     /**
      * Create or Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param name Name of the dedicated Hsm.
      * @param parameters Parameters to create or update the dedicated hsm.
@@ -392,14 +320,14 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @return the {@link SyncPoller} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DedicatedHsmInner>, DedicatedHsmInner> beginCreateOrUpdate(
-        String resourceGroupName, String name, DedicatedHsmInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, name, parameters, context).getSyncPoller();
+    public SyncPoller<PollResult<DedicatedHsmInner>, DedicatedHsmInner> beginCreateOrUpdate(String resourceGroupName,
+        String name, DedicatedHsmInner parameters, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, name, parameters, context).getSyncPoller();
     }
 
     /**
      * Create or Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param name Name of the dedicated Hsm.
      * @param parameters Parameters to create or update the dedicated hsm.
@@ -409,16 +337,15 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @return resource information with extended details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DedicatedHsmInner> createOrUpdateAsync(
-        String resourceGroupName, String name, DedicatedHsmInner parameters) {
-        return beginCreateOrUpdateAsync(resourceGroupName, name, parameters)
-            .last()
+    private Mono<DedicatedHsmInner> createOrUpdateAsync(String resourceGroupName, String name,
+        DedicatedHsmInner parameters) {
+        return beginCreateOrUpdateAsync(resourceGroupName, name, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param name Name of the dedicated Hsm.
      * @param parameters Parameters to create or update the dedicated hsm.
@@ -429,16 +356,15 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @return resource information with extended details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DedicatedHsmInner> createOrUpdateAsync(
-        String resourceGroupName, String name, DedicatedHsmInner parameters, Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, name, parameters, context)
-            .last()
+    private Mono<DedicatedHsmInner> createOrUpdateAsync(String resourceGroupName, String name,
+        DedicatedHsmInner parameters, Context context) {
+        return beginCreateOrUpdateAsync(resourceGroupName, name, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Create or Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param name Name of the dedicated Hsm.
      * @param parameters Parameters to create or update the dedicated hsm.
@@ -454,7 +380,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
 
     /**
      * Create or Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the resource belongs.
      * @param name Name of the dedicated Hsm.
      * @param parameters Parameters to create or update the dedicated hsm.
@@ -465,31 +391,29 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @return resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DedicatedHsmInner createOrUpdate(
-        String resourceGroupName, String name, DedicatedHsmInner parameters, Context context) {
+    public DedicatedHsmInner createOrUpdate(String resourceGroupName, String name, DedicatedHsmInner parameters,
+        Context context) {
         return createOrUpdateAsync(resourceGroupName, name, parameters, context).block();
     }
 
     /**
      * Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param name Name of the dedicated HSM.
      * @param parameters Parameters to patch the dedicated HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return resource information with extended details along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String name, DedicatedHsmPatchParameters parameters) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String name,
+        DedicatedHsmPatchParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -499,36 +423,25 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName, name, apiVersion,
+                this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param name Name of the dedicated HSM.
      * @param parameters Parameters to patch the dedicated HSM.
@@ -536,17 +449,15 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return resource information with extended details along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return resource information with extended details along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName, String name, DedicatedHsmPatchParameters parameters, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String name,
+        DedicatedHsmPatchParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -556,33 +467,24 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
         } else {
             parameters.validate();
         }
+        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, name, apiVersion,
+            this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param name Name of the dedicated HSM.
      * @param parameters Parameters to patch the dedicated HSM.
@@ -592,22 +494,16 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @return the {@link PollerFlux} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DedicatedHsmInner>, DedicatedHsmInner> beginUpdateAsync(
-        String resourceGroupName, String name, DedicatedHsmPatchParameters parameters) {
+    private PollerFlux<PollResult<DedicatedHsmInner>, DedicatedHsmInner> beginUpdateAsync(String resourceGroupName,
+        String name, DedicatedHsmPatchParameters parameters) {
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, name, parameters);
-        return this
-            .client
-            .<DedicatedHsmInner, DedicatedHsmInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                DedicatedHsmInner.class,
-                DedicatedHsmInner.class,
-                this.client.getContext());
+        return this.client.<DedicatedHsmInner, DedicatedHsmInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DedicatedHsmInner.class, DedicatedHsmInner.class, this.client.getContext());
     }
 
     /**
      * Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param name Name of the dedicated HSM.
      * @param parameters Parameters to patch the dedicated HSM.
@@ -618,19 +514,17 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @return the {@link PollerFlux} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<DedicatedHsmInner>, DedicatedHsmInner> beginUpdateAsync(
-        String resourceGroupName, String name, DedicatedHsmPatchParameters parameters, Context context) {
+    private PollerFlux<PollResult<DedicatedHsmInner>, DedicatedHsmInner> beginUpdateAsync(String resourceGroupName,
+        String name, DedicatedHsmPatchParameters parameters, Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, name, parameters, context);
-        return this
-            .client
-            .<DedicatedHsmInner, DedicatedHsmInner>getLroResult(
-                mono, this.client.getHttpPipeline(), DedicatedHsmInner.class, DedicatedHsmInner.class, context);
+        return this.client.<DedicatedHsmInner, DedicatedHsmInner>getLroResult(mono, this.client.getHttpPipeline(),
+            DedicatedHsmInner.class, DedicatedHsmInner.class, context);
     }
 
     /**
      * Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param name Name of the dedicated HSM.
      * @param parameters Parameters to patch the dedicated HSM.
@@ -640,14 +534,14 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @return the {@link SyncPoller} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DedicatedHsmInner>, DedicatedHsmInner> beginUpdate(
-        String resourceGroupName, String name, DedicatedHsmPatchParameters parameters) {
-        return beginUpdateAsync(resourceGroupName, name, parameters).getSyncPoller();
+    public SyncPoller<PollResult<DedicatedHsmInner>, DedicatedHsmInner> beginUpdate(String resourceGroupName,
+        String name, DedicatedHsmPatchParameters parameters) {
+        return this.beginUpdateAsync(resourceGroupName, name, parameters).getSyncPoller();
     }
 
     /**
      * Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param name Name of the dedicated HSM.
      * @param parameters Parameters to patch the dedicated HSM.
@@ -658,14 +552,14 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @return the {@link SyncPoller} for polling of resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<DedicatedHsmInner>, DedicatedHsmInner> beginUpdate(
-        String resourceGroupName, String name, DedicatedHsmPatchParameters parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, name, parameters, context).getSyncPoller();
+    public SyncPoller<PollResult<DedicatedHsmInner>, DedicatedHsmInner> beginUpdate(String resourceGroupName,
+        String name, DedicatedHsmPatchParameters parameters, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, name, parameters, context).getSyncPoller();
     }
 
     /**
      * Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param name Name of the dedicated HSM.
      * @param parameters Parameters to patch the dedicated HSM.
@@ -675,16 +569,15 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @return resource information with extended details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DedicatedHsmInner> updateAsync(
-        String resourceGroupName, String name, DedicatedHsmPatchParameters parameters) {
-        return beginUpdateAsync(resourceGroupName, name, parameters)
-            .last()
+    private Mono<DedicatedHsmInner> updateAsync(String resourceGroupName, String name,
+        DedicatedHsmPatchParameters parameters) {
+        return beginUpdateAsync(resourceGroupName, name, parameters).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param name Name of the dedicated HSM.
      * @param parameters Parameters to patch the dedicated HSM.
@@ -695,16 +588,15 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @return resource information with extended details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<DedicatedHsmInner> updateAsync(
-        String resourceGroupName, String name, DedicatedHsmPatchParameters parameters, Context context) {
-        return beginUpdateAsync(resourceGroupName, name, parameters, context)
-            .last()
+    private Mono<DedicatedHsmInner> updateAsync(String resourceGroupName, String name,
+        DedicatedHsmPatchParameters parameters, Context context) {
+        return beginUpdateAsync(resourceGroupName, name, parameters, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param name Name of the dedicated HSM.
      * @param parameters Parameters to patch the dedicated HSM.
@@ -720,7 +612,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
 
     /**
      * Update a dedicated HSM in the specified subscription.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the server belongs.
      * @param name Name of the dedicated HSM.
      * @param parameters Parameters to patch the dedicated HSM.
@@ -731,14 +623,14 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @return resource information with extended details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public DedicatedHsmInner update(
-        String resourceGroupName, String name, DedicatedHsmPatchParameters parameters, Context context) {
+    public DedicatedHsmInner update(String resourceGroupName, String name, DedicatedHsmPatchParameters parameters,
+        Context context) {
         return updateAsync(resourceGroupName, name, parameters, context).block();
     }
 
     /**
      * Deletes the specified Azure Dedicated HSM.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @param name The name of the dedicated HSM to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -749,10 +641,8 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -762,30 +652,20 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), resourceGroupName, name, apiVersion,
+                this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes the specified Azure Dedicated HSM.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @param name The name of the dedicated HSM to delete.
      * @param context The context to associate with this operation.
@@ -795,13 +675,11 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String name, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String name,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -811,27 +689,19 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, name, apiVersion,
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Deletes the specified Azure Dedicated HSM.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @param name The name of the dedicated HSM to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -842,15 +712,13 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes the specified Azure Dedicated HSM.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @param name The name of the dedicated HSM to delete.
      * @param context The context to associate with this operation.
@@ -860,18 +728,17 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String name, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String name,
+        Context context) {
         context = this.client.mergeContext(context);
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, name, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes the specified Azure Dedicated HSM.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @param name The name of the dedicated HSM to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -881,12 +748,12 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name) {
-        return beginDeleteAsync(resourceGroupName, name).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, name).getSyncPoller();
     }
 
     /**
      * Deletes the specified Azure Dedicated HSM.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @param name The name of the dedicated HSM to delete.
      * @param context The context to associate with this operation.
@@ -897,12 +764,12 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String name, Context context) {
-        return beginDeleteAsync(resourceGroupName, name, context).getSyncPoller();
+        return this.beginDeleteAsync(resourceGroupName, name, context).getSyncPoller();
     }
 
     /**
      * Deletes the specified Azure Dedicated HSM.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @param name The name of the dedicated HSM to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -917,7 +784,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
 
     /**
      * Deletes the specified Azure Dedicated HSM.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @param name The name of the dedicated HSM to delete.
      * @param context The context to associate with this operation.
@@ -933,7 +800,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
 
     /**
      * Deletes the specified Azure Dedicated HSM.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @param name The name of the dedicated HSM to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -947,7 +814,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
 
     /**
      * Deletes the specified Azure Dedicated HSM.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @param name The name of the dedicated HSM to delete.
      * @param context The context to associate with this operation.
@@ -962,7 +829,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
 
     /**
      * Gets the specified Azure dedicated HSM.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
      * @param name The name of the dedicated HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -971,13 +838,11 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @return the specified Azure dedicated HSM along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DedicatedHsmInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String name) {
+    private Mono<Response<DedicatedHsmInner>> getByResourceGroupWithResponseAsync(String resourceGroupName,
+        String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -987,30 +852,20 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, name,
+                apiVersion, this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the specified Azure dedicated HSM.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
      * @param name The name of the dedicated HSM.
      * @param context The context to associate with this operation.
@@ -1020,13 +875,11 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @return the specified Azure dedicated HSM along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<DedicatedHsmInner>> getByResourceGroupWithResponseAsync(
-        String resourceGroupName, String name, Context context) {
+    private Mono<Response<DedicatedHsmInner>> getByResourceGroupWithResponseAsync(String resourceGroupName, String name,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1036,27 +889,19 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getByResourceGroup(this.client.getEndpoint(), resourceGroupName, name, apiVersion,
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets the specified Azure dedicated HSM.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
      * @param name The name of the dedicated HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1067,34 +912,12 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<DedicatedHsmInner> getByResourceGroupAsync(String resourceGroupName, String name) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, name)
-            .flatMap(
-                (Response<DedicatedHsmInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the specified Azure dedicated HSM.
-     *
-     * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
-     * @param name The name of the dedicated HSM.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ErrorException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified Azure dedicated HSM.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public DedicatedHsmInner getByResourceGroup(String resourceGroupName, String name) {
-        return getByResourceGroupAsync(resourceGroupName, name).block();
-    }
-
-    /**
-     * Gets the specified Azure dedicated HSM.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
      * @param name The name of the dedicated HSM.
      * @param context The context to associate with this operation.
@@ -1104,15 +927,30 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @return the specified Azure dedicated HSM along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<DedicatedHsmInner> getByResourceGroupWithResponse(
-        String resourceGroupName, String name, Context context) {
+    public Response<DedicatedHsmInner> getByResourceGroupWithResponse(String resourceGroupName, String name,
+        Context context) {
         return getByResourceGroupWithResponseAsync(resourceGroupName, name, context).block();
+    }
+
+    /**
+     * Gets the specified Azure dedicated HSM.
+     * 
+     * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
+     * @param name The name of the dedicated HSM.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ErrorException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Azure dedicated HSM.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public DedicatedHsmInner getByResourceGroup(String resourceGroupName, String name) {
+        return getByResourceGroupWithResponse(resourceGroupName, name, Context.NONE).getValue();
     }
 
     /**
      * The List operation gets information about the dedicated hsms associated with the subscription and within the
      * specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @param top Maximum number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1121,53 +959,34 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @return list of dedicated HSMs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DedicatedHsmInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Integer top) {
+    private Mono<PagedResponse<DedicatedHsmInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByResourceGroup(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            top,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<DedicatedHsmInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByResourceGroup(this.client.getEndpoint(), resourceGroupName, top,
+                apiVersion, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<DedicatedHsmInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The List operation gets information about the dedicated hsms associated with the subscription and within the
      * specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
@@ -1177,50 +996,34 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @return list of dedicated HSMs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DedicatedHsmInner>> listByResourceGroupSinglePageAsync(
-        String resourceGroupName, Integer top, Context context) {
+    private Mono<PagedResponse<DedicatedHsmInner>> listByResourceGroupSinglePageAsync(String resourceGroupName,
+        Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByResourceGroup(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                top,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByResourceGroup(this.client.getEndpoint(), resourceGroupName, top, apiVersion,
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * The List operation gets information about the dedicated hsms associated with the subscription and within the
      * specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @param top Maximum number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1230,15 +1033,14 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DedicatedHsmInner> listByResourceGroupAsync(String resourceGroupName, Integer top) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, top),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, top),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * The List operation gets information about the dedicated hsms associated with the subscription and within the
      * specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1248,15 +1050,14 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DedicatedHsmInner> listByResourceGroupAsync(String resourceGroupName) {
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, top),
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, top),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink));
     }
 
     /**
      * The List operation gets information about the dedicated hsms associated with the subscription and within the
      * specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
@@ -1266,17 +1067,16 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @return list of dedicated HSMs as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<DedicatedHsmInner> listByResourceGroupAsync(
-        String resourceGroupName, Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listByResourceGroupSinglePageAsync(resourceGroupName, top, context),
+    private PagedFlux<DedicatedHsmInner> listByResourceGroupAsync(String resourceGroupName, Integer top,
+        Context context) {
+        return new PagedFlux<>(() -> listByResourceGroupSinglePageAsync(resourceGroupName, top, context),
             nextLink -> listByResourceGroupNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * The List operation gets information about the dedicated hsms associated with the subscription and within the
      * specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1292,7 +1092,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     /**
      * The List operation gets information about the dedicated hsms associated with the subscription and within the
      * specified resource group.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated HSM belongs.
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
@@ -1302,14 +1102,14 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @return list of dedicated HSMs as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<DedicatedHsmInner> listByResourceGroup(
-        String resourceGroupName, Integer top, Context context) {
+    public PagedIterable<DedicatedHsmInner> listByResourceGroup(String resourceGroupName, Integer top,
+        Context context) {
         return new PagedIterable<>(listByResourceGroupAsync(resourceGroupName, top, context));
     }
 
     /**
      * The List operation gets information about the dedicated HSMs associated with the subscription.
-     *
+     * 
      * @param top Maximum number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1319,44 +1119,26 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DedicatedHsmInner>> listSinglePageAsync(Integer top) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            top,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<DedicatedHsmInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.list(this.client.getEndpoint(), top, apiVersion,
+                this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<DedicatedHsmInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * The List operation gets information about the dedicated HSMs associated with the subscription.
-     *
+     * 
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1367,41 +1149,25 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<DedicatedHsmInner>> listSinglePageAsync(Integer top, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                top,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .list(this.client.getEndpoint(), top, apiVersion, this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * The List operation gets information about the dedicated HSMs associated with the subscription.
-     *
+     * 
      * @param top Maximum number of results to return.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1410,13 +1176,13 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DedicatedHsmInner> listAsync(Integer top) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(top), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(top),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * The List operation gets information about the dedicated HSMs associated with the subscription.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of dedicated HSMs as paginated response with {@link PagedFlux}.
@@ -1424,13 +1190,13 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DedicatedHsmInner> listAsync() {
         final Integer top = null;
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(top), nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
+        return new PagedFlux<>(() -> listSinglePageAsync(top),
+            nextLink -> listBySubscriptionNextSinglePageAsync(nextLink));
     }
 
     /**
      * The List operation gets information about the dedicated HSMs associated with the subscription.
-     *
+     * 
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1440,14 +1206,13 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<DedicatedHsmInner> listAsync(Integer top, Context context) {
-        return new PagedFlux<>(
-            () -> listSinglePageAsync(top, context),
+        return new PagedFlux<>(() -> listSinglePageAsync(top, context),
             nextLink -> listBySubscriptionNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * The List operation gets information about the dedicated HSMs associated with the subscription.
-     *
+     * 
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of dedicated HSMs as paginated response with {@link PagedIterable}.
@@ -1460,7 +1225,7 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
 
     /**
      * The List operation gets information about the dedicated HSMs associated with the subscription.
-     *
+     * 
      * @param top Maximum number of results to return.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -1475,24 +1240,25 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
+     * resource.
+     * 
+     * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
      * resource. The operation returns properties of each egress endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
      * @param name The name of the dedicated HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated
-     *     hsm resource along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * hsm resource along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundEnvironmentEndpointInner>>
         listOutboundNetworkDependenciesEndpointsSinglePageAsync(String resourceGroupName, String name) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1502,40 +1268,26 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listOutboundNetworkDependenciesEndpoints(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            name,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<OutboundEnvironmentEndpointInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listOutboundNetworkDependenciesEndpoints(this.client.getEndpoint(),
+                resourceGroupName, name, apiVersion, this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<OutboundEnvironmentEndpointInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
+     * resource.
+     * 
+     * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
      * resource. The operation returns properties of each egress endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
      * @param name The name of the dedicated HSM.
      * @param context The context to associate with this operation.
@@ -1543,17 +1295,15 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated
-     *     hsm resource along with {@link PagedResponse} on successful completion of {@link Mono}.
+     * hsm resource along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundEnvironmentEndpointInner>>
-        listOutboundNetworkDependenciesEndpointsSinglePageAsync(
-            String resourceGroupName, String name, Context context) {
+        listOutboundNetworkDependenciesEndpointsSinglePageAsync(String resourceGroupName, String name,
+            Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1563,57 +1313,48 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
             return Mono.error(new IllegalArgumentException("Parameter name is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
+        final String apiVersion = "2021-11-30";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listOutboundNetworkDependenciesEndpoints(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                name,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listOutboundNetworkDependenciesEndpoints(this.client.getEndpoint(), resourceGroupName, name, apiVersion,
+                this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
+     * resource.
+     * 
+     * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
      * resource. The operation returns properties of each egress endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
      * @param name The name of the dedicated HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated
-     *     hsm resource as paginated response with {@link PagedFlux}.
+     * hsm resource as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpointsAsync(
-        String resourceGroupName, String name) {
-        return new PagedFlux<>(
-            () -> listOutboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName, name),
+    private PagedFlux<OutboundEnvironmentEndpointInner>
+        listOutboundNetworkDependenciesEndpointsAsync(String resourceGroupName, String name) {
+        return new PagedFlux<>(() -> listOutboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName, name),
             nextLink -> listOutboundNetworkDependenciesEndpointsNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
+     * resource.
+     * 
+     * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
      * resource. The operation returns properties of each egress endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
      * @param name The name of the dedicated HSM.
      * @param context The context to associate with this operation.
@@ -1621,11 +1362,11 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated
-     *     hsm resource as paginated response with {@link PagedFlux}.
+     * hsm resource as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpointsAsync(
-        String resourceGroupName, String name, Context context) {
+    private PagedFlux<OutboundEnvironmentEndpointInner>
+        listOutboundNetworkDependenciesEndpointsAsync(String resourceGroupName, String name, Context context) {
         return new PagedFlux<>(
             () -> listOutboundNetworkDependenciesEndpointsSinglePageAsync(resourceGroupName, name, context),
             nextLink -> listOutboundNetworkDependenciesEndpointsNextSinglePageAsync(nextLink, context));
@@ -1633,26 +1374,32 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
+     * resource.
+     * 
+     * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
      * resource. The operation returns properties of each egress endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
      * @param name The name of the dedicated HSM.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated
-     *     hsm resource as paginated response with {@link PagedIterable}.
+     * hsm resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String name) {
+    public PagedIterable<OutboundEnvironmentEndpointInner>
+        listOutboundNetworkDependenciesEndpoints(String resourceGroupName, String name) {
         return new PagedIterable<>(listOutboundNetworkDependenciesEndpointsAsync(resourceGroupName, name));
     }
 
     /**
      * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
+     * resource.
+     * 
+     * Gets a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated hsm
      * resource. The operation returns properties of each egress endpoint.
-     *
+     * 
      * @param resourceGroupName The name of the Resource Group to which the dedicated hsm belongs.
      * @param name The name of the dedicated HSM.
      * @param context The context to associate with this operation.
@@ -1660,18 +1407,20 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of egress endpoints (network endpoints of all outbound dependencies) in the specified dedicated
-     *     hsm resource as paginated response with {@link PagedIterable}.
+     * hsm resource as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<OutboundEnvironmentEndpointInner> listOutboundNetworkDependenciesEndpoints(
-        String resourceGroupName, String name, Context context) {
+    public PagedIterable<OutboundEnvironmentEndpointInner>
+        listOutboundNetworkDependenciesEndpoints(String resourceGroupName, String name, Context context) {
         return new PagedIterable<>(listOutboundNetworkDependenciesEndpointsAsync(resourceGroupName, name, context));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1683,31 +1432,24 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DedicatedHsmInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DedicatedHsmInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1715,36 +1457,28 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @return list of dedicated HSMs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DedicatedHsmInner>> listByResourceGroupNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DedicatedHsmInner>> listByResourceGroupNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByResourceGroupNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1756,31 +1490,24 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(
                 context -> service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<DedicatedHsmInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<DedicatedHsmInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
@@ -1788,41 +1515,33 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
      * @return list of dedicated HSMs along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<DedicatedHsmInner>> listBySubscriptionNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<DedicatedHsmInner>> listBySubscriptionNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listBySubscriptionNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of OutboundEnvironmentEndpoint along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundEnvironmentEndpointInner>>
@@ -1831,40 +1550,30 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listOutboundNetworkDependenciesEndpointsNext(
-                            nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<OutboundEnvironmentEndpointInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listOutboundNetworkDependenciesEndpointsNext(nextLink,
+                this.client.getEndpoint(), accept, context))
+            .<PagedResponse<OutboundEnvironmentEndpointInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of OutboundEnvironmentEndpoint along with {@link PagedResponse} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<OutboundEnvironmentEndpointInner>>
@@ -1873,23 +1582,14 @@ public final class DedicatedHsmsClientImpl implements DedicatedHsmsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
             .listOutboundNetworkDependenciesEndpointsNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

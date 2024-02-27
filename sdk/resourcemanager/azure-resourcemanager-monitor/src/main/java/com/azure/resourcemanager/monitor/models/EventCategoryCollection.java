@@ -22,13 +22,15 @@ public final class EventCategoryCollection {
     @JsonProperty(value = "value", required = true)
     private List<LocalizableStringInner> value;
 
-    /** Creates an instance of EventCategoryCollection class. */
+    /**
+     * Creates an instance of EventCategoryCollection class.
+     */
     public EventCategoryCollection() {
     }
 
     /**
      * Get the value property: the list that includes the Azure event categories.
-     *
+     * 
      * @return the value value.
      */
     public List<LocalizableStringInner> value() {
@@ -37,7 +39,7 @@ public final class EventCategoryCollection {
 
     /**
      * Set the value property: the list that includes the Azure event categories.
-     *
+     * 
      * @param value the value value to set.
      * @return the EventCategoryCollection object itself.
      */
@@ -48,14 +50,13 @@ public final class EventCategoryCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model EventCategoryCollection"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model EventCategoryCollection"));
         } else {
             value().forEach(e -> e.validate());
         }

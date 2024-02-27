@@ -20,12 +20,18 @@ public final class JdkHttpClientProxySelector extends ProxySelector {
     private final SocketAddress proxyAddress;
     private final Pattern nonProxyHostsPattern;
 
+    /**
+     * Creates a new JdkHttpClientProxySelector.
+     *
+     * @param proxyType The type of proxy to use.
+     * @param proxyAddress The address of the proxy.
+     * @param nonProxyHosts The hosts that should not be proxied.
+     */
     public JdkHttpClientProxySelector(Proxy.Type proxyType, SocketAddress proxyAddress, String nonProxyHosts) {
         this.proxyType = proxyType;
         this.proxyAddress = proxyAddress;
-        this.nonProxyHostsPattern = (nonProxyHosts == null)
-            ? null
-            : Pattern.compile(nonProxyHosts, Pattern.CASE_INSENSITIVE);
+        this.nonProxyHostsPattern
+            = (nonProxyHosts == null) ? null : Pattern.compile(nonProxyHosts, Pattern.CASE_INSENSITIVE);
     }
 
     @Override

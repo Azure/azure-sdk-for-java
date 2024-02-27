@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupStoreDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupStoreDetails model =
-            BinaryData.fromString("{\"sasUriList\":[\"qxolzdahzx\"]}").toObject(BackupStoreDetails.class);
+        BackupStoreDetails model
+            = BinaryData.fromString("{\"sasUriList\":[\"qxolzdahzx\"]}").toObject(BackupStoreDetails.class);
         Assertions.assertEquals("qxolzdahzx", model.sasUriList().get(0));
     }
 

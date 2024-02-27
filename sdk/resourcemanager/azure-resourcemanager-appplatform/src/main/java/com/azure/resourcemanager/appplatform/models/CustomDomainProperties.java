@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Custom domain of app resource payload. */
+/**
+ * Custom domain of app resource payload.
+ */
 @Fluent
 public final class CustomDomainProperties {
     /*
@@ -35,8 +37,14 @@ public final class CustomDomainProperties {
     private CustomDomainResourceProvisioningState provisioningState;
 
     /**
+     * Creates an instance of CustomDomainProperties class.
+     */
+    public CustomDomainProperties() {
+    }
+
+    /**
      * Get the thumbprint property: The thumbprint of bound certificate.
-     *
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -45,7 +53,7 @@ public final class CustomDomainProperties {
 
     /**
      * Set the thumbprint property: The thumbprint of bound certificate.
-     *
+     * 
      * @param thumbprint the thumbprint value to set.
      * @return the CustomDomainProperties object itself.
      */
@@ -56,7 +64,7 @@ public final class CustomDomainProperties {
 
     /**
      * Get the appName property: The app name of domain.
-     *
+     * 
      * @return the appName value.
      */
     public String appName() {
@@ -65,7 +73,7 @@ public final class CustomDomainProperties {
 
     /**
      * Get the certName property: The bound certificate name of domain.
-     *
+     * 
      * @return the certName value.
      */
     public String certName() {
@@ -74,7 +82,7 @@ public final class CustomDomainProperties {
 
     /**
      * Set the certName property: The bound certificate name of domain.
-     *
+     * 
      * @param certName the certName value to set.
      * @return the CustomDomainProperties object itself.
      */
@@ -85,7 +93,7 @@ public final class CustomDomainProperties {
 
     /**
      * Get the provisioningState property: Provisioning state of the Domain.
-     *
+     * 
      * @return the provisioningState value.
      */
     public CustomDomainResourceProvisioningState provisioningState() {
@@ -94,7 +102,7 @@ public final class CustomDomainProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

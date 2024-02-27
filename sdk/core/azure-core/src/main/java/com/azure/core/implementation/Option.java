@@ -12,7 +12,9 @@ import java.util.Objects;
  * The Option type to describe tri-state. Every Option instance is in one of the three states: a state representing a
  * non-null-value, null-value, or no-value.
  *
- * <p><strong>Code sample</strong></p>
+ * <p>
+ * <strong>Code sample</strong>
+ * </p>
  * <!-- src_embed com.azure.core.util.Option -->
  * <pre>
  * &#47;&#47; An Option with non-null-value.
@@ -158,7 +160,6 @@ public final class Option<T> {
         }
         return Objects.hashCode(value);
     }
-
 
     private Option() {
         this.isInitialized = false;

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerservice.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Settings for upgrading a cluster. */
+/**
+ * Settings for upgrading a cluster.
+ */
 @Fluent
 public final class ClusterUpgradeSettings {
     /*
@@ -16,13 +18,15 @@ public final class ClusterUpgradeSettings {
     @JsonProperty(value = "overrideSettings")
     private UpgradeOverrideSettings overrideSettings;
 
-    /** Creates an instance of ClusterUpgradeSettings class. */
+    /**
+     * Creates an instance of ClusterUpgradeSettings class.
+     */
     public ClusterUpgradeSettings() {
     }
 
     /**
      * Get the overrideSettings property: Settings for overrides.
-     *
+     * 
      * @return the overrideSettings value.
      */
     public UpgradeOverrideSettings overrideSettings() {
@@ -31,7 +35,7 @@ public final class ClusterUpgradeSettings {
 
     /**
      * Set the overrideSettings property: Settings for overrides.
-     *
+     * 
      * @param overrideSettings the overrideSettings value to set.
      * @return the ClusterUpgradeSettings object itself.
      */
@@ -42,7 +46,7 @@ public final class ClusterUpgradeSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

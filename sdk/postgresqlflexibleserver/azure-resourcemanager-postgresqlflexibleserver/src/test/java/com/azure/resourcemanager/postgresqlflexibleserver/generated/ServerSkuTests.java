@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ServerSkuTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ServerSku model =
-            BinaryData.fromString("{\"name\":\"m\",\"tier\":\"GeneralPurpose\"}").toObject(ServerSku.class);
+        ServerSku model
+            = BinaryData.fromString("{\"name\":\"m\",\"tier\":\"GeneralPurpose\"}").toObject(ServerSku.class);
         Assertions.assertEquals("m", model.name());
         Assertions.assertEquals(SkuTier.GENERAL_PURPOSE, model.tier());
     }

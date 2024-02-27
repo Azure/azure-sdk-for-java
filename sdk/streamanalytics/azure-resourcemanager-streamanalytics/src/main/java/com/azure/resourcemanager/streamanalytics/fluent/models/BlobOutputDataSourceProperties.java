@@ -5,74 +5,115 @@
 package com.azure.resourcemanager.streamanalytics.fluent.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.streamanalytics.models.AuthenticationMode;
 import com.azure.resourcemanager.streamanalytics.models.BlobDataSourceProperties;
+import com.azure.resourcemanager.streamanalytics.models.BlobWriteMode;
 import com.azure.resourcemanager.streamanalytics.models.StorageAccount;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The properties that are associated with a blob output. */
+/**
+ * The properties that are associated with a blob output.
+ */
 @Fluent
 public final class BlobOutputDataSourceProperties extends BlobDataSourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(BlobOutputDataSourceProperties.class);
+    /*
+     * Blob path prefix.
+     */
+    @JsonProperty(value = "blobPathPrefix")
+    private String blobPathPrefix;
 
     /*
-     * Authentication Mode.
+     * Blob write mode.
      */
-    @JsonProperty(value = "authenticationMode")
-    private AuthenticationMode authenticationMode;
+    @JsonProperty(value = "blobWriteMode")
+    private BlobWriteMode blobWriteMode;
 
     /**
-     * Get the authenticationMode property: Authentication Mode.
-     *
-     * @return the authenticationMode value.
+     * Creates an instance of BlobOutputDataSourceProperties class.
      */
-    public AuthenticationMode authenticationMode() {
-        return this.authenticationMode;
+    public BlobOutputDataSourceProperties() {
     }
 
     /**
-     * Set the authenticationMode property: Authentication Mode.
-     *
-     * @param authenticationMode the authenticationMode value to set.
+     * Get the blobPathPrefix property: Blob path prefix.
+     * 
+     * @return the blobPathPrefix value.
+     */
+    public String blobPathPrefix() {
+        return this.blobPathPrefix;
+    }
+
+    /**
+     * Set the blobPathPrefix property: Blob path prefix.
+     * 
+     * @param blobPathPrefix the blobPathPrefix value to set.
      * @return the BlobOutputDataSourceProperties object itself.
      */
-    public BlobOutputDataSourceProperties withAuthenticationMode(AuthenticationMode authenticationMode) {
-        this.authenticationMode = authenticationMode;
+    public BlobOutputDataSourceProperties withBlobPathPrefix(String blobPathPrefix) {
+        this.blobPathPrefix = blobPathPrefix;
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the blobWriteMode property: Blob write mode.
+     * 
+     * @return the blobWriteMode value.
+     */
+    public BlobWriteMode blobWriteMode() {
+        return this.blobWriteMode;
+    }
+
+    /**
+     * Set the blobWriteMode property: Blob write mode.
+     * 
+     * @param blobWriteMode the blobWriteMode value to set.
+     * @return the BlobOutputDataSourceProperties object itself.
+     */
+    public BlobOutputDataSourceProperties withBlobWriteMode(BlobWriteMode blobWriteMode) {
+        this.blobWriteMode = blobWriteMode;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BlobOutputDataSourceProperties withStorageAccounts(List<StorageAccount> storageAccounts) {
         super.withStorageAccounts(storageAccounts);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BlobOutputDataSourceProperties withContainer(String container) {
         super.withContainer(container);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BlobOutputDataSourceProperties withPathPattern(String pathPattern) {
         super.withPathPattern(pathPattern);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BlobOutputDataSourceProperties withDateFormat(String dateFormat) {
         super.withDateFormat(dateFormat);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BlobOutputDataSourceProperties withTimeFormat(String timeFormat) {
         super.withTimeFormat(timeFormat);
@@ -80,8 +121,17 @@ public final class BlobOutputDataSourceProperties extends BlobDataSourceProperti
     }
 
     /**
+     * {@inheritDoc}
+     */
+    @Override
+    public BlobOutputDataSourceProperties withAuthenticationMode(AuthenticationMode authenticationMode) {
+        super.withAuthenticationMode(authenticationMode);
+        return this;
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

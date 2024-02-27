@@ -27,6 +27,9 @@ import static com.azure.core.amqp.implementation.ExceptionUtil.amqpResponseCodeT
 import static com.azure.core.amqp.implementation.RequestResponseUtils.getStatusCode;
 import static com.azure.core.amqp.implementation.RequestResponseUtils.getStatusDescription;
 
+/**
+ * Channel responsible for managing the lifecycle of an AMQP CBS node.
+ */
 public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
     static final String PUT_TOKEN_TYPE = "type";
     static final String PUT_TOKEN_AUDIENCE = "name";
@@ -39,6 +42,15 @@ public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
     private final CbsAuthorizationType authorizationType;
     private final AmqpRetryOptions retryOptions;
 
+    /**
+     * Creates a new instance of {@link ClaimsBasedSecurityChannel}.
+     *
+     * @param responseChannelMono The mono that completes with the {@link RequestResponseChannel} to send the CBS node
+     * requests.
+     * @param tokenCredential The credential to authorize with the CBS node.
+     * @param authorizationType The type of authorization to use.
+     * @param retryOptions The retry options to use when sending requests to the CBS node.
+     */
     public ClaimsBasedSecurityChannel(Mono<RequestResponseChannel> responseChannelMono, TokenCredential tokenCredential,
         CbsAuthorizationType authorizationType, AmqpRetryOptions retryOptions) {
 
@@ -50,37 +62,36 @@ public class ClaimsBasedSecurityChannel implements ClaimsBasedSecurityNode {
 
     @Override
     public Mono<OffsetDateTime> authorize(String tokenAudience, String scopes) {
-        return cbsChannelMono.flatMap(channel ->
-            credential.getToken(new TokenRequestContext().addScopes(scopes))
-                .flatMap(accessToken -> {
-                    final Message request = Proton.message();
-                    final Map<String, Object> properties = new HashMap<>();
-                    properties.put(PUT_TOKEN_OPERATION, PUT_TOKEN_OPERATION_VALUE);
-                    properties.put(PUT_TOKEN_EXPIRY, Date.from(accessToken.getExpiresAt().toInstant()));
-                    properties.put(PUT_TOKEN_TYPE, authorizationType.toString());
-                    properties.put(PUT_TOKEN_AUDIENCE, tokenAudience);
+        return cbsChannelMono.flatMap(
+            channel -> credential.getToken(new TokenRequestContext().addScopes(scopes)).flatMap(accessToken -> {
+                final Message request = Proton.message();
+                final Map<String, Object> properties = new HashMap<>();
+                properties.put(PUT_TOKEN_OPERATION, PUT_TOKEN_OPERATION_VALUE);
+                properties.put(PUT_TOKEN_EXPIRY, Date.from(accessToken.getExpiresAt().toInstant()));
+                properties.put(PUT_TOKEN_TYPE, authorizationType.toString());
+                properties.put(PUT_TOKEN_AUDIENCE, tokenAudience);
 
-                    final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
-                    request.setApplicationProperties(applicationProperties);
-                    request.setBody(new AmqpValue(accessToken.getToken()));
+                final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
+                request.setApplicationProperties(applicationProperties);
+                request.setBody(new AmqpValue(accessToken.getToken()));
 
-                    return channel.sendWithAck(request)
-                        .handle((Message message, SynchronousSink<OffsetDateTime> sink) -> {
-                            if (RequestResponseUtils.isSuccessful(message)) {
-                                sink.next(accessToken.getExpiresAt());
-                            } else {
-                                final String description = getStatusDescription(message);
-                                final AmqpResponseCode statusCode = getStatusCode(message);
-                                final Exception error = amqpResponseCodeToException(
-                                    statusCode.getValue(), description, channel.getErrorContext());
+                return channel.sendWithAck(request).handle((Message message, SynchronousSink<OffsetDateTime> sink) -> {
+                    if (RequestResponseUtils.isSuccessful(message)) {
+                        sink.next(accessToken.getExpiresAt());
+                    } else {
+                        final String description = getStatusDescription(message);
+                        final AmqpResponseCode statusCode = getStatusCode(message);
+                        final Exception error = amqpResponseCodeToException(statusCode.getValue(), description,
+                            channel.getErrorContext());
 
-                                sink.error(error);
-                            }
-                        })
-                        .switchIfEmpty(Mono.error(() -> new AmqpException(true, String.format(
-                            "No response received from CBS node. tokenAudience: '%s'. scopes: '%s'",
-                            tokenAudience, scopes), channel.getErrorContext())));
-                }));
+                        sink.error(error);
+                    }
+                })
+                    .switchIfEmpty(Mono.error(() -> new AmqpException(true,
+                        String.format("No response received from CBS node. tokenAudience: '%s'. scopes: '%s'",
+                            tokenAudience, scopes),
+                        channel.getErrorContext())));
+            }));
     }
 
     @Override

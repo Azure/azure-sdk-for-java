@@ -9,23 +9,27 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Recovery plan provider specific details. */
+/**
+ * Recovery plan provider specific details.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "instanceType",
     defaultImpl = RecoveryPlanProviderSpecificDetails.class)
 @JsonTypeName("RecoveryPlanProviderSpecificDetails")
-@JsonSubTypes({@JsonSubTypes.Type(name = "A2A", value = RecoveryPlanA2ADetails.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "A2A", value = RecoveryPlanA2ADetails.class) })
 @Immutable
 public class RecoveryPlanProviderSpecificDetails {
-    /** Creates an instance of RecoveryPlanProviderSpecificDetails class. */
+    /**
+     * Creates an instance of RecoveryPlanProviderSpecificDetails class.
+     */
     public RecoveryPlanProviderSpecificDetails() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

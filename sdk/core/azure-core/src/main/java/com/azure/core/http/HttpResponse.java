@@ -7,6 +7,7 @@ import com.azure.core.implementation.http.BufferedHttpResponse;
 import com.azure.core.implementation.util.BinaryDataHelper;
 import com.azure.core.implementation.util.FluxByteBufferContent;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.FluxUtil;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -22,7 +23,21 @@ import java.nio.charset.Charset;
 import java.util.Objects;
 
 /**
- * The response of an {@link HttpRequest}.
+ * <p>Represents an incoming HTTP response.</p>
+ *
+ * <p>This class encapsulates an HTTP response, including the HTTP status code, headers, and body. It provides methods
+ * to get these properties.</p>
+ *
+ * <p>This class is useful when you want to process an HTTP response received from a server. For example, you can use it to
+ * get the status code to check if the request was successful, get the headers to check for any additional information,
+ * and get the body to process the content of the response.</p>
+ *
+ * <p>Note: This class implements {@link Closeable}, so you should call the {@link #close()} method when you're done
+ * with the HTTP response to free any resources associated with it.</p>
+ *
+ * @see HttpRequest
+ * @see HttpHeaders
+ * @see HttpHeader
  */
 public abstract class HttpResponse implements Closeable {
     private final HttpRequest request;
@@ -89,11 +104,18 @@ public abstract class HttpResponse implements Closeable {
      * @return The {@link BinaryData} response body.
      */
     public BinaryData getBodyAsBinaryData() {
+        String contentLength = getHeaderValue(HttpHeaderName.CONTENT_LENGTH);
         Flux<ByteBuffer> body = getBody();
-        if (body != null) {
+        if (CoreUtils.isNullOrEmpty(contentLength)) {
             return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(body));
         } else {
-            return null;
+            try {
+                return BinaryDataHelper
+                    .createBinaryData(new FluxByteBufferContent(body, Long.parseLong(contentLength)));
+            } catch (NumberFormatException ignored) {
+                // Using Content-Length is speculative, so if it's not a number, we'll just return the stream.
+                return BinaryDataHelper.createBinaryData(new FluxByteBufferContent(body));
+            }
         }
     }
 

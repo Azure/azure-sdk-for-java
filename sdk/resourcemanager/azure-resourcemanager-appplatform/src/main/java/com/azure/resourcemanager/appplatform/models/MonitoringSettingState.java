@@ -8,23 +8,42 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MonitoringSettingState. */
+/**
+ * State of the Monitoring Setting.
+ */
 public final class MonitoringSettingState extends ExpandableStringEnum<MonitoringSettingState> {
-    /** Static value NotAvailable for MonitoringSettingState. */
+    /**
+     * Static value NotAvailable for MonitoringSettingState.
+     */
     public static final MonitoringSettingState NOT_AVAILABLE = fromString("NotAvailable");
 
-    /** Static value Failed for MonitoringSettingState. */
+    /**
+     * Static value Failed for MonitoringSettingState.
+     */
     public static final MonitoringSettingState FAILED = fromString("Failed");
 
-    /** Static value Succeeded for MonitoringSettingState. */
+    /**
+     * Static value Succeeded for MonitoringSettingState.
+     */
     public static final MonitoringSettingState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Updating for MonitoringSettingState. */
+    /**
+     * Static value Updating for MonitoringSettingState.
+     */
     public static final MonitoringSettingState UPDATING = fromString("Updating");
 
     /**
+     * Creates a new instance of MonitoringSettingState value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public MonitoringSettingState() {
+    }
+
+    /**
      * Creates or finds a MonitoringSettingState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MonitoringSettingState.
      */
@@ -35,7 +54,7 @@ public final class MonitoringSettingState extends ExpandableStringEnum<Monitorin
 
     /**
      * Gets known MonitoringSettingState values.
-     *
+     * 
      * @return known MonitoringSettingState values.
      */
     public static Collection<MonitoringSettingState> values() {

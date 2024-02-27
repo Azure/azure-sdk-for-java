@@ -12,20 +12,16 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateMigra
 public final class UpdateMigrationItemInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UpdateMigrationItemInput model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"providerSpecificDetails\":{\"instanceType\":\"UpdateMigrationItemProviderSpecificInput\"}}}")
-                .toObject(UpdateMigrationItemInput.class);
+        UpdateMigrationItemInput model = BinaryData.fromString(
+            "{\"properties\":{\"providerSpecificDetails\":{\"instanceType\":\"UpdateMigrationItemProviderSpecificInput\"}}}")
+            .toObject(UpdateMigrationItemInput.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UpdateMigrationItemInput model =
-            new UpdateMigrationItemInput()
-                .withProperties(
-                    new UpdateMigrationItemInputProperties()
-                        .withProviderSpecificDetails(new UpdateMigrationItemProviderSpecificInput()));
+        UpdateMigrationItemInput model
+            = new UpdateMigrationItemInput().withProperties(new UpdateMigrationItemInputProperties()
+                .withProviderSpecificDetails(new UpdateMigrationItemProviderSpecificInput()));
         model = BinaryData.fromObject(model).toObject(UpdateMigrationItemInput.class);
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Outstanding conditions that will need to be resolved. */
+/**
+ * Outstanding conditions that will need to be resolved.
+ */
 @Immutable
 public final class Condition {
     /*
@@ -23,13 +25,15 @@ public final class Condition {
     @JsonProperty(value = "message", access = JsonProperty.Access.WRITE_ONLY)
     private String message;
 
-    /** Creates an instance of Condition class. */
+    /**
+     * Creates an instance of Condition class.
+     */
     public Condition() {
     }
 
     /**
      * Get the timestamp property: The time when the condition was raised.
-     *
+     * 
      * @return the timestamp value.
      */
     public OffsetDateTime timestamp() {
@@ -38,7 +42,7 @@ public final class Condition {
 
     /**
      * Get the message property: The issue requiring attention.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -47,7 +51,7 @@ public final class Condition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

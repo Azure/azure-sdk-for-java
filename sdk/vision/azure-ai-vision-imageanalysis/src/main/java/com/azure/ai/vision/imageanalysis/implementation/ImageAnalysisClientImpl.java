@@ -161,7 +161,7 @@ public final class ImageAnalysisClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Mono<Response<BinaryData>> analyzeFromBuffer(@HostParam("endpoint") String endpoint,
+        Mono<Response<BinaryData>> analyzeFromImageData(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @QueryParam("features") String visualFeatures, @HeaderParam("accept") String accept,
             @BodyParam("application/octet-stream") BinaryData imageContent, RequestOptions requestOptions,
@@ -173,7 +173,7 @@ public final class ImageAnalysisClientImpl {
         @UnexpectedResponseExceptionType(value = ResourceNotFoundException.class, code = { 404 })
         @UnexpectedResponseExceptionType(value = ResourceModifiedException.class, code = { 409 })
         @UnexpectedResponseExceptionType(HttpResponseException.class)
-        Response<BinaryData> analyzeFromBufferSync(@HostParam("endpoint") String endpoint,
+        Response<BinaryData> analyzeFromImageDataSync(@HostParam("endpoint") String endpoint,
             @QueryParam("api-version") String apiVersion, @HeaderParam("content-type") String contentType,
             @QueryParam("features") String visualFeatures, @HeaderParam("accept") String accept,
             @BodyParam("application/octet-stream") BinaryData imageContent, RequestOptions requestOptions,
@@ -221,8 +221,7 @@ public final class ImageAnalysisClientImpl {
      * <td>No</td>
      * <td>The desired language for result generation (a two-letter language code).
      * If this option is not specified, the default value 'en' is used (English).
-     * See https://aka.ms/cv-languages for a list of supported languages.
-     * At the moment, only tags can be generated in none-English languages.</td>
+     * See https://aka.ms/cv-languages for a list of supported languages.</td>
      * </tr>
      * <tr>
      * <td>gender-neutral-caption</td>
@@ -366,14 +365,14 @@ public final class ImageAnalysisClientImpl {
      * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> analyzeFromBufferWithResponseAsync(List<String> visualFeatures,
+    public Mono<Response<BinaryData>> analyzeFromImageDataWithResponseAsync(List<String> visualFeatures,
         BinaryData imageContent, RequestOptions requestOptions) {
         final String contentType = "application/octet-stream";
         final String accept = "application/json";
         String visualFeaturesConverted = visualFeatures.stream()
             .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return FluxUtil
-            .withContext(context -> service.analyzeFromBuffer(this.getEndpoint(), this.getServiceVersion().getVersion(),
+        return FluxUtil.withContext(
+            context -> service.analyzeFromImageData(this.getEndpoint(), this.getServiceVersion().getVersion(),
                 contentType, visualFeaturesConverted, accept, imageContent, requestOptions, context));
     }
 
@@ -396,8 +395,7 @@ public final class ImageAnalysisClientImpl {
      * <td>No</td>
      * <td>The desired language for result generation (a two-letter language code).
      * If this option is not specified, the default value 'en' is used (English).
-     * See https://aka.ms/cv-languages for a list of supported languages.
-     * At the moment, only tags can be generated in none-English languages.</td>
+     * See https://aka.ms/cv-languages for a list of supported languages.</td>
      * </tr>
      * <tr>
      * <td>gender-neutral-caption</td>
@@ -540,13 +538,13 @@ public final class ImageAnalysisClientImpl {
      * @return represents the outcome of an Image Analysis operation along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> analyzeFromBufferWithResponse(List<String> visualFeatures, BinaryData imageContent,
+    public Response<BinaryData> analyzeFromImageDataWithResponse(List<String> visualFeatures, BinaryData imageContent,
         RequestOptions requestOptions) {
         final String contentType = "application/octet-stream";
         final String accept = "application/json";
         String visualFeaturesConverted = visualFeatures.stream()
             .map(paramItemValue -> Objects.toString(paramItemValue, "")).collect(Collectors.joining(","));
-        return service.analyzeFromBufferSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
+        return service.analyzeFromImageDataSync(this.getEndpoint(), this.getServiceVersion().getVersion(), contentType,
             visualFeaturesConverted, accept, imageContent, requestOptions, Context.NONE);
     }
 
@@ -569,8 +567,7 @@ public final class ImageAnalysisClientImpl {
      * <td>No</td>
      * <td>The desired language for result generation (a two-letter language code).
      * If this option is not specified, the default value 'en' is used (English).
-     * See https://aka.ms/cv-languages for a list of supported languages.
-     * At the moment, only tags can be generated in none-English languages.</td>
+     * See https://aka.ms/cv-languages for a list of supported languages.</td>
      * </tr>
      * <tr>
      * <td>gender-neutral-caption</td>
@@ -746,8 +743,7 @@ public final class ImageAnalysisClientImpl {
      * <td>No</td>
      * <td>The desired language for result generation (a two-letter language code).
      * If this option is not specified, the default value 'en' is used (English).
-     * See https://aka.ms/cv-languages for a list of supported languages.
-     * At the moment, only tags can be generated in none-English languages.</td>
+     * See https://aka.ms/cv-languages for a list of supported languages.</td>
      * </tr>
      * <tr>
      * <td>gender-neutral-caption</td>

@@ -12,18 +12,17 @@ import org.junit.jupiter.api.Assertions;
 public final class HighAvailabilityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HighAvailability model =
-            BinaryData
-                .fromString("{\"mode\":\"Disabled\",\"state\":\"Healthy\",\"standbyAvailabilityZone\":\"oxdjebwpuc\"}")
-                .toObject(HighAvailability.class);
+        HighAvailability model = BinaryData
+            .fromString("{\"mode\":\"Disabled\",\"state\":\"Healthy\",\"standbyAvailabilityZone\":\"oxdjebwpuc\"}")
+            .toObject(HighAvailability.class);
         Assertions.assertEquals(HighAvailabilityMode.DISABLED, model.mode());
         Assertions.assertEquals("oxdjebwpuc", model.standbyAvailabilityZone());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HighAvailability model =
-            new HighAvailability().withMode(HighAvailabilityMode.DISABLED).withStandbyAvailabilityZone("oxdjebwpuc");
+        HighAvailability model
+            = new HighAvailability().withMode(HighAvailabilityMode.DISABLED).withStandbyAvailabilityZone("oxdjebwpuc");
         model = BinaryData.fromObject(model).toObject(HighAvailability.class);
         Assertions.assertEquals(HighAvailabilityMode.DISABLED, model.mode());
         Assertions.assertEquals("oxdjebwpuc", model.standbyAvailabilityZone());

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Azure IaaS VM workload-specific error information. */
+/**
+ * Azure IaaS VM workload-specific error information.
+ */
 @Immutable
 public final class AzureIaaSvmErrorInfo {
     /*
@@ -35,13 +37,15 @@ public final class AzureIaaSvmErrorInfo {
     @JsonProperty(value = "recommendations", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> recommendations;
 
-    /** Creates an instance of AzureIaaSvmErrorInfo class. */
+    /**
+     * Creates an instance of AzureIaaSvmErrorInfo class.
+     */
     public AzureIaaSvmErrorInfo() {
     }
 
     /**
      * Get the errorCode property: Error code.
-     *
+     * 
      * @return the errorCode value.
      */
     public Integer errorCode() {
@@ -50,7 +54,7 @@ public final class AzureIaaSvmErrorInfo {
 
     /**
      * Get the errorTitle property: Title: Typically, the entity that the error pertains to.
-     *
+     * 
      * @return the errorTitle value.
      */
     public String errorTitle() {
@@ -59,7 +63,7 @@ public final class AzureIaaSvmErrorInfo {
 
     /**
      * Get the errorString property: Localized error string.
-     *
+     * 
      * @return the errorString value.
      */
     public String errorString() {
@@ -68,7 +72,7 @@ public final class AzureIaaSvmErrorInfo {
 
     /**
      * Get the recommendations property: List of localized recommendations for above error code.
-     *
+     * 
      * @return the recommendations value.
      */
     public List<String> recommendations() {
@@ -77,7 +81,7 @@ public final class AzureIaaSvmErrorInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

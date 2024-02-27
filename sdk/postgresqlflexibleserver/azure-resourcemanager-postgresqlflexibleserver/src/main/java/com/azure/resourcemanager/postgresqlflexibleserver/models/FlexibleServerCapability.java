@@ -7,39 +7,41 @@ package com.azure.resourcemanager.postgresqlflexibleserver.models;
 import com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.FlexibleServerCapabilityInner;
 import java.util.List;
 
-/** An immutable client-side representation of FlexibleServerCapability. */
+/**
+ * An immutable client-side representation of FlexibleServerCapability.
+ */
 public interface FlexibleServerCapability {
     /**
      * Gets the status property: The status of the capability.
-     *
+     * 
      * @return the status value.
      */
     CapabilityStatus status();
 
     /**
      * Gets the reason property: The reason for the capability not being available.
-     *
+     * 
      * @return the reason value.
      */
     String reason();
 
     /**
      * Gets the name property: Name of flexible servers capability.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the supportedServerEditions property: List of supported flexible server editions.
-     *
+     * 
      * @return the supportedServerEditions value.
      */
     List<FlexibleServerEditionCapability> supportedServerEditions();
 
     /**
      * Gets the supportedServerVersions property: The list of server versions supported for this capability.
-     *
+     * 
      * @return the supportedServerVersions value.
      */
     List<ServerVersionCapability> supportedServerVersions();
@@ -47,14 +49,14 @@ public interface FlexibleServerCapability {
     /**
      * Gets the fastProvisioningSupported property: Gets a value indicating whether fast provisioning is supported.
      * "Enabled" means fast provisioning is supported. "Disabled" stands for fast provisioning is not supported.
-     *
+     * 
      * @return the fastProvisioningSupported value.
      */
     FastProvisioningSupportedEnum fastProvisioningSupported();
 
     /**
      * Gets the supportedFastProvisioningEditions property: List of supported server editions for fast provisioning.
-     *
+     * 
      * @return the supportedFastProvisioningEditions value.
      */
     List<FastProvisioningEditionCapability> supportedFastProvisioningEditions();
@@ -62,7 +64,7 @@ public interface FlexibleServerCapability {
     /**
      * Gets the geoBackupSupported property: Determines if geo-backup is supported in this region. "Enabled" means
      * geo-backup is supported. "Disabled" stands for geo-back is not supported.
-     *
+     * 
      * @return the geoBackupSupported value.
      */
     GeoBackupSupportedEnum geoBackupSupported();
@@ -70,7 +72,7 @@ public interface FlexibleServerCapability {
     /**
      * Gets the zoneRedundantHaSupported property: A value indicating whether Zone Redundant HA is supported in this
      * region. "Enabled" means zone redundant HA is supported. "Disabled" stands for zone redundant HA is not supported.
-     *
+     * 
      * @return the zoneRedundantHaSupported value.
      */
     ZoneRedundantHaSupportedEnum zoneRedundantHaSupported();
@@ -79,7 +81,7 @@ public interface FlexibleServerCapability {
      * Gets the zoneRedundantHaAndGeoBackupSupported property: A value indicating whether Zone Redundant HA and
      * Geo-backup is supported in this region. "Enabled" means zone redundant HA and geo-backup is supported. "Disabled"
      * stands for zone redundant HA and geo-backup is not supported.
-     *
+     * 
      * @return the zoneRedundantHaAndGeoBackupSupported value.
      */
     ZoneRedundantHaAndGeoBackupSupportedEnum zoneRedundantHaAndGeoBackupSupported();
@@ -87,7 +89,7 @@ public interface FlexibleServerCapability {
     /**
      * Gets the storageAutoGrowthSupported property: A value indicating whether storage auto-grow is supported in this
      * region. "Enabled" means storage auto-grow is supported. "Disabled" stands for storage auto-grow is not supported.
-     *
+     * 
      * @return the storageAutoGrowthSupported value.
      */
     StorageAutoGrowthSupportedEnum storageAutoGrowthSupported();
@@ -96,7 +98,7 @@ public interface FlexibleServerCapability {
      * Gets the onlineResizeSupported property: A value indicating whether online resize is supported in this region for
      * the given subscription. "Enabled" means storage online resize is supported. "Disabled" means storage online
      * resize is not supported.
-     *
+     * 
      * @return the onlineResizeSupported value.
      */
     OnlineResizeSupportedEnum onlineResizeSupported();
@@ -104,7 +106,7 @@ public interface FlexibleServerCapability {
     /**
      * Gets the restricted property: A value indicating whether this region is restricted. "Enabled" means region is
      * restricted. "Disabled" stands for region is not restricted.
-     *
+     * 
      * @return the restricted value.
      */
     RestrictedEnum restricted();
@@ -112,7 +114,7 @@ public interface FlexibleServerCapability {
     /**
      * Gets the inner com.azure.resourcemanager.postgresqlflexibleserver.fluent.models.FlexibleServerCapabilityInner
      * object.
-     *
+     * 
      * @return the inner object.
      */
     FlexibleServerCapabilityInner innerModel();

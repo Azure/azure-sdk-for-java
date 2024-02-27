@@ -1,61 +1,62 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.util.Context;
 import com.azure.data.tables.implementation.TransactionalBatchImpl;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Defines headers for the
- * {@link TransactionalBatchImpl#submitTransactionalBatchWithRestResponseAsync(TransactionalBatchRequestBody, String, Context)}
- * operation.
+ * {@link TransactionalBatchImpl#submitTransactionalBatchWithRestResponseAsync(TransactionalBatchRequestBody, String,
+ * Context)} operation.
  */
 @Fluent
 public final class TransactionalBatchSubmitBatchHeaders {
+    private static final HttpHeaderName X_MS_VERSION = HttpHeaderName.fromString("x-ms-version");
+    private static final HttpHeaderName X_MS_REQUEST_ID = HttpHeaderName.fromString("x-ms-request-id");
+
     /*
      * The media type of the body of the response. For transactional batch requests, this is
      * "multipart/mixed; boundary=batchresponse_GUID".
      */
-    @JsonProperty(value = "Content-Type")
     private String contentType;
 
     /*
      * The x-ms-version property.
      */
-    @JsonProperty(value = "x-ms-version")
     private String xMsVersion;
 
     /*
      * The x-ms-request-id property.
      */
-    @JsonProperty(value = "x-ms-request-id")
     private String xMsRequestId;
 
     /*
      * The x-ms-client-request-id property.
      */
-    @JsonProperty(value = "x-ms-client-request-id")
     private String xMsClientRequestId;
 
     // HttpHeaders containing the raw property values.
+
     /**
      * Creates an instance of TablesQueryEntitiesHeaders class.
      *
      * @param rawHeaders The raw HttpHeaders that will be used to create the property values.
      */
     public TransactionalBatchSubmitBatchHeaders(HttpHeaders rawHeaders) {
-        this.contentType = rawHeaders.getValue("Content-Type");
-        this.xMsVersion = rawHeaders.getValue("x-ms-version");
-        this.xMsRequestId = rawHeaders.getValue("x-ms-request-id");
-        this.xMsClientRequestId = rawHeaders.getValue("x-ms-client-request-id");
+        this.contentType = rawHeaders.getValue(HttpHeaderName.CONTENT_TYPE);
+        this.xMsVersion = rawHeaders.getValue(X_MS_VERSION);
+        this.xMsRequestId = rawHeaders.getValue(X_MS_REQUEST_ID);
+        this.xMsClientRequestId = rawHeaders.getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID);
     }
 
     /**
-     * Get the media type of the body of the response. For transactional batch requests, this is
-     * "multipart/mixed; boundary=batchresponse_GUID".
+     * Get the media type of the body of the response. For transactional batch requests, this is "multipart/mixed;
+     * boundary=batchresponse_GUID".
      *
      * @return The content type.
      */
@@ -64,8 +65,8 @@ public final class TransactionalBatchSubmitBatchHeaders {
     }
 
     /**
-     * Set the contentType property: The media type of the body of the response. For transactional batch requests,
-     * this is "multipart/mixed; boundary=batch_GUID".
+     * Set the contentType property: The media type of the body of the response. For transactional batch requests, this
+     * is "multipart/mixed; boundary=batch_GUID".
      *
      * @param contentType the contentType value to set.
      * @return The updated {@link TransactionalBatchSubmitBatchHeaders} object.

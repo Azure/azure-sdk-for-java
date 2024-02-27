@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Replication appliance properties. */
+/**
+ * Replication appliance properties.
+ */
 @Fluent
 public final class ReplicationApplianceProperties {
     /*
@@ -16,13 +18,15 @@ public final class ReplicationApplianceProperties {
     @JsonProperty(value = "providerSpecificDetails")
     private ApplianceSpecificDetails providerSpecificDetails;
 
-    /** Creates an instance of ReplicationApplianceProperties class. */
+    /**
+     * Creates an instance of ReplicationApplianceProperties class.
+     */
     public ReplicationApplianceProperties() {
     }
 
     /**
      * Get the providerSpecificDetails property: Provider specific settings.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public ApplianceSpecificDetails providerSpecificDetails() {
@@ -31,19 +35,19 @@ public final class ReplicationApplianceProperties {
 
     /**
      * Set the providerSpecificDetails property: Provider specific settings.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the ReplicationApplianceProperties object itself.
      */
-    public ReplicationApplianceProperties withProviderSpecificDetails(
-        ApplianceSpecificDetails providerSpecificDetails) {
+    public ReplicationApplianceProperties
+        withProviderSpecificDetails(ApplianceSpecificDetails providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -22,57 +22,64 @@ public final class AzureMLUpdateResourceActivityTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         AzureMLUpdateResourceActivity model = BinaryData.fromString(
-            "{\"type\":\"AzureMLUpdateResource\",\"typeProperties\":{\"trainedModelName\":\"datasqovmtidmyc\",\"trainedModelLinkedServiceName\":{\"referenceName\":\"yajlnotmirgip\",\"parameters\":{\"hnj\":\"datanbfxmefymdmfrfz\",\"twmmvbahftkcey\":\"dataqzdzkyqqbqbwbw\"}},\"trainedModelFilePath\":\"datatdeyoxtlq\"},\"linkedServiceName\":{\"referenceName\":\"xftepzrcqnsjqrgt\",\"parameters\":{\"b\":\"datawpzphkm\",\"ondbvlqtpeba\":\"datarqk\",\"vqdwzyvxd\":\"datawzsxpyrbjt\"}},\"policy\":{\"timeout\":\"datanieqlikyc\",\"retry\":\"datanfukehxvktlrc\",\"retryIntervalInSeconds\":1149102333,\"secureInput\":true,\"secureOutput\":false,\"\":{\"zqamxxpfy\":\"datauwnrqf\",\"rtgww\":\"datampftwtepu\"}},\"name\":\"aolfdgjrgp\",\"description\":\"vohvcaqarppkzz\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Failed\",\"dependsOn\":[{\"activity\":\"qou\",\"dependencyConditions\":[\"Completed\",\"Failed\",\"Skipped\",\"Completed\"],\"\":{\"znnpazbfrqotigxn\":\"datahtncadrmthhfx\"}}],\"userProperties\":[{\"name\":\"xnvwq\",\"value\":\"datahklhoss\"},{\"name\":\"pjtiu\",\"value\":\"datagjbfm\"},{\"name\":\"sjgmes\",\"value\":\"datamhxkjj\"}],\"\":{\"yafazwie\":\"datargxskghdadgqpbg\",\"rijcwnthtq\":\"datazzxjjdboxuinrs\",\"zbvdzjlkocjuajcl\":\"databcwtcqjsvlzdus\",\"iprjahgqzb\":\"datatssbkzdgwpyljn\"}}")
+            "{\"type\":\"AzureMLUpdateResource\",\"typeProperties\":{\"trainedModelName\":\"datagwgqh\",\"trainedModelLinkedServiceName\":{\"referenceName\":\"feasmkdguod\",\"parameters\":{\"rtajlyd\":\"datapwqbotlvcpcxxp\",\"uxbqdwbjh\":\"datafqfvrqruympo\"}},\"trainedModelFilePath\":\"datajzvceyxvfoyuyk\"},\"linkedServiceName\":{\"referenceName\":\"ggyhpu\",\"parameters\":{\"tpt\":\"datalehndb\",\"morfzuhvycdndcz\":\"dataabdkbkblop\",\"kplnd\":\"datazsfvri\",\"btpbwthz\":\"datapqcqinvkm\"}},\"policy\":{\"timeout\":\"databvwb\",\"retry\":\"dataanvdrrmbxshra\",\"retryIntervalInSeconds\":960450511,\"secureInput\":true,\"secureOutput\":false,\"\":{\"zeib\":\"dataqtzh\",\"mo\":\"datauuoluldjeq\",\"aqkeuraylygclwb\":\"datamcy\"}},\"name\":\"oqamvdnexqvthf\",\"description\":\"zgt\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Skipped\",\"dependsOn\":[{\"activity\":\"oelknyopglgkeaz\",\"dependencyConditions\":[\"Failed\",\"Completed\",\"Succeeded\",\"Completed\"],\"\":{\"cxmftgmqlco\":\"datahcbzoary\",\"bdyhjfmyc\":\"datayxfrr\"}},{\"activity\":\"ucccb\",\"dependencyConditions\":[\"Failed\",\"Skipped\",\"Skipped\",\"Succeeded\"],\"\":{\"bmjcch\":\"dataurl\",\"ozlhl\":\"dataigja\"}}],\"userProperties\":[{\"name\":\"egxnguvjryfcx\",\"value\":\"datacr\"},{\"name\":\"wy\",\"value\":\"datanoiriemkxm\"},{\"name\":\"q\",\"value\":\"dataimnfgfsjptb\"},{\"name\":\"svweu\",\"value\":\"datatoe\"}],\"\":{\"wtpvaiewf\":\"datahmrawmchcde\",\"thpg\":\"datawfkw\"}}")
             .toObject(AzureMLUpdateResourceActivity.class);
-        Assertions.assertEquals("aolfdgjrgp", model.name());
-        Assertions.assertEquals("vohvcaqarppkzz", model.description());
-        Assertions.assertEquals(ActivityState.ACTIVE, model.state());
-        Assertions.assertEquals(ActivityOnInactiveMarkAs.FAILED, model.onInactiveMarkAs());
-        Assertions.assertEquals("qou", model.dependsOn().get(0).activity());
-        Assertions.assertEquals(DependencyCondition.COMPLETED, model.dependsOn().get(0).dependencyConditions().get(0));
-        Assertions.assertEquals("xnvwq", model.userProperties().get(0).name());
-        Assertions.assertEquals("xftepzrcqnsjqrgt", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(1149102333, model.policy().retryIntervalInSeconds());
+        Assertions.assertEquals("oqamvdnexqvthf", model.name());
+        Assertions.assertEquals("zgt", model.description());
+        Assertions.assertEquals(ActivityState.INACTIVE, model.state());
+        Assertions.assertEquals(ActivityOnInactiveMarkAs.SKIPPED, model.onInactiveMarkAs());
+        Assertions.assertEquals("oelknyopglgkeaz", model.dependsOn().get(0).activity());
+        Assertions.assertEquals(DependencyCondition.FAILED, model.dependsOn().get(0).dependencyConditions().get(0));
+        Assertions.assertEquals("egxnguvjryfcx", model.userProperties().get(0).name());
+        Assertions.assertEquals("ggyhpu", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(960450511, model.policy().retryIntervalInSeconds());
         Assertions.assertEquals(true, model.policy().secureInput());
         Assertions.assertEquals(false, model.policy().secureOutput());
-        Assertions.assertEquals("yajlnotmirgip", model.trainedModelLinkedServiceName().referenceName());
+        Assertions.assertEquals("feasmkdguod", model.trainedModelLinkedServiceName().referenceName());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureMLUpdateResourceActivity model
-            = new AzureMLUpdateResourceActivity().withName("aolfdgjrgp").withDescription("vohvcaqarppkzz")
-                .withState(ActivityState.ACTIVE).withOnInactiveMarkAs(ActivityOnInactiveMarkAs.FAILED)
-                .withDependsOn(Arrays.asList(new ActivityDependency().withActivity("qou")
-                    .withDependencyConditions(Arrays.asList(DependencyCondition.COMPLETED, DependencyCondition.FAILED,
-                        DependencyCondition.SKIPPED, DependencyCondition.COMPLETED))
+        AzureMLUpdateResourceActivity model = new AzureMLUpdateResourceActivity().withName("oqamvdnexqvthf")
+            .withDescription("zgt").withState(ActivityState.INACTIVE)
+            .withOnInactiveMarkAs(ActivityOnInactiveMarkAs.SKIPPED)
+            .withDependsOn(Arrays.asList(
+                new ActivityDependency()
+                    .withActivity("oelknyopglgkeaz")
+                    .withDependencyConditions(Arrays.asList(DependencyCondition.FAILED, DependencyCondition.COMPLETED,
+                        DependencyCondition.SUCCEEDED, DependencyCondition.COMPLETED))
+                    .withAdditionalProperties(mapOf()),
+                new ActivityDependency().withActivity("ucccb")
+                    .withDependencyConditions(Arrays.asList(DependencyCondition.FAILED, DependencyCondition.SKIPPED,
+                        DependencyCondition.SKIPPED, DependencyCondition.SUCCEEDED))
                     .withAdditionalProperties(mapOf())))
-                .withUserProperties(Arrays.asList(new UserProperty().withName("xnvwq").withValue("datahklhoss"),
-                    new UserProperty().withName("pjtiu").withValue("datagjbfm"),
-                    new UserProperty().withName("sjgmes").withValue("datamhxkjj")))
-                .withLinkedServiceName(
-                    new LinkedServiceReference().withReferenceName("xftepzrcqnsjqrgt").withParameters(
-                        mapOf("b", "datawpzphkm", "ondbvlqtpeba", "datarqk", "vqdwzyvxd", "datawzsxpyrbjt")))
-                .withPolicy(new ActivityPolicy()
-                    .withTimeout("datanieqlikyc").withRetry("datanfukehxvktlrc").withRetryIntervalInSeconds(1149102333)
-                    .withSecureInput(true).withSecureOutput(false).withAdditionalProperties(mapOf()))
-                .withTrainedModelName("datasqovmtidmyc")
-                .withTrainedModelLinkedServiceName(new LinkedServiceReference().withReferenceName("yajlnotmirgip")
-                    .withParameters(mapOf("hnj", "datanbfxmefymdmfrfz", "twmmvbahftkcey", "dataqzdzkyqqbqbwbw")))
-                .withTrainedModelFilePath("datatdeyoxtlq");
+            .withUserProperties(Arrays.asList(new UserProperty().withName("egxnguvjryfcx").withValue("datacr"),
+                new UserProperty().withName("wy").withValue("datanoiriemkxm"),
+                new UserProperty().withName("q").withValue("dataimnfgfsjptb"),
+                new UserProperty().withName("svweu").withValue("datatoe")))
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("ggyhpu")
+                .withParameters(mapOf("tpt", "datalehndb", "morfzuhvycdndcz", "dataabdkbkblop", "kplnd", "datazsfvri",
+                    "btpbwthz", "datapqcqinvkm")))
+            .withPolicy(new ActivityPolicy()
+                .withTimeout("databvwb").withRetry("dataanvdrrmbxshra").withRetryIntervalInSeconds(960450511)
+                .withSecureInput(true).withSecureOutput(false).withAdditionalProperties(mapOf()))
+            .withTrainedModelName("datagwgqh")
+            .withTrainedModelLinkedServiceName(new LinkedServiceReference().withReferenceName("feasmkdguod")
+                .withParameters(mapOf("rtajlyd", "datapwqbotlvcpcxxp", "uxbqdwbjh", "datafqfvrqruympo")))
+            .withTrainedModelFilePath("datajzvceyxvfoyuyk");
         model = BinaryData.fromObject(model).toObject(AzureMLUpdateResourceActivity.class);
-        Assertions.assertEquals("aolfdgjrgp", model.name());
-        Assertions.assertEquals("vohvcaqarppkzz", model.description());
-        Assertions.assertEquals(ActivityState.ACTIVE, model.state());
-        Assertions.assertEquals(ActivityOnInactiveMarkAs.FAILED, model.onInactiveMarkAs());
-        Assertions.assertEquals("qou", model.dependsOn().get(0).activity());
-        Assertions.assertEquals(DependencyCondition.COMPLETED, model.dependsOn().get(0).dependencyConditions().get(0));
-        Assertions.assertEquals("xnvwq", model.userProperties().get(0).name());
-        Assertions.assertEquals("xftepzrcqnsjqrgt", model.linkedServiceName().referenceName());
-        Assertions.assertEquals(1149102333, model.policy().retryIntervalInSeconds());
+        Assertions.assertEquals("oqamvdnexqvthf", model.name());
+        Assertions.assertEquals("zgt", model.description());
+        Assertions.assertEquals(ActivityState.INACTIVE, model.state());
+        Assertions.assertEquals(ActivityOnInactiveMarkAs.SKIPPED, model.onInactiveMarkAs());
+        Assertions.assertEquals("oelknyopglgkeaz", model.dependsOn().get(0).activity());
+        Assertions.assertEquals(DependencyCondition.FAILED, model.dependsOn().get(0).dependencyConditions().get(0));
+        Assertions.assertEquals("egxnguvjryfcx", model.userProperties().get(0).name());
+        Assertions.assertEquals("ggyhpu", model.linkedServiceName().referenceName());
+        Assertions.assertEquals(960450511, model.policy().retryIntervalInSeconds());
         Assertions.assertEquals(true, model.policy().secureInput());
         Assertions.assertEquals(false, model.policy().secureOutput());
-        Assertions.assertEquals("yajlnotmirgip", model.trainedModelLinkedServiceName().referenceName());
+        Assertions.assertEquals("feasmkdguod", model.trainedModelLinkedServiceName().referenceName());
     }
 
     // Use "Map.of" if available

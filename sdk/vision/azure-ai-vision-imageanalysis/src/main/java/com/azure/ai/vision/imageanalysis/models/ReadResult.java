@@ -25,7 +25,7 @@ public final class ReadResult {
 
     /**
      * Creates an instance of ReadResult class.
-     * 
+     *
      * @param blocks the blocks value to set.
      */
     @Generated
@@ -37,7 +37,7 @@ public final class ReadResult {
     /**
      * Get the blocks property: A list of text blocks in the image. At the moment only one block is returned,
      * containing all the text detected in the image.
-     * 
+     *
      * @return the blocks value.
      */
     @Generated

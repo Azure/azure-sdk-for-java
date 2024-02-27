@@ -29,7 +29,7 @@ public final class ChangeDataCapturesStatusWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr = "\"dv\"";
+        String responseStr = "\"ky\"";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -47,8 +47,8 @@ public final class ChangeDataCapturesStatusWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         String response = manager.changeDataCaptures()
-            .statusWithResponse("qohvcv", "ebxgxgrphoabhkya", "pccwievj", com.azure.core.util.Context.NONE).getValue();
+            .statusWithResponse("jottzukqsx", "aojwu", "atqzjz", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("dv", response);
+        Assertions.assertEquals("ky", response);
     }
 }

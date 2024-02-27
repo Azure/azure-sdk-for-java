@@ -11,17 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class DiskInformationTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DiskInformation model =
-            BinaryData.fromString("{\"lun\":695098311,\"name\":\"pjwogqqno\"}").toObject(DiskInformation.class);
-        Assertions.assertEquals(695098311, model.lun());
-        Assertions.assertEquals("pjwogqqno", model.name());
+        DiskInformation model
+            = BinaryData.fromString("{\"lun\":673657894,\"name\":\"usfzsvtuikzha\"}").toObject(DiskInformation.class);
+        Assertions.assertEquals(673657894, model.lun());
+        Assertions.assertEquals("usfzsvtuikzha", model.name());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DiskInformation model = new DiskInformation().withLun(695098311).withName("pjwogqqno");
+        DiskInformation model = new DiskInformation().withLun(673657894).withName("usfzsvtuikzha");
         model = BinaryData.fromObject(model).toObject(DiskInformation.class);
-        Assertions.assertEquals(695098311, model.lun());
-        Assertions.assertEquals("pjwogqqno", model.name());
+        Assertions.assertEquals(673657894, model.lun());
+        Assertions.assertEquals("usfzsvtuikzha", model.name());
     }
 }

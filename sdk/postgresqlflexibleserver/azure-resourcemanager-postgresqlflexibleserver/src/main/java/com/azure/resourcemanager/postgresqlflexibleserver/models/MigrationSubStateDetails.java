@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Migration sub state details. */
+/**
+ * Migration sub state details.
+ */
 @Fluent
 public final class MigrationSubStateDetails {
     /*
@@ -31,13 +33,15 @@ public final class MigrationSubStateDetails {
     @JsonProperty(value = "validationDetails")
     private ValidationDetails validationDetails;
 
-    /** Creates an instance of MigrationSubStateDetails class. */
+    /**
+     * Creates an instance of MigrationSubStateDetails class.
+     */
     public MigrationSubStateDetails() {
     }
 
     /**
      * Get the currentSubState property: Migration sub state.
-     *
+     * 
      * @return the currentSubState value.
      */
     public MigrationSubState currentSubState() {
@@ -46,7 +50,7 @@ public final class MigrationSubStateDetails {
 
     /**
      * Get the dbDetails property: Dictionary of &lt;DbMigrationStatus&gt;.
-     *
+     * 
      * @return the dbDetails value.
      */
     public Map<String, DbMigrationStatus> dbDetails() {
@@ -55,7 +59,7 @@ public final class MigrationSubStateDetails {
 
     /**
      * Set the dbDetails property: Dictionary of &lt;DbMigrationStatus&gt;.
-     *
+     * 
      * @param dbDetails the dbDetails value to set.
      * @return the MigrationSubStateDetails object itself.
      */
@@ -66,7 +70,7 @@ public final class MigrationSubStateDetails {
 
     /**
      * Get the validationDetails property: Details for the validation for migration.
-     *
+     * 
      * @return the validationDetails value.
      */
     public ValidationDetails validationDetails() {
@@ -75,7 +79,7 @@ public final class MigrationSubStateDetails {
 
     /**
      * Set the validationDetails property: Details for the validation for migration.
-     *
+     * 
      * @param validationDetails the validationDetails value to set.
      * @return the MigrationSubStateDetails object itself.
      */
@@ -86,19 +90,16 @@ public final class MigrationSubStateDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (dbDetails() != null) {
-            dbDetails()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            dbDetails().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (validationDetails() != null) {
             validationDetails().validate();

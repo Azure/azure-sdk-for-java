@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InMageAzureV2ManagedDiskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageAzureV2ManagedDiskDetails model =
-            BinaryData
-                .fromString(
-                    "{\"diskId\":\"oizwxvs\",\"seedManagedDiskId\":\"sgfy\",\"replicaDiskType\":\"ky\",\"diskEncryptionSetId\":\"gafxczvf\",\"targetDiskName\":\"kwrt\"}")
-                .toObject(InMageAzureV2ManagedDiskDetails.class);
+        InMageAzureV2ManagedDiskDetails model = BinaryData.fromString(
+            "{\"diskId\":\"oizwxvs\",\"seedManagedDiskId\":\"sgfy\",\"replicaDiskType\":\"ky\",\"diskEncryptionSetId\":\"gafxczvf\",\"targetDiskName\":\"kwrt\"}")
+            .toObject(InMageAzureV2ManagedDiskDetails.class);
         Assertions.assertEquals("oizwxvs", model.diskId());
         Assertions.assertEquals("sgfy", model.seedManagedDiskId());
         Assertions.assertEquals("ky", model.replicaDiskType());
@@ -25,13 +23,9 @@ public final class InMageAzureV2ManagedDiskDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageAzureV2ManagedDiskDetails model =
-            new InMageAzureV2ManagedDiskDetails()
-                .withDiskId("oizwxvs")
-                .withSeedManagedDiskId("sgfy")
-                .withReplicaDiskType("ky")
-                .withDiskEncryptionSetId("gafxczvf")
-                .withTargetDiskName("kwrt");
+        InMageAzureV2ManagedDiskDetails model
+            = new InMageAzureV2ManagedDiskDetails().withDiskId("oizwxvs").withSeedManagedDiskId("sgfy")
+                .withReplicaDiskType("ky").withDiskEncryptionSetId("gafxczvf").withTargetDiskName("kwrt");
         model = BinaryData.fromObject(model).toObject(InMageAzureV2ManagedDiskDetails.class);
         Assertions.assertEquals("oizwxvs", model.diskId());
         Assertions.assertEquals("sgfy", model.seedManagedDiskId());

@@ -6,24 +6,30 @@ package com.azure.resourcemanager.monitor.models;
 
 import com.azure.core.annotation.Fluent;
 
-/** Network access control rules for the endpoints. */
+/**
+ * Network access control rules for the endpoints.
+ */
 @Fluent
 public final class DataCollectionEndpointNetworkAcls extends NetworkRuleSet {
-    /** Creates an instance of DataCollectionEndpointNetworkAcls class. */
+    /**
+     * Creates an instance of DataCollectionEndpointNetworkAcls class.
+     */
     public DataCollectionEndpointNetworkAcls() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public DataCollectionEndpointNetworkAcls withPublicNetworkAccess(
-        KnownPublicNetworkAccessOptions publicNetworkAccess) {
+    public DataCollectionEndpointNetworkAcls
+        withPublicNetworkAccess(KnownPublicNetworkAccessOptions publicNetworkAccess) {
         super.withPublicNetworkAccess(publicNetworkAccess);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

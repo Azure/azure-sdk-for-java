@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Describes an image source that is an image version in an Azure Compute Gallery or a Direct Shared Gallery. */
+/**
+ * Describes an image source that is an image version in an Azure Compute Gallery or a Direct Shared Gallery.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SharedImageVersion")
 @Fluent
@@ -29,14 +31,16 @@ public final class ImageTemplateSharedImageVersionSource extends ImageTemplateSo
     @JsonProperty(value = "exactVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String exactVersion;
 
-    /** Creates an instance of ImageTemplateSharedImageVersionSource class. */
+    /**
+     * Creates an instance of ImageTemplateSharedImageVersionSource class.
+     */
     public ImageTemplateSharedImageVersionSource() {
     }
 
     /**
      * Get the imageVersionId property: ARM resource id of the image version. When image version name is 'latest', the
      * version is evaluated when the image build takes place.
-     *
+     * 
      * @return the imageVersionId value.
      */
     public String imageVersionId() {
@@ -46,7 +50,7 @@ public final class ImageTemplateSharedImageVersionSource extends ImageTemplateSo
     /**
      * Set the imageVersionId property: ARM resource id of the image version. When image version name is 'latest', the
      * version is evaluated when the image build takes place.
-     *
+     * 
      * @param imageVersionId the imageVersionId value to set.
      * @return the ImageTemplateSharedImageVersionSource object itself.
      */
@@ -58,7 +62,7 @@ public final class ImageTemplateSharedImageVersionSource extends ImageTemplateSo
     /**
      * Get the exactVersion property: Exact ARM resource id of the image version. This readonly field differs from the
      * image version Id in 'imageVersionId' only if the version name specified in 'imageVersionId' field is 'latest'.
-     *
+     * 
      * @return the exactVersion value.
      */
     public String exactVersion() {
@@ -67,17 +71,15 @@ public final class ImageTemplateSharedImageVersionSource extends ImageTemplateSo
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (imageVersionId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property imageVersionId in model ImageTemplateSharedImageVersionSource"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property imageVersionId in model ImageTemplateSharedImageVersionSource"));
         }
     }
 

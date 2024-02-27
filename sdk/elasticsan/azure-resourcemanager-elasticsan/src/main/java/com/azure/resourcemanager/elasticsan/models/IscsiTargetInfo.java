@@ -7,7 +7,9 @@ package com.azure.resourcemanager.elasticsan.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Iscsi target information. */
+/**
+ * Iscsi target information.
+ */
 @Fluent
 public final class IscsiTargetInfo {
     /*
@@ -40,13 +42,15 @@ public final class IscsiTargetInfo {
     @JsonProperty(value = "status")
     private OperationalStatus status;
 
-    /** Creates an instance of IscsiTargetInfo class. */
+    /**
+     * Creates an instance of IscsiTargetInfo class.
+     */
     public IscsiTargetInfo() {
     }
 
     /**
      * Get the targetIqn property: iSCSI Target IQN (iSCSI Qualified Name); example: "iqn.2005-03.org.iscsi:server".
-     *
+     * 
      * @return the targetIqn value.
      */
     public String targetIqn() {
@@ -55,7 +59,7 @@ public final class IscsiTargetInfo {
 
     /**
      * Get the targetPortalHostname property: iSCSI Target Portal Host Name.
-     *
+     * 
      * @return the targetPortalHostname value.
      */
     public String targetPortalHostname() {
@@ -64,7 +68,7 @@ public final class IscsiTargetInfo {
 
     /**
      * Get the targetPortalPort property: iSCSI Target Portal Port.
-     *
+     * 
      * @return the targetPortalPort value.
      */
     public Integer targetPortalPort() {
@@ -73,7 +77,7 @@ public final class IscsiTargetInfo {
 
     /**
      * Get the provisioningState property: State of the operation on the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningStates provisioningState() {
@@ -82,7 +86,7 @@ public final class IscsiTargetInfo {
 
     /**
      * Get the status property: Operational status of the iSCSI Target.
-     *
+     * 
      * @return the status value.
      */
     public OperationalStatus status() {
@@ -91,7 +95,7 @@ public final class IscsiTargetInfo {
 
     /**
      * Set the status property: Operational status of the iSCSI Target.
-     *
+     * 
      * @param status the status value to set.
      * @return the IscsiTargetInfo object itself.
      */
@@ -102,7 +106,7 @@ public final class IscsiTargetInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

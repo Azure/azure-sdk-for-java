@@ -15,7 +15,19 @@ import java.util.List;
 import java.util.Objects;
 
 /**
- * Represents a linear ring that is part of a {@link GeoPolygon}.
+ * <p>Represents a linear ring that is part of a {@link GeoPolygon}.</p>
+ *
+ * <p>This class encapsulates a list of {@link GeoPosition} instances that form a closed loop, which is a component
+ * of a {@link GeoPolygon}. The first and last positions of the loop are the same, forming a closed ring.</p>
+ *
+ * <p>This class is useful when you want to work with a linear ring in a geographic context. For example, you can
+ * use it to define the boundary of a geographic area in a {@link GeoPolygon}.</p>
+ *
+ * <p>Note: A linear ring requires at least 4 coordinates, and the first and last coordinates must be the same.</p>
+ *
+ * @see GeoPosition
+ * @see GeoPolygon
+ * @see JsonSerializable
  */
 @Immutable
 public final class GeoLinearRing implements JsonSerializable<GeoLinearRing> {
@@ -37,8 +49,8 @@ public final class GeoLinearRing implements JsonSerializable<GeoLinearRing> {
 
         int size = coordinates.size();
         if (size < 4) {
-            throw LOGGER.logExceptionAsError(
-                new IllegalArgumentException("A linear ring requires at least 4 coordinates."));
+            throw LOGGER
+                .logExceptionAsError(new IllegalArgumentException("A linear ring requires at least 4 coordinates."));
         }
 
         if (!Objects.equals(coordinates.get(0), coordinates.get(size - 1))) {

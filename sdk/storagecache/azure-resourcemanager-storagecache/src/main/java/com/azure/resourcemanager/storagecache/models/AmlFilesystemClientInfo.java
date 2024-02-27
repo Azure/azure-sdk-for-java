@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storagecache.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** AML file system client information. */
+/**
+ * AML file system client information.
+ */
 @Immutable
 public final class AmlFilesystemClientInfo {
     /*
@@ -34,14 +36,16 @@ public final class AmlFilesystemClientInfo {
     @JsonProperty(value = "containerStorageInterface", access = JsonProperty.Access.WRITE_ONLY)
     private AmlFilesystemContainerStorageInterface containerStorageInterface;
 
-    /** Creates an instance of AmlFilesystemClientInfo class. */
+    /**
+     * Creates an instance of AmlFilesystemClientInfo class.
+     */
     public AmlFilesystemClientInfo() {
     }
 
     /**
      * Get the mgsAddress property: The IPv4 address used by clients to mount the AML file system's Lustre Management
      * Service (MGS).
-     *
+     * 
      * @return the mgsAddress value.
      */
     public String mgsAddress() {
@@ -50,7 +54,7 @@ public final class AmlFilesystemClientInfo {
 
     /**
      * Get the mountCommand property: Recommended command to mount the AML file system.
-     *
+     * 
      * @return the mountCommand value.
      */
     public String mountCommand() {
@@ -59,7 +63,7 @@ public final class AmlFilesystemClientInfo {
 
     /**
      * Get the lustreVersion property: The version of Lustre running in the AML file system.
-     *
+     * 
      * @return the lustreVersion value.
      */
     public String lustreVersion() {
@@ -68,7 +72,7 @@ public final class AmlFilesystemClientInfo {
 
     /**
      * Get the containerStorageInterface property: Container Storage Interface information for the AML file system.
-     *
+     * 
      * @return the containerStorageInterface value.
      */
     public AmlFilesystemContainerStorageInterface containerStorageInterface() {
@@ -77,7 +81,7 @@ public final class AmlFilesystemClientInfo {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

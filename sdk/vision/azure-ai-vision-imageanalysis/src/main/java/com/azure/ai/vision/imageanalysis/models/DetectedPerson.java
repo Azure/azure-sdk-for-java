@@ -37,7 +37,7 @@ public final class DetectedPerson {
 
     /**
      * Get the boundingBox property: A rectangular boundary where the person was detected.
-     * 
+     *
      * @return the boundingBox value.
      */
     @Generated
@@ -49,7 +49,7 @@ public final class DetectedPerson {
      * Get the confidence property: A score, in the range of 0 to 1 (inclusive), representing the confidence that this
      * detection was accurate.
      * Higher values indicating higher confidence.
-     * 
+     *
      * @return the confidence value.
      */
     @Generated

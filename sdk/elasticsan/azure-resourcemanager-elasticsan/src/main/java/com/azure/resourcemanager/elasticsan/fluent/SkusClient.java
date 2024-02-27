@@ -10,11 +10,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.elasticsan.fluent.models.SkuInformationInner;
 
-/** An instance of this class provides access to all the operations defined in SkusClient. */
+/**
+ * An instance of this class provides access to all the operations defined in SkusClient.
+ */
 public interface SkusClient {
     /**
      * List all the available Skus in the region and information related to them.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return list of SKU Information objects as paginated response with {@link PagedIterable}.
@@ -24,7 +26,7 @@ public interface SkusClient {
 
     /**
      * List all the available Skus in the region and information related to them.
-     *
+     * 
      * @param filter Specify $filter='location eq &lt;location&gt;' to filter on location.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

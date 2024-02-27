@@ -139,6 +139,7 @@ public final class SpanDataMapper {
             consumer);
     }
 
+    // TODO looks like this method can be private
     public TelemetryItem map(SpanData span, long itemCount) {
         if (RequestChecker.isRequest(span)) {
             return exportRequest(span, itemCount);
@@ -764,8 +765,10 @@ public final class SpanDataMapper {
                     // TODO (trask) map OpenTelemetry exception to Application Insights exception better
                     String stacktrace = event.getAttributes().get(SemanticAttributes.EXCEPTION_STACKTRACE);
                     if (stacktrace != null && !shouldSuppress.test(span, event)) {
-                        consumer.accept(
-                            createExceptionTelemetryItem(stacktrace, span, operationName, itemCount));
+                        String exceptionLogged = span.getAttributes().get(AiSemanticAttributes.LOGGED_EXCEPTION);
+                        if (!stacktrace.equals(exceptionLogged)) {
+                            consumer.accept(createExceptionTelemetryItem(event.getAttributes().get(SemanticAttributes.EXCEPTION_STACKTRACE), span, operationName, itemCount));
+                        }
                     }
                 }
                 return;
@@ -834,9 +837,7 @@ public final class SpanDataMapper {
     }
 
     private static void setItemCount(AbstractTelemetryBuilder telemetryBuilder, long itemCount) {
-        if (itemCount != 1) {
-            telemetryBuilder.setSampleRate(100.0f / itemCount);
-        }
+        telemetryBuilder.setSampleRate(100.0f / itemCount);
     }
 
     private static long getItemCount(SpanData span) {

@@ -16,11 +16,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ProtectionIntentResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProtectionIntentResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"DefaultBackup\",\"sourceResourceId\":\"xhekuksjtxukcdm\",\"itemId\":\"rcryuanzwuxzdxta\",\"policyId\":\"lhmwhfpmrqobm\",\"protectionState\":\"Protected\"},\"eTag\":\"nryrtihf\",\"location\":\"tijbpzvgnwzsymgl\",\"tags\":{\"fcbjysagithxqha\":\"cyzkohdbihanuf\",\"cnpqxuhivyqniwby\":\"ifpikxwczby\",\"grtfwvu\":\"rkxvdum\",\"h\":\"xgaudccs\"},\"id\":\"jcny\",\"name\":\"j\",\"type\":\"kryhtnapczwlokj\"}")
-                .toObject(ProtectionIntentResourceInner.class);
+        ProtectionIntentResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"protectionIntentItemType\":\"ProtectionIntent\",\"backupManagementType\":\"DefaultBackup\",\"sourceResourceId\":\"xhekuksjtxukcdm\",\"itemId\":\"rcryuanzwuxzdxta\",\"policyId\":\"lhmwhfpmrqobm\",\"protectionState\":\"Protected\"},\"eTag\":\"nryrtihf\",\"location\":\"tijbpzvgnwzsymgl\",\"tags\":{\"fcbjysagithxqha\":\"cyzkohdbihanuf\",\"cnpqxuhivyqniwby\":\"ifpikxwczby\",\"grtfwvu\":\"rkxvdum\",\"h\":\"xgaudccs\"},\"id\":\"jcny\",\"name\":\"j\",\"type\":\"kryhtnapczwlokj\"}")
+            .toObject(ProtectionIntentResourceInner.class);
         Assertions.assertEquals("tijbpzvgnwzsymgl", model.location());
         Assertions.assertEquals("cyzkohdbihanuf", model.tags().get("fcbjysagithxqha"));
         Assertions.assertEquals(BackupManagementType.DEFAULT_BACKUP, model.properties().backupManagementType());
@@ -33,27 +31,13 @@ public final class ProtectionIntentResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ProtectionIntentResourceInner model =
-            new ProtectionIntentResourceInner()
-                .withLocation("tijbpzvgnwzsymgl")
-                .withTags(
-                    mapOf(
-                        "fcbjysagithxqha",
-                        "cyzkohdbihanuf",
-                        "cnpqxuhivyqniwby",
-                        "ifpikxwczby",
-                        "grtfwvu",
-                        "rkxvdum",
-                        "h",
-                        "xgaudccs"))
-                .withProperties(
-                    new ProtectionIntent()
-                        .withBackupManagementType(BackupManagementType.DEFAULT_BACKUP)
-                        .withSourceResourceId("xhekuksjtxukcdm")
-                        .withItemId("rcryuanzwuxzdxta")
-                        .withPolicyId("lhmwhfpmrqobm")
-                        .withProtectionState(ProtectionStatus.PROTECTED))
-                .withEtag("nryrtihf");
+        ProtectionIntentResourceInner model = new ProtectionIntentResourceInner().withLocation("tijbpzvgnwzsymgl")
+            .withTags(mapOf("fcbjysagithxqha", "cyzkohdbihanuf", "cnpqxuhivyqniwby", "ifpikxwczby", "grtfwvu",
+                "rkxvdum", "h", "xgaudccs"))
+            .withProperties(new ProtectionIntent().withBackupManagementType(BackupManagementType.DEFAULT_BACKUP)
+                .withSourceResourceId("xhekuksjtxukcdm").withItemId("rcryuanzwuxzdxta").withPolicyId("lhmwhfpmrqobm")
+                .withProtectionState(ProtectionStatus.PROTECTED))
+            .withEtag("nryrtihf");
         model = BinaryData.fromObject(model).toObject(ProtectionIntentResourceInner.class);
         Assertions.assertEquals("tijbpzvgnwzsymgl", model.location());
         Assertions.assertEquals("cyzkohdbihanuf", model.tags().get("fcbjysagithxqha"));

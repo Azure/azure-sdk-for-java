@@ -71,7 +71,8 @@ public final class PeriodFeedback extends MetricFeedback {
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("feedbackType", Objects.toString(FeedbackType.PERIOD, null));
+        jsonWriter.writeStringField("feedbackType",
+            FeedbackType.PERIOD == null ? null : FeedbackType.PERIOD.toString());
         jsonWriter.writeStringField("metricId", Objects.toString(getMetricId(), null));
         jsonWriter.writeJsonField("dimensionFilter", getDimensionFilter());
         jsonWriter.writeJsonField("value", this.value);

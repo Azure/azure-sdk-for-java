@@ -25,7 +25,7 @@ public final class DenseCaptionsResult {
 
     /**
      * Creates an instance of DenseCaptionsResult class.
-     * 
+     *
      * @param values the values value to set.
      */
     @Generated
@@ -36,7 +36,7 @@ public final class DenseCaptionsResult {
 
     /**
      * Get the values property: The list of image captions.
-     * 
+     *
      * @return the values value.
      */
     @Generated

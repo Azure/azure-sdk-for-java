@@ -11,16 +11,16 @@ public final class CommonDataServiceForAppsSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CommonDataServiceForAppsSource model = BinaryData.fromString(
-            "{\"type\":\"CommonDataServiceForAppsSource\",\"query\":\"datamdjzgovmkplrjk\",\"additionalColumns\":\"dataaxoe\",\"sourceRetryCount\":\"datapofaogvmq\",\"sourceRetryWait\":\"datagrqcqhwfskmkd\",\"maxConcurrentConnections\":\"datakdpn\",\"disableMetricsCollection\":\"datadwcxjv\",\"\":{\"otqocnryyp\":\"datautxcmcc\"}}")
+            "{\"type\":\"CommonDataServiceForAppsSource\",\"query\":\"dataeqvpedw\",\"additionalColumns\":\"dataqcjreryp\",\"sourceRetryCount\":\"datayqxeyzqnupsi\",\"sourceRetryWait\":\"datalxvaovssibnv\",\"maxConcurrentConnections\":\"datavi\",\"disableMetricsCollection\":\"datadbmzwlejiiyoon\",\"\":{\"dwcfmzmqmgdlgsxk\":\"datalrixzdbntopbab\"}}")
             .toObject(CommonDataServiceForAppsSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CommonDataServiceForAppsSource model = new CommonDataServiceForAppsSource()
-            .withSourceRetryCount("datapofaogvmq").withSourceRetryWait("datagrqcqhwfskmkd")
-            .withMaxConcurrentConnections("datakdpn").withDisableMetricsCollection("datadwcxjv")
-            .withQuery("datamdjzgovmkplrjk").withAdditionalColumns("dataaxoe");
+            .withSourceRetryCount("datayqxeyzqnupsi").withSourceRetryWait("datalxvaovssibnv")
+            .withMaxConcurrentConnections("datavi").withDisableMetricsCollection("datadbmzwlejiiyoon")
+            .withQuery("dataeqvpedw").withAdditionalColumns("dataqcjreryp");
         model = BinaryData.fromObject(model).toObject(CommonDataServiceForAppsSource.class);
     }
 }

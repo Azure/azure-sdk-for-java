@@ -24,7 +24,7 @@ public final class AssertingClient implements HttpClient {
     private final BiFunction<HttpRequest, Context, Boolean> skipRequestBiFunction;
 
     AssertingClient(HttpClient delegate, List<Predicate<HttpRequest>> syncAssertions,
-                    List<Predicate<HttpRequest>> asyncAssertions, BiFunction<HttpRequest, Context, Boolean> skipRequestBiFunction) {
+        List<Predicate<HttpRequest>> asyncAssertions, BiFunction<HttpRequest, Context, Boolean> skipRequestBiFunction) {
         this.delegate = delegate;
         this.syncAssertions = syncAssertions;
         this.asyncAssertions = asyncAssertions;

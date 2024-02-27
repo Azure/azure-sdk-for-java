@@ -45,7 +45,7 @@ public final class IntegrationRuntimesStopMockTests {
             tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        manager.integrationRuntimes().stop("zrrikvyu", "xnopdeqqf", "cwbupxfikiumhv", com.azure.core.util.Context.NONE);
+        manager.integrationRuntimes().stop("c", "ddfvdktbaexbvyu", "rbycuuxgda", com.azure.core.util.Context.NONE);
 
     }
 }

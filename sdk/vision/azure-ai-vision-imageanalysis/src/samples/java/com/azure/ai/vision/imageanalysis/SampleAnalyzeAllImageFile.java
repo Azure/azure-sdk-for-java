@@ -1,35 +1,8 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
-//
-// DESCRIPTION:
-//     This sample demonstrates how to analyze all supported visual features from the image file sample.jpg,
-//     using a synchronous client.
-//
-//     The synchronous (blocking) `analyze` method makes a single REST call to the Azure AI Vision
-//     service, where all visual features are analyzed in parallel. When the service responds, the method returns
-//     an `ImageAnalysisResult` object, which contains separate result properties for each one of the visual features.
-//     This sample prints all the results to the console.
-//
-//     The sample also shows how to turn on SDK logs, which may be needed for troubleshooting purposes.
-//
-//     For more information on a particular visual feature, and optional setting associated with it,
-//     have a look at the sample in this folder dedicated to that visual feature.
-//
-// USAGE:
-//     Compile the sample:
-//         mvn clean dependency:copy-dependencies
-//         javac SampleAnalyzeAllImageFile.java -cp target\dependency\*
-//     Run the sample:
-//         java -cp ".;target\dependency\*" SampleAnalyzeAllImageFile
-//
-//     Set these two environment variables before running the sample:
-//     1) VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com
-//                          where `your-resource-name` is your unique Azure Computer Vision resource name.
-//     2) VISION_KEY - Your Computer Vision key (a 32-character Hexadecimal number)
 
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClient;
 import com.azure.ai.vision.imageanalysis.ImageAnalysisClientBuilder;
-import com.azure.ai.vision.imageanalysis.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.CropRegion;
 import com.azure.ai.vision.imageanalysis.models.DenseCaption;
 import com.azure.ai.vision.imageanalysis.models.DetectedObject;
@@ -37,6 +10,7 @@ import com.azure.ai.vision.imageanalysis.models.DetectedPerson;
 import com.azure.ai.vision.imageanalysis.models.DetectedTag;
 import com.azure.ai.vision.imageanalysis.models.DetectedTextLine;
 import com.azure.ai.vision.imageanalysis.models.DetectedTextWord;
+import com.azure.ai.vision.imageanalysis.models.ImageAnalysisOptions;
 import com.azure.ai.vision.imageanalysis.models.ImageAnalysisResult;
 import com.azure.ai.vision.imageanalysis.models.VisualFeatures;
 import com.azure.core.credential.KeyCredential;
@@ -47,6 +21,27 @@ import com.azure.core.util.BinaryData;
 import java.io.File;
 import java.util.Arrays;
 
+/**
+ *  This sample demonstrates how to analyze all supported visual features from the image file sample.jpg,
+ *  using a synchronous client.
+ *
+ *  The synchronous (blocking) `analyze` method makes a single REST call to the Azure AI Vision
+ *  service, where all visual features are analyzed in parallel. When the service responds, the method returns
+ *  an `ImageAnalysisResult` object, which contains separate result properties for each one of the visual features.
+ *  This sample prints all the results to the console.
+ *
+ *  The sample also shows how to turn on console SDK logs by calling httpLogOptions, which may be needed
+ *  for troubleshooting purposes. You will also need to set environment variable `AZURE_LOG_LEVEL` to `debug`
+ *  to see the logs.
+ *
+ *  For more information on a particular visual feature, and optional setting associated with it,
+ *  have a look at the sample in this folder dedicated to that visual feature.
+ *
+ *  Set these two environment variables before running the sample:
+ *  1) VISION_ENDPOINT - Your endpoint URL, in the form https://your-resource-name.cognitiveservices.azure.com
+ *                       where `your-resource-name` is your unique Azure Computer Vision resource name.
+ *  2) VISION_KEY - Your Computer Vision key (a 32-character Hexadecimal number)
+ */
 public class SampleAnalyzeAllImageFile {
 
     public static void main(String[] args) {
@@ -79,7 +74,7 @@ public class SampleAnalyzeAllImageFile {
 
             // Analyze all visual features from an image stream. This is a synchronous (blocking) call.
             ImageAnalysisResult result = client.analyze(
-                BinaryData.fromFile(new File("sample.jpg").toPath()), // imageBuffer: the image file loaded into memory as BinaryData
+                BinaryData.fromFile(new File("sample.jpg").toPath()), // imageData: the image file loaded into memory as BinaryData
                 Arrays.asList(
                     VisualFeatures.SMART_CROPS,
                     VisualFeatures.CAPTION,

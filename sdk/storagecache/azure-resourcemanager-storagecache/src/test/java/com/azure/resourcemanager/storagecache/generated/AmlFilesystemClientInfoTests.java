@@ -10,11 +10,9 @@ import com.azure.resourcemanager.storagecache.models.AmlFilesystemClientInfo;
 public final class AmlFilesystemClientInfoTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AmlFilesystemClientInfo model =
-            BinaryData
-                .fromString(
-                    "{\"mgsAddress\":\"giawx\",\"mountCommand\":\"ryplwckbasyypn\",\"lustreVersion\":\"hsgcbacphejkot\",\"containerStorageInterface\":{\"persistentVolumeClaim\":\"gou\",\"persistentVolume\":\"ndlik\",\"storageClass\":\"qkgfgibma\"}}")
-                .toObject(AmlFilesystemClientInfo.class);
+        AmlFilesystemClientInfo model = BinaryData.fromString(
+            "{\"mgsAddress\":\"cs\",\"mountCommand\":\"s\",\"lustreVersion\":\"nyejhkryhtnap\",\"containerStorageInterface\":{\"persistentVolumeClaim\":\"lokjyemkk\",\"persistentVolume\":\"ipjoxzjnchgejs\",\"storageClass\":\"dmailzydehojw\"}}")
+            .toObject(AmlFilesystemClientInfo.class);
     }
 
     @org.junit.jupiter.api.Test

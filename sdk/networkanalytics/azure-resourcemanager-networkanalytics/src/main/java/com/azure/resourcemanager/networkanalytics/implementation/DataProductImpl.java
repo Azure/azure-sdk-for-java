@@ -136,8 +136,8 @@ public final class DataProductImpl implements DataProduct, DataProduct.Definitio
         com.azure.resourcemanager.networkanalytics.NetworkAnalyticsManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.dataProductName = Utils.getValueFromIdByName(innerObject.id(), "dataProducts");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.dataProductName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "dataProducts");
     }
 
     public DataProduct refresh() {

@@ -13,13 +13,13 @@ import java.time.Duration;
 
 public class FixedAmqpRetryPolicyTest {
     private final AmqpErrorContext errorContext = new AmqpErrorContext("test-namespace");
-    private final AmqpException exception = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "error message", errorContext);
+    private final AmqpException exception
+        = new AmqpException(true, AmqpErrorCondition.SERVER_BUSY_ERROR, "error message", errorContext);
     private final Duration minBackoff = Duration.ofSeconds(15);
     private final Duration maxBackoff = Duration.ofSeconds(60);
     private final Duration tolerance = Duration.ofSeconds(1);
     private final int retryAttempts = 5;
-    private final AmqpRetryOptions options = new AmqpRetryOptions()
-        .setDelay(minBackoff)
+    private final AmqpRetryOptions options = new AmqpRetryOptions().setDelay(minBackoff)
         .setMaxDelay(maxBackoff)
         .setMaxRetries(retryAttempts)
         .setMode(AmqpRetryMode.FIXED);
@@ -43,8 +43,8 @@ public class FixedAmqpRetryPolicyTest {
         // Assert that the second retry interval is within our jitter threshold.
         final Duration minValue = firstRetryInterval.minus(tolerance);
         final Duration maxValue = firstRetryInterval.plus(tolerance);
-        Assertions.assertTrue(minValue.compareTo(secondRetryInterval) < 0
-            && maxValue.compareTo(secondRetryInterval) > 0);
+        Assertions
+            .assertTrue(minValue.compareTo(secondRetryInterval) < 0 && maxValue.compareTo(secondRetryInterval) > 0);
     }
 
     /**
@@ -55,8 +55,7 @@ public class FixedAmqpRetryPolicyTest {
         // Arrange
         final FixedAmqpRetryPolicy policy = new FixedAmqpRetryPolicy(options);
 
-        final AmqpRetryOptions otherOptions = new AmqpRetryOptions()
-            .setDelay(minBackoff)
+        final AmqpRetryOptions otherOptions = new AmqpRetryOptions().setDelay(minBackoff)
             .setMaxDelay(maxBackoff)
             .setMaxRetries(retryAttempts)
             .setMode(AmqpRetryMode.FIXED);

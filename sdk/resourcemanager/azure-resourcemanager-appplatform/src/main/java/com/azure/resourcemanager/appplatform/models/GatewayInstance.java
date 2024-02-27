@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Collection of instances belong to the Spring Cloud Gateway. */
+/**
+ * Collection of instances belong to the Spring Cloud Gateway.
+ */
 @Immutable
 public final class GatewayInstance {
     /*
@@ -23,8 +25,14 @@ public final class GatewayInstance {
     private String status;
 
     /**
+     * Creates an instance of GatewayInstance class.
+     */
+    public GatewayInstance() {
+    }
+
+    /**
      * Get the name property: Name of the Spring Cloud Gateway instance.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -33,7 +41,7 @@ public final class GatewayInstance {
 
     /**
      * Get the status property: Status of the Spring Cloud Gateway instance.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -42,7 +50,7 @@ public final class GatewayInstance {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Binding resource properties payload. */
+/**
+ * Binding resource properties payload.
+ */
 @Fluent
 public final class BindingResourceProperties {
     /*
@@ -44,8 +46,7 @@ public final class BindingResourceProperties {
     private Map<String, Object> bindingParameters;
 
     /*
-     * The generated Spring Boot property file for this binding. The secret
-     * will be deducted.
+     * The generated Spring Boot property file for this binding. The secret will be deducted.
      */
     @JsonProperty(value = "generatedProperties", access = JsonProperty.Access.WRITE_ONLY)
     private String generatedProperties;
@@ -63,8 +64,14 @@ public final class BindingResourceProperties {
     private String updatedAt;
 
     /**
+     * Creates an instance of BindingResourceProperties class.
+     */
+    public BindingResourceProperties() {
+    }
+
+    /**
      * Get the resourceName property: The name of the bound resource.
-     *
+     * 
      * @return the resourceName value.
      */
     public String resourceName() {
@@ -73,7 +80,7 @@ public final class BindingResourceProperties {
 
     /**
      * Get the resourceType property: The standard Azure resource type of the bound resource.
-     *
+     * 
      * @return the resourceType value.
      */
     public String resourceType() {
@@ -82,7 +89,7 @@ public final class BindingResourceProperties {
 
     /**
      * Get the resourceId property: The Azure resource id of the bound resource.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -91,7 +98,7 @@ public final class BindingResourceProperties {
 
     /**
      * Set the resourceId property: The Azure resource id of the bound resource.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the BindingResourceProperties object itself.
      */
@@ -102,7 +109,7 @@ public final class BindingResourceProperties {
 
     /**
      * Get the key property: The key of the bound resource.
-     *
+     * 
      * @return the key value.
      */
     public String key() {
@@ -111,7 +118,7 @@ public final class BindingResourceProperties {
 
     /**
      * Set the key property: The key of the bound resource.
-     *
+     * 
      * @param key the key value to set.
      * @return the BindingResourceProperties object itself.
      */
@@ -122,7 +129,7 @@ public final class BindingResourceProperties {
 
     /**
      * Get the bindingParameters property: Binding parameters of the Binding resource.
-     *
+     * 
      * @return the bindingParameters value.
      */
     public Map<String, Object> bindingParameters() {
@@ -131,7 +138,7 @@ public final class BindingResourceProperties {
 
     /**
      * Set the bindingParameters property: Binding parameters of the Binding resource.
-     *
+     * 
      * @param bindingParameters the bindingParameters value to set.
      * @return the BindingResourceProperties object itself.
      */
@@ -143,7 +150,7 @@ public final class BindingResourceProperties {
     /**
      * Get the generatedProperties property: The generated Spring Boot property file for this binding. The secret will
      * be deducted.
-     *
+     * 
      * @return the generatedProperties value.
      */
     public String generatedProperties() {
@@ -152,7 +159,7 @@ public final class BindingResourceProperties {
 
     /**
      * Get the createdAt property: Creation time of the Binding resource.
-     *
+     * 
      * @return the createdAt value.
      */
     public String createdAt() {
@@ -161,7 +168,7 @@ public final class BindingResourceProperties {
 
     /**
      * Get the updatedAt property: Update time of the Binding resource.
-     *
+     * 
      * @return the updatedAt value.
      */
     public String updatedAt() {
@@ -170,7 +177,7 @@ public final class BindingResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -34,54 +34,37 @@ public final class ProtectionPoliciesCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":1909827281,\"resourceGuardOperationRequests\":[\"jgvrquvpyggl\",\"mcrdcue\"]},\"eTag\":\"tiahxmfq\",\"location\":\"yarvsxzqbglcjk\",\"tags\":{\"odubtlmjt\":\"pth\",\"jxyxgb\":\"blioskkfmkmf\",\"lskkzpxvj\":\"kqvjcteoedlr\",\"cojhpcnabx\":\"zdpv\"},\"id\":\"fsnggytexvzilm\",\"name\":\"iv\",\"type\":\"kwwwnckn\"}";
+        String responseStr
+            = "{\"properties\":{\"backupManagementType\":\"ProtectionPolicy\",\"protectedItemsCount\":2005722569,\"resourceGuardOperationRequests\":[\"mwhqnucsklh\",\"i\"]},\"eTag\":\"jtdlp\",\"location\":\"ninjgazlsvbz\",\"tags\":{\"lhsyekrdrenxolr\":\"uoeedwjcci\",\"bfgrlpunytjlkes\":\"yehqbeivdlhydwb\"},\"id\":\"mpathubtah\",\"name\":\"e\",\"type\":\"niiwllbvgwz\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        RecoveryServicesBackupManager manager =
-            RecoveryServicesBackupManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        RecoveryServicesBackupManager manager = RecoveryServicesBackupManager.configure().withHttpClient(httpClient)
+            .authenticate(tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+                new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ProtectionPolicyResource response =
-            manager
-                .protectionPolicies()
-                .define("trdexyionofnin")
-                .withRegion("tbfcm")
-                .withExistingVault("eexpgeumi", "hwu")
-                .withTags(mapOf("mb", "tsjcwjjxs", "xkecifhocj", "wvif"))
-                .withProperties(
-                    new ProtectionPolicy()
-                        .withProtectedItemsCount(1366131106)
-                        .withResourceGuardOperationRequests(Arrays.asList("cw", "qrs", "pcbbprtugav")))
-                .withEtag("bcyksivmfogd")
-                .create();
+        ProtectionPolicyResource response = manager.protectionPolicies().define("dkyzbfvxov").withRegion("f")
+            .withExistingVault("mcrunfhiucn", "fbcpaqktkrumzu")
+            .withTags(mapOf("sdxeqztvxwmwwmjs", "qrkijpeuq", "wwa", "en", "ojhtollhs", "ecleqioulndhzyo", "lxpnovyoanf",
+                "idmytzln"))
+            .withProperties(new ProtectionPolicy().withProtectedItemsCount(113581490)
+                .withResourceGuardOperationRequests(Arrays.asList("q", "gvqrnhyhlwcj")))
+            .withEtag("ggjh").create();
 
-        Assertions.assertEquals("yarvsxzqbglcjk", response.location());
-        Assertions.assertEquals("pth", response.tags().get("odubtlmjt"));
-        Assertions.assertEquals(1909827281, response.properties().protectedItemsCount());
-        Assertions.assertEquals("jgvrquvpyggl", response.properties().resourceGuardOperationRequests().get(0));
-        Assertions.assertEquals("tiahxmfq", response.etag());
+        Assertions.assertEquals("ninjgazlsvbz", response.location());
+        Assertions.assertEquals("uoeedwjcci", response.tags().get("lhsyekrdrenxolr"));
+        Assertions.assertEquals(2005722569, response.properties().protectedItemsCount());
+        Assertions.assertEquals("mwhqnucsklh", response.properties().resourceGuardOperationRequests().get(0));
+        Assertions.assertEquals("jtdlp", response.etag());
     }
 
     // Use "Map.of" if available

@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Fabric provider specific settings. */
+/**
+ * Fabric provider specific settings.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -19,17 +21,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Azure", value = AzureFabricCreationInput.class),
     @JsonSubTypes.Type(name = "InMageRcm", value = InMageRcmFabricCreationInput.class),
-    @JsonSubTypes.Type(name = "VMwareV2", value = VMwareV2FabricCreationInput.class)
-})
+    @JsonSubTypes.Type(name = "VMwareV2", value = VMwareV2FabricCreationInput.class) })
 @Immutable
 public class FabricSpecificCreationInput {
-    /** Creates an instance of FabricSpecificCreationInput class. */
+    /**
+     * Creates an instance of FabricSpecificCreationInput class.
+     */
     public FabricSpecificCreationInput() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

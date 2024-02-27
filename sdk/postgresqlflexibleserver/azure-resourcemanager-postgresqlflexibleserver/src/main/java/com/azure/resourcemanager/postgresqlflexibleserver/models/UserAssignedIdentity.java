@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Information describing the identities associated with this application. */
+/**
+ * Information describing the identities associated with this application.
+ */
 @Fluent
 public final class UserAssignedIdentity {
     /*
@@ -32,13 +34,15 @@ public final class UserAssignedIdentity {
     @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
     private String tenantId;
 
-    /** Creates an instance of UserAssignedIdentity class. */
+    /**
+     * Creates an instance of UserAssignedIdentity class.
+     */
     public UserAssignedIdentity() {
     }
 
     /**
      * Get the userAssignedIdentities property: represents user assigned identities map.
-     *
+     * 
      * @return the userAssignedIdentities value.
      */
     public Map<String, UserIdentity> userAssignedIdentities() {
@@ -47,7 +51,7 @@ public final class UserAssignedIdentity {
 
     /**
      * Set the userAssignedIdentities property: represents user assigned identities map.
-     *
+     * 
      * @param userAssignedIdentities the userAssignedIdentities value to set.
      * @return the UserAssignedIdentity object itself.
      */
@@ -59,7 +63,7 @@ public final class UserAssignedIdentity {
     /**
      * Get the type property: the types of identities associated with this resource; currently restricted to 'None and
      * UserAssigned'.
-     *
+     * 
      * @return the type value.
      */
     public IdentityType type() {
@@ -69,7 +73,7 @@ public final class UserAssignedIdentity {
     /**
      * Set the type property: the types of identities associated with this resource; currently restricted to 'None and
      * UserAssigned'.
-     *
+     * 
      * @param type the type value to set.
      * @return the UserAssignedIdentity object itself.
      */
@@ -80,7 +84,7 @@ public final class UserAssignedIdentity {
 
     /**
      * Get the tenantId property: Tenant id of the server.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -89,24 +93,20 @@ public final class UserAssignedIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (userAssignedIdentities() != null) {
-            userAssignedIdentities()
-                .values()
-                .forEach(
-                    e -> {
-                        if (e != null) {
-                            e.validate();
-                        }
-                    });
+            userAssignedIdentities().values().forEach(e -> {
+                if (e != null) {
+                    e.validate();
+                }
+            });
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model UserAssignedIdentity"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model UserAssignedIdentity"));
         }
     }
 

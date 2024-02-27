@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.26.0-beta.1 (Unreleased)
+### 4.29.0-beta.1 (Unreleased)
 
 #### Features Added
 
@@ -9,6 +9,43 @@
 #### Bugs Fixed
 
 #### Other Changes
+
+### 4.28.0 (2024-02-26)
+
+#### Features Added
+* Added UDF `CosmosAsyncClientCache.getCosmosClientFuncFromCache` to allow Spark applications to reuse the same instance instead of having to instantiate their own `CosmsoAsyncClient` when also using the Cosmos Java SDK besides the Spark connector even on executors. - See [PR 38939](https://github.com/Azure/azure-sdk-for-java/pull/38939)
+
+### 4.27.1 (2024-02-23)
+
+#### Other Changes
+* Prevented any types in azure-cosmos package from being omitted during shading process. - See [PR 38902](https://github.com/Azure/azure-sdk-for-java/pull/38902)
+
+### 4.27.0 (2024-02-20)
+
+#### Features Added
+* Added an option to retrieve the `CosmosAsyncClient` used by the connector internally to allow Spark applications to reuse the same instance instead of having to instantiate their own `CosmsoAsyncClient` when also using the Cosmos Java SDK besides the Spark connector. - See [PR 38834](https://github.com/Azure/azure-sdk-for-java/pull/38834) and [PR 38939](https://github.com/Azure/azure-sdk-for-java/pull/38939)
+
+### 4.26.1 (2024-02-13)
+
+#### Other Changes
+* Limited max. number of threads possible to be used by BulkExecutor instances . - See [PR 38745](https://github.com/Azure/azure-sdk-for-java/pull/38745)
+
+### 4.26.0 (2024-02-08)
+
+#### Features Added
+* Added optimization for query to use readMany internally when applicable - See [PR 38299](https://github.com/Azure/azure-sdk-for-java/pull/38299), [PR 38675](https://github.com/Azure/azure-sdk-for-java/pull/38675) and [PR 38433](https://github.com/Azure/azure-sdk-for-java/pull/38433) and [PR 38670](https://github.com/Azure/azure-sdk-for-java/pull/38670)
+* Added option to use custom Schema with StringType (raw json) for a nested property - See [PR 38481](https://github.com/Azure/azure-sdk-for-java/pull/38481)
+
+#### Bugs Fixed
+* Fixed warning related to custom metrics in Spark 3.2 / 3.3 and 3.4. - See [PR 38315](https://github.com/Azure/azure-sdk-for-java/pull/38315)
+
+#### Other Changes
+* Added additional retry being en-queued when bulk ingestion hangs. - See [PR 38630](https://github.com/Azure/azure-sdk-for-java/pull/38630)
+
+### 4.25.1 (2024-01-14)
+
+#### Features Added
+* Added config option `spark.cosmos.http.connectionPoolSize` to override the Http Connection Pool size in Gateway mode. Increasing the connection pool size beyond 1000 can be useful when the number of concurrent requests in Gateway mode is very high and you see a `reactor.netty.internal.shaded.reactor.pool.PoolAcquirePendingLimitException: Pending acquire queue has reached its maximum size of 2000` error. - See [PR 38305](https://github.com/Azure/azure-sdk-for-java/pull/38305)
 
 ### 4.25.0 (2024-01-03)
 

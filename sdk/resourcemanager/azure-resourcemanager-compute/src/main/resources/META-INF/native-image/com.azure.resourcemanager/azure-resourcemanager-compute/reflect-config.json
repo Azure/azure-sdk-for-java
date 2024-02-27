@@ -2819,6 +2819,11 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.compute.models.ProvisionedBandwidthCopyOption",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.compute.models.DiskState",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,

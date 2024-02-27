@@ -12,18 +12,18 @@ public final class VirtualNetworkPropertiesVipPoolItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         VirtualNetworkPropertiesVipPoolItem model
-            = BinaryData.fromString("{\"endIP\":\"szkkfoqre\",\"startIP\":\"kzikfjawneaivxwc\"}")
+            = BinaryData.fromString("{\"endIP\":\"cjefuzmu\",\"startIP\":\"bttdumorppxe\"}")
                 .toObject(VirtualNetworkPropertiesVipPoolItem.class);
-        Assertions.assertEquals("szkkfoqre", model.endIp());
-        Assertions.assertEquals("kzikfjawneaivxwc", model.startIp());
+        Assertions.assertEquals("cjefuzmu", model.endIp());
+        Assertions.assertEquals("bttdumorppxe", model.startIp());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         VirtualNetworkPropertiesVipPoolItem model
-            = new VirtualNetworkPropertiesVipPoolItem().withEndIp("szkkfoqre").withStartIp("kzikfjawneaivxwc");
+            = new VirtualNetworkPropertiesVipPoolItem().withEndIp("cjefuzmu").withStartIp("bttdumorppxe");
         model = BinaryData.fromObject(model).toObject(VirtualNetworkPropertiesVipPoolItem.class);
-        Assertions.assertEquals("szkkfoqre", model.endIp());
-        Assertions.assertEquals("kzikfjawneaivxwc", model.startIp());
+        Assertions.assertEquals("cjefuzmu", model.endIp());
+        Assertions.assertEquals("bttdumorppxe", model.startIp());
     }
 }
