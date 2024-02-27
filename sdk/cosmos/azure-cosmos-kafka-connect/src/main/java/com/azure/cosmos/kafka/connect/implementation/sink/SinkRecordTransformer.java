@@ -1,5 +1,15 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.kafka.connect.implementation.sink;
 
+import com.azure.cosmos.kafka.connect.implementation.sink.idStrategy.AbstractIdStrategyConfig;
+import com.azure.cosmos.kafka.connect.implementation.sink.idStrategy.FullKeyStrategy;
+import com.azure.cosmos.kafka.connect.implementation.sink.idStrategy.IdStrategy;
+import com.azure.cosmos.kafka.connect.implementation.sink.idStrategy.KafkaMetadataStrategy;
+import com.azure.cosmos.kafka.connect.implementation.sink.idStrategy.ProvidedInKeyStrategy;
+import com.azure.cosmos.kafka.connect.implementation.sink.idStrategy.ProvidedInValueStrategy;
+import com.azure.cosmos.kafka.connect.implementation.sink.idStrategy.TemplateStrategy;
 import org.apache.kafka.connect.data.Struct;
 import org.apache.kafka.connect.sink.SinkRecord;
 import org.slf4j.Logger;
@@ -13,10 +23,10 @@ import java.util.Map;
 public class SinkRecordTransformer {
     private static final Logger LOGGER = LoggerFactory.getLogger(SinkRecordTransformer.class);
 
-    private final IdStrategies idStrategies;
+    private final IdStrategy idStrategy;
 
-    public SinkRecordTransformer(IdStrategies idStrategies) {
-        this.idStrategies = idStrategies;
+    public SinkRecordTransformer(CosmosSinkTaskConfig sinkTaskConfig) {
+        this.idStrategy = this.createIdStrategy(sinkTaskConfig);
     }
 
     public List<SinkRecord> transform(String containerName, List<SinkRecord> sinkRecords) {
@@ -68,7 +78,32 @@ public class SinkRecordTransformer {
             return;
         }
         Map<String, Object> recordMap = (Map<String, Object>) recordValue;
-        IdStrategy idStrategy = config.idStrategy();
-        recordMap.put(AbstractIdStrategyConfig.ID, idStrategy.generateId(sinkRecord));
+        recordMap.put(AbstractIdStrategyConfig.ID, this.idStrategy.generateId(sinkRecord));
+    }
+
+    private IdStrategy createIdStrategy(CosmosSinkTaskConfig sinkTaskConfig) {
+        IdStrategy idStrategyClass;
+        switch (sinkTaskConfig.getIdStrategy()) {
+            case FULL_KEY_STRATEGY:
+                idStrategyClass = new FullKeyStrategy();
+                break;
+            case TEMPLATE_STRATEGY:
+                idStrategyClass = new TemplateStrategy();
+                break;
+            case KAFKA_METADATA_STRATEGY:
+                idStrategyClass = new KafkaMetadataStrategy();
+                break;
+            case PROVIDED_IN_VALUE_STRATEGY:
+                idStrategyClass = new ProvidedInValueStrategy();
+                break;
+            case PROVIDED_IN_KEY_STRATEGY:
+                idStrategyClass = new ProvidedInKeyStrategy();
+                break;
+            default:
+                throw new IllegalArgumentException(sinkTaskConfig.getIdStrategy() + " is not supported");
+        }
+
+        idStrategyClass.configure(sinkTaskConfig.originalsWithPrefix(AbstractIdStrategyConfig.PREFIX));
+        return idStrategyClass;
     }
 }

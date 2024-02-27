@@ -10,17 +10,21 @@ public class CosmosSinkWriteConfig {
     private final ItemWriteStrategy itemWriteStrategy;
     private final int maxRetryCount;
 
+    private final ToleranceOnErrorLevel toleranceOnErrorLevel;
+
     public CosmosSinkWriteConfig(
         boolean bulkEnabled,
         int bulkMaxConcurrentCosmosPartitions,
         int bulkInitialBatchSize,
         ItemWriteStrategy itemWriteStrategy,
-        int maxRetryCount) {
+        int maxRetryCount,
+        ToleranceOnErrorLevel toleranceOnErrorLevel) {
         this.bulkEnabled = bulkEnabled;
         this.bulkMaxConcurrentCosmosPartitions = bulkMaxConcurrentCosmosPartitions;
         this.bulkInitialBatchSize = bulkInitialBatchSize;
         this.itemWriteStrategy = itemWriteStrategy;
         this.maxRetryCount = maxRetryCount;
+        this.toleranceOnErrorLevel = toleranceOnErrorLevel;
     }
 
     public boolean isBulkEnabled() {
@@ -41,5 +45,9 @@ public class CosmosSinkWriteConfig {
 
     public int getMaxRetryCount() {
         return maxRetryCount;
+    }
+
+    public ToleranceOnErrorLevel getToleranceOnErrorLevel() {
+        return toleranceOnErrorLevel;
     }
 }

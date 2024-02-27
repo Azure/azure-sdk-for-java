@@ -51,14 +51,18 @@ public class CosmosSinkConfig extends CosmosConfig {
         "Cosmos DB initial bulk micro batch size - a micro batch will be flushed to the backend "
             + "when the number of documents enqueued exceeds this size - or the target payload size is met. The micro batch "
             + "size is getting automatically tuned based on the throttling rate. By default the "
-            + "initial micro batch size is 100. Reduce this when you want to avoid that the first few requests consume "
+            + "initial micro batch size is 1. Reduce this when you want to avoid that the first few requests consume "
             + "too many RUs.";
     private static final String BULK_INITIAL_BATCH_SIZE_DISPLAY = "Cosmos DB initial bulk micro batch size.";
     private static final int DEFAULT_BULK_INITIAL_BATCH_SIZE = 1; // start with small value to avoid initial RU spike
 
     // write strategy
     public static final String WRITE_STRATEGY_CONF = SINK_CONFIG_PREFIX + "write.strategy";
-    private static final String WRITE_STRATEGY_DOC = "Cosmos DB Item write Strategy: `ItemOverwrite` (using upsert)";
+    private static final String WRITE_STRATEGY_DOC = "Cosmos DB Item write Strategy: `ItemOverwrite` (using upsert), `ItemAppend` (using create, "
+        + "ignore pre-existing items i.e., Conflicts), `ItemDelete` (deletes based on id/pk of data frame), "
+        + "`ItemDeleteIfNotModified` (deletes based on id/pk of data frame if etag hasn't changed since collecting "
+        + "id/pk), `ItemOverwriteIfNotModified` (using create if etag is empty, update/replace with etag pre-condition "
+        + "otherwise, if document was updated the pre-condition failure is ignored)";
     private static final String WRITE_STRATEGY_DISPLAY = "Cosmos DB Item write Strategy.";
     private static final String DEFAULT_WRITE_STRATEGY = ItemWriteStrategy.ITEM_OVERWRITE.getName();
 
@@ -80,17 +84,15 @@ public class CosmosSinkConfig extends CosmosConfig {
         "A comma delimited list of Kafka topics mapped to Cosmos containers. For example: topic1#con1,topic2#con2.";
     private static final String CONTAINERS_TOPIC_MAP_DISPLAY = "Topic-Container map";
 
+    // TODO[Public preview]: re-examine idStrategy implementation
     // id.strategy
     public static final String ID_STRATEGY_CONF = SINK_CONFIG_PREFIX + "id.strategy";
     public static final String ID_STRATEGY_DOC =
         "A strategy used to populate the document with an ``id``. Valid strategies are: "
             + "``TemplateStrategy``, ``FullKeyStrategy``, ``KafkaMetadataStrategy``, "
-            + "``ProvidedInKeyStrategy``, ``ProvidedInValueStrategy``. For each strategy, the full "
-            + "name of the strategy must be specified, e.g. "
-            + "com.azure.cosmos.kafka.connect.sink.id.strategy.TemplateStrategy. Configuration "
+            + "``ProvidedInKeyStrategy``, ``ProvidedInValueStrategy``. Configuration "
             + "properties prefixed with``id.strategy`` are passed through to the strategy. For "
-            + "example, when using"
-            + "``id.strategy=com.azure.cosmos.kafka.connect.sink.id.strategy.TemplateStrategy`` , "
+            + "example, when using ``id.strategy=TemplateStrategy`` , "
             + "the property ``id.strategy.template`` is passed through to the template strategy "
             + "and used to specify the template string to be used in constructing the ``id``.";
     public static final String ID_STRATEGY_DISPLAY = "ID Strategy";
@@ -100,7 +102,6 @@ public class CosmosSinkConfig extends CosmosConfig {
 
     private final CosmosSinkWriteConfig writeConfig;
     private final CosmosSinkContainersConfig containersConfig;
-    private final ToleranceOnErrorLevel toleranceOnErrorLevel;
     private final IdStrategies idStrategy;
 
     public CosmosSinkConfig(Map<String, ?> parsedConfig) {
@@ -111,7 +112,6 @@ public class CosmosSinkConfig extends CosmosConfig {
         super(config, parsedConfig);
         this.writeConfig = this.parseWriteConfig();
         this.containersConfig = this.parseContainersConfig();
-        this.toleranceOnErrorLevel = this.parseToleranceOnErrorLevel();
         this.idStrategy = this.parseIdStrategy();
     }
 
@@ -120,7 +120,6 @@ public class CosmosSinkConfig extends CosmosConfig {
 
         defineWriteConfig(configDef);
         defineContainersConfig(configDef);
-        defineToleranceOnErrorConfig(configDef);
         defineIdStrategyConfig(configDef);
         return configDef;
     }
@@ -184,6 +183,17 @@ public class CosmosSinkConfig extends CosmosConfig {
                 writeConfigGroupOrder++,
                 ConfigDef.Width.MEDIUM,
                 MAX_RETRY_COUNT_DISPLAY
+            )
+            .define(
+                TOLERANCE_ON_ERROR_CONFIG,
+                ConfigDef.Type.STRING,
+                DEFAULT_TOLERANCE_ON_ERROR,
+                ConfigDef.Importance.HIGH,
+                TOLERANCE_ON_ERROR_DOC,
+                writeConfigGroupName,
+                writeConfigGroupOrder++,
+                ConfigDef.Width.MEDIUM,
+                TOLERANCE_ON_ERROR_DISPLAY
             );
     }
 
@@ -207,7 +217,7 @@ public class CosmosSinkConfig extends CosmosConfig {
             .define(
                 CONTAINERS_TOPIC_MAP_CONF,
                 ConfigDef.Type.STRING,
-                Strings.Emtpy,
+                ConfigDef.NO_DEFAULT_VALUE,
                 new ContainersTopicMapValidator(),
                 ConfigDef.Importance.MEDIUM,
                 CONTAINERS_TOPIC_MAP_DOC,
@@ -215,23 +225,6 @@ public class CosmosSinkConfig extends CosmosConfig {
                 containersGroupOrder++,
                 ConfigDef.Width.LONG,
                 CONTAINERS_TOPIC_MAP_DISPLAY
-            );
-    }
-
-    private static void defineToleranceOnErrorConfig(ConfigDef configDef) {
-        final String toleranceOnErrorConfigGroupName = "Errors tolerance";
-        int toleranceOnErrorConfigGroupOrder = 0;
-        configDef
-            .define(
-                TOLERANCE_ON_ERROR_CONFIG,
-                ConfigDef.Type.STRING,
-                DEFAULT_TOLERANCE_ON_ERROR,
-                ConfigDef.Importance.HIGH,
-                TOLERANCE_ON_ERROR_DOC,
-                toleranceOnErrorConfigGroupName,
-                toleranceOnErrorConfigGroupOrder++,
-                ConfigDef.Width.MEDIUM,
-                TOLERANCE_ON_ERROR_DISPLAY
             );
     }
 
@@ -258,13 +251,15 @@ public class CosmosSinkConfig extends CosmosConfig {
         int bulkInitialBatchSize = this.getInt(BULK_INITIAL_BATCH_SIZE_CONF);
         ItemWriteStrategy writeStrategy = this.parseItemWriteStrategy();
         int maxRetryCount = this.getInt(MAX_RETRY_COUNT_CONF);
+        ToleranceOnErrorLevel toleranceOnErrorLevel = this.parseToleranceOnErrorLevel();
 
         return new CosmosSinkWriteConfig(
             bulkEnabled,
             bulkMaxConcurrentCosmosPartitions,
             bulkInitialBatchSize,
             writeStrategy,
-            maxRetryCount);
+            maxRetryCount,
+            toleranceOnErrorLevel);
     }
 
     private CosmosSinkContainersConfig parseContainersConfig() {
@@ -303,10 +298,6 @@ public class CosmosSinkConfig extends CosmosConfig {
 
     public CosmosSinkContainersConfig getContainersConfig() {
         return containersConfig;
-    }
-
-    public ToleranceOnErrorLevel getToleranceOnErrorLevel() {
-        return toleranceOnErrorLevel;
     }
 
     public IdStrategies getIdStrategy() {

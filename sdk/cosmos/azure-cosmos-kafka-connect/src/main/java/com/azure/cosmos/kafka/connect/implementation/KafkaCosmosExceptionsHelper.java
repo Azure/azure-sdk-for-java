@@ -8,7 +8,7 @@ import com.azure.cosmos.implementation.HttpConstants;
 import org.apache.kafka.connect.errors.ConnectException;
 import org.apache.kafka.connect.errors.RetriableException;
 
-public class CosmosExceptionsHelper {
+public class KafkaCosmosExceptionsHelper {
     public static boolean isTransientFailure(int statusCode, int substatusCode) {
         return statusCode == HttpConstants.StatusCodes.GONE
             || statusCode == HttpConstants.StatusCodes.SERVICE_UNAVAILABLE
@@ -43,7 +43,7 @@ public class CosmosExceptionsHelper {
     }
 
     public static ConnectException convertToConnectException(Throwable throwable, String message) {
-        if (CosmosExceptionsHelper.isTransientFailure(throwable)) {
+        if (KafkaCosmosExceptionsHelper.isTransientFailure(throwable)) {
             return new RetriableException(message, throwable);
         }
 
@@ -69,6 +69,14 @@ public class CosmosExceptionsHelper {
     public static boolean isPreconditionFailedException(Throwable throwable) {
         if (throwable instanceof CosmosException) {
             return ((CosmosException) throwable).getStatusCode() == HttpConstants.StatusCodes.PRECONDITION_FAILED;
+        }
+
+        return false;
+    }
+
+    public static boolean isTimeoutException(Throwable throwable) {
+        if (throwable instanceof CosmosException) {
+            return ((CosmosException) throwable).getStatusCode() == HttpConstants.StatusCodes.REQUEST_TIMEOUT;
         }
 
         return false;

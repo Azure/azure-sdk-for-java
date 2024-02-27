@@ -1,200 +1,253 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.cosmos.kafka.connect.implementation.sink;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.implementation.HttpConstants;
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.azure.cosmos.kafka.connect.implementation.KafkaCosmosExceptionsHelper;
+import com.azure.cosmos.models.CosmosBulkExecutionOptions;
 import com.azure.cosmos.models.CosmosBulkItemRequestOptions;
 import com.azure.cosmos.models.CosmosBulkItemResponse;
+import com.azure.cosmos.models.CosmosBulkOperationResponse;
 import com.azure.cosmos.models.CosmosBulkOperations;
 import com.azure.cosmos.models.CosmosItemOperation;
-import org.apache.kafka.connect.sink.SinkRecord;
+import com.azure.cosmos.models.PartitionKeyDefinition;
+import org.apache.kafka.connect.sink.ErrantRecordReporter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.SignalType;
+import reactor.core.publisher.Sinks;
 
-import java.util.ArrayList;
+import java.time.Duration;
 import java.util.List;
-import java.util.stream.Collectors;
+import java.util.Random;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class KafkaCosmosBulkWriter extends KafkaCosmosWriterBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaCosmosBulkWriter.class);
+    private static final int MAX_DELAY_ON_408_REQUEST_TIMEOUT_IN_MS = 10000;
+    private static final int MIN_DELAY_ON_408_REQUEST_TIMEOUT_IN_MS = 1000;
+    private static final Random random = new Random();
 
     private final CosmosSinkWriteConfig writeConfig;
+    private final Sinks.EmitFailureHandler emitFailureHandler;
 
-    public KafkaCosmosBulkWriter(CosmosSinkWriteConfig writeConfig) {
+    public KafkaCosmosBulkWriter(
+        CosmosSinkWriteConfig writeConfig,
+        ErrantRecordReporter errantRecordReporter) {
+        super(errantRecordReporter);
         checkNotNull(writeConfig, "Argument 'writeConfig' can not be null");
 
         this.writeConfig = writeConfig;
+        this.emitFailureHandler = new KafkaCosmosEmitFailureHandler();
     }
 
     @Override
-    public SinkWriteResponse write(CosmosAsyncContainer container, List<SinkRecord> sinkRecords) {
-        LOGGER.debug("Write {} records to container {}", sinkRecords.size(), container.getId());
+    public void writeCore(CosmosAsyncContainer container, List<SinkOperation> sinkOperations) {
+        Sinks.Many<CosmosItemOperation> bulkRetryEmitter = Sinks.many().unicast().onBackpressureBuffer();
+        CosmosBulkExecutionOptions bulkExecutionOptions = this.getBulkExecutionOperations();
+        AtomicInteger totalPendingRecords = new AtomicInteger(sinkOperations.size());
+        Runnable onTaskCompleteCheck = () -> {
+            if (totalPendingRecords.decrementAndGet() <= 0) {
+                bulkRetryEmitter.emitComplete(emitFailureHandler);
+            }
+        };
 
-        SinkWriteResponse sinkWriteResponse = new SinkWriteResponse();
+        Flux.fromIterable(sinkOperations)
+            .flatMap(sinkOperation -> this.getBulkOperation(container, sinkOperation))
+            .collectList()
+            .flatMapMany(itemOperations -> {
 
-        if (sinkRecords == null || sinkRecords.isEmpty()) {
-            return sinkWriteResponse;
-        }
+                Flux<CosmosBulkOperationResponse<Object>> cosmosBulkOperationResponseFlux =
+                    container.executeBulkOperations(
+                        Flux.fromIterable(itemOperations).mergeWith(bulkRetryEmitter.asFlux()),
+                        bulkExecutionOptions);
+                return cosmosBulkOperationResponseFlux;
+            })
+            .flatMap(itemResponse -> {
+                SinkOperation sinkOperation = itemResponse.getOperation().getContext();
+                checkNotNull(sinkOperation, "sinkOperation should not be null");
 
-        List<SinkOperationContext> sinkOperationContexts =
-            sinkRecords
-                .stream()
-                .map(sinkRecord -> new SinkOperationContext(sinkRecord))
-                .collect(Collectors.toList());
+                if (itemResponse.getResponse() != null && itemResponse.getResponse().isSuccessStatusCode()) {
+                    // success
+                    this.completeSinkOperation(sinkOperation, onTaskCompleteCheck);
+                } else {
+                    BulkOperationFailedException exception = handleErrorStatusCode(
+                        itemResponse.getResponse(),
+                        itemResponse.getException(),
+                        sinkOperation);
 
-        Mono
-            .defer(() -> Mono.just(getToBeProcessedSinkOperation(sinkOperationContexts)))
-            .flatMap(operationsToBeProcessed -> {
-                if (this.writeConfig.getItemWriteStrategy() == ItemWriteStrategy.ITEM_OVERWRITE) {
-                    return this.getBulkOperations(container, operationsToBeProcessed)
-                        .flatMap(itemOperations -> this.executeBulkOperations(container, itemOperations));
+                    if (shouldIgnore(exception)) {
+                        this.completeSinkOperation(sinkOperation, onTaskCompleteCheck);
+                    } else {
+                        if (shouldRetry(exception, sinkOperation.getRetryCount(), this.writeConfig.getMaxRetryCount())) {
+                            sinkOperation.setException(exception);
+                            return this.scheduleRetry(container, itemResponse.getOperation().getContext(), bulkRetryEmitter, exception);
+                        } else {
+                            // operation failed after exhausting all retries
+                            this.completeSinkOperationWithFailure(sinkOperation, exception, onTaskCompleteCheck);
+                            if (this.writeConfig.getToleranceOnErrorLevel() == ToleranceOnErrorLevel.ALL) {
+                                LOGGER.warn(
+                                    "Could not upload record {} to CosmosDB after exhausting all retries, "
+                                        + "but ToleranceOnErrorLevel is all, will only log the error message. ",
+                                    sinkOperation.getSinkRecord().key(),
+                                    sinkOperation.getException());
+                                return Mono.empty();
+                            } else {
+                                return Mono.error(exception);
+                            }
+                        }
+                    }
                 }
 
                 return Mono.empty();
             })
-            .repeat(() -> getToBeProcessedSinkOperation(sinkOperationContexts).size() > 0)// only repeat when there are records still need to be processed
             .blockLast();
-
-        return sinkWriteResponse;
     }
 
-    private List<SinkOperationContext> getToBeProcessedSinkOperation(List<SinkOperationContext> sinkOperationContexts) {
-        return sinkOperationContexts
-            .stream()
-            .filter(
-            sinkOperationContext -> {
-                return !sinkOperationContext.getIsSucceeded()
-                    && shouldRetry(sinkOperationContext.getException(), sinkOperationContext.getRetryCount(), this.writeConfig.getMaxRetryCount());
-            })
-            .collect(Collectors.toList());
+    private CosmosBulkExecutionOptions getBulkExecutionOperations() {
+        CosmosBulkExecutionOptions bulkExecutionOptions = new CosmosBulkExecutionOptions();
+        bulkExecutionOptions.setInitialMicroBatchSize(this.writeConfig.getBulkInitialBatchSize());
+        if (this.writeConfig.getBulkMaxConcurrentCosmosPartitions() > 0) {
+            ImplementationBridgeHelpers
+                .CosmosBulkExecutionOptionsHelper
+                .getCosmosBulkExecutionOptionsAccessor()
+                .setMaxConcurrentCosmosPartitions(bulkExecutionOptions, this.writeConfig.getBulkMaxConcurrentCosmosPartitions());
+        }
+
+        return bulkExecutionOptions;
     }
 
-    private Mono<List<CosmosItemOperation>> getBulkOperations(
+    private Mono<CosmosItemOperation> getBulkOperation(
         CosmosAsyncContainer container,
-        List<SinkOperationContext> sinkOperationContexts) {
+        SinkOperation sinkOperation) {
 
         return this.getPartitionKeyDefinition(container)
             .flatMap(partitionKeyDefinition -> {
-                List<CosmosItemOperation> cosmosItemOperations = new ArrayList<>();
+                CosmosItemOperation cosmosItemOperation;
+
                 switch (this.writeConfig.getItemWriteStrategy()) {
                     case ITEM_OVERWRITE:
-                        sinkOperationContexts.forEach(sinkOperationContext ->
-                            cosmosItemOperations.add(
-                                CosmosBulkOperations.getUpsertItemOperation(
-                                    sinkOperationContext.getSinkRecord().value(),
-                                    this.getPartitionKeyValue(sinkOperationContext.getSinkRecord().value(), partitionKeyDefinition),
-                                    sinkOperationContext
-                                )
-                            ));
+                        cosmosItemOperation = this.getUpsertItemOperation(sinkOperation, partitionKeyDefinition);
                         break;
                     case ITEM_OVERWRITE_IF_NOT_MODIFIED:
-                        sinkOperationContexts.forEach(sinkOperationContext -> {
-                            String etag = getEtag(sinkOperationContext.getSinkRecord().value());
-                            if (StringUtils.isEmpty(etag)) {
-                                cosmosItemOperations.add(
-                                    CosmosBulkOperations.getCreateItemOperation(
-                                        sinkOperationContext.getSinkRecord().value(),
-                                        this.getPartitionKeyValue(sinkOperationContext.getSinkRecord().value(), partitionKeyDefinition),
-                                        sinkOperationContext
-                                    )
-                                );
-                            } else {
-                                cosmosItemOperations.add(
-                                    CosmosBulkOperations.getReplaceItemOperation(
-                                        getId(sinkOperationContext.getSinkRecord().value()),
-                                        sinkOperationContext.getSinkRecord(),
-                                        this.getPartitionKeyValue(sinkOperationContext.getSinkRecord().value(), partitionKeyDefinition),
-                                        new CosmosBulkItemRequestOptions().setIfMatchETag(etag),
-                                        sinkOperationContext)
-                                );
-                            }
-                        });
+                        String etag = getEtag(sinkOperation.getSinkRecord().value());
+                        if (StringUtils.isEmpty(etag)) {
+                            cosmosItemOperation = this.getCreateItemOperation(sinkOperation, partitionKeyDefinition);
+                        } else {
+                            cosmosItemOperation = this.getReplaceItemOperation(sinkOperation, partitionKeyDefinition, etag);
+                        }
                         break;
                     case ITEM_APPEND:
-                        sinkOperationContexts.forEach(sinkOperationContext -> {
-                            cosmosItemOperations.add(
-                                CosmosBulkOperations.getCreateItemOperation(
-                                    sinkOperationContext.getSinkRecord().value(),
-                                    this.getPartitionKeyValue(sinkOperationContext.getSinkRecord().value(), partitionKeyDefinition),
-                                    sinkOperationContext
-                                ));
-
-                        });
+                        cosmosItemOperation = this.getCreateItemOperation(sinkOperation, partitionKeyDefinition);
                         break;
                     case ITEM_DELETE:
-                        sinkOperationContexts.forEach(sinkOperationContext -> {
-                            cosmosItemOperations.add(
-                                CosmosBulkOperations.getDeleteItemOperation(
-                                    this.getId(sinkOperationContext.getSinkRecord().value()),
-                                    this.getPartitionKeyValue(sinkOperationContext.getSinkRecord().value(), partitionKeyDefinition),
-                                    sinkOperationContext
-                                ));
-                        });
+                        cosmosItemOperation = this.getDeleteItemOperation(sinkOperation, partitionKeyDefinition, null);
                         break;
                     case ITEM_DELETE_IF_NOT_MODIFIED:
-                        sinkOperationContexts.forEach(sinkOperationContext -> {
-                            String etag = getEtag(sinkOperationContext.getSinkRecord().value());
-                            CosmosBulkItemRequestOptions itemRequestOptions = new CosmosBulkItemRequestOptions();
-                            if (StringUtils.isNotEmpty(etag)) {
-                                itemRequestOptions.setIfMatchETag(etag);
-                            }
-
-                            CosmosBulkOperations.getDeleteItemOperation(
-                                getId(sinkOperationContext.getSinkRecord().value()),
-                                this.getPartitionKeyValue(sinkOperationContext.getSinkRecord().value(), partitionKeyDefinition),
-                                itemRequestOptions,
-                                sinkOperationContext);
-                        });
+                        String itemDeleteEtag = getEtag(sinkOperation.getSinkRecord().value());
+                        cosmosItemOperation = this.getDeleteItemOperation(sinkOperation, partitionKeyDefinition, itemDeleteEtag);
                         break;
                     default:
                         return Mono.error(new IllegalArgumentException(this.writeConfig.getItemWriteStrategy() + " is not supported"));
                 }
 
-                return Mono.just(cosmosItemOperations);
+                return Mono.just(cosmosItemOperation);
             });
     }
 
-    private Mono<Void> executeBulkOperations(CosmosAsyncContainer container, List<CosmosItemOperation> cosmosItemOperations) {
-        return container
-            .executeBulkOperations(Flux.fromIterable(cosmosItemOperations))
-            .doOnNext(itemResponse -> {
-                SinkOperationContext context = itemResponse.getOperation().getContext();
-                checkNotNull(context, "sinkOperationContext should not be null");
+    private CosmosItemOperation getUpsertItemOperation(
+        SinkOperation sinkOperation,
+        PartitionKeyDefinition partitionKeyDefinition) {
 
-                if (itemResponse.getException() != null
-                    || itemResponse.getResponse() == null
-                    || !itemResponse.getResponse().isSuccessStatusCode()) {
+        return CosmosBulkOperations.getUpsertItemOperation(
+            sinkOperation.getSinkRecord().value(),
+            this.getPartitionKeyValue(sinkOperation.getSinkRecord().value(), partitionKeyDefinition),
+            sinkOperation);
+    }
 
-                    BulkOperationFailedException exception = handleErrorStatusCode(
-                        itemResponse.getResponse(),
-                        itemResponse.getException(),
-                        context);
+    private CosmosItemOperation getCreateItemOperation(
+        SinkOperation sinkOperation,
+        PartitionKeyDefinition partitionKeyDefinition) {
+        return CosmosBulkOperations.getCreateItemOperation(
+            sinkOperation.getSinkRecord().value(),
+            this.getPartitionKeyValue(sinkOperation.getSinkRecord().value(), partitionKeyDefinition),
+            sinkOperation);
+    }
 
-                    context.setException(exception);
-                } else {
-                    context.setSucceeded();
-                }
-            })
-            .onErrorResume(throwable -> {
-                cosmosItemOperations.forEach(cosmosItemOperation -> {
-                    ((SinkOperationContext)cosmosItemOperation.getContext()).setException(throwable);
+    private CosmosItemOperation getReplaceItemOperation(
+        SinkOperation sinkOperation,
+        PartitionKeyDefinition partitionKeyDefinition,
+        String etag) {
+
+        CosmosBulkItemRequestOptions itemRequestOptions = new CosmosBulkItemRequestOptions();
+        if (StringUtils.isNotEmpty(etag)) {
+            itemRequestOptions.setIfMatchETag(etag);
+        }
+
+        return CosmosBulkOperations.getReplaceItemOperation(
+            getId(sinkOperation.getSinkRecord().value()),
+            sinkOperation.getSinkRecord().value(),
+            this.getPartitionKeyValue(sinkOperation.getSinkRecord().value(), partitionKeyDefinition),
+            new CosmosBulkItemRequestOptions().setIfMatchETag(etag),
+            sinkOperation);
+    }
+
+    private CosmosItemOperation getDeleteItemOperation(
+        SinkOperation sinkOperation,
+        PartitionKeyDefinition partitionKeyDefinition,
+        String etag) {
+
+        CosmosBulkItemRequestOptions itemRequestOptions = new CosmosBulkItemRequestOptions();
+        if (StringUtils.isNotEmpty(etag)) {
+            itemRequestOptions.setIfMatchETag(etag);
+        }
+
+        return CosmosBulkOperations.getDeleteItemOperation(
+            this.getId(sinkOperation.getSinkRecord().value()),
+            this.getPartitionKeyValue(sinkOperation.getSinkRecord().value(), partitionKeyDefinition),
+            itemRequestOptions,
+            sinkOperation);
+    }
+
+    private Mono<Void> scheduleRetry(
+        CosmosAsyncContainer container,
+        SinkOperation sinkOperation,
+        Sinks.Many<CosmosItemOperation> bulkRetryEmitter,
+        BulkOperationFailedException exception) {
+
+        sinkOperation.retry();
+        Mono<Void> retryMono =
+            getBulkOperation(container, sinkOperation)
+                .flatMap(itemOperation -> {
+                    bulkRetryEmitter.emitNext(itemOperation, emitFailureHandler);
+                    return Mono.empty();
                 });
 
-                return Mono.empty();
-            })
-            .then();
+        if (KafkaCosmosExceptionsHelper.isTimeoutException(exception)) {
+            Duration delayDuration = Duration.ofMillis(
+                MIN_DELAY_ON_408_REQUEST_TIMEOUT_IN_MS
+                    + random.nextInt(MAX_DELAY_ON_408_REQUEST_TIMEOUT_IN_MS - MIN_DELAY_ON_408_REQUEST_TIMEOUT_IN_MS));
+
+            return retryMono.delaySubscription(delayDuration);
+        }
+
+        return retryMono;
     }
 
     BulkOperationFailedException handleErrorStatusCode(
         CosmosBulkItemResponse itemResponse,
         Exception exception,
-        SinkOperationContext sinkOperationContext) {
+        SinkOperation sinkOperationContext) {
 
         int effectiveStatusCode =
             itemResponse != null
@@ -218,10 +271,59 @@ public class KafkaCosmosBulkWriter extends KafkaCosmosWriterBase {
         return new BulkOperationFailedException(effectiveStatusCode, effectiveSubStatusCode, errorMessage, exception);
     }
 
+    private boolean shouldIgnore(BulkOperationFailedException failedException) {
+        switch (this.writeConfig.getItemWriteStrategy()) {
+            case ITEM_APPEND:
+                return KafkaCosmosExceptionsHelper.isResourceExistsException(failedException);
+            case ITEM_DELETE:
+                return KafkaCosmosExceptionsHelper.isNotFoundException(failedException);
+            case ITEM_DELETE_IF_NOT_MODIFIED:
+                return KafkaCosmosExceptionsHelper.isNotFoundException(failedException)
+                    || KafkaCosmosExceptionsHelper.isPreconditionFailedException(failedException);
+            case ITEM_OVERWRITE_IF_NOT_MODIFIED:
+                return KafkaCosmosExceptionsHelper.isResourceExistsException(failedException)
+                    || KafkaCosmosExceptionsHelper.isNotFoundException(failedException)
+                    || KafkaCosmosExceptionsHelper.isPreconditionFailedException(failedException);
+            default:
+                return false;
+        }
+    }
+
+    private void completeSinkOperation(SinkOperation sinkOperationContext, Runnable onCompleteRunnable) {
+        sinkOperationContext.complete();
+        onCompleteRunnable.run();
+    }
+
+    public void completeSinkOperationWithFailure(
+        SinkOperation sinkOperationContext,
+        Exception exception,
+        Runnable onCompleteRunnable) {
+
+        sinkOperationContext.setException(exception);
+        sinkOperationContext.complete();
+        onCompleteRunnable.run();
+
+        this.sendToDlqIfConfigured(sinkOperationContext);
+    }
+
     private static class BulkOperationFailedException extends CosmosException {
         protected BulkOperationFailedException(int statusCode, int subStatusCode, String message, Throwable cause) {
             super(statusCode, message, null, cause);
             BridgeInternal.setSubStatusCode(this, subStatusCode);
+        }
+    }
+
+    private static class KafkaCosmosEmitFailureHandler implements Sinks.EmitFailureHandler {
+
+        @Override
+        public boolean onEmitFailure(SignalType signalType, Sinks.EmitResult emitResult) {
+            if (emitResult.equals(Sinks.EmitResult.FAIL_NON_SERIALIZED)) {
+                LOGGER.debug("emitFailureHandler - Signal: {}, Result: {}", signalType, emitResult.toString());
+                return true;
+            } else {
+                LOGGER.error("emitFailureHandler - Signal: {}, Result: {}", signalType, emitResult.toString());
+                return false;
+            }
         }
     }
 }
