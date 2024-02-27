@@ -177,6 +177,7 @@
     <module>sdk/securitydevops</module>
     <module>sdk/securityinsights</module>
     <module>sdk/selfhelp</module>
+    <module>sdk/serialization</module>
     <module>sdk/servicebus</module>
     <module>sdk/servicefabric</module>
     <module>sdk/servicelinker</module>
@@ -208,5 +209,6 @@
     <module>sdk/voiceservices</module>
     <module>sdk/webpubsub</module>
     <module>sdk/workloads</module>
+    <module>sdk/workloadssapvirtualinstance</module>
   </modules>
 </project>
