@@ -418,7 +418,7 @@ BinaryData speech = client.generateSpeechFromText(deploymentOrModelId, options);
 Path path = Paths.get("{your-local-file-path}/speech.wav");
 Files.write(path, speech.toBytes());
 ```
-For a complete sample example, see sample [Text to Speech][sample_text_to_speech].
+See sample [Text to Speech][sample_text_to_speech] for a complete sample.
 Please refer to the service documentation for a conceptual discussion of [Text to Speech][microsoft_docs_text_to_speech].
 
 ## Troubleshooting

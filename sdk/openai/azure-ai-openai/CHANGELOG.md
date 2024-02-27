@@ -7,8 +7,12 @@
 - Text-to-speech using OpenAI TTS models is now supported. See [OpenAI's API reference](https://platform.openai.com/docs/api-reference/audio/createSpeech) 
   or the [Azure OpenAI quickstart](https://learn.microsoft.com/azure/ai-services/openai/text-to-speech-quickstart)
   for detailed overview and background information. The new method `generateSpeechFromText` exposes this capability on 
-  `OpenAIClient`. Text-to-speech converts text into lifelike spoken audio in a chosen voice, together with other optional
+  `OpenAIClient` and `OpenAIAsyncClient`. Text-to-speech converts text into lifelike spoken audio in a chosen voice, together with other optional
   configurations. This method works for both Azure OpenAI and non-Azure `api.openai.com` client configurations.
+- Added more properties to `AzureCosmosDBFieldMappingOptions` class to support more field mapping options, including
+  `titleField`, `urlField`, `filepathField`, `contentFields`, and `contentFieldsSeparator`. Made `contentField` as required parameter.
+- Added two new authentication options, `OnYourDataEncodedApiKeyAuthenticationOptions` and `OnYourDataAccessTokenAuthenticationOptions`
+  to support the new authentication mechanism for "On Your Data" feature.
 
 ### Breaking Changes
 
@@ -23,8 +27,11 @@
   - `AzureCognitiveSearchIndexFieldMappingOptions` is now `AzureSearchIndexFieldMappingOptions`.
   - `AzureCognitiveSearchQueryType` is now `AzureSearchQueryType`.
 - Replaced `String` property `name` by `ChatCompletionsFunctionToolSelection` property `function` in `ChatCompletionsNamedFunctionToolSelection`
+- Made `embeddingDependency` as a required parameter in `AzureCosmosDBChatExtensionParameters` and `PineconeChatExtensionParameters` class, and removed setter method.
+- Removed `vectorFields` and `imageVectorFields` from `PineconeFieldMappingOptions` class, and made `contentField` as required parameter.
 
 ### Bugs Fixed
+
 - Fixed `ChatRequestUserMessage` deserialization issue. [#38183](https://github.com/Azure/azure-sdk-for-java/issues/38183)
 
 ### Other Changes
@@ -73,7 +80,9 @@ Use `getAudioTranslation` or `getAudioTranslationWithResponse` convenience metho
 
 ### Other Changes
 
-- Audio transcription and translation (via `getAudioTranscription()` and `getAudioTranslation()` now allow specification of an optional `fileName` in addition to the binary audio data. This is used purely as an identifier and does not functionally alter the transcription/translation behavior in any way.
+- Audio transcription and translation (via `getAudioTranscription()` and `getAudioTranslation()` now allow specification  
+  of an optional `fileName` in addition to the binary audio data. This is used purely as an identifier and does not 
+  functionally alter the transcription/translation behavior in any way.
 
 ## 1.0.0-beta.5 (2023-09-22)
 
