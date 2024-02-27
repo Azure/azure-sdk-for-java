@@ -111,4 +111,79 @@ public final class ImageGenerationData {
         this.revisedPrompt = revisedPrompt;
         return this;
     }
+
+    /*
+     * Information about the content filtering results.
+     */
+    @Generated
+    @JsonProperty(value = "content_filter_results")
+    private ImageGenerationContentFilterResults contentFilterResults;
+
+    /*
+     * Information about the content filtering category (hate, sexual, violence, self_harm), if
+     * it has been detected, as well as the severity level (very_low, low, medium, high-scale
+     * that determines the intensity and risk level of harmful content) and if it has been
+     * filtered or not. Information about jailbreak content and profanity, if it has been detected,
+     * and if it has been filtered or not. And information about customer block list, if it has
+     * been filtered and its id.
+     */
+    @Generated
+    @JsonProperty(value = "prompt_filter_results")
+    private ImageGenerationPromptFilterResults promptFilterResults;
+
+    /**
+     * Get the contentFilterResults property: Information about the content filtering results.
+     *
+     * @return the contentFilterResults value.
+     */
+    @Generated
+    public ImageGenerationContentFilterResults getContentFilterResults() {
+        return this.contentFilterResults;
+    }
+
+    /**
+     * Set the contentFilterResults property: Information about the content filtering results.
+     *
+     * @param contentFilterResults the contentFilterResults value to set.
+     * @return the ImageGenerationData object itself.
+     */
+    @Generated
+    public ImageGenerationData setContentFilterResults(ImageGenerationContentFilterResults contentFilterResults) {
+        this.contentFilterResults = contentFilterResults;
+        return this;
+    }
+
+    /**
+     * Get the promptFilterResults property: Information about the content filtering category (hate, sexual, violence,
+     * self_harm), if
+     * it has been detected, as well as the severity level (very_low, low, medium, high-scale
+     * that determines the intensity and risk level of harmful content) and if it has been
+     * filtered or not. Information about jailbreak content and profanity, if it has been detected,
+     * and if it has been filtered or not. And information about customer block list, if it has
+     * been filtered and its id.
+     *
+     * @return the promptFilterResults value.
+     */
+    @Generated
+    public ImageGenerationPromptFilterResults getPromptFilterResults() {
+        return this.promptFilterResults;
+    }
+
+    /**
+     * Set the promptFilterResults property: Information about the content filtering category (hate, sexual, violence,
+     * self_harm), if
+     * it has been detected, as well as the severity level (very_low, low, medium, high-scale
+     * that determines the intensity and risk level of harmful content) and if it has been
+     * filtered or not. Information about jailbreak content and profanity, if it has been detected,
+     * and if it has been filtered or not. And information about customer block list, if it has
+     * been filtered and its id.
+     *
+     * @param promptFilterResults the promptFilterResults value to set.
+     * @return the ImageGenerationData object itself.
+     */
+    @Generated
+    public ImageGenerationData setPromptFilterResults(ImageGenerationPromptFilterResults promptFilterResults) {
+        this.promptFilterResults = promptFilterResults;
+        return this;
+    }
 }
