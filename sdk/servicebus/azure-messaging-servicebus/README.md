@@ -437,13 +437,11 @@ try {
 
 When to use 'ServiceBusProcessorClient', 'ServiceBusReceiverClient' or ServiceBusReceiverAsyncClient? 
  
-The best option for receiving messages in most common situations is 'ServiceBusProcessorClient'. The processor can handle errors automatically and is designed to receive messages continuously. The processor has a simple API to set concurrency for asynchronous processing.  
+The best option for receiving messages in most common cases is 'ServiceBusProcessorClient'. The processor can handle errors automatically and is designed to receive messages continuously. The processor has a simple API to set concurrency for processing messages in parallel.
 
-The low-level client, 'ServiceBusReceiverAsyncClient' is for advanced users who want more control and flexibility over their Reactive application at the expense of more complexity in the application. Unlike the processor, the low-level 'ServiceBusReceiverAsyncClient' does not have automatic recovery built into it. The reactive application that hosts it needs to deal with terminal events and choose the operators (to add recovery, manage backpressure, threading) in the Reactor chain. As stated earlier, for common asynchronous receive situations, the 'ServiceBusProcessorClient' should be the first choice. 
+The low-level client, 'ServiceBusReceiverAsyncClient', is for advanced users who want more control and flexibility over their Reactive application at the expense of more complexity in the application. Unlike the processor, the low-level 'ServiceBusReceiverAsyncClient' does not have automatic recovery built into it. The reactive application using this client needs to deal with terminal events and choose the operators (to add recovery, manage backpressure, threading) in the Reactor chain. As stated earlier, for common asynchronous receive situations, the 'ServiceBusProcessorClient' should be the first choice.
 
-Use 'ServiceBusReceiverClient', if you want to receive messages synchronously, usually in a loop that calls `receiveMessages` on 'ServiceBusReceiverClient' instance, process the message(s) and then repeat this sequential receive pattern. For high-throughput non-sequential use cases, use 'ServiceBusProcessorClient'. 
-
-In summary, since 'ServiceBusProcessorClient' is created and optimized for common Service Bus use cases, evaluate it first and the other client types should be a fallback choice.
+Use 'ServiceBusReceiverClient', if you want to receive messages synchronously, usually in a loop that calls `receiveMessages` on 'ServiceBusReceiverClient' instance, process the message(s) and then repeat this sequential receive pattern. For high-throughput and parallel message processing use cases, use 'ServiceBusProcessorClient'.
 
 ## Troubleshooting
 
