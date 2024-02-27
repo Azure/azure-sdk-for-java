@@ -2590,7 +2590,7 @@ public interface VirtualMachine
             Update withNetworkInterfacesDeleteOptions(DeleteOptions deleteOptions, String... nicIds);
 
             /**
-             * Specifies delete options for the network interfaces attached to the VM.
+             * Specifies delete options for all the existing network interfaces attached to the VM.
              * <p>This operation only affects existing <strong>attached</strong> network interfaces. Any newly-attached
              * network interfaces that appear before {@link Update#apply()} won't be affected.</p>
              *
