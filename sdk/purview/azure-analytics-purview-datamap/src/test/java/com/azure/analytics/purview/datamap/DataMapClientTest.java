@@ -39,7 +39,7 @@ class DataMapClientTest extends TestProxyTestBase {
     @Override
     protected void beforeTest() {
         DataMapClientBuilder entityClientbuilder
-            = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+            = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://endpoint"))
                 .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -54,7 +54,7 @@ class DataMapClientTest extends TestProxyTestBase {
         entityClient = entityClientbuilder.buildEntityClient();
 
         DataMapClientBuilder glossaryClientbuilder
-            = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+            = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://endpoint"))
                 .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -69,7 +69,7 @@ class DataMapClientTest extends TestProxyTestBase {
         glossaryClient = glossaryClientbuilder.buildGlossaryClient();
 
         DataMapClientBuilder discoveryClientbuilder
-            = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+            = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://endpoint"))
                 .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -84,7 +84,7 @@ class DataMapClientTest extends TestProxyTestBase {
         discoveryClient = discoveryClientbuilder.buildDiscoveryClient();
 
         DataMapClientBuilder lineageClientbuilder
-            = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+            = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://endpoint"))
                 .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -99,7 +99,7 @@ class DataMapClientTest extends TestProxyTestBase {
         lineageClient = lineageClientbuilder.buildLineageClient();
 
         DataMapClientBuilder relationshipClientbuilder
-            = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+            = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://endpoint"))
                 .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
@@ -114,7 +114,7 @@ class DataMapClientTest extends TestProxyTestBase {
         relationshipClient = relationshipClientbuilder.buildRelationshipClient();
 
         DataMapClientBuilder typeDefinitionClientbuilder
-            = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "endpoint"))
+            = new DataMapClientBuilder().endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT", "https://endpoint"))
                 .httpClient(HttpClient.createDefault())
                 .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BASIC));
         if (getTestMode() == TestMode.PLAYBACK) {
