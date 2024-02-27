@@ -19,6 +19,7 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 import reactor.core.publisher.Mono;
 import reactor.test.StepVerifier;
+import reactor.util.function.Tuple2;
 
 import java.time.OffsetDateTime;
 import java.util.stream.Stream;
@@ -270,10 +271,8 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
         DataLakeFileAsyncClient fc = createPathClient();
         DataLakeLeaseAsyncClient leaseClient = createLeaseAsyncClient(fc, testResourceNamer.randomUuid());
 
-        leaseClient.acquireLease(leaseTime).block();
-
         Mono<Response<Integer>> response = leaseClient.acquireLease(leaseTime)
-                .then(leaseClient.breakLeaseWithResponse(breakPeriod, null));
+            .then(leaseClient.breakLeaseWithResponse(breakPeriod, null));
 
         StepVerifier.create(response)
             .assertNext(r -> {
@@ -486,13 +485,16 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
 
     @Test
     public void renewFileSystemLease() {
-        String leaseID = setupFileSystemLeaseAsyncCondition(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID);
-        DataLakeLeaseAsyncClient leaseClient = createLeaseAsyncClient(dataLakeFileSystemAsyncClient, leaseID);
+        Mono<Tuple2<Response<String>, DataLakeLeaseAsyncClient>> response = setupFileSystemLeaseAsyncConditionNonBlocking(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID)
+            .flatMap(r -> {
+                DataLakeLeaseAsyncClient leaseClient = createLeaseAsyncClient(dataLakeFileSystemAsyncClient, r);
+                return Mono.zip(leaseClient.renewLeaseWithResponse(null), Mono.just(leaseClient));
+            });
 
-        StepVerifier.create(leaseClient.renewLeaseWithResponse(null))
+        StepVerifier.create(response)
             .assertNext(r -> {
-                validateBasicHeaders(r.getHeaders());
-                assertEquals(leaseClient.getLeaseId(), r.getValue());
+                validateBasicHeaders(r.getT1().getHeaders());
+                assertEquals(r.getT2().getLeaseId(), r.getT1().getValue());
             })
             .verifyComplete();
 
@@ -503,20 +505,22 @@ public class LeaseAsyncApiTests  extends DataLakeTestBase {
 
     @Test
     public void renewFileSystemLeaseMin() {
-        String leaseID = setupFileSystemLeaseAsyncCondition(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID);
+        Mono<Response<String>> response = setupFileSystemLeaseAsyncConditionNonBlocking(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID)
+            .flatMap(r -> createLeaseAsyncClient(dataLakeFileSystemAsyncClient, r).renewLeaseWithResponse(null));
 
-        assertAsyncResponseStatusCode(createLeaseAsyncClient(dataLakeFileSystemAsyncClient, leaseID)
-            .renewLeaseWithResponse(null), 200);
+        assertAsyncResponseStatusCode(response, 200);
     }
 
     @ParameterizedTest
     @MethodSource("validModifiedConditions")
     public void renewFileSystemLeaseAC(OffsetDateTime modified, OffsetDateTime unmodified) {
-        String leaseID = setupFileSystemLeaseAsyncCondition(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID);
-        RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
+        Mono<Response<String>> response = setupFileSystemLeaseAsyncConditionNonBlocking(dataLakeFileSystemAsyncClient, RECEIVED_LEASE_ID)
+            .flatMap(r -> {
+                RequestConditions mac = new RequestConditions().setIfModifiedSince(modified).setIfUnmodifiedSince(unmodified);
+                return createLeaseAsyncClient(dataLakeFileSystemAsyncClient, r).renewLeaseWithResponse(mac);
+            });
 
-        assertAsyncResponseStatusCode(createLeaseAsyncClient(dataLakeFileSystemAsyncClient, leaseID)
-            .renewLeaseWithResponse(mac), 200);
+        assertAsyncResponseStatusCode(response, 200);
     }
 
     private static Stream<Arguments> validModifiedConditions() {

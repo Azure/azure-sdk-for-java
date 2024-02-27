@@ -563,6 +563,10 @@ public class DataLakeTestBase extends TestProxyTestBase {
         return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? createLeaseAsyncClient(fsc).acquireLease(-1).block() : leaseID;
     }
 
+    protected Mono<String> setupFileSystemLeaseAsyncConditionNonBlocking(DataLakeFileSystemAsyncClient fsc, String leaseID) {
+        return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? createLeaseAsyncClient(fsc).acquireLease(-1) : Mono.just(leaseID);
+    }
+
     /**
      * This will retrieve the etag to be used in testing match conditions. The result will typically be assigned to
      * the ifMatch condition when testing success and the ifNoneMatch condition when testing failure.
@@ -628,9 +632,6 @@ public class DataLakeTestBase extends TestProxyTestBase {
                 : createLeaseAsyncClient((DataLakeDirectoryAsyncClient) pac).acquireLease(-1);
         }
         return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? responseLeaseId : Mono.just(leaseID == null ? "null": leaseID);
-
-        //Optional<String> empty = Optional.empty();
-        //return Objects.equals(RECEIVED_LEASE_ID, leaseID) ? Mono.just(responseLeaseId) : Mono.just(leaseID == null ? empty : Optional.of(leaseID));
     }
 
     protected static void compareACL(List<PathAccessControlEntry> expected, List<PathAccessControlEntry> actual) {
