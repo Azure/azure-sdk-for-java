@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Response after calling a manual recovery walk. */
+/**
+ * Response after calling a manual recovery walk.
+ */
 @Immutable
 public final class RecoveryWalkResponseInner {
     /*
@@ -22,13 +24,15 @@ public final class RecoveryWalkResponseInner {
     @JsonProperty(value = "nextPlatformUpdateDomain", access = JsonProperty.Access.WRITE_ONLY)
     private Integer nextPlatformUpdateDomain;
 
-    /** Creates an instance of RecoveryWalkResponseInner class. */
+    /**
+     * Creates an instance of RecoveryWalkResponseInner class.
+     */
     public RecoveryWalkResponseInner() {
     }
 
     /**
      * Get the walkPerformed property: Whether the recovery walk was performed.
-     *
+     * 
      * @return the walkPerformed value.
      */
     public Boolean walkPerformed() {
@@ -38,7 +42,7 @@ public final class RecoveryWalkResponseInner {
     /**
      * Get the nextPlatformUpdateDomain property: The next update domain that needs to be walked. Null means walk
      * spanning all update domains has been completed.
-     *
+     * 
      * @return the nextPlatformUpdateDomain value.
      */
     public Integer nextPlatformUpdateDomain() {
@@ -47,7 +51,7 @@ public final class RecoveryWalkResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

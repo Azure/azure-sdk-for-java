@@ -6,18 +6,20 @@ package com.azure.resourcemanager.selfhelp.models;
 
 import com.azure.resourcemanager.selfhelp.fluent.models.RestartTroubleshooterResponseInner;
 
-/** An immutable client-side representation of RestartTroubleshooterResponse. */
+/**
+ * An immutable client-side representation of RestartTroubleshooterResponse.
+ */
 public interface RestartTroubleshooterResponse {
     /**
      * Gets the troubleshooterResourceName property: Updated TroubleshooterResource Name .
-     *
+     * 
      * @return the troubleshooterResourceName value.
      */
     String troubleshooterResourceName();
 
     /**
      * Gets the inner com.azure.resourcemanager.selfhelp.fluent.models.RestartTroubleshooterResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     RestartTroubleshooterResponseInner innerModel();

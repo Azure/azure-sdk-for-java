@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-/** Samples for DppResourceGuardProxy List. */
+/**
+ * Samples for DppResourceGuardProxy List.
+ */
 public final class DppResourceGuardProxyListSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/ResourceGuardProxyCRUD/ListResourceGuardProxy.json
+     * x-ms-original-file:
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/
+     * ResourceGuardProxyCRUD/ListResourceGuardProxy.json
      */
     /**
      * Sample code: Get ResourceGuardProxies.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void getResourceGuardProxies(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {

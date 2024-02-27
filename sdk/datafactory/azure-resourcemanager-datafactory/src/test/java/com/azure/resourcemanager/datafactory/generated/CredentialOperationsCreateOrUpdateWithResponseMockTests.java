@@ -33,7 +33,7 @@ public final class CredentialOperationsCreateOrUpdateWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"type\":\"ManagedIdentity\",\"typeProperties\":{\"resourceId\":\"cpwrgry\"},\"description\":\"lrqeqcdikc\",\"annotations\":[\"datazdtfthnjxid\"],\"\":{\"rrzuegindln\":\"datampyixgxtccmqzku\"}},\"name\":\"oapsz\",\"type\":\"n\",\"etag\":\"vyracqmfjihm\",\"id\":\"zwoijtlhxlsxxra\"}";
+            = "{\"properties\":{\"type\":\"ManagedIdentity\",\"typeProperties\":{\"resourceId\":\"yscnbrwh\"},\"description\":\"tzgmfybr\",\"annotations\":[\"datahdigmgszzhxv\",\"dataunuus\",\"datatzfvzlqspavxfpbi\"],\"\":{\"franngwldymuehvv\":\"databzu\"}},\"name\":\"t\",\"type\":\"clzyunhoog\",\"etag\":\"tjcmlyhpxfhix\",\"id\":\"gvkwenl\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -51,13 +51,13 @@ public final class CredentialOperationsCreateOrUpdateWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         ManagedIdentityCredentialResource response
-            = manager.credentialOperations().define("kiupgmdsz").withExistingFactory("lbqdxvxdfkdwk", "mnoecfjw")
-                .withProperties(new ManagedIdentityCredential().withDescription("ecr")
-                    .withAnnotations(Arrays.asList("datamzqfisggoap", "datadmxwe")).withResourceId("djxltjsm"))
-                .withIfMatch("dxvl").create();
+            = manager.credentialOperations().define("bsuijxmw").withExistingFactory("kxln", "pbadycnjxyproq")
+                .withProperties(new ManagedIdentityCredential().withDescription("zouvckreju")
+                    .withAnnotations(Arrays.asList("dataorb", "datafarb", "dataarxyh")).withResourceId("qpjueodhtltoo"))
+                .withIfMatch("vzepgljtuzqreprn").create();
 
-        Assertions.assertEquals("zwoijtlhxlsxxra", response.id());
-        Assertions.assertEquals("lrqeqcdikc", response.properties().description());
-        Assertions.assertEquals("cpwrgry", response.properties().resourceId());
+        Assertions.assertEquals("gvkwenl", response.id());
+        Assertions.assertEquals("tzgmfybr", response.properties().description());
+        Assertions.assertEquals("yscnbrwh", response.properties().resourceId());
     }
 }

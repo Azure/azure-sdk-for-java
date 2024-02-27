@@ -21,8 +21,7 @@ public final class OperationResultsImpl implements OperationResults {
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    public OperationResultsImpl(
-        OperationResultsClient innerClient,
+    public OperationResultsImpl(OperationResultsClient innerClient,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -31,10 +30,7 @@ public final class OperationResultsImpl implements OperationResults {
     public Response<OperationJobExtendedInfo> getWithResponse(String operationId, String location, Context context) {
         OperationResultsGetResponse inner = this.serviceClient().getWithResponse(operationId, location, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new OperationJobExtendedInfoImpl(inner.getValue(), this.manager()));
         } else {
             return null;

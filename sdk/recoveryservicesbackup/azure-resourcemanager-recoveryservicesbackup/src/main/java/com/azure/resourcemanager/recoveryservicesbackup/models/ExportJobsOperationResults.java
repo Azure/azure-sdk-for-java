@@ -7,13 +7,15 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of ExportJobsOperationResults. */
+/**
+ * Resource collection API of ExportJobsOperationResults.
+ */
 public interface ExportJobsOperationResults {
     /**
      * Gets the operation result of operation triggered by Export Jobs API. If the operation is successful, then it also
      * contains URL of a Blob and a SAS key to access the same. The blob contains exported jobs in JSON serialized
      * format.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID which represents the export job.
@@ -23,14 +25,14 @@ public interface ExportJobsOperationResults {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the operation result of operation triggered by Export Jobs API along with {@link Response}.
      */
-    Response<OperationResultInfoBaseResource> getWithResponse(
-        String vaultName, String resourceGroupName, String operationId, Context context);
+    Response<OperationResultInfoBaseResource> getWithResponse(String vaultName, String resourceGroupName,
+        String operationId, Context context);
 
     /**
      * Gets the operation result of operation triggered by Export Jobs API. If the operation is successful, then it also
      * contains URL of a Blob and a SAS key to access the same. The blob contains exported jobs in JSON serialized
      * format.
-     *
+     * 
      * @param vaultName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param operationId OperationID which represents the export job.

@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The StopTranscriptionRequest model. */
+/**
+ * The StopTranscriptionRequest model.
+ */
 @Fluent
 public final class StopTranscriptionRequest {
     /*
@@ -17,8 +19,14 @@ public final class StopTranscriptionRequest {
     private String operationContext;
 
     /**
+     * Creates an instance of StopTranscriptionRequest class.
+     */
+    public StopTranscriptionRequest() {
+    }
+
+    /**
      * Get the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -27,7 +35,7 @@ public final class StopTranscriptionRequest {
 
     /**
      * Set the operationContext property: The value to identify context of the operation.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the StopTranscriptionRequest object itself.
      */

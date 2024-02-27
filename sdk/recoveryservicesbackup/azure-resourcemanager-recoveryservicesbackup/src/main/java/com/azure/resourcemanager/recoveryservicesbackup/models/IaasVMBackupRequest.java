@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 
-/** IaaS VM workload-specific backup request. */
+/**
+ * IaaS VM workload-specific backup request.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("IaasVMBackupRequest")
 @Fluent
@@ -21,13 +23,15 @@ public final class IaasVMBackupRequest extends BackupRequest {
     @JsonProperty(value = "recoveryPointExpiryTimeInUTC")
     private OffsetDateTime recoveryPointExpiryTimeInUtc;
 
-    /** Creates an instance of IaasVMBackupRequest class. */
+    /**
+     * Creates an instance of IaasVMBackupRequest class.
+     */
     public IaasVMBackupRequest() {
     }
 
     /**
      * Get the recoveryPointExpiryTimeInUtc property: Backup copy will expire after the time specified (UTC).
-     *
+     * 
      * @return the recoveryPointExpiryTimeInUtc value.
      */
     public OffsetDateTime recoveryPointExpiryTimeInUtc() {
@@ -36,7 +40,7 @@ public final class IaasVMBackupRequest extends BackupRequest {
 
     /**
      * Set the recoveryPointExpiryTimeInUtc property: Backup copy will expire after the time specified (UTC).
-     *
+     * 
      * @param recoveryPointExpiryTimeInUtc the recoveryPointExpiryTimeInUtc value to set.
      * @return the IaasVMBackupRequest object itself.
      */
@@ -47,7 +51,7 @@ public final class IaasVMBackupRequest extends BackupRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

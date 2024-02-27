@@ -44,9 +44,316 @@ import static com.azure.core.util.FluxUtil.withContext;
 
 /**
  * This class provides a client that contains the operations for creating, getting, listing, updating, or deleting
- * indexes or synonym map and analyzing text in an Azure Cognitive Search service.
+ * indexes or synonym map and analyzing text in an Azure AI Search service.
  *
+ * <h2>
+ *     Overview
+ * </h2>
+ *
+ * <p>
+ *     An index is stored on your search service and populated with JSON documents that are indexed and tokenized for
+ *     information retrieval. The fields collection of an index defines the structure of the search document. Fields
+ *     have a name, data types, and attributes that determine how it's used. For example, searchable fields are used in
+ *     full text search, and thus tokenized during indexing. An index also defines other constructs, such as scoring
+ *     profiles for relevance tuning, suggesters, semantic configurations, and custom analyzers.
+ * </p>
+ *
+ * <p>
+ *     A synonym map is service-level object that contains user-defined synonyms. This object is maintained
+ *     independently from search indexes. Once uploaded, you can point any searchable field to the synonym map (one per field).
+ * </p>
+ *
+ * <p>
+ *     This client provides an asynchronous API for accessing indexes. This client allows you to create, delete, update,
+ *     and configure search indexes. The client also allows you to declare custom synonym maps to expand or rewrite
+ *     queries.
+ * </p>
+ *
+ * <h2>
+ *     Getting Started
+ * </h2>
+ *
+ * <p>
+ *     Authenticating and building instances of this client are handled by {@link SearchIndexClientBuilder}. This
+ *     sample shows you how to create an instance of the client:
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.instantiation -->
+ * <pre>
+ * SearchIndexAsyncClient searchIndexAsyncClient = new SearchIndexClientBuilder&#40;&#41;
+ *     .credential&#40;new AzureKeyCredential&#40;&quot;&#123;key&#125;&quot;&#41;&#41;
+ *     .endpoint&#40;&quot;&#123;endpoint&#125;&quot;&#41;
+ *     .buildAsyncClient&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.instantiation -->
+ *
+ * <p>
+ *     For more information on authentication and building, see the documentation for {@link SearchIndexClientBuilder}.
+ * </p>
+ *
+ * <hr/>
+ *
+ * <h2>
+ *     Examples
+ * </h2>
+ *
+ * <p>
+ *     The following examples all use <a href="https://github.com/Azure-Samples/azure-search-sample-data">a simple Hotel
+ *     data set</a> that you can <a href="https://learn.microsoft.com/azure/search/search-get-started-portal#step-1---start-the-import-data-wizard-and-create-a-data-source">
+ *         import into your own index from the Azure portal.</a>
+ *     These are just a few of the basics - please check out <a href="https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/search/azure-search-documents/src/samples/README.md">our Samples </a>for much more.
+ * </p>
+ *
+ * <h3>
+ *     Create an Index
+ * </h3>
+ *
+ * <p>
+ *     The following sample creates an index.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.createIndex#SearchIndex -->
+ * <pre>
+ * SearchIndex searchIndex = new SearchIndex&#40;&quot;indexName&quot;, Arrays.asList&#40;
+ *     new SearchField&#40;&quot;hotelId&quot;, SearchFieldDataType.STRING&#41;
+ *         .setKey&#40;true&#41;
+ *         .setFilterable&#40;true&#41;
+ *         .setSortable&#40;true&#41;,
+ *     new SearchField&#40;&quot;hotelName&quot;, SearchFieldDataType.STRING&#41;
+ *         .setSearchable&#40;true&#41;
+ *         .setFilterable&#40;true&#41;
+ *         .setSortable&#40;true&#41;,
+ *     new SearchField&#40;&quot;description&quot;, SearchFieldDataType.STRING&#41;
+ *         .setSearchable&#40;true&#41;
+ *         .setAnalyzerName&#40;LexicalAnalyzerName.EN_LUCENE&#41;,
+ *     new SearchField&#40;&quot;descriptionFr&quot;, SearchFieldDataType.STRING&#41;
+ *         .setSearchable&#40;true&#41;
+ *         .setAnalyzerName&#40;LexicalAnalyzerName.FR_LUCENE&#41;,
+ *     new SearchField&#40;&quot;tags&quot;, SearchFieldDataType.collection&#40;SearchFieldDataType.STRING&#41;&#41;
+ *         .setSearchable&#40;true&#41;
+ *         .setFilterable&#40;true&#41;
+ *         .setFacetable&#40;true&#41;,
+ *     new SearchField&#40;&quot;address&quot;, SearchFieldDataType.COMPLEX&#41;
+ *         .setFields&#40;
+ *             new SearchField&#40;&quot;streetAddress&quot;, SearchFieldDataType.STRING&#41;
+ *                 .setSearchable&#40;true&#41;,
+ *             new SearchField&#40;&quot;city&quot;, SearchFieldDataType.STRING&#41;
+ *                 .setFilterable&#40;true&#41;
+ *                 .setSortable&#40;true&#41;
+ *                 .setFacetable&#40;true&#41;,
+ *             new SearchField&#40;&quot;stateProvince&quot;, SearchFieldDataType.STRING&#41;
+ *                 .setSearchable&#40;true&#41;
+ *                 .setFilterable&#40;true&#41;
+ *                 .setSortable&#40;true&#41;
+ *                 .setFacetable&#40;true&#41;,
+ *             new SearchField&#40;&quot;country&quot;, SearchFieldDataType.STRING&#41;
+ *                 .setSearchable&#40;true&#41;
+ *                 .setSynonymMapNames&#40;&quot;synonymMapName&quot;&#41;
+ *                 .setFilterable&#40;true&#41;
+ *                 .setSortable&#40;true&#41;
+ *                 .setFacetable&#40;true&#41;,
+ *             new SearchField&#40;&quot;postalCode&quot;, SearchFieldDataType.STRING&#41;
+ *                 .setSearchable&#40;true&#41;
+ *                 .setFilterable&#40;true&#41;
+ *                 .setSortable&#40;true&#41;
+ *                 .setFacetable&#40;true&#41;&#41;
+ * &#41;&#41;;
+ *
+ * searchIndexAsyncClient.createIndex&#40;searchIndex&#41;.block&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.createIndex#SearchIndex -->
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient#createIndex(SearchIndex)}.
+ * </em>
+ *
+ * <h3>
+ *     List indexes
+ * </h3>
+ *
+ * <p>
+ *     The following sample lists all indexes.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.listIndexes -->
+ * <pre>
+ * searchIndexAsyncClient.listIndexes&#40;&#41;.subscribe&#40;index -&gt; System.out.println&#40;&quot;The index name is &quot; + index.getName&#40;&#41;&#41;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.listIndexes -->
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient#listIndexes()}.
+ * </em>
+ *
+ * <h3>
+ *     Retrieve an Index
+ * </h3>
+ *
+ * <p>
+ *     The following sample retrieves an index.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.getIndex#String -->
+ * <pre>
+ * SearchIndex searchIndex = searchIndexAsyncClient.getIndex&#40;&quot;indexName&quot;&#41;.block&#40;&#41;;
+ * if &#40;searchIndex != null&#41; &#123;
+ *     System.out.println&#40;&quot;The index name is &quot; + searchIndex.getName&#40;&#41;&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.getIndex#String -->
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient#getIndex(String)}.
+ * </em>
+ *
+ * <h3>
+ *     Update an Index
+ * </h3>
+ *
+ * <p>
+ *     The following sample updates an index.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.updateIndex#SearchIndex -->
+ * <pre>
+ * SearchIndex searchIndex = searchIndexAsyncClient.getIndex&#40;&quot;indexName&quot;&#41;.block&#40;&#41;;
+ * if &#40;searchIndex != null&#41; &#123;
+ *     searchIndex.setFields&#40;new SearchField&#40;&quot;newField&quot;, SearchFieldDataType.STRING&#41;&#41;;
+ *     searchIndexAsyncClient.createOrUpdateIndex&#40;searchIndex&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.updateIndex#SearchIndex -->
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient#createOrUpdateIndex(SearchIndex)}.
+ * </em>
+ *
+ * <h3>
+ *     Delete an Index
+ * </h3>
+ *
+ * <p>
+ *     The following sample deletes an index.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.deleteIndex#String -->
+ * <pre>
+ * String indexName = &quot;indexName&quot;;
+ * searchIndexAsyncClient.deleteIndex&#40;indexName&#41;.block&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.deleteIndex#String -->
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient#deleteIndex(String)}.
+ * </em>
+ *
+ *  <h3>
+ *     Create a Synonym Map
+ * </h3>
+ *
+ * <p>
+ *     The following sample creates a synonym map.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.createSynonymMap#SynonymMap -->
+ * <pre>
+ * SynonymMap synonymMap = new SynonymMap&#40;&quot;synonymMapName&quot;, &quot;hotel, motel, &#92;&quot;motor inn&#92;&quot;&quot;&#41;;
+ * searchIndexAsyncClient.createSynonymMap&#40;synonymMap&#41;.block&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.createSynonymMap#SynonymMap -->
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient#createSynonymMap(SynonymMap)}.
+ * </em>
+ *
+ * <h3>
+ *     List Synonym Maps
+ * </h3>
+ *
+ * <p>
+ *     The following sample lists all synonym maps.
+ * </p>
+ *
+ *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.listSynonymMaps -->
+ * <pre>
+ * searchIndexAsyncClient.listSynonymMaps&#40;&#41;.subscribe&#40;synonymMap -&gt;
+ *     System.out.println&#40;&quot;The synonymMap name is &quot; + synonymMap.getName&#40;&#41;&#41;
+ * &#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.listSynonymMaps -->
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient#listSynonymMaps()}.
+ * </em>
+ *
+ * <h3>
+ *     Retrieve a Synonym Map
+ * </h3>
+ *
+ * <p>
+ *     The following sample retrieves a synonym map.
+ * </p>
+ *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.getSynonymMap#String -->
+ * <pre>
+ * SynonymMap synonymMap = searchIndexAsyncClient.getSynonymMap&#40;&quot;synonymMapName&quot;&#41;.block&#40;&#41;;
+ * if &#40;synonymMap != null&#41; &#123;
+ *     System.out.println&#40;&quot;The synonymMap name is &quot; + synonymMap.getName&#40;&#41;&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.getSynonymMap#String -->
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient#getSynonymMap(String)}.
+ * </em>
+ *
+ * <h3>
+ *     Update a Synonym Map
+ * </h3>
+ *
+ * <p>
+ *     The following sample updates a synonym map.
+ * </p>
+ *
+ *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.updateSynonymMap#SynonymMap -->
+ * <pre>
+ * SynonymMap synonymMap = searchIndexAsyncClient.getSynonymMap&#40;&quot;synonymMapName&quot;&#41;.block&#40;&#41;;
+ * if &#40;synonymMap != null&#41; &#123;
+ *     synonymMap.setSynonyms&#40;&quot;hotel, motel, inn&quot;&#41;;
+ *     searchIndexAsyncClient.createOrUpdateSynonymMap&#40;synonymMap&#41;.block&#40;&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.updateSynonymMap#SynonymMap -->
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient#createOrUpdateSynonymMap(SynonymMap)}.
+ * </em>
+ *
+ * <h3>
+ *     Delete a Synonym Map
+ * </h3>
+ *
+ * <p>
+ *     The following sample deletes a synonym map.
+ * </p>
+ *
+ *
+ * <!-- src_embed com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.deleteSynonymMap#String -->
+ * <pre>
+ * String synonymMapName = &quot;synonymMapName&quot;;
+ * searchIndexAsyncClient.deleteSynonymMap&#40;synonymMapName&#41;.block&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.search.documents.indexes.SearchIndexAsyncClient-classLevelJavaDoc.deleteSynonymMap#String -->
+ *
+ * <em>
+ *     For a synchronous sample see {@link SearchIndexClient#deleteSynonymMap(String)}.
+ * </em>
+ *
+ * @see SearchIndexAsyncClient
  * @see SearchIndexClientBuilder
+ * @see com.azure.search.documents.indexes
  */
 @ServiceClient(builder = SearchIndexClientBuilder.class, isAsync = true)
 public final class SearchIndexAsyncClient {
@@ -58,7 +365,7 @@ public final class SearchIndexAsyncClient {
     private final SearchServiceVersion serviceVersion;
 
     /**
-     * The endpoint for the Azure Cognitive Search service.
+     * The endpoint for the Azure AI Search service.
      */
     private final String endpoint;
 
@@ -89,12 +396,12 @@ public final class SearchIndexAsyncClient {
      *
      * @return the pipeline.
      */
-    HttpPipeline getHttpPipeline() {
+    public HttpPipeline getHttpPipeline() {
         return this.httpPipeline;
     }
 
     /**
-     * Gets the endpoint for the Azure Cognitive Search service.
+     * Gets the endpoint for the Azure AI Search service.
      *
      * @return the endpoint value.
      */
@@ -125,7 +432,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search index.
+     * Creates a new Azure AI Search index.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -154,7 +461,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search index.
+     * Creates a new Azure AI Search index.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -195,7 +502,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Retrieves an index definition from the Azure Cognitive Search.
+     * Retrieves an index definition from the Azure AI Search.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -219,7 +526,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Retrieves an index definition from the Azure Cognitive Search.
+     * Retrieves an index definition from the Azure AI Search.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -313,7 +620,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Lists all indexes available for an Azure Cognitive Search service.
+     * Lists all indexes available for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -340,7 +647,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Lists all indexes names for an Azure Cognitive Search service.
+     * Lists all indexes names for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -372,7 +679,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search index or updates an index if it already exists.
+     * Creates a new Azure AI Search index or updates an index if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -399,7 +706,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search index or updates an index if it already exists.
+     * Creates a new Azure AI Search index or updates an index if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -449,7 +756,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Deletes an Azure Cognitive Search index and all the documents it contains.
+     * Deletes an Azure AI Search index and all the documents it contains.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -471,7 +778,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Deletes an Azure Cognitive Search index and all the documents it contains.
+     * Deletes an Azure AI Search index and all the documents it contains.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -551,7 +858,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search synonym map.
+     * Creates a new Azure AI Search synonym map.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -577,7 +884,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search synonym map.
+     * Creates a new Azure AI Search synonym map.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -674,7 +981,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Lists all synonym maps available for an Azure Cognitive Search service.
+     * Lists all synonym maps available for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -701,7 +1008,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Lists all synonym map names for an Azure Cognitive Search service.
+     * Lists all synonym map names for an Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -733,7 +1040,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search synonym map or updates a synonym map if it already exists.
+     * Creates a new Azure AI Search synonym map or updates a synonym map if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -760,7 +1067,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search synonym map or updates a synonym map if it already exists.
+     * Creates a new Azure AI Search synonym map or updates a synonym map if it already exists.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -807,7 +1114,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Deletes an Azure Cognitive Search synonym map.
+     * Deletes an Azure AI Search synonym map.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -830,7 +1137,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Deletes an Azure Cognitive Search synonym map.
+     * Deletes an Azure AI Search synonym map.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -944,7 +1251,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search alias.
+     * Creates a new Azure AI Search alias.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -966,7 +1273,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Creates a new Azure Cognitive Search alias.
+     * Creates a new Azure AI Search alias.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -998,7 +1305,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Creates or updates an Azure Cognitive Search alias.
+     * Creates or updates an Azure AI Search alias.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1027,7 +1334,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Creates or updates an Azure Cognitive Search alias.
+     * Creates or updates an Azure AI Search alias.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1073,7 +1380,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Gets the Azure Cognitive Search alias.
+     * Gets the Azure AI Search alias.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1095,7 +1402,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Gets the Azure Cognitive Search alias.
+     * Gets the Azure AI Search alias.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1126,7 +1433,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Deletes the Azure Cognitive Search alias.
+     * Deletes the Azure AI Search alias.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1147,7 +1454,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Deletes the Azure Cognitive Search alias.
+     * Deletes the Azure AI Search alias.
      *
      * <p><strong>Code Sample</strong></p>
      *
@@ -1184,7 +1491,7 @@ public final class SearchIndexAsyncClient {
     }
 
     /**
-     * Lists all aliases in the Azure Cognitive Search service.
+     * Lists all aliases in the Azure AI Search service.
      *
      * <p><strong>Code Sample</strong></p>
      *

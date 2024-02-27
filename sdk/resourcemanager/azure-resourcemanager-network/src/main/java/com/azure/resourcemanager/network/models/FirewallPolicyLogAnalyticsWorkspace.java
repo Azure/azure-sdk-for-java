@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Log Analytics Workspace for Firewall Policy Insights. */
+/**
+ * Log Analytics Workspace for Firewall Policy Insights.
+ */
 @Fluent
 public final class FirewallPolicyLogAnalyticsWorkspace {
     /*
@@ -23,13 +25,15 @@ public final class FirewallPolicyLogAnalyticsWorkspace {
     @JsonProperty(value = "workspaceId")
     private SubResource workspaceId;
 
-    /** Creates an instance of FirewallPolicyLogAnalyticsWorkspace class. */
+    /**
+     * Creates an instance of FirewallPolicyLogAnalyticsWorkspace class.
+     */
     public FirewallPolicyLogAnalyticsWorkspace() {
     }
 
     /**
      * Get the region property: Region to configure the Workspace.
-     *
+     * 
      * @return the region value.
      */
     public String region() {
@@ -38,7 +42,7 @@ public final class FirewallPolicyLogAnalyticsWorkspace {
 
     /**
      * Set the region property: Region to configure the Workspace.
-     *
+     * 
      * @param region the region value to set.
      * @return the FirewallPolicyLogAnalyticsWorkspace object itself.
      */
@@ -49,7 +53,7 @@ public final class FirewallPolicyLogAnalyticsWorkspace {
 
     /**
      * Get the workspaceId property: The workspace Id for Firewall Policy Insights.
-     *
+     * 
      * @return the workspaceId value.
      */
     public SubResource workspaceId() {
@@ -58,7 +62,7 @@ public final class FirewallPolicyLogAnalyticsWorkspace {
 
     /**
      * Set the workspaceId property: The workspace Id for Firewall Policy Insights.
-     *
+     * 
      * @param workspaceId the workspaceId value to set.
      * @return the FirewallPolicyLogAnalyticsWorkspace object itself.
      */
@@ -69,7 +73,7 @@ public final class FirewallPolicyLogAnalyticsWorkspace {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

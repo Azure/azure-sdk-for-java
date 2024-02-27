@@ -7,6 +7,7 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.models.DelegationProperties;
+import com.azure.resourcemanager.network.models.InternetIngressPublicIpsProperties;
 import com.azure.resourcemanager.network.models.PartnerManagedResourceProperties;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.azure.resourcemanager.network.models.VirtualApplianceAdditionalNicProperties;
@@ -15,7 +16,9 @@ import com.azure.resourcemanager.network.models.VirtualApplianceSkuProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Network Virtual Appliance definition. */
+/**
+ * Network Virtual Appliance definition.
+ */
 @Fluent
 public final class NetworkVirtualAppliancePropertiesFormat {
     /*
@@ -79,6 +82,12 @@ public final class NetworkVirtualAppliancePropertiesFormat {
     private List<VirtualApplianceAdditionalNicProperties> additionalNics;
 
     /*
+     * List of Resource Uri of Public IPs for Internet Ingress Scenario.
+     */
+    @JsonProperty(value = "internetIngressPublicIps")
+    private List<InternetIngressPublicIpsProperties> internetIngressPublicIps;
+
+    /*
      * List of references to VirtualApplianceSite.
      */
     @JsonProperty(value = "virtualApplianceSites", access = JsonProperty.Access.WRITE_ONLY)
@@ -120,13 +129,15 @@ public final class NetworkVirtualAppliancePropertiesFormat {
     @JsonProperty(value = "partnerManagedResource")
     private PartnerManagedResourceProperties partnerManagedResource;
 
-    /** Creates an instance of NetworkVirtualAppliancePropertiesFormat class. */
+    /**
+     * Creates an instance of NetworkVirtualAppliancePropertiesFormat class.
+     */
     public NetworkVirtualAppliancePropertiesFormat() {
     }
 
     /**
      * Get the nvaSku property: Network Virtual Appliance SKU.
-     *
+     * 
      * @return the nvaSku value.
      */
     public VirtualApplianceSkuProperties nvaSku() {
@@ -135,7 +146,7 @@ public final class NetworkVirtualAppliancePropertiesFormat {
 
     /**
      * Set the nvaSku property: Network Virtual Appliance SKU.
-     *
+     * 
      * @param nvaSku the nvaSku value to set.
      * @return the NetworkVirtualAppliancePropertiesFormat object itself.
      */
@@ -146,7 +157,7 @@ public final class NetworkVirtualAppliancePropertiesFormat {
 
     /**
      * Get the addressPrefix property: Address Prefix.
-     *
+     * 
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
@@ -155,7 +166,7 @@ public final class NetworkVirtualAppliancePropertiesFormat {
 
     /**
      * Get the bootStrapConfigurationBlobs property: BootStrapConfigurationBlobs storage URLs.
-     *
+     * 
      * @return the bootStrapConfigurationBlobs value.
      */
     public List<String> bootStrapConfigurationBlobs() {
@@ -164,19 +175,19 @@ public final class NetworkVirtualAppliancePropertiesFormat {
 
     /**
      * Set the bootStrapConfigurationBlobs property: BootStrapConfigurationBlobs storage URLs.
-     *
+     * 
      * @param bootStrapConfigurationBlobs the bootStrapConfigurationBlobs value to set.
      * @return the NetworkVirtualAppliancePropertiesFormat object itself.
      */
-    public NetworkVirtualAppliancePropertiesFormat withBootStrapConfigurationBlobs(
-        List<String> bootStrapConfigurationBlobs) {
+    public NetworkVirtualAppliancePropertiesFormat
+        withBootStrapConfigurationBlobs(List<String> bootStrapConfigurationBlobs) {
         this.bootStrapConfigurationBlobs = bootStrapConfigurationBlobs;
         return this;
     }
 
     /**
      * Get the virtualHub property: The Virtual Hub where Network Virtual Appliance is being deployed.
-     *
+     * 
      * @return the virtualHub value.
      */
     public SubResource virtualHub() {
@@ -185,7 +196,7 @@ public final class NetworkVirtualAppliancePropertiesFormat {
 
     /**
      * Set the virtualHub property: The Virtual Hub where Network Virtual Appliance is being deployed.
-     *
+     * 
      * @param virtualHub the virtualHub value to set.
      * @return the NetworkVirtualAppliancePropertiesFormat object itself.
      */
@@ -196,7 +207,7 @@ public final class NetworkVirtualAppliancePropertiesFormat {
 
     /**
      * Get the cloudInitConfigurationBlobs property: CloudInitConfigurationBlob storage URLs.
-     *
+     * 
      * @return the cloudInitConfigurationBlobs value.
      */
     public List<String> cloudInitConfigurationBlobs() {
@@ -205,19 +216,19 @@ public final class NetworkVirtualAppliancePropertiesFormat {
 
     /**
      * Set the cloudInitConfigurationBlobs property: CloudInitConfigurationBlob storage URLs.
-     *
+     * 
      * @param cloudInitConfigurationBlobs the cloudInitConfigurationBlobs value to set.
      * @return the NetworkVirtualAppliancePropertiesFormat object itself.
      */
-    public NetworkVirtualAppliancePropertiesFormat withCloudInitConfigurationBlobs(
-        List<String> cloudInitConfigurationBlobs) {
+    public NetworkVirtualAppliancePropertiesFormat
+        withCloudInitConfigurationBlobs(List<String> cloudInitConfigurationBlobs) {
         this.cloudInitConfigurationBlobs = cloudInitConfigurationBlobs;
         return this;
     }
 
     /**
      * Get the cloudInitConfiguration property: CloudInitConfiguration string in plain text.
-     *
+     * 
      * @return the cloudInitConfiguration value.
      */
     public String cloudInitConfiguration() {
@@ -226,7 +237,7 @@ public final class NetworkVirtualAppliancePropertiesFormat {
 
     /**
      * Set the cloudInitConfiguration property: CloudInitConfiguration string in plain text.
-     *
+     * 
      * @param cloudInitConfiguration the cloudInitConfiguration value to set.
      * @return the NetworkVirtualAppliancePropertiesFormat object itself.
      */
@@ -238,7 +249,7 @@ public final class NetworkVirtualAppliancePropertiesFormat {
     /**
      * Get the virtualApplianceAsn property: VirtualAppliance ASN. Microsoft private, public and IANA reserved ASN are
      * not supported.
-     *
+     * 
      * @return the virtualApplianceAsn value.
      */
     public Long virtualApplianceAsn() {
@@ -248,7 +259,7 @@ public final class NetworkVirtualAppliancePropertiesFormat {
     /**
      * Set the virtualApplianceAsn property: VirtualAppliance ASN. Microsoft private, public and IANA reserved ASN are
      * not supported.
-     *
+     * 
      * @param virtualApplianceAsn the virtualApplianceAsn value to set.
      * @return the NetworkVirtualAppliancePropertiesFormat object itself.
      */
@@ -259,7 +270,7 @@ public final class NetworkVirtualAppliancePropertiesFormat {
 
     /**
      * Get the sshPublicKey property: Public key for SSH login.
-     *
+     * 
      * @return the sshPublicKey value.
      */
     public String sshPublicKey() {
@@ -268,7 +279,7 @@ public final class NetworkVirtualAppliancePropertiesFormat {
 
     /**
      * Set the sshPublicKey property: Public key for SSH login.
-     *
+     * 
      * @param sshPublicKey the sshPublicKey value to set.
      * @return the NetworkVirtualAppliancePropertiesFormat object itself.
      */
@@ -279,7 +290,7 @@ public final class NetworkVirtualAppliancePropertiesFormat {
 
     /**
      * Get the virtualApplianceNics property: List of Virtual Appliance Network Interfaces.
-     *
+     * 
      * @return the virtualApplianceNics value.
      */
     public List<VirtualApplianceNicProperties> virtualApplianceNics() {
@@ -288,7 +299,7 @@ public final class NetworkVirtualAppliancePropertiesFormat {
 
     /**
      * Get the additionalNics property: Details required for Additional Network Interface.
-     *
+     * 
      * @return the additionalNics value.
      */
     public List<VirtualApplianceAdditionalNicProperties> additionalNics() {
@@ -297,19 +308,40 @@ public final class NetworkVirtualAppliancePropertiesFormat {
 
     /**
      * Set the additionalNics property: Details required for Additional Network Interface.
-     *
+     * 
      * @param additionalNics the additionalNics value to set.
      * @return the NetworkVirtualAppliancePropertiesFormat object itself.
      */
-    public NetworkVirtualAppliancePropertiesFormat withAdditionalNics(
-        List<VirtualApplianceAdditionalNicProperties> additionalNics) {
+    public NetworkVirtualAppliancePropertiesFormat
+        withAdditionalNics(List<VirtualApplianceAdditionalNicProperties> additionalNics) {
         this.additionalNics = additionalNics;
         return this;
     }
 
     /**
+     * Get the internetIngressPublicIps property: List of Resource Uri of Public IPs for Internet Ingress Scenario.
+     * 
+     * @return the internetIngressPublicIps value.
+     */
+    public List<InternetIngressPublicIpsProperties> internetIngressPublicIps() {
+        return this.internetIngressPublicIps;
+    }
+
+    /**
+     * Set the internetIngressPublicIps property: List of Resource Uri of Public IPs for Internet Ingress Scenario.
+     * 
+     * @param internetIngressPublicIps the internetIngressPublicIps value to set.
+     * @return the NetworkVirtualAppliancePropertiesFormat object itself.
+     */
+    public NetworkVirtualAppliancePropertiesFormat
+        withInternetIngressPublicIps(List<InternetIngressPublicIpsProperties> internetIngressPublicIps) {
+        this.internetIngressPublicIps = internetIngressPublicIps;
+        return this;
+    }
+
+    /**
      * Get the virtualApplianceSites property: List of references to VirtualApplianceSite.
-     *
+     * 
      * @return the virtualApplianceSites value.
      */
     public List<SubResource> virtualApplianceSites() {
@@ -318,7 +350,7 @@ public final class NetworkVirtualAppliancePropertiesFormat {
 
     /**
      * Get the virtualApplianceConnections property: List of references to VirtualApplianceConnections.
-     *
+     * 
      * @return the virtualApplianceConnections value.
      */
     public List<SubResource> virtualApplianceConnections() {
@@ -327,7 +359,7 @@ public final class NetworkVirtualAppliancePropertiesFormat {
 
     /**
      * Get the inboundSecurityRules property: List of references to InboundSecurityRules.
-     *
+     * 
      * @return the inboundSecurityRules value.
      */
     public List<SubResource> inboundSecurityRules() {
@@ -336,7 +368,7 @@ public final class NetworkVirtualAppliancePropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -345,7 +377,7 @@ public final class NetworkVirtualAppliancePropertiesFormat {
 
     /**
      * Get the deploymentType property: The deployment type. PartnerManaged for the SaaS NVA.
-     *
+     * 
      * @return the deploymentType value.
      */
     public String deploymentType() {
@@ -354,7 +386,7 @@ public final class NetworkVirtualAppliancePropertiesFormat {
 
     /**
      * Get the delegation property: The delegation for the Virtual Appliance.
-     *
+     * 
      * @return the delegation value.
      */
     public DelegationProperties delegation() {
@@ -363,7 +395,7 @@ public final class NetworkVirtualAppliancePropertiesFormat {
 
     /**
      * Set the delegation property: The delegation for the Virtual Appliance.
-     *
+     * 
      * @param delegation the delegation value to set.
      * @return the NetworkVirtualAppliancePropertiesFormat object itself.
      */
@@ -374,7 +406,7 @@ public final class NetworkVirtualAppliancePropertiesFormat {
 
     /**
      * Get the partnerManagedResource property: The delegation for the Virtual Appliance.
-     *
+     * 
      * @return the partnerManagedResource value.
      */
     public PartnerManagedResourceProperties partnerManagedResource() {
@@ -383,19 +415,19 @@ public final class NetworkVirtualAppliancePropertiesFormat {
 
     /**
      * Set the partnerManagedResource property: The delegation for the Virtual Appliance.
-     *
+     * 
      * @param partnerManagedResource the partnerManagedResource value to set.
      * @return the NetworkVirtualAppliancePropertiesFormat object itself.
      */
-    public NetworkVirtualAppliancePropertiesFormat withPartnerManagedResource(
-        PartnerManagedResourceProperties partnerManagedResource) {
+    public NetworkVirtualAppliancePropertiesFormat
+        withPartnerManagedResource(PartnerManagedResourceProperties partnerManagedResource) {
         this.partnerManagedResource = partnerManagedResource;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -407,6 +439,9 @@ public final class NetworkVirtualAppliancePropertiesFormat {
         }
         if (additionalNics() != null) {
             additionalNics().forEach(e -> e.validate());
+        }
+        if (internetIngressPublicIps() != null) {
+            internetIngressPublicIps().forEach(e -> e.validate());
         }
         if (delegation() != null) {
             delegation().validate();

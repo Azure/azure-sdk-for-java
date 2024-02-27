@@ -16,7 +16,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The application resource. */
+/**
+ * The application resource.
+ */
 @Fluent
 public final class ApplicationResourceInner extends ProxyResource {
     /*
@@ -56,13 +58,15 @@ public final class ApplicationResourceInner extends ProxyResource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of ApplicationResourceInner class. */
+    /**
+     * Creates an instance of ApplicationResourceInner class.
+     */
     public ApplicationResourceInner() {
     }
 
     /**
      * Get the identity property: Describes the managed identities for an Azure resource.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedIdentity identity() {
@@ -71,7 +75,7 @@ public final class ApplicationResourceInner extends ProxyResource {
 
     /**
      * Set the identity property: Describes the managed identities for an Azure resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the ApplicationResourceInner object itself.
      */
@@ -82,7 +86,7 @@ public final class ApplicationResourceInner extends ProxyResource {
 
     /**
      * Get the innerProperties property: The application resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationResourceProperties innerProperties() {
@@ -91,7 +95,7 @@ public final class ApplicationResourceInner extends ProxyResource {
 
     /**
      * Get the location property: It will be deprecated in New API, resource location depends on the parent resource.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -100,7 +104,7 @@ public final class ApplicationResourceInner extends ProxyResource {
 
     /**
      * Set the location property: It will be deprecated in New API, resource location depends on the parent resource.
-     *
+     * 
      * @param location the location value to set.
      * @return the ApplicationResourceInner object itself.
      */
@@ -111,7 +115,7 @@ public final class ApplicationResourceInner extends ProxyResource {
 
     /**
      * Get the tags property: Azure resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -120,7 +124,7 @@ public final class ApplicationResourceInner extends ProxyResource {
 
     /**
      * Set the tags property: Azure resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ApplicationResourceInner object itself.
      */
@@ -131,7 +135,7 @@ public final class ApplicationResourceInner extends ProxyResource {
 
     /**
      * Get the etag property: Azure resource etag.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -140,7 +144,7 @@ public final class ApplicationResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -150,7 +154,7 @@ public final class ApplicationResourceInner extends ProxyResource {
     /**
      * Get the provisioningState property: The current deployment or provisioning state, which only appears in the
      * response.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -159,7 +163,7 @@ public final class ApplicationResourceInner extends ProxyResource {
 
     /**
      * Get the typeName property: The application type name as defined in the application manifest.
-     *
+     * 
      * @return the typeName value.
      */
     public String typeName() {
@@ -168,7 +172,7 @@ public final class ApplicationResourceInner extends ProxyResource {
 
     /**
      * Set the typeName property: The application type name as defined in the application manifest.
-     *
+     * 
      * @param typeName the typeName value to set.
      * @return the ApplicationResourceInner object itself.
      */
@@ -182,7 +186,7 @@ public final class ApplicationResourceInner extends ProxyResource {
 
     /**
      * Get the typeVersion property: The version of the application type as defined in the application manifest.
-     *
+     * 
      * @return the typeVersion value.
      */
     public String typeVersion() {
@@ -191,7 +195,7 @@ public final class ApplicationResourceInner extends ProxyResource {
 
     /**
      * Set the typeVersion property: The version of the application type as defined in the application manifest.
-     *
+     * 
      * @param typeVersion the typeVersion value to set.
      * @return the ApplicationResourceInner object itself.
      */
@@ -206,7 +210,7 @@ public final class ApplicationResourceInner extends ProxyResource {
     /**
      * Get the parameters property: List of application parameters with overridden values from their default values
      * specified in the application manifest.
-     *
+     * 
      * @return the parameters value.
      */
     public Map<String, String> parameters() {
@@ -216,7 +220,7 @@ public final class ApplicationResourceInner extends ProxyResource {
     /**
      * Set the parameters property: List of application parameters with overridden values from their default values
      * specified in the application manifest.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the ApplicationResourceInner object itself.
      */
@@ -230,7 +234,7 @@ public final class ApplicationResourceInner extends ProxyResource {
 
     /**
      * Get the upgradePolicy property: Describes the policy for a monitored application upgrade.
-     *
+     * 
      * @return the upgradePolicy value.
      */
     public ApplicationUpgradePolicy upgradePolicy() {
@@ -239,7 +243,7 @@ public final class ApplicationResourceInner extends ProxyResource {
 
     /**
      * Set the upgradePolicy property: Describes the policy for a monitored application upgrade.
-     *
+     * 
      * @param upgradePolicy the upgradePolicy value to set.
      * @return the ApplicationResourceInner object itself.
      */
@@ -256,7 +260,7 @@ public final class ApplicationResourceInner extends ProxyResource {
      * application. Note that this does not mean that the services of this application will be placed on all of those
      * nodes. If this property is set to zero, no capacity will be reserved. The value of this property cannot be more
      * than the value of the MaximumNodes property.
-     *
+     * 
      * @return the minimumNodes value.
      */
     public Long minimumNodes() {
@@ -268,7 +272,7 @@ public final class ApplicationResourceInner extends ProxyResource {
      * application. Note that this does not mean that the services of this application will be placed on all of those
      * nodes. If this property is set to zero, no capacity will be reserved. The value of this property cannot be more
      * than the value of the MaximumNodes property.
-     *
+     * 
      * @param minimumNodes the minimumNodes value to set.
      * @return the ApplicationResourceInner object itself.
      */
@@ -284,7 +288,7 @@ public final class ApplicationResourceInner extends ProxyResource {
      * Get the maximumNodes property: The maximum number of nodes where Service Fabric will reserve capacity for this
      * application. Note that this does not mean that the services of this application will be placed on all of those
      * nodes. By default, the value of this property is zero and it means that the services can be placed on any node.
-     *
+     * 
      * @return the maximumNodes value.
      */
     public Long maximumNodes() {
@@ -295,7 +299,7 @@ public final class ApplicationResourceInner extends ProxyResource {
      * Set the maximumNodes property: The maximum number of nodes where Service Fabric will reserve capacity for this
      * application. Note that this does not mean that the services of this application will be placed on all of those
      * nodes. By default, the value of this property is zero and it means that the services can be placed on any node.
-     *
+     * 
      * @param maximumNodes the maximumNodes value to set.
      * @return the ApplicationResourceInner object itself.
      */
@@ -309,7 +313,7 @@ public final class ApplicationResourceInner extends ProxyResource {
 
     /**
      * Get the removeApplicationCapacity property: Remove the current application capacity settings.
-     *
+     * 
      * @return the removeApplicationCapacity value.
      */
     public Boolean removeApplicationCapacity() {
@@ -318,7 +322,7 @@ public final class ApplicationResourceInner extends ProxyResource {
 
     /**
      * Set the removeApplicationCapacity property: Remove the current application capacity settings.
-     *
+     * 
      * @param removeApplicationCapacity the removeApplicationCapacity value to set.
      * @return the ApplicationResourceInner object itself.
      */
@@ -332,7 +336,7 @@ public final class ApplicationResourceInner extends ProxyResource {
 
     /**
      * Get the metrics property: List of application capacity metric description.
-     *
+     * 
      * @return the metrics value.
      */
     public List<ApplicationMetricDescription> metrics() {
@@ -341,7 +345,7 @@ public final class ApplicationResourceInner extends ProxyResource {
 
     /**
      * Set the metrics property: List of application capacity metric description.
-     *
+     * 
      * @param metrics the metrics value to set.
      * @return the ApplicationResourceInner object itself.
      */
@@ -356,7 +360,7 @@ public final class ApplicationResourceInner extends ProxyResource {
     /**
      * Get the managedIdentities property: List of user assigned identities for the application, each mapped to a
      * friendly name.
-     *
+     * 
      * @return the managedIdentities value.
      */
     public List<ApplicationUserAssignedIdentity> managedIdentities() {
@@ -366,7 +370,7 @@ public final class ApplicationResourceInner extends ProxyResource {
     /**
      * Set the managedIdentities property: List of user assigned identities for the application, each mapped to a
      * friendly name.
-     *
+     * 
      * @param managedIdentities the managedIdentities value to set.
      * @return the ApplicationResourceInner object itself.
      */
@@ -380,7 +384,7 @@ public final class ApplicationResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

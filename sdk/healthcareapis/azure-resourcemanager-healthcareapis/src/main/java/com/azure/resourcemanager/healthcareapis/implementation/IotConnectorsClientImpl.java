@@ -40,22 +40,28 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in IotConnectorsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in IotConnectorsClient.
+ */
 public final class IotConnectorsClientImpl implements IotConnectorsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final IotConnectorsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final HealthcareApisManagementClientImpl client;
 
     /**
      * Initializes an instance of IotConnectorsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     IotConnectorsClientImpl(HealthcareApisManagementClientImpl client) {
-        this.service =
-            RestProxy.create(IotConnectorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(IotConnectorsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -65,102 +71,70 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      */
     @Host("{$host}")
     @ServiceInterface(name = "HealthcareApisManage")
-    private interface IotConnectorsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis"
-                + "/workspaces/{workspaceName}/iotconnectors")
-        @ExpectedResponses({200})
+    public interface IotConnectorsService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/iotconnectors")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<IotConnectorCollection>> listByWorkspace(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("workspaceName") String workspaceName,
-            @HeaderParam("Accept") String accept,
+        Mono<Response<IotConnectorCollection>> listByWorkspace(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("workspaceName") String workspaceName,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/iotconnectors/{iotConnectorName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<IotConnectorInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("workspaceName") String workspaceName,
+            @PathParam("iotConnectorName") String iotConnectorName, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis"
-                + "/workspaces/{workspaceName}/iotconnectors/{iotConnectorName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/iotconnectors/{iotConnectorName}")
+        @ExpectedResponses({ 200, 201, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<IotConnectorInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("workspaceName") String workspaceName,
+        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("workspaceName") String workspaceName,
             @PathParam("iotConnectorName") String iotConnectorName,
-            @HeaderParam("Accept") String accept,
+            @BodyParam("application/json") IotConnectorInner iotConnector, @HeaderParam("Accept") String accept,
             Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis"
-                + "/workspaces/{workspaceName}/iotconnectors/{iotConnectorName}")
-        @ExpectedResponses({200, 201, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/iotconnectors/{iotConnectorName}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> createOrUpdate(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("workspaceName") String workspaceName,
-            @PathParam("iotConnectorName") String iotConnectorName,
-            @BodyParam("application/json") IotConnectorInner iotConnector,
-            @HeaderParam("Accept") String accept,
-            Context context);
-
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis"
-                + "/workspaces/{workspaceName}/iotconnectors/{iotConnectorName}")
-        @ExpectedResponses({200, 202})
-        @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("iotConnectorName") String iotConnectorName,
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("iotConnectorName") String iotConnectorName,
             @PathParam("workspaceName") String workspaceName,
             @BodyParam("application/json") IotConnectorPatchResource iotConnectorPatchResource,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis"
-                + "/workspaces/{workspaceName}/iotconnectors/{iotConnectorName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/workspaces/{workspaceName}/iotconnectors/{iotConnectorName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
             @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("iotConnectorName") String iotConnectorName,
-            @PathParam("workspaceName") String workspaceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("iotConnectorName") String iotConnectorName, @PathParam("workspaceName") String workspaceName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<IotConnectorCollection>> listByWorkspaceNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Lists all IoT Connectors for the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -169,55 +143,35 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return a collection of IoT Connectors along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<IotConnectorInner>> listByWorkspaceSinglePageAsync(
-        String resourceGroupName, String workspaceName) {
+    private Mono<PagedResponse<IotConnectorInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
+        String workspaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByWorkspace(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            workspaceName,
-                            accept,
-                            context))
-            .<PagedResponse<IotConnectorInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByWorkspace(this.client.getEndpoint(), resourceGroupName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), workspaceName, accept, context))
+            .<PagedResponse<IotConnectorInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Lists all IoT Connectors for the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param context The context to associate with this operation.
@@ -227,23 +181,19 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return a collection of IoT Connectors along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<IotConnectorInner>> listByWorkspaceSinglePageAsync(
-        String resourceGroupName, String workspaceName, Context context) {
+    private Mono<PagedResponse<IotConnectorInner>> listByWorkspaceSinglePageAsync(String resourceGroupName,
+        String workspaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -251,28 +201,15 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByWorkspace(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                workspaceName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByWorkspace(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), workspaceName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Lists all IoT Connectors for the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -282,14 +219,13 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<IotConnectorInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName) {
-        return new PagedFlux<>(
-            () -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName),
+        return new PagedFlux<>(() -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName),
             nextLink -> listByWorkspaceNextSinglePageAsync(nextLink));
     }
 
     /**
      * Lists all IoT Connectors for the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param context The context to associate with this operation.
@@ -299,16 +235,15 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return a collection of IoT Connectors as paginated response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<IotConnectorInner> listByWorkspaceAsync(
-        String resourceGroupName, String workspaceName, Context context) {
-        return new PagedFlux<>(
-            () -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, context),
+    private PagedFlux<IotConnectorInner> listByWorkspaceAsync(String resourceGroupName, String workspaceName,
+        Context context) {
+        return new PagedFlux<>(() -> listByWorkspaceSinglePageAsync(resourceGroupName, workspaceName, context),
             nextLink -> listByWorkspaceNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Lists all IoT Connectors for the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -323,7 +258,7 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
 
     /**
      * Lists all IoT Connectors for the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param context The context to associate with this operation.
@@ -333,14 +268,14 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return a collection of IoT Connectors as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<IotConnectorInner> listByWorkspace(
-        String resourceGroupName, String workspaceName, Context context) {
+    public PagedIterable<IotConnectorInner> listByWorkspace(String resourceGroupName, String workspaceName,
+        Context context) {
         return new PagedIterable<>(listByWorkspaceAsync(resourceGroupName, workspaceName, context));
     }
 
     /**
      * Gets the properties of the specified IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -348,26 +283,22 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified IoT Connector along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IotConnectorInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String iotConnectorName) {
+    private Mono<Response<IotConnectorInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String iotConnectorName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -379,23 +310,14 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            workspaceName,
-                            iotConnectorName,
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), workspaceName, iotConnectorName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the properties of the specified IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -404,26 +326,22 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the properties of the specified IoT Connector along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<IotConnectorInner>> getWithResponseAsync(
-        String resourceGroupName, String workspaceName, String iotConnectorName, Context context) {
+    private Mono<Response<IotConnectorInner>> getWithResponseAsync(String resourceGroupName, String workspaceName,
+        String iotConnectorName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -434,21 +352,13 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                workspaceName,
-                iotConnectorName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), workspaceName, iotConnectorName, accept, context);
     }
 
     /**
      * Gets the properties of the specified IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -460,35 +370,12 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<IotConnectorInner> getAsync(String resourceGroupName, String workspaceName, String iotConnectorName) {
         return getWithResponseAsync(resourceGroupName, workspaceName, iotConnectorName)
-            .flatMap(
-                (Response<IotConnectorInner> res) -> {
-                    if (res.getValue() != null) {
-                        return Mono.just(res.getValue());
-                    } else {
-                        return Mono.empty();
-                    }
-                });
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets the properties of the specified IoT Connector.
-     *
-     * @param resourceGroupName The name of the resource group that contains the service instance.
-     * @param workspaceName The name of workspace resource.
-     * @param iotConnectorName The name of IoT Connector resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified IoT Connector.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public IotConnectorInner get(String resourceGroupName, String workspaceName, String iotConnectorName) {
-        return getAsync(resourceGroupName, workspaceName, iotConnectorName).block();
-    }
-
-    /**
-     * Gets the properties of the specified IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -499,14 +386,30 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return the properties of the specified IoT Connector along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<IotConnectorInner> getWithResponse(
-        String resourceGroupName, String workspaceName, String iotConnectorName, Context context) {
+    public Response<IotConnectorInner> getWithResponse(String resourceGroupName, String workspaceName,
+        String iotConnectorName, Context context) {
         return getWithResponseAsync(resourceGroupName, workspaceName, iotConnectorName, context).block();
     }
 
     /**
+     * Gets the properties of the specified IoT Connector.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the service instance.
+     * @param workspaceName The name of workspace resource.
+     * @param iotConnectorName The name of IoT Connector resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified IoT Connector.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public IotConnectorInner get(String resourceGroupName, String workspaceName, String iotConnectorName) {
+        return getWithResponse(resourceGroupName, workspaceName, iotConnectorName, Context.NONE).getValue();
+    }
+
+    /**
      * Creates or updates an IoT Connector resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -517,23 +420,19 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return ioT Connector definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String workspaceName, String iotConnectorName, IotConnectorInner iotConnector) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String iotConnectorName, IotConnectorInner iotConnector) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -549,25 +448,15 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            workspaceName,
-                            iotConnectorName,
-                            iotConnector,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), resourceGroupName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), workspaceName, iotConnectorName,
+                iotConnector, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates an IoT Connector resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -579,27 +468,19 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return ioT Connector definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        IotConnectorInner iotConnector,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String workspaceName, String iotConnectorName, IotConnectorInner iotConnector, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (workspaceName == null) {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
@@ -615,22 +496,13 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                workspaceName,
-                iotConnectorName,
-                iotConnector,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), workspaceName, iotConnectorName, iotConnector, accept, context);
     }
 
     /**
      * Creates or updates an IoT Connector resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -643,21 +515,15 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IotConnectorInner>, IotConnectorInner> beginCreateOrUpdateAsync(
         String resourceGroupName, String workspaceName, String iotConnectorName, IotConnectorInner iotConnector) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, iotConnectorName, iotConnector);
-        return this
-            .client
-            .<IotConnectorInner, IotConnectorInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                IotConnectorInner.class,
-                IotConnectorInner.class,
-                this.client.getContext());
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, iotConnectorName, iotConnector);
+        return this.client.<IotConnectorInner, IotConnectorInner>getLroResult(mono, this.client.getHttpPipeline(),
+            IotConnectorInner.class, IotConnectorInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates an IoT Connector resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -670,23 +536,18 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     private PollerFlux<PollResult<IotConnectorInner>, IotConnectorInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        IotConnectorInner iotConnector,
+        String resourceGroupName, String workspaceName, String iotConnectorName, IotConnectorInner iotConnector,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createOrUpdateWithResponseAsync(resourceGroupName, workspaceName, iotConnectorName, iotConnector, context);
-        return this
-            .client
-            .<IotConnectorInner, IotConnectorInner>getLroResult(
-                mono, this.client.getHttpPipeline(), IotConnectorInner.class, IotConnectorInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = createOrUpdateWithResponseAsync(resourceGroupName, workspaceName,
+            iotConnectorName, iotConnector, context);
+        return this.client.<IotConnectorInner, IotConnectorInner>getLroResult(mono, this.client.getHttpPipeline(),
+            IotConnectorInner.class, IotConnectorInner.class, context);
     }
 
     /**
      * Creates or updates an IoT Connector resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -697,15 +558,15 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return the {@link SyncPoller} for polling of ioT Connector definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<IotConnectorInner>, IotConnectorInner> beginCreateOrUpdate(
-        String resourceGroupName, String workspaceName, String iotConnectorName, IotConnectorInner iotConnector) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, iotConnectorName, iotConnector)
+    public SyncPoller<PollResult<IotConnectorInner>, IotConnectorInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String iotConnectorName, IotConnectorInner iotConnector) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, iotConnectorName, iotConnector)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates an IoT Connector resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -717,19 +578,15 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return the {@link SyncPoller} for polling of ioT Connector definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<IotConnectorInner>, IotConnectorInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        IotConnectorInner iotConnector,
-        Context context) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, iotConnectorName, iotConnector, context)
+    public SyncPoller<PollResult<IotConnectorInner>, IotConnectorInner> beginCreateOrUpdate(String resourceGroupName,
+        String workspaceName, String iotConnectorName, IotConnectorInner iotConnector, Context context) {
+        return this.beginCreateOrUpdateAsync(resourceGroupName, workspaceName, iotConnectorName, iotConnector, context)
             .getSyncPoller();
     }
 
     /**
      * Creates or updates an IoT Connector resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -740,16 +597,15 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return ioT Connector definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IotConnectorInner> createOrUpdateAsync(
-        String resourceGroupName, String workspaceName, String iotConnectorName, IotConnectorInner iotConnector) {
-        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, iotConnectorName, iotConnector)
-            .last()
+    private Mono<IotConnectorInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String iotConnectorName, IotConnectorInner iotConnector) {
+        return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, iotConnectorName, iotConnector).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates an IoT Connector resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -761,20 +617,15 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return ioT Connector definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IotConnectorInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        IotConnectorInner iotConnector,
-        Context context) {
+    private Mono<IotConnectorInner> createOrUpdateAsync(String resourceGroupName, String workspaceName,
+        String iotConnectorName, IotConnectorInner iotConnector, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, workspaceName, iotConnectorName, iotConnector, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates an IoT Connector resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -785,14 +636,14 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return ioT Connector definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IotConnectorInner createOrUpdate(
-        String resourceGroupName, String workspaceName, String iotConnectorName, IotConnectorInner iotConnector) {
+    public IotConnectorInner createOrUpdate(String resourceGroupName, String workspaceName, String iotConnectorName,
+        IotConnectorInner iotConnector) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, iotConnectorName, iotConnector).block();
     }
 
     /**
      * Creates or updates an IoT Connector resource with the specified parameters.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -804,18 +655,14 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return ioT Connector definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IotConnectorInner createOrUpdate(
-        String resourceGroupName,
-        String workspaceName,
-        String iotConnectorName,
-        IotConnectorInner iotConnector,
-        Context context) {
+    public IotConnectorInner createOrUpdate(String resourceGroupName, String workspaceName, String iotConnectorName,
+        IotConnectorInner iotConnector, Context context) {
         return createOrUpdateAsync(resourceGroupName, workspaceName, iotConnectorName, iotConnector, context).block();
     }
 
     /**
      * Patch an IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param iotConnectorName The name of IoT Connector resource.
      * @param workspaceName The name of workspace resource.
@@ -826,26 +673,19 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return ioT Connector definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String iotConnectorName,
-        String workspaceName,
-        IotConnectorPatchResource iotConnectorPatchResource) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String iotConnectorName,
+        String workspaceName, IotConnectorPatchResource iotConnectorPatchResource) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (iotConnectorName == null) {
             return Mono
@@ -855,34 +695,22 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (iotConnectorPatchResource == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter iotConnectorPatchResource is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter iotConnectorPatchResource is required and cannot be null."));
         } else {
             iotConnectorPatchResource.validate();
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            iotConnectorName,
-                            workspaceName,
-                            iotConnectorPatchResource,
-                            accept,
-                            context))
+            .withContext(context -> service.update(this.client.getEndpoint(), resourceGroupName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), iotConnectorName, workspaceName,
+                iotConnectorPatchResource, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Patch an IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param iotConnectorName The name of IoT Connector resource.
      * @param workspaceName The name of workspace resource.
@@ -894,27 +722,19 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return ioT Connector definition along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(
-        String resourceGroupName,
-        String iotConnectorName,
-        String workspaceName,
-        IotConnectorPatchResource iotConnectorPatchResource,
-        Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String iotConnectorName,
+        String workspaceName, IotConnectorPatchResource iotConnectorPatchResource, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (iotConnectorName == null) {
             return Mono
@@ -924,31 +744,21 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
             return Mono.error(new IllegalArgumentException("Parameter workspaceName is required and cannot be null."));
         }
         if (iotConnectorPatchResource == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter iotConnectorPatchResource is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter iotConnectorPatchResource is required and cannot be null."));
         } else {
             iotConnectorPatchResource.validate();
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                iotConnectorName,
-                workspaceName,
-                iotConnectorPatchResource,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), iotConnectorName, workspaceName, iotConnectorPatchResource, accept,
+            context);
     }
 
     /**
      * Patch an IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param iotConnectorName The name of IoT Connector resource.
      * @param workspaceName The name of workspace resource.
@@ -959,26 +769,17 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return the {@link PollerFlux} for polling of ioT Connector definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<IotConnectorInner>, IotConnectorInner> beginUpdateAsync(
-        String resourceGroupName,
-        String iotConnectorName,
-        String workspaceName,
-        IotConnectorPatchResource iotConnectorPatchResource) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(resourceGroupName, iotConnectorName, workspaceName, iotConnectorPatchResource);
-        return this
-            .client
-            .<IotConnectorInner, IotConnectorInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                IotConnectorInner.class,
-                IotConnectorInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<IotConnectorInner>, IotConnectorInner> beginUpdateAsync(String resourceGroupName,
+        String iotConnectorName, String workspaceName, IotConnectorPatchResource iotConnectorPatchResource) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, iotConnectorName, workspaceName, iotConnectorPatchResource);
+        return this.client.<IotConnectorInner, IotConnectorInner>getLroResult(mono, this.client.getHttpPipeline(),
+            IotConnectorInner.class, IotConnectorInner.class, this.client.getContext());
     }
 
     /**
      * Patch an IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param iotConnectorName The name of IoT Connector resource.
      * @param workspaceName The name of workspace resource.
@@ -990,71 +791,60 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return the {@link PollerFlux} for polling of ioT Connector definition.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<IotConnectorInner>, IotConnectorInner> beginUpdateAsync(
-        String resourceGroupName,
-        String iotConnectorName,
-        String workspaceName,
-        IotConnectorPatchResource iotConnectorPatchResource,
+    private PollerFlux<PollResult<IotConnectorInner>, IotConnectorInner> beginUpdateAsync(String resourceGroupName,
+        String iotConnectorName, String workspaceName, IotConnectorPatchResource iotConnectorPatchResource,
         Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            updateWithResponseAsync(
-                resourceGroupName, iotConnectorName, workspaceName, iotConnectorPatchResource, context);
+        Mono<Response<Flux<ByteBuffer>>> mono = updateWithResponseAsync(resourceGroupName, iotConnectorName,
+            workspaceName, iotConnectorPatchResource, context);
+        return this.client.<IotConnectorInner, IotConnectorInner>getLroResult(mono, this.client.getHttpPipeline(),
+            IotConnectorInner.class, IotConnectorInner.class, context);
+    }
+
+    /**
+     * Patch an IoT Connector.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the service instance.
+     * @param iotConnectorName The name of IoT Connector resource.
+     * @param workspaceName The name of workspace resource.
+     * @param iotConnectorPatchResource The parameters for updating an IoT Connector.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of ioT Connector definition.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<IotConnectorInner>, IotConnectorInner> beginUpdate(String resourceGroupName,
+        String iotConnectorName, String workspaceName, IotConnectorPatchResource iotConnectorPatchResource) {
+        return this.beginUpdateAsync(resourceGroupName, iotConnectorName, workspaceName, iotConnectorPatchResource)
+            .getSyncPoller();
+    }
+
+    /**
+     * Patch an IoT Connector.
+     * 
+     * @param resourceGroupName The name of the resource group that contains the service instance.
+     * @param iotConnectorName The name of IoT Connector resource.
+     * @param workspaceName The name of workspace resource.
+     * @param iotConnectorPatchResource The parameters for updating an IoT Connector.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of ioT Connector definition.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<IotConnectorInner>, IotConnectorInner> beginUpdate(String resourceGroupName,
+        String iotConnectorName, String workspaceName, IotConnectorPatchResource iotConnectorPatchResource,
+        Context context) {
         return this
-            .client
-            .<IotConnectorInner, IotConnectorInner>getLroResult(
-                mono, this.client.getHttpPipeline(), IotConnectorInner.class, IotConnectorInner.class, context);
-    }
-
-    /**
-     * Patch an IoT Connector.
-     *
-     * @param resourceGroupName The name of the resource group that contains the service instance.
-     * @param iotConnectorName The name of IoT Connector resource.
-     * @param workspaceName The name of workspace resource.
-     * @param iotConnectorPatchResource The parameters for updating an IoT Connector.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of ioT Connector definition.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<IotConnectorInner>, IotConnectorInner> beginUpdate(
-        String resourceGroupName,
-        String iotConnectorName,
-        String workspaceName,
-        IotConnectorPatchResource iotConnectorPatchResource) {
-        return beginUpdateAsync(resourceGroupName, iotConnectorName, workspaceName, iotConnectorPatchResource)
+            .beginUpdateAsync(resourceGroupName, iotConnectorName, workspaceName, iotConnectorPatchResource, context)
             .getSyncPoller();
     }
 
     /**
      * Patch an IoT Connector.
-     *
-     * @param resourceGroupName The name of the resource group that contains the service instance.
-     * @param iotConnectorName The name of IoT Connector resource.
-     * @param workspaceName The name of workspace resource.
-     * @param iotConnectorPatchResource The parameters for updating an IoT Connector.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the {@link SyncPoller} for polling of ioT Connector definition.
-     */
-    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<IotConnectorInner>, IotConnectorInner> beginUpdate(
-        String resourceGroupName,
-        String iotConnectorName,
-        String workspaceName,
-        IotConnectorPatchResource iotConnectorPatchResource,
-        Context context) {
-        return beginUpdateAsync(resourceGroupName, iotConnectorName, workspaceName, iotConnectorPatchResource, context)
-            .getSyncPoller();
-    }
-
-    /**
-     * Patch an IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param iotConnectorName The name of IoT Connector resource.
      * @param workspaceName The name of workspace resource.
@@ -1065,19 +855,15 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return ioT Connector definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IotConnectorInner> updateAsync(
-        String resourceGroupName,
-        String iotConnectorName,
-        String workspaceName,
+    private Mono<IotConnectorInner> updateAsync(String resourceGroupName, String iotConnectorName, String workspaceName,
         IotConnectorPatchResource iotConnectorPatchResource) {
-        return beginUpdateAsync(resourceGroupName, iotConnectorName, workspaceName, iotConnectorPatchResource)
-            .last()
+        return beginUpdateAsync(resourceGroupName, iotConnectorName, workspaceName, iotConnectorPatchResource).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Patch an IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param iotConnectorName The name of IoT Connector resource.
      * @param workspaceName The name of workspace resource.
@@ -1089,20 +875,15 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return ioT Connector definition on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<IotConnectorInner> updateAsync(
-        String resourceGroupName,
-        String iotConnectorName,
-        String workspaceName,
-        IotConnectorPatchResource iotConnectorPatchResource,
-        Context context) {
+    private Mono<IotConnectorInner> updateAsync(String resourceGroupName, String iotConnectorName, String workspaceName,
+        IotConnectorPatchResource iotConnectorPatchResource, Context context) {
         return beginUpdateAsync(resourceGroupName, iotConnectorName, workspaceName, iotConnectorPatchResource, context)
-            .last()
-            .flatMap(this.client::getLroFinalResultOrError);
+            .last().flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Patch an IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param iotConnectorName The name of IoT Connector resource.
      * @param workspaceName The name of workspace resource.
@@ -1113,17 +894,14 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return ioT Connector definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IotConnectorInner update(
-        String resourceGroupName,
-        String iotConnectorName,
-        String workspaceName,
+    public IotConnectorInner update(String resourceGroupName, String iotConnectorName, String workspaceName,
         IotConnectorPatchResource iotConnectorPatchResource) {
         return updateAsync(resourceGroupName, iotConnectorName, workspaceName, iotConnectorPatchResource).block();
     }
 
     /**
      * Patch an IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param iotConnectorName The name of IoT Connector resource.
      * @param workspaceName The name of workspace resource.
@@ -1135,19 +913,15 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return ioT Connector definition.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public IotConnectorInner update(
-        String resourceGroupName,
-        String iotConnectorName,
-        String workspaceName,
-        IotConnectorPatchResource iotConnectorPatchResource,
-        Context context) {
+    public IotConnectorInner update(String resourceGroupName, String iotConnectorName, String workspaceName,
+        IotConnectorPatchResource iotConnectorPatchResource, Context context) {
         return updateAsync(resourceGroupName, iotConnectorName, workspaceName, iotConnectorPatchResource, context)
             .block();
     }
 
     /**
      * Deletes an IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param iotConnectorName The name of IoT Connector resource.
      * @param workspaceName The name of workspace resource.
@@ -1157,19 +931,15 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String iotConnectorName, String workspaceName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String iotConnectorName,
+        String workspaceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1184,24 +954,14 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            iotConnectorName,
-                            workspaceName,
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), resourceGroupName, iotConnectorName, workspaceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes an IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param iotConnectorName The name of IoT Connector resource.
      * @param workspaceName The name of workspace resource.
@@ -1212,19 +972,15 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String iotConnectorName, String workspaceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String iotConnectorName,
+        String workspaceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -1239,21 +995,13 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                iotConnectorName,
-                workspaceName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            resourceGroupName, iotConnectorName, workspaceName, accept, context);
     }
 
     /**
      * Deletes an IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param iotConnectorName The name of IoT Connector resource.
      * @param workspaceName The name of workspace resource.
@@ -1263,19 +1011,17 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String iotConnectorName, String workspaceName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, iotConnectorName, workspaceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String iotConnectorName,
+        String workspaceName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, iotConnectorName, workspaceName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes an IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param iotConnectorName The name of IoT Connector resource.
      * @param workspaceName The name of workspace resource.
@@ -1286,19 +1032,18 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String iotConnectorName, String workspaceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String iotConnectorName,
+        String workspaceName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, iotConnectorName, workspaceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, iotConnectorName, workspaceName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes an IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param iotConnectorName The name of IoT Connector resource.
      * @param workspaceName The name of workspace resource.
@@ -1308,14 +1053,14 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String iotConnectorName, String workspaceName) {
-        return beginDeleteAsync(resourceGroupName, iotConnectorName, workspaceName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String iotConnectorName,
+        String workspaceName) {
+        return this.beginDeleteAsync(resourceGroupName, iotConnectorName, workspaceName).getSyncPoller();
     }
 
     /**
      * Deletes an IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param iotConnectorName The name of IoT Connector resource.
      * @param workspaceName The name of workspace resource.
@@ -1326,14 +1071,14 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String iotConnectorName, String workspaceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, iotConnectorName, workspaceName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String iotConnectorName,
+        String workspaceName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, iotConnectorName, workspaceName, context).getSyncPoller();
     }
 
     /**
      * Deletes an IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param iotConnectorName The name of IoT Connector resource.
      * @param workspaceName The name of workspace resource.
@@ -1344,14 +1089,13 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String iotConnectorName, String workspaceName) {
-        return beginDeleteAsync(resourceGroupName, iotConnectorName, workspaceName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, iotConnectorName, workspaceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param iotConnectorName The name of IoT Connector resource.
      * @param workspaceName The name of workspace resource.
@@ -1362,16 +1106,15 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String iotConnectorName, String workspaceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, iotConnectorName, workspaceName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String iotConnectorName, String workspaceName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, iotConnectorName, workspaceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes an IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param iotConnectorName The name of IoT Connector resource.
      * @param workspaceName The name of workspace resource.
@@ -1386,7 +1129,7 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
 
     /**
      * Deletes an IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param iotConnectorName The name of IoT Connector resource.
      * @param workspaceName The name of workspace resource.
@@ -1402,8 +1145,10 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1415,30 +1160,23 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<IotConnectorInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<IotConnectorInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
-     * @param nextLink The nextLink parameter.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1446,29 +1184,19 @@ public final class IotConnectorsClientImpl implements IotConnectorsClient {
      * @return a collection of IoT Connectors along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<IotConnectorInner>> listByWorkspaceNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<IotConnectorInner>> listByWorkspaceNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByWorkspaceNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

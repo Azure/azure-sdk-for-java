@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.fluent.models.ServiceAssociationLinkPro
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** ServiceAssociationLink resource. */
+/**
+ * ServiceAssociationLink resource.
+ */
 @Fluent
 public final class ServiceAssociationLink extends SubResource {
     /*
@@ -37,13 +39,15 @@ public final class ServiceAssociationLink extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ServiceAssociationLink class. */
+    /**
+     * Creates an instance of ServiceAssociationLink class.
+     */
     public ServiceAssociationLink() {
     }
 
     /**
      * Get the innerProperties property: Resource navigation link properties format.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ServiceAssociationLinkPropertiesFormat innerProperties() {
@@ -53,7 +57,7 @@ public final class ServiceAssociationLink extends SubResource {
     /**
      * Get the name property: Name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -63,7 +67,7 @@ public final class ServiceAssociationLink extends SubResource {
     /**
      * Set the name property: Name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the ServiceAssociationLink object itself.
      */
@@ -74,7 +78,7 @@ public final class ServiceAssociationLink extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -83,14 +87,16 @@ public final class ServiceAssociationLink extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ServiceAssociationLink withId(String id) {
         super.withId(id);
@@ -99,7 +105,7 @@ public final class ServiceAssociationLink extends SubResource {
 
     /**
      * Get the linkedResourceType property: Resource type of the linked resource.
-     *
+     * 
      * @return the linkedResourceType value.
      */
     public String linkedResourceType() {
@@ -108,7 +114,7 @@ public final class ServiceAssociationLink extends SubResource {
 
     /**
      * Set the linkedResourceType property: Resource type of the linked resource.
-     *
+     * 
      * @param linkedResourceType the linkedResourceType value to set.
      * @return the ServiceAssociationLink object itself.
      */
@@ -122,7 +128,7 @@ public final class ServiceAssociationLink extends SubResource {
 
     /**
      * Get the link property: Link to the external resource.
-     *
+     * 
      * @return the link value.
      */
     public String link() {
@@ -131,7 +137,7 @@ public final class ServiceAssociationLink extends SubResource {
 
     /**
      * Set the link property: Link to the external resource.
-     *
+     * 
      * @param link the link value to set.
      * @return the ServiceAssociationLink object itself.
      */
@@ -145,7 +151,7 @@ public final class ServiceAssociationLink extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the service association link resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -154,7 +160,7 @@ public final class ServiceAssociationLink extends SubResource {
 
     /**
      * Get the allowDelete property: If true, the resource can be deleted.
-     *
+     * 
      * @return the allowDelete value.
      */
     public Boolean allowDelete() {
@@ -163,7 +169,7 @@ public final class ServiceAssociationLink extends SubResource {
 
     /**
      * Set the allowDelete property: If true, the resource can be deleted.
-     *
+     * 
      * @param allowDelete the allowDelete value to set.
      * @return the ServiceAssociationLink object itself.
      */
@@ -177,7 +183,7 @@ public final class ServiceAssociationLink extends SubResource {
 
     /**
      * Get the locations property: A list of locations.
-     *
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -186,7 +192,7 @@ public final class ServiceAssociationLink extends SubResource {
 
     /**
      * Set the locations property: A list of locations.
-     *
+     * 
      * @param locations the locations value to set.
      * @return the ServiceAssociationLink object itself.
      */
@@ -200,7 +206,7 @@ public final class ServiceAssociationLink extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

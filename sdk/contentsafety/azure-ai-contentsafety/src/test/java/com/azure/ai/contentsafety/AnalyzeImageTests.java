@@ -4,7 +4,12 @@
 
 package com.azure.ai.contentsafety;
 
-import com.azure.ai.contentsafety.models.*;
+import com.azure.ai.contentsafety.models.AnalyzeImageOptions;
+import com.azure.ai.contentsafety.models.AnalyzeImageResult;
+import com.azure.ai.contentsafety.models.ContentSafetyImageData;
+import com.azure.ai.contentsafety.models.ImageCategoriesAnalysis;
+import com.azure.ai.contentsafety.models.ImageCategory;
+import com.azure.core.util.BinaryData;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
@@ -14,47 +19,94 @@ import java.nio.file.Paths;
 
 public final class AnalyzeImageTests extends ContentSafetyClientTestBase {
     @Test
-    public void testAnalyzeImageTests() throws IOException {
+    public void testAnalyzeImageAsyncWithContent() throws IOException {
         // method invocation
-        ImageData image = new ImageData();
+        ContentSafetyImageData image = new ContentSafetyImageData();
         String cwd = System.getProperty("user.dir");
-        String source = "/src/samples/resources/image.jpg";
-        image.setContent(Files.readAllBytes(Paths.get(cwd, source)));
+        String source = "/src/samples/resources/image.png";
+        image.setContent(BinaryData.fromBytes(Files.readAllBytes(Paths.get(cwd, source))));
 
         AnalyzeImageResult response =
-                contentSafetyClient.analyzeImage(
-                        new AnalyzeImageOptions(image));
+            contentSafetyAsyncClient.analyzeImage(
+                new AnalyzeImageOptions(image)).block();
 
         // response assertion
         Assertions.assertNotNull(response);
+        Assertions.assertEquals(4, response.getCategoriesAnalysis().size());
 
-        ImageAnalyzeSeverityResult responseHateResult = response.getHateResult();
+        ImageCategoriesAnalysis responseHateResult = response.getCategoriesAnalysis().get(0);
         Assertions.assertNotNull(responseHateResult);
 
         ImageCategory responseHateResultCategory = responseHateResult.getCategory();
         Assertions.assertEquals(ImageCategory.HATE, responseHateResultCategory);
         int responseHateResultSeverity = responseHateResult.getSeverity();
         Assertions.assertEquals(0, responseHateResultSeverity);
-        ImageAnalyzeSeverityResult responseSelfHarmResult = response.getSelfHarmResult();
-        Assertions.assertNotNull(responseSelfHarmResult);
+    }
 
-        ImageCategory responseSelfHarmResultCategory = responseSelfHarmResult.getCategory();
-        Assertions.assertEquals(ImageCategory.SELF_HARM, responseSelfHarmResultCategory);
-        int responseSelfHarmResultSeverity = responseSelfHarmResult.getSeverity();
-        Assertions.assertEquals(0, responseSelfHarmResultSeverity);
-        ImageAnalyzeSeverityResult responseSexualResult = response.getSexualResult();
-        Assertions.assertNotNull(responseSexualResult);
+    @Test
+    public void testAnalyzeImageAsyncWithConvenientContent() throws IOException {
+        // method invocation
+        String cwd = System.getProperty("user.dir");
+        String source = "/src/samples/resources/image.png";
+        BinaryData content = BinaryData.fromBytes(Files.readAllBytes(Paths.get(cwd, source)));
 
-        ImageCategory responseSexualResultCategory = responseSexualResult.getCategory();
-        Assertions.assertEquals(ImageCategory.SEXUAL, responseSexualResultCategory);
-        int responseSexualResultSeverity = responseSexualResult.getSeverity();
-        Assertions.assertEquals(0, responseSexualResultSeverity);
-        ImageAnalyzeSeverityResult responseViolenceResult = response.getViolenceResult();
-        Assertions.assertNotNull(responseViolenceResult);
+        AnalyzeImageResult response =
+            contentSafetyAsyncClient.analyzeImage(content).block();
 
-        ImageCategory responseViolenceResultCategory = responseViolenceResult.getCategory();
-        Assertions.assertEquals(ImageCategory.VIOLENCE, responseViolenceResultCategory);
-        int responseViolenceResultSeverity = responseViolenceResult.getSeverity();
-        Assertions.assertEquals(2, responseViolenceResultSeverity);
+        // response assertion
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(4, response.getCategoriesAnalysis().size());
+
+        ImageCategoriesAnalysis responseHateResult = response.getCategoriesAnalysis().get(0);
+        Assertions.assertNotNull(responseHateResult);
+
+        ImageCategory responseHateResultCategory = responseHateResult.getCategory();
+        Assertions.assertEquals(ImageCategory.HATE, responseHateResultCategory);
+        int responseHateResultSeverity = responseHateResult.getSeverity();
+        Assertions.assertEquals(0, responseHateResultSeverity);
+    }
+
+    @Test
+    public void testAnalyzeImageAsyncWithBlobUri() throws IOException {
+        // method invocation
+        ContentSafetyImageData image = new ContentSafetyImageData();
+        image.setBlobUrl("https://cmbugbashsampledata.blob.core.windows.net/image-sdk-test/image.png");
+
+        AnalyzeImageResult response =
+            contentSafetyAsyncClient.analyzeImage(
+                new AnalyzeImageOptions(image)).block();
+
+        // response assertion
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(4, response.getCategoriesAnalysis().size());
+
+        ImageCategoriesAnalysis responseHateResult = response.getCategoriesAnalysis().get(0);
+        Assertions.assertNotNull(responseHateResult);
+
+        ImageCategory responseHateResultCategory = responseHateResult.getCategory();
+        Assertions.assertEquals(ImageCategory.HATE, responseHateResultCategory);
+        int responseHateResultSeverity = responseHateResult.getSeverity();
+        Assertions.assertEquals(0, responseHateResultSeverity);
+    }
+
+    @Test
+    public void testAnalyzeImageAsyncWithConvenientBlobUri() throws IOException {
+        // method invocation
+        String blobUrl = "https://cmbugbashsampledata.blob.core.windows.net/image-sdk-test/image.png";
+
+        AnalyzeImageResult response =
+            contentSafetyAsyncClient.analyzeImage(blobUrl).block();
+
+        // response assertion
+        Assertions.assertNotNull(response);
+        Assertions.assertEquals(4, response.getCategoriesAnalysis().size());
+
+        ImageCategoriesAnalysis responseHateResult = response.getCategoriesAnalysis().get(0);
+        Assertions.assertNotNull(responseHateResult);
+
+        ImageCategory responseHateResultCategory = responseHateResult.getCategory();
+        Assertions.assertEquals(ImageCategory.HATE, responseHateResultCategory);
+        int responseHateResultSeverity = responseHateResult.getSeverity();
+        Assertions.assertEquals(0, responseHateResultSeverity);
     }
 }

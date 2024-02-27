@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The sku of this Bastion Host. */
+/**
+ * The sku of this Bastion Host.
+ */
 @Fluent
 public final class Sku {
     /*
@@ -16,13 +18,15 @@ public final class Sku {
     @JsonProperty(value = "name")
     private BastionHostSkuName name;
 
-    /** Creates an instance of Sku class. */
+    /**
+     * Creates an instance of Sku class.
+     */
     public Sku() {
     }
 
     /**
      * Get the name property: The name of this Bastion Host.
-     *
+     * 
      * @return the name value.
      */
     public BastionHostSkuName name() {
@@ -31,7 +35,7 @@ public final class Sku {
 
     /**
      * Set the name property: The name of this Bastion Host.
-     *
+     * 
      * @param name the name value to set.
      * @return the Sku object itself.
      */
@@ -42,7 +46,7 @@ public final class Sku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

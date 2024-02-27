@@ -8,17 +8,32 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SessionAffinity. */
+/**
+ * Type of the affinity, set this to Cookie to enable session affinity.
+ */
 public final class SessionAffinity extends ExpandableStringEnum<SessionAffinity> {
-    /** Static value Cookie for SessionAffinity. */
+    /**
+     * Static value Cookie for SessionAffinity.
+     */
     public static final SessionAffinity COOKIE = fromString("Cookie");
 
-    /** Static value None for SessionAffinity. */
+    /**
+     * Static value None for SessionAffinity.
+     */
     public static final SessionAffinity NONE = fromString("None");
 
     /**
+     * Creates a new instance of SessionAffinity value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public SessionAffinity() {
+    }
+
+    /**
      * Creates or finds a SessionAffinity from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SessionAffinity.
      */
@@ -29,7 +44,7 @@ public final class SessionAffinity extends ExpandableStringEnum<SessionAffinity>
 
     /**
      * Gets known SessionAffinity values.
-     *
+     * 
      * @return known SessionAffinity values.
      */
     public static Collection<SessionAffinity> values() {

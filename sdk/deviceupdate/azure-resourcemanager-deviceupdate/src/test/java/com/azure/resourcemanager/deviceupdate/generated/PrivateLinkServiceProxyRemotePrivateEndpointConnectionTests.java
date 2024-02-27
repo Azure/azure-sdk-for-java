@@ -6,21 +6,18 @@ package com.azure.resourcemanager.deviceupdate.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceupdate.models.PrivateLinkServiceProxyRemotePrivateEndpointConnection;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateLinkServiceProxyRemotePrivateEndpointConnectionTests {
-    @Test
-    public void testDeserialize() {
-        PrivateLinkServiceProxyRemotePrivateEndpointConnection model =
-            BinaryData
-                .fromString("{\"id\":\"wgxhn\"}")
-                .toObject(PrivateLinkServiceProxyRemotePrivateEndpointConnection.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PrivateLinkServiceProxyRemotePrivateEndpointConnection model = BinaryData.fromString("{\"id\":\"dxrbuukzcle\"}")
+            .toObject(PrivateLinkServiceProxyRemotePrivateEndpointConnection.class);
     }
 
-    @Test
-    public void testSerialize() {
-        PrivateLinkServiceProxyRemotePrivateEndpointConnection model =
-            new PrivateLinkServiceProxyRemotePrivateEndpointConnection();
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PrivateLinkServiceProxyRemotePrivateEndpointConnection model
+            = new PrivateLinkServiceProxyRemotePrivateEndpointConnection();
         model = BinaryData.fromObject(model).toObject(PrivateLinkServiceProxyRemotePrivateEndpointConnection.class);
     }
 }

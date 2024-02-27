@@ -8,18 +8,22 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Describes the policy to be used for placement of a Service Fabric service. */
+/**
+ * Describes the policy to be used for placement of a Service Fabric service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("ServicePlacementPolicyDescription")
 @Immutable
 public final class ServicePlacementPolicyDescription {
-    /** Creates an instance of ServicePlacementPolicyDescription class. */
+    /**
+     * Creates an instance of ServicePlacementPolicyDescription class.
+     */
     public ServicePlacementPolicyDescription() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

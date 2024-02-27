@@ -12,7 +12,8 @@ public final class ChatAttachmentConverter {
         ChatAttachment attachment = new ChatAttachment(chatAttachment.getId(),
                 AttachmentTypeConverter.convert(chatAttachment.getAttachmentType()))
                 .setName(chatAttachment.getName())
-                .setUrl(chatAttachment.getUrl());
+                .setUrl(chatAttachment.getUrl())
+                .setPreviewUrl(chatAttachment.getPreviewUrl());
 
         return attachment;
     }

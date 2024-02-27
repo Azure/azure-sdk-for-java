@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Routing Configuration indicating the associated and propagated route tables for this connection. */
+/**
+ * Routing Configuration indicating the associated and propagated route tables for this connection.
+ */
 @Fluent
 public final class RoutingConfiguration {
     /*
@@ -41,13 +43,15 @@ public final class RoutingConfiguration {
     @JsonProperty(value = "outboundRouteMap")
     private SubResource outboundRouteMap;
 
-    /** Creates an instance of RoutingConfiguration class. */
+    /**
+     * Creates an instance of RoutingConfiguration class.
+     */
     public RoutingConfiguration() {
     }
 
     /**
      * Get the associatedRouteTable property: The resource id RouteTable associated with this RoutingConfiguration.
-     *
+     * 
      * @return the associatedRouteTable value.
      */
     public SubResource associatedRouteTable() {
@@ -56,7 +60,7 @@ public final class RoutingConfiguration {
 
     /**
      * Set the associatedRouteTable property: The resource id RouteTable associated with this RoutingConfiguration.
-     *
+     * 
      * @param associatedRouteTable the associatedRouteTable value to set.
      * @return the RoutingConfiguration object itself.
      */
@@ -67,7 +71,7 @@ public final class RoutingConfiguration {
 
     /**
      * Get the propagatedRouteTables property: The list of RouteTables to advertise the routes to.
-     *
+     * 
      * @return the propagatedRouteTables value.
      */
     public PropagatedRouteTable propagatedRouteTables() {
@@ -76,7 +80,7 @@ public final class RoutingConfiguration {
 
     /**
      * Set the propagatedRouteTables property: The list of RouteTables to advertise the routes to.
-     *
+     * 
      * @param propagatedRouteTables the propagatedRouteTables value to set.
      * @return the RoutingConfiguration object itself.
      */
@@ -88,7 +92,7 @@ public final class RoutingConfiguration {
     /**
      * Get the vnetRoutes property: List of routes that control routing from VirtualHub into a virtual network
      * connection.
-     *
+     * 
      * @return the vnetRoutes value.
      */
     public VnetRoute vnetRoutes() {
@@ -98,7 +102,7 @@ public final class RoutingConfiguration {
     /**
      * Set the vnetRoutes property: List of routes that control routing from VirtualHub into a virtual network
      * connection.
-     *
+     * 
      * @param vnetRoutes the vnetRoutes value to set.
      * @return the RoutingConfiguration object itself.
      */
@@ -110,7 +114,7 @@ public final class RoutingConfiguration {
     /**
      * Get the inboundRouteMap property: The resource id of the RouteMap associated with this RoutingConfiguration for
      * inbound learned routes.
-     *
+     * 
      * @return the inboundRouteMap value.
      */
     public SubResource inboundRouteMap() {
@@ -120,7 +124,7 @@ public final class RoutingConfiguration {
     /**
      * Set the inboundRouteMap property: The resource id of the RouteMap associated with this RoutingConfiguration for
      * inbound learned routes.
-     *
+     * 
      * @param inboundRouteMap the inboundRouteMap value to set.
      * @return the RoutingConfiguration object itself.
      */
@@ -132,7 +136,7 @@ public final class RoutingConfiguration {
     /**
      * Get the outboundRouteMap property: The resource id of theRouteMap associated with this RoutingConfiguration for
      * outbound advertised routes.
-     *
+     * 
      * @return the outboundRouteMap value.
      */
     public SubResource outboundRouteMap() {
@@ -142,7 +146,7 @@ public final class RoutingConfiguration {
     /**
      * Set the outboundRouteMap property: The resource id of theRouteMap associated with this RoutingConfiguration for
      * outbound advertised routes.
-     *
+     * 
      * @param outboundRouteMap the outboundRouteMap value to set.
      * @return the RoutingConfiguration object itself.
      */
@@ -153,7 +157,7 @@ public final class RoutingConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

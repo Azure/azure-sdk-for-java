@@ -27,13 +27,15 @@ public final class NetworkManagerListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of NetworkManagerListResult class. */
+    /**
+     * Creates an instance of NetworkManagerListResult class.
+     */
     public NetworkManagerListResult() {
     }
 
     /**
      * Get the value property: Gets a page of NetworkManager.
-     *
+     * 
      * @return the value value.
      */
     public List<NetworkManagerInner> value() {
@@ -42,7 +44,7 @@ public final class NetworkManagerListResult {
 
     /**
      * Set the value property: Gets a page of NetworkManager.
-     *
+     * 
      * @param value the value value to set.
      * @return the NetworkManagerListResult object itself.
      */
@@ -53,7 +55,7 @@ public final class NetworkManagerListResult {
 
     /**
      * Get the nextLink property: Gets the URL to get the next page of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +64,7 @@ public final class NetworkManagerListResult {
 
     /**
      * Set the nextLink property: Gets the URL to get the next page of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the NetworkManagerListResult object itself.
      */
@@ -73,7 +75,7 @@ public final class NetworkManagerListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

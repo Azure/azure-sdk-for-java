@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendHealthServerHealth;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Application gateway backendhealth http settings. */
+/**
+ * Application gateway backendhealth http settings.
+ */
 @Fluent
 public final class ApplicationGatewayBackendHealthServerInner {
     /*
@@ -35,13 +37,15 @@ public final class ApplicationGatewayBackendHealthServerInner {
     @JsonProperty(value = "healthProbeLog")
     private String healthProbeLog;
 
-    /** Creates an instance of ApplicationGatewayBackendHealthServerInner class. */
+    /**
+     * Creates an instance of ApplicationGatewayBackendHealthServerInner class.
+     */
     public ApplicationGatewayBackendHealthServerInner() {
     }
 
     /**
      * Get the address property: IP address or FQDN of backend server.
-     *
+     * 
      * @return the address value.
      */
     public String address() {
@@ -50,7 +54,7 @@ public final class ApplicationGatewayBackendHealthServerInner {
 
     /**
      * Set the address property: IP address or FQDN of backend server.
-     *
+     * 
      * @param address the address value to set.
      * @return the ApplicationGatewayBackendHealthServerInner object itself.
      */
@@ -61,7 +65,7 @@ public final class ApplicationGatewayBackendHealthServerInner {
 
     /**
      * Get the ipConfiguration property: Reference to IP configuration of backend server.
-     *
+     * 
      * @return the ipConfiguration value.
      */
     public NetworkInterfaceIpConfigurationInner ipConfiguration() {
@@ -70,19 +74,19 @@ public final class ApplicationGatewayBackendHealthServerInner {
 
     /**
      * Set the ipConfiguration property: Reference to IP configuration of backend server.
-     *
+     * 
      * @param ipConfiguration the ipConfiguration value to set.
      * @return the ApplicationGatewayBackendHealthServerInner object itself.
      */
-    public ApplicationGatewayBackendHealthServerInner withIpConfiguration(
-        NetworkInterfaceIpConfigurationInner ipConfiguration) {
+    public ApplicationGatewayBackendHealthServerInner
+        withIpConfiguration(NetworkInterfaceIpConfigurationInner ipConfiguration) {
         this.ipConfiguration = ipConfiguration;
         return this;
     }
 
     /**
      * Get the health property: Health of backend server.
-     *
+     * 
      * @return the health value.
      */
     public ApplicationGatewayBackendHealthServerHealth health() {
@@ -91,7 +95,7 @@ public final class ApplicationGatewayBackendHealthServerInner {
 
     /**
      * Set the health property: Health of backend server.
-     *
+     * 
      * @param health the health value to set.
      * @return the ApplicationGatewayBackendHealthServerInner object itself.
      */
@@ -102,7 +106,7 @@ public final class ApplicationGatewayBackendHealthServerInner {
 
     /**
      * Get the healthProbeLog property: Health Probe Log.
-     *
+     * 
      * @return the healthProbeLog value.
      */
     public String healthProbeLog() {
@@ -111,7 +115,7 @@ public final class ApplicationGatewayBackendHealthServerInner {
 
     /**
      * Set the healthProbeLog property: Health Probe Log.
-     *
+     * 
      * @param healthProbeLog the healthProbeLog value to set.
      * @return the ApplicationGatewayBackendHealthServerInner object itself.
      */
@@ -122,7 +126,7 @@ public final class ApplicationGatewayBackendHealthServerInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -11,88 +11,98 @@ import com.azure.resourcemanager.selfhelp.fluent.models.TroubleshooterResourceIn
 import java.util.List;
 import java.util.Map;
 
-/** An immutable client-side representation of TroubleshooterResource. */
+/**
+ * An immutable client-side representation of TroubleshooterResource.
+ */
 public interface TroubleshooterResource {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
      * Gets the solutionId property: Solution Id to identify single troubleshooter.
-     *
+     * 
      * @return the solutionId value.
      */
     String solutionId();
 
     /**
      * Gets the parameters property: Client input parameters to run Troubleshooter Resource.
-     *
+     * 
      * @return the parameters value.
      */
     Map<String, String> parameters();
 
     /**
      * Gets the provisioningState property: Status of troubleshooter provisioning.
-     *
+     * 
      * @return the provisioningState value.
      */
     TroubleshooterProvisioningState provisioningState();
 
     /**
      * Gets the steps property: List of step object.
-     *
+     * 
      * @return the steps value.
      */
     List<Step> steps();
 
     /**
      * Gets the inner com.azure.resourcemanager.selfhelp.fluent.models.TroubleshooterResourceInner object.
-     *
+     * 
      * @return the inner object.
      */
     TroubleshooterResourceInner innerModel();
 
-    /** The entirety of the TroubleshooterResource definition. */
+    /**
+     * The entirety of the TroubleshooterResource definition.
+     */
     interface Definition extends DefinitionStages.Blank, DefinitionStages.WithScope, DefinitionStages.WithCreate {
     }
 
-    /** The TroubleshooterResource definition stages. */
+    /**
+     * The TroubleshooterResource definition stages.
+     */
     interface DefinitionStages {
-        /** The first stage of the TroubleshooterResource definition. */
+        /**
+         * The first stage of the TroubleshooterResource definition.
+         */
         interface Blank extends WithScope {
         }
 
-        /** The stage of the TroubleshooterResource definition allowing to specify parent resource. */
+        /**
+         * The stage of the TroubleshooterResource definition allowing to specify parent resource.
+         */
         interface WithScope {
             /**
              * Specifies scope.
-             *
-             * @param scope This is an extension resource provider and only resource level extension is supported at the
-             *     moment.
+             * 
+             * @param scope scope = resourceUri of affected resource.&lt;br/&gt; For example:
+             * /subscriptions/0d0fcd2e-c4fd-4349-8497-200edb3923c6/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-non-read.
              * @return the next definition stage.
              */
             WithCreate withExistingScope(String scope);
@@ -105,36 +115,40 @@ public interface TroubleshooterResource {
         interface WithCreate extends DefinitionStages.WithSolutionId, DefinitionStages.WithParameters {
             /**
              * Executes the create request.
-             *
+             * 
              * @return the created resource.
              */
             TroubleshooterResource create();
 
             /**
              * Executes the create request.
-             *
+             * 
              * @param context The context to associate with this operation.
              * @return the created resource.
              */
             TroubleshooterResource create(Context context);
         }
 
-        /** The stage of the TroubleshooterResource definition allowing to specify solutionId. */
+        /**
+         * The stage of the TroubleshooterResource definition allowing to specify solutionId.
+         */
         interface WithSolutionId {
             /**
              * Specifies the solutionId property: Solution Id to identify single troubleshooter..
-             *
+             * 
              * @param solutionId Solution Id to identify single troubleshooter.
              * @return the next definition stage.
              */
             WithCreate withSolutionId(String solutionId);
         }
 
-        /** The stage of the TroubleshooterResource definition allowing to specify parameters. */
+        /**
+         * The stage of the TroubleshooterResource definition allowing to specify parameters.
+         */
         interface WithParameters {
             /**
              * Specifies the parameters property: Client input parameters to run Troubleshooter Resource.
-             *
+             * 
              * @param parameters Client input parameters to run Troubleshooter Resource.
              * @return the next definition stage.
              */
@@ -144,14 +158,14 @@ public interface TroubleshooterResource {
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @return the refreshed resource.
      */
     TroubleshooterResource refresh();
 
     /**
      * Refreshes the resource to sync with Azure.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @return the refreshed resource.
      */
@@ -162,7 +176,7 @@ public interface TroubleshooterResource {
      * troubleshooter resource name. &lt;br/&gt;Continue API is used to provide inputs that are required for the
      * specific troubleshooter to progress into the next step in the process. This API is used after the Troubleshooter
      * has been created using the Create API.
-     *
+     * 
      * @param continueRequestBody The required request body for going to next step in Troubleshooter resource.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -170,15 +184,15 @@ public interface TroubleshooterResource {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response.
      */
-    TroubleshootersContinueMethodResponse continueMethodWithResponse(
-        ContinueRequestBody continueRequestBody, Context context);
+    TroubleshootersContinueMethodResponse continueMethodWithResponse(ContinueRequestBody continueRequestBody,
+        Context context);
 
     /**
      * Uses ‘stepId’ and ‘responses’ as the trigger to continue the troubleshooting steps for the respective
      * troubleshooter resource name. &lt;br/&gt;Continue API is used to provide inputs that are required for the
      * specific troubleshooter to progress into the next step in the process. This API is used after the Troubleshooter
      * has been created using the Create API.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
@@ -186,7 +200,7 @@ public interface TroubleshooterResource {
 
     /**
      * Ends the troubleshooter action.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -197,7 +211,7 @@ public interface TroubleshooterResource {
 
     /**
      * Ends the troubleshooter action.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
@@ -207,7 +221,7 @@ public interface TroubleshooterResource {
      * Restarts the troubleshooter API using applicable troubleshooter resource name as the input.&lt;br/&gt; It returns
      * new resource name which should be used in subsequent request. The old resource name is obsolete after this API is
      * invoked.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -220,7 +234,7 @@ public interface TroubleshooterResource {
      * Restarts the troubleshooter API using applicable troubleshooter resource name as the input.&lt;br/&gt; It returns
      * new resource name which should be used in subsequent request. The old resource name is obsolete after this API is
      * invoked.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return troubleshooter restart response.

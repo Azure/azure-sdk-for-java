@@ -14,8 +14,8 @@ import java.util.List;
 
 /**
  * BaseBackupPolicy
- *
- * <p>BackupPolicy base.
+ * 
+ * BackupPolicy base.
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -23,7 +23,7 @@ import java.util.List;
     property = "objectType",
     defaultImpl = BaseBackupPolicy.class)
 @JsonTypeName("BaseBackupPolicy")
-@JsonSubTypes({@JsonSubTypes.Type(name = "BackupPolicy", value = BackupPolicy.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "BackupPolicy", value = BackupPolicy.class) })
 @Fluent
 public class BaseBackupPolicy {
     /*
@@ -32,13 +32,15 @@ public class BaseBackupPolicy {
     @JsonProperty(value = "datasourceTypes", required = true)
     private List<String> datasourceTypes;
 
-    /** Creates an instance of BaseBackupPolicy class. */
+    /**
+     * Creates an instance of BaseBackupPolicy class.
+     */
     public BaseBackupPolicy() {
     }
 
     /**
      * Get the datasourceTypes property: Type of datasource for the backup management.
-     *
+     * 
      * @return the datasourceTypes value.
      */
     public List<String> datasourceTypes() {
@@ -47,7 +49,7 @@ public class BaseBackupPolicy {
 
     /**
      * Set the datasourceTypes property: Type of datasource for the backup management.
-     *
+     * 
      * @param datasourceTypes the datasourceTypes value to set.
      * @return the BaseBackupPolicy object itself.
      */
@@ -58,15 +60,13 @@ public class BaseBackupPolicy {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (datasourceTypes() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property datasourceTypes in model BaseBackupPolicy"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property datasourceTypes in model BaseBackupPolicy"));
         }
     }
 

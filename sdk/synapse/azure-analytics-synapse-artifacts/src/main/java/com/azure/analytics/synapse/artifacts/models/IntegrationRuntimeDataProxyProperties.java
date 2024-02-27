@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Data proxy properties for a managed dedicated integration runtime. */
+/**
+ * Data proxy properties for a managed dedicated integration runtime.
+ */
 @Fluent
 public final class IntegrationRuntimeDataProxyProperties {
     /*
@@ -28,12 +30,15 @@ public final class IntegrationRuntimeDataProxyProperties {
     @JsonProperty(value = "path")
     private String path;
 
-    /** Creates an instance of IntegrationRuntimeDataProxyProperties class. */
-    public IntegrationRuntimeDataProxyProperties() {}
+    /**
+     * Creates an instance of IntegrationRuntimeDataProxyProperties class.
+     */
+    public IntegrationRuntimeDataProxyProperties() {
+    }
 
     /**
      * Get the connectVia property: The self-hosted integration runtime reference.
-     *
+     * 
      * @return the connectVia value.
      */
     public EntityReference getConnectVia() {
@@ -42,7 +47,7 @@ public final class IntegrationRuntimeDataProxyProperties {
 
     /**
      * Set the connectVia property: The self-hosted integration runtime reference.
-     *
+     * 
      * @param connectVia the connectVia value to set.
      * @return the IntegrationRuntimeDataProxyProperties object itself.
      */
@@ -53,7 +58,7 @@ public final class IntegrationRuntimeDataProxyProperties {
 
     /**
      * Get the stagingLinkedService property: The staging linked service reference.
-     *
+     * 
      * @return the stagingLinkedService value.
      */
     public EntityReference getStagingLinkedService() {
@@ -62,7 +67,7 @@ public final class IntegrationRuntimeDataProxyProperties {
 
     /**
      * Set the stagingLinkedService property: The staging linked service reference.
-     *
+     * 
      * @param stagingLinkedService the stagingLinkedService value to set.
      * @return the IntegrationRuntimeDataProxyProperties object itself.
      */
@@ -73,7 +78,7 @@ public final class IntegrationRuntimeDataProxyProperties {
 
     /**
      * Get the path property: The path to contain the staged data in the Blob storage.
-     *
+     * 
      * @return the path value.
      */
     public String getPath() {
@@ -82,7 +87,7 @@ public final class IntegrationRuntimeDataProxyProperties {
 
     /**
      * Set the path property: The path to contain the staged data in the Blob storage.
-     *
+     * 
      * @param path the path value to set.
      * @return the IntegrationRuntimeDataProxyProperties object itself.
      */

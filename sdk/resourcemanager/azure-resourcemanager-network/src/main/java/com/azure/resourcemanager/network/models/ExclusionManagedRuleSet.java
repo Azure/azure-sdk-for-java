@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Defines a managed rule set for Exclusions. */
+/**
+ * Defines a managed rule set for Exclusions.
+ */
 @Fluent
 public final class ExclusionManagedRuleSet {
     /*
@@ -30,13 +32,15 @@ public final class ExclusionManagedRuleSet {
     @JsonProperty(value = "ruleGroups")
     private List<ExclusionManagedRuleGroup> ruleGroups;
 
-    /** Creates an instance of ExclusionManagedRuleSet class. */
+    /**
+     * Creates an instance of ExclusionManagedRuleSet class.
+     */
     public ExclusionManagedRuleSet() {
     }
 
     /**
      * Get the ruleSetType property: Defines the rule set type to use.
-     *
+     * 
      * @return the ruleSetType value.
      */
     public String ruleSetType() {
@@ -45,7 +49,7 @@ public final class ExclusionManagedRuleSet {
 
     /**
      * Set the ruleSetType property: Defines the rule set type to use.
-     *
+     * 
      * @param ruleSetType the ruleSetType value to set.
      * @return the ExclusionManagedRuleSet object itself.
      */
@@ -56,7 +60,7 @@ public final class ExclusionManagedRuleSet {
 
     /**
      * Get the ruleSetVersion property: Defines the version of the rule set to use.
-     *
+     * 
      * @return the ruleSetVersion value.
      */
     public String ruleSetVersion() {
@@ -65,7 +69,7 @@ public final class ExclusionManagedRuleSet {
 
     /**
      * Set the ruleSetVersion property: Defines the version of the rule set to use.
-     *
+     * 
      * @param ruleSetVersion the ruleSetVersion value to set.
      * @return the ExclusionManagedRuleSet object itself.
      */
@@ -76,7 +80,7 @@ public final class ExclusionManagedRuleSet {
 
     /**
      * Get the ruleGroups property: Defines the rule groups to apply to the rule set.
-     *
+     * 
      * @return the ruleGroups value.
      */
     public List<ExclusionManagedRuleGroup> ruleGroups() {
@@ -85,7 +89,7 @@ public final class ExclusionManagedRuleSet {
 
     /**
      * Set the ruleGroups property: Defines the rule groups to apply to the rule set.
-     *
+     * 
      * @param ruleGroups the ruleGroups value to set.
      * @return the ExclusionManagedRuleSet object itself.
      */
@@ -96,21 +100,17 @@ public final class ExclusionManagedRuleSet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ruleSetType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ruleSetType in model ExclusionManagedRuleSet"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property ruleSetType in model ExclusionManagedRuleSet"));
         }
         if (ruleSetVersion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ruleSetVersion in model ExclusionManagedRuleSet"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property ruleSetVersion in model ExclusionManagedRuleSet"));
         }
         if (ruleGroups() != null) {
             ruleGroups().forEach(e -> e.validate());

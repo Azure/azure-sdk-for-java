@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The MetastoreUpdationResponse model. */
+/**
+ * The MetastoreUpdationResponse model.
+ */
 @Fluent
 public final class MetastoreUpdationResponse {
     /*
@@ -16,12 +18,15 @@ public final class MetastoreUpdationResponse {
     @JsonProperty(value = "status")
     private RequestStatus status;
 
-    /** Creates an instance of MetastoreUpdationResponse class. */
-    public MetastoreUpdationResponse() {}
+    /**
+     * Creates an instance of MetastoreUpdationResponse class.
+     */
+    public MetastoreUpdationResponse() {
+    }
 
     /**
      * Get the status property: Enumerates possible request statuses.
-     *
+     * 
      * @return the status value.
      */
     public RequestStatus getStatus() {
@@ -30,7 +35,7 @@ public final class MetastoreUpdationResponse {
 
     /**
      * Set the status property: Enumerates possible request statuses.
-     *
+     * 
      * @param status the status value to set.
      * @return the MetastoreUpdationResponse object itself.
      */

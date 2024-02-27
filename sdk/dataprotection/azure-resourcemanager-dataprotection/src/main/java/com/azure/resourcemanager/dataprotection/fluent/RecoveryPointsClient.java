@@ -11,11 +11,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.dataprotection.fluent.models.AzureBackupRecoveryPointResourceInner;
 
-/** An instance of this class provides access to all the operations defined in RecoveryPointsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RecoveryPointsClient.
+ */
 public interface RecoveryPointsClient {
     /**
      * Returns a list of Recovery Points for a DataSource in a vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -25,12 +27,12 @@ public interface RecoveryPointsClient {
      * @return azureBackupRecoveryPointResourceList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AzureBackupRecoveryPointResourceInner> list(
-        String resourceGroupName, String vaultName, String backupInstanceName);
+    PagedIterable<AzureBackupRecoveryPointResourceInner> list(String resourceGroupName, String vaultName,
+        String backupInstanceName);
 
     /**
      * Returns a list of Recovery Points for a DataSource in a vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -43,17 +45,12 @@ public interface RecoveryPointsClient {
      * @return azureBackupRecoveryPointResourceList as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<AzureBackupRecoveryPointResourceInner> list(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        String filter,
-        String skipToken,
-        Context context);
+    PagedIterable<AzureBackupRecoveryPointResourceInner> list(String resourceGroupName, String vaultName,
+        String backupInstanceName, String filter, String skipToken, Context context);
 
     /**
      * Gets a Recovery Point using recoveryPointId for a Datasource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -65,12 +62,12 @@ public interface RecoveryPointsClient {
      * @return a Recovery Point using recoveryPointId for a Datasource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AzureBackupRecoveryPointResourceInner> getWithResponse(
-        String resourceGroupName, String vaultName, String backupInstanceName, String recoveryPointId, Context context);
+    Response<AzureBackupRecoveryPointResourceInner> getWithResponse(String resourceGroupName, String vaultName,
+        String backupInstanceName, String recoveryPointId, Context context);
 
     /**
      * Gets a Recovery Point using recoveryPointId for a Datasource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -81,6 +78,6 @@ public interface RecoveryPointsClient {
      * @return a Recovery Point using recoveryPointId for a Datasource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    AzureBackupRecoveryPointResourceInner get(
-        String resourceGroupName, String vaultName, String backupInstanceName, String recoveryPointId);
+    AzureBackupRecoveryPointResourceInner get(String resourceGroupName, String vaultName, String backupInstanceName,
+        String recoveryPointId);
 }

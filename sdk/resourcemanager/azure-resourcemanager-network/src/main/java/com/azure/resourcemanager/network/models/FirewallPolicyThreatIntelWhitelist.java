@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** ThreatIntel Whitelist for Firewall Policy. */
+/**
+ * ThreatIntel Whitelist for Firewall Policy.
+ */
 @Fluent
 public final class FirewallPolicyThreatIntelWhitelist {
     /*
@@ -23,13 +25,15 @@ public final class FirewallPolicyThreatIntelWhitelist {
     @JsonProperty(value = "fqdns")
     private List<String> fqdns;
 
-    /** Creates an instance of FirewallPolicyThreatIntelWhitelist class. */
+    /**
+     * Creates an instance of FirewallPolicyThreatIntelWhitelist class.
+     */
     public FirewallPolicyThreatIntelWhitelist() {
     }
 
     /**
      * Get the ipAddresses property: List of IP addresses for the ThreatIntel Whitelist.
-     *
+     * 
      * @return the ipAddresses value.
      */
     public List<String> ipAddresses() {
@@ -38,7 +42,7 @@ public final class FirewallPolicyThreatIntelWhitelist {
 
     /**
      * Set the ipAddresses property: List of IP addresses for the ThreatIntel Whitelist.
-     *
+     * 
      * @param ipAddresses the ipAddresses value to set.
      * @return the FirewallPolicyThreatIntelWhitelist object itself.
      */
@@ -49,7 +53,7 @@ public final class FirewallPolicyThreatIntelWhitelist {
 
     /**
      * Get the fqdns property: List of FQDNs for the ThreatIntel Whitelist.
-     *
+     * 
      * @return the fqdns value.
      */
     public List<String> fqdns() {
@@ -58,7 +62,7 @@ public final class FirewallPolicyThreatIntelWhitelist {
 
     /**
      * Set the fqdns property: List of FQDNs for the ThreatIntel Whitelist.
-     *
+     * 
      * @param fqdns the fqdns value to set.
      * @return the FirewallPolicyThreatIntelWhitelist object itself.
      */
@@ -69,7 +73,7 @@ public final class FirewallPolicyThreatIntelWhitelist {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

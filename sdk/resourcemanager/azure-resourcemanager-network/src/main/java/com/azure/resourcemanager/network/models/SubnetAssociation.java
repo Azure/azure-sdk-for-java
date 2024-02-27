@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.SecurityRuleInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Subnet and it's custom security rules. */
+/**
+ * Subnet and it's custom security rules.
+ */
 @Fluent
 public final class SubnetAssociation {
     /*
@@ -24,13 +26,15 @@ public final class SubnetAssociation {
     @JsonProperty(value = "securityRules")
     private List<SecurityRuleInner> securityRules;
 
-    /** Creates an instance of SubnetAssociation class. */
+    /**
+     * Creates an instance of SubnetAssociation class.
+     */
     public SubnetAssociation() {
     }
 
     /**
      * Get the id property: Subnet ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -39,7 +43,7 @@ public final class SubnetAssociation {
 
     /**
      * Get the securityRules property: Collection of custom security rules.
-     *
+     * 
      * @return the securityRules value.
      */
     public List<SecurityRuleInner> securityRules() {
@@ -48,7 +52,7 @@ public final class SubnetAssociation {
 
     /**
      * Set the securityRules property: Collection of custom security rules.
-     *
+     * 
      * @param securityRules the securityRules value to set.
      * @return the SubnetAssociation object itself.
      */
@@ -59,7 +63,7 @@ public final class SubnetAssociation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

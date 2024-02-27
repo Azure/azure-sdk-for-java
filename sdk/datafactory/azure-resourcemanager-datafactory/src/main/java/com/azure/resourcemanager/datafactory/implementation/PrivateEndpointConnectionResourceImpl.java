@@ -120,9 +120,10 @@ public final class PrivateEndpointConnectionResourceImpl implements PrivateEndpo
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.factoryName = Utils.getValueFromIdByName(innerObject.id(), "factories");
-        this.privateEndpointConnectionName = Utils.getValueFromIdByName(innerObject.id(), "privateEndpointConnections");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.factoryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "factories");
+        this.privateEndpointConnectionName
+            = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "privateEndpointConnections");
     }
 
     public PrivateEndpointConnectionResource refresh() {

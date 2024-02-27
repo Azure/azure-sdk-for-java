@@ -11,18 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ApplicationTypeVersionsCleanupPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ApplicationTypeVersionsCleanupPolicy model =
-            BinaryData
-                .fromString("{\"maxUnusedVersionsToKeep\":5507217577010646686}")
+        ApplicationTypeVersionsCleanupPolicy model
+            = BinaryData.fromString("{\"maxUnusedVersionsToKeep\":6101750029331136264}")
                 .toObject(ApplicationTypeVersionsCleanupPolicy.class);
-        Assertions.assertEquals(5507217577010646686L, model.maxUnusedVersionsToKeep());
+        Assertions.assertEquals(6101750029331136264L, model.maxUnusedVersionsToKeep());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ApplicationTypeVersionsCleanupPolicy model =
-            new ApplicationTypeVersionsCleanupPolicy().withMaxUnusedVersionsToKeep(5507217577010646686L);
+        ApplicationTypeVersionsCleanupPolicy model
+            = new ApplicationTypeVersionsCleanupPolicy().withMaxUnusedVersionsToKeep(6101750029331136264L);
         model = BinaryData.fromObject(model).toObject(ApplicationTypeVersionsCleanupPolicy.class);
-        Assertions.assertEquals(5507217577010646686L, model.maxUnusedVersionsToKeep());
+        Assertions.assertEquals(6101750029331136264L, model.maxUnusedVersionsToKeep());
     }
 }

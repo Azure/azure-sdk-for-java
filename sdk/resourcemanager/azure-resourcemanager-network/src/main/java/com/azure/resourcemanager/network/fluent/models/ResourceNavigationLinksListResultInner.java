@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.ResourceNavigationLink;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ResourceNavigationLinks_List operation. */
+/**
+ * Response for ResourceNavigationLinks_List operation.
+ */
 @Fluent
 public final class ResourceNavigationLinksListResultInner {
     /*
@@ -24,13 +26,15 @@ public final class ResourceNavigationLinksListResultInner {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ResourceNavigationLinksListResultInner class. */
+    /**
+     * Creates an instance of ResourceNavigationLinksListResultInner class.
+     */
     public ResourceNavigationLinksListResultInner() {
     }
 
     /**
      * Get the value property: The resource navigation links in a subnet.
-     *
+     * 
      * @return the value value.
      */
     public List<ResourceNavigationLink> value() {
@@ -39,7 +43,7 @@ public final class ResourceNavigationLinksListResultInner {
 
     /**
      * Set the value property: The resource navigation links in a subnet.
-     *
+     * 
      * @param value the value value to set.
      * @return the ResourceNavigationLinksListResultInner object itself.
      */
@@ -50,7 +54,7 @@ public final class ResourceNavigationLinksListResultInner {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ResourceNavigationLinksListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

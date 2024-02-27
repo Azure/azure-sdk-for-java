@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Linked service for MongoDB data source. */
+/**
+ * Linked service for MongoDB data source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("MongoDbV2")
 @JsonFlatten
@@ -31,13 +33,16 @@ public class MongoDbV2LinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.database", required = true)
     private Object database;
 
-    /** Creates an instance of MongoDbV2LinkedService class. */
-    public MongoDbV2LinkedService() {}
+    /**
+     * Creates an instance of MongoDbV2LinkedService class.
+     */
+    public MongoDbV2LinkedService() {
+    }
 
     /**
      * Get the connectionString property: The MongoDB connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object getConnectionString() {
@@ -47,7 +52,7 @@ public class MongoDbV2LinkedService extends LinkedService {
     /**
      * Set the connectionString property: The MongoDB connection string. Type: string, SecureString or
      * AzureKeyVaultSecretReference. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the MongoDbV2LinkedService object itself.
      */
@@ -59,7 +64,7 @@ public class MongoDbV2LinkedService extends LinkedService {
     /**
      * Get the database property: The name of the MongoDB database that you want to access. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @return the database value.
      */
     public Object getDatabase() {
@@ -69,7 +74,7 @@ public class MongoDbV2LinkedService extends LinkedService {
     /**
      * Set the database property: The name of the MongoDB database that you want to access. Type: string (or Expression
      * with resultType string).
-     *
+     * 
      * @param database the database value to set.
      * @return the MongoDbV2LinkedService object itself.
      */
@@ -78,28 +83,36 @@ public class MongoDbV2LinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbV2LinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbV2LinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbV2LinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbV2LinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** MAB workload-specific Health Details. */
+/**
+ * MAB workload-specific Health Details.
+ */
 @Fluent
 public final class MabContainerHealthDetails {
     /*
@@ -35,13 +37,15 @@ public final class MabContainerHealthDetails {
     @JsonProperty(value = "recommendations")
     private List<String> recommendations;
 
-    /** Creates an instance of MabContainerHealthDetails class. */
+    /**
+     * Creates an instance of MabContainerHealthDetails class.
+     */
     public MabContainerHealthDetails() {
     }
 
     /**
      * Get the code property: Health Code.
-     *
+     * 
      * @return the code value.
      */
     public Integer code() {
@@ -50,7 +54,7 @@ public final class MabContainerHealthDetails {
 
     /**
      * Set the code property: Health Code.
-     *
+     * 
      * @param code the code value to set.
      * @return the MabContainerHealthDetails object itself.
      */
@@ -61,7 +65,7 @@ public final class MabContainerHealthDetails {
 
     /**
      * Get the title property: Health Title.
-     *
+     * 
      * @return the title value.
      */
     public String title() {
@@ -70,7 +74,7 @@ public final class MabContainerHealthDetails {
 
     /**
      * Set the title property: Health Title.
-     *
+     * 
      * @param title the title value to set.
      * @return the MabContainerHealthDetails object itself.
      */
@@ -81,7 +85,7 @@ public final class MabContainerHealthDetails {
 
     /**
      * Get the message property: Health Message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -90,7 +94,7 @@ public final class MabContainerHealthDetails {
 
     /**
      * Set the message property: Health Message.
-     *
+     * 
      * @param message the message value to set.
      * @return the MabContainerHealthDetails object itself.
      */
@@ -101,7 +105,7 @@ public final class MabContainerHealthDetails {
 
     /**
      * Get the recommendations property: Health Recommended Actions.
-     *
+     * 
      * @return the recommendations value.
      */
     public List<String> recommendations() {
@@ -110,7 +114,7 @@ public final class MabContainerHealthDetails {
 
     /**
      * Set the recommendations property: Health Recommended Actions.
-     *
+     * 
      * @param recommendations the recommendations value to set.
      * @return the MabContainerHealthDetails object itself.
      */
@@ -121,7 +125,7 @@ public final class MabContainerHealthDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -30,45 +30,28 @@ public final class ApplicationPackagesActivateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"state\":\"Pending\",\"format\":\"onok\",\"storageUrl\":\"rjqc\",\"storageUrlExpiry\":\"2021-10-08T15:41:33Z\",\"lastActivationTime\":\"2021-02-12T14:44:45Z\"},\"etag\":\"rlazszrnw\",\"id\":\"iin\",\"name\":\"fpwpjylwbt\",\"type\":\"h\"}";
+        String responseStr
+            = "{\"properties\":{\"state\":\"Active\",\"format\":\"mtdh\",\"storageUrl\":\"dvypgikdgsz\",\"storageUrlExpiry\":\"2021-09-09T14:02:20Z\",\"lastActivationTime\":\"2021-01-23T14:08:39Z\"},\"etag\":\"ryuzh\",\"id\":\"hkjoqr\",\"name\":\"qqaatjinrvgou\",\"type\":\"mfiibfggj\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        BatchManager manager =
-            BatchManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        BatchManager manager = BatchManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ApplicationPackage response =
-            manager
-                .applicationPackages()
-                .activateWithResponse(
-                    "wbdsr",
-                    "zpdrhneu",
-                    "owqkdwytisi",
-                    "ircgpikpz",
-                    new ActivateApplicationPackageParameters().withFormat("mejzanlfzxia"),
-                    com.azure.core.util.Context.NONE)
-                .getValue();
+        ApplicationPackage response = manager.applicationPackages()
+            .activateWithResponse("erqwkyhkobopg", "edkowepbqpcrfk", "wccsnjvcdwxlpqek", "tn",
+                new ActivateApplicationPackageParameters().withFormat("htjsying"), com.azure.core.util.Context.NONE)
+            .getValue();
+
     }
 }

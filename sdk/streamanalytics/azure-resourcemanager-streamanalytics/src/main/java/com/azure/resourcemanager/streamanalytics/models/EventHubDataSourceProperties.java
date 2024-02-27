@@ -5,24 +5,34 @@
 package com.azure.resourcemanager.streamanalytics.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.logging.ClientLogger;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The common properties that are associated with Event Hub data sources. */
+/**
+ * The common properties that are associated with Event Hub data sources.
+ */
 @Fluent
 public class EventHubDataSourceProperties extends ServiceBusDataSourceProperties {
-    @JsonIgnore private final ClientLogger logger = new ClientLogger(EventHubDataSourceProperties.class);
-
     /*
      * The name of the Event Hub. Required on PUT (CreateOrReplace) requests.
      */
     @JsonProperty(value = "eventHubName")
     private String eventHubName;
 
+    /*
+     * The partition count of the event hub data source. Range 1 - 256.
+     */
+    @JsonProperty(value = "partitionCount")
+    private Integer partitionCount;
+
+    /**
+     * Creates an instance of EventHubDataSourceProperties class.
+     */
+    public EventHubDataSourceProperties() {
+    }
+
     /**
      * Get the eventHubName property: The name of the Event Hub. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @return the eventHubName value.
      */
     public String eventHubName() {
@@ -31,7 +41,7 @@ public class EventHubDataSourceProperties extends ServiceBusDataSourceProperties
 
     /**
      * Set the eventHubName property: The name of the Event Hub. Required on PUT (CreateOrReplace) requests.
-     *
+     * 
      * @param eventHubName the eventHubName value to set.
      * @return the EventHubDataSourceProperties object itself.
      */
@@ -40,28 +50,56 @@ public class EventHubDataSourceProperties extends ServiceBusDataSourceProperties
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the partitionCount property: The partition count of the event hub data source. Range 1 - 256.
+     * 
+     * @return the partitionCount value.
+     */
+    public Integer partitionCount() {
+        return this.partitionCount;
+    }
+
+    /**
+     * Set the partitionCount property: The partition count of the event hub data source. Range 1 - 256.
+     * 
+     * @param partitionCount the partitionCount value to set.
+     * @return the EventHubDataSourceProperties object itself.
+     */
+    public EventHubDataSourceProperties withPartitionCount(Integer partitionCount) {
+        this.partitionCount = partitionCount;
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubDataSourceProperties withServiceBusNamespace(String serviceBusNamespace) {
         super.withServiceBusNamespace(serviceBusNamespace);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubDataSourceProperties withSharedAccessPolicyName(String sharedAccessPolicyName) {
         super.withSharedAccessPolicyName(sharedAccessPolicyName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubDataSourceProperties withSharedAccessPolicyKey(String sharedAccessPolicyKey) {
         super.withSharedAccessPolicyKey(sharedAccessPolicyKey);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventHubDataSourceProperties withAuthenticationMode(AuthenticationMode authenticationMode) {
         super.withAuthenticationMode(authenticationMode);
@@ -70,7 +108,7 @@ public class EventHubDataSourceProperties extends ServiceBusDataSourceProperties
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.containerservice.models.OSOptionProperty;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The list of OS option properties. */
+/**
+ * The list of OS option properties.
+ */
 @Fluent
 public final class OSOptionPropertyList {
     /*
@@ -19,13 +21,15 @@ public final class OSOptionPropertyList {
     @JsonProperty(value = "osOptionPropertyList", required = true)
     private List<OSOptionProperty> osOptionPropertyList;
 
-    /** Creates an instance of OSOptionPropertyList class. */
+    /**
+     * Creates an instance of OSOptionPropertyList class.
+     */
     public OSOptionPropertyList() {
     }
 
     /**
      * Get the osOptionPropertyList property: The list of OS options.
-     *
+     * 
      * @return the osOptionPropertyList value.
      */
     public List<OSOptionProperty> osOptionPropertyList() {
@@ -34,7 +38,7 @@ public final class OSOptionPropertyList {
 
     /**
      * Set the osOptionPropertyList property: The list of OS options.
-     *
+     * 
      * @param osOptionPropertyList the osOptionPropertyList value to set.
      * @return the OSOptionPropertyList object itself.
      */
@@ -45,15 +49,13 @@ public final class OSOptionPropertyList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (osOptionPropertyList() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property osOptionPropertyList in model OSOptionPropertyList"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property osOptionPropertyList in model OSOptionPropertyList"));
         } else {
             osOptionPropertyList().forEach(e -> e.validate());
         }

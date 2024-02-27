@@ -15,7 +15,6 @@ import org.junit.jupiter.api.parallel.Execution;
 import org.junit.jupiter.api.parallel.ExecutionMode;
 import org.mockito.Mock;
 import org.mockito.MockitoAnnotations;
-import reactor.core.Disposable;
 import reactor.test.StepVerifier;
 
 import java.nio.charset.StandardCharsets;
@@ -28,6 +27,7 @@ import java.util.concurrent.TimeUnit;
 
 import static com.azure.messaging.eventhubs.TestUtils.MESSAGE_ID;
 import static com.azure.messaging.eventhubs.TestUtils.isMatchingEvent;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @Tag(TestUtils.INTEGRATION)
 @Execution(ExecutionMode.SAME_THREAD)
@@ -52,7 +52,9 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
             .shareConnection()
             .consumerGroup(EventHubClientBuilder.DEFAULT_CONSUMER_GROUP_NAME)
             .prefetchCount(EventHubClientBuilder.DEFAULT_PREFETCH_COUNT);
-        producer = toClose(builder.buildAsyncProducerClient());
+        producer = toClose(builder
+            .retryOptions(RETRY_OPTIONS)
+            .buildAsyncProducerClient());
     }
 
     /**
@@ -134,24 +136,11 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
         for (String id : partitionIds) {
             final EventHubConsumerAsyncClient consumer = toClose(builder.buildAsyncConsumerClient());
 
-            Disposable subscription = toClose(consumer.receiveFromPartition(id, EventPosition.fromEnqueuedTime(now)).subscribe(partitionEvent -> {
-                EventData event = partitionEvent.getData();
-                if (event.getPartitionKey() == null || !PARTITION_KEY.equals(event.getPartitionKey())) {
-                    return;
-                }
-
-                if (isMatchingEvent(event, messageValue)) {
-                    logger.info("Event[{}] matched. Countdown: {}", event.getSequenceNumber(), countDownLatch.getCount());
-                    countDownLatch.countDown();
-                } else {
-                    logger.warning("Event[{}] matched partition key, but not GUID. Expected: {}. Actual: {}",
-                        event.getSequenceNumber(), messageValue, event.getProperties().get(MESSAGE_ID));
-                }
-            }, error -> {
-                    Assertions.fail("An error should not have occurred:" + error.toString());
-                }, () -> {
-                    logger.info("Disposing of consumer now that the receive is complete.");
-                    dispose(consumer);
+            toClose(consumer.receiveFromPartition(id, EventPosition.fromEnqueuedTime(now))
+                .subscribe(partitionEvent -> {
+                    if (isMatchingEvent(partitionEvent.getData(), messageValue)) {
+                        countDownLatch.countDown();
+                    }
                 }));
         }
 
@@ -160,9 +149,7 @@ public class EventDataBatchIntegrationTest extends IntegrationTestBase {
 
         // Assert
         // Wait for all the events we sent to be received.
-        countDownLatch.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS);
-
-        Assertions.assertEquals(0, countDownLatch.getCount());
+        assertTrue(countDownLatch.await(TIMEOUT.getSeconds(), TimeUnit.SECONDS));
     }
 
     /**

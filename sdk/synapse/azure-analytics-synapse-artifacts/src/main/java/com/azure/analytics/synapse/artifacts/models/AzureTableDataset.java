@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The Azure Table storage dataset. */
+/**
+ * The Azure Table storage dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureTable")
 @JsonFlatten
@@ -24,13 +26,16 @@ public class AzureTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.tableName", required = true)
     private Object tableName;
 
-    /** Creates an instance of AzureTableDataset class. */
-    public AzureTableDataset() {}
+    /**
+     * Creates an instance of AzureTableDataset class.
+     */
+    public AzureTableDataset() {
+    }
 
     /**
      * Get the tableName property: The table name of the Azure Table storage. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the tableName value.
      */
     public Object getTableName() {
@@ -40,7 +45,7 @@ public class AzureTableDataset extends Dataset {
     /**
      * Set the tableName property: The table name of the Azure Table storage. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the AzureTableDataset object itself.
      */
@@ -49,49 +54,63 @@ public class AzureTableDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

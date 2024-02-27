@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Describes the properties of a gallery Application Definition. */
+/**
+ * Describes the properties of a gallery Application Definition.
+ */
 @Fluent
 public final class GalleryApplicationProperties {
     /*
@@ -47,8 +49,8 @@ public final class GalleryApplicationProperties {
     private OffsetDateTime endOfLifeDate;
 
     /*
-     * This property allows you to specify the supported type of the OS that application is built for. <br><br>
-     * Possible values are: <br><br> **Windows** <br><br> **Linux**
+     * This property allows you to specify the supported type of the OS that application is built for. Possible values
+     * are: **Windows,** **Linux.**
      */
     @JsonProperty(value = "supportedOSType", required = true)
     private OperatingSystemTypes supportedOSType;
@@ -60,14 +62,16 @@ public final class GalleryApplicationProperties {
     @JsonProperty(value = "customActions")
     private List<GalleryApplicationCustomAction> customActions;
 
-    /** Creates an instance of GalleryApplicationProperties class. */
+    /**
+     * Creates an instance of GalleryApplicationProperties class.
+     */
     public GalleryApplicationProperties() {
     }
 
     /**
      * Get the description property: The description of this gallery Application Definition resource. This property is
      * updatable.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -77,7 +81,7 @@ public final class GalleryApplicationProperties {
     /**
      * Set the description property: The description of this gallery Application Definition resource. This property is
      * updatable.
-     *
+     * 
      * @param description the description value to set.
      * @return the GalleryApplicationProperties object itself.
      */
@@ -88,7 +92,7 @@ public final class GalleryApplicationProperties {
 
     /**
      * Get the eula property: The Eula agreement for the gallery Application Definition.
-     *
+     * 
      * @return the eula value.
      */
     public String eula() {
@@ -97,7 +101,7 @@ public final class GalleryApplicationProperties {
 
     /**
      * Set the eula property: The Eula agreement for the gallery Application Definition.
-     *
+     * 
      * @param eula the eula value to set.
      * @return the GalleryApplicationProperties object itself.
      */
@@ -108,7 +112,7 @@ public final class GalleryApplicationProperties {
 
     /**
      * Get the privacyStatementUri property: The privacy statement uri.
-     *
+     * 
      * @return the privacyStatementUri value.
      */
     public String privacyStatementUri() {
@@ -117,7 +121,7 @@ public final class GalleryApplicationProperties {
 
     /**
      * Set the privacyStatementUri property: The privacy statement uri.
-     *
+     * 
      * @param privacyStatementUri the privacyStatementUri value to set.
      * @return the GalleryApplicationProperties object itself.
      */
@@ -128,7 +132,7 @@ public final class GalleryApplicationProperties {
 
     /**
      * Get the releaseNoteUri property: The release note uri.
-     *
+     * 
      * @return the releaseNoteUri value.
      */
     public String releaseNoteUri() {
@@ -137,7 +141,7 @@ public final class GalleryApplicationProperties {
 
     /**
      * Set the releaseNoteUri property: The release note uri.
-     *
+     * 
      * @param releaseNoteUri the releaseNoteUri value to set.
      * @return the GalleryApplicationProperties object itself.
      */
@@ -149,7 +153,7 @@ public final class GalleryApplicationProperties {
     /**
      * Get the endOfLifeDate property: The end of life date of the gallery Application Definition. This property can be
      * used for decommissioning purposes. This property is updatable.
-     *
+     * 
      * @return the endOfLifeDate value.
      */
     public OffsetDateTime endOfLifeDate() {
@@ -159,7 +163,7 @@ public final class GalleryApplicationProperties {
     /**
      * Set the endOfLifeDate property: The end of life date of the gallery Application Definition. This property can be
      * used for decommissioning purposes. This property is updatable.
-     *
+     * 
      * @param endOfLifeDate the endOfLifeDate value to set.
      * @return the GalleryApplicationProperties object itself.
      */
@@ -170,9 +174,8 @@ public final class GalleryApplicationProperties {
 
     /**
      * Get the supportedOSType property: This property allows you to specify the supported type of the OS that
-     * application is built for. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Windows**
-     * &lt;br&gt;&lt;br&gt; **Linux**.
-     *
+     * application is built for. Possible values are: **Windows,** **Linux.**.
+     * 
      * @return the supportedOSType value.
      */
     public OperatingSystemTypes supportedOSType() {
@@ -181,9 +184,8 @@ public final class GalleryApplicationProperties {
 
     /**
      * Set the supportedOSType property: This property allows you to specify the supported type of the OS that
-     * application is built for. &lt;br&gt;&lt;br&gt; Possible values are: &lt;br&gt;&lt;br&gt; **Windows**
-     * &lt;br&gt;&lt;br&gt; **Linux**.
-     *
+     * application is built for. Possible values are: **Windows,** **Linux.**.
+     * 
      * @param supportedOSType the supportedOSType value to set.
      * @return the GalleryApplicationProperties object itself.
      */
@@ -195,7 +197,7 @@ public final class GalleryApplicationProperties {
     /**
      * Get the customActions property: A list of custom actions that can be performed with all of the Gallery
      * Application Versions within this Gallery Application.
-     *
+     * 
      * @return the customActions value.
      */
     public List<GalleryApplicationCustomAction> customActions() {
@@ -205,7 +207,7 @@ public final class GalleryApplicationProperties {
     /**
      * Set the customActions property: A list of custom actions that can be performed with all of the Gallery
      * Application Versions within this Gallery Application.
-     *
+     * 
      * @param customActions the customActions value to set.
      * @return the GalleryApplicationProperties object itself.
      */
@@ -216,15 +218,13 @@ public final class GalleryApplicationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (supportedOSType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property supportedOSType in model GalleryApplicationProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property supportedOSType in model GalleryApplicationProperties"));
         }
         if (customActions() != null) {
             customActions().forEach(e -> e.validate());

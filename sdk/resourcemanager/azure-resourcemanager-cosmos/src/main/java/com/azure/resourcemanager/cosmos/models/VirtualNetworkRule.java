@@ -7,12 +7,15 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Virtual Network ACL Rule object. */
+/**
+ * Virtual Network ACL Rule object.
+ */
 @Fluent
 public final class VirtualNetworkRule {
     /*
      * Resource ID of a subnet, for example:
-     * /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.
+     * /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.Network/virtualNetworks/{
+     * virtualNetworkName}/subnets/{subnetName}.
      */
     @JsonProperty(value = "id")
     private String id;
@@ -23,14 +26,16 @@ public final class VirtualNetworkRule {
     @JsonProperty(value = "ignoreMissingVNetServiceEndpoint")
     private Boolean ignoreMissingVNetServiceEndpoint;
 
-    /** Creates an instance of VirtualNetworkRule class. */
+    /**
+     * Creates an instance of VirtualNetworkRule class.
+     */
     public VirtualNetworkRule() {
     }
 
     /**
      * Get the id property: Resource ID of a subnet, for example:
      * /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -40,7 +45,7 @@ public final class VirtualNetworkRule {
     /**
      * Set the id property: Resource ID of a subnet, for example:
      * /subscriptions/{subscriptionId}/resourceGroups/{groupName}/providers/Microsoft.Network/virtualNetworks/{virtualNetworkName}/subnets/{subnetName}.
-     *
+     * 
      * @param id the id value to set.
      * @return the VirtualNetworkRule object itself.
      */
@@ -52,7 +57,7 @@ public final class VirtualNetworkRule {
     /**
      * Get the ignoreMissingVNetServiceEndpoint property: Create firewall rule before the virtual network has vnet
      * service endpoint enabled.
-     *
+     * 
      * @return the ignoreMissingVNetServiceEndpoint value.
      */
     public Boolean ignoreMissingVNetServiceEndpoint() {
@@ -62,7 +67,7 @@ public final class VirtualNetworkRule {
     /**
      * Set the ignoreMissingVNetServiceEndpoint property: Create firewall rule before the virtual network has vnet
      * service endpoint enabled.
-     *
+     * 
      * @param ignoreMissingVNetServiceEndpoint the ignoreMissingVNetServiceEndpoint value to set.
      * @return the VirtualNetworkRule object itself.
      */
@@ -73,7 +78,7 @@ public final class VirtualNetworkRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

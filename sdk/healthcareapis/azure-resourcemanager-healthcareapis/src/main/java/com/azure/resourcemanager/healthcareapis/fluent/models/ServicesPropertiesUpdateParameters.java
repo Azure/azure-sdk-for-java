@@ -8,20 +8,27 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.healthcareapis.models.PublicNetworkAccess;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The properties for updating a service instance. */
+/**
+ * The properties for updating a service instance.
+ */
 @Fluent
 public final class ServicesPropertiesUpdateParameters {
     /*
-     * Control permission for data plane traffic coming from public networks
-     * while private endpoint is enabled.
+     * Control permission for data plane traffic coming from public networks while private endpoint is enabled.
      */
     @JsonProperty(value = "publicNetworkAccess")
     private PublicNetworkAccess publicNetworkAccess;
 
     /**
-     * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
-     * private endpoint is enabled.
-     *
+     * Creates an instance of ServicesPropertiesUpdateParameters class.
+     */
+    public ServicesPropertiesUpdateParameters() {
+    }
+
+    /**
+     * Get the publicNetworkAccess property: Control permission for data plane traffic coming from public networks
+     * while private endpoint is enabled.
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -29,9 +36,9 @@ public final class ServicesPropertiesUpdateParameters {
     }
 
     /**
-     * Set the publicNetworkAccess property: Control permission for data plane traffic coming from public networks while
-     * private endpoint is enabled.
-     *
+     * Set the publicNetworkAccess property: Control permission for data plane traffic coming from public networks
+     * while private endpoint is enabled.
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the ServicesPropertiesUpdateParameters object itself.
      */
@@ -42,7 +49,7 @@ public final class ServicesPropertiesUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

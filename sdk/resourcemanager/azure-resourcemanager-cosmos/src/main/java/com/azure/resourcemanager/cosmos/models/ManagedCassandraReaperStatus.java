@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The ManagedCassandraReaperStatus model. */
+/**
+ * The ManagedCassandraReaperStatus model.
+ */
 @Fluent
 public final class ManagedCassandraReaperStatus {
     /*
@@ -32,13 +34,15 @@ public final class ManagedCassandraReaperStatus {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, String> repairSchedules;
 
-    /** Creates an instance of ManagedCassandraReaperStatus class. */
+    /**
+     * Creates an instance of ManagedCassandraReaperStatus class.
+     */
     public ManagedCassandraReaperStatus() {
     }
 
     /**
      * Get the healthy property: The healthy property.
-     *
+     * 
      * @return the healthy value.
      */
     public Boolean healthy() {
@@ -47,7 +51,7 @@ public final class ManagedCassandraReaperStatus {
 
     /**
      * Set the healthy property: The healthy property.
-     *
+     * 
      * @param healthy the healthy value to set.
      * @return the ManagedCassandraReaperStatus object itself.
      */
@@ -58,7 +62,7 @@ public final class ManagedCassandraReaperStatus {
 
     /**
      * Get the repairRunIds property: Dictionary of &lt;string&gt;.
-     *
+     * 
      * @return the repairRunIds value.
      */
     public Map<String, String> repairRunIds() {
@@ -67,7 +71,7 @@ public final class ManagedCassandraReaperStatus {
 
     /**
      * Set the repairRunIds property: Dictionary of &lt;string&gt;.
-     *
+     * 
      * @param repairRunIds the repairRunIds value to set.
      * @return the ManagedCassandraReaperStatus object itself.
      */
@@ -78,7 +82,7 @@ public final class ManagedCassandraReaperStatus {
 
     /**
      * Get the repairSchedules property: Dictionary of &lt;string&gt;.
-     *
+     * 
      * @return the repairSchedules value.
      */
     public Map<String, String> repairSchedules() {
@@ -87,7 +91,7 @@ public final class ManagedCassandraReaperStatus {
 
     /**
      * Set the repairSchedules property: Dictionary of &lt;string&gt;.
-     *
+     * 
      * @param repairSchedules the repairSchedules value to set.
      * @return the ManagedCassandraReaperStatus object itself.
      */
@@ -98,7 +102,7 @@ public final class ManagedCassandraReaperStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

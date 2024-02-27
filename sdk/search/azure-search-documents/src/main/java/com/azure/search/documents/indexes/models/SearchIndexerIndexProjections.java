@@ -12,10 +12,11 @@ import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
-import java.util.ArrayList;
 import java.util.List;
 
-/** Definition of additional projections to secondary search indexes. */
+/**
+ * Definition of additional projections to secondary search indexes.
+ */
 @Fluent
 public final class SearchIndexerIndexProjections implements JsonSerializable<SearchIndexerIndexProjections> {
     /*
@@ -31,7 +32,7 @@ public final class SearchIndexerIndexProjections implements JsonSerializable<Sea
 
     /**
      * Creates an instance of SearchIndexerIndexProjections class.
-     *
+     * 
      * @param selectors the selectors value to set.
      */
     public SearchIndexerIndexProjections(List<SearchIndexerIndexProjectionSelector> selectors) {
@@ -40,7 +41,7 @@ public final class SearchIndexerIndexProjections implements JsonSerializable<Sea
 
     /**
      * Get the selectors property: A list of projections to be performed to secondary search indexes.
-     *
+     * 
      * @return the selectors value.
      */
     public List<SearchIndexerIndexProjectionSelector> getSelectors() {
@@ -48,9 +49,9 @@ public final class SearchIndexerIndexProjections implements JsonSerializable<Sea
     }
 
     /**
-     * Get the parameters property: A dictionary of index projection-specific configuration properties. Each name is the
-     * name of a specific property. Each value must be of a primitive type.
-     *
+     * Get the parameters property: A dictionary of index projection-specific configuration properties. Each name is
+     * the name of a specific property. Each value must be of a primitive type.
+     * 
      * @return the parameters value.
      */
     public SearchIndexerIndexProjectionsParameters getParameters() {
@@ -58,9 +59,9 @@ public final class SearchIndexerIndexProjections implements JsonSerializable<Sea
     }
 
     /**
-     * Set the parameters property: A dictionary of index projection-specific configuration properties. Each name is the
-     * name of a specific property. Each value must be of a primitive type.
-     *
+     * Set the parameters property: A dictionary of index projection-specific configuration properties. Each name is
+     * the name of a specific property. Each value must be of a primitive type.
+     * 
      * @param parameters the parameters value to set.
      * @return the SearchIndexerIndexProjections object itself.
      */
@@ -79,47 +80,39 @@ public final class SearchIndexerIndexProjections implements JsonSerializable<Sea
 
     /**
      * Reads an instance of SearchIndexerIndexProjections from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of SearchIndexerIndexProjections if the JsonReader was pointing to an instance of it, or null
-     *     if it was pointing to JSON null.
+     * if it was pointing to JSON null.
      * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
      * @throws IOException If an error occurs while reading the SearchIndexerIndexProjections.
      */
     public static SearchIndexerIndexProjections fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    boolean selectorsFound = false;
-                    List<SearchIndexerIndexProjectionSelector> selectors = null;
-                    SearchIndexerIndexProjectionsParameters parameters = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            boolean selectorsFound = false;
+            List<SearchIndexerIndexProjectionSelector> selectors = null;
+            SearchIndexerIndexProjectionsParameters parameters = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("selectors".equals(fieldName)) {
-                            selectors =
-                                    reader.readArray(reader1 -> SearchIndexerIndexProjectionSelector.fromJson(reader1));
-                            selectorsFound = true;
-                        } else if ("parameters".equals(fieldName)) {
-                            parameters = SearchIndexerIndexProjectionsParameters.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    if (selectorsFound) {
-                        SearchIndexerIndexProjections deserializedSearchIndexerIndexProjections =
-                                new SearchIndexerIndexProjections(selectors);
-                        deserializedSearchIndexerIndexProjections.parameters = parameters;
+                if ("selectors".equals(fieldName)) {
+                    selectors = reader.readArray(reader1 -> SearchIndexerIndexProjectionSelector.fromJson(reader1));
+                    selectorsFound = true;
+                } else if ("parameters".equals(fieldName)) {
+                    parameters = SearchIndexerIndexProjectionsParameters.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            if (selectorsFound) {
+                SearchIndexerIndexProjections deserializedSearchIndexerIndexProjections
+                    = new SearchIndexerIndexProjections(selectors);
+                deserializedSearchIndexerIndexProjections.parameters = parameters;
 
-                        return deserializedSearchIndexerIndexProjections;
-                    }
-                    List<String> missingProperties = new ArrayList<>();
-                    if (!selectorsFound) {
-                        missingProperties.add("selectors");
-                    }
-
-                    throw new IllegalStateException(
-                            "Missing required property/properties: " + String.join(", ", missingProperties));
-                });
+                return deserializedSearchIndexerIndexProjections;
+            }
+            throw new IllegalStateException("Missing required property: selectors");
+        });
     }
 }

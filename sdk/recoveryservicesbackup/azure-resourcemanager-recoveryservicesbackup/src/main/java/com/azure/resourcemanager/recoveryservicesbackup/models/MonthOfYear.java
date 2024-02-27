@@ -7,48 +7,78 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for MonthOfYear. */
+/**
+ * Defines values for MonthOfYear.
+ */
 public enum MonthOfYear {
-    /** Enum value Invalid. */
+    /**
+     * Enum value Invalid.
+     */
     INVALID("Invalid"),
 
-    /** Enum value January. */
+    /**
+     * Enum value January.
+     */
     JANUARY("January"),
 
-    /** Enum value February. */
+    /**
+     * Enum value February.
+     */
     FEBRUARY("February"),
 
-    /** Enum value March. */
+    /**
+     * Enum value March.
+     */
     MARCH("March"),
 
-    /** Enum value April. */
+    /**
+     * Enum value April.
+     */
     APRIL("April"),
 
-    /** Enum value May. */
+    /**
+     * Enum value May.
+     */
     MAY("May"),
 
-    /** Enum value June. */
+    /**
+     * Enum value June.
+     */
     JUNE("June"),
 
-    /** Enum value July. */
+    /**
+     * Enum value July.
+     */
     JULY("July"),
 
-    /** Enum value August. */
+    /**
+     * Enum value August.
+     */
     AUGUST("August"),
 
-    /** Enum value September. */
+    /**
+     * Enum value September.
+     */
     SEPTEMBER("September"),
 
-    /** Enum value October. */
+    /**
+     * Enum value October.
+     */
     OCTOBER("October"),
 
-    /** Enum value November. */
+    /**
+     * Enum value November.
+     */
     NOVEMBER("November"),
 
-    /** Enum value December. */
+    /**
+     * Enum value December.
+     */
     DECEMBER("December");
 
-    /** The actual serialized value for a MonthOfYear instance. */
+    /**
+     * The actual serialized value for a MonthOfYear instance.
+     */
     private final String value;
 
     MonthOfYear(String value) {
@@ -57,7 +87,7 @@ public enum MonthOfYear {
 
     /**
      * Parses a serialized value to a MonthOfYear instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed MonthOfYear object, or null if unable to parse.
      */
@@ -75,7 +105,9 @@ public enum MonthOfYear {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

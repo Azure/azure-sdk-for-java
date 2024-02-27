@@ -11,8 +11,8 @@ import java.util.List;
 
 /**
  * ExpressRoutePorts Location List Result
- *
- * <p>Response for ListExpressRoutePortsLocations API service call.
+ * 
+ * Response for ListExpressRoutePortsLocations API service call.
  */
 @Fluent
 public final class ExpressRoutePortsLocationListResult {
@@ -28,13 +28,15 @@ public final class ExpressRoutePortsLocationListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ExpressRoutePortsLocationListResult class. */
+    /**
+     * Creates an instance of ExpressRoutePortsLocationListResult class.
+     */
     public ExpressRoutePortsLocationListResult() {
     }
 
     /**
      * Get the value property: The list of all ExpressRoutePort peering locations.
-     *
+     * 
      * @return the value value.
      */
     public List<ExpressRoutePortsLocationInner> value() {
@@ -43,7 +45,7 @@ public final class ExpressRoutePortsLocationListResult {
 
     /**
      * Set the value property: The list of all ExpressRoutePort peering locations.
-     *
+     * 
      * @param value the value value to set.
      * @return the ExpressRoutePortsLocationListResult object itself.
      */
@@ -54,7 +56,7 @@ public final class ExpressRoutePortsLocationListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +65,7 @@ public final class ExpressRoutePortsLocationListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ExpressRoutePortsLocationListResult object itself.
      */
@@ -74,7 +76,7 @@ public final class ExpressRoutePortsLocationListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

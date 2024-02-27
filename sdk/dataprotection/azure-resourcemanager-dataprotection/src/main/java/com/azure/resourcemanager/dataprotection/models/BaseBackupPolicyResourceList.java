@@ -11,8 +11,8 @@ import java.util.List;
 
 /**
  * BaseBackupPolicyResourceList
- *
- * <p>List of BaseBackupPolicy resources.
+ * 
+ * List of BaseBackupPolicy resources.
  */
 @Fluent
 public final class BaseBackupPolicyResourceList extends DppResourceList {
@@ -22,13 +22,15 @@ public final class BaseBackupPolicyResourceList extends DppResourceList {
     @JsonProperty(value = "value")
     private List<BaseBackupPolicyResourceInner> value;
 
-    /** Creates an instance of BaseBackupPolicyResourceList class. */
+    /**
+     * Creates an instance of BaseBackupPolicyResourceList class.
+     */
     public BaseBackupPolicyResourceList() {
     }
 
     /**
      * Get the value property: List of resources.
-     *
+     * 
      * @return the value value.
      */
     public List<BaseBackupPolicyResourceInner> value() {
@@ -37,7 +39,7 @@ public final class BaseBackupPolicyResourceList extends DppResourceList {
 
     /**
      * Set the value property: List of resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the BaseBackupPolicyResourceList object itself.
      */
@@ -46,7 +48,9 @@ public final class BaseBackupPolicyResourceList extends DppResourceList {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BaseBackupPolicyResourceList withNextLink(String nextLink) {
         super.withNextLink(nextLink);
@@ -55,7 +59,7 @@ public final class BaseBackupPolicyResourceList extends DppResourceList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -12,8 +12,8 @@ import org.junit.jupiter.api.Assertions;
 public final class TaskSchedulingPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TaskSchedulingPolicy model =
-            BinaryData.fromString("{\"nodeFillType\":\"Spread\"}").toObject(TaskSchedulingPolicy.class);
+        TaskSchedulingPolicy model
+            = BinaryData.fromString("{\"nodeFillType\":\"Spread\"}").toObject(TaskSchedulingPolicy.class);
         Assertions.assertEquals(ComputeNodeFillType.SPREAD, model.nodeFillType());
     }
 

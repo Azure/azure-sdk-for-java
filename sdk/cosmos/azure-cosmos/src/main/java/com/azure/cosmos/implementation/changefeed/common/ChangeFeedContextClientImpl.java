@@ -87,7 +87,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
     }
 
     @Override
-    public Mono<List<PartitionKeyRange>> getOverlappingRanges(Range<String> range) {
+    public Mono<List<PartitionKeyRange>> getOverlappingRanges(Range<String> range, boolean forceRefresh) {
         AsyncDocumentClient clientWrapper =
                 CosmosBridgeInternal.getAsyncDocumentClient(this.cosmosContainer.getDatabase());
 
@@ -99,7 +99,7 @@ public class ChangeFeedContextClientImpl implements ChangeFeedContextClient {
                             null,
                             collection.getResourceId(),
                             range,
-                            true,
+                            forceRefresh,
                             null);
                 })
                 .flatMap(pkRangesValueHolder -> {

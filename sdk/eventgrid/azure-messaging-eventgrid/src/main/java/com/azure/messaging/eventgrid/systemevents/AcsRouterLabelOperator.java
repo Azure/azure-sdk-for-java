@@ -5,51 +5,64 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Router Job Worker Selector Label Operator. */
+/**
+ * Router Job Worker Selector Label Operator.
+ */
 public final class AcsRouterLabelOperator extends ExpandableStringEnum<AcsRouterLabelOperator> {
-    /** =. */
+    /**
+     * =.
+     */
     public static final AcsRouterLabelOperator EQUAL = fromString("Equal");
 
-    /** !=. */
+    /**
+     * !=.
+     */
     public static final AcsRouterLabelOperator NOT_EQUAL = fromString("NotEqual");
 
-    /** &gt;. */
+    /**
+     * &gt;.
+     */
     public static final AcsRouterLabelOperator GREATER = fromString("Greater");
 
-    /** &lt;. */
+    /**
+     * &lt;.
+     */
     public static final AcsRouterLabelOperator LESS = fromString("Less");
 
-    /** &gt;=. */
+    /**
+     * &gt;=.
+     */
     public static final AcsRouterLabelOperator GREATER_THAN_OR_EQUAL = fromString("GreaterThanOrEqual");
 
-    /** &lt;=. */
+    /**
+     * &lt;=.
+     */
     public static final AcsRouterLabelOperator LESS_THAN_OR_EQUAL = fromString("LessThanOrEqual");
 
     /**
      * Creates a new instance of AcsRouterLabelOperator value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public AcsRouterLabelOperator() {}
+    public AcsRouterLabelOperator() {
+    }
 
     /**
      * Creates or finds a AcsRouterLabelOperator from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AcsRouterLabelOperator.
      */
-    @JsonCreator
     public static AcsRouterLabelOperator fromString(String name) {
         return fromString(name, AcsRouterLabelOperator.class);
     }
 
     /**
      * Gets known AcsRouterLabelOperator values.
-     *
+     * 
      * @return known AcsRouterLabelOperator values.
      */
     public static Collection<AcsRouterLabelOperator> values() {

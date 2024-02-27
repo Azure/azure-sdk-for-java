@@ -11,16 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class RetryPolicyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        RetryPolicy model
-            = BinaryData.fromString("{\"count\":\"datakdwagnyahurxtpu\",\"intervalInSeconds\":1445981696}")
-                .toObject(RetryPolicy.class);
-        Assertions.assertEquals(1445981696, model.intervalInSeconds());
+        RetryPolicy model = BinaryData.fromString("{\"count\":\"datagwxpu\",\"intervalInSeconds\":1254021355}")
+            .toObject(RetryPolicy.class);
+        Assertions.assertEquals(1254021355, model.intervalInSeconds());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        RetryPolicy model = new RetryPolicy().withCount("datakdwagnyahurxtpu").withIntervalInSeconds(1445981696);
+        RetryPolicy model = new RetryPolicy().withCount("datagwxpu").withIntervalInSeconds(1254021355);
         model = BinaryData.fromObject(model).toObject(RetryPolicy.class);
-        Assertions.assertEquals(1445981696, model.intervalInSeconds());
+        Assertions.assertEquals(1254021355, model.intervalInSeconds());
     }
 }

@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Salesforce Marketing Cloud dataset. */
+/**
+ * Salesforce Marketing Cloud dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("SalesforceMarketingCloudObject")
 @JsonFlatten
@@ -24,12 +26,15 @@ public class SalesforceMarketingCloudObjectDataset extends Dataset {
     @JsonProperty(value = "typeProperties.tableName")
     private Object tableName;
 
-    /** Creates an instance of SalesforceMarketingCloudObjectDataset class. */
-    public SalesforceMarketingCloudObjectDataset() {}
+    /**
+     * Creates an instance of SalesforceMarketingCloudObjectDataset class.
+     */
+    public SalesforceMarketingCloudObjectDataset() {
+    }
 
     /**
      * Get the tableName property: The table name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the tableName value.
      */
     public Object getTableName() {
@@ -38,7 +43,7 @@ public class SalesforceMarketingCloudObjectDataset extends Dataset {
 
     /**
      * Set the tableName property: The table name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the SalesforceMarketingCloudObjectDataset object itself.
      */
@@ -47,49 +52,63 @@ public class SalesforceMarketingCloudObjectDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceMarketingCloudObjectDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceMarketingCloudObjectDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceMarketingCloudObjectDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceMarketingCloudObjectDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceMarketingCloudObjectDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceMarketingCloudObjectDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SalesforceMarketingCloudObjectDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

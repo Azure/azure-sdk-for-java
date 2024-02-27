@@ -12,7 +12,9 @@ import com.azure.resourcemanager.network.models.RoutingConfiguration;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters for P2SConnectionConfiguration. */
+/**
+ * Parameters for P2SConnectionConfiguration.
+ */
 @Fluent
 public final class P2SConnectionConfigurationProperties {
     /*
@@ -51,14 +53,16 @@ public final class P2SConnectionConfigurationProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of P2SConnectionConfigurationProperties class. */
+    /**
+     * Creates an instance of P2SConnectionConfigurationProperties class.
+     */
     public P2SConnectionConfigurationProperties() {
     }
 
     /**
-     * Get the vpnClientAddressPool property: The reference to the address space resource which represents Address space
-     * for P2S VpnClient.
-     *
+     * Get the vpnClientAddressPool property: The reference to the address space resource which represents Address
+     * space for P2S VpnClient.
+     * 
      * @return the vpnClientAddressPool value.
      */
     public AddressSpace vpnClientAddressPool() {
@@ -66,9 +70,9 @@ public final class P2SConnectionConfigurationProperties {
     }
 
     /**
-     * Set the vpnClientAddressPool property: The reference to the address space resource which represents Address space
-     * for P2S VpnClient.
-     *
+     * Set the vpnClientAddressPool property: The reference to the address space resource which represents Address
+     * space for P2S VpnClient.
+     * 
      * @param vpnClientAddressPool the vpnClientAddressPool value to set.
      * @return the P2SConnectionConfigurationProperties object itself.
      */
@@ -80,7 +84,7 @@ public final class P2SConnectionConfigurationProperties {
     /**
      * Get the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
      * tables on this connection.
-     *
+     * 
      * @return the routingConfiguration value.
      */
     public RoutingConfiguration routingConfiguration() {
@@ -90,7 +94,7 @@ public final class P2SConnectionConfigurationProperties {
     /**
      * Set the routingConfiguration property: The Routing Configuration indicating the associated and propagated route
      * tables on this connection.
-     *
+     * 
      * @param routingConfiguration the routingConfiguration value to set.
      * @return the P2SConnectionConfigurationProperties object itself.
      */
@@ -102,7 +106,7 @@ public final class P2SConnectionConfigurationProperties {
     /**
      * Get the enableInternetSecurity property: Flag indicating whether the enable internet security flag is turned on
      * for the P2S Connections or not.
-     *
+     * 
      * @return the enableInternetSecurity value.
      */
     public Boolean enableInternetSecurity() {
@@ -112,7 +116,7 @@ public final class P2SConnectionConfigurationProperties {
     /**
      * Set the enableInternetSecurity property: Flag indicating whether the enable internet security flag is turned on
      * for the P2S Connections or not.
-     *
+     * 
      * @param enableInternetSecurity the enableInternetSecurity value to set.
      * @return the P2SConnectionConfigurationProperties object itself.
      */
@@ -124,7 +128,7 @@ public final class P2SConnectionConfigurationProperties {
     /**
      * Get the configurationPolicyGroupAssociations property: List of Configuration Policy Groups that this
      * P2SConnectionConfiguration is attached to.
-     *
+     * 
      * @return the configurationPolicyGroupAssociations value.
      */
     public List<SubResource> configurationPolicyGroupAssociations() {
@@ -134,7 +138,7 @@ public final class P2SConnectionConfigurationProperties {
     /**
      * Get the previousConfigurationPolicyGroupAssociations property: List of previous Configuration Policy Groups that
      * this P2SConnectionConfiguration was attached to.
-     *
+     * 
      * @return the previousConfigurationPolicyGroupAssociations value.
      */
     public List<VpnServerConfigurationPolicyGroupInner> previousConfigurationPolicyGroupAssociations() {
@@ -143,7 +147,7 @@ public final class P2SConnectionConfigurationProperties {
 
     /**
      * Get the provisioningState property: The provisioning state of the P2SConnectionConfiguration resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -152,7 +156,7 @@ public final class P2SConnectionConfigurationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

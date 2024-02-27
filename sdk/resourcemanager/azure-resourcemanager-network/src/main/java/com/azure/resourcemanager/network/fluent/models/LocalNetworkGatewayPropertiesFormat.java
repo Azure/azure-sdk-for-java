@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.BgpSettings;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** LocalNetworkGateway properties. */
+/**
+ * LocalNetworkGateway properties.
+ */
 @Fluent
 public final class LocalNetworkGatewayPropertiesFormat {
     /*
@@ -49,13 +51,15 @@ public final class LocalNetworkGatewayPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of LocalNetworkGatewayPropertiesFormat class. */
+    /**
+     * Creates an instance of LocalNetworkGatewayPropertiesFormat class.
+     */
     public LocalNetworkGatewayPropertiesFormat() {
     }
 
     /**
      * Get the localNetworkAddressSpace property: Local network site address space.
-     *
+     * 
      * @return the localNetworkAddressSpace value.
      */
     public AddressSpace localNetworkAddressSpace() {
@@ -64,7 +68,7 @@ public final class LocalNetworkGatewayPropertiesFormat {
 
     /**
      * Set the localNetworkAddressSpace property: Local network site address space.
-     *
+     * 
      * @param localNetworkAddressSpace the localNetworkAddressSpace value to set.
      * @return the LocalNetworkGatewayPropertiesFormat object itself.
      */
@@ -75,7 +79,7 @@ public final class LocalNetworkGatewayPropertiesFormat {
 
     /**
      * Get the gatewayIpAddress property: IP address of local network gateway.
-     *
+     * 
      * @return the gatewayIpAddress value.
      */
     public String gatewayIpAddress() {
@@ -84,7 +88,7 @@ public final class LocalNetworkGatewayPropertiesFormat {
 
     /**
      * Set the gatewayIpAddress property: IP address of local network gateway.
-     *
+     * 
      * @param gatewayIpAddress the gatewayIpAddress value to set.
      * @return the LocalNetworkGatewayPropertiesFormat object itself.
      */
@@ -95,7 +99,7 @@ public final class LocalNetworkGatewayPropertiesFormat {
 
     /**
      * Get the fqdn property: FQDN of local network gateway.
-     *
+     * 
      * @return the fqdn value.
      */
     public String fqdn() {
@@ -104,7 +108,7 @@ public final class LocalNetworkGatewayPropertiesFormat {
 
     /**
      * Set the fqdn property: FQDN of local network gateway.
-     *
+     * 
      * @param fqdn the fqdn value to set.
      * @return the LocalNetworkGatewayPropertiesFormat object itself.
      */
@@ -115,7 +119,7 @@ public final class LocalNetworkGatewayPropertiesFormat {
 
     /**
      * Get the bgpSettings property: Local network gateway's BGP speaker settings.
-     *
+     * 
      * @return the bgpSettings value.
      */
     public BgpSettings bgpSettings() {
@@ -124,7 +128,7 @@ public final class LocalNetworkGatewayPropertiesFormat {
 
     /**
      * Set the bgpSettings property: Local network gateway's BGP speaker settings.
-     *
+     * 
      * @param bgpSettings the bgpSettings value to set.
      * @return the LocalNetworkGatewayPropertiesFormat object itself.
      */
@@ -135,7 +139,7 @@ public final class LocalNetworkGatewayPropertiesFormat {
 
     /**
      * Get the resourceGuid property: The resource GUID property of the local network gateway resource.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -144,7 +148,7 @@ public final class LocalNetworkGatewayPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the local network gateway resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -153,7 +157,7 @@ public final class LocalNetworkGatewayPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

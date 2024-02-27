@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity source for a MongoDB Atlas database. */
+/**
+ * A copy activity source for a MongoDB Atlas database.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("MongoDbAtlasSource")
 @Fluent
@@ -49,14 +51,17 @@ public final class MongoDbAtlasSource extends CopySource {
     @JsonProperty(value = "additionalColumns")
     private Object additionalColumns;
 
-    /** Creates an instance of MongoDbAtlasSource class. */
-    public MongoDbAtlasSource() {}
+    /**
+     * Creates an instance of MongoDbAtlasSource class.
+     */
+    public MongoDbAtlasSource() {
+    }
 
     /**
      * Get the filter property: Specifies selection filter using query operators. To return all documents in a
      * collection, omit this parameter or pass an empty document ({}). Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the filter value.
      */
     public Object getFilter() {
@@ -67,7 +72,7 @@ public final class MongoDbAtlasSource extends CopySource {
      * Set the filter property: Specifies selection filter using query operators. To return all documents in a
      * collection, omit this parameter or pass an empty document ({}). Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param filter the filter value to set.
      * @return the MongoDbAtlasSource object itself.
      */
@@ -78,7 +83,7 @@ public final class MongoDbAtlasSource extends CopySource {
 
     /**
      * Get the cursorMethods property: Cursor methods for Mongodb query.
-     *
+     * 
      * @return the cursorMethods value.
      */
     public MongoDbCursorMethodsProperties getCursorMethods() {
@@ -87,7 +92,7 @@ public final class MongoDbAtlasSource extends CopySource {
 
     /**
      * Set the cursorMethods property: Cursor methods for Mongodb query.
-     *
+     * 
      * @param cursorMethods the cursorMethods value to set.
      * @return the MongoDbAtlasSource object itself.
      */
@@ -98,10 +103,10 @@ public final class MongoDbAtlasSource extends CopySource {
 
     /**
      * Get the batchSize property: Specifies the number of documents to return in each batch of the response from
-     * MongoDB Atlas instance. In most cases, modifying the batch size will not affect the user or the application. This
-     * property's main purpose is to avoid hit the limitation of response size. Type: integer (or Expression with
+     * MongoDB Atlas instance. In most cases, modifying the batch size will not affect the user or the application.
+     * This property's main purpose is to avoid hit the limitation of response size. Type: integer (or Expression with
      * resultType integer).
-     *
+     * 
      * @return the batchSize value.
      */
     public Object getBatchSize() {
@@ -110,10 +115,10 @@ public final class MongoDbAtlasSource extends CopySource {
 
     /**
      * Set the batchSize property: Specifies the number of documents to return in each batch of the response from
-     * MongoDB Atlas instance. In most cases, modifying the batch size will not affect the user or the application. This
-     * property's main purpose is to avoid hit the limitation of response size. Type: integer (or Expression with
+     * MongoDB Atlas instance. In most cases, modifying the batch size will not affect the user or the application.
+     * This property's main purpose is to avoid hit the limitation of response size. Type: integer (or Expression with
      * resultType integer).
-     *
+     * 
      * @param batchSize the batchSize value to set.
      * @return the MongoDbAtlasSource object itself.
      */
@@ -125,7 +130,7 @@ public final class MongoDbAtlasSource extends CopySource {
     /**
      * Get the queryTimeout property: Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the queryTimeout value.
      */
     public Object getQueryTimeout() {
@@ -135,7 +140,7 @@ public final class MongoDbAtlasSource extends CopySource {
     /**
      * Set the queryTimeout property: Query timeout. Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param queryTimeout the queryTimeout value to set.
      * @return the MongoDbAtlasSource object itself.
      */
@@ -147,7 +152,7 @@ public final class MongoDbAtlasSource extends CopySource {
     /**
      * Get the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @return the additionalColumns value.
      */
     public Object getAdditionalColumns() {
@@ -157,7 +162,7 @@ public final class MongoDbAtlasSource extends CopySource {
     /**
      * Set the additionalColumns property: Specifies the additional columns to be added to source data. Type: array of
      * objects(AdditionalColumns) (or Expression with resultType array of objects).
-     *
+     * 
      * @param additionalColumns the additionalColumns value to set.
      * @return the MongoDbAtlasSource object itself.
      */
@@ -166,21 +171,27 @@ public final class MongoDbAtlasSource extends CopySource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbAtlasSource setSourceRetryCount(Object sourceRetryCount) {
         super.setSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbAtlasSource setSourceRetryWait(Object sourceRetryWait) {
         super.setSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDbAtlasSource setMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.setMaxConcurrentConnections(maxConcurrentConnections);

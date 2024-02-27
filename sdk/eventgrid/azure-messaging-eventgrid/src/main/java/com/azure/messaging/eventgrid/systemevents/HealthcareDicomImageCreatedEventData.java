@@ -5,54 +5,58 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.DicomImageCreated event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.HealthcareApis.DicomImageCreated event.
+ */
 @Fluent
-public final class HealthcareDicomImageCreatedEventData {
+public final class HealthcareDicomImageCreatedEventData
+    implements JsonSerializable<HealthcareDicomImageCreatedEventData> {
     /*
      * Data partition name
      */
-    @JsonProperty(value = "partitionName")
     private String partitionName;
 
     /*
      * Unique identifier for the Study
      */
-    @JsonProperty(value = "imageStudyInstanceUid")
     private String imageStudyInstanceUid;
 
     /*
      * Unique identifier for the Series
      */
-    @JsonProperty(value = "imageSeriesInstanceUid")
     private String imageSeriesInstanceUid;
 
     /*
      * Unique identifier for the DICOM Image
      */
-    @JsonProperty(value = "imageSopInstanceUid")
     private String imageSopInstanceUid;
 
     /*
      * Domain name of the DICOM account for this image.
      */
-    @JsonProperty(value = "serviceHostName")
     private String serviceHostName;
 
     /*
      * Sequence number of the DICOM Service within Azure Health Data Services. It is unique for every image creation
      * and deletion within the service.
      */
-    @JsonProperty(value = "sequenceNumber")
     private Long sequenceNumber;
 
-    /** Creates an instance of HealthcareDicomImageCreatedEventData class. */
-    public HealthcareDicomImageCreatedEventData() {}
+    /**
+     * Creates an instance of HealthcareDicomImageCreatedEventData class.
+     */
+    public HealthcareDicomImageCreatedEventData() {
+    }
 
     /**
      * Get the partitionName property: Data partition name.
-     *
+     * 
      * @return the partitionName value.
      */
     public String getPartitionName() {
@@ -61,7 +65,7 @@ public final class HealthcareDicomImageCreatedEventData {
 
     /**
      * Set the partitionName property: Data partition name.
-     *
+     * 
      * @param partitionName the partitionName value to set.
      * @return the HealthcareDicomImageCreatedEventData object itself.
      */
@@ -72,7 +76,7 @@ public final class HealthcareDicomImageCreatedEventData {
 
     /**
      * Get the imageStudyInstanceUid property: Unique identifier for the Study.
-     *
+     * 
      * @return the imageStudyInstanceUid value.
      */
     public String getImageStudyInstanceUid() {
@@ -81,7 +85,7 @@ public final class HealthcareDicomImageCreatedEventData {
 
     /**
      * Set the imageStudyInstanceUid property: Unique identifier for the Study.
-     *
+     * 
      * @param imageStudyInstanceUid the imageStudyInstanceUid value to set.
      * @return the HealthcareDicomImageCreatedEventData object itself.
      */
@@ -92,7 +96,7 @@ public final class HealthcareDicomImageCreatedEventData {
 
     /**
      * Get the imageSeriesInstanceUid property: Unique identifier for the Series.
-     *
+     * 
      * @return the imageSeriesInstanceUid value.
      */
     public String getImageSeriesInstanceUid() {
@@ -101,7 +105,7 @@ public final class HealthcareDicomImageCreatedEventData {
 
     /**
      * Set the imageSeriesInstanceUid property: Unique identifier for the Series.
-     *
+     * 
      * @param imageSeriesInstanceUid the imageSeriesInstanceUid value to set.
      * @return the HealthcareDicomImageCreatedEventData object itself.
      */
@@ -112,7 +116,7 @@ public final class HealthcareDicomImageCreatedEventData {
 
     /**
      * Get the imageSopInstanceUid property: Unique identifier for the DICOM Image.
-     *
+     * 
      * @return the imageSopInstanceUid value.
      */
     public String getImageSopInstanceUid() {
@@ -121,7 +125,7 @@ public final class HealthcareDicomImageCreatedEventData {
 
     /**
      * Set the imageSopInstanceUid property: Unique identifier for the DICOM Image.
-     *
+     * 
      * @param imageSopInstanceUid the imageSopInstanceUid value to set.
      * @return the HealthcareDicomImageCreatedEventData object itself.
      */
@@ -132,7 +136,7 @@ public final class HealthcareDicomImageCreatedEventData {
 
     /**
      * Get the serviceHostName property: Domain name of the DICOM account for this image.
-     *
+     * 
      * @return the serviceHostName value.
      */
     public String getServiceHostName() {
@@ -141,7 +145,7 @@ public final class HealthcareDicomImageCreatedEventData {
 
     /**
      * Set the serviceHostName property: Domain name of the DICOM account for this image.
-     *
+     * 
      * @param serviceHostName the serviceHostName value to set.
      * @return the HealthcareDicomImageCreatedEventData object itself.
      */
@@ -153,7 +157,7 @@ public final class HealthcareDicomImageCreatedEventData {
     /**
      * Get the sequenceNumber property: Sequence number of the DICOM Service within Azure Health Data Services. It is
      * unique for every image creation and deletion within the service.
-     *
+     * 
      * @return the sequenceNumber value.
      */
     public Long getSequenceNumber() {
@@ -163,12 +167,62 @@ public final class HealthcareDicomImageCreatedEventData {
     /**
      * Set the sequenceNumber property: Sequence number of the DICOM Service within Azure Health Data Services. It is
      * unique for every image creation and deletion within the service.
-     *
+     * 
      * @param sequenceNumber the sequenceNumber value to set.
      * @return the HealthcareDicomImageCreatedEventData object itself.
      */
     public HealthcareDicomImageCreatedEventData setSequenceNumber(Long sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("partitionName", this.partitionName);
+        jsonWriter.writeStringField("imageStudyInstanceUid", this.imageStudyInstanceUid);
+        jsonWriter.writeStringField("imageSeriesInstanceUid", this.imageSeriesInstanceUid);
+        jsonWriter.writeStringField("imageSopInstanceUid", this.imageSopInstanceUid);
+        jsonWriter.writeStringField("serviceHostName", this.serviceHostName);
+        jsonWriter.writeNumberField("sequenceNumber", this.sequenceNumber);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of HealthcareDicomImageCreatedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of HealthcareDicomImageCreatedEventData if the JsonReader was pointing to an instance of it,
+     * or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the HealthcareDicomImageCreatedEventData.
+     */
+    public static HealthcareDicomImageCreatedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            HealthcareDicomImageCreatedEventData deserializedHealthcareDicomImageCreatedEventData
+                = new HealthcareDicomImageCreatedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("partitionName".equals(fieldName)) {
+                    deserializedHealthcareDicomImageCreatedEventData.partitionName = reader.getString();
+                } else if ("imageStudyInstanceUid".equals(fieldName)) {
+                    deserializedHealthcareDicomImageCreatedEventData.imageStudyInstanceUid = reader.getString();
+                } else if ("imageSeriesInstanceUid".equals(fieldName)) {
+                    deserializedHealthcareDicomImageCreatedEventData.imageSeriesInstanceUid = reader.getString();
+                } else if ("imageSopInstanceUid".equals(fieldName)) {
+                    deserializedHealthcareDicomImageCreatedEventData.imageSopInstanceUid = reader.getString();
+                } else if ("serviceHostName".equals(fieldName)) {
+                    deserializedHealthcareDicomImageCreatedEventData.serviceHostName = reader.getString();
+                } else if ("sequenceNumber".equals(fieldName)) {
+                    deserializedHealthcareDicomImageCreatedEventData.sequenceNumber
+                        = reader.getNullable(JsonReader::getLong);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedHealthcareDicomImageCreatedEventData;
+        });
     }
 }

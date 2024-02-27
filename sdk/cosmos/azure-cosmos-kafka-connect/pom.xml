@@ -37,8 +37,6 @@ Licensed under the MIT License.
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <jacoco.min.linecoverage>0.01</jacoco.min.linecoverage>
     <jacoco.min.branchcoverage>0.02</jacoco.min.branchcoverage>
-    <maven.compiler.source>11</maven.compiler.source>
-    <maven.compiler.target>11</maven.compiler.target>
     <shadingPrefix>azure_cosmos_kafka_connect</shadingPrefix>
 
     <!-- CosmosSkip - This is not a module we want/expect external customers to consume. Skip breaking API checks. -->
@@ -48,7 +46,9 @@ Licensed under the MIT License.
     <javaModulesSurefireArgLine>
       --add-opens com.azure.cosmos.kafka.connect/com.azure.cosmos.kafka.connect=ALL-UNNAMED
       --add-opens com.azure.cosmos.kafka.connect/com.azure.cosmos.kafka.connect.implementation=ALL-UNNAMED
-      --add-opens com.azure.cosmos.kafka.connect/com.azure.cosmos.kafka.connect.models=ALL-UNNAMED
+      --add-opens com.azure.cosmos.kafka.connect/com.azure.cosmos.kafka.connect.implementation.source=com.fasterxml.jackson.databind,ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.routing=ALL-UNNAMED
+      --add-opens com.azure.cosmos/com.azure.cosmos.implementation.apachecommons.lang=ALL-UNNAMED
     </javaModulesSurefireArgLine>
   </properties>
 
@@ -64,7 +64,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.53.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.57.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
 
     <!-- Added this provided dependency to include necessary annotations used by "reactor-core".
@@ -92,6 +92,19 @@ Licensed under the MIT License.
       <artifactId>commons-text</artifactId>
       <scope>test</scope>
       <version>1.10.0</version> <!-- {x-version-update;org.apache.commons:commons-text;external_dependency} -->
+    </dependency>
+
+    <dependency>
+      <groupId>org.apache.kafka</groupId>
+      <artifactId>connect-runtime</artifactId>
+      <version>3.6.0</version> <!-- {x-version-update;cosmos_org.apache.kafka:connect-runtime;external_dependency} -->
+      <scope>test</scope>
+      <exclusions>
+        <exclusion>
+          <artifactId>jackson-jaxrs-json-provider</artifactId>
+          <groupId>com.fasterxml.jackson.jaxrs</groupId>
+        </exclusion>
+      </exclusions>
     </dependency>
 
     <dependency>
@@ -146,6 +159,21 @@ Licensed under the MIT License.
       <version>4.11.0</version> <!-- {x-version-update;org.mockito:mockito-core;external_dependency} -->
       <scope>test</scope>
     </dependency>
+    <!-- bytebuddy dependencies are required for mockito 4.11.0 to work with Java 21. Mockito 4.11.0 is the last release -->
+    <!-- of Mockito supporting Java 8 as a baseline. -->
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy</artifactId>
+      <version>1.14.8</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>net.bytebuddy</groupId>
+      <artifactId>byte-buddy-agent</artifactId>
+      <version>1.14.8</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+
   </dependencies>
 
   <build>
@@ -165,7 +193,7 @@ Licensed under the MIT License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+        <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
         <configuration>
           <groups>unit</groups>
           <includes>
@@ -198,7 +226,7 @@ Licensed under the MIT License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-shade-plugin</artifactId>
-        <version>3.3.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
+        <version>3.5.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-shade-plugin;external_dependency} -->
         <executions>
           <execution>
             <id>shade</id>
@@ -207,6 +235,7 @@ Licensed under the MIT License.
               <goal>shade</goal>
             </goals>
             <configuration>
+              <finalName>${project.artifactId}-${project.version}-jar-with-dependencies</finalName>
               <filters>
                 <filter>
                   <artifact>*:*:*:*</artifact>
@@ -400,7 +429,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
             </configuration>
           </plugin>
@@ -418,7 +447,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/kafka-testng.xml</suiteXmlFile>

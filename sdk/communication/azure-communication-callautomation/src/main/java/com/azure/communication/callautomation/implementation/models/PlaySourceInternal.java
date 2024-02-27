@@ -13,131 +13,131 @@ public final class PlaySourceInternal {
     /*
      * Defines the type of the play source
      */
-    @JsonProperty(value = "sourceType", required = true)
-    private PlaySourceTypeInternal sourceType;
+    @JsonProperty(value = "kind", required = true)
+    private PlaySourceTypeInternal kind;
 
     /*
      * Defines the identifier to be used for caching related media
      */
-    @JsonProperty(value = "playSourceId")
-    private String playSourceId;
+    @JsonProperty(value = "playSourceCacheId")
+    private String playSourceCacheId;
 
     /*
      * Defines the file source info to be used for play
      */
-    @JsonProperty(value = "fileSource")
-    private FileSourceInternal fileSource;
+    @JsonProperty(value = "file")
+    private FileSourceInternal file;
 
     /*
      * Defines the text source info to be used for play
      */
-    @JsonProperty(value = "textSource")
-    private TextSourceInternal textSource;
+    @JsonProperty(value = "text")
+    private TextSourceInternal text;
 
     /*
      * Defines the ssml(Speech Synthesis Markup Language) source info to be
      * used for play
      */
-    @JsonProperty(value = "ssmlSource")
-    private SsmlSourceInternal ssmlSource;
+    @JsonProperty(value = "ssml")
+    private SsmlSourceInternal ssml;
 
     /**
-     * Get the sourceType property: Defines the type of the play source.
+     * Get the kind property: Defines the type of the play source.
      *
-     * @return the sourceType value.
+     * @return the kind value.
      */
-    public PlaySourceTypeInternal getSourceType() {
-        return this.sourceType;
+    public PlaySourceTypeInternal getKind() {
+        return this.kind;
     }
 
     /**
-     * Set the sourceType property: Defines the type of the play source.
+     * Set the kind property: Defines the type of the play source.
      *
-     * @param sourceType the sourceType value to set.
+     * @param kind the kind value to set.
      * @return the PlaySourceInternal object itself.
      */
-    public PlaySourceInternal setSourceType(PlaySourceTypeInternal sourceType) {
-        this.sourceType = sourceType;
+    public PlaySourceInternal setKind(PlaySourceTypeInternal kind) {
+        this.kind = kind;
         return this;
     }
 
     /**
-     * Get the playSourceId property: Defines the identifier to be used for caching related media.
+     * Get the playSourceCacheId property: Defines the identifier to be used for caching related media.
      *
-     * @return the playSourceId value.
+     * @return the playSourceCacheId value.
      */
-    public String getPlaySourceId() {
-        return this.playSourceId;
+    public String getPlaySourceCacheId() {
+        return this.playSourceCacheId;
     }
 
     /**
-     * Set the playSourceId property: Defines the identifier to be used for caching related media.
+     * Set the playSourceCacheId property: Defines the identifier to be used for caching related media.
      *
-     * @param playSourceId the playSourceId value to set.
+     * @param playSourceCacheId the playSourceCacheId value to set.
      * @return the PlaySourceInternal object itself.
      */
-    public PlaySourceInternal setPlaySourceId(String playSourceId) {
-        this.playSourceId = playSourceId;
+    public PlaySourceInternal setPlaySourceCacheId(String playSourceCacheId) {
+        this.playSourceCacheId = playSourceCacheId;
         return this;
     }
 
     /**
-     * Get the fileSource property: Defines the file source info to be used for play.
+     * Get the file property: Defines the file source info to be used for play.
      *
-     * @return the fileSource value.
+     * @return the file value.
      */
-    public FileSourceInternal getFileSource() {
-        return this.fileSource;
+    public FileSourceInternal getFile() {
+        return this.file;
     }
 
     /**
-     * Set the fileSource property: Defines the file source info to be used for play.
+     * Set the file property: Defines the file source info to be used for play.
      *
-     * @param fileSource the fileSource value to set.
+     * @param file the file value to set.
      * @return the PlaySourceInternal object itself.
      */
-    public PlaySourceInternal setFileSource(FileSourceInternal fileSource) {
-        this.fileSource = fileSource;
+    public PlaySourceInternal setFile(FileSourceInternal file) {
+        this.file = file;
         return this;
     }
 
     /**
-     * Get the textSource property: Defines the text source info to be used for play.
+     * Get the text property: Defines the text source info to be used for play.
      *
-     * @return the textSource value.
+     * @return the text value.
      */
-    public TextSourceInternal getTextSource() {
-        return this.textSource;
+    public TextSourceInternal getText() {
+        return this.text;
     }
 
     /**
-     * Set the textSource property: Defines the text source info to be used for play.
+     * Set the text property: Defines the text source info to be used for play.
      *
-     * @param textSource the textSource value to set.
+     * @param text the text value to set.
      * @return the PlaySourceInternal object itself.
      */
-    public PlaySourceInternal setTextSource(TextSourceInternal textSource) {
-        this.textSource = textSource;
+    public PlaySourceInternal setText(TextSourceInternal text) {
+        this.text = text;
         return this;
     }
 
     /**
-     * Get the ssmlSource property: Defines the ssml(Speech Synthesis Markup Language) source info to be used for play.
+     * Get the ssml property: Defines the ssml(Speech Synthesis Markup Language) source info to be used for play.
      *
-     * @return the ssmlSource value.
+     * @return the ssml value.
      */
-    public SsmlSourceInternal getSsmlSource() {
-        return this.ssmlSource;
+    public SsmlSourceInternal getSsml() {
+        return this.ssml;
     }
 
     /**
-     * Set the ssmlSource property: Defines the ssml(Speech Synthesis Markup Language) source info to be used for play.
+     * Set the ssml property: Defines the ssml(Speech Synthesis Markup Language) source info to be used for play.
      *
-     * @param ssmlSource the ssmlSource value to set.
+     * @param ssml the ssml value to set.
      * @return the PlaySourceInternal object itself.
      */
-    public PlaySourceInternal setSsmlSource(SsmlSourceInternal ssmlSource) {
-        this.ssmlSource = ssmlSource;
+    public PlaySourceInternal setSsml(SsmlSourceInternal ssml) {
+        this.ssml = ssml;
         return this;
     }
 }

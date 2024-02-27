@@ -3,6 +3,7 @@
 
 package com.azure.storage.common.test.shared.policy;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpPipelineCallContext;
 import com.azure.core.http.HttpPipelineNextPolicy;
 import com.azure.core.http.HttpResponse;
@@ -11,8 +12,10 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.IOException;
+import java.util.Objects;
 
 public class MockRetryRangeResponsePolicy implements HttpPipelinePolicy {
+    private static final HttpHeaderName X_MS_RANGE = HttpHeaderName.fromString("x-ms-range");
 
     private final String rangeMatch;
 
@@ -23,7 +26,7 @@ public class MockRetryRangeResponsePolicy implements HttpPipelinePolicy {
     @Override
     public Mono<HttpResponse> process(HttpPipelineCallContext context, HttpPipelineNextPolicy next) {
         return next.process().flatMap(response -> {
-            if (!response.getRequest().getHeaders().getValue("x-ms-range").equals(rangeMatch)) {
+            if (!Objects.equals(response.getRequest().getHeaders().getValue(X_MS_RANGE), rangeMatch)) {
                 return Mono.error(new IllegalArgumentException("The range header was not set correctly on retry."));
             } else {
                 // ETag can be a dummy value. It's not validated, but DownloadResponse requires one

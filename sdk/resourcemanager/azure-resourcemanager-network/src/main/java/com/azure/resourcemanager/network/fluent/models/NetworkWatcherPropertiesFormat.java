@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The network watcher properties. */
+/**
+ * The network watcher properties.
+ */
 @Immutable
 public final class NetworkWatcherPropertiesFormat {
     /*
@@ -17,13 +19,15 @@ public final class NetworkWatcherPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of NetworkWatcherPropertiesFormat class. */
+    /**
+     * Creates an instance of NetworkWatcherPropertiesFormat class.
+     */
     public NetworkWatcherPropertiesFormat() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the network watcher resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -32,7 +36,7 @@ public final class NetworkWatcherPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

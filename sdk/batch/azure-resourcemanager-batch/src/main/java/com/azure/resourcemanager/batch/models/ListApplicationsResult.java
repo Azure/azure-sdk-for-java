@@ -9,7 +9,9 @@ import com.azure.resourcemanager.batch.fluent.models.ApplicationInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The result of performing list applications. */
+/**
+ * The result of performing list applications.
+ */
 @Fluent
 public final class ListApplicationsResult {
     /*
@@ -24,13 +26,15 @@ public final class ListApplicationsResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ListApplicationsResult class. */
+    /**
+     * Creates an instance of ListApplicationsResult class.
+     */
     public ListApplicationsResult() {
     }
 
     /**
      * Get the value property: The list of applications.
-     *
+     * 
      * @return the value value.
      */
     public List<ApplicationInner> value() {
@@ -39,7 +43,7 @@ public final class ListApplicationsResult {
 
     /**
      * Set the value property: The list of applications.
-     *
+     * 
      * @param value the value value to set.
      * @return the ListApplicationsResult object itself.
      */
@@ -50,7 +54,7 @@ public final class ListApplicationsResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ListApplicationsResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ListApplicationsResult object itself.
      */
@@ -70,7 +74,7 @@ public final class ListApplicationsResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

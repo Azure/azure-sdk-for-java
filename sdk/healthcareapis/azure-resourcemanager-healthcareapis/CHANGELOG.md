@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,104 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2023-12-21)
+
+- Azure Resource Manager HealthcareApis client library for Java. This package contains Microsoft Azure SDK for HealthcareApis Management SDK. Azure Healthcare APIs Client. Package tag package-2023-11. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Breaking Changes
+
+* `models.FhirServiceAccessPolicyEntry` was removed
+
+#### `models.FhirService$Definition` was modified
+
+* `withAccessPolicies(java.util.List)` was removed
+
+#### `models.FhirService` was modified
+
+* `accessPolicies()` was removed
+
+### Features Added
+
+* `models.ImplementationGuidesConfiguration` was added
+
+* `models.ServiceImportConfigurationInfo` was added
+
+* `models.Encryption` was added
+
+* `models.FhirServiceImportConfiguration` was added
+
+* `models.CorsConfiguration` was added
+
+* `models.EncryptionCustomerManagedKeyEncryption` was added
+
+#### `models.FhirService$Definition` was modified
+
+* `withImportConfiguration(models.FhirServiceImportConfiguration)` was added
+* `withEncryption(models.Encryption)` was added
+* `withImplementationGuidesConfiguration(models.ImplementationGuidesConfiguration)` was added
+
+#### `models.ServicesDescription` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.DicomService` was modified
+
+* `eventState()` was added
+* `corsConfiguration()` was added
+* `resourceGroupName()` was added
+* `encryption()` was added
+
+#### `models.IotConnector` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.MetricSpecification` was modified
+
+* `enableRegionalMdmAccount()` was added
+* `metricFilterPattern()` was added
+* `sourceMdmAccount()` was added
+* `withIsInternal(java.lang.Boolean)` was added
+* `withEnableRegionalMdmAccount(java.lang.Boolean)` was added
+* `withMetricFilterPattern(java.lang.String)` was added
+* `withResourceIdDimensionNameOverride(java.lang.String)` was added
+* `isInternal()` was added
+* `resourceIdDimensionNameOverride()` was added
+* `withSourceMdmAccount(java.lang.String)` was added
+
+#### `models.Workspace` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.PrivateEndpointConnectionDescription` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.FhirService` was modified
+
+* `implementationGuidesConfiguration()` was added
+* `resourceGroupName()` was added
+* `importConfiguration()` was added
+* `encryption()` was added
+
+#### `models.ServicesProperties` was modified
+
+* `importConfiguration()` was added
+* `withImportConfiguration(models.ServiceImportConfigurationInfo)` was added
+
+#### `models.ServiceCosmosDbConfigurationInfo` was modified
+
+* `crossTenantCmkApplicationId()` was added
+* `withCrossTenantCmkApplicationId(java.lang.String)` was added
+
+#### `models.IotFhirDestination` was modified
+
+* `resourceGroupName()` was added
+
+#### `models.DicomService$Definition` was modified
+
+* `withEncryption(models.Encryption)` was added
+* `withCorsConfiguration(models.CorsConfiguration)` was added
 
 ## 1.0.0-beta.2 (2022-04-11)
 

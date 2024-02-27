@@ -5,27 +5,36 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.UserCreated event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.UserCreated event.
+ */
 @Fluent
-public final class ApiManagementUserCreatedEventData {
+public final class ApiManagementUserCreatedEventData implements JsonSerializable<ApiManagementUserCreatedEventData> {
     /*
      * The fully qualified ID of the resource that the compliance state change is for, including the resource name and
      * resource type. Uses the format,
-     * `/subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/<ResourceType>/<ResourceName>`
+     * `/subscriptions/<SubscriptionID>/resourceGroups/<ResourceGroup>/Microsoft.ApiManagement/service/<ServiceName>/<
+     * ResourceType>/<ResourceName>`
      */
-    @JsonProperty(value = "resourceUri")
     private String resourceUri;
 
-    /** Creates an instance of ApiManagementUserCreatedEventData class. */
-    public ApiManagementUserCreatedEventData() {}
+    /**
+     * Creates an instance of ApiManagementUserCreatedEventData class.
+     */
+    public ApiManagementUserCreatedEventData() {
+    }
 
     /**
      * Get the resourceUri property: The fully qualified ID of the resource that the compliance state change is for,
      * including the resource name and resource type. Uses the format,
      * `/subscriptions/&lt;SubscriptionID&gt;/resourceGroups/&lt;ResourceGroup&gt;/Microsoft.ApiManagement/service/&lt;ServiceName&gt;/&lt;ResourceType&gt;/&lt;ResourceName&gt;`.
-     *
+     * 
      * @return the resourceUri value.
      */
     public String getResourceUri() {
@@ -36,12 +45,46 @@ public final class ApiManagementUserCreatedEventData {
      * Set the resourceUri property: The fully qualified ID of the resource that the compliance state change is for,
      * including the resource name and resource type. Uses the format,
      * `/subscriptions/&lt;SubscriptionID&gt;/resourceGroups/&lt;ResourceGroup&gt;/Microsoft.ApiManagement/service/&lt;ServiceName&gt;/&lt;ResourceType&gt;/&lt;ResourceName&gt;`.
-     *
+     * 
      * @param resourceUri the resourceUri value to set.
      * @return the ApiManagementUserCreatedEventData object itself.
      */
     public ApiManagementUserCreatedEventData setResourceUri(String resourceUri) {
         this.resourceUri = resourceUri;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceUri", this.resourceUri);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ApiManagementUserCreatedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ApiManagementUserCreatedEventData if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ApiManagementUserCreatedEventData.
+     */
+    public static ApiManagementUserCreatedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ApiManagementUserCreatedEventData deserializedApiManagementUserCreatedEventData
+                = new ApiManagementUserCreatedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("resourceUri".equals(fieldName)) {
+                    deserializedApiManagementUserCreatedEventData.resourceUri = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedApiManagementUserCreatedEventData;
+        });
     }
 }

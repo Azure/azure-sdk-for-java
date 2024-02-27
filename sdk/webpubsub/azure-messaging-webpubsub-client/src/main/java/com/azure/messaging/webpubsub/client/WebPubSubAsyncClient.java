@@ -3,7 +3,6 @@
 
 package com.azure.messaging.webpubsub.client;
 
-import com.azure.core.annotation.ServiceClient;
 import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.UrlBuilder;
@@ -38,10 +37,10 @@ import com.azure.messaging.webpubsub.client.models.SendToGroupOptions;
 import com.azure.messaging.webpubsub.client.implementation.models.ServerDataMessage;
 import com.azure.messaging.webpubsub.client.models.ServerMessageEvent;
 import com.azure.messaging.webpubsub.client.models.StoppedEvent;
-import com.azure.messaging.webpubsub.client.models.WebPubSubDataType;
+import com.azure.messaging.webpubsub.client.models.WebPubSubDataFormat;
 import com.azure.messaging.webpubsub.client.implementation.models.WebPubSubMessage;
+import com.azure.messaging.webpubsub.client.models.WebPubSubProtocolType;
 import com.azure.messaging.webpubsub.client.models.WebPubSubResult;
-import com.azure.messaging.webpubsub.client.models.WebPubSubProtocol;
 import reactor.core.Disposable;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -60,13 +59,13 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 /**
  * The WebPubSubAsync client.
  */
-@ServiceClient(builder = WebPubSubClientBuilder.class)
-class WebPubSubAsyncClient implements Closeable {
+final class WebPubSubAsyncClient implements Closeable {
 
     // logging
     private ClientLogger logger;
@@ -74,7 +73,7 @@ class WebPubSubAsyncClient implements Closeable {
 
     // options
     private final Mono<String> clientAccessUrlProvider;
-    private final WebPubSubProtocol webPubSubProtocol;
+    private final WebPubSubProtocolType webPubSubProtocol;
     private final boolean autoReconnect;
     private final boolean autoRestoreGroup;
 
@@ -143,8 +142,8 @@ class WebPubSubAsyncClient implements Closeable {
     private static final Duration SEQUENCE_ACK_DELAY = Duration.ofSeconds(5);
 
     WebPubSubAsyncClient(WebSocketClient webSocketClient,
-                         Mono<String> clientAccessUrlProvider,
-                         WebPubSubProtocol webPubSubProtocol,
+                         Supplier<String> clientAccessUrlSupplier,
+                         WebPubSubProtocolType webPubSubProtocol,
                          String applicationId, String userAgent,
                          RetryStrategy retryStrategy,
                          boolean autoReconnect,
@@ -155,13 +154,15 @@ class WebPubSubAsyncClient implements Closeable {
         this.applicationId = applicationId;
 
         // options
-        this.clientAccessUrlProvider = Objects.requireNonNull(clientAccessUrlProvider);
+        Objects.requireNonNull(clientAccessUrlSupplier);
+        this.clientAccessUrlProvider = Mono.fromSupplier(clientAccessUrlSupplier)
+            .subscribeOn(Schedulers.boundedElastic());
         this.webPubSubProtocol = Objects.requireNonNull(webPubSubProtocol);
         this.autoReconnect = autoReconnect;
         this.autoRestoreGroup = autoRestoreGroup;
 
         // websocket configuration and client
-        this.clientEndpointConfiguration = new ClientEndpointConfiguration(webPubSubProtocol.getName(), userAgent);
+        this.clientEndpointConfiguration = new ClientEndpointConfiguration(webPubSubProtocol.toString(), userAgent);
         this.webSocketClient = webSocketClient == null ? new WebSocketClientNettyImpl() : webSocketClient;
 
         this.sendMessageRetrySpec = Retry.from(signals -> {
@@ -383,7 +384,7 @@ class WebPubSubAsyncClient implements Closeable {
      * @return the result.
      */
     public Mono<WebPubSubResult> sendToGroup(String group, String content) {
-        return sendToGroup(group, BinaryData.fromString(content), WebPubSubDataType.TEXT);
+        return sendToGroup(group, BinaryData.fromString(content), WebPubSubDataFormat.TEXT);
     }
 
     /**
@@ -395,7 +396,7 @@ class WebPubSubAsyncClient implements Closeable {
      * @return the result.
      */
     public Mono<WebPubSubResult> sendToGroup(String group, String content, SendToGroupOptions options) {
-        return sendToGroup(group, BinaryData.fromString(content), WebPubSubDataType.TEXT, options);
+        return sendToGroup(group, BinaryData.fromString(content), WebPubSubDataFormat.TEXT, options);
     }
 
     /**
@@ -403,11 +404,11 @@ class WebPubSubAsyncClient implements Closeable {
      *
      * @param group the group name.
      * @param content the data.
-     * @param dataType the data type.
+     * @param dataFormat the data format.
      * @return the result.
      */
-    public Mono<WebPubSubResult> sendToGroup(String group, BinaryData content, WebPubSubDataType dataType) {
-        return sendToGroup(group, content, dataType, new SendToGroupOptions().setAckId(nextAckId()));
+    public Mono<WebPubSubResult> sendToGroup(String group, BinaryData content, WebPubSubDataFormat dataFormat) {
+        return sendToGroup(group, content, dataFormat, new SendToGroupOptions().setAckId(nextAckId()));
     }
 
     /**
@@ -415,15 +416,15 @@ class WebPubSubAsyncClient implements Closeable {
      *
      * @param group the group name.
      * @param content the data.
-     * @param dataType the data type.
+     * @param dataFormat the data format.
      * @param options the options.
      * @return the result.
      */
-    public Mono<WebPubSubResult> sendToGroup(String group, BinaryData content, WebPubSubDataType dataType,
+    public Mono<WebPubSubResult> sendToGroup(String group, BinaryData content, WebPubSubDataFormat dataFormat,
                                              SendToGroupOptions options) {
         Objects.requireNonNull(group);
         Objects.requireNonNull(content);
-        Objects.requireNonNull(dataType);
+        Objects.requireNonNull(dataFormat);
         Objects.requireNonNull(options);
 
         Long ackId = options.isFireAndForget()
@@ -433,9 +434,9 @@ class WebPubSubAsyncClient implements Closeable {
         SendToGroupMessage message = new SendToGroupMessage()
             .setGroup(group)
             .setData(content)
-            .setDataType(dataType.toString())
+            .setDataType(dataFormat.toString())
             .setAckId(ackId)
-            .setNoEcho(options.isNoEcho());
+            .setNoEcho(options.isEchoDisabled());
 
         Mono<Void> sendMessageMono = sendMessage(message);
         Mono<WebPubSubResult> responseMono = sendMessageMono.then(waitForAckMessage(ackId));
@@ -447,11 +448,11 @@ class WebPubSubAsyncClient implements Closeable {
      *
      * @param eventName the event name.
      * @param content the data.
-     * @param dataType the data type.
+     * @param dataFormat the data format.
      * @return the result.
      */
-    public Mono<WebPubSubResult> sendEvent(String eventName, BinaryData content, WebPubSubDataType dataType) {
-        return sendEvent(eventName, content, dataType, new SendEventOptions().setAckId(nextAckId()));
+    public Mono<WebPubSubResult> sendEvent(String eventName, BinaryData content, WebPubSubDataFormat dataFormat) {
+        return sendEvent(eventName, content, dataFormat, new SendEventOptions().setAckId(nextAckId()));
     }
 
     /**
@@ -459,15 +460,15 @@ class WebPubSubAsyncClient implements Closeable {
      *
      * @param eventName the event name.
      * @param content the data.
-     * @param dataType the data type.
+     * @param dataFormat the data format.
      * @param options the options.
      * @return the result.
      */
-    public Mono<WebPubSubResult> sendEvent(String eventName, BinaryData content, WebPubSubDataType dataType,
+    public Mono<WebPubSubResult> sendEvent(String eventName, BinaryData content, WebPubSubDataFormat dataFormat,
                                            SendEventOptions options) {
         Objects.requireNonNull(eventName);
         Objects.requireNonNull(content);
-        Objects.requireNonNull(dataType);
+        Objects.requireNonNull(dataFormat);
         Objects.requireNonNull(options);
 
         Long ackId = options.isFireAndForget()
@@ -477,7 +478,7 @@ class WebPubSubAsyncClient implements Closeable {
         SendEventMessage message = new SendEventMessage()
             .setEvent(eventName)
             .setData(content)
-            .setDataType(dataType.toString())
+            .setDataType(dataFormat.toString())
             .setAckId(ackId);
 
         Mono<Void> sendMessageMono = sendMessage(message);
@@ -686,7 +687,7 @@ class WebPubSubAsyncClient implements Closeable {
             });
         } else {
             // sequence ack task, for reliable protocol
-            if (webPubSubProtocol.isReliable()) {
+            if (isReliableProtocol(webPubSubProtocol)) {
                 Flux<Void> sequenceAckFlux = Flux.interval(SEQUENCE_ACK_DELAY).concatMap(ignored -> {
                     if (clientState.get() == WebPubSubClientState.CONNECTED && session != null && session.isOpen()) {
                         WebPubSubConnection connection = this.webPubSubConnection;
@@ -721,9 +722,9 @@ class WebPubSubAsyncClient implements Closeable {
                 List<Mono<WebPubSubResult>> restoreGroupMonoList = groups.values().stream()
                     .filter(WebPubSubGroup::isJoined)
                     .map(group -> joinGroup(group.getName()).onErrorResume(error -> {
-                        if (error instanceof Exception) {
+                        if (error instanceof SendMessageFailedException) {
                             tryEmitNext(rejoinGroupFailedEventSink,
-                                new RejoinGroupFailedEvent(group.getName(), (Exception) error));
+                                new RejoinGroupFailedEvent(group.getName(), (SendMessageFailedException) error));
                         }
                         return Mono.empty();
                     }))
@@ -772,7 +773,7 @@ class WebPubSubAsyncClient implements Closeable {
         } else {
             final WebPubSubConnection connection = this.webPubSubConnection;
             final String reconnectionToken = connection == null ? null : connection.getReconnectionToken();
-            if (!webPubSubProtocol.isReliable() || reconnectionToken == null || connectionId == null) {
+            if (!isReliableProtocol(webPubSubProtocol) || reconnectionToken == null || connectionId == null) {
                 clientState.changeState(WebPubSubClientState.DISCONNECTED);
                 // connection close, send DisconnectedEvent
                 handleConnectionClose();
@@ -1109,5 +1110,9 @@ class WebPubSubAsyncClient implements Closeable {
 
         return logger.logExceptionAsWarning(
             new SendMessageFailedException(errorMessage, cause, isTransient, ackId, error));
+    }
+
+    private static boolean isReliableProtocol(WebPubSubProtocolType webPubSubProtocol) {
+        return webPubSubProtocol == WebPubSubProtocolType.JSON_RELIABLE_PROTOCOL;
     }
 }

@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Specifies a list of role instances from the cloud service. */
+/**
+ * Specifies a list of role instances from the cloud service.
+ */
 @Fluent
 public final class RoleInstances {
     /*
@@ -18,14 +20,16 @@ public final class RoleInstances {
     @JsonProperty(value = "roleInstances", required = true)
     private List<String> roleInstances;
 
-    /** Creates an instance of RoleInstances class. */
+    /**
+     * Creates an instance of RoleInstances class.
+     */
     public RoleInstances() {
     }
 
     /**
      * Get the roleInstances property: List of cloud service role instance names. Value of '*' will signify all role
      * instances of the cloud service.
-     *
+     * 
      * @return the roleInstances value.
      */
     public List<String> roleInstances() {
@@ -35,7 +39,7 @@ public final class RoleInstances {
     /**
      * Set the roleInstances property: List of cloud service role instance names. Value of '*' will signify all role
      * instances of the cloud service.
-     *
+     * 
      * @param roleInstances the roleInstances value to set.
      * @return the RoleInstances object itself.
      */
@@ -46,14 +50,13 @@ public final class RoleInstances {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (roleInstances() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property roleInstances in model RoleInstances"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property roleInstances in model RoleInstances"));
         }
     }
 

@@ -7,14 +7,24 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Configuration for intrusion detection mode and rules. */
+/**
+ * Configuration for intrusion detection mode and rules.
+ */
 @Fluent
 public final class FirewallPolicyIntrusionDetection {
     /*
-     * Intrusion detection general state.
+     * Intrusion detection general state. When attached to a parent policy, the firewall's effective IDPS mode is the
+     * stricter mode of the two.
      */
     @JsonProperty(value = "mode")
     private FirewallPolicyIntrusionDetectionStateType mode;
+
+    /*
+     * IDPS profile name. When attached to a parent policy, the firewall's effective profile is the profile name of the
+     * parent policy.
+     */
+    @JsonProperty(value = "profile")
+    private FirewallPolicyIntrusionDetectionProfileType profile;
 
     /*
      * Intrusion detection configuration properties.
@@ -22,13 +32,16 @@ public final class FirewallPolicyIntrusionDetection {
     @JsonProperty(value = "configuration")
     private FirewallPolicyIntrusionDetectionConfiguration configuration;
 
-    /** Creates an instance of FirewallPolicyIntrusionDetection class. */
+    /**
+     * Creates an instance of FirewallPolicyIntrusionDetection class.
+     */
     public FirewallPolicyIntrusionDetection() {
     }
 
     /**
-     * Get the mode property: Intrusion detection general state.
-     *
+     * Get the mode property: Intrusion detection general state. When attached to a parent policy, the firewall's
+     * effective IDPS mode is the stricter mode of the two.
+     * 
      * @return the mode value.
      */
     public FirewallPolicyIntrusionDetectionStateType mode() {
@@ -36,8 +49,9 @@ public final class FirewallPolicyIntrusionDetection {
     }
 
     /**
-     * Set the mode property: Intrusion detection general state.
-     *
+     * Set the mode property: Intrusion detection general state. When attached to a parent policy, the firewall's
+     * effective IDPS mode is the stricter mode of the two.
+     * 
      * @param mode the mode value to set.
      * @return the FirewallPolicyIntrusionDetection object itself.
      */
@@ -47,8 +61,30 @@ public final class FirewallPolicyIntrusionDetection {
     }
 
     /**
+     * Get the profile property: IDPS profile name. When attached to a parent policy, the firewall's effective profile
+     * is the profile name of the parent policy.
+     * 
+     * @return the profile value.
+     */
+    public FirewallPolicyIntrusionDetectionProfileType profile() {
+        return this.profile;
+    }
+
+    /**
+     * Set the profile property: IDPS profile name. When attached to a parent policy, the firewall's effective profile
+     * is the profile name of the parent policy.
+     * 
+     * @param profile the profile value to set.
+     * @return the FirewallPolicyIntrusionDetection object itself.
+     */
+    public FirewallPolicyIntrusionDetection withProfile(FirewallPolicyIntrusionDetectionProfileType profile) {
+        this.profile = profile;
+        return this;
+    }
+
+    /**
      * Get the configuration property: Intrusion detection configuration properties.
-     *
+     * 
      * @return the configuration value.
      */
     public FirewallPolicyIntrusionDetectionConfiguration configuration() {
@@ -57,19 +93,19 @@ public final class FirewallPolicyIntrusionDetection {
 
     /**
      * Set the configuration property: Intrusion detection configuration properties.
-     *
+     * 
      * @param configuration the configuration value to set.
      * @return the FirewallPolicyIntrusionDetection object itself.
      */
-    public FirewallPolicyIntrusionDetection withConfiguration(
-        FirewallPolicyIntrusionDetectionConfiguration configuration) {
+    public FirewallPolicyIntrusionDetection
+        withConfiguration(FirewallPolicyIntrusionDetectionConfiguration configuration) {
         this.configuration = configuration;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

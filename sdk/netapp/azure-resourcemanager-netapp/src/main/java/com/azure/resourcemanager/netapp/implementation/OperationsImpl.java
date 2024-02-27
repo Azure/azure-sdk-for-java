@@ -19,8 +19,8 @@ public final class OperationsImpl implements Operations {
 
     private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
-    public OperationsImpl(
-        OperationsClient innerClient, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
+    public OperationsImpl(OperationsClient innerClient,
+        com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }

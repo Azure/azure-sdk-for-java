@@ -5,6 +5,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.User;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Instant;
 import java.util.List;
@@ -38,10 +39,10 @@ public final class CosmosUserProperties {
     /**
      * Initialize a user object from json string.
      *
-     * @param jsonString the json string that represents the database user.
+     * @param jsonNode the json node that represents the database user.
      */
-    CosmosUserProperties(String jsonString) {
-        this.user = new User(jsonString);
+    CosmosUserProperties(ObjectNode jsonNode) {
+        this.user = new User(jsonNode);
     }
 
     // Converting container to CosmosContainerProperties
@@ -59,7 +60,7 @@ public final class CosmosUserProperties {
     }
 
     User getV2User() {
-        return new User(this.user.toJson());
+        return new User(this.user.getPropertyBag());
     }
 
 

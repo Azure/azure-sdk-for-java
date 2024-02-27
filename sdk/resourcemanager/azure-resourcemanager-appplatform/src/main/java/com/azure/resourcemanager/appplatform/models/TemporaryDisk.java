@@ -7,7 +7,9 @@ package com.azure.resourcemanager.appplatform.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Temporary disk payload. */
+/**
+ * Temporary disk payload.
+ */
 @Fluent
 public final class TemporaryDisk {
     /*
@@ -23,8 +25,14 @@ public final class TemporaryDisk {
     private String mountPath;
 
     /**
+     * Creates an instance of TemporaryDisk class.
+     */
+    public TemporaryDisk() {
+    }
+
+    /**
      * Get the sizeInGB property: Size of the temporary disk in GB.
-     *
+     * 
      * @return the sizeInGB value.
      */
     public Integer sizeInGB() {
@@ -33,7 +41,7 @@ public final class TemporaryDisk {
 
     /**
      * Set the sizeInGB property: Size of the temporary disk in GB.
-     *
+     * 
      * @param sizeInGB the sizeInGB value to set.
      * @return the TemporaryDisk object itself.
      */
@@ -44,7 +52,7 @@ public final class TemporaryDisk {
 
     /**
      * Get the mountPath property: Mount path of the temporary disk.
-     *
+     * 
      * @return the mountPath value.
      */
     public String mountPath() {
@@ -53,7 +61,7 @@ public final class TemporaryDisk {
 
     /**
      * Set the mountPath property: Mount path of the temporary disk.
-     *
+     * 
      * @param mountPath the mountPath value to set.
      * @return the TemporaryDisk object itself.
      */
@@ -64,7 +72,7 @@ public final class TemporaryDisk {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

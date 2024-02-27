@@ -183,8 +183,9 @@ public interface ChangeFeedContextClient {
      * Get the overlapping partition key ranges.
      *
      * @param range the range.
+     * @param forceRefresh flag to indicate whether to refresh the underlying caches
      *
      * @return The list of partition key ranges.
      */
-    Mono<List<PartitionKeyRange>> getOverlappingRanges(Range<String> range);
+    Mono<List<PartitionKeyRange>> getOverlappingRanges(Range<String> range, boolean forceRefresh);
 }

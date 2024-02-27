@@ -41,7 +41,8 @@ public final class ImageReference extends SubResource {
      * automatically update after deploy time even if a new version becomes available. Please do not use field
      * 'version' for gallery image deployment, gallery image should always use 'id' field for deployment, to use
      * 'latest' version of gallery image, just set
-     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageName}'
+     * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{
+     * galleryName}/images/{imageName}'
      * in the 'id' field without version input.
      */
     @JsonProperty(value = "version")
@@ -68,13 +69,15 @@ public final class ImageReference extends SubResource {
     @JsonProperty(value = "communityGalleryImageId")
     private String communityGalleryImageId;
 
-    /** Creates an instance of ImageReference class. */
+    /**
+     * Creates an instance of ImageReference class.
+     */
     public ImageReference() {
     }
 
     /**
      * Get the publisher property: The image publisher.
-     *
+     * 
      * @return the publisher value.
      */
     public String publisher() {
@@ -83,7 +86,7 @@ public final class ImageReference extends SubResource {
 
     /**
      * Set the publisher property: The image publisher.
-     *
+     * 
      * @param publisher the publisher value to set.
      * @return the ImageReference object itself.
      */
@@ -93,9 +96,9 @@ public final class ImageReference extends SubResource {
     }
 
     /**
-     * Get the offer property: Specifies the offer of the platform image or marketplace image used to create the virtual
-     * machine.
-     *
+     * Get the offer property: Specifies the offer of the platform image or marketplace image used to create the
+     * virtual machine.
+     * 
      * @return the offer value.
      */
     public String offer() {
@@ -103,9 +106,9 @@ public final class ImageReference extends SubResource {
     }
 
     /**
-     * Set the offer property: Specifies the offer of the platform image or marketplace image used to create the virtual
-     * machine.
-     *
+     * Set the offer property: Specifies the offer of the platform image or marketplace image used to create the
+     * virtual machine.
+     * 
      * @param offer the offer value to set.
      * @return the ImageReference object itself.
      */
@@ -116,7 +119,7 @@ public final class ImageReference extends SubResource {
 
     /**
      * Get the sku property: The image SKU.
-     *
+     * 
      * @return the sku value.
      */
     public String sku() {
@@ -125,7 +128,7 @@ public final class ImageReference extends SubResource {
 
     /**
      * Set the sku property: The image SKU.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the ImageReference object itself.
      */
@@ -143,7 +146,7 @@ public final class ImageReference extends SubResource {
      * deployment, to use 'latest' version of gallery image, just set
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageName}'
      * in the 'id' field without version input.
-     *
+     * 
      * @return the version value.
      */
     public String version() {
@@ -159,7 +162,7 @@ public final class ImageReference extends SubResource {
      * deployment, to use 'latest' version of gallery image, just set
      * '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/galleries/{galleryName}/images/{imageName}'
      * in the 'id' field without version input.
-     *
+     * 
      * @param version the version value to set.
      * @return the ImageReference object itself.
      */
@@ -172,7 +175,7 @@ public final class ImageReference extends SubResource {
      * Get the exactVersion property: Specifies in decimal numbers, the version of platform image or marketplace image
      * used to create the virtual machine. This readonly field differs from 'version', only if the value specified in
      * 'version' field is 'latest'.
-     *
+     * 
      * @return the exactVersion value.
      */
     public String exactVersion() {
@@ -182,7 +185,7 @@ public final class ImageReference extends SubResource {
     /**
      * Get the sharedGalleryImageId property: Specified the shared gallery image unique id for vm deployment. This can
      * be fetched from shared gallery image GET call.
-     *
+     * 
      * @return the sharedGalleryImageId value.
      */
     public String sharedGalleryImageId() {
@@ -192,7 +195,7 @@ public final class ImageReference extends SubResource {
     /**
      * Set the sharedGalleryImageId property: Specified the shared gallery image unique id for vm deployment. This can
      * be fetched from shared gallery image GET call.
-     *
+     * 
      * @param sharedGalleryImageId the sharedGalleryImageId value to set.
      * @return the ImageReference object itself.
      */
@@ -202,9 +205,9 @@ public final class ImageReference extends SubResource {
     }
 
     /**
-     * Get the communityGalleryImageId property: Specified the community gallery image unique id for vm deployment. This
-     * can be fetched from community gallery image GET call.
-     *
+     * Get the communityGalleryImageId property: Specified the community gallery image unique id for vm deployment.
+     * This can be fetched from community gallery image GET call.
+     * 
      * @return the communityGalleryImageId value.
      */
     public String communityGalleryImageId() {
@@ -212,9 +215,9 @@ public final class ImageReference extends SubResource {
     }
 
     /**
-     * Set the communityGalleryImageId property: Specified the community gallery image unique id for vm deployment. This
-     * can be fetched from community gallery image GET call.
-     *
+     * Set the communityGalleryImageId property: Specified the community gallery image unique id for vm deployment.
+     * This can be fetched from community gallery image GET call.
+     * 
      * @param communityGalleryImageId the communityGalleryImageId value to set.
      * @return the ImageReference object itself.
      */
@@ -223,7 +226,9 @@ public final class ImageReference extends SubResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageReference withId(String id) {
         super.withId(id);
@@ -232,7 +237,7 @@ public final class ImageReference extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

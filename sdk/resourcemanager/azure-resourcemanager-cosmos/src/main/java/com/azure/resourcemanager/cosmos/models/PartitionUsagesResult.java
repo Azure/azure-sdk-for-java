@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.PartitionUsageInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response to a list partition level usage request. */
+/**
+ * The response to a list partition level usage request.
+ */
 @Immutable
 public final class PartitionUsagesResult {
     /*
@@ -18,13 +20,15 @@ public final class PartitionUsagesResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<PartitionUsageInner> value;
 
-    /** Creates an instance of PartitionUsagesResult class. */
+    /**
+     * Creates an instance of PartitionUsagesResult class.
+     */
     public PartitionUsagesResult() {
     }
 
     /**
      * Get the value property: The list of partition-level usages for the database. A usage is a point in time metric.
-     *
+     * 
      * @return the value value.
      */
     public List<PartitionUsageInner> value() {
@@ -33,7 +37,7 @@ public final class PartitionUsagesResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** File system linked service. */
+/**
+ * File system linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("FileServer")
 @JsonFlatten
@@ -43,12 +45,15 @@ public class FileServerLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of FileServerLinkedService class. */
-    public FileServerLinkedService() {}
+    /**
+     * Creates an instance of FileServerLinkedService class.
+     */
+    public FileServerLinkedService() {
+    }
 
     /**
      * Get the host property: Host name of the server. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the host value.
      */
     public Object getHost() {
@@ -57,7 +62,7 @@ public class FileServerLinkedService extends LinkedService {
 
     /**
      * Set the host property: Host name of the server. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param host the host value to set.
      * @return the FileServerLinkedService object itself.
      */
@@ -68,7 +73,7 @@ public class FileServerLinkedService extends LinkedService {
 
     /**
      * Get the userId property: User ID to logon the server. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the userId value.
      */
     public Object getUserId() {
@@ -77,7 +82,7 @@ public class FileServerLinkedService extends LinkedService {
 
     /**
      * Set the userId property: User ID to logon the server. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param userId the userId value to set.
      * @return the FileServerLinkedService object itself.
      */
@@ -88,7 +93,7 @@ public class FileServerLinkedService extends LinkedService {
 
     /**
      * Get the password property: Password to logon the server.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -97,7 +102,7 @@ public class FileServerLinkedService extends LinkedService {
 
     /**
      * Set the password property: Password to logon the server.
-     *
+     * 
      * @param password the password value to set.
      * @return the FileServerLinkedService object itself.
      */
@@ -107,9 +112,9 @@ public class FileServerLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -117,9 +122,9 @@ public class FileServerLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the FileServerLinkedService object itself.
      */
@@ -128,28 +133,36 @@ public class FileServerLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileServerLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileServerLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileServerLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public FileServerLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

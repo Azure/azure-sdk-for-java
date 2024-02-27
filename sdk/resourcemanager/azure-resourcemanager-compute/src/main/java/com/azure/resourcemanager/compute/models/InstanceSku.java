@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The role instance SKU. */
+/**
+ * The role instance SKU.
+ */
 @Immutable
 public final class InstanceSku {
     /*
@@ -22,13 +24,15 @@ public final class InstanceSku {
     @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)
     private String tier;
 
-    /** Creates an instance of InstanceSku class. */
+    /**
+     * Creates an instance of InstanceSku class.
+     */
     public InstanceSku() {
     }
 
     /**
      * Get the name property: The sku name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class InstanceSku {
 
     /**
      * Get the tier property: The tier of the cloud service role instance.
-     *
+     * 
      * @return the tier value.
      */
     public String tier() {
@@ -46,7 +50,7 @@ public final class InstanceSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

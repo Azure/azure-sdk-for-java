@@ -14,25 +14,18 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureBackupRecoveryPointResourceListTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureBackupRecoveryPointResourceList model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"objectType\":\"AzureBackupRecoveryPoint\"},\"id\":\"gjrwjueiotwmcdyt\",\"name\":\"x\",\"type\":\"it\"},{\"properties\":{\"objectType\":\"AzureBackupRecoveryPoint\"},\"id\":\"jawgqwg\",\"name\":\"hniskxfbkpyc\",\"type\":\"klwndnhjdauwhv\"}],\"nextLink\":\"wzbtdhxu\"}")
-                .toObject(AzureBackupRecoveryPointResourceList.class);
+        AzureBackupRecoveryPointResourceList model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"objectType\":\"AzureBackupRecoveryPoint\"},\"id\":\"gjrwjueiotwmcdyt\",\"name\":\"x\",\"type\":\"it\"},{\"properties\":{\"objectType\":\"AzureBackupRecoveryPoint\"},\"id\":\"jawgqwg\",\"name\":\"hniskxfbkpyc\",\"type\":\"klwndnhjdauwhv\"}],\"nextLink\":\"wzbtdhxu\"}")
+            .toObject(AzureBackupRecoveryPointResourceList.class);
         Assertions.assertEquals("wzbtdhxu", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureBackupRecoveryPointResourceList model =
-            new AzureBackupRecoveryPointResourceList()
-                .withNextLink("wzbtdhxu")
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AzureBackupRecoveryPointResourceInner().withProperties(new AzureBackupRecoveryPoint()),
-                            new AzureBackupRecoveryPointResourceInner()
-                                .withProperties(new AzureBackupRecoveryPoint())));
+        AzureBackupRecoveryPointResourceList model = new AzureBackupRecoveryPointResourceList().withNextLink("wzbtdhxu")
+            .withValue(Arrays.asList(
+                new AzureBackupRecoveryPointResourceInner().withProperties(new AzureBackupRecoveryPoint()),
+                new AzureBackupRecoveryPointResourceInner().withProperties(new AzureBackupRecoveryPoint())));
         model = BinaryData.fromObject(model).toObject(AzureBackupRecoveryPointResourceList.class);
         Assertions.assertEquals("wzbtdhxu", model.nextLink());
     }

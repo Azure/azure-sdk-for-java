@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.Duration;
 import java.time.OffsetDateTime;
 
-/** DPM workload-specific job task details. */
+/**
+ * DPM workload-specific job task details.
+ */
 @Fluent
 public final class DpmJobTaskDetails {
     /*
@@ -42,13 +44,15 @@ public final class DpmJobTaskDetails {
     @JsonProperty(value = "status")
     private String status;
 
-    /** Creates an instance of DpmJobTaskDetails class. */
+    /**
+     * Creates an instance of DpmJobTaskDetails class.
+     */
     public DpmJobTaskDetails() {
     }
 
     /**
      * Get the taskId property: The task display name.
-     *
+     * 
      * @return the taskId value.
      */
     public String taskId() {
@@ -57,7 +61,7 @@ public final class DpmJobTaskDetails {
 
     /**
      * Set the taskId property: The task display name.
-     *
+     * 
      * @param taskId the taskId value to set.
      * @return the DpmJobTaskDetails object itself.
      */
@@ -68,7 +72,7 @@ public final class DpmJobTaskDetails {
 
     /**
      * Get the startTime property: The start time.
-     *
+     * 
      * @return the startTime value.
      */
     public OffsetDateTime startTime() {
@@ -77,7 +81,7 @@ public final class DpmJobTaskDetails {
 
     /**
      * Set the startTime property: The start time.
-     *
+     * 
      * @param startTime the startTime value to set.
      * @return the DpmJobTaskDetails object itself.
      */
@@ -88,7 +92,7 @@ public final class DpmJobTaskDetails {
 
     /**
      * Get the endTime property: The end time.
-     *
+     * 
      * @return the endTime value.
      */
     public OffsetDateTime endTime() {
@@ -97,7 +101,7 @@ public final class DpmJobTaskDetails {
 
     /**
      * Set the endTime property: The end time.
-     *
+     * 
      * @param endTime the endTime value to set.
      * @return the DpmJobTaskDetails object itself.
      */
@@ -108,7 +112,7 @@ public final class DpmJobTaskDetails {
 
     /**
      * Get the duration property: Time elapsed for task.
-     *
+     * 
      * @return the duration value.
      */
     public Duration duration() {
@@ -117,7 +121,7 @@ public final class DpmJobTaskDetails {
 
     /**
      * Set the duration property: Time elapsed for task.
-     *
+     * 
      * @param duration the duration value to set.
      * @return the DpmJobTaskDetails object itself.
      */
@@ -128,7 +132,7 @@ public final class DpmJobTaskDetails {
 
     /**
      * Get the status property: The status.
-     *
+     * 
      * @return the status value.
      */
     public String status() {
@@ -137,7 +141,7 @@ public final class DpmJobTaskDetails {
 
     /**
      * Set the status property: The status.
-     *
+     * 
      * @param status the status value to set.
      * @return the DpmJobTaskDetails object itself.
      */
@@ -148,7 +152,7 @@ public final class DpmJobTaskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -178,9 +178,9 @@ public final class PipelineResourceImpl
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.factoryName = Utils.getValueFromIdByName(innerObject.id(), "factories");
-        this.pipelineName = Utils.getValueFromIdByName(innerObject.id(), "pipelines");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.factoryName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "factories");
+        this.pipelineName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "pipelines");
     }
 
     public PipelineResource refresh() {

@@ -7,11 +7,13 @@ package com.azure.resourcemanager.netapp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Encryption settings. */
+/**
+ * Encryption settings.
+ */
 @Fluent
 public final class AccountEncryption {
     /*
-     * The encryption keySource (provider). Possible values (case-insensitive):  Microsoft.NetApp, Microsoft.KeyVault
+     * The encryption keySource (provider). Possible values (case-insensitive): Microsoft.NetApp, Microsoft.KeyVault
      */
     @JsonProperty(value = "keySource")
     private KeySource keySource;
@@ -28,14 +30,16 @@ public final class AccountEncryption {
     @JsonProperty(value = "identity")
     private EncryptionIdentity identity;
 
-    /** Creates an instance of AccountEncryption class. */
+    /**
+     * Creates an instance of AccountEncryption class.
+     */
     public AccountEncryption() {
     }
 
     /**
      * Get the keySource property: The encryption keySource (provider). Possible values (case-insensitive):
      * Microsoft.NetApp, Microsoft.KeyVault.
-     *
+     * 
      * @return the keySource value.
      */
     public KeySource keySource() {
@@ -45,7 +49,7 @@ public final class AccountEncryption {
     /**
      * Set the keySource property: The encryption keySource (provider). Possible values (case-insensitive):
      * Microsoft.NetApp, Microsoft.KeyVault.
-     *
+     * 
      * @param keySource the keySource value to set.
      * @return the AccountEncryption object itself.
      */
@@ -57,7 +61,7 @@ public final class AccountEncryption {
     /**
      * Get the keyVaultProperties property: Properties provided by KeVault. Applicable if keySource is
      * 'Microsoft.KeyVault'.
-     *
+     * 
      * @return the keyVaultProperties value.
      */
     public KeyVaultProperties keyVaultProperties() {
@@ -67,7 +71,7 @@ public final class AccountEncryption {
     /**
      * Set the keyVaultProperties property: Properties provided by KeVault. Applicable if keySource is
      * 'Microsoft.KeyVault'.
-     *
+     * 
      * @param keyVaultProperties the keyVaultProperties value to set.
      * @return the AccountEncryption object itself.
      */
@@ -79,7 +83,7 @@ public final class AccountEncryption {
     /**
      * Get the identity property: Identity used to authenticate to KeyVault. Applicable if keySource is
      * 'Microsoft.KeyVault'.
-     *
+     * 
      * @return the identity value.
      */
     public EncryptionIdentity identity() {
@@ -89,7 +93,7 @@ public final class AccountEncryption {
     /**
      * Set the identity property: Identity used to authenticate to KeyVault. Applicable if keySource is
      * 'Microsoft.KeyVault'.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the AccountEncryption object itself.
      */
@@ -100,7 +104,7 @@ public final class AccountEncryption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

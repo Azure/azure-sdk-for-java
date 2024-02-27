@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The parameters specifying the connection resource whose inbound routes are being requested. */
+/**
+ * The parameters specifying the connection resource whose inbound routes are being requested.
+ */
 @Fluent
 public final class GetInboundRoutesParameters {
     /*
@@ -23,13 +25,15 @@ public final class GetInboundRoutesParameters {
     @JsonProperty(value = "connectionType")
     private String connectionType;
 
-    /** Creates an instance of GetInboundRoutesParameters class. */
+    /**
+     * Creates an instance of GetInboundRoutesParameters class.
+     */
     public GetInboundRoutesParameters() {
     }
 
     /**
      * Get the resourceUri property: The connection resource whose inbound routes are being requested.
-     *
+     * 
      * @return the resourceUri value.
      */
     public String resourceUri() {
@@ -38,7 +42,7 @@ public final class GetInboundRoutesParameters {
 
     /**
      * Set the resourceUri property: The connection resource whose inbound routes are being requested.
-     *
+     * 
      * @param resourceUri the resourceUri value to set.
      * @return the GetInboundRoutesParameters object itself.
      */
@@ -50,7 +54,7 @@ public final class GetInboundRoutesParameters {
     /**
      * Get the connectionType property: The type of the specified connection resource like ExpressRouteConnection,
      * HubVirtualNetworkConnection, VpnConnection and P2SConnection.
-     *
+     * 
      * @return the connectionType value.
      */
     public String connectionType() {
@@ -60,7 +64,7 @@ public final class GetInboundRoutesParameters {
     /**
      * Set the connectionType property: The type of the specified connection resource like ExpressRouteConnection,
      * HubVirtualNetworkConnection, VpnConnection and P2SConnection.
-     *
+     * 
      * @param connectionType the connectionType value to set.
      * @return the GetInboundRoutesParameters object itself.
      */
@@ -71,7 +75,7 @@ public final class GetInboundRoutesParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

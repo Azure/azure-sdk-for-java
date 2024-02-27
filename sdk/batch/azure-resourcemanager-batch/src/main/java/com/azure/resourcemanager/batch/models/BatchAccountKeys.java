@@ -6,32 +6,34 @@ package com.azure.resourcemanager.batch.models;
 
 import com.azure.resourcemanager.batch.fluent.models.BatchAccountKeysInner;
 
-/** An immutable client-side representation of BatchAccountKeys. */
+/**
+ * An immutable client-side representation of BatchAccountKeys.
+ */
 public interface BatchAccountKeys {
     /**
      * Gets the accountName property: The Batch account name.
-     *
+     * 
      * @return the accountName value.
      */
     String accountName();
 
     /**
      * Gets the primary property: The primary key associated with the account.
-     *
+     * 
      * @return the primary value.
      */
     String primary();
 
     /**
      * Gets the secondary property: The secondary key associated with the account.
-     *
+     * 
      * @return the secondary value.
      */
     String secondary();
 
     /**
      * Gets the inner com.azure.resourcemanager.batch.fluent.models.BatchAccountKeysInner object.
-     *
+     * 
      * @return the inner object.
      */
     BatchAccountKeysInner innerModel();

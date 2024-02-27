@@ -62,11 +62,16 @@ parameters:
   displayName: 'azure-messaging-eventhubs-checkpointstore-jedis'
   type: boolean
   default: true
+- name: release_dependsonlivetests
+  displayName: 'Release depends on live tests'
+  type: boolean
+  default: true
 
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
     ServiceDirectory: eventhubs
+    JavadocSafeJavaBuildVersion: '1.21'
     EnableBatchRelease: true
     Artifacts:
       - name: azure-messaging-eventhubs

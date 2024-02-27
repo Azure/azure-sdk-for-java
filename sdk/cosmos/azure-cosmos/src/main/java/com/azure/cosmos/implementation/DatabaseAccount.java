@@ -31,7 +31,7 @@ public final class DatabaseAccount extends Resource {
      * @param objectNode the {@link ObjectNode} that represent the
      * {@link JsonSerializable}
      */
-    DatabaseAccount(ObjectNode objectNode) {
+    public DatabaseAccount(ObjectNode objectNode) {
         super(objectNode);
     }
 

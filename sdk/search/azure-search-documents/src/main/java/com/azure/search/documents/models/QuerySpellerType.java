@@ -9,9 +9,13 @@ package com.azure.search.documents.models;
 import com.azure.core.util.ExpandableStringEnum;
 import java.util.Collection;
 
-/** Improve search recall by spell-correcting individual search query terms. */
+/**
+ * Improve search recall by spell-correcting individual search query terms.
+ */
 public final class QuerySpellerType extends ExpandableStringEnum<QuerySpellerType> {
-    /** Speller not enabled. */
+    /**
+     * Speller not enabled.
+     */
     public static final QuerySpellerType NONE = fromString("none");
 
     /**
@@ -22,15 +26,16 @@ public final class QuerySpellerType extends ExpandableStringEnum<QuerySpellerTyp
 
     /**
      * Creates a new instance of QuerySpellerType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public QuerySpellerType() {}
+    public QuerySpellerType() {
+    }
 
     /**
      * Creates or finds a QuerySpellerType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding QuerySpellerType.
      */
@@ -40,7 +45,7 @@ public final class QuerySpellerType extends ExpandableStringEnum<QuerySpellerTyp
 
     /**
      * Gets known QuerySpellerType values.
-     *
+     * 
      * @return known QuerySpellerType values.
      */
     public static Collection<QuerySpellerType> values() {

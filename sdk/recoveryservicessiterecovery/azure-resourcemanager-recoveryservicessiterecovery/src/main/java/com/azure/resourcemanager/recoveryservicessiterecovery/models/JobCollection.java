@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.JobI
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of jobs. */
+/**
+ * Collection of jobs.
+ */
 @Fluent
 public final class JobCollection {
     /*
@@ -24,13 +26,15 @@ public final class JobCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of JobCollection class. */
+    /**
+     * Creates an instance of JobCollection class.
+     */
     public JobCollection() {
     }
 
     /**
      * Get the value property: The list of jobs.
-     *
+     * 
      * @return the value value.
      */
     public List<JobInner> value() {
@@ -39,7 +43,7 @@ public final class JobCollection {
 
     /**
      * Set the value property: The list of jobs.
-     *
+     * 
      * @param value the value value to set.
      * @return the JobCollection object itself.
      */
@@ -50,7 +54,7 @@ public final class JobCollection {
 
     /**
      * Get the nextLink property: The value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class JobCollection {
 
     /**
      * Set the nextLink property: The value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the JobCollection object itself.
      */
@@ -70,7 +74,7 @@ public final class JobCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

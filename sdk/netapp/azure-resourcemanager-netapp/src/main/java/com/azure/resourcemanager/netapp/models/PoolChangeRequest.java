@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Pool change request. */
+/**
+ * Pool change request.
+ */
 @Fluent
 public final class PoolChangeRequest {
     /*
@@ -17,13 +19,15 @@ public final class PoolChangeRequest {
     @JsonProperty(value = "newPoolResourceId", required = true)
     private String newPoolResourceId;
 
-    /** Creates an instance of PoolChangeRequest class. */
+    /**
+     * Creates an instance of PoolChangeRequest class.
+     */
     public PoolChangeRequest() {
     }
 
     /**
      * Get the newPoolResourceId property: Resource id of the pool to move volume to.
-     *
+     * 
      * @return the newPoolResourceId value.
      */
     public String newPoolResourceId() {
@@ -32,7 +36,7 @@ public final class PoolChangeRequest {
 
     /**
      * Set the newPoolResourceId property: Resource id of the pool to move volume to.
-     *
+     * 
      * @param newPoolResourceId the newPoolResourceId value to set.
      * @return the PoolChangeRequest object itself.
      */
@@ -43,15 +47,13 @@ public final class PoolChangeRequest {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (newPoolResourceId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property newPoolResourceId in model PoolChangeRequest"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property newPoolResourceId in model PoolChangeRequest"));
         }
     }
 

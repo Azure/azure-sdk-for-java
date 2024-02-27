@@ -14,7 +14,7 @@ public final class KubernetesVersionReadinessTests {
     public void testDeserialize() throws Exception {
         KubernetesVersionReadiness model = BinaryData
             .fromString(
-                "{\"osType\":\"Windows\",\"osSku\":\"CBLMariner\",\"ready\":true,\"errorMessage\":\"vjtoqnermclfp\"}")
+                "{\"osType\":\"Linux\",\"osSku\":\"CBLMariner\",\"ready\":true,\"errorMessage\":\"nyyazttbtwwrqpue\"}")
             .toObject(KubernetesVersionReadiness.class);
         Assertions.assertEquals(Ossku.CBLMARINER, model.osSku());
     }

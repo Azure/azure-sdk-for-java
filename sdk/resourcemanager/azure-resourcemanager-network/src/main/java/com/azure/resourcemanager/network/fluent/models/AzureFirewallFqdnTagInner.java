@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Azure Firewall FQDN Tag Resource. */
+/**
+ * Azure Firewall FQDN Tag Resource.
+ */
 @Fluent
 public final class AzureFirewallFqdnTagInner extends Resource {
     /*
@@ -31,13 +33,15 @@ public final class AzureFirewallFqdnTagInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of AzureFirewallFqdnTagInner class. */
+    /**
+     * Creates an instance of AzureFirewallFqdnTagInner class.
+     */
     public AzureFirewallFqdnTagInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the azure firewall FQDN tag.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AzureFirewallFqdnTagPropertiesFormat innerProperties() {
@@ -46,7 +50,7 @@ public final class AzureFirewallFqdnTagInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -55,7 +59,7 @@ public final class AzureFirewallFqdnTagInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -64,7 +68,7 @@ public final class AzureFirewallFqdnTagInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the AzureFirewallFqdnTagInner object itself.
      */
@@ -73,14 +77,18 @@ public final class AzureFirewallFqdnTagInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFirewallFqdnTagInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureFirewallFqdnTagInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -89,7 +97,7 @@ public final class AzureFirewallFqdnTagInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the Azure firewall FQDN tag resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -98,7 +106,7 @@ public final class AzureFirewallFqdnTagInner extends Resource {
 
     /**
      * Get the fqdnTagName property: The name of this FQDN Tag.
-     *
+     * 
      * @return the fqdnTagName value.
      */
     public String fqdnTagName() {
@@ -107,7 +115,7 @@ public final class AzureFirewallFqdnTagInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

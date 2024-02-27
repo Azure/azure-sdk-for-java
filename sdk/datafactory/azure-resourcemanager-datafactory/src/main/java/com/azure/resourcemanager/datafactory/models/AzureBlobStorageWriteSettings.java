@@ -8,6 +8,7 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import java.util.List;
 
 /**
  * Azure blob write settings.
@@ -74,6 +75,15 @@ public final class AzureBlobStorageWriteSettings extends StoreWriteSettings {
     @Override
     public AzureBlobStorageWriteSettings withCopyBehavior(Object copyBehavior) {
         super.withCopyBehavior(copyBehavior);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public AzureBlobStorageWriteSettings withMetadata(List<MetadataItem> metadata) {
+        super.withMetadata(metadata);
         return this;
     }
 

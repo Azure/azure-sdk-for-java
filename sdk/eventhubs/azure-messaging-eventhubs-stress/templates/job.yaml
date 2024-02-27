@@ -2,10 +2,10 @@
 {{- define "stress.java-eventhubs" -}}
 metadata:
   labels:
-    testInstance: "eventhubs-{{ .Release.Name }}-{{ .Release.Revision }}"
-    testName: eventhubs-stress-test
-    chaos: "true"
+    testName: "{{ .Release.Name }}"
 spec:
+  nodeSelector:
+    sku: chaosperf
   containers:
     - name: sender
       image: {{ .Stress.imageTag }}
@@ -15,16 +15,29 @@ spec:
         - |
           set -a &&
           source $ENV_FILE &&
-          export CONTAINER_NAME=sender &&
-          export APPLICATIONINSIGHTS_ROLE_NAME=sender &&
-          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.13.jar \
-          -jar /app/azure-messaging-eventhubs-stress-1.0.0-beta.1.jar \
-          --TEST_CLASS=EventSender
+          export TEST_CLASS={{ .Stress.senderTestClass }}
+          export DURATION_MINUTES={{ .Stress.testDurationMin }}
+          export SEND_MESSAGE_RATE={{ .Stress.sendRate }}
+          export MESSAGE_SIZE_IN_BYTES={{ .Stress.messageSizeInBytes }}
+          export SEND_BATCH_SIZE={{ default 5 .Stress.sendBatchSize }}
+          export SEND_CONCURRENCY={{ default 20 .Stress.sendConcurrency }}
+          export CONTAINER_NAME=sender
+          export DELAY_START_MINUTES=1
+          java \
+          -Dotel.service.name={{ .Release.Name }}-{{ .Stress.BaseName }} \
+          -Dotel.traces.sampler=traceidratio \
+          -Dotel.traces.sampler.arg=0.00001 \
+          -XX:InitialRAMPercentage=75.0 \
+          -XX:MaxRAMPercentage=75.0 \
+          -XX:+HeapDumpOnOutOfMemoryError \
+          -XX:HeapDumpPath="${DEBUG_SHARE}" \
+          -Dreactor.schedulers.defaultBoundedElasticSize={{ mul (default 20 .Stress.sendConcurrency) 4 }} \
+          -jar /app/azure-messaging-eventhubs-stress-1.0.0-beta.1.jar
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
       resources:
-        requests:
-          memory: "1G"
-          cpu: "1"
+        limits:
+          memory: 1Gi
+          cpu: 0.5
     - name: receiver
       image: {{ .Stress.imageTag }}
       imagePullPolicy: Always
@@ -32,15 +45,31 @@ spec:
       args:
         - |
           set -a &&
+          mkdir -p "$DEBUG_SHARE";
           source $ENV_FILE &&
-          export CONTAINER_NAME=receiver &&
-          export APPLICATIONINSIGHTS_ROLE_NAME=receiver &&
-          java -javaagent:BOOT-INF/classes/applicationinsights-agent-3.4.13.jar \
-          -jar /app/azure-messaging-eventhubs-stress-1.0.0-beta.1.jar \
-          --TEST_CLASS=EventProcessor
+          export TEST_CLASS={{ .Stress.receiverTestClass }}
+          export DURATION_MINUTES={{ .Stress.testDurationMin }}
+          export MESSAGE_SIZE_IN_BYTES={{ .Stress.messageSizeInBytes }}
+          export MAX_BATCH_SIZE={{ .Stress.processorBatchSize }}
+          export MAX_WAIT_TIME_IN_MS={{ default 0 .Stress.processorMaxWaitTime }}
+          export PROCESSOR_INSTANCES_COUNT={{ default 2 .Stress.processorInstancesCount }}
+          export PROCESSOR_FAILURE_RATIO={{ default 0 .Stress.processorFailureRatio }}
+          export PREFETCH_COUNT={{ default 0 .Stress.prefetchCount }}
+          export FORWARD_PARTITIONS_COUNT={{ default 32 .Stress.forwardPartitionsCount }}
+          export CONTAINER_NAME=receiver
+          java \
+          -Dotel.service.name={{ .Release.Name }}-{{ .Stress.BaseName }} \
+          -Dotel.traces.sampler=traceidratio \
+          -Dotel.traces.sampler.arg=0.00001 \
+          -XX:InitialRAMPercentage=75.0 \
+          -XX:MaxRAMPercentage=75.0 \
+          -XX:+HeapDumpOnOutOfMemoryError \
+          -XX:HeapDumpPath="${DEBUG_SHARE}" \
+          -Dreactor.schedulers.defaultBoundedElasticSize={{ mul .Stress.processorInstancesCount 32 }} \
+          -jar /app/azure-messaging-eventhubs-stress-1.0.0-beta.1.jar
       {{- include "stress-test-addons.container-env" . | nindent 6 }}
       resources:
-        requests:
-          memory: "1G"
-          cpu: "1"
+        limits:
+          memory: {{ default "1Gi" .Stress.memory }}
+          cpu: {{ default 1 .Stress.cores }}
 {{- end -}}

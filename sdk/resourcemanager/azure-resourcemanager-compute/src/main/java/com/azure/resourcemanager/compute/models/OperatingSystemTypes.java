@@ -8,17 +8,23 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * This property allows you to specify the supported type of the OS that application is built for. &lt;br&gt;&lt;br&gt;
- * Possible values are: &lt;br&gt;&lt;br&gt; **Windows** &lt;br&gt;&lt;br&gt; **Linux**.
+ * This property allows you to specify the supported type of the OS that application is built for. Possible values are:
+ * **Windows,** **Linux.**.
  */
 public enum OperatingSystemTypes {
-    /** Enum value Windows. */
+    /**
+     * Enum value Windows.
+     */
     WINDOWS("Windows"),
 
-    /** Enum value Linux. */
+    /**
+     * Enum value Linux.
+     */
     LINUX("Linux");
 
-    /** The actual serialized value for a OperatingSystemTypes instance. */
+    /**
+     * The actual serialized value for a OperatingSystemTypes instance.
+     */
     private final String value;
 
     OperatingSystemTypes(String value) {
@@ -27,7 +33,7 @@ public enum OperatingSystemTypes {
 
     /**
      * Parses a serialized value to a OperatingSystemTypes instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed OperatingSystemTypes object, or null if unable to parse.
      */
@@ -45,7 +51,9 @@ public enum OperatingSystemTypes {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

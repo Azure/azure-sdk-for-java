@@ -11,8 +11,8 @@ import java.util.List;
 
 /**
  * TaggingCriteria
- *
- * <p>Tagging criteria.
+ * 
+ * Tagging criteria.
  */
 @Fluent
 public final class TaggingCriteria {
@@ -36,19 +36,21 @@ public final class TaggingCriteria {
 
     /*
      * RetentionTag
-     *
+     * 
      * Retention tag information
      */
     @JsonProperty(value = "tagInfo", required = true)
     private RetentionTag tagInfo;
 
-    /** Creates an instance of TaggingCriteria class. */
+    /**
+     * Creates an instance of TaggingCriteria class.
+     */
     public TaggingCriteria() {
     }
 
     /**
      * Get the criteria property: Criteria which decides whether the tag can be applied to a triggered backup.
-     *
+     * 
      * @return the criteria value.
      */
     public List<BackupCriteria> criteria() {
@@ -57,7 +59,7 @@ public final class TaggingCriteria {
 
     /**
      * Set the criteria property: Criteria which decides whether the tag can be applied to a triggered backup.
-     *
+     * 
      * @param criteria the criteria value to set.
      * @return the TaggingCriteria object itself.
      */
@@ -68,7 +70,7 @@ public final class TaggingCriteria {
 
     /**
      * Get the isDefault property: Specifies if tag is default.
-     *
+     * 
      * @return the isDefault value.
      */
     public boolean isDefault() {
@@ -77,7 +79,7 @@ public final class TaggingCriteria {
 
     /**
      * Set the isDefault property: Specifies if tag is default.
-     *
+     * 
      * @param isDefault the isDefault value to set.
      * @return the TaggingCriteria object itself.
      */
@@ -88,7 +90,7 @@ public final class TaggingCriteria {
 
     /**
      * Get the taggingPriority property: Retention Tag priority.
-     *
+     * 
      * @return the taggingPriority value.
      */
     public long taggingPriority() {
@@ -97,7 +99,7 @@ public final class TaggingCriteria {
 
     /**
      * Set the taggingPriority property: Retention Tag priority.
-     *
+     * 
      * @param taggingPriority the taggingPriority value to set.
      * @return the TaggingCriteria object itself.
      */
@@ -108,9 +110,9 @@ public final class TaggingCriteria {
 
     /**
      * Get the tagInfo property: RetentionTag
-     *
-     * <p>Retention tag information.
-     *
+     * 
+     * Retention tag information.
+     * 
      * @return the tagInfo value.
      */
     public RetentionTag tagInfo() {
@@ -119,9 +121,9 @@ public final class TaggingCriteria {
 
     /**
      * Set the tagInfo property: RetentionTag
-     *
-     * <p>Retention tag information.
-     *
+     * 
+     * Retention tag information.
+     * 
      * @param tagInfo the tagInfo value to set.
      * @return the TaggingCriteria object itself.
      */
@@ -132,7 +134,7 @@ public final class TaggingCriteria {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -140,9 +142,8 @@ public final class TaggingCriteria {
             criteria().forEach(e -> e.validate());
         }
         if (tagInfo() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property tagInfo in model TaggingCriteria"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property tagInfo in model TaggingCriteria"));
         } else {
             tagInfo().validate();
         }

@@ -12,7 +12,9 @@ import com.azure.resourcemanager.cosmos.models.ManagedCassandraReaperStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of a managed Cassandra cluster public status. */
+/**
+ * Properties of a managed Cassandra cluster public status.
+ */
 @Fluent
 public final class CassandraClusterPublicStatusInner {
     /*
@@ -45,13 +47,15 @@ public final class CassandraClusterPublicStatusInner {
     @JsonProperty(value = "dataCenters")
     private List<CassandraClusterPublicStatusDataCentersItem> dataCenters;
 
-    /** Creates an instance of CassandraClusterPublicStatusInner class. */
+    /**
+     * Creates an instance of CassandraClusterPublicStatusInner class.
+     */
     public CassandraClusterPublicStatusInner() {
     }
 
     /**
      * Get the etag property: The eTag property.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -60,7 +64,7 @@ public final class CassandraClusterPublicStatusInner {
 
     /**
      * Set the etag property: The eTag property.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the CassandraClusterPublicStatusInner object itself.
      */
@@ -71,7 +75,7 @@ public final class CassandraClusterPublicStatusInner {
 
     /**
      * Get the reaperStatus property: The reaperStatus property.
-     *
+     * 
      * @return the reaperStatus value.
      */
     public ManagedCassandraReaperStatus reaperStatus() {
@@ -80,7 +84,7 @@ public final class CassandraClusterPublicStatusInner {
 
     /**
      * Set the reaperStatus property: The reaperStatus property.
-     *
+     * 
      * @param reaperStatus the reaperStatus value to set.
      * @return the CassandraClusterPublicStatusInner object itself.
      */
@@ -91,7 +95,7 @@ public final class CassandraClusterPublicStatusInner {
 
     /**
      * Get the connectionErrors property: List relevant information about any connection errors to the Datacenters.
-     *
+     * 
      * @return the connectionErrors value.
      */
     public List<ConnectionError> connectionErrors() {
@@ -100,7 +104,7 @@ public final class CassandraClusterPublicStatusInner {
 
     /**
      * Set the connectionErrors property: List relevant information about any connection errors to the Datacenters.
-     *
+     * 
      * @param connectionErrors the connectionErrors value to set.
      * @return the CassandraClusterPublicStatusInner object itself.
      */
@@ -112,7 +116,7 @@ public final class CassandraClusterPublicStatusInner {
     /**
      * Get the errors property: List relevant information about any errors about cluster, data center and connection
      * error.
-     *
+     * 
      * @return the errors value.
      */
     public List<CassandraError> errors() {
@@ -122,7 +126,7 @@ public final class CassandraClusterPublicStatusInner {
     /**
      * Set the errors property: List relevant information about any errors about cluster, data center and connection
      * error.
-     *
+     * 
      * @param errors the errors value to set.
      * @return the CassandraClusterPublicStatusInner object itself.
      */
@@ -133,7 +137,7 @@ public final class CassandraClusterPublicStatusInner {
 
     /**
      * Get the dataCenters property: List of the status of each datacenter in this cluster.
-     *
+     * 
      * @return the dataCenters value.
      */
     public List<CassandraClusterPublicStatusDataCentersItem> dataCenters() {
@@ -142,19 +146,19 @@ public final class CassandraClusterPublicStatusInner {
 
     /**
      * Set the dataCenters property: List of the status of each datacenter in this cluster.
-     *
+     * 
      * @param dataCenters the dataCenters value to set.
      * @return the CassandraClusterPublicStatusInner object itself.
      */
-    public CassandraClusterPublicStatusInner withDataCenters(
-        List<CassandraClusterPublicStatusDataCentersItem> dataCenters) {
+    public CassandraClusterPublicStatusInner
+        withDataCenters(List<CassandraClusterPublicStatusDataCentersItem> dataCenters) {
         this.dataCenters = dataCenters;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -18,7 +18,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** A network interface in a resource group. */
+/**
+ * A network interface in a resource group.
+ */
 @Fluent
 public final class NetworkInterfaceInner extends Resource {
     /*
@@ -45,13 +47,15 @@ public final class NetworkInterfaceInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of NetworkInterfaceInner class. */
+    /**
+     * Creates an instance of NetworkInterfaceInner class.
+     */
     public NetworkInterfaceInner() {
     }
 
     /**
      * Get the extendedLocation property: The extended location of the network interface.
-     *
+     * 
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -60,7 +64,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Set the extendedLocation property: The extended location of the network interface.
-     *
+     * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the NetworkInterfaceInner object itself.
      */
@@ -71,7 +75,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Get the innerProperties property: Properties of the network interface.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NetworkInterfacePropertiesFormatInner innerProperties() {
@@ -80,7 +84,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -89,7 +93,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -98,7 +102,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the NetworkInterfaceInner object itself.
      */
@@ -107,14 +111,18 @@ public final class NetworkInterfaceInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkInterfaceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkInterfaceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -123,7 +131,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Get the virtualMachine property: The reference to a virtual machine.
-     *
+     * 
      * @return the virtualMachine value.
      */
     public SubResource virtualMachine() {
@@ -132,7 +140,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Get the networkSecurityGroup property: The reference to the NetworkSecurityGroup resource.
-     *
+     * 
      * @return the networkSecurityGroup value.
      */
     public NetworkSecurityGroupInner networkSecurityGroup() {
@@ -141,7 +149,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Set the networkSecurityGroup property: The reference to the NetworkSecurityGroup resource.
-     *
+     * 
      * @param networkSecurityGroup the networkSecurityGroup value to set.
      * @return the NetworkInterfaceInner object itself.
      */
@@ -155,7 +163,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Get the privateEndpoint property: A reference to the private endpoint to which the network interface is linked.
-     *
+     * 
      * @return the privateEndpoint value.
      */
     public PrivateEndpointInner privateEndpoint() {
@@ -164,7 +172,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Get the ipConfigurations property: A list of IPConfigurations of the network interface.
-     *
+     * 
      * @return the ipConfigurations value.
      */
     public List<NetworkInterfaceIpConfigurationInner> ipConfigurations() {
@@ -173,7 +181,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Set the ipConfigurations property: A list of IPConfigurations of the network interface.
-     *
+     * 
      * @param ipConfigurations the ipConfigurations value to set.
      * @return the NetworkInterfaceInner object itself.
      */
@@ -187,7 +195,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Get the tapConfigurations property: A list of TapConfigurations of the network interface.
-     *
+     * 
      * @return the tapConfigurations value.
      */
     public List<NetworkInterfaceTapConfigurationInner> tapConfigurations() {
@@ -196,7 +204,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Get the dnsSettings property: The DNS settings in network interface.
-     *
+     * 
      * @return the dnsSettings value.
      */
     public NetworkInterfaceDnsSettings dnsSettings() {
@@ -205,7 +213,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Set the dnsSettings property: The DNS settings in network interface.
-     *
+     * 
      * @param dnsSettings the dnsSettings value to set.
      * @return the NetworkInterfaceInner object itself.
      */
@@ -219,7 +227,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Get the macAddress property: The MAC address of the network interface.
-     *
+     * 
      * @return the macAddress value.
      */
     public String macAddress() {
@@ -228,7 +236,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Get the primary property: Whether this is a primary network interface on a virtual machine.
-     *
+     * 
      * @return the primary value.
      */
     public Boolean primary() {
@@ -238,7 +246,7 @@ public final class NetworkInterfaceInner extends Resource {
     /**
      * Get the vnetEncryptionSupported property: Whether the virtual machine this nic is attached to supports
      * encryption.
-     *
+     * 
      * @return the vnetEncryptionSupported value.
      */
     public Boolean vnetEncryptionSupported() {
@@ -248,7 +256,7 @@ public final class NetworkInterfaceInner extends Resource {
     /**
      * Get the enableAcceleratedNetworking property: If the network interface is configured for accelerated networking.
      * Not applicable to VM sizes which require accelerated networking.
-     *
+     * 
      * @return the enableAcceleratedNetworking value.
      */
     public Boolean enableAcceleratedNetworking() {
@@ -258,7 +266,7 @@ public final class NetworkInterfaceInner extends Resource {
     /**
      * Set the enableAcceleratedNetworking property: If the network interface is configured for accelerated networking.
      * Not applicable to VM sizes which require accelerated networking.
-     *
+     * 
      * @param enableAcceleratedNetworking the enableAcceleratedNetworking value to set.
      * @return the NetworkInterfaceInner object itself.
      */
@@ -272,7 +280,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Get the disableTcpStateTracking property: Indicates whether to disable tcp state tracking.
-     *
+     * 
      * @return the disableTcpStateTracking value.
      */
     public Boolean disableTcpStateTracking() {
@@ -281,7 +289,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Set the disableTcpStateTracking property: Indicates whether to disable tcp state tracking.
-     *
+     * 
      * @param disableTcpStateTracking the disableTcpStateTracking value to set.
      * @return the NetworkInterfaceInner object itself.
      */
@@ -295,7 +303,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Get the enableIpForwarding property: Indicates whether IP forwarding is enabled on this network interface.
-     *
+     * 
      * @return the enableIpForwarding value.
      */
     public Boolean enableIpForwarding() {
@@ -304,7 +312,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Set the enableIpForwarding property: Indicates whether IP forwarding is enabled on this network interface.
-     *
+     * 
      * @param enableIpForwarding the enableIpForwarding value to set.
      * @return the NetworkInterfaceInner object itself.
      */
@@ -318,7 +326,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Get the hostedWorkloads property: A list of references to linked BareMetal resources.
-     *
+     * 
      * @return the hostedWorkloads value.
      */
     public List<String> hostedWorkloads() {
@@ -328,7 +336,7 @@ public final class NetworkInterfaceInner extends Resource {
     /**
      * Get the dscpConfiguration property: A reference to the dscp configuration to which the network interface is
      * linked.
-     *
+     * 
      * @return the dscpConfiguration value.
      */
     public SubResource dscpConfiguration() {
@@ -337,7 +345,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Get the resourceGuid property: The resource GUID property of the network interface resource.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -346,7 +354,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the network interface resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -355,7 +363,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Get the workloadType property: WorkloadType of the NetworkInterface for BareMetal resources.
-     *
+     * 
      * @return the workloadType value.
      */
     public String workloadType() {
@@ -364,7 +372,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Set the workloadType property: WorkloadType of the NetworkInterface for BareMetal resources.
-     *
+     * 
      * @param workloadType the workloadType value to set.
      * @return the NetworkInterfaceInner object itself.
      */
@@ -378,7 +386,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Get the nicType property: Type of Network Interface resource.
-     *
+     * 
      * @return the nicType value.
      */
     public NetworkInterfaceNicType nicType() {
@@ -387,7 +395,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Set the nicType property: Type of Network Interface resource.
-     *
+     * 
      * @param nicType the nicType value to set.
      * @return the NetworkInterfaceInner object itself.
      */
@@ -401,7 +409,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Get the privateLinkService property: Privatelinkservice of the network interface resource.
-     *
+     * 
      * @return the privateLinkService value.
      */
     public PrivateLinkServiceInner privateLinkService() {
@@ -410,7 +418,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Set the privateLinkService property: Privatelinkservice of the network interface resource.
-     *
+     * 
      * @param privateLinkService the privateLinkService value to set.
      * @return the NetworkInterfaceInner object itself.
      */
@@ -424,7 +432,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Get the migrationPhase property: Migration phase of Network Interface resource.
-     *
+     * 
      * @return the migrationPhase value.
      */
     public NetworkInterfaceMigrationPhase migrationPhase() {
@@ -433,7 +441,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Set the migrationPhase property: Migration phase of Network Interface resource.
-     *
+     * 
      * @param migrationPhase the migrationPhase value to set.
      * @return the NetworkInterfaceInner object itself.
      */
@@ -447,7 +455,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Get the auxiliaryMode property: Auxiliary mode of Network Interface resource.
-     *
+     * 
      * @return the auxiliaryMode value.
      */
     public NetworkInterfaceAuxiliaryMode auxiliaryMode() {
@@ -456,7 +464,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Set the auxiliaryMode property: Auxiliary mode of Network Interface resource.
-     *
+     * 
      * @param auxiliaryMode the auxiliaryMode value to set.
      * @return the NetworkInterfaceInner object itself.
      */
@@ -470,7 +478,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Get the auxiliarySku property: Auxiliary sku of Network Interface resource.
-     *
+     * 
      * @return the auxiliarySku value.
      */
     public NetworkInterfaceAuxiliarySku auxiliarySku() {
@@ -479,7 +487,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Set the auxiliarySku property: Auxiliary sku of Network Interface resource.
-     *
+     * 
      * @param auxiliarySku the auxiliarySku value to set.
      * @return the NetworkInterfaceInner object itself.
      */
@@ -493,7 +501,7 @@ public final class NetworkInterfaceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The ProxyOnly Resource model definition. */
+/**
+ * The ProxyOnly Resource model definition.
+ */
 @Immutable
 public class ProxyOnlyResource {
     /*
@@ -28,13 +30,15 @@ public class ProxyOnlyResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ProxyOnlyResource class. */
+    /**
+     * Creates an instance of ProxyOnlyResource class.
+     */
     public ProxyOnlyResource() {
     }
 
     /**
      * Get the id property: Resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -43,7 +47,7 @@ public class ProxyOnlyResource {
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -52,7 +56,7 @@ public class ProxyOnlyResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -61,7 +65,7 @@ public class ProxyOnlyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

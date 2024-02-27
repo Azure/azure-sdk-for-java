@@ -18,29 +18,28 @@ public final class CustomDataSourceLinkedServiceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         CustomDataSourceLinkedService model = BinaryData.fromString(
-            "{\"type\":\"CustomDataSource\",\"typeProperties\":\"dataotwvkuhtdxdcodzd\",\"connectVia\":{\"referenceName\":\"knmcvmxiun\",\"parameters\":{\"kccru\":\"datauaht\",\"foqody\":\"datarz\",\"o\":\"datafayxnlvtip\"}},\"description\":\"slctilbxnnynjtu\",\"parameters\":{\"drchu\":{\"type\":\"Int\",\"defaultValue\":\"datalzavohvdbn\"},\"jcglvobctit\":{\"type\":\"String\",\"defaultValue\":\"dataliqcbonqjoek\"},\"dqilp\":{\"type\":\"Bool\",\"defaultValue\":\"databalvk\"}},\"annotations\":[\"dataxfqkqpdyrqlaz\"],\"\":{\"yf\":\"datatckbjvdx\",\"de\":\"dataq\"}}")
+            "{\"type\":\"CustomDataSource\",\"typeProperties\":\"datakrjucazwedma\",\"connectVia\":{\"referenceName\":\"lx\",\"parameters\":{\"nenxg\":\"datamxoanudvqa\",\"b\":\"datahmmgblqyfg\"}},\"description\":\"qifsgzfgxwfxji\",\"parameters\":{\"yooghjxhp\":{\"type\":\"Object\",\"defaultValue\":\"datahwnn\"},\"hoyg\":{\"type\":\"Object\",\"defaultValue\":\"dataksqiwlmegjtose\"},\"zzugdorc\":{\"type\":\"Float\",\"defaultValue\":\"dataz\"}},\"annotations\":[\"datavovsirtasepi\"],\"\":{\"amnvrcqjpbainsih\":\"dataexhhjjatlepzbiro\",\"eufj\":\"dataz\",\"zm\":\"datab\"}}")
             .toObject(CustomDataSourceLinkedService.class);
-        Assertions.assertEquals("knmcvmxiun", model.connectVia().referenceName());
-        Assertions.assertEquals("slctilbxnnynjtu", model.description());
-        Assertions.assertEquals(ParameterType.INT, model.parameters().get("drchu").type());
+        Assertions.assertEquals("lx", model.connectVia().referenceName());
+        Assertions.assertEquals("qifsgzfgxwfxji", model.description());
+        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("yooghjxhp").type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         CustomDataSourceLinkedService model = new CustomDataSourceLinkedService()
-            .withConnectVia(new IntegrationRuntimeReference().withReferenceName("knmcvmxiun")
-                .withParameters(mapOf("kccru", "datauaht", "foqody", "datarz", "o", "datafayxnlvtip")))
-            .withDescription("slctilbxnnynjtu")
-            .withParameters(mapOf("drchu",
-                new ParameterSpecification().withType(ParameterType.INT).withDefaultValue("datalzavohvdbn"),
-                "jcglvobctit",
-                new ParameterSpecification().withType(ParameterType.STRING).withDefaultValue("dataliqcbonqjoek"),
-                "dqilp", new ParameterSpecification().withType(ParameterType.BOOL).withDefaultValue("databalvk")))
-            .withAnnotations(Arrays.asList("dataxfqkqpdyrqlaz")).withTypeProperties("dataotwvkuhtdxdcodzd");
+            .withConnectVia(new IntegrationRuntimeReference().withReferenceName("lx")
+                .withParameters(mapOf("nenxg", "datamxoanudvqa", "b", "datahmmgblqyfg")))
+            .withDescription("qifsgzfgxwfxji")
+            .withParameters(mapOf("yooghjxhp",
+                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("datahwnn"), "hoyg",
+                new ParameterSpecification().withType(ParameterType.OBJECT).withDefaultValue("dataksqiwlmegjtose"),
+                "zzugdorc", new ParameterSpecification().withType(ParameterType.FLOAT).withDefaultValue("dataz")))
+            .withAnnotations(Arrays.asList("datavovsirtasepi")).withTypeProperties("datakrjucazwedma");
         model = BinaryData.fromObject(model).toObject(CustomDataSourceLinkedService.class);
-        Assertions.assertEquals("knmcvmxiun", model.connectVia().referenceName());
-        Assertions.assertEquals("slctilbxnnynjtu", model.description());
-        Assertions.assertEquals(ParameterType.INT, model.parameters().get("drchu").type());
+        Assertions.assertEquals("lx", model.connectVia().referenceName());
+        Assertions.assertEquals("qifsgzfgxwfxji", model.description());
+        Assertions.assertEquals(ParameterType.OBJECT, model.parameters().get("yooghjxhp").type());
     }
 
     // Use "Map.of" if available

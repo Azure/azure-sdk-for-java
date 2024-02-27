@@ -6,16 +6,17 @@ package com.azure.resourcemanager.deviceupdate.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceupdate.models.UserAssignedIdentity;
-import org.junit.jupiter.api.Test;
 
 public final class UserAssignedIdentityTests {
-    @Test
-    public void testDeserialize() {
-        UserAssignedIdentity model = BinaryData.fromString("{}").toObject(UserAssignedIdentity.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        UserAssignedIdentity model = BinaryData.fromString(
+            "{\"principalId\":\"1ec35675-a84d-4d2a-929d-55297d7c315d\",\"clientId\":\"a7d9cdc7-fcb3-4297-8144-fc49a273fe33\"}")
+            .toObject(UserAssignedIdentity.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         UserAssignedIdentity model = new UserAssignedIdentity();
         model = BinaryData.fromObject(model).toObject(UserAssignedIdentity.class);
     }

@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Log location settings. */
+/**
+ * Log location settings.
+ */
 @Fluent
 public final class LogLocationSettings {
     /*
@@ -23,12 +25,15 @@ public final class LogLocationSettings {
     @JsonProperty(value = "path")
     private Object path;
 
-    /** Creates an instance of LogLocationSettings class. */
-    public LogLocationSettings() {}
+    /**
+     * Creates an instance of LogLocationSettings class.
+     */
+    public LogLocationSettings() {
+    }
 
     /**
      * Get the linkedServiceName property: Log storage linked service reference.
-     *
+     * 
      * @return the linkedServiceName value.
      */
     public LinkedServiceReference getLinkedServiceName() {
@@ -37,7 +42,7 @@ public final class LogLocationSettings {
 
     /**
      * Set the linkedServiceName property: Log storage linked service reference.
-     *
+     * 
      * @param linkedServiceName the linkedServiceName value to set.
      * @return the LogLocationSettings object itself.
      */
@@ -49,7 +54,7 @@ public final class LogLocationSettings {
     /**
      * Get the path property: The path to storage for storing detailed logs of activity execution. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the path value.
      */
     public Object getPath() {
@@ -59,7 +64,7 @@ public final class LogLocationSettings {
     /**
      * Set the path property: The path to storage for storing detailed logs of activity execution. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param path the path value to set.
      * @return the LogLocationSettings object itself.
      */

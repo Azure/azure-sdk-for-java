@@ -310,8 +310,14 @@ public class AzureServiceBusJmsProperties implements InitializingBean, Passwordl
             }
         }
 
-        if (null == pricingTier || !pricingTier.matches("(?i)premium|standard|basic")) {
-            throw new IllegalArgumentException("'spring.jms.servicebus.pricing-tier' is not valid");
+        if (null == pricingTier || !pricingTier.matches("(?i)premium|standard")) {
+            String errMessage = null;
+            if ("basic".equalsIgnoreCase(pricingTier)) {
+                errMessage = "The basic tier is not supported by Service Bus JMS. Please use standard or premium tier instead.";
+            } else {
+                errMessage = "'spring.jms.servicebus.pricing-tier' is not valid.";
+            }
+            throw new IllegalArgumentException(errMessage);
         }
     }
 

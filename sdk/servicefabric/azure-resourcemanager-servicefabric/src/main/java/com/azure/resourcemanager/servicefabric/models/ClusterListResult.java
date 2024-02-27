@@ -4,29 +4,82 @@
 
 package com.azure.resourcemanager.servicefabric.models;
 
-import com.azure.resourcemanager.servicefabric.fluent.models.ClusterListResultInner;
+import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.servicefabric.fluent.models.ClusterInner;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An immutable client-side representation of ClusterListResult. */
-public interface ClusterListResult {
+/**
+ * Cluster list results.
+ */
+@Fluent
+public final class ClusterListResult {
+    /*
+     * The value property.
+     */
+    @JsonProperty(value = "value")
+    private List<ClusterInner> value;
+
+    /*
+     * The URL to use for getting the next set of results.
+     */
+    @JsonProperty(value = "nextLink")
+    private String nextLink;
+
     /**
-     * Gets the value property: The value property.
-     *
+     * Creates an instance of ClusterListResult class.
+     */
+    public ClusterListResult() {
+    }
+
+    /**
+     * Get the value property: The value property.
+     * 
      * @return the value value.
      */
-    List<Cluster> value();
+    public List<ClusterInner> value() {
+        return this.value;
+    }
 
     /**
-     * Gets the nextLink property: The URL to use for getting the next set of results.
-     *
+     * Set the value property: The value property.
+     * 
+     * @param value the value value to set.
+     * @return the ClusterListResult object itself.
+     */
+    public ClusterListResult withValue(List<ClusterInner> value) {
+        this.value = value;
+        return this;
+    }
+
+    /**
+     * Get the nextLink property: The URL to use for getting the next set of results.
+     * 
      * @return the nextLink value.
      */
-    String nextLink();
+    public String nextLink() {
+        return this.nextLink;
+    }
 
     /**
-     * Gets the inner com.azure.resourcemanager.servicefabric.fluent.models.ClusterListResultInner object.
-     *
-     * @return the inner object.
+     * Set the nextLink property: The URL to use for getting the next set of results.
+     * 
+     * @param nextLink the nextLink value to set.
+     * @return the ClusterListResult object itself.
      */
-    ClusterListResultInner innerModel();
+    public ClusterListResult withNextLink(String nextLink) {
+        this.nextLink = nextLink;
+        return this;
+    }
+
+    /**
+     * Validates the instance.
+     * 
+     * @throws IllegalArgumentException thrown if the instance is not valid.
+     */
+    public void validate() {
+        if (value() != null) {
+            value().forEach(e -> e.validate());
+        }
+    }
 }

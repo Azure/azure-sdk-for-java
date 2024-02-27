@@ -508,8 +508,66 @@ public interface WebAppsClient
      * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SiteInner>> updateWithResponseAsync(String resourceGroupName, String name,
+    Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String name,
         SitePatchResourceInner siteEnvelope);
+
+    /**
+     * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
+     * 
+     * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
+     * parameter.
+     * @param siteEnvelope A JSON representation of the app properties. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of a web app, a mobile app backend, or an API app.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<SiteInner>, SiteInner> beginUpdateAsync(String resourceGroupName, String name,
+        SitePatchResourceInner siteEnvelope);
+
+    /**
+     * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
+     * 
+     * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
+     * parameter.
+     * @param siteEnvelope A JSON representation of the app properties. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a web app, a mobile app backend, or an API app.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<SiteInner>, SiteInner> beginUpdate(String resourceGroupName, String name,
+        SitePatchResourceInner siteEnvelope);
+
+    /**
+     * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
+     * 
+     * Description for Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
+     * parameter.
+     * @param siteEnvelope A JSON representation of the app properties. See example.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of a web app, a mobile app backend, or an API app.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<SiteInner>, SiteInner> beginUpdate(String resourceGroupName, String name,
+        SitePatchResourceInner siteEnvelope, Context context);
 
     /**
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
@@ -538,16 +596,14 @@ public interface WebAppsClient
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
      * parameter.
      * @param siteEnvelope A JSON representation of the app properties. See example.
-     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return a web app, a mobile app backend, or an API app along with {@link Response}.
+     * @return a web app, a mobile app backend, or an API app.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SiteInner> updateWithResponse(String resourceGroupName, String name, SitePatchResourceInner siteEnvelope,
-        Context context);
+    SiteInner update(String resourceGroupName, String name, SitePatchResourceInner siteEnvelope);
 
     /**
      * Creates a new web, mobile, or API app in an existing resource group, or updates an existing app.
@@ -558,6 +614,7 @@ public interface WebAppsClient
      * @param name Unique name of the app to create or update. To create or update a deployment slot, use the {slot}
      * parameter.
      * @param siteEnvelope A JSON representation of the app properties. See example.
+     * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -565,7 +622,7 @@ public interface WebAppsClient
      * @return a web app, a mobile app backend, or an API app.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SiteInner update(String resourceGroupName, String name, SitePatchResourceInner siteEnvelope);
+    SiteInner update(String resourceGroupName, String name, SitePatchResourceInner siteEnvelope, Context context);
 
     /**
      * Analyze a custom hostname.
@@ -1601,8 +1658,63 @@ public interface WebAppsClient
      * @return string dictionary resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<StringDictionaryInner>> updateApplicationSettingsWithResponseAsync(String resourceGroupName,
-        String name, StringDictionaryInner appSettings);
+    Mono<Response<Flux<ByteBuffer>>> updateApplicationSettingsWithResponseAsync(String resourceGroupName, String name,
+        StringDictionaryInner appSettings);
+
+    /**
+     * Replaces the application settings of an app.
+     * 
+     * Description for Replaces the application settings of an app.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param appSettings Application settings of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of string dictionary resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<StringDictionaryInner>, StringDictionaryInner>
+        beginUpdateApplicationSettingsAsync(String resourceGroupName, String name, StringDictionaryInner appSettings);
+
+    /**
+     * Replaces the application settings of an app.
+     * 
+     * Description for Replaces the application settings of an app.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param appSettings Application settings of the app.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of string dictionary resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<StringDictionaryInner>, StringDictionaryInner>
+        beginUpdateApplicationSettings(String resourceGroupName, String name, StringDictionaryInner appSettings);
+
+    /**
+     * Replaces the application settings of an app.
+     * 
+     * Description for Replaces the application settings of an app.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param appSettings Application settings of the app.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of string dictionary resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<StringDictionaryInner>, StringDictionaryInner> beginUpdateApplicationSettings(
+        String resourceGroupName, String name, StringDictionaryInner appSettings, Context context);
 
     /**
      * Replaces the application settings of an app.
@@ -1630,25 +1742,6 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param appSettings Application settings of the app.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return string dictionary resource along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<StringDictionaryInner> updateApplicationSettingsWithResponse(String resourceGroupName, String name,
-        StringDictionaryInner appSettings, Context context);
-
-    /**
-     * Replaces the application settings of an app.
-     * 
-     * Description for Replaces the application settings of an app.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param appSettings Application settings of the app.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -1658,6 +1751,25 @@ public interface WebAppsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     StringDictionaryInner updateApplicationSettings(String resourceGroupName, String name,
         StringDictionaryInner appSettings);
+
+    /**
+     * Replaces the application settings of an app.
+     * 
+     * Description for Replaces the application settings of an app.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param appSettings Application settings of the app.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return string dictionary resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    StringDictionaryInner updateApplicationSettings(String resourceGroupName, String name,
+        StringDictionaryInner appSettings, Context context);
 
     /**
      * Gets the application settings of an app.
@@ -3592,8 +3704,63 @@ public interface WebAppsClient
      * @return web app configuration ARM resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SiteConfigResourceInner>> createOrUpdateConfigurationWithResponseAsync(String resourceGroupName,
-        String name, SiteConfigResourceInner siteConfig);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateConfigurationWithResponseAsync(String resourceGroupName, String name,
+        SiteConfigResourceInner siteConfig);
+
+    /**
+     * Updates the configuration of an app.
+     * 
+     * Description for Updates the configuration of an app.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param siteConfig JSON representation of a SiteConfig object. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of web app configuration ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    PollerFlux<PollResult<SiteConfigResourceInner>, SiteConfigResourceInner> beginCreateOrUpdateConfigurationAsync(
+        String resourceGroupName, String name, SiteConfigResourceInner siteConfig);
+
+    /**
+     * Updates the configuration of an app.
+     * 
+     * Description for Updates the configuration of an app.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param siteConfig JSON representation of a SiteConfig object. See example.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of web app configuration ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<SiteConfigResourceInner>, SiteConfigResourceInner>
+        beginCreateOrUpdateConfiguration(String resourceGroupName, String name, SiteConfigResourceInner siteConfig);
+
+    /**
+     * Updates the configuration of an app.
+     * 
+     * Description for Updates the configuration of an app.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param siteConfig JSON representation of a SiteConfig object. See example.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of web app configuration ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    SyncPoller<PollResult<SiteConfigResourceInner>, SiteConfigResourceInner> beginCreateOrUpdateConfiguration(
+        String resourceGroupName, String name, SiteConfigResourceInner siteConfig, Context context);
 
     /**
      * Updates the configuration of an app.
@@ -3621,25 +3788,6 @@ public interface WebAppsClient
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param name Name of the app.
      * @param siteConfig JSON representation of a SiteConfig object. See example.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
-     * rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return web app configuration ARM resource along with {@link Response}.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SiteConfigResourceInner> createOrUpdateConfigurationWithResponse(String resourceGroupName, String name,
-        SiteConfigResourceInner siteConfig, Context context);
-
-    /**
-     * Updates the configuration of an app.
-     * 
-     * Description for Updates the configuration of an app.
-     * 
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param name Name of the app.
-     * @param siteConfig JSON representation of a SiteConfig object. See example.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
      * rejected by server.
@@ -3649,6 +3797,25 @@ public interface WebAppsClient
     @ServiceMethod(returns = ReturnType.SINGLE)
     SiteConfigResourceInner createOrUpdateConfiguration(String resourceGroupName, String name,
         SiteConfigResourceInner siteConfig);
+
+    /**
+     * Updates the configuration of an app.
+     * 
+     * Description for Updates the configuration of an app.
+     * 
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param name Name of the app.
+     * @param siteConfig JSON representation of a SiteConfig object. See example.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.resourcemanager.appservice.models.DefaultErrorResponseErrorException thrown if the request is
+     * rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return web app configuration ARM resource.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    SiteConfigResourceInner createOrUpdateConfiguration(String resourceGroupName, String name,
+        SiteConfigResourceInner siteConfig, Context context);
 
     /**
      * Updates the configuration of an app.

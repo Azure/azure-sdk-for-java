@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Enum to indicate type of Continuous backup tier. */
+/**
+ * Enum to indicate type of Continuous backup tier.
+ */
 public final class ContinuousTier extends ExpandableStringEnum<ContinuousTier> {
-    /** Static value Continuous7Days for ContinuousTier. */
+    /**
+     * Static value Continuous7Days for ContinuousTier.
+     */
     public static final ContinuousTier CONTINUOUS7DAYS = fromString("Continuous7Days");
 
-    /** Static value Continuous30Days for ContinuousTier. */
+    /**
+     * Static value Continuous30Days for ContinuousTier.
+     */
     public static final ContinuousTier CONTINUOUS30DAYS = fromString("Continuous30Days");
 
     /**
      * Creates a new instance of ContinuousTier value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class ContinuousTier extends ExpandableStringEnum<ContinuousTier> {
 
     /**
      * Creates or finds a ContinuousTier from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ContinuousTier.
      */
@@ -38,7 +44,7 @@ public final class ContinuousTier extends ExpandableStringEnum<ContinuousTier> {
 
     /**
      * Gets known ContinuousTier values.
-     *
+     * 
      * @return known ContinuousTier values.
      */
     public static Collection<ContinuousTier> values() {

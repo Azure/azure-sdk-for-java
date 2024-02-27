@@ -7,7 +7,9 @@ package com.azure.resourcemanager.cosmos.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Configuration values for periodic mode backup. */
+/**
+ * Configuration values for periodic mode backup.
+ */
 @Fluent
 public final class ContinuousModeProperties {
     /*
@@ -16,13 +18,15 @@ public final class ContinuousModeProperties {
     @JsonProperty(value = "tier")
     private ContinuousTier tier;
 
-    /** Creates an instance of ContinuousModeProperties class. */
+    /**
+     * Creates an instance of ContinuousModeProperties class.
+     */
     public ContinuousModeProperties() {
     }
 
     /**
      * Get the tier property: Enum to indicate type of Continuous backup mode.
-     *
+     * 
      * @return the tier value.
      */
     public ContinuousTier tier() {
@@ -31,7 +35,7 @@ public final class ContinuousModeProperties {
 
     /**
      * Set the tier property: Enum to indicate type of Continuous backup mode.
-     *
+     * 
      * @param tier the tier value to set.
      * @return the ContinuousModeProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class ContinuousModeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

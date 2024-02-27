@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.BgpPeerStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for list BGP peer status API service call. */
+/**
+ * Response for list BGP peer status API service call.
+ */
 @Fluent
 public final class BgpPeerStatusListResultInner {
     /*
@@ -18,13 +20,15 @@ public final class BgpPeerStatusListResultInner {
     @JsonProperty(value = "value")
     private List<BgpPeerStatus> value;
 
-    /** Creates an instance of BgpPeerStatusListResultInner class. */
+    /**
+     * Creates an instance of BgpPeerStatusListResultInner class.
+     */
     public BgpPeerStatusListResultInner() {
     }
 
     /**
      * Get the value property: List of BGP peers.
-     *
+     * 
      * @return the value value.
      */
     public List<BgpPeerStatus> value() {
@@ -33,7 +37,7 @@ public final class BgpPeerStatusListResultInner {
 
     /**
      * Set the value property: List of BGP peers.
-     *
+     * 
      * @param value the value value to set.
      * @return the BgpPeerStatusListResultInner object itself.
      */
@@ -44,7 +48,7 @@ public final class BgpPeerStatusListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -13,16 +13,20 @@ import java.util.Collection;
  * restored.
  */
 public final class PersistentVolumeRestoreMode extends ExpandableStringEnum<PersistentVolumeRestoreMode> {
-    /** Static value RestoreWithVolumeData for PersistentVolumeRestoreMode. */
+    /**
+     * Static value RestoreWithVolumeData for PersistentVolumeRestoreMode.
+     */
     public static final PersistentVolumeRestoreMode RESTORE_WITH_VOLUME_DATA = fromString("RestoreWithVolumeData");
 
-    /** Static value RestoreWithoutVolumeData for PersistentVolumeRestoreMode. */
-    public static final PersistentVolumeRestoreMode RESTORE_WITHOUT_VOLUME_DATA =
-        fromString("RestoreWithoutVolumeData");
+    /**
+     * Static value RestoreWithoutVolumeData for PersistentVolumeRestoreMode.
+     */
+    public static final PersistentVolumeRestoreMode RESTORE_WITHOUT_VOLUME_DATA
+        = fromString("RestoreWithoutVolumeData");
 
     /**
      * Creates a new instance of PersistentVolumeRestoreMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -31,7 +35,7 @@ public final class PersistentVolumeRestoreMode extends ExpandableStringEnum<Pers
 
     /**
      * Creates or finds a PersistentVolumeRestoreMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding PersistentVolumeRestoreMode.
      */
@@ -42,7 +46,7 @@ public final class PersistentVolumeRestoreMode extends ExpandableStringEnum<Pers
 
     /**
      * Gets known PersistentVolumeRestoreMode values.
-     *
+     * 
      * @return known PersistentVolumeRestoreMode values.
      */
     public static Collection<PersistentVolumeRestoreMode> values() {

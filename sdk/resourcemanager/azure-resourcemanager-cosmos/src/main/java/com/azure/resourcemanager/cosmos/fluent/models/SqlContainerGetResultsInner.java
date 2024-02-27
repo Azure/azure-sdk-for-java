@@ -11,7 +11,9 @@ import com.azure.resourcemanager.cosmos.models.SqlContainerGetPropertiesResource
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An Azure Cosmos DB container. */
+/**
+ * An Azure Cosmos DB container.
+ */
 @Fluent
 public final class SqlContainerGetResultsInner extends ArmResourceProperties {
     /*
@@ -20,27 +22,33 @@ public final class SqlContainerGetResultsInner extends ArmResourceProperties {
     @JsonProperty(value = "properties")
     private SqlContainerGetProperties innerProperties;
 
-    /** Creates an instance of SqlContainerGetResultsInner class. */
+    /**
+     * Creates an instance of SqlContainerGetResultsInner class.
+     */
     public SqlContainerGetResultsInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of an Azure Cosmos DB container.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SqlContainerGetProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlContainerGetResultsInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SqlContainerGetResultsInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -49,7 +57,7 @@ public final class SqlContainerGetResultsInner extends ArmResourceProperties {
 
     /**
      * Get the resource property: The resource property.
-     *
+     * 
      * @return the resource value.
      */
     public SqlContainerGetPropertiesResource resource() {
@@ -58,7 +66,7 @@ public final class SqlContainerGetResultsInner extends ArmResourceProperties {
 
     /**
      * Set the resource property: The resource property.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the SqlContainerGetResultsInner object itself.
      */
@@ -72,7 +80,7 @@ public final class SqlContainerGetResultsInner extends ArmResourceProperties {
 
     /**
      * Get the options property: The options property.
-     *
+     * 
      * @return the options value.
      */
     public SqlContainerGetPropertiesOptions options() {
@@ -81,7 +89,7 @@ public final class SqlContainerGetResultsInner extends ArmResourceProperties {
 
     /**
      * Set the options property: The options property.
-     *
+     * 
      * @param options the options value to set.
      * @return the SqlContainerGetResultsInner object itself.
      */
@@ -95,7 +103,7 @@ public final class SqlContainerGetResultsInner extends ArmResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

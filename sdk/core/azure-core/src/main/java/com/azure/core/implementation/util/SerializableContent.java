@@ -3,22 +3,32 @@
 
 package com.azure.core.implementation.util;
 
+import com.azure.core.implementation.ImplUtils;
+import com.azure.core.util.FluxUtil;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.ObjectSerializer;
 import com.azure.core.util.serializer.TypeReference;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousByteChannel;
+import java.nio.channels.WritableByteChannel;
 import java.nio.charset.StandardCharsets;
 import java.util.Objects;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
+
+import static com.azure.core.util.FluxUtil.monoError;
 
 /**
  * A {@link BinaryDataContent} implementation which is backed by a serializable object.
  */
 public final class SerializableContent extends BinaryDataContent {
+    private static final ClientLogger LOGGER = new ClientLogger(SerializableContent.class);
 
     private final Object content;
     private final ObjectSerializer serializer;
@@ -71,6 +81,29 @@ public final class SerializableContent extends BinaryDataContent {
     @Override
     public Flux<ByteBuffer> toFluxByteBuffer() {
         return Mono.fromSupplier(() -> ByteBuffer.wrap(toBytes())).flux();
+    }
+
+    @Override
+    public void writeTo(OutputStream outputStream) throws IOException {
+        Objects.requireNonNull(outputStream, "'outputStream' cannot be null");
+
+        outputStream.write(toBytes());
+    }
+
+    @Override
+    public void writeTo(WritableByteChannel channel) throws IOException {
+        Objects.requireNonNull(channel, "'channel' cannot be null");
+
+        ImplUtils.fullyWriteBuffer(toByteBuffer(), channel);
+    }
+
+    @Override
+    public Mono<Void> writeTo(AsynchronousByteChannel channel) {
+        if (channel == null) {
+            return monoError(LOGGER, new NullPointerException("'channel' cannot be null"));
+        }
+
+        return FluxUtil.writeToAsynchronousByteChannel(toFluxByteBuffer(), channel);
     }
 
     @Override

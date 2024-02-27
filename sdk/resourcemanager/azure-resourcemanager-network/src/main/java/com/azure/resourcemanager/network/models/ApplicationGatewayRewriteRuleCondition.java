@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Set of conditions in the Rewrite Rule in Application Gateway. */
+/**
+ * Set of conditions in the Rewrite Rule in Application Gateway.
+ */
 @Fluent
 public final class ApplicationGatewayRewriteRuleCondition {
     /*
@@ -34,13 +36,15 @@ public final class ApplicationGatewayRewriteRuleCondition {
     @JsonProperty(value = "negate")
     private Boolean negate;
 
-    /** Creates an instance of ApplicationGatewayRewriteRuleCondition class. */
+    /**
+     * Creates an instance of ApplicationGatewayRewriteRuleCondition class.
+     */
     public ApplicationGatewayRewriteRuleCondition() {
     }
 
     /**
      * Get the variable property: The condition parameter of the RewriteRuleCondition.
-     *
+     * 
      * @return the variable value.
      */
     public String variable() {
@@ -49,7 +53,7 @@ public final class ApplicationGatewayRewriteRuleCondition {
 
     /**
      * Set the variable property: The condition parameter of the RewriteRuleCondition.
-     *
+     * 
      * @param variable the variable value to set.
      * @return the ApplicationGatewayRewriteRuleCondition object itself.
      */
@@ -59,9 +63,9 @@ public final class ApplicationGatewayRewriteRuleCondition {
     }
 
     /**
-     * Get the pattern property: The pattern, either fixed string or regular expression, that evaluates the truthfulness
-     * of the condition.
-     *
+     * Get the pattern property: The pattern, either fixed string or regular expression, that evaluates the
+     * truthfulness of the condition.
+     * 
      * @return the pattern value.
      */
     public String pattern() {
@@ -69,9 +73,9 @@ public final class ApplicationGatewayRewriteRuleCondition {
     }
 
     /**
-     * Set the pattern property: The pattern, either fixed string or regular expression, that evaluates the truthfulness
-     * of the condition.
-     *
+     * Set the pattern property: The pattern, either fixed string or regular expression, that evaluates the
+     * truthfulness of the condition.
+     * 
      * @param pattern the pattern value to set.
      * @return the ApplicationGatewayRewriteRuleCondition object itself.
      */
@@ -83,7 +87,7 @@ public final class ApplicationGatewayRewriteRuleCondition {
     /**
      * Get the ignoreCase property: Setting this parameter to truth value with force the pattern to do a case
      * in-sensitive comparison.
-     *
+     * 
      * @return the ignoreCase value.
      */
     public Boolean ignoreCase() {
@@ -93,7 +97,7 @@ public final class ApplicationGatewayRewriteRuleCondition {
     /**
      * Set the ignoreCase property: Setting this parameter to truth value with force the pattern to do a case
      * in-sensitive comparison.
-     *
+     * 
      * @param ignoreCase the ignoreCase value to set.
      * @return the ApplicationGatewayRewriteRuleCondition object itself.
      */
@@ -105,7 +109,7 @@ public final class ApplicationGatewayRewriteRuleCondition {
     /**
      * Get the negate property: Setting this value as truth will force to check the negation of the condition given by
      * the user.
-     *
+     * 
      * @return the negate value.
      */
     public Boolean negate() {
@@ -115,7 +119,7 @@ public final class ApplicationGatewayRewriteRuleCondition {
     /**
      * Set the negate property: Setting this value as truth will force to check the negation of the condition given by
      * the user.
-     *
+     * 
      * @param negate the negate value to set.
      * @return the ApplicationGatewayRewriteRuleCondition object itself.
      */
@@ -126,7 +130,7 @@ public final class ApplicationGatewayRewriteRuleCondition {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

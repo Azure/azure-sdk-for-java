@@ -27,13 +27,15 @@ public final class ListVirtualWansResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ListVirtualWansResult class. */
+    /**
+     * Creates an instance of ListVirtualWansResult class.
+     */
     public ListVirtualWansResult() {
     }
 
     /**
      * Get the value property: List of VirtualWANs.
-     *
+     * 
      * @return the value value.
      */
     public List<VirtualWanInner> value() {
@@ -42,7 +44,7 @@ public final class ListVirtualWansResult {
 
     /**
      * Set the value property: List of VirtualWANs.
-     *
+     * 
      * @param value the value value to set.
      * @return the ListVirtualWansResult object itself.
      */
@@ -53,7 +55,7 @@ public final class ListVirtualWansResult {
 
     /**
      * Get the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +64,7 @@ public final class ListVirtualWansResult {
 
     /**
      * Set the nextLink property: URL to get the next set of operation list results if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ListVirtualWansResult object itself.
      */
@@ -73,7 +75,7 @@ public final class ListVirtualWansResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

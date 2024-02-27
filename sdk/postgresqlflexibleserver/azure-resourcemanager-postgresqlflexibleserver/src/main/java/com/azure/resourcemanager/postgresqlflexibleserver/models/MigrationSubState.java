@@ -8,53 +8,79 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Migration sub state. */
+/**
+ * Migration sub state.
+ */
 public final class MigrationSubState extends ExpandableStringEnum<MigrationSubState> {
-    /** Static value PerformingPreRequisiteSteps for MigrationSubState. */
+    /**
+     * Static value PerformingPreRequisiteSteps for MigrationSubState.
+     */
     public static final MigrationSubState PERFORMING_PRE_REQUISITE_STEPS = fromString("PerformingPreRequisiteSteps");
 
-    /** Static value WaitingForLogicalReplicationSetupRequestOnSourceDB for MigrationSubState. */
-    public static final MigrationSubState WAITING_FOR_LOGICAL_REPLICATION_SETUP_REQUEST_ON_SOURCE_DB =
-        fromString("WaitingForLogicalReplicationSetupRequestOnSourceDB");
+    /**
+     * Static value WaitingForLogicalReplicationSetupRequestOnSourceDB for MigrationSubState.
+     */
+    public static final MigrationSubState WAITING_FOR_LOGICAL_REPLICATION_SETUP_REQUEST_ON_SOURCE_DB
+        = fromString("WaitingForLogicalReplicationSetupRequestOnSourceDB");
 
-    /** Static value WaitingForDBsToMigrateSpecification for MigrationSubState. */
-    public static final MigrationSubState WAITING_FOR_DBS_TO_MIGRATE_SPECIFICATION =
-        fromString("WaitingForDBsToMigrateSpecification");
+    /**
+     * Static value WaitingForDBsToMigrateSpecification for MigrationSubState.
+     */
+    public static final MigrationSubState WAITING_FOR_DBS_TO_MIGRATE_SPECIFICATION
+        = fromString("WaitingForDBsToMigrateSpecification");
 
-    /** Static value WaitingForTargetDBOverwriteConfirmation for MigrationSubState. */
-    public static final MigrationSubState WAITING_FOR_TARGET_DBOVERWRITE_CONFIRMATION =
-        fromString("WaitingForTargetDBOverwriteConfirmation");
+    /**
+     * Static value WaitingForTargetDBOverwriteConfirmation for MigrationSubState.
+     */
+    public static final MigrationSubState WAITING_FOR_TARGET_DBOVERWRITE_CONFIRMATION
+        = fromString("WaitingForTargetDBOverwriteConfirmation");
 
-    /** Static value WaitingForDataMigrationScheduling for MigrationSubState. */
-    public static final MigrationSubState WAITING_FOR_DATA_MIGRATION_SCHEDULING =
-        fromString("WaitingForDataMigrationScheduling");
+    /**
+     * Static value WaitingForDataMigrationScheduling for MigrationSubState.
+     */
+    public static final MigrationSubState WAITING_FOR_DATA_MIGRATION_SCHEDULING
+        = fromString("WaitingForDataMigrationScheduling");
 
-    /** Static value WaitingForDataMigrationWindow for MigrationSubState. */
-    public static final MigrationSubState WAITING_FOR_DATA_MIGRATION_WINDOW =
-        fromString("WaitingForDataMigrationWindow");
+    /**
+     * Static value WaitingForDataMigrationWindow for MigrationSubState.
+     */
+    public static final MigrationSubState WAITING_FOR_DATA_MIGRATION_WINDOW
+        = fromString("WaitingForDataMigrationWindow");
 
-    /** Static value MigratingData for MigrationSubState. */
+    /**
+     * Static value MigratingData for MigrationSubState.
+     */
     public static final MigrationSubState MIGRATING_DATA = fromString("MigratingData");
 
-    /** Static value WaitingForCutoverTrigger for MigrationSubState. */
+    /**
+     * Static value WaitingForCutoverTrigger for MigrationSubState.
+     */
     public static final MigrationSubState WAITING_FOR_CUTOVER_TRIGGER = fromString("WaitingForCutoverTrigger");
 
-    /** Static value CompletingMigration for MigrationSubState. */
+    /**
+     * Static value CompletingMigration for MigrationSubState.
+     */
     public static final MigrationSubState COMPLETING_MIGRATION = fromString("CompletingMigration");
 
-    /** Static value Completed for MigrationSubState. */
+    /**
+     * Static value Completed for MigrationSubState.
+     */
     public static final MigrationSubState COMPLETED = fromString("Completed");
 
-    /** Static value CancelingRequestedDBMigrations for MigrationSubState. */
-    public static final MigrationSubState CANCELING_REQUESTED_DBMIGRATIONS =
-        fromString("CancelingRequestedDBMigrations");
+    /**
+     * Static value CancelingRequestedDBMigrations for MigrationSubState.
+     */
+    public static final MigrationSubState CANCELING_REQUESTED_DBMIGRATIONS
+        = fromString("CancelingRequestedDBMigrations");
 
-    /** Static value ValidationInProgress for MigrationSubState. */
+    /**
+     * Static value ValidationInProgress for MigrationSubState.
+     */
     public static final MigrationSubState VALIDATION_IN_PROGRESS = fromString("ValidationInProgress");
 
     /**
      * Creates a new instance of MigrationSubState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -63,7 +89,7 @@ public final class MigrationSubState extends ExpandableStringEnum<MigrationSubSt
 
     /**
      * Creates or finds a MigrationSubState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MigrationSubState.
      */
@@ -74,7 +100,7 @@ public final class MigrationSubState extends ExpandableStringEnum<MigrationSubSt
 
     /**
      * Gets known MigrationSubState values.
-     *
+     * 
      * @return known MigrationSubState values.
      */
     public static Collection<MigrationSubState> values() {

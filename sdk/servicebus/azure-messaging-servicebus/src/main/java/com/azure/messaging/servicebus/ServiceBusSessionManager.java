@@ -13,7 +13,6 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.messaging.servicebus.implementation.DispositionStatus;
 import com.azure.messaging.servicebus.implementation.MessageUtils;
 import com.azure.messaging.servicebus.implementation.MessagingEntityType;
-import com.azure.messaging.servicebus.implementation.ServiceBusConnectionProcessor;
 import com.azure.messaging.servicebus.implementation.ServiceBusManagementNode;
 import com.azure.messaging.servicebus.implementation.ServiceBusReceiveLink;
 import com.azure.messaging.servicebus.implementation.instrumentation.ServiceBusTracer;
@@ -50,7 +49,7 @@ import static reactor.core.scheduler.Schedulers.DEFAULT_BOUNDED_ELASTIC_SIZE;
 /**
  * Package-private class that manages session aware message receiving.
  */
-class ServiceBusSessionManager implements AutoCloseable {
+class ServiceBusSessionManager implements AutoCloseable, IServiceBusSessionManager {
     // Time to delay before trying to accept another session.
     private static final String TRACKING_ID_KEY = "trackingId";
 
@@ -59,7 +58,7 @@ class ServiceBusSessionManager implements AutoCloseable {
     private final MessagingEntityType entityType;
     private final ReceiverOptions receiverOptions;
     private final ServiceBusReceiveLink receiveLink;
-    private final ServiceBusConnectionProcessor connectionProcessor;
+    private final ConnectionCacheWrapper connectionCacheWrapper;
     private final Duration operationTimeout;
     private final MessageSerializer messageSerializer;
     private final String identifier;
@@ -82,14 +81,15 @@ class ServiceBusSessionManager implements AutoCloseable {
     private volatile Flux<ServiceBusMessageContext> receiveFlux;
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
-        ServiceBusConnectionProcessor connectionProcessor,
+        ConnectionCacheWrapper connectionCacheWrapper,
         MessageSerializer messageSerializer, ReceiverOptions receiverOptions, ServiceBusReceiveLink receiveLink, String identifier,
         ServiceBusTracer tracer) {
+        assert !connectionCacheWrapper.isV2();
         this.entityPath = entityPath;
         this.entityType = entityType;
         this.receiverOptions = receiverOptions;
-        this.connectionProcessor = connectionProcessor;
-        this.operationTimeout = connectionProcessor.getRetryOptions().getTryTimeout();
+        this.connectionCacheWrapper = connectionCacheWrapper;
+        this.operationTimeout = connectionCacheWrapper.getRetryOptions().getTryTimeout();
         this.messageSerializer = messageSerializer;
         this.maxSessionLockRenewDuration = receiverOptions.getMaxLockRenewDuration();
         this.identifier = identifier;
@@ -114,13 +114,13 @@ class ServiceBusSessionManager implements AutoCloseable {
         this.receiveLink = receiveLink;
         this.sessionIdleTimeout = receiverOptions.getSessionIdleTimeout() != null
             ? receiverOptions.getSessionIdleTimeout()
-            : connectionProcessor.getRetryOptions().getTryTimeout();
+            : connectionCacheWrapper.getRetryOptions().getTryTimeout();
     }
 
     ServiceBusSessionManager(String entityPath, MessagingEntityType entityType,
-        ServiceBusConnectionProcessor connectionProcessor,
+        ConnectionCacheWrapper connectionCacheWrapper,
         MessageSerializer messageSerializer, ReceiverOptions receiverOptions, String identifier, ServiceBusTracer tracer) {
-        this(entityPath, entityType, connectionProcessor,
+        this(entityPath, entityType, connectionCacheWrapper,
             messageSerializer, receiverOptions, null, identifier, tracer);
     }
 
@@ -131,7 +131,7 @@ class ServiceBusSessionManager implements AutoCloseable {
      *
      * @return The name of the link, or {@code null} if there is no open link with that {@code sessionId}.
      */
-    String getLinkName(String sessionId) {
+    public String getLinkName(String sessionId) {
         final ServiceBusSessionReceiver receiver = sessionReceivers.get(sessionId);
         return receiver != null ? receiver.getLinkName() : null;
     }
@@ -150,7 +150,7 @@ class ServiceBusSessionManager implements AutoCloseable {
      *
      * @return A Flux of messages merged from different sessions.
      */
-    Flux<ServiceBusMessageContext> receive() {
+    public Flux<ServiceBusMessageContext> receive() {
         if (!isStarted.getAndSet(true)) {
             this.sessionReceiveSink.onRequest(this::onSessionRequest);
 
@@ -194,7 +194,7 @@ class ServiceBusSessionManager implements AutoCloseable {
      * @return {@code true} if the {@code lockToken} was updated on receive link. {@code false} otherwise. This means
      *     there isn't an open link with that {@code sessionId}.
      */
-    Mono<Boolean> updateDisposition(String lockToken, String sessionId,
+    public Mono<Boolean> updateDisposition(String lockToken, String sessionId,
         DispositionStatus dispositionStatus, Map<String, Object> propertiesToModify, String deadLetterReason,
         String deadLetterDescription, ServiceBusTransactionContext transactionContext) {
 
@@ -235,7 +235,7 @@ class ServiceBusSessionManager implements AutoCloseable {
     }
 
     private AmqpErrorContext getErrorContext() {
-        return new SessionErrorContext(connectionProcessor.getFullyQualifiedNamespace(), entityPath);
+        return new SessionErrorContext(connectionCacheWrapper.getFullyQualifiedNamespace(), entityPath);
     }
 
     /**
@@ -249,7 +249,7 @@ class ServiceBusSessionManager implements AutoCloseable {
         final String linkName = (sessionId != null)
             ? sessionId
             : StringUtil.getRandomString("session-");
-        return connectionProcessor
+        return connectionCacheWrapper.getConnection()
             .flatMap(connection -> {
                 return connection.createReceiveLink(linkName, entityPath, receiverOptions.getReceiveMode(),
                 null, entityType, identifier, sessionId);
@@ -339,7 +339,7 @@ class ServiceBusSessionManager implements AutoCloseable {
                 }
 
                 final Duration idleTimeout = disposeOnIdle ? sessionIdleTimeout : null;
-                return new ServiceBusSessionReceiver(sessionId, link, messageSerializer, connectionProcessor.getRetryOptions(),
+                return new ServiceBusSessionReceiver(sessionId, link, messageSerializer, connectionCacheWrapper.getRetryOptions(),
                     receiverOptions.getPrefetchCount(), scheduler, this::renewSessionLock,
                     maxSessionLockRenewDuration, idleTimeout);
             })))
@@ -359,7 +359,7 @@ class ServiceBusSessionManager implements AutoCloseable {
     }
 
     private Mono<ServiceBusManagementNode> getManagementNode() {
-        return connectionProcessor.flatMap(connection -> connection.getManagementNode(entityPath, entityType));
+        return connectionCacheWrapper.getConnection().flatMap(connection -> connection.getManagementNode(entityPath, entityType));
     }
 
     /**

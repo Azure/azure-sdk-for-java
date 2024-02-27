@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** IPv6 Circuit Connection properties for global reach. */
+/**
+ * IPv6 Circuit Connection properties for global reach.
+ */
 @Fluent
 public final class Ipv6CircuitConnectionConfig {
     /*
@@ -22,13 +24,15 @@ public final class Ipv6CircuitConnectionConfig {
     @JsonProperty(value = "circuitConnectionStatus", access = JsonProperty.Access.WRITE_ONLY)
     private CircuitConnectionStatus circuitConnectionStatus;
 
-    /** Creates an instance of Ipv6CircuitConnectionConfig class. */
+    /**
+     * Creates an instance of Ipv6CircuitConnectionConfig class.
+     */
     public Ipv6CircuitConnectionConfig() {
     }
 
     /**
      * Get the addressPrefix property: /125 IP address space to carve out customer addresses for global reach.
-     *
+     * 
      * @return the addressPrefix value.
      */
     public String addressPrefix() {
@@ -37,7 +41,7 @@ public final class Ipv6CircuitConnectionConfig {
 
     /**
      * Set the addressPrefix property: /125 IP address space to carve out customer addresses for global reach.
-     *
+     * 
      * @param addressPrefix the addressPrefix value to set.
      * @return the Ipv6CircuitConnectionConfig object itself.
      */
@@ -48,7 +52,7 @@ public final class Ipv6CircuitConnectionConfig {
 
     /**
      * Get the circuitConnectionStatus property: Express Route Circuit connection state.
-     *
+     * 
      * @return the circuitConnectionStatus value.
      */
     public CircuitConnectionStatus circuitConnectionStatus() {
@@ -57,7 +61,7 @@ public final class Ipv6CircuitConnectionConfig {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

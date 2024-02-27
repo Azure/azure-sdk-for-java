@@ -6,11 +6,13 @@ package com.azure.resourcemanager.dataprotection.models;
 
 import com.azure.resourcemanager.dataprotection.fluent.models.FeatureValidationResponseBaseInner;
 
-/** An immutable client-side representation of FeatureValidationResponseBase. */
+/**
+ * An immutable client-side representation of FeatureValidationResponseBase.
+ */
 public interface FeatureValidationResponseBase {
     /**
      * Gets the inner com.azure.resourcemanager.dataprotection.fluent.models.FeatureValidationResponseBaseInner object.
-     *
+     * 
      * @return the inner object.
      */
     FeatureValidationResponseBaseInner innerModel();

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A reference to VirtualNetworkGateway or LocalNetworkGateway resource. */
+/**
+ * A reference to VirtualNetworkGateway or LocalNetworkGateway resource.
+ */
 @Fluent
 public final class VirtualNetworkConnectionGatewayReference {
     /*
@@ -17,13 +19,15 @@ public final class VirtualNetworkConnectionGatewayReference {
     @JsonProperty(value = "id", required = true)
     private String id;
 
-    /** Creates an instance of VirtualNetworkConnectionGatewayReference class. */
+    /**
+     * Creates an instance of VirtualNetworkConnectionGatewayReference class.
+     */
     public VirtualNetworkConnectionGatewayReference() {
     }
 
     /**
      * Get the id property: The ID of VirtualNetworkGateway or LocalNetworkGateway resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -32,7 +36,7 @@ public final class VirtualNetworkConnectionGatewayReference {
 
     /**
      * Set the id property: The ID of VirtualNetworkGateway or LocalNetworkGateway resource.
-     *
+     * 
      * @param id the id value to set.
      * @return the VirtualNetworkConnectionGatewayReference object itself.
      */
@@ -43,15 +47,13 @@ public final class VirtualNetworkConnectionGatewayReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (id() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property id in model VirtualNetworkConnectionGatewayReference"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property id in model VirtualNetworkConnectionGatewayReference"));
         }
     }
 

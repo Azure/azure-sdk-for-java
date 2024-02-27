@@ -7,6 +7,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.implementation.AsyncDocumentClient;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.implementation.ConnectionPolicy;
@@ -542,14 +543,14 @@ public class ResourceTokenTest extends TestSuiteBase {
     private Permission getDocPermissionWithPartitionKey() {
         String permissionStr = String.format(PERMISSION_DEFINITION, createdDocumentWithPartitionKey.getSelfLink(),
                 PARTITION_KEY_VALUE);
-        Permission permission = new Permission(permissionStr);
+        Permission permission = new Permission(Utils.parseJson(permissionStr));
         return permission;
     }
 
     private Permission getDocPermissionWithPartitionKeyWithName() {
         String permissionStr = String.format(PERMISSION_DEFINITION, TestUtils.getDocumentNameLink(createdDatabase.getId(), createdCollectionWithPartitionKey.getId(), createdDocumentWithPartitionKey.getId()),
                 PARTITION_KEY_VALUE);
-        Permission permission = new Permission(permissionStr);
+        Permission permission = new Permission(Utils.parseJson(permissionStr));
         permission.setId("PermissionForDocWithPartitionKeyWithName");
         return permission;
     }
@@ -557,7 +558,7 @@ public class ResourceTokenTest extends TestSuiteBase {
     private Permission getDocPermissionWithPartitionKey2() {
         String permissionStr = String.format(PERMISSION_DEFINITION, createdDocumentWithPartitionKey2.getSelfLink(),
                 PARTITION_KEY_VALUE_2);
-        Permission permission = new Permission(permissionStr);
+        Permission permission = new Permission(Utils.parseJson(permissionStr));
         permission.setId("PermissionForDocWithPartitionKey2");
         return permission;
     }
@@ -565,7 +566,7 @@ public class ResourceTokenTest extends TestSuiteBase {
     private Permission getDocPermissionWithPartitionKey2WithName() {
         String permissionStr = String.format(PERMISSION_DEFINITION, TestUtils.getDocumentNameLink(createdDatabase.getId(),createdCollectionWithPartitionKey.getId(),createdDocumentWithPartitionKey2.getId()),
                 PARTITION_KEY_VALUE_2);
-        Permission permission = new Permission(permissionStr);
+        Permission permission = new Permission(Utils.parseJson(permissionStr));
         permission.setId("PermissionForDocWithPartitionKey2WithName");
         return permission;
     }
@@ -573,14 +574,14 @@ public class ResourceTokenTest extends TestSuiteBase {
     private Permission getColPermissionWithPartitionKey() {
         String permissionStr = String.format(COLLECTION_PERMISSION_DEFINITION, createdCollectionWithPartitionKey.getSelfLink(),
                 PARTITION_KEY_VALUE);
-        Permission permission = new Permission(permissionStr);
+        Permission permission = new Permission(Utils.parseJson(permissionStr));
         return permission;
     }
 
     private Permission getColPermissionWithPartitionKeyWithName() {
         String permissionStr = String.format(COLLECTION_PERMISSION_DEFINITION, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollectionWithPartitionKey.getId()),
                 PARTITION_KEY_VALUE);
-        Permission permission = new Permission(permissionStr);
+        Permission permission = new Permission(Utils.parseJson(permissionStr));
         permission.setId("PermissionForColWithPartitionKeyWithName");
         return permission;
     }
@@ -588,7 +589,7 @@ public class ResourceTokenTest extends TestSuiteBase {
     private Permission getColPermissionWithPartitionKey2() {
         String permissionStr = String.format(COLLECTION_PERMISSION_DEFINITION, createdCollectionWithPartitionKey.getSelfLink(),
                 PARTITION_KEY_VALUE_2);
-        Permission permission = new Permission(permissionStr);
+        Permission permission = new Permission(Utils.parseJson(permissionStr));
         permission.setId("PermissionForColWithPartitionKey2");
         return permission;
     }
@@ -596,7 +597,7 @@ public class ResourceTokenTest extends TestSuiteBase {
     private Permission getColPermissionWithPartitionKey2WithName() {
         String permissionStr = String.format(COLLECTION_PERMISSION_DEFINITION, TestUtils.getCollectionNameLink(createdDatabase.getId(), createdCollectionWithPartitionKey.getId()),
                 PARTITION_KEY_VALUE_2);
-        Permission permission = new Permission(permissionStr);
+        Permission permission = new Permission(Utils.parseJson(permissionStr));
         permission.setId("PermissionForColWithPartitionKey2WithName");
         return permission;
     }

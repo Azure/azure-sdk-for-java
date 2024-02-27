@@ -27,13 +27,15 @@ public final class NetworkGroupListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of NetworkGroupListResult class. */
+    /**
+     * Creates an instance of NetworkGroupListResult class.
+     */
     public NetworkGroupListResult() {
     }
 
     /**
      * Get the value property: Gets a page of NetworkGroup.
-     *
+     * 
      * @return the value value.
      */
     public List<NetworkGroupInner> value() {
@@ -42,7 +44,7 @@ public final class NetworkGroupListResult {
 
     /**
      * Set the value property: Gets a page of NetworkGroup.
-     *
+     * 
      * @param value the value value to set.
      * @return the NetworkGroupListResult object itself.
      */
@@ -53,7 +55,7 @@ public final class NetworkGroupListResult {
 
     /**
      * Get the nextLink property: Gets the URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -62,7 +64,7 @@ public final class NetworkGroupListResult {
 
     /**
      * Set the nextLink property: Gets the URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the NetworkGroupListResult object itself.
      */
@@ -73,7 +75,7 @@ public final class NetworkGroupListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

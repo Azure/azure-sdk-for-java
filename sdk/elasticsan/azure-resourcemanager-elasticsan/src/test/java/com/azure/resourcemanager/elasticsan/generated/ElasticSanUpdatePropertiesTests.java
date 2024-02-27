@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ElasticSanUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ElasticSanUpdateProperties model =
-            BinaryData
-                .fromString(
-                    "{\"baseSizeTiB\":8963352586461588270,\"extendedCapacitySizeTiB\":5681518543466823728,\"publicNetworkAccess\":\"Disabled\"}")
-                .toObject(ElasticSanUpdateProperties.class);
+        ElasticSanUpdateProperties model = BinaryData.fromString(
+            "{\"baseSizeTiB\":8963352586461588270,\"extendedCapacitySizeTiB\":5681518543466823728,\"publicNetworkAccess\":\"Disabled\"}")
+            .toObject(ElasticSanUpdateProperties.class);
         Assertions.assertEquals(8963352586461588270L, model.baseSizeTiB());
         Assertions.assertEquals(5681518543466823728L, model.extendedCapacitySizeTiB());
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
@@ -24,11 +22,8 @@ public final class ElasticSanUpdatePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ElasticSanUpdateProperties model =
-            new ElasticSanUpdateProperties()
-                .withBaseSizeTiB(8963352586461588270L)
-                .withExtendedCapacitySizeTiB(5681518543466823728L)
-                .withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+        ElasticSanUpdateProperties model = new ElasticSanUpdateProperties().withBaseSizeTiB(8963352586461588270L)
+            .withExtendedCapacitySizeTiB(5681518543466823728L).withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
         model = BinaryData.fromObject(model).toObject(ElasticSanUpdateProperties.class);
         Assertions.assertEquals(8963352586461588270L, model.baseSizeTiB());
         Assertions.assertEquals(5681518543466823728L, model.extendedCapacitySizeTiB());

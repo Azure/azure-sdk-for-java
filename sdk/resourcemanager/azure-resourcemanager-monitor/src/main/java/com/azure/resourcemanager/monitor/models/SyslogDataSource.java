@@ -9,7 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Definition of which syslog data will be collected and how it will be collected. Only collected from Linux machines.
+ * Definition of which syslog data will be collected and how it will be collected.
+ * Only collected from Linux machines.
  */
 @Fluent
 public final class SyslogDataSource {
@@ -40,14 +41,17 @@ public final class SyslogDataSource {
     @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of SyslogDataSource class. */
+    /**
+     * Creates an instance of SyslogDataSource class.
+     */
     public SyslogDataSource() {
     }
 
     /**
-     * Get the streams property: List of streams that this data source will be sent to. A stream indicates what schema
-     * will be used for this data and usually what table in Log Analytics the data will be sent to.
-     *
+     * Get the streams property: List of streams that this data source will be sent to.
+     * A stream indicates what schema will be used for this data and usually what table in Log Analytics the data will
+     * be sent to.
+     * 
      * @return the streams value.
      */
     public List<KnownSyslogDataSourceStreams> streams() {
@@ -55,9 +59,10 @@ public final class SyslogDataSource {
     }
 
     /**
-     * Set the streams property: List of streams that this data source will be sent to. A stream indicates what schema
-     * will be used for this data and usually what table in Log Analytics the data will be sent to.
-     *
+     * Set the streams property: List of streams that this data source will be sent to.
+     * A stream indicates what schema will be used for this data and usually what table in Log Analytics the data will
+     * be sent to.
+     * 
      * @param streams the streams value to set.
      * @return the SyslogDataSource object itself.
      */
@@ -68,7 +73,7 @@ public final class SyslogDataSource {
 
     /**
      * Get the facilityNames property: The list of facility names.
-     *
+     * 
      * @return the facilityNames value.
      */
     public List<KnownSyslogDataSourceFacilityNames> facilityNames() {
@@ -77,7 +82,7 @@ public final class SyslogDataSource {
 
     /**
      * Set the facilityNames property: The list of facility names.
-     *
+     * 
      * @param facilityNames the facilityNames value to set.
      * @return the SyslogDataSource object itself.
      */
@@ -88,7 +93,7 @@ public final class SyslogDataSource {
 
     /**
      * Get the logLevels property: The log levels to collect.
-     *
+     * 
      * @return the logLevels value.
      */
     public List<KnownSyslogDataSourceLogLevels> logLevels() {
@@ -97,7 +102,7 @@ public final class SyslogDataSource {
 
     /**
      * Set the logLevels property: The log levels to collect.
-     *
+     * 
      * @param logLevels the logLevels value to set.
      * @return the SyslogDataSource object itself.
      */
@@ -107,9 +112,9 @@ public final class SyslogDataSource {
     }
 
     /**
-     * Get the name property: A friendly name for the data source. This name should be unique across all data sources
-     * (regardless of type) within the data collection rule.
-     *
+     * Get the name property: A friendly name for the data source.
+     * This name should be unique across all data sources (regardless of type) within the data collection rule.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -117,9 +122,9 @@ public final class SyslogDataSource {
     }
 
     /**
-     * Set the name property: A friendly name for the data source. This name should be unique across all data sources
-     * (regardless of type) within the data collection rule.
-     *
+     * Set the name property: A friendly name for the data source.
+     * This name should be unique across all data sources (regardless of type) within the data collection rule.
+     * 
      * @param name the name value to set.
      * @return the SyslogDataSource object itself.
      */
@@ -130,7 +135,7 @@ public final class SyslogDataSource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

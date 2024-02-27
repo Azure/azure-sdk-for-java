@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Netezza dataset. */
+/**
+ * Netezza dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("NetezzaTable")
 @JsonFlatten
@@ -36,13 +38,16 @@ public class NetezzaTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties.schema")
     private Object schemaTypePropertiesSchema;
 
-    /** Creates an instance of NetezzaTableDataset class. */
-    public NetezzaTableDataset() {}
+    /**
+     * Creates an instance of NetezzaTableDataset class.
+     */
+    public NetezzaTableDataset() {
+    }
 
     /**
      * Get the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.
-     *
+     * 
      * @return the tableName value.
      */
     public Object getTableName() {
@@ -52,7 +57,7 @@ public class NetezzaTableDataset extends Dataset {
     /**
      * Set the tableName property: This property will be retired. Please consider using schema + table properties
      * instead.
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the NetezzaTableDataset object itself.
      */
@@ -63,7 +68,7 @@ public class NetezzaTableDataset extends Dataset {
 
     /**
      * Get the table property: The table name of the Netezza. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the table value.
      */
     public Object getTable() {
@@ -72,7 +77,7 @@ public class NetezzaTableDataset extends Dataset {
 
     /**
      * Set the table property: The table name of the Netezza. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param table the table value to set.
      * @return the NetezzaTableDataset object itself.
      */
@@ -84,7 +89,7 @@ public class NetezzaTableDataset extends Dataset {
     /**
      * Get the schemaTypePropertiesSchema property: The schema name of the Netezza. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the schemaTypePropertiesSchema value.
      */
     public Object getSchemaTypePropertiesSchema() {
@@ -94,7 +99,7 @@ public class NetezzaTableDataset extends Dataset {
     /**
      * Set the schemaTypePropertiesSchema property: The schema name of the Netezza. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param schemaTypePropertiesSchema the schemaTypePropertiesSchema value to set.
      * @return the NetezzaTableDataset object itself.
      */
@@ -103,49 +108,63 @@ public class NetezzaTableDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetezzaTableDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetezzaTableDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetezzaTableDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetezzaTableDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetezzaTableDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetezzaTableDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetezzaTableDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

@@ -12,19 +12,29 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * created for the public IP in the Microsoft Azure DNS system with a hashed value includes in FQDN.
  */
 public enum PublicIpAddressDnsSettingsDomainNameLabelScope {
-    /** Enum value TenantReuse. */
+    /**
+     * Enum value TenantReuse.
+     */
     TENANT_REUSE("TenantReuse"),
 
-    /** Enum value SubscriptionReuse. */
+    /**
+     * Enum value SubscriptionReuse.
+     */
     SUBSCRIPTION_REUSE("SubscriptionReuse"),
 
-    /** Enum value ResourceGroupReuse. */
+    /**
+     * Enum value ResourceGroupReuse.
+     */
     RESOURCE_GROUP_REUSE("ResourceGroupReuse"),
 
-    /** Enum value NoReuse. */
+    /**
+     * Enum value NoReuse.
+     */
     NO_REUSE("NoReuse");
 
-    /** The actual serialized value for a PublicIpAddressDnsSettingsDomainNameLabelScope instance. */
+    /**
+     * The actual serialized value for a PublicIpAddressDnsSettingsDomainNameLabelScope instance.
+     */
     private final String value;
 
     PublicIpAddressDnsSettingsDomainNameLabelScope(String value) {
@@ -33,7 +43,7 @@ public enum PublicIpAddressDnsSettingsDomainNameLabelScope {
 
     /**
      * Parses a serialized value to a PublicIpAddressDnsSettingsDomainNameLabelScope instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed PublicIpAddressDnsSettingsDomainNameLabelScope object, or null if unable to parse.
      */
@@ -42,8 +52,8 @@ public enum PublicIpAddressDnsSettingsDomainNameLabelScope {
         if (value == null) {
             return null;
         }
-        PublicIpAddressDnsSettingsDomainNameLabelScope[] items =
-            PublicIpAddressDnsSettingsDomainNameLabelScope.values();
+        PublicIpAddressDnsSettingsDomainNameLabelScope[] items
+            = PublicIpAddressDnsSettingsDomainNameLabelScope.values();
         for (PublicIpAddressDnsSettingsDomainNameLabelScope item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
@@ -52,7 +62,9 @@ public enum PublicIpAddressDnsSettingsDomainNameLabelScope {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

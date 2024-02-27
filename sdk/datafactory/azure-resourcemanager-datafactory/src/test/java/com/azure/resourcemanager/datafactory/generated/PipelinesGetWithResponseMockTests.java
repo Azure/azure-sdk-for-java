@@ -35,7 +35,7 @@ public final class PipelinesGetWithResponseMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"properties\":{\"description\":\"w\",\"activities\":[{\"type\":\"Activity\",\"name\":\"skyjlteiul\",\"description\":\"pvhivvlmzcvp\",\"state\":\"Active\",\"onInactiveMarkAs\":\"Failed\",\"dependsOn\":[{\"activity\":\"e\",\"dependencyConditions\":[]},{\"activity\":\"yzer\",\"dependencyConditions\":[]},{\"activity\":\"ezgi\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"sfmcxarhg\",\"value\":\"datauejtxxlkoktbcl\"},{\"name\":\"vwtwboxgrvsavo\",\"value\":\"databsqu\"},{\"name\":\"kuszllognledhvll\",\"value\":\"datanyg\"},{\"name\":\"mn\",\"value\":\"datavqaq\"}],\"\":{\"bvhflbchzob\":\"datapulwdh\",\"yqtyuywzccumk\":\"dataeeiakwdtuwbrw\"}}],\"parameters\":{\"tzvrgoxpayjs\":{\"type\":\"Int\",\"defaultValue\":\"datakcolvitbtloxrb\"},\"beyugggf\":{\"type\":\"Float\",\"defaultValue\":\"datafqstbfuqmlnef\"},\"vrkxyjsuappdmu\":{\"type\":\"SecureString\",\"defaultValue\":\"datatykenmjznjqrxyaa\"}},\"variables\":{\"dg\":{\"type\":\"String\",\"defaultValue\":\"datasbwmsyoybjt\"},\"lfovmc\":{\"type\":\"Array\",\"defaultValue\":\"datakqi\"},\"qvjfszvecedoptez\":{\"type\":\"Array\",\"defaultValue\":\"databofqd\"},\"dbkgxqsbwep\":{\"type\":\"String\",\"defaultValue\":\"dataerurcjgkauyzbrdi\"}},\"concurrency\":448070341,\"annotations\":[\"datavjxarddb\"],\"runDimensions\":{\"wgttpxbjihz\":\"dataayltyftwdprtp\",\"dnljpouz\":\"dataxndnbzhs\"},\"folder\":{\"name\":\"ytex\"},\"policy\":{\"elapsedTimeMetric\":{\"duration\":\"dataqllqn\"}}},\"name\":\"y\",\"type\":\"fleioyw\",\"etag\":\"lhbytshsathkt\",\"\":{\"aji\":\"dataljnuayptyzjqte\",\"gytquktcqggxdnpp\":\"datanpwomjlps\"},\"id\":\"fqag\"}";
+            = "{\"properties\":{\"description\":\"kwgsqosrpcxw\",\"activities\":[{\"type\":\"Activity\",\"name\":\"ljktujfcr\",\"description\":\"fryket\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Skipped\",\"dependsOn\":[{\"activity\":\"yifkg\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"njfjyppixfubkfj\",\"value\":\"datavl\"},{\"name\":\"yetyrnhispac\",\"value\":\"datav\"},{\"name\":\"nlypspn\",\"value\":\"datalo\"},{\"name\":\"oangrl\",\"value\":\"dataaixrbwbkrsmkeiun\"}],\"\":{\"tzzmcrmhhfcai\":\"datamedzfox\",\"zufdmsbvyg\":\"dataxuiy\"}},{\"type\":\"Activity\",\"name\":\"fljv\",\"description\":\"qkoecozfauhn\",\"state\":\"Inactive\",\"onInactiveMarkAs\":\"Succeeded\",\"dependsOn\":[{\"activity\":\"grzcjpkzmhaxtwji\",\"dependencyConditions\":[]},{\"activity\":\"lf\",\"dependencyConditions\":[]},{\"activity\":\"kmynm\",\"dependencyConditions\":[]},{\"activity\":\"mglbxoeghordccpk\",\"dependencyConditions\":[]}],\"userProperties\":[{\"name\":\"c\",\"value\":\"datalvqlccaiphsart\"},{\"name\":\"iqq\",\"value\":\"datadgyshpvva\"}],\"\":{\"r\":\"datar\",\"oxweuo\":\"datahwdxdkvqqtfjj\"}}],\"parameters\":{\"xndheocj\":{\"type\":\"Object\",\"defaultValue\":\"datae\"}},\"variables\":{\"utve\":{\"type\":\"Array\",\"defaultValue\":\"datanan\"},\"vdqcohjwzynb\":{\"type\":\"Array\",\"defaultValue\":\"datahfwq\"}},\"concurrency\":865354799,\"annotations\":[\"databhlhyqgfimllrad\",\"datawpudvuphizztklk\",\"datahdeeht\"],\"runDimensions\":{\"fopcn\":\"dataefkphskkivy\"},\"folder\":{\"name\":\"ulpwwmxwlwcurk\"},\"policy\":{\"elapsedTimeMetric\":{\"duration\":\"dataazep\"}}},\"name\":\"uk\",\"type\":\"dcvrux\",\"etag\":\"nugujiwidunsvsjo\",\"\":{\"lt\":\"dataxs\",\"qro\":\"dataghykqxr\",\"fgkqudxvjrndbi\":\"dataknenpybuskvj\",\"oeuidhp\":\"dataqqrkkgawna\"},\"id\":\"xyitnzpfdoet\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -53,19 +53,20 @@ public final class PipelinesGetWithResponseMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PipelineResource response = manager.pipelines()
-            .getWithResponse("eacpwsdir", "pr", "lgzpnr", "mjyvmxt", com.azure.core.util.Context.NONE).getValue();
+            .getWithResponse("uun", "yokftdlwezplnzvr", "gjweelkviki", "z", com.azure.core.util.Context.NONE)
+            .getValue();
 
-        Assertions.assertEquals("fqag", response.id());
-        Assertions.assertEquals("w", response.description());
-        Assertions.assertEquals("skyjlteiul", response.activities().get(0).name());
-        Assertions.assertEquals("pvhivvlmzcvp", response.activities().get(0).description());
-        Assertions.assertEquals(ActivityState.ACTIVE, response.activities().get(0).state());
-        Assertions.assertEquals(ActivityOnInactiveMarkAs.FAILED, response.activities().get(0).onInactiveMarkAs());
-        Assertions.assertEquals("e", response.activities().get(0).dependsOn().get(0).activity());
-        Assertions.assertEquals("sfmcxarhg", response.activities().get(0).userProperties().get(0).name());
-        Assertions.assertEquals(ParameterType.INT, response.parameters().get("tzvrgoxpayjs").type());
-        Assertions.assertEquals(VariableType.STRING, response.variables().get("dg").type());
-        Assertions.assertEquals(448070341, response.concurrency());
-        Assertions.assertEquals("ytex", response.folder().name());
+        Assertions.assertEquals("xyitnzpfdoet", response.id());
+        Assertions.assertEquals("kwgsqosrpcxw", response.description());
+        Assertions.assertEquals("ljktujfcr", response.activities().get(0).name());
+        Assertions.assertEquals("fryket", response.activities().get(0).description());
+        Assertions.assertEquals(ActivityState.INACTIVE, response.activities().get(0).state());
+        Assertions.assertEquals(ActivityOnInactiveMarkAs.SKIPPED, response.activities().get(0).onInactiveMarkAs());
+        Assertions.assertEquals("yifkg", response.activities().get(0).dependsOn().get(0).activity());
+        Assertions.assertEquals("njfjyppixfubkfj", response.activities().get(0).userProperties().get(0).name());
+        Assertions.assertEquals(ParameterType.OBJECT, response.parameters().get("xndheocj").type());
+        Assertions.assertEquals(VariableType.ARRAY, response.variables().get("utve").type());
+        Assertions.assertEquals(865354799, response.concurrency());
+        Assertions.assertEquals("ulpwwmxwlwcurk", response.folder().name());
     }
 }

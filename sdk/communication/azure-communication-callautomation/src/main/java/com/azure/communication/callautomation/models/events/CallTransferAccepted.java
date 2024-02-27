@@ -24,19 +24,19 @@ public final class CallTransferAccepted extends CallAutomationEventBase {
      */
     @JsonProperty(value = "resultInformation")
     private final ResultInformation resultInformation;
-    
+
     /**
-     * Participant being transferred away
+     * The participant who is being transferred away.
      */
     @JsonIgnore
     private final CommunicationIdentifier transferee;
-    
+
     /**
-     * The target transferee is transferred to
+     * Target to whom the call is transferred.
      */
     @JsonIgnore
     private final CommunicationIdentifier transferTarget;
-    
+
     @JsonCreator
     private CallTransferAccepted(
             @JsonProperty("transferee") Map<String, Object> transferee,
@@ -57,18 +57,18 @@ public final class CallTransferAccepted extends CallAutomationEventBase {
     public ResultInformation getResultInformation() {
         return this.resultInformation;
     }
-    
+
     /**
-     * Participant being transferred away
+     * The participant who is being transferred away
      * @return the transferee value
      */
     public CommunicationIdentifier getTransferee() {
         return this.transferee;
     }
-    
+
     /**
-     * The target transferee is transferred to
-     * @return the tansferTarget value
+     * Target to whom the call is transferred.
+     * @return the transferTarget value
      */
     public CommunicationIdentifier getTransferTarget() {
         return this.transferTarget;

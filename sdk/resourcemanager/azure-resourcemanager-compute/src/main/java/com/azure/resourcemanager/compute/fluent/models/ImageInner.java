@@ -31,13 +31,15 @@ public final class ImageInner extends Resource {
     @JsonProperty(value = "extendedLocation")
     private ExtendedLocation extendedLocation;
 
-    /** Creates an instance of ImageInner class. */
+    /**
+     * Creates an instance of ImageInner class.
+     */
     public ImageInner() {
     }
 
     /**
      * Get the innerProperties property: Describes the properties of an Image.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ImageProperties innerProperties() {
@@ -46,7 +48,7 @@ public final class ImageInner extends Resource {
 
     /**
      * Get the extendedLocation property: The extended location of the Image.
-     *
+     * 
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -55,7 +57,7 @@ public final class ImageInner extends Resource {
 
     /**
      * Set the extendedLocation property: The extended location of the Image.
-     *
+     * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the ImageInner object itself.
      */
@@ -64,14 +66,18 @@ public final class ImageInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ImageInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -80,7 +86,7 @@ public final class ImageInner extends Resource {
 
     /**
      * Get the sourceVirtualMachine property: The source virtual machine from which Image is created.
-     *
+     * 
      * @return the sourceVirtualMachine value.
      */
     public SubResource sourceVirtualMachine() {
@@ -89,7 +95,7 @@ public final class ImageInner extends Resource {
 
     /**
      * Set the sourceVirtualMachine property: The source virtual machine from which Image is created.
-     *
+     * 
      * @param sourceVirtualMachine the sourceVirtualMachine value to set.
      * @return the ImageInner object itself.
      */
@@ -103,7 +109,7 @@ public final class ImageInner extends Resource {
 
     /**
      * Get the storageProfile property: Specifies the storage settings for the virtual machine disks.
-     *
+     * 
      * @return the storageProfile value.
      */
     public ImageStorageProfile storageProfile() {
@@ -112,7 +118,7 @@ public final class ImageInner extends Resource {
 
     /**
      * Set the storageProfile property: Specifies the storage settings for the virtual machine disks.
-     *
+     * 
      * @param storageProfile the storageProfile value to set.
      * @return the ImageInner object itself.
      */
@@ -126,7 +132,7 @@ public final class ImageInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -138,7 +144,7 @@ public final class ImageInner extends Resource {
      * image. From API Version 2019-03-01 if the image source is a blob, then we need the user to specify the value, if
      * the source is managed resource like disk or snapshot, we may require the user to specify the property if we
      * cannot deduce it from the source managed resource.
-     *
+     * 
      * @return the hyperVGeneration value.
      */
     public HyperVGenerationTypes hyperVGeneration() {
@@ -150,7 +156,7 @@ public final class ImageInner extends Resource {
      * image. From API Version 2019-03-01 if the image source is a blob, then we need the user to specify the value, if
      * the source is managed resource like disk or snapshot, we may require the user to specify the property if we
      * cannot deduce it from the source managed resource.
-     *
+     * 
      * @param hyperVGeneration the hyperVGeneration value to set.
      * @return the ImageInner object itself.
      */
@@ -164,7 +170,7 @@ public final class ImageInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

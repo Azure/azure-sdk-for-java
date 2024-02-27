@@ -14,7 +14,9 @@ import com.azure.resourcemanager.network.models.VirtualNetworkPeeringLevel;
 import com.azure.resourcemanager.network.models.VirtualNetworkPeeringState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Peerings in a virtual network resource. */
+/**
+ * Peerings in a virtual network resource.
+ */
 @Fluent
 public final class VirtualNetworkPeeringInner extends SubResource {
     /*
@@ -41,13 +43,15 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     @JsonProperty(value = "type")
     private String type;
 
-    /** Creates an instance of VirtualNetworkPeeringInner class. */
+    /**
+     * Creates an instance of VirtualNetworkPeeringInner class.
+     */
     public VirtualNetworkPeeringInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the virtual network peering.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VirtualNetworkPeeringPropertiesFormat innerProperties() {
@@ -57,7 +61,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -67,7 +71,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     /**
      * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the VirtualNetworkPeeringInner object itself.
      */
@@ -78,7 +82,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -87,7 +91,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -96,7 +100,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
 
     /**
      * Set the type property: Resource type.
-     *
+     * 
      * @param type the type value to set.
      * @return the VirtualNetworkPeeringInner object itself.
      */
@@ -105,7 +109,9 @@ public final class VirtualNetworkPeeringInner extends SubResource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualNetworkPeeringInner withId(String id) {
         super.withId(id);
@@ -115,7 +121,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     /**
      * Get the allowVirtualNetworkAccess property: Whether the VMs in the local virtual network space would be able to
      * access the VMs in remote virtual network space.
-     *
+     * 
      * @return the allowVirtualNetworkAccess value.
      */
     public Boolean allowVirtualNetworkAccess() {
@@ -125,7 +131,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     /**
      * Set the allowVirtualNetworkAccess property: Whether the VMs in the local virtual network space would be able to
      * access the VMs in remote virtual network space.
-     *
+     * 
      * @param allowVirtualNetworkAccess the allowVirtualNetworkAccess value to set.
      * @return the VirtualNetworkPeeringInner object itself.
      */
@@ -140,7 +146,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     /**
      * Get the allowForwardedTraffic property: Whether the forwarded traffic from the VMs in the local virtual network
      * will be allowed/disallowed in remote virtual network.
-     *
+     * 
      * @return the allowForwardedTraffic value.
      */
     public Boolean allowForwardedTraffic() {
@@ -150,7 +156,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     /**
      * Set the allowForwardedTraffic property: Whether the forwarded traffic from the VMs in the local virtual network
      * will be allowed/disallowed in remote virtual network.
-     *
+     * 
      * @param allowForwardedTraffic the allowForwardedTraffic value to set.
      * @return the VirtualNetworkPeeringInner object itself.
      */
@@ -165,7 +171,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     /**
      * Get the allowGatewayTransit property: If gateway links can be used in remote virtual networking to link to this
      * virtual network.
-     *
+     * 
      * @return the allowGatewayTransit value.
      */
     public Boolean allowGatewayTransit() {
@@ -175,7 +181,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     /**
      * Set the allowGatewayTransit property: If gateway links can be used in remote virtual networking to link to this
      * virtual network.
-     *
+     * 
      * @param allowGatewayTransit the allowGatewayTransit value to set.
      * @return the VirtualNetworkPeeringInner object itself.
      */
@@ -188,11 +194,11 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Get the useRemoteGateways property: If remote gateways can be used on this virtual network. If the flag is set to
-     * true, and allowGatewayTransit on remote peering is also true, virtual network will use gateways of remote virtual
-     * network for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual network
-     * already has a gateway.
-     *
+     * Get the useRemoteGateways property: If remote gateways can be used on this virtual network. If the flag is set
+     * to true, and allowGatewayTransit on remote peering is also true, virtual network will use gateways of remote
+     * virtual network for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual
+     * network already has a gateway.
+     * 
      * @return the useRemoteGateways value.
      */
     public Boolean useRemoteGateways() {
@@ -200,11 +206,11 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     }
 
     /**
-     * Set the useRemoteGateways property: If remote gateways can be used on this virtual network. If the flag is set to
-     * true, and allowGatewayTransit on remote peering is also true, virtual network will use gateways of remote virtual
-     * network for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual network
-     * already has a gateway.
-     *
+     * Set the useRemoteGateways property: If remote gateways can be used on this virtual network. If the flag is set
+     * to true, and allowGatewayTransit on remote peering is also true, virtual network will use gateways of remote
+     * virtual network for transit. Only one peering can have this flag set to true. This flag cannot be set if virtual
+     * network already has a gateway.
+     * 
      * @param useRemoteGateways the useRemoteGateways value to set.
      * @return the VirtualNetworkPeeringInner object itself.
      */
@@ -220,7 +226,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
      * Get the remoteVirtualNetwork property: The reference to the remote virtual network. The remote virtual network
      * can be in the same or different region (preview). See here to register for the preview and learn more
      * (https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-create-peering).
-     *
+     * 
      * @return the remoteVirtualNetwork value.
      */
     public SubResource remoteVirtualNetwork() {
@@ -231,7 +237,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
      * Set the remoteVirtualNetwork property: The reference to the remote virtual network. The remote virtual network
      * can be in the same or different region (preview). See here to register for the preview and learn more
      * (https://docs.microsoft.com/en-us/azure/virtual-network/virtual-network-create-peering).
-     *
+     * 
      * @param remoteVirtualNetwork the remoteVirtualNetwork value to set.
      * @return the VirtualNetworkPeeringInner object itself.
      */
@@ -245,7 +251,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
 
     /**
      * Get the remoteAddressSpace property: The reference to the address space peered with the remote virtual network.
-     *
+     * 
      * @return the remoteAddressSpace value.
      */
     public AddressSpace remoteAddressSpace() {
@@ -254,7 +260,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
 
     /**
      * Set the remoteAddressSpace property: The reference to the address space peered with the remote virtual network.
-     *
+     * 
      * @param remoteAddressSpace the remoteAddressSpace value to set.
      * @return the VirtualNetworkPeeringInner object itself.
      */
@@ -269,7 +275,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     /**
      * Get the remoteVirtualNetworkAddressSpace property: The reference to the current address space of the remote
      * virtual network.
-     *
+     * 
      * @return the remoteVirtualNetworkAddressSpace value.
      */
     public AddressSpace remoteVirtualNetworkAddressSpace() {
@@ -279,12 +285,12 @@ public final class VirtualNetworkPeeringInner extends SubResource {
     /**
      * Set the remoteVirtualNetworkAddressSpace property: The reference to the current address space of the remote
      * virtual network.
-     *
+     * 
      * @param remoteVirtualNetworkAddressSpace the remoteVirtualNetworkAddressSpace value to set.
      * @return the VirtualNetworkPeeringInner object itself.
      */
-    public VirtualNetworkPeeringInner withRemoteVirtualNetworkAddressSpace(
-        AddressSpace remoteVirtualNetworkAddressSpace) {
+    public VirtualNetworkPeeringInner
+        withRemoteVirtualNetworkAddressSpace(AddressSpace remoteVirtualNetworkAddressSpace) {
         if (this.innerProperties() == null) {
             this.innerProperties = new VirtualNetworkPeeringPropertiesFormat();
         }
@@ -294,7 +300,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
 
     /**
      * Get the remoteBgpCommunities property: The reference to the remote virtual network's Bgp Communities.
-     *
+     * 
      * @return the remoteBgpCommunities value.
      */
     public VirtualNetworkBgpCommunities remoteBgpCommunities() {
@@ -303,7 +309,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
 
     /**
      * Set the remoteBgpCommunities property: The reference to the remote virtual network's Bgp Communities.
-     *
+     * 
      * @param remoteBgpCommunities the remoteBgpCommunities value to set.
      * @return the VirtualNetworkPeeringInner object itself.
      */
@@ -317,7 +323,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
 
     /**
      * Get the remoteVirtualNetworkEncryption property: The reference to the remote virtual network's encryption.
-     *
+     * 
      * @return the remoteVirtualNetworkEncryption value.
      */
     public VirtualNetworkEncryption remoteVirtualNetworkEncryption() {
@@ -326,7 +332,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
 
     /**
      * Get the peeringState property: The status of the virtual network peering.
-     *
+     * 
      * @return the peeringState value.
      */
     public VirtualNetworkPeeringState peeringState() {
@@ -335,7 +341,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
 
     /**
      * Set the peeringState property: The status of the virtual network peering.
-     *
+     * 
      * @param peeringState the peeringState value to set.
      * @return the VirtualNetworkPeeringInner object itself.
      */
@@ -349,7 +355,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
 
     /**
      * Get the peeringSyncLevel property: The peering sync status of the virtual network peering.
-     *
+     * 
      * @return the peeringSyncLevel value.
      */
     public VirtualNetworkPeeringLevel peeringSyncLevel() {
@@ -358,7 +364,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
 
     /**
      * Set the peeringSyncLevel property: The peering sync status of the virtual network peering.
-     *
+     * 
      * @param peeringSyncLevel the peeringSyncLevel value to set.
      * @return the VirtualNetworkPeeringInner object itself.
      */
@@ -372,7 +378,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the virtual network peering resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -381,7 +387,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
 
     /**
      * Get the doNotVerifyRemoteGateways property: If we need to verify the provisioning state of the remote gateway.
-     *
+     * 
      * @return the doNotVerifyRemoteGateways value.
      */
     public Boolean doNotVerifyRemoteGateways() {
@@ -390,7 +396,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
 
     /**
      * Set the doNotVerifyRemoteGateways property: If we need to verify the provisioning state of the remote gateway.
-     *
+     * 
      * @param doNotVerifyRemoteGateways the doNotVerifyRemoteGateways value to set.
      * @return the VirtualNetworkPeeringInner object itself.
      */
@@ -404,7 +410,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
 
     /**
      * Get the resourceGuid property: The resourceGuid property of the Virtual Network peering resource.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -413,7 +419,7 @@ public final class VirtualNetworkPeeringInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

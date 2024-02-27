@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.AuthorizationUseStatus;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of ExpressRouteCircuitAuthorization. */
+/**
+ * Properties of ExpressRouteCircuitAuthorization.
+ */
 @Fluent
 public final class AuthorizationPropertiesFormat {
     /*
@@ -30,13 +32,15 @@ public final class AuthorizationPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of AuthorizationPropertiesFormat class. */
+    /**
+     * Creates an instance of AuthorizationPropertiesFormat class.
+     */
     public AuthorizationPropertiesFormat() {
     }
 
     /**
      * Get the authorizationKey property: The authorization key.
-     *
+     * 
      * @return the authorizationKey value.
      */
     public String authorizationKey() {
@@ -45,7 +49,7 @@ public final class AuthorizationPropertiesFormat {
 
     /**
      * Set the authorizationKey property: The authorization key.
-     *
+     * 
      * @param authorizationKey the authorizationKey value to set.
      * @return the AuthorizationPropertiesFormat object itself.
      */
@@ -56,7 +60,7 @@ public final class AuthorizationPropertiesFormat {
 
     /**
      * Get the authorizationUseStatus property: The authorization use status.
-     *
+     * 
      * @return the authorizationUseStatus value.
      */
     public AuthorizationUseStatus authorizationUseStatus() {
@@ -65,7 +69,7 @@ public final class AuthorizationPropertiesFormat {
 
     /**
      * Set the authorizationUseStatus property: The authorization use status.
-     *
+     * 
      * @param authorizationUseStatus the authorizationUseStatus value to set.
      * @return the AuthorizationPropertiesFormat object itself.
      */
@@ -76,7 +80,7 @@ public final class AuthorizationPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the authorization resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -85,7 +89,7 @@ public final class AuthorizationPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

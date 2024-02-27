@@ -13,29 +13,24 @@ import org.junit.jupiter.api.Assertions;
 public final class FixedScaleSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FixedScaleSettings model =
-            BinaryData
-                .fromString(
-                    "{\"resizeTimeout\":\"PT217H3M52S\",\"targetDedicatedNodes\":22179172,\"targetLowPriorityNodes\":2101794539,\"nodeDeallocationOption\":\"Requeue\"}")
-                .toObject(FixedScaleSettings.class);
-        Assertions.assertEquals(Duration.parse("PT217H3M52S"), model.resizeTimeout());
-        Assertions.assertEquals(22179172, model.targetDedicatedNodes());
-        Assertions.assertEquals(2101794539, model.targetLowPriorityNodes());
-        Assertions.assertEquals(ComputeNodeDeallocationOption.REQUEUE, model.nodeDeallocationOption());
+        FixedScaleSettings model = BinaryData.fromString(
+            "{\"resizeTimeout\":\"PT10H38M25S\",\"targetDedicatedNodes\":1187113167,\"targetLowPriorityNodes\":931979220,\"nodeDeallocationOption\":\"TaskCompletion\"}")
+            .toObject(FixedScaleSettings.class);
+        Assertions.assertEquals(Duration.parse("PT10H38M25S"), model.resizeTimeout());
+        Assertions.assertEquals(1187113167, model.targetDedicatedNodes());
+        Assertions.assertEquals(931979220, model.targetLowPriorityNodes());
+        Assertions.assertEquals(ComputeNodeDeallocationOption.TASK_COMPLETION, model.nodeDeallocationOption());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FixedScaleSettings model =
-            new FixedScaleSettings()
-                .withResizeTimeout(Duration.parse("PT217H3M52S"))
-                .withTargetDedicatedNodes(22179172)
-                .withTargetLowPriorityNodes(2101794539)
-                .withNodeDeallocationOption(ComputeNodeDeallocationOption.REQUEUE);
+        FixedScaleSettings model = new FixedScaleSettings().withResizeTimeout(Duration.parse("PT10H38M25S"))
+            .withTargetDedicatedNodes(1187113167).withTargetLowPriorityNodes(931979220)
+            .withNodeDeallocationOption(ComputeNodeDeallocationOption.TASK_COMPLETION);
         model = BinaryData.fromObject(model).toObject(FixedScaleSettings.class);
-        Assertions.assertEquals(Duration.parse("PT217H3M52S"), model.resizeTimeout());
-        Assertions.assertEquals(22179172, model.targetDedicatedNodes());
-        Assertions.assertEquals(2101794539, model.targetLowPriorityNodes());
-        Assertions.assertEquals(ComputeNodeDeallocationOption.REQUEUE, model.nodeDeallocationOption());
+        Assertions.assertEquals(Duration.parse("PT10H38M25S"), model.resizeTimeout());
+        Assertions.assertEquals(1187113167, model.targetDedicatedNodes());
+        Assertions.assertEquals(931979220, model.targetLowPriorityNodes());
+        Assertions.assertEquals(ComputeNodeDeallocationOption.TASK_COMPLETION, model.nodeDeallocationOption());
     }
 }

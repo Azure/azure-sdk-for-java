@@ -5,14 +5,12 @@ package com.azure.data.schemaregistry;
 
 import com.azure.core.credential.AccessToken;
 import com.azure.core.credential.TokenCredential;
-import com.azure.core.credential.TokenRequestContext;
 import com.azure.core.http.HttpClient;
 import com.azure.core.test.TestProxyTestBase;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.data.schemaregistry.models.SchemaFormat;
 import com.azure.identity.DefaultAzureCredentialBuilder;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import reactor.core.publisher.Mono;
 
 import java.time.OffsetDateTime;
@@ -23,9 +21,6 @@ import static com.azure.data.schemaregistry.Constants.RESOURCE_LENGTH;
 import static com.azure.data.schemaregistry.Constants.SCHEMA_REGISTRY_CUSTOM_FULLY_QUALIFIED_NAMESPACE;
 import static com.azure.data.schemaregistry.Constants.SCHEMA_REGISTRY_GROUP;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
 
 public class SchemaRegistryAsyncClientCustomTests extends TestProxyTestBase {
     static final String SCHEMA_CONTENT = "Person: int, string, decimal";
@@ -39,16 +34,9 @@ public class SchemaRegistryAsyncClientCustomTests extends TestProxyTestBase {
         String endpoint;
         String schemaGroup;
         if (interceptorManager.isPlaybackMode()) {
-            tokenCredential = mock(TokenCredential.class);
+            tokenCredential = tokenRequestContext ->
+                Mono.fromCallable(() -> new AccessToken("foo", OffsetDateTime.now().plusMinutes(20)));
             schemaGroup = PLAYBACK_TEST_GROUP;
-
-            // Sometimes it throws an "NotAMockException", so we had to change from thenReturn to thenAnswer.
-            when(tokenCredential.getToken(any(TokenRequestContext.class))).thenAnswer(invocationOnMock -> {
-                return Mono.fromCallable(() -> {
-                    return new AccessToken("foo", OffsetDateTime.now().plusMinutes(20));
-                });
-            });
-
             endpoint = PLAYBACK_ENDPOINT;
         } else {
             tokenCredential = new DefaultAzureCredentialBuilder().build();
@@ -70,11 +58,6 @@ public class SchemaRegistryAsyncClientCustomTests extends TestProxyTestBase {
         }
 
         testBase = new SchemaRegistryAsyncClientTestsBase(schemaGroup, SchemaFormat.CUSTOM);
-    }
-
-    @Override
-    protected void afterTest() {
-        Mockito.framework().clearInlineMock(this);
     }
 
     private HttpClient buildAsyncAssertingClient(HttpClient httpClient) {

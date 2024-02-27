@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A2A Cross-Cluster Migration enable protection input. */
+/**
+ * A2A Cross-Cluster Migration enable protection input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("A2ACrossClusterMigration")
 @Fluent
@@ -26,13 +28,15 @@ public final class A2ACrossClusterMigrationEnableProtectionInput extends EnableP
     @JsonProperty(value = "recoveryContainerId")
     private String recoveryContainerId;
 
-    /** Creates an instance of A2ACrossClusterMigrationEnableProtectionInput class. */
+    /**
+     * Creates an instance of A2ACrossClusterMigrationEnableProtectionInput class.
+     */
     public A2ACrossClusterMigrationEnableProtectionInput() {
     }
 
     /**
      * Get the fabricObjectId property: The fabric specific object Id of the virtual machine.
-     *
+     * 
      * @return the fabricObjectId value.
      */
     public String fabricObjectId() {
@@ -41,7 +45,7 @@ public final class A2ACrossClusterMigrationEnableProtectionInput extends EnableP
 
     /**
      * Set the fabricObjectId property: The fabric specific object Id of the virtual machine.
-     *
+     * 
      * @param fabricObjectId the fabricObjectId value to set.
      * @return the A2ACrossClusterMigrationEnableProtectionInput object itself.
      */
@@ -52,7 +56,7 @@ public final class A2ACrossClusterMigrationEnableProtectionInput extends EnableP
 
     /**
      * Get the recoveryContainerId property: The recovery container Id.
-     *
+     * 
      * @return the recoveryContainerId value.
      */
     public String recoveryContainerId() {
@@ -61,7 +65,7 @@ public final class A2ACrossClusterMigrationEnableProtectionInput extends EnableP
 
     /**
      * Set the recoveryContainerId property: The recovery container Id.
-     *
+     * 
      * @param recoveryContainerId the recoveryContainerId value to set.
      * @return the A2ACrossClusterMigrationEnableProtectionInput object itself.
      */
@@ -72,7 +76,7 @@ public final class A2ACrossClusterMigrationEnableProtectionInput extends EnableP
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

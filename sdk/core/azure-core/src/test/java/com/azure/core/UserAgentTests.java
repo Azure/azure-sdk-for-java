@@ -41,8 +41,8 @@ public class UserAgentTests {
     @MethodSource("userAgentAndExpectedSupplier")
     public void validateUserAgentPolicyHandling(UserAgentPolicy userAgentPolicy, String expected) {
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new ValidationHttpClient(request ->
-                assertEquals(expected, request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))
+            .httpClient(new ValidationHttpClient(
+                request -> assertEquals(expected, request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))
             .policies(userAgentPolicy)
             .build();
 
@@ -59,8 +59,8 @@ public class UserAgentTests {
     @MethodSource("userAgentAndExpectedSupplier")
     public void userAgentPolicyAfterRetryPolicy(UserAgentPolicy userAgentPolicy, String expected) {
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new RetryValidationHttpClient(request ->
-                assertEquals(expected, request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))
+            .httpClient(new RetryValidationHttpClient(
+                request -> assertEquals(expected, request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))
             .policies(new RetryPolicy(new FixedDelay(5, Duration.ofMillis(10))))
             .policies(userAgentPolicy)
             .build();
@@ -78,8 +78,8 @@ public class UserAgentTests {
     @MethodSource("userAgentAndExpectedSupplier")
     public void multipleUserAgentPolicies(UserAgentPolicy userAgentPolicy, String expected) {
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new ValidationHttpClient(request ->
-                assertEquals(expected, request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))
+            .httpClient(new ValidationHttpClient(
+                request -> assertEquals(expected, request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))
             .policies(userAgentPolicy, userAgentPolicy)
             .build();
 
@@ -97,13 +97,14 @@ public class UserAgentTests {
     public void overrideUserAgentContext(UserAgentPolicy userAgentPolicy, String expected) {
         String overrideUserAgent = "overrideUserAgent";
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new ValidationHttpClient(request ->
-                assertEquals(overrideUserAgent, request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))
+            .httpClient(new ValidationHttpClient(
+                request -> assertEquals(overrideUserAgent, request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))
             .policies(userAgentPolicy)
             .build();
 
-        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost"),
-            new Context(UserAgentPolicy.OVERRIDE_USER_AGENT_CONTEXT_KEY, overrideUserAgent)))
+        StepVerifier
+            .create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost"),
+                new Context(UserAgentPolicy.OVERRIDE_USER_AGENT_CONTEXT_KEY, overrideUserAgent)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
@@ -117,13 +118,13 @@ public class UserAgentTests {
     public void appendUserAgentContext(UserAgentPolicy userAgentPolicy, String expected) {
         String appendUserAgent = "appendUserAgent";
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new ValidationHttpClient(request ->
-                assertEquals(expected + " " + appendUserAgent, request.getHeaders()
-                    .getValue(HttpHeaderName.USER_AGENT))))
+            .httpClient(new ValidationHttpClient(request -> assertEquals(expected + " " + appendUserAgent,
+                request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))
             .policies(userAgentPolicy)
             .build();
 
-        StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost"),
+        StepVerifier
+            .create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost"),
                 new Context(UserAgentPolicy.APPEND_USER_AGENT_CONTEXT_KEY, appendUserAgent)))
             .assertNext(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
@@ -138,9 +139,8 @@ public class UserAgentTests {
     public void appendUserAgentContextSendSync(UserAgentPolicy userAgentPolicy, String expected) {
         String appendUserAgent = "appendUserAgent";
         HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(new ValidationHttpClient(request ->
-                assertEquals(expected + " " + appendUserAgent, request.getHeaders()
-                    .getValue(HttpHeaderName.USER_AGENT))))
+            .httpClient(new ValidationHttpClient(request -> assertEquals(expected + " " + appendUserAgent,
+                request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))
             .policies(userAgentPolicy)
             .build();
 
@@ -157,17 +157,14 @@ public class UserAgentTests {
         String sdkVersion = "sdkVersion";
         String baseUserAgent = String.format("%s-%s/%s", defaultUserAgent, sdkName, sdkVersion);
         String applicationId = "applicationId";
-        String platformInfo = String.format("%s; %s; %s",
-            Configuration.getGlobalConfiguration().get("java.version"),
+        String platformInfo = String.format("%s; %s; %s", Configuration.getGlobalConfiguration().get("java.version"),
             Configuration.getGlobalConfiguration().get("os.name"),
             Configuration.getGlobalConfiguration().get("os.version"));
 
         Configuration enabledTelemetryConfiguration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-                new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, "false"))
-            .build();
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, "false")).build();
         Configuration disabledTelemetryConfiguration = new ConfigurationBuilder(EMPTY_SOURCE, EMPTY_SOURCE,
-                new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, "true"))
-            .build();
+            new TestConfigurationSource().put(Configuration.PROPERTY_AZURE_TELEMETRY_DISABLED, "true")).build();
 
         return Stream.of(
             // Tests using the default User-Agent
@@ -177,8 +174,7 @@ public class UserAgentTests {
             Arguments.of(new UserAgentPolicy("AutoRest-Java"), "AutoRest-Java"),
 
             // Tests using SDK name and version without platform information or application ID
-            Arguments.of(new UserAgentPolicy(null, sdkName, sdkVersion, disabledTelemetryConfiguration),
-                baseUserAgent),
+            Arguments.of(new UserAgentPolicy(null, sdkName, sdkVersion, disabledTelemetryConfiguration), baseUserAgent),
             Arguments.of(new UserAgentPolicy(sdkName, sdkVersion, disabledTelemetryConfiguration, () -> "1.0"),
                 baseUserAgent),
 
@@ -194,8 +190,7 @@ public class UserAgentTests {
 
             // Tests using SDK name and version with platform information and application ID
             Arguments.of(new UserAgentPolicy("applicationId", "sdkName", "sdkVersion", enabledTelemetryConfiguration),
-                String.format("%s %s (%s)", applicationId, baseUserAgent, platformInfo))
-        );
+                String.format("%s %s (%s)", applicationId, baseUserAgent, platformInfo)));
     }
 
     /*

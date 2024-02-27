@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.Targ
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Target compute size collection. */
+/**
+ * Target compute size collection.
+ */
 @Fluent
 public final class TargetComputeSizeCollection {
     /*
@@ -24,13 +26,15 @@ public final class TargetComputeSizeCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of TargetComputeSizeCollection class. */
+    /**
+     * Creates an instance of TargetComputeSizeCollection class.
+     */
     public TargetComputeSizeCollection() {
     }
 
     /**
      * Get the value property: The list of target compute sizes.
-     *
+     * 
      * @return the value value.
      */
     public List<TargetComputeSizeInner> value() {
@@ -39,7 +43,7 @@ public final class TargetComputeSizeCollection {
 
     /**
      * Set the value property: The list of target compute sizes.
-     *
+     * 
      * @param value the value value to set.
      * @return the TargetComputeSizeCollection object itself.
      */
@@ -50,7 +54,7 @@ public final class TargetComputeSizeCollection {
 
     /**
      * Get the nextLink property: The value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class TargetComputeSizeCollection {
 
     /**
      * Set the nextLink property: The value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the TargetComputeSizeCollection object itself.
      */
@@ -70,7 +74,7 @@ public final class TargetComputeSizeCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

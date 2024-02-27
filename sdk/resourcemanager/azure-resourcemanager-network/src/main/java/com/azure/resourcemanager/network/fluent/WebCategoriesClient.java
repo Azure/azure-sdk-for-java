@@ -13,11 +13,13 @@ import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.AzureWebCategoryInner;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in WebCategoriesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in WebCategoriesClient.
+ */
 public interface WebCategoriesClient {
     /**
      * Gets the specified Azure Web Category.
-     *
+     * 
      * @param name The name of the azureWebCategory.
      * @param expand Expands resourceIds back referenced by the azureWebCategory resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -30,7 +32,7 @@ public interface WebCategoriesClient {
 
     /**
      * Gets the specified Azure Web Category.
-     *
+     * 
      * @param name The name of the azureWebCategory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -42,7 +44,7 @@ public interface WebCategoriesClient {
 
     /**
      * Gets the specified Azure Web Category.
-     *
+     * 
      * @param name The name of the azureWebCategory.
      * @param expand Expands resourceIds back referenced by the azureWebCategory resource.
      * @param context The context to associate with this operation.
@@ -56,7 +58,7 @@ public interface WebCategoriesClient {
 
     /**
      * Gets the specified Azure Web Category.
-     *
+     * 
      * @param name The name of the azureWebCategory.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -68,7 +70,7 @@ public interface WebCategoriesClient {
 
     /**
      * Gets all the Azure Web Categories in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Azure Web Categories in a subscription as paginated response with {@link PagedFlux}.
@@ -78,7 +80,7 @@ public interface WebCategoriesClient {
 
     /**
      * Gets all the Azure Web Categories in a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all the Azure Web Categories in a subscription as paginated response with {@link PagedIterable}.
@@ -88,7 +90,7 @@ public interface WebCategoriesClient {
 
     /**
      * Gets all the Azure Web Categories in a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.

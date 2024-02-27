@@ -21,22 +21,18 @@ public final class LtrBackupOperationsImpl implements LtrBackupOperations {
 
     private final com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager;
 
-    public LtrBackupOperationsImpl(
-        LtrBackupOperationsClient innerClient,
+    public LtrBackupOperationsImpl(LtrBackupOperationsClient innerClient,
         com.azure.resourcemanager.postgresqlflexibleserver.PostgreSqlManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<LtrServerBackupOperation> getWithResponse(
-        String resourceGroupName, String serverName, String backupName, Context context) {
-        Response<LtrServerBackupOperationInner> inner =
-            this.serviceClient().getWithResponse(resourceGroupName, serverName, backupName, context);
+    public Response<LtrServerBackupOperation> getWithResponse(String resourceGroupName, String serverName,
+        String backupName, Context context) {
+        Response<LtrServerBackupOperationInner> inner
+            = this.serviceClient().getWithResponse(resourceGroupName, serverName, backupName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new LtrServerBackupOperationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -53,16 +49,16 @@ public final class LtrBackupOperationsImpl implements LtrBackupOperations {
     }
 
     public PagedIterable<LtrServerBackupOperation> listByServer(String resourceGroupName, String serverName) {
-        PagedIterable<LtrServerBackupOperationInner> inner =
-            this.serviceClient().listByServer(resourceGroupName, serverName);
-        return Utils.mapPage(inner, inner1 -> new LtrServerBackupOperationImpl(inner1, this.manager()));
+        PagedIterable<LtrServerBackupOperationInner> inner
+            = this.serviceClient().listByServer(resourceGroupName, serverName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LtrServerBackupOperationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<LtrServerBackupOperation> listByServer(
-        String resourceGroupName, String serverName, Context context) {
-        PagedIterable<LtrServerBackupOperationInner> inner =
-            this.serviceClient().listByServer(resourceGroupName, serverName, context);
-        return Utils.mapPage(inner, inner1 -> new LtrServerBackupOperationImpl(inner1, this.manager()));
+    public PagedIterable<LtrServerBackupOperation> listByServer(String resourceGroupName, String serverName,
+        Context context) {
+        PagedIterable<LtrServerBackupOperationInner> inner
+            = this.serviceClient().listByServer(resourceGroupName, serverName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new LtrServerBackupOperationImpl(inner1, this.manager()));
     }
 
     private LtrBackupOperationsClient serviceClient() {

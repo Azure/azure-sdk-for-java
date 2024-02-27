@@ -9,7 +9,9 @@ import com.azure.core.management.Resource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Describes a Virtual Machine Extension Image. */
+/**
+ * Describes a Virtual Machine Extension Image.
+ */
 @Fluent
 public final class VirtualMachineExtensionImageInner extends Resource {
     /*
@@ -18,27 +20,33 @@ public final class VirtualMachineExtensionImageInner extends Resource {
     @JsonProperty(value = "properties")
     private VirtualMachineExtensionImageProperties innerProperties;
 
-    /** Creates an instance of VirtualMachineExtensionImageInner class. */
+    /**
+     * Creates an instance of VirtualMachineExtensionImageInner class.
+     */
     public VirtualMachineExtensionImageInner() {
     }
 
     /**
      * Get the innerProperties property: Describes the properties of a Virtual Machine Extension Image.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VirtualMachineExtensionImageProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineExtensionImageInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualMachineExtensionImageInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -47,7 +55,7 @@ public final class VirtualMachineExtensionImageInner extends Resource {
 
     /**
      * Get the operatingSystem property: The operating system this extension supports.
-     *
+     * 
      * @return the operatingSystem value.
      */
     public String operatingSystem() {
@@ -56,7 +64,7 @@ public final class VirtualMachineExtensionImageInner extends Resource {
 
     /**
      * Set the operatingSystem property: The operating system this extension supports.
-     *
+     * 
      * @param operatingSystem the operatingSystem value to set.
      * @return the VirtualMachineExtensionImageInner object itself.
      */
@@ -70,7 +78,7 @@ public final class VirtualMachineExtensionImageInner extends Resource {
 
     /**
      * Get the computeRole property: The type of role (IaaS or PaaS) this extension supports.
-     *
+     * 
      * @return the computeRole value.
      */
     public String computeRole() {
@@ -79,7 +87,7 @@ public final class VirtualMachineExtensionImageInner extends Resource {
 
     /**
      * Set the computeRole property: The type of role (IaaS or PaaS) this extension supports.
-     *
+     * 
      * @param computeRole the computeRole value to set.
      * @return the VirtualMachineExtensionImageInner object itself.
      */
@@ -94,7 +102,7 @@ public final class VirtualMachineExtensionImageInner extends Resource {
     /**
      * Get the handlerSchema property: The schema defined by publisher, where extension consumers should provide
      * settings in a matching schema.
-     *
+     * 
      * @return the handlerSchema value.
      */
     public String handlerSchema() {
@@ -104,7 +112,7 @@ public final class VirtualMachineExtensionImageInner extends Resource {
     /**
      * Set the handlerSchema property: The schema defined by publisher, where extension consumers should provide
      * settings in a matching schema.
-     *
+     * 
      * @param handlerSchema the handlerSchema value to set.
      * @return the VirtualMachineExtensionImageInner object itself.
      */
@@ -120,7 +128,7 @@ public final class VirtualMachineExtensionImageInner extends Resource {
      * Get the vmScaleSetEnabled property: Whether the extension can be used on xRP VMScaleSets. By default existing
      * extensions are usable on scalesets, but there might be cases where a publisher wants to explicitly indicate the
      * extension is only enabled for CRP VMs but not VMSS.
-     *
+     * 
      * @return the vmScaleSetEnabled value.
      */
     public Boolean vmScaleSetEnabled() {
@@ -131,7 +139,7 @@ public final class VirtualMachineExtensionImageInner extends Resource {
      * Set the vmScaleSetEnabled property: Whether the extension can be used on xRP VMScaleSets. By default existing
      * extensions are usable on scalesets, but there might be cases where a publisher wants to explicitly indicate the
      * extension is only enabled for CRP VMs but not VMSS.
-     *
+     * 
      * @param vmScaleSetEnabled the vmScaleSetEnabled value to set.
      * @return the VirtualMachineExtensionImageInner object itself.
      */
@@ -145,7 +153,7 @@ public final class VirtualMachineExtensionImageInner extends Resource {
 
     /**
      * Get the supportsMultipleExtensions property: Whether the handler can support multiple extensions.
-     *
+     * 
      * @return the supportsMultipleExtensions value.
      */
     public Boolean supportsMultipleExtensions() {
@@ -154,7 +162,7 @@ public final class VirtualMachineExtensionImageInner extends Resource {
 
     /**
      * Set the supportsMultipleExtensions property: Whether the handler can support multiple extensions.
-     *
+     * 
      * @param supportsMultipleExtensions the supportsMultipleExtensions value to set.
      * @return the VirtualMachineExtensionImageInner object itself.
      */
@@ -168,7 +176,7 @@ public final class VirtualMachineExtensionImageInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

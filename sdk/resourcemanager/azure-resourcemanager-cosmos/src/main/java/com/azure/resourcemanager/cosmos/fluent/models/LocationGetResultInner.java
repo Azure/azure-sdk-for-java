@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
 import com.azure.resourcemanager.cosmos.models.LocationProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Cosmos DB location get result. */
+/**
+ * Cosmos DB location get result.
+ */
 @Fluent
 public final class LocationGetResultInner extends ArmProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class LocationGetResultInner extends ArmProxyResource {
     @JsonProperty(value = "properties")
     private LocationProperties properties;
 
-    /** Creates an instance of LocationGetResultInner class. */
+    /**
+     * Creates an instance of LocationGetResultInner class.
+     */
     public LocationGetResultInner() {
     }
 
     /**
      * Get the properties property: Cosmos DB location metadata.
-     *
+     * 
      * @return the properties value.
      */
     public LocationProperties properties() {
@@ -33,7 +37,7 @@ public final class LocationGetResultInner extends ArmProxyResource {
 
     /**
      * Set the properties property: Cosmos DB location metadata.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the LocationGetResultInner object itself.
      */
@@ -44,7 +48,7 @@ public final class LocationGetResultInner extends ArmProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

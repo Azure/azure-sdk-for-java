@@ -1,15 +1,45 @@
 # Release History
 
-## 1.12.0-beta.1 (Unreleased)
+## 1.12.0-beta.2 (Unreleased)
 
 ### Features Added
 
 ### Breaking Changes
 
 ### Bugs Fixed
-- fixed Azure Arc Managed Identiy not being retrived because of a code logic bug (misplaced finally block)
 
 ### Other Changes
+
+## 1.12.0-beta.1 (2024-02-12)
+
+### Features Added
+- Added expires_on parsing support to `AzureCliCredential`.([#38406](https://github.com/Azure/azure-sdk-for-java/pull/38406))
+- Added caching support for working credential in `DefaultAzureCredential`. ([#38404](https://github.com/Azure/azure-sdk-for-java/pull/38404))
+
+## 1.11.2 (2024-02-05)
+
+### Bugs Fixed
+
+- Lowered logging level of token cache misses from `ERROR` to `DEBUG`. ([#38502](https://github.com/Azure/azure-sdk-for-java/pull/38502))
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`
+
+## 1.11.1 (2023-12-01)
+
+### Bugs Fixed
+- Fixed Azure Arc Managed Identity token retrieval issue.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.0` to version `1.45.1`
+- Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`
 
 ## 1.11.0 (2023-11-07)
 

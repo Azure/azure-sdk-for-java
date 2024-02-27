@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * ExportJobsResult
- *
- * <p>The result for export jobs containing blob details.
+ * 
+ * The result for export jobs containing blob details.
  */
 @Immutable
 public final class ExportJobsResultInner {
@@ -38,13 +38,15 @@ public final class ExportJobsResultInner {
     @JsonProperty(value = "excelFileBlobSasKey", access = JsonProperty.Access.WRITE_ONLY)
     private String excelFileBlobSasKey;
 
-    /** Creates an instance of ExportJobsResultInner class. */
+    /**
+     * Creates an instance of ExportJobsResultInner class.
+     */
     public ExportJobsResultInner() {
     }
 
     /**
      * Get the blobUrl property: URL of the blob into which the serialized string of list of jobs is exported.
-     *
+     * 
      * @return the blobUrl value.
      */
     public String blobUrl() {
@@ -53,7 +55,7 @@ public final class ExportJobsResultInner {
 
     /**
      * Get the blobSasKey property: SAS key to access the blob.
-     *
+     * 
      * @return the blobSasKey value.
      */
     public String blobSasKey() {
@@ -62,7 +64,7 @@ public final class ExportJobsResultInner {
 
     /**
      * Get the excelFileBlobUrl property: URL of the blob into which the ExcelFile is uploaded.
-     *
+     * 
      * @return the excelFileBlobUrl value.
      */
     public String excelFileBlobUrl() {
@@ -71,7 +73,7 @@ public final class ExportJobsResultInner {
 
     /**
      * Get the excelFileBlobSasKey property: SAS key to access the ExcelFile blob.
-     *
+     * 
      * @return the excelFileBlobSasKey value.
      */
     public String excelFileBlobSasKey() {
@@ -80,7 +82,7 @@ public final class ExportJobsResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

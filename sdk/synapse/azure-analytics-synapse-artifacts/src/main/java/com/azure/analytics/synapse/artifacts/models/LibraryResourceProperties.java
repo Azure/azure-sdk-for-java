@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Library/package properties. */
+/**
+ * Library/package properties.
+ */
 @Immutable
 public final class LibraryResourceProperties {
     /*
@@ -52,12 +54,15 @@ public final class LibraryResourceProperties {
     @JsonProperty(value = "creatorId", access = JsonProperty.Access.WRITE_ONLY)
     private String creatorId;
 
-    /** Creates an instance of LibraryResourceProperties class. */
-    public LibraryResourceProperties() {}
+    /**
+     * Creates an instance of LibraryResourceProperties class.
+     */
+    public LibraryResourceProperties() {
+    }
 
     /**
      * Get the name property: Name of the library/package.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -66,7 +71,7 @@ public final class LibraryResourceProperties {
 
     /**
      * Get the path property: Location of library/package in storage account.
-     *
+     * 
      * @return the path value.
      */
     public String getPath() {
@@ -75,7 +80,7 @@ public final class LibraryResourceProperties {
 
     /**
      * Get the containerName property: Container name of the library/package.
-     *
+     * 
      * @return the containerName value.
      */
     public String getContainerName() {
@@ -84,7 +89,7 @@ public final class LibraryResourceProperties {
 
     /**
      * Get the uploadedTimestamp property: The last update time of the library/package.
-     *
+     * 
      * @return the uploadedTimestamp value.
      */
     public String getUploadedTimestamp() {
@@ -93,7 +98,7 @@ public final class LibraryResourceProperties {
 
     /**
      * Get the type property: Type of the library/package.
-     *
+     * 
      * @return the type value.
      */
     public String getType() {
@@ -102,7 +107,7 @@ public final class LibraryResourceProperties {
 
     /**
      * Get the provisioningStatus property: Provisioning status of the library/package.
-     *
+     * 
      * @return the provisioningStatus value.
      */
     public String getProvisioningStatus() {
@@ -111,7 +116,7 @@ public final class LibraryResourceProperties {
 
     /**
      * Get the creatorId property: Creator Id of the library/package.
-     *
+     * 
      * @return the creatorId value.
      */
     public String getCreatorId() {

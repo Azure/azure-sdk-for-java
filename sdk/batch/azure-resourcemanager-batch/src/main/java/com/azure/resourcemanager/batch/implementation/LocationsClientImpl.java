@@ -35,22 +35,28 @@ import com.azure.resourcemanager.batch.models.CheckNameAvailabilityParameters;
 import com.azure.resourcemanager.batch.models.SupportedSkusResult;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LocationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LocationsClient.
+ */
 public final class LocationsClientImpl implements LocationsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final LocationsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final BatchManagementClientImpl client;
 
     /**
      * Initializes an instance of LocationsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     LocationsClientImpl(BatchManagementClientImpl client) {
-        this.service =
-            RestProxy.create(LocationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(LocationsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -61,172 +67,128 @@ public final class LocationsClientImpl implements LocationsClient {
     @Host("{$host}")
     @ServiceInterface(name = "BatchManagementClien")
     public interface LocationsService {
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Batch/locations/{locationName}/quotas")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<BatchLocationQuotaInner>> getQuotas(
-            @HostParam("$host") String endpoint,
-            @PathParam("locationName") String locationName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<BatchLocationQuotaInner>> getQuotas(@HostParam("$host") String endpoint,
+            @PathParam("locationName") String locationName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Batch/locations/{locationName}/virtualMachineSkus")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SupportedSkusResult>> listSupportedVirtualMachineSkus(
-            @HostParam("$host") String endpoint,
-            @PathParam("locationName") String locationName,
-            @QueryParam("maxresults") Integer maxresults,
-            @QueryParam("$filter") String filter,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SupportedSkusResult>> listSupportedVirtualMachineSkus(@HostParam("$host") String endpoint,
+            @PathParam("locationName") String locationName, @QueryParam("maxresults") Integer maxresults,
+            @QueryParam("$filter") String filter, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("/subscriptions/{subscriptionId}/providers/Microsoft.Batch/locations/{locationName}/cloudServiceSkus")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<SupportedSkusResult>> listSupportedCloudServiceSkus(
-            @HostParam("$host") String endpoint,
-            @PathParam("locationName") String locationName,
-            @QueryParam("maxresults") Integer maxresults,
-            @QueryParam("$filter") String filter,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<SupportedSkusResult>> listSupportedCloudServiceSkus(@HostParam("$host") String endpoint,
+            @PathParam("locationName") String locationName, @QueryParam("maxresults") Integer maxresults,
+            @QueryParam("$filter") String filter, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Post(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.Batch/locations/{locationName}/checkNameAvailability")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Post("/subscriptions/{subscriptionId}/providers/Microsoft.Batch/locations/{locationName}/checkNameAvailability")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailability(
-            @HostParam("$host") String endpoint,
-            @PathParam("locationName") String locationName,
-            @QueryParam("api-version") String apiVersion,
+        Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailability(@HostParam("$host") String endpoint,
+            @PathParam("locationName") String locationName, @QueryParam("api-version") String apiVersion,
             @PathParam("subscriptionId") String subscriptionId,
             @BodyParam("application/json") CheckNameAvailabilityParameters parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SupportedSkusResult>> listSupportedVirtualMachineSkusNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
         Mono<Response<SupportedSkusResult>> listSupportedCloudServiceSkusNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the Batch service quotas for the specified subscription at the given location.
-     *
+     * 
      * @param locationName The region for which to retrieve Batch service quotas.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Batch service quotas for the specified subscription at the given location along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BatchLocationQuotaInner>> getQuotasWithResponseAsync(String locationName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .getQuotas(
-                            this.client.getEndpoint(),
-                            locationName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
+            .withContext(context -> service.getQuotas(this.client.getEndpoint(), locationName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the Batch service quotas for the specified subscription at the given location.
-     *
+     * 
      * @param locationName The region for which to retrieve Batch service quotas.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Batch service quotas for the specified subscription at the given location along with {@link Response}
-     *     on successful completion of {@link Mono}.
+     * on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Response<BatchLocationQuotaInner>> getQuotasWithResponseAsync(String locationName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getQuotas(
-                this.client.getEndpoint(),
-                locationName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context);
+        return service.getQuotas(this.client.getEndpoint(), locationName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accept, context);
     }
 
     /**
      * Gets the Batch service quotas for the specified subscription at the given location.
-     *
+     * 
      * @param locationName The region for which to retrieve Batch service quotas.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Batch service quotas for the specified subscription at the given location on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<BatchLocationQuotaInner> getQuotasAsync(String locationName) {
@@ -235,14 +197,14 @@ public final class LocationsClientImpl implements LocationsClient {
 
     /**
      * Gets the Batch service quotas for the specified subscription at the given location.
-     *
+     * 
      * @param locationName The region for which to retrieve Batch service quotas.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the Batch service quotas for the specified subscription at the given location along with {@link
-     *     Response}.
+     * @return the Batch service quotas for the specified subscription at the given location along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BatchLocationQuotaInner> getQuotasWithResponse(String locationName, Context context) {
@@ -251,7 +213,7 @@ public final class LocationsClientImpl implements LocationsClient {
 
     /**
      * Gets the Batch service quotas for the specified subscription at the given location.
-     *
+     * 
      * @param locationName The region for which to retrieve Batch service quotas.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -265,63 +227,42 @@ public final class LocationsClientImpl implements LocationsClient {
 
     /**
      * Gets the list of Batch supported Virtual Machine VM sizes available at the given location.
-     *
+     * 
      * @param locationName The region for which to retrieve Batch service supported SKUs.
      * @param maxresults The maximum number of items to return in the response.
      * @param filter OData filter expression. Valid properties for filtering are "familyName".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Batch supported Virtual Machine VM sizes available at the given location along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return the list of Batch supported Virtual Machine VM sizes available at the given location along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SupportedSkuInner>> listSupportedVirtualMachineSkusSinglePageAsync(
-        String locationName, Integer maxresults, String filter) {
+    private Mono<PagedResponse<SupportedSkuInner>> listSupportedVirtualMachineSkusSinglePageAsync(String locationName,
+        Integer maxresults, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listSupportedVirtualMachineSkus(
-                            this.client.getEndpoint(),
-                            locationName,
-                            maxresults,
-                            filter,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<SupportedSkuInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listSupportedVirtualMachineSkus(this.client.getEndpoint(), locationName,
+                maxresults, filter, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<SupportedSkuInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the list of Batch supported Virtual Machine VM sizes available at the given location.
-     *
+     * 
      * @param locationName The region for which to retrieve Batch service supported SKUs.
      * @param maxresults The maximum number of items to return in the response.
      * @param filter OData filter expression. Valid properties for filtering are "familyName".
@@ -329,53 +270,35 @@ public final class LocationsClientImpl implements LocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Batch supported Virtual Machine VM sizes available at the given location along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return the list of Batch supported Virtual Machine VM sizes available at the given location along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SupportedSkuInner>> listSupportedVirtualMachineSkusSinglePageAsync(
-        String locationName, Integer maxresults, String filter, Context context) {
+    private Mono<PagedResponse<SupportedSkuInner>> listSupportedVirtualMachineSkusSinglePageAsync(String locationName,
+        Integer maxresults, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listSupportedVirtualMachineSkus(
-                this.client.getEndpoint(),
-                locationName,
-                maxresults,
-                filter,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listSupportedVirtualMachineSkus(this.client.getEndpoint(), locationName, maxresults, filter,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets the list of Batch supported Virtual Machine VM sizes available at the given location.
-     *
+     * 
      * @param locationName The region for which to retrieve Batch service supported SKUs.
      * @param maxresults The maximum number of items to return in the response.
      * @param filter OData filter expression. Valid properties for filtering are "familyName".
@@ -383,38 +306,36 @@ public final class LocationsClientImpl implements LocationsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Batch supported Virtual Machine VM sizes available at the given location as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SupportedSkuInner> listSupportedVirtualMachineSkusAsync(
-        String locationName, Integer maxresults, String filter) {
-        return new PagedFlux<>(
-            () -> listSupportedVirtualMachineSkusSinglePageAsync(locationName, maxresults, filter),
+    private PagedFlux<SupportedSkuInner> listSupportedVirtualMachineSkusAsync(String locationName, Integer maxresults,
+        String filter) {
+        return new PagedFlux<>(() -> listSupportedVirtualMachineSkusSinglePageAsync(locationName, maxresults, filter),
             nextLink -> listSupportedVirtualMachineSkusNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets the list of Batch supported Virtual Machine VM sizes available at the given location.
-     *
+     * 
      * @param locationName The region for which to retrieve Batch service supported SKUs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Batch supported Virtual Machine VM sizes available at the given location as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SupportedSkuInner> listSupportedVirtualMachineSkusAsync(String locationName) {
         final Integer maxresults = null;
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listSupportedVirtualMachineSkusSinglePageAsync(locationName, maxresults, filter),
+        return new PagedFlux<>(() -> listSupportedVirtualMachineSkusSinglePageAsync(locationName, maxresults, filter),
             nextLink -> listSupportedVirtualMachineSkusNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets the list of Batch supported Virtual Machine VM sizes available at the given location.
-     *
+     * 
      * @param locationName The region for which to retrieve Batch service supported SKUs.
      * @param maxresults The maximum number of items to return in the response.
      * @param filter OData filter expression. Valid properties for filtering are "familyName".
@@ -423,11 +344,11 @@ public final class LocationsClientImpl implements LocationsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Batch supported Virtual Machine VM sizes available at the given location as paginated
-     *     response with {@link PagedFlux}.
+     * response with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SupportedSkuInner> listSupportedVirtualMachineSkusAsync(
-        String locationName, Integer maxresults, String filter, Context context) {
+    private PagedFlux<SupportedSkuInner> listSupportedVirtualMachineSkusAsync(String locationName, Integer maxresults,
+        String filter, Context context) {
         return new PagedFlux<>(
             () -> listSupportedVirtualMachineSkusSinglePageAsync(locationName, maxresults, filter, context),
             nextLink -> listSupportedVirtualMachineSkusNextSinglePageAsync(nextLink, context));
@@ -435,13 +356,13 @@ public final class LocationsClientImpl implements LocationsClient {
 
     /**
      * Gets the list of Batch supported Virtual Machine VM sizes available at the given location.
-     *
+     * 
      * @param locationName The region for which to retrieve Batch service supported SKUs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Batch supported Virtual Machine VM sizes available at the given location as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SupportedSkuInner> listSupportedVirtualMachineSkus(String locationName) {
@@ -452,7 +373,7 @@ public final class LocationsClientImpl implements LocationsClient {
 
     /**
      * Gets the list of Batch supported Virtual Machine VM sizes available at the given location.
-     *
+     * 
      * @param locationName The region for which to retrieve Batch service supported SKUs.
      * @param maxresults The maximum number of items to return in the response.
      * @param filter OData filter expression. Valid properties for filtering are "familyName".
@@ -461,73 +382,52 @@ public final class LocationsClientImpl implements LocationsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Batch supported Virtual Machine VM sizes available at the given location as paginated
-     *     response with {@link PagedIterable}.
+     * response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SupportedSkuInner> listSupportedVirtualMachineSkus(
-        String locationName, Integer maxresults, String filter, Context context) {
+    public PagedIterable<SupportedSkuInner> listSupportedVirtualMachineSkus(String locationName, Integer maxresults,
+        String filter, Context context) {
         return new PagedIterable<>(listSupportedVirtualMachineSkusAsync(locationName, maxresults, filter, context));
     }
 
     /**
      * Gets the list of Batch supported Cloud Service VM sizes available at the given location.
-     *
+     * 
      * @param locationName The region for which to retrieve Batch service supported SKUs.
      * @param maxresults The maximum number of items to return in the response.
      * @param filter OData filter expression. Valid properties for filtering are "familyName".
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Batch supported Cloud Service VM sizes available at the given location along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return the list of Batch supported Cloud Service VM sizes available at the given location along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SupportedSkuInner>> listSupportedCloudServiceSkusSinglePageAsync(
-        String locationName, Integer maxresults, String filter) {
+    private Mono<PagedResponse<SupportedSkuInner>> listSupportedCloudServiceSkusSinglePageAsync(String locationName,
+        Integer maxresults, String filter) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listSupportedCloudServiceSkus(
-                            this.client.getEndpoint(),
-                            locationName,
-                            maxresults,
-                            filter,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accept,
-                            context))
-            .<PagedResponse<SupportedSkuInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listSupportedCloudServiceSkus(this.client.getEndpoint(), locationName,
+                maxresults, filter, this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context))
+            .<PagedResponse<SupportedSkuInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the list of Batch supported Cloud Service VM sizes available at the given location.
-     *
+     * 
      * @param locationName The region for which to retrieve Batch service supported SKUs.
      * @param maxresults The maximum number of items to return in the response.
      * @param filter OData filter expression. Valid properties for filtering are "familyName".
@@ -535,53 +435,35 @@ public final class LocationsClientImpl implements LocationsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the list of Batch supported Cloud Service VM sizes available at the given location along with {@link
-     *     PagedResponse} on successful completion of {@link Mono}.
+     * @return the list of Batch supported Cloud Service VM sizes available at the given location along with
+     * {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SupportedSkuInner>> listSupportedCloudServiceSkusSinglePageAsync(
-        String locationName, Integer maxresults, String filter, Context context) {
+    private Mono<PagedResponse<SupportedSkuInner>> listSupportedCloudServiceSkusSinglePageAsync(String locationName,
+        Integer maxresults, String filter, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listSupportedCloudServiceSkus(
-                this.client.getEndpoint(),
-                locationName,
-                maxresults,
-                filter,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listSupportedCloudServiceSkus(this.client.getEndpoint(), locationName, maxresults, filter,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets the list of Batch supported Cloud Service VM sizes available at the given location.
-     *
+     * 
      * @param locationName The region for which to retrieve Batch service supported SKUs.
      * @param maxresults The maximum number of items to return in the response.
      * @param filter OData filter expression. Valid properties for filtering are "familyName".
@@ -589,38 +471,36 @@ public final class LocationsClientImpl implements LocationsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Batch supported Cloud Service VM sizes available at the given location as paginated response
-     *     with {@link PagedFlux}.
+     * with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SupportedSkuInner> listSupportedCloudServiceSkusAsync(
-        String locationName, Integer maxresults, String filter) {
-        return new PagedFlux<>(
-            () -> listSupportedCloudServiceSkusSinglePageAsync(locationName, maxresults, filter),
+    private PagedFlux<SupportedSkuInner> listSupportedCloudServiceSkusAsync(String locationName, Integer maxresults,
+        String filter) {
+        return new PagedFlux<>(() -> listSupportedCloudServiceSkusSinglePageAsync(locationName, maxresults, filter),
             nextLink -> listSupportedCloudServiceSkusNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets the list of Batch supported Cloud Service VM sizes available at the given location.
-     *
+     * 
      * @param locationName The region for which to retrieve Batch service supported SKUs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Batch supported Cloud Service VM sizes available at the given location as paginated response
-     *     with {@link PagedFlux}.
+     * with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<SupportedSkuInner> listSupportedCloudServiceSkusAsync(String locationName) {
         final Integer maxresults = null;
         final String filter = null;
-        return new PagedFlux<>(
-            () -> listSupportedCloudServiceSkusSinglePageAsync(locationName, maxresults, filter),
+        return new PagedFlux<>(() -> listSupportedCloudServiceSkusSinglePageAsync(locationName, maxresults, filter),
             nextLink -> listSupportedCloudServiceSkusNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets the list of Batch supported Cloud Service VM sizes available at the given location.
-     *
+     * 
      * @param locationName The region for which to retrieve Batch service supported SKUs.
      * @param maxresults The maximum number of items to return in the response.
      * @param filter OData filter expression. Valid properties for filtering are "familyName".
@@ -629,11 +509,11 @@ public final class LocationsClientImpl implements LocationsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Batch supported Cloud Service VM sizes available at the given location as paginated response
-     *     with {@link PagedFlux}.
+     * with {@link PagedFlux}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    private PagedFlux<SupportedSkuInner> listSupportedCloudServiceSkusAsync(
-        String locationName, Integer maxresults, String filter, Context context) {
+    private PagedFlux<SupportedSkuInner> listSupportedCloudServiceSkusAsync(String locationName, Integer maxresults,
+        String filter, Context context) {
         return new PagedFlux<>(
             () -> listSupportedCloudServiceSkusSinglePageAsync(locationName, maxresults, filter, context),
             nextLink -> listSupportedCloudServiceSkusNextSinglePageAsync(nextLink, context));
@@ -641,13 +521,13 @@ public final class LocationsClientImpl implements LocationsClient {
 
     /**
      * Gets the list of Batch supported Cloud Service VM sizes available at the given location.
-     *
+     * 
      * @param locationName The region for which to retrieve Batch service supported SKUs.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Batch supported Cloud Service VM sizes available at the given location as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<SupportedSkuInner> listSupportedCloudServiceSkus(String locationName) {
@@ -658,7 +538,7 @@ public final class LocationsClientImpl implements LocationsClient {
 
     /**
      * Gets the list of Batch supported Cloud Service VM sizes available at the given location.
-     *
+     * 
      * @param locationName The region for which to retrieve Batch service supported SKUs.
      * @param maxresults The maximum number of items to return in the response.
      * @param filter OData filter expression. Valid properties for filtering are "familyName".
@@ -667,42 +547,38 @@ public final class LocationsClientImpl implements LocationsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the list of Batch supported Cloud Service VM sizes available at the given location as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedIterable<SupportedSkuInner> listSupportedCloudServiceSkus(
-        String locationName, Integer maxresults, String filter, Context context) {
+    public PagedIterable<SupportedSkuInner> listSupportedCloudServiceSkus(String locationName, Integer maxresults,
+        String filter, Context context) {
         return new PagedIterable<>(listSupportedCloudServiceSkusAsync(locationName, maxresults, filter, context));
     }
 
     /**
      * Checks whether the Batch account name is available in the specified region.
-     *
+     * 
      * @param locationName The desired region for the name check.
      * @param parameters Properties needed to check the availability of a name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the CheckNameAvailability operation response along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
-        String locationName, CheckNameAvailabilityParameters parameters) {
+    private Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(String locationName,
+        CheckNameAvailabilityParameters parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -711,23 +587,14 @@ public final class LocationsClientImpl implements LocationsClient {
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .checkNameAvailability(
-                            this.client.getEndpoint(),
-                            locationName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.checkNameAvailability(this.client.getEndpoint(), locationName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), parameters, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Checks whether the Batch account name is available in the specified region.
-     *
+     * 
      * @param locationName The desired region for the name check.
      * @param parameters Properties needed to check the availability of a name.
      * @param context The context to associate with this operation.
@@ -735,25 +602,21 @@ public final class LocationsClientImpl implements LocationsClient {
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the CheckNameAvailability operation response along with {@link Response} on successful completion of
-     *     {@link Mono}.
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(
-        String locationName, CheckNameAvailabilityParameters parameters, Context context) {
+    private Mono<Response<CheckNameAvailabilityResultInner>> checkNameAvailabilityWithResponseAsync(String locationName,
+        CheckNameAvailabilityParameters parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (locationName == null) {
             return Mono.error(new IllegalArgumentException("Parameter locationName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (parameters == null) {
             return Mono.error(new IllegalArgumentException("Parameter parameters is required and cannot be null."));
@@ -762,20 +625,13 @@ public final class LocationsClientImpl implements LocationsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .checkNameAvailability(
-                this.client.getEndpoint(),
-                locationName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                parameters,
-                accept,
-                context);
+        return service.checkNameAvailability(this.client.getEndpoint(), locationName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), parameters, accept, context);
     }
 
     /**
      * Checks whether the Batch account name is available in the specified region.
-     *
+     * 
      * @param locationName The desired region for the name check.
      * @param parameters Properties needed to check the availability of a name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -784,15 +640,15 @@ public final class LocationsClientImpl implements LocationsClient {
      * @return the CheckNameAvailability operation response on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(
-        String locationName, CheckNameAvailabilityParameters parameters) {
+    private Mono<CheckNameAvailabilityResultInner> checkNameAvailabilityAsync(String locationName,
+        CheckNameAvailabilityParameters parameters) {
         return checkNameAvailabilityWithResponseAsync(locationName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Checks whether the Batch account name is available in the specified region.
-     *
+     * 
      * @param locationName The desired region for the name check.
      * @param parameters Properties needed to check the availability of a name.
      * @param context The context to associate with this operation.
@@ -802,14 +658,14 @@ public final class LocationsClientImpl implements LocationsClient {
      * @return the CheckNameAvailability operation response along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(
-        String locationName, CheckNameAvailabilityParameters parameters, Context context) {
+    public Response<CheckNameAvailabilityResultInner> checkNameAvailabilityWithResponse(String locationName,
+        CheckNameAvailabilityParameters parameters, Context context) {
         return checkNameAvailabilityWithResponseAsync(locationName, parameters, context).block();
     }
 
     /**
      * Checks whether the Batch account name is available in the specified region.
-     *
+     * 
      * @param locationName The desired region for the name check.
      * @param parameters Properties needed to check the availability of a name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -818,21 +674,22 @@ public final class LocationsClientImpl implements LocationsClient {
      * @return the CheckNameAvailability operation response.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public CheckNameAvailabilityResultInner checkNameAvailability(
-        String locationName, CheckNameAvailabilityParameters parameters) {
+    public CheckNameAvailabilityResultInner checkNameAvailability(String locationName,
+        CheckNameAvailabilityParameters parameters) {
         return checkNameAvailabilityWithResponse(locationName, parameters, Context.NONE).getValue();
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Batch List supported SKUs operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SupportedSkuInner>> listSupportedVirtualMachineSkusNextSinglePageAsync(String nextLink) {
@@ -840,77 +697,59 @@ public final class LocationsClientImpl implements LocationsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service.listSupportedVirtualMachineSkusNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SupportedSkuInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listSupportedVirtualMachineSkusNext(nextLink, this.client.getEndpoint(),
+                accept, context))
+            .<PagedResponse<SupportedSkuInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Batch List supported SKUs operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SupportedSkuInner>> listSupportedVirtualMachineSkusNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<SupportedSkuInner>> listSupportedVirtualMachineSkusNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listSupportedVirtualMachineSkusNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listSupportedVirtualMachineSkusNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Batch List supported SKUs operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<PagedResponse<SupportedSkuInner>> listSupportedCloudServiceSkusNextSinglePageAsync(String nextLink) {
@@ -918,64 +757,44 @@ public final class LocationsClientImpl implements LocationsClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
-        return FluxUtil
-            .withContext(
-                context ->
-                    service.listSupportedCloudServiceSkusNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<SupportedSkuInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+        return FluxUtil.withContext(
+            context -> service.listSupportedCloudServiceSkusNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<SupportedSkuInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Batch List supported SKUs operation response along with {@link PagedResponse} on successful
-     *     completion of {@link Mono}.
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<SupportedSkuInner>> listSupportedCloudServiceSkusNextSinglePageAsync(
-        String nextLink, Context context) {
+    private Mono<PagedResponse<SupportedSkuInner>> listSupportedCloudServiceSkusNextSinglePageAsync(String nextLink,
+        Context context) {
         if (nextLink == null) {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listSupportedCloudServiceSkusNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listSupportedCloudServiceSkusNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

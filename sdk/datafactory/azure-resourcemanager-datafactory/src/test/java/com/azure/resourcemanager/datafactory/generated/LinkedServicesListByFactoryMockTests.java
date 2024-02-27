@@ -33,7 +33,7 @@ public final class LinkedServicesListByFactoryMockTests {
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
         String responseStr
-            = "{\"value\":[{\"properties\":{\"type\":\"LinkedService\",\"connectVia\":{\"referenceName\":\"sqbyubswzafqrmwd\",\"parameters\":{\"uxwvjcdjvlwczw\":\"datafspzwad\",\"fckrmrbaoidt\":\"datakkscooqnvht\",\"cbvkoughjsxp\":\"datam\"}},\"description\":\"svppfdnih\",\"parameters\":{\"z\":{\"type\":\"Bool\",\"defaultValue\":\"datatsbpvyvsc\"},\"ohfvbgjn\":{\"type\":\"SecureString\",\"defaultValue\":\"dataddaqqklvyib\"},\"j\":{\"type\":\"Bool\",\"defaultValue\":\"datalsanglwnkkz\"},\"ajyrhrywucpdzbnt\":{\"type\":\"Int\",\"defaultValue\":\"datarhjj\"}},\"annotations\":[\"datawnpuyhqayls\",\"dataehlzplzrrhab\",\"datadqnefofujzwqpkhg\",\"datadgyilo\"],\"\":{\"etrglp\":\"datakvufnphbzssa\"}},\"name\":\"cqxdvleo\",\"type\":\"vuhagoqxfxje\",\"etag\":\"oqua\",\"id\":\"dnmhrymeynbi\"}]}";
+            = "{\"value\":[{\"properties\":{\"type\":\"LinkedService\",\"connectVia\":{\"referenceName\":\"nwqeixyj\",\"parameters\":{\"oduvcqowcg\":\"databjibetsvn\",\"skivlzvxmqvlgcp\":\"datafeolhs\",\"wgtypnj\":\"datansiynzdadku\",\"kt\":\"dataxollcsdgmcj\"}},\"description\":\"cmhttiqbn\",\"parameters\":{\"lddvvcwho\":{\"type\":\"Int\",\"defaultValue\":\"dataeavbezzp\"},\"yktlofgpnswv\":{\"type\":\"String\",\"defaultValue\":\"datavzxrfrax\"}},\"annotations\":[\"datakwpgdf\",\"dataoqbekkqs\",\"databyowfrw\",\"datarbzfbds\"],\"\":{\"owtazqexwkkjx\":\"dataflgtq\",\"jxud\":\"datajomnkeaiamh\",\"irttlwuqgaaj\":\"dataclzrot\",\"qsbekmeeowdojpja\":\"datafkdf\"}},\"name\":\"ebtvnskyg\",\"type\":\"qiktsyvzhxzj\",\"etag\":\"zijnykf\",\"id\":\"omdqg\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
@@ -51,13 +51,12 @@ public final class LinkedServicesListByFactoryMockTests {
             new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<LinkedServiceResource> response
-            = manager.linkedServices().listByFactory("lcalyvcxvcpxdeq", "tblt", com.azure.core.util.Context.NONE);
+            = manager.linkedServices().listByFactory("reyrgrgft", "ehxddmaevcjtrw", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("dnmhrymeynbi", response.iterator().next().id());
-        Assertions.assertEquals("sqbyubswzafqrmwd",
-            response.iterator().next().properties().connectVia().referenceName());
-        Assertions.assertEquals("svppfdnih", response.iterator().next().properties().description());
-        Assertions.assertEquals(ParameterType.BOOL,
-            response.iterator().next().properties().parameters().get("z").type());
+        Assertions.assertEquals("omdqg", response.iterator().next().id());
+        Assertions.assertEquals("nwqeixyj", response.iterator().next().properties().connectVia().referenceName());
+        Assertions.assertEquals("cmhttiqbn", response.iterator().next().properties().description());
+        Assertions.assertEquals(ParameterType.INT,
+            response.iterator().next().properties().parameters().get("lddvvcwho").type());
     }
 }

@@ -4,25 +4,25 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-/** Samples for BackupInstances GetBackupInstanceOperationResult. */
+/**
+ * Samples for BackupInstances GetBackupInstanceOperationResult.
+ */
 public final class BackupInstancesGetBackupInstanceOperationResultSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/BackupInstanceOperations/GetBackupInstanceOperationResult.json
+     * x-ms-original-file:
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/
+     * BackupInstanceOperations/GetBackupInstanceOperationResult.json
      */
     /**
      * Sample code: Get BackupInstanceOperationResult.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
-    public static void getBackupInstanceOperationResult(
-        com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupInstances()
-            .getBackupInstanceOperationResultWithResponse(
-                "SampleResourceGroup",
-                "swaggerExample",
-                "testInstance1",
-                "YWUzNDFkMzQtZmM5OS00MmUyLWEzNDMtZGJkMDIxZjlmZjgzOzdmYzBiMzhmLTc2NmItNDM5NS05OWQ1LTVmOGEzNzg4MWQzNA==",
-                com.azure.core.util.Context.NONE);
+    public static void
+        getBackupInstanceOperationResult(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
+        manager.backupInstances().getBackupInstanceOperationResultWithResponse("SampleResourceGroup", "swaggerExample",
+            "testInstance1",
+            "YWUzNDFkMzQtZmM5OS00MmUyLWEzNDMtZGJkMDIxZjlmZjgzOzdmYzBiMzhmLTc2NmItNDM5NS05OWQ1LTVmOGEzNzg4MWQzNA==",
+            com.azure.core.util.Context.NONE);
     }
 }

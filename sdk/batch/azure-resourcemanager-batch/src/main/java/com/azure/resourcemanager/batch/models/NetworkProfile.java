@@ -7,7 +7,9 @@ package com.azure.resourcemanager.batch.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Network profile for Batch account, which contains network rule settings for each endpoint. */
+/**
+ * Network profile for Batch account, which contains network rule settings for each endpoint.
+ */
 @Fluent
 public final class NetworkProfile {
     /*
@@ -22,13 +24,15 @@ public final class NetworkProfile {
     @JsonProperty(value = "nodeManagementAccess")
     private EndpointAccessProfile nodeManagementAccess;
 
-    /** Creates an instance of NetworkProfile class. */
+    /**
+     * Creates an instance of NetworkProfile class.
+     */
     public NetworkProfile() {
     }
 
     /**
      * Get the accountAccess property: Network access profile for batchAccount endpoint (Batch account data plane API).
-     *
+     * 
      * @return the accountAccess value.
      */
     public EndpointAccessProfile accountAccess() {
@@ -37,7 +41,7 @@ public final class NetworkProfile {
 
     /**
      * Set the accountAccess property: Network access profile for batchAccount endpoint (Batch account data plane API).
-     *
+     * 
      * @param accountAccess the accountAccess value to set.
      * @return the NetworkProfile object itself.
      */
@@ -47,9 +51,9 @@ public final class NetworkProfile {
     }
 
     /**
-     * Get the nodeManagementAccess property: Network access profile for nodeManagement endpoint (Batch service managing
-     * compute nodes for Batch pools).
-     *
+     * Get the nodeManagementAccess property: Network access profile for nodeManagement endpoint (Batch service
+     * managing compute nodes for Batch pools).
+     * 
      * @return the nodeManagementAccess value.
      */
     public EndpointAccessProfile nodeManagementAccess() {
@@ -57,9 +61,9 @@ public final class NetworkProfile {
     }
 
     /**
-     * Set the nodeManagementAccess property: Network access profile for nodeManagement endpoint (Batch service managing
-     * compute nodes for Batch pools).
-     *
+     * Set the nodeManagementAccess property: Network access profile for nodeManagement endpoint (Batch service
+     * managing compute nodes for Batch pools).
+     * 
      * @param nodeManagementAccess the nodeManagementAccess value to set.
      * @return the NetworkProfile object itself.
      */
@@ -70,7 +74,7 @@ public final class NetworkProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

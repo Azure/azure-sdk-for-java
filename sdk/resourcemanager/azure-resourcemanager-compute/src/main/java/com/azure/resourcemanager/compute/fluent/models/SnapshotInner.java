@@ -25,7 +25,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.Map;
 
-/** Snapshot resource. */
+/**
+ * Snapshot resource.
+ */
 @Fluent
 public final class SnapshotInner extends Resource {
     /*
@@ -53,13 +55,15 @@ public final class SnapshotInner extends Resource {
     @JsonProperty(value = "properties")
     private SnapshotProperties innerProperties;
 
-    /** Creates an instance of SnapshotInner class. */
+    /**
+     * Creates an instance of SnapshotInner class.
+     */
     public SnapshotInner() {
     }
 
     /**
      * Get the managedBy property: Unused. Always Null.
-     *
+     * 
      * @return the managedBy value.
      */
     public String managedBy() {
@@ -70,7 +74,7 @@ public final class SnapshotInner extends Resource {
      * Get the sku property: The snapshots sku name. Can be Standard_LRS, Premium_LRS, or Standard_ZRS. This is an
      * optional parameter for incremental snapshot and the default behavior is the SKU will be set to the same sku as
      * the previous snapshot.
-     *
+     * 
      * @return the sku value.
      */
     public SnapshotSku sku() {
@@ -81,7 +85,7 @@ public final class SnapshotInner extends Resource {
      * Set the sku property: The snapshots sku name. Can be Standard_LRS, Premium_LRS, or Standard_ZRS. This is an
      * optional parameter for incremental snapshot and the default behavior is the SKU will be set to the same sku as
      * the previous snapshot.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the SnapshotInner object itself.
      */
@@ -93,7 +97,7 @@ public final class SnapshotInner extends Resource {
     /**
      * Get the extendedLocation property: The extended location where the snapshot will be created. Extended location
      * cannot be changed.
-     *
+     * 
      * @return the extendedLocation value.
      */
     public ExtendedLocation extendedLocation() {
@@ -103,7 +107,7 @@ public final class SnapshotInner extends Resource {
     /**
      * Set the extendedLocation property: The extended location where the snapshot will be created. Extended location
      * cannot be changed.
-     *
+     * 
      * @param extendedLocation the extendedLocation value to set.
      * @return the SnapshotInner object itself.
      */
@@ -114,21 +118,25 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Get the innerProperties property: Snapshot resource properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SnapshotProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnapshotInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SnapshotInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -137,7 +145,7 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Get the timeCreated property: The time when the snapshot was created.
-     *
+     * 
      * @return the timeCreated value.
      */
     public OffsetDateTime timeCreated() {
@@ -146,7 +154,7 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Get the osType property: The Operating System type.
-     *
+     * 
      * @return the osType value.
      */
     public OperatingSystemTypes osType() {
@@ -155,7 +163,7 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Set the osType property: The Operating System type.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the SnapshotInner object itself.
      */
@@ -168,8 +176,9 @@ public final class SnapshotInner extends Resource {
     }
 
     /**
-     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
-     *
+     * Get the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks
+     * only.
+     * 
      * @return the hyperVGeneration value.
      */
     public HyperVGeneration hyperVGeneration() {
@@ -177,8 +186,9 @@ public final class SnapshotInner extends Resource {
     }
 
     /**
-     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks only.
-     *
+     * Set the hyperVGeneration property: The hypervisor generation of the Virtual Machine. Applicable to OS disks
+     * only.
+     * 
      * @param hyperVGeneration the hyperVGeneration value to set.
      * @return the SnapshotInner object itself.
      */
@@ -193,7 +203,7 @@ public final class SnapshotInner extends Resource {
     /**
      * Get the purchasePlan property: Purchase plan information for the image from which the source disk for the
      * snapshot was originally created.
-     *
+     * 
      * @return the purchasePlan value.
      */
     public PurchasePlanAutoGenerated purchasePlan() {
@@ -203,7 +213,7 @@ public final class SnapshotInner extends Resource {
     /**
      * Set the purchasePlan property: Purchase plan information for the image from which the source disk for the
      * snapshot was originally created.
-     *
+     * 
      * @param purchasePlan the purchasePlan value to set.
      * @return the SnapshotInner object itself.
      */
@@ -218,7 +228,7 @@ public final class SnapshotInner extends Resource {
     /**
      * Get the supportedCapabilities property: List of supported capabilities for the image from which the source disk
      * from the snapshot was originally created.
-     *
+     * 
      * @return the supportedCapabilities value.
      */
     public SupportedCapabilities supportedCapabilities() {
@@ -228,7 +238,7 @@ public final class SnapshotInner extends Resource {
     /**
      * Set the supportedCapabilities property: List of supported capabilities for the image from which the source disk
      * from the snapshot was originally created.
-     *
+     * 
      * @param supportedCapabilities the supportedCapabilities value to set.
      * @return the SnapshotInner object itself.
      */
@@ -241,9 +251,9 @@ public final class SnapshotInner extends Resource {
     }
 
     /**
-     * Get the creationData property: Disk source information. CreationData information cannot be changed after the disk
-     * has been created.
-     *
+     * Get the creationData property: Disk source information. CreationData information cannot be changed after the
+     * disk has been created.
+     * 
      * @return the creationData value.
      */
     public CreationData creationData() {
@@ -251,9 +261,9 @@ public final class SnapshotInner extends Resource {
     }
 
     /**
-     * Set the creationData property: Disk source information. CreationData information cannot be changed after the disk
-     * has been created.
-     *
+     * Set the creationData property: Disk source information. CreationData information cannot be changed after the
+     * disk has been created.
+     * 
      * @param creationData the creationData value to set.
      * @return the SnapshotInner object itself.
      */
@@ -270,7 +280,7 @@ public final class SnapshotInner extends Resource {
      * size of the disk to create. If this field is present for updates or creation with other options, it indicates a
      * resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's
      * size.
-     *
+     * 
      * @return the diskSizeGB value.
      */
     public Integer diskSizeGB() {
@@ -282,7 +292,7 @@ public final class SnapshotInner extends Resource {
      * size of the disk to create. If this field is present for updates or creation with other options, it indicates a
      * resize. Resizes are only allowed if the disk is not attached to a running VM, and can only increase the disk's
      * size.
-     *
+     * 
      * @param diskSizeGB the diskSizeGB value to set.
      * @return the SnapshotInner object itself.
      */
@@ -296,7 +306,7 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Get the diskSizeBytes property: The size of the disk in bytes. This field is read only.
-     *
+     * 
      * @return the diskSizeBytes value.
      */
     public Long diskSizeBytes() {
@@ -305,7 +315,7 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Get the diskState property: The state of the snapshot.
-     *
+     * 
      * @return the diskState value.
      */
     public DiskState diskState() {
@@ -314,7 +324,7 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Get the uniqueId property: Unique Guid identifying the resource.
-     *
+     * 
      * @return the uniqueId value.
      */
     public String uniqueId() {
@@ -324,7 +334,7 @@ public final class SnapshotInner extends Resource {
     /**
      * Get the encryptionSettingsCollection property: Encryption settings collection used be Azure Disk Encryption, can
      * contain multiple encryption settings per disk or snapshot.
-     *
+     * 
      * @return the encryptionSettingsCollection value.
      */
     public EncryptionSettingsCollection encryptionSettingsCollection() {
@@ -334,7 +344,7 @@ public final class SnapshotInner extends Resource {
     /**
      * Set the encryptionSettingsCollection property: Encryption settings collection used be Azure Disk Encryption, can
      * contain multiple encryption settings per disk or snapshot.
-     *
+     * 
      * @param encryptionSettingsCollection the encryptionSettingsCollection value to set.
      * @return the SnapshotInner object itself.
      */
@@ -348,7 +358,7 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Get the provisioningState property: The disk provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -358,7 +368,7 @@ public final class SnapshotInner extends Resource {
     /**
      * Get the incremental property: Whether a snapshot is incremental. Incremental snapshots on the same disk occupy
      * less space than full snapshots and can be diffed.
-     *
+     * 
      * @return the incremental value.
      */
     public Boolean incremental() {
@@ -368,7 +378,7 @@ public final class SnapshotInner extends Resource {
     /**
      * Set the incremental property: Whether a snapshot is incremental. Incremental snapshots on the same disk occupy
      * less space than full snapshots and can be diffed.
-     *
+     * 
      * @param incremental the incremental value to set.
      * @return the SnapshotInner object itself.
      */
@@ -383,7 +393,7 @@ public final class SnapshotInner extends Resource {
     /**
      * Get the incrementalSnapshotFamilyId property: Incremental snapshots for a disk share an incremental snapshot
      * family id. The Get Page Range Diff API can only be called on incremental snapshots with the same family id.
-     *
+     * 
      * @return the incrementalSnapshotFamilyId value.
      */
     public String incrementalSnapshotFamilyId() {
@@ -393,7 +403,7 @@ public final class SnapshotInner extends Resource {
     /**
      * Get the encryption property: Encryption property can be used to encrypt data at rest with customer managed keys
      * or platform managed keys.
-     *
+     * 
      * @return the encryption value.
      */
     public Encryption encryption() {
@@ -403,7 +413,7 @@ public final class SnapshotInner extends Resource {
     /**
      * Set the encryption property: Encryption property can be used to encrypt data at rest with customer managed keys
      * or platform managed keys.
-     *
+     * 
      * @param encryption the encryption value to set.
      * @return the SnapshotInner object itself.
      */
@@ -417,7 +427,7 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Get the networkAccessPolicy property: Policy for accessing the disk via network.
-     *
+     * 
      * @return the networkAccessPolicy value.
      */
     public NetworkAccessPolicy networkAccessPolicy() {
@@ -426,7 +436,7 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Set the networkAccessPolicy property: Policy for accessing the disk via network.
-     *
+     * 
      * @param networkAccessPolicy the networkAccessPolicy value to set.
      * @return the SnapshotInner object itself.
      */
@@ -440,7 +450,7 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Get the diskAccessId property: ARM id of the DiskAccess resource for using private endpoints on disks.
-     *
+     * 
      * @return the diskAccessId value.
      */
     public String diskAccessId() {
@@ -449,7 +459,7 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Set the diskAccessId property: ARM id of the DiskAccess resource for using private endpoints on disks.
-     *
+     * 
      * @param diskAccessId the diskAccessId value to set.
      * @return the SnapshotInner object itself.
      */
@@ -463,7 +473,7 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Get the securityProfile property: Contains the security related information for the resource.
-     *
+     * 
      * @return the securityProfile value.
      */
     public DiskSecurityProfile securityProfile() {
@@ -472,7 +482,7 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Set the securityProfile property: Contains the security related information for the resource.
-     *
+     * 
      * @param securityProfile the securityProfile value to set.
      * @return the SnapshotInner object itself.
      */
@@ -486,7 +496,7 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Get the supportsHibernation property: Indicates the OS on a snapshot supports hibernation.
-     *
+     * 
      * @return the supportsHibernation value.
      */
     public Boolean supportsHibernation() {
@@ -495,7 +505,7 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Set the supportsHibernation property: Indicates the OS on a snapshot supports hibernation.
-     *
+     * 
      * @param supportsHibernation the supportsHibernation value to set.
      * @return the SnapshotInner object itself.
      */
@@ -509,7 +519,7 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Get the publicNetworkAccess property: Policy for controlling export on the disk.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -518,7 +528,7 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Set the publicNetworkAccess property: Policy for controlling export on the disk.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the SnapshotInner object itself.
      */
@@ -533,7 +543,7 @@ public final class SnapshotInner extends Resource {
     /**
      * Get the completionPercent property: Percentage complete for the background copy when a resource is created via
      * the CopyStart operation.
-     *
+     * 
      * @return the completionPercent value.
      */
     public Float completionPercent() {
@@ -543,7 +553,7 @@ public final class SnapshotInner extends Resource {
     /**
      * Set the completionPercent property: Percentage complete for the background copy when a resource is created via
      * the CopyStart operation.
-     *
+     * 
      * @param completionPercent the completionPercent value to set.
      * @return the SnapshotInner object itself.
      */
@@ -558,7 +568,7 @@ public final class SnapshotInner extends Resource {
     /**
      * Get the copyCompletionError property: Indicates the error details if the background copy of a resource created
      * via the CopyStart operation fails.
-     *
+     * 
      * @return the copyCompletionError value.
      */
     public CopyCompletionError copyCompletionError() {
@@ -568,7 +578,7 @@ public final class SnapshotInner extends Resource {
     /**
      * Set the copyCompletionError property: Indicates the error details if the background copy of a resource created
      * via the CopyStart operation fails.
-     *
+     * 
      * @param copyCompletionError the copyCompletionError value to set.
      * @return the SnapshotInner object itself.
      */
@@ -581,9 +591,9 @@ public final class SnapshotInner extends Resource {
     }
 
     /**
-     * Get the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
-     * or snapshot.
-     *
+     * Get the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a
+     * disk or snapshot.
+     * 
      * @return the dataAccessAuthMode value.
      */
     public DataAccessAuthMode dataAccessAuthMode() {
@@ -591,9 +601,9 @@ public final class SnapshotInner extends Resource {
     }
 
     /**
-     * Set the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a disk
-     * or snapshot.
-     *
+     * Set the dataAccessAuthMode property: Additional authentication requirements when exporting or uploading to a
+     * disk or snapshot.
+     * 
      * @param dataAccessAuthMode the dataAccessAuthMode value to set.
      * @return the SnapshotInner object itself.
      */
@@ -607,7 +617,7 @@ public final class SnapshotInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

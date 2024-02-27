@@ -7,12 +7,14 @@ package com.azure.resourcemanager.batch.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Base certificate properties. */
+/**
+ * Base certificate properties.
+ */
 @Fluent
 public class CertificateBaseProperties {
     /*
      * The algorithm of the certificate thumbprint.
-     *
+     * 
      * This must match the first portion of the certificate name. Currently required to be 'SHA1'.
      */
     @JsonProperty(value = "thumbprintAlgorithm")
@@ -20,7 +22,7 @@ public class CertificateBaseProperties {
 
     /*
      * The thumbprint of the certificate.
-     *
+     * 
      * This must match the thumbprint from the name.
      */
     @JsonProperty(value = "thumbprint")
@@ -32,15 +34,17 @@ public class CertificateBaseProperties {
     @JsonProperty(value = "format")
     private CertificateFormat format;
 
-    /** Creates an instance of CertificateBaseProperties class. */
+    /**
+     * Creates an instance of CertificateBaseProperties class.
+     */
     public CertificateBaseProperties() {
     }
 
     /**
      * Get the thumbprintAlgorithm property: The algorithm of the certificate thumbprint.
-     *
-     * <p>This must match the first portion of the certificate name. Currently required to be 'SHA1'.
-     *
+     * 
+     * This must match the first portion of the certificate name. Currently required to be 'SHA1'.
+     * 
      * @return the thumbprintAlgorithm value.
      */
     public String thumbprintAlgorithm() {
@@ -49,9 +53,9 @@ public class CertificateBaseProperties {
 
     /**
      * Set the thumbprintAlgorithm property: The algorithm of the certificate thumbprint.
-     *
-     * <p>This must match the first portion of the certificate name. Currently required to be 'SHA1'.
-     *
+     * 
+     * This must match the first portion of the certificate name. Currently required to be 'SHA1'.
+     * 
      * @param thumbprintAlgorithm the thumbprintAlgorithm value to set.
      * @return the CertificateBaseProperties object itself.
      */
@@ -62,9 +66,9 @@ public class CertificateBaseProperties {
 
     /**
      * Get the thumbprint property: The thumbprint of the certificate.
-     *
-     * <p>This must match the thumbprint from the name.
-     *
+     * 
+     * This must match the thumbprint from the name.
+     * 
      * @return the thumbprint value.
      */
     public String thumbprint() {
@@ -73,9 +77,9 @@ public class CertificateBaseProperties {
 
     /**
      * Set the thumbprint property: The thumbprint of the certificate.
-     *
-     * <p>This must match the thumbprint from the name.
-     *
+     * 
+     * This must match the thumbprint from the name.
+     * 
      * @param thumbprint the thumbprint value to set.
      * @return the CertificateBaseProperties object itself.
      */
@@ -86,7 +90,7 @@ public class CertificateBaseProperties {
 
     /**
      * Get the format property: The format of the certificate - either Pfx or Cer. If omitted, the default is Pfx.
-     *
+     * 
      * @return the format value.
      */
     public CertificateFormat format() {
@@ -95,7 +99,7 @@ public class CertificateBaseProperties {
 
     /**
      * Set the format property: The format of the certificate - either Pfx or Cer. If omitted, the default is Pfx.
-     *
+     * 
      * @param format the format value to set.
      * @return the CertificateBaseProperties object itself.
      */
@@ -106,7 +110,7 @@ public class CertificateBaseProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

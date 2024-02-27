@@ -7,27 +7,43 @@ package com.azure.resourcemanager.batch.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** The provisioned state of the resource. */
+/**
+ * The provisioned state of the resource.
+ */
 public enum ProvisioningState {
-    /** Enum value Invalid. */
+    /**
+     * Enum value Invalid.
+     */
     INVALID("Invalid"),
 
-    /** Enum value Creating. */
+    /**
+     * Enum value Creating.
+     */
     CREATING("Creating"),
 
-    /** Enum value Deleting. */
+    /**
+     * Enum value Deleting.
+     */
     DELETING("Deleting"),
 
-    /** Enum value Succeeded. */
+    /**
+     * Enum value Succeeded.
+     */
     SUCCEEDED("Succeeded"),
 
-    /** Enum value Failed. */
+    /**
+     * Enum value Failed.
+     */
     FAILED("Failed"),
 
-    /** Enum value Cancelled. */
+    /**
+     * Enum value Cancelled.
+     */
     CANCELLED("Cancelled");
 
-    /** The actual serialized value for a ProvisioningState instance. */
+    /**
+     * The actual serialized value for a ProvisioningState instance.
+     */
     private final String value;
 
     ProvisioningState(String value) {
@@ -36,7 +52,7 @@ public enum ProvisioningState {
 
     /**
      * Parses a serialized value to a ProvisioningState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ProvisioningState object, or null if unable to parse.
      */
@@ -54,7 +70,9 @@ public enum ProvisioningState {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

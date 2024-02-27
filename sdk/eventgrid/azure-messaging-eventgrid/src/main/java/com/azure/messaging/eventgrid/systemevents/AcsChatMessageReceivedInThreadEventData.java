@@ -5,31 +5,38 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.time.OffsetDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Map;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageReceivedInThread event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.ChatMessageReceivedInThread event.
+ */
 @Fluent
 public final class AcsChatMessageReceivedInThreadEventData extends AcsChatMessageEventInThreadBaseProperties {
     /*
      * The body of the chat message
      */
-    @JsonProperty(value = "messageBody")
     private String messageBody;
 
     /*
      * The chat message metadata
      */
-    @JsonProperty(value = "metadata")
     private Map<String, String> metadata;
 
-    /** Creates an instance of AcsChatMessageReceivedInThreadEventData class. */
-    public AcsChatMessageReceivedInThreadEventData() {}
+    /**
+     * Creates an instance of AcsChatMessageReceivedInThreadEventData class.
+     */
+    public AcsChatMessageReceivedInThreadEventData() {
+    }
 
     /**
      * Get the messageBody property: The body of the chat message.
-     *
+     * 
      * @return the messageBody value.
      */
     public String getMessageBody() {
@@ -38,7 +45,7 @@ public final class AcsChatMessageReceivedInThreadEventData extends AcsChatMessag
 
     /**
      * Set the messageBody property: The body of the chat message.
-     *
+     * 
      * @param messageBody the messageBody value to set.
      * @return the AcsChatMessageReceivedInThreadEventData object itself.
      */
@@ -49,7 +56,7 @@ public final class AcsChatMessageReceivedInThreadEventData extends AcsChatMessag
 
     /**
      * Get the metadata property: The chat message metadata.
-     *
+     * 
      * @return the metadata value.
      */
     public Map<String, String> getMetadata() {
@@ -58,7 +65,7 @@ public final class AcsChatMessageReceivedInThreadEventData extends AcsChatMessag
 
     /**
      * Set the metadata property: The chat message metadata.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the AcsChatMessageReceivedInThreadEventData object itself.
      */
@@ -67,60 +74,142 @@ public final class AcsChatMessageReceivedInThreadEventData extends AcsChatMessag
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageReceivedInThreadEventData setMessageId(String messageId) {
         super.setMessageId(messageId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public AcsChatMessageReceivedInThreadEventData setSenderCommunicationIdentifier(
-            CommunicationIdentifierModel senderCommunicationIdentifier) {
+    public AcsChatMessageReceivedInThreadEventData
+        setSenderCommunicationIdentifier(CommunicationIdentifierModel senderCommunicationIdentifier) {
         super.setSenderCommunicationIdentifier(senderCommunicationIdentifier);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageReceivedInThreadEventData setSenderDisplayName(String senderDisplayName) {
         super.setSenderDisplayName(senderDisplayName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageReceivedInThreadEventData setComposeTime(OffsetDateTime composeTime) {
         super.setComposeTime(composeTime);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageReceivedInThreadEventData setType(String type) {
         super.setType(type);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageReceivedInThreadEventData setVersion(Long version) {
         super.setVersion(version);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageReceivedInThreadEventData setTransactionId(String transactionId) {
         super.setTransactionId(transactionId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsChatMessageReceivedInThreadEventData setThreadId(String threadId) {
         super.setThreadId(threadId);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("transactionId", getTransactionId());
+        jsonWriter.writeStringField("threadId", getThreadId());
+        jsonWriter.writeStringField("messageId", getMessageId());
+        jsonWriter.writeJsonField("senderCommunicationIdentifier", getSenderCommunicationIdentifier());
+        jsonWriter.writeStringField("senderDisplayName", getSenderDisplayName());
+        jsonWriter.writeStringField("composeTime",
+            getComposeTime() == null ? null : DateTimeFormatter.ISO_OFFSET_DATE_TIME.format(getComposeTime()));
+        jsonWriter.writeStringField("type", getType());
+        jsonWriter.writeNumberField("version", getVersion());
+        jsonWriter.writeStringField("messageBody", this.messageBody);
+        jsonWriter.writeMapField("metadata", this.metadata, (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsChatMessageReceivedInThreadEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsChatMessageReceivedInThreadEventData if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsChatMessageReceivedInThreadEventData.
+     */
+    public static AcsChatMessageReceivedInThreadEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsChatMessageReceivedInThreadEventData deserializedAcsChatMessageReceivedInThreadEventData
+                = new AcsChatMessageReceivedInThreadEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("transactionId".equals(fieldName)) {
+                    deserializedAcsChatMessageReceivedInThreadEventData.setTransactionId(reader.getString());
+                } else if ("threadId".equals(fieldName)) {
+                    deserializedAcsChatMessageReceivedInThreadEventData.setThreadId(reader.getString());
+                } else if ("messageId".equals(fieldName)) {
+                    deserializedAcsChatMessageReceivedInThreadEventData.setMessageId(reader.getString());
+                } else if ("senderCommunicationIdentifier".equals(fieldName)) {
+                    deserializedAcsChatMessageReceivedInThreadEventData
+                        .setSenderCommunicationIdentifier(CommunicationIdentifierModel.fromJson(reader));
+                } else if ("senderDisplayName".equals(fieldName)) {
+                    deserializedAcsChatMessageReceivedInThreadEventData.setSenderDisplayName(reader.getString());
+                } else if ("composeTime".equals(fieldName)) {
+                    deserializedAcsChatMessageReceivedInThreadEventData.setComposeTime(
+                        reader.getNullable(nonNullReader -> OffsetDateTime.parse(nonNullReader.getString())));
+                } else if ("type".equals(fieldName)) {
+                    deserializedAcsChatMessageReceivedInThreadEventData.setType(reader.getString());
+                } else if ("version".equals(fieldName)) {
+                    deserializedAcsChatMessageReceivedInThreadEventData
+                        .setVersion(reader.getNullable(JsonReader::getLong));
+                } else if ("messageBody".equals(fieldName)) {
+                    deserializedAcsChatMessageReceivedInThreadEventData.messageBody = reader.getString();
+                } else if ("metadata".equals(fieldName)) {
+                    Map<String, String> metadata = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsChatMessageReceivedInThreadEventData.metadata = metadata;
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsChatMessageReceivedInThreadEventData;
+        });
     }
 }

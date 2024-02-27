@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The RestoreJobRecoveryPointDetails model. */
+/**
+ * The RestoreJobRecoveryPointDetails model.
+ */
 @Fluent
 public final class RestoreJobRecoveryPointDetails {
     /*
@@ -23,13 +25,15 @@ public final class RestoreJobRecoveryPointDetails {
     @JsonProperty(value = "recoveryPointTime")
     private OffsetDateTime recoveryPointTime;
 
-    /** Creates an instance of RestoreJobRecoveryPointDetails class. */
+    /**
+     * Creates an instance of RestoreJobRecoveryPointDetails class.
+     */
     public RestoreJobRecoveryPointDetails() {
     }
 
     /**
      * Get the recoveryPointId property: The recoveryPointID property.
-     *
+     * 
      * @return the recoveryPointId value.
      */
     public String recoveryPointId() {
@@ -38,7 +42,7 @@ public final class RestoreJobRecoveryPointDetails {
 
     /**
      * Set the recoveryPointId property: The recoveryPointID property.
-     *
+     * 
      * @param recoveryPointId the recoveryPointId value to set.
      * @return the RestoreJobRecoveryPointDetails object itself.
      */
@@ -49,7 +53,7 @@ public final class RestoreJobRecoveryPointDetails {
 
     /**
      * Get the recoveryPointTime property: The recoveryPointTime property.
-     *
+     * 
      * @return the recoveryPointTime value.
      */
     public OffsetDateTime recoveryPointTime() {
@@ -58,7 +62,7 @@ public final class RestoreJobRecoveryPointDetails {
 
     /**
      * Set the recoveryPointTime property: The recoveryPointTime property.
-     *
+     * 
      * @param recoveryPointTime the recoveryPointTime value to set.
      * @return the RestoreJobRecoveryPointDetails object itself.
      */
@@ -69,7 +73,7 @@ public final class RestoreJobRecoveryPointDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

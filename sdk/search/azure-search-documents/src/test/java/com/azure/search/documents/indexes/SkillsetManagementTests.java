@@ -431,7 +431,7 @@ public class SkillsetManagementTests extends SearchTestBase {
     }
 
     @Test
-    public void canCreateAndListSkillsetsSync() {
+    public void canCreateAndListSkillsetsSyncAndAsync() {
         SearchIndexerSkillset skillset1 = createSkillsetWithCognitiveServicesKey();
         SearchIndexerSkillset skillset2 = createSkillsetWithEntityRecognitionDefaultSettings();
 
@@ -449,30 +449,15 @@ public class SkillsetManagementTests extends SearchTestBase {
 
         compareMaps(expectedSkillsets, actualSkillsets,
             (expected, actual) -> assertObjectEquals(expected, actual, true));
-    }
-
-    @Test
-    public void canCreateAndListSkillsetsAsync() {
-        SearchIndexerSkillset skillset1 = createSkillsetWithCognitiveServicesKey();
-        SearchIndexerSkillset skillset2 = createSkillsetWithEntityRecognitionDefaultSettings();
-
-        client.createSkillset(skillset1);
-        skillsetsToDelete.add(skillset1.getName());
-        client.createSkillset(skillset2);
-        skillsetsToDelete.add(skillset2.getName());
-
-        Map<String, SearchIndexerSkillset> expectedSkillsets = new HashMap<>();
-        expectedSkillsets.put(skillset1.getName(), skillset1);
-        expectedSkillsets.put(skillset2.getName(), skillset2);
 
         StepVerifier.create(asyncClient.listSkillsets().collectMap(SearchIndexerSkillset::getName))
-            .assertNext(actualSkillsets -> compareMaps(expectedSkillsets, actualSkillsets,
+            .assertNext(actualSkillsetsAsync -> compareMaps(expectedSkillsets, actualSkillsetsAsync,
                 (expected, actual) -> assertObjectEquals(expected, actual, true)))
             .verifyComplete();
     }
 
     @Test
-    public void canListSkillsetsWithSelectedFieldSync() {
+    public void canListSkillsetsWithSelectedFieldSyncAndAsync() {
         SearchIndexerSkillset skillset1 = createSkillsetWithCognitiveServicesKey();
         SearchIndexerSkillset skillset2 = createSkillsetWithEntityRecognitionDefaultSettings();
 
@@ -487,24 +472,11 @@ public class SkillsetManagementTests extends SearchTestBase {
 
         assertEquals(expectedSkillsetNames.size(), actualSkillsetNames.size());
         assertTrue(actualSkillsetNames.containsAll(expectedSkillsetNames));
-    }
-
-    @Test
-    public void canListSkillsetsWithSelectedFieldAsync() {
-        SearchIndexerSkillset skillset1 = createSkillsetWithCognitiveServicesKey();
-        SearchIndexerSkillset skillset2 = createSkillsetWithEntityRecognitionDefaultSettings();
-
-        client.createSkillset(skillset1);
-        skillsetsToDelete.add(skillset1.getName());
-        client.createSkillset(skillset2);
-        skillsetsToDelete.add(skillset2.getName());
-
-        Set<String> expectedSkillsetNames = new HashSet<>(Arrays.asList(skillset1.getName(), skillset2.getName()));
 
         StepVerifier.create(asyncClient.listSkillsetNames().collect(Collectors.toSet()))
-            .assertNext(actualSkillsetNames -> {
-                assertEquals(expectedSkillsetNames.size(), actualSkillsetNames.size());
-                assertTrue(actualSkillsetNames.containsAll(expectedSkillsetNames));
+            .assertNext(actualSkillsetNamesAsync -> {
+                assertEquals(actualSkillsetNamesAsync.size(), actualSkillsetNames.size());
+                assertTrue(actualSkillsetNamesAsync.containsAll(expectedSkillsetNames));
             })
             .verifyComplete();
     }
@@ -817,7 +789,7 @@ public class SkillsetManagementTests extends SearchTestBase {
     }
 
     @Test
-    public void createOrUpdateSkillsetIfNotChangedFailsWhenResourceChangedSync() {
+    public void createOrUpdateSkillsetIfNotChangedFailsWhenResourceChangedSyncAndAsync() {
         SearchIndexerSkillset original = client.createOrUpdateSkillsetWithResponse(
             createSkillsetWithOcrDefaultSettings(false), false, Context.NONE).getValue();
         skillsetsToDelete.add(original.getName());
@@ -830,29 +802,13 @@ public class SkillsetManagementTests extends SearchTestBase {
             () -> client.createOrUpdateSkillsetWithResponse(original, true, Context.NONE));
         assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
 
-        validateETagUpdate(original.getETag(), updated.getETag());
-    }
-
-    @Test
-    public void createOrUpdateSkillsetIfNotChangedFailsWhenResourceChangedAsync() {
-        Mono<Response<SearchIndexerSkillset>> createUpdateAndFailToUpdateMono =
-            asyncClient.createOrUpdateSkillsetWithResponse(createSkillsetWithOcrDefaultSettings(false), false)
-                .flatMap(response -> {
-                    SearchIndexerSkillset original = response.getValue();
-                    String originalETag = original.getETag();
-                    skillsetsToDelete.add(original.getName());
-
-                    return asyncClient.createOrUpdateSkillsetWithResponse(mutateSkillsInSkillset(original), true)
-                        .map(update -> Tuples.of(originalETag, update.getValue().getETag(), original));
-                })
-                .doOnNext(etags -> validateETagUpdate(etags.getT1(), etags.getT2()))
-                .flatMap(original -> asyncClient.createOrUpdateSkillsetWithResponse(original.getT3(), true));
-
-        StepVerifier.create(createUpdateAndFailToUpdateMono)
+        StepVerifier.create(asyncClient.createOrUpdateSkillsetWithResponse(original, true))
             .verifyErrorSatisfies(throwable -> {
-                HttpResponseException ex = assertInstanceOf(HttpResponseException.class, throwable);
-                assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
+                HttpResponseException exAsync = assertInstanceOf(HttpResponseException.class, throwable);
+                assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, exAsync.getResponse().getStatusCode());
             });
+
+        validateETagUpdate(original.getETag(), updated.getETag());
     }
 
     @Test
@@ -894,7 +850,7 @@ public class SkillsetManagementTests extends SearchTestBase {
     }
 
     @Test
-    public void deleteSkillsetIfExistsWorksOnlyWhenResourceExistsSync() {
+    public void deleteSkillsetIfExistsWorksOnlyWhenResourceExistsSyncAndAsync() {
         SearchIndexerSkillset skillset = client.createOrUpdateSkillsetWithResponse(
                 createSkillsetWithOcrDefaultSettings(false), false, Context.NONE)
             .getValue();
@@ -904,21 +860,11 @@ public class SkillsetManagementTests extends SearchTestBase {
         HttpResponseException ex = assertThrows(HttpResponseException.class,
             () -> client.deleteSkillsetWithResponse(skillset, true, Context.NONE));
         assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
-    }
-
-    @Test
-    public void deleteSkillsetIfExistsWorksOnlyWhenResourceExistsAsync() {
-        SearchIndexerSkillset skillset = asyncClient.createOrUpdateSkillsetWithResponse(
-                createSkillsetWithOcrDefaultSettings(false), false)
-            .map(Response::getValue)
-            .block();
-
-        asyncClient.deleteSkillsetWithResponse(skillset, true).block();
 
         StepVerifier.create(asyncClient.deleteSkillsetWithResponse(skillset, true))
             .verifyErrorSatisfies(throwable -> {
-                HttpResponseException ex = assertInstanceOf(HttpResponseException.class, throwable);
-                assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
+                HttpResponseException exAsync = assertInstanceOf(HttpResponseException.class, throwable);
+                assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, exAsync.getResponse().getStatusCode());
             });
     }
 

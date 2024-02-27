@@ -7,7 +7,9 @@ package com.azure.resourcemanager.netapp.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Log Definition of a single resource metric. */
+/**
+ * Log Definition of a single resource metric.
+ */
 @Fluent
 public final class LogSpecification {
     /*
@@ -22,13 +24,15 @@ public final class LogSpecification {
     @JsonProperty(value = "displayName")
     private String displayName;
 
-    /** Creates an instance of LogSpecification class. */
+    /**
+     * Creates an instance of LogSpecification class.
+     */
     public LogSpecification() {
     }
 
     /**
      * Get the name property: Name of log specification.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class LogSpecification {
 
     /**
      * Set the name property: Name of log specification.
-     *
+     * 
      * @param name the name value to set.
      * @return the LogSpecification object itself.
      */
@@ -48,7 +52,7 @@ public final class LogSpecification {
 
     /**
      * Get the displayName property: Display name of log specification.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -57,7 +61,7 @@ public final class LogSpecification {
 
     /**
      * Set the displayName property: Display name of log specification.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the LogSpecification object itself.
      */
@@ -68,7 +72,7 @@ public final class LogSpecification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

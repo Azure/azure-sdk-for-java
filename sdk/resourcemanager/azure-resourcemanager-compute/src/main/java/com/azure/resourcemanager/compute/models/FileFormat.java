@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Used to specify the file format when making request for SAS on a VHDX file format snapshot. */
+/**
+ * Used to specify the file format when making request for SAS on a VHDX file format snapshot.
+ */
 public final class FileFormat extends ExpandableStringEnum<FileFormat> {
-    /** Static value VHD for FileFormat. */
+    /**
+     * Static value VHD for FileFormat.
+     */
     public static final FileFormat VHD = fromString("VHD");
 
-    /** Static value VHDX for FileFormat. */
+    /**
+     * Static value VHDX for FileFormat.
+     */
     public static final FileFormat VHDX = fromString("VHDX");
 
     /**
      * Creates a new instance of FileFormat value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class FileFormat extends ExpandableStringEnum<FileFormat> {
 
     /**
      * Creates or finds a FileFormat from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding FileFormat.
      */
@@ -38,7 +44,7 @@ public final class FileFormat extends ExpandableStringEnum<FileFormat> {
 
     /**
      * Gets known FileFormat values.
-     *
+     * 
      * @return known FileFormat values.
      */
     public static Collection<FileFormat> values() {

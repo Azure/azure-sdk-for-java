@@ -33,7 +33,7 @@ public interface KubernetesVersionProfile {
     String type();
 
     /**
-     * Gets the extendedLocation property: Extended Location definition.
+     * Gets the extendedLocation property: Extended location pointing to the underlying infrastructure.
      * 
      * @return the extendedLocation value.
      */

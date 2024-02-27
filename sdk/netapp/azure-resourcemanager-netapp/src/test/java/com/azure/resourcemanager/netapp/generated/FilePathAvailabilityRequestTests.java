@@ -11,10 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class FilePathAvailabilityRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FilePathAvailabilityRequest model =
-            BinaryData
-                .fromString("{\"name\":\"ovm\",\"subnetId\":\"okacspk\"}")
-                .toObject(FilePathAvailabilityRequest.class);
+        FilePathAvailabilityRequest model = BinaryData.fromString("{\"name\":\"ovm\",\"subnetId\":\"okacspk\"}")
+            .toObject(FilePathAvailabilityRequest.class);
         Assertions.assertEquals("ovm", model.name());
         Assertions.assertEquals("okacspk", model.subnetId());
     }

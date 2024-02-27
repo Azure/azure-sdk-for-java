@@ -13,7 +13,9 @@ import com.azure.resourcemanager.network.models.PacketCaptureTargetType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Parameters that define the create packet capture operation. */
+/**
+ * Parameters that define the create packet capture operation.
+ */
 @Fluent
 public class PacketCaptureParameters {
     /*
@@ -65,14 +67,16 @@ public class PacketCaptureParameters {
     @JsonProperty(value = "filters")
     private List<PacketCaptureFilter> filters;
 
-    /** Creates an instance of PacketCaptureParameters class. */
+    /**
+     * Creates an instance of PacketCaptureParameters class.
+     */
     public PacketCaptureParameters() {
     }
 
     /**
-     * Get the target property: The ID of the targeted resource, only AzureVM and AzureVMSS as target type are currently
-     * supported.
-     *
+     * Get the target property: The ID of the targeted resource, only AzureVM and AzureVMSS as target type are
+     * currently supported.
+     * 
      * @return the target value.
      */
     public String target() {
@@ -80,9 +84,9 @@ public class PacketCaptureParameters {
     }
 
     /**
-     * Set the target property: The ID of the targeted resource, only AzureVM and AzureVMSS as target type are currently
-     * supported.
-     *
+     * Set the target property: The ID of the targeted resource, only AzureVM and AzureVMSS as target type are
+     * currently supported.
+     * 
      * @param target the target value to set.
      * @return the PacketCaptureParameters object itself.
      */
@@ -92,9 +96,9 @@ public class PacketCaptureParameters {
     }
 
     /**
-     * Get the scope property: A list of AzureVMSS instances which can be included or excluded to run packet capture. If
-     * both included and excluded are empty, then the packet capture will run on all instances of AzureVMSS.
-     *
+     * Get the scope property: A list of AzureVMSS instances which can be included or excluded to run packet capture.
+     * If both included and excluded are empty, then the packet capture will run on all instances of AzureVMSS.
+     * 
      * @return the scope value.
      */
     public PacketCaptureMachineScope scope() {
@@ -102,9 +106,9 @@ public class PacketCaptureParameters {
     }
 
     /**
-     * Set the scope property: A list of AzureVMSS instances which can be included or excluded to run packet capture. If
-     * both included and excluded are empty, then the packet capture will run on all instances of AzureVMSS.
-     *
+     * Set the scope property: A list of AzureVMSS instances which can be included or excluded to run packet capture.
+     * If both included and excluded are empty, then the packet capture will run on all instances of AzureVMSS.
+     * 
      * @param scope the scope value to set.
      * @return the PacketCaptureParameters object itself.
      */
@@ -115,7 +119,7 @@ public class PacketCaptureParameters {
 
     /**
      * Get the targetType property: Target type of the resource provided.
-     *
+     * 
      * @return the targetType value.
      */
     public PacketCaptureTargetType targetType() {
@@ -124,7 +128,7 @@ public class PacketCaptureParameters {
 
     /**
      * Set the targetType property: Target type of the resource provided.
-     *
+     * 
      * @param targetType the targetType value to set.
      * @return the PacketCaptureParameters object itself.
      */
@@ -134,8 +138,9 @@ public class PacketCaptureParameters {
     }
 
     /**
-     * Get the bytesToCapturePerPacket property: Number of bytes captured per packet, the remaining bytes are truncated.
-     *
+     * Get the bytesToCapturePerPacket property: Number of bytes captured per packet, the remaining bytes are
+     * truncated.
+     * 
      * @return the bytesToCapturePerPacket value.
      */
     public Long bytesToCapturePerPacket() {
@@ -143,8 +148,9 @@ public class PacketCaptureParameters {
     }
 
     /**
-     * Set the bytesToCapturePerPacket property: Number of bytes captured per packet, the remaining bytes are truncated.
-     *
+     * Set the bytesToCapturePerPacket property: Number of bytes captured per packet, the remaining bytes are
+     * truncated.
+     * 
      * @param bytesToCapturePerPacket the bytesToCapturePerPacket value to set.
      * @return the PacketCaptureParameters object itself.
      */
@@ -155,7 +161,7 @@ public class PacketCaptureParameters {
 
     /**
      * Get the totalBytesPerSession property: Maximum size of the capture output.
-     *
+     * 
      * @return the totalBytesPerSession value.
      */
     public Long totalBytesPerSession() {
@@ -164,7 +170,7 @@ public class PacketCaptureParameters {
 
     /**
      * Set the totalBytesPerSession property: Maximum size of the capture output.
-     *
+     * 
      * @param totalBytesPerSession the totalBytesPerSession value to set.
      * @return the PacketCaptureParameters object itself.
      */
@@ -175,7 +181,7 @@ public class PacketCaptureParameters {
 
     /**
      * Get the timeLimitInSeconds property: Maximum duration of the capture session in seconds.
-     *
+     * 
      * @return the timeLimitInSeconds value.
      */
     public Integer timeLimitInSeconds() {
@@ -184,7 +190,7 @@ public class PacketCaptureParameters {
 
     /**
      * Set the timeLimitInSeconds property: Maximum duration of the capture session in seconds.
-     *
+     * 
      * @param timeLimitInSeconds the timeLimitInSeconds value to set.
      * @return the PacketCaptureParameters object itself.
      */
@@ -195,7 +201,7 @@ public class PacketCaptureParameters {
 
     /**
      * Get the storageLocation property: The storage location for a packet capture session.
-     *
+     * 
      * @return the storageLocation value.
      */
     public PacketCaptureStorageLocation storageLocation() {
@@ -204,7 +210,7 @@ public class PacketCaptureParameters {
 
     /**
      * Set the storageLocation property: The storage location for a packet capture session.
-     *
+     * 
      * @param storageLocation the storageLocation value to set.
      * @return the PacketCaptureParameters object itself.
      */
@@ -215,7 +221,7 @@ public class PacketCaptureParameters {
 
     /**
      * Get the filters property: A list of packet capture filters.
-     *
+     * 
      * @return the filters value.
      */
     public List<PacketCaptureFilter> filters() {
@@ -224,7 +230,7 @@ public class PacketCaptureParameters {
 
     /**
      * Set the filters property: A list of packet capture filters.
-     *
+     * 
      * @param filters the filters value to set.
      * @return the PacketCaptureParameters object itself.
      */
@@ -235,23 +241,20 @@ public class PacketCaptureParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (target() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property target in model PacketCaptureParameters"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property target in model PacketCaptureParameters"));
         }
         if (scope() != null) {
             scope().validate();
         }
         if (storageLocation() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property storageLocation in model PacketCaptureParameters"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property storageLocation in model PacketCaptureParameters"));
         } else {
             storageLocation().validate();
         }

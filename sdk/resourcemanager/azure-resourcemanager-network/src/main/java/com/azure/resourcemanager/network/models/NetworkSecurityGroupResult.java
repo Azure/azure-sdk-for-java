@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Network configuration diagnostic result corresponded provided traffic query. */
+/**
+ * Network configuration diagnostic result corresponded provided traffic query.
+ */
 @Fluent
 public final class NetworkSecurityGroupResult {
     /*
@@ -23,13 +25,15 @@ public final class NetworkSecurityGroupResult {
     @JsonProperty(value = "evaluatedNetworkSecurityGroups", access = JsonProperty.Access.WRITE_ONLY)
     private List<EvaluatedNetworkSecurityGroup> evaluatedNetworkSecurityGroups;
 
-    /** Creates an instance of NetworkSecurityGroupResult class. */
+    /**
+     * Creates an instance of NetworkSecurityGroupResult class.
+     */
     public NetworkSecurityGroupResult() {
     }
 
     /**
      * Get the securityRuleAccessResult property: The network traffic is allowed or denied.
-     *
+     * 
      * @return the securityRuleAccessResult value.
      */
     public SecurityRuleAccess securityRuleAccessResult() {
@@ -38,7 +42,7 @@ public final class NetworkSecurityGroupResult {
 
     /**
      * Set the securityRuleAccessResult property: The network traffic is allowed or denied.
-     *
+     * 
      * @param securityRuleAccessResult the securityRuleAccessResult value to set.
      * @return the NetworkSecurityGroupResult object itself.
      */
@@ -49,7 +53,7 @@ public final class NetworkSecurityGroupResult {
 
     /**
      * Get the evaluatedNetworkSecurityGroups property: List of results network security groups diagnostic.
-     *
+     * 
      * @return the evaluatedNetworkSecurityGroups value.
      */
     public List<EvaluatedNetworkSecurityGroup> evaluatedNetworkSecurityGroups() {
@@ -58,7 +62,7 @@ public final class NetworkSecurityGroupResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

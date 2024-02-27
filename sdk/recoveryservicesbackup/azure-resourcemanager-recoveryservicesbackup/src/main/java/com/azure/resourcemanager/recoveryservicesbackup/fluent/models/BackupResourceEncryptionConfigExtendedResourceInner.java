@@ -10,7 +10,9 @@ import com.azure.resourcemanager.recoveryservicesbackup.models.BackupResourceEnc
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The BackupResourceEncryptionConfigExtendedResource model. */
+/**
+ * The BackupResourceEncryptionConfigExtendedResource model.
+ */
 @Fluent
 public final class BackupResourceEncryptionConfigExtendedResourceInner extends Resource {
     /*
@@ -25,13 +27,15 @@ public final class BackupResourceEncryptionConfigExtendedResourceInner extends R
     @JsonProperty(value = "eTag")
     private String etag;
 
-    /** Creates an instance of BackupResourceEncryptionConfigExtendedResourceInner class. */
+    /**
+     * Creates an instance of BackupResourceEncryptionConfigExtendedResourceInner class.
+     */
     public BackupResourceEncryptionConfigExtendedResourceInner() {
     }
 
     /**
      * Get the properties property: BackupResourceEncryptionConfigExtendedResource properties.
-     *
+     * 
      * @return the properties value.
      */
     public BackupResourceEncryptionConfigExtended properties() {
@@ -40,19 +44,19 @@ public final class BackupResourceEncryptionConfigExtendedResourceInner extends R
 
     /**
      * Set the properties property: BackupResourceEncryptionConfigExtendedResource properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the BackupResourceEncryptionConfigExtendedResourceInner object itself.
      */
-    public BackupResourceEncryptionConfigExtendedResourceInner withProperties(
-        BackupResourceEncryptionConfigExtended properties) {
+    public BackupResourceEncryptionConfigExtendedResourceInner
+        withProperties(BackupResourceEncryptionConfigExtended properties) {
         this.properties = properties;
         return this;
     }
 
     /**
      * Get the etag property: Optional ETag.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -61,7 +65,7 @@ public final class BackupResourceEncryptionConfigExtendedResourceInner extends R
 
     /**
      * Set the etag property: Optional ETag.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the BackupResourceEncryptionConfigExtendedResourceInner object itself.
      */
@@ -70,14 +74,18 @@ public final class BackupResourceEncryptionConfigExtendedResourceInner extends R
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackupResourceEncryptionConfigExtendedResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public BackupResourceEncryptionConfigExtendedResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -86,7 +94,7 @@ public final class BackupResourceEncryptionConfigExtendedResourceInner extends R
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

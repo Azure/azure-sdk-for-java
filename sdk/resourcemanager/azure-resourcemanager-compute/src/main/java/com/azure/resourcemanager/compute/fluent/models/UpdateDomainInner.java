@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines an update domain for the cloud service. */
+/**
+ * Defines an update domain for the cloud service.
+ */
 @Immutable
 public final class UpdateDomainInner {
     /*
@@ -22,13 +24,15 @@ public final class UpdateDomainInner {
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
-    /** Creates an instance of UpdateDomainInner class. */
+    /**
+     * Creates an instance of UpdateDomainInner class.
+     */
     public UpdateDomainInner() {
     }
 
     /**
      * Get the id property: Resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -37,7 +41,7 @@ public final class UpdateDomainInner {
 
     /**
      * Get the name property: Resource Name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -46,7 +50,7 @@ public final class UpdateDomainInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

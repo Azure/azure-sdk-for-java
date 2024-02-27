@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Resources that have an association with the parent resource. */
+/**
+ * Resources that have an association with the parent resource.
+ */
 @Fluent
 public final class TopologyAssociation {
     /*
@@ -28,13 +30,15 @@ public final class TopologyAssociation {
     @JsonProperty(value = "associationType")
     private AssociationType associationType;
 
-    /** Creates an instance of TopologyAssociation class. */
+    /**
+     * Creates an instance of TopologyAssociation class.
+     */
     public TopologyAssociation() {
     }
 
     /**
      * Get the name property: The name of the resource that is associated with the parent resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,7 +47,7 @@ public final class TopologyAssociation {
 
     /**
      * Set the name property: The name of the resource that is associated with the parent resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the TopologyAssociation object itself.
      */
@@ -54,7 +58,7 @@ public final class TopologyAssociation {
 
     /**
      * Get the resourceId property: The ID of the resource that is associated with the parent resource.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -63,7 +67,7 @@ public final class TopologyAssociation {
 
     /**
      * Set the resourceId property: The ID of the resource that is associated with the parent resource.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the TopologyAssociation object itself.
      */
@@ -74,7 +78,7 @@ public final class TopologyAssociation {
 
     /**
      * Get the associationType property: The association type of the child resource to the parent resource.
-     *
+     * 
      * @return the associationType value.
      */
     public AssociationType associationType() {
@@ -83,7 +87,7 @@ public final class TopologyAssociation {
 
     /**
      * Set the associationType property: The association type of the child resource to the parent resource.
-     *
+     * 
      * @param associationType the associationType value to set.
      * @return the TopologyAssociation object itself.
      */
@@ -94,7 +98,7 @@ public final class TopologyAssociation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for SelectPermissions. */
+/**
+ * Defines values for SelectPermissions.
+ */
 public final class SelectPermissions extends ExpandableStringEnum<SelectPermissions> {
-    /** Static value Permissions for SelectPermissions. */
+    /**
+     * Static value Permissions for SelectPermissions.
+     */
     public static final SelectPermissions PERMISSIONS = fromString("Permissions");
 
     /**
      * Creates a new instance of SelectPermissions value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class SelectPermissions extends ExpandableStringEnum<SelectPermissi
 
     /**
      * Creates or finds a SelectPermissions from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SelectPermissions.
      */
@@ -35,7 +39,7 @@ public final class SelectPermissions extends ExpandableStringEnum<SelectPermissi
 
     /**
      * Gets known SelectPermissions values.
-     *
+     * 
      * @return known SelectPermissions values.
      */
     public static Collection<SelectPermissions> values() {

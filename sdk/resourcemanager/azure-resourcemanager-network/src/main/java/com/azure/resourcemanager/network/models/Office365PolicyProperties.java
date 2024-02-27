@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Network Virtual Appliance Sku Properties. */
+/**
+ * Network Virtual Appliance Sku Properties.
+ */
 @Fluent
 public final class Office365PolicyProperties {
     /*
@@ -16,13 +18,15 @@ public final class Office365PolicyProperties {
     @JsonProperty(value = "breakOutCategories")
     private BreakOutCategoryPolicies breakOutCategories;
 
-    /** Creates an instance of Office365PolicyProperties class. */
+    /**
+     * Creates an instance of Office365PolicyProperties class.
+     */
     public Office365PolicyProperties() {
     }
 
     /**
      * Get the breakOutCategories property: Office 365 breakout categories.
-     *
+     * 
      * @return the breakOutCategories value.
      */
     public BreakOutCategoryPolicies breakOutCategories() {
@@ -31,7 +35,7 @@ public final class Office365PolicyProperties {
 
     /**
      * Set the breakOutCategories property: Office 365 breakout categories.
-     *
+     * 
      * @param breakOutCategories the breakOutCategories value to set.
      * @return the Office365PolicyProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class Office365PolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

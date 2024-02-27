@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.netapp.generated;
 
-/** Samples for VolumeGroups Get. */
+/**
+ * Samples for VolumeGroups Get.
+ */
 public final class VolumeGroupsGetSamples {
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-05-01/examples/VolumeGroups_Get_SapHana.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/
+     * VolumeGroups_Get_SapHana.json
      */
     /**
      * Sample code: VolumeGroups_Get_SapHana.
-     *
+     * 
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void volumeGroupsGetSapHana(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {
@@ -19,11 +22,12 @@ public final class VolumeGroupsGetSamples {
     }
 
     /*
-     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/stable/2023-05-01/examples/VolumeGroups_Get_Oracle.json
+     * x-ms-original-file: specification/netapp/resource-manager/Microsoft.NetApp/preview/2023-05-01-preview/examples/
+     * VolumeGroups_Get_Oracle.json
      */
     /**
      * Sample code: VolumeGroups_Get_Oracle.
-     *
+     * 
      * @param manager Entry point to NetAppFilesManager.
      */
     public static void volumeGroupsGetOracle(com.azure.resourcemanager.netapp.NetAppFilesManager manager) {

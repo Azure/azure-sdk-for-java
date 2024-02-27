@@ -19,6 +19,10 @@ import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
@@ -29,108 +33,98 @@ import com.azure.core.util.polling.PollerFlux;
 import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.servicefabric.fluent.ApplicationTypesClient;
 import com.azure.resourcemanager.servicefabric.fluent.models.ApplicationTypeResourceInner;
-import com.azure.resourcemanager.servicefabric.fluent.models.ApplicationTypeResourceListInner;
+import com.azure.resourcemanager.servicefabric.models.ApplicationTypeResourceList;
 import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in ApplicationTypesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ApplicationTypesClient.
+ */
 public final class ApplicationTypesClientImpl implements ApplicationTypesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final ApplicationTypesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final ServiceFabricManagementClientImpl client;
 
     /**
      * Initializes an instance of ApplicationTypesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     ApplicationTypesClientImpl(ServiceFabricManagementClientImpl client) {
-        this.service =
-            RestProxy.create(ApplicationTypesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(ApplicationTypesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for ServiceFabricManagementClientApplicationTypes to be used by the proxy
-     * service to perform REST calls.
+     * The interface defining all the services for ServiceFabricManagementClientApplicationTypes to be used by the
+     * proxy service to perform REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "ServiceFabricManagem")
     public interface ApplicationTypesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric"
-                + "/clusters/{clusterName}/applicationTypes/{applicationTypeName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applicationTypes/{applicationTypeName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationTypeResourceInner>> get(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ApplicationTypeResourceInner>> get(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("applicationTypeName") String applicationTypeName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("applicationTypeName") String applicationTypeName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric"
-                + "/clusters/{clusterName}/applicationTypes/{applicationTypeName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applicationTypes/{applicationTypeName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationTypeResourceInner>> createOrUpdate(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ApplicationTypeResourceInner>> createOrUpdate(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("applicationTypeName") String applicationTypeName,
-            @QueryParam("api-version") String apiVersion,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("applicationTypeName") String applicationTypeName, @QueryParam("api-version") String apiVersion,
             @BodyParam("application/json") ApplicationTypeResourceInner parameters,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric"
-                + "/clusters/{clusterName}/applicationTypes/{applicationTypeName}")
-        @ExpectedResponses({202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applicationTypes/{applicationTypeName}")
+        @ExpectedResponses({ 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @PathParam("applicationTypeName") String applicationTypeName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @PathParam("applicationTypeName") String applicationTypeName, @QueryParam("api-version") String apiVersion,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric"
-                + "/clusters/{clusterName}/applicationTypes")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ServiceFabric/clusters/{clusterName}/applicationTypes")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<ApplicationTypeResourceListInner>> list(
-            @HostParam("$host") String endpoint,
+        Mono<Response<ApplicationTypeResourceList>> list(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("clusterName") String clusterName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("clusterName") String clusterName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<ApplicationTypeResourceList>> listNext(
+            @PathParam(value = "nextLink", encoded = true) String nextLink, @HostParam("$host") String endpoint,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets a Service Fabric application type name resource.
-     *
-     * <p>Get a Service Fabric application type name resource created or in the process of being created in the Service
+     * 
+     * Get a Service Fabric application type name resource created or in the process of being created in the Service
      * Fabric cluster resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -138,22 +132,18 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Service Fabric application type name resource created or in the process of being created in the Service
-     *     Fabric cluster resource along with {@link Response} on successful completion of {@link Mono}.
+     * Fabric cluster resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationTypeResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String clusterName, String applicationTypeName) {
+    private Mono<Response<ApplicationTypeResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String clusterName, String applicationTypeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -168,27 +158,17 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            applicationTypeName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterName, applicationTypeName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets a Service Fabric application type name resource.
-     *
-     * <p>Get a Service Fabric application type name resource created or in the process of being created in the Service
+     * 
+     * Get a Service Fabric application type name resource created or in the process of being created in the Service
      * Fabric cluster resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -197,22 +177,18 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Service Fabric application type name resource created or in the process of being created in the Service
-     *     Fabric cluster resource along with {@link Response} on successful completion of {@link Mono}.
+     * Fabric cluster resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationTypeResourceInner>> getWithResponseAsync(
-        String resourceGroupName, String clusterName, String applicationTypeName, Context context) {
+    private Mono<Response<ApplicationTypeResourceInner>> getWithResponseAsync(String resourceGroupName,
+        String clusterName, String applicationTypeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -227,24 +203,16 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                applicationTypeName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, clusterName,
+            applicationTypeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Gets a Service Fabric application type name resource.
-     *
-     * <p>Get a Service Fabric application type name resource created or in the process of being created in the Service
+     * 
+     * Get a Service Fabric application type name resource created or in the process of being created in the Service
      * Fabric cluster resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -252,21 +220,21 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Service Fabric application type name resource created or in the process of being created in the Service
-     *     Fabric cluster resource on successful completion of {@link Mono}.
+     * Fabric cluster resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationTypeResourceInner> getAsync(
-        String resourceGroupName, String clusterName, String applicationTypeName) {
+    private Mono<ApplicationTypeResourceInner> getAsync(String resourceGroupName, String clusterName,
+        String applicationTypeName) {
         return getWithResponseAsync(resourceGroupName, clusterName, applicationTypeName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Gets a Service Fabric application type name resource.
-     *
-     * <p>Get a Service Fabric application type name resource created or in the process of being created in the Service
+     * 
+     * Get a Service Fabric application type name resource created or in the process of being created in the Service
      * Fabric cluster resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -275,20 +243,20 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Service Fabric application type name resource created or in the process of being created in the Service
-     *     Fabric cluster resource along with {@link Response}.
+     * Fabric cluster resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationTypeResourceInner> getWithResponse(
-        String resourceGroupName, String clusterName, String applicationTypeName, Context context) {
+    public Response<ApplicationTypeResourceInner> getWithResponse(String resourceGroupName, String clusterName,
+        String applicationTypeName, Context context) {
         return getWithResponseAsync(resourceGroupName, clusterName, applicationTypeName, context).block();
     }
 
     /**
      * Gets a Service Fabric application type name resource.
-     *
-     * <p>Get a Service Fabric application type name resource created or in the process of being created in the Service
+     * 
+     * Get a Service Fabric application type name resource created or in the process of being created in the Service
      * Fabric cluster resource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -296,7 +264,7 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a Service Fabric application type name resource created or in the process of being created in the Service
-     *     Fabric cluster resource.
+     * Fabric cluster resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public ApplicationTypeResourceInner get(String resourceGroupName, String clusterName, String applicationTypeName) {
@@ -305,9 +273,9 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
 
     /**
      * Creates or updates a Service Fabric application type name resource.
-     *
-     * <p>Create or update a Service Fabric application type name resource with the specified name.
-     *
+     * 
+     * Create or update a Service Fabric application type name resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -318,22 +286,15 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @return the application type name resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationTypeResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String applicationTypeName,
-        ApplicationTypeResourceInner parameters) {
+    private Mono<Response<ApplicationTypeResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String clusterName, String applicationTypeName, ApplicationTypeResourceInner parameters) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -353,27 +314,17 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .createOrUpdate(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            applicationTypeName,
-                            this.client.getApiVersion(),
-                            parameters,
-                            accept,
-                            context))
+            .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterName, applicationTypeName, this.client.getApiVersion(), parameters, accept,
+                context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates a Service Fabric application type name resource.
-     *
-     * <p>Create or update a Service Fabric application type name resource with the specified name.
-     *
+     * 
+     * Create or update a Service Fabric application type name resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -385,23 +336,15 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @return the application type name resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationTypeResourceInner>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String clusterName,
-        String applicationTypeName,
-        ApplicationTypeResourceInner parameters,
-        Context context) {
+    private Mono<Response<ApplicationTypeResourceInner>> createOrUpdateWithResponseAsync(String resourceGroupName,
+        String clusterName, String applicationTypeName, ApplicationTypeResourceInner parameters, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -421,24 +364,15 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .createOrUpdate(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                applicationTypeName,
-                this.client.getApiVersion(),
-                parameters,
-                accept,
-                context);
+        return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            clusterName, applicationTypeName, this.client.getApiVersion(), parameters, accept, context);
     }
 
     /**
      * Creates or updates a Service Fabric application type name resource.
-     *
-     * <p>Create or update a Service Fabric application type name resource with the specified name.
-     *
+     * 
+     * Create or update a Service Fabric application type name resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -449,20 +383,17 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @return the application type name resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationTypeResourceInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String clusterName,
-        String applicationTypeName,
-        ApplicationTypeResourceInner parameters) {
+    private Mono<ApplicationTypeResourceInner> createOrUpdateAsync(String resourceGroupName, String clusterName,
+        String applicationTypeName, ApplicationTypeResourceInner parameters) {
         return createOrUpdateWithResponseAsync(resourceGroupName, clusterName, applicationTypeName, parameters)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Creates or updates a Service Fabric application type name resource.
-     *
-     * <p>Create or update a Service Fabric application type name resource with the specified name.
-     *
+     * 
+     * Create or update a Service Fabric application type name resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -474,21 +405,17 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @return the application type name resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationTypeResourceInner> createOrUpdateWithResponse(
-        String resourceGroupName,
-        String clusterName,
-        String applicationTypeName,
-        ApplicationTypeResourceInner parameters,
-        Context context) {
+    public Response<ApplicationTypeResourceInner> createOrUpdateWithResponse(String resourceGroupName,
+        String clusterName, String applicationTypeName, ApplicationTypeResourceInner parameters, Context context) {
         return createOrUpdateWithResponseAsync(resourceGroupName, clusterName, applicationTypeName, parameters, context)
             .block();
     }
 
     /**
      * Creates or updates a Service Fabric application type name resource.
-     *
-     * <p>Create or update a Service Fabric application type name resource with the specified name.
-     *
+     * 
+     * Create or update a Service Fabric application type name resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -499,20 +426,17 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @return the application type name resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationTypeResourceInner createOrUpdate(
-        String resourceGroupName,
-        String clusterName,
-        String applicationTypeName,
-        ApplicationTypeResourceInner parameters) {
+    public ApplicationTypeResourceInner createOrUpdate(String resourceGroupName, String clusterName,
+        String applicationTypeName, ApplicationTypeResourceInner parameters) {
         return createOrUpdateWithResponse(resourceGroupName, clusterName, applicationTypeName, parameters, Context.NONE)
             .getValue();
     }
 
     /**
      * Deletes a Service Fabric application type name resource.
-     *
-     * <p>Delete a Service Fabric application type name resource with the specified name.
-     *
+     * 
+     * Delete a Service Fabric application type name resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -522,19 +446,15 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, String applicationTypeName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
+        String applicationTypeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -549,26 +469,16 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            applicationTypeName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterName, applicationTypeName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes a Service Fabric application type name resource.
-     *
-     * <p>Delete a Service Fabric application type name resource with the specified name.
-     *
+     * 
+     * Delete a Service Fabric application type name resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -579,19 +489,15 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String clusterName, String applicationTypeName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String clusterName,
+        String applicationTypeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -606,23 +512,15 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                applicationTypeName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            clusterName, applicationTypeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Deletes a Service Fabric application type name resource.
-     *
-     * <p>Delete a Service Fabric application type name resource with the specified name.
-     *
+     * 
+     * Delete a Service Fabric application type name resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -632,21 +530,19 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, String applicationTypeName) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, clusterName, applicationTypeName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
+        String applicationTypeName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, clusterName, applicationTypeName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes a Service Fabric application type name resource.
-     *
-     * <p>Delete a Service Fabric application type name resource with the specified name.
-     *
+     * 
+     * Delete a Service Fabric application type name resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -657,21 +553,20 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String clusterName, String applicationTypeName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String clusterName,
+        String applicationTypeName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, clusterName, applicationTypeName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, clusterName, applicationTypeName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes a Service Fabric application type name resource.
-     *
-     * <p>Delete a Service Fabric application type name resource with the specified name.
-     *
+     * 
+     * Delete a Service Fabric application type name resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -681,16 +576,16 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String applicationTypeName) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String applicationTypeName) {
         return this.beginDeleteAsync(resourceGroupName, clusterName, applicationTypeName).getSyncPoller();
     }
 
     /**
      * Deletes a Service Fabric application type name resource.
-     *
-     * <p>Delete a Service Fabric application type name resource with the specified name.
-     *
+     * 
+     * Delete a Service Fabric application type name resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -701,16 +596,16 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String clusterName, String applicationTypeName, Context context) {
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String clusterName,
+        String applicationTypeName, Context context) {
         return this.beginDeleteAsync(resourceGroupName, clusterName, applicationTypeName, context).getSyncPoller();
     }
 
     /**
      * Deletes a Service Fabric application type name resource.
-     *
-     * <p>Delete a Service Fabric application type name resource with the specified name.
-     *
+     * 
+     * Delete a Service Fabric application type name resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -721,16 +616,15 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String applicationTypeName) {
-        return beginDeleteAsync(resourceGroupName, clusterName, applicationTypeName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, clusterName, applicationTypeName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a Service Fabric application type name resource.
-     *
-     * <p>Delete a Service Fabric application type name resource with the specified name.
-     *
+     * 
+     * Delete a Service Fabric application type name resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -741,18 +635,17 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Void> deleteAsync(
-        String resourceGroupName, String clusterName, String applicationTypeName, Context context) {
-        return beginDeleteAsync(resourceGroupName, clusterName, applicationTypeName, context)
-            .last()
+    private Mono<Void> deleteAsync(String resourceGroupName, String clusterName, String applicationTypeName,
+        Context context) {
+        return beginDeleteAsync(resourceGroupName, clusterName, applicationTypeName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes a Service Fabric application type name resource.
-     *
-     * <p>Delete a Service Fabric application type name resource with the specified name.
-     *
+     * 
+     * Delete a Service Fabric application type name resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -767,9 +660,9 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
 
     /**
      * Deletes a Service Fabric application type name resource.
-     *
-     * <p>Delete a Service Fabric application type name resource with the specified name.
-     *
+     * 
+     * Delete a Service Fabric application type name resource with the specified name.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param applicationTypeName The name of the application type name resource.
@@ -785,32 +678,28 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
 
     /**
      * Gets the list of application type name resources created in the specified Service Fabric cluster resource.
-     *
-     * <p>Gets all application type name resources created or in the process of being created in the Service Fabric
-     * cluster resource.
-     *
+     * 
+     * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
+     * resource.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all application type name resources created or in the process of being created in the Service Fabric
-     *     cluster resource along with {@link Response} on successful completion of {@link Mono}.
+     * cluster resource along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationTypeResourceListInner>> listWithResponseAsync(
-        String resourceGroupName, String clusterName) {
+    private Mono<PagedResponse<ApplicationTypeResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String clusterName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -821,26 +710,19 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .list(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            clusterName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+            .withContext(context -> service.list(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, clusterName, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<ApplicationTypeResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the list of application type name resources created in the specified Service Fabric cluster resource.
-     *
-     * <p>Gets all application type name resources created or in the process of being created in the Service Fabric
-     * cluster resource.
-     *
+     * 
+     * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
+     * resource.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param context The context to associate with this operation.
@@ -848,22 +730,18 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all application type name resources created or in the process of being created in the Service Fabric
-     *     cluster resource along with {@link Response} on successful completion of {@link Mono}.
+     * cluster resource along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<ApplicationTypeResourceListInner>> listWithResponseAsync(
-        String resourceGroupName, String clusterName, Context context) {
+    private Mono<PagedResponse<ApplicationTypeResourceInner>> listSinglePageAsync(String resourceGroupName,
+        String clusterName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -875,41 +753,38 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .list(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                clusterName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+            .list(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, clusterName,
+                this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Gets the list of application type name resources created in the specified Service Fabric cluster resource.
-     *
-     * <p>Gets all application type name resources created or in the process of being created in the Service Fabric
-     * cluster resource.
-     *
+     * 
+     * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
+     * resource.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all application type name resources created or in the process of being created in the Service Fabric
-     *     cluster resource on successful completion of {@link Mono}.
+     * cluster resource as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<ApplicationTypeResourceListInner> listAsync(String resourceGroupName, String clusterName) {
-        return listWithResponseAsync(resourceGroupName, clusterName).flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ApplicationTypeResourceInner> listAsync(String resourceGroupName, String clusterName) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, clusterName),
+            nextLink -> listNextSinglePageAsync(nextLink));
     }
 
     /**
      * Gets the list of application type name resources created in the specified Service Fabric cluster resource.
-     *
-     * <p>Gets all application type name resources created or in the process of being created in the Service Fabric
-     * cluster resource.
-     *
+     * 
+     * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
+     * resource.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @param context The context to associate with this operation.
@@ -917,30 +792,110 @@ public final class ApplicationTypesClientImpl implements ApplicationTypesClient 
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all application type name resources created or in the process of being created in the Service Fabric
-     *     cluster resource along with {@link Response}.
+     * cluster resource as paginated response with {@link PagedFlux}.
      */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<ApplicationTypeResourceListInner> listWithResponse(
-        String resourceGroupName, String clusterName, Context context) {
-        return listWithResponseAsync(resourceGroupName, clusterName, context).block();
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<ApplicationTypeResourceInner> listAsync(String resourceGroupName, String clusterName,
+        Context context) {
+        return new PagedFlux<>(() -> listSinglePageAsync(resourceGroupName, clusterName, context),
+            nextLink -> listNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Gets the list of application type name resources created in the specified Service Fabric cluster resource.
-     *
-     * <p>Gets all application type name resources created or in the process of being created in the Service Fabric
-     * cluster resource.
-     *
+     * 
+     * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
+     * resource.
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param clusterName The name of the cluster resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return all application type name resources created or in the process of being created in the Service Fabric
-     *     cluster resource.
+     * cluster resource as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ApplicationTypeResourceInner> list(String resourceGroupName, String clusterName) {
+        return new PagedIterable<>(listAsync(resourceGroupName, clusterName));
+    }
+
+    /**
+     * Gets the list of application type name resources created in the specified Service Fabric cluster resource.
+     * 
+     * Gets all application type name resources created or in the process of being created in the Service Fabric cluster
+     * resource.
+     * 
+     * @param resourceGroupName The name of the resource group.
+     * @param clusterName The name of the cluster resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return all application type name resources created or in the process of being created in the Service Fabric
+     * cluster resource as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<ApplicationTypeResourceInner> list(String resourceGroupName, String clusterName,
+        Context context) {
+        return new PagedIterable<>(listAsync(resourceGroupName, clusterName, context));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of application type names along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public ApplicationTypeResourceListInner list(String resourceGroupName, String clusterName) {
-        return listWithResponse(resourceGroupName, clusterName, Context.NONE).getValue();
+    private Mono<PagedResponse<ApplicationTypeResourceInner>> listNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil.withContext(context -> service.listNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<ApplicationTypeResourceInner>>map(res -> new PagedResponseBase<>(res.getRequest(),
+                res.getStatusCode(), res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the list of application type names along with {@link PagedResponse} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<ApplicationTypeResourceInner>> listNextSinglePageAsync(String nextLink,
+        Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

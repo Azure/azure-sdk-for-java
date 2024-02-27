@@ -3,6 +3,7 @@
 
 package com.azure.communication.callautomation.models;
 
+import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.Fluent;
 
 /**
@@ -25,15 +26,26 @@ public final class AnswerCallOptions {
      */
     private MediaStreamingOptions mediaStreamingOptions;
 
-    /*
-     * The endpoint URL of the Azure Cognitive Services resource attached
+    /**
+     * Transcription Configuration.
      */
-    private String azureCognitiveServicesUrl;
-    
+    private TranscriptionOptions transcriptionOptions;
+
+    /*
+     * AI options for the call.
+     */
+    private CallIntelligenceOptions callIntelligenceOptions;
+
     /**
      * The operational context
      */
     private String operationContext;
+    
+    /**
+     * The source caller ID number which is a phone number that will be used when inviting a pstn target.
+     * Required only when this is an incoming voip call and there will be a transfer call request to a PSTN target.
+     */
+    private PhoneNumberIdentifier sourceCallerIdNumber;
 
     /**
      * Constructor
@@ -65,13 +77,83 @@ public final class AnswerCallOptions {
     }
 
     /**
-     * Get the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
+     * Get the Transcription configuration.
      *
-     * @return the azureCognitiveServicesEndpointUrl value.
+     * @return the transcriptionConfiguration.
      */
-    public String getAzureCognitiveServicesUrl() {
-        return this.azureCognitiveServicesUrl;
+    public TranscriptionOptions getTranscriptionConfiguration() {
+        return transcriptionOptions;
+    }
+
+    /**
+     * Get the operationContext.
+     *
+     * @return the operationContext
+     */
+    public String getOperationContext() {
+        return operationContext;
+    }
+
+     /**
+     * Get the sourceCallerIdNumber.
+     *
+     * @return the sourceCallerIdNumber
+     */
+    public PhoneNumberIdentifier getSourceCallerIdNumber() {
+        return sourceCallerIdNumber;
+    }
+
+    /**
+     * Set the transcription configuration.
+     *
+     * @param transcriptionOptions The transcription configuration.
+     * @return the AnswerCallOptions object itself.
+     */
+    public AnswerCallOptions setTranscriptionConfiguration(TranscriptionOptions transcriptionOptions) {
+        this.transcriptionOptions = transcriptionOptions;
+        return this;
+    }
+
+     /**
+     * Set the operationContext.
+     *
+     * @param operationContext the operationContext to set
+     * @return the AnswerCallOptions object itself.
+     */
+    public AnswerCallOptions setOperationContext(String operationContext) {
+        this.operationContext = operationContext;
+        return this;
+    }
+
+    /**
+     * Set the sourceCallerIdNumber.
+     *
+     * @param sourceCallerIdNumber the sourceCallerIdNumber to set
+     * @return the AnswerCallOptions object itself.
+     */
+    public AnswerCallOptions setSourceCallerIdNumber(PhoneNumberIdentifier sourceCallerIdNumber) {
+        this.sourceCallerIdNumber = sourceCallerIdNumber;
+        return this;
+    }
+
+    /**
+     * Get the CallIntelligenceOptions property: AI options for the call such as cognitiveServicesEndpoint
+     *
+     * @return the callIntelligenceOptions value.
+     */
+    public CallIntelligenceOptions getCallIntelligenceOptions() {
+        return this.callIntelligenceOptions;
+    }
+
+    /**
+     * Set the CallIntelligenceOptions property: AI options for the call such as cognitiveServicesEndpoint
+     *
+     * @param callIntelligenceOptions the cognitiveServicesEndpoint value to set.
+     * @return the AnswerCallOptions object itself.
+     */
+    public AnswerCallOptions setCallIntelligenceOptions(CallIntelligenceOptions callIntelligenceOptions) {
+        this.callIntelligenceOptions = callIntelligenceOptions;
+        return this;
     }
 
     /**
@@ -82,15 +164,6 @@ public final class AnswerCallOptions {
     public MediaStreamingOptions getMediaStreamingConfiguration() {
         return mediaStreamingOptions;
     }
-    
-    /**
-     * Get the operationContext.
-     *
-     * @return the operationContext
-     */
-    public String getOperationContext() {
-        return operationContext;
-    }
 
     /**
      * Set the media streaming configuration.
@@ -100,29 +173,6 @@ public final class AnswerCallOptions {
      */
     public AnswerCallOptions setMediaStreamingConfiguration(MediaStreamingOptions mediaStreamingOptions) {
         this.mediaStreamingOptions = mediaStreamingOptions;
-        return this;
-    }
-
-    /**
-     * Set the azureCognitiveServicesEndpointUrl property: The endpoint URL of the Azure Cognitive Services resource
-     * attached.
-     *
-     * @param azureCognitiveServicesUrl the azureCognitiveServicesEndpointUrl value to set.
-     * @return the AnswerCallOptions object itself.
-     */
-    public AnswerCallOptions setAzureCognitiveServicesUrl(String azureCognitiveServicesUrl) {
-        this.azureCognitiveServicesUrl = azureCognitiveServicesUrl;
-        return this;
-    }
-    
-     /**
-     * Set the operationContext.
-     *
-     * @param operationContext the operationContext to set
-     * @return the AnswerCallOptions object itself.
-     */
-    public AnswerCallOptions setOperationContext(String operationContext) {
-        this.operationContext = operationContext;
         return this;
     }
 }

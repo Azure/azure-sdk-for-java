@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Sci mode enabled/disabled. */
+/**
+ * Sci mode enabled/disabled.
+ */
 public final class ExpressRouteLinkMacSecSciState extends ExpandableStringEnum<ExpressRouteLinkMacSecSciState> {
-    /** Static value Disabled for ExpressRouteLinkMacSecSciState. */
+    /**
+     * Static value Disabled for ExpressRouteLinkMacSecSciState.
+     */
     public static final ExpressRouteLinkMacSecSciState DISABLED = fromString("Disabled");
 
-    /** Static value Enabled for ExpressRouteLinkMacSecSciState. */
+    /**
+     * Static value Enabled for ExpressRouteLinkMacSecSciState.
+     */
     public static final ExpressRouteLinkMacSecSciState ENABLED = fromString("Enabled");
 
     /**
      * Creates a new instance of ExpressRouteLinkMacSecSciState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class ExpressRouteLinkMacSecSciState extends ExpandableStringEnum<E
 
     /**
      * Creates or finds a ExpressRouteLinkMacSecSciState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ExpressRouteLinkMacSecSciState.
      */
@@ -38,7 +44,7 @@ public final class ExpressRouteLinkMacSecSciState extends ExpandableStringEnum<E
 
     /**
      * Gets known ExpressRouteLinkMacSecSciState values.
-     *
+     * 
      * @return known ExpressRouteLinkMacSecSciState values.
      */
     public static Collection<ExpressRouteLinkMacSecSciState> values() {

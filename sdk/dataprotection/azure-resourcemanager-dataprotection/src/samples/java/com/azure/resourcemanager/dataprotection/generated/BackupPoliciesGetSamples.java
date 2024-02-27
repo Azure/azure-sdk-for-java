@@ -4,19 +4,22 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-/** Samples for BackupPolicies Get. */
+/**
+ * Samples for BackupPolicies Get.
+ */
 public final class BackupPoliciesGetSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/PolicyCRUD/GetBackupPolicy.json
+     * x-ms-original-file:
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/PolicyCRUD/
+     * GetBackupPolicy.json
      */
     /**
      * Sample code: Get BackupPolicy.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void getBackupPolicy(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {
-        manager
-            .backupPolicies()
-            .getWithResponse("000pikumar", "PrivatePreviewVault", "OSSDBPolicy", com.azure.core.util.Context.NONE);
+        manager.backupPolicies().getWithResponse("000pikumar", "PrivatePreviewVault", "OSSDBPolicy",
+            com.azure.core.util.Context.NONE);
     }
 }

@@ -354,7 +354,8 @@ public class CosmosException extends AzureException {
      * requests.
      */
     public Duration getRetryAfterDuration() {
-        long retryIntervalInMilliseconds = 0;
+        // if retry after is not being returned, use -1, so to differentiate with server returned 0
+        long retryIntervalInMilliseconds = -1;
 
         if (this.responseHeaders != null) {
             String header = this.responseHeaders.get(HttpConstants.HttpHeaders.RETRY_AFTER_IN_MILLISECONDS);

@@ -16,9 +16,11 @@ stages:
       Clouds: 'Cosmos_Public_Integration'
       MatrixConfigs:
         - Name: Cosmos_live_test
-          Path: sdk/cosmos/platform-matrix.json
+          Path: sdk/cosmos/live-platform-matrix.json
           Selection: all
           GenerateVMJobs: true
+      MatrixReplace:
+        - .*Version=1.21/1.17
       ServiceDirectory: cosmos
       Artifacts:
         - name: azure-cosmos
@@ -58,6 +60,32 @@ stages:
           groupId: com.azure
           safeName: azurespringdatacosmos
       TimeoutInMinutes: 90
+      PreSteps:
+        - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
+      TestGoals: 'clean verify'
+      TestOptions: '$(ProfileFlag)'
+
+  - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
+    parameters:
+      TestName: 'Kafka_Cosmos_Integration'
+      CloudConfig:
+        Public:
+          SubscriptionConfigurations:
+            - $(sub-config-azure-cloud-test-resources)
+            - $(sub-config-cosmos-azure-cloud-test-resources)
+      MatrixConfigs:
+        - Name: Kafka_Cosmos_Integration_Test
+          Path: sdk/cosmos/kafka-integration-matrix.json
+          Selection: all
+          GenerateVMJobs: true
+      ServiceDirectory: cosmos
+      TestResourceDirectories:
+        - cosmos/
+      Artifacts:
+        - name: azure-cosmos-kafka-connect
+          groupId: com.azure.cosmos.kafka
+          safeName: azurecosmoskafkaconnect
+      TimeoutInMinutes: 120
       PreSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
       TestGoals: 'clean verify'

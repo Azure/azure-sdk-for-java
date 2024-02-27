@@ -9,7 +9,9 @@ import com.azure.core.management.Resource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** Specifies information about the SSH public key. */
+/**
+ * Specifies information about the SSH public key.
+ */
 @Fluent
 public final class SshPublicKeyResourceInner extends Resource {
     /*
@@ -18,27 +20,33 @@ public final class SshPublicKeyResourceInner extends Resource {
     @JsonProperty(value = "properties")
     private SshPublicKeyResourceProperties innerProperties;
 
-    /** Creates an instance of SshPublicKeyResourceInner class. */
+    /**
+     * Creates an instance of SshPublicKeyResourceInner class.
+     */
     public SshPublicKeyResourceInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the SSH public key.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SshPublicKeyResourceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SshPublicKeyResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SshPublicKeyResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -48,9 +56,9 @@ public final class SshPublicKeyResourceInner extends Resource {
     /**
      * Get the publicKey property: SSH public key used to authenticate to a virtual machine through ssh. If this
      * property is not initially provided when the resource is created, the publicKey property will be populated when
-     * generateKeyPair is called. If the public key is provided upon resource creation, the provided public key needs to
-     * be at least 2048-bit and in ssh-rsa format.
-     *
+     * generateKeyPair is called. If the public key is provided upon resource creation, the provided public key needs
+     * to be at least 2048-bit and in ssh-rsa format.
+     * 
      * @return the publicKey value.
      */
     public String publicKey() {
@@ -60,9 +68,9 @@ public final class SshPublicKeyResourceInner extends Resource {
     /**
      * Set the publicKey property: SSH public key used to authenticate to a virtual machine through ssh. If this
      * property is not initially provided when the resource is created, the publicKey property will be populated when
-     * generateKeyPair is called. If the public key is provided upon resource creation, the provided public key needs to
-     * be at least 2048-bit and in ssh-rsa format.
-     *
+     * generateKeyPair is called. If the public key is provided upon resource creation, the provided public key needs
+     * to be at least 2048-bit and in ssh-rsa format.
+     * 
      * @param publicKey the publicKey value to set.
      * @return the SshPublicKeyResourceInner object itself.
      */
@@ -76,7 +84,7 @@ public final class SshPublicKeyResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

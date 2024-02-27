@@ -18,11 +18,13 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in LoadBalancerBackendAddressPoolsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LoadBalancerBackendAddressPoolsClient.
+ */
 public interface LoadBalancerBackendAddressPoolsClient {
     /**
      * Gets all the load balancer backed address pools.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -35,7 +37,7 @@ public interface LoadBalancerBackendAddressPoolsClient {
 
     /**
      * Gets all the load balancer backed address pools.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -48,7 +50,7 @@ public interface LoadBalancerBackendAddressPoolsClient {
 
     /**
      * Gets all the load balancer backed address pools.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param context The context to associate with this operation.
@@ -62,7 +64,7 @@ public interface LoadBalancerBackendAddressPoolsClient {
 
     /**
      * Gets load balancer backend address pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendAddressPoolName The name of the backend address pool.
@@ -72,12 +74,12 @@ public interface LoadBalancerBackendAddressPoolsClient {
      * @return load balancer backend address pool along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<BackendAddressPoolInner>> getWithResponseAsync(
-        String resourceGroupName, String loadBalancerName, String backendAddressPoolName);
+    Mono<Response<BackendAddressPoolInner>> getWithResponseAsync(String resourceGroupName, String loadBalancerName,
+        String backendAddressPoolName);
 
     /**
      * Gets load balancer backend address pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendAddressPoolName The name of the backend address pool.
@@ -87,12 +89,12 @@ public interface LoadBalancerBackendAddressPoolsClient {
      * @return load balancer backend address pool on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BackendAddressPoolInner> getAsync(
-        String resourceGroupName, String loadBalancerName, String backendAddressPoolName);
+    Mono<BackendAddressPoolInner> getAsync(String resourceGroupName, String loadBalancerName,
+        String backendAddressPoolName);
 
     /**
      * Gets load balancer backend address pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendAddressPoolName The name of the backend address pool.
@@ -103,12 +105,12 @@ public interface LoadBalancerBackendAddressPoolsClient {
      * @return load balancer backend address pool along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BackendAddressPoolInner> getWithResponse(
-        String resourceGroupName, String loadBalancerName, String backendAddressPoolName, Context context);
+    Response<BackendAddressPoolInner> getWithResponse(String resourceGroupName, String loadBalancerName,
+        String backendAddressPoolName, Context context);
 
     /**
      * Gets load balancer backend address pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendAddressPoolName The name of the backend address pool.
@@ -122,7 +124,7 @@ public interface LoadBalancerBackendAddressPoolsClient {
 
     /**
      * Creates or updates a load balancer backend address pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendAddressPoolName The name of the backend address pool.
@@ -133,15 +135,12 @@ public interface LoadBalancerBackendAddressPoolsClient {
      * @return pool of backend IP addresses along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName,
-        String loadBalancerName,
-        String backendAddressPoolName,
-        BackendAddressPoolInner parameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String loadBalancerName,
+        String backendAddressPoolName, BackendAddressPoolInner parameters);
 
     /**
      * Creates or updates a load balancer backend address pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendAddressPoolName The name of the backend address pool.
@@ -153,14 +152,12 @@ public interface LoadBalancerBackendAddressPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     PollerFlux<PollResult<BackendAddressPoolInner>, BackendAddressPoolInner> beginCreateOrUpdateAsync(
-        String resourceGroupName,
-        String loadBalancerName,
-        String backendAddressPoolName,
+        String resourceGroupName, String loadBalancerName, String backendAddressPoolName,
         BackendAddressPoolInner parameters);
 
     /**
      * Creates or updates a load balancer backend address pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendAddressPoolName The name of the backend address pool.
@@ -172,14 +169,12 @@ public interface LoadBalancerBackendAddressPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackendAddressPoolInner>, BackendAddressPoolInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String loadBalancerName,
-        String backendAddressPoolName,
+        String resourceGroupName, String loadBalancerName, String backendAddressPoolName,
         BackendAddressPoolInner parameters);
 
     /**
      * Creates or updates a load balancer backend address pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendAddressPoolName The name of the backend address pool.
@@ -192,15 +187,12 @@ public interface LoadBalancerBackendAddressPoolsClient {
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
     SyncPoller<PollResult<BackendAddressPoolInner>, BackendAddressPoolInner> beginCreateOrUpdate(
-        String resourceGroupName,
-        String loadBalancerName,
-        String backendAddressPoolName,
-        BackendAddressPoolInner parameters,
-        Context context);
+        String resourceGroupName, String loadBalancerName, String backendAddressPoolName,
+        BackendAddressPoolInner parameters, Context context);
 
     /**
      * Creates or updates a load balancer backend address pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendAddressPoolName The name of the backend address pool.
@@ -211,15 +203,12 @@ public interface LoadBalancerBackendAddressPoolsClient {
      * @return pool of backend IP addresses on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<BackendAddressPoolInner> createOrUpdateAsync(
-        String resourceGroupName,
-        String loadBalancerName,
-        String backendAddressPoolName,
-        BackendAddressPoolInner parameters);
+    Mono<BackendAddressPoolInner> createOrUpdateAsync(String resourceGroupName, String loadBalancerName,
+        String backendAddressPoolName, BackendAddressPoolInner parameters);
 
     /**
      * Creates or updates a load balancer backend address pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendAddressPoolName The name of the backend address pool.
@@ -230,15 +219,12 @@ public interface LoadBalancerBackendAddressPoolsClient {
      * @return pool of backend IP addresses.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackendAddressPoolInner createOrUpdate(
-        String resourceGroupName,
-        String loadBalancerName,
-        String backendAddressPoolName,
-        BackendAddressPoolInner parameters);
+    BackendAddressPoolInner createOrUpdate(String resourceGroupName, String loadBalancerName,
+        String backendAddressPoolName, BackendAddressPoolInner parameters);
 
     /**
      * Creates or updates a load balancer backend address pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendAddressPoolName The name of the backend address pool.
@@ -250,16 +236,12 @@ public interface LoadBalancerBackendAddressPoolsClient {
      * @return pool of backend IP addresses.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    BackendAddressPoolInner createOrUpdate(
-        String resourceGroupName,
-        String loadBalancerName,
-        String backendAddressPoolName,
-        BackendAddressPoolInner parameters,
-        Context context);
+    BackendAddressPoolInner createOrUpdate(String resourceGroupName, String loadBalancerName,
+        String backendAddressPoolName, BackendAddressPoolInner parameters, Context context);
 
     /**
      * Deletes the specified load balancer backend address pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendAddressPoolName The name of the backend address pool.
@@ -269,12 +251,12 @@ public interface LoadBalancerBackendAddressPoolsClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String loadBalancerName, String backendAddressPoolName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String loadBalancerName,
+        String backendAddressPoolName);
 
     /**
      * Deletes the specified load balancer backend address pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendAddressPoolName The name of the backend address pool.
@@ -284,12 +266,12 @@ public interface LoadBalancerBackendAddressPoolsClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String loadBalancerName, String backendAddressPoolName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String loadBalancerName,
+        String backendAddressPoolName);
 
     /**
      * Deletes the specified load balancer backend address pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendAddressPoolName The name of the backend address pool.
@@ -299,12 +281,12 @@ public interface LoadBalancerBackendAddressPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String loadBalancerName, String backendAddressPoolName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String loadBalancerName,
+        String backendAddressPoolName);
 
     /**
      * Deletes the specified load balancer backend address pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendAddressPoolName The name of the backend address pool.
@@ -315,12 +297,12 @@ public interface LoadBalancerBackendAddressPoolsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String loadBalancerName, String backendAddressPoolName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String loadBalancerName,
+        String backendAddressPoolName, Context context);
 
     /**
      * Deletes the specified load balancer backend address pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendAddressPoolName The name of the backend address pool.
@@ -334,7 +316,7 @@ public interface LoadBalancerBackendAddressPoolsClient {
 
     /**
      * Deletes the specified load balancer backend address pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendAddressPoolName The name of the backend address pool.
@@ -347,7 +329,7 @@ public interface LoadBalancerBackendAddressPoolsClient {
 
     /**
      * Deletes the specified load balancer backend address pool.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param backendAddressPoolName The name of the backend address pool.

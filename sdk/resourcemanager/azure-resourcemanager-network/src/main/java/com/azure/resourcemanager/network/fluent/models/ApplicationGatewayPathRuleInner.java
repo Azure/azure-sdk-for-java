@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Path rule of URL path map of an application gateway. */
+/**
+ * Path rule of URL path map of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayPathRuleInner extends SubResource {
     /*
@@ -37,13 +39,15 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of ApplicationGatewayPathRuleInner class. */
+    /**
+     * Creates an instance of ApplicationGatewayPathRuleInner class.
+     */
     public ApplicationGatewayPathRuleInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the application gateway path rule.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ApplicationGatewayPathRulePropertiesFormat innerProperties() {
@@ -52,7 +56,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Get the name property: Name of the path rule that is unique within an Application Gateway.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -61,7 +65,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Set the name property: Name of the path rule that is unique within an Application Gateway.
-     *
+     * 
      * @param name the name value to set.
      * @return the ApplicationGatewayPathRuleInner object itself.
      */
@@ -72,7 +76,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -81,14 +85,16 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Get the type property: Type of the resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ApplicationGatewayPathRuleInner withId(String id) {
         super.withId(id);
@@ -97,7 +103,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Get the paths property: Path rules of URL path map.
-     *
+     * 
      * @return the paths value.
      */
     public List<String> paths() {
@@ -106,7 +112,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Set the paths property: Path rules of URL path map.
-     *
+     * 
      * @param paths the paths value to set.
      * @return the ApplicationGatewayPathRuleInner object itself.
      */
@@ -120,7 +126,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Get the backendAddressPool property: Backend address pool resource of URL path map path rule.
-     *
+     * 
      * @return the backendAddressPool value.
      */
     public SubResource backendAddressPool() {
@@ -129,7 +135,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Set the backendAddressPool property: Backend address pool resource of URL path map path rule.
-     *
+     * 
      * @param backendAddressPool the backendAddressPool value to set.
      * @return the ApplicationGatewayPathRuleInner object itself.
      */
@@ -143,7 +149,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Get the backendHttpSettings property: Backend http settings resource of URL path map path rule.
-     *
+     * 
      * @return the backendHttpSettings value.
      */
     public SubResource backendHttpSettings() {
@@ -152,7 +158,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Set the backendHttpSettings property: Backend http settings resource of URL path map path rule.
-     *
+     * 
      * @param backendHttpSettings the backendHttpSettings value to set.
      * @return the ApplicationGatewayPathRuleInner object itself.
      */
@@ -166,7 +172,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Get the redirectConfiguration property: Redirect configuration resource of URL path map path rule.
-     *
+     * 
      * @return the redirectConfiguration value.
      */
     public SubResource redirectConfiguration() {
@@ -175,7 +181,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Set the redirectConfiguration property: Redirect configuration resource of URL path map path rule.
-     *
+     * 
      * @param redirectConfiguration the redirectConfiguration value to set.
      * @return the ApplicationGatewayPathRuleInner object itself.
      */
@@ -189,7 +195,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Get the rewriteRuleSet property: Rewrite rule set resource of URL path map path rule.
-     *
+     * 
      * @return the rewriteRuleSet value.
      */
     public SubResource rewriteRuleSet() {
@@ -198,7 +204,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Set the rewriteRuleSet property: Rewrite rule set resource of URL path map path rule.
-     *
+     * 
      * @param rewriteRuleSet the rewriteRuleSet value to set.
      * @return the ApplicationGatewayPathRuleInner object itself.
      */
@@ -212,7 +218,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Get the loadDistributionPolicy property: Load Distribution Policy resource of URL path map path rule.
-     *
+     * 
      * @return the loadDistributionPolicy value.
      */
     public SubResource loadDistributionPolicy() {
@@ -221,7 +227,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Set the loadDistributionPolicy property: Load Distribution Policy resource of URL path map path rule.
-     *
+     * 
      * @param loadDistributionPolicy the loadDistributionPolicy value to set.
      * @return the ApplicationGatewayPathRuleInner object itself.
      */
@@ -235,7 +241,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the path rule resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -244,7 +250,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Get the firewallPolicy property: Reference to the FirewallPolicy resource.
-     *
+     * 
      * @return the firewallPolicy value.
      */
     public SubResource firewallPolicy() {
@@ -253,7 +259,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Set the firewallPolicy property: Reference to the FirewallPolicy resource.
-     *
+     * 
      * @param firewallPolicy the firewallPolicy value to set.
      * @return the ApplicationGatewayPathRuleInner object itself.
      */
@@ -267,7 +273,7 @@ public final class ApplicationGatewayPathRuleInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

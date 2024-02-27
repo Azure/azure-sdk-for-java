@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains the DDoS protection settings of the public IP. */
+/**
+ * Contains the DDoS protection settings of the public IP.
+ */
 @Fluent
 public final class DdosSettings {
     /*
@@ -23,13 +25,15 @@ public final class DdosSettings {
     @JsonProperty(value = "ddosProtectionPlan")
     private SubResource ddosProtectionPlan;
 
-    /** Creates an instance of DdosSettings class. */
+    /**
+     * Creates an instance of DdosSettings class.
+     */
     public DdosSettings() {
     }
 
     /**
      * Get the protectionMode property: The DDoS protection mode of the public IP.
-     *
+     * 
      * @return the protectionMode value.
      */
     public DdosSettingsProtectionMode protectionMode() {
@@ -38,7 +42,7 @@ public final class DdosSettings {
 
     /**
      * Set the protectionMode property: The DDoS protection mode of the public IP.
-     *
+     * 
      * @param protectionMode the protectionMode value to set.
      * @return the DdosSettings object itself.
      */
@@ -50,7 +54,7 @@ public final class DdosSettings {
     /**
      * Get the ddosProtectionPlan property: The DDoS protection plan associated with the public IP. Can only be set if
      * ProtectionMode is Enabled.
-     *
+     * 
      * @return the ddosProtectionPlan value.
      */
     public SubResource ddosProtectionPlan() {
@@ -60,7 +64,7 @@ public final class DdosSettings {
     /**
      * Set the ddosProtectionPlan property: The DDoS protection plan associated with the public IP. Can only be set if
      * ProtectionMode is Enabled.
-     *
+     * 
      * @param ddosProtectionPlan the ddosProtectionPlan value to set.
      * @return the DdosSettings object itself.
      */
@@ -71,7 +75,7 @@ public final class DdosSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

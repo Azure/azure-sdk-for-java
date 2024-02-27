@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The BastionHostPropertiesFormatNetworkAcls model. */
+/**
+ * The BastionHostPropertiesFormatNetworkAcls model.
+ */
 @Fluent
 public final class BastionHostPropertiesFormatNetworkAcls {
     /*
@@ -17,13 +19,15 @@ public final class BastionHostPropertiesFormatNetworkAcls {
     @JsonProperty(value = "ipRules")
     private List<IpRule> ipRules;
 
-    /** Creates an instance of BastionHostPropertiesFormatNetworkAcls class. */
+    /**
+     * Creates an instance of BastionHostPropertiesFormatNetworkAcls class.
+     */
     public BastionHostPropertiesFormatNetworkAcls() {
     }
 
     /**
      * Get the ipRules property: Sets the IP ACL rules for Developer Bastion Host.
-     *
+     * 
      * @return the ipRules value.
      */
     public List<IpRule> ipRules() {
@@ -32,7 +36,7 @@ public final class BastionHostPropertiesFormatNetworkAcls {
 
     /**
      * Set the ipRules property: Sets the IP ACL rules for Developer Bastion Host.
-     *
+     * 
      * @param ipRules the ipRules value to set.
      * @return the BastionHostPropertiesFormatNetworkAcls object itself.
      */
@@ -43,7 +47,7 @@ public final class BastionHostPropertiesFormatNetworkAcls {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

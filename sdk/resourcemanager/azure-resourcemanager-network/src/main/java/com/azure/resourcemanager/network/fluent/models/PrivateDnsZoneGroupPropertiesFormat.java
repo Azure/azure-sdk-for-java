@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of the private dns zone group. */
+/**
+ * Properties of the private dns zone group.
+ */
 @Fluent
 public final class PrivateDnsZoneGroupPropertiesFormat {
     /*
@@ -25,13 +27,15 @@ public final class PrivateDnsZoneGroupPropertiesFormat {
     @JsonProperty(value = "privateDnsZoneConfigs")
     private List<PrivateDnsZoneConfig> privateDnsZoneConfigs;
 
-    /** Creates an instance of PrivateDnsZoneGroupPropertiesFormat class. */
+    /**
+     * Creates an instance of PrivateDnsZoneGroupPropertiesFormat class.
+     */
     public PrivateDnsZoneGroupPropertiesFormat() {
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the private dns zone group resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -41,7 +45,7 @@ public final class PrivateDnsZoneGroupPropertiesFormat {
     /**
      * Get the privateDnsZoneConfigs property: A collection of private dns zone configurations of the private dns zone
      * group.
-     *
+     * 
      * @return the privateDnsZoneConfigs value.
      */
     public List<PrivateDnsZoneConfig> privateDnsZoneConfigs() {
@@ -51,19 +55,19 @@ public final class PrivateDnsZoneGroupPropertiesFormat {
     /**
      * Set the privateDnsZoneConfigs property: A collection of private dns zone configurations of the private dns zone
      * group.
-     *
+     * 
      * @param privateDnsZoneConfigs the privateDnsZoneConfigs value to set.
      * @return the PrivateDnsZoneGroupPropertiesFormat object itself.
      */
-    public PrivateDnsZoneGroupPropertiesFormat withPrivateDnsZoneConfigs(
-        List<PrivateDnsZoneConfig> privateDnsZoneConfigs) {
+    public PrivateDnsZoneGroupPropertiesFormat
+        withPrivateDnsZoneConfigs(List<PrivateDnsZoneConfig> privateDnsZoneConfigs) {
         this.privateDnsZoneConfigs = privateDnsZoneConfigs;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

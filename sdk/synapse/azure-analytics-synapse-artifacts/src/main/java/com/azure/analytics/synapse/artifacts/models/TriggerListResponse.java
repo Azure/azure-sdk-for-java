@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list of trigger resources. */
+/**
+ * A list of trigger resources.
+ */
 @Fluent
 public final class TriggerListResponse {
     /*
@@ -23,12 +25,15 @@ public final class TriggerListResponse {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of TriggerListResponse class. */
-    public TriggerListResponse() {}
+    /**
+     * Creates an instance of TriggerListResponse class.
+     */
+    public TriggerListResponse() {
+    }
 
     /**
      * Get the value property: List of triggers.
-     *
+     * 
      * @return the value value.
      */
     public List<TriggerResource> getValue() {
@@ -37,7 +42,7 @@ public final class TriggerListResponse {
 
     /**
      * Set the value property: List of triggers.
-     *
+     * 
      * @param value the value value to set.
      * @return the TriggerListResponse object itself.
      */
@@ -48,7 +53,7 @@ public final class TriggerListResponse {
 
     /**
      * Get the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @return the nextLink value.
      */
     public String getNextLink() {
@@ -57,7 +62,7 @@ public final class TriggerListResponse {
 
     /**
      * Set the nextLink property: The link to the next page of results, if any remaining results exist.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the TriggerListResponse object itself.
      */

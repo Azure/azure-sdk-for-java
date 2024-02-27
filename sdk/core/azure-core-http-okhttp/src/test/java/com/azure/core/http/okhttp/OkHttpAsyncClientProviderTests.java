@@ -22,8 +22,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class OkHttpAsyncClientProviderTests {
     @Test
     public void nullOptionsReturnsBaseClient() {
-        OkHttpAsyncHttpClient httpClient = (OkHttpAsyncHttpClient) new OkHttpAsyncClientProvider()
-            .createInstance(null);
+        OkHttpAsyncHttpClient httpClient = (OkHttpAsyncHttpClient) new OkHttpAsyncClientProvider().createInstance(null);
 
         ProxyOptions environmentProxy = ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration());
         if (environmentProxy == null) {
@@ -38,8 +37,8 @@ public class OkHttpAsyncClientProviderTests {
 
     @Test
     public void defaultOptionsReturnsBaseClient() {
-        OkHttpAsyncHttpClient httpClient = (OkHttpAsyncHttpClient) new OkHttpAsyncClientProvider()
-            .createInstance(new HttpClientOptions());
+        OkHttpAsyncHttpClient httpClient
+            = (OkHttpAsyncHttpClient) new OkHttpAsyncClientProvider().createInstance(new HttpClientOptions());
 
         ProxyOptions environmentProxy = ProxyOptions.fromConfiguration(Configuration.getGlobalConfiguration());
         if (environmentProxy == null) {
@@ -57,8 +56,8 @@ public class OkHttpAsyncClientProviderTests {
         ProxyOptions proxyOptions = new ProxyOptions(ProxyOptions.Type.HTTP, new InetSocketAddress("localhost", 8888));
         HttpClientOptions clientOptions = new HttpClientOptions().setProxyOptions(proxyOptions);
 
-        OkHttpAsyncHttpClient httpClient = (OkHttpAsyncHttpClient) new OkHttpAsyncClientProvider()
-            .createInstance(clientOptions);
+        OkHttpAsyncHttpClient httpClient
+            = (OkHttpAsyncHttpClient) new OkHttpAsyncClientProvider().createInstance(clientOptions);
 
         // Proxy isn't configured on the OkHttp HttpClient when a proxy exists, the ProxySelector is configured.
         ProxySelector proxySelector = httpClient.httpClient.proxySelector();
@@ -70,14 +69,13 @@ public class OkHttpAsyncClientProviderTests {
     public void optionsWithTimeouts() {
         long expectedTimeout = 15000;
         Duration timeout = Duration.ofMillis(expectedTimeout);
-        HttpClientOptions clientOptions = new HttpClientOptions()
-            .setConnectTimeout(timeout)
+        HttpClientOptions clientOptions = new HttpClientOptions().setConnectTimeout(timeout)
             .setWriteTimeout(timeout)
             .setResponseTimeout(timeout)
             .setReadTimeout(timeout);
 
-        OkHttpAsyncHttpClient httpClient = (OkHttpAsyncHttpClient) new OkHttpAsyncClientProvider()
-            .createInstance(clientOptions);
+        OkHttpAsyncHttpClient httpClient
+            = (OkHttpAsyncHttpClient) new OkHttpAsyncClientProvider().createInstance(clientOptions);
 
         assertEquals(expectedTimeout, httpClient.httpClient.connectTimeoutMillis());
         assertEquals(expectedTimeout, httpClient.httpClient.writeTimeoutMillis());

@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Jira Service linked service. */
+/**
+ * Jira Service linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Jira")
 @JsonFlatten
@@ -69,12 +71,15 @@ public class JiraLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of JiraLinkedService class. */
-    public JiraLinkedService() {}
+    /**
+     * Creates an instance of JiraLinkedService class.
+     */
+    public JiraLinkedService() {
+    }
 
     /**
      * Get the host property: The IP address or host name of the Jira service. (e.g. jira.example.com).
-     *
+     * 
      * @return the host value.
      */
     public Object getHost() {
@@ -83,7 +88,7 @@ public class JiraLinkedService extends LinkedService {
 
     /**
      * Set the host property: The IP address or host name of the Jira service. (e.g. jira.example.com).
-     *
+     * 
      * @param host the host value to set.
      * @return the JiraLinkedService object itself.
      */
@@ -93,9 +98,9 @@ public class JiraLinkedService extends LinkedService {
     }
 
     /**
-     * Get the port property: The TCP port that the Jira server uses to listen for client connections. The default value
-     * is 443 if connecting through HTTPS, or 8080 if connecting through HTTP.
-     *
+     * Get the port property: The TCP port that the Jira server uses to listen for client connections. The default
+     * value is 443 if connecting through HTTPS, or 8080 if connecting through HTTP.
+     * 
      * @return the port value.
      */
     public Object getPort() {
@@ -103,9 +108,9 @@ public class JiraLinkedService extends LinkedService {
     }
 
     /**
-     * Set the port property: The TCP port that the Jira server uses to listen for client connections. The default value
-     * is 443 if connecting through HTTPS, or 8080 if connecting through HTTP.
-     *
+     * Set the port property: The TCP port that the Jira server uses to listen for client connections. The default
+     * value is 443 if connecting through HTTPS, or 8080 if connecting through HTTP.
+     * 
      * @param port the port value to set.
      * @return the JiraLinkedService object itself.
      */
@@ -116,7 +121,7 @@ public class JiraLinkedService extends LinkedService {
 
     /**
      * Get the username property: The user name that you use to access Jira Service.
-     *
+     * 
      * @return the username value.
      */
     public Object getUsername() {
@@ -125,7 +130,7 @@ public class JiraLinkedService extends LinkedService {
 
     /**
      * Set the username property: The user name that you use to access Jira Service.
-     *
+     * 
      * @param username the username value to set.
      * @return the JiraLinkedService object itself.
      */
@@ -136,7 +141,7 @@ public class JiraLinkedService extends LinkedService {
 
     /**
      * Get the password property: The password corresponding to the user name that you provided in the username field.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -145,7 +150,7 @@ public class JiraLinkedService extends LinkedService {
 
     /**
      * Set the password property: The password corresponding to the user name that you provided in the username field.
-     *
+     * 
      * @param password the password value to set.
      * @return the JiraLinkedService object itself.
      */
@@ -157,7 +162,7 @@ public class JiraLinkedService extends LinkedService {
     /**
      * Get the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @return the useEncryptedEndpoints value.
      */
     public Object getUseEncryptedEndpoints() {
@@ -167,7 +172,7 @@ public class JiraLinkedService extends LinkedService {
     /**
      * Set the useEncryptedEndpoints property: Specifies whether the data source endpoints are encrypted using HTTPS.
      * The default value is true.
-     *
+     * 
      * @param useEncryptedEndpoints the useEncryptedEndpoints value to set.
      * @return the JiraLinkedService object itself.
      */
@@ -179,7 +184,7 @@ public class JiraLinkedService extends LinkedService {
     /**
      * Get the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     *
+     * 
      * @return the useHostVerification value.
      */
     public Object getUseHostVerification() {
@@ -189,7 +194,7 @@ public class JiraLinkedService extends LinkedService {
     /**
      * Set the useHostVerification property: Specifies whether to require the host name in the server's certificate to
      * match the host name of the server when connecting over SSL. The default value is true.
-     *
+     * 
      * @param useHostVerification the useHostVerification value to set.
      * @return the JiraLinkedService object itself.
      */
@@ -199,9 +204,9 @@ public class JiraLinkedService extends LinkedService {
     }
 
     /**
-     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true.
-     *
+     * Get the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
+     * over SSL. The default value is true.
+     * 
      * @return the usePeerVerification value.
      */
     public Object getUsePeerVerification() {
@@ -209,9 +214,9 @@ public class JiraLinkedService extends LinkedService {
     }
 
     /**
-     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting over
-     * SSL. The default value is true.
-     *
+     * Set the usePeerVerification property: Specifies whether to verify the identity of the server when connecting
+     * over SSL. The default value is true.
+     * 
      * @param usePeerVerification the usePeerVerification value to set.
      * @return the JiraLinkedService object itself.
      */
@@ -221,9 +226,9 @@ public class JiraLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -231,9 +236,9 @@ public class JiraLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the JiraLinkedService object itself.
      */
@@ -242,28 +247,36 @@ public class JiraLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JiraLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JiraLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JiraLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public JiraLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

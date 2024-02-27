@@ -8,7 +8,7 @@ import com.azure.monitor.query.MetricsBatchQueryAsyncClient;
 import com.azure.monitor.query.MetricsBatchQueryClient;
 import com.azure.monitor.query.MetricsBatchQueryClientBuilder;
 import com.azure.monitor.query.models.MetricResult;
-import com.azure.monitor.query.models.MetricsBatchResult;
+import com.azure.monitor.query.models.MetricsBatchQueryResult;
 import com.azure.monitor.query.models.MetricsQueryResult;
 
 import java.util.Arrays;
@@ -50,11 +50,11 @@ public class MetricsBatchQueryClientJavaDocCodeSnippets {
             .buildClient();
 
         // BEGIN: com.azure.monitor.query.MetricsBatchQueryClient.queryBatch#List-List-String
-        MetricsBatchResult metricsBatchResult = metricsBatchQueryClient.queryBatch(
+        MetricsBatchQueryResult metricsBatchQueryResult = metricsBatchQueryClient.queryBatch(
             Arrays.asList("{resourceId1}", "{resourceId2}"),
             Arrays.asList("{metricId}"), "{metricNamespace}");
 
-        for (MetricsQueryResult metricsQueryResult : metricsBatchResult.getMetricsQueryResults()) {
+        for (MetricsQueryResult metricsQueryResult : metricsBatchQueryResult.getMetricsQueryResults()) {
             // Each MetricsQueryResult corresponds to one of the resourceIds in the batch request.
             List<MetricResult> metrics = metricsQueryResult.getMetrics();
             metrics.forEach(metric -> {

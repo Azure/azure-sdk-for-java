@@ -11,7 +11,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** NVA Inbound Security Rule resource. */
+/**
+ * NVA Inbound Security Rule resource.
+ */
 @Fluent
 public final class InboundSecurityRuleInner extends SubResource {
     /*
@@ -38,13 +40,15 @@ public final class InboundSecurityRuleInner extends SubResource {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of InboundSecurityRuleInner class. */
+    /**
+     * Creates an instance of InboundSecurityRuleInner class.
+     */
     public InboundSecurityRuleInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the Inbound Security Rules.
-     *
+     * 
      * @return the innerProperties value.
      */
     private InboundSecurityRuleProperties innerProperties() {
@@ -53,7 +57,7 @@ public final class InboundSecurityRuleInner extends SubResource {
 
     /**
      * Get the name property: Name of security rule collection.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -62,7 +66,7 @@ public final class InboundSecurityRuleInner extends SubResource {
 
     /**
      * Set the name property: Name of security rule collection.
-     *
+     * 
      * @param name the name value to set.
      * @return the InboundSecurityRuleInner object itself.
      */
@@ -73,7 +77,7 @@ public final class InboundSecurityRuleInner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -82,14 +86,16 @@ public final class InboundSecurityRuleInner extends SubResource {
 
     /**
      * Get the type property: NVA inbound security rule type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
         return this.type;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InboundSecurityRuleInner withId(String id) {
         super.withId(id);
@@ -98,7 +104,7 @@ public final class InboundSecurityRuleInner extends SubResource {
 
     /**
      * Get the rules property: List of allowed rules.
-     *
+     * 
      * @return the rules value.
      */
     public List<InboundSecurityRules> rules() {
@@ -107,7 +113,7 @@ public final class InboundSecurityRuleInner extends SubResource {
 
     /**
      * Set the rules property: List of allowed rules.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the InboundSecurityRuleInner object itself.
      */
@@ -121,7 +127,7 @@ public final class InboundSecurityRuleInner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -130,7 +136,7 @@ public final class InboundSecurityRuleInner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -89,21 +89,14 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public Volume create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVolumes()
-                .create(
-                    resourceGroupName, elasticSanName, volumeGroupName, volumeName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getVolumes().create(resourceGroupName, elasticSanName,
+            volumeGroupName, volumeName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Volume create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVolumes()
-                .create(resourceGroupName, elasticSanName, volumeGroupName, volumeName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getVolumes().create(resourceGroupName, elasticSanName,
+            volumeGroupName, volumeName, this.innerModel(), context);
         return this;
     }
 
@@ -119,49 +112,35 @@ public final class VolumeImpl implements Volume, Volume.Definition, Volume.Updat
     }
 
     public Volume apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVolumes()
-                .update(resourceGroupName, elasticSanName, volumeGroupName, volumeName, updateParameters, Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getVolumes().update(resourceGroupName, elasticSanName,
+            volumeGroupName, volumeName, updateParameters, Context.NONE);
         return this;
     }
 
     public Volume apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVolumes()
-                .update(resourceGroupName, elasticSanName, volumeGroupName, volumeName, updateParameters, context);
+        this.innerObject = serviceManager.serviceClient().getVolumes().update(resourceGroupName, elasticSanName,
+            volumeGroupName, volumeName, updateParameters, context);
         return this;
     }
 
     VolumeImpl(VolumeInner innerObject, com.azure.resourcemanager.elasticsan.ElasticSanManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.elasticSanName = Utils.getValueFromIdByName(innerObject.id(), "elasticSans");
-        this.volumeGroupName = Utils.getValueFromIdByName(innerObject.id(), "volumegroups");
-        this.volumeName = Utils.getValueFromIdByName(innerObject.id(), "volumes");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.elasticSanName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "elasticSans");
+        this.volumeGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "volumegroups");
+        this.volumeName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "volumes");
     }
 
     public Volume refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVolumes()
-                .getWithResponse(resourceGroupName, elasticSanName, volumeGroupName, volumeName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getVolumes()
+            .getWithResponse(resourceGroupName, elasticSanName, volumeGroupName, volumeName, Context.NONE).getValue();
         return this;
     }
 
     public Volume refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getVolumes()
-                .getWithResponse(resourceGroupName, elasticSanName, volumeGroupName, volumeName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getVolumes()
+            .getWithResponse(resourceGroupName, elasticSanName, volumeGroupName, volumeName, context).getValue();
         return this;
     }
 

@@ -14,8 +14,8 @@ public final class RestoreStatusImpl implements RestoreStatus {
 
     private final com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager;
 
-    RestoreStatusImpl(
-        RestoreStatusInner innerObject, com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
+    RestoreStatusImpl(RestoreStatusInner innerObject,
+        com.azure.resourcemanager.netapp.NetAppFilesManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

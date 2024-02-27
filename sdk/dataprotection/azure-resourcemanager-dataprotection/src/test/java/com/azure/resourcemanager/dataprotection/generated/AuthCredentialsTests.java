@@ -10,8 +10,8 @@ import com.azure.resourcemanager.dataprotection.models.AuthCredentials;
 public final class AuthCredentialsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AuthCredentials model =
-            BinaryData.fromString("{\"objectType\":\"AuthCredentials\"}").toObject(AuthCredentials.class);
+        AuthCredentials model
+            = BinaryData.fromString("{\"objectType\":\"AuthCredentials\"}").toObject(AuthCredentials.class);
     }
 
     @org.junit.jupiter.api.Test

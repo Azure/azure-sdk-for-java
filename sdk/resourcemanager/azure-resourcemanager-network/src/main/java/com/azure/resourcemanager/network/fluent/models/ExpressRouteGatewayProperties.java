@@ -12,7 +12,9 @@ import com.azure.resourcemanager.network.models.VirtualHubId;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** ExpressRoute gateway resource properties. */
+/**
+ * ExpressRoute gateway resource properties.
+ */
 @Fluent
 public final class ExpressRouteGatewayProperties {
     /*
@@ -45,13 +47,15 @@ public final class ExpressRouteGatewayProperties {
     @JsonProperty(value = "allowNonVirtualWanTraffic")
     private Boolean allowNonVirtualWanTraffic;
 
-    /** Creates an instance of ExpressRouteGatewayProperties class. */
+    /**
+     * Creates an instance of ExpressRouteGatewayProperties class.
+     */
     public ExpressRouteGatewayProperties() {
     }
 
     /**
      * Get the autoScaleConfiguration property: Configuration for auto scaling.
-     *
+     * 
      * @return the autoScaleConfiguration value.
      */
     public ExpressRouteGatewayPropertiesAutoScaleConfiguration autoScaleConfiguration() {
@@ -60,19 +64,19 @@ public final class ExpressRouteGatewayProperties {
 
     /**
      * Set the autoScaleConfiguration property: Configuration for auto scaling.
-     *
+     * 
      * @param autoScaleConfiguration the autoScaleConfiguration value to set.
      * @return the ExpressRouteGatewayProperties object itself.
      */
-    public ExpressRouteGatewayProperties withAutoScaleConfiguration(
-        ExpressRouteGatewayPropertiesAutoScaleConfiguration autoScaleConfiguration) {
+    public ExpressRouteGatewayProperties
+        withAutoScaleConfiguration(ExpressRouteGatewayPropertiesAutoScaleConfiguration autoScaleConfiguration) {
         this.autoScaleConfiguration = autoScaleConfiguration;
         return this;
     }
 
     /**
      * Get the expressRouteConnections property: List of ExpressRoute connections to the ExpressRoute gateway.
-     *
+     * 
      * @return the expressRouteConnections value.
      */
     public List<ExpressRouteConnectionInner> expressRouteConnections() {
@@ -81,19 +85,19 @@ public final class ExpressRouteGatewayProperties {
 
     /**
      * Set the expressRouteConnections property: List of ExpressRoute connections to the ExpressRoute gateway.
-     *
+     * 
      * @param expressRouteConnections the expressRouteConnections value to set.
      * @return the ExpressRouteGatewayProperties object itself.
      */
-    public ExpressRouteGatewayProperties withExpressRouteConnections(
-        List<ExpressRouteConnectionInner> expressRouteConnections) {
+    public ExpressRouteGatewayProperties
+        withExpressRouteConnections(List<ExpressRouteConnectionInner> expressRouteConnections) {
         this.expressRouteConnections = expressRouteConnections;
         return this;
     }
 
     /**
      * Get the provisioningState property: The provisioning state of the express route gateway resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -102,7 +106,7 @@ public final class ExpressRouteGatewayProperties {
 
     /**
      * Get the virtualHub property: The Virtual Hub where the ExpressRoute gateway is or will be deployed.
-     *
+     * 
      * @return the virtualHub value.
      */
     public VirtualHubId virtualHub() {
@@ -111,7 +115,7 @@ public final class ExpressRouteGatewayProperties {
 
     /**
      * Set the virtualHub property: The Virtual Hub where the ExpressRoute gateway is or will be deployed.
-     *
+     * 
      * @param virtualHub the virtualHub value to set.
      * @return the ExpressRouteGatewayProperties object itself.
      */
@@ -123,7 +127,7 @@ public final class ExpressRouteGatewayProperties {
     /**
      * Get the allowNonVirtualWanTraffic property: Configures this gateway to accept traffic from non Virtual WAN
      * networks.
-     *
+     * 
      * @return the allowNonVirtualWanTraffic value.
      */
     public Boolean allowNonVirtualWanTraffic() {
@@ -133,7 +137,7 @@ public final class ExpressRouteGatewayProperties {
     /**
      * Set the allowNonVirtualWanTraffic property: Configures this gateway to accept traffic from non Virtual WAN
      * networks.
-     *
+     * 
      * @param allowNonVirtualWanTraffic the allowNonVirtualWanTraffic value to set.
      * @return the ExpressRouteGatewayProperties object itself.
      */
@@ -144,7 +148,7 @@ public final class ExpressRouteGatewayProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -155,10 +159,8 @@ public final class ExpressRouteGatewayProperties {
             expressRouteConnections().forEach(e -> e.validate());
         }
         if (virtualHub() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property virtualHub in model ExpressRouteGatewayProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property virtualHub in model ExpressRouteGatewayProperties"));
         } else {
             virtualHub().validate();
         }

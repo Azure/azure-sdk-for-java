@@ -11,19 +11,18 @@ import org.junit.jupiter.api.Assertions;
 public final class VirtualNetworkConfigTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VirtualNetworkConfig model =
-            BinaryData
-                .fromString("{\"subnetId\":\"rljdouskcqv\",\"proxyVmSize\":\"cr\"}")
+        VirtualNetworkConfig model
+            = BinaryData.fromString("{\"subnetId\":\"qduujitcjczdz\",\"proxyVmSize\":\"ndhkrw\"}")
                 .toObject(VirtualNetworkConfig.class);
-        Assertions.assertEquals("rljdouskcqv", model.subnetId());
-        Assertions.assertEquals("cr", model.proxyVmSize());
+        Assertions.assertEquals("qduujitcjczdz", model.subnetId());
+        Assertions.assertEquals("ndhkrw", model.proxyVmSize());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VirtualNetworkConfig model = new VirtualNetworkConfig().withSubnetId("rljdouskcqv").withProxyVmSize("cr");
+        VirtualNetworkConfig model = new VirtualNetworkConfig().withSubnetId("qduujitcjczdz").withProxyVmSize("ndhkrw");
         model = BinaryData.fromObject(model).toObject(VirtualNetworkConfig.class);
-        Assertions.assertEquals("rljdouskcqv", model.subnetId());
-        Assertions.assertEquals("cr", model.proxyVmSize());
+        Assertions.assertEquals("qduujitcjczdz", model.subnetId());
+        Assertions.assertEquals("ndhkrw", model.proxyVmSize());
     }
 }

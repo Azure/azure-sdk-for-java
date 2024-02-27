@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Result of the post subvolume and action is to get metadata of the subvolume. */
+/**
+ * Result of the post subvolume and action is to get metadata of the subvolume.
+ */
 @Fluent
 public final class SubvolumeModelInner {
     /*
@@ -35,13 +37,15 @@ public final class SubvolumeModelInner {
     @JsonProperty(value = "properties")
     private SubvolumeModelProperties innerProperties;
 
-    /** Creates an instance of SubvolumeModelInner class. */
+    /**
+     * Creates an instance of SubvolumeModelInner class.
+     */
     public SubvolumeModelInner() {
     }
 
     /**
      * Get the id property: Resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -50,7 +54,7 @@ public final class SubvolumeModelInner {
 
     /**
      * Get the name property: Resource name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -59,7 +63,7 @@ public final class SubvolumeModelInner {
 
     /**
      * Get the type property: Resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -68,7 +72,7 @@ public final class SubvolumeModelInner {
 
     /**
      * Get the innerProperties property: It represents the minimal properties of the subvolume.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SubvolumeModelProperties innerProperties() {
@@ -77,9 +81,9 @@ public final class SubvolumeModelInner {
 
     /**
      * Get the path property: path
-     *
-     * <p>Path to the subvolume.
-     *
+     * 
+     * Path to the subvolume.
+     * 
      * @return the path value.
      */
     public String path() {
@@ -88,9 +92,9 @@ public final class SubvolumeModelInner {
 
     /**
      * Set the path property: path
-     *
-     * <p>Path to the subvolume.
-     *
+     * 
+     * Path to the subvolume.
+     * 
      * @param path the path value to set.
      * @return the SubvolumeModelInner object itself.
      */
@@ -104,9 +108,9 @@ public final class SubvolumeModelInner {
 
     /**
      * Get the parentPath property: parentpath
-     *
-     * <p>Path to the parent subvolume.
-     *
+     * 
+     * Path to the parent subvolume.
+     * 
      * @return the parentPath value.
      */
     public String parentPath() {
@@ -115,9 +119,9 @@ public final class SubvolumeModelInner {
 
     /**
      * Set the parentPath property: parentpath
-     *
-     * <p>Path to the parent subvolume.
-     *
+     * 
+     * Path to the parent subvolume.
+     * 
      * @param parentPath the parentPath value to set.
      * @return the SubvolumeModelInner object itself.
      */
@@ -131,9 +135,9 @@ public final class SubvolumeModelInner {
 
     /**
      * Get the size property: size
-     *
-     * <p>Size of subvolume.
-     *
+     * 
+     * Size of subvolume.
+     * 
      * @return the size value.
      */
     public Long size() {
@@ -142,9 +146,9 @@ public final class SubvolumeModelInner {
 
     /**
      * Set the size property: size
-     *
-     * <p>Size of subvolume.
-     *
+     * 
+     * Size of subvolume.
+     * 
      * @param size the size value to set.
      * @return the SubvolumeModelInner object itself.
      */
@@ -158,9 +162,9 @@ public final class SubvolumeModelInner {
 
     /**
      * Get the bytesUsed property: bytesUsed
-     *
-     * <p>Bytes used.
-     *
+     * 
+     * Bytes used.
+     * 
      * @return the bytesUsed value.
      */
     public Long bytesUsed() {
@@ -169,9 +173,9 @@ public final class SubvolumeModelInner {
 
     /**
      * Set the bytesUsed property: bytesUsed
-     *
-     * <p>Bytes used.
-     *
+     * 
+     * Bytes used.
+     * 
      * @param bytesUsed the bytesUsed value to set.
      * @return the SubvolumeModelInner object itself.
      */
@@ -185,9 +189,9 @@ public final class SubvolumeModelInner {
 
     /**
      * Get the permissions property: permissions
-     *
-     * <p>Permissions of the subvolume.
-     *
+     * 
+     * Permissions of the subvolume.
+     * 
      * @return the permissions value.
      */
     public String permissions() {
@@ -196,9 +200,9 @@ public final class SubvolumeModelInner {
 
     /**
      * Set the permissions property: permissions
-     *
-     * <p>Permissions of the subvolume.
-     *
+     * 
+     * Permissions of the subvolume.
+     * 
      * @param permissions the permissions value to set.
      * @return the SubvolumeModelInner object itself.
      */
@@ -212,9 +216,9 @@ public final class SubvolumeModelInner {
 
     /**
      * Get the creationTimestamp property: creationTimeStamp
-     *
-     * <p>Creation time and date.
-     *
+     * 
+     * Creation time and date.
+     * 
      * @return the creationTimestamp value.
      */
     public OffsetDateTime creationTimestamp() {
@@ -223,9 +227,9 @@ public final class SubvolumeModelInner {
 
     /**
      * Set the creationTimestamp property: creationTimeStamp
-     *
-     * <p>Creation time and date.
-     *
+     * 
+     * Creation time and date.
+     * 
      * @param creationTimestamp the creationTimestamp value to set.
      * @return the SubvolumeModelInner object itself.
      */
@@ -239,9 +243,9 @@ public final class SubvolumeModelInner {
 
     /**
      * Get the accessedTimestamp property: accessedTimeStamp
-     *
-     * <p>Most recent access time and date.
-     *
+     * 
+     * Most recent access time and date.
+     * 
      * @return the accessedTimestamp value.
      */
     public OffsetDateTime accessedTimestamp() {
@@ -250,9 +254,9 @@ public final class SubvolumeModelInner {
 
     /**
      * Set the accessedTimestamp property: accessedTimeStamp
-     *
-     * <p>Most recent access time and date.
-     *
+     * 
+     * Most recent access time and date.
+     * 
      * @param accessedTimestamp the accessedTimestamp value to set.
      * @return the SubvolumeModelInner object itself.
      */
@@ -266,9 +270,9 @@ public final class SubvolumeModelInner {
 
     /**
      * Get the modifiedTimestamp property: modifiedTimeStamp
-     *
-     * <p>Most recent modification time and date.
-     *
+     * 
+     * Most recent modification time and date.
+     * 
      * @return the modifiedTimestamp value.
      */
     public OffsetDateTime modifiedTimestamp() {
@@ -277,9 +281,9 @@ public final class SubvolumeModelInner {
 
     /**
      * Set the modifiedTimestamp property: modifiedTimeStamp
-     *
-     * <p>Most recent modification time and date.
-     *
+     * 
+     * Most recent modification time and date.
+     * 
      * @param modifiedTimestamp the modifiedTimestamp value to set.
      * @return the SubvolumeModelInner object itself.
      */
@@ -293,9 +297,9 @@ public final class SubvolumeModelInner {
 
     /**
      * Get the changedTimestamp property: changedTimeStamp
-     *
-     * <p>Most recent change time and date.
-     *
+     * 
+     * Most recent change time and date.
+     * 
      * @return the changedTimestamp value.
      */
     public OffsetDateTime changedTimestamp() {
@@ -304,9 +308,9 @@ public final class SubvolumeModelInner {
 
     /**
      * Set the changedTimestamp property: changedTimeStamp
-     *
-     * <p>Most recent change time and date.
-     *
+     * 
+     * Most recent change time and date.
+     * 
      * @param changedTimestamp the changedTimestamp value to set.
      * @return the SubvolumeModelInner object itself.
      */
@@ -320,7 +324,7 @@ public final class SubvolumeModelInner {
 
     /**
      * Get the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -329,7 +333,7 @@ public final class SubvolumeModelInner {
 
     /**
      * Set the provisioningState property: Azure lifecycle management.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the SubvolumeModelInner object itself.
      */
@@ -343,7 +347,7 @@ public final class SubvolumeModelInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

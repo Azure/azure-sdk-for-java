@@ -4,23 +4,22 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-/** Samples for CassandraClusters List. */
+/**
+ * Samples for CassandraClusters List.
+ */
 public final class CassandraClustersListSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBManagedCassandraClusterListBySubscription.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * CosmosDBManagedCassandraClusterListBySubscription.json
      */
     /**
      * Sample code: CosmosDBManagedCassandraClusterListBySubscription.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void cosmosDBManagedCassandraClusterListBySubscription(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
-            .manager()
-            .serviceClient()
-            .getCassandraClusters()
+    public static void
+        cosmosDBManagedCassandraClusterListBySubscription(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.cosmosDBAccounts().manager().serviceClient().getCassandraClusters()
             .list(com.azure.core.util.Context.NONE);
     }
 }

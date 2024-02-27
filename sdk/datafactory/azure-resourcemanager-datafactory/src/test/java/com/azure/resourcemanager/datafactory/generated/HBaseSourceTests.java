@@ -11,16 +11,16 @@ public final class HBaseSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
         HBaseSource model = BinaryData.fromString(
-            "{\"type\":\"HBaseSource\",\"query\":\"datarakucgjre\",\"queryTimeout\":\"dataceoabo\",\"additionalColumns\":\"dataxkdzmtkm\",\"sourceRetryCount\":\"dataufdemrclsxgpky\",\"sourceRetryWait\":\"datamtkhihixi\",\"maxConcurrentConnections\":\"datavyflkeqgxlj\",\"disableMetricsCollection\":\"datatosiwcveq\",\"\":{\"hwdaj\":\"databwlxoczzzlf\"}}")
+            "{\"type\":\"HBaseSource\",\"query\":\"datao\",\"queryTimeout\":\"datavtvbfpu\",\"additionalColumns\":\"dataobtdhum\",\"sourceRetryCount\":\"dataqwckapoetdfzjwje\",\"sourceRetryWait\":\"datalihanawipdqoz\",\"maxConcurrentConnections\":\"datalqzopvhwmtdbfrj\",\"disableMetricsCollection\":\"datavu\",\"\":{\"rd\":\"datasnfeag\"}}")
             .toObject(HBaseSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
         HBaseSource model
-            = new HBaseSource().withSourceRetryCount("dataufdemrclsxgpky").withSourceRetryWait("datamtkhihixi")
-                .withMaxConcurrentConnections("datavyflkeqgxlj").withDisableMetricsCollection("datatosiwcveq")
-                .withQueryTimeout("dataceoabo").withAdditionalColumns("dataxkdzmtkm").withQuery("datarakucgjre");
+            = new HBaseSource().withSourceRetryCount("dataqwckapoetdfzjwje").withSourceRetryWait("datalihanawipdqoz")
+                .withMaxConcurrentConnections("datalqzopvhwmtdbfrj").withDisableMetricsCollection("datavu")
+                .withQueryTimeout("datavtvbfpu").withAdditionalColumns("dataobtdhum").withQuery("datao");
         model = BinaryData.fromObject(model).toObject(HBaseSource.class);
     }
 }

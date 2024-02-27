@@ -7,15 +7,23 @@ package com.azure.resourcemanager.batch.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** The current state of the pool. */
+/**
+ * The current state of the pool.
+ */
 public enum PoolProvisioningState {
-    /** Enum value Succeeded. */
+    /**
+     * Enum value Succeeded.
+     */
     SUCCEEDED("Succeeded"),
 
-    /** Enum value Deleting. */
+    /**
+     * Enum value Deleting.
+     */
     DELETING("Deleting");
 
-    /** The actual serialized value for a PoolProvisioningState instance. */
+    /**
+     * The actual serialized value for a PoolProvisioningState instance.
+     */
     private final String value;
 
     PoolProvisioningState(String value) {
@@ -24,7 +32,7 @@ public enum PoolProvisioningState {
 
     /**
      * Parses a serialized value to a PoolProvisioningState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed PoolProvisioningState object, or null if unable to parse.
      */
@@ -42,7 +50,9 @@ public enum PoolProvisioningState {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

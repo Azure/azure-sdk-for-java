@@ -9,7 +9,9 @@ import com.azure.resourcemanager.imagebuilder.fluent.models.RunOutputInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The result of List run outputs operation. */
+/**
+ * The result of List run outputs operation.
+ */
 @Fluent
 public final class RunOutputCollection {
     /*
@@ -24,13 +26,15 @@ public final class RunOutputCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of RunOutputCollection class. */
+    /**
+     * Creates an instance of RunOutputCollection class.
+     */
     public RunOutputCollection() {
     }
 
     /**
      * Get the value property: An array of run outputs.
-     *
+     * 
      * @return the value value.
      */
     public List<RunOutputInner> value() {
@@ -39,7 +43,7 @@ public final class RunOutputCollection {
 
     /**
      * Set the value property: An array of run outputs.
-     *
+     * 
      * @param value the value value to set.
      * @return the RunOutputCollection object itself.
      */
@@ -50,7 +54,7 @@ public final class RunOutputCollection {
 
     /**
      * Get the nextLink property: The continuation token.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class RunOutputCollection {
 
     /**
      * Set the nextLink property: The continuation token.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the RunOutputCollection object itself.
      */
@@ -70,7 +74,7 @@ public final class RunOutputCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
