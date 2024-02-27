@@ -80,10 +80,10 @@ public final class DiscoveryAsyncClient {
      * </p>
      * <pre>{@code
      * {
-     *     searchCount: Integer (Optional)
-     *     searchCountApproximate: Boolean (Optional)
+     *     &#64;search.count: Integer (Optional)
+     *     &#64;search.count.approximate: Boolean (Optional)
      *     continuationToken: String (Optional)
-     *     searchFacets (Optional): {
+     *     &#64;search.facets (Optional): {
      *         entityType (Optional): [
      *              (Optional){
      *                 count: Integer (Optional)
@@ -120,8 +120,8 @@ public final class DiscoveryAsyncClient {
      *     }
      *     value (Optional): [
      *          (Optional){
-     *             searchScore: Double (Optional)
-     *             searchHighlights (Optional): {
+     *             &#64;search.score: Double (Optional)
+     *             @search.highlights (Optional): {
      *                 id (Optional): [
      *                     String (Optional)
      *                 ]
@@ -216,8 +216,8 @@ public final class DiscoveryAsyncClient {
      * {
      *     value (Optional): [
      *          (Optional){
-     *             searchScore: Double (Optional)
-     *             searchText: String (Optional)
+     *             &#64;search.score: Double (Optional)
+     *             @search.text: String (Optional)
      *             objectType: String (Optional)
      *             createTime: Long (Optional)
      *             updateTime: Long (Optional)

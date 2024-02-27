@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.datamap.implementation;
 
+import com.azure.analytics.purview.datamap.PurviewDataMapServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -54,6 +55,15 @@ public final class GlossariesImpl {
         this.service
             = RestProxy.create(GlossariesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
+    }
+
+    /**
+     * Gets Service version.
+     * 
+     * @return the serviceVersion value.
+     */
+    public PurviewDataMapServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**
@@ -703,7 +713,7 @@ public final class GlossariesImpl {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -824,7 +834,7 @@ public final class GlossariesImpl {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -900,7 +910,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -958,7 +968,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1034,7 +1044,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1092,7 +1102,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1168,7 +1178,7 @@ public final class GlossariesImpl {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1232,7 +1242,7 @@ public final class GlossariesImpl {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1315,7 +1325,7 @@ public final class GlossariesImpl {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1379,7 +1389,7 @@ public final class GlossariesImpl {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1459,7 +1469,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1521,7 +1531,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1602,7 +1612,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1664,7 +1674,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1745,7 +1755,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1826,7 +1836,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1905,7 +1915,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1967,7 +1977,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2049,7 +2059,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2111,7 +2121,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2237,7 +2247,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2329,7 +2339,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2697,7 +2707,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2749,14 +2759,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -2767,16 +2777,16 @@ public final class GlossariesImpl {
      *         }
      *     ]
      *     contacts (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 id: String (Optional)
      *                 info: String (Optional)
      *             }
      *         ]
      *     }
      *     attributes (Optional): {
-     *         String (Optional): {
-     *             String: Object (Optional)
+     *         String (Required): {
+     *             String: Object (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -2784,14 +2794,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -2860,7 +2870,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2912,14 +2922,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -2930,16 +2940,16 @@ public final class GlossariesImpl {
      *         }
      *     ]
      *     contacts (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 id: String (Optional)
      *                 info: String (Optional)
      *             }
      *         ]
      *     }
      *     attributes (Optional): {
-     *         String (Optional): {
-     *             String: Object (Optional)
+     *         String (Required): {
+     *             String: Object (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -2947,14 +2957,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -3061,7 +3071,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -3113,14 +3123,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -3131,16 +3141,16 @@ public final class GlossariesImpl {
      *         }
      *     ]
      *     contacts (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 id: String (Optional)
      *                 info: String (Optional)
      *             }
      *         ]
      *     }
      *     attributes (Optional): {
-     *         String (Optional): {
-     *             String: Object (Optional)
+     *         String (Required): {
+     *             String: Object (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -3148,14 +3158,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -3224,7 +3234,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -3276,14 +3286,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -3294,16 +3304,16 @@ public final class GlossariesImpl {
      *         }
      *     ]
      *     contacts (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 id: String (Optional)
      *                 info: String (Optional)
      *             }
      *         ]
      *     }
      *     attributes (Optional): {
-     *         String (Optional): {
-     *             String: Object (Optional)
+     *         String (Required): {
+     *             String: Object (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -3311,14 +3321,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -3405,7 +3415,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -3457,14 +3467,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -3475,16 +3485,16 @@ public final class GlossariesImpl {
      *         }
      *     ]
      *     contacts (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 id: String (Optional)
      *                 info: String (Optional)
      *             }
      *         ]
      *     }
      *     attributes (Optional): {
-     *         String (Optional): {
-     *             String: Object (Optional)
+     *         String (Required): {
+     *             String: Object (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -3492,14 +3502,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -3587,7 +3597,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -3639,14 +3649,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -3657,16 +3667,16 @@ public final class GlossariesImpl {
      *         }
      *     ]
      *     contacts (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 id: String (Optional)
      *                 info: String (Optional)
      *             }
      *         ]
      *     }
      *     attributes (Optional): {
-     *         String (Optional): {
-     *             String: Object (Optional)
+     *         String (Required): {
+     *             String: Object (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -3674,14 +3684,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -3787,7 +3797,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -3839,14 +3849,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -3857,16 +3867,16 @@ public final class GlossariesImpl {
      *         }
      *     ]
      *     contacts (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 id: String (Optional)
      *                 info: String (Optional)
      *             }
      *         ]
      *     }
      *     attributes (Optional): {
-     *         String (Optional): {
-     *             String: Object (Optional)
+     *         String (Required): {
+     *             String: Object (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -3874,14 +3884,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -3950,7 +3960,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -4002,14 +4012,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -4020,16 +4030,16 @@ public final class GlossariesImpl {
      *         }
      *     ]
      *     contacts (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 id: String (Optional)
      *                 info: String (Optional)
      *             }
      *         ]
      *     }
      *     attributes (Optional): {
-     *         String (Optional): {
-     *             String: Object (Optional)
+     *         String (Required): {
+     *             String: Object (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -4037,14 +4047,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -4152,7 +4162,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -4204,14 +4214,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -4222,16 +4232,16 @@ public final class GlossariesImpl {
      *         }
      *     ]
      *     contacts (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 id: String (Optional)
      *                 info: String (Optional)
      *             }
      *         ]
      *     }
      *     attributes (Optional): {
-     *         String (Optional): {
-     *             String: Object (Optional)
+     *         String (Required): {
+     *             String: Object (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -4239,14 +4249,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -4315,7 +4325,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -4367,14 +4377,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -4385,16 +4395,16 @@ public final class GlossariesImpl {
      *         }
      *     ]
      *     contacts (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 id: String (Optional)
      *                 info: String (Optional)
      *             }
      *         ]
      *     }
      *     attributes (Optional): {
-     *         String (Optional): {
-     *             String: Object (Optional)
+     *         String (Required): {
+     *             String: Object (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -4402,14 +4412,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -4561,7 +4571,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -4613,14 +4623,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -4631,16 +4641,16 @@ public final class GlossariesImpl {
      *         }
      *     ]
      *     contacts (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 id: String (Optional)
      *                 info: String (Optional)
      *             }
      *         ]
      *     }
      *     attributes (Optional): {
-     *         String (Optional): {
-     *             String: Object (Optional)
+     *         String (Required): {
+     *             String: Object (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -4648,14 +4658,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -4773,7 +4783,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -4825,14 +4835,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -4843,16 +4853,16 @@ public final class GlossariesImpl {
      *         }
      *     ]
      *     contacts (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 id: String (Optional)
      *                 info: String (Optional)
      *             }
      *         ]
      *     }
      *     attributes (Optional): {
-     *         String (Optional): {
-     *             String: Object (Optional)
+     *         String (Required): {
+     *             String: Object (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -4860,14 +4870,14 @@ public final class GlossariesImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -4977,7 +4987,7 @@ public final class GlossariesImpl {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -5029,14 +5039,14 @@ public final class GlossariesImpl {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 name: String (Optional)
      *                 displayText: String (Optional)
      *                 itemPath: String (Optional)
      *                 resourceId: String (Optional)
      *                 properties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *             }
      *         ]
@@ -5047,16 +5057,16 @@ public final class GlossariesImpl {
      *             }
      *         ]
      *         contacts (Optional): {
-     *             String (Optional): [
-     *                  (Optional){
+     *             String (Required): [
+     *                  (Required){
      *                     id: String (Optional)
      *                     info: String (Optional)
      *                 }
      *             ]
      *         }
      *         attributes (Optional): {
-     *             String (Optional): {
-     *                 String: Object (Optional)
+     *             String (Required): {
+     *                 String: Object (Required)
      *             }
      *         }
      *         assignedEntities (Optional): [
@@ -5064,14 +5074,14 @@ public final class GlossariesImpl {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 displayText: String (Optional)
      *                 entityStatus: String(ACTIVE/DELETED) (Optional)
      *                 relationshipType: String (Optional)
      *                 relationshipAttributes (Optional): {
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -5142,7 +5152,7 @@ public final class GlossariesImpl {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -5194,14 +5204,14 @@ public final class GlossariesImpl {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 name: String (Optional)
      *                 displayText: String (Optional)
      *                 itemPath: String (Optional)
      *                 resourceId: String (Optional)
      *                 properties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *             }
      *         ]
@@ -5212,16 +5222,16 @@ public final class GlossariesImpl {
      *             }
      *         ]
      *         contacts (Optional): {
-     *             String (Optional): [
-     *                  (Optional){
+     *             String (Required): [
+     *                  (Required){
      *                     id: String (Optional)
      *                     info: String (Optional)
      *                 }
      *             ]
      *         }
      *         attributes (Optional): {
-     *             String (Optional): {
-     *                 String: Object (Optional)
+     *             String (Required): {
+     *                 String: Object (Required)
      *             }
      *         }
      *         assignedEntities (Optional): [
@@ -5229,14 +5239,14 @@ public final class GlossariesImpl {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 displayText: String (Optional)
      *                 entityStatus: String(ACTIVE/DELETED) (Optional)
      *                 relationshipType: String (Optional)
      *                 relationshipAttributes (Optional): {
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -5344,7 +5354,7 @@ public final class GlossariesImpl {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -5396,14 +5406,14 @@ public final class GlossariesImpl {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 name: String (Optional)
      *                 displayText: String (Optional)
      *                 itemPath: String (Optional)
      *                 resourceId: String (Optional)
      *                 properties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *             }
      *         ]
@@ -5414,16 +5424,16 @@ public final class GlossariesImpl {
      *             }
      *         ]
      *         contacts (Optional): {
-     *             String (Optional): [
-     *                  (Optional){
+     *             String (Required): [
+     *                  (Required){
      *                     id: String (Optional)
      *                     info: String (Optional)
      *                 }
      *             ]
      *         }
      *         attributes (Optional): {
-     *             String (Optional): {
-     *                 String: Object (Optional)
+     *             String (Required): {
+     *                 String: Object (Required)
      *             }
      *         }
      *         assignedEntities (Optional): [
@@ -5431,14 +5441,14 @@ public final class GlossariesImpl {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 displayText: String (Optional)
      *                 entityStatus: String(ACTIVE/DELETED) (Optional)
      *                 relationshipType: String (Optional)
      *                 relationshipAttributes (Optional): {
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -5509,7 +5519,7 @@ public final class GlossariesImpl {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -5561,14 +5571,14 @@ public final class GlossariesImpl {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 name: String (Optional)
      *                 displayText: String (Optional)
      *                 itemPath: String (Optional)
      *                 resourceId: String (Optional)
      *                 properties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *             }
      *         ]
@@ -5579,16 +5589,16 @@ public final class GlossariesImpl {
      *             }
      *         ]
      *         contacts (Optional): {
-     *             String (Optional): [
-     *                  (Optional){
+     *             String (Required): [
+     *                  (Required){
      *                     id: String (Optional)
      *                     info: String (Optional)
      *                 }
      *             ]
      *         }
      *         attributes (Optional): {
-     *             String (Optional): {
-     *                 String: Object (Optional)
+     *             String (Required): {
+     *                 String: Object (Required)
      *             }
      *         }
      *         assignedEntities (Optional): [
@@ -5596,14 +5606,14 @@ public final class GlossariesImpl {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 displayText: String (Optional)
      *                 entityStatus: String(ACTIVE/DELETED) (Optional)
      *                 relationshipType: String (Optional)
      *                 relationshipAttributes (Optional): {
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -5723,14 +5733,14 @@ public final class GlossariesImpl {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *         displayText: String (Optional)
      *         entityStatus: String(ACTIVE/DELETED) (Optional)
      *         relationshipType: String (Optional)
      *         relationshipAttributes (Optional): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -5800,14 +5810,14 @@ public final class GlossariesImpl {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *         displayText: String (Optional)
      *         entityStatus: String(ACTIVE/DELETED) (Optional)
      *         relationshipType: String (Optional)
      *         relationshipAttributes (Optional): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -5849,14 +5859,14 @@ public final class GlossariesImpl {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *         displayText: String (Optional)
      *         entityStatus: String(ACTIVE/DELETED) (Optional)
      *         relationshipType: String (Optional)
      *         relationshipAttributes (Optional): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -5900,14 +5910,14 @@ public final class GlossariesImpl {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *         displayText: String (Optional)
      *         entityStatus: String(ACTIVE/DELETED) (Optional)
      *         relationshipType: String (Optional)
      *         relationshipAttributes (Optional): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -5946,14 +5956,14 @@ public final class GlossariesImpl {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *         displayText: String (Optional)
      *         entityStatus: String(ACTIVE/DELETED) (Optional)
      *         relationshipType: String (Optional)
      *         relationshipAttributes (Optional): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -5992,14 +6002,14 @@ public final class GlossariesImpl {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *         displayText: String (Optional)
      *         entityStatus: String(ACTIVE/DELETED) (Optional)
      *         relationshipType: String (Optional)
      *         relationshipAttributes (Optional): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -6175,7 +6185,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -6251,7 +6261,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -6345,7 +6355,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -6403,7 +6413,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -6500,7 +6510,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -6558,7 +6568,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -6706,7 +6716,7 @@ public final class GlossariesImpl {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -6821,7 +6831,7 @@ public final class GlossariesImpl {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -7038,7 +7048,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -7086,7 +7096,7 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      *     categoryInfo (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             guid: String (Optional)
      *             classifications (Optional): [
      *                 (recursive schema, see above)
@@ -7115,7 +7125,7 @@ public final class GlossariesImpl {
      *         }
      *     }
      *     termInfo (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             guid: String (Optional)
      *             classifications (Optional): [
      *                 (recursive schema, see above)
@@ -7144,14 +7154,14 @@ public final class GlossariesImpl {
      *                     guid: String (Optional)
      *                     typeName: String (Optional)
      *                     uniqueAttributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     name: String (Optional)
      *                     displayText: String (Optional)
      *                     itemPath: String (Optional)
      *                     resourceId: String (Optional)
      *                     properties (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                 }
      *             ]
@@ -7162,16 +7172,16 @@ public final class GlossariesImpl {
      *                 }
      *             ]
      *             contacts (Optional): {
-     *                 String (Optional): [
-     *                      (Optional){
+     *                 String (Required): [
+     *                      (Required){
      *                         id: String (Optional)
      *                         info: String (Optional)
      *                     }
      *                 ]
      *             }
      *             attributes (Optional): {
-     *                 String (Optional): {
-     *                     String: Object (Optional)
+     *                 String (Required): {
+     *                     String: Object (Required)
      *                 }
      *             }
      *             assignedEntities (Optional): [
@@ -7179,14 +7189,14 @@ public final class GlossariesImpl {
      *                     guid: String (Optional)
      *                     typeName: String (Optional)
      *                     uniqueAttributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     displayText: String (Optional)
      *                     entityStatus: String(ACTIVE/DELETED) (Optional)
      *                     relationshipType: String (Optional)
      *                     relationshipAttributes (Optional): {
      *                         attributes (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -7283,7 +7293,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -7331,7 +7341,7 @@ public final class GlossariesImpl {
      *     ]
      *     usage: String (Optional)
      *     categoryInfo (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             guid: String (Optional)
      *             classifications (Optional): [
      *                 (recursive schema, see above)
@@ -7360,7 +7370,7 @@ public final class GlossariesImpl {
      *         }
      *     }
      *     termInfo (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             guid: String (Optional)
      *             classifications (Optional): [
      *                 (recursive schema, see above)
@@ -7389,14 +7399,14 @@ public final class GlossariesImpl {
      *                     guid: String (Optional)
      *                     typeName: String (Optional)
      *                     uniqueAttributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     name: String (Optional)
      *                     displayText: String (Optional)
      *                     itemPath: String (Optional)
      *                     resourceId: String (Optional)
      *                     properties (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                 }
      *             ]
@@ -7407,16 +7417,16 @@ public final class GlossariesImpl {
      *                 }
      *             ]
      *             contacts (Optional): {
-     *                 String (Optional): [
-     *                      (Optional){
+     *                 String (Required): [
+     *                      (Required){
      *                         id: String (Optional)
      *                         info: String (Optional)
      *                     }
      *                 ]
      *             }
      *             attributes (Optional): {
-     *                 String (Optional): {
-     *                     String: Object (Optional)
+     *                 String (Required): {
+     *                     String: Object (Required)
      *                 }
      *             }
      *             assignedEntities (Optional): [
@@ -7424,14 +7434,14 @@ public final class GlossariesImpl {
      *                     guid: String (Optional)
      *                     typeName: String (Optional)
      *                     uniqueAttributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     displayText: String (Optional)
      *                     entityStatus: String(ACTIVE/DELETED) (Optional)
      *                     relationshipType: String (Optional)
      *                     relationshipAttributes (Optional): {
      *                         attributes (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -7554,7 +7564,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -7667,7 +7677,7 @@ public final class GlossariesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -7779,7 +7789,7 @@ public final class GlossariesImpl {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -7831,14 +7841,14 @@ public final class GlossariesImpl {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 name: String (Optional)
      *                 displayText: String (Optional)
      *                 itemPath: String (Optional)
      *                 resourceId: String (Optional)
      *                 properties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *             }
      *         ]
@@ -7849,16 +7859,16 @@ public final class GlossariesImpl {
      *             }
      *         ]
      *         contacts (Optional): {
-     *             String (Optional): [
-     *                  (Optional){
+     *             String (Required): [
+     *                  (Required){
      *                     id: String (Optional)
      *                     info: String (Optional)
      *                 }
      *             ]
      *         }
      *         attributes (Optional): {
-     *             String (Optional): {
-     *                 String: Object (Optional)
+     *             String (Required): {
+     *                 String: Object (Required)
      *             }
      *         }
      *         assignedEntities (Optional): [
@@ -7866,14 +7876,14 @@ public final class GlossariesImpl {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 displayText: String (Optional)
      *                 entityStatus: String(ACTIVE/DELETED) (Optional)
      *                 relationshipType: String (Optional)
      *                 relationshipAttributes (Optional): {
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -7995,7 +8005,7 @@ public final class GlossariesImpl {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -8047,14 +8057,14 @@ public final class GlossariesImpl {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 name: String (Optional)
      *                 displayText: String (Optional)
      *                 itemPath: String (Optional)
      *                 resourceId: String (Optional)
      *                 properties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *             }
      *         ]
@@ -8065,16 +8075,16 @@ public final class GlossariesImpl {
      *             }
      *         ]
      *         contacts (Optional): {
-     *             String (Optional): [
-     *                  (Optional){
+     *             String (Required): [
+     *                  (Required){
      *                     id: String (Optional)
      *                     info: String (Optional)
      *                 }
      *             ]
      *         }
      *         attributes (Optional): {
-     *             String (Optional): {
-     *                 String: Object (Optional)
+     *             String (Required): {
+     *                 String: Object (Required)
      *             }
      *         }
      *         assignedEntities (Optional): [
@@ -8082,14 +8092,14 @@ public final class GlossariesImpl {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 displayText: String (Optional)
      *                 entityStatus: String(ACTIVE/DELETED) (Optional)
      *                 relationshipType: String (Optional)
      *                 relationshipAttributes (Optional): {
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)

@@ -101,7 +101,7 @@ public final class TypeDefinitionClient {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -115,7 +115,7 @@ public final class TypeDefinitionClient {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -128,7 +128,7 @@ public final class TypeDefinitionClient {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -205,7 +205,7 @@ public final class TypeDefinitionClient {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -219,7 +219,7 @@ public final class TypeDefinitionClient {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -232,7 +232,7 @@ public final class TypeDefinitionClient {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -309,7 +309,7 @@ public final class TypeDefinitionClient {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -323,7 +323,7 @@ public final class TypeDefinitionClient {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -336,7 +336,7 @@ public final class TypeDefinitionClient {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -422,7 +422,7 @@ public final class TypeDefinitionClient {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -436,7 +436,7 @@ public final class TypeDefinitionClient {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -449,7 +449,7 @@ public final class TypeDefinitionClient {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -535,7 +535,7 @@ public final class TypeDefinitionClient {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -549,7 +549,7 @@ public final class TypeDefinitionClient {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -562,7 +562,7 @@ public final class TypeDefinitionClient {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -589,7 +589,7 @@ public final class TypeDefinitionClient {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -668,7 +668,7 @@ public final class TypeDefinitionClient {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -682,7 +682,7 @@ public final class TypeDefinitionClient {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -695,7 +695,7 @@ public final class TypeDefinitionClient {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -722,7 +722,7 @@ public final class TypeDefinitionClient {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -801,7 +801,7 @@ public final class TypeDefinitionClient {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -887,7 +887,7 @@ public final class TypeDefinitionClient {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -973,7 +973,7 @@ public final class TypeDefinitionClient {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -987,7 +987,7 @@ public final class TypeDefinitionClient {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -1000,7 +1000,7 @@ public final class TypeDefinitionClient {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -1088,7 +1088,7 @@ public final class TypeDefinitionClient {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -1102,7 +1102,7 @@ public final class TypeDefinitionClient {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -1115,7 +1115,7 @@ public final class TypeDefinitionClient {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -1203,7 +1203,7 @@ public final class TypeDefinitionClient {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -1217,7 +1217,7 @@ public final class TypeDefinitionClient {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -1230,7 +1230,7 @@ public final class TypeDefinitionClient {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -1307,7 +1307,7 @@ public final class TypeDefinitionClient {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -1321,7 +1321,7 @@ public final class TypeDefinitionClient {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -1334,7 +1334,7 @@ public final class TypeDefinitionClient {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -1411,7 +1411,7 @@ public final class TypeDefinitionClient {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -1434,7 +1434,7 @@ public final class TypeDefinitionClient {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -1447,7 +1447,7 @@ public final class TypeDefinitionClient {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -1489,7 +1489,7 @@ public final class TypeDefinitionClient {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -1566,7 +1566,7 @@ public final class TypeDefinitionClient {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -1589,7 +1589,7 @@ public final class TypeDefinitionClient {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -1602,7 +1602,7 @@ public final class TypeDefinitionClient {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -1644,7 +1644,7 @@ public final class TypeDefinitionClient {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -1768,7 +1768,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -1782,7 +1782,7 @@ public final class TypeDefinitionClient {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: Object (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -1795,7 +1795,7 @@ public final class TypeDefinitionClient {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -1814,7 +1814,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -1846,7 +1846,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -1877,7 +1877,7 @@ public final class TypeDefinitionClient {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -1898,7 +1898,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -1926,7 +1926,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -1960,7 +1960,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -1983,7 +1983,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -2069,7 +2069,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -2083,7 +2083,7 @@ public final class TypeDefinitionClient {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: Object (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -2096,7 +2096,7 @@ public final class TypeDefinitionClient {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -2115,7 +2115,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -2147,7 +2147,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -2178,7 +2178,7 @@ public final class TypeDefinitionClient {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -2199,7 +2199,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -2227,7 +2227,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -2261,7 +2261,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -2284,7 +2284,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -2352,7 +2352,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -2366,7 +2366,7 @@ public final class TypeDefinitionClient {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: Object (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -2379,7 +2379,7 @@ public final class TypeDefinitionClient {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -2398,7 +2398,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -2430,7 +2430,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -2461,7 +2461,7 @@ public final class TypeDefinitionClient {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -2482,7 +2482,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -2510,7 +2510,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -2544,7 +2544,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -2567,7 +2567,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -2653,7 +2653,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -2667,7 +2667,7 @@ public final class TypeDefinitionClient {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: Object (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -2680,7 +2680,7 @@ public final class TypeDefinitionClient {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -2699,7 +2699,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -2731,7 +2731,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -2762,7 +2762,7 @@ public final class TypeDefinitionClient {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -2783,7 +2783,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -2811,7 +2811,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -2845,7 +2845,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -2868,7 +2868,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -2936,7 +2936,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -2950,7 +2950,7 @@ public final class TypeDefinitionClient {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: Object (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -2963,7 +2963,7 @@ public final class TypeDefinitionClient {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -2982,7 +2982,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -3014,7 +3014,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -3045,7 +3045,7 @@ public final class TypeDefinitionClient {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -3066,7 +3066,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -3094,7 +3094,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -3128,7 +3128,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -3151,7 +3151,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -3236,7 +3236,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -3250,7 +3250,7 @@ public final class TypeDefinitionClient {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: Object (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -3263,7 +3263,7 @@ public final class TypeDefinitionClient {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -3282,7 +3282,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -3314,7 +3314,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -3345,7 +3345,7 @@ public final class TypeDefinitionClient {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -3366,7 +3366,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -3394,7 +3394,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -3428,7 +3428,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -3451,7 +3451,7 @@ public final class TypeDefinitionClient {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -3590,7 +3590,7 @@ public final class TypeDefinitionClient {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -3604,7 +3604,7 @@ public final class TypeDefinitionClient {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -3617,7 +3617,7 @@ public final class TypeDefinitionClient {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -3694,7 +3694,7 @@ public final class TypeDefinitionClient {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -3708,7 +3708,7 @@ public final class TypeDefinitionClient {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -3721,7 +3721,7 @@ public final class TypeDefinitionClient {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)

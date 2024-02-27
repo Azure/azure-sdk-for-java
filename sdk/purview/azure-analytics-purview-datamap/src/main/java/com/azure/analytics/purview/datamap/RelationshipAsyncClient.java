@@ -47,7 +47,7 @@ public final class RelationshipAsyncClient {
      * <pre>{@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -57,7 +57,7 @@ public final class RelationshipAsyncClient {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *     }
      *     end2 (Optional): (recursive schema, see end2 above)
@@ -77,7 +77,7 @@ public final class RelationshipAsyncClient {
      * <pre>{@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -87,7 +87,7 @@ public final class RelationshipAsyncClient {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *     }
      *     end2 (Optional): (recursive schema, see end2 above)
@@ -124,7 +124,7 @@ public final class RelationshipAsyncClient {
      * <pre>{@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -134,7 +134,7 @@ public final class RelationshipAsyncClient {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *     }
      *     end2 (Optional): (recursive schema, see end2 above)
@@ -154,7 +154,7 @@ public final class RelationshipAsyncClient {
      * <pre>{@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -164,7 +164,7 @@ public final class RelationshipAsyncClient {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *     }
      *     end2 (Optional): (recursive schema, see end2 above)
@@ -220,9 +220,9 @@ public final class RelationshipAsyncClient {
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -232,7 +232,7 @@ public final class RelationshipAsyncClient {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -275,7 +275,7 @@ public final class RelationshipAsyncClient {
      *     }
      *     relationship (Optional): {
      *         attributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -285,7 +285,7 @@ public final class RelationshipAsyncClient {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *         }
      *         end2 (Optional): (recursive schema, see end2 above)

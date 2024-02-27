@@ -101,7 +101,7 @@ public final class GlossaryClient {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -176,7 +176,7 @@ public final class GlossaryClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -234,7 +234,7 @@ public final class GlossaryClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -310,7 +310,7 @@ public final class GlossaryClient {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -374,7 +374,7 @@ public final class GlossaryClient {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -454,7 +454,7 @@ public final class GlossaryClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -516,7 +516,7 @@ public final class GlossaryClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -596,7 +596,7 @@ public final class GlossaryClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -675,7 +675,7 @@ public final class GlossaryClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -737,7 +737,7 @@ public final class GlossaryClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -844,7 +844,7 @@ public final class GlossaryClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1074,7 +1074,7 @@ public final class GlossaryClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1126,14 +1126,14 @@ public final class GlossaryClient {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -1144,16 +1144,16 @@ public final class GlossaryClient {
      *         }
      *     ]
      *     contacts (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 id: String (Optional)
      *                 info: String (Optional)
      *             }
      *         ]
      *     }
      *     attributes (Optional): {
-     *         String (Optional): {
-     *             String: Object (Optional)
+     *         String (Required): {
+     *             String: Object (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -1161,14 +1161,14 @@ public final class GlossaryClient {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1237,7 +1237,7 @@ public final class GlossaryClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1289,14 +1289,14 @@ public final class GlossaryClient {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -1307,16 +1307,16 @@ public final class GlossaryClient {
      *         }
      *     ]
      *     contacts (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 id: String (Optional)
      *                 info: String (Optional)
      *             }
      *         ]
      *     }
      *     attributes (Optional): {
-     *         String (Optional): {
-     *             String: Object (Optional)
+     *         String (Required): {
+     *             String: Object (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -1324,14 +1324,14 @@ public final class GlossaryClient {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1417,7 +1417,7 @@ public final class GlossaryClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1469,14 +1469,14 @@ public final class GlossaryClient {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -1487,16 +1487,16 @@ public final class GlossaryClient {
      *         }
      *     ]
      *     contacts (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 id: String (Optional)
      *                 info: String (Optional)
      *             }
      *         ]
      *     }
      *     attributes (Optional): {
-     *         String (Optional): {
-     *             String: Object (Optional)
+     *         String (Required): {
+     *             String: Object (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -1504,14 +1504,14 @@ public final class GlossaryClient {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1616,7 +1616,7 @@ public final class GlossaryClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1668,14 +1668,14 @@ public final class GlossaryClient {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -1686,16 +1686,16 @@ public final class GlossaryClient {
      *         }
      *     ]
      *     contacts (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 id: String (Optional)
      *                 info: String (Optional)
      *             }
      *         ]
      *     }
      *     attributes (Optional): {
-     *         String (Optional): {
-     *             String: Object (Optional)
+     *         String (Required): {
+     *             String: Object (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -1703,14 +1703,14 @@ public final class GlossaryClient {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1779,7 +1779,7 @@ public final class GlossaryClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1831,14 +1831,14 @@ public final class GlossaryClient {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -1849,16 +1849,16 @@ public final class GlossaryClient {
      *         }
      *     ]
      *     contacts (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 id: String (Optional)
      *                 info: String (Optional)
      *             }
      *         ]
      *     }
      *     attributes (Optional): {
-     *         String (Optional): {
-     *             String: Object (Optional)
+     *         String (Required): {
+     *             String: Object (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -1866,14 +1866,14 @@ public final class GlossaryClient {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -2006,7 +2006,7 @@ public final class GlossaryClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2058,14 +2058,14 @@ public final class GlossaryClient {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             name: String (Optional)
      *             displayText: String (Optional)
      *             itemPath: String (Optional)
      *             resourceId: String (Optional)
      *             properties (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *         }
      *     ]
@@ -2076,16 +2076,16 @@ public final class GlossaryClient {
      *         }
      *     ]
      *     contacts (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 id: String (Optional)
      *                 info: String (Optional)
      *             }
      *         ]
      *     }
      *     attributes (Optional): {
-     *         String (Optional): {
-     *             String: Object (Optional)
+     *         String (Required): {
+     *             String: Object (Required)
      *         }
      *     }
      *     assignedEntities (Optional): [
@@ -2093,14 +2093,14 @@ public final class GlossaryClient {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             displayText: String (Optional)
      *             entityStatus: String(ACTIVE/DELETED) (Optional)
      *             relationshipType: String (Optional)
      *             relationshipAttributes (Optional): {
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -2209,7 +2209,7 @@ public final class GlossaryClient {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -2261,14 +2261,14 @@ public final class GlossaryClient {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 name: String (Optional)
      *                 displayText: String (Optional)
      *                 itemPath: String (Optional)
      *                 resourceId: String (Optional)
      *                 properties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *             }
      *         ]
@@ -2279,16 +2279,16 @@ public final class GlossaryClient {
      *             }
      *         ]
      *         contacts (Optional): {
-     *             String (Optional): [
-     *                  (Optional){
+     *             String (Required): [
+     *                  (Required){
      *                     id: String (Optional)
      *                     info: String (Optional)
      *                 }
      *             ]
      *         }
      *         attributes (Optional): {
-     *             String (Optional): {
-     *                 String: Object (Optional)
+     *             String (Required): {
+     *                 String: Object (Required)
      *             }
      *         }
      *         assignedEntities (Optional): [
@@ -2296,14 +2296,14 @@ public final class GlossaryClient {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 displayText: String (Optional)
      *                 entityStatus: String(ACTIVE/DELETED) (Optional)
      *                 relationshipType: String (Optional)
      *                 relationshipAttributes (Optional): {
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -2374,7 +2374,7 @@ public final class GlossaryClient {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -2426,14 +2426,14 @@ public final class GlossaryClient {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 name: String (Optional)
      *                 displayText: String (Optional)
      *                 itemPath: String (Optional)
      *                 resourceId: String (Optional)
      *                 properties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *             }
      *         ]
@@ -2444,16 +2444,16 @@ public final class GlossaryClient {
      *             }
      *         ]
      *         contacts (Optional): {
-     *             String (Optional): [
-     *                  (Optional){
+     *             String (Required): [
+     *                  (Required){
      *                     id: String (Optional)
      *                     info: String (Optional)
      *                 }
      *             ]
      *         }
      *         attributes (Optional): {
-     *             String (Optional): {
-     *                 String: Object (Optional)
+     *             String (Required): {
+     *                 String: Object (Required)
      *             }
      *         }
      *         assignedEntities (Optional): [
@@ -2461,14 +2461,14 @@ public final class GlossaryClient {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 displayText: String (Optional)
      *                 entityStatus: String(ACTIVE/DELETED) (Optional)
      *                 relationshipType: String (Optional)
      *                 relationshipAttributes (Optional): {
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -2587,14 +2587,14 @@ public final class GlossaryClient {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *         displayText: String (Optional)
      *         entityStatus: String(ACTIVE/DELETED) (Optional)
      *         relationshipType: String (Optional)
      *         relationshipAttributes (Optional): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2635,14 +2635,14 @@ public final class GlossaryClient {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *         displayText: String (Optional)
      *         entityStatus: String(ACTIVE/DELETED) (Optional)
      *         relationshipType: String (Optional)
      *         relationshipAttributes (Optional): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2680,14 +2680,14 @@ public final class GlossaryClient {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *         displayText: String (Optional)
      *         entityStatus: String(ACTIVE/DELETED) (Optional)
      *         relationshipType: String (Optional)
      *         relationshipAttributes (Optional): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2792,7 +2792,7 @@ public final class GlossaryClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2886,7 +2886,7 @@ public final class GlossaryClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2944,7 +2944,7 @@ public final class GlossaryClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -3072,7 +3072,7 @@ public final class GlossaryClient {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -3222,7 +3222,7 @@ public final class GlossaryClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -3270,7 +3270,7 @@ public final class GlossaryClient {
      *     ]
      *     usage: String (Optional)
      *     categoryInfo (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             guid: String (Optional)
      *             classifications (Optional): [
      *                 (recursive schema, see above)
@@ -3299,7 +3299,7 @@ public final class GlossaryClient {
      *         }
      *     }
      *     termInfo (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             guid: String (Optional)
      *             classifications (Optional): [
      *                 (recursive schema, see above)
@@ -3328,14 +3328,14 @@ public final class GlossaryClient {
      *                     guid: String (Optional)
      *                     typeName: String (Optional)
      *                     uniqueAttributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     name: String (Optional)
      *                     displayText: String (Optional)
      *                     itemPath: String (Optional)
      *                     resourceId: String (Optional)
      *                     properties (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                 }
      *             ]
@@ -3346,16 +3346,16 @@ public final class GlossaryClient {
      *                 }
      *             ]
      *             contacts (Optional): {
-     *                 String (Optional): [
-     *                      (Optional){
+     *                 String (Required): [
+     *                      (Required){
      *                         id: String (Optional)
      *                         info: String (Optional)
      *                     }
      *                 ]
      *             }
      *             attributes (Optional): {
-     *                 String (Optional): {
-     *                     String: Object (Optional)
+     *                 String (Required): {
+     *                     String: Object (Required)
      *                 }
      *             }
      *             assignedEntities (Optional): [
@@ -3363,14 +3363,14 @@ public final class GlossaryClient {
      *                     guid: String (Optional)
      *                     typeName: String (Optional)
      *                     uniqueAttributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     displayText: String (Optional)
      *                     entityStatus: String(ACTIVE/DELETED) (Optional)
      *                     relationshipType: String (Optional)
      *                     relationshipAttributes (Optional): {
      *                         attributes (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -3492,7 +3492,7 @@ public final class GlossaryClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -3603,7 +3603,7 @@ public final class GlossaryClient {
      *         classifications (Optional): [
      *              (Optional){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -3655,14 +3655,14 @@ public final class GlossaryClient {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 name: String (Optional)
      *                 displayText: String (Optional)
      *                 itemPath: String (Optional)
      *                 resourceId: String (Optional)
      *                 properties (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *             }
      *         ]
@@ -3673,16 +3673,16 @@ public final class GlossaryClient {
      *             }
      *         ]
      *         contacts (Optional): {
-     *             String (Optional): [
-     *                  (Optional){
+     *             String (Required): [
+     *                  (Required){
      *                     id: String (Optional)
      *                     info: String (Optional)
      *                 }
      *             ]
      *         }
      *         attributes (Optional): {
-     *             String (Optional): {
-     *                 String: Object (Optional)
+     *             String (Required): {
+     *                 String: Object (Required)
      *             }
      *         }
      *         assignedEntities (Optional): [
@@ -3690,14 +3690,14 @@ public final class GlossaryClient {
      *                 guid: String (Optional)
      *                 typeName: String (Optional)
      *                 uniqueAttributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 displayText: String (Optional)
      *                 entityStatus: String(ACTIVE/DELETED) (Optional)
      *                 relationshipType: String (Optional)
      *                 relationshipAttributes (Optional): {
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)

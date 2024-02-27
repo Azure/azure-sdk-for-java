@@ -19,14 +19,14 @@ public final class QueryResult {
      * page).
      */
     @Generated
-    @JsonProperty(value = "searchCount")
+    @JsonProperty(value = "@search.count")
     private Integer searchCount;
 
     /*
      * 'True' if the '@search.count' is an approximate value and vise versa.
      */
     @Generated
-    @JsonProperty(value = "searchCountApproximate")
+    @JsonProperty(value = "@search.count.approximate")
     private Boolean searchCountApproximate;
 
     /*
@@ -42,7 +42,7 @@ public final class QueryResult {
      * the facet is returned as an element of @search.facets.
      */
     @Generated
-    @JsonProperty(value = "searchFacets")
+    @JsonProperty(value = "@search.facets")
     private SearchFacetResultValue searchFacets;
 
     /*

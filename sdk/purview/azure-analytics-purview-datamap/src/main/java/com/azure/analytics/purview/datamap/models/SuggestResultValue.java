@@ -19,7 +19,7 @@ public final class SuggestResultValue {
      * search score by default.
      */
     @Generated
-    @JsonProperty(value = "searchScore")
+    @JsonProperty(value = "@search.score")
     private Double searchScore;
 
     /*
@@ -27,7 +27,7 @@ public final class SuggestResultValue {
      * with emphasis mark.
      */
     @Generated
-    @JsonProperty(value = "searchText")
+    @JsonProperty(value = "@search.text")
     private String searchText;
 
     /*

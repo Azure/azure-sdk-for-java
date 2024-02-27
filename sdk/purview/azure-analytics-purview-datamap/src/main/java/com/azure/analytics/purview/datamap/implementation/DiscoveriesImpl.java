@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.datamap.implementation;
 
+import com.azure.analytics.purview.datamap.PurviewDataMapServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.HeaderParam;
@@ -50,6 +51,15 @@ public final class DiscoveriesImpl {
         this.service
             = RestProxy.create(DiscoveriesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
+    }
+
+    /**
+     * Gets Service version.
+     * 
+     * @return the serviceVersion value.
+     */
+    public PurviewDataMapServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**
@@ -159,10 +169,10 @@ public final class DiscoveriesImpl {
      * </p>
      * <pre>{@code
      * {
-     *     searchCount: Integer (Optional)
-     *     searchCountApproximate: Boolean (Optional)
+     *     &#64;search.count: Integer (Optional)
+     *     &#64;search.count.approximate: Boolean (Optional)
      *     continuationToken: String (Optional)
-     *     searchFacets (Optional): {
+     *     &#64;search.facets (Optional): {
      *         entityType (Optional): [
      *              (Optional){
      *                 count: Integer (Optional)
@@ -199,8 +209,8 @@ public final class DiscoveriesImpl {
      *     }
      *     value (Optional): [
      *          (Optional){
-     *             searchScore: Double (Optional)
-     *             searchHighlights (Optional): {
+     *             &#64;search.score: Double (Optional)
+     *             @search.highlights (Optional): {
      *                 id (Optional): [
      *                     String (Optional)
      *                 ]
@@ -314,10 +324,10 @@ public final class DiscoveriesImpl {
      * </p>
      * <pre>{@code
      * {
-     *     searchCount: Integer (Optional)
-     *     searchCountApproximate: Boolean (Optional)
+     *     &#64;search.count: Integer (Optional)
+     *     &#64;search.count.approximate: Boolean (Optional)
      *     continuationToken: String (Optional)
-     *     searchFacets (Optional): {
+     *     &#64;search.facets (Optional): {
      *         entityType (Optional): [
      *              (Optional){
      *                 count: Integer (Optional)
@@ -354,8 +364,8 @@ public final class DiscoveriesImpl {
      *     }
      *     value (Optional): [
      *          (Optional){
-     *             searchScore: Double (Optional)
-     *             searchHighlights (Optional): {
+     *             &#64;search.score: Double (Optional)
+     *             @search.highlights (Optional): {
      *                 id (Optional): [
      *                     String (Optional)
      *                 ]
@@ -451,8 +461,8 @@ public final class DiscoveriesImpl {
      * {
      *     value (Optional): [
      *          (Optional){
-     *             searchScore: Double (Optional)
-     *             searchText: String (Optional)
+     *             &#64;search.score: Double (Optional)
+     *             @search.text: String (Optional)
      *             objectType: String (Optional)
      *             createTime: Long (Optional)
      *             updateTime: Long (Optional)
@@ -534,8 +544,8 @@ public final class DiscoveriesImpl {
      * {
      *     value (Optional): [
      *          (Optional){
-     *             searchScore: Double (Optional)
-     *             searchText: String (Optional)
+     *             &#64;search.score: Double (Optional)
+     *             @search.text: String (Optional)
      *             objectType: String (Optional)
      *             createTime: Long (Optional)
      *             updateTime: Long (Optional)

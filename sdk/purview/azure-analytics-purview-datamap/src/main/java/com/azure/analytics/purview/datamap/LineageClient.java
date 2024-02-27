@@ -65,9 +65,9 @@ public final class LineageClient {
      * {
      *     baseEntityGuid: String (Optional)
      *     guidEntityMap (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -77,7 +77,7 @@ public final class LineageClient {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -119,8 +119,8 @@ public final class LineageClient {
      *         }
      *     }
      *     widthCounts (Optional): {
-     *         String (Optional): {
-     *             String: Object (Optional)
+     *         String (Required): {
+     *             String: Object (Required)
      *         }
      *     }
      *     lineageDepth: Integer (Optional)
@@ -194,9 +194,9 @@ public final class LineageClient {
      * {
      *     baseEntityGuid: String (Optional)
      *     guidEntityMap (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -206,7 +206,7 @@ public final class LineageClient {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -248,8 +248,8 @@ public final class LineageClient {
      *         }
      *     }
      *     widthCounts (Optional): {
-     *         String (Optional): {
-     *             String: Object (Optional)
+     *         String (Required): {
+     *             String: Object (Required)
      *         }
      *     }
      *     lineageDepth: Integer (Optional)
@@ -339,9 +339,9 @@ public final class LineageClient {
      * {
      *     baseEntityGuid: String (Optional)
      *     guidEntityMap (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -351,7 +351,7 @@ public final class LineageClient {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -393,8 +393,8 @@ public final class LineageClient {
      *         }
      *     }
      *     widthCounts (Optional): {
-     *         String (Optional): {
-     *             String: Object (Optional)
+     *         String (Required): {
+     *             String: Object (Required)
      *         }
      *     }
      *     lineageDepth: Integer (Optional)

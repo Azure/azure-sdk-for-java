@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.datamap.implementation;
 
+import com.azure.analytics.purview.datamap.PurviewDataMapServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -53,6 +54,15 @@ public final class RelationshipsImpl {
         this.service
             = RestProxy.create(RelationshipsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
+    }
+
+    /**
+     * Gets Service version.
+     * 
+     * @return the serviceVersion value.
+     */
+    public PurviewDataMapServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**
@@ -147,7 +157,7 @@ public final class RelationshipsImpl {
      * <pre>{@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -157,7 +167,7 @@ public final class RelationshipsImpl {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *     }
      *     end2 (Optional): (recursive schema, see end2 above)
@@ -177,7 +187,7 @@ public final class RelationshipsImpl {
      * <pre>{@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -187,7 +197,7 @@ public final class RelationshipsImpl {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *     }
      *     end2 (Optional): (recursive schema, see end2 above)
@@ -226,7 +236,7 @@ public final class RelationshipsImpl {
      * <pre>{@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -236,7 +246,7 @@ public final class RelationshipsImpl {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *     }
      *     end2 (Optional): (recursive schema, see end2 above)
@@ -256,7 +266,7 @@ public final class RelationshipsImpl {
      * <pre>{@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -266,7 +276,7 @@ public final class RelationshipsImpl {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *     }
      *     end2 (Optional): (recursive schema, see end2 above)
@@ -303,7 +313,7 @@ public final class RelationshipsImpl {
      * <pre>{@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -313,7 +323,7 @@ public final class RelationshipsImpl {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *     }
      *     end2 (Optional): (recursive schema, see end2 above)
@@ -333,7 +343,7 @@ public final class RelationshipsImpl {
      * <pre>{@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -343,7 +353,7 @@ public final class RelationshipsImpl {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *     }
      *     end2 (Optional): (recursive schema, see end2 above)
@@ -382,7 +392,7 @@ public final class RelationshipsImpl {
      * <pre>{@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -392,7 +402,7 @@ public final class RelationshipsImpl {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *     }
      *     end2 (Optional): (recursive schema, see end2 above)
@@ -412,7 +422,7 @@ public final class RelationshipsImpl {
      * <pre>{@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -422,7 +432,7 @@ public final class RelationshipsImpl {
      *         guid: String (Optional)
      *         typeName: String (Optional)
      *         uniqueAttributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *     }
      *     end2 (Optional): (recursive schema, see end2 above)
@@ -478,9 +488,9 @@ public final class RelationshipsImpl {
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -490,7 +500,7 @@ public final class RelationshipsImpl {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -533,7 +543,7 @@ public final class RelationshipsImpl {
      *     }
      *     relationship (Optional): {
      *         attributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -543,7 +553,7 @@ public final class RelationshipsImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *         }
      *         end2 (Optional): (recursive schema, see end2 above)
@@ -602,9 +612,9 @@ public final class RelationshipsImpl {
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -614,7 +624,7 @@ public final class RelationshipsImpl {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -657,7 +667,7 @@ public final class RelationshipsImpl {
      *     }
      *     relationship (Optional): {
      *         attributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -667,7 +677,7 @@ public final class RelationshipsImpl {
      *             guid: String (Optional)
      *             typeName: String (Optional)
      *             uniqueAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *         }
      *         end2 (Optional): (recursive schema, see end2 above)

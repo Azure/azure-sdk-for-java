@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.datamap.implementation;
 
+import com.azure.analytics.purview.datamap.PurviewDataMapServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -57,6 +58,15 @@ public final class EntitiesImpl {
     EntitiesImpl(DataMapClientImpl client) {
         this.service = RestProxy.create(EntitiesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
+    }
+
+    /**
+     * Gets Service version.
+     * 
+     * @return the serviceVersion value.
+     */
+    public PurviewDataMapServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**
@@ -812,19 +822,19 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -843,7 +853,7 @@ public final class EntitiesImpl {
      *             createTime: Long (Optional)
      *             createdBy: String (Optional)
      *             customAttributes (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             guid: String (Optional)
      *             homeId: String (Optional)
@@ -868,15 +878,15 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
      *             updatedBy: String (Optional)
      *             version: Long (Optional)
      *             contacts (Optional): {
-     *                 String (Optional): [
-     *                      (Optional){
+     *                 String (Required): [
+     *                      (Required){
      *                         id: String (Optional)
      *                         info: String (Optional)
      *                     }
@@ -893,13 +903,13 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     mutatedEntities (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -909,7 +919,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -1016,19 +1026,19 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -1047,7 +1057,7 @@ public final class EntitiesImpl {
      *             createTime: Long (Optional)
      *             createdBy: String (Optional)
      *             customAttributes (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             guid: String (Optional)
      *             homeId: String (Optional)
@@ -1072,15 +1082,15 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
      *             updatedBy: String (Optional)
      *             version: Long (Optional)
      *             contacts (Optional): {
-     *                 String (Optional): [
-     *                      (Optional){
+     *                 String (Required): [
+     *                      (Required){
      *                         id: String (Optional)
      *                         info: String (Optional)
      *                     }
@@ -1097,13 +1107,13 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     mutatedEntities (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1113,7 +1123,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -1211,19 +1221,19 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -1242,7 +1252,7 @@ public final class EntitiesImpl {
      *             createTime: Long (Optional)
      *             createdBy: String (Optional)
      *             customAttributes (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             guid: String (Optional)
      *             homeId: String (Optional)
@@ -1267,15 +1277,15 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
      *             updatedBy: String (Optional)
      *             version: Long (Optional)
      *             contacts (Optional): {
-     *                 String (Optional): [
-     *                      (Optional){
+     *                 String (Required): [
+     *                      (Required){
      *                         id: String (Optional)
      *                         info: String (Optional)
      *                     }
@@ -1339,19 +1349,19 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -1370,7 +1380,7 @@ public final class EntitiesImpl {
      *             createTime: Long (Optional)
      *             createdBy: String (Optional)
      *             customAttributes (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             guid: String (Optional)
      *             homeId: String (Optional)
@@ -1395,15 +1405,15 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
      *             updatedBy: String (Optional)
      *             version: Long (Optional)
      *             contacts (Optional): {
-     *                 String (Optional): [
-     *                      (Optional){
+     *                 String (Required): [
+     *                      (Required){
      *                         id: String (Optional)
      *                         info: String (Optional)
      *                     }
@@ -1476,19 +1486,19 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -1507,7 +1517,7 @@ public final class EntitiesImpl {
      *             createTime: Long (Optional)
      *             createdBy: String (Optional)
      *             customAttributes (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             guid: String (Optional)
      *             homeId: String (Optional)
@@ -1532,15 +1542,15 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
      *             updatedBy: String (Optional)
      *             version: Long (Optional)
      *             contacts (Optional): {
-     *                 String (Optional): [
-     *                      (Optional){
+     *                 String (Required): [
+     *                      (Required){
      *                         id: String (Optional)
      *                         info: String (Optional)
      *                     }
@@ -1559,13 +1569,13 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     mutatedEntities (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1575,7 +1585,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -1683,19 +1693,19 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -1714,7 +1724,7 @@ public final class EntitiesImpl {
      *             createTime: Long (Optional)
      *             createdBy: String (Optional)
      *             customAttributes (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             guid: String (Optional)
      *             homeId: String (Optional)
@@ -1739,15 +1749,15 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
      *             updatedBy: String (Optional)
      *             version: Long (Optional)
      *             contacts (Optional): {
-     *                 String (Optional): [
-     *                      (Optional){
+     *                 String (Required): [
+     *                      (Required){
      *                         id: String (Optional)
      *                         info: String (Optional)
      *                     }
@@ -1766,13 +1776,13 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     mutatedEntities (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1782,7 +1792,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -1856,13 +1866,13 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     mutatedEntities (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1872,7 +1882,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -1946,13 +1956,13 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     mutatedEntities (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1962,7 +1972,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -2034,7 +2044,7 @@ public final class EntitiesImpl {
      * {
      *     classification (Optional): {
      *         attributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -2080,7 +2090,7 @@ public final class EntitiesImpl {
      * {
      *     classification (Optional): {
      *         attributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -2150,19 +2160,19 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -2181,7 +2191,7 @@ public final class EntitiesImpl {
      *             createTime: Long (Optional)
      *             createdBy: String (Optional)
      *             customAttributes (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             guid: String (Optional)
      *             homeId: String (Optional)
@@ -2206,15 +2216,15 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
      *             updatedBy: String (Optional)
      *             version: Long (Optional)
      *             contacts (Optional): {
-     *                 String (Optional): [
-     *                      (Optional){
+     *                 String (Required): [
+     *                      (Required){
      *                         id: String (Optional)
      *                         info: String (Optional)
      *                     }
@@ -2275,19 +2285,19 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -2306,7 +2316,7 @@ public final class EntitiesImpl {
      *             createTime: Long (Optional)
      *             createdBy: String (Optional)
      *             customAttributes (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             guid: String (Optional)
      *             homeId: String (Optional)
@@ -2331,15 +2341,15 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
      *             updatedBy: String (Optional)
      *             version: Long (Optional)
      *             contacts (Optional): {
-     *                 String (Optional): [
-     *                      (Optional){
+     *                 String (Required): [
+     *                      (Required){
      *                         id: String (Optional)
      *                         info: String (Optional)
      *                     }
@@ -2383,13 +2393,13 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     mutatedEntities (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -2399,7 +2409,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -2484,13 +2494,13 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     mutatedEntities (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -2500,7 +2510,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -2574,13 +2584,13 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     mutatedEntities (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -2590,7 +2600,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -2662,13 +2672,13 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     mutatedEntities (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -2678,7 +2688,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -2748,7 +2758,7 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -2791,7 +2801,7 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -2939,7 +2949,7 @@ public final class EntitiesImpl {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -2983,7 +2993,7 @@ public final class EntitiesImpl {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -3026,7 +3036,7 @@ public final class EntitiesImpl {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -3070,7 +3080,7 @@ public final class EntitiesImpl {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -3158,19 +3168,19 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -3189,7 +3199,7 @@ public final class EntitiesImpl {
      *             createTime: Long (Optional)
      *             createdBy: String (Optional)
      *             customAttributes (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             guid: String (Optional)
      *             homeId: String (Optional)
@@ -3214,15 +3224,15 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
      *             updatedBy: String (Optional)
      *             version: Long (Optional)
      *             contacts (Optional): {
-     *                 String (Optional): [
-     *                      (Optional){
+     *                 String (Required): [
+     *                      (Required){
      *                         id: String (Optional)
      *                         info: String (Optional)
      *                     }
@@ -3317,19 +3327,19 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -3348,7 +3358,7 @@ public final class EntitiesImpl {
      *             createTime: Long (Optional)
      *             createdBy: String (Optional)
      *             customAttributes (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             guid: String (Optional)
      *             homeId: String (Optional)
@@ -3373,15 +3383,15 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
      *             updatedBy: String (Optional)
      *             version: Long (Optional)
      *             contacts (Optional): {
-     *                 String (Optional): [
-     *                      (Optional){
+     *                 String (Required): [
+     *                      (Required){
      *                         id: String (Optional)
      *                         info: String (Optional)
      *                     }
@@ -3464,19 +3474,19 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -3495,7 +3505,7 @@ public final class EntitiesImpl {
      *             createTime: Long (Optional)
      *             createdBy: String (Optional)
      *             customAttributes (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             guid: String (Optional)
      *             homeId: String (Optional)
@@ -3520,15 +3530,15 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
      *             updatedBy: String (Optional)
      *             version: Long (Optional)
      *             contacts (Optional): {
-     *                 String (Optional): [
-     *                      (Optional){
+     *                 String (Required): [
+     *                      (Required){
      *                         id: String (Optional)
      *                         info: String (Optional)
      *                     }
@@ -3545,13 +3555,13 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     mutatedEntities (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -3561,7 +3571,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -3671,19 +3681,19 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -3702,7 +3712,7 @@ public final class EntitiesImpl {
      *             createTime: Long (Optional)
      *             createdBy: String (Optional)
      *             customAttributes (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             guid: String (Optional)
      *             homeId: String (Optional)
@@ -3727,15 +3737,15 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
      *             updatedBy: String (Optional)
      *             version: Long (Optional)
      *             contacts (Optional): {
-     *                 String (Optional): [
-     *                      (Optional){
+     *                 String (Required): [
+     *                      (Required){
      *                         id: String (Optional)
      *                         info: String (Optional)
      *                     }
@@ -3752,13 +3762,13 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     mutatedEntities (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -3768,7 +3778,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -3873,13 +3883,13 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     mutatedEntities (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -3889,7 +3899,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -3993,13 +4003,13 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     mutatedEntities (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -4009,7 +4019,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -4183,7 +4193,7 @@ public final class EntitiesImpl {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -4247,7 +4257,7 @@ public final class EntitiesImpl {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -4311,7 +4321,7 @@ public final class EntitiesImpl {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -4375,7 +4385,7 @@ public final class EntitiesImpl {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -4418,9 +4428,9 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     guidHeaderMap (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -4430,7 +4440,7 @@ public final class EntitiesImpl {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -4506,9 +4516,9 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     guidHeaderMap (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -4518,7 +4528,7 @@ public final class EntitiesImpl {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -4644,19 +4654,19 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -4675,7 +4685,7 @@ public final class EntitiesImpl {
      *             createTime: Long (Optional)
      *             createdBy: String (Optional)
      *             customAttributes (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             guid: String (Optional)
      *             homeId: String (Optional)
@@ -4700,15 +4710,15 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
      *             updatedBy: String (Optional)
      *             version: Long (Optional)
      *             contacts (Optional): {
-     *                 String (Optional): [
-     *                      (Optional){
+     *                 String (Required): [
+     *                      (Required){
      *                         id: String (Optional)
      *                         info: String (Optional)
      *                     }
@@ -4797,19 +4807,19 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -4828,7 +4838,7 @@ public final class EntitiesImpl {
      *             createTime: Long (Optional)
      *             createdBy: String (Optional)
      *             customAttributes (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             guid: String (Optional)
      *             homeId: String (Optional)
@@ -4853,15 +4863,15 @@ public final class EntitiesImpl {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
      *             updatedBy: String (Optional)
      *             version: Long (Optional)
      *             contacts (Optional): {
-     *                 String (Optional): [
-     *                      (Optional){
+     *                 String (Required): [
+     *                      (Required){
      *                         id: String (Optional)
      *                         info: String (Optional)
      *                     }
@@ -4899,7 +4909,7 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -4909,7 +4919,7 @@ public final class EntitiesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -4974,7 +4984,7 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -4984,7 +4994,7 @@ public final class EntitiesImpl {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -5335,7 +5345,7 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getBusinessMetadataTemplateWithResponseAsync(RequestOptions requestOptions) {
-        final String accept = "application/json, application/octet-stream";
+        final String accept = "application/octet-stream, application/json";
         return FluxUtil.withContext(
             context -> service.getBusinessMetadataTemplate(this.client.getEndpoint(), accept, requestOptions, context));
     }
@@ -5358,20 +5368,12 @@ public final class EntitiesImpl {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getBusinessMetadataTemplateWithResponse(RequestOptions requestOptions) {
-        final String accept = "application/json, application/octet-stream";
+        final String accept = "application/octet-stream, application/json";
         return service.getBusinessMetadataTemplateSync(this.client.getEndpoint(), accept, requestOptions, Context.NONE);
     }
 
     /**
      * Upload the file for creating Business Metadata in BULK.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: byte[] (Required)
-     * }
-     * }</pre>
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -5410,14 +5412,6 @@ public final class EntitiesImpl {
 
     /**
      * Upload the file for creating Business Metadata in BULK.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: byte[] (Required)
-     * }
-     * }</pre>
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -6055,13 +6049,13 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     mutatedEntities (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -6071,7 +6065,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -6156,13 +6150,13 @@ public final class EntitiesImpl {
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     mutatedEntities (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -6172,7 +6166,7 @@ public final class EntitiesImpl {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)

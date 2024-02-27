@@ -5,15 +5,19 @@
 package com.azure.analytics.purview.datamap;
 
 import com.azure.analytics.purview.datamap.implementation.EntitiesImpl;
+import com.azure.analytics.purview.datamap.implementation.MultipartFormDataHelper;
+import com.azure.analytics.purview.datamap.implementation.models.ImportBusinessMetadataRequest;
 import com.azure.analytics.purview.datamap.models.AtlasClassification;
 import com.azure.analytics.purview.datamap.models.AtlasClassifications;
 import com.azure.analytics.purview.datamap.models.AtlasEntitiesWithExtInfo;
 import com.azure.analytics.purview.datamap.models.AtlasEntityHeader;
 import com.azure.analytics.purview.datamap.models.AtlasEntityHeaders;
 import com.azure.analytics.purview.datamap.models.AtlasEntityWithExtInfo;
+import com.azure.analytics.purview.datamap.models.BulkImportResult;
 import com.azure.analytics.purview.datamap.models.BusinessAttributeUpdateBehavior;
 import com.azure.analytics.purview.datamap.models.ClassificationAssociateOptions;
 import com.azure.analytics.purview.datamap.models.EntityMutationResult;
+import com.azure.analytics.purview.datamap.models.FileDetails;
 import com.azure.analytics.purview.datamap.models.MoveEntitiesOptions;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -89,19 +93,19 @@ public final class EntityClient {
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -120,7 +124,7 @@ public final class EntityClient {
      *             createTime: Long (Optional)
      *             createdBy: String (Optional)
      *             customAttributes (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             guid: String (Optional)
      *             homeId: String (Optional)
@@ -145,15 +149,15 @@ public final class EntityClient {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
      *             updatedBy: String (Optional)
      *             version: Long (Optional)
      *             contacts (Optional): {
-     *                 String (Optional): [
-     *                      (Optional){
+     *                 String (Required): [
+     *                      (Required){
      *                         id: String (Optional)
      *                         info: String (Optional)
      *                     }
@@ -170,13 +174,13 @@ public final class EntityClient {
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     mutatedEntities (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -186,7 +190,7 @@ public final class EntityClient {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -283,19 +287,19 @@ public final class EntityClient {
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -314,7 +318,7 @@ public final class EntityClient {
      *             createTime: Long (Optional)
      *             createdBy: String (Optional)
      *             customAttributes (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             guid: String (Optional)
      *             homeId: String (Optional)
@@ -339,15 +343,15 @@ public final class EntityClient {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
      *             updatedBy: String (Optional)
      *             version: Long (Optional)
      *             contacts (Optional): {
-     *                 String (Optional): [
-     *                      (Optional){
+     *                 String (Required): [
+     *                      (Required){
      *                         id: String (Optional)
      *                         info: String (Optional)
      *                     }
@@ -418,19 +422,19 @@ public final class EntityClient {
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -449,7 +453,7 @@ public final class EntityClient {
      *             createTime: Long (Optional)
      *             createdBy: String (Optional)
      *             customAttributes (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             guid: String (Optional)
      *             homeId: String (Optional)
@@ -474,15 +478,15 @@ public final class EntityClient {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
      *             updatedBy: String (Optional)
      *             version: Long (Optional)
      *             contacts (Optional): {
-     *                 String (Optional): [
-     *                      (Optional){
+     *                 String (Required): [
+     *                      (Required){
      *                         id: String (Optional)
      *                         info: String (Optional)
      *                     }
@@ -501,13 +505,13 @@ public final class EntityClient {
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     mutatedEntities (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -517,7 +521,7 @@ public final class EntityClient {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -590,13 +594,13 @@ public final class EntityClient {
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     mutatedEntities (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -606,7 +610,7 @@ public final class EntityClient {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -677,7 +681,7 @@ public final class EntityClient {
      * {
      *     classification (Optional): {
      *         attributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -746,19 +750,19 @@ public final class EntityClient {
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -777,7 +781,7 @@ public final class EntityClient {
      *             createTime: Long (Optional)
      *             createdBy: String (Optional)
      *             customAttributes (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             guid: String (Optional)
      *             homeId: String (Optional)
@@ -802,15 +806,15 @@ public final class EntityClient {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
      *             updatedBy: String (Optional)
      *             version: Long (Optional)
      *             contacts (Optional): {
-     *                 String (Optional): [
-     *                      (Optional){
+     *                 String (Required): [
+     *                      (Required){
      *                         id: String (Optional)
      *                         info: String (Optional)
      *                     }
@@ -854,13 +858,13 @@ public final class EntityClient {
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     mutatedEntities (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -870,7 +874,7 @@ public final class EntityClient {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -943,13 +947,13 @@ public final class EntityClient {
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     mutatedEntities (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -959,7 +963,7 @@ public final class EntityClient {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -1029,7 +1033,7 @@ public final class EntityClient {
      * <pre>{@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -1122,7 +1126,7 @@ public final class EntityClient {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -1164,7 +1168,7 @@ public final class EntityClient {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -1251,19 +1255,19 @@ public final class EntityClient {
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -1282,7 +1286,7 @@ public final class EntityClient {
      *             createTime: Long (Optional)
      *             createdBy: String (Optional)
      *             customAttributes (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             guid: String (Optional)
      *             homeId: String (Optional)
@@ -1307,15 +1311,15 @@ public final class EntityClient {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
      *             updatedBy: String (Optional)
      *             version: Long (Optional)
      *             contacts (Optional): {
-     *                 String (Optional): [
-     *                      (Optional){
+     *                 String (Required): [
+     *                      (Required){
      *                         id: String (Optional)
      *                         info: String (Optional)
      *                     }
@@ -1397,19 +1401,19 @@ public final class EntityClient {
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -1428,7 +1432,7 @@ public final class EntityClient {
      *             createTime: Long (Optional)
      *             createdBy: String (Optional)
      *             customAttributes (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             guid: String (Optional)
      *             homeId: String (Optional)
@@ -1453,15 +1457,15 @@ public final class EntityClient {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
      *             updatedBy: String (Optional)
      *             version: Long (Optional)
      *             contacts (Optional): {
-     *                 String (Optional): [
-     *                      (Optional){
+     *                 String (Required): [
+     *                      (Required){
      *                         id: String (Optional)
      *                         info: String (Optional)
      *                     }
@@ -1478,13 +1482,13 @@ public final class EntityClient {
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     mutatedEntities (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1494,7 +1498,7 @@ public final class EntityClient {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -1598,13 +1602,13 @@ public final class EntityClient {
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     mutatedEntities (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -1614,7 +1618,7 @@ public final class EntityClient {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -1746,7 +1750,7 @@ public final class EntityClient {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -1809,7 +1813,7 @@ public final class EntityClient {
      * [
      *      (Required){
      *         attributes (Optional): {
-     *             String: Object (Optional)
+     *             String: Object (Required)
      *         }
      *         typeName: String (Optional)
      *         lastModifiedTS: String (Optional)
@@ -1851,9 +1855,9 @@ public final class EntityClient {
      * <pre>{@code
      * {
      *     guidHeaderMap (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -1863,7 +1867,7 @@ public final class EntityClient {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -1988,19 +1992,19 @@ public final class EntityClient {
      * <pre>{@code
      * {
      *     referredEntities (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
      *             businessAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -2019,7 +2023,7 @@ public final class EntityClient {
      *             createTime: Long (Optional)
      *             createdBy: String (Optional)
      *             customAttributes (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             guid: String (Optional)
      *             homeId: String (Optional)
@@ -2044,15 +2048,15 @@ public final class EntityClient {
      *             provenanceType: Integer (Optional)
      *             proxy: Boolean (Optional)
      *             relationshipAttributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             status: String(ACTIVE/DELETED) (Optional)
      *             updateTime: Long (Optional)
      *             updatedBy: String (Optional)
      *             version: Long (Optional)
      *             contacts (Optional): {
-     *                 String (Optional): [
-     *                      (Optional){
+     *                 String (Required): [
+     *                      (Required){
      *                         id: String (Optional)
      *                         info: String (Optional)
      *                     }
@@ -2089,7 +2093,7 @@ public final class EntityClient {
      * <pre>{@code
      * {
      *     attributes (Optional): {
-     *         String: Object (Optional)
+     *         String: Object (Required)
      *     }
      *     typeName: String (Optional)
      *     lastModifiedTS: String (Optional)
@@ -2099,7 +2103,7 @@ public final class EntityClient {
      *     classifications (Optional): [
      *          (Optional){
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -2315,14 +2319,6 @@ public final class EntityClient {
 
     /**
      * Upload the file for creating Business Metadata in BULK.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
-     * <pre>{@code
-     * {
-     *     file: byte[] (Required)
-     * }
-     * }</pre>
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -2626,13 +2622,13 @@ public final class EntityClient {
      * <pre>{@code
      * {
      *     guidAssignments (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     mutatedEntities (Optional): {
-     *         String (Optional): [
-     *              (Optional){
+     *         String (Required): [
+     *              (Required){
      *                 attributes (Optional): {
-     *                     String: Object (Optional)
+     *                     String: Object (Required)
      *                 }
      *                 typeName: String (Optional)
      *                 lastModifiedTS: String (Optional)
@@ -2642,7 +2638,7 @@ public final class EntityClient {
      *                 classifications (Optional): [
      *                      (Optional){
      *                         attributes (Optional): {
-     *                             String: Object (Optional)
+     *                             String: Object (Required)
      *                         }
      *                         typeName: String (Optional)
      *                         lastModifiedTS: String (Optional)
@@ -3794,6 +3790,30 @@ public final class EntityClient {
         // Generated convenience method for getBusinessMetadataTemplateWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getBusinessMetadataTemplateWithResponse(requestOptions).getValue();
+    }
+
+    /**
+     * Upload the file for creating Business Metadata in BULK.
+     * 
+     * @param file InputStream of file.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return bulk import result.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BulkImportResult importBusinessMetadata(FileDetails file) {
+        // Generated convenience method for importBusinessMetadataWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        ImportBusinessMetadataRequest requestObj = new ImportBusinessMetadataRequest(file);
+        BinaryData request
+            = new MultipartFormDataHelper(requestOptions).serializeFileField("file", requestObj.getFile().getContent(),
+                requestObj.getFile().getContentType(), requestObj.getFile().getFilename()).end().getRequestBody();
+        return importBusinessMetadataWithResponse(request, requestOptions).getValue().toObject(BulkImportResult.class);
     }
 
     /**

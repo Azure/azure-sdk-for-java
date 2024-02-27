@@ -67,9 +67,9 @@ public final class LineageAsyncClient {
      * {
      *     baseEntityGuid: String (Optional)
      *     guidEntityMap (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -79,7 +79,7 @@ public final class LineageAsyncClient {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -121,8 +121,8 @@ public final class LineageAsyncClient {
      *         }
      *     }
      *     widthCounts (Optional): {
-     *         String (Optional): {
-     *             String: Object (Optional)
+     *         String (Required): {
+     *             String: Object (Required)
      *         }
      *     }
      *     lineageDepth: Integer (Optional)
@@ -197,9 +197,9 @@ public final class LineageAsyncClient {
      * {
      *     baseEntityGuid: String (Optional)
      *     guidEntityMap (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -209,7 +209,7 @@ public final class LineageAsyncClient {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -251,8 +251,8 @@ public final class LineageAsyncClient {
      *         }
      *     }
      *     widthCounts (Optional): {
-     *         String (Optional): {
-     *             String: Object (Optional)
+     *         String (Required): {
+     *             String: Object (Required)
      *         }
      *     }
      *     lineageDepth: Integer (Optional)
@@ -343,9 +343,9 @@ public final class LineageAsyncClient {
      * {
      *     baseEntityGuid: String (Optional)
      *     guidEntityMap (Optional): {
-     *         String (Optional): {
+     *         String (Required): {
      *             attributes (Optional): {
-     *                 String: Object (Optional)
+     *                 String: Object (Required)
      *             }
      *             typeName: String (Optional)
      *             lastModifiedTS: String (Optional)
@@ -355,7 +355,7 @@ public final class LineageAsyncClient {
      *             classifications (Optional): [
      *                  (Optional){
      *                     attributes (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     lastModifiedTS: String (Optional)
@@ -397,8 +397,8 @@ public final class LineageAsyncClient {
      *         }
      *     }
      *     widthCounts (Optional): {
-     *         String (Optional): {
-     *             String: Object (Optional)
+     *         String (Required): {
+     *             String: Object (Required)
      *         }
      *     }
      *     lineageDepth: Integer (Optional)

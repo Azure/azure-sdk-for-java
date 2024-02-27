@@ -4,6 +4,7 @@
 
 package com.azure.analytics.purview.datamap.implementation;
 
+import com.azure.analytics.purview.datamap.PurviewDataMapServiceVersion;
 import com.azure.core.annotation.BodyParam;
 import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
@@ -54,6 +55,15 @@ public final class TypeDefinitionsImpl {
         this.service
             = RestProxy.create(TypeDefinitionsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
+    }
+
+    /**
+     * Gets Service version.
+     * 
+     * @return the serviceVersion value.
+     */
+    public PurviewDataMapServiceVersion getServiceVersion() {
+        return client.getServiceVersion();
     }
 
     /**
@@ -539,7 +549,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -553,7 +563,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -566,7 +576,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -646,7 +656,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -660,7 +670,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -673,7 +683,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -751,7 +761,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -765,7 +775,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -778,7 +788,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -858,7 +868,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -872,7 +882,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -885,7 +895,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -963,7 +973,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -977,7 +987,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -990,7 +1000,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -1079,7 +1089,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -1093,7 +1103,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -1106,7 +1116,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -1192,7 +1202,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -1206,7 +1216,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -1219,7 +1229,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -1308,7 +1318,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -1322,7 +1332,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -1335,7 +1345,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -1422,7 +1432,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -1436,7 +1446,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -1449,7 +1459,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -1476,7 +1486,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -1557,7 +1567,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -1571,7 +1581,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -1584,7 +1594,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -1611,7 +1621,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -1690,7 +1700,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -1704,7 +1714,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -1717,7 +1727,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -1744,7 +1754,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -1825,7 +1835,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -1839,7 +1849,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -1852,7 +1862,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -1879,7 +1889,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -1958,7 +1968,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -2046,7 +2056,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -2132,7 +2142,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -2220,7 +2230,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -2306,7 +2316,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -2320,7 +2330,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -2333,7 +2343,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -2423,7 +2433,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -2437,7 +2447,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -2450,7 +2460,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -2538,7 +2548,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -2552,7 +2562,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -2565,7 +2575,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -2656,7 +2666,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -2670,7 +2680,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -2683,7 +2693,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -2771,7 +2781,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -2785,7 +2795,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -2798,7 +2808,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -2877,7 +2887,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -2891,7 +2901,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -2904,7 +2914,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -2981,7 +2991,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -2995,7 +3005,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -3008,7 +3018,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -3087,7 +3097,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -3101,7 +3111,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -3114,7 +3124,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -3191,7 +3201,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -3214,7 +3224,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -3227,7 +3237,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -3269,7 +3279,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -3348,7 +3358,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -3371,7 +3381,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -3384,7 +3394,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -3426,7 +3436,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -3503,7 +3513,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -3526,7 +3536,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -3539,7 +3549,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -3581,7 +3591,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -3660,7 +3670,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -3683,7 +3693,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -3696,7 +3706,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -3738,7 +3748,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -3880,7 +3890,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -3894,7 +3904,7 @@ public final class TypeDefinitionsImpl {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: Object (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -3907,7 +3917,7 @@ public final class TypeDefinitionsImpl {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -3926,7 +3936,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -3958,7 +3968,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -3989,7 +3999,7 @@ public final class TypeDefinitionsImpl {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -4010,7 +4020,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -4038,7 +4048,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -4072,7 +4082,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -4095,7 +4105,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -4208,7 +4218,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -4222,7 +4232,7 @@ public final class TypeDefinitionsImpl {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: Object (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -4235,7 +4245,7 @@ public final class TypeDefinitionsImpl {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -4254,7 +4264,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -4286,7 +4296,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -4317,7 +4327,7 @@ public final class TypeDefinitionsImpl {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -4338,7 +4348,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -4366,7 +4376,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -4400,7 +4410,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -4423,7 +4433,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -4510,7 +4520,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -4524,7 +4534,7 @@ public final class TypeDefinitionsImpl {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: Object (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -4537,7 +4547,7 @@ public final class TypeDefinitionsImpl {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -4556,7 +4566,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -4588,7 +4598,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -4619,7 +4629,7 @@ public final class TypeDefinitionsImpl {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -4640,7 +4650,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -4668,7 +4678,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -4702,7 +4712,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -4725,7 +4735,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -4793,7 +4803,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -4807,7 +4817,7 @@ public final class TypeDefinitionsImpl {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: Object (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -4820,7 +4830,7 @@ public final class TypeDefinitionsImpl {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -4839,7 +4849,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -4871,7 +4881,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -4902,7 +4912,7 @@ public final class TypeDefinitionsImpl {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -4923,7 +4933,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -4951,7 +4961,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -4985,7 +4995,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -5008,7 +5018,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -5097,7 +5107,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -5111,7 +5121,7 @@ public final class TypeDefinitionsImpl {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: Object (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -5124,7 +5134,7 @@ public final class TypeDefinitionsImpl {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -5143,7 +5153,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -5175,7 +5185,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -5206,7 +5216,7 @@ public final class TypeDefinitionsImpl {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -5227,7 +5237,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -5255,7 +5265,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -5289,7 +5299,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -5312,7 +5322,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -5380,7 +5390,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -5394,7 +5404,7 @@ public final class TypeDefinitionsImpl {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: Object (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -5407,7 +5417,7 @@ public final class TypeDefinitionsImpl {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -5426,7 +5436,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -5458,7 +5468,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -5489,7 +5499,7 @@ public final class TypeDefinitionsImpl {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -5510,7 +5520,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -5538,7 +5548,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -5572,7 +5582,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -5595,7 +5605,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -5681,7 +5691,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -5695,7 +5705,7 @@ public final class TypeDefinitionsImpl {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: Object (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -5708,7 +5718,7 @@ public final class TypeDefinitionsImpl {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -5727,7 +5737,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -5759,7 +5769,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -5790,7 +5800,7 @@ public final class TypeDefinitionsImpl {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -5811,7 +5821,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -5839,7 +5849,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -5873,7 +5883,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -5896,7 +5906,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -5964,7 +5974,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -5978,7 +5988,7 @@ public final class TypeDefinitionsImpl {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: Object (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -5991,7 +6001,7 @@ public final class TypeDefinitionsImpl {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -6010,7 +6020,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -6042,7 +6052,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -6073,7 +6083,7 @@ public final class TypeDefinitionsImpl {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -6094,7 +6104,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -6122,7 +6132,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -6156,7 +6166,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -6179,7 +6189,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -6267,7 +6277,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -6281,7 +6291,7 @@ public final class TypeDefinitionsImpl {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: Object (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -6294,7 +6304,7 @@ public final class TypeDefinitionsImpl {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -6313,7 +6323,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -6345,7 +6355,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -6376,7 +6386,7 @@ public final class TypeDefinitionsImpl {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -6397,7 +6407,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -6425,7 +6435,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -6459,7 +6469,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -6482,7 +6492,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -6550,7 +6560,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -6564,7 +6574,7 @@ public final class TypeDefinitionsImpl {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: Object (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -6577,7 +6587,7 @@ public final class TypeDefinitionsImpl {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -6596,7 +6606,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -6628,7 +6638,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -6659,7 +6669,7 @@ public final class TypeDefinitionsImpl {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -6680,7 +6690,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -6708,7 +6718,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -6742,7 +6752,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -6765,7 +6775,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -6850,7 +6860,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -6864,7 +6874,7 @@ public final class TypeDefinitionsImpl {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: Object (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -6877,7 +6887,7 @@ public final class TypeDefinitionsImpl {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -6896,7 +6906,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -6928,7 +6938,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -6959,7 +6969,7 @@ public final class TypeDefinitionsImpl {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -6980,7 +6990,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -7008,7 +7018,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -7042,7 +7052,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -7065,7 +7075,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -7151,7 +7161,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -7165,7 +7175,7 @@ public final class TypeDefinitionsImpl {
      *                     constraints (Optional): [
      *                          (Optional){
      *                             params (Optional): {
-     *                                 String: Object (Optional)
+     *                                 String: Object (Required)
      *                             }
      *                             type: String (Optional)
      *                         }
@@ -7178,7 +7188,7 @@ public final class TypeDefinitionsImpl {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -7197,7 +7207,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -7229,7 +7239,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -7260,7 +7270,7 @@ public final class TypeDefinitionsImpl {
      *                     isUnique: Boolean (Optional)
      *                     name: String (Optional)
      *                     options (Optional): {
-     *                         String: String (Optional)
+     *                         String: String (Required)
      *                     }
      *                     typeName: String (Optional)
      *                     valuesMaxCount: Integer (Optional)
@@ -7281,7 +7291,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -7309,7 +7319,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -7343,7 +7353,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -7366,7 +7376,7 @@ public final class TypeDefinitionsImpl {
      *             guid: String (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             serviceType: String (Optional)
      *             typeVersion: String (Optional)
@@ -7563,7 +7573,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -7577,7 +7587,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -7590,7 +7600,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -7669,7 +7679,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -7683,7 +7693,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -7696,7 +7706,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -7774,7 +7784,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -7788,7 +7798,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -7801,7 +7811,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
@@ -7881,7 +7891,7 @@ public final class TypeDefinitionsImpl {
      *     guid: String (Optional)
      *     name: String (Optional)
      *     options (Optional): {
-     *         String: String (Optional)
+     *         String: String (Required)
      *     }
      *     serviceType: String (Optional)
      *     typeVersion: String (Optional)
@@ -7895,7 +7905,7 @@ public final class TypeDefinitionsImpl {
      *             constraints (Optional): [
      *                  (Optional){
      *                     params (Optional): {
-     *                         String: Object (Optional)
+     *                         String: Object (Required)
      *                     }
      *                     type: String (Optional)
      *                 }
@@ -7908,7 +7918,7 @@ public final class TypeDefinitionsImpl {
      *             isUnique: Boolean (Optional)
      *             name: String (Optional)
      *             options (Optional): {
-     *                 String: String (Optional)
+     *                 String: String (Required)
      *             }
      *             typeName: String (Optional)
      *             valuesMaxCount: Integer (Optional)
