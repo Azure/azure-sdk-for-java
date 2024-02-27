@@ -5,6 +5,7 @@ package com.azure.core.models;
 
 import com.azure.core.annotation.Immutable;
 import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
@@ -17,7 +18,24 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Represents a geometric polygon.
+ * <p>Represents a geometric polygon in GeoJSON format.</p>
+ *
+ * <p>This class encapsulates a polygon defined by a list of {@link GeoLinearRing} instances. Each ring represents a
+ * closed loop of coordinates forming the boundary of the polygon.</p>
+ *
+ * <p>This class also provides a {@link #toJson(JsonWriter)} method to serialize the geometric polygon to JSON, and a
+ * {@link #fromJson(JsonReader)} method to deserialize a geometric polygon from JSON.</p>
+ *
+ * <p>This class is useful when you want to work with a polygon in a geographic context. For example, you can use it
+ * to represent a geographic area on a map.</p>
+ *
+ * <p>Note: A polygon requires at least one ring, and each ring requires at least 4 coordinates
+ * (with the first and last coordinates being the same to form a closed loop).</p>
+ *
+ * @see GeoLinearRing
+ * @see GeoPosition
+ * @see GeoObject
+ * @see JsonSerializable
  */
 @Immutable
 public final class GeoPolygon extends GeoObject {

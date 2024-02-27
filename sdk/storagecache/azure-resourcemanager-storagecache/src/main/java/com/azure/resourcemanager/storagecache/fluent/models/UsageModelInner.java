@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.storagecache.models.UsageModelDisplay;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A usage model. */
+/**
+ * A usage model.
+ */
 @Fluent
 public final class UsageModelInner {
     /*
@@ -29,13 +31,15 @@ public final class UsageModelInner {
     @JsonProperty(value = "targetType")
     private String targetType;
 
-    /** Creates an instance of UsageModelInner class. */
+    /**
+     * Creates an instance of UsageModelInner class.
+     */
     public UsageModelInner() {
     }
 
     /**
      * Get the display property: Localized information describing this usage model.
-     *
+     * 
      * @return the display value.
      */
     public UsageModelDisplay display() {
@@ -44,7 +48,7 @@ public final class UsageModelInner {
 
     /**
      * Set the display property: Localized information describing this usage model.
-     *
+     * 
      * @param display the display value to set.
      * @return the UsageModelInner object itself.
      */
@@ -55,7 +59,7 @@ public final class UsageModelInner {
 
     /**
      * Get the modelName property: Non-localized keyword name for this usage model.
-     *
+     * 
      * @return the modelName value.
      */
     public String modelName() {
@@ -64,7 +68,7 @@ public final class UsageModelInner {
 
     /**
      * Set the modelName property: Non-localized keyword name for this usage model.
-     *
+     * 
      * @param modelName the modelName value to set.
      * @return the UsageModelInner object itself.
      */
@@ -76,7 +80,7 @@ public final class UsageModelInner {
     /**
      * Get the targetType property: The type of Storage Target to which this model is applicable (only nfs3 as of this
      * version).
-     *
+     * 
      * @return the targetType value.
      */
     public String targetType() {
@@ -86,7 +90,7 @@ public final class UsageModelInner {
     /**
      * Set the targetType property: The type of Storage Target to which this model is applicable (only nfs3 as of this
      * version).
-     *
+     * 
      * @param targetType the targetType value to set.
      * @return the UsageModelInner object itself.
      */
@@ -97,7 +101,7 @@ public final class UsageModelInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -6,8 +6,18 @@ package com.azure.core.exception;
 import com.azure.core.http.HttpResponse;
 
 /**
- * The exception thrown when HTTP request tried to create an already existing resource with status code of 4XX,
- * typically 412 conflict.
+ * <p>The {@code ResourceExistsException} represents an exception thrown when an HTTP request attempts to create a
+ * resource that already exists.</p>
+ *
+ * <p>This exception is typically thrown when the service responds with a status code of 4XX,
+ * typically 412 conflict.</p>
+ *
+ * <p>This class also provides methods to get the {@link HttpResponse} that was received when the exception occurred and
+ * the deserialized HTTP response value.</p>
+ *
+ * @see com.azure.core.exception
+ * @see com.azure.core.exception.HttpResponseException
+ * @see com.azure.core.http.HttpResponse
  */
 public class ResourceExistsException extends HttpResponseException {
 
