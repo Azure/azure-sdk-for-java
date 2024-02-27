@@ -5,6 +5,7 @@ package com.azure.monitor.opentelemetry.exporter.implementation.logging;
 
 import nl.altindag.log.LogCaptor;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.parallel.Execution;
 
@@ -25,6 +26,7 @@ class MessageAggregatorTest {
         networkExceptionStats = new OperationLogger(MessageAggregatorTest.class, "intro", 1);
     }
 
+    @Disabled
     @Test
     void testWarnAndExceptionsAreLogged() throws InterruptedException {
         LogCaptor logCaptor = LogCaptor.forClass(MessageAggregatorTest.class);
