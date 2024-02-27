@@ -8,16 +8,7 @@ package com.azure.analytics.purview.datamap;
 // If you wish to modify these files, please copy them out of the 'generated' package, and modify there.
 // See https://aka.ms/azsdk/dpg/java/tests for guide on adding a test.
 
-import com.azure.analytics.purview.datamap.DataMapClientBuilder;
-import com.azure.analytics.purview.datamap.DiscoveryClient;
-import com.azure.analytics.purview.datamap.EntityClient;
-import com.azure.analytics.purview.datamap.GlossaryClient;
-import com.azure.analytics.purview.datamap.LineageClient;
-import com.azure.analytics.purview.datamap.RelationshipClient;
-import com.azure.analytics.purview.datamap.TypeDefinitionClient;
 import com.azure.analytics.purview.datamap.models.AtlasEntityDef;
-import com.azure.analytics.purview.datamap.models.AtlasTypeDef;
-import com.azure.analytics.purview.datamap.models.AtlasTypesDef;
 import com.azure.core.credential.AccessToken;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
