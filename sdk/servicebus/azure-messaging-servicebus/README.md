@@ -434,14 +434,20 @@ try {
 }
 ```
 ### When to use 'ServiceBusProcessorClient'.
- When to use 'ServiceBusProcessorClient', 'ServiceBusReceiverClient' or ServiceBusReceiverAsyncClient? The processor 
- is built using 'ServiceBusReceiverAsyncClient', it provides a convenient way of receiving messages with default 
- auto complete and auto-renew of message locks in 'PEEK_LOCK' mode. The processor is appropriate where the 
- applications have not made complete move to async receiver client and want to process message in synchronous mode. 
- The processor receives messages forever because it recovers from the network errors internally. 
- 'ServiceBusProcessorClient:processMessage()' function call is made for each message. Alternatively, You can also use 
- 'ServiceBusReceiverClient', it is a lower level client and provides a wider range of APIs. If async processing is  
- suitable for your application, you can use 'ServiceBusReceiverAsyncClient'. 
+ When to use 'ServiceBusProcessorClient', 'ServiceBusReceiverClient' or ServiceBusReceiverAsyncClient? 
+ 
+ For almost all common use cases, 'ServiceBusProcessorClient' should be the primary choice for consuming messages.  The processor is built with 
+ necessary resiliency to recover from errors and designed to receive messages forever. The processor also offers simplified API to configure 
+ concurrency for asynchronous receive.
+
+Use of the low-level client, 'ServiceBusReceiverAsyncClient', expects proficiency in Reactive programming and must be used only when building 
+a Reactive library or an end-to-end Reactive application. The low-level 'ServiceBusReceiverAsyncClient' doesn’t have resiliency like processor 
+built into it.
+
+Use 'ServiceBusReceiverClient', if it is desired to receive messages synchronously, typical use case will have a loop, that calls `receiveMessages`on 
+'ServiceBusReceiverClient' instance, process the message(s) and the loop repeat this serial receive pattern. For concurrent message processing and high
+ throughput use cases, use 'ServiceBusProcessorClient'.
+
 
 ## Troubleshooting
 
