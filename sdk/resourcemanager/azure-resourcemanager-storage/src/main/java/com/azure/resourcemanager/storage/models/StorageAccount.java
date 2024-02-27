@@ -70,7 +70,13 @@ public interface StorageAccount
      */
     PublicEndpoints endPoints();
 
-    /** @return the source of the key used for encryption. */
+    /**
+     * The source of the key used for encryption.
+     * <p>{@link StorageAccountEncryptionKeySource#MICROSOFT_STORAGE} means that the Storage Account is encrypted using Microsoft-managed Key.</p>
+     * <p>{@link StorageAccountEncryptionKeySource#MICROSOFT_KEYVAULT} means that the Storage Account is encrypted using Customer-managed Key.</p>
+     *
+     * @return the source of the key used for encryption.
+     */
     StorageAccountEncryptionKeySource encryptionKeySource();
 
     /** @return the encryption statuses indexed by storage service type. */
