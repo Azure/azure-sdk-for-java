@@ -434,22 +434,24 @@ try {
 }
 ```
 ### When to use 'ServiceBusProcessorClient'.
- When to use 'ServiceBusProcessorClient', 'ServiceBusReceiverClient' or ServiceBusReceiverAsyncClient? 
+
+When to use 'ServiceBusProcessorClient', 'ServiceBusReceiverClient' or ServiceBusReceiverAsyncClient? 
  
- For almost all common use cases, 'ServiceBusProcessorClient' should be the primary choice for consuming messages.  The processor is built with 
- necessary resiliency to recover from errors and designed to receive messages forever. The processor offers simplified API to configure 
- concurrency for asynchronous receive.
+For almost all common use cases, 'ServiceBusProcessorClient' should be the primary choice for consuming messages. The processor is built with 
+necessary resiliency to recover from errors and designed to receive messages forever. The processor offers simplified API to configure 
+concurrency for asynchronous processing.
 
 Use of the low-level client, 'ServiceBusReceiverAsyncClient', expects proficiency in Reactive programming and must be used only when building 
-a Reactive library or an end-to-end Reactive application. The low-level 'ServiceBusReceiverAsyncClient' doesn’t have resiliency like processor 
-built into it. As stated earlier, for common asynchronous receive use cases, the 'ServiceBusProcessorClient' must be the primary choice.
+a Reactive library or an end-to-end Reactive application. Unlike processor, the low-level 'ServiceBusReceiverAsyncClient' doesn’t have resiliency built into it. 
+The owning (reactive) application is responsible to handle terminal events and pick the operators (to incorporate resiliency, manage backpressure, threading) 
+in the Reactor chain.  As stated earlier, for common asynchronous receive use cases, the 'ServiceBusProcessorClient' must be the primary choice.
 
 Use 'ServiceBusReceiverClient', if it is desired to receive messages synchronously, typical use case will have a loop, that calls `receiveMessages`on 
 'ServiceBusReceiverClient' instance, process the message(s) and the loop repeat this serial receive pattern. For non-serial high
 throughput use cases, use 'ServiceBusProcessorClient'.
 
-In nutshell, given 'ServiceBusProcessorClient' is built for common Service Bus usage scenarios, consider it first and the other client types should be
-secondary choice. 
+In nutshell, given 'ServiceBusProcessorClient' is built and tuned for common Service Bus usage scenarios, consider it first and the other client types
+should be secondary choice. 
 
 ## Troubleshooting
 
