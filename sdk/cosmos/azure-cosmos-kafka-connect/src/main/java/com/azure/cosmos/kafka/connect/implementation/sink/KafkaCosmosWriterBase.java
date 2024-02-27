@@ -61,16 +61,19 @@ public abstract class KafkaCosmosWriterBase implements IWriter {
         }
     }
 
+    @SuppressWarnings("unchecked")
     protected String getId(Object recordValue) {
         checkArgument(recordValue instanceof Map, "Argument 'recordValue' is not valid map format.");
         return ((Map<String, Object>) recordValue).get(ID).toString();
     }
 
+    @SuppressWarnings("unchecked")
     protected String getEtag(Object recordValue) {
         checkArgument(recordValue instanceof Map, "Argument 'recordValue' is not valid map format.");
         return ((Map<String, Object>) recordValue).getOrDefault(ETAG, Strings.Emtpy).toString();
     }
 
+    @SuppressWarnings("unchecked")
     protected PartitionKey getPartitionKeyValue(Object recordValue, PartitionKeyDefinition partitionKeyDefinition) {
         checkArgument(recordValue instanceof Map, "Argument 'recordValue' is not valid map format.");
 

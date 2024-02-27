@@ -85,6 +85,7 @@ public class StructToJsonMap {
         return jsonMap;
     }
 
+    @SuppressWarnings("unchecked")
     public static Map<String, Object> handleMap(Map<String, Object> map) {
         if (map == null) {
             return null;

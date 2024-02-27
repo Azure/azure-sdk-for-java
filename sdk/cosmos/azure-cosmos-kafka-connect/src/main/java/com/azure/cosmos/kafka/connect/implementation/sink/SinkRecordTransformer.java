@@ -29,6 +29,7 @@ public class SinkRecordTransformer {
         this.idStrategy = this.createIdStrategy(sinkTaskConfig);
     }
 
+    @SuppressWarnings("unchecked")
     public List<SinkRecord> transform(String containerName, List<SinkRecord> sinkRecords) {
         List<SinkRecord> toBeWrittenRecordList = new ArrayList<>();
         for (SinkRecord record : sinkRecords) {
@@ -72,6 +73,7 @@ public class SinkRecordTransformer {
         return toBeWrittenRecordList;
     }
 
+    @SuppressWarnings("unchecked")
     private void maybeInsertId(Object recordValue, SinkRecord sinkRecord) {
         if (!(recordValue instanceof Map)) {
             return;

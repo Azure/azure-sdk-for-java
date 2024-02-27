@@ -12,8 +12,9 @@ import org.mockito.Mockito;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Test;
 
+import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
-import java.util.List;
 import java.util.Map;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
@@ -46,7 +47,7 @@ public class ProvidedInStrategyTest {
 
     @Test(groups = { "unit" }, dataProvider = "idStrategyParameterProvider", expectedExceptions = ConnectException.class, timeOut = TIMEOUT)
     public void valueNotStructOrMapShouldFail(IdStrategy idStrategy) {
-        idStrategy.configure(Map.of());
+        idStrategy.configure(new HashMap<>());
         SinkRecord sinkRecord = Mockito.mock(SinkRecord.class);
         returnOnKeyOrValue(Schema.STRING_SCHEMA, "a string", idStrategy, sinkRecord);
         idStrategy.generateId(sinkRecord);
@@ -54,19 +55,19 @@ public class ProvidedInStrategyTest {
 
     @Test(groups = { "unit" }, dataProvider = "idStrategyParameterProvider", expectedExceptions = ConnectException.class, timeOut = TIMEOUT)
     public void noIdInValueShouldFail(IdStrategy idStrategy) {
-        idStrategy.configure(Map.of());
+        idStrategy.configure(new HashMap<>());
         SinkRecord sinkRecord = Mockito.mock(SinkRecord.class);
-        returnOnKeyOrValue(null, Map.of(), idStrategy, sinkRecord);
+        returnOnKeyOrValue(null, new HashMap<>(), idStrategy, sinkRecord);
         idStrategy.generateId(sinkRecord);
     }
 
     @Test(groups = { "unit" }, dataProvider = "idStrategyParameterProvider", timeOut = TIMEOUT)
     public void stringIdOnMapShouldReturn(IdStrategy idStrategy) {
-        idStrategy.configure(Map.of());
+        idStrategy.configure(new HashMap<>());
         SinkRecord sinkRecord = Mockito.mock(SinkRecord.class);
         returnOnKeyOrValue(
             null,
-            Map.of("id", "1234567"),
+            new HashMap<String, Object>(){{ put("id", "1234567"); }},
             idStrategy,
             sinkRecord);
         assertThat("1234567").isEqualTo(idStrategy.generateId(sinkRecord));
@@ -74,11 +75,11 @@ public class ProvidedInStrategyTest {
 
     @Test(groups = { "unit" }, dataProvider = "idStrategyParameterProvider", timeOut = TIMEOUT)
     public void nonStringIdOnMapShouldReturn(IdStrategy idStrategy) {
-        idStrategy.configure(Map.of());
+        idStrategy.configure(new HashMap<>());
         SinkRecord sinkRecord = Mockito.mock(SinkRecord.class);
         returnOnKeyOrValue(
             null,
-            Map.of("id", 1234567),
+            new HashMap<String, Object>(){{ put("id", 1234567); }},
             idStrategy,
             sinkRecord);
         assertThat("1234567").isEqualTo(idStrategy.generateId(sinkRecord));
@@ -86,7 +87,7 @@ public class ProvidedInStrategyTest {
 
     @Test(groups = { "unit" }, dataProvider = "idStrategyParameterProvider", timeOut = TIMEOUT)
     public void stringIdOnStructShouldReturn(IdStrategy idStrategy) {
-        idStrategy.configure(Map.of());
+        idStrategy.configure(new HashMap<>());
         Schema schema = SchemaBuilder.struct()
             .field("id", Schema.STRING_SCHEMA)
             .build();
@@ -100,7 +101,7 @@ public class ProvidedInStrategyTest {
 
     @Test(groups = { "unit" }, dataProvider = "idStrategyParameterProvider", timeOut = TIMEOUT)
     public void structIdOnStructShouldReturn(IdStrategy idStrategy) {
-        idStrategy.configure(Map.of());
+        idStrategy.configure(new HashMap<>());
         Schema idSchema = SchemaBuilder.struct()
             .field("name", Schema.STRING_SCHEMA)
             .build();
@@ -117,8 +118,7 @@ public class ProvidedInStrategyTest {
 
     @Test(groups = { "unit" }, dataProvider = "idStrategyParameterProvider", timeOut = TIMEOUT)
     public void jsonPathOnStruct(IdStrategy idStrategy) {
-        idStrategy.configure(Map.of());
-        idStrategy.configure(Map.of(ProvidedInConfig.JSON_PATH_CONFIG, "$.id.name"));
+        idStrategy.configure(new HashMap<String, Object>(){{ put(ProvidedInConfig.JSON_PATH_CONFIG, "$.id.name"); }});
 
         Schema idSchema = SchemaBuilder.struct()
             .field("name", Schema.STRING_SCHEMA)
@@ -136,13 +136,12 @@ public class ProvidedInStrategyTest {
 
     @Test(groups = { "unit" }, dataProvider = "idStrategyParameterProvider", timeOut = TIMEOUT)
     public void jsonPathOnMap(IdStrategy idStrategy) {
-        idStrategy.configure(Map.of());
-        idStrategy.configure(Map.of(ProvidedInConfig.JSON_PATH_CONFIG, "$.id.name"));
+        idStrategy.configure(new HashMap<String, Object>(){{ put(ProvidedInConfig.JSON_PATH_CONFIG, "$.id.name"); }});
 
         SinkRecord sinkRecord = Mockito.mock(SinkRecord.class);
         returnOnKeyOrValue(
             null,
-            Map.of("id", Map.of("name", "franz kafka")),
+            new HashMap<String, Object>(){{ put("id", new HashMap<String, Object>(){{ put("name", "franz kafka"); }}); }},
             idStrategy,
             sinkRecord);
         assertThat("franz kafka").isEqualTo(idStrategy.generateId(sinkRecord));
@@ -150,12 +149,11 @@ public class ProvidedInStrategyTest {
 
     @Test(groups = { "unit" }, dataProvider = "idStrategyParameterProvider", expectedExceptions = ConnectException.class, timeOut = TIMEOUT)
     public void invalidJsonPathThrows(IdStrategy idStrategy) {
-        idStrategy.configure(Map.of());
-        idStrategy.configure(Map.of(ProvidedInConfig.JSON_PATH_CONFIG, "invalid.path"));
+        idStrategy.configure(new HashMap<String, Object>(){{ put(ProvidedInConfig.JSON_PATH_CONFIG, "invalid.path"); }});
         SinkRecord sinkRecord = Mockito.mock(SinkRecord.class);
         returnOnKeyOrValue(
             null,
-            Map.of("id", Map.of("name", "franz kafka")),
+            new HashMap<String, Object>(){{ put("id", new HashMap<String, Object>(){{ put("name", "franz kafka"); }}); }},
             idStrategy,
             sinkRecord);
 
@@ -164,12 +162,11 @@ public class ProvidedInStrategyTest {
 
     @Test(groups = { "unit" }, dataProvider = "idStrategyParameterProvider", expectedExceptions = ConnectException.class, timeOut = TIMEOUT)
     public void jsonPathNotExistThrows(IdStrategy idStrategy) {
-        idStrategy.configure(Map.of());
-        idStrategy.configure(Map.of(ProvidedInConfig.JSON_PATH_CONFIG, "$.id.not.exist"));
+        idStrategy.configure(new HashMap<String, Object>(){{ put(ProvidedInConfig.JSON_PATH_CONFIG, "$.id.not.exist"); }});
         SinkRecord sinkRecord = Mockito.mock(SinkRecord.class);
         returnOnKeyOrValue(
             null,
-            Map.of("id", Map.of("name", "franz kafka")),
+            new HashMap<String, Object>(){{ put("id", new HashMap<String, Object>(){{ put("name", "franz kafka"); }}); }},
             idStrategy,
             sinkRecord);
 
@@ -178,7 +175,6 @@ public class ProvidedInStrategyTest {
 
     @Test(groups = { "unit" }, dataProvider = "idStrategyParameterProvider", timeOut = TIMEOUT)
     public void complexJsonPath(IdStrategy idStrategy) {
-        idStrategy.configure(Map.of());
         Map<String, Object> map1 = new LinkedHashMap<>();
         map1.put("id", 0);
         map1.put("name", "cosmos kramer");
@@ -191,30 +187,30 @@ public class ProvidedInStrategyTest {
         SinkRecord sinkRecord = Mockito.mock(SinkRecord.class);
         returnOnKeyOrValue(
             null,
-            Map.of("id", List.of(map1, map2)),
+            new HashMap<String, Object>() {{ put("id", Arrays.asList(map1, map2)); }},
             idStrategy,
             sinkRecord);
 
-        idStrategy.configure(Map.of(ProvidedInConfig.JSON_PATH_CONFIG, "$.id[0].name"));
+        idStrategy.configure(new HashMap<String, Object>(){{ put(ProvidedInConfig.JSON_PATH_CONFIG, "$.id[0].name"); }});
         assertThat("cosmos kramer").isEqualTo(idStrategy.generateId(sinkRecord));
 
-        idStrategy.configure(Map.of(ProvidedInConfig.JSON_PATH_CONFIG, "$.id[1].name"));
+        idStrategy.configure(new HashMap<String, Object>(){{ put(ProvidedInConfig.JSON_PATH_CONFIG, "$.id[1].name"); }});
         assertThat("franz kafka").isEqualTo(idStrategy.generateId(sinkRecord));
 
-        idStrategy.configure(Map.of(ProvidedInConfig.JSON_PATH_CONFIG, "$.id[*].id"));
+        idStrategy.configure(new HashMap<String, Object>(){{ put(ProvidedInConfig.JSON_PATH_CONFIG, "$.id[*].id"); }});
         assertThat("[0,1]").isEqualTo(idStrategy.generateId(sinkRecord));
 
-        idStrategy.configure(Map.of(ProvidedInConfig.JSON_PATH_CONFIG, "$.id"));
+        idStrategy.configure(new HashMap<String, Object>(){{ put(ProvidedInConfig.JSON_PATH_CONFIG, "$.id"); }});
         assertThat("[{\"id\":0,\"name\":\"cosmos kramer\",\"occupation\":\"unknown\"},{\"id\":1,\"name\":\"franz kafka\",\"occupation\":\"writer\"}]").isEqualTo(idStrategy.generateId(sinkRecord));
     }
 
     @Test(groups = { "unit" }, dataProvider = "idStrategyParameterProvider", timeOut = TIMEOUT)
     public void generatedIdSanitized(IdStrategy idStrategy) {
-        idStrategy.configure(Map.of());
+        idStrategy.configure(new HashMap<>());
         SinkRecord sinkRecord = Mockito.mock(SinkRecord.class);
         returnOnKeyOrValue(
             null,
-            Map.of("id", "#my/special\\id?"),
+            new HashMap<String, Object>() {{put("id", "#my/special\\id?");}},
             idStrategy,
             sinkRecord);
 
