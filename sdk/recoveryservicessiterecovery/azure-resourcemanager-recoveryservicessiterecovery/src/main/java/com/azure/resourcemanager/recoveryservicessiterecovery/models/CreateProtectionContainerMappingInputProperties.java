@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Configure pairing input properties. */
+/**
+ * Configure pairing input properties.
+ */
 @Fluent
 public final class CreateProtectionContainerMappingInputProperties {
     /*
@@ -28,13 +30,15 @@ public final class CreateProtectionContainerMappingInputProperties {
     @JsonProperty(value = "providerSpecificInput")
     private ReplicationProviderSpecificContainerMappingInput providerSpecificInput;
 
-    /** Creates an instance of CreateProtectionContainerMappingInputProperties class. */
+    /**
+     * Creates an instance of CreateProtectionContainerMappingInputProperties class.
+     */
     public CreateProtectionContainerMappingInputProperties() {
     }
 
     /**
      * Get the targetProtectionContainerId property: The target unique protection container name.
-     *
+     * 
      * @return the targetProtectionContainerId value.
      */
     public String targetProtectionContainerId() {
@@ -43,19 +47,19 @@ public final class CreateProtectionContainerMappingInputProperties {
 
     /**
      * Set the targetProtectionContainerId property: The target unique protection container name.
-     *
+     * 
      * @param targetProtectionContainerId the targetProtectionContainerId value to set.
      * @return the CreateProtectionContainerMappingInputProperties object itself.
      */
-    public CreateProtectionContainerMappingInputProperties withTargetProtectionContainerId(
-        String targetProtectionContainerId) {
+    public CreateProtectionContainerMappingInputProperties
+        withTargetProtectionContainerId(String targetProtectionContainerId) {
         this.targetProtectionContainerId = targetProtectionContainerId;
         return this;
     }
 
     /**
      * Get the policyId property: Applicable policy.
-     *
+     * 
      * @return the policyId value.
      */
     public String policyId() {
@@ -64,7 +68,7 @@ public final class CreateProtectionContainerMappingInputProperties {
 
     /**
      * Set the policyId property: Applicable policy.
-     *
+     * 
      * @param policyId the policyId value to set.
      * @return the CreateProtectionContainerMappingInputProperties object itself.
      */
@@ -75,7 +79,7 @@ public final class CreateProtectionContainerMappingInputProperties {
 
     /**
      * Get the providerSpecificInput property: Provider specific input for pairing.
-     *
+     * 
      * @return the providerSpecificInput value.
      */
     public ReplicationProviderSpecificContainerMappingInput providerSpecificInput() {
@@ -84,19 +88,19 @@ public final class CreateProtectionContainerMappingInputProperties {
 
     /**
      * Set the providerSpecificInput property: Provider specific input for pairing.
-     *
+     * 
      * @param providerSpecificInput the providerSpecificInput value to set.
      * @return the CreateProtectionContainerMappingInputProperties object itself.
      */
-    public CreateProtectionContainerMappingInputProperties withProviderSpecificInput(
-        ReplicationProviderSpecificContainerMappingInput providerSpecificInput) {
+    public CreateProtectionContainerMappingInputProperties
+        withProviderSpecificInput(ReplicationProviderSpecificContainerMappingInput providerSpecificInput) {
         this.providerSpecificInput = providerSpecificInput;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Details about operation related to metrics. */
+/**
+ * Details about operation related to metrics.
+ */
 @Fluent
 public final class MetricSpecification {
     /*
@@ -59,13 +61,15 @@ public final class MetricSpecification {
     @JsonProperty(value = "dimensions")
     private List<MetricDimension> dimensions;
 
-    /** Creates an instance of MetricSpecification class. */
+    /**
+     * Creates an instance of MetricSpecification class.
+     */
     public MetricSpecification() {
     }
 
     /**
      * Get the name property: The name of the metric.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -74,7 +78,7 @@ public final class MetricSpecification {
 
     /**
      * Set the name property: The name of the metric.
-     *
+     * 
      * @param name the name value to set.
      * @return the MetricSpecification object itself.
      */
@@ -85,7 +89,7 @@ public final class MetricSpecification {
 
     /**
      * Get the displayName property: Localized display name of the metric.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -94,7 +98,7 @@ public final class MetricSpecification {
 
     /**
      * Set the displayName property: Localized display name of the metric.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the MetricSpecification object itself.
      */
@@ -105,7 +109,7 @@ public final class MetricSpecification {
 
     /**
      * Get the displayDescription property: The description of the metric.
-     *
+     * 
      * @return the displayDescription value.
      */
     public String displayDescription() {
@@ -114,7 +118,7 @@ public final class MetricSpecification {
 
     /**
      * Set the displayDescription property: The description of the metric.
-     *
+     * 
      * @param displayDescription the displayDescription value to set.
      * @return the MetricSpecification object itself.
      */
@@ -125,7 +129,7 @@ public final class MetricSpecification {
 
     /**
      * Get the unit property: The unit that the metric is measured in.
-     *
+     * 
      * @return the unit value.
      */
     public String unit() {
@@ -134,7 +138,7 @@ public final class MetricSpecification {
 
     /**
      * Set the unit property: The unit that the metric is measured in.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the MetricSpecification object itself.
      */
@@ -145,7 +149,7 @@ public final class MetricSpecification {
 
     /**
      * Get the aggregationType property: The type of metric aggregation.
-     *
+     * 
      * @return the aggregationType value.
      */
     public String aggregationType() {
@@ -154,7 +158,7 @@ public final class MetricSpecification {
 
     /**
      * Set the aggregationType property: The type of metric aggregation.
-     *
+     * 
      * @param aggregationType the aggregationType value to set.
      * @return the MetricSpecification object itself.
      */
@@ -165,7 +169,7 @@ public final class MetricSpecification {
 
     /**
      * Get the supportedAggregationTypes property: Support metric aggregation type.
-     *
+     * 
      * @return the supportedAggregationTypes value.
      */
     public List<MetricAggregationType> supportedAggregationTypes() {
@@ -174,7 +178,7 @@ public final class MetricSpecification {
 
     /**
      * Set the supportedAggregationTypes property: Support metric aggregation type.
-     *
+     * 
      * @param supportedAggregationTypes the supportedAggregationTypes value to set.
      * @return the MetricSpecification object itself.
      */
@@ -185,7 +189,7 @@ public final class MetricSpecification {
 
     /**
      * Get the metricClass property: Type of metrics.
-     *
+     * 
      * @return the metricClass value.
      */
     public String metricClass() {
@@ -194,7 +198,7 @@ public final class MetricSpecification {
 
     /**
      * Set the metricClass property: Type of metrics.
-     *
+     * 
      * @param metricClass the metricClass value to set.
      * @return the MetricSpecification object itself.
      */
@@ -205,7 +209,7 @@ public final class MetricSpecification {
 
     /**
      * Get the dimensions property: Dimensions of the metric.
-     *
+     * 
      * @return the dimensions value.
      */
     public List<MetricDimension> dimensions() {
@@ -214,7 +218,7 @@ public final class MetricSpecification {
 
     /**
      * Set the dimensions property: Dimensions of the metric.
-     *
+     * 
      * @param dimensions the dimensions value to set.
      * @return the MetricSpecification object itself.
      */
@@ -225,7 +229,7 @@ public final class MetricSpecification {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

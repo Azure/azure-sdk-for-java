@@ -48,29 +48,24 @@ public class SyncRestProxyTests {
     @ServiceInterface(name = "myService")
     interface TestInterface {
         @Post("my/url/path")
-        @ExpectedResponses({200})
-        Response<Void> testMethod(
-            @BodyParam("application/octet-stream") BinaryData data,
-            @HeaderParam("Content-Type") String contentType,
-            @HeaderParam("Content-Length") Long contentLength,
-            Context context
-        );
+        @ExpectedResponses({ 200 })
+        Response<Void> testMethod(@BodyParam("application/octet-stream") BinaryData data,
+            @HeaderParam("Content-Type") String contentType, @HeaderParam("Content-Length") Long contentLength,
+            Context context);
 
         @Get("my/url/path")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         StreamResponse testDownload(Context context);
 
         @Get("my/url/path")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         void testVoidMethod(Context context);
     }
 
     @Test
     public void voidReturningApiClosesResponse() {
         LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         testInterface.testVoidMethod(Context.NONE);
@@ -94,9 +89,7 @@ public class SyncRestProxyTests {
             }
         };
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         testInterface.testVoidMethod(new Context("com.azure.core.http.restproxy.syncproxy.enable", false));
@@ -106,24 +99,20 @@ public class SyncRestProxyTests {
     @Test
     public void contentTypeHeaderPriorityOverBodyParamAnnotationTest() {
         HttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         byte[] bytes = "hello".getBytes();
-        Response<Void> response = testInterface.testMethod(BinaryData.fromStream(
-            new ByteArrayInputStream(bytes), (long) bytes.length), "application/json", (long) bytes.length,
-            Context.NONE);
+        Response<Void> response
+            = testInterface.testMethod(BinaryData.fromStream(new ByteArrayInputStream(bytes), (long) bytes.length),
+                "application/json", (long) bytes.length, Context.NONE);
         assertEquals(200, response.getStatusCode());
     }
 
     @Test
     public void streamResponseShouldHaveHttpResponseReference() {
         LocalHttpClient client = new LocalHttpClient();
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .httpClient(client)
-            .build();
+        HttpPipeline pipeline = new HttpPipelineBuilder().httpClient(client).build();
 
         TestInterface testInterface = RestProxy.create(TestInterface.class, pipeline);
         StreamResponse streamResponse = testInterface.testDownload(Context.NONE);
@@ -163,13 +152,14 @@ public class SyncRestProxyTests {
     @ParameterizedTest
     @MethodSource("mergeRequestOptionsContextSupplier")
     public void mergeRequestOptionsContext(Context context, RequestOptions options,
-                                           Map<Object, Object> expectedContextValues) {
-        Map<Object, Object> actualContextValues = RestProxyUtils.mergeRequestOptionsContext(context, options).getValues();
+        Map<Object, Object> expectedContextValues) {
+        Map<Object, Object> actualContextValues
+            = RestProxyUtils.mergeRequestOptionsContext(context, options).getValues();
 
         assertEquals(expectedContextValues.size(), actualContextValues.size());
         for (Map.Entry<Object, Object> expectedKvp : expectedContextValues.entrySet()) {
-            assertTrue(actualContextValues.containsKey(expectedKvp.getKey()), () ->
-                "Missing expected key '" + expectedKvp.getKey() + "'.");
+            assertTrue(actualContextValues.containsKey(expectedKvp.getKey()),
+                () -> "Missing expected key '" + expectedKvp.getKey() + "'.");
             assertEquals(expectedKvp.getValue(), actualContextValues.get(expectedKvp.getKey()));
         }
     }
@@ -195,7 +185,6 @@ public class SyncRestProxyTests {
 
             // Case where the RequestOptions Context is merged and overrides an existing Context.
             Arguments.of(new Context("key", "value"), new RequestOptions().setContext(new Context("key", "value2")),
-                Collections.singletonMap("key", "value2"))
-        );
+                Collections.singletonMap("key", "value2")));
     }
 }

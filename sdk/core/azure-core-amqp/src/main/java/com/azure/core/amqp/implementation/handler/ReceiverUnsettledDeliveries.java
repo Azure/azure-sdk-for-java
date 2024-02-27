@@ -199,12 +199,15 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
      */
     public void onDispositionAck(UUID deliveryTag, Delivery delivery) {
         // Note: It's by design that this method doesn't check for the 'isTerminated' flag. This ack route needs to
-        // stay open for potential concurrent termination-route awaiting for in-progress dispositions completion/timeout.
+        // stay open for potential concurrent termination-route awaiting for in-progress dispositions
+        // completion/timeout.
         // termination-route == 'terminateAndAwaitForDispositionsInProgressToComplete'
 
         final DeliveryState remoteState = delivery.getRemoteState();
 
-        logger.atVerbose().addKeyValue(DELIVERY_TAG_KEY, deliveryTag).addKeyValue(DELIVERY_STATE_KEY, remoteState)
+        logger.atVerbose()
+            .addKeyValue(DELIVERY_TAG_KEY, deliveryTag)
+            .addKeyValue(DELIVERY_STATE_KEY, remoteState)
             .log("onDispositionAck");
 
         final Outcome remoteOutcome;
@@ -217,7 +220,9 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
         }
 
         if (remoteOutcome == null) {
-            logger.atWarning().addKeyValue(DELIVERY_TAG_KEY, deliveryTag).addKeyValue(DELIVERY_KEY, delivery)
+            logger.atWarning()
+                .addKeyValue(DELIVERY_TAG_KEY, deliveryTag)
+                .addKeyValue(DELIVERY_KEY, delivery)
                 .log("No outcome associated with delivery.");
 
             return;
@@ -225,7 +230,9 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
 
         final DispositionWork work = pendingDispositions.get(deliveryTag.toString());
         if (work == null) {
-            logger.atWarning().addKeyValue(DELIVERY_TAG_KEY, deliveryTag).addKeyValue(DELIVERY_KEY, delivery)
+            logger.atWarning()
+                .addKeyValue(DELIVERY_TAG_KEY, deliveryTag)
+                .addKeyValue(DELIVERY_KEY, delivery)
                 .log("No pending update for delivery.");
             return;
         }
@@ -238,7 +245,9 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
         if (desiredOutcomeType == remoteOutcomeType) {
             completeDispositionWorkWithSettle(work, delivery, null);
         } else {
-            logger.atInfo().addKeyValue(DELIVERY_TAG_KEY, deliveryTag).addKeyValue("receivedDeliveryState", remoteState)
+            logger.atInfo()
+                .addKeyValue(DELIVERY_TAG_KEY, deliveryTag)
+                .addKeyValue("receivedDeliveryState", remoteState)
                 .addKeyValue(DELIVERY_STATE_KEY, work.getDesiredState())
                 .log("Received delivery state doesn't match expected state.");
 
@@ -267,15 +276,15 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
      */
     public Mono<Void> terminateAndAwaitForDispositionsInProgressToComplete() {
         // 1. Mark this ReceiverUnsettledDeliveries as terminated, so it no longer accept unsettled deliveries
-        //    or disposition requests
+        // or disposition requests
         isTerminated.getAndSet(true);
 
         // 2. then complete already expired (timed-out) works,
         completeDispositionWorksOnTimeout("terminateAndAwaitForDispositionsInProgressToComplete");
 
         // 3. then obtain a Mono that wait, with AmqpRetryOptions_tryTimeout as the upper bound for the maximum
-        //    wait, for the completion of all disposition work in progress, including committing open transactions.
-        //    The AmqpRetryOptions_tryTimeout is applied implicitly through timeoutTimer.
+        // wait, for the completion of all disposition work in progress, including committing open transactions.
+        // The AmqpRetryOptions_tryTimeout is applied implicitly through timeoutTimer.
         final List<Mono<Void>> workMonoList = new ArrayList<>();
         final StringJoiner deliveryTags = new StringJoiner(", ");
         for (DispositionWork work : pendingDispositions.values()) {
@@ -302,7 +311,7 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
             workMonoListMerged = Mono.empty();
         }
         // 4. finally, Given this is a terminal API in which the timeoutTimer will be used last time,
-        //    termination also disposes of the timer.
+        // termination also disposes of the timer.
         return workMonoListMerged.doFinally(__ -> timoutTimer.dispose());
     }
 
@@ -366,15 +375,14 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
                 dispatcher.invoke(() -> {
                     delivery.disposition(desiredState);
                     if (pendingDispositions.putIfAbsent(deliveryTag, work) != null) {
-                        work.onComplete(new AmqpException(false,
-                            "A disposition requested earlier is waiting for the broker's ack; "
+                        work.onComplete(
+                            new AmqpException(false, "A disposition requested earlier is waiting for the broker's ack; "
                                 + "a new disposition request is not allowed.", null));
                     }
                 });
             } catch (IOException | RejectedExecutionException dispatchError) {
-                work.onComplete(
-                    new AmqpException(false, "updateDisposition failed while dispatching to Reactor.", dispatchError,
-                        getErrorContext(delivery)));
+                work.onComplete(new AmqpException(false, "updateDisposition failed while dispatching to Reactor.",
+                    dispatchError, getErrorContext(delivery)));
             }
         });
 
@@ -406,16 +414,19 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
             try {
                 dispatcher.invoke(() -> delivery.disposition(work.getDesiredState()));
             } catch (IOException | RejectedExecutionException dispatchError) {
-                final Throwable amqpException = logger.atError().addKeyValue(DELIVERY_TAG_KEY, work.getDeliveryTag())
-                    .addKeyValue(LINK_NAME_KEY, receiveLinkName).log(
-                        new AmqpException(false, "Retrying updateDisposition failed to dispatch to Reactor.",
-                            dispatchError, getErrorContext(delivery)));
+                final Throwable amqpException = logger.atError()
+                    .addKeyValue(DELIVERY_TAG_KEY, work.getDeliveryTag())
+                    .addKeyValue(LINK_NAME_KEY, receiveLinkName)
+                    .log(new AmqpException(false, "Retrying updateDisposition failed to dispatch to Reactor.",
+                        dispatchError, getErrorContext(delivery)));
 
                 completeDispositionWorkWithSettle(work, delivery, amqpException);
             }
         } else {
-            logger.atInfo().addKeyValue(DELIVERY_TAG_KEY, work.getDeliveryTag())
-                .addKeyValue(DELIVERY_STATE_KEY, delivery.getRemoteState()).log("Retry attempts exhausted.", error);
+            logger.atInfo()
+                .addKeyValue(DELIVERY_TAG_KEY, work.getDeliveryTag())
+                .addKeyValue(DELIVERY_STATE_KEY, delivery.getRemoteState())
+                .log("Retry attempts exhausted.", error);
 
             completeDispositionWorkWithSettle(work, delivery, error);
         }
@@ -444,7 +455,8 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
             completionError = new AmqpException(false, remoteOutcome.toString(), amqpErrorContext);
         }
 
-        logger.atInfo().addKeyValue(DELIVERY_TAG_KEY, work.getDeliveryTag())
+        logger.atInfo()
+            .addKeyValue(DELIVERY_TAG_KEY, work.getDeliveryTag())
             .addKeyValue(DELIVERY_STATE_KEY, delivery.getRemoteState())
             .log("Completing pending updateState operation with exception.", completionError);
 
@@ -468,7 +480,8 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
             }
 
             if (completionCount[0] == 0) {
-                logger.atInfo().addKeyValue(CALL_SITE_KEY, callSite)
+                logger.atInfo()
+                    .addKeyValue(CALL_SITE_KEY, callSite)
                     .log("Starting completion of timed out disposition works.");
             }
 
@@ -486,7 +499,9 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
 
         if (completionCount[0] > 0) {
             // The log help debug if the user code chained to the work-mono (DispositionWork::getMono()) never returns.
-            logger.atInfo().addKeyValue(CALL_SITE_KEY, callSite).addKeyValue("locks", deliveryTags.toString())
+            logger.atInfo()
+                .addKeyValue(CALL_SITE_KEY, callSite)
+                .addKeyValue("locks", deliveryTags.toString())
                 .log("Completed {} timed-out disposition works.", completionCount[0]);
         }
     }
@@ -554,8 +569,9 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
         }
 
         if (completionError != null) {
-            final Throwable loggedError = completionError instanceof RuntimeException ? logger.logExceptionAsError(
-                (RuntimeException) completionError) : completionError;
+            final Throwable loggedError = completionError instanceof RuntimeException
+                ? logger.logExceptionAsError((RuntimeException) completionError)
+                : completionError;
             work.onComplete(loggedError);
         } else {
             work.onComplete();
@@ -580,8 +596,9 @@ public final class ReceiverUnsettledDeliveries implements AutoCloseable {
 
         pendingDispositions.remove(work.getDeliveryTag());
 
-        final Throwable loggedError = completionError instanceof RuntimeException ? logger.logExceptionAsError(
-            (RuntimeException) completionError) : completionError;
+        final Throwable loggedError = completionError instanceof RuntimeException
+            ? logger.logExceptionAsError((RuntimeException) completionError)
+            : completionError;
         work.onComplete(loggedError);
     }
 

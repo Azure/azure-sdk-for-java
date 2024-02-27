@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents the error used to indicate why the target compute size is not applicable. */
+/**
+ * Represents the error used to indicate why the target compute size is not applicable.
+ */
 @Fluent
 public final class ComputeSizeErrorDetails {
     /*
@@ -22,13 +24,15 @@ public final class ComputeSizeErrorDetails {
     @JsonProperty(value = "severity")
     private String severity;
 
-    /** Creates an instance of ComputeSizeErrorDetails class. */
+    /**
+     * Creates an instance of ComputeSizeErrorDetails class.
+     */
     public ComputeSizeErrorDetails() {
     }
 
     /**
      * Get the message property: The error message.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -37,7 +41,7 @@ public final class ComputeSizeErrorDetails {
 
     /**
      * Set the message property: The error message.
-     *
+     * 
      * @param message the message value to set.
      * @return the ComputeSizeErrorDetails object itself.
      */
@@ -48,7 +52,7 @@ public final class ComputeSizeErrorDetails {
 
     /**
      * Get the severity property: The severity of the error.
-     *
+     * 
      * @return the severity value.
      */
     public String severity() {
@@ -57,7 +61,7 @@ public final class ComputeSizeErrorDetails {
 
     /**
      * Set the severity property: The severity of the error.
-     *
+     * 
      * @param severity the severity value to set.
      * @return the ComputeSizeErrorDetails object itself.
      */
@@ -68,7 +72,7 @@ public final class ComputeSizeErrorDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

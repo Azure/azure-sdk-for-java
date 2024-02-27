@@ -5,6 +5,7 @@ package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.models.events.AddParticipantFailed;
 import com.azure.communication.callautomation.models.events.AddParticipantSucceeded;
+import com.azure.communication.callautomation.models.events.AnswerFailed;
 import com.azure.communication.callautomation.models.events.CallAutomationEventBase;
 import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.communication.callautomation.models.events.CallDisconnected;
@@ -15,6 +16,7 @@ import com.azure.communication.callautomation.models.events.CancelAddParticipant
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionStopped;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneFailed;
 import com.azure.communication.callautomation.models.events.ContinuousDtmfRecognitionToneReceived;
+import com.azure.communication.callautomation.models.events.CreateCallFailed;
 import com.azure.communication.callautomation.models.events.DialogCompleted;
 import com.azure.communication.callautomation.models.events.DialogConsent;
 import com.azure.communication.callautomation.models.events.DialogFailed;
@@ -33,6 +35,8 @@ import com.azure.communication.callautomation.models.events.RecognizeFailed;
 import com.azure.communication.callautomation.models.events.RecordingStateChanged;
 import com.azure.communication.callautomation.models.events.RemoveParticipantFailed;
 import com.azure.communication.callautomation.models.events.RemoveParticipantSucceeded;
+import com.azure.communication.callautomation.models.events.TeamsComplianceRecordingStateChanged;
+import com.azure.communication.callautomation.models.events.TeamsRecordingStateChanged;
 import com.azure.communication.callautomation.models.events.TranscriptionFailed;
 import com.azure.communication.callautomation.models.events.TranscriptionResumed;
 import com.azure.communication.callautomation.models.events.TranscriptionStarted;
@@ -165,7 +169,11 @@ public final class CallAutomationEventParser {
                 ret = mapper.convertValue(eventData, DialogTransfer.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.DialogSensitivityUpdate")) {
                 ret = mapper.convertValue(eventData, DialogSensitivityUpdate.class);
-            } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionStarted")) {
+            } else if (Objects.equals(eventType, "Microsoft.Communication.TeamsComplianceRecordingStateChanged")) {
+                ret = mapper.convertValue(eventData, TeamsComplianceRecordingStateChanged.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.TeamsRecordingStateChanged")) {
+                ret = mapper.convertValue(eventData, TeamsRecordingStateChanged.class);
+            }   else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionStarted")) {
                 ret = mapper.convertValue(eventData, TranscriptionStarted.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionFailed")) {
                 ret = mapper.convertValue(eventData, TranscriptionFailed.class);
@@ -175,6 +183,10 @@ public final class CallAutomationEventParser {
                 ret = mapper.convertValue(eventData, TranscriptionStopped.class);
             } else if (Objects.equals(eventType, "Microsoft.Communication.TranscriptionUpdated")) {
                 ret = mapper.convertValue(eventData, TranscriptionUpdated.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.AnswerFailed")) {
+                ret = mapper.convertValue(eventData, AnswerFailed.class);
+            } else if (Objects.equals(eventType, "Microsoft.Communication.CreateCallFailed")) {
+                ret = mapper.convertValue(eventData, CreateCallFailed.class);
             }
             return ret;
         } catch (RuntimeException e) {

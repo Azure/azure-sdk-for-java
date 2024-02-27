@@ -49,6 +49,8 @@ class CosmosClientCacheITest
           Some("SampleApplicationName"),
           "SampleApplicationName",
           useGatewayMode = true,
+          proactiveConnectionInitialization = None,
+          proactiveConnectionInitializationDurationInSeconds = 120,
           httpConnectionPoolSize = 1000,
           useEventualConsistency = true,
           enableClientTelemetry = false,
@@ -58,7 +60,7 @@ class CosmosClientCacheITest
           subscriptionId = None,
           tenantId = None,
           resourceGroupName = None,
-          azureEnvironment = AzureEnvironment.AZURE,
+          azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
           sparkEnvironmentInfo = "")
       ),
       (
@@ -70,6 +72,8 @@ class CosmosClientCacheITest
           Some("SampleApplicationName"),
           "SampleApplicationName",
           useGatewayMode = true,
+          proactiveConnectionInitialization = None,
+          proactiveConnectionInitializationDurationInSeconds = 120,
           httpConnectionPoolSize = 1000,
           useEventualConsistency = true,
           enableClientTelemetry = false,
@@ -79,7 +83,7 @@ class CosmosClientCacheITest
           subscriptionId = None,
           tenantId = None,
           resourceGroupName = None,
-          azureEnvironment = AzureEnvironment.AZURE,
+          azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
           sparkEnvironmentInfo = "")
       ),
       (
@@ -91,6 +95,8 @@ class CosmosClientCacheITest
           None,
           "SampleApplicationName",
           useGatewayMode = true,
+          proactiveConnectionInitialization = None,
+          proactiveConnectionInitializationDurationInSeconds = 120,
           httpConnectionPoolSize = 1000,
           useEventualConsistency = true,
           enableClientTelemetry = false,
@@ -100,7 +106,7 @@ class CosmosClientCacheITest
           subscriptionId = None,
           tenantId = None,
           resourceGroupName = None,
-          azureEnvironment = AzureEnvironment.AZURE,
+          azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
           sparkEnvironmentInfo = "")
       ),
       (
@@ -112,6 +118,8 @@ class CosmosClientCacheITest
           None,
           "SampleApplicationName",
           useGatewayMode = true,
+          proactiveConnectionInitialization = None,
+          proactiveConnectionInitializationDurationInSeconds = 120,
           httpConnectionPoolSize = 1000,
           useEventualConsistency = true,
           enableClientTelemetry = false,
@@ -121,7 +129,7 @@ class CosmosClientCacheITest
           subscriptionId = None,
           tenantId = None,
           resourceGroupName = None,
-          azureEnvironment = AzureEnvironment.AZURE,
+          azureEnvironmentEndpoints = AzureEnvironment.AZURE.getEndpoints,
           sparkEnvironmentInfo = "")
       )
     )
@@ -137,6 +145,8 @@ class CosmosClientCacheITest
         userConfig.customApplicationNameSuffix,
         userConfig.applicationName,
         userConfig.useGatewayMode,
+        userConfig.proactiveConnectionInitialization,
+        userConfig.proactiveConnectionInitializationDurationInSeconds,
         userConfig.httpConnectionPoolSize,
         userConfig.useEventualConsistency,
         enableClientTelemetry = false,
@@ -149,7 +159,7 @@ class CosmosClientCacheITest
         userConfig.subscriptionId,
         userConfig.tenantId,
         userConfig.resourceGroupName,
-        userConfig.azureEnvironment,
+        userConfig.azureEnvironmentEndpoints,
         sparkEnvironmentInfo = ""
       )
 

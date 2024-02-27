@@ -128,7 +128,7 @@ currently released version and a lower version is resolved. -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.11.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.11.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <optional>true</optional>
     </dependency>
     <!-- We should keep these netty dependencies, for the netty version in qpid-jms-client is lower than the ones in azure sdks.  -->
@@ -170,7 +170,7 @@ currently released version and a lower version is resolved. -->
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity-extensions</artifactId>
-      <version>1.1.11</version> <!-- {x-version-update;com.azure:azure-identity-extensions;dependency} -->
+      <version>1.1.13</version> <!-- {x-version-update;com.azure:azure-identity-extensions;dependency} -->
     </dependency>
   </dependencies>
 
@@ -180,6 +180,14 @@ currently released version and a lower version is resolved. -->
         <groupId>com.github.spotbugs</groupId>
         <artifactId>spotbugs-maven-plugin</artifactId>
         <version>4.8.2.0</version> <!-- {x-version-update;com.github.spotbugs:spotbugs-maven-plugin;external_dependency} -->
+        <configuration>
+          <skip>true</skip>
+        </configuration>
+      </plugin>
+      <plugin>
+        <groupId>com.diffplug.spotless</groupId>
+        <artifactId>spotless-maven-plugin</artifactId>
+        <version>2.30.0</version> <!-- {x-version-update;com.diffplug.spotless:spotless-maven-plugin;external_dependency} -->
         <configuration>
           <skip>true</skip>
         </configuration>

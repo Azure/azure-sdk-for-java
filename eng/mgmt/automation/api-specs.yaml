@@ -11,6 +11,8 @@ authorization:
   suffix: generated
 azure-kusto:
   service: kusto
+azurelargeinstance:
+  service: largeinstance
 cdn:
   suffix: generated
 compute:
@@ -60,6 +62,8 @@ hybridaks:
   service: hybridcontainerservice
 keyvault:
   suffix: generated
+liftrastronomer:
+  service: astro
 liftrqumulo:
   service: qumulo
 loadtestservice:
@@ -111,3 +115,5 @@ vmware:
 web:
   service: appservice
   suffix: generated
+workloads/Microsoft.Workloads/SAPVirtualInstance:
+  service: workloadssapvirtualinstance

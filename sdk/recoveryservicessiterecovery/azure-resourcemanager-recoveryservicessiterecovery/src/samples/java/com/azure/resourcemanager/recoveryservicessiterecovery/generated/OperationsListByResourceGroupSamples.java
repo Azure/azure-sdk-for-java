@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.recoveryservicessiterecovery.generated;
 
-/** Samples for Operations ListByResourceGroup. */
+/**
+ * Samples for Operations ListByResourceGroup.
+ */
 public final class OperationsListByResourceGroupSamples {
     /*
-     * x-ms-original-file: specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-06-01/examples/Operations_List.json
+     * x-ms-original-file:
+     * specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2023-08-01/examples
+     * /Operations_List.json
      */
     /**
      * Sample code: Returns the list of available operations.
-     *
+     * 
      * @param manager Entry point to SiteRecoveryManager.
      */
     public static void returnsTheListOfAvailableOperations(

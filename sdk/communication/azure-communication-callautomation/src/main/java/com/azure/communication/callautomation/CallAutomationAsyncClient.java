@@ -346,12 +346,13 @@ public final class CallAutomationAsyncClient {
                                                                     Context context) {
         try {
             context = context == null ? Context.NONE : context;
-
+            
             AnswerCallRequestInternal request = new AnswerCallRequestInternal()
                 .setIncomingCallContext(answerCallOptions.getIncomingCallContext())
                 .setCallbackUri(answerCallOptions.getCallbackUrl())
                 .setAnsweredBy(sourceIdentity)
-                .setOperationContext(answerCallOptions.getOperationContext());
+                .setOperationContext(answerCallOptions.getOperationContext())
+                .setSourceCallerIdNumber(PhoneNumberIdentifierConverter.convert(answerCallOptions.getSourceCallerIdNumber()));
 
             if (answerCallOptions.getCallIntelligenceOptions() != null && answerCallOptions.getCallIntelligenceOptions().getCognitiveServicesEndpoint() != null) {
                 CallIntelligenceOptionsInternal callIntelligenceOptionsInternal = new CallIntelligenceOptionsInternal();

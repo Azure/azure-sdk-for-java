@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Input to apply recovery point. */
+/**
+ * Input to apply recovery point.
+ */
 @Fluent
 public final class ApplyRecoveryPointInput {
     /*
@@ -17,13 +19,15 @@ public final class ApplyRecoveryPointInput {
     @JsonProperty(value = "properties", required = true)
     private ApplyRecoveryPointInputProperties properties;
 
-    /** Creates an instance of ApplyRecoveryPointInput class. */
+    /**
+     * Creates an instance of ApplyRecoveryPointInput class.
+     */
     public ApplyRecoveryPointInput() {
     }
 
     /**
      * Get the properties property: The input properties to apply recovery point.
-     *
+     * 
      * @return the properties value.
      */
     public ApplyRecoveryPointInputProperties properties() {
@@ -32,7 +36,7 @@ public final class ApplyRecoveryPointInput {
 
     /**
      * Set the properties property: The input properties to apply recovery point.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the ApplyRecoveryPointInput object itself.
      */
@@ -43,15 +47,13 @@ public final class ApplyRecoveryPointInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (properties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property properties in model ApplyRecoveryPointInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property properties in model ApplyRecoveryPointInput"));
         } else {
             properties().validate();
         }

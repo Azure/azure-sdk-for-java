@@ -13,18 +13,33 @@ import java.util.Collection;
  * series pattern.
  */
 public final class DynamicThresholdSensitivity extends ExpandableStringEnum<DynamicThresholdSensitivity> {
-    /** Static value Low for DynamicThresholdSensitivity. */
+    /**
+     * Static value Low for DynamicThresholdSensitivity.
+     */
     public static final DynamicThresholdSensitivity LOW = fromString("Low");
 
-    /** Static value Medium for DynamicThresholdSensitivity. */
+    /**
+     * Static value Medium for DynamicThresholdSensitivity.
+     */
     public static final DynamicThresholdSensitivity MEDIUM = fromString("Medium");
 
-    /** Static value High for DynamicThresholdSensitivity. */
+    /**
+     * Static value High for DynamicThresholdSensitivity.
+     */
     public static final DynamicThresholdSensitivity HIGH = fromString("High");
 
     /**
+     * Creates a new instance of DynamicThresholdSensitivity value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public DynamicThresholdSensitivity() {
+    }
+
+    /**
      * Creates or finds a DynamicThresholdSensitivity from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DynamicThresholdSensitivity.
      */
@@ -35,7 +50,7 @@ public final class DynamicThresholdSensitivity extends ExpandableStringEnum<Dyna
 
     /**
      * Gets known DynamicThresholdSensitivity values.
-     *
+     * 
      * @return known DynamicThresholdSensitivity values.
      */
     public static Collection<DynamicThresholdSensitivity> values() {

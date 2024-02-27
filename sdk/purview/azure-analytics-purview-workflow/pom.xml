@@ -45,6 +45,7 @@
     <javaModulesSurefireArgLine>
       --add-exports com.azure.core/com.azure.core.implementation.util=ALL-UNNAMED
     </javaModulesSurefireArgLine>
+    <jacoco.skip>true</jacoco.skip> <!-- all tests are disabled -->
   </properties>
   <dependencies>
     <dependency>
@@ -98,7 +99,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-identity</artifactId>
-      <version>1.11.1</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
+      <version>1.11.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

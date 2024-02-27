@@ -11,17 +11,15 @@ import org.junit.jupiter.api.Assertions;
 public final class InMageDiskSignatureExclusionOptionsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageDiskSignatureExclusionOptions model =
-            BinaryData
-                .fromString("{\"diskSignature\":\"fvppkeqsifj\"}")
-                .toObject(InMageDiskSignatureExclusionOptions.class);
+        InMageDiskSignatureExclusionOptions model = BinaryData.fromString("{\"diskSignature\":\"fvppkeqsifj\"}")
+            .toObject(InMageDiskSignatureExclusionOptions.class);
         Assertions.assertEquals("fvppkeqsifj", model.diskSignature());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageDiskSignatureExclusionOptions model =
-            new InMageDiskSignatureExclusionOptions().withDiskSignature("fvppkeqsifj");
+        InMageDiskSignatureExclusionOptions model
+            = new InMageDiskSignatureExclusionOptions().withDiskSignature("fvppkeqsifj");
         model = BinaryData.fromObject(model).toObject(InMageDiskSignatureExclusionOptions.class);
         Assertions.assertEquals("fvppkeqsifj", model.diskSignature());
     }

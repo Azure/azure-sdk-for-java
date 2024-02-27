@@ -63,6 +63,7 @@
 
     <spotbugs.skip>false</spotbugs.skip>
     <spotbugs.excludeFilterFile>spotbugs-exclude.xml</spotbugs.excludeFilterFile>
+    <spotless.skip>false</spotless.skip>
   </properties>
 
   <developers>
@@ -132,28 +133,43 @@
           </rules>
         </configuration>
       </plugin>
-
-      <plugin>
-        <groupId>org.apache.avro</groupId>
-        <artifactId>avro-maven-plugin</artifactId>
-        <version>1.11.3</version> <!-- {x-version-update;org.apache.avro:avro-maven-plugin;external_dependency} -->
-        <executions>
-          <execution>
-            <phase>generate-test-sources</phase>
-            <goals>
-              <goal>schema</goal>
-            </goals>
-            <configuration>
-              <testSourceDirectory>src/test/resources/avro/</testSourceDirectory>
-              <testOutputDirectory>${project.basedir}/src/test/java/</testOutputDirectory>
-              <testIncludes>
-                <testInclude>**/*.avro</testInclude>
-              </testIncludes>
-              <stringType>String</stringType>
-            </configuration>
-          </execution>
-        </executions>
-      </plugin>
     </plugins>
   </build>
+
+  <profiles>
+    <profile>
+      <id>generate-avro</id>
+      <activation>
+        <property>
+          <name>generate-avro</name>
+        </property>
+      </activation>
+
+      <build>
+        <plugins>
+          <plugin>
+            <groupId>org.apache.avro</groupId>
+            <artifactId>avro-maven-plugin</artifactId>
+            <version>1.11.3</version> <!-- {x-version-update;org.apache.avro:avro-maven-plugin;external_dependency} -->
+            <executions>
+              <execution>
+                <phase>generate-sources</phase>
+                <goals>
+                  <goal>schema</goal>
+                </goals>
+                <configuration>
+                  <testSourceDirectory>src/test/resources/avro/</testSourceDirectory>
+                  <testOutputDirectory>${project.basedir}/src/test/java/</testOutputDirectory>
+                  <testIncludes>
+                    <testInclude>**/*.avro</testInclude>
+                  </testIncludes>
+                  <stringType>String</stringType>
+                </configuration>
+              </execution>
+            </executions>
+          </plugin>
+        </plugins>
+      </build>
+    </profile>
+  </profiles>
 </project>

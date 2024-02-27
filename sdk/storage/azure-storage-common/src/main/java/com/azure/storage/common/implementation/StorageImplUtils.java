@@ -467,26 +467,8 @@ public class StorageImplUtils {
     }
 
     public static ExecutorService getThreadPoolWithShutdownHook() {
-        ExecutorService threadPool = Executors.newCachedThreadPool();
-        registerShutdownHook(threadPool);
-        return threadPool;
-    }
-
-    public static void registerShutdownHook(ExecutorService threadPool) {
-        long halfTimeout = TimeUnit.SECONDS.toNanos(THREADPOOL_SHUTDOWN_HOOK_TIMEOUT_SECONDS) / 2;
-        Thread hook = new Thread(() -> {
-            try {
-                threadPool.shutdown();
-                if (!threadPool.awaitTermination(halfTimeout, TimeUnit.NANOSECONDS)) {
-                    threadPool.shutdownNow();
-                    threadPool.awaitTermination(halfTimeout, TimeUnit.NANOSECONDS);
-                }
-            } catch (InterruptedException e) {
-                Thread.currentThread().interrupt();
-                threadPool.shutdown();
-            }
-        });
-        Runtime.getRuntime().addShutdownHook(hook);
+        return CoreUtils.addShutdownHookSafely(Executors.newCachedThreadPool(),
+            Duration.ofSeconds(THREADPOOL_SHUTDOWN_HOOK_TIMEOUT_SECONDS));
     }
 
     public static String getEncryptionDataKey(Map<String, String> metadata) {

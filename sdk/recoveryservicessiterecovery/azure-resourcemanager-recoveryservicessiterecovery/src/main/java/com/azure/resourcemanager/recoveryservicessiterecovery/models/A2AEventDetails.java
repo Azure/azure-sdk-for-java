@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Model class for event details of a A2A event. */
+/**
+ * Model class for event details of a A2A event.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("A2A")
 @Fluent
@@ -50,13 +52,15 @@ public final class A2AEventDetails extends EventProviderSpecificDetails {
     @JsonProperty(value = "remoteFabricLocation")
     private String remoteFabricLocation;
 
-    /** Creates an instance of A2AEventDetails class. */
+    /**
+     * Creates an instance of A2AEventDetails class.
+     */
     public A2AEventDetails() {
     }
 
     /**
      * Get the protectedItemName property: The protected item arm name.
-     *
+     * 
      * @return the protectedItemName value.
      */
     public String protectedItemName() {
@@ -65,7 +69,7 @@ public final class A2AEventDetails extends EventProviderSpecificDetails {
 
     /**
      * Set the protectedItemName property: The protected item arm name.
-     *
+     * 
      * @param protectedItemName the protectedItemName value to set.
      * @return the A2AEventDetails object itself.
      */
@@ -76,7 +80,7 @@ public final class A2AEventDetails extends EventProviderSpecificDetails {
 
     /**
      * Get the fabricObjectId property: The azure vm arm id.
-     *
+     * 
      * @return the fabricObjectId value.
      */
     public String fabricObjectId() {
@@ -85,7 +89,7 @@ public final class A2AEventDetails extends EventProviderSpecificDetails {
 
     /**
      * Set the fabricObjectId property: The azure vm arm id.
-     *
+     * 
      * @param fabricObjectId the fabricObjectId value to set.
      * @return the A2AEventDetails object itself.
      */
@@ -96,7 +100,7 @@ public final class A2AEventDetails extends EventProviderSpecificDetails {
 
     /**
      * Get the fabricName property: Fabric arm name.
-     *
+     * 
      * @return the fabricName value.
      */
     public String fabricName() {
@@ -105,7 +109,7 @@ public final class A2AEventDetails extends EventProviderSpecificDetails {
 
     /**
      * Set the fabricName property: Fabric arm name.
-     *
+     * 
      * @param fabricName the fabricName value to set.
      * @return the A2AEventDetails object itself.
      */
@@ -116,7 +120,7 @@ public final class A2AEventDetails extends EventProviderSpecificDetails {
 
     /**
      * Get the fabricLocation property: The fabric location.
-     *
+     * 
      * @return the fabricLocation value.
      */
     public String fabricLocation() {
@@ -125,7 +129,7 @@ public final class A2AEventDetails extends EventProviderSpecificDetails {
 
     /**
      * Set the fabricLocation property: The fabric location.
-     *
+     * 
      * @param fabricLocation the fabricLocation value to set.
      * @return the A2AEventDetails object itself.
      */
@@ -136,7 +140,7 @@ public final class A2AEventDetails extends EventProviderSpecificDetails {
 
     /**
      * Get the remoteFabricName property: Remote fabric arm name.
-     *
+     * 
      * @return the remoteFabricName value.
      */
     public String remoteFabricName() {
@@ -145,7 +149,7 @@ public final class A2AEventDetails extends EventProviderSpecificDetails {
 
     /**
      * Set the remoteFabricName property: Remote fabric arm name.
-     *
+     * 
      * @param remoteFabricName the remoteFabricName value to set.
      * @return the A2AEventDetails object itself.
      */
@@ -156,7 +160,7 @@ public final class A2AEventDetails extends EventProviderSpecificDetails {
 
     /**
      * Get the remoteFabricLocation property: Remote fabric location.
-     *
+     * 
      * @return the remoteFabricLocation value.
      */
     public String remoteFabricLocation() {
@@ -165,7 +169,7 @@ public final class A2AEventDetails extends EventProviderSpecificDetails {
 
     /**
      * Set the remoteFabricLocation property: Remote fabric location.
-     *
+     * 
      * @param remoteFabricLocation the remoteFabricLocation value to set.
      * @return the A2AEventDetails object itself.
      */
@@ -176,7 +180,7 @@ public final class A2AEventDetails extends EventProviderSpecificDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

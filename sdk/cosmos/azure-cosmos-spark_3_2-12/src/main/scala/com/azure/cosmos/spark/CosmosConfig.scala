@@ -7,7 +7,7 @@ import com.azure.core.management.AzureEnvironment
 import com.azure.cosmos.implementation.batch.BatchRequestResponseConstants
 import com.azure.cosmos.implementation.routing.LocationHelper
 import com.azure.cosmos.implementation.{Configs, SparkBridgeImplementationInternal, Strings}
-import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, CosmosParameterizedQuery, DedicatedGatewayRequestOptions, FeedRange, PartitionKeyDefinition}
+import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, CosmosContainerIdentity, CosmosParameterizedQuery, DedicatedGatewayRequestOptions, FeedRange, PartitionKeyDefinition}
 import com.azure.cosmos.spark.ChangeFeedModes.ChangeFeedMode
 import com.azure.cosmos.spark.ChangeFeedStartFromModes.{ChangeFeedStartFromMode, PointInTime}
 import com.azure.cosmos.spark.CosmosAuthType.CosmosAuthType
@@ -59,6 +59,8 @@ private[spark] object CosmosConfigNames {
   val DisableTcpConnectionEndpointRediscovery = "spark.cosmos.disableTcpConnectionEndpointRediscovery"
   val ApplicationName = "spark.cosmos.applicationName"
   val UseGatewayMode = "spark.cosmos.useGatewayMode"
+  val ProactiveConnectionInitialization = "spark.cosmos.proactiveConnectionInitialization"
+  val ProactiveConnectionInitializationDurationInSeconds = "spark.cosmos.proactiveConnectionInitializationDurationInSeconds"
   val GatewayConnectionPoolSize = "spark.cosmos.http.connectionPoolSize"
   val AllowInvalidJsonWithDuplicateJsonProperties = "spark.cosmos.read.allowInvalidJsonWithDuplicateJsonProperties"
   val ReadCustomQuery = "spark.cosmos.read.customQuery"
@@ -149,6 +151,8 @@ private[spark] object CosmosConfigNames {
     DisableTcpConnectionEndpointRediscovery,
     ApplicationName,
     UseGatewayMode,
+    ProactiveConnectionInitialization,
+    ProactiveConnectionInitializationDurationInSeconds,
     GatewayConnectionPoolSize,
     AllowInvalidJsonWithDuplicateJsonProperties,
     ReadCustomQuery,
@@ -324,16 +328,18 @@ private case class CosmosAccountConfig(endpoint: String,
                                        accountName: String,
                                        applicationName: Option[String],
                                        useGatewayMode: Boolean,
+                                       proactiveConnectionInitialization: Option[String],
+                                       proactiveConnectionInitializationDurationInSeconds: Int,
                                        httpConnectionPoolSize: Int,
                                        disableTcpConnectionEndpointRediscovery: Boolean,
                                        preferredRegionsList: Option[Array[String]],
                                        subscriptionId: Option[String],
                                        tenantId: Option[String],
                                        resourceGroupName: Option[String],
-                                       azureEnvironment: AzureEnvironment)
+                                       azureEnvironmentEndpoints: java.util.Map[String, String])
 
 private object CosmosAccountConfig {
-  private val DefaultAzureEnvironmentType = AzureEnvironmentType.Azure
+  private val DefaultAzureEnvironmentEndpoints = AzureEnvironmentType.Azure
 
   private val CosmosAccountEndpointUri = CosmosConfigEntry[String](key = CosmosConfigNames.AccountEndpoint,
     mandatory = true,
@@ -402,6 +408,27 @@ private object CosmosAccountConfig {
     parseFromStringFunction = useGatewayMode => useGatewayMode.toBoolean,
     helpMessage = "Use gateway mode for the client operations")
 
+  private val ProactiveConnectionInitialization = CosmosConfigEntry[String](key = CosmosConfigNames.ProactiveConnectionInitialization,
+    mandatory = false,
+    defaultValue = None,
+    parseFromStringFunction = proactiveConnectionInitializationText => {
+      // force parsing and validation of config string. CosmosContainerIdentity is not serializable
+      // so delaying the actual conversion
+      parseProactiveConnectionInitConfigs(proactiveConnectionInitializationText)
+      proactiveConnectionInitializationText
+    },
+    helpMessage = "Enable proactive connection initialization. This will result in keeping warmed-up connections "
+      + "to each replica. Config should be formatted like "
+      + "`DBName1/ContainerName1;DBName2/ContainerName2;DBName1/ContainerName3`")
+
+  private val ProactiveConnectionInitializationDurationInSeconds = CosmosConfigEntry[Int](key = CosmosConfigNames.ProactiveConnectionInitializationDurationInSeconds,
+    mandatory = false,
+    defaultValue = Some(120),
+    parseFromStringFunction = secondsText => secondsText.toInt,
+    helpMessage = "The duration in seconds that Cosmos client initialization should wait and allow connections "
+      + "being warmed-up aggressively. After this duration the remaining connections will be slowly opened "
+      + "on a single thread in the background.")
+
   private val HttpConnectionPoolSize = CosmosConfigEntry[Integer](key = CosmosConfigNames.GatewayConnectionPoolSize,
     mandatory = false,
     defaultValue = Some(Configs.getDefaultHttpPoolSize),
@@ -436,20 +463,38 @@ private object CosmosAccountConfig {
       parseFromStringFunction = resourceGroupName => resourceGroupName,
       helpMessage = "The resource group of the CosmosDB account. Required for `ServicePrincipal` authentication.")
 
-  private val AzureEnvironmentTypeEnum = CosmosConfigEntry[AzureEnvironment](key = CosmosConfigNames.AzureEnvironment,
-      defaultValue = Option.apply(AzureEnvironment.AZURE),
+  private val AzureEnvironmentTypeEnum = CosmosConfigEntry[java.util.Map[String, String]](key = CosmosConfigNames.AzureEnvironment,
+      defaultValue = Option.apply(AzureEnvironment.AZURE.getEndpoints),
       mandatory = false,
       parseFromStringFunction = azureEnvironmentTypeAsString => {
           val azureEnvironmentType = CosmosConfigEntry.parseEnumeration(azureEnvironmentTypeAsString, AzureEnvironmentType)
           azureEnvironmentType match {
-              case AzureEnvironmentType.Azure => AzureEnvironment.AZURE
-              case AzureEnvironmentType.AzureChina => AzureEnvironment.AZURE_CHINA
-              case AzureEnvironmentType.AzureGermany => AzureEnvironment.AZURE_GERMANY
-              case AzureEnvironmentType.AzureUsGovernment => AzureEnvironment.AZURE_US_GOVERNMENT
+              case AzureEnvironmentType.Azure => AzureEnvironment.AZURE.getEndpoints
+              case AzureEnvironmentType.AzureChina => AzureEnvironment.AZURE_CHINA.getEndpoints
+              case AzureEnvironmentType.AzureGermany => AzureEnvironment.AZURE_GERMANY.getEndpoints
+              case AzureEnvironmentType.AzureUsGovernment => AzureEnvironment.AZURE_US_GOVERNMENT.getEndpoints
               case _ => throw new IllegalArgumentException(s"Azure environment type ${azureEnvironmentType} is not supported")
           }
       },
       helpMessage = "The azure environment of the CosmosDB account: `Azure`, `AzureChina`, `AzureUsGovernment`, `AzureGermany`.")
+
+  private[spark] def parseProactiveConnectionInitConfigs(config: String): java.util.List[CosmosContainerIdentity] = {
+    val result = new java.util.ArrayList[CosmosContainerIdentity]
+    try {
+      val identities = config.split(";")
+      for (identity: String <- identities) {
+        val parts = identity.split("/")
+        result.add(new CosmosContainerIdentity(parts.apply(0).trim, parts.apply(1).trim))
+      }
+
+      result
+    }
+    catch {
+      case e: Exception => throw new IllegalArgumentException(
+        s"Invalid proactive connection initialization config $config. The string must be a list of containers to "
+          + "be warmed-up in the format of `DBName1/ContainerName1;DBName2/ContainerName2;DBName1/ContainerName3`")
+    }
+  }
 
   def parseCosmosAccountConfig(cfg: Map[String, String]): CosmosAccountConfig = {
     val endpointOpt = CosmosConfigEntry.parse(cfg, CosmosAccountEndpointUri)
@@ -457,6 +502,8 @@ private object CosmosAccountConfig {
     val accountName = CosmosConfigEntry.parse(cfg, CosmosAccountName)
     val applicationName = CosmosConfigEntry.parse(cfg, ApplicationName)
     val useGatewayMode = CosmosConfigEntry.parse(cfg, UseGatewayMode)
+    val proactiveConnectionInitialization = CosmosConfigEntry.parse(cfg, ProactiveConnectionInitialization)
+    val proactiveConnectionInitializationDurationInSeconds = CosmosConfigEntry.parse(cfg, ProactiveConnectionInitializationDurationInSeconds)
     val httpConnectionPoolSize = CosmosConfigEntry.parse(cfg, HttpConnectionPoolSize)
     val subscriptionIdOpt = CosmosConfigEntry.parse(cfg, SubscriptionId)
     val resourceGroupNameOpt = CosmosConfigEntry.parse(cfg, ResourceGroupName)
@@ -511,6 +558,8 @@ private object CosmosAccountConfig {
       accountName.get,
       applicationName,
       useGatewayMode.get,
+      proactiveConnectionInitialization,
+      proactiveConnectionInitializationDurationInSeconds.get,
       httpConnectionPoolSize.get,
       disableTcpConnectionEndpointRediscovery.get,
       preferredRegionsListOpt,
@@ -1297,7 +1346,7 @@ protected case class CosmosReadManyFilteringConfig(readManyFilteringEnabled: Boo
 
 private object CosmosReadManyFilteringConfig {
   // For now,we use a hardcoded name, if there are requirements to make it more dynamic, can open it to be configurable
-  private val defaultReadManyFilterProperty = "_itemIdentity"
+  private val defaultReadManyFilterProperty = CosmosConstants.Properties.ItemIdentity
 
   private val readManyFilteringEnabled = CosmosConfigEntry[Boolean](
     key = CosmosConfigNames.ReadManyFilteringEnabled,

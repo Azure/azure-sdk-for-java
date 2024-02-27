@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InMageBasePolicyDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageBasePolicyDetails model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"InMageBasePolicyDetails\",\"recoveryPointThresholdInMinutes\":1501835760,\"recoveryPointHistory\":1196368599,\"appConsistentFrequencyInMinutes\":612698857,\"multiVmSyncStatus\":\"tb\"}")
-                .toObject(InMageBasePolicyDetails.class);
+        InMageBasePolicyDetails model = BinaryData.fromString(
+            "{\"instanceType\":\"InMageBasePolicyDetails\",\"recoveryPointThresholdInMinutes\":1501835760,\"recoveryPointHistory\":1196368599,\"appConsistentFrequencyInMinutes\":612698857,\"multiVmSyncStatus\":\"tb\"}")
+            .toObject(InMageBasePolicyDetails.class);
         Assertions.assertEquals(1501835760, model.recoveryPointThresholdInMinutes());
         Assertions.assertEquals(1196368599, model.recoveryPointHistory());
         Assertions.assertEquals(612698857, model.appConsistentFrequencyInMinutes());
@@ -24,12 +22,9 @@ public final class InMageBasePolicyDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageBasePolicyDetails model =
-            new InMageBasePolicyDetails()
-                .withRecoveryPointThresholdInMinutes(1501835760)
-                .withRecoveryPointHistory(1196368599)
-                .withAppConsistentFrequencyInMinutes(612698857)
-                .withMultiVmSyncStatus("tb");
+        InMageBasePolicyDetails model = new InMageBasePolicyDetails().withRecoveryPointThresholdInMinutes(1501835760)
+            .withRecoveryPointHistory(1196368599).withAppConsistentFrequencyInMinutes(612698857)
+            .withMultiVmSyncStatus("tb");
         model = BinaryData.fromObject(model).toObject(InMageBasePolicyDetails.class);
         Assertions.assertEquals(1501835760, model.recoveryPointThresholdInMinutes());
         Assertions.assertEquals(1196368599, model.recoveryPointHistory());

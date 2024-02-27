@@ -7,7 +7,8 @@ import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 
 /**
- * Interface that defines implementation-agnostic methods for creating {@link ReflectiveInvoker Invokers} that will invoke
+ * Interface that defines implementation-agnostic methods for creating {@link ReflectiveInvoker Invokers} that will
+ * invoke
  * {@link Method Methods}, {@link Constructor Constructors}, and {@link Field Fields}.
  */
 interface ReflectionUtilsApi {

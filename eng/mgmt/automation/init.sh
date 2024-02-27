@@ -10,6 +10,9 @@ export NVM_DIR="$HOME/.nvm"
 nvm install v18.15.0
 nvm alias default node
 
+# install tsp-client globally (local install may interfere with tooling)
+npm install -g @azure-tools/typespec-client-generator-cli
+
 cat << EOF > $2
 {"envs": {"PATH": "$JAVA_HOME_11_X64/bin:$PATH", "JAVA_HOME": "$JAVA_HOME_11_X64"}}
 EOF

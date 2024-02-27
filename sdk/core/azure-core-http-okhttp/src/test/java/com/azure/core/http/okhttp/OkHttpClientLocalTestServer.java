@@ -70,8 +70,9 @@ public final class OkHttpClientLocalTestServer {
                 resp.getHttpOutput().flush();
                 resp.getHttpOutput().complete(Callback.NOOP);
             } else if (get && COOKIE_VALIDATOR_PATH.equals(path)) {
-                boolean hasCookie = req.getCookies() != null && Arrays.stream(req.getCookies())
-                    .anyMatch(cookie -> "test".equals(cookie.getName()) && "success".equals(cookie.getValue()));
+                boolean hasCookie = req.getCookies() != null
+                    && Arrays.stream(req.getCookies())
+                        .anyMatch(cookie -> "test".equals(cookie.getName()) && "success".equals(cookie.getValue()));
                 if (!hasCookie) {
                     resp.setStatus(400);
                 }
@@ -135,8 +136,7 @@ public final class OkHttpClientLocalTestServer {
         byte[] longBody = new byte[duplicateBytes.length * 100000];
 
         for (int i = 0; i < 100000; i++) {
-            System.arraycopy(duplicateBytes, 0, longBody, i * duplicateBytes.length,
-                duplicateBytes.length);
+            System.arraycopy(duplicateBytes, 0, longBody, i * duplicateBytes.length, duplicateBytes.length);
         }
 
         return longBody;

@@ -89,11 +89,11 @@ public class OpenTelemetryHttpPolicyTests {
     @BeforeEach
     public void setUp(TestInfo testInfo) {
         exporter = InMemorySpanExporter.create();
-        tracerProvider = SdkTracerProvider.builder()
-            .addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
+        tracerProvider = SdkTracerProvider.builder().addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
 
         openTelemetry = OpenTelemetrySdk.builder().setTracerProvider(tracerProvider).build();
-        azTracer = new OpenTelemetryTracer("test", null, null, new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry));
+        azTracer = new OpenTelemetryTracer("test", null, null,
+            new OpenTelemetryTracingOptions().setOpenTelemetry(openTelemetry));
         tracer = openTelemetry.getTracer(testInfo.getDisplayName());
     }
 
@@ -103,8 +103,9 @@ public class OpenTelemetryHttpPolicyTests {
         Span parentSpan = tracer.spanBuilder(SPAN_NAME).startSpan();
 
         // Add parent span to tracingContext
-        Context tracingContext = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root().with(parentSpan))
-            .addData("az.namespace", "foo");
+        Context tracingContext
+            = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root().with(parentSpan))
+                .addData("az.namespace", "foo");
 
         // Act
         HttpRequest request = new HttpRequest(HttpMethod.POST, "https://httpbin.org/hello?there#otel");
@@ -120,7 +121,8 @@ public class OpenTelemetryHttpPolicyTests {
 
         SpanData httpSpan = exportedSpans.get(0);
 
-        assertEquals(request.getHeaders().getValue(TRACEPARENT), String.format("00-%s-%s-01", httpSpan.getTraceId(), httpSpan.getSpanId()));
+        assertEquals(request.getHeaders().getValue(TRACEPARENT),
+            String.format("00-%s-%s-01", httpSpan.getTraceId(), httpSpan.getSpanId()));
         assertEquals(((ReadableSpan) parentSpan).getSpanContext().getSpanId(), httpSpan.getParentSpanId());
         assertEquals("POST", httpSpan.getName());
 
@@ -139,34 +141,35 @@ public class OpenTelemetryHttpPolicyTests {
     @Test
     public void presamplingAttributesArePopulatedBeforeSpanStarts() {
         AtomicBoolean samplerCalled = new AtomicBoolean();
-        SdkTracerProvider providerWithSampler = SdkTracerProvider.builder()
-            .setSampler(new Sampler() {
-                @Override
-                public SamplingResult shouldSample(io.opentelemetry.context.Context parentContext, String traceId, String name, SpanKind spanKind, Attributes attributes, List<LinkData> parentLinks) {
-                    samplerCalled.set(true);
-                    assertEquals(4, attributes.size());
-                    assertEquals("DELETE", name);
-                    assertEquals("DELETE", attributes.get(AttributeKey.stringKey("http.request.method")));
-                    assertEquals("https://httpbin.org/hello?there#otel", attributes.get(AttributeKey.stringKey("url.full")));
-                    assertEquals("httpbin.org", attributes.get(AttributeKey.stringKey("server.address")));
-                    assertEquals(443, attributes.get(AttributeKey.longKey("server.port")));
-                    return SamplingResult.create(SamplingDecision.DROP);
-                }
+        SdkTracerProvider providerWithSampler = SdkTracerProvider.builder().setSampler(new Sampler() {
+            @Override
+            public SamplingResult shouldSample(io.opentelemetry.context.Context parentContext, String traceId,
+                String name, SpanKind spanKind, Attributes attributes, List<LinkData> parentLinks) {
+                samplerCalled.set(true);
+                assertEquals(4, attributes.size());
+                assertEquals("DELETE", name);
+                assertEquals("DELETE", attributes.get(AttributeKey.stringKey("http.request.method")));
+                assertEquals("https://httpbin.org/hello?there#otel",
+                    attributes.get(AttributeKey.stringKey("url.full")));
+                assertEquals("httpbin.org", attributes.get(AttributeKey.stringKey("server.address")));
+                assertEquals(443, attributes.get(AttributeKey.longKey("server.port")));
+                return SamplingResult.create(SamplingDecision.DROP);
+            }
 
-                @Override
-                public String getDescription() {
-                    return "test";
-                }
-            })
-            .addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
+            @Override
+            public String getDescription() {
+                return "test";
+            }
+        }).addSpanProcessor(SimpleSpanProcessor.create(exporter)).build();
 
         // Act
         HttpRequest request = new HttpRequest(HttpMethod.DELETE, "https://httpbin.org/hello?there#otel");
         try (Scope scope = tracer.spanBuilder("test").startSpan().makeCurrent()) {
             createHttpPipeline(new OpenTelemetryTracer("test", null, null,
-                new OpenTelemetryTracingOptions().setOpenTelemetry(OpenTelemetrySdk.builder().setTracerProvider(providerWithSampler).build())))
-                .send(request)
-                .block();
+                new OpenTelemetryTracingOptions()
+                    .setOpenTelemetry(OpenTelemetrySdk.builder().setTracerProvider(providerWithSampler).build())))
+                        .send(request)
+                        .block();
         }
         // Assert
         List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
@@ -190,7 +193,8 @@ public class OpenTelemetryHttpPolicyTests {
             Map<String, Object> httpAttributes = getAttributes(exportedSpans.get(0));
             assertEquals(7, httpAttributes.size());
 
-            assertEquals(response.getRequest().getHeaders().getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID), httpAttributes.get("az.client_request_id"));
+            assertEquals(response.getRequest().getHeaders().getValue(HttpHeaderName.X_MS_CLIENT_REQUEST_ID),
+                httpAttributes.get("az.client_request_id"));
             assertEquals(X_MS_REQUEST_ID_1, httpAttributes.get("az.service_request_id"));
 
             assertEquals("https://httpbin.org/hello?there#otel", httpAttributes.get("url.full"));
@@ -214,9 +218,8 @@ public class OpenTelemetryHttpPolicyTests {
         List<HttpPipelinePolicy> policies = new ArrayList<>(Arrays.asList(new RetryPolicy()));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(request -> {
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0])).httpClient(request -> {
                 HttpHeaders headers = new HttpHeaders();
 
                 int count = attemptCount.getAndIncrement();
@@ -232,15 +235,14 @@ public class OpenTelemetryHttpPolicyTests {
                     // Too many requests have been made.
                     return Mono.just(new MockHttpResponse(request, 400, headers));
                 }
-            })
-            .tracer(azTracer)
-            .build();
+            }).tracer(azTracer).build();
 
         // Start user parent span and populate context.
         Span parentSpan = tracer.spanBuilder("test").startSpan();
 
-        Context tracingContext = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root().with(parentSpan))
-            .addData("az.namespace", "foo");
+        Context tracingContext
+            = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root().with(parentSpan))
+                .addData("az.namespace", "foo");
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), tracingContext))
             .assertNext(response -> {
@@ -284,8 +286,7 @@ public class OpenTelemetryHttpPolicyTests {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(request -> Mono.just(new MockHttpResponse(request, statusCode)))
             .tracer(azTracer)
             .build();
@@ -301,7 +302,8 @@ public class OpenTelemetryHttpPolicyTests {
         assertEquals(1, exportedSpans.size());
 
         SpanData span = exportedSpans.get(0);
-        assertEquals(Long.valueOf(statusCode), span.getAttributes().get(AttributeKey.longKey("http.response.status_code")));
+        assertEquals(Long.valueOf(statusCode),
+            span.getAttributes().get(AttributeKey.longKey("http.response.status_code")));
         assertEquals(status, span.getStatus().getStatusCode());
     }
 
@@ -314,8 +316,7 @@ public class OpenTelemetryHttpPolicyTests {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(request -> Mono.error(new Exception("foo")))
             .tracer(azTracer)
             .build();
@@ -344,9 +345,8 @@ public class OpenTelemetryHttpPolicyTests {
         List<HttpPipelinePolicy> policies = new ArrayList<>(Arrays.asList(new RetryPolicy()));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(request -> {
+        HttpPipeline pipeline
+            = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0])).httpClient(request -> {
                 HttpHeaders headers = new HttpHeaders();
                 int count = attemptCount.getAndIncrement();
                 if (count == 0) {
@@ -357,15 +357,14 @@ public class OpenTelemetryHttpPolicyTests {
                     // Too many requests have been made.
                     return Mono.just(new MockHttpResponse(request, 400, headers));
                 }
-            })
-            .tracer(azTracer)
-            .build();
+            }).tracer(azTracer).build();
 
         // Start user parent span and populate context.
         Span parentSpan = tracer.spanBuilder("test").startSpan();
 
-        Context tracingContext = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root().with(parentSpan))
-            .addData("az.namespace", "foo");
+        Context tracingContext
+            = new Context(PARENT_TRACE_CONTEXT_KEY, io.opentelemetry.context.Context.root().with(parentSpan))
+                .addData("az.namespace", "foo");
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), tracingContext))
             .assertNext(response -> {
@@ -382,7 +381,8 @@ public class OpenTelemetryHttpPolicyTests {
         assertNull(httpAttributesTimeout.get("http.response.status_code"));
         assertEquals(StatusCode.ERROR, tryTimeout.getStatus().getStatusCode());
         assertEquals("timeout", tryTimeout.getStatus().getDescription());
-        assertEquals(TimeoutException.class.getName(), tryTimeout.getAttributes().get(AttributeKey.stringKey("error.type")));
+        assertEquals(TimeoutException.class.getName(),
+            tryTimeout.getAttributes().get(AttributeKey.stringKey("error.type")));
     }
 
     @Test
@@ -393,16 +393,14 @@ public class OpenTelemetryHttpPolicyTests {
         List<HttpPipelinePolicy> policies = new ArrayList<>();
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(request -> Mono.just(new ThrowingHttpResponse(request, 200, 16, new IOException("boom"))))
             .tracer(azTracer)
             .build();
 
-        StepVerifier.create(pipeline
-                .send(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), Context.NONE)
-                .flatMap(response -> response.getBodyAsInputStream()
-                    .doFinally(i -> response.close())))
+        StepVerifier
+            .create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), Context.NONE)
+                .flatMap(response -> response.getBodyAsInputStream().doFinally(i -> response.close())))
             .expectError(IOException.class)
             .verify();
 
@@ -427,16 +425,12 @@ public class OpenTelemetryHttpPolicyTests {
         List<HttpPipelinePolicy> policies = new ArrayList<>(Arrays.asList(new RetryPolicy()));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
-        HttpPipeline pipeline = new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
-            .httpClient(request ->
-                Mono.delay(Duration.ofSeconds(10)).map(l -> new MockHttpResponse(request, 200)))
+        HttpPipeline pipeline = new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
+            .httpClient(request -> Mono.delay(Duration.ofSeconds(10)).map(l -> new MockHttpResponse(request, 200)))
             .tracer(azTracer)
             .build();
 
-        pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), Context.NONE)
-                .toFuture()
-            .cancel(true);
+        pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), Context.NONE).toFuture().cancel(true);
 
         List<SpanData> exportedSpans = exporter.getFinishedSpanItems();
         assertEquals(1, exportedSpans.size());
@@ -455,37 +449,30 @@ public class OpenTelemetryHttpPolicyTests {
         return attributes;
     }
 
-    private static HttpPipeline createHttpPipeline(com.azure.core.util.tracing.Tracer azTracer, HttpPipelinePolicy... beforeRetryPolicies) {
+    private static HttpPipeline createHttpPipeline(com.azure.core.util.tracing.Tracer azTracer,
+        HttpPipelinePolicy... beforeRetryPolicies) {
         List<HttpPipelinePolicy> policies = new ArrayList<>(Arrays.asList(beforeRetryPolicies));
         HttpPolicyProviders.addAfterRetryPolicies(policies);
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(new SimpleMockHttpClient())
             .tracer(azTracer)
             .build();
     }
 
     public static Stream<Arguments> getStatusCodes() {
-        return Stream.of(
-            Arguments.of(100, StatusCode.UNSET),
-            Arguments.of(200, StatusCode.UNSET),
-            Arguments.of(201, StatusCode.UNSET),
-            Arguments.of(302, StatusCode.UNSET),
-            Arguments.of(307, StatusCode.UNSET),
-            Arguments.of(400, StatusCode.ERROR),
-            Arguments.of(404, StatusCode.ERROR),
-            Arguments.of(500, StatusCode.ERROR),
-            Arguments.of(503, StatusCode.ERROR)
-        );
+        return Stream.of(Arguments.of(100, StatusCode.UNSET), Arguments.of(200, StatusCode.UNSET),
+            Arguments.of(201, StatusCode.UNSET), Arguments.of(302, StatusCode.UNSET),
+            Arguments.of(307, StatusCode.UNSET), Arguments.of(400, StatusCode.ERROR),
+            Arguments.of(404, StatusCode.ERROR), Arguments.of(500, StatusCode.ERROR),
+            Arguments.of(503, StatusCode.ERROR));
     }
 
     private static class SimpleMockHttpClient implements HttpClient {
 
         @Override
         public Mono<HttpResponse> send(HttpRequest request) {
-            HttpHeaders headers = new HttpHeaders()
-                .set(X_MS_REQUEST_ID, X_MS_REQUEST_ID_1);
+            HttpHeaders headers = new HttpHeaders().set(X_MS_REQUEST_ID, X_MS_REQUEST_ID_1);
 
             // parent span
             SpanContext currentContext = Span.current().getSpanContext();
@@ -499,6 +486,7 @@ public class OpenTelemetryHttpPolicyTests {
     private class ThrowingHttpResponse extends MockHttpResponse {
         private final int throwAfterBytes;
         private final Throwable toThrow;
+
         ThrowingHttpResponse(HttpRequest request, int statusCode, int throwAfterBytes, Throwable toThrow) {
             super(request, statusCode, new byte[throwAfterBytes + 1]);
             this.throwAfterBytes = throwAfterBytes;
@@ -539,8 +527,7 @@ public class OpenTelemetryHttpPolicyTests {
 
         @Override
         public Mono<InputStream> getBodyAsInputStream() {
-            return BinaryData.fromFlux(getBody())
-                .map(data -> data.toStream());
+            return BinaryData.fromFlux(getBody()).map(data -> data.toStream());
         }
     }
 }

@@ -4,14 +4,17 @@
 
 package com.azure.resourcemanager.apicenter.generated;
 
-/** Samples for Services List. */
+/**
+ * Samples for Services List.
+ */
 public final class ServicesListSamples {
     /*
-     * x-ms-original-file: specification/apicenter/resource-manager/Microsoft.ApiCenter/preview/2023-07-01-preview/examples/Services_ListBySubscription.json
+     * x-ms-original-file: specification/apicenter/resource-manager/Microsoft.ApiCenter/stable/2024-03-01/examples/
+     * Services_ListBySubscription.json
      */
     /**
      * Sample code: Services_ListBySubscription.
-     *
+     * 
      * @param manager Entry point to ApiCenterManager.
      */
     public static void servicesListBySubscription(com.azure.resourcemanager.apicenter.ApiCenterManager manager) {
