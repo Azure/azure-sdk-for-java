@@ -238,6 +238,7 @@ public class IdentitySyncClient extends IdentityClientBase {
             ClaimsRequest customClaimRequest = CustomClaimRequest
                 .formatAsClaimsRequest(request.getClaims());
             parametersBuilder.claims(customClaimRequest);
+            parametersBuilder.forceRefresh(true);
         }
 
         if (account != null) {
