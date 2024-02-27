@@ -10,11 +10,9 @@ import com.azure.resourcemanager.storagecache.models.ResourceUsagesListResult;
 public final class ResourceUsagesListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceUsagesListResult model =
-            BinaryData
-                .fromString(
-                    "{\"nextLink\":\"conuqszfkbeype\",\"value\":[{\"limit\":1769488182,\"unit\":\"vvjektcxsenhwlrs\",\"currentValue\":1160903159,\"name\":{\"value\":\"wvlqdqgb\",\"localizedValue\":\"ylihkaetckt\"}},{\"limit\":1161915494,\"unit\":\"vf\",\"currentValue\":1439839130,\"name\":{\"value\":\"uctqhjfbe\",\"localizedValue\":\"jcxerfuwu\"}},{\"limit\":743526122,\"unit\":\"fvjrbirphxepcy\",\"currentValue\":1901169400,\"name\":{\"value\":\"ljkyqxjvuuj\",\"localizedValue\":\"idokgjlj\"}}]}")
-                .toObject(ResourceUsagesListResult.class);
+        ResourceUsagesListResult model = BinaryData.fromString(
+            "{\"nextLink\":\"rbirphxe\",\"value\":[{\"limit\":1012026798,\"unit\":\"fnljky\",\"currentValue\":197436298,\"name\":{\"value\":\"ujqgidok\",\"localizedValue\":\"ljyoxgvcltb\"}}]}")
+            .toObject(ResourceUsagesListResult.class);
     }
 
     @org.junit.jupiter.api.Test

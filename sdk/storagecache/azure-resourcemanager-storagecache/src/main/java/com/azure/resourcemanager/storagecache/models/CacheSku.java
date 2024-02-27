@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storagecache.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SKU for the cache. */
+/**
+ * SKU for the cache.
+ */
 @Fluent
 public final class CacheSku {
     /*
@@ -16,13 +18,15 @@ public final class CacheSku {
     @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of CacheSku class. */
+    /**
+     * Creates an instance of CacheSku class.
+     */
     public CacheSku() {
     }
 
     /**
      * Get the name property: SKU name for this cache.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -31,7 +35,7 @@ public final class CacheSku {
 
     /**
      * Set the name property: SKU name for this cache.
-     *
+     * 
      * @param name the name value to set.
      * @return the CacheSku object itself.
      */
@@ -42,7 +46,7 @@ public final class CacheSku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

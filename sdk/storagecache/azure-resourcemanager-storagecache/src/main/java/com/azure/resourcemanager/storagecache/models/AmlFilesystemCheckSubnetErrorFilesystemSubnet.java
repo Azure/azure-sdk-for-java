@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storagecache.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The error details for the AML file system's subnet. */
+/**
+ * The error details for the AML file system's subnet.
+ */
 @Fluent
 public final class AmlFilesystemCheckSubnetErrorFilesystemSubnet {
     /*
@@ -22,13 +24,15 @@ public final class AmlFilesystemCheckSubnetErrorFilesystemSubnet {
     @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of AmlFilesystemCheckSubnetErrorFilesystemSubnet class. */
+    /**
+     * Creates an instance of AmlFilesystemCheckSubnetErrorFilesystemSubnet class.
+     */
     public AmlFilesystemCheckSubnetErrorFilesystemSubnet() {
     }
 
     /**
      * Get the status property: The status of the AML file system subnet check.
-     *
+     * 
      * @return the status value.
      */
     public FilesystemSubnetStatusType status() {
@@ -37,7 +41,7 @@ public final class AmlFilesystemCheckSubnetErrorFilesystemSubnet {
 
     /**
      * Set the status property: The status of the AML file system subnet check.
-     *
+     * 
      * @param status the status value to set.
      * @return the AmlFilesystemCheckSubnetErrorFilesystemSubnet object itself.
      */
@@ -48,7 +52,7 @@ public final class AmlFilesystemCheckSubnetErrorFilesystemSubnet {
 
     /**
      * Get the message property: The details of the AML file system subnet check.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -57,7 +61,7 @@ public final class AmlFilesystemCheckSubnetErrorFilesystemSubnet {
 
     /**
      * Set the message property: The details of the AML file system subnet check.
-     *
+     * 
      * @param message the message value to set.
      * @return the AmlFilesystemCheckSubnetErrorFilesystemSubnet object itself.
      */
@@ -68,7 +72,7 @@ public final class AmlFilesystemCheckSubnetErrorFilesystemSubnet {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
