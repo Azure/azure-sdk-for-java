@@ -405,7 +405,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * Generates the redacted URL for logging.
      *
      * @param url URL where the request is being sent.
-     * 
+     *
      * @return A URL with query parameters redacted based on configurations in this policy.
      */
     private static String getRedactedUrl(URL url, Set<String> allowedQueryParameterNames) {
@@ -434,9 +434,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * Adds HTTP headers into the StringBuilder that is generating the log message.
      *
      * @param headers HTTP headers on the request or response.
-     * 
+     *
      * @param sb StringBuilder that is generating the log message.
-     * 
+     *
      * @param logLevel Log level the environment is configured to use.
      */
     private static void addHeadersToLogMessage(Set<String> allowedHeaderNames, HttpHeaders headers,
@@ -467,11 +467,11 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * <p>The body is pretty printed if the Content-Type is JSON and the policy is configured to pretty print JSON.</p>
      *
      * @param logger Logger used to log a warning if the body fails to pretty print as JSON.
-     * 
+     *
      * @param contentType Content-Type header.
-     * 
+     *
      * @param body Body of the request or response.
-     * 
+     *
      * @return The body pretty printed if it is JSON, otherwise the unmodified body.
      */
     private static String prettyPrintIfNeeded(ClientLogger logger, boolean prettyPrintBody, String contentType,
@@ -494,9 +494,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * Attempts to retrieve and parse the Content-Length header into a numeric representation.
      *
      * @param logger Logger used to log a warning if the Content-Length header is an invalid number.
-     * 
+     *
      * @param headers HTTP headers that are checked for containing Content-Length.
-     * 
+     *
      * @return
      */
     private static long getContentLength(ClientLogger logger, HttpHeaders headers) {
@@ -524,9 +524,9 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * isn't empty and is less than 16KB in size.</p>
      *
      * @param contentTypeHeader Content-Type header value.
-     * 
+     *
      * @param contentLength Content-Length header represented as a numeric.
-     * 
+     *
      * @return A flag indicating if the request or response body should be logged.
      */
     private static boolean shouldBodyBeLogged(String contentTypeHeader, long contentLength) {
@@ -561,7 +561,10 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * Get or create the ClientLogger for the method having its request and response logged.
      */
     private static ClientLogger getOrCreateMethodLogger(Context context) {
-        ClientLogger logger = (ClientLogger) context.getData("caller-logger").orElse(null);
+        // caller-method-logger is a new way to handle this where the caller passes a full-fledged ClientLogger through
+        // Context rather than the name of the logger. This way HttpLoggingPolicy doesn't need to keep track of
+        // ClientLogger instances.
+        ClientLogger logger = (ClientLogger) context.getData("caller-method-logger").orElse(null);
         if (logger != null) {
             return logger;
         }

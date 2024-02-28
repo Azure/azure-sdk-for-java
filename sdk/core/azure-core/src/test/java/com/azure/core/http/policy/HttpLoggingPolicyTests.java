@@ -545,7 +545,7 @@ public class HttpLoggingPolicyTests {
     private Context getCallerMethodContext(String testMethodName, LogLevel logLevel) {
         Logger logger = new DefaultLogger(HttpLoggingPolicyTests.class.getName() + "." + testMethodName,
             new PrintStream(logCaptureStream), logLevel);
-        return new Context("caller-logger", ClientLoggerAccessHelper.createClientLogger(logger, null));
+        return new Context("caller-method-logger", ClientLoggerAccessHelper.createClientLogger(logger, null));
     }
 
     private static String convertOutputStreamToString(AccessibleByteArrayOutputStream stream) {
