@@ -26,5 +26,5 @@ steps:
 
   - publish: $(Build.ArtifactStagingDirectory)/${{ parameters.TestLogsArtifactName }}.zip
     displayName: 'Publish test logs'
-    artifact: ${{ parameters.TestLogsArtifactName }}-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
+    artifact: Test-Logs/${{ parameters.TestLogsArtifactName }}-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)
     condition: eq(variables['HAS_TEST_LOGS'], 'true')
