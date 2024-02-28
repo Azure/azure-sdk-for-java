@@ -7,11 +7,13 @@ package com.azure.resourcemanager.storagecache.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Information about the AML file system archive. */
+/**
+ * Information about the AML file system archive.
+ */
 @Immutable
 public final class AmlFilesystemArchive {
     /*
-     * Lustre file system path to archive relative to the file system root.  Specify '/' to archive all modified data.
+     * Lustre file system path to archive relative to the file system root. Specify '/' to archive all modified data.
      */
     @JsonProperty(value = "filesystemPath", access = JsonProperty.Access.WRITE_ONLY)
     private String filesystemPath;
@@ -22,14 +24,16 @@ public final class AmlFilesystemArchive {
     @JsonProperty(value = "status", access = JsonProperty.Access.WRITE_ONLY)
     private AmlFilesystemArchiveStatus status;
 
-    /** Creates an instance of AmlFilesystemArchive class. */
+    /**
+     * Creates an instance of AmlFilesystemArchive class.
+     */
     public AmlFilesystemArchive() {
     }
 
     /**
-     * Get the filesystemPath property: Lustre file system path to archive relative to the file system root. Specify '/'
-     * to archive all modified data.
-     *
+     * Get the filesystemPath property: Lustre file system path to archive relative to the file system root. Specify
+     * '/' to archive all modified data.
+     * 
      * @return the filesystemPath value.
      */
     public String filesystemPath() {
@@ -38,7 +42,7 @@ public final class AmlFilesystemArchive {
 
     /**
      * Get the status property: The status of the archive.
-     *
+     * 
      * @return the status value.
      */
     public AmlFilesystemArchiveStatus status() {
@@ -47,7 +51,7 @@ public final class AmlFilesystemArchive {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

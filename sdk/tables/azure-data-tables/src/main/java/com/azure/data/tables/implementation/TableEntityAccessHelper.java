@@ -5,6 +5,8 @@ package com.azure.data.tables.implementation;
 
 import com.azure.data.tables.models.TableEntity;
 
+import java.time.OffsetDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -37,6 +39,17 @@ public final class TableEntityAccessHelper {
         }
 
         assert creator != null;
+        Object timestamp = properties.get(TablesConstants.TIMESTAMP_KEY);
+        if (timestamp instanceof String) {
+            try {
+                properties.put(TablesConstants.TIMESTAMP_KEY, OffsetDateTime.parse((String) timestamp));
+            } catch (DateTimeParseException ex) {
+                // Attempt to convert the Timestamp String into an OffsetDateTime.
+                // Previously Jackson did this by default but azure-json treats JSON more simplistically and will return
+                // a String as there is nothing in Map to indicate a String should be an OffsetDateTime.
+            }
+        }
+
         return creator.get().setProperties(properties);
     }
 

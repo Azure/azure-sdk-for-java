@@ -18,42 +18,42 @@ public final class ElasticsearchIndexFieldMappingOptions {
      * The name of the index field to use as a title.
      */
     @Generated
-    @JsonProperty(value = "titleField")
+    @JsonProperty(value = "title_field")
     private String titleField;
 
     /*
      * The name of the index field to use as a URL.
      */
     @Generated
-    @JsonProperty(value = "urlField")
+    @JsonProperty(value = "url_field")
     private String urlField;
 
     /*
      * The name of the index field to use as a filepath.
      */
     @Generated
-    @JsonProperty(value = "filepathField")
+    @JsonProperty(value = "filepath_field")
     private String filepathField;
 
     /*
      * The names of index fields that should be treated as content.
      */
     @Generated
-    @JsonProperty(value = "contentFields")
+    @JsonProperty(value = "content_fields")
     private List<String> contentFields;
 
     /*
      * The separator pattern that content fields should use.
      */
     @Generated
-    @JsonProperty(value = "contentFieldsSeparator")
+    @JsonProperty(value = "content_fields_separator")
     private String contentFieldsSeparator;
 
     /*
      * The names of fields that represent vector data.
      */
     @Generated
-    @JsonProperty(value = "vectorFields")
+    @JsonProperty(value = "vector_fields")
     private List<String> vectorFields;
 
     /**

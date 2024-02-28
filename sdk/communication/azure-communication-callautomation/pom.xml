@@ -151,7 +151,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-communication-phonenumbers</artifactId>
-      <version>1.1.9</version><!-- {x-version-update;com.azure:azure-communication-phonenumbers;dependency} -->
+      <version>1.1.10</version><!-- {x-version-update;com.azure:azure-communication-phonenumbers;dependency} -->
       <scope>test</scope>
     </dependency>
     <dependency>

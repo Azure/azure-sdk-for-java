@@ -16,7 +16,23 @@ import java.util.Objects;
 import java.util.Optional;
 
 /**
- * Represents a JSON Patch operation.
+ * <p>Represents a JSON Patch operation.</p>
+ *
+ * <p>This class encapsulates a single operation in a JSON Patch document. Each operation is defined by its kind
+ * (add, replace, remove, etc.), a path pointing to the location within the target JSON document, an optional
+ * 'from' path for copy and move operations, and an optional value.</p>
+ *
+ * <p>This class also provides a {@link #toJson(JsonWriter)} method to serialize the JSON Patch operation to JSON,
+ * and a {@link #fromJson(JsonReader)} method to deserialize a JSON Patch operation from JSON.</p>
+ *
+ * <p>This class is useful when you want to create a JSON Patch operation to be included in a JSON Patch document.
+ * For example, you can use it to represent an operation that adds a new property to a JSON object, replaces the
+ * value of a property, or removes a property.</p>
+ *
+ * @see JsonPatchOperationKind
+ * @see JsonSerializable
+ * @see JsonWriter
+ * @see JsonReader
  */
 @Immutable
 @JsonSerialize(using = JsonPatchOperationSerializer.class)

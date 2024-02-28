@@ -626,6 +626,32 @@ public final class CoreUtils {
             }
         });
 
+        CoreUtils.addShutdownHookSafely(shutdownThread);
+
+        return executorService;
+    }
+
+    /**
+     * Helper method that safely adds a {@link Runtime#addShutdownHook(Thread)} to the JVM that will run when the JVM is
+     * shutting down.
+     * <p>
+     * {@link Runtime#addShutdownHook(Thread)} checks for security privileges and will throw an exception if the proper
+     * security isn't available. So, if running with a security manager, setting
+     * {@code AZURE_ENABLE_SHUTDOWN_HOOK_WITH_PRIVILEGE} to true will have this method use access controller to add
+     * the shutdown hook with privileged permissions.
+     * <p>
+     * If {@code shutdownThread} is null, no shutdown hook will be added and this method will return null.
+     *
+     * @param shutdownThread The {@link Thread} that will be added as a
+     * {@link Runtime#addShutdownHook(Thread) shutdown hook}.
+     * @return The {@link Thread} that was passed in.
+     */
+    @SuppressWarnings({ "deprecation", "removal" })
+    public static Thread addShutdownHookSafely(Thread shutdownThread) {
+        if (shutdownThread == null) {
+            return null;
+        }
+
         if (ShutdownHookAccessHelperHolder.shutdownHookAccessHelper) {
             java.security.AccessController.doPrivileged((java.security.PrivilegedAction<Void>) () -> {
                 Runtime.getRuntime().addShutdownHook(shutdownThread);
@@ -635,7 +661,7 @@ public final class CoreUtils {
             Runtime.getRuntime().addShutdownHook(shutdownThread);
         }
 
-        return executorService;
+        return shutdownThread;
     }
 
     /**

@@ -44,6 +44,7 @@
       --add-opens com.azure.analytics.purview.sharing/com.azure.analytics.purview.sharing.models=com.fasterxml.jackson.databind
       --add-opens com.azure.analytics.purview.sharing/com.azure.analytics.purview.sharing.models=com.azure.core
     </javaModulesSurefireArgLine>
+    <jacoco.skip>true</jacoco.skip> <!-- All tests are disabled -->
   </properties>
   <dependencies>
     <dependency>

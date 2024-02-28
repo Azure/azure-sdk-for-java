@@ -115,8 +115,8 @@ org.slf4j:slf4j-api;1.7.36
 org.slf4j:slf4j-nop;1.7.36
 org.slf4j:slf4j-simple;1.7.36
 redis.clients:jedis;4.3.2
-io.lettuce:lettuce-core;6.3.0.RELEASE
-org.redisson:redisson;3.17.0
+io.lettuce:lettuce-core;6.3.1.RELEASE
+org.redisson:redisson;3.27.0
 net.bytebuddy:byte-buddy;1.14.10
 net.bytebuddy:byte-buddy-agent;1.14.10
 testdep_net.bytebuddy:byte-buddy;1.14.8
@@ -292,10 +292,10 @@ org.apache.maven.plugins:maven-antrun-plugin;3.1.0
 org.apache.maven.plugins:maven-assembly-plugin;3.6.0
 org.apache.maven.plugins:maven-checkstyle-plugin;3.3.1
 org.apache.maven.plugins:maven-clean-plugin;3.3.2
-org.apache.maven.plugins:maven-compiler-plugin;3.11.0
+org.apache.maven.plugins:maven-compiler-plugin;3.12.1
 org.apache.maven.plugins:maven-eclipse-plugin;2.8
 org.apache.maven.plugins:maven-enforcer-plugin;3.4.1
-org.apache.maven.plugins:maven-failsafe-plugin;3.1.2
+org.apache.maven.plugins:maven-failsafe-plugin;3.2.5
 org.apache.maven.plugins:maven-help-plugin;3.4.0
 org.apache.maven.plugins:maven-install-plugin;3.1.1
 org.apache.maven.plugins:maven-jar-plugin;3.3.0
@@ -308,7 +308,7 @@ org.apache.maven.plugins:maven-resources-plugin;3.3.1
 org.apache.maven.plugins:maven-shade-plugin;3.5.1
 org.apache.maven.plugins:maven-site-plugin;3.7.1
 org.apache.maven.plugins:maven-source-plugin;3.3.0
-org.apache.maven.plugins:maven-surefire-plugin;3.1.2
+org.apache.maven.plugins:maven-surefire-plugin;3.2.5
 org.codehaus.mojo:animal-sniffer-maven-plugin;1.23
 org.codehaus.mojo:build-helper-maven-plugin;3.4.0
 org.codehaus.mojo:cobertura-maven-plugin;2.7
@@ -394,6 +394,7 @@ cosmos_org.scalastyle:scalastyle-maven-plugin;1.0.0
 # Cosmos Kafka connector runtime dependencies
 cosmos_org.apache.kafka:connect-api;3.6.0
 # Cosmos Kafka connector tests only
+cosmos_org.apache.kafka:connect-runtime;3.6.0
 # Maven Tools for Cosmos Kafka connector only
 cosmos_io.confluent:kafka-connect-maven-plugin;0.12.0
 

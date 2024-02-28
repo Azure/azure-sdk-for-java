@@ -11,11 +11,11 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * A specific representation of configurable options for Elasticsearch when using it as an Azure OpenAI chat
+ * A specific representation of configurable options for Azure Cosmos DB when using it as an Azure OpenAI chat
  * extension.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("AzureCosmosDB")
+@JsonTypeName("azure_cosmos_db")
 @Immutable
 public final class AzureCosmosDBChatExtensionConfiguration extends AzureChatExtensionConfiguration {
 
