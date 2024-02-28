@@ -76,6 +76,7 @@ public class PhoneNumbersClientBuilderTest {
         validateCustomPipeline(spyHelper, httpPipeline);
     }
 
+    
     @Test()
     public void buildClientWithLogOptions() {
         ClientBuilderSpyHelper spyHelper = new ClientBuilderSpyHelper(this.clientBuilder);
