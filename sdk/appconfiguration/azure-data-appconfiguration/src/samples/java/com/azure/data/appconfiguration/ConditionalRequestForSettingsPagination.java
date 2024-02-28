@@ -11,10 +11,19 @@ import com.azure.data.appconfiguration.models.SettingSelector;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
 /**
- * Sample demonstrates how to use pa.
+ * Sample demonstrates how to list configuration settings by conditional request.
+ * If the ETag of the given setting matches the one in the service, then 304 status code (not modified) with null value
+ * returned in the response. Otherwise, a setting with new ETag returned, which is the latest setting retrieved from
+ * the service.
  */
 public class ConditionalRequestForSettingsPagination {
+    /**
+     * Runs the sample algorithm and demonstrates how to list configuration settings by conditional request.
+     *
+     * @param args Unused. Arguments to the program.
+     */
     public static void main(String[] args) {
         // The connection string value can be obtained by going to your App Configuration instance in the Azure portal
         // and navigating to the "Access Keys" page under the "Settings" section.
@@ -25,10 +34,10 @@ public class ConditionalRequestForSettingsPagination {
                 .connectionString(connectionString)
                 .buildClient();
 
-        // list all settings and get their etags
+        // list all settings and get their page ETags
         List<MatchConditions> matchConditionsList = client.listConfigurationSettings(null)
                 .streamByPage()
-                .collect(Collectors.toList())
+                .toList()
                 .stream()
                 .map(pagedResponse -> new MatchConditions().setIfNoneMatch(pagedResponse.getHeaders().getValue("Etag")))
                 .collect(Collectors.toList());
@@ -42,13 +51,13 @@ public class ConditionalRequestForSettingsPagination {
             if (statusCode == 304) {
                 System.out.println("Settings have not changed. ");
                 String continuationToken = pagedResponse.getContinuationToken();
-                String etag = pagedResponse.getHeaders().getValue("ETag");
                 System.out.println("Continuation Token: " + continuationToken);
-                System.out.println("ETag: " + etag);
+                return;
             }
 
-            System.out.println("Settings:");
-            pagedResponse.getElements().forEach(setting -> {
+            System.out.println("At least one setting in the page has changes. Listing all settings in the page:");
+            System.out.println("new page ETag: " + pagedResponse.getHeaders().getValue("ETag"));
+            pagedResponse.getValue().forEach(setting -> {
                 System.out.println("Key: " + setting.getKey() + ", Value: " + setting.getValue());
             });
         });

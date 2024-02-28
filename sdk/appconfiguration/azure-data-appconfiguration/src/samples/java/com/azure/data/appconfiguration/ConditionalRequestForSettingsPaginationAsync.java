@@ -13,10 +13,17 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * Sample demonstrates how to list configuration settings by conditional request asynchronously.
+ * If the ETag of the given setting matches the one in the service, then 304 status code (not modified) with null value
+ * returned in the response. Otherwise, a setting with new ETag returned, which is the latest setting retrieved from
+ * the service.
+ */
 public class ConditionalRequestForSettingsPaginationAsync {
     /**
-     * Runs the sample algorithm and demonstrates how to add, get, and delete a configuration setting by conditional
-     * request asynchronously
+     * Runs the sample algorithm and demonstrates how to list configuration settings by conditional request
+     * asynchronously.
+     *
      * @param args Unused. Arguments to the program.
      * @throws InterruptedException when a thread is waiting, sleeping, or otherwise occupied,
      * and the thread is interrupted, either before or during the activity.
@@ -31,7 +38,7 @@ public class ConditionalRequestForSettingsPaginationAsync {
 
         List<MatchConditions> matchConditionsList = new ArrayList<>();
 
-        // list all settings and get their etags
+        // list all settings and get their page ETags
         client.listConfigurationSettings(null)
                 .byPage()
                 .subscribe(pagedResponse -> {
@@ -47,14 +54,13 @@ public class ConditionalRequestForSettingsPaginationAsync {
             if (statusCode == 304) {
                 System.out.println("Settings have not changed. ");
                 String continuationToken = pagedResponse.getContinuationToken();
-                String etag = pagedResponse.getHeaders().getValue("ETag");
                 System.out.println("Continuation Token: " + continuationToken);
-                System.out.println("ETag: " + etag);
                 return;
             }
 
-            System.out.println("Settings:");
-            pagedResponse.getElements().forEach(setting -> {
+            System.out.println("At least one setting in the page has changes. Listing all settings in the page:");
+            System.out.println("new page ETag: " + pagedResponse.getHeaders().getValue("ETag"));
+            pagedResponse.getValue().forEach(setting -> {
                 System.out.println("Key: " + setting.getKey() + ", Value: " + setting.getValue());
             });
         });
