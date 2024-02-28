@@ -250,37 +250,76 @@ directive:
     from: swagger-document
     where: $.definitions.PhoneNumberSearchResult.properties.error.x-ms-enum
     transform: >
-        $["name"] = "PhoneNumberSearchResultError";
+      $["properties"]["localizedName"].readOnly = true;
+      $["properties"]["countryCode"].readOnly = true;
 ```
 
+### Add readonly attribute to OperatorDetails properties
 ```yaml
 directive:
-    from: swagger-document
-    where: $.parameters.Endpoint
+  - from: swagger-document
+    where: $.definitions.OperatorDetails
     transform: >
-        $["format"] = "";
+      $["properties"]["name"].readOnly = true;
+      $["properties"]["mobileNetworkCode"].readOnly = true;
+      $["properties"]["mobileCountryCode"].readOnly = true;
+```
+
+### Add readonly attribute to OperatorInformation properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.OperatorInformation
+    transform: >
+      $["properties"]["phoneNumber"].readOnly = true;
+      $["properties"]["numberType"].readOnly = true;
+      $["properties"]["isoCountryCode"].readOnly = true;
+      $["properties"]["operatorDetails"].readOnly = true;
+```
+
+### Add readonly attribute to OperatorInformationResult properties
+```yaml
+directive:
+  - from: swagger-document
+    where: $.definitions.OperatorInformationResult
+    transform: >
+      $["properties"]["values"].readOnly = true;
+```
+
+``` yaml
+directive:
+  from: swagger-document
+  where: $.definitions.PhoneNumberSearchResult.properties.error.x-ms-enum
+  transform: >
+    $["name"] = "PhoneNumberSearchResultError";
+```
+
+``` yaml
+directive:
+  from: swagger-document
+  where: $.parameters.Endpoint
+  transform: >
+    $["format"] = "";
 ```
 
 ### Removed Property phoneNumberSource from PurchasedPhoneNumber
-
-```yaml
+``` yaml
 directive:
-    where-model: PurchasedPhoneNumber
-    remove-property: phoneNumberSource
+  where-model: PurchasedPhoneNumber
+  remove-property: phoneNumberSource
 ```
 
 # Removed Models
-
-```yaml
+``` yaml
 directive:
-    - remove-operation-match: /.*Reservation.*/i
-    - remove-operation: PhoneNumbers_BrowseAvailableNumbers
-    - remove-model: PhoneNumbersReservation
-    - remove-model: PhoneNumbersReservations
-    - remove-model: PhoneNumbersBrowseRequest
-    - remove-model: PhoneNumbersBrowseResult
-    - remove-model: PhoneNumberBrowseCapabilitiesRequest
-    - remove-model: PhoneNumbersReservationPurchaseRequest
-    - remove-model: AvailablePhoneNumber
-    - remove-model: AvailablePhoneNumberCost
+  - remove-operation-match: /.*Reservation.*/i
+  - remove-operation: PhoneNumbers_BrowseAvailableNumbers
+  - remove-model: PhoneNumbersReservation
+  - remove-model: PhoneNumbersReservations
+  - remove-model: PhoneNumbersBrowseRequest
+  - remove-model: PhoneNumbersBrowseResult
+  - remove-model: PhoneNumberBrowseCapabilitiesRequest
+  - remove-model: PhoneNumbersReservationPurchaseRequest
+  - remove-model: AvailablePhoneNumber
+  - remove-model: AvailablePhoneNumberCost
 ```
