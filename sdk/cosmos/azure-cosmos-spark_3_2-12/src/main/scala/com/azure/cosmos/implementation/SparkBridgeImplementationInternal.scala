@@ -365,7 +365,7 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
       "\"timeoutDetectionTimeLimit\": \"PT600S\", \"timeoutDetectionHighFrequencyThreshold\": 100," +
       "\"timeoutDetectionHighFrequencyTimeLimit\": \"PT30S\", \"timeoutDetectionOnWriteThreshold\": 10," +
       "\"timeoutDetectionOnWriteTimeLimit\": \"PT600s\", \"tcpNetworkRequestTimeout\": \"PT10S\", " +
-      "\"connectTimeout\": \"PT30S\", \"connectionAcquisitionTimeout\": \"PT30S\"}"
+      "\"connectTimeout\": \"PT30S\"}"
 
     if (System.getProperty("reactor.netty.tcp.sslHandshakeTimeout") == null) {
       System.setProperty("reactor.netty.tcp.sslHandshakeTimeout", "45000");

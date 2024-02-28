@@ -95,16 +95,13 @@ public class GeoCollectionTests {
             Arguments.of(collection, 1, false),
 
             // Other is itself.
-            Arguments.of(collection, collection, true),
-            Arguments.of(collection1, collection1, true),
+            Arguments.of(collection, collection, true), Arguments.of(collection1, collection1, true),
 
             // Other is a different value.
-            Arguments.of(collection, collection1, false),
-            Arguments.of(collection1, collection, false),
+            Arguments.of(collection, collection1, false), Arguments.of(collection1, collection, false),
 
             // Other is the same value.
             Arguments.of(collection, new GeoCollection(geometries), true),
-            Arguments.of(collection1, new GeoCollection(geometries1, boundingBox, properties), true)
-        );
+            Arguments.of(collection1, new GeoCollection(geometries1, boundingBox, properties), true));
     }
 }

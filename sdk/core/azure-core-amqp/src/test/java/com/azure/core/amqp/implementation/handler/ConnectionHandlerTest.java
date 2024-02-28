@@ -64,11 +64,9 @@ public class ConnectionHandlerTest {
     private static final String HOSTNAME = "hostname-random";
     private static final String CLIENT_PRODUCT = "test";
     private static final String CLIENT_VERSION = "1.0.0-test";
-    private static final List<Header> HEADER_LIST = Collections.singletonList(
-        new Header("foo-bar", "some-values"));
-    private static final ClientOptions CLIENT_OPTIONS = new ClientOptions()
-        .setApplicationId(APPLICATION_ID)
-        .setHeaders(HEADER_LIST);
+    private static final List<Header> HEADER_LIST = Collections.singletonList(new Header("foo-bar", "some-values"));
+    private static final ClientOptions CLIENT_OPTIONS
+        = new ClientOptions().setApplicationId(APPLICATION_ID).setHeaders(HEADER_LIST);
 
     private static final SslDomain.VerifyMode VERIFY_MODE = SslDomain.VerifyMode.VERIFY_PEER_NAME;
 
@@ -89,10 +87,10 @@ public class ConnectionHandlerTest {
     public void setup() {
         mocksCloseable = MockitoAnnotations.openMocks(this);
 
-        this.connectionOptions = new ConnectionOptions(HOSTNAME, tokenCredential,
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "authorization-scope",
-            AmqpTransportType.AMQP, new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler, CLIENT_OPTIONS,
-            VERIFY_MODE, CLIENT_PRODUCT, CLIENT_VERSION);
+        this.connectionOptions
+            = new ConnectionOptions(HOSTNAME, tokenCredential, CbsAuthorizationType.SHARED_ACCESS_SIGNATURE,
+                "authorization-scope", AmqpTransportType.AMQP, new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS,
+                scheduler, CLIENT_OPTIONS, VERIFY_MODE, CLIENT_PRODUCT, CLIENT_VERSION);
         this.handler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, AmqpMetricsProvider.noop());
     }
 
@@ -111,25 +109,28 @@ public class ConnectionHandlerTest {
 
     @Test
     void constructorNull() {
-        assertThrows(NullPointerException.class, () -> new ConnectionHandler(null, connectionOptions, peerDetails, AmqpMetricsProvider.noop()));
-        assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, null, peerDetails, AmqpMetricsProvider.noop()));
-        assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, connectionOptions, null, AmqpMetricsProvider.noop()));
-        assertThrows(NullPointerException.class, () -> new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, null));
+        assertThrows(NullPointerException.class,
+            () -> new ConnectionHandler(null, connectionOptions, peerDetails, AmqpMetricsProvider.noop()));
+        assertThrows(NullPointerException.class,
+            () -> new ConnectionHandler(CONNECTION_ID, null, peerDetails, AmqpMetricsProvider.noop()));
+        assertThrows(NullPointerException.class,
+            () -> new ConnectionHandler(CONNECTION_ID, connectionOptions, null, AmqpMetricsProvider.noop()));
+        assertThrows(NullPointerException.class,
+            () -> new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, null));
     }
 
     @Test
     void applicationIdNotSet() {
         // Arrange
-        final ClientOptions clientOptions = new ClientOptions()
-            .setHeaders(HEADER_LIST);
+        final ClientOptions clientOptions = new ClientOptions().setHeaders(HEADER_LIST);
         final String expected = UserAgentUtil.toUserAgentString(null, CLIENT_PRODUCT, CLIENT_VERSION, null);
         final ConnectionOptions options = new ConnectionOptions(HOSTNAME, tokenCredential,
-            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "scope", AmqpTransportType.AMQP,
-            new AmqpRetryOptions(), ProxyOptions.SYSTEM_DEFAULTS, scheduler, clientOptions, VERIFY_MODE, CLIENT_PRODUCT,
-            CLIENT_VERSION);
+            CbsAuthorizationType.SHARED_ACCESS_SIGNATURE, "scope", AmqpTransportType.AMQP, new AmqpRetryOptions(),
+            ProxyOptions.SYSTEM_DEFAULTS, scheduler, clientOptions, VERIFY_MODE, CLIENT_PRODUCT, CLIENT_VERSION);
 
         // Act
-        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, options, peerDetails, AmqpMetricsProvider.noop());
+        final ConnectionHandler handler
+            = new ConnectionHandler(CONNECTION_ID, options, peerDetails, AmqpMetricsProvider.noop());
 
         // Assert
         final String userAgent = (String) handler.getConnectionProperties().get(USER_AGENT.toString());
@@ -139,11 +140,12 @@ public class ConnectionHandlerTest {
     @Test
     void applicationIdSet() {
         // Arrange
-        final String expected = UserAgentUtil.toUserAgentString(CLIENT_OPTIONS.getApplicationId(), CLIENT_PRODUCT,
-            CLIENT_VERSION, null);
+        final String expected
+            = UserAgentUtil.toUserAgentString(CLIENT_OPTIONS.getApplicationId(), CLIENT_PRODUCT, CLIENT_VERSION, null);
 
         // Act
-        final ConnectionHandler handler = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, AmqpMetricsProvider.noop());
+        final ConnectionHandler handler
+            = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails, AmqpMetricsProvider.noop());
 
         // Assert
         final String userAgent = (String) handler.getConnectionProperties().get(USER_AGENT.toString());
@@ -181,7 +183,8 @@ public class ConnectionHandlerTest {
 
         final String actualUserAgent = (String) properties.get(USER_AGENT.toString());
         assertNotNull(actualUserAgent);
-        assertEquals(0, actualUserAgent.indexOf(APPLICATION_ID), "Expected the APPLICATION_ID to be present in USER_AGENT.");
+        assertEquals(0, actualUserAgent.indexOf(APPLICATION_ID),
+            "Expected the APPLICATION_ID to be present in USER_AGENT.");
     }
 
     @Test
@@ -241,7 +244,8 @@ public class ConnectionHandlerTest {
     @Test
     void onConnectionCloseMetrics() {
         // Arrange
-        final ErrorCondition errorCondition = new ErrorCondition(Symbol.valueOf(AmqpErrorCode.SERVER_BUSY_ERROR.toString()), "");
+        final ErrorCondition errorCondition
+            = new ErrorCondition(Symbol.valueOf(AmqpErrorCode.SERVER_BUSY_ERROR.toString()), "");
         Event openEvent = mock(Event.class);
         Event closeEventWithError = mock(Event.class);
         Event closeEventNoError = mock(Event.class);
@@ -261,8 +265,8 @@ public class ConnectionHandlerTest {
         when(connectionNoError.getRemoteState()).thenReturn(EndpointState.ACTIVE);
 
         TestMeter meter = new TestMeter();
-        ConnectionHandler handlerWithMetrics = new ConnectionHandler(CONNECTION_ID, connectionOptions,
-            peerDetails, new AmqpMetricsProvider(meter, HOSTNAME, null));
+        ConnectionHandler handlerWithMetrics = new ConnectionHandler(CONNECTION_ID, connectionOptions, peerDetails,
+            new AmqpMetricsProvider(meter, HOSTNAME, null));
 
         handlerWithMetrics.onConnectionInit(openEvent);
         handlerWithMetrics.onConnectionInit(openEvent);
@@ -270,14 +274,16 @@ public class ConnectionHandlerTest {
         handlerWithMetrics.onConnectionFinal(closeEventNoError);
 
         // Assert
-        List<TestMeasurement<Long>> closedConnections = meter.getCounters().get("messaging.az.amqp.client.connections.closed").getMeasurements();
+        List<TestMeasurement<Long>> closedConnections
+            = meter.getCounters().get("messaging.az.amqp.client.connections.closed").getMeasurements();
         assertEquals(2, closedConnections.size());
 
         assertEquals(1, closedConnections.get(0).getValue());
         assertEquals(1, closedConnections.get(1).getValue());
 
         assertEquals(HOSTNAME, closedConnections.get(0).getAttributes().get(ClientConstants.HOSTNAME_KEY));
-        assertEquals("com.microsoft:server-busy", closedConnections.get(0).getAttributes().get(ClientConstants.ERROR_CONDITION_KEY));
+        assertEquals("com.microsoft:server-busy",
+            closedConnections.get(0).getAttributes().get(ClientConstants.ERROR_CONDITION_KEY));
         assertEquals("ok", closedConnections.get(1).getAttributes().get(ClientConstants.ERROR_CONDITION_KEY));
     }
 }

@@ -16,8 +16,10 @@ public class TypeReferenceTests {
 
     @Test
     public void createGenericTypeReference() {
-        final TypeReference<HashMap<String, Object>> typeReference = new TypeReference<HashMap<String, Object>>() { };
-        final Map<String, Object> expectedJavaType = new HashMap<String, Object>() { };
+        final TypeReference<HashMap<String, Object>> typeReference = new TypeReference<HashMap<String, Object>>() {
+        };
+        final Map<String, Object> expectedJavaType = new HashMap<String, Object>() {
+        };
         assertEquals(expectedJavaType.getClass().getGenericSuperclass(), typeReference.getJavaType());
         assertEquals(HashMap.class, typeReference.getJavaClass());
     }
@@ -32,8 +34,8 @@ public class TypeReferenceTests {
     @SuppressWarnings("rawtypes")
     @Test
     public void createTypeReferenceWithoutType() {
-        IllegalArgumentException thrown
-            = assertThrows(IllegalArgumentException.class, () -> new TypeReference() { });
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> new TypeReference() {
+        });
         assertEquals("Type constructed without type information.", thrown.getMessage());
     }
 }

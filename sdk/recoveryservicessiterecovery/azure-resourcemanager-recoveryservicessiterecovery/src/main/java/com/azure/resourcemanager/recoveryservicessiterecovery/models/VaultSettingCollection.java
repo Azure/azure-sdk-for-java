@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.Vaul
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Vault setting collection. */
+/**
+ * Vault setting collection.
+ */
 @Fluent
 public final class VaultSettingCollection {
     /*
@@ -24,13 +26,15 @@ public final class VaultSettingCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of VaultSettingCollection class. */
+    /**
+     * Creates an instance of VaultSettingCollection class.
+     */
     public VaultSettingCollection() {
     }
 
     /**
      * Get the value property: The list of vault setting.
-     *
+     * 
      * @return the value value.
      */
     public List<VaultSettingInner> value() {
@@ -39,7 +43,7 @@ public final class VaultSettingCollection {
 
     /**
      * Set the value property: The list of vault setting.
-     *
+     * 
      * @param value the value value to set.
      * @return the VaultSettingCollection object itself.
      */
@@ -50,7 +54,7 @@ public final class VaultSettingCollection {
 
     /**
      * Get the nextLink property: The value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class VaultSettingCollection {
 
     /**
      * Set the nextLink property: The value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the VaultSettingCollection object itself.
      */
@@ -70,7 +74,7 @@ public final class VaultSettingCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

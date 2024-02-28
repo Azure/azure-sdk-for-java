@@ -9,23 +9,27 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Resync provider specific input. */
+/**
+ * Resync provider specific input.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
     property = "instanceType",
     defaultImpl = ResyncProviderSpecificInput.class)
 @JsonTypeName("ResyncProviderSpecificInput")
-@JsonSubTypes({@JsonSubTypes.Type(name = "VMwareCbt", value = VMwareCbtResyncInput.class)})
+@JsonSubTypes({ @JsonSubTypes.Type(name = "VMwareCbt", value = VMwareCbtResyncInput.class) })
 @Immutable
 public class ResyncProviderSpecificInput {
-    /** Creates an instance of ResyncProviderSpecificInput class. */
+    /**
+     * Creates an instance of ResyncProviderSpecificInput class.
+     */
     public ResyncProviderSpecificInput() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

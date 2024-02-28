@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.Prot
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Protectable item collection. */
+/**
+ * Protectable item collection.
+ */
 @Fluent
 public final class ProtectableItemCollection {
     /*
@@ -24,13 +26,15 @@ public final class ProtectableItemCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ProtectableItemCollection class. */
+    /**
+     * Creates an instance of ProtectableItemCollection class.
+     */
     public ProtectableItemCollection() {
     }
 
     /**
      * Get the value property: The Protectable item details.
-     *
+     * 
      * @return the value value.
      */
     public List<ProtectableItemInner> value() {
@@ -39,7 +43,7 @@ public final class ProtectableItemCollection {
 
     /**
      * Set the value property: The Protectable item details.
-     *
+     * 
      * @param value the value value to set.
      * @return the ProtectableItemCollection object itself.
      */
@@ -50,7 +54,7 @@ public final class ProtectableItemCollection {
 
     /**
      * Get the nextLink property: The value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ProtectableItemCollection {
 
     /**
      * Set the nextLink property: The value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ProtectableItemCollection object itself.
      */
@@ -70,7 +74,7 @@ public final class ProtectableItemCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -69,14 +69,14 @@ public class LocalTestServer {
         sslContextFactory.setKeyStorePath(mockKeyStore);
         sslContextFactory.setTrustStorePassword("password");
         sslContextFactory.setTrustAll(true);
-        SslConnectionFactory sslConnectionFactory = new SslConnectionFactory(sslContextFactory,
-            httpConnectionFactory.getProtocol());
+        SslConnectionFactory sslConnectionFactory
+            = new SslConnectionFactory(sslContextFactory, httpConnectionFactory.getProtocol());
 
         HttpConfiguration httpConfiguration = new HttpConfiguration();
         httpConfiguration.addCustomizer(new SecureRequestCustomizer());
 
-        this.httpsConnector = new ServerConnector(server, sslConnectionFactory,
-            new HttpConnectionFactory(httpConfiguration));
+        this.httpsConnector
+            = new ServerConnector(server, sslConnectionFactory, new HttpConnectionFactory(httpConfiguration));
         this.httpsConnector.setHost("localhost");
 
         server.addConnector(this.httpsConnector);
@@ -97,8 +97,7 @@ public class LocalTestServer {
         }
 
         @Override
-        protected void service(HttpServletRequest req, HttpServletResponse resp)
-            throws ServletException, IOException {
+        protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
             byte[] requestBody = fullyReadRequest(req.getInputStream());
             requestHandler.handle((Request) req, (Response) resp, requestBody);
         }

@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
 /**
- * Test class for  {@link AmqpAnnotatedMessage}
+ * Test class for {@link AmqpAnnotatedMessage}
  */
 public class AmqpAnnotatedMessageTest {
 
@@ -70,9 +70,12 @@ public class AmqpAnnotatedMessageTest {
                 byte[] actualData = actual.getBody().getData().stream().findFirst().get();
                 assertArrayEquals(expectedbody, actualData);
                 break;
+
             case VALUE:
             case SEQUENCE:
-                throw logger.logExceptionAsError(new UnsupportedOperationException("type not supported yet :" + actualType));
+                throw logger
+                    .logExceptionAsError(new UnsupportedOperationException("type not supported yet :" + actualType));
+
             default:
                 throw logger.logExceptionAsError(new IllegalStateException("Invalid type :" + actualType));
         }

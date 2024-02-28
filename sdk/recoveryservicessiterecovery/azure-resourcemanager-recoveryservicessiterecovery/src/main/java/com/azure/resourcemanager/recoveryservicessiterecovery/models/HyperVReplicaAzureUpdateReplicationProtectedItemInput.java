@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** HyperV replica Azure input to update replication protected item. */
+/**
+ * HyperV replica Azure input to update replication protected item.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("HyperVReplicaAzure")
 @Fluent
@@ -88,13 +90,15 @@ public final class HyperVReplicaAzureUpdateReplicationProtectedItemInput
     @JsonProperty(value = "vmDisks")
     private List<UpdateDiskInput> vmDisks;
 
-    /** Creates an instance of HyperVReplicaAzureUpdateReplicationProtectedItemInput class. */
+    /**
+     * Creates an instance of HyperVReplicaAzureUpdateReplicationProtectedItemInput class.
+     */
     public HyperVReplicaAzureUpdateReplicationProtectedItemInput() {
     }
 
     /**
      * Get the recoveryAzureV1ResourceGroupId property: The recovery Azure resource group Id for classic deployment.
-     *
+     * 
      * @return the recoveryAzureV1ResourceGroupId value.
      */
     public String recoveryAzureV1ResourceGroupId() {
@@ -103,12 +107,12 @@ public final class HyperVReplicaAzureUpdateReplicationProtectedItemInput
 
     /**
      * Set the recoveryAzureV1ResourceGroupId property: The recovery Azure resource group Id for classic deployment.
-     *
+     * 
      * @param recoveryAzureV1ResourceGroupId the recoveryAzureV1ResourceGroupId value to set.
      * @return the HyperVReplicaAzureUpdateReplicationProtectedItemInput object itself.
      */
-    public HyperVReplicaAzureUpdateReplicationProtectedItemInput withRecoveryAzureV1ResourceGroupId(
-        String recoveryAzureV1ResourceGroupId) {
+    public HyperVReplicaAzureUpdateReplicationProtectedItemInput
+        withRecoveryAzureV1ResourceGroupId(String recoveryAzureV1ResourceGroupId) {
         this.recoveryAzureV1ResourceGroupId = recoveryAzureV1ResourceGroupId;
         return this;
     }
@@ -116,7 +120,7 @@ public final class HyperVReplicaAzureUpdateReplicationProtectedItemInput
     /**
      * Get the recoveryAzureV2ResourceGroupId property: The recovery Azure resource group Id for resource manager
      * deployment.
-     *
+     * 
      * @return the recoveryAzureV2ResourceGroupId value.
      */
     public String recoveryAzureV2ResourceGroupId() {
@@ -126,19 +130,19 @@ public final class HyperVReplicaAzureUpdateReplicationProtectedItemInput
     /**
      * Set the recoveryAzureV2ResourceGroupId property: The recovery Azure resource group Id for resource manager
      * deployment.
-     *
+     * 
      * @param recoveryAzureV2ResourceGroupId the recoveryAzureV2ResourceGroupId value to set.
      * @return the HyperVReplicaAzureUpdateReplicationProtectedItemInput object itself.
      */
-    public HyperVReplicaAzureUpdateReplicationProtectedItemInput withRecoveryAzureV2ResourceGroupId(
-        String recoveryAzureV2ResourceGroupId) {
+    public HyperVReplicaAzureUpdateReplicationProtectedItemInput
+        withRecoveryAzureV2ResourceGroupId(String recoveryAzureV2ResourceGroupId) {
         this.recoveryAzureV2ResourceGroupId = recoveryAzureV2ResourceGroupId;
         return this;
     }
 
     /**
      * Get the useManagedDisks property: A value indicating whether managed disks should be used during failover.
-     *
+     * 
      * @return the useManagedDisks value.
      */
     public String useManagedDisks() {
@@ -147,7 +151,7 @@ public final class HyperVReplicaAzureUpdateReplicationProtectedItemInput
 
     /**
      * Set the useManagedDisks property: A value indicating whether managed disks should be used during failover.
-     *
+     * 
      * @param useManagedDisks the useManagedDisks value to set.
      * @return the HyperVReplicaAzureUpdateReplicationProtectedItemInput object itself.
      */
@@ -158,7 +162,7 @@ public final class HyperVReplicaAzureUpdateReplicationProtectedItemInput
 
     /**
      * Get the diskIdToDiskEncryptionMap property: The dictionary of disk resource Id to disk encryption set ARM Id.
-     *
+     * 
      * @return the diskIdToDiskEncryptionMap value.
      */
     public Map<String, String> diskIdToDiskEncryptionMap() {
@@ -167,19 +171,19 @@ public final class HyperVReplicaAzureUpdateReplicationProtectedItemInput
 
     /**
      * Set the diskIdToDiskEncryptionMap property: The dictionary of disk resource Id to disk encryption set ARM Id.
-     *
+     * 
      * @param diskIdToDiskEncryptionMap the diskIdToDiskEncryptionMap value to set.
      * @return the HyperVReplicaAzureUpdateReplicationProtectedItemInput object itself.
      */
-    public HyperVReplicaAzureUpdateReplicationProtectedItemInput withDiskIdToDiskEncryptionMap(
-        Map<String, String> diskIdToDiskEncryptionMap) {
+    public HyperVReplicaAzureUpdateReplicationProtectedItemInput
+        withDiskIdToDiskEncryptionMap(Map<String, String> diskIdToDiskEncryptionMap) {
         this.diskIdToDiskEncryptionMap = diskIdToDiskEncryptionMap;
         return this;
     }
 
     /**
      * Get the targetProximityPlacementGroupId property: The target proximity placement group Id.
-     *
+     * 
      * @return the targetProximityPlacementGroupId value.
      */
     public String targetProximityPlacementGroupId() {
@@ -188,19 +192,19 @@ public final class HyperVReplicaAzureUpdateReplicationProtectedItemInput
 
     /**
      * Set the targetProximityPlacementGroupId property: The target proximity placement group Id.
-     *
+     * 
      * @param targetProximityPlacementGroupId the targetProximityPlacementGroupId value to set.
      * @return the HyperVReplicaAzureUpdateReplicationProtectedItemInput object itself.
      */
-    public HyperVReplicaAzureUpdateReplicationProtectedItemInput withTargetProximityPlacementGroupId(
-        String targetProximityPlacementGroupId) {
+    public HyperVReplicaAzureUpdateReplicationProtectedItemInput
+        withTargetProximityPlacementGroupId(String targetProximityPlacementGroupId) {
         this.targetProximityPlacementGroupId = targetProximityPlacementGroupId;
         return this;
     }
 
     /**
      * Get the targetAvailabilityZone property: The target availability zone.
-     *
+     * 
      * @return the targetAvailabilityZone value.
      */
     public String targetAvailabilityZone() {
@@ -209,19 +213,19 @@ public final class HyperVReplicaAzureUpdateReplicationProtectedItemInput
 
     /**
      * Set the targetAvailabilityZone property: The target availability zone.
-     *
+     * 
      * @param targetAvailabilityZone the targetAvailabilityZone value to set.
      * @return the HyperVReplicaAzureUpdateReplicationProtectedItemInput object itself.
      */
-    public HyperVReplicaAzureUpdateReplicationProtectedItemInput withTargetAvailabilityZone(
-        String targetAvailabilityZone) {
+    public HyperVReplicaAzureUpdateReplicationProtectedItemInput
+        withTargetAvailabilityZone(String targetAvailabilityZone) {
         this.targetAvailabilityZone = targetAvailabilityZone;
         return this;
     }
 
     /**
      * Get the targetVmTags property: The target VM tags.
-     *
+     * 
      * @return the targetVmTags value.
      */
     public Map<String, String> targetVmTags() {
@@ -230,7 +234,7 @@ public final class HyperVReplicaAzureUpdateReplicationProtectedItemInput
 
     /**
      * Set the targetVmTags property: The target VM tags.
-     *
+     * 
      * @param targetVmTags the targetVmTags value to set.
      * @return the HyperVReplicaAzureUpdateReplicationProtectedItemInput object itself.
      */
@@ -241,7 +245,7 @@ public final class HyperVReplicaAzureUpdateReplicationProtectedItemInput
 
     /**
      * Get the targetManagedDiskTags property: The tags for the target managed disks.
-     *
+     * 
      * @return the targetManagedDiskTags value.
      */
     public Map<String, String> targetManagedDiskTags() {
@@ -250,19 +254,19 @@ public final class HyperVReplicaAzureUpdateReplicationProtectedItemInput
 
     /**
      * Set the targetManagedDiskTags property: The tags for the target managed disks.
-     *
+     * 
      * @param targetManagedDiskTags the targetManagedDiskTags value to set.
      * @return the HyperVReplicaAzureUpdateReplicationProtectedItemInput object itself.
      */
-    public HyperVReplicaAzureUpdateReplicationProtectedItemInput withTargetManagedDiskTags(
-        Map<String, String> targetManagedDiskTags) {
+    public HyperVReplicaAzureUpdateReplicationProtectedItemInput
+        withTargetManagedDiskTags(Map<String, String> targetManagedDiskTags) {
         this.targetManagedDiskTags = targetManagedDiskTags;
         return this;
     }
 
     /**
      * Get the targetNicTags property: The tags for the target NICs.
-     *
+     * 
      * @return the targetNicTags value.
      */
     public Map<String, String> targetNicTags() {
@@ -271,7 +275,7 @@ public final class HyperVReplicaAzureUpdateReplicationProtectedItemInput
 
     /**
      * Set the targetNicTags property: The tags for the target NICs.
-     *
+     * 
      * @param targetNicTags the targetNicTags value to set.
      * @return the HyperVReplicaAzureUpdateReplicationProtectedItemInput object itself.
      */
@@ -282,7 +286,7 @@ public final class HyperVReplicaAzureUpdateReplicationProtectedItemInput
 
     /**
      * Get the sqlServerLicenseType property: The SQL Server license type.
-     *
+     * 
      * @return the sqlServerLicenseType value.
      */
     public SqlServerLicenseType sqlServerLicenseType() {
@@ -291,19 +295,19 @@ public final class HyperVReplicaAzureUpdateReplicationProtectedItemInput
 
     /**
      * Set the sqlServerLicenseType property: The SQL Server license type.
-     *
+     * 
      * @param sqlServerLicenseType the sqlServerLicenseType value to set.
      * @return the HyperVReplicaAzureUpdateReplicationProtectedItemInput object itself.
      */
-    public HyperVReplicaAzureUpdateReplicationProtectedItemInput withSqlServerLicenseType(
-        SqlServerLicenseType sqlServerLicenseType) {
+    public HyperVReplicaAzureUpdateReplicationProtectedItemInput
+        withSqlServerLicenseType(SqlServerLicenseType sqlServerLicenseType) {
         this.sqlServerLicenseType = sqlServerLicenseType;
         return this;
     }
 
     /**
      * Get the vmDisks property: The list of disk update properties.
-     *
+     * 
      * @return the vmDisks value.
      */
     public List<UpdateDiskInput> vmDisks() {
@@ -312,7 +316,7 @@ public final class HyperVReplicaAzureUpdateReplicationProtectedItemInput
 
     /**
      * Set the vmDisks property: The list of disk update properties.
-     *
+     * 
      * @param vmDisks the vmDisks value to set.
      * @return the HyperVReplicaAzureUpdateReplicationProtectedItemInput object itself.
      */
@@ -323,7 +327,7 @@ public final class HyperVReplicaAzureUpdateReplicationProtectedItemInput
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

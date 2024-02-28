@@ -16,17 +16,6 @@ import java.util.List;
 @Immutable
 public final class AzureChatExtensionsMessageContext {
 
-    /*
-     * The contextual message payload associated with the Azure chat extensions used for a chat completions request.
-     * These messages describe the data source retrievals, plugin invocations, and other intermediate steps taken in
-     * the
-     * course of generating a chat completions response that was augmented by capabilities from Azure OpenAI chat
-     * extensions.
-     */
-    @Generated
-    @JsonProperty(value = "messages")
-    private List<ChatResponseMessage> messages;
-
     /**
      * Creates an instance of AzureChatExtensionsMessageContext class.
      */
@@ -34,18 +23,47 @@ public final class AzureChatExtensionsMessageContext {
     private AzureChatExtensionsMessageContext() {
     }
 
+    /*
+     * The contextual information associated with the Azure chat extensions used for a chat completions request.
+     * These messages describe the data source retrievals, plugin invocations, and other intermediate steps taken in
+     * the
+     * course of generating a chat completions response that was augmented by capabilities from Azure OpenAI chat
+     * extensions.
+     */
+    @Generated
+    @JsonProperty(value = "citations")
+    private List<AzureChatExtensionDataSourceResponseCitation> citations;
+
+    /*
+     * The detected intent from the chat history, used to pass to the next turn to carry over the context.
+     */
+    @Generated
+    @JsonProperty(value = "intent")
+    private String intent;
+
     /**
-     * Get the messages property: The contextual message payload associated with the Azure chat extensions used for a
+     * Get the citations property: The contextual information associated with the Azure chat extensions used for a
      * chat completions request.
      * These messages describe the data source retrievals, plugin invocations, and other intermediate steps taken in
      * the
      * course of generating a chat completions response that was augmented by capabilities from Azure OpenAI chat
      * extensions.
      *
-     * @return the messages value.
+     * @return the citations value.
      */
     @Generated
-    public List<ChatResponseMessage> getMessages() {
-        return this.messages;
+    public List<AzureChatExtensionDataSourceResponseCitation> getCitations() {
+        return this.citations;
+    }
+
+    /**
+     * Get the intent property: The detected intent from the chat history, used to pass to the next turn to carry over
+     * the context.
+     *
+     * @return the intent value.
+     */
+    @Generated
+    public String getIntent() {
+        return this.intent;
     }
 }

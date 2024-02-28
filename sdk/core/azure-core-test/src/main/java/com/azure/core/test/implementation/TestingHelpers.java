@@ -18,7 +18,8 @@ public final class TestingHelpers {
 
     public static final String AZURE_TEST_MODE = "AZURE_TEST_MODE";
     public static final HttpHeaderName X_RECORDING_ID = HttpHeaderName.fromString("x-recording-id");
-    public static final HttpHeaderName X_RECORDING_FILE_LOCATION = HttpHeaderName.fromString("x-base64-recording-file-location");
+    public static final HttpHeaderName X_RECORDING_FILE_LOCATION
+        = HttpHeaderName.fromString("x-base64-recording-file-location");
 
     /**
      * Gets the {@link TestMode} being used to run tests.

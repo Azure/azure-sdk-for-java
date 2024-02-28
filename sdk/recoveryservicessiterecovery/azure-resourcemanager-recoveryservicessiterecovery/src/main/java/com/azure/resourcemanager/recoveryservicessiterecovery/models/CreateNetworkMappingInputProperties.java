@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Common input details for network mapping operation. */
+/**
+ * Common input details for network mapping operation.
+ */
 @Fluent
 public final class CreateNetworkMappingInputProperties {
     /*
@@ -29,13 +31,15 @@ public final class CreateNetworkMappingInputProperties {
     @JsonProperty(value = "fabricSpecificDetails")
     private FabricSpecificCreateNetworkMappingInput fabricSpecificDetails;
 
-    /** Creates an instance of CreateNetworkMappingInputProperties class. */
+    /**
+     * Creates an instance of CreateNetworkMappingInputProperties class.
+     */
     public CreateNetworkMappingInputProperties() {
     }
 
     /**
      * Get the recoveryFabricName property: Recovery fabric Name.
-     *
+     * 
      * @return the recoveryFabricName value.
      */
     public String recoveryFabricName() {
@@ -44,7 +48,7 @@ public final class CreateNetworkMappingInputProperties {
 
     /**
      * Set the recoveryFabricName property: Recovery fabric Name.
-     *
+     * 
      * @param recoveryFabricName the recoveryFabricName value to set.
      * @return the CreateNetworkMappingInputProperties object itself.
      */
@@ -55,7 +59,7 @@ public final class CreateNetworkMappingInputProperties {
 
     /**
      * Get the recoveryNetworkId property: Recovery network Id.
-     *
+     * 
      * @return the recoveryNetworkId value.
      */
     public String recoveryNetworkId() {
@@ -64,7 +68,7 @@ public final class CreateNetworkMappingInputProperties {
 
     /**
      * Set the recoveryNetworkId property: Recovery network Id.
-     *
+     * 
      * @param recoveryNetworkId the recoveryNetworkId value to set.
      * @return the CreateNetworkMappingInputProperties object itself.
      */
@@ -75,7 +79,7 @@ public final class CreateNetworkMappingInputProperties {
 
     /**
      * Get the fabricSpecificDetails property: Fabric specific input properties.
-     *
+     * 
      * @return the fabricSpecificDetails value.
      */
     public FabricSpecificCreateNetworkMappingInput fabricSpecificDetails() {
@@ -84,27 +88,25 @@ public final class CreateNetworkMappingInputProperties {
 
     /**
      * Set the fabricSpecificDetails property: Fabric specific input properties.
-     *
+     * 
      * @param fabricSpecificDetails the fabricSpecificDetails value to set.
      * @return the CreateNetworkMappingInputProperties object itself.
      */
-    public CreateNetworkMappingInputProperties withFabricSpecificDetails(
-        FabricSpecificCreateNetworkMappingInput fabricSpecificDetails) {
+    public CreateNetworkMappingInputProperties
+        withFabricSpecificDetails(FabricSpecificCreateNetworkMappingInput fabricSpecificDetails) {
         this.fabricSpecificDetails = fabricSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (recoveryNetworkId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoveryNetworkId in model CreateNetworkMappingInputProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property recoveryNetworkId in model CreateNetworkMappingInputProperties"));
         }
         if (fabricSpecificDetails() != null) {
             fabricSpecificDetails().validate();

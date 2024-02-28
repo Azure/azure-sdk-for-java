@@ -439,6 +439,16 @@
   "allDeclaredFields" : true,
   "allDeclaredMethods" : true
 }, {
+  "name" : "com.azure.resourcemanager.containerservice.models.ManagedClusterIngressProfile",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
+  "name" : "com.azure.resourcemanager.containerservice.models.ManagedClusterIngressProfileWebAppRouting",
+  "allDeclaredConstructors" : true,
+  "allDeclaredFields" : true,
+  "allDeclaredMethods" : true
+}, {
   "name" : "com.azure.resourcemanager.containerservice.models.ManagedClusterWorkloadAutoScalerProfile",
   "allDeclaredConstructors" : true,
   "allDeclaredFields" : true,

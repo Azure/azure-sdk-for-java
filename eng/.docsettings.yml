@@ -63,7 +63,6 @@ known_presence_issues:
   - ['sdk/mediaservices/microsoft-azure-media', '#2847']
   - ['sdk/servicebus/microsoft-azure-servicebus', '#2847']
   # Changelog List
-  - ['sdk/applicationinsights/microsoft-azure-applicationinsights-query/CHANGELOG.md', '#2847']
   - ['sdk/authorization/microsoft-azure-authentication-msi-token-provider/CHANGELOG.md', '#2847']
   - ['sdk/cognitiveservices/ms-azure-cs-autosuggest/CHANGELOG.md', '#2847']
   - ['sdk/cognitiveservices/ms-azure-cs-computervision/CHANGELOG.md', '#2847']
@@ -106,7 +105,6 @@ known_presence_issues:
 
 known_content_issues:
   - ['README.md', '#3113']
-  - ['sdk/applicationinsights/microsoft-azure-applicationinsights-query/README.md', '#3113']
   - ['sdk/authorization/microsoft-azure-authentication-msi-token-provider/README.md', '#3113']
   - ['sdk/batch/microsoft-azure-batch/README.md', '#3113']
   - ['sdk/boms/azure-sdk-bom/README.md', '#3113']

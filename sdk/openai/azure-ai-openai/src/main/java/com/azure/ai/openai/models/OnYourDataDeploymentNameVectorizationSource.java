@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * on an internal embeddings model deployment name in the same Azure OpenAI resource.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("DeploymentName")
+@JsonTypeName("deployment_name")
 @Immutable
 public final class OnYourDataDeploymentNameVectorizationSource extends OnYourDataVectorizationSource {
 
@@ -25,7 +25,7 @@ public final class OnYourDataDeploymentNameVectorizationSource extends OnYourDat
      * without Azure OpenAI api-key and without Azure OpenAI public network access.
      */
     @Generated
-    @JsonProperty(value = "deploymentName")
+    @JsonProperty(value = "deployment_name")
     private String deploymentName;
 
     /**
@@ -35,7 +35,7 @@ public final class OnYourDataDeploymentNameVectorizationSource extends OnYourDat
      */
     @Generated
     @JsonCreator
-    public OnYourDataDeploymentNameVectorizationSource(@JsonProperty(value = "deploymentName") String deploymentName) {
+    public OnYourDataDeploymentNameVectorizationSource(@JsonProperty(value = "deployment_name") String deploymentName) {
         this.deploymentName = deploymentName;
     }
 

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Recovery plan HVR Azure failback input. */
+/**
+ * Recovery plan HVR Azure failback input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("HyperVReplicaAzureFailback")
 @Fluent
@@ -27,13 +29,15 @@ public final class RecoveryPlanHyperVReplicaAzureFailbackInput extends RecoveryP
     @JsonProperty(value = "recoveryVmCreationOption", required = true)
     private AlternateLocationRecoveryOption recoveryVmCreationOption;
 
-    /** Creates an instance of RecoveryPlanHyperVReplicaAzureFailbackInput class. */
+    /**
+     * Creates an instance of RecoveryPlanHyperVReplicaAzureFailbackInput class.
+     */
     public RecoveryPlanHyperVReplicaAzureFailbackInput() {
     }
 
     /**
      * Get the dataSyncOption property: The data sync option.
-     *
+     * 
      * @return the dataSyncOption value.
      */
     public DataSyncStatus dataSyncOption() {
@@ -42,7 +46,7 @@ public final class RecoveryPlanHyperVReplicaAzureFailbackInput extends RecoveryP
 
     /**
      * Set the dataSyncOption property: The data sync option.
-     *
+     * 
      * @param dataSyncOption the dataSyncOption value to set.
      * @return the RecoveryPlanHyperVReplicaAzureFailbackInput object itself.
      */
@@ -53,7 +57,7 @@ public final class RecoveryPlanHyperVReplicaAzureFailbackInput extends RecoveryP
 
     /**
      * Get the recoveryVmCreationOption property: The ALR option.
-     *
+     * 
      * @return the recoveryVmCreationOption value.
      */
     public AlternateLocationRecoveryOption recoveryVmCreationOption() {
@@ -62,37 +66,31 @@ public final class RecoveryPlanHyperVReplicaAzureFailbackInput extends RecoveryP
 
     /**
      * Set the recoveryVmCreationOption property: The ALR option.
-     *
+     * 
      * @param recoveryVmCreationOption the recoveryVmCreationOption value to set.
      * @return the RecoveryPlanHyperVReplicaAzureFailbackInput object itself.
      */
-    public RecoveryPlanHyperVReplicaAzureFailbackInput withRecoveryVmCreationOption(
-        AlternateLocationRecoveryOption recoveryVmCreationOption) {
+    public RecoveryPlanHyperVReplicaAzureFailbackInput
+        withRecoveryVmCreationOption(AlternateLocationRecoveryOption recoveryVmCreationOption) {
         this.recoveryVmCreationOption = recoveryVmCreationOption;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (dataSyncOption() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property dataSyncOption in model"
-                            + " RecoveryPlanHyperVReplicaAzureFailbackInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property dataSyncOption in model RecoveryPlanHyperVReplicaAzureFailbackInput"));
         }
         if (recoveryVmCreationOption() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoveryVmCreationOption in model"
-                            + " RecoveryPlanHyperVReplicaAzureFailbackInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property recoveryVmCreationOption in model RecoveryPlanHyperVReplicaAzureFailbackInput"));
         }
     }
 

@@ -9,7 +9,7 @@ import com.azure.cosmos.models.{CosmosClientTelemetryConfig, CosmosMetricCategor
 import com.azure.cosmos.spark.CosmosPredicates.isOnSparkDriver
 import com.azure.cosmos.spark.catalog.{CosmosCatalogClient, CosmosCatalogCosmosSDKClient, CosmosCatalogManagementSDKClient}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
-import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, GatewayConnectionConfig, ThrottlingRetryOptions}
+import com.azure.cosmos.{ConsistencyLevel, CosmosAsyncClient, CosmosClientBuilder, CosmosContainerProactiveInitConfigBuilder, DirectConnectionConfig, GatewayConnectionConfig, ThrottlingRetryOptions}
 import com.azure.identity.ClientSecretCredentialBuilder
 import com.azure.resourcemanager.cosmos.CosmosManager
 import org.apache.spark.scheduler.{SparkListener, SparkListenerApplicationEnd}
@@ -275,6 +275,19 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                   .setIoThreadPriority(directConfig, Thread.MAX_PRIORITY)
 
           builder = builder.directMode(directConfig)
+
+          if (cosmosClientConfiguration.proactiveConnectionInitialization.isDefined &&
+            !cosmosClientConfiguration.proactiveConnectionInitialization.get.isEmpty) {
+            val containerIdentities = CosmosAccountConfig.parseProactiveConnectionInitConfigs(
+              cosmosClientConfiguration.proactiveConnectionInitialization.get)
+
+            val initConfig = new CosmosContainerProactiveInitConfigBuilder(containerIdentities)
+              .setAggressiveWarmupDuration(
+                Duration.ofSeconds(cosmosClientConfiguration.proactiveConnectionInitializationDurationInSeconds))
+              .setProactiveConnectionRegionsCount(1)
+              .build
+            builder.openConnectionsAndInitCaches(initConfig)
+          }
       }
 
       if (cosmosClientConfiguration.preferredRegionsList.isDefined) {
@@ -441,6 +454,9 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
                                                         authConfig: CosmosAuthConfig,
                                                         applicationName: String,
                                                         useGatewayMode: Boolean,
+                                                        // Intentionally not looking at proactive connection
+                                                        // initialization to distinguish cache key
+                                                        // You would never want to clients just for the diffs
                                                         httpConnectionPoolSize: Int,
                                                         useEventualConsistency: Boolean,
                                                         preferredRegionsList: String)

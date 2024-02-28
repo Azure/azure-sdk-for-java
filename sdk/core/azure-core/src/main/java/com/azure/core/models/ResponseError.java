@@ -14,7 +14,17 @@ import java.io.IOException;
 import java.util.List;
 
 /**
- * This class represents the error details of an HTTP response.
+ * <p>Represents the error details of an HTTP response.</p>
+ *
+ * <p>This class encapsulates the details of an HTTP error response, including the error code, message, target,
+ * inner error, and additional error details. It provides methods to access these properties.</p>
+ *
+ * <p>This class also provides a {@link #toJson(JsonWriter)} method to serialize the error details to JSON, and
+ * a {@link #fromJson(JsonReader)} method to deserialize the error details from JSON.</p>
+ *
+ * @see JsonSerializable
+ * @see JsonReader
+ * @see JsonWriter
  */
 public final class ResponseError implements JsonSerializable<ResponseError> {
 
@@ -207,8 +217,7 @@ public final class ResponseError implements JsonSerializable<ResponseError> {
                 throw new IllegalStateException("Missing required property: message");
             }
 
-            return new ResponseError(code, message)
-                .setTarget(target)
+            return new ResponseError(code, message).setTarget(target)
                 .setInnerError(innerError)
                 .setErrorDetails(errorDetails);
         });

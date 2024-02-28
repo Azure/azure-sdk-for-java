@@ -22,15 +22,21 @@ import static com.azure.core.implementation.logging.LoggingUtils.removeThrowable
 /**
  * This is a fluent logger helper class that wraps a pluggable {@link Logger}.
  *
- * <p>This logger logs format-able messages that use {@code {}} as the placeholder. When a {@link Throwable throwable}
+ * <p>
+ * This logger logs format-able messages that use {@code {}} as the placeholder. When a {@link Throwable throwable}
  * is the last argument of the format varargs and the logger is enabled for {@link ClientLogger#verbose(String,
- * Object...) verbose}, the stack trace for the throwable is logged.</p>
+ * Object...) verbose}, the stack trace for the throwable is logged.
+ * </p>
  *
- * <p>A minimum logging level threshold is determined by the
+ * <p>
+ * A minimum logging level threshold is determined by the
  * {@link Configuration#PROPERTY_AZURE_LOG_LEVEL AZURE_LOG_LEVEL} environment configuration. By default logging is
- * <b>disabled</b>.</p>
+ * <b>disabled</b>.
+ * </p>
  *
- * <p><strong>Log level hierarchy</strong></p>
+ * <p>
+ * <strong>Log level hierarchy</strong>
+ * </p>
  * <ol>
  * <li>{@link ClientLogger#error(String, Object...) Error}</li>
  * <li>{@link ClientLogger#warning(String, Object...) Warning}</li>
@@ -38,8 +44,11 @@ import static com.azure.core.implementation.logging.LoggingUtils.removeThrowable
  * <li>{@link ClientLogger#verbose(String, Object...) Verbose}</li>
  * </ol>
  *
- * <p>The logger is capable of producing json-formatted messages enriched with key value pairs.
- * Context can be provided in the constructor and populated on every message or added per each log record.</p>
+ * <p>
+ * The logger is capable of producing json-formatted messages enriched with key value pairs.
+ * Context can be provided in the constructor and populated on every message or added per each log record.
+ * </p>
+ * 
  * @see Configuration
  */
 public class ClientLogger {
@@ -452,12 +461,12 @@ public class ClientLogger {
      * Performs the logging. Call only if logging at this level is enabled.
      *
      * @param format format-able message.
+     * 
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     private void performLogging(LogLevel logLevel, boolean isExceptionLogging, String format, Object... args) {
         if (hasGlobalContext) {
-            LoggingEventBuilder.create(logger, logLevel, globalContextSerialized, true)
-                .log(format, args);
+            LoggingEventBuilder.create(logger, logLevel, globalContextSerialized, true).log(format, args);
             return;
         }
 
@@ -489,21 +498,25 @@ public class ClientLogger {
             case VERBOSE:
                 logger.debug(format, args);
                 break;
+
             case INFORMATIONAL:
                 logger.info(format, args);
                 break;
+
             case WARNING:
                 if (!CoreUtils.isNullOrEmpty(throwableMessage)) {
                     format += System.lineSeparator() + throwableMessage;
                 }
                 logger.warn(format, args);
                 break;
+
             case ERROR:
                 if (!CoreUtils.isNullOrEmpty(throwableMessage)) {
                     format += System.lineSeparator() + throwableMessage;
                 }
                 logger.error(format, args);
                 break;
+
             default:
                 // Don't do anything, this state shouldn't be possible.
                 break;
@@ -514,6 +527,7 @@ public class ClientLogger {
      * Performs deferred logging. Call only if logging at this level is enabled.
      *
      * @param logLevel sets the logging level
+     * 
      * @param args Arguments for the message, if an exception is being logged last argument is the throwable.
      */
     private void performDeferredLogging(LogLevel logLevel, Supplier<String> messageSupplier, Throwable throwable) {
@@ -521,8 +535,7 @@ public class ClientLogger {
         if (hasGlobalContext) {
             // LoggingEventBuilder writes log messages as json and performs all necessary escaping, i.e. no
             // sanitization needed
-            LoggingEventBuilder.create(logger, logLevel, globalContextSerialized, true)
-                .log(messageSupplier, throwable);
+            LoggingEventBuilder.create(logger, logLevel, globalContextSerialized, true).log(messageSupplier, throwable);
             return;
         }
 
@@ -537,21 +550,25 @@ public class ClientLogger {
                     logger.debug(message);
                 }
                 break;
+
             case INFORMATIONAL:
                 logger.info(message);
                 break;
+
             case WARNING:
                 if (!CoreUtils.isNullOrEmpty(throwableMessage)) {
                     message += System.lineSeparator() + throwableMessage;
                 }
                 logger.warn(message);
                 break;
+
             case ERROR:
                 if (!CoreUtils.isNullOrEmpty(throwableMessage)) {
                     message += System.lineSeparator() + throwableMessage;
                 }
                 logger.error(message);
                 break;
+
             default:
                 // Don't do anything, this state shouldn't be possible.
                 break;
@@ -560,6 +577,7 @@ public class ClientLogger {
 
     /*
      * @param args The arguments passed to evaluate suppliers in args.
+     * 
      * @return Return the argument with evaluated supplier
      */
     Object[] evaluateSupplierArgument(Object[] args) {
@@ -571,6 +589,7 @@ public class ClientLogger {
 
     /*
      * @param args The arguments passed to determine supplier evaluation
+     * 
      * @return Determines if it is supplier logging
      */
     boolean isSupplierLogging(Object[] args) {
@@ -591,12 +610,16 @@ public class ClientLogger {
         switch (logLevel) {
             case VERBOSE:
                 return logger.isDebugEnabled();
+
             case INFORMATIONAL:
                 return logger.isInfoEnabled();
+
             case WARNING:
                 return logger.isWarnEnabled();
+
             case ERROR:
                 return logger.isErrorEnabled();
+
             default:
                 return false;
         }
@@ -620,13 +643,14 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder}  or no-op if error logging is disabled.
      */
     public LoggingEventBuilder atError() {
-        return LoggingEventBuilder.create(logger, LogLevel.ERROR, globalContextSerialized, canLogAtLevel(LogLevel.ERROR));
+        return LoggingEventBuilder.create(logger, LogLevel.ERROR, globalContextSerialized,
+            canLogAtLevel(LogLevel.ERROR));
     }
 
     /**
      * Creates {@link LoggingEventBuilder} for {@code warning} log level that can be
      * used to enrich log with additional context.
-
+    
      * <p><strong>Code samples</strong></p>
      *
      * <p>Logging with context at warning level.</p>
@@ -712,7 +736,6 @@ public class ClientLogger {
      * @return instance of {@link LoggingEventBuilder} or no-op if logging at provided level is disabled.
      */
     public LoggingEventBuilder atLevel(LogLevel level) {
-        return LoggingEventBuilder.create(logger, level, globalContextSerialized,
-            canLogAtLevel(level));
+        return LoggingEventBuilder.create(logger, level, globalContextSerialized, canLogAtLevel(level));
     }
 }

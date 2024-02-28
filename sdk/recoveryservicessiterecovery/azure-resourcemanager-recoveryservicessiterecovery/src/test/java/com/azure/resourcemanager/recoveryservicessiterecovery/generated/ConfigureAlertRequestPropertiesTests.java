@@ -12,11 +12,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ConfigureAlertRequestPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ConfigureAlertRequestProperties model =
-            BinaryData
-                .fromString(
-                    "{\"sendToOwners\":\"fziton\",\"customEmailAddresses\":[\"fpjkjlxofp\",\"vhpfxxypininmay\"],\"locale\":\"ybb\"}")
-                .toObject(ConfigureAlertRequestProperties.class);
+        ConfigureAlertRequestProperties model = BinaryData.fromString(
+            "{\"sendToOwners\":\"fziton\",\"customEmailAddresses\":[\"fpjkjlxofp\",\"vhpfxxypininmay\"],\"locale\":\"ybb\"}")
+            .toObject(ConfigureAlertRequestProperties.class);
         Assertions.assertEquals("fziton", model.sendToOwners());
         Assertions.assertEquals("fpjkjlxofp", model.customEmailAddresses().get(0));
         Assertions.assertEquals("ybb", model.locale());
@@ -24,11 +22,8 @@ public final class ConfigureAlertRequestPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ConfigureAlertRequestProperties model =
-            new ConfigureAlertRequestProperties()
-                .withSendToOwners("fziton")
-                .withCustomEmailAddresses(Arrays.asList("fpjkjlxofp", "vhpfxxypininmay"))
-                .withLocale("ybb");
+        ConfigureAlertRequestProperties model = new ConfigureAlertRequestProperties().withSendToOwners("fziton")
+            .withCustomEmailAddresses(Arrays.asList("fpjkjlxofp", "vhpfxxypininmay")).withLocale("ybb");
         model = BinaryData.fromObject(model).toObject(ConfigureAlertRequestProperties.class);
         Assertions.assertEquals("fziton", model.sendToOwners());
         Assertions.assertEquals("fpjkjlxofp", model.customEmailAddresses().get(0));

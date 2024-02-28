@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Vault setting properties. */
+/**
+ * Vault setting properties.
+ */
 @Fluent
 public final class VaultSettingProperties {
     /*
@@ -22,13 +24,15 @@ public final class VaultSettingProperties {
     @JsonProperty(value = "vmwareToAzureProviderType")
     private String vmwareToAzureProviderType;
 
-    /** Creates an instance of VaultSettingProperties class. */
+    /**
+     * Creates an instance of VaultSettingProperties class.
+     */
     public VaultSettingProperties() {
     }
 
     /**
      * Get the migrationSolutionId property: The migration solution ARM Id.
-     *
+     * 
      * @return the migrationSolutionId value.
      */
     public String migrationSolutionId() {
@@ -37,7 +41,7 @@ public final class VaultSettingProperties {
 
     /**
      * Set the migrationSolutionId property: The migration solution ARM Id.
-     *
+     * 
      * @param migrationSolutionId the migrationSolutionId value to set.
      * @return the VaultSettingProperties object itself.
      */
@@ -48,7 +52,7 @@ public final class VaultSettingProperties {
 
     /**
      * Get the vmwareToAzureProviderType property: VMware to Azure provider type.
-     *
+     * 
      * @return the vmwareToAzureProviderType value.
      */
     public String vmwareToAzureProviderType() {
@@ -57,7 +61,7 @@ public final class VaultSettingProperties {
 
     /**
      * Set the vmwareToAzureProviderType property: VMware to Azure provider type.
-     *
+     * 
      * @param vmwareToAzureProviderType the vmwareToAzureProviderType value to set.
      * @return the VaultSettingProperties object itself.
      */
@@ -68,7 +72,7 @@ public final class VaultSettingProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

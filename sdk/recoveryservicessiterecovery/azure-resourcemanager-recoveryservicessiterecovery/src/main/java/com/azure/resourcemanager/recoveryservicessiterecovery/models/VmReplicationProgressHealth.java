@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The initial replication progress health. */
+/**
+ * The initial replication progress health.
+ */
 public final class VmReplicationProgressHealth extends ExpandableStringEnum<VmReplicationProgressHealth> {
-    /** Static value None for VmReplicationProgressHealth. */
+    /**
+     * Static value None for VmReplicationProgressHealth.
+     */
     public static final VmReplicationProgressHealth NONE = fromString("None");
 
-    /** Static value InProgress for VmReplicationProgressHealth. */
+    /**
+     * Static value InProgress for VmReplicationProgressHealth.
+     */
     public static final VmReplicationProgressHealth IN_PROGRESS = fromString("InProgress");
 
-    /** Static value SlowProgress for VmReplicationProgressHealth. */
+    /**
+     * Static value SlowProgress for VmReplicationProgressHealth.
+     */
     public static final VmReplicationProgressHealth SLOW_PROGRESS = fromString("SlowProgress");
 
-    /** Static value NoProgress for VmReplicationProgressHealth. */
+    /**
+     * Static value NoProgress for VmReplicationProgressHealth.
+     */
     public static final VmReplicationProgressHealth NO_PROGRESS = fromString("NoProgress");
 
     /**
      * Creates a new instance of VmReplicationProgressHealth value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class VmReplicationProgressHealth extends ExpandableStringEnum<VmRe
 
     /**
      * Creates or finds a VmReplicationProgressHealth from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding VmReplicationProgressHealth.
      */
@@ -44,7 +54,7 @@ public final class VmReplicationProgressHealth extends ExpandableStringEnum<VmRe
 
     /**
      * Gets known VmReplicationProgressHealth values.
-     *
+     * 
      * @return known VmReplicationProgressHealth values.
      */
     public static Collection<VmReplicationProgressHealth> values() {

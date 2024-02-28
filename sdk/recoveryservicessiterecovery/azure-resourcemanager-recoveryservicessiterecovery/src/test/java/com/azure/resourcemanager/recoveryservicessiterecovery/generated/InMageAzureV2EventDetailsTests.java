@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class InMageAzureV2EventDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        InMageAzureV2EventDetails model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"InMageAzureV2\",\"eventType\":\"fhaxttpf\",\"category\":\"wgsghqucumldd\",\"component\":\"qm\",\"correctiveAction\":\"feothxu\",\"details\":\"igrjdljlkqhvkrbz\",\"summary\":\"astax\",\"siteName\":\"pruulhg\"}")
-                .toObject(InMageAzureV2EventDetails.class);
+        InMageAzureV2EventDetails model = BinaryData.fromString(
+            "{\"instanceType\":\"InMageAzureV2\",\"eventType\":\"fhaxttpf\",\"category\":\"wgsghqucumldd\",\"component\":\"qm\",\"correctiveAction\":\"feothxu\",\"details\":\"igrjdljlkqhvkrbz\",\"summary\":\"astax\",\"siteName\":\"pruulhg\"}")
+            .toObject(InMageAzureV2EventDetails.class);
         Assertions.assertEquals("fhaxttpf", model.eventType());
         Assertions.assertEquals("wgsghqucumldd", model.category());
         Assertions.assertEquals("qm", model.component());
@@ -27,15 +25,9 @@ public final class InMageAzureV2EventDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        InMageAzureV2EventDetails model =
-            new InMageAzureV2EventDetails()
-                .withEventType("fhaxttpf")
-                .withCategory("wgsghqucumldd")
-                .withComponent("qm")
-                .withCorrectiveAction("feothxu")
-                .withDetails("igrjdljlkqhvkrbz")
-                .withSummary("astax")
-                .withSiteName("pruulhg");
+        InMageAzureV2EventDetails model = new InMageAzureV2EventDetails().withEventType("fhaxttpf")
+            .withCategory("wgsghqucumldd").withComponent("qm").withCorrectiveAction("feothxu")
+            .withDetails("igrjdljlkqhvkrbz").withSummary("astax").withSiteName("pruulhg");
         model = BinaryData.fromObject(model).toObject(InMageAzureV2EventDetails.class);
         Assertions.assertEquals("fhaxttpf", model.eventType());
         Assertions.assertEquals("wgsghqucumldd", model.category());

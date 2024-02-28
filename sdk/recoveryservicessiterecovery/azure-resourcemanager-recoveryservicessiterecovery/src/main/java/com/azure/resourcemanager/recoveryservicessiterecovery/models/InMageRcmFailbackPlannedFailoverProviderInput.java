@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Provider specific input for InMageRcmFailback failover. */
+/**
+ * Provider specific input for InMageRcmFailback failover.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMageRcmFailback")
 @Fluent
@@ -21,13 +23,15 @@ public final class InMageRcmFailbackPlannedFailoverProviderInput extends Planned
     @JsonProperty(value = "recoveryPointType", required = true)
     private InMageRcmFailbackRecoveryPointType recoveryPointType;
 
-    /** Creates an instance of InMageRcmFailbackPlannedFailoverProviderInput class. */
+    /**
+     * Creates an instance of InMageRcmFailbackPlannedFailoverProviderInput class.
+     */
     public InMageRcmFailbackPlannedFailoverProviderInput() {
     }
 
     /**
      * Get the recoveryPointType property: The recovery point type.
-     *
+     * 
      * @return the recoveryPointType value.
      */
     public InMageRcmFailbackRecoveryPointType recoveryPointType() {
@@ -36,30 +40,27 @@ public final class InMageRcmFailbackPlannedFailoverProviderInput extends Planned
 
     /**
      * Set the recoveryPointType property: The recovery point type.
-     *
+     * 
      * @param recoveryPointType the recoveryPointType value to set.
      * @return the InMageRcmFailbackPlannedFailoverProviderInput object itself.
      */
-    public InMageRcmFailbackPlannedFailoverProviderInput withRecoveryPointType(
-        InMageRcmFailbackRecoveryPointType recoveryPointType) {
+    public InMageRcmFailbackPlannedFailoverProviderInput
+        withRecoveryPointType(InMageRcmFailbackRecoveryPointType recoveryPointType) {
         this.recoveryPointType = recoveryPointType;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (recoveryPointType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property recoveryPointType in model"
-                            + " InMageRcmFailbackPlannedFailoverProviderInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property recoveryPointType in model InMageRcmFailbackPlannedFailoverProviderInput"));
         }
     }
 
