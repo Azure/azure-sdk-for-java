@@ -1,12 +1,12 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.models.traits;
+package com.generic.core.models.traits;
 
 import com.generic.core.credential.KeyCredential;
 
 /**
- * An {@link com.generic.core.client.trait SDK for Java trait} providing a consistent interface for setting
+ * An {@link com.generic.core.models.traits SDK for Java trait} providing a consistent interface for setting
  * {@link KeyCredential}. Refer to the SDK for Java
  * <a href="https://aka.ms/azsdk/java/docs/identity">identity and authentication</a> documentation for more details on
  * proper usage of the {@link KeyCredential} type.
@@ -14,7 +14,7 @@ import com.generic.core.credential.KeyCredential;
  * @param <T> The concrete type that implements the trait. This is required so that fluent operations can continue to
  * return the concrete type, rather than the trait type.
  *
- * @see com.generic.core.client.trait
+ * @see com.generic.core.models.traits
  * @see KeyCredential
  */
 public interface KeyCredentialTrait<T> {

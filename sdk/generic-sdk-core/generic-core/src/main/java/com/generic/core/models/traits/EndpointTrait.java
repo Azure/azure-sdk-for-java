@@ -1,16 +1,16 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.http.models.traits;
+package com.generic.core.models.traits;
 
 /**
- * An {@link com.generic.core.client.trait SDK for Java trait} providing a consistent interface for setting service
+ * An {@link com.generic.core.models.traits SDK for Java trait} providing a consistent interface for setting service
  * endpoints.
  *
  * @param <T> The concrete type that implements the trait. This is required so that fluent operations can continue to
  * return the concrete type, rather than the trait type.
  *
- * @see com.generic.core.client.trait
+ * @see com.generic.core.models.traits
  */
 public interface EndpointTrait<T extends EndpointTrait<T>> {
     /**
