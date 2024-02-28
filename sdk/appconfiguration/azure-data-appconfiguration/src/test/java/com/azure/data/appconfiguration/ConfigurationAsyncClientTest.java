@@ -4,6 +4,7 @@ package com.azure.data.appconfiguration;
 
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.MatchConditions;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
@@ -1912,7 +1913,7 @@ public class ConfigurationAsyncClientTest extends ConfigurationClientTestBase {
         // Get all page ETags
         List<MatchConditions> matchConditionsList = new ArrayList<>();
         PagedResponse<ConfigurationSetting> pagedResponse = client.listConfigurationSettings(null).byPage().blockLast();
-        matchConditionsList.add(new MatchConditions().setIfNoneMatch(pagedResponse.getHeaders().getValue("Etag")));
+        matchConditionsList.add(new MatchConditions().setIfNoneMatch(pagedResponse.getHeaders().getValue(HttpHeaderName.ETAG)));
 
 
         // Step 2: Test list settings with page ETag
