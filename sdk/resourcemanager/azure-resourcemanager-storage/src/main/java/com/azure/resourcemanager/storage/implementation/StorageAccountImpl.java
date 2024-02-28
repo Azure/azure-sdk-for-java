@@ -7,6 +7,7 @@ import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.authorization.utils.RoleAssignmentHelper;
@@ -69,11 +70,9 @@ class StorageAccountImpl
     private StorageNetworkRulesHelper networkRulesHelper;
     private StorageEncryptionHelper encryptionHelper;
     private StorageAccountMsiHandler storageAccountMsiHandler;
-    private final AuthorizationManager authorizationManager;
 
     StorageAccountImpl(String name, StorageAccountInner innerModel, final StorageManager storageManager, final AuthorizationManager authorizationManager) {
         super(name, innerModel, storageManager);
-        this.authorizationManager = authorizationManager;
         this.createParameters = new StorageAccountCreateParameters();
         this.networkRulesHelper = new StorageNetworkRulesHelper(this.createParameters);
         this.encryptionHelper = new StorageEncryptionHelper(this.createParameters);
@@ -454,12 +453,17 @@ class StorageAccountImpl
 
     @Override
     public StorageAccountImpl withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion, Identity userAssignedIdentity) {
-        this.encryptionHelper.withEncryptionKeyFromKeyVault(keyVaultUri, keyName, keyVersion, userAssignedIdentity == null ? null : userAssignedIdentity.id());
-        return this;
+        if (userAssignedIdentity == null) {
+            throw new IllegalArgumentException("User-assigned identity is null.");
+        }
+        return this.withEncryptionKeyFromKeyVault(keyVaultUri, keyName, keyVersion, userAssignedIdentity.id());
     }
 
     @Override
     public StorageAccountImpl withEncryptionKeyFromKeyVault(String keyVaultUri, String keyName, String keyVersion, String userAssignedIdentityId) {
+        if (CoreUtils.isNullOrEmpty(userAssignedIdentityId)) {
+            throw new IllegalArgumentException("User-assigned identity ID is null.");
+        }
         this.encryptionHelper.withEncryptionKeyFromKeyVault(keyVaultUri, keyName, keyVersion, userAssignedIdentityId);
         return this;
     }
