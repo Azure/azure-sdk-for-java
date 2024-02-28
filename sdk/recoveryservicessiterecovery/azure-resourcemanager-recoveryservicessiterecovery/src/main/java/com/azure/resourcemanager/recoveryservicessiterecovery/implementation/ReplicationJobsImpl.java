@@ -23,8 +23,7 @@ public final class ReplicationJobsImpl implements ReplicationJobs {
 
     private final com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager;
 
-    public ReplicationJobsImpl(
-        ReplicationJobsClient innerClient,
+    public ReplicationJobsImpl(ReplicationJobsClient innerClient,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -32,23 +31,20 @@ public final class ReplicationJobsImpl implements ReplicationJobs {
 
     public PagedIterable<Job> list(String resourceName, String resourceGroupName) {
         PagedIterable<JobInner> inner = this.serviceClient().list(resourceName, resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new JobImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new JobImpl(inner1, this.manager()));
     }
 
     public PagedIterable<Job> list(String resourceName, String resourceGroupName, String filter, Context context) {
         PagedIterable<JobInner> inner = this.serviceClient().list(resourceName, resourceGroupName, filter, context);
-        return Utils.mapPage(inner, inner1 -> new JobImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new JobImpl(inner1, this.manager()));
     }
 
-    public Response<Job> getWithResponse(
-        String resourceName, String resourceGroupName, String jobName, Context context) {
-        Response<JobInner> inner =
-            this.serviceClient().getWithResponse(resourceName, resourceGroupName, jobName, context);
+    public Response<Job> getWithResponse(String resourceName, String resourceGroupName, String jobName,
+        Context context) {
+        Response<JobInner> inner
+            = this.serviceClient().getWithResponse(resourceName, resourceGroupName, jobName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new JobImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -109,14 +105,10 @@ public final class ReplicationJobsImpl implements ReplicationJobs {
         }
     }
 
-    public Job resume(
-        String resourceName,
-        String resourceGroupName,
-        String jobName,
-        ResumeJobParams resumeJobParams,
+    public Job resume(String resourceName, String resourceGroupName, String jobName, ResumeJobParams resumeJobParams,
         Context context) {
-        JobInner inner =
-            this.serviceClient().resume(resourceName, resourceGroupName, jobName, resumeJobParams, context);
+        JobInner inner
+            = this.serviceClient().resume(resourceName, resourceGroupName, jobName, resumeJobParams, context);
         if (inner != null) {
             return new JobImpl(inner, this.manager());
         } else {
@@ -133,8 +125,8 @@ public final class ReplicationJobsImpl implements ReplicationJobs {
         }
     }
 
-    public Job export(
-        String resourceName, String resourceGroupName, JobQueryParameter jobQueryParameter, Context context) {
+    public Job export(String resourceName, String resourceGroupName, JobQueryParameter jobQueryParameter,
+        Context context) {
         JobInner inner = this.serviceClient().export(resourceName, resourceGroupName, jobQueryParameter, context);
         if (inner != null) {
             return new JobImpl(inner, this.manager());

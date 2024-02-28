@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SupportedOSPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SupportedOSProperties model =
-            BinaryData
-                .fromString(
-                    "{\"supportedOsList\":[{\"instanceType\":\"uuipldq\",\"supportedOs\":[{\"osName\":\"kva\",\"osType\":\"l\",\"osVersions\":[{}]},{\"osName\":\"vqyvwehtaemxhzz\",\"osType\":\"ev\",\"osVersions\":[{},{}]}]}]}")
-                .toObject(SupportedOSProperties.class);
+        SupportedOSProperties model = BinaryData.fromString(
+            "{\"supportedOsList\":[{\"instanceType\":\"uuipldq\",\"supportedOs\":[{\"osName\":\"kva\",\"osType\":\"l\",\"osVersions\":[{}]},{\"osName\":\"vqyvwehtaemxhzz\",\"osType\":\"ev\",\"osVersions\":[{},{}]}]}]}")
+            .toObject(SupportedOSProperties.class);
         Assertions.assertEquals("uuipldq", model.supportedOsList().get(0).instanceType());
         Assertions.assertEquals("kva", model.supportedOsList().get(0).supportedOs().get(0).osName());
         Assertions.assertEquals("l", model.supportedOsList().get(0).supportedOs().get(0).osType());
@@ -27,25 +25,13 @@ public final class SupportedOSPropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SupportedOSProperties model =
-            new SupportedOSProperties()
-                .withSupportedOsList(
-                    Arrays
-                        .asList(
-                            new SupportedOSProperty()
-                                .withInstanceType("uuipldq")
-                                .withSupportedOs(
-                                    Arrays
-                                        .asList(
-                                            new SupportedOSDetails()
-                                                .withOsName("kva")
-                                                .withOsType("l")
-                                                .withOsVersions(Arrays.asList(new OSVersionWrapper())),
-                                            new SupportedOSDetails()
-                                                .withOsName("vqyvwehtaemxhzz")
-                                                .withOsType("ev")
-                                                .withOsVersions(
-                                                    Arrays.asList(new OSVersionWrapper(), new OSVersionWrapper()))))));
+        SupportedOSProperties model = new SupportedOSProperties()
+            .withSupportedOsList(Arrays.asList(new SupportedOSProperty().withInstanceType("uuipldq")
+                .withSupportedOs(Arrays.asList(
+                    new SupportedOSDetails().withOsName("kva").withOsType("l")
+                        .withOsVersions(Arrays.asList(new OSVersionWrapper())),
+                    new SupportedOSDetails().withOsName("vqyvwehtaemxhzz").withOsType("ev")
+                        .withOsVersions(Arrays.asList(new OSVersionWrapper(), new OSVersionWrapper()))))));
         model = BinaryData.fromObject(model).toObject(SupportedOSProperties.class);
         Assertions.assertEquals("uuipldq", model.supportedOsList().get(0).instanceType());
         Assertions.assertEquals("kva", model.supportedOsList().get(0).supportedOs().get(0).osName());

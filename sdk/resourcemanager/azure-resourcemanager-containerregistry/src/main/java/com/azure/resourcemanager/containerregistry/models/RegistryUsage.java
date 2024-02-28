@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerregistry.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The quota usage for a container registry. */
+/**
+ * The quota usage for a container registry.
+ */
 @Fluent
 public final class RegistryUsage {
     /*
@@ -34,13 +36,15 @@ public final class RegistryUsage {
     @JsonProperty(value = "unit")
     private RegistryUsageUnit unit;
 
-    /** Creates an instance of RegistryUsage class. */
+    /**
+     * Creates an instance of RegistryUsage class.
+     */
     public RegistryUsage() {
     }
 
     /**
      * Get the name property: The name of the usage.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -49,7 +53,7 @@ public final class RegistryUsage {
 
     /**
      * Set the name property: The name of the usage.
-     *
+     * 
      * @param name the name value to set.
      * @return the RegistryUsage object itself.
      */
@@ -60,7 +64,7 @@ public final class RegistryUsage {
 
     /**
      * Get the limit property: The limit of the usage.
-     *
+     * 
      * @return the limit value.
      */
     public Long limit() {
@@ -69,7 +73,7 @@ public final class RegistryUsage {
 
     /**
      * Set the limit property: The limit of the usage.
-     *
+     * 
      * @param limit the limit value to set.
      * @return the RegistryUsage object itself.
      */
@@ -80,7 +84,7 @@ public final class RegistryUsage {
 
     /**
      * Get the currentValue property: The current value of the usage.
-     *
+     * 
      * @return the currentValue value.
      */
     public Long currentValue() {
@@ -89,7 +93,7 @@ public final class RegistryUsage {
 
     /**
      * Set the currentValue property: The current value of the usage.
-     *
+     * 
      * @param currentValue the currentValue value to set.
      * @return the RegistryUsage object itself.
      */
@@ -100,7 +104,7 @@ public final class RegistryUsage {
 
     /**
      * Get the unit property: The unit of measurement.
-     *
+     * 
      * @return the unit value.
      */
     public RegistryUsageUnit unit() {
@@ -109,7 +113,7 @@ public final class RegistryUsage {
 
     /**
      * Set the unit property: The unit of measurement.
-     *
+     * 
      * @param unit the unit value to set.
      * @return the RegistryUsage object itself.
      */
@@ -120,7 +124,7 @@ public final class RegistryUsage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

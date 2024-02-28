@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** Failover details for a replication protected item. */
+/**
+ * Failover details for a replication protected item.
+ */
 @Fluent
 public final class FailoverReplicationProtectedItemDetails {
     /*
@@ -65,13 +67,15 @@ public final class FailoverReplicationProtectedItemDetails {
     @JsonProperty(value = "recoveryPointTime")
     private OffsetDateTime recoveryPointTime;
 
-    /** Creates an instance of FailoverReplicationProtectedItemDetails class. */
+    /**
+     * Creates an instance of FailoverReplicationProtectedItemDetails class.
+     */
     public FailoverReplicationProtectedItemDetails() {
     }
 
     /**
      * Get the name property: The name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -80,7 +84,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Set the name property: The name.
-     *
+     * 
      * @param name the name value to set.
      * @return the FailoverReplicationProtectedItemDetails object itself.
      */
@@ -91,7 +95,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Get the friendlyName property: The friendly name.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -100,7 +104,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Set the friendlyName property: The friendly name.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the FailoverReplicationProtectedItemDetails object itself.
      */
@@ -111,7 +115,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Get the testVmName property: The test Vm name.
-     *
+     * 
      * @return the testVmName value.
      */
     public String testVmName() {
@@ -120,7 +124,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Set the testVmName property: The test Vm name.
-     *
+     * 
      * @param testVmName the testVmName value to set.
      * @return the FailoverReplicationProtectedItemDetails object itself.
      */
@@ -131,7 +135,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Get the testVmFriendlyName property: The test Vm friendly name.
-     *
+     * 
      * @return the testVmFriendlyName value.
      */
     public String testVmFriendlyName() {
@@ -140,7 +144,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Set the testVmFriendlyName property: The test Vm friendly name.
-     *
+     * 
      * @param testVmFriendlyName the testVmFriendlyName value to set.
      * @return the FailoverReplicationProtectedItemDetails object itself.
      */
@@ -151,7 +155,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Get the networkConnectionStatus property: The network connection status.
-     *
+     * 
      * @return the networkConnectionStatus value.
      */
     public String networkConnectionStatus() {
@@ -160,7 +164,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Set the networkConnectionStatus property: The network connection status.
-     *
+     * 
      * @param networkConnectionStatus the networkConnectionStatus value to set.
      * @return the FailoverReplicationProtectedItemDetails object itself.
      */
@@ -171,7 +175,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Get the networkFriendlyName property: The network friendly name.
-     *
+     * 
      * @return the networkFriendlyName value.
      */
     public String networkFriendlyName() {
@@ -180,7 +184,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Set the networkFriendlyName property: The network friendly name.
-     *
+     * 
      * @param networkFriendlyName the networkFriendlyName value to set.
      * @return the FailoverReplicationProtectedItemDetails object itself.
      */
@@ -191,7 +195,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Get the subnet property: The network subnet.
-     *
+     * 
      * @return the subnet value.
      */
     public String subnet() {
@@ -200,7 +204,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Set the subnet property: The network subnet.
-     *
+     * 
      * @param subnet the subnet value to set.
      * @return the FailoverReplicationProtectedItemDetails object itself.
      */
@@ -211,7 +215,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Get the recoveryPointId property: The recovery point Id.
-     *
+     * 
      * @return the recoveryPointId value.
      */
     public String recoveryPointId() {
@@ -220,7 +224,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Set the recoveryPointId property: The recovery point Id.
-     *
+     * 
      * @param recoveryPointId the recoveryPointId value to set.
      * @return the FailoverReplicationProtectedItemDetails object itself.
      */
@@ -231,7 +235,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Get the recoveryPointTime property: The recovery point time.
-     *
+     * 
      * @return the recoveryPointTime value.
      */
     public OffsetDateTime recoveryPointTime() {
@@ -240,7 +244,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Set the recoveryPointTime property: The recovery point time.
-     *
+     * 
      * @param recoveryPointTime the recoveryPointTime value to set.
      * @return the FailoverReplicationProtectedItemDetails object itself.
      */
@@ -251,7 +255,7 @@ public final class FailoverReplicationProtectedItemDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

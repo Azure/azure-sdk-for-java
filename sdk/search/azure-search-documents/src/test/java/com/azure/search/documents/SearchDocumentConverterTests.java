@@ -195,7 +195,7 @@ public class SearchDocumentConverterTests {
 
     @Test
     public void canReadArraysOfMixedTypes() {
-        // Azure Cognitive Search won't return payloads like this; This test is only for pinning purposes.
+        // Azure AI Search won't return payloads like this; This test is only for pinning purposes.
         String json =
             "{\"field\": [\"hello\", 123, 3.25, { \"type\": \"Point\", \"coordinates\": [-122.131577, 47.678581], "
                 + "\"crs\":{\"type\":\"name\", \"properties\":{\"name\": \"EPSG:4326\"}}}, "
@@ -242,7 +242,7 @@ public class SearchDocumentConverterTests {
         String json = "{ \"field\": [null, null] }";
 
         // With only null elements, we can't tell what type of collection it is. For backward compatibility, we assume type string.
-        // This shouldn't happen in practice anyway since Azure Cognitive Search generally doesn't allow nulls in collections.
+        // This shouldn't happen in practice anyway since Azure AI Search generally doesn't allow nulls in collections.
         SearchDocument expectedDoc = new SearchDocument();
         List<String> emptyStringList = Arrays.asList(null, null);
         expectedDoc.put("field", emptyStringList);

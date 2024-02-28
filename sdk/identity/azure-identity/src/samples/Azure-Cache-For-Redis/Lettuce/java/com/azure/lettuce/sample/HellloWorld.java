@@ -27,7 +27,7 @@ public class HellloWorld {
         // Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
         String token = defaultAzureCredential
             .getToken(new TokenRequestContext()
-                .addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default")).block().getToken();
+                .addScopes("https://redis.azure.com/.default")).block().getToken();
 
         // Build Redis URI with host and authentication details.
         // TODO: Replace Host Name with Azure Cache for Redis Host Name.

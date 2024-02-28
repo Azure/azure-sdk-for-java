@@ -354,6 +354,14 @@
         <Class name="com.azure.core.models.MessageContent" />
         <Method name="getBodyAsBinaryData" />
       </And>
+      <And>
+        <Class name="com.azure.core.http.policy.RequestRetryCondition" />
+        <Or>
+          <Method name="getResponse" />
+          <Method name="getThrowable" />
+          <Method name="getRetriedThrowables" />
+        </Or>
+      </And>
     </Or>
   </Match>
 

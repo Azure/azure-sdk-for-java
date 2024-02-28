@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureVmDiskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureVmDiskDetails model =
-            BinaryData
-                .fromString(
-                    "{\"vhdType\":\"aqszllrzl\",\"vhdId\":\"mdqgmihzpimcqr\",\"diskId\":\"xtminklogxsvtzar\",\"vhdName\":\"vqnsqk\",\"maxSizeMB\":\"mbjwzzoslpkyb\",\"targetDiskLocation\":\"lwkzpgajsqjcem\",\"targetDiskName\":\"mfuvqarwzxuqr\",\"lunId\":\"lui\",\"diskEncryptionSetId\":\"bwxsfgtdm\",\"customTargetDiskName\":\"xekr\"}")
-                .toObject(AzureVmDiskDetails.class);
+        AzureVmDiskDetails model = BinaryData.fromString(
+            "{\"vhdType\":\"aqszllrzl\",\"vhdId\":\"mdqgmihzpimcqr\",\"diskId\":\"xtminklogxsvtzar\",\"vhdName\":\"vqnsqk\",\"maxSizeMB\":\"mbjwzzoslpkyb\",\"targetDiskLocation\":\"lwkzpgajsqjcem\",\"targetDiskName\":\"mfuvqarwzxuqr\",\"lunId\":\"lui\",\"diskEncryptionSetId\":\"bwxsfgtdm\",\"customTargetDiskName\":\"xekr\"}")
+            .toObject(AzureVmDiskDetails.class);
         Assertions.assertEquals("aqszllrzl", model.vhdType());
         Assertions.assertEquals("mdqgmihzpimcqr", model.vhdId());
         Assertions.assertEquals("xtminklogxsvtzar", model.diskId());
@@ -30,18 +28,10 @@ public final class AzureVmDiskDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureVmDiskDetails model =
-            new AzureVmDiskDetails()
-                .withVhdType("aqszllrzl")
-                .withVhdId("mdqgmihzpimcqr")
-                .withDiskId("xtminklogxsvtzar")
-                .withVhdName("vqnsqk")
-                .withMaxSizeMB("mbjwzzoslpkyb")
-                .withTargetDiskLocation("lwkzpgajsqjcem")
-                .withTargetDiskName("mfuvqarwzxuqr")
-                .withLunId("lui")
-                .withDiskEncryptionSetId("bwxsfgtdm")
-                .withCustomTargetDiskName("xekr");
+        AzureVmDiskDetails model = new AzureVmDiskDetails().withVhdType("aqszllrzl").withVhdId("mdqgmihzpimcqr")
+            .withDiskId("xtminklogxsvtzar").withVhdName("vqnsqk").withMaxSizeMB("mbjwzzoslpkyb")
+            .withTargetDiskLocation("lwkzpgajsqjcem").withTargetDiskName("mfuvqarwzxuqr").withLunId("lui")
+            .withDiskEncryptionSetId("bwxsfgtdm").withCustomTargetDiskName("xekr");
         model = BinaryData.fromObject(model).toObject(AzureVmDiskDetails.class);
         Assertions.assertEquals("aqszllrzl", model.vhdType());
         Assertions.assertEquals("mdqgmihzpimcqr", model.vhdId());

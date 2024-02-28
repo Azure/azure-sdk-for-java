@@ -13,24 +13,20 @@ import org.junit.jupiter.api.Assertions;
 public final class UnknownTargetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        UnknownTarget model =
-            BinaryData
-                .fromString(
-                    "{\"attributes\":{\"lla\":\"gxk\",\"z\":\"melwuipiccjz\",\"vvcnayr\":\"v\",\"rdvstkwqqtch\":\"yrnxxmueedn\"}}")
+        UnknownTarget model
+            = BinaryData.fromString("{\"attributes\":{\"tpuqujmq\":\"efkifr\",\"jcntuj\":\"gkfbtndoaong\"}}")
                 .toObject(UnknownTarget.class);
-        Assertions.assertEquals("gxk", model.attributes().get("lla"));
+        Assertions.assertEquals("efkifr", model.attributes().get("tpuqujmq"));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        UnknownTarget model =
-            new UnknownTarget()
-                .withAttributes(
-                    mapOf("lla", "gxk", "z", "melwuipiccjz", "vvcnayr", "v", "rdvstkwqqtch", "yrnxxmueedn"));
+        UnknownTarget model = new UnknownTarget().withAttributes(mapOf("tpuqujmq", "efkifr", "jcntuj", "gkfbtndoaong"));
         model = BinaryData.fromObject(model).toObject(UnknownTarget.class);
-        Assertions.assertEquals("gxk", model.attributes().get("lla"));
+        Assertions.assertEquals("efkifr", model.attributes().get("tpuqujmq"));
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

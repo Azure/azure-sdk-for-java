@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * extension.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Elasticsearch")
+@JsonTypeName("elasticsearch")
 @Immutable
 public final class ElasticsearchChatExtensionConfiguration extends AzureChatExtensionConfiguration {
 

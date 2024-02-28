@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The parameters for updating a replication. */
+/**
+ * The parameters for updating a replication.
+ */
 @Fluent
 public final class ReplicationUpdateParameters {
     /*
@@ -26,13 +28,15 @@ public final class ReplicationUpdateParameters {
     @JsonProperty(value = "properties")
     private ReplicationUpdateParametersProperties innerProperties;
 
-    /** Creates an instance of ReplicationUpdateParameters class. */
+    /**
+     * Creates an instance of ReplicationUpdateParameters class.
+     */
     public ReplicationUpdateParameters() {
     }
 
     /**
      * Get the tags property: The tags for the replication.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -41,7 +45,7 @@ public final class ReplicationUpdateParameters {
 
     /**
      * Set the tags property: The tags for the replication.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the ReplicationUpdateParameters object itself.
      */
@@ -52,7 +56,7 @@ public final class ReplicationUpdateParameters {
 
     /**
      * Get the innerProperties property: The parameters for updating a replication's properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ReplicationUpdateParametersProperties innerProperties() {
@@ -63,7 +67,7 @@ public final class ReplicationUpdateParameters {
      * Get the regionEndpointEnabled property: Specifies whether the replication's regional endpoint is enabled.
      * Requests will not be routed to a replication whose regional endpoint is disabled, however its data will continue
      * to be synced with other replications.
-     *
+     * 
      * @return the regionEndpointEnabled value.
      */
     public Boolean regionEndpointEnabled() {
@@ -74,7 +78,7 @@ public final class ReplicationUpdateParameters {
      * Set the regionEndpointEnabled property: Specifies whether the replication's regional endpoint is enabled.
      * Requests will not be routed to a replication whose regional endpoint is disabled, however its data will continue
      * to be synced with other replications.
-     *
+     * 
      * @param regionEndpointEnabled the regionEndpointEnabled value to set.
      * @return the ReplicationUpdateParameters object itself.
      */
@@ -88,7 +92,7 @@ public final class ReplicationUpdateParameters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

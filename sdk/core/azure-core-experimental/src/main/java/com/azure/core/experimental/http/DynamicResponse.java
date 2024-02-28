@@ -16,10 +16,13 @@ import com.azure.core.util.BinaryData;
  *
  * <p>
  * To demonstrate how this class can be used to read the response, let's use Pet Store service as an example. The
- * list of APIs available on this service are <a href="https://petstore.swagger.io/#/pet">documented in the swagger definition.</a>
+ * list of APIs available on this service are <a href="https://petstore.swagger.io/#/pet">documented in the swagger
+ * definition.</a>
  * </p>
  *
- * <p><strong>Reading the response of a HTTP GET request to get a pet from a petId</strong></p>
+ * <p>
+ * <strong>Reading the response of a HTTP GET request to get a pet from a petId</strong>
+ * </p>
  * The structure of the JSON response for the GET call is shown below:
  * <pre>{@code
  * {
@@ -27,18 +30,18 @@ import com.azure.core.util.BinaryData;
  *   "category": {
  *     "id": 0,
  *     "name": "string"
- *   },
- *   "name": "doggie",
- *   "photoUrls": [
- *     "string"
- *   ],
- *   "tags": [
- *     {
- *       "id": 0,
- *       "name": "string"
- *     }
- *   ],
- *   "status": "available"
+ * },
+ * "name": "doggie",
+ * "photoUrls": [
+ * "string"
+ * ],
+ * "tags": [
+ * {
+ * "id": 0,
+ * "name": "string"
+ * }
+ * ],
+ * "status": "available"
  * }
  * }</pre>
  *

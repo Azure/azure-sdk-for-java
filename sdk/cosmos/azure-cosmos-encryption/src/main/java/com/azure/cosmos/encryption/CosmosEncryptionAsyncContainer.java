@@ -1495,16 +1495,22 @@ public final class CosmosEncryptionAsyncContainer {
         });
     }
 
-
     private void setRequestHeaders(CosmosItemRequestOptions requestOptions) {
         cosmosItemRequestOptionsAccessor.setHeader(requestOptions, Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
         cosmosItemRequestOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
     }
 
     private CosmosQueryRequestOptions setRequestHeaders(CosmosQueryRequestOptions requestOptions) {
-        cosmosQueryRequestOptionsAccessor.setHeader(requestOptions, Constants.IS_CLIENT_ENCRYPTED_HEADER, "true");
-        cosmosQueryRequestOptionsAccessor.setHeader(requestOptions, Constants.INTENDED_COLLECTION_RID_HEADER, this.encryptionProcessor.getContainerRid());
-        System.out.println("Setting collectionRid header " + this.encryptionProcessor.getContainerRid());
+        cosmosQueryRequestOptionsAccessor
+            .getImpl(requestOptions)
+            .setHeader(
+                Constants.IS_CLIENT_ENCRYPTED_HEADER,
+                "true");
+        cosmosQueryRequestOptionsAccessor
+            .getImpl(requestOptions)
+            .setHeader(
+                Constants.INTENDED_COLLECTION_RID_HEADER,
+                this.encryptionProcessor.getContainerRid());
         return requestOptions;
     }
 

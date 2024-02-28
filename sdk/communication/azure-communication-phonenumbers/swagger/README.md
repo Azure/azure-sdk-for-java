@@ -1,11 +1,13 @@
 # Azure Communication Phone Numbers library for Java
 
 > see https://aka.ms/autorest
+
 ## Getting Started
 
 To build the SDK for Communication Phone Numbers library, simply Install AutoRest and in this folder, run:
 
 ### Setup
+
 ```ps
 Fork and clone https://github.com/Azure/autorest.java
 git checkout main
@@ -16,6 +18,7 @@ npm install -g autorest
 ```
 
 ### Generation
+
 ```ps
 cd <swagger-folder>
 autorest README.md --java --v4 --use=@autorest/java@4.0.2
@@ -26,7 +29,7 @@ autorest README.md --java --v4 --use=@autorest/java@4.0.2
 tag: package-preview-2024-01
 require: https://raw.githubusercontent.com/Azure/azure-rest-api-specs/a443d2d3c562d91419d11bed6326b5907d38848c/specification/communication/data-plane/PhoneNumbers/readme.md
 override-client-name: PhoneNumberAdminClient
-custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability,PhoneNumberAdministrativeDivision,PhoneNumberCountry,PhoneNumberLocality,PhoneNumberOffering,AreaCodeResult,AreaCodes,PhoneNumberAreaCode
+custom-types: PurchasedPhoneNumber,BillingFrequency,PhoneNumberOperationStatus,PhoneNumberOperationStatusCodes,PhoneNumberOperationType,PhoneNumberAssignmentType,PhoneNumberCapabilities,PhoneNumberCapabilityType,PhoneNumberCost,PhoneNumberSearchResult,PhoneNumberType,PhoneNumberCapability,PhoneNumberAdministrativeDivision,PhoneNumberCountry,PhoneNumberLocality,PhoneNumberOffering,AreaCodeResult,AreaCodes,PhoneNumberAreaCode,PhoneNumberSearchResultError,OperatorDetails,OperatorInformation,OperatorInformationResult,OperatorNumberType
 custom-types-subpackage: models
 models-subpackage: implementation.models
 java: true
@@ -40,189 +43,243 @@ context-client-method-parameter: true
 ```
 
 ### Add readonly attribute to PurchasedPhoneNumber properties
+
 ```yaml
 directive:
-  - from: swagger-document
-    where: $.definitions.PurchasedPhoneNumber
-    transform: >
-      $["properties"]["id"].readOnly = true;
-      $["properties"]["phoneNumber"].readOnly = true;
-      $["properties"]["phoneNumberType"].readOnly = true;
-      $["properties"]["countryCode"].readOnly = true;
-      $["properties"]["capabilities"].readOnly = true;
-      $["properties"]["assignmentType"].readOnly = true;
-      $["properties"]["purchaseDate"].readOnly = true;
-      $["properties"]["cost"].readOnly = true;
+    - from: swagger-document
+      where: $.definitions.PurchasedPhoneNumber
+      transform: >
+          $["properties"]["id"].readOnly = true;
+          $["properties"]["phoneNumber"].readOnly = true;
+          $["properties"]["phoneNumberType"].readOnly = true;
+          $["properties"]["countryCode"].readOnly = true;
+          $["properties"]["capabilities"].readOnly = true;
+          $["properties"]["assignmentType"].readOnly = true;
+          $["properties"]["purchaseDate"].readOnly = true;
+          $["properties"]["cost"].readOnly = true;
 ```
 
 ### Add readonly attribute to PhoneNumberCost properties
+
 ```yaml
 directive:
-  - from: swagger-document
-    where: $.definitions.PhoneNumberCost
-    transform: >
-      $["properties"]["amount"].readOnly = true;
-      $["properties"]["currencyCode"].readOnly = true;
-      $["properties"]["billingFrequency"].readOnly = true;
+    - from: swagger-document
+      where: $.definitions.PhoneNumberCost
+      transform: >
+          $["properties"]["amount"].readOnly = true;
+          $["properties"]["currencyCode"].readOnly = true;
+          $["properties"]["billingFrequency"].readOnly = true;
 ```
 
 ### Add readonly attribute to PhoneNumberSearchResult properties
+
 ```yaml
 directive:
-  - from: swagger-document
-    where: $.definitions.PhoneNumberSearchResult
-    transform: >
-      $["properties"]["searchId"].readOnly = true;
-      $["properties"]["phoneNumbers"].readOnly = true;
-      $["properties"]["cost"].readOnly = true;
-      $["properties"]["searchExpiresBy"].readOnly = true;
-      $["properties"]["phoneNumberType"].readOnly = true;
-      $["properties"]["assignmentType"].readOnly = true;
-      $["properties"]["capabilities"].readOnly = true;
+    - from: swagger-document
+      where: $.definitions.PhoneNumberSearchResult
+      transform: >
+          $["properties"]["searchId"].readOnly = true;
+          $["properties"]["phoneNumbers"].readOnly = true;
+          $["properties"]["cost"].readOnly = true;
+          $["properties"]["searchExpiresBy"].readOnly = true;
+          $["properties"]["phoneNumberType"].readOnly = true;
+          $["properties"]["assignmentType"].readOnly = true;
+          $["properties"]["capabilities"].readOnly = true;
 ```
 
 ### Rename PhoneNumberOperation to PhoneNumberRawOperation
-``` yaml
+
+```yaml
 directive:
     - rename-model:
-        from: PhoneNumberOperation
-        to: PhoneNumberRawOperation
+          from: PhoneNumberOperation
+          to: PhoneNumberRawOperation
 ```
 
 ### Add readonly attribute to AreaCodeResult properties
+
 ```yaml
 directive:
-  - from: swagger-document
-    where: $.definitions.PhoneNumberAreaCode
-    transform: >
-      $["properties"]["areaCode"].readOnly = true;
+    - from: swagger-document
+      where: $.definitions.PhoneNumberAreaCode
+      transform: >
+          $["properties"]["areaCode"].readOnly = true;
 ```
 
 ### Add readonly attribute to AreaCodes properties
+
 ```yaml
 directive:
-  - from: swagger-document
-    where: $.definitions.PhoneNumberAreaCodes
-    transform: >
-      $["properties"]["areaCodes"].readOnly = true;
-      $["properties"]["nextLink"].readOnly = true;
+    - from: swagger-document
+      where: $.definitions.PhoneNumberAreaCodes
+      transform: >
+          $["properties"]["areaCodes"].readOnly = true;
+          $["properties"]["nextLink"].readOnly = true;
 ```
 
 ### Add readonly attribute to PhoneNumberAdministrativeDivision properties
+
 ```yaml
 directive:
-  - from: swagger-document
-    where: $.definitions.PhoneNumberAdministrativeDivision
-    transform: >
-      $["properties"]["abbreviatedName"].readOnly = true;
-      $["properties"]["localizedName"].readOnly = true;
+    - from: swagger-document
+      where: $.definitions.PhoneNumberAdministrativeDivision
+      transform: >
+          $["properties"]["abbreviatedName"].readOnly = true;
+          $["properties"]["localizedName"].readOnly = true;
 ```
 
 ### Add readonly attribute to PhoneNumberAdministrativeDivision properties
+
 ```yaml
 directive:
-  - from: swagger-document
-    where: $.definitions.PhoneNumberAdministrativeDivision
-    transform: >
-      $["properties"]["abbreviatedName"].readOnly = true;
-      $["properties"]["localizedName"].readOnly = true;
+    - from: swagger-document
+      where: $.definitions.PhoneNumberAdministrativeDivision
+      transform: >
+          $["properties"]["abbreviatedName"].readOnly = true;
+          $["properties"]["localizedName"].readOnly = true;
 ```
 
 ### Add readonly attribute to PhoneNumberCountries properties
+
 ```yaml
 directive:
-  - from: swagger-document
-    where: $.definitions.PhoneNumberCountries
-    transform: >
-      $["properties"]["countries"].readOnly = true;
-      $["properties"]["nextLink"].readOnly = true;
+    - from: swagger-document
+      where: $.definitions.PhoneNumberCountries
+      transform: >
+          $["properties"]["countries"].readOnly = true;
+          $["properties"]["nextLink"].readOnly = true;
 ```
 
 ### Add readonly attribute to PhoneNumberLocality properties
+
 ```yaml
 directive:
-  - from: swagger-document
-    where: $.definitions.PhoneNumberLocality
-    transform: >
-      $["properties"]["administrativeDivision"].readOnly = true;
-      $["properties"]["localizedName"].readOnly = true;
+    - from: swagger-document
+      where: $.definitions.PhoneNumberLocality
+      transform: >
+          $["properties"]["administrativeDivision"].readOnly = true;
+          $["properties"]["localizedName"].readOnly = true;
 ```
 
 ### Add readonly attribute to PhoneNumberLocalities properties
+
 ```yaml
 directive:
-  - from: swagger-document
-    where: $.definitions.PhoneNumberLocalities
-    transform: >
-      $["properties"]["nextLink"].readOnly = true;
-      $["properties"]["phoneNumberLocalities"].readOnly = true;
+    - from: swagger-document
+      where: $.definitions.PhoneNumberLocalities
+      transform: >
+          $["properties"]["nextLink"].readOnly = true;
+          $["properties"]["phoneNumberLocalities"].readOnly = true;
 ```
 
 ### Add readonly attribute to PhoneNumberOffering properties
+
 ```yaml
 directive:
-  - from: swagger-document
-    where: $.definitions.PhoneNumberOffering
-    transform: >
-      $["properties"]["assignmentType"].readOnly = true;
-      $["properties"]["availableCapabilities"].readOnly = true;
-      $["properties"]["cost"].readOnly = true;
-      $["properties"]["phoneNumberType"].readOnly = true;
+    - from: swagger-document
+      where: $.definitions.PhoneNumberOffering
+      transform: >
+          $["properties"]["assignmentType"].readOnly = true;
+          $["properties"]["availableCapabilities"].readOnly = true;
+          $["properties"]["cost"].readOnly = true;
+          $["properties"]["phoneNumberType"].readOnly = true;
 ```
 
 ### Add readonly attribute to PhoneNumberOfferings properties
+
 ```yaml
 directive:
-  - from: swagger-document
-    where: $.definitions.OfferingsResponse
-    transform: >
-      $["properties"]["nextLink"].readOnly = true;
-      $["properties"]["phoneNumberOfferings"].readOnly = true;
+    - from: swagger-document
+      where: $.definitions.OfferingsResponse
+      transform: >
+          $["properties"]["nextLink"].readOnly = true;
+          $["properties"]["phoneNumberOfferings"].readOnly = true;
 ```
 
 ### Add readonly attribute to PhoneNumberCountry properties
+
 ```yaml
 directive:
-  - from: swagger-document
-    where: $.definitions.PhoneNumberCountry
+    - from: swagger-document
+      where: $.definitions.PhoneNumberCountry
+      transform: >
+          $["properties"]["localizedName"].readOnly = true;
+          $["properties"]["countryCode"].readOnly = true;
+```
+
+### Add readonly attribute to OperatorDetails properties
+
+```yaml
+directive:
+    - from: swagger-document
+      where: $.definitions.OperatorDetails
+      transform: >
+          $["properties"]["name"].readOnly = true;
+          $["properties"]["mobileNetworkCode"].readOnly = true;
+          $["properties"]["mobileCountryCode"].readOnly = true;
+```
+
+### Add readonly attribute to OperatorInformation properties
+
+```yaml
+directive:
+    - from: swagger-document
+      where: $.definitions.OperatorInformation
+      transform: >
+          $["properties"]["phoneNumber"].readOnly = true;
+          $["properties"]["numberType"].readOnly = true;
+          $["properties"]["isoCountryCode"].readOnly = true;
+          $["properties"]["operatorDetails"].readOnly = true;
+          $["properties"]["nationalFormat"].readOnly = true;
+          $["properties"]["internationalFormat"].readOnly = true;
+```
+
+### Add readonly attribute to OperatorInformationResult properties
+
+```yaml
+directive:
+    - from: swagger-document
+      where: $.definitions.OperatorInformationResult
+      transform: >
+          $["properties"]["values"].readOnly = true;
+```
+
+```yaml
+directive:
+    from: swagger-document
+    where: $.definitions.PhoneNumberSearchResult.properties.error.x-ms-enum
     transform: >
-      $["properties"]["localizedName"].readOnly = true;
-      $["properties"]["countryCode"].readOnly = true;
+        $["name"] = "PhoneNumberSearchResultError";
 ```
 
-### Removed Property error from PhoneNumberSearchResult
-``` yaml
+```yaml
 directive:
-  where-model: PhoneNumberSearchResult
-  remove-property: error
-```
-
-### Removed Property errorCode from PhoneNumberSearchResult
-``` yaml
-directive:
-  where-model: PhoneNumberSearchResult
-  remove-property: errorCode
+    from: swagger-document
+    where: $.parameters.Endpoint
+    transform: >
+        $["format"] = "";
 ```
 
 ### Removed Property phoneNumberSource from PurchasedPhoneNumber
-``` yaml
+
+```yaml
 directive:
-  where-model: PurchasedPhoneNumber
-  remove-property: phoneNumberSource
+    where-model: PurchasedPhoneNumber
+    remove-property: phoneNumberSource
 ```
 
 # Removed Models
-``` yaml
+
+```yaml
 directive:
-  - remove-operation-match: /.*Reservation.*/i
-  - remove-operation: PhoneNumbers_BrowseAvailableNumbers
-  - remove-model: PhoneNumbersReservation
-  - remove-model: PhoneNumbersReservations
-  - remove-model: PhoneNumbersBrowseRequest
-  - remove-model: PhoneNumbersBrowseResult
-  - remove-model: PhoneNumberBrowseCapabilitiesRequest
-  - remove-model: PhoneNumbersReservationPurchaseRequest
-  - remove-model: Error
-  - remove-model: AvailablePhoneNumber
-  - remove-model: AvailablePhoneNumberCost
+    - remove-operation-match: /.*Reservation.*/i
+    - remove-operation: PhoneNumbers_BrowseAvailableNumbers
+    - remove-model: PhoneNumbersReservation
+    - remove-model: PhoneNumbersReservations
+    - remove-model: PhoneNumbersBrowseRequest
+    - remove-model: PhoneNumbersBrowseResult
+    - remove-model: PhoneNumberBrowseCapabilitiesRequest
+    - remove-model: PhoneNumbersReservationPurchaseRequest
+    - remove-model: AvailablePhoneNumber
+    - remove-model: AvailablePhoneNumberCost
 ```

@@ -28,13 +28,15 @@ public final class NetworkMappingCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of NetworkMappingCollection class. */
+    /**
+     * Creates an instance of NetworkMappingCollection class.
+     */
     public NetworkMappingCollection() {
     }
 
     /**
      * Get the value property: The Network Mappings list.
-     *
+     * 
      * @return the value value.
      */
     public List<NetworkMappingInner> value() {
@@ -43,7 +45,7 @@ public final class NetworkMappingCollection {
 
     /**
      * Set the value property: The Network Mappings list.
-     *
+     * 
      * @param value the value value to set.
      * @return the NetworkMappingCollection object itself.
      */
@@ -54,7 +56,7 @@ public final class NetworkMappingCollection {
 
     /**
      * Get the nextLink property: The value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -63,7 +65,7 @@ public final class NetworkMappingCollection {
 
     /**
      * Set the nextLink property: The value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the NetworkMappingCollection object itself.
      */
@@ -74,7 +76,7 @@ public final class NetworkMappingCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

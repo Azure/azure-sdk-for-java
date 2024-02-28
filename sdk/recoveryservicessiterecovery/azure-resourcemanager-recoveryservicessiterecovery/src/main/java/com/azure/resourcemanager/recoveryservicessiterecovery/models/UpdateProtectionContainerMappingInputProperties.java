@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Container pairing update input. */
+/**
+ * Container pairing update input.
+ */
 @Fluent
 public final class UpdateProtectionContainerMappingInputProperties {
     /*
@@ -16,13 +18,15 @@ public final class UpdateProtectionContainerMappingInputProperties {
     @JsonProperty(value = "providerSpecificInput")
     private ReplicationProviderSpecificUpdateContainerMappingInput providerSpecificInput;
 
-    /** Creates an instance of UpdateProtectionContainerMappingInputProperties class. */
+    /**
+     * Creates an instance of UpdateProtectionContainerMappingInputProperties class.
+     */
     public UpdateProtectionContainerMappingInputProperties() {
     }
 
     /**
      * Get the providerSpecificInput property: Provider specific input for updating protection container mapping.
-     *
+     * 
      * @return the providerSpecificInput value.
      */
     public ReplicationProviderSpecificUpdateContainerMappingInput providerSpecificInput() {
@@ -31,19 +35,19 @@ public final class UpdateProtectionContainerMappingInputProperties {
 
     /**
      * Set the providerSpecificInput property: Provider specific input for updating protection container mapping.
-     *
+     * 
      * @param providerSpecificInput the providerSpecificInput value to set.
      * @return the UpdateProtectionContainerMappingInputProperties object itself.
      */
-    public UpdateProtectionContainerMappingInputProperties withProviderSpecificInput(
-        ReplicationProviderSpecificUpdateContainerMappingInput providerSpecificInput) {
+    public UpdateProtectionContainerMappingInputProperties
+        withProviderSpecificInput(ReplicationProviderSpecificUpdateContainerMappingInput providerSpecificInput) {
         this.providerSpecificInput = providerSpecificInput;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
