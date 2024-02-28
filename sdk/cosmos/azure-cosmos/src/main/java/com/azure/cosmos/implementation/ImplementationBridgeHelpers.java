@@ -21,6 +21,7 @@ import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.CosmosRegionSwitchHint;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GlobalThroughputControlConfig;
 import com.azure.cosmos.SessionRetryOptions;
@@ -146,6 +147,8 @@ public class ImplementationBridgeHelpers {
             ConsistencyLevel getConsistencyLevel(CosmosClientBuilder builder);
 
             String getEndpoint(CosmosClientBuilder builder);
+
+            CosmosItemSerializer getDefaultCustomSerializer(CosmosClientBuilder builder);
         }
     }
 
@@ -391,6 +394,7 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosItemRequestOptionsAccessor {
+            RequestOptions toRequestOptions(CosmosItemRequestOptions itemRequestOptions, CosmosItemSerializer effectiveItemSerializer);
             void setOperationContext(CosmosItemRequestOptions queryRequestOptions, OperationContextAndListenerTuple operationContext);
             OperationContextAndListenerTuple getOperationContext(CosmosItemRequestOptions queryRequestOptions);
             CosmosItemRequestOptions clone(CosmosItemRequestOptions options);
@@ -523,7 +527,11 @@ public class ImplementationBridgeHelpers {
         public interface CosmosItemResponseBuilderAccessor {
             <T> CosmosItemResponse<T> createCosmosItemResponse(CosmosItemResponse<byte[]> response,
                                                                Class<T> classType,
-                                                               ItemDeserializer itemDeserializer);
+                                                               CosmosItemSerializer serializer);
+
+            <T> CosmosItemResponse<T> createCosmosItemResponse(ResourceResponse<Document> response,
+                                                               Class<T> classType,
+                                                               CosmosItemSerializer serializer);
 
 
             <T> CosmosItemResponse<T> withRemappedStatusCode(
@@ -1325,6 +1333,10 @@ public class ImplementationBridgeHelpers {
                 CosmosDiagnosticsThresholds operationLevelThresholds);
 
             DiagnosticsProvider getDiagnosticsProvider(CosmosAsyncClient client);
+
+            CosmosItemSerializer getEffectiveItemSerializer(
+                CosmosAsyncClient client,
+                CosmosItemSerializer requestOptionsItemSerializer);
         }
     }
 
@@ -1647,6 +1659,46 @@ public class ImplementationBridgeHelpers {
             Duration getMinInRegionRetryTime(SessionRetryOptions sessionRetryOptions);
 
             int getMaxInRegionRetryCount(SessionRetryOptions sessionRetryOptions);
+        }
+    }
+
+    public static final class CosmosItemSerializerHelper {
+        private static final AtomicReference<Boolean> cosmosItemSerializerClassLoaded = new AtomicReference<>(false);
+        private static final AtomicReference<CosmosItemSerializerAccessor> accessor = new AtomicReference<>();
+
+        private CosmosItemSerializerHelper() {}
+
+        public static CosmosItemSerializerAccessor getCosmosItemSerializerAccessor() {
+
+            if (!cosmosItemSerializerClassLoaded.get()) {
+                logger.debug("Initializing cosmosItemSerializerAccessor...");
+                initializeAllAccessors();
+            }
+
+            CosmosItemSerializerAccessor snapshot = accessor.get();
+
+            if (snapshot == null) {
+                logger.error("cosmosItemSerializerAccessor is not initialized yet!");
+                System.exit(9730); // Using a unique status code here to help debug the issue.
+            }
+
+            return snapshot;
+        }
+
+        public static void setCosmosItemSerializerAccessor(final CosmosItemSerializerAccessor newAccessor) {
+
+            assert (newAccessor != null);
+
+            if (!accessor.compareAndSet(null, newAccessor)) {
+                logger.debug("CosmosItemSerializerAccessor already initialized!");
+            } else {
+                logger.debug("Setting CosmosItemSerializerAccessor...");
+                cosmosItemSerializerClassLoaded.set(true);
+            }
+        }
+
+        public interface CosmosItemSerializerAccessor {
+            //<T> T deserializeInternal(CosmosItemSerializer serializer, JsonNode jsonNode, Class<T> clazz);
         }
     }
 }

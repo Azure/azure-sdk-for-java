@@ -3,6 +3,7 @@
 package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 import com.azure.cosmos.implementation.uuid.EthernetAddress;
 import com.azure.cosmos.implementation.uuid.Generators;
@@ -556,11 +557,11 @@ public class Utils {
         }
     }
 
-    public static <T> T parse(JsonNode jsonNode, Class<T> itemClassType, ItemDeserializer itemDeserializer) {
-        ItemDeserializer effectiveDeserializer = itemDeserializer == null ?
-                new ItemDeserializer.JsonDeserializer() : itemDeserializer;
+    public static <T> T parse(JsonNode jsonNode, Class<T> itemClassType, CosmosItemSerializer itemSerializer) {
+        CosmosItemSerializer effectiveItemSerializer= itemSerializer == null ?
+                CosmosItemSerializer.DEFAULT_SERIALIZER : itemSerializer;
 
-        return effectiveDeserializer.convert(itemClassType, jsonNode);
+        return effectiveItemSerializer.deserialize(new JsonNodeMap(jsonNode), itemClassType);
     }
 
     public static ByteBuffer serializeJsonToByteBuffer(ObjectMapper objectMapper, Object object) {

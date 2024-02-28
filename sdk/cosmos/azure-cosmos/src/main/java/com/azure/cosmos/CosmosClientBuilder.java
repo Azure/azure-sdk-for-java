@@ -143,6 +143,7 @@ public class CosmosClientBuilder implements
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
     private SessionRetryOptions sessionRetryOptions;
     private Supplier<CosmosExcludedRegions> cosmosExcludedRegionsSupplier;
+    private CosmosItemSerializer defaultCustomSerializer;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -743,7 +744,7 @@ public class CosmosClientBuilder implements
      * on their own.
      * @return the CosmosItemRequestOptions
      */
-    CosmosClientBuilder setNonIdempotentWriteRetryPolicy(
+    public CosmosClientBuilder setNonIdempotentWriteRetryPolicy(
         boolean nonIdempotentWriteRetriesEnabled,
         boolean useTrackingIdPropertyForCreateAndReplace) {
 
@@ -1063,6 +1064,23 @@ public class CosmosClientBuilder implements
     }
 
     /**
+     * Sets a custom serializer that should be used for conversion between POJOs and Json payload stored in the
+     * Cosmos DB service. The custom serializer can also be specified in request options. If defined here and
+     * in request options the serializer defined in request options will be used.
+     * @param serializer the custom serialzier to be used for payload transformations
+     * @return current CosmosClientBuilder
+     */
+    public CosmosClientBuilder setCustomSerializer(CosmosItemSerializer serializer) {
+        this.defaultCustomSerializer = serializer;
+
+        return this;
+    }
+
+    CosmosItemSerializer getCustomSerializer() {
+        return this.defaultCustomSerializer;
+    }
+
+    /**
      * Builds a cosmos async client with the provided properties
      *
      * @return CosmosAsyncClient
@@ -1294,6 +1312,11 @@ public class CosmosClientBuilder implements
                 @Override
                 public String getEndpoint(CosmosClientBuilder builder) {
                     return builder.getEndpoint();
+                }
+
+                @Override
+                public CosmosItemSerializer getDefaultCustomSerializer(CosmosClientBuilder builder) {
+                    return builder.getCustomSerializer();
                 }
             });
     }

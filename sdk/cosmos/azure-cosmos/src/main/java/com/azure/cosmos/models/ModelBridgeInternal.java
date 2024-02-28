@@ -8,16 +8,13 @@ import com.azure.cosmos.CosmosDiagnostics;
 import com.azure.cosmos.implementation.ClientEncryptionKey;
 import com.azure.cosmos.implementation.Conflict;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
-import com.azure.cosmos.implementation.CosmosQueryRequestOptionsBase;
 import com.azure.cosmos.implementation.CosmosResourceType;
 import com.azure.cosmos.implementation.Database;
 import com.azure.cosmos.implementation.DatabaseAccount;
-import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.DocumentCollection;
 import com.azure.cosmos.implementation.HttpConstants;
 import com.azure.cosmos.implementation.Index;
 import com.azure.cosmos.implementation.InternalObjectNode;
-import com.azure.cosmos.implementation.ItemDeserializer;
 import com.azure.cosmos.implementation.JsonSerializable;
 import com.azure.cosmos.implementation.Offer;
 import com.azure.cosmos.implementation.Permission;
@@ -85,16 +82,6 @@ public final class ModelBridgeInternal {
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
     public static CosmosDatabaseResponse createCosmosDatabaseResponse(ResourceResponse<Database> response) {
         return new CosmosDatabaseResponse(response);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static <T> CosmosItemResponse<T> createCosmosAsyncItemResponse(ResourceResponse<Document> response, Class<T> classType, ItemDeserializer itemDeserializer) {
-        return new CosmosItemResponse<>(response, classType, itemDeserializer);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static CosmosItemResponse<Object> createCosmosAsyncItemResponseWithObjectType(ResourceResponse<Document> response) {
-        return new CosmosItemResponse<>(response, Object.class, null);
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)
@@ -255,16 +242,6 @@ public final class ModelBridgeInternal {
     public static CosmosItemRequestOptions setPartitionKey(CosmosItemRequestOptions cosmosItemRequestOptions,
                                                            PartitionKey partitionKey) {
         return cosmosItemRequestOptions.setPartitionKey(partitionKey);
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static RequestOptions toRequestOptions(CosmosItemRequestOptions cosmosItemRequestOptions) {
-        return cosmosItemRequestOptions.toRequestOptions();
-    }
-
-    @Warning(value = INTERNAL_USE_ONLY_WARNING)
-    public static RequestOptions toRequestOptions(CosmosPatchItemRequestOptions cosmosPatchItemRequestOptions) {
-        return cosmosPatchItemRequestOptions.toRequestOptions();
     }
 
     @Warning(value = INTERNAL_USE_ONLY_WARNING)

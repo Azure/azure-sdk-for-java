@@ -4,6 +4,7 @@
 package com.azure.cosmos.encryption.implementation;
 
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncContainer;
 import com.azure.cosmos.encryption.implementation.keyprovider.EncryptionKeyStoreProviderImpl;
@@ -104,6 +105,10 @@ public class EncryptionImplementationBridgeHelpers {
                 boolean shouldForceRefresh);
 
             EncryptionKeyStoreProviderImpl getEncryptionKeyStoreProviderImpl(CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient);
+
+            CosmosItemSerializer getEffectiveItemSerializer(
+                CosmosEncryptionAsyncClient cosmosEncryptionAsyncClient,
+                CosmosItemSerializer requestOptionsItemSerializer);
         }
     }
 

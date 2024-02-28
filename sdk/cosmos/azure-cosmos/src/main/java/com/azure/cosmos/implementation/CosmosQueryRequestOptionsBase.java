@@ -6,6 +6,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosDiagnosticsThresholds;
 import com.azure.cosmos.CosmosEndToEndOperationLatencyPolicyConfig;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.apachecommons.collections.list.UnmodifiableList;
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -42,6 +43,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
     private Function<JsonNode, ?> itemFactoryMethod;
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
     private List<String> excludeRegions;
+    private CosmosItemSerializer customSerializer;
 
     /**
      * Instantiates a new query request options.
@@ -73,6 +75,7 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
         this.cosmosEndToEndOperationLatencyPolicyConfig = options.cosmosEndToEndOperationLatencyPolicyConfig;
         this.excludeRegions = options.excludeRegions;
         this.properties = options.properties;
+        this.customSerializer = options.customSerializer;
     }
 
     public void setOperationContextAndListenerTuple(OperationContextAndListenerTuple operationContextAndListenerTuple) {
@@ -440,6 +443,28 @@ public abstract class CosmosQueryRequestOptionsBase<T extends CosmosQueryRequest
 
     public CosmosEndToEndOperationLatencyPolicyConfig getEndToEndOperationLatencyConfig() {
         return cosmosEndToEndOperationLatencyPolicyConfig;
+    }
+
+    /**
+     * Gets the custom item serializer defined for this instance of request options
+     * @return the custom item serializer
+     */
+    public CosmosItemSerializer getCustomSerializer() {
+        return this.customSerializer;
+    }
+
+    /**
+     * Allows specifying a custom item serializer to be used for this operation. If the serializer
+     * on the request options is null, the serializer on CosmosClientBuilder is used. If both serializers
+     * are null (the default), an internal Jackson ObjectMapper is ued for serialization/deserialization.
+     * @param itemSerializerOverride the custom item serializer for this operation
+     * @return  the CosmosItemRequestOptions.
+     */
+    @SuppressWarnings("unchecked")
+    public T setCustomSerializer(CosmosItemSerializer itemSerializerOverride) {
+        this.customSerializer = itemSerializerOverride;
+
+        return (T)this;
     }
 
     public RequestOptions applyToRequestOptions(RequestOptions requestOptions) {
