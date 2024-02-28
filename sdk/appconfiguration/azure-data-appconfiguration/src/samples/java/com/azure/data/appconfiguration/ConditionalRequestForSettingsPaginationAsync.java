@@ -42,8 +42,10 @@ public class ConditionalRequestForSettingsPaginationAsync {
         client.listConfigurationSettings(null)
                 .byPage()
                 .subscribe(pagedResponse -> {
-                    matchConditionsList.add(new MatchConditions().setIfNoneMatch(pagedResponse.getHeaders().getValue("ETag")));
+                    matchConditionsList.add(new MatchConditions().setIfNoneMatch(pagedResponse.getHeaders().getValue("Etag")));
                 });
+
+        TimeUnit.MILLISECONDS.sleep(1000);
 
         PagedFlux<ConfigurationSetting> settings = client.listConfigurationSettings(
                 new SettingSelector().setMatchConditions(matchConditionsList));
@@ -68,10 +70,6 @@ public class ConditionalRequestForSettingsPaginationAsync {
         // The .subscribe() creation and assignment is not a blocking call. For the purpose of this example, we sleep
         // the thread so the program does not end before the send operation is complete. Using .block() instead of
         // .subscribe() will turn this into a synchronous call.
-        try {
-            TimeUnit.MINUTES.sleep(1);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        TimeUnit.SECONDS.sleep(5);
     }
 }

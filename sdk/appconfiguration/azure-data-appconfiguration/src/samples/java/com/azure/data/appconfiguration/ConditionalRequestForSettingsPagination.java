@@ -37,7 +37,7 @@ public class ConditionalRequestForSettingsPagination {
         // list all settings and get their page ETags
         List<MatchConditions> matchConditionsList = client.listConfigurationSettings(null)
                 .streamByPage()
-                .toList()
+                .collect(Collectors.toList())
                 .stream()
                 .map(pagedResponse -> new MatchConditions().setIfNoneMatch(pagedResponse.getHeaders().getValue("Etag")))
                 .collect(Collectors.toList());

@@ -1042,6 +1042,7 @@ public final class ConfigurationAsyncClient {
         final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
         final List<MatchConditions> matchConditionsList = selector == null ? null : selector.getMatchConditions();
         AtomicInteger pageETagIndex = new AtomicInteger(1);
+
         return new PagedFlux<>(
                 () -> withContext(context -> {
                     String firstPageETag = (matchConditionsList == null || matchConditionsList.isEmpty())
@@ -1062,9 +1063,9 @@ public final class ConfigurationAsyncClient {
                                 (Function<Throwable, Mono<PagedResponse<KeyValue>>>) throwable -> {
                                     HttpResponseException e = (HttpResponseException) throwable;
                                     HttpResponse httpResponse = e.getResponse();
-                                    String continuationToken = parseNextLink(httpResponse.getHeaderValue("link"));
 
                                     if (httpResponse.getStatusCode() == 304) {
+                                        String continuationToken = parseNextLink(httpResponse.getHeaderValue("link"));
                                         return Mono.just(
                                                 new PagedResponseBase<>(
                                                         httpResponse.getRequest(),

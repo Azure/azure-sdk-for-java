@@ -1055,7 +1055,10 @@ public final class ConfigurationClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     public PagedIterable<ConfigurationSetting> listConfigurationSettings(SettingSelector selector, Context context) {
+        final String keyFilter = selector == null ? null : selector.getKeyFilter();
+        final String labelFilter = selector == null ? null : selector.getLabelFilter();
         final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
+        final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
         final List<MatchConditions> matchConditionsList = selector == null ? null : selector.getMatchConditions();
         AtomicInteger pageETagIndex = new AtomicInteger(1);
 
@@ -1067,11 +1070,11 @@ public final class ConfigurationClient {
                 PagedResponse<KeyValue> pagedResponse;
                 try {
                     pagedResponse = serviceClient.getKeyValuesSinglePage(
-                            selector == null ? null : selector.getKeyFilter(),
-                            selector == null ? null : selector.getLabelFilter(),
+                            keyFilter,
+                            labelFilter,
                             null,
                             acceptDateTime,
-                            selector == null ? null : toSettingFieldsList(selector.getFields()),
+                            settingFields,
                             null,
                             null,
                             firstPageETag,
@@ -1079,9 +1082,7 @@ public final class ConfigurationClient {
                 } catch (HttpResponseException ex) {
                     final HttpResponse httpResponse = ex.getResponse();
                     if (httpResponse.getStatusCode() == 304) {
-                        // actual value of next link: </kv?api-version=2023-10-01&$Select=&after=a2V5MTg4Cg%3D%3D>; rel="next"
                         String continuationToken = parseNextLink(httpResponse.getHeaderValue("link"));
-
                         return new PagedResponseBase<>(
                                 httpResponse.getRequest(),
                                 httpResponse.getStatusCode(),
