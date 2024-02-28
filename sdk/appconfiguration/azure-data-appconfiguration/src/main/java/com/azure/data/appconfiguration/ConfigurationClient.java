@@ -14,7 +14,6 @@ import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.ResponseBase;
 import com.azure.core.http.rest.SimpleResponse;
@@ -50,7 +49,8 @@ import static com.azure.data.appconfiguration.implementation.Utility.ETAG_ANY;
 import static com.azure.data.appconfiguration.implementation.Utility.addTracingNamespace;
 import static com.azure.data.appconfiguration.implementation.Utility.enableSyncRestProxy;
 import static com.azure.data.appconfiguration.implementation.Utility.getETag;
-import static com.azure.data.appconfiguration.implementation.Utility.parseNextLink;
+import static com.azure.data.appconfiguration.implementation.Utility.getPageETag;
+import static com.azure.data.appconfiguration.implementation.Utility.handleNotModifiedErrorToValidResponse;
 import static com.azure.data.appconfiguration.implementation.Utility.toKeyValue;
 import static com.azure.data.appconfiguration.implementation.Utility.toSettingFieldsList;
 import static com.azure.data.appconfiguration.implementation.Utility.updateSnapshotSync;
@@ -1060,13 +1060,9 @@ public final class ConfigurationClient {
         final String acceptDateTime = selector == null ? null : selector.getAcceptDateTime();
         final List<SettingFields> settingFields = selector == null ? null : toSettingFieldsList(selector.getFields());
         final List<MatchConditions> matchConditionsList = selector == null ? null : selector.getMatchConditions();
-        AtomicInteger pageETagIndex = new AtomicInteger(1);
-
+        AtomicInteger pageETagIndex = new AtomicInteger(0);
         return new PagedIterable<>(
             () -> {
-                String firstPageETag = (matchConditionsList == null || matchConditionsList.isEmpty())
-                        ? null
-                        : matchConditionsList.get(0).getIfNoneMatch();
                 PagedResponse<KeyValue> pagedResponse;
                 try {
                     pagedResponse = serviceClient.getKeyValuesSinglePage(
@@ -1077,55 +1073,24 @@ public final class ConfigurationClient {
                             settingFields,
                             null,
                             null,
-                            firstPageETag,
+                            getPageETag(matchConditionsList, pageETagIndex),
                             enableSyncRestProxy(addTracingNamespace(context)));
                 } catch (HttpResponseException ex) {
-                    final HttpResponse httpResponse = ex.getResponse();
-                    if (httpResponse.getStatusCode() == 304) {
-                        String continuationToken = parseNextLink(httpResponse.getHeaderValue("link"));
-                        return new PagedResponseBase<>(
-                                httpResponse.getRequest(),
-                                httpResponse.getStatusCode(),
-                                httpResponse.getHeaders(),
-                                null,
-                                continuationToken,
-                                null);
-                    }
-                    throw LOGGER.logExceptionAsError(ex);
+                    return handleNotModifiedErrorToValidResponse(ex, LOGGER);
                 }
                 return toConfigurationSettingWithPagedResponse(pagedResponse);
             },
             nextLink -> {
-                int pageETagListSize = (matchConditionsList == null || matchConditionsList.isEmpty()) ? 0 : matchConditionsList.size();
-                String nextPageETag = null;
-                int pageETagIndexValue = pageETagIndex.get();
-                if (pageETagIndexValue < pageETagListSize) {
-                    nextPageETag = matchConditionsList.get(pageETagIndexValue).getIfNoneMatch();
-                    pageETagIndex.set(pageETagIndexValue + 1);
-                }
-
                 PagedResponse<KeyValue> pagedResponse;
                 try {
                     pagedResponse = serviceClient.getKeyValuesNextSinglePage(
                             nextLink,
                             acceptDateTime,
                             null,
-                            nextPageETag,
+                            getPageETag(matchConditionsList, pageETagIndex),
                             enableSyncRestProxy(addTracingNamespace(context)));
                 } catch (HttpResponseException ex) {
-                    final HttpResponse httpResponse = ex.getResponse();
-                    if (httpResponse.getStatusCode() == 304) {
-                        // actual value of next link: </kv?api-version=2023-10-01&$Select=&after=a2V5MTg4Cg%3D%3D>; rel="next"
-                        String continuationToken = parseNextLink(httpResponse.getHeaderValue("link"));
-                        return new PagedResponseBase<>(
-                                httpResponse.getRequest(),
-                                httpResponse.getStatusCode(),
-                                httpResponse.getHeaders(),
-                                null,
-                                continuationToken,
-                                null);
-                    }
-                    throw LOGGER.logExceptionAsError(ex);
+                    return handleNotModifiedErrorToValidResponse(ex, LOGGER);
                 }
                 return toConfigurationSettingWithPagedResponse(pagedResponse);
             }
