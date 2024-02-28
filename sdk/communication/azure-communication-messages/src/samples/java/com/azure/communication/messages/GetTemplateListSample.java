@@ -30,7 +30,7 @@ public class GetTemplateListSample {
         PagedIterable<MessageTemplateItem> response = templateClient.listTemplates(CHANNEL_ID);
 
         response.stream().forEach(t -> {
-            WhatsAppMessageTemplateItem template = (WhatsAppMessageTemplateItem) t ;
+            WhatsAppMessageTemplateItem template = (WhatsAppMessageTemplateItem) t;
             System.out.println("===============================");
             System.out.println("Template Name :: " + template.getName());
             System.out.println("Template Language :: " + template.getLanguage());
@@ -49,7 +49,7 @@ public class GetTemplateListSample {
         PagedIterable<MessageTemplateItem> response = templateClient.listTemplates(CHANNEL_ID);
 
         response.stream().forEach(t -> {
-            WhatsAppMessageTemplateItem template = (WhatsAppMessageTemplateItem) t ;
+            WhatsAppMessageTemplateItem template = (WhatsAppMessageTemplateItem) t;
             System.out.println("===============================");
             System.out.println("Template Name :: " + template.getName());
             System.out.println("Template Language :: " + template.getLanguage());

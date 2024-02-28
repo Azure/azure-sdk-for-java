@@ -1,0 +1,1 @@
+[ [ "com.azure.resourcemanager.playwrighttesting.implementation.OperationsClientImpl$OperationsService" ], [ "com.azure.resourcemanager.playwrighttesting.implementation.AccountsClientImpl$AccountsService" ], [ "com.azure.resourcemanager.playwrighttesting.implementation.QuotasClientImpl$QuotasService" ] ]

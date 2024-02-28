@@ -5,18 +5,17 @@
 package com.azure.resourcemanager.playwrighttesting.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.playwrighttesting.fluent.models.AccountUpdateProperties;
+import com.azure.resourcemanager.playwrighttesting.models.AccountUpdateProperties;
 import com.azure.resourcemanager.playwrighttesting.models.EnablementStatus;
 import org.junit.jupiter.api.Assertions;
 
 public final class AccountUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccountUpdateProperties model =
-            BinaryData
-                .fromString(
-                    "{\"regionalAffinity\":\"Enabled\",\"scalableExecution\":\"Disabled\",\"reporting\":\"Disabled\"}")
-                .toObject(AccountUpdateProperties.class);
+        AccountUpdateProperties model = BinaryData
+            .fromString(
+                "{\"regionalAffinity\":\"Enabled\",\"scalableExecution\":\"Disabled\",\"reporting\":\"Disabled\"}")
+            .toObject(AccountUpdateProperties.class);
         Assertions.assertEquals(EnablementStatus.ENABLED, model.regionalAffinity());
         Assertions.assertEquals(EnablementStatus.DISABLED, model.scalableExecution());
         Assertions.assertEquals(EnablementStatus.DISABLED, model.reporting());
@@ -24,11 +23,8 @@ public final class AccountUpdatePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccountUpdateProperties model =
-            new AccountUpdateProperties()
-                .withRegionalAffinity(EnablementStatus.ENABLED)
-                .withScalableExecution(EnablementStatus.DISABLED)
-                .withReporting(EnablementStatus.DISABLED);
+        AccountUpdateProperties model = new AccountUpdateProperties().withRegionalAffinity(EnablementStatus.ENABLED)
+            .withScalableExecution(EnablementStatus.DISABLED).withReporting(EnablementStatus.DISABLED);
         model = BinaryData.fromObject(model).toObject(AccountUpdateProperties.class);
         Assertions.assertEquals(EnablementStatus.ENABLED, model.regionalAffinity());
         Assertions.assertEquals(EnablementStatus.DISABLED, model.scalableExecution());

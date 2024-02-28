@@ -9,10 +9,11 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters for Azure Cognitive Search when used as an Azure OpenAI chat extension.
+ * Parameters for Azure Cognitive Search when used as an Azure OpenAI chat extension. The supported authentication
+ * types are APIKey, SystemAssignedManagedIdentity and UserAssignedManagedIdentity.
  */
 @Fluent
-public final class AzureCognitiveSearchChatExtensionParameters {
+public final class AzureSearchChatExtensionParameters {
 
     /*
      * The authentication method to use when accessing the defined data source.
@@ -30,14 +31,14 @@ public final class AzureCognitiveSearchChatExtensionParameters {
      * The configured top number of documents to feature for the configured query.
      */
     @Generated
-    @JsonProperty(value = "topNDocuments")
+    @JsonProperty(value = "top_n_documents")
     private Integer topNDocuments;
 
     /*
      * Whether queries should be restricted to use of indexed data.
      */
     @Generated
-    @JsonProperty(value = "inScope")
+    @JsonProperty(value = "in_scope")
     private Boolean inScope;
 
     /*
@@ -54,7 +55,7 @@ public final class AzureCognitiveSearchChatExtensionParameters {
      * limit for it, and it counts against the overall token limit.
      */
     @Generated
-    @JsonProperty(value = "roleInformation")
+    @JsonProperty(value = "role_information")
     private String roleInformation;
 
     /*
@@ -68,35 +69,28 @@ public final class AzureCognitiveSearchChatExtensionParameters {
      * The name of the index to use as available in the referenced Azure Cognitive Search resource.
      */
     @Generated
-    @JsonProperty(value = "indexName")
+    @JsonProperty(value = "index_name")
     private String indexName;
-
-    /*
-     * The API key to use when interacting with the Azure Cognitive Search resource.
-     */
-    @Generated
-    @JsonProperty(value = "key")
-    private String key;
 
     /*
      * Customized field mapping behavior to use when interacting with the search index.
      */
     @Generated
-    @JsonProperty(value = "fieldsMapping")
-    private AzureCognitiveSearchIndexFieldMappingOptions fieldsMapping;
+    @JsonProperty(value = "fields_mapping")
+    private AzureSearchIndexFieldMappingOptions fieldsMapping;
 
     /*
      * The query type to use with Azure Cognitive Search.
      */
     @Generated
-    @JsonProperty(value = "queryType")
-    private AzureCognitiveSearchQueryType queryType;
+    @JsonProperty(value = "query_type")
+    private AzureSearchQueryType queryType;
 
     /*
      * The additional semantic configuration for the query.
      */
     @Generated
-    @JsonProperty(value = "semanticConfiguration")
+    @JsonProperty(value = "semantic_configuration")
     private String semanticConfiguration;
 
     /*
@@ -107,39 +101,22 @@ public final class AzureCognitiveSearchChatExtensionParameters {
     private String filter;
 
     /*
-     * When using embeddings for search, specifies the resource endpoint URL from which embeddings should be retrieved.
-     * It should be in the format of format
-     * https://YOUR_RESOURCE_NAME.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT_NAME/embeddings?api-version={api-
-     * version}.
-     */
-    @Generated
-    @JsonProperty(value = "embeddingEndpoint")
-    private String embeddingEndpoint;
-
-    /*
-     * When using embeddings, specifies the API key to use with the provided embeddings endpoint.
-     */
-    @Generated
-    @JsonProperty(value = "embeddingKey")
-    private String embeddingKey;
-
-    /*
      * The embedding dependency for vector search.
      */
     @Generated
-    @JsonProperty(value = "embeddingDependency")
+    @JsonProperty(value = "embedding_dependency")
     private OnYourDataVectorizationSource embeddingDependency;
 
     /**
-     * Creates an instance of AzureCognitiveSearchChatExtensionParameters class.
+     * Creates an instance of AzureSearchChatExtensionParameters class.
      *
      * @param endpoint the endpoint value to set.
      * @param indexName the indexName value to set.
      */
     @Generated
     @JsonCreator
-    public AzureCognitiveSearchChatExtensionParameters(@JsonProperty(value = "endpoint") String endpoint,
-        @JsonProperty(value = "indexName") String indexName) {
+    public AzureSearchChatExtensionParameters(@JsonProperty(value = "endpoint") String endpoint,
+        @JsonProperty(value = "index_name") String indexName) {
         this.endpoint = endpoint;
         this.indexName = indexName;
     }
@@ -168,11 +145,10 @@ public final class AzureCognitiveSearchChatExtensionParameters {
      * authentication.
      *
      * @param authentication the authentication value to set.
-     * @return the AzureCognitiveSearchChatExtensionParameters object itself.
+     * @return the AzureSearchChatExtensionParameters object itself.
      */
     @Generated
-    public AzureCognitiveSearchChatExtensionParameters
-        setAuthentication(OnYourDataAuthenticationOptions authentication) {
+    public AzureSearchChatExtensionParameters setAuthentication(OnYourDataAuthenticationOptions authentication) {
         this.authentication = authentication;
         return this;
     }
@@ -191,10 +167,10 @@ public final class AzureCognitiveSearchChatExtensionParameters {
      * Set the topNDocuments property: The configured top number of documents to feature for the configured query.
      *
      * @param topNDocuments the topNDocuments value to set.
-     * @return the AzureCognitiveSearchChatExtensionParameters object itself.
+     * @return the AzureSearchChatExtensionParameters object itself.
      */
     @Generated
-    public AzureCognitiveSearchChatExtensionParameters setTopNDocuments(Integer topNDocuments) {
+    public AzureSearchChatExtensionParameters setTopNDocuments(Integer topNDocuments) {
         this.topNDocuments = topNDocuments;
         return this;
     }
@@ -213,10 +189,10 @@ public final class AzureCognitiveSearchChatExtensionParameters {
      * Set the inScope property: Whether queries should be restricted to use of indexed data.
      *
      * @param inScope the inScope value to set.
-     * @return the AzureCognitiveSearchChatExtensionParameters object itself.
+     * @return the AzureSearchChatExtensionParameters object itself.
      */
     @Generated
-    public AzureCognitiveSearchChatExtensionParameters setInScope(Boolean inScope) {
+    public AzureSearchChatExtensionParameters setInScope(Boolean inScope) {
         this.inScope = inScope;
         return this;
     }
@@ -237,10 +213,10 @@ public final class AzureCognitiveSearchChatExtensionParameters {
      * strictness, the higher of the precision but lower recall of the answer.
      *
      * @param strictness the strictness value to set.
-     * @return the AzureCognitiveSearchChatExtensionParameters object itself.
+     * @return the AzureSearchChatExtensionParameters object itself.
      */
     @Generated
-    public AzureCognitiveSearchChatExtensionParameters setStrictness(Integer strictness) {
+    public AzureSearchChatExtensionParameters setStrictness(Integer strictness) {
         this.strictness = strictness;
         return this;
     }
@@ -263,10 +239,10 @@ public final class AzureCognitiveSearchChatExtensionParameters {
      * format responses. There's a 100 token limit for it, and it counts against the overall token limit.
      *
      * @param roleInformation the roleInformation value to set.
-     * @return the AzureCognitiveSearchChatExtensionParameters object itself.
+     * @return the AzureSearchChatExtensionParameters object itself.
      */
     @Generated
-    public AzureCognitiveSearchChatExtensionParameters setRoleInformation(String roleInformation) {
+    public AzureSearchChatExtensionParameters setRoleInformation(String roleInformation) {
         this.roleInformation = roleInformation;
         return this;
     }
@@ -293,34 +269,12 @@ public final class AzureCognitiveSearchChatExtensionParameters {
     }
 
     /**
-     * Get the key property: The API key to use when interacting with the Azure Cognitive Search resource.
-     *
-     * @return the key value.
-     */
-    @Generated
-    public String getKey() {
-        return this.key;
-    }
-
-    /**
-     * Set the key property: The API key to use when interacting with the Azure Cognitive Search resource.
-     *
-     * @param key the key value to set.
-     * @return the AzureCognitiveSearchChatExtensionParameters object itself.
-     */
-    @Generated
-    public AzureCognitiveSearchChatExtensionParameters setKey(String key) {
-        this.key = key;
-        return this;
-    }
-
-    /**
      * Get the fieldsMapping property: Customized field mapping behavior to use when interacting with the search index.
      *
      * @return the fieldsMapping value.
      */
     @Generated
-    public AzureCognitiveSearchIndexFieldMappingOptions getFieldsMapping() {
+    public AzureSearchIndexFieldMappingOptions getFieldsMapping() {
         return this.fieldsMapping;
     }
 
@@ -328,11 +282,10 @@ public final class AzureCognitiveSearchChatExtensionParameters {
      * Set the fieldsMapping property: Customized field mapping behavior to use when interacting with the search index.
      *
      * @param fieldsMapping the fieldsMapping value to set.
-     * @return the AzureCognitiveSearchChatExtensionParameters object itself.
+     * @return the AzureSearchChatExtensionParameters object itself.
      */
     @Generated
-    public AzureCognitiveSearchChatExtensionParameters
-        setFieldsMapping(AzureCognitiveSearchIndexFieldMappingOptions fieldsMapping) {
+    public AzureSearchChatExtensionParameters setFieldsMapping(AzureSearchIndexFieldMappingOptions fieldsMapping) {
         this.fieldsMapping = fieldsMapping;
         return this;
     }
@@ -343,7 +296,7 @@ public final class AzureCognitiveSearchChatExtensionParameters {
      * @return the queryType value.
      */
     @Generated
-    public AzureCognitiveSearchQueryType getQueryType() {
+    public AzureSearchQueryType getQueryType() {
         return this.queryType;
     }
 
@@ -351,10 +304,10 @@ public final class AzureCognitiveSearchChatExtensionParameters {
      * Set the queryType property: The query type to use with Azure Cognitive Search.
      *
      * @param queryType the queryType value to set.
-     * @return the AzureCognitiveSearchChatExtensionParameters object itself.
+     * @return the AzureSearchChatExtensionParameters object itself.
      */
     @Generated
-    public AzureCognitiveSearchChatExtensionParameters setQueryType(AzureCognitiveSearchQueryType queryType) {
+    public AzureSearchChatExtensionParameters setQueryType(AzureSearchQueryType queryType) {
         this.queryType = queryType;
         return this;
     }
@@ -373,10 +326,10 @@ public final class AzureCognitiveSearchChatExtensionParameters {
      * Set the semanticConfiguration property: The additional semantic configuration for the query.
      *
      * @param semanticConfiguration the semanticConfiguration value to set.
-     * @return the AzureCognitiveSearchChatExtensionParameters object itself.
+     * @return the AzureSearchChatExtensionParameters object itself.
      */
     @Generated
-    public AzureCognitiveSearchChatExtensionParameters setSemanticConfiguration(String semanticConfiguration) {
+    public AzureSearchChatExtensionParameters setSemanticConfiguration(String semanticConfiguration) {
         this.semanticConfiguration = semanticConfiguration;
         return this;
     }
@@ -395,61 +348,11 @@ public final class AzureCognitiveSearchChatExtensionParameters {
      * Set the filter property: Search filter.
      *
      * @param filter the filter value to set.
-     * @return the AzureCognitiveSearchChatExtensionParameters object itself.
+     * @return the AzureSearchChatExtensionParameters object itself.
      */
     @Generated
-    public AzureCognitiveSearchChatExtensionParameters setFilter(String filter) {
+    public AzureSearchChatExtensionParameters setFilter(String filter) {
         this.filter = filter;
-        return this;
-    }
-
-    /**
-     * Get the embeddingEndpoint property: When using embeddings for search, specifies the resource endpoint URL from
-     * which embeddings should be retrieved. It should be in the format of format
-     * https://YOUR_RESOURCE_NAME.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT_NAME/embeddings?api-version={api-version}.
-     *
-     * @return the embeddingEndpoint value.
-     */
-    @Generated
-    public String getEmbeddingEndpoint() {
-        return this.embeddingEndpoint;
-    }
-
-    /**
-     * Set the embeddingEndpoint property: When using embeddings for search, specifies the resource endpoint URL from
-     * which embeddings should be retrieved. It should be in the format of format
-     * https://YOUR_RESOURCE_NAME.openai.azure.com/openai/deployments/YOUR_DEPLOYMENT_NAME/embeddings?api-version={api-version}.
-     *
-     * @param embeddingEndpoint the embeddingEndpoint value to set.
-     * @return the AzureCognitiveSearchChatExtensionParameters object itself.
-     */
-    @Generated
-    public AzureCognitiveSearchChatExtensionParameters setEmbeddingEndpoint(String embeddingEndpoint) {
-        this.embeddingEndpoint = embeddingEndpoint;
-        return this;
-    }
-
-    /**
-     * Get the embeddingKey property: When using embeddings, specifies the API key to use with the provided embeddings
-     * endpoint.
-     *
-     * @return the embeddingKey value.
-     */
-    @Generated
-    public String getEmbeddingKey() {
-        return this.embeddingKey;
-    }
-
-    /**
-     * Set the embeddingKey property: When using embeddings, specifies the API key to use with the provided embeddings
-     * endpoint.
-     *
-     * @param embeddingKey the embeddingKey value to set.
-     * @return the AzureCognitiveSearchChatExtensionParameters object itself.
-     */
-    @Generated
-    public AzureCognitiveSearchChatExtensionParameters setEmbeddingKey(String embeddingKey) {
-        this.embeddingKey = embeddingKey;
         return this;
     }
 
@@ -467,10 +370,10 @@ public final class AzureCognitiveSearchChatExtensionParameters {
      * Set the embeddingDependency property: The embedding dependency for vector search.
      *
      * @param embeddingDependency the embeddingDependency value to set.
-     * @return the AzureCognitiveSearchChatExtensionParameters object itself.
+     * @return the AzureSearchChatExtensionParameters object itself.
      */
     @Generated
-    public AzureCognitiveSearchChatExtensionParameters
+    public AzureSearchChatExtensionParameters
         setEmbeddingDependency(OnYourDataVectorizationSource embeddingDependency) {
         this.embeddingDependency = embeddingDependency;
         return this;
