@@ -50,6 +50,8 @@ import com.azure.messaging.eventgrid.systemevents.AcsRouterWorkerRegisteredEvent
 import com.azure.messaging.eventgrid.systemevents.AcsSmsDeliveryReportReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsSmsReceivedEventData;
 import com.azure.messaging.eventgrid.systemevents.AcsUserDisconnectedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiDefinitionAddedEventData;
+import com.azure.messaging.eventgrid.systemevents.ApiDefinitionUpdatedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementApiCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementApiDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.ApiManagementApiReleaseCreatedEventData;
@@ -487,6 +489,16 @@ public final class SystemEventNames {
      * Schema of the Data property of an EventGridEvent for an Microsoft.Communication.UserDisconnected event.
      */
     public static final String COMMUNICATION_USER_DISCONNECTED = "Microsoft.Communication.UserDisconnected";
+
+    /**
+     * Schema of the data property of an EventGridEvent for a Microsoft.ApiCenter.ApiDefinitionAdded event.
+     */
+    public static final String API_DEFINITION_ADDED = "Microsoft.ApiCenter.ApiDefinitionAdded";
+
+    /**
+     * Schema of the data property of an EventGridEvent for a Microsoft.ApiCenter.ApiDefinitionUpdated event.
+     */
+    public static final String API_DEFINITION_UPDATED = "Microsoft.ApiCenter.ApiDefinitionUpdated";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.ApiManagement.APICreated event.
@@ -1490,6 +1502,8 @@ public final class SystemEventNames {
             put(COMMUNICATION_SMS_DELIVERY_REPORT_RECEIVED, AcsSmsDeliveryReportReceivedEventData.class);
             put(COMMUNICATION_SMS_RECEIVED, AcsSmsReceivedEventData.class);
             put(COMMUNICATION_USER_DISCONNECTED, AcsUserDisconnectedEventData.class);
+            put(API_DEFINITION_ADDED, ApiDefinitionAddedEventData.class);
+            put(API_DEFINITION_UPDATED, ApiDefinitionUpdatedEventData.class);
             put(API_MANAGEMENT_API_CREATED, ApiManagementApiCreatedEventData.class);
             put(API_MANAGEMENT_API_DELETED, ApiManagementApiDeletedEventData.class);
             put(API_MANAGEMENT_API_RELEASE_CREATED, ApiManagementApiReleaseCreatedEventData.class);
