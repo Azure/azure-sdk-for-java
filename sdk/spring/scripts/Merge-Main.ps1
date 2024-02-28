@@ -10,15 +10,5 @@
 param(
 )
 
-& "$PSScriptRoot\..\..\..\eng\scripts\Merge-Branch.ps1" `
-    -SourceBranch 'main' `
-    -Theirs @('**') `
-    -Ours @('sdk/spring', '.github/CODEOWNERS', 'sdk/boms/spring-cloud-azure-dependencies/pom.xml') `
-    -Merge @('eng/versioning/version_*.txt', `
-            'eng/code-quality-reports/src/main/resources/spotbugs/spotbugs-exclude.xml', `
-            'eng/code-quality-reports/src/main/resources/checkstyle/checkstyle-suppressions.xml', `
-            'eng/code-quality-reports/src/main/resources/revapi/revapi.json', `
-            'sdk/parents/azure-client-sdk-parent/pom.xml', `
-            'sdk/cosmos/azure-spring-data-cosmos-test/pom.xml', `
-            '.vscode/cspell.json', `
-            'pom.xml')
+git merge main --no-ff --no-commit
+git checkout head 'sdk/spring' '.github/CODEOWNERS' 'sdk/boms/spring-cloud-azure-dependencies/pom.xml'
