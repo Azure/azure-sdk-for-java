@@ -124,7 +124,7 @@ steps:
     env: ${{ parameters.TestEnvVars }}
     condition: and(succeeded(), eq(variables['TestFromSource'], 'true'))
 
-  - template: /eng/pipelines/templates/steps//upload-repository-on-failure.yml
+  - template: /eng/pipelines/templates/steps/upload-repository-on-failure.yml
 
   - template: /eng/pipelines/templates/steps/retain-test-logs.yml
 
