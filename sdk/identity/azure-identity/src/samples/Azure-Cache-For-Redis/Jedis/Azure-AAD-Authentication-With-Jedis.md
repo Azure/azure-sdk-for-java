@@ -18,13 +18,13 @@
     <dependency>
         <groupId>com.azure</groupId>
         <artifactId>azure-identity</artifactId>
-        <version>1.8.2</version>
+        <version>1.11.2</version> <!-- {x-version-update;com.azure:azure-identity;dependency} -->
     </dependency>
     
     <dependency>
         <groupId>redis.clients</groupId>
         <artifactId>jedis</artifactId>
-        <version>4.3.2</version>
+        <version>5.1.0</version>  <!-- {x-version-update;redis.clients:jedis;external_dependency} -->
     </dependency>
     ```
 
@@ -57,7 +57,7 @@ DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilde
 // Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
 String token = defaultAzureCredential
     .getToken(new TokenRequestContext()
-        .addScopes("https://*.cacheinfra.windows.net:10225/appid/.default")).block().getToken();
+        .addScopes("https://redis.azure.com/.default")).block().getToken();
 
 // SSL connection is required.
 boolean useSsl = true;
@@ -103,7 +103,7 @@ DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilde
 
 // Fetch a Microsoft Entra token to be used for authentication. This token will be used as the password.
 // Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
-TokenRequestContext trc = new TokenRequestContext().addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
+TokenRequestContext trc = new TokenRequestContext().addScopes("https://redis.azure.com/.default");
 AccessToken accessToken = getAccessToken(defaultAzureCredential, trc);
 
 // SSL connection is required.
@@ -169,7 +169,7 @@ DefaultAzureCredential defaultAzureCredential = new DefaultAzureCredentialBuilde
 
 // Fetch a Microsoft Entra token to be used for authentication. This token will be used as the password.
 // Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
-TokenRequestContext trc = new TokenRequestContext().addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
+TokenRequestContext trc = new TokenRequestContext().addScopes("https://redis.azure.com/.default");
 TokenRefreshCache tokenRefreshCache = new TokenRefreshCache(defaultAzureCredential, trc);
 AccessToken accessToken = tokenRefreshCache.getAccessToken();
 
@@ -374,7 +374,7 @@ jedisClient.close();
 In this error scenario, the username provided and the access token used as password are not compatible.
 To mitigate this error, navigate to your Azure Cache for Redis resource in the Azure portal. Confirm that:
 * In **Data Access Configuration**, you've assigned the required role to your user/service principal identity.
-* In **Advanced settings**, the **Microsoft Entra Authentication** box is selected. If not, select it and select the **Save** button.
+* Under **Authentication** -> **Microsoft Entra Authentication** category the **Enable Microsoft Entra Authentication** box is selected. If not, select it and select the **Save** button.
 
 ##### Permissions not granted / NOPERM Error
 In this error scenario, the authentication was successful, but your registered user/service principal is not granted the RBAC permission to perform the action.

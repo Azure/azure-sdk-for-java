@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Supported OS upgrade versions. */
+/**
+ * Supported OS upgrade versions.
+ */
 @Immutable
 public final class OSUpgradeSupportedVersions {
     /*
@@ -23,13 +25,15 @@ public final class OSUpgradeSupportedVersions {
     @JsonProperty(value = "supportedTargetOsVersions", access = JsonProperty.Access.WRITE_ONLY)
     private List<String> supportedTargetOsVersions;
 
-    /** Creates an instance of OSUpgradeSupportedVersions class. */
+    /**
+     * Creates an instance of OSUpgradeSupportedVersions class.
+     */
     public OSUpgradeSupportedVersions() {
     }
 
     /**
      * Get the supportedSourceOsVersion property: The source OS version name.
-     *
+     * 
      * @return the supportedSourceOsVersion value.
      */
     public String supportedSourceOsVersion() {
@@ -38,7 +42,7 @@ public final class OSUpgradeSupportedVersions {
 
     /**
      * Get the supportedTargetOsVersions property: The target OS version names.
-     *
+     * 
      * @return the supportedTargetOsVersions value.
      */
     public List<String> supportedTargetOsVersions() {
@@ -47,7 +51,7 @@ public final class OSUpgradeSupportedVersions {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

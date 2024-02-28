@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.StorageClassificationProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Storage object definition. */
+/**
+ * Storage object definition.
+ */
 @Fluent
 public final class StorageClassificationInner extends ProxyResource {
     /*
@@ -24,13 +26,15 @@ public final class StorageClassificationInner extends ProxyResource {
     @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of StorageClassificationInner class. */
+    /**
+     * Creates an instance of StorageClassificationInner class.
+     */
     public StorageClassificationInner() {
     }
 
     /**
      * Get the properties property: Properties of the storage object.
-     *
+     * 
      * @return the properties value.
      */
     public StorageClassificationProperties properties() {
@@ -39,7 +43,7 @@ public final class StorageClassificationInner extends ProxyResource {
 
     /**
      * Set the properties property: Properties of the storage object.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the StorageClassificationInner object itself.
      */
@@ -50,7 +54,7 @@ public final class StorageClassificationInner extends ProxyResource {
 
     /**
      * Get the location property: Resource Location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -59,7 +63,7 @@ public final class StorageClassificationInner extends ProxyResource {
 
     /**
      * Set the location property: Resource Location.
-     *
+     * 
      * @param location the location value to set.
      * @return the StorageClassificationInner object itself.
      */
@@ -70,7 +74,7 @@ public final class StorageClassificationInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

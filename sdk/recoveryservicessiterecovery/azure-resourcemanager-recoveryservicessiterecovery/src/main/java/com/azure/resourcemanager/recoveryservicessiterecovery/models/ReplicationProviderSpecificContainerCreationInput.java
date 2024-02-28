@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Provider specific input for container creation operation. */
+/**
+ * Provider specific input for container creation operation.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -19,17 +21,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "A2A", value = A2AContainerCreationInput.class),
     @JsonSubTypes.Type(name = "A2ACrossClusterMigration", value = A2ACrossClusterMigrationContainerCreationInput.class),
-    @JsonSubTypes.Type(name = "VMwareCbt", value = VMwareCbtContainerCreationInput.class)
-})
+    @JsonSubTypes.Type(name = "VMwareCbt", value = VMwareCbtContainerCreationInput.class) })
 @Immutable
 public class ReplicationProviderSpecificContainerCreationInput {
-    /** Creates an instance of ReplicationProviderSpecificContainerCreationInput class. */
+    /**
+     * Creates an instance of ReplicationProviderSpecificContainerCreationInput class.
+     */
     public ReplicationProviderSpecificContainerCreationInput() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

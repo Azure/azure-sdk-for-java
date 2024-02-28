@@ -113,7 +113,7 @@ public class CoreUtilsSecurityIT {
      * Baseline test for when there is no SecurityManager.
      */
     @Test
-    public void noSecurityRestrictionsWorks() throws Exception {
+    public void noSecurityRestrictionsWorks() {
         captureDefaultConfigurations();
 
         try {

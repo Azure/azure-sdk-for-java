@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.Prot
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Protection Container collection. */
+/**
+ * Protection Container collection.
+ */
 @Fluent
 public final class ProtectionContainerCollection {
     /*
@@ -24,13 +26,15 @@ public final class ProtectionContainerCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ProtectionContainerCollection class. */
+    /**
+     * Creates an instance of ProtectionContainerCollection class.
+     */
     public ProtectionContainerCollection() {
     }
 
     /**
      * Get the value property: The Protection Container details.
-     *
+     * 
      * @return the value value.
      */
     public List<ProtectionContainerInner> value() {
@@ -39,7 +43,7 @@ public final class ProtectionContainerCollection {
 
     /**
      * Set the value property: The Protection Container details.
-     *
+     * 
      * @param value the value value to set.
      * @return the ProtectionContainerCollection object itself.
      */
@@ -50,7 +54,7 @@ public final class ProtectionContainerCollection {
 
     /**
      * Get the nextLink property: The value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ProtectionContainerCollection {
 
     /**
      * Set the nextLink property: The value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ProtectionContainerCollection object itself.
      */
@@ -70,7 +74,7 @@ public final class ProtectionContainerCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

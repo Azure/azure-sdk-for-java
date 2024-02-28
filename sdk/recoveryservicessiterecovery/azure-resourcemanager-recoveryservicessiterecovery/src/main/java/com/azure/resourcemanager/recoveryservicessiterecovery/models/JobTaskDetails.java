@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** This class represents a task which is actually a workflow so that one can navigate to its individual drill down. */
+/**
+ * This class represents a task which is actually a workflow so that one can navigate to its individual drill down.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -19,8 +21,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("JobTaskDetails")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "FabricReplicationGroupTaskDetails", value = FabricReplicationGroupTaskDetails.class),
-    @JsonSubTypes.Type(name = "VirtualMachineTaskDetails", value = VirtualMachineTaskDetails.class)
-})
+    @JsonSubTypes.Type(name = "VirtualMachineTaskDetails", value = VirtualMachineTaskDetails.class) })
 @Fluent
 public class JobTaskDetails extends TaskTypeDetails {
     /*
@@ -29,13 +30,15 @@ public class JobTaskDetails extends TaskTypeDetails {
     @JsonProperty(value = "jobTask")
     private JobEntity jobTask;
 
-    /** Creates an instance of JobTaskDetails class. */
+    /**
+     * Creates an instance of JobTaskDetails class.
+     */
     public JobTaskDetails() {
     }
 
     /**
      * Get the jobTask property: The job entity.
-     *
+     * 
      * @return the jobTask value.
      */
     public JobEntity jobTask() {
@@ -44,7 +47,7 @@ public class JobTaskDetails extends TaskTypeDetails {
 
     /**
      * Set the jobTask property: The job entity.
-     *
+     * 
      * @param jobTask the jobTask value to set.
      * @return the JobTaskDetails object itself.
      */
@@ -55,7 +58,7 @@ public class JobTaskDetails extends TaskTypeDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

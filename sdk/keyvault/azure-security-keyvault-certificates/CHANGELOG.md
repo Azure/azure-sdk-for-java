@@ -1,6 +1,6 @@
 # Release History
 
-## 4.6.0-beta.2 (Unreleased)
+## 4.7.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,20 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 4.6.0 (2024-02-22)
+Changes when compared to the last stable release (`4.5.9`) include:
+
+### Features Added
+- Added support for service version `7.5`.
+- Added `CertificateProperties.getX509ThumbprintAsString()` to return the hexadecimal string representation of the SHA-1 hash of a certificate.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
 
 ## 4.5.9 (2023-12-04)
 

@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.ProtectionP
 public final class ProtectionProfileCustomDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ProtectionProfileCustomDetails model =
-            BinaryData
-                .fromString("{\"resourceType\":\"ProtectionProfileCustomDetails\"}")
+        ProtectionProfileCustomDetails model
+            = BinaryData.fromString("{\"resourceType\":\"ProtectionProfileCustomDetails\"}")
                 .toObject(ProtectionProfileCustomDetails.class);
     }
 

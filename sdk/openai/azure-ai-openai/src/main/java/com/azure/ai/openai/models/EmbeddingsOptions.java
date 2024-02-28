@@ -119,4 +119,33 @@ public final class EmbeddingsOptions {
     public List<String> getInput() {
         return this.input;
     }
+
+    /*
+     * When using Azure OpenAI, specifies the input type to use for embedding search.
+     */
+    @Generated
+    @JsonProperty(value = "input_type")
+    private String inputType;
+
+    /**
+     * Get the inputType property: When using Azure OpenAI, specifies the input type to use for embedding search.
+     *
+     * @return the inputType value.
+     */
+    @Generated
+    public String getInputType() {
+        return this.inputType;
+    }
+
+    /**
+     * Set the inputType property: When using Azure OpenAI, specifies the input type to use for embedding search.
+     *
+     * @param inputType the inputType value to set.
+     * @return the EmbeddingsOptions object itself.
+     */
+    @Generated
+    public EmbeddingsOptions setInputType(String inputType) {
+        this.inputType = inputType;
+        return this;
+    }
 }

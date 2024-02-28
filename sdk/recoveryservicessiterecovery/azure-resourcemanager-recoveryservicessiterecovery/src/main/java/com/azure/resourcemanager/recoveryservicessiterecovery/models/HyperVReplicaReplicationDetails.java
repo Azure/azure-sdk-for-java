@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** HyperV replica 2012 replication details. */
+/**
+ * HyperV replica 2012 replication details.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("HyperVReplica2012")
 @Fluent
@@ -58,13 +60,15 @@ public final class HyperVReplicaReplicationDetails extends ReplicationProviderSp
     @JsonProperty(value = "vMDiskDetails")
     private List<DiskDetails> vMDiskDetails;
 
-    /** Creates an instance of HyperVReplicaReplicationDetails class. */
+    /**
+     * Creates an instance of HyperVReplicaReplicationDetails class.
+     */
     public HyperVReplicaReplicationDetails() {
     }
 
     /**
      * Get the lastReplicatedTime property: The Last replication time.
-     *
+     * 
      * @return the lastReplicatedTime value.
      */
     public OffsetDateTime lastReplicatedTime() {
@@ -73,7 +77,7 @@ public final class HyperVReplicaReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the lastReplicatedTime property: The Last replication time.
-     *
+     * 
      * @param lastReplicatedTime the lastReplicatedTime value to set.
      * @return the HyperVReplicaReplicationDetails object itself.
      */
@@ -84,7 +88,7 @@ public final class HyperVReplicaReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the vmNics property: The PE Network details.
-     *
+     * 
      * @return the vmNics value.
      */
     public List<VMNicDetails> vmNics() {
@@ -93,7 +97,7 @@ public final class HyperVReplicaReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the vmNics property: The PE Network details.
-     *
+     * 
      * @param vmNics the vmNics value to set.
      * @return the HyperVReplicaReplicationDetails object itself.
      */
@@ -104,7 +108,7 @@ public final class HyperVReplicaReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the vmId property: The virtual machine Id.
-     *
+     * 
      * @return the vmId value.
      */
     public String vmId() {
@@ -113,7 +117,7 @@ public final class HyperVReplicaReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the vmId property: The virtual machine Id.
-     *
+     * 
      * @param vmId the vmId value to set.
      * @return the HyperVReplicaReplicationDetails object itself.
      */
@@ -124,7 +128,7 @@ public final class HyperVReplicaReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the vmProtectionState property: The protection state for the vm.
-     *
+     * 
      * @return the vmProtectionState value.
      */
     public String vmProtectionState() {
@@ -133,7 +137,7 @@ public final class HyperVReplicaReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the vmProtectionState property: The protection state for the vm.
-     *
+     * 
      * @param vmProtectionState the vmProtectionState value to set.
      * @return the HyperVReplicaReplicationDetails object itself.
      */
@@ -144,7 +148,7 @@ public final class HyperVReplicaReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the vmProtectionStateDescription property: The protection state description for the vm.
-     *
+     * 
      * @return the vmProtectionStateDescription value.
      */
     public String vmProtectionStateDescription() {
@@ -153,7 +157,7 @@ public final class HyperVReplicaReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the vmProtectionStateDescription property: The protection state description for the vm.
-     *
+     * 
      * @param vmProtectionStateDescription the vmProtectionStateDescription value to set.
      * @return the HyperVReplicaReplicationDetails object itself.
      */
@@ -164,7 +168,7 @@ public final class HyperVReplicaReplicationDetails extends ReplicationProviderSp
 
     /**
      * Get the initialReplicationDetails property: Initial replication details.
-     *
+     * 
      * @return the initialReplicationDetails value.
      */
     public InitialReplicationDetails initialReplicationDetails() {
@@ -173,19 +177,19 @@ public final class HyperVReplicaReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the initialReplicationDetails property: Initial replication details.
-     *
+     * 
      * @param initialReplicationDetails the initialReplicationDetails value to set.
      * @return the HyperVReplicaReplicationDetails object itself.
      */
-    public HyperVReplicaReplicationDetails withInitialReplicationDetails(
-        InitialReplicationDetails initialReplicationDetails) {
+    public HyperVReplicaReplicationDetails
+        withInitialReplicationDetails(InitialReplicationDetails initialReplicationDetails) {
         this.initialReplicationDetails = initialReplicationDetails;
         return this;
     }
 
     /**
      * Get the vMDiskDetails property: VM disk details.
-     *
+     * 
      * @return the vMDiskDetails value.
      */
     public List<DiskDetails> vMDiskDetails() {
@@ -194,7 +198,7 @@ public final class HyperVReplicaReplicationDetails extends ReplicationProviderSp
 
     /**
      * Set the vMDiskDetails property: VM disk details.
-     *
+     * 
      * @param vMDiskDetails the vMDiskDetails value to set.
      * @return the HyperVReplicaReplicationDetails object itself.
      */
@@ -205,7 +209,7 @@ public final class HyperVReplicaReplicationDetails extends ReplicationProviderSp
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

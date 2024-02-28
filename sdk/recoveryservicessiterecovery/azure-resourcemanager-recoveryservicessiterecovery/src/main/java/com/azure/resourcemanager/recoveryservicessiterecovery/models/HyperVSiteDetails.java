@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** HyperVSite fabric specific details. */
+/**
+ * HyperVSite fabric specific details.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("HyperVSite")
 @Fluent
@@ -21,13 +23,15 @@ public final class HyperVSiteDetails extends FabricSpecificDetails {
     @JsonProperty(value = "hyperVHosts")
     private List<HyperVHostDetails> hyperVHosts;
 
-    /** Creates an instance of HyperVSiteDetails class. */
+    /**
+     * Creates an instance of HyperVSiteDetails class.
+     */
     public HyperVSiteDetails() {
     }
 
     /**
      * Get the hyperVHosts property: The list of Hyper-V hosts associated with the fabric.
-     *
+     * 
      * @return the hyperVHosts value.
      */
     public List<HyperVHostDetails> hyperVHosts() {
@@ -36,7 +40,7 @@ public final class HyperVSiteDetails extends FabricSpecificDetails {
 
     /**
      * Set the hyperVHosts property: The list of Hyper-V hosts associated with the fabric.
-     *
+     * 
      * @param hyperVHosts the hyperVHosts value to set.
      * @return the HyperVSiteDetails object itself.
      */
@@ -47,7 +51,7 @@ public final class HyperVSiteDetails extends FabricSpecificDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
