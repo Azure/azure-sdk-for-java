@@ -348,7 +348,11 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
         if (pipId != null) {
             return new PublicIpAddressInner().withId(pipId).withDeleteOption(deleteOptions);
         } else if (!this.isInCreateMode) {
-            return this.innerModel().publicIpAddress().withDeleteOption(deleteOptions);
+            if (Objects.isNull(this.innerModel().publicIpAddress())) {
+                return this.innerModel().publicIpAddress();
+            } else {
+                return this.innerModel().publicIpAddress().withDeleteOption(deleteOptions);
+            }
         } else {
             return null;
         }
