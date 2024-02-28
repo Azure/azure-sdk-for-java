@@ -3,6 +3,7 @@
 
 package com.azure.data.appconfiguration;
 
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.util.Configuration;
@@ -42,7 +43,8 @@ public class ConditionalRequestForSettingsPaginationAsync {
         client.listConfigurationSettings(null)
                 .byPage()
                 .subscribe(pagedResponse -> {
-                    matchConditionsList.add(new MatchConditions().setIfNoneMatch(pagedResponse.getHeaders().getValue("Etag")));
+                    matchConditionsList.add(new MatchConditions().setIfNoneMatch(
+                            pagedResponse.getHeaders().getValue(HttpHeaderName.ETAG)));
                 });
 
         TimeUnit.MILLISECONDS.sleep(1000);
@@ -61,7 +63,7 @@ public class ConditionalRequestForSettingsPaginationAsync {
             }
 
             System.out.println("At least one setting in the page has changes. Listing all settings in the page:");
-            System.out.println("new page ETag: " + pagedResponse.getHeaders().getValue("ETag"));
+            System.out.println("new page ETag: " + pagedResponse.getHeaders().getValue(HttpHeaderName.ETAG));
             pagedResponse.getValue().forEach(setting -> {
                 System.out.println("Key: " + setting.getKey() + ", Value: " + setting.getValue());
             });

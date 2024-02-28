@@ -4,6 +4,7 @@
 package com.azure.data.appconfiguration.implementation;
 
 import com.azure.core.exception.HttpResponseException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpResponse;
 import com.azure.core.http.MatchConditions;
 import com.azure.core.http.rest.PagedResponse;
@@ -194,6 +195,7 @@ public class Utility {
             return null;
         }
         String[] parts = nextLink.split(";");
+
         return parts[0].substring(1, parts[0].length() - 1);
     }
 
@@ -201,7 +203,7 @@ public class Utility {
     // Async handler
     public static Mono<PagedResponse<KeyValue>> handleNotModifiedErrorToValidResponse(HttpResponseException error) {
         HttpResponse httpResponse = error.getResponse();
-        String continuationToken = parseNextLink(httpResponse.getHeaderValue("link"));
+        String continuationToken = parseNextLink(httpResponse.getHeaderValue(HttpHeaderName.LINK));
         if (httpResponse.getStatusCode() == 304) {
             return Mono.just(
                     new PagedResponseBase<>(
@@ -218,7 +220,7 @@ public class Utility {
     public static PagedResponse<ConfigurationSetting> handleNotModifiedErrorToValidResponse(HttpResponseException error,
         ClientLogger logger) {
         HttpResponse httpResponse = error.getResponse();
-        String continuationToken = parseNextLink(httpResponse.getHeaderValue("link"));
+        String continuationToken = parseNextLink(httpResponse.getHeaderValue(HttpHeaderName.LINK));
         if (httpResponse.getStatusCode() == 304) {
             return new PagedResponseBase<>(
                             httpResponse.getRequest(),
