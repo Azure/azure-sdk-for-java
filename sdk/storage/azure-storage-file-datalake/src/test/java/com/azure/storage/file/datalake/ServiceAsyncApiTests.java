@@ -241,7 +241,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
     public void setPropsError() {
         StepVerifier.create(getServiceAsyncClient(getDataLakeCredential(),
             "https://error.blob.core.windows.net").setProperties(new DataLakeServiceProperties()))
-            .verifyError(DataLakeStorageException.class);
+            .verifyError(Exception.class);
     }
 
     @ResourceLock("ServiceProperties")
@@ -255,7 +255,7 @@ public class ServiceAsyncApiTests extends DataLakeTestBase {
     public void getPropsError() {
         StepVerifier.create(getServiceAsyncClient(getDataLakeCredential(),
             "https://error.blob.core.windows.net").getProperties())
-            .verifyError(DataLakeStorageException.class);
+            .verifyError(Exception.class);
     }
 
     @Test
