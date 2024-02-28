@@ -6,6 +6,7 @@ package com.azure.storage.blob.stress.utils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
+import com.azure.storage.blob.BlobServiceClientBuilder;
 import com.azure.storage.stress.StorageStressOptions;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
@@ -223,7 +224,7 @@ public class TelemetryHelper {
     public void recordStart(StorageStressOptions options) {
         String storageBlobPackageVersion = "storagePackageVersion";
         try {
-            Class<?> storageBlobBusPackage = Class.forName("com.azure.storage.blob.BlobServiceClientBuilder");
+            Class<?> storageBlobBusPackage = Class.forName(BlobServiceClientBuilder.class.getName());
             storageBlobPackageVersion = storageBlobBusPackage.getPackage().getImplementationVersion();
 
             if (storageBlobPackageVersion == null) {

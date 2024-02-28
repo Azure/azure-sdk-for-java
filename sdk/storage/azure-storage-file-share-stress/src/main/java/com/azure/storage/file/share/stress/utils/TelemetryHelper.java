@@ -6,6 +6,7 @@ package com.azure.storage.file.share.stress.utils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
+import com.azure.storage.file.share.ShareServiceClientBuilder;
 import com.azure.storage.stress.StorageStressOptions;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
@@ -223,8 +224,10 @@ public class TelemetryHelper {
     public void recordStart(StorageStressOptions options) {
         String storageFileSharePackageVersion = "storagePackageVersion";
         try {
-            Class<?> storageSharePackage = Class.forName("com.azure.storage.file.share.ShareServiceClientBuilder");
+            // why is this null? need to investigate
+            Class<?> storageSharePackage = Class.forName(ShareServiceClientBuilder.class.getName());
             storageFileSharePackageVersion = storageSharePackage.getPackage().getImplementationVersion();
+
             if (storageFileSharePackageVersion == null) {
                 storageFileSharePackageVersion = "null";
             }

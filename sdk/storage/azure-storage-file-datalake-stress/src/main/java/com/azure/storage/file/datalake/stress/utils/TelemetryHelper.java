@@ -6,6 +6,7 @@ package com.azure.storage.file.datalake.stress.utils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.logging.LogLevel;
 import com.azure.monitor.opentelemetry.exporter.AzureMonitorExporterBuilder;
+import com.azure.storage.file.datalake.DataLakeServiceClientBuilder;
 import com.azure.storage.stress.StorageStressOptions;
 import io.opentelemetry.api.OpenTelemetry;
 import io.opentelemetry.api.common.AttributeKey;
@@ -223,8 +224,9 @@ public class TelemetryHelper {
     public void recordStart(StorageStressOptions options) {
         String storageDataLakePackageVersion = "storagePackageVersion";
         try {
-            Class<?> storageDatalakePackage = Class.forName("com.azure.storage.file.datalake.DataLakeServiceClientBuilder");
+            Class<?> storageDatalakePackage = Class.forName(DataLakeServiceClientBuilder.class.getName());
             storageDataLakePackageVersion = storageDatalakePackage.getPackage().getImplementationVersion();
+
             if (storageDataLakePackageVersion == null) {
                 storageDataLakePackageVersion = "null";
             }

@@ -40,7 +40,7 @@ spec:
           --size {{ .Stress.sizeBytes }} \
           {{ ternary "--sync" "" .Stress.sync }} \
           {{ ternary "--faults" "" .Stress.faults }} \
-          {{ ternary "--requestFaulted" "" .Stress.requestFaulted }} \
+          {{ ternary "--requestFaulted" "" (default false .Stress.requestFaulted) }} \
           --warmup 0 \
           2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.testScenario }}-`date +%s`.log"; \
           code=$?; \

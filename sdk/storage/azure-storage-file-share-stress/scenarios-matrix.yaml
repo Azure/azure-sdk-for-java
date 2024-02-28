@@ -1,7 +1,7 @@
 matrix:
   scenarios:
     # this test downloads 1KB (1024 bytes), small file, no chunking
-    download-small-file-test:
+    download-to-file-test:
       testScenario: downloadtofile
       sync: true
       sizeBytes: 1024
@@ -11,7 +11,7 @@ matrix:
       imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes), small file, no chunking with async client
-    download-small-file-async-test:
+    download-to-file-async-test:
       testScenario: downloadtofile
       sync: false
       sizeBytes: 1024
@@ -41,7 +41,7 @@ matrix:
       imageBuildDir: "../../.."
 
 #   this test downloads 1KB (1024 bytes) to open input stream, no chunking
-    openinputstream-small-test:
+    openinputstream-test:
       testScenario: openinputstream
       sync: true
       sizeBytes: 1024
@@ -51,7 +51,7 @@ matrix:
       imageBuildDir: "../../.."
 
 #   this test downloads 1KB (1024 bytes) to seekablebytechannel, no chunking
-    seekablebytechannel-small-test:
+    seekablebytechannel-test:
       testScenario: getfileseekablebytechannelread
       sync: true
       sizeBytes: 1024
