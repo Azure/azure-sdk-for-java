@@ -818,9 +818,12 @@ public final class IdentityClientOptions implements Cloneable {
             .setPerCallPolicies(this.perCallPolicies)
             .setPerRetryPolicies(this.perRetryPolicies)
             .setBrowserCustomizationOptions(this.browserCustomizationOptions)
-            .setChained(this.isChained)
-            .setBrokerWindowHandle(this.brokerWindowHandle)
-            .setEnableLegacyMsaPassthrough(this.enableMsaPassthrough);
+            .setChained(this.isChained);
+
+        if (isBrokerEnabled()) {
+            clone.setBrokerWindowHandle(this.brokerWindowHandle);
+            clone.setEnableLegacyMsaPassthrough(this.enableMsaPassthrough);
+        }
         if (!isInstanceDiscoveryEnabled()) {
             clone.disableInstanceDiscovery();
         }
