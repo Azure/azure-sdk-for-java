@@ -47,6 +47,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.autoconfigure.domain.EntityScanner;
+import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.context.ApplicationContext;
 import org.springframework.data.annotation.Persistent;
 import org.springframework.data.repository.query.parser.Part;
@@ -55,6 +56,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.util.ReflectionTestUtils;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 import reactor.test.StepVerifier;
 
 import java.lang.reflect.InvocationTargetException;
@@ -496,6 +498,29 @@ public class ReactiveCosmosTemplateIT {
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
         Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
 
+    }
+
+    @Test
+    public void testDeleteByQuery() {
+        cosmosTemplate.insert(TEST_PERSON_4,
+            new PartitionKey(personInfo.getPartitionKeyFieldValue(TEST_PERSON_4))).block();
+
+        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNull();
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+
+        final Criteria criteria = Criteria.getInstance(CriteriaType.IS_EQUAL, "id",
+            Collections.singletonList(TEST_PERSON_4.getId()), Part.IgnoreCaseType.NEVER);
+
+        final CosmosQuery query = new CosmosQuery(criteria);
+        Flux<Person> deleteFlux = cosmosTemplate.delete(query, Person.class, Person.class.getSimpleName());
+        StepVerifier.create(deleteFlux).expectNextCount(1).verifyComplete();
+
+        assertThat(responseDiagnosticsTestUtils.getCosmosDiagnostics()).isNotNull();
+        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics()).isNotNull();
+        Assertions.assertThat(responseDiagnosticsTestUtils.getCosmosResponseStatistics().getRequestCharge()).isGreaterThan(0);
+
+        Mono<Person> itemMono = cosmosTemplate.findById(TEST_PERSON_4.getId(), Person.class);
+        StepVerifier.create(itemMono).expectNextCount(0).verifyComplete();
     }
 
     @Test
