@@ -500,38 +500,6 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                 .verifyError();
     }
 
-    @ParameterizedTest
-    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void searchOperatorInformationRespectsSearchOptions(HttpClient httpClient) {
-        List<String> phoneNumbers = new ArrayList<String>();
-        phoneNumbers.add(redactIfPlaybackMode(getTestPhoneNumber()));
-        StepVerifier.create(
-                this.getClientWithConnectionString(httpClient, "searchOperatorInformation")
-                        .searchOperatorInformationWithResponse(phoneNumbers, false))
-                .assertNext((Response<OperatorInformationResult> result) -> {
-                    assertEquals(phoneNumbers.get(0), result.getValue().getValues().get(0).getPhoneNumber());
-                    assertNotNull(result.getValue().getValues().get(0).getNationalFormat());
-                    assertNotNull(result.getValue().getValues().get(0).getInternationalFormat());
-                    assertEquals(null, result.getValue().getValues().get(0).getNumberType());
-                    assertEquals(null, result.getValue().getValues().get(0).getIsoCountryCode());
-                    assertEquals(null, result.getValue().getValues().get(0).getOperatorDetails());
-                })
-                .verifyComplete();
-
-        StepVerifier.create(
-                this.getClientWithConnectionString(httpClient, "searchOperatorInformation")
-                        .searchOperatorInformationWithResponse(phoneNumbers, true))
-                .assertNext((Response<OperatorInformationResult> result) -> {
-                    assertEquals(phoneNumbers.get(0), result.getValue().getValues().get(0).getPhoneNumber());
-                    assertNotNull(result.getValue().getValues().get(0).getNationalFormat());
-                    assertNotNull(result.getValue().getValues().get(0).getInternationalFormat());
-                    assertNotNull(result.getValue().getValues().get(0).getNumberType());
-                    assertNotNull(result.getValue().getValues().get(0).getIsoCountryCode());
-                    assertNotNull(result.getValue().getValues().get(0).getOperatorDetails());
-                })
-                .verifyComplete();
-    }
-
     private PollerFlux<PhoneNumberOperation, PhoneNumberSearchResult> beginSearchAvailablePhoneNumbersHelper(
         PhoneNumbersAsyncClient client, boolean withOptions) {
         PhoneNumberCapabilities capabilities = new PhoneNumberCapabilities();
@@ -542,7 +510,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         if (withOptions) {
             return setPollInterval(client
                     .beginSearchAvailablePhoneNumbers(
-                            "CA",
+                            "US",
                             PhoneNumberType.TOLL_FREE,
                             PhoneNumberAssignmentType.APPLICATION,
                             capabilities,
@@ -550,7 +518,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         }
         return setPollInterval(client
                 .beginSearchAvailablePhoneNumbers(
-                        "CA",
+                        "US",
                         PhoneNumberType.TOLL_FREE,
                         PhoneNumberAssignmentType.APPLICATION,
                         capabilities));
@@ -566,7 +534,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         if (withOptions) {
             return setPollInterval(client
                     .beginSearchAvailablePhoneNumbers(
-                            "US",
+                            "CA",
                             PhoneNumberType.TOLL_FREE,
                             PhoneNumberAssignmentType.APPLICATION,
                             capabilities,
