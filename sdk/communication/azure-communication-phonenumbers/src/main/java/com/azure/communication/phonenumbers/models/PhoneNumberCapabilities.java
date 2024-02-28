@@ -22,6 +22,13 @@ public final class PhoneNumberCapabilities {
     @JsonProperty(value = "sms", required = true)
     private PhoneNumberCapabilityType sms;
 
+    /*
+     * Capability value for tenDLCCampaignBriefId.
+     */
+    @JsonProperty(value = "tenDLCCampaignBriefId", required = false)
+    private String tenDLCCampaignBriefId;
+
+
     /**
      * Get the calling property: Capability value for calling.
      *
@@ -59,6 +66,26 @@ public final class PhoneNumberCapabilities {
      */
     public PhoneNumberCapabilities setSms(PhoneNumberCapabilityType sms) {
         this.sms = sms;
+        return this;
+    }
+
+    /**
+     * Get the ten DLC campaign brief Id property: Capability value for tenDLCCampaignBriefId.
+     *
+     * @return the tenDLCCampaignBriefId value.
+     */
+    public String getTenDLCCampaignBriefId() {
+        return this.tenDLCCampaignBriefId;
+    }
+
+    /**
+     * Set the ten DLC campaign brief Id property: Capability value for tenDLCCampaignBriefId.
+     *
+     * @param tenDLCCampaignBriefId the calling value to set.
+     * @return the PhoneNumberCapabilities object itself.
+     */
+    public PhoneNumberCapabilities setTenDLCCampaignBriefId(String tenDLCCampaignBriefId) {
+        this.tenDLCCampaignBriefId = tenDLCCampaignBriefId;
         return this;
     }
 }
