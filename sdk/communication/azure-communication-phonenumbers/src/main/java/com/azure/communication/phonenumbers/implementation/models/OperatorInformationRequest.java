@@ -4,26 +4,18 @@
 
 package com.azure.communication.phonenumbers.implementation.models;
 
-import com.azure.communication.phonenumbers.CodeCoverageAnnotation.Generated;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Represents a search request for operator information for the given phone numbers. */
+/** The OperatorInformationRequest model. */
 @Fluent
-@Generated
 public final class OperatorInformationRequest {
     /*
      * Phone number(s) whose operator information is being requested
      */
-    @JsonProperty(value = "phoneNumbers", required = true)
+    @JsonProperty(value = "phoneNumbers")
     private List<String> phoneNumbers;
-
-    /*
-     * Represents options to modify a search request for operator information
-     */
-    @JsonProperty(value = "options")
-    private OperatorInformationOptions options;
 
     /**
      * Get the phoneNumbers property: Phone number(s) whose operator information is being requested.
@@ -42,26 +34,6 @@ public final class OperatorInformationRequest {
      */
     public OperatorInformationRequest setPhoneNumbers(List<String> phoneNumbers) {
         this.phoneNumbers = phoneNumbers;
-        return this;
-    }
-
-    /**
-     * Get the options property: Represents options to modify a search request for operator information.
-     *
-     * @return the options value.
-     */
-    public OperatorInformationOptions getOptions() {
-        return this.options;
-    }
-
-    /**
-     * Set the options property: Represents options to modify a search request for operator information.
-     *
-     * @param options the options value to set.
-     * @return the OperatorInformationRequest object itself.
-     */
-    public OperatorInformationRequest setOptions(OperatorInformationOptions options) {
-        this.options = options;
         return this;
     }
 }

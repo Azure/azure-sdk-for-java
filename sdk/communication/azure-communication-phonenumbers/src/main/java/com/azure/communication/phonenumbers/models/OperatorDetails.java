@@ -7,13 +7,13 @@ package com.azure.communication.phonenumbers.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Represents metadata describing the operator of a phone number. */
+/** The OperatorDetails model. */
 @Immutable
 public final class OperatorDetails {
     /*
      * Name of the phone operator
      */
-    @JsonProperty(value = "name", required = true, access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
