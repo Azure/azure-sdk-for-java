@@ -7,6 +7,7 @@
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed `IllegalStateException` for `delete` - See [PR 38996](https://github.com/Azure/azure-sdk-for-java/pull/38996). 
 
 #### Other Changes
 
