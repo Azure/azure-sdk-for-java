@@ -1898,6 +1898,17 @@ public interface VirtualMachine
             WithCreate withPrimaryNetworkInterfaceDeleteOptions(DeleteOptions deleteOptions);
         }
 
+        /** The stage of the definition allowing to specify delete options for the public ip address. */
+        interface WithPublicIPAddressDeleteOptions {
+            /**
+             * Sets delete options for public ip address.
+             *
+             * @param deleteOptions the delete options for primary network interfaces
+             * @return the next stage of the definition
+             */
+            WithCreate withPublicIPAddressDeleteOptions(DeleteOptions deleteOptions);
+        }
+
         /** The stage of the VM definition allowing to specify additional capacities. */
         interface WithAdditionalCapacities {
             /**
@@ -1988,6 +1999,7 @@ public interface VirtualMachine
                 DefinitionStages.WithLicenseType,
                 DefinitionStages.WithAdditionalCapacities,
                 DefinitionStages.WithNetworkInterfaceDeleteOptions,
+                DefinitionStages.WithPublicIPAddressDeleteOptions,
                 DefinitionStages.WithEphemeralOSDisk,
                 DefinitionStages.WithScaleSet,
                 DefinitionStages.WithSecurityTypes,
@@ -2599,6 +2611,33 @@ public interface VirtualMachine
              * @return the next stage of the update
              */
             Update withDataDisksDeleteOptions(DeleteOptions deleteOptions, Integer... luns);
+
+            /**
+             * Update delete option for the primary public ip address of the primary network interface.
+             *
+             * @param deleteOptions what happens to the public IP address when the VM using it is deleted
+             * @return the next stage of the update
+             */
+            Update withPrimaryNicPrimaryPipDeleteOption(DeleteOptions deleteOptions);
+
+            /**
+             * Update delete option for the primary public ip address of the specified network interface.
+             *
+             * @param deleteOptions what happens to the public IP address when the VM using it is deleted
+             * @param nicIds resource Ids of the specified network interface
+             * @return the next stage of the update
+             */
+            Update withSpecifiedNicPrimaryPIpDeleteOption(DeleteOptions deleteOptions, String... nicIds);
+
+            /**
+             * Update delete option for the specified public ip address of the specified network interface.
+             *
+             * @param deleteOptions what happens to the public IP address when the VM using it is deleted
+             * @param nicId resource id of the specified network interfac
+             * @param ipConfigIds resource Ids of specified network interface ip configs
+             * @return the next stage of the update
+             */
+            Update withSpecifiedNicSpecifiedPIpDeleteOption(DeleteOptions deleteOptions, String nicId, String... ipConfigIds);
         }
 
         /** The stage of the virtual machine update allowing to user data configurations. */

@@ -30,6 +30,7 @@ import com.azure.resourcemanager.compute.models.InstanceViewStatus;
 import com.azure.resourcemanager.compute.models.InstanceViewTypes;
 import com.azure.resourcemanager.compute.models.KnownLinuxVirtualMachineImage;
 import com.azure.resourcemanager.compute.models.KnownWindowsVirtualMachineImage;
+import com.azure.resourcemanager.compute.models.NetworkInterfaceReference;
 import com.azure.resourcemanager.compute.models.PowerState;
 import com.azure.resourcemanager.compute.models.ProximityPlacementGroupType;
 import com.azure.resourcemanager.compute.models.RunCommandInputParameter;
@@ -54,6 +55,7 @@ import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.NetworkSecurityGroup;
 import com.azure.resourcemanager.network.models.NicIpConfiguration;
+import com.azure.resourcemanager.network.models.NicIpConfigurationBase;
 import com.azure.resourcemanager.network.models.PublicIPSkuType;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.SecurityRuleProtocol;
@@ -66,6 +68,7 @@ import com.azure.resourcemanager.resources.fluentcore.utils.ResourceManagerUtils
 import com.azure.resourcemanager.resources.models.ResourceGroup;
 import com.azure.resourcemanager.storage.models.StorageAccount;
 import com.azure.resourcemanager.storage.models.StorageAccountSkuType;
+import com.azure.resourcemanager.test.utils.TestUtilities;
 import com.azure.security.keyvault.keys.models.KeyType;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
@@ -93,6 +96,7 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
     private final String availabilitySetName = "availset1";
     private final String availabilitySetName2 = "availset2";
     private final ProximityPlacementGroupType proxGroupType = ProximityPlacementGroupType.STANDARD;
+    private static final Integer SLEEP_TIME_MILLI_SECONDS = 15 * 1000;
 
     @Override
     protected void initializeClients(HttpPipeline httpPipeline, AzureProfile profile) {
@@ -1987,6 +1991,345 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         creatablesInfo.networkCreatableKeys = networkCreatableKeys;
         creatablesInfo.publicIpCreatableKeys = publicIpCreatableKeys;
         return creatablesInfo;
+    }
+
+    @Test
+    public void canDeleteSinglePublicIpAddressWithVM() {
+        PublicIpAddress publicIPAddress =
+            networkManager
+                .publicIpAddresses()
+                .define(generateRandomResourceName("pip-", 15))
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withDynamicIP()
+                .create();
+
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withExistingPrimaryPublicIPAddress(publicIPAddress)
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2019_DATACENTER_GEN2)
+            .withAdminUsername("Foo12")
+            .withAdminPassword(password())
+            .withNewDataDisk(127)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withPublicIPAddressDeleteOptions(DeleteOptions.DELETE)
+            .create();
+
+        vm.refresh();
+        List<com.azure.resourcemanager.network.models.DeleteOptions> deleteOptionsList = new ArrayList<>();
+        vm.innerModel().networkProfile().networkInterfaces()
+            .stream().filter(NetworkInterfaceReference::primary)
+            .forEach(nicReference -> networkManager.networkInterfaces().getById(nicReference.id())
+                .ipConfigurations().values()
+                .stream().filter(NicIpConfigurationBase::isPrimary)
+                .forEach(ipConfig -> deleteOptionsList.add(ipConfig.innerModel().publicIpAddress().deleteOption())));
+
+        Assertions.assertEquals(1, deleteOptionsList.size());
+        deleteOptionsList.forEach(deleteOption -> Assertions.assertEquals(com.azure.resourcemanager.network.models.DeleteOptions.DELETE, deleteOption));
+
+        computeManager.virtualMachines().deleteById(vm.id(), true);
+        TestUtilities.sleep(SLEEP_TIME_MILLI_SECONDS, true);
+        Assertions.assertTrue(networkManager.publicIpAddresses().listByResourceGroup(rgName).stream().findAny().isPresent());
+    }
+
+    @Test
+    public void canDeleteMultiplePublicIpAddressWithVM() {
+        String subnetName = generateRandomResourceName("subnet-", 15);
+        PublicIpAddress publicIPAddress1 =
+            networkManager
+                .publicIpAddresses()
+                .define(generateRandomResourceName("pip-", 15))
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withDynamicIP()
+                .create();
+        PublicIpAddress publicIPAddress2 =
+            networkManager
+                .publicIpAddresses()
+                .define(generateRandomResourceName("pip-", 15))
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withDynamicIP()
+                .create();
+        PublicIpAddress publicIPAddress3 =
+            networkManager
+                .publicIpAddresses()
+                .define(generateRandomResourceName("pip-", 15))
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withDynamicIP()
+                .create();
+        Network vnet = networkManager.networks()
+            .define(generateRandomResourceName("vnet-", 15))
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet(subnetName, "10.0.0.0/28")
+            .create();
+
+        NetworkInterface secondaryNic = networkManager.networkInterfaces()
+            .define(generateRandomResourceName("nic-", 15))
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withExistingPrimaryNetwork(vnet)
+            .withSubnet(subnetName)
+            .withPrimaryPrivateIPAddressDynamic()
+            .withExistingPrimaryPublicIPAddress(publicIPAddress1)
+            .defineSecondaryIPConfiguration("secondary")
+            .withExistingNetwork(vnet)
+            .withSubnet(subnetName)
+            .withPrivateIpAddressDynamic()
+            .withExistingPublicIpAddress(publicIPAddress2)
+            .attach()
+            .withPublicIPAddressDeleteOptions(com.azure.resourcemanager.network.models.DeleteOptions.DELETE)
+            .create();
+
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withExistingPrimaryNetwork(vnet)
+            .withSubnet(subnetName)
+            .withPrimaryPrivateIPAddressDynamic()
+            .withExistingPrimaryPublicIPAddress(publicIPAddress3)
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2019_DATACENTER_GEN2)
+            .withAdminUsername("Foo12")
+            .withAdminPassword(password())
+            .withNewDataDisk(127)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withExistingSecondaryNetworkInterface(secondaryNic)
+            .withPublicIPAddressDeleteOptions(DeleteOptions.DELETE)
+            .create();
+
+        vm.refresh();
+        List<com.azure.resourcemanager.network.models.DeleteOptions> deleteOptionsList = new ArrayList<>();
+        vm.innerModel().networkProfile().networkInterfaces()
+            .forEach(nicReference -> networkManager.networkInterfaces().getById(nicReference.id())
+                .ipConfigurations().values()
+                .forEach(ipConfig -> deleteOptionsList.add(ipConfig.innerModel().publicIpAddress().deleteOption())));
+
+        Assertions.assertEquals(3, deleteOptionsList.size());
+        deleteOptionsList.forEach(deleteOption -> Assertions.assertEquals(com.azure.resourcemanager.network.models.DeleteOptions.DELETE, deleteOption));
+
+        computeManager.virtualMachines().deleteById(vm.id(), true);
+        TestUtilities.sleep(SLEEP_TIME_MILLI_SECONDS, true);
+        Assertions.assertTrue(networkManager.publicIpAddresses().listByResourceGroup(rgName).stream().findAny().isPresent());
+    }
+
+    @Test
+    public void updateDeleteOptionWithPrimaryNicPrimaryPip() {
+        PublicIpAddress publicIPAddress =
+            networkManager
+                .publicIpAddresses()
+                .define(generateRandomResourceName("pip-", 15))
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withDynamicIP()
+                .create();
+
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withNewPrimaryNetwork("10.0.0.0/28")
+            .withPrimaryPrivateIPAddressDynamic()
+            .withExistingPrimaryPublicIPAddress(publicIPAddress)
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2019_DATACENTER_GEN2)
+            .withAdminUsername("Foo12")
+            .withAdminPassword(password())
+            .withNewDataDisk(127)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withPublicIPAddressDeleteOptions(DeleteOptions.DELETE)
+            .create();
+
+        vm.refresh();
+        vm.update().withPrimaryNicPrimaryPipDeleteOption(DeleteOptions.DETACH).apply();
+        vm.refresh();
+        List<com.azure.resourcemanager.network.models.DeleteOptions> deleteOptionsList = new ArrayList<>();
+        vm.innerModel().networkProfile().networkInterfaces()
+            .stream().filter(NetworkInterfaceReference::primary)
+            .forEach(nicReference -> {
+                networkManager.networkInterfaces().getById(nicReference.id())
+                    .ipConfigurations().values()
+                    .stream().filter(NicIpConfigurationBase::isPrimary)
+                    .forEach(ipConfig -> deleteOptionsList.add(ipConfig.innerModel().publicIpAddress().deleteOption()));
+            });
+
+        Assertions.assertEquals(1, deleteOptionsList.size());
+        deleteOptionsList.forEach(deleteOption -> Assertions.assertEquals(com.azure.resourcemanager.network.models.DeleteOptions.DETACH, deleteOption));
+    }
+
+    @Test
+    public void updateDeleteOptionWithSpecifiedNicPrimaryPip() {
+        String subnetName = generateRandomResourceName("subnet-", 15);
+        PublicIpAddress publicIPAddress1 =
+            networkManager
+                .publicIpAddresses()
+                .define(generateRandomResourceName("pip-", 15))
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withDynamicIP()
+                .create();
+        PublicIpAddress publicIPAddress2 =
+            networkManager
+                .publicIpAddresses()
+                .define(generateRandomResourceName("pip-", 15))
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withDynamicIP()
+                .create();
+        PublicIpAddress publicIPAddress3 =
+            networkManager
+                .publicIpAddresses()
+                .define(generateRandomResourceName("pip-", 15))
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withDynamicIP()
+                .create();
+        Network vnet = networkManager.networks()
+            .define(generateRandomResourceName("vnet-", 15))
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet(subnetName, "10.0.0.0/28")
+            .create();
+
+        NetworkInterface secondaryNic = networkManager.networkInterfaces()
+            .define(generateRandomResourceName("nic-", 15))
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withExistingPrimaryNetwork(vnet)
+            .withSubnet(subnetName)
+            .withPrimaryPrivateIPAddressDynamic()
+            .withExistingPrimaryPublicIPAddress(publicIPAddress1)
+            .defineSecondaryIPConfiguration("secondary")
+            .withExistingNetwork(vnet)
+            .withSubnet(subnetName)
+            .withPrivateIpAddressDynamic()
+            .withExistingPublicIpAddress(publicIPAddress2)
+            .attach()
+            .withPublicIPAddressDeleteOptions(com.azure.resourcemanager.network.models.DeleteOptions.DELETE)
+            .create();
+
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withExistingPrimaryNetwork(vnet)
+            .withSubnet(subnetName)
+            .withPrimaryPrivateIPAddressDynamic()
+            .withExistingPrimaryPublicIPAddress(publicIPAddress3)
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2019_DATACENTER_GEN2)
+            .withAdminUsername("Foo12")
+            .withAdminPassword(password())
+            .withNewDataDisk(127)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withExistingSecondaryNetworkInterface(secondaryNic)
+            .withPublicIPAddressDeleteOptions(DeleteOptions.DELETE)
+            .create();
+        vm.refresh();
+
+        vm.innerModel().networkProfile().networkInterfaces()
+            .stream().filter(nicReference -> Boolean.FALSE.equals(nicReference.primary()))
+            .forEach(nicReference -> vm.update().withSpecifiedNicPrimaryPIpDeleteOption(DeleteOptions.DETACH, nicReference.id()).apply());
+        vm.refresh();
+
+        List<com.azure.resourcemanager.network.models.DeleteOptions> deleteOptionsList = new ArrayList<>();
+        vm.innerModel().networkProfile().networkInterfaces()
+            .stream().filter(nicReference -> Boolean.FALSE.equals(nicReference.primary()))
+            .forEach(nicReference -> deleteOptionsList.add(networkManager.networkInterfaces().getById(nicReference.id()).primaryIPConfiguration().innerModel().publicIpAddress().deleteOption()));
+        Assertions.assertEquals(1, deleteOptionsList.size());
+        deleteOptionsList.forEach(deleteOption -> Assertions.assertEquals(com.azure.resourcemanager.network.models.DeleteOptions.DETACH, deleteOption));
+    }
+
+    @Test
+    public void updateDeleteOptionWithSpecifiedNicSpecifiedPip() {
+        String subnetName = generateRandomResourceName("subnet-", 15);
+        PublicIpAddress publicIPAddress1 =
+            networkManager
+                .publicIpAddresses()
+                .define(generateRandomResourceName("pip-", 15))
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withDynamicIP()
+                .create();
+        PublicIpAddress publicIPAddress2 =
+            networkManager
+                .publicIpAddresses()
+                .define(generateRandomResourceName("pip-", 15))
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withDynamicIP()
+                .create();
+        PublicIpAddress publicIPAddress3 =
+            networkManager
+                .publicIpAddresses()
+                .define(generateRandomResourceName("pip-", 15))
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withDynamicIP()
+                .create();
+        Network vnet = networkManager.networks()
+            .define(generateRandomResourceName("vnet-", 15))
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet(subnetName, "10.0.0.0/28")
+            .create();
+
+        NetworkInterface secondaryNic = networkManager.networkInterfaces()
+            .define(generateRandomResourceName("nic-", 15))
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withExistingPrimaryNetwork(vnet)
+            .withSubnet(subnetName)
+            .withPrimaryPrivateIPAddressDynamic()
+            .withExistingPrimaryPublicIPAddress(publicIPAddress1)
+            .defineSecondaryIPConfiguration("secondary")
+            .withExistingNetwork(vnet)
+            .withSubnet(subnetName)
+            .withPrivateIpAddressDynamic()
+            .withExistingPublicIpAddress(publicIPAddress2)
+            .attach()
+            .withPublicIPAddressDeleteOptions(com.azure.resourcemanager.network.models.DeleteOptions.DELETE)
+            .create();
+
+        VirtualMachine vm = computeManager.virtualMachines()
+            .define(vmName)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+            .withExistingPrimaryNetwork(vnet)
+            .withSubnet(subnetName)
+            .withPrimaryPrivateIPAddressDynamic()
+            .withExistingPrimaryPublicIPAddress(publicIPAddress3)
+            .withPopularWindowsImage(KnownWindowsVirtualMachineImage.WINDOWS_SERVER_2019_DATACENTER_GEN2)
+            .withAdminUsername("Foo12")
+            .withAdminPassword(password())
+            .withNewDataDisk(127)
+            .withSize(VirtualMachineSizeTypes.fromString("Standard_D2a_v4"))
+            .withExistingSecondaryNetworkInterface(secondaryNic)
+            .withPublicIPAddressDeleteOptions(DeleteOptions.DELETE)
+            .create();
+        vm.refresh();
+
+        vm.innerModel().networkProfile().networkInterfaces()
+            .stream().filter(nicReference -> Boolean.FALSE.equals(nicReference.primary()))
+            .forEach(nicReference -> {
+                String specifiedIpConfigId = networkManager.networkInterfaces().getById(nicReference.id()).specifiedIPConfiguration("secondary").innerModel().id();
+                vm.update().withSpecifiedNicSpecifiedPIpDeleteOption(DeleteOptions.DETACH, nicReference.id(), specifiedIpConfigId).apply();
+            });
+
+        vm.refresh();
+        List<com.azure.resourcemanager.network.models.DeleteOptions> deleteOptionsList = new ArrayList<>();
+        vm.innerModel().networkProfile().networkInterfaces()
+            .stream().filter(nicReference -> Boolean.FALSE.equals(nicReference.primary()))
+            .forEach(nicReference -> deleteOptionsList.add(networkManager.networkInterfaces().getById(nicReference.id()).specifiedIPConfiguration("secondary").innerModel().publicIpAddress().deleteOption()));
+        Assertions.assertEquals(1, deleteOptionsList.size());
+        deleteOptionsList.forEach(deleteOption -> Assertions.assertEquals(com.azure.resourcemanager.network.models.DeleteOptions.DETACH, deleteOption));
     }
 
     class CreatablesInfo {

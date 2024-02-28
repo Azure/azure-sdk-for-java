@@ -9,6 +9,7 @@ import com.azure.resourcemanager.network.fluent.models.ApplicationSecurityGroupI
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddressPool;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
+import com.azure.resourcemanager.network.models.DeleteOptions;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.LoadBalancer;
@@ -257,11 +258,11 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
         return natRefs;
     }
 
-    protected static void ensureConfigurations(Collection<NicIpConfiguration> nicIPConfigurations) {
+    protected static void ensureConfigurations(Collection<NicIpConfiguration> nicIPConfigurations, DeleteOptions deleteOptions) {
         for (NicIpConfiguration nicIPConfiguration : nicIPConfigurations) {
             NicIpConfigurationImpl config = (NicIpConfigurationImpl) nicIPConfiguration;
             config.innerModel().withSubnet(config.subnetToAssociate());
-            config.innerModel().withPublicIpAddress(config.publicIPToAssociate());
+            config.innerModel().withPublicIpAddress(config.publicIPToAssociate(deleteOptions));
         }
     }
 
@@ -331,9 +332,10 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
      * public IP in create fluent chain. In case of update chain, if withoutPublicIP(..) is not specified then existing
      * associated (if any) public IP will be returned.
      *
+     * @param deleteOptions what happens to the public IP address when the VM using it is deleted.
      * @return public IP SubResource
      */
-    private PublicIpAddressInner publicIPToAssociate() {
+    private PublicIpAddressInner publicIPToAssociate(DeleteOptions deleteOptions) {
         String pipId = null;
         if (this.removePrimaryPublicIPAssociation) {
             return null;
@@ -344,9 +346,9 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
         }
 
         if (pipId != null) {
-            return new PublicIpAddressInner().withId(pipId);
+            return new PublicIpAddressInner().withId(pipId).withDeleteOption(deleteOptions);
         } else if (!this.isInCreateMode) {
-            return this.innerModel().publicIpAddress();
+            return this.innerModel().publicIpAddress().withDeleteOption(deleteOptions);
         } else {
             return null;
         }

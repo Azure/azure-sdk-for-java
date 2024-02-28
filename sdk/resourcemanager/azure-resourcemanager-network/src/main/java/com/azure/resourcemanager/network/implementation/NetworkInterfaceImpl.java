@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.models.ApplicationSecurityGroupInner;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
+import com.azure.resourcemanager.network.models.DeleteOptions;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.Network;
@@ -60,6 +61,7 @@ class NetworkInterfaceImpl
     private NetworkSecurityGroup existingNetworkSecurityGroupToAssociate;
     /** cached related resources. */
     private NetworkSecurityGroup networkSecurityGroup;
+    private DeleteOptions publicIPAddressDeleteOption;
 
     NetworkInterfaceImpl(String name, NetworkInterfaceInner innerModel, final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
@@ -416,6 +418,22 @@ class NetworkInterfaceImpl
         return this.networkSecurityGroup;
     }
 
+    @Override
+    public NicIpConfigurationImpl specifiedIPConfiguration(String ipConfigName) {
+        NicIpConfigurationImpl specifiedIPConfig = null;
+        for (NicIpConfiguration ipConfiguration : this.nicIPConfigurations.values()) {
+            if (ipConfigName.equals(ipConfiguration.name())) {
+                specifiedIPConfig = (NicIpConfigurationImpl) ipConfiguration;
+                break;
+            }
+        }
+        if (specifiedIPConfig == null) {
+            specifiedIPConfig = prepareNewNicIPConfiguration(ipConfigName);
+            withIPConfiguration(specifiedIPConfig);
+        }
+        return specifiedIPConfig;
+    }
+
     /** @return the primary IP configuration of the network interface */
     @Override
     public NicIpConfigurationImpl primaryIPConfiguration() {
@@ -563,9 +581,24 @@ class NetworkInterfaceImpl
                 .withNetworkSecurityGroup(new NetworkSecurityGroupInner().withId(networkSecurityGroup.id()));
         }
 
-        NicIpConfigurationImpl.ensureConfigurations(this.nicIPConfigurations.values());
+        NicIpConfigurationImpl.ensureConfigurations(this.nicIPConfigurations.values(), this.publicIPAddressDeleteOption);
 
         // Reset and update IP configs
         this.innerModel().withIpConfigurations(innersFromWrappers(this.nicIPConfigurations.values()));
+    }
+
+    @Override
+    public NetworkInterfaceImpl withPublicIPAddressDeleteOptions(DeleteOptions deleteOptions) {
+        this.publicIPAddressDeleteOption = deleteOptions;
+        return this;
+    }
+
+    @Override
+    public NetworkInterfaceImpl withSpecifiedNicSpecifiedPipDeleteOption(
+        DeleteOptions deleteOptions, PublicIpAddress publicIpAddress, String ipConfigName) {
+        this.specifiedIPConfiguration(ipConfigName).withExistingPublicIpAddress(publicIpAddress);
+        this.specifiedIPConfiguration(ipConfigName).withPrivateIpVersion(publicIpAddress.version());
+        this.publicIPAddressDeleteOption = deleteOptions;
+        return this;
     }
 }

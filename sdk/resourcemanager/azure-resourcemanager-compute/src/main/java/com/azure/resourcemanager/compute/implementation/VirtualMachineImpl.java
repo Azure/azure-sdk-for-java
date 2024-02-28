@@ -87,6 +87,7 @@ import com.azure.resourcemanager.msi.models.Identity;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.models.Network;
 import com.azure.resourcemanager.network.models.NetworkInterface;
+import com.azure.resourcemanager.network.models.NicIpConfigurationBase;
 import com.azure.resourcemanager.network.models.PublicIPSkuType;
 import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.resources.fluentcore.arm.AvailabilityZoneId;
@@ -94,6 +95,7 @@ import com.azure.resourcemanager.resources.fluentcore.arm.ResourceId;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.azure.resourcemanager.resources.fluentcore.model.Accepted;
+import com.azure.resourcemanager.resources.fluentcore.model.Appliable;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
 import com.azure.resourcemanager.resources.fluentcore.model.Indexable;
 import com.azure.resourcemanager.resources.fluentcore.model.implementation.AcceptedImpl;
@@ -2307,6 +2309,74 @@ class VirtualMachineImpl
         return this;
     }
 
+    @Override
+    public VirtualMachineImpl withPrimaryNicPrimaryPipDeleteOption(DeleteOptions deleteOptions) {
+        if (this.innerModel().networkProfile() != null
+            && this.innerModel().networkProfile().networkInterfaces() != null) {
+            this.innerModel().networkProfile().networkInterfaces()
+                .stream().filter(NetworkInterfaceReference::primary)
+                .forEach(nicReference -> {
+                    NetworkInterface nic = networkManager.networkInterfaces().getById(nicReference.id());
+                    nic.ipConfigurations().values()
+                        .stream().filter(NicIpConfigurationBase::isPrimary)
+                        .forEach(ipConfig -> {
+                            PublicIpAddress publicIpAddress = networkManager.publicIpAddresses().getById(ipConfig.innerModel().publicIpAddress().id());
+                            Appliable<NetworkInterface> appliable = nic.update().withSpecifiedNicSpecifiedPipDeleteOption(convertDeleteOptionType(deleteOptions), publicIpAddress, ipConfig.name());
+                            this.addDependency(appliable);
+                        });
+                });
+        }
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withSpecifiedNicPrimaryPIpDeleteOption(DeleteOptions deleteOptions, String... nicIds) {
+        if (this.innerModel().networkProfile() != null
+            && this.innerModel().networkProfile().networkInterfaces() != null) {
+            Set<String> nicIdSet = Arrays.stream(nicIds).map(nicId -> nicId.toLowerCase(Locale.ROOT)).collect(Collectors.toSet());
+            this.innerModel().networkProfile().networkInterfaces()
+                .stream().filter(nicReference -> nicIdSet.isEmpty()
+                    || nicIdSet.contains(nicReference.id().toLowerCase(Locale.ROOT)))
+                .forEach(nicReference -> {
+                    NetworkInterface nic = networkManager.networkInterfaces().getById(nicReference.id());
+                    nic.ipConfigurations().values()
+                        .stream().filter(NicIpConfigurationBase::isPrimary)
+                        .forEach(ipConfig -> {
+                            PublicIpAddress publicIpAddress = networkManager.publicIpAddresses().getById(ipConfig.innerModel().publicIpAddress().id());
+                            Appliable<NetworkInterface> appliable =
+                                nic.update().withSpecifiedNicSpecifiedPipDeleteOption(
+                                    convertDeleteOptionType(deleteOptions), publicIpAddress, ipConfig.name());
+                            this.addDependency(appliable);
+                        });
+                });
+        }
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withSpecifiedNicSpecifiedPIpDeleteOption(DeleteOptions deleteOptions, String nicId, String... ipConfigIds) {
+        if (this.innerModel().networkProfile() != null
+            && this.innerModel().networkProfile().networkInterfaces() != null) {
+            this.innerModel().networkProfile().networkInterfaces()
+                .stream().filter(nicReference -> nicId.equalsIgnoreCase(nicReference.id()))
+                .forEach(nicReference -> {
+                    NetworkInterface nic = networkManager.networkInterfaces().getById(nicReference.id());
+                    Set<String> ipConfigIdSet = Arrays.stream(ipConfigIds).map(ipConfigId -> ipConfigId.toLowerCase(Locale.ROOT)).collect(Collectors.toSet());
+                    nic.ipConfigurations().values()
+                        .stream().filter(ipConfig -> ipConfigIdSet.isEmpty()
+                            || ipConfigIdSet.contains(ipConfig.innerModel().id().toLowerCase(Locale.ROOT)))
+                        .forEach(ipConfig -> {
+                            PublicIpAddress publicIpAddress = networkManager.publicIpAddresses().getById(ipConfig.innerModel().publicIpAddress().id());
+                            Appliable<NetworkInterface> appliable =
+                                nic.update().withSpecifiedNicSpecifiedPipDeleteOption(
+                                    convertDeleteOptionType(deleteOptions), publicIpAddress, ipConfig.name());
+                            this.addDependency(appliable);
+                        });
+                });
+        }
+        return this;
+    }
+
     AzureEnvironment environment() {
         return manager().environment();
     }
@@ -2933,6 +3003,12 @@ class VirtualMachineImpl
         return this;
     }
 
+    @Override
+    public VirtualMachine.DefinitionStages.WithCreate withPublicIPAddressDeleteOptions(DeleteOptions deleteOptions) {
+        this.nicDefinitionWithCreate.withPublicIPAddressDeleteOptions(convertDeleteOptionType(deleteOptions));
+        return this;
+    }
+
     /** Class to manage Data disk collection. */
     private class ManagedDataDiskCollection {
         private final Map<String, DataDisk> newDisksToAttach = new HashMap<>();
@@ -3356,5 +3432,16 @@ class VirtualMachineImpl
                 this.vmInner().diagnosticsProfile().bootDiagnostics().withStorageUri(null);
             }
         }
+    }
+
+    private com.azure.resourcemanager.network.models.DeleteOptions convertDeleteOptionType(DeleteOptions deleteOptions) {
+        if (Objects.nonNull(deleteOptions)) {
+            if (DeleteOptions.DELETE.equals(deleteOptions)) {
+                return com.azure.resourcemanager.network.models.DeleteOptions.DELETE;
+            } else {
+                return com.azure.resourcemanager.network.models.DeleteOptions.DETACH;
+            }
+        }
+        return null;
     }
 }
