@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * The authentication options for Azure OpenAI On Your Data when using an Elasticsearch key and key ID pair.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("KeyAndKeyId")
+@JsonTypeName("key_and_key_id")
 @Immutable
 public final class OnYourDataKeyAndKeyIdAuthenticationOptions extends OnYourDataAuthenticationOptions {
 
@@ -29,7 +29,7 @@ public final class OnYourDataKeyAndKeyIdAuthenticationOptions extends OnYourData
      * The key ID to use for authentication.
      */
     @Generated
-    @JsonProperty(value = "keyId")
+    @JsonProperty(value = "key_id")
     private String keyId;
 
     /**
@@ -41,7 +41,7 @@ public final class OnYourDataKeyAndKeyIdAuthenticationOptions extends OnYourData
     @Generated
     @JsonCreator
     public OnYourDataKeyAndKeyIdAuthenticationOptions(@JsonProperty(value = "key") String key,
-        @JsonProperty(value = "keyId") String keyId) {
+        @JsonProperty(value = "key_id") String keyId) {
         this.key = key;
         this.keyId = keyId;
     }

@@ -1,5 +1,20 @@
 # Release History
 
+## 7.16.0-beta.1 (Unreleased)
+
+### Features Added
+
+- Replaced Jackson Dataformat XML with `azure-xml`.
+
+### Breaking Changes
+
+- Remove Jackson Dataformat XML dependency. If you were depending on this, you will need to add 
+  `com.fasterxml.jackson.dataformat:jackson-dataformat-xml` to your project.
+
+### Bugs Fixed
+
+### Other Changes
+
 ## 7.15.1 (2024-02-16)
 
 ### Bugs Fixed

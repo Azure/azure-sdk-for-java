@@ -4,6 +4,8 @@
 
 ### Features Added
 
+- Added new Azure region `Region.ITALY_NORTH`.
+
 ### Breaking Changes
 
 ### Bugs Fixed

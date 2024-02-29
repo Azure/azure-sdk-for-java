@@ -70,8 +70,8 @@ public class ByteBufWriterSubscriberTests {
         });
 
         WriteCountTrackingChannel channel = new WriteCountTrackingChannel();
-        StepVerifier.create(Mono.<Void>create(sink ->
-                data.subscribe(new ByteBufWriteSubscriber(channel::write, sink, null))))
+        StepVerifier
+            .create(Mono.<Void>create(sink -> data.subscribe(new ByteBufWriteSubscriber(channel::write, sink, null))))
             .verifyComplete();
 
         assertEquals(0, channel.getWriteCount());
@@ -90,8 +90,8 @@ public class ByteBufWriterSubscriberTests {
             sink.complete();
         });
 
-        StepVerifier.create(Mono.<Void>create(sink ->
-                data.subscribe(new ByteBufWriteSubscriber(channel::write, sink, 8192L))))
+        StepVerifier
+            .create(Mono.<Void>create(sink -> data.subscribe(new ByteBufWriteSubscriber(channel::write, sink, 8192L))))
             .verifyComplete();
 
         assertEquals(16, channel.getWriteCount());
@@ -110,8 +110,8 @@ public class ByteBufWriterSubscriberTests {
             sink.error(new IOException());
         });
 
-        StepVerifier.create(Mono.<Void>create(sink ->
-                data.subscribe(new ByteBufWriteSubscriber(channel::write, sink, 8192L))))
+        StepVerifier
+            .create(Mono.<Void>create(sink -> data.subscribe(new ByteBufWriteSubscriber(channel::write, sink, 8192L))))
             .verifyError(IOException.class);
 
         // Last ByteBuf written isn't flushed as an error happened.
@@ -125,8 +125,8 @@ public class ByteBufWriterSubscriberTests {
     @MethodSource("byteBufsLargerThanInternalBufferSupplier")
     public void byteBufsLargerThanInternalBufferWriteWithoutBuffering(Flux<ByteBuf> data, byte[] expectedData) {
         WriteCountTrackingChannel channel = new WriteCountTrackingChannel();
-        StepVerifier.create(Mono.<Void>create(sink ->
-                data.subscribe(new ByteBufWriteSubscriber(channel::write, sink, null))))
+        StepVerifier
+            .create(Mono.<Void>create(sink -> data.subscribe(new ByteBufWriteSubscriber(channel::write, sink, null))))
             .verifyComplete();
 
         assertArraysEqual(expectedData, channel.getDataWritten());
@@ -155,13 +155,12 @@ public class ByteBufWriterSubscriberTests {
         System.arraycopy(largeChunk, 0, expectedData3, smallChunk.length, largeChunk.length);
         System.arraycopy(mediumChunk, 0, expectedData3, smallChunk.length + largeChunk.length, mediumChunk.length);
 
-        return Stream.of(
-            Arguments.of(Flux.create(sink -> {
-                sink.next(Unpooled.wrappedBuffer(smallChunk));
-                sink.next(Unpooled.wrappedBuffer(mediumChunk));
-                sink.next(Unpooled.wrappedBuffer(largeChunk));
-                sink.complete();
-            }), expectedData1),
+        return Stream.of(Arguments.of(Flux.create(sink -> {
+            sink.next(Unpooled.wrappedBuffer(smallChunk));
+            sink.next(Unpooled.wrappedBuffer(mediumChunk));
+            sink.next(Unpooled.wrappedBuffer(largeChunk));
+            sink.complete();
+        }), expectedData1),
 
             Arguments.of(Flux.create(sink -> {
                 sink.next(Unpooled.wrappedBuffer(largeChunk));
@@ -175,8 +174,7 @@ public class ByteBufWriterSubscriberTests {
                 sink.next(Unpooled.wrappedBuffer(largeChunk));
                 sink.next(Unpooled.wrappedBuffer(mediumChunk));
                 sink.complete();
-            }), expectedData3)
-        );
+            }), expectedData3));
     }
 
     @Test
@@ -244,8 +242,9 @@ public class ByteBufWriterSubscriberTests {
             sink.next(droppedByteBuf);
         }).contextWrite(Context.of("reactor.onNextDropped.local", onNextDroppedConsumer));
 
-        StepVerifier.create(Mono.<Void>create(sink ->
-                onNextAfterTerminalState.subscribe(new ByteBufWriteSubscriber(null, sink, null))))
+        StepVerifier
+            .create(Mono
+                .<Void>create(sink -> onNextAfterTerminalState.subscribe(new ByteBufWriteSubscriber(null, sink, null))))
             .verifyComplete();
 
         assertEquals(1, onNextDroppedCalledCount.get());
@@ -270,8 +269,9 @@ public class ByteBufWriterSubscriberTests {
             sink.next(droppedByteBuf);
         }).contextWrite(Context.of("reactor.onNextDropped.local", onNextDroppedConsumer));
 
-        StepVerifier.create(Mono.<Void>create(sink ->
-                onNextAfterTerminalState.subscribe(new ByteBufWriteSubscriber(null, sink, null))))
+        StepVerifier
+            .create(Mono
+                .<Void>create(sink -> onNextAfterTerminalState.subscribe(new ByteBufWriteSubscriber(null, sink, null))))
             .verifyError(IOException.class);
 
         assertEquals(1, onNextDroppedCalledCount.get());

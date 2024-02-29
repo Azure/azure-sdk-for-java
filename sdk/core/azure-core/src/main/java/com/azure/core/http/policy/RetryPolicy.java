@@ -29,7 +29,32 @@ import java.util.function.Supplier;
 import static com.azure.core.util.CoreUtils.isNullOrEmpty;
 
 /**
- * A pipeline policy that retries when a recoverable HTTP error or exception occurs.
+ * The {@code RetryPolicy} class is an implementation of the {@link HttpPipelinePolicy} interface. This policy handles
+ * HTTP retries by determining if an HTTP request should be retried based on the received {@link HttpResponse}.
+ *
+ * <p>This class is useful when you need to handle HTTP retries in a pipeline. It uses a {@link RetryStrategy} to
+ * decide if a request should be retried. By default, it uses the {@link ExponentialBackoff} strategy, which uses
+ * a delay duration that exponentially increases with each retry attempt until an upper bound is reached.</p>
+ *
+ * <p><strong>Code sample:</strong></p>
+ *
+ * <p>In this example, a {@code RetryPolicy} is created which can then be added to the pipeline. For the request then
+ * sent by the pipeline, if the server responds with a status code that indicates a transient error, the request will be
+ * retried according to the {@link RetryStrategy} used by the {@code RetryPolicy}.</p>
+ *
+ * <!-- src_embed com.azure.core.http.policy.RetryPolicy.constructor -->
+ * <pre>
+ * RetryPolicy retryPolicy = new RetryPolicy&#40;&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.policy.RetryPolicy.constructor -->
+ *
+ * @see com.azure.core.http.policy
+ * @see com.azure.core.http.policy.HttpPipelinePolicy
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
+ * @see com.azure.core.http.policy.RetryStrategy
+ * @see com.azure.core.http.policy.DefaultRedirectStrategy
  */
 public class RetryPolicy implements HttpPipelinePolicy {
     // RetryPolicy is a commonly used policy, use a static logger.
@@ -230,8 +255,9 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
     private static boolean shouldRetry(RetryStrategy retryStrategy, HttpResponse response, int tryCount,
         List<Throwable> retriedExceptions) {
-        return tryCount < retryStrategy.getMaxRetries() && retryStrategy
-            .shouldRetryCondition(new RequestRetryCondition(response, null, tryCount, retriedExceptions));
+        return tryCount < retryStrategy.getMaxRetries()
+            && retryStrategy
+                .shouldRetryCondition(new RequestRetryCondition(response, null, tryCount, retriedExceptions));
     }
 
     private static boolean shouldRetryException(RetryStrategy retryStrategy, Throwable throwable, int tryCount,
@@ -261,8 +287,10 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     private static void logRetry(int tryCount, Duration delayDuration) {
-        LOGGER.atVerbose().addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
-            .addKeyValue(LoggingKeys.DURATION_MS_KEY, delayDuration.toMillis()).log("Retrying.");
+        LOGGER.atVerbose()
+            .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
+            .addKeyValue(LoggingKeys.DURATION_MS_KEY, delayDuration.toMillis())
+            .log("Retrying.");
     }
 
     private static void logRetryExhausted(int tryCount) {

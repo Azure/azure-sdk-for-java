@@ -17,7 +17,17 @@ import java.util.Map;
 import java.util.Objects;
 
 /**
- * Represents a heterogeneous collection of {@link GeoObject GeoObjects}.
+ * <p>Represents a heterogeneous collection of {@link GeoObject GeoObjects}.</p>
+ *
+ * <p>This class encapsulates a list of geometry objects and provides methods to access these objects.
+ * The objects can be of any type that extends {@link GeoObject}.</p>
+ *
+ * <p>This class is useful when you want to work with a collection of geometry objects in a read-only manner. For
+ * example, you can use it to represent a complex geographic feature that is composed of multiple simple geographic
+ * features.</p>
+ *
+ * @see GeoObject
+ * @see GeoBoundingBox
  */
 @Immutable
 public final class GeoCollection extends GeoObject {
@@ -83,8 +93,10 @@ public final class GeoCollection extends GeoObject {
 
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject().writeStringField("type", GeoObjectType.GEOMETRY_COLLECTION.toString())
-            .writeArrayField("geometries", geometries, JsonWriter::writeJson).writeJsonField("bbox", getBoundingBox());
+        jsonWriter.writeStartObject()
+            .writeStringField("type", GeoObjectType.GEOMETRY_COLLECTION.toString())
+            .writeArrayField("geometries", geometries, JsonWriter::writeJson)
+            .writeJsonField("bbox", getBoundingBox());
 
         return writeCustomProperties(jsonWriter).writeEndObject();
     }

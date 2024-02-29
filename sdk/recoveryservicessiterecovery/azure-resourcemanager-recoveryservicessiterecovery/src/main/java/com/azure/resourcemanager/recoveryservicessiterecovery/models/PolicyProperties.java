@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Protection profile custom data details. */
+/**
+ * Protection profile custom data details.
+ */
 @Fluent
 public final class PolicyProperties {
     /*
@@ -22,13 +24,15 @@ public final class PolicyProperties {
     @JsonProperty(value = "providerSpecificDetails")
     private PolicyProviderSpecificDetails providerSpecificDetails;
 
-    /** Creates an instance of PolicyProperties class. */
+    /**
+     * Creates an instance of PolicyProperties class.
+     */
     public PolicyProperties() {
     }
 
     /**
      * Get the friendlyName property: The FriendlyName.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -37,7 +41,7 @@ public final class PolicyProperties {
 
     /**
      * Set the friendlyName property: The FriendlyName.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the PolicyProperties object itself.
      */
@@ -48,7 +52,7 @@ public final class PolicyProperties {
 
     /**
      * Get the providerSpecificDetails property: The ReplicationChannelSetting.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public PolicyProviderSpecificDetails providerSpecificDetails() {
@@ -57,7 +61,7 @@ public final class PolicyProperties {
 
     /**
      * Set the providerSpecificDetails property: The ReplicationChannelSetting.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the PolicyProperties object itself.
      */
@@ -68,7 +72,7 @@ public final class PolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

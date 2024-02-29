@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Azure specific reprotect input. */
+/**
+ * Azure specific reprotect input.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("HyperVReplicaAzure")
 @Fluent
@@ -50,13 +52,15 @@ public final class HyperVReplicaAzureReprotectInput extends ReverseReplicationPr
     @JsonProperty(value = "logStorageAccountId")
     private String logStorageAccountId;
 
-    /** Creates an instance of HyperVReplicaAzureReprotectInput class. */
+    /**
+     * Creates an instance of HyperVReplicaAzureReprotectInput class.
+     */
     public HyperVReplicaAzureReprotectInput() {
     }
 
     /**
      * Get the hvHostVmId property: The Hyper-V host Vm Id.
-     *
+     * 
      * @return the hvHostVmId value.
      */
     public String hvHostVmId() {
@@ -65,7 +69,7 @@ public final class HyperVReplicaAzureReprotectInput extends ReverseReplicationPr
 
     /**
      * Set the hvHostVmId property: The Hyper-V host Vm Id.
-     *
+     * 
      * @param hvHostVmId the hvHostVmId value to set.
      * @return the HyperVReplicaAzureReprotectInput object itself.
      */
@@ -76,7 +80,7 @@ public final class HyperVReplicaAzureReprotectInput extends ReverseReplicationPr
 
     /**
      * Get the vmName property: The Vm Name.
-     *
+     * 
      * @return the vmName value.
      */
     public String vmName() {
@@ -85,7 +89,7 @@ public final class HyperVReplicaAzureReprotectInput extends ReverseReplicationPr
 
     /**
      * Set the vmName property: The Vm Name.
-     *
+     * 
      * @param vmName the vmName value to set.
      * @return the HyperVReplicaAzureReprotectInput object itself.
      */
@@ -96,7 +100,7 @@ public final class HyperVReplicaAzureReprotectInput extends ReverseReplicationPr
 
     /**
      * Get the osType property: The OS type associated with vm.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -105,7 +109,7 @@ public final class HyperVReplicaAzureReprotectInput extends ReverseReplicationPr
 
     /**
      * Set the osType property: The OS type associated with vm.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the HyperVReplicaAzureReprotectInput object itself.
      */
@@ -116,7 +120,7 @@ public final class HyperVReplicaAzureReprotectInput extends ReverseReplicationPr
 
     /**
      * Get the vHDId property: The OS disk VHD id associated with vm.
-     *
+     * 
      * @return the vHDId value.
      */
     public String vHDId() {
@@ -125,7 +129,7 @@ public final class HyperVReplicaAzureReprotectInput extends ReverseReplicationPr
 
     /**
      * Set the vHDId property: The OS disk VHD id associated with vm.
-     *
+     * 
      * @param vHDId the vHDId value to set.
      * @return the HyperVReplicaAzureReprotectInput object itself.
      */
@@ -136,7 +140,7 @@ public final class HyperVReplicaAzureReprotectInput extends ReverseReplicationPr
 
     /**
      * Get the storageAccountId property: The storage account name.
-     *
+     * 
      * @return the storageAccountId value.
      */
     public String storageAccountId() {
@@ -145,7 +149,7 @@ public final class HyperVReplicaAzureReprotectInput extends ReverseReplicationPr
 
     /**
      * Set the storageAccountId property: The storage account name.
-     *
+     * 
      * @param storageAccountId the storageAccountId value to set.
      * @return the HyperVReplicaAzureReprotectInput object itself.
      */
@@ -156,7 +160,7 @@ public final class HyperVReplicaAzureReprotectInput extends ReverseReplicationPr
 
     /**
      * Get the logStorageAccountId property: The storage account to be used for logging during replication.
-     *
+     * 
      * @return the logStorageAccountId value.
      */
     public String logStorageAccountId() {
@@ -165,7 +169,7 @@ public final class HyperVReplicaAzureReprotectInput extends ReverseReplicationPr
 
     /**
      * Set the logStorageAccountId property: The storage account to be used for logging during replication.
-     *
+     * 
      * @param logStorageAccountId the logStorageAccountId value to set.
      * @return the HyperVReplicaAzureReprotectInput object itself.
      */
@@ -176,7 +180,7 @@ public final class HyperVReplicaAzureReprotectInput extends ReverseReplicationPr
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

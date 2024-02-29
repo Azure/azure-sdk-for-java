@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class HyperVReplicaBaseEventDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HyperVReplicaBaseEventDetails model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"HyperVReplicaBaseEventDetails\",\"containerName\":\"xke\",\"fabricName\":\"iraabmdlqjbedpf\",\"remoteContainerName\":\"lhupmomihzbdnpxp\",\"remoteFabricName\":\"dpr\"}")
-                .toObject(HyperVReplicaBaseEventDetails.class);
+        HyperVReplicaBaseEventDetails model = BinaryData.fromString(
+            "{\"instanceType\":\"HyperVReplicaBaseEventDetails\",\"containerName\":\"xke\",\"fabricName\":\"iraabmdlqjbedpf\",\"remoteContainerName\":\"lhupmomihzbdnpxp\",\"remoteFabricName\":\"dpr\"}")
+            .toObject(HyperVReplicaBaseEventDetails.class);
         Assertions.assertEquals("xke", model.containerName());
         Assertions.assertEquals("iraabmdlqjbedpf", model.fabricName());
         Assertions.assertEquals("lhupmomihzbdnpxp", model.remoteContainerName());
@@ -24,12 +22,8 @@ public final class HyperVReplicaBaseEventDetailsTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HyperVReplicaBaseEventDetails model =
-            new HyperVReplicaBaseEventDetails()
-                .withContainerName("xke")
-                .withFabricName("iraabmdlqjbedpf")
-                .withRemoteContainerName("lhupmomihzbdnpxp")
-                .withRemoteFabricName("dpr");
+        HyperVReplicaBaseEventDetails model = new HyperVReplicaBaseEventDetails().withContainerName("xke")
+            .withFabricName("iraabmdlqjbedpf").withRemoteContainerName("lhupmomihzbdnpxp").withRemoteFabricName("dpr");
         model = BinaryData.fromObject(model).toObject(HyperVReplicaBaseEventDetails.class);
         Assertions.assertEquals("xke", model.containerName());
         Assertions.assertEquals("iraabmdlqjbedpf", model.fabricName());

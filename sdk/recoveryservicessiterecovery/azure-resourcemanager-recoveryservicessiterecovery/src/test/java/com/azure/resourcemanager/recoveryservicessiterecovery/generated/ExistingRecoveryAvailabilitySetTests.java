@@ -11,17 +11,16 @@ import org.junit.jupiter.api.Assertions;
 public final class ExistingRecoveryAvailabilitySetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExistingRecoveryAvailabilitySet model =
-            BinaryData
-                .fromString("{\"resourceType\":\"Existing\",\"recoveryAvailabilitySetId\":\"qimiymqr\"}")
+        ExistingRecoveryAvailabilitySet model
+            = BinaryData.fromString("{\"resourceType\":\"Existing\",\"recoveryAvailabilitySetId\":\"qimiymqr\"}")
                 .toObject(ExistingRecoveryAvailabilitySet.class);
         Assertions.assertEquals("qimiymqr", model.recoveryAvailabilitySetId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExistingRecoveryAvailabilitySet model =
-            new ExistingRecoveryAvailabilitySet().withRecoveryAvailabilitySetId("qimiymqr");
+        ExistingRecoveryAvailabilitySet model
+            = new ExistingRecoveryAvailabilitySet().withRecoveryAvailabilitySetId("qimiymqr");
         model = BinaryData.fromObject(model).toObject(ExistingRecoveryAvailabilitySet.class);
         Assertions.assertEquals("qimiymqr", model.recoveryAvailabilitySetId());
     }

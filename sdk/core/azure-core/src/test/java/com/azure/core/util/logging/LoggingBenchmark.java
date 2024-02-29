@@ -35,8 +35,8 @@ public class LoggingBenchmark {
 
     @Setup
     public void setup() {
-        EnvironmentConfiguration.getGlobalConfiguration().put(PROPERTY_AZURE_LOG_LEVEL,
-            String.valueOf(LogLevel.WARNING));
+        EnvironmentConfiguration.getGlobalConfiguration()
+            .put(PROPERTY_AZURE_LOG_LEVEL, String.valueOf(LogLevel.WARNING));
         this.logger = new ClientLogger(LoggingBenchmark.class);
 
         System.setOut(new PrintStream(new OutputStream() {

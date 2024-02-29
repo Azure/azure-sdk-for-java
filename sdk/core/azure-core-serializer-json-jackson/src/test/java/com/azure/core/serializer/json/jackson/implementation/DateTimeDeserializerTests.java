@@ -35,13 +35,10 @@ public class DateTimeDeserializerTests {
 
         OffsetDateTime nonUtcTimeZone = OffsetDateTime.of(2020, 1, 1, 0, 0, 0, 0, ZoneOffset.ofHours(-7));
 
-        return Stream.of(
-            Arguments.of("\"0001-01-01T00:00:00\"", minValue),
+        return Stream.of(Arguments.of("\"0001-01-01T00:00:00\"", minValue),
             Arguments.of(String.valueOf(minValue.toEpochSecond()), minValue),
-            Arguments.of("\"0001-01-01T00:00:00Z\"", minValue),
-            Arguments.of("\"1970-01-01T00:00:00\"", unixEpoch),
+            Arguments.of("\"0001-01-01T00:00:00Z\"", minValue), Arguments.of("\"1970-01-01T00:00:00\"", unixEpoch),
             Arguments.of("\"1970-01-01T00:00:00Z\"", unixEpoch),
-            Arguments.of("\"2020-01-01T00:00:00-07:00\"", nonUtcTimeZone)
-        );
+            Arguments.of("\"2020-01-01T00:00:00-07:00\"", nonUtcTimeZone));
     }
 }

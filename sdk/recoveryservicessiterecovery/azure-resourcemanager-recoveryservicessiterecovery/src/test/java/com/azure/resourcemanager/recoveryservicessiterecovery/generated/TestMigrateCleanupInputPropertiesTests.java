@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class TestMigrateCleanupInputPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TestMigrateCleanupInputProperties model =
-            BinaryData.fromString("{\"comments\":\"lnjixisxya\"}").toObject(TestMigrateCleanupInputProperties.class);
+        TestMigrateCleanupInputProperties model
+            = BinaryData.fromString("{\"comments\":\"lnjixisxya\"}").toObject(TestMigrateCleanupInputProperties.class);
         Assertions.assertEquals("lnjixisxya", model.comments());
     }
 

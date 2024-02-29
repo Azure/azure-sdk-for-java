@@ -137,8 +137,10 @@ public class IOUtilsTest {
             = new FaultyAsynchronousByteChannel(IOUtils.toAsynchronousByteChannel(mockAsynchronousFileChannel, 0),
                 () -> new IOException("KABOOM"), 3, 16384)) {
 
-            StepVerifier.create(IOUtils.transferStreamResponseToAsynchronousByteChannel(channel, initialResponse,
-                onErrorResume, null, 5)).verifyComplete();
+            StepVerifier
+                .create(IOUtils.transferStreamResponseToAsynchronousByteChannel(channel, initialResponse, onErrorResume,
+                    null, 5))
+                .verifyComplete();
         }
 
         assertEquals(3, retries.get());
@@ -192,8 +194,11 @@ public class IOUtilsTest {
             = new FaultyAsynchronousByteChannel(IOUtils.toAsynchronousByteChannel(mockAsynchronousFileChannel, 0),
                 () -> new IOException("KABOOM"), 3, 1024)) {
 
-            StepVerifier.create(IOUtils.transferStreamResponseToAsynchronousByteChannel(channel, initialResponse,
-                onErrorResume, null, 2)).expectErrorMessage("KABOOM").verify();
+            StepVerifier
+                .create(IOUtils.transferStreamResponseToAsynchronousByteChannel(channel, initialResponse, onErrorResume,
+                    null, 2))
+                .expectErrorMessage("KABOOM")
+                .verify();
         }
 
         assertEquals(2, retries.get());

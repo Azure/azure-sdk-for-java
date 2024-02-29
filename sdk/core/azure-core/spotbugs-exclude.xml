@@ -88,6 +88,7 @@
       <Class name="com.azure.core.implementation.jackson.AdditionalPropertiesSerializer" />
       <Class name="com.azure.core.implementation.jackson.FlatteningDeserializer" />
       <Class name="com.azure.core.implementation.jackson.FlatteningSerializer" />
+      <Class name="com.azure.core.implementation.logging.DefaultLogger" />
     </Or>
   </Match>
 
@@ -387,6 +388,7 @@
           <Class name="com.azure.core.implementation.jackson.ObjectMapperShim" />
           <Class name="com.azure.core.util.tracing.TracingLink" />
           <Class name="com.azure.core.models.CloudEvent" />
+          <Class name="com.azure.core.implementation.logging.DefaultLogger" />
         </Or>
         <Method name="&lt;init&gt;" />
       </And>

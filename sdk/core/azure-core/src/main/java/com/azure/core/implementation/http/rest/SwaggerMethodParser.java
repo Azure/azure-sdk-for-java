@@ -490,7 +490,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     public Object setBody(Object[] swaggerMethodArguments, SerializerAdapter serializer) {
         Object result = null;
 
-        if (bodyContentMethodParameterIndex != null && swaggerMethodArguments != null
+        if (bodyContentMethodParameterIndex != null
+            && swaggerMethodArguments != null
             && 0 <= bodyContentMethodParameterIndex
             && bodyContentMethodParameterIndex < swaggerMethodArguments.length) {
             result = swaggerMethodArguments[bodyContentMethodParameterIndex];
@@ -500,7 +501,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             result = formSubstitutions.stream()
                 .map(substitution -> serializeFormData(serializer, substitution.getUrlParameterName(),
                     swaggerMethodArguments[substitution.getMethodParameterIndex()], substitution.shouldEncode()))
-                .filter(Objects::nonNull).collect(Collectors.joining("&"));
+                .filter(Objects::nonNull)
+                .collect(Collectors.joining("&"));
         }
 
         return result;
@@ -568,8 +570,11 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
 
         if (value instanceof String) {
             return (String) value;
-        } else if (value.getClass().isPrimitive() || value instanceof Number || value instanceof Boolean
-            || value instanceof Character || value instanceof DateTimeRfc1123) {
+        } else if (value.getClass().isPrimitive()
+            || value instanceof Number
+            || value instanceof Boolean
+            || value instanceof Character
+            || value instanceof DateTimeRfc1123) {
             return String.valueOf(value);
         } else if (value instanceof OffsetDateTime) {
             return ((OffsetDateTime) value).format(DateTimeFormatter.ISO_INSTANT);
@@ -592,8 +597,10 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
         String encodedKey = UrlEscapers.FORM_ESCAPER.escape(key);
         if (value instanceof List<?>) {
             return ((List<?>) value).stream()
-                .map(element -> serializeAndEncodeFormValue(serializer, element, shouldEncode)).filter(Objects::nonNull)
-                .map(formValue -> encodedKey + "=" + formValue).collect(Collectors.joining("&"));
+                .map(element -> serializeAndEncodeFormValue(serializer, element, shouldEncode))
+                .filter(Objects::nonNull)
+                .map(formValue -> encodedKey + "=" + formValue)
+                .collect(Collectors.joining("&"));
         } else {
             return encodedKey + "=" + serializeAndEncodeFormValue(serializer, value, shouldEncode);
         }
@@ -689,7 +696,8 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
     }
 
     boolean isReactiveType(Type type) {
-        return (TypeUtil.isTypeOrSubTypeOf(type, Mono.class) || TypeUtil.isTypeOrSubTypeOf(type, Flux.class)
+        return (TypeUtil.isTypeOrSubTypeOf(type, Mono.class)
+            || TypeUtil.isTypeOrSubTypeOf(type, Flux.class)
             || TypeUtil.isTypeOrSubTypeOf(type, Publisher.class));
     }
 

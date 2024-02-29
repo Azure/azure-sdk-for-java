@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** Details of the Process Server. */
+/**
+ * Details of the Process Server.
+ */
 @Fluent
 public final class ProcessServer {
     /*
@@ -228,13 +230,15 @@ public final class ProcessServer {
     @JsonProperty(value = "marsRegistrationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private String marsRegistrationStatus;
 
-    /** Creates an instance of ProcessServer class. */
+    /**
+     * Creates an instance of ProcessServer class.
+     */
     public ProcessServer() {
     }
 
     /**
      * Get the friendlyName property: The Process Server's friendly name.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -243,7 +247,7 @@ public final class ProcessServer {
 
     /**
      * Set the friendlyName property: The Process Server's friendly name.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the ProcessServer object itself.
      */
@@ -254,7 +258,7 @@ public final class ProcessServer {
 
     /**
      * Get the id property: The Process Server Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -263,7 +267,7 @@ public final class ProcessServer {
 
     /**
      * Set the id property: The Process Server Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the ProcessServer object itself.
      */
@@ -274,7 +278,7 @@ public final class ProcessServer {
 
     /**
      * Get the ipAddress property: The IP address of the server.
-     *
+     * 
      * @return the ipAddress value.
      */
     public String ipAddress() {
@@ -283,7 +287,7 @@ public final class ProcessServer {
 
     /**
      * Set the ipAddress property: The IP address of the server.
-     *
+     * 
      * @param ipAddress the ipAddress value to set.
      * @return the ProcessServer object itself.
      */
@@ -294,7 +298,7 @@ public final class ProcessServer {
 
     /**
      * Get the osType property: The OS type of the server.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -303,7 +307,7 @@ public final class ProcessServer {
 
     /**
      * Set the osType property: The OS type of the server.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the ProcessServer object itself.
      */
@@ -314,7 +318,7 @@ public final class ProcessServer {
 
     /**
      * Get the agentVersion property: The version of the scout component on the server.
-     *
+     * 
      * @return the agentVersion value.
      */
     public String agentVersion() {
@@ -323,7 +327,7 @@ public final class ProcessServer {
 
     /**
      * Set the agentVersion property: The version of the scout component on the server.
-     *
+     * 
      * @param agentVersion the agentVersion value to set.
      * @return the ProcessServer object itself.
      */
@@ -334,7 +338,7 @@ public final class ProcessServer {
 
     /**
      * Get the lastHeartbeat property: The last heartbeat received from the server.
-     *
+     * 
      * @return the lastHeartbeat value.
      */
     public OffsetDateTime lastHeartbeat() {
@@ -343,7 +347,7 @@ public final class ProcessServer {
 
     /**
      * Set the lastHeartbeat property: The last heartbeat received from the server.
-     *
+     * 
      * @param lastHeartbeat the lastHeartbeat value to set.
      * @return the ProcessServer object itself.
      */
@@ -354,7 +358,7 @@ public final class ProcessServer {
 
     /**
      * Get the versionStatus property: Version status.
-     *
+     * 
      * @return the versionStatus value.
      */
     public String versionStatus() {
@@ -363,7 +367,7 @@ public final class ProcessServer {
 
     /**
      * Set the versionStatus property: Version status.
-     *
+     * 
      * @param versionStatus the versionStatus value to set.
      * @return the ProcessServer object itself.
      */
@@ -375,7 +379,7 @@ public final class ProcessServer {
     /**
      * Get the mobilityServiceUpdates property: The list of the mobility service updates available on the Process
      * Server.
-     *
+     * 
      * @return the mobilityServiceUpdates value.
      */
     public List<MobilityServiceUpdate> mobilityServiceUpdates() {
@@ -385,7 +389,7 @@ public final class ProcessServer {
     /**
      * Set the mobilityServiceUpdates property: The list of the mobility service updates available on the Process
      * Server.
-     *
+     * 
      * @param mobilityServiceUpdates the mobilityServiceUpdates value to set.
      * @return the ProcessServer object itself.
      */
@@ -396,7 +400,7 @@ public final class ProcessServer {
 
     /**
      * Get the hostId property: The agent generated Id.
-     *
+     * 
      * @return the hostId value.
      */
     public String hostId() {
@@ -405,7 +409,7 @@ public final class ProcessServer {
 
     /**
      * Set the hostId property: The agent generated Id.
-     *
+     * 
      * @param hostId the hostId value to set.
      * @return the ProcessServer object itself.
      */
@@ -416,7 +420,7 @@ public final class ProcessServer {
 
     /**
      * Get the machineCount property: The servers configured with this PS.
-     *
+     * 
      * @return the machineCount value.
      */
     public String machineCount() {
@@ -425,7 +429,7 @@ public final class ProcessServer {
 
     /**
      * Set the machineCount property: The servers configured with this PS.
-     *
+     * 
      * @param machineCount the machineCount value to set.
      * @return the ProcessServer object itself.
      */
@@ -436,7 +440,7 @@ public final class ProcessServer {
 
     /**
      * Get the replicationPairCount property: The number of replication pairs configured in this PS.
-     *
+     * 
      * @return the replicationPairCount value.
      */
     public String replicationPairCount() {
@@ -445,7 +449,7 @@ public final class ProcessServer {
 
     /**
      * Set the replicationPairCount property: The number of replication pairs configured in this PS.
-     *
+     * 
      * @param replicationPairCount the replicationPairCount value to set.
      * @return the ProcessServer object itself.
      */
@@ -456,7 +460,7 @@ public final class ProcessServer {
 
     /**
      * Get the systemLoad property: The percentage of the system load.
-     *
+     * 
      * @return the systemLoad value.
      */
     public String systemLoad() {
@@ -465,7 +469,7 @@ public final class ProcessServer {
 
     /**
      * Set the systemLoad property: The percentage of the system load.
-     *
+     * 
      * @param systemLoad the systemLoad value to set.
      * @return the ProcessServer object itself.
      */
@@ -476,7 +480,7 @@ public final class ProcessServer {
 
     /**
      * Get the systemLoadStatus property: The system load status.
-     *
+     * 
      * @return the systemLoadStatus value.
      */
     public String systemLoadStatus() {
@@ -485,7 +489,7 @@ public final class ProcessServer {
 
     /**
      * Set the systemLoadStatus property: The system load status.
-     *
+     * 
      * @param systemLoadStatus the systemLoadStatus value to set.
      * @return the ProcessServer object itself.
      */
@@ -496,7 +500,7 @@ public final class ProcessServer {
 
     /**
      * Get the cpuLoad property: The percentage of the CPU load.
-     *
+     * 
      * @return the cpuLoad value.
      */
     public String cpuLoad() {
@@ -505,7 +509,7 @@ public final class ProcessServer {
 
     /**
      * Set the cpuLoad property: The percentage of the CPU load.
-     *
+     * 
      * @param cpuLoad the cpuLoad value to set.
      * @return the ProcessServer object itself.
      */
@@ -516,7 +520,7 @@ public final class ProcessServer {
 
     /**
      * Get the cpuLoadStatus property: The CPU load status.
-     *
+     * 
      * @return the cpuLoadStatus value.
      */
     public String cpuLoadStatus() {
@@ -525,7 +529,7 @@ public final class ProcessServer {
 
     /**
      * Set the cpuLoadStatus property: The CPU load status.
-     *
+     * 
      * @param cpuLoadStatus the cpuLoadStatus value to set.
      * @return the ProcessServer object itself.
      */
@@ -536,7 +540,7 @@ public final class ProcessServer {
 
     /**
      * Get the totalMemoryInBytes property: The total memory.
-     *
+     * 
      * @return the totalMemoryInBytes value.
      */
     public Long totalMemoryInBytes() {
@@ -545,7 +549,7 @@ public final class ProcessServer {
 
     /**
      * Set the totalMemoryInBytes property: The total memory.
-     *
+     * 
      * @param totalMemoryInBytes the totalMemoryInBytes value to set.
      * @return the ProcessServer object itself.
      */
@@ -556,7 +560,7 @@ public final class ProcessServer {
 
     /**
      * Get the availableMemoryInBytes property: The available memory.
-     *
+     * 
      * @return the availableMemoryInBytes value.
      */
     public Long availableMemoryInBytes() {
@@ -565,7 +569,7 @@ public final class ProcessServer {
 
     /**
      * Set the availableMemoryInBytes property: The available memory.
-     *
+     * 
      * @param availableMemoryInBytes the availableMemoryInBytes value to set.
      * @return the ProcessServer object itself.
      */
@@ -576,7 +580,7 @@ public final class ProcessServer {
 
     /**
      * Get the memoryUsageStatus property: The memory usage status.
-     *
+     * 
      * @return the memoryUsageStatus value.
      */
     public String memoryUsageStatus() {
@@ -585,7 +589,7 @@ public final class ProcessServer {
 
     /**
      * Set the memoryUsageStatus property: The memory usage status.
-     *
+     * 
      * @param memoryUsageStatus the memoryUsageStatus value to set.
      * @return the ProcessServer object itself.
      */
@@ -596,7 +600,7 @@ public final class ProcessServer {
 
     /**
      * Get the totalSpaceInBytes property: The total space.
-     *
+     * 
      * @return the totalSpaceInBytes value.
      */
     public Long totalSpaceInBytes() {
@@ -605,7 +609,7 @@ public final class ProcessServer {
 
     /**
      * Set the totalSpaceInBytes property: The total space.
-     *
+     * 
      * @param totalSpaceInBytes the totalSpaceInBytes value to set.
      * @return the ProcessServer object itself.
      */
@@ -616,7 +620,7 @@ public final class ProcessServer {
 
     /**
      * Get the availableSpaceInBytes property: The available space.
-     *
+     * 
      * @return the availableSpaceInBytes value.
      */
     public Long availableSpaceInBytes() {
@@ -625,7 +629,7 @@ public final class ProcessServer {
 
     /**
      * Set the availableSpaceInBytes property: The available space.
-     *
+     * 
      * @param availableSpaceInBytes the availableSpaceInBytes value to set.
      * @return the ProcessServer object itself.
      */
@@ -636,7 +640,7 @@ public final class ProcessServer {
 
     /**
      * Get the spaceUsageStatus property: The space usage status.
-     *
+     * 
      * @return the spaceUsageStatus value.
      */
     public String spaceUsageStatus() {
@@ -645,7 +649,7 @@ public final class ProcessServer {
 
     /**
      * Set the spaceUsageStatus property: The space usage status.
-     *
+     * 
      * @param spaceUsageStatus the spaceUsageStatus value to set.
      * @return the ProcessServer object itself.
      */
@@ -656,7 +660,7 @@ public final class ProcessServer {
 
     /**
      * Get the psServiceStatus property: The PS service status.
-     *
+     * 
      * @return the psServiceStatus value.
      */
     public String psServiceStatus() {
@@ -665,7 +669,7 @@ public final class ProcessServer {
 
     /**
      * Set the psServiceStatus property: The PS service status.
-     *
+     * 
      * @param psServiceStatus the psServiceStatus value to set.
      * @return the ProcessServer object itself.
      */
@@ -676,7 +680,7 @@ public final class ProcessServer {
 
     /**
      * Get the sslCertExpiryDate property: The PS SSL cert expiry date.
-     *
+     * 
      * @return the sslCertExpiryDate value.
      */
     public OffsetDateTime sslCertExpiryDate() {
@@ -685,7 +689,7 @@ public final class ProcessServer {
 
     /**
      * Set the sslCertExpiryDate property: The PS SSL cert expiry date.
-     *
+     * 
      * @param sslCertExpiryDate the sslCertExpiryDate value to set.
      * @return the ProcessServer object itself.
      */
@@ -696,7 +700,7 @@ public final class ProcessServer {
 
     /**
      * Get the sslCertExpiryRemainingDays property: CS SSL cert expiry date.
-     *
+     * 
      * @return the sslCertExpiryRemainingDays value.
      */
     public Integer sslCertExpiryRemainingDays() {
@@ -705,7 +709,7 @@ public final class ProcessServer {
 
     /**
      * Set the sslCertExpiryRemainingDays property: CS SSL cert expiry date.
-     *
+     * 
      * @param sslCertExpiryRemainingDays the sslCertExpiryRemainingDays value to set.
      * @return the ProcessServer object itself.
      */
@@ -717,7 +721,7 @@ public final class ProcessServer {
     /**
      * Get the osVersion property: OS Version of the process server. Note: This will get populated if user has CS
      * version greater than 9.12.0.0.
-     *
+     * 
      * @return the osVersion value.
      */
     public String osVersion() {
@@ -727,7 +731,7 @@ public final class ProcessServer {
     /**
      * Set the osVersion property: OS Version of the process server. Note: This will get populated if user has CS
      * version greater than 9.12.0.0.
-     *
+     * 
      * @param osVersion the osVersion value to set.
      * @return the ProcessServer object itself.
      */
@@ -738,7 +742,7 @@ public final class ProcessServer {
 
     /**
      * Get the healthErrors property: Health errors.
-     *
+     * 
      * @return the healthErrors value.
      */
     public List<HealthError> healthErrors() {
@@ -747,7 +751,7 @@ public final class ProcessServer {
 
     /**
      * Set the healthErrors property: Health errors.
-     *
+     * 
      * @param healthErrors the healthErrors value to set.
      * @return the ProcessServer object itself.
      */
@@ -758,7 +762,7 @@ public final class ProcessServer {
 
     /**
      * Get the agentExpiryDate property: Agent expiry date.
-     *
+     * 
      * @return the agentExpiryDate value.
      */
     public OffsetDateTime agentExpiryDate() {
@@ -767,7 +771,7 @@ public final class ProcessServer {
 
     /**
      * Set the agentExpiryDate property: Agent expiry date.
-     *
+     * 
      * @param agentExpiryDate the agentExpiryDate value to set.
      * @return the ProcessServer object itself.
      */
@@ -778,7 +782,7 @@ public final class ProcessServer {
 
     /**
      * Get the agentVersionDetails property: The agent version details.
-     *
+     * 
      * @return the agentVersionDetails value.
      */
     public VersionDetails agentVersionDetails() {
@@ -787,7 +791,7 @@ public final class ProcessServer {
 
     /**
      * Set the agentVersionDetails property: The agent version details.
-     *
+     * 
      * @param agentVersionDetails the agentVersionDetails value to set.
      * @return the ProcessServer object itself.
      */
@@ -798,7 +802,7 @@ public final class ProcessServer {
 
     /**
      * Get the health property: The health of Process Server.
-     *
+     * 
      * @return the health value.
      */
     public ProtectionHealth health() {
@@ -807,7 +811,7 @@ public final class ProcessServer {
 
     /**
      * Get the psStatsRefreshTime property: The process server stats refresh time.
-     *
+     * 
      * @return the psStatsRefreshTime value.
      */
     public OffsetDateTime psStatsRefreshTime() {
@@ -816,7 +820,7 @@ public final class ProcessServer {
 
     /**
      * Get the throughputUploadPendingDataInBytes property: The uploading pending data in bytes.
-     *
+     * 
      * @return the throughputUploadPendingDataInBytes value.
      */
     public Long throughputUploadPendingDataInBytes() {
@@ -825,7 +829,7 @@ public final class ProcessServer {
 
     /**
      * Get the throughputInMBps property: The throughput in MBps.
-     *
+     * 
      * @return the throughputInMBps value.
      */
     public Long throughputInMBps() {
@@ -834,7 +838,7 @@ public final class ProcessServer {
 
     /**
      * Get the throughputInBytes property: The throughput in bytes.
-     *
+     * 
      * @return the throughputInBytes value.
      */
     public Long throughputInBytes() {
@@ -843,7 +847,7 @@ public final class ProcessServer {
 
     /**
      * Get the throughputStatus property: The throughput status.
-     *
+     * 
      * @return the throughputStatus value.
      */
     public String throughputStatus() {
@@ -852,7 +856,7 @@ public final class ProcessServer {
 
     /**
      * Get the marsCommunicationStatus property: The MARS communication status.
-     *
+     * 
      * @return the marsCommunicationStatus value.
      */
     public String marsCommunicationStatus() {
@@ -861,7 +865,7 @@ public final class ProcessServer {
 
     /**
      * Get the marsRegistrationStatus property: The MARS registration status.
-     *
+     * 
      * @return the marsRegistrationStatus value.
      */
     public String marsRegistrationStatus() {
@@ -870,7 +874,7 @@ public final class ProcessServer {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -79,7 +79,8 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
 
         return Mono.defer(() -> {
             Context span = startSpan(context);
-            return next.process().doOnSuccess(response -> onResponseCode(response, span))
+            return next.process()
+                .doOnSuccess(response -> onResponseCode(response, span))
                 // TODO: maybe we can optimize it? https://github.com/Azure/azure-sdk-for-java/issues/38228
                 .map(response -> new TraceableResponse(response, span))
                 .doOnCancel(() -> tracer.end(CANCELLED_ERROR_TYPE, null, span))
@@ -203,13 +204,15 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
 
         @Override
         public Mono<byte[]> getBodyAsByteArray() {
-            return response.getBodyAsByteArray().doOnError(e -> exception = e)
+            return response.getBodyAsByteArray()
+                .doOnError(e -> exception = e)
                 .doOnCancel(() -> errorType = CANCELLED_ERROR_TYPE);
         }
 
         @Override
         public Mono<String> getBodyAsString() {
-            return response.getBodyAsString().doOnError(e -> exception = e)
+            return response.getBodyAsString()
+                .doOnError(e -> exception = e)
                 .doOnCancel(() -> errorType = CANCELLED_ERROR_TYPE);
         }
 
@@ -225,13 +228,15 @@ public class InstrumentationPolicy implements HttpPipelinePolicy {
 
         @Override
         public Mono<String> getBodyAsString(Charset charset) {
-            return response.getBodyAsString(charset).doOnError(e -> exception = e)
+            return response.getBodyAsString(charset)
+                .doOnError(e -> exception = e)
                 .doOnCancel(() -> errorType = CANCELLED_ERROR_TYPE);
         }
 
         @Override
         public Mono<InputStream> getBodyAsInputStream() {
-            return response.getBodyAsInputStream().doOnError(e -> exception = e)
+            return response.getBodyAsInputStream()
+                .doOnError(e -> exception = e)
                 .doOnCancel(() -> errorType = CANCELLED_ERROR_TYPE);
         }
 

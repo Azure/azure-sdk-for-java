@@ -15,11 +15,9 @@ import org.junit.jupiter.api.Assertions;
 public final class PolicyCollectionTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PolicyCollection model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"friendlyName\":\"ulaiywzejywhs\",\"providerSpecificDetails\":{\"instanceType\":\"PolicyProviderSpecificDetails\"}},\"location\":\"ojpllndnpdwrpqaf\",\"id\":\"fugsnnfhyetefy\",\"name\":\"oc\",\"type\":\"ctfjgtixr\"},{\"properties\":{\"friendlyName\":\"uyturml\",\"providerSpecificDetails\":{\"instanceType\":\"PolicyProviderSpecificDetails\"}},\"location\":\"wolba\",\"id\":\"iropionszon\",\"name\":\"pngajin\",\"type\":\"ixjawrtm\"},{\"properties\":{\"friendlyName\":\"myccx\",\"providerSpecificDetails\":{\"instanceType\":\"PolicyProviderSpecificDetails\"}},\"location\":\"coxovn\",\"id\":\"khenlus\",\"name\":\"nrd\",\"type\":\"jxtxrdc\"},{\"properties\":{\"friendlyName\":\"vidttgepuslvyjt\",\"providerSpecificDetails\":{\"instanceType\":\"PolicyProviderSpecificDetails\"}},\"location\":\"wkasiziesf\",\"id\":\"ughtuqfecjxeygtu\",\"name\":\"xu\",\"type\":\"cbuewmrswnjlxuz\"}],\"nextLink\":\"wpusxjbaqehg\"}")
-                .toObject(PolicyCollection.class);
+        PolicyCollection model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"friendlyName\":\"ulaiywzejywhs\",\"providerSpecificDetails\":{\"instanceType\":\"PolicyProviderSpecificDetails\"}},\"location\":\"ojpllndnpdwrpqaf\",\"id\":\"fugsnnfhyetefy\",\"name\":\"oc\",\"type\":\"ctfjgtixr\"},{\"properties\":{\"friendlyName\":\"uyturml\",\"providerSpecificDetails\":{\"instanceType\":\"PolicyProviderSpecificDetails\"}},\"location\":\"wolba\",\"id\":\"iropionszon\",\"name\":\"pngajin\",\"type\":\"ixjawrtm\"},{\"properties\":{\"friendlyName\":\"myccx\",\"providerSpecificDetails\":{\"instanceType\":\"PolicyProviderSpecificDetails\"}},\"location\":\"coxovn\",\"id\":\"khenlus\",\"name\":\"nrd\",\"type\":\"jxtxrdc\"},{\"properties\":{\"friendlyName\":\"vidttgepuslvyjt\",\"providerSpecificDetails\":{\"instanceType\":\"PolicyProviderSpecificDetails\"}},\"location\":\"wkasiziesf\",\"id\":\"ughtuqfecjxeygtu\",\"name\":\"xu\",\"type\":\"cbuewmrswnjlxuz\"}],\"nextLink\":\"wpusxjbaqehg\"}")
+            .toObject(PolicyCollection.class);
         Assertions.assertEquals("ulaiywzejywhs", model.value().get(0).properties().friendlyName());
         Assertions.assertEquals("ojpllndnpdwrpqaf", model.value().get(0).location());
         Assertions.assertEquals("wpusxjbaqehg", model.nextLink());
@@ -27,34 +25,25 @@ public final class PolicyCollectionTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolicyCollection model =
-            new PolicyCollection()
+        PolicyCollection model
+            = new PolicyCollection()
                 .withValue(
                     Arrays
                         .asList(
                             new PolicyInner()
-                                .withProperties(
-                                    new PolicyProperties()
-                                        .withFriendlyName("ulaiywzejywhs")
-                                        .withProviderSpecificDetails(new PolicyProviderSpecificDetails()))
+                                .withProperties(new PolicyProperties().withFriendlyName("ulaiywzejywhs")
+                                    .withProviderSpecificDetails(new PolicyProviderSpecificDetails()))
                                 .withLocation("ojpllndnpdwrpqaf"),
-                            new PolicyInner()
-                                .withProperties(
-                                    new PolicyProperties()
-                                        .withFriendlyName("uyturml")
-                                        .withProviderSpecificDetails(new PolicyProviderSpecificDetails()))
+                            new PolicyInner().withProperties(new PolicyProperties().withFriendlyName("uyturml")
+                                .withProviderSpecificDetails(new PolicyProviderSpecificDetails()))
                                 .withLocation("wolba"),
                             new PolicyInner()
-                                .withProperties(
-                                    new PolicyProperties()
-                                        .withFriendlyName("myccx")
-                                        .withProviderSpecificDetails(new PolicyProviderSpecificDetails()))
+                                .withProperties(new PolicyProperties().withFriendlyName("myccx")
+                                    .withProviderSpecificDetails(new PolicyProviderSpecificDetails()))
                                 .withLocation("coxovn"),
                             new PolicyInner()
-                                .withProperties(
-                                    new PolicyProperties()
-                                        .withFriendlyName("vidttgepuslvyjt")
-                                        .withProviderSpecificDetails(new PolicyProviderSpecificDetails()))
+                                .withProperties(new PolicyProperties().withFriendlyName("vidttgepuslvyjt")
+                                    .withProviderSpecificDetails(new PolicyProviderSpecificDetails()))
                                 .withLocation("wkasiziesf")))
                 .withNextLink("wpusxjbaqehg");
         model = BinaryData.fromObject(model).toObject(PolicyCollection.class);

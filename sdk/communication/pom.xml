@@ -23,5 +23,6 @@
       <module>azure-resourcemanager-communication</module>
       <module>azure-communication-common-perf</module>
       <module>azure-communication-jobrouter</module>
+      <module>azure-communication-messages</module>
   </modules>
 </project>

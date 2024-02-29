@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** InMageRcm provider specific input to update appliance for replication protected item. */
+/**
+ * InMageRcm provider specific input to update appliance for replication protected item.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMageRcm")
 @Fluent
@@ -21,13 +23,15 @@ public final class InMageRcmUpdateApplianceForReplicationProtectedItemInput
     @JsonProperty(value = "runAsAccountId")
     private String runAsAccountId;
 
-    /** Creates an instance of InMageRcmUpdateApplianceForReplicationProtectedItemInput class. */
+    /**
+     * Creates an instance of InMageRcmUpdateApplianceForReplicationProtectedItemInput class.
+     */
     public InMageRcmUpdateApplianceForReplicationProtectedItemInput() {
     }
 
     /**
      * Get the runAsAccountId property: The run as account Id.
-     *
+     * 
      * @return the runAsAccountId value.
      */
     public String runAsAccountId() {
@@ -36,7 +40,7 @@ public final class InMageRcmUpdateApplianceForReplicationProtectedItemInput
 
     /**
      * Set the runAsAccountId property: The run as account Id.
-     *
+     * 
      * @param runAsAccountId the runAsAccountId value to set.
      * @return the InMageRcmUpdateApplianceForReplicationProtectedItemInput object itself.
      */
@@ -47,7 +51,7 @@ public final class InMageRcmUpdateApplianceForReplicationProtectedItemInput
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

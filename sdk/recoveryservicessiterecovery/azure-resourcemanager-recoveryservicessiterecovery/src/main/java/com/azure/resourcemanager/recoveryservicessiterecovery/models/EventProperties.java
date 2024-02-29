@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 import java.util.List;
 
-/** The properties of a monitoring event. */
+/**
+ * The properties of a monitoring event.
+ */
 @Fluent
 public final class EventProperties {
     /*
@@ -78,13 +80,15 @@ public final class EventProperties {
     @JsonProperty(value = "healthErrors")
     private List<HealthError> healthErrors;
 
-    /** Creates an instance of EventProperties class. */
+    /**
+     * Creates an instance of EventProperties class.
+     */
     public EventProperties() {
     }
 
     /**
      * Get the eventCode property: The Id of the monitoring event.
-     *
+     * 
      * @return the eventCode value.
      */
     public String eventCode() {
@@ -93,7 +97,7 @@ public final class EventProperties {
 
     /**
      * Set the eventCode property: The Id of the monitoring event.
-     *
+     * 
      * @param eventCode the eventCode value to set.
      * @return the EventProperties object itself.
      */
@@ -104,7 +108,7 @@ public final class EventProperties {
 
     /**
      * Get the description property: The event name.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -113,7 +117,7 @@ public final class EventProperties {
 
     /**
      * Set the description property: The event name.
-     *
+     * 
      * @param description the description value to set.
      * @return the EventProperties object itself.
      */
@@ -124,7 +128,7 @@ public final class EventProperties {
 
     /**
      * Get the eventType property: The type of the event. for example: VM Health, Server Health, Job Failure etc.
-     *
+     * 
      * @return the eventType value.
      */
     public String eventType() {
@@ -133,7 +137,7 @@ public final class EventProperties {
 
     /**
      * Set the eventType property: The type of the event. for example: VM Health, Server Health, Job Failure etc.
-     *
+     * 
      * @param eventType the eventType value to set.
      * @return the EventProperties object itself.
      */
@@ -145,7 +149,7 @@ public final class EventProperties {
     /**
      * Get the affectedObjectFriendlyName property: The friendly name of the source of the event on which it is raised
      * (for example, VM, VMM etc).
-     *
+     * 
      * @return the affectedObjectFriendlyName value.
      */
     public String affectedObjectFriendlyName() {
@@ -155,7 +159,7 @@ public final class EventProperties {
     /**
      * Set the affectedObjectFriendlyName property: The friendly name of the source of the event on which it is raised
      * (for example, VM, VMM etc).
-     *
+     * 
      * @param affectedObjectFriendlyName the affectedObjectFriendlyName value to set.
      * @return the EventProperties object itself.
      */
@@ -166,7 +170,7 @@ public final class EventProperties {
 
     /**
      * Get the affectedObjectCorrelationId property: The affected object correlationId for the event.
-     *
+     * 
      * @return the affectedObjectCorrelationId value.
      */
     public String affectedObjectCorrelationId() {
@@ -175,7 +179,7 @@ public final class EventProperties {
 
     /**
      * Set the affectedObjectCorrelationId property: The affected object correlationId for the event.
-     *
+     * 
      * @param affectedObjectCorrelationId the affectedObjectCorrelationId value to set.
      * @return the EventProperties object itself.
      */
@@ -186,7 +190,7 @@ public final class EventProperties {
 
     /**
      * Get the severity property: The severity of the event.
-     *
+     * 
      * @return the severity value.
      */
     public String severity() {
@@ -195,7 +199,7 @@ public final class EventProperties {
 
     /**
      * Set the severity property: The severity of the event.
-     *
+     * 
      * @param severity the severity value to set.
      * @return the EventProperties object itself.
      */
@@ -206,7 +210,7 @@ public final class EventProperties {
 
     /**
      * Get the timeOfOccurrence property: The time of occurrence of the event.
-     *
+     * 
      * @return the timeOfOccurrence value.
      */
     public OffsetDateTime timeOfOccurrence() {
@@ -215,7 +219,7 @@ public final class EventProperties {
 
     /**
      * Set the timeOfOccurrence property: The time of occurrence of the event.
-     *
+     * 
      * @param timeOfOccurrence the timeOfOccurrence value to set.
      * @return the EventProperties object itself.
      */
@@ -226,7 +230,7 @@ public final class EventProperties {
 
     /**
      * Get the fabricId property: The ARM ID of the fabric.
-     *
+     * 
      * @return the fabricId value.
      */
     public String fabricId() {
@@ -235,7 +239,7 @@ public final class EventProperties {
 
     /**
      * Set the fabricId property: The ARM ID of the fabric.
-     *
+     * 
      * @param fabricId the fabricId value to set.
      * @return the EventProperties object itself.
      */
@@ -246,7 +250,7 @@ public final class EventProperties {
 
     /**
      * Get the providerSpecificDetails property: The provider specific settings.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public EventProviderSpecificDetails providerSpecificDetails() {
@@ -255,7 +259,7 @@ public final class EventProperties {
 
     /**
      * Set the providerSpecificDetails property: The provider specific settings.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the EventProperties object itself.
      */
@@ -266,7 +270,7 @@ public final class EventProperties {
 
     /**
      * Get the eventSpecificDetails property: The event specific settings.
-     *
+     * 
      * @return the eventSpecificDetails value.
      */
     public EventSpecificDetails eventSpecificDetails() {
@@ -275,7 +279,7 @@ public final class EventProperties {
 
     /**
      * Set the eventSpecificDetails property: The event specific settings.
-     *
+     * 
      * @param eventSpecificDetails the eventSpecificDetails value to set.
      * @return the EventProperties object itself.
      */
@@ -286,7 +290,7 @@ public final class EventProperties {
 
     /**
      * Get the healthErrors property: The list of errors / warnings capturing details associated with the issue(s).
-     *
+     * 
      * @return the healthErrors value.
      */
     public List<HealthError> healthErrors() {
@@ -295,7 +299,7 @@ public final class EventProperties {
 
     /**
      * Set the healthErrors property: The list of errors / warnings capturing details associated with the issue(s).
-     *
+     * 
      * @param healthErrors the healthErrors value to set.
      * @return the EventProperties object itself.
      */
@@ -306,7 +310,7 @@ public final class EventProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

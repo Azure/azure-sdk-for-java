@@ -6,7 +6,7 @@
     <groupId>com.azure</groupId>
     <artifactId>azure-client-sdk-parent</artifactId>
     <version>1.7.0</version> <!-- {x-version-update;com.azure:azure-client-sdk-parent;current} -->
-    <relativePath>../../parents/azure-client-sdk-parent/pom.xml</relativePath>
+    <relativePath>../../parents/azure-client-sdk-parent</relativePath>
   </parent>
 
   <groupId>com.azure</groupId>
@@ -36,7 +36,7 @@
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-mixedreality-authentication</artifactId>
-      <version>1.2.20</version> <!-- {x-version-update;com.azure:azure-mixedreality-authentication;dependency} -->
+      <version>1.2.21</version> <!-- {x-version-update;com.azure:azure-mixedreality-authentication;dependency} -->
     </dependency>
 
     <!-- Test dependencies -->

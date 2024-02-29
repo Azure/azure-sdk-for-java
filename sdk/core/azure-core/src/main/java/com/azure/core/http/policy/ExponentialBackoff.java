@@ -18,9 +18,32 @@ import java.util.function.Predicate;
 import static com.azure.core.util.Configuration.PROPERTY_AZURE_REQUEST_RETRY_COUNT;
 
 /**
- * A truncated exponential backoff implementation of {@link RetryStrategy} that has a delay duration that exponentially
- * increases with each retry attempt until an upper bound is reached after which every retry attempt is delayed by the
- * provided max delay duration.
+ * <p>The {@code ExponentialBackoff} class is an implementation of the {@link RetryStrategy} interface. This strategy uses
+ * a delay duration that exponentially increases with each retry attempt until an upper bound is reached, after which
+ * every retry attempt is delayed by the provided max delay duration.</p>
+ *
+ * <p>This class is useful when you need to handle retries for operations that may transiently fail. It ensures that
+ * the retries are performed with an increasing delay to avoid overloading the system.</p>
+ *
+ * <p><strong>Code sample:</strong></p>
+ *
+ * <p>In this example, an {@code ExponentialBackoff} is created and used in a {@code RetryPolicy} which can be added to
+ * a pipeline. For a request sent by the pipeline, if the server responds with a transient error, the request will be
+ * retried with an exponentially increasing delay.</p>
+ *
+ * <!-- src_embed com.azure.core.http.policy.ExponentialBackoff.constructor -->
+ * <pre>
+ * ExponentialBackoff retryStrategy = new ExponentialBackoff&#40;&#41;;
+ * RetryPolicy policy = new RetryPolicy&#40;retryStrategy&#41;;
+ * </pre>
+ * <!-- end com.azure.core.http.policy.ExponentialBackoff.constructor -->
+ *
+ * @see com.azure.core.http.policy
+ * @see com.azure.core.http.policy.RetryStrategy
+ * @see com.azure.core.http.policy.RetryPolicy
+ * @see com.azure.core.http.HttpPipeline
+ * @see com.azure.core.http.HttpRequest
+ * @see com.azure.core.http.HttpResponse
  */
 public class ExponentialBackoff implements RetryStrategy {
     private static final double JITTER_FACTOR = 0.05;
@@ -143,7 +166,8 @@ public class ExponentialBackoff implements RetryStrategy {
 
     @Override
     public boolean shouldRetryCondition(RequestRetryCondition requestRetryCondition) {
-        return shouldRetryCondition == null ? RetryStrategy.super.shouldRetryCondition(requestRetryCondition)
+        return shouldRetryCondition == null
+            ? RetryStrategy.super.shouldRetryCondition(requestRetryCondition)
             : shouldRetryCondition.test(requestRetryCondition);
     }
 }

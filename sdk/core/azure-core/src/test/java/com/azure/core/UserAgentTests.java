@@ -43,10 +43,12 @@ public class UserAgentTests {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new ValidationHttpClient(
                 request -> assertEquals(expected, request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))
-            .policies(userAgentPolicy).build();
+            .policies(userAgentPolicy)
+            .build();
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost")))
-            .assertNext(response -> assertEquals(200, response.getStatusCode())).verifyComplete();
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
     }
 
     /**
@@ -59,10 +61,13 @@ public class UserAgentTests {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new RetryValidationHttpClient(
                 request -> assertEquals(expected, request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))
-            .policies(new RetryPolicy(new FixedDelay(5, Duration.ofMillis(10)))).policies(userAgentPolicy).build();
+            .policies(new RetryPolicy(new FixedDelay(5, Duration.ofMillis(10))))
+            .policies(userAgentPolicy)
+            .build();
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost")))
-            .assertNext(response -> assertEquals(200, response.getStatusCode())).verifyComplete();
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
     }
 
     /**
@@ -75,10 +80,12 @@ public class UserAgentTests {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new ValidationHttpClient(
                 request -> assertEquals(expected, request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))
-            .policies(userAgentPolicy, userAgentPolicy).build();
+            .policies(userAgentPolicy, userAgentPolicy)
+            .build();
 
         StepVerifier.create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost")))
-            .assertNext(response -> assertEquals(200, response.getStatusCode())).verifyComplete();
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
     }
 
     /**
@@ -92,12 +99,14 @@ public class UserAgentTests {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new ValidationHttpClient(
                 request -> assertEquals(overrideUserAgent, request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))
-            .policies(userAgentPolicy).build();
+            .policies(userAgentPolicy)
+            .build();
 
         StepVerifier
             .create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost"),
                 new Context(UserAgentPolicy.OVERRIDE_USER_AGENT_CONTEXT_KEY, overrideUserAgent)))
-            .assertNext(response -> assertEquals(200, response.getStatusCode())).verifyComplete();
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
     }
 
     /**
@@ -111,12 +120,14 @@ public class UserAgentTests {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new ValidationHttpClient(request -> assertEquals(expected + " " + appendUserAgent,
                 request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))
-            .policies(userAgentPolicy).build();
+            .policies(userAgentPolicy)
+            .build();
 
         StepVerifier
             .create(pipeline.send(new HttpRequest(HttpMethod.GET, "http://localhost"),
                 new Context(UserAgentPolicy.APPEND_USER_AGENT_CONTEXT_KEY, appendUserAgent)))
-            .assertNext(response -> assertEquals(200, response.getStatusCode())).verifyComplete();
+            .assertNext(response -> assertEquals(200, response.getStatusCode()))
+            .verifyComplete();
     }
 
     /**
@@ -130,7 +141,8 @@ public class UserAgentTests {
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(new ValidationHttpClient(request -> assertEquals(expected + " " + appendUserAgent,
                 request.getHeaders().getValue(HttpHeaderName.USER_AGENT))))
-            .policies(userAgentPolicy).build();
+            .policies(userAgentPolicy)
+            .build();
 
         try (HttpResponse response = pipeline.sendSync(new HttpRequest(HttpMethod.GET, "http://localhost"),
             new Context(UserAgentPolicy.APPEND_USER_AGENT_CONTEXT_KEY, appendUserAgent))) {

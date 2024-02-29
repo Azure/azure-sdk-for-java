@@ -26,11 +26,13 @@ public class BufferedFluxByteBufferTests {
 
         // Run once to verify that the results are expected.
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(bufferedFluxByteBuffer))
-            .assertNext(bytes -> assertArraysEqual(randomBytes, bytes)).verifyComplete();
+            .assertNext(bytes -> assertArraysEqual(randomBytes, bytes))
+            .verifyComplete();
 
         // Run again to verify that the results are consistent.
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(bufferedFluxByteBuffer))
-            .assertNext(bytes -> assertArraysEqual(randomBytes, bytes)).verifyComplete();
+            .assertNext(bytes -> assertArraysEqual(randomBytes, bytes))
+            .verifyComplete();
     }
 
     @Test
@@ -43,11 +45,13 @@ public class BufferedFluxByteBufferTests {
 
         // Run once to verify that the results are expected.
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(bufferedFluxByteBuffer))
-            .assertNext(bytes -> assertArraysEqual(randomBytes, bytes)).verifyComplete();
+            .assertNext(bytes -> assertArraysEqual(randomBytes, bytes))
+            .verifyComplete();
 
         // Run again to verify that the results are consistent.
         StepVerifier.create(FluxUtil.collectBytesInByteBufferStream(bufferedFluxByteBuffer))
-            .assertNext(bytes -> assertArraysEqual(randomBytes, bytes)).verifyComplete();
+            .assertNext(bytes -> assertArraysEqual(randomBytes, bytes))
+            .verifyComplete();
     }
 
     private static ByteBuffer[] splitBytesIntoBuffers(byte[] bytes) {

@@ -18,12 +18,16 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 public class SimpleTokenCacheTests {
     @Test
     public void wipResetsOnCancel() {
-        SimpleTokenCache simpleTokenCache = new SimpleTokenCache(() -> Mono
-            .just(new AccessToken("test", OffsetDateTime.now().plusMinutes(5))).delayElement(Duration.ofMinutes(1)));
+        SimpleTokenCache simpleTokenCache
+            = new SimpleTokenCache(() -> Mono.just(new AccessToken("test", OffsetDateTime.now().plusMinutes(5)))
+                .delayElement(Duration.ofMinutes(1)));
 
         StepVerifier
             .create(simpleTokenCache.getToken().doOnRequest(ignored -> assertNotNull(simpleTokenCache.getWipValue())))
-            .expectSubscription().expectNoEvent(Duration.ofSeconds(2)).thenCancel().verify();
+            .expectSubscription()
+            .expectNoEvent(Duration.ofSeconds(2))
+            .thenCancel()
+            .verify();
 
         assertNull(simpleTokenCache.getWipValue());
     }

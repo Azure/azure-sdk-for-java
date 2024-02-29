@@ -182,6 +182,7 @@ public class SimpleTokenCache {
         Duration tte = Duration.between(now, cache.getExpiresAt());
         return logBuilder.addKeyValue("expiresAt", cache.getExpiresAt())
             .addKeyValue("tteSeconds", String.valueOf(tte.abs().getSeconds()))
-            .addKeyValue("retryAfterSeconds", REFRESH_DELAY_STRING).addKeyValue("expired", tte.isNegative());
+            .addKeyValue("retryAfterSeconds", REFRESH_DELAY_STRING)
+            .addKeyValue("expired", tte.isNegative());
     }
 }

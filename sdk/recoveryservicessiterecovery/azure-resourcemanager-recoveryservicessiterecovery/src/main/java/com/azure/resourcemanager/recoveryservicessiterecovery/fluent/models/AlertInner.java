@@ -9,7 +9,9 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.AlertProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Implements the Alert class. */
+/**
+ * Implements the Alert class.
+ */
 @Fluent
 public final class AlertInner extends ProxyResource {
     /*
@@ -24,13 +26,15 @@ public final class AlertInner extends ProxyResource {
     @JsonProperty(value = "location")
     private String location;
 
-    /** Creates an instance of AlertInner class. */
+    /**
+     * Creates an instance of AlertInner class.
+     */
     public AlertInner() {
     }
 
     /**
      * Get the properties property: Alert related data.
-     *
+     * 
      * @return the properties value.
      */
     public AlertProperties properties() {
@@ -39,7 +43,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Set the properties property: Alert related data.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the AlertInner object itself.
      */
@@ -50,7 +54,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Get the location property: Resource Location.
-     *
+     * 
      * @return the location value.
      */
     public String location() {
@@ -59,7 +63,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Set the location property: Resource Location.
-     *
+     * 
      * @param location the location value to set.
      * @return the AlertInner object itself.
      */
@@ -70,7 +74,7 @@ public final class AlertInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

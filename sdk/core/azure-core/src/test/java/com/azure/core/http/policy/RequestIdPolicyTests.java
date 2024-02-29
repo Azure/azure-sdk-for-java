@@ -109,7 +109,8 @@ public class RequestIdPolicyTests {
                 }
                 return Mono.just(mockResponse);
             }
-        }).policies(new RequestIdPolicy(), new RetryPolicy(new FixedDelay(1, Duration.of(0, ChronoUnit.SECONDS))))
+        })
+            .policies(new RequestIdPolicy(), new RetryPolicy(new FixedDelay(1, Duration.of(0, ChronoUnit.SECONDS))))
             .build();
 
         SyncAsyncExtension.execute(() -> pipeline.sendSync(createHttpRequest("https://www.bing.com"), Context.NONE),

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.Repl
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Replication protected item collection. */
+/**
+ * Replication protected item collection.
+ */
 @Fluent
 public final class ReplicationProtectedItemCollection {
     /*
@@ -24,13 +26,15 @@ public final class ReplicationProtectedItemCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ReplicationProtectedItemCollection class. */
+    /**
+     * Creates an instance of ReplicationProtectedItemCollection class.
+     */
     public ReplicationProtectedItemCollection() {
     }
 
     /**
      * Get the value property: The Replication protected item details.
-     *
+     * 
      * @return the value value.
      */
     public List<ReplicationProtectedItemInner> value() {
@@ -39,7 +43,7 @@ public final class ReplicationProtectedItemCollection {
 
     /**
      * Set the value property: The Replication protected item details.
-     *
+     * 
      * @param value the value value to set.
      * @return the ReplicationProtectedItemCollection object itself.
      */
@@ -50,7 +54,7 @@ public final class ReplicationProtectedItemCollection {
 
     /**
      * Get the nextLink property: The value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ReplicationProtectedItemCollection {
 
     /**
      * Set the nextLink property: The value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ReplicationProtectedItemCollection object itself.
      */
@@ -70,7 +74,7 @@ public final class ReplicationProtectedItemCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

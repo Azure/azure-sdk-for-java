@@ -126,8 +126,11 @@
       -XX:+CrashOnOutOfMemoryError
     </heapDumpOnOom>
 
+    <jacocoUnitTestAgent></jacocoUnitTestAgent>
+
     <!-- Reserved for general Surefire JVM arguments that affect all SDKs. -->
     <defaultSurefireArgLine>
+      @{jacocoUnitTestAgent}
       ${surefireJvmXmx}
       ${heapDumpOnOom}
     </defaultSurefireArgLine>
@@ -140,8 +143,11 @@
     <additionalSurefireArgLine>
     </additionalSurefireArgLine>
 
+    <jacocoIntegrationTestAgent></jacocoIntegrationTestAgent>
+
     <!-- Reserved for general Failsafe JVM arguments that affect all SDKs. -->
     <defaultFailsafeArgLine>
+      @{jacocoIntegrationTestAgent}
       ${surefireJvmXmx}
       ${heapDumpOnOom}
     </defaultFailsafeArgLine>
@@ -251,6 +257,23 @@
     <spotless.check.skip>false</spotless.check.skip>
   </properties>
 
+  <dependencies>
+    <dependency>
+      <!-- must be on the classpath -->
+      <groupId>org.jacoco</groupId>
+      <artifactId>org.jacoco.agent</artifactId>
+      <classifier>runtime</classifier>
+      <version>0.8.11</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-simple</artifactId>
+      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
+
   <build>
     <resources>
       <resource>
@@ -268,6 +291,18 @@
         </excludes>
       </resource>
     </resources>
+
+    <testResources>
+      <testResource>
+        <directory>src/test/resources</directory>
+      </testResource>
+      <testResource>
+        <directory>${project.parent.relativePath}</directory>
+        <includes>
+          <include>simplelogger.properties</include>
+        </includes>
+      </testResource>
+    </testResources>
 
     <plugins>
       <!-- This plugin checks dependencies for android API level compatibility -->
@@ -297,7 +332,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <version>3.12.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
       </plugin>
 
       <!-- This plugin scans checkstyle issues in the code -->
@@ -439,25 +474,47 @@
         <executions>
           <execution>
             <id>prepare-agent</id>
+            <phase>process-test-classes</phase>
             <goals>
               <goal>prepare-agent</goal>
             </goals>
+            <configuration>
+              <destFile>${project.build.directory}/jacoco-unit.exec</destFile>
+              <propertyName>jacocoUnitTestAgent</propertyName>
+            </configuration>
           </execution>
           <execution>
-            <id>default-instrument</id>
+            <id>integration-prepare-agent</id>
+            <phase>pre-integration-test</phase>
             <goals>
-              <goal>instrument</goal>
+              <goal>prepare-agent</goal>
             </goals>
+            <configuration>
+              <destFile>${project.build.directory}/jacoco-it.exec</destFile>
+              <propertyName>jacocoIntegrationTestAgent</propertyName>
+            </configuration>
           </execution>
           <execution>
-            <id>default-restore-instrumented-classes</id>
+            <id>merge-unit-and-integration</id>
+            <phase>verify</phase>
             <goals>
-              <goal>restore-instrumented-classes</goal>
+              <goal>merge</goal>
             </goals>
+            <configuration>
+              <fileSets>
+                <fileSet>
+                  <directory>${project.build.directory}</directory>
+                  <includes>
+                    <include>jacoco-unit.exec</include>
+                    <include>jacoco-it.exec</include>
+                  </includes>
+                </fileSet>
+              </fileSets>
+            </configuration>
           </execution>
           <execution>
             <id>post-unit-test</id>
-            <phase>package</phase>
+            <phase>verify</phase>
             <goals>
               <goal>report</goal>
             </goals>
@@ -473,11 +530,13 @@
           </execution>
           <execution>
             <id>check</id>
+            <phase>verify</phase>
             <goals>
               <goal>check</goal>
             </goals>
             <configuration>
               <skip>${jacoco.skip}</skip>
+              <dataFile>${project.build.directory}/jacoco.exec</dataFile>
               <rules>
                 <rule>
                   <element>BUNDLE</element>
@@ -617,7 +676,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-compiler-plugin</artifactId>
-          <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+          <version>3.12.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
           <configuration>
             <showWarnings>true</showWarnings>
             <failOnWarning>true</failOnWarning>
@@ -848,7 +907,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-surefire-plugin</artifactId>
-          <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+          <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
           <configuration>
             <runOrder>alphabetical</runOrder>
             <useSystemClassLoader>false</useSystemClassLoader>
@@ -878,6 +937,13 @@
               <artifactId>asm</artifactId>
               <version>9.6</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
             </dependency>
+            <dependency>
+              <!-- must be on the classpath -->
+              <groupId>org.jacoco</groupId>
+              <artifactId>org.jacoco.agent</artifactId>
+              <classifier>runtime</classifier>
+              <version>0.8.11</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
+            </dependency>
           </dependencies>
         </plugin>
 
@@ -885,7 +951,7 @@
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-failsafe-plugin</artifactId>
-          <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+          <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
           <configuration>
             <runOrder>alphabetical</runOrder>
             <useSystemClassLoader>false</useSystemClassLoader>
@@ -914,6 +980,13 @@
               <groupId>org.ow2.asm</groupId>
               <artifactId>asm</artifactId>
               <version>9.6</version> <!-- {x-version-update;org.ow2.asm:asm;external_dependency} -->
+            </dependency>
+            <dependency>
+              <!-- must be on the classpath -->
+              <groupId>org.jacoco</groupId>
+              <artifactId>org.jacoco.agent</artifactId>
+              <classifier>runtime</classifier>
+              <version>0.8.11</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
             </dependency>
           </dependencies>
         </plugin>
@@ -1000,7 +1073,7 @@
               <goals>
                 <goal>apply</goal>
               </goals>
-              <phase>validate</phase>
+              <phase>process-sources</phase>
             </execution>
             <execution>
               <id>spotless-check</id>
@@ -1014,17 +1087,6 @@
       </plugins>
     </pluginManagement>
   </build>
-
-  <dependencies>
-    <dependency>
-      <!-- must be on the classpath -->
-      <groupId>org.jacoco</groupId>
-      <artifactId>org.jacoco.agent</artifactId>
-      <classifier>runtime</classifier>
-      <version>0.8.11</version> <!-- {x-version-update;org.jacoco:org.jacoco.agent;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-  </dependencies>
 
   <reporting>
     <plugins>
@@ -1114,7 +1176,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.12.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <source>1.8</source>
               <target>1.8</target>
@@ -1170,7 +1232,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.12.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <configuration>
               <compilerArgs combine.children="append">
                 <arg>-Xlint:-module</arg> <!-- FIXME: this is required for now as it introduces a build failure -->
@@ -1234,6 +1296,7 @@
                 <configuration>
                   <release>${java.vm.specification.version}</release>
                   <testRelease>${java.vm.specification.version}</testRelease>
+                  <useModulePath>false</useModulePath>
                 </configuration>
               </execution>
 
@@ -1252,6 +1315,7 @@
                   <testExcludes>
                     <testExclude>module-info.java</testExclude>
                   </testExcludes>
+                  <useModulePath>false</useModulePath>
                 </configuration>
               </execution>
             </executions>
@@ -1260,11 +1324,8 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
-              <systemPropertyVariables>
-                <jacoco-agent.destfile>${project.build.directory}/jacoco.exec</jacoco-agent.destfile>
-              </systemPropertyVariables>
               <argLine>
                 ${defaultSurefireArgLine}
                 ${javaModulesSurefireArgLine}
@@ -1279,7 +1340,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <argLine>
                 ${defaultFailsafeArgLine}
@@ -1460,7 +1521,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
@@ -1482,7 +1543,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
@@ -1503,7 +1564,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
@@ -1525,7 +1586,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
               <systemPropertiesFile>${AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE}</systemPropertiesFile>
             </configuration>
@@ -1711,7 +1772,7 @@
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-compiler-plugin</artifactId>
-            <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+            <version>3.12.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
             <executions>
               <!-- then compile with Java 11 as the base version that supports module-info -->
               <!-- this is the Azure SDK baseline for jars that are released to Maven and should only be updated

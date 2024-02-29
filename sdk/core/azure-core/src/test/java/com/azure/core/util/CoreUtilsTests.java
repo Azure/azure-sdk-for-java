@@ -104,7 +104,8 @@ public class CoreUtilsTests {
     public void testProperties() {
         assertNotNull(CoreUtils.getProperties("azure-core.properties").get("version"));
         assertNotNull(CoreUtils.getProperties("azure-core.properties").get("name"));
-        assertTrue(CoreUtils.getProperties("azure-core.properties").get("version")
+        assertTrue(CoreUtils.getProperties("azure-core.properties")
+            .get("version")
             .matches("\\d+\\.\\d+\\.\\d+(-beta\\.\\d+)?"));
     }
 
@@ -621,5 +622,10 @@ public class CoreUtilsTests {
     public void addShutdownHookTimeoutCannotBeZero() {
         assertThrows(IllegalArgumentException.class,
             () -> CoreUtils.addShutdownHookSafely(Executors.newSingleThreadExecutor(), Duration.ZERO));
+    }
+
+    @Test
+    public void addShutdownHookSafelyWithNullThreadDoesNothing() {
+        assertNull(CoreUtils.addShutdownHookSafely(null));
     }
 }

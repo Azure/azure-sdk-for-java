@@ -192,6 +192,16 @@ public final class CosmosChangeFeedRequestOptions {
         return this;
     }
 
+    /**
+     * Gets the diagnostic thresholds used as an override for a specific operation. If no operation specific
+     * diagnostic threshold has been specified, this method will return null, although at runtime the default
+     * thresholds specified at the client-level will be used.
+     * @return the diagnostic thresholds used as an override for a specific operation.
+     */
+    public CosmosDiagnosticsThresholds getDiagnosticsThresholds() {
+        return this.thresholds;
+    }
+
     boolean isSplitHandlingDisabled() {
         return this.isSplitHandlingDisabled;
     }
