@@ -1,14 +1,10 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
-
-### Features Added
+## 1.0.0-beta.3 (2024-02-29)
 
 ### Breaking Changes
 
-### Bugs Fixed
-
-### Other Changes
+- Changed default encoding from `utf-8` to `UTF-8`.
 
 ## 1.0.0-beta.2 (2023-06-02)
 
