@@ -2648,7 +2648,8 @@ public interface VirtualMachine
              * @return the next stage of the update
              */
             Update withSpecifiedNicSpecifiedPIpDeleteOption(DeleteOptions deleteOptions, String nicId, String... ipConfigIds);
-          
+
+            /**
              * Specifies delete options for all the existing data disk attached to the VM.
              * <p>This operation only affects existing <strong>attached</strong> data disks. Any newly-attached data disks
              * that appear before {@link Update#apply()} won't be affected.</p>
