@@ -51,7 +51,7 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
                 new SimpleEntry<>(generateCallProperties(CALL_CONNECTION_ID, CALL_SERVER_CALL_ID,
                     CALL_CALLER_ID, CALL_CALLER_DISPLAY_NAME, CALL_TARGET_ID, CALL_CONNECTION_STATE, CALL_SUBJECT, CALL_CALLBACK_URL, null, null), 201)
             )));
-        CommunicationUserIdentifier caller = new CommunicationUserIdentifier(CALL_CALLER_ID);
+            
         List<CommunicationIdentifier> targets = new ArrayList<>(Collections.singletonList(new CommunicationUserIdentifier(CALL_TARGET_ID)));
         CreateGroupCallOptions callOptions = new CreateGroupCallOptions(targets, CALL_CALLBACK_URL);
         callOptions.setOperationContext(CALL_SUBJECT);
@@ -61,7 +61,6 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(createCallResult);
         assertEquals(201, createCallResult.getStatusCode());
         assertNotNull(createCallResult.getValue());
-        assertEquals(null, createCallResult.getValue().getCallConnectionProperties().getMediaSubscriptionId());
     }
 
     @Test
@@ -95,7 +94,6 @@ public class CallAutomationClientUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(answerCallResult);
         assertEquals(200, answerCallResult.getStatusCode());
         assertNotNull(answerCallResult.getValue());
-        assertEquals(MEDIA_SUBSCRIPTION_ID, answerCallResult.getValue().getCallConnectionProperties().getMediaSubscriptionId());
         assertEquals(DATA_SUBSCRIPTION_ID, answerCallResult.getValue().getCallConnectionProperties().getDataSubscriptionId());
     }
 

@@ -48,12 +48,6 @@ public final class AddParticipantRequestInternal {
     private String operationContext;
 
     /*
-     * Used by customer to send custom calling context to targets
-     */
-    @JsonProperty(value = "customCallingContext")
-    private CustomCallingContext customCallingContext;
-
-    /*
      * Set a callback URI that overrides the default callback URI set by
      * CreateCall/AnswerCall for this operation.
      * This setup is per-action. If this is not set, the default callback URI
@@ -61,6 +55,12 @@ public final class AddParticipantRequestInternal {
      */
     @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
+
+    /*
+     * Used by customer to send custom calling context to targets
+     */
+    @JsonProperty(value = "customCallingContext")
+    private CustomCallingContext customCallingContext;
 
     /**
      * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's shown to the PSTN participant
@@ -171,26 +171,6 @@ public final class AddParticipantRequestInternal {
     }
 
     /**
-     * Get the customCallingContext property: Used by customer to send custom calling context to targets.
-     *
-     * @return the customCallingContext value.
-     */
-    public CustomCallingContext getCustomCallingContext() {
-        return this.customCallingContext;
-    }
-
-    /**
-     * Set the customCallingContext property: Used by customer to send custom calling context to targets.
-     *
-     * @param customCallingContext the customCallingContext value to set.
-     * @return the AddParticipantRequestInternal object itself.
-     */
-    public AddParticipantRequestInternal setCustomCallingContext(CustomCallingContext customCallingContext) {
-        this.customCallingContext = customCallingContext;
-        return this;
-    }
-
-    /**
      * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
      * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
      * set by CreateCall/AnswerCall will be used.
@@ -211,6 +191,26 @@ public final class AddParticipantRequestInternal {
      */
     public AddParticipantRequestInternal setOperationCallbackUri(String operationCallbackUri) {
         this.operationCallbackUri = operationCallbackUri;
+        return this;
+    }
+
+    /**
+     * Get the customCallingContext property: Used by customer to send custom calling context to targets.
+     *
+     * @return the customCallingContext value.
+     */
+    public CustomCallingContext getCustomCallingContext() {
+        return this.customCallingContext;
+    }
+
+    /**
+     * Set the customCallingContext property: Used by customer to send custom calling context to targets.
+     *
+     * @param customCallingContext the customCallingContext value to set.
+     * @return the AddParticipantRequestInternal object itself.
+     */
+    public AddParticipantRequestInternal setCustomCallingContext(CustomCallingContext customCallingContext) {
+        this.customCallingContext = customCallingContext;
         return this;
     }
 }

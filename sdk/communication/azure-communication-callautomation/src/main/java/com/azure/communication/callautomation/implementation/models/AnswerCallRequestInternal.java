@@ -29,18 +29,6 @@ public final class AnswerCallRequestInternal {
     private String operationContext;
 
     /*
-     * Media Streaming Configuration.
-     */
-    @JsonProperty(value = "mediaStreamingConfiguration")
-    private MediaStreamingConfigurationInternal mediaStreamingConfiguration;
-
-    /*
-     * Live Transcription Configuration.
-     */
-    @JsonProperty(value = "transcriptionConfiguration")
-    private TranscriptionConfigurationInternal transcriptionConfiguration;
-
-    /*
      * AI options for the call.
      */
     @JsonProperty(value = "callIntelligenceOptions")
@@ -53,13 +41,10 @@ public final class AnswerCallRequestInternal {
     private CommunicationUserIdentifierModel answeredBy;
 
     /*
-     * The source caller Id, a phone number, that's will be used when inviting
-     * a pstn target.
-     * Required only when transferring call to PSTN, if this is an incoming
-     * voip call.
+     * Live Transcription Configuration.
      */
-    @JsonProperty(value = "sourceCallerIdNumber")
-    private PhoneNumberIdentifierModel sourceCallerIdNumber;
+    @JsonProperty(value = "transcriptionConfiguration")
+    private TranscriptionConfigurationInternal transcriptionConfiguration;
 
     /**
      * Get the incomingCallContext property: The context associated with the call.
@@ -122,48 +107,6 @@ public final class AnswerCallRequestInternal {
     }
 
     /**
-     * Get the mediaStreamingConfiguration property: Media Streaming Configuration.
-     *
-     * @return the mediaStreamingConfiguration value.
-     */
-    public MediaStreamingConfigurationInternal getMediaStreamingConfiguration() {
-        return this.mediaStreamingConfiguration;
-    }
-
-    /**
-     * Set the mediaStreamingConfiguration property: Media Streaming Configuration.
-     *
-     * @param mediaStreamingConfiguration the mediaStreamingConfiguration value to set.
-     * @return the AnswerCallRequestInternal object itself.
-     */
-    public AnswerCallRequestInternal setMediaStreamingConfiguration(
-            MediaStreamingConfigurationInternal mediaStreamingConfiguration) {
-        this.mediaStreamingConfiguration = mediaStreamingConfiguration;
-        return this;
-    }
-
-    /**
-     * Get the transcriptionConfiguration property: Live Transcription Configuration.
-     *
-     * @return the transcriptionConfiguration value.
-     */
-    public TranscriptionConfigurationInternal getTranscriptionConfiguration() {
-        return this.transcriptionConfiguration;
-    }
-
-    /**
-     * Set the transcriptionConfiguration property: Live Transcription Configuration.
-     *
-     * @param transcriptionConfiguration the transcriptionConfiguration value to set.
-     * @return the AnswerCallRequestInternal object itself.
-     */
-    public AnswerCallRequestInternal setTranscriptionConfiguration(
-            TranscriptionConfigurationInternal transcriptionConfiguration) {
-        this.transcriptionConfiguration = transcriptionConfiguration;
-        return this;
-    }
-
-    /**
      * Get the callIntelligenceOptions property: AI options for the call.
      *
      * @return the callIntelligenceOptions value.
@@ -205,24 +148,23 @@ public final class AnswerCallRequestInternal {
     }
 
     /**
-     * Get the sourceCallerIdNumber property: The source caller Id, a phone number, that's will be used when inviting a
-     * pstn target. Required only when transferring call to PSTN, if this is an incoming voip call.
+     * Get the transcriptionConfiguration property: Live Transcription Configuration.
      *
-     * @return the sourceCallerIdNumber value.
+     * @return the transcriptionConfiguration value.
      */
-    public PhoneNumberIdentifierModel getSourceCallerIdNumber() {
-        return this.sourceCallerIdNumber;
+    public TranscriptionConfigurationInternal getTranscriptionConfiguration() {
+        return this.transcriptionConfiguration;
     }
 
     /**
-     * Set the sourceCallerIdNumber property: The source caller Id, a phone number, that's will be used when inviting a
-     * pstn target. Required only when transferring call to PSTN, if this is an incoming voip call.
+     * Set the transcriptionConfiguration property: Live Transcription Configuration.
      *
-     * @param sourceCallerIdNumber the sourceCallerIdNumber value to set.
+     * @param transcriptionConfiguration the transcriptionConfiguration value to set.
      * @return the AnswerCallRequestInternal object itself.
      */
-    public AnswerCallRequestInternal setSourceCallerIdNumber(PhoneNumberIdentifierModel sourceCallerIdNumber) {
-        this.sourceCallerIdNumber = sourceCallerIdNumber;
+    public AnswerCallRequestInternal setTranscriptionConfiguration(
+            TranscriptionConfigurationInternal transcriptionConfiguration) {
+        this.transcriptionConfiguration = transcriptionConfiguration;
         return this;
     }
 }

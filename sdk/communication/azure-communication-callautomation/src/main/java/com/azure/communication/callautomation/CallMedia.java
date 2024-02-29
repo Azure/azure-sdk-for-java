@@ -10,7 +10,6 @@ import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
 import com.azure.communication.callautomation.models.SendDtmfTonesOptions;
 import com.azure.communication.callautomation.models.SendDtmfTonesResult;
-import com.azure.communication.callautomation.models.StartHoldMusicOptions;
 import com.azure.communication.callautomation.models.StartTranscriptionOptions;
 import com.azure.communication.callautomation.models.StopTranscriptionOptions;
 import com.azure.communication.callautomation.models.PlaySource;
@@ -216,54 +215,6 @@ public final class CallMedia {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stopContinuousDtmfRecognitionWithResponse(ContinuousDtmfRecognitionOptions options, Context context) {
         return callMediaAsync.stopContinuousDtmfRecognitionWithResponseInternal(options, context).block();
-    }
-
-    /**
-     * Holds participant in call.
-     * @param targetParticipant the target.
-     * @param playSourceInfo audio to play.
-     * @return Response for successful operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void startHoldMusic(CommunicationIdentifier targetParticipant,
-                               PlaySource playSourceInfo) {
-        return callMediaAsync.startHoldMusic(targetParticipant, playSourceInfo).block();
-    }
-
-    /**
-     * Holds participant in call.
-     * @param options - Different options to pass to the request.
-     * @param context Context
-     * @return Response for successful operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> startHoldMusicWithResponse(StartHoldMusicOptions options,
-                                                     Context context) {
-        return callMediaAsync.startHoldMusicWithResponseInternal(options, context).block();
-    }
-
-    /**
-     * Removes hold from participant in call.
-     * @param targetParticipant the target.
-     * @return Response for successful operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Void stopHoldMusic(CommunicationIdentifier targetParticipant) {
-        return callMediaAsync.stopHoldMusic(targetParticipant).block();
-    }
-
-    /**
-     * Removes hold from participant in call.
-     * @param targetParticipant the target.
-     * @param operationContext operational context.
-     * @param context Context.
-     * @return Response for successful operation.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> stopHoldMusicWithResponse(CommunicationIdentifier targetParticipant,
-                                                     String operationContext,
-                                                     Context context) {
-        return callMediaAsync.stopHoldMusicWithResponseInternal(targetParticipant, operationContext, context).block();
     }
 
     /**

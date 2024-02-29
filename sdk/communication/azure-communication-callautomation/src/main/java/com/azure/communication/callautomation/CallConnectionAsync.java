@@ -12,7 +12,6 @@ import com.azure.communication.callautomation.implementation.accesshelpers.Cance
 import com.azure.communication.callautomation.implementation.accesshelpers.MuteParticipantsResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.RemoveParticipantResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.TransferCallResponseConstructorProxy;
-import com.azure.communication.callautomation.implementation.accesshelpers.UnmuteParticipantsResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CallParticipantConverter;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.converters.PhoneNumberIdentifierConverter;
@@ -22,7 +21,6 @@ import com.azure.communication.callautomation.implementation.models.CustomCallin
 import com.azure.communication.callautomation.implementation.models.MuteParticipantsRequestInternal;
 import com.azure.communication.callautomation.implementation.models.RemoveParticipantRequestInternal;
 import com.azure.communication.callautomation.implementation.models.TransferToParticipantRequestInternal;
-import com.azure.communication.callautomation.implementation.models.UnmuteParticipantsRequestInternal;
 import com.azure.communication.callautomation.models.AddParticipantOptions;
 import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
@@ -36,8 +34,6 @@ import com.azure.communication.callautomation.models.RemoveParticipantOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
 import com.azure.communication.callautomation.models.TransferCallToParticipantOptions;
-import com.azure.communication.callautomation.models.UnmuteParticipantOptions;
-import com.azure.communication.callautomation.models.UnmuteParticipantResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.MicrosoftTeamsUserIdentifier;
@@ -462,47 +458,6 @@ public final class CallConnectionAsync {
                     UUID.randomUUID(),
                     OffsetDateTime.now(),
                     context).map(internalResponse -> new SimpleResponse<>(internalResponse, MuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Unmutes participant in the call.
-     * @param targetParticipant - Participant to be unmuted. Only ACS Users are currently supported.
-     * @return An UnmuteParticipantResult object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UnmuteParticipantResult> unmuteParticipant(CommunicationIdentifier targetParticipant) {
-        return unmuteParticipantWithResponseInternal(
-            new UnmuteParticipantOptions(targetParticipant),
-            null)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Unmute participants in the call.
-     * @param unmuteParticipantOptions - Options for the request.
-     * @return a Response containing the UnmuteParticipantResult object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UnmuteParticipantResult>> unmuteParticipantWithResponse(UnmuteParticipantOptions unmuteParticipantOptions) {
-        return withContext(context -> unmuteParticipantWithResponseInternal(unmuteParticipantOptions, context));
-    }
-
-    Mono<Response<UnmuteParticipantResult>> unmuteParticipantWithResponseInternal(UnmuteParticipantOptions unmuteParticipantOptions, Context context) {
-        try {
-            context = context == null ? Context.NONE : context;
-            UnmuteParticipantsRequestInternal request = new UnmuteParticipantsRequestInternal()
-                .setTargetParticipants(Collections.singletonList(CommunicationIdentifierConverter.convert(unmuteParticipantOptions.getTargetParticipant())))
-                .setOperationContext(unmuteParticipantOptions.getOperationContext());
-
-            return callConnectionInternal.unmuteWithResponseAsync(
-                    callConnectionId,
-                    request,
-                    UUID.randomUUID(),
-                    OffsetDateTime.now(),
-                    context).map(internalResponse -> new SimpleResponse<>(internalResponse, UnmuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
         }

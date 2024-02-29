@@ -188,33 +188,6 @@ public class CallMediaUnitTests {
     }
 
     @Test
-    public void startHoldMusicWithResponseTest() {
-        CallConnection callConnection =
-            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
-                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
-            );
-        callMedia = callConnection.getCallMedia();
-        StartHoldMusicOptions options = new StartHoldMusicOptions(
-            new CommunicationUserIdentifier("id"),
-            new TextSource().setText("audio to play"));
-        Response<Void> response = callMedia.startHoldMusicWithResponse(options, null);
-        assertEquals(response.getStatusCode(), 200);
-    }
-
-    @Test
-    public void stopHoldMusicWithResponseTest() {
-        CallConnection callConnection =
-            CallAutomationUnitTestBase.getCallConnection(new ArrayList<>(
-                Collections.singletonList(new AbstractMap.SimpleEntry<>("", 200)))
-            );
-        callMedia = callConnection.getCallMedia();
-
-        Response<Void> response = callMedia.stopHoldMusicWithResponse(new CommunicationUserIdentifier("id"),
-            "operationalContext", Context.NONE);
-        assertEquals(response.getStatusCode(), 200);
-    }
-
-    @Test
     public void startTranscriptionWithResponse() {
         StartTranscriptionOptions options = new StartTranscriptionOptions();
         options.setOperationContext("operationContext");
