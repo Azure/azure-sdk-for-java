@@ -188,7 +188,11 @@ The source code of Spring Cloud Azure for Spring Boot 3.x can be found on the [f
 
 Azure SDK JARs are signed. [Spring Boot 3 does not support today signed JARs](https://github.com/Azure/azure-sdk-for-java/issues/30320) when you run your application with [AOT mode on a JVM](https://docs.spring.io/spring-boot/docs/current/reference/html/deployment.html#deployment.efficient.aot) or you [build a native image](https://docs.spring.io/spring-boot/docs/current/reference/html/native-image.html).
 
-You can disable the JAR signature verification in the following way for GraalVM Native Build Tools:
+To disable the JAR signature verification in the following way:
+* Create a `custom.security file` in `src/main/resources`
+```
+jdk.jar.disabledAlgorithms=MD2, MD5, RSA, DSA
+```
 
 * Maven
 ```xml
