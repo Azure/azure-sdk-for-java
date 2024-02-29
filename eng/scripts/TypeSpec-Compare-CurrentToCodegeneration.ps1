@@ -50,10 +50,7 @@ foreach ($tspLocationPath in (Get-ChildItem -Path $Directory -Filter "tsp-locati
 }
 
 if ($failedSdk.Length -gt 0) {
-  Write-Host "
-Generate code failed for following modules:
-$failedSdk
-"
+  Write-Host "Code generation failed for following modules: $failedSdk"
   exit 1
 }
 
