@@ -46,8 +46,6 @@ extends:
         groupId: com.azure
         safeName: azurexml
         releaseInBatch: ${{ parameters.release_azurexml }}
-    MatrixReplace:
-      - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
     AdditionalStagesAfterBuild:
       - stage: AzureJsonReflectVersionSupport
         displayName: 'azure-json-reflect Version Support'
@@ -87,10 +85,3 @@ extends:
             - name: azure-xml
               groupId: com.azure
               safeName: azurexml
-          MatrixReplace:
-            - TestGoals=(surefire:test)/$1 failsafe:integration-test failsafe:verify
-      - template: /sdk/storage/tests-template.yml
-        parameters:
-          AdditionalMatrixReplace:
-            - TestFromSource=(.*)/true
-
