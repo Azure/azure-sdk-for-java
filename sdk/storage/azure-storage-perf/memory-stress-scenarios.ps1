@@ -1,7 +1,6 @@
 $JavaPath = Join-Path -Path $Env:JAVA_HOME -ChildPath "bin" | Join-Path -ChildPath "java"
 $TargetDirPath = Join-Path -Path $PSScriptRoot -ChildPath "target"
 $PerfJarPath = Get-ChildItem -Path (Join-Path -Path $TargetDirPath -ChildPath "*") -Include azure-storage-perf-*-jar-with-dependencies.jar -File
-Copy-Item -Path $PerfJarPath -Destination (Join-Path -Path $env:Build.ArtifactStagingDirectory -ChildPath "azure-storage-perf.jar") -Force
 
 Invoke-Expression "& '$JavaPath' -version"
 

@@ -86,6 +86,11 @@ stages:
         - template: /eng/pipelines/templates/steps/retain-heap-dump-hprofs.yml
           parameters:
             OomArtifactName: 'stress-oom-hprofs'
+        - pwsh: |
+            $PerfJarPath = Get-ChildItem -Path (Join-Path -Path $TargetDirPath -ChildPath "*") -Include azure-storage-perf-*-jar-with-dependencies.jar -File
+            Copy-Item -Path $PerfJarPath -Destination $(Build.ArtifactStagingDirectory)/azure-storage-perf.jar
+          displayName: 'Capture perf library for inspection'
+          condition: eq(variables['StorageRunStressScenarios'], 'true')
         - publish: $(Build.ArtifactStagingDirectory)/azure-storage-perf.jar
           displayName: 'Publish perf library for inspection'
           artifact: 'perf-library-$(System.StageName)-$(System.JobName)-$(System.JobAttempt)'
