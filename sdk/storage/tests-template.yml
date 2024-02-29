@@ -87,7 +87,7 @@ stages:
           parameters:
             OomArtifactName: 'stress-oom-hprofs'
         - pwsh: |
-            $PerfJarPath = Get-ChildItem -Path (Join-Path -Path $TargetDirPath -ChildPath "*") -Include azure-storage-perf-*-jar-with-dependencies.jar -File
+            $PerfJarPath = Get-ChildItem -Include azure-storage-perf-*-jar-with-dependencies.jar -File -Recurse -Depth 4
             Copy-Item -Path $PerfJarPath -Destination $(Build.ArtifactStagingDirectory)/azure-storage-perf.jar
           displayName: 'Capture perf library for inspection'
           condition: eq(variables['StorageRunStressScenarios'], 'true')
