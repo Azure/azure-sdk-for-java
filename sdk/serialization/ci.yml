@@ -34,7 +34,7 @@ parameters:
 extends:
   template: ../../eng/pipelines/templates/stages/archetype-sdk-client.yml
   parameters:
-    ServiceDirectory: core
+    ServiceDirectory: serialization
     JavadocSafeJavaBuildVersion: '1.21'
     EnableBatchRelease: true
     Artifacts:
@@ -53,7 +53,7 @@ extends:
         jobs:
           - template: /eng/pipelines/templates/jobs/ci.versions.tests.yml
             parameters:
-              ServiceDirectory: core
+              ServiceDirectory: serialization
               Artifacts:
                 - name: azure-json-reflect
                   groupId: com.azure
