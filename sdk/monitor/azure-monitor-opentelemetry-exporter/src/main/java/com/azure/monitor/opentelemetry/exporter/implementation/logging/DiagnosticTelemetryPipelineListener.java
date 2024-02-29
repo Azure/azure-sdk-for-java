@@ -101,7 +101,7 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
     public void onException(TelemetryPipelineRequest request, String reason, Throwable throwable) {
         if (!NetworkFriendlyExceptions.logSpecialOneTimeFriendlyException(
             throwable, request.getUrl().toString(), friendlyExceptionThrown, logger)) {
-            if (logRetryableFailures) {
+            if (logOnException) {
                 operationLogger.recordFailure(
                     reason + retryableFailureSuffix,
                     throwable,
