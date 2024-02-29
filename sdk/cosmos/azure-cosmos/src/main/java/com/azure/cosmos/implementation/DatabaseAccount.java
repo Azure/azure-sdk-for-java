@@ -197,11 +197,10 @@ public final class DatabaseAccount extends Resource {
             String queryEngineConfigurationJsonString = super.getObject(Constants.Properties.QUERY_ENGINE_CONFIGURATION,
                 String.class);
             if (StringUtils.isNotEmpty(queryEngineConfigurationJsonString)) {
-                TypeReference<HashMap<String, Object>> typeRef = new TypeReference<>() {
-                };
                 try {
-                    this.queryEngineConfiguration = Utils.getSimpleObjectMapper()
-                                                        .readValue(queryEngineConfigurationJsonString, typeRef);
+                    this.queryEngineConfiguration = Utils
+                        .getSimpleObjectMapper()
+                        .readValue(queryEngineConfigurationJsonString, ObjectNodeMap.JACKSON_MAP_TYPE);
                 } catch (IOException e) {
                     throw new IllegalArgumentException(e);
                 }
