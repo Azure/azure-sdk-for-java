@@ -4,11 +4,8 @@
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported encryption with Customer-managed keys using user-assigned service identity.
+- Supported `withExistingUserAssignedManagedServiceIdentity(String)` for `StorageAccount`. 
 
 ## 2.35.0 (2024-01-26)
 

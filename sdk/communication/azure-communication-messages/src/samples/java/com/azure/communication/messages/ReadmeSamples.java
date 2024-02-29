@@ -4,7 +4,15 @@
 
 package com.azure.communication.messages;
 
-import com.azure.communication.messages.models.*;
+import com.azure.communication.messages.models.MessageTemplate;
+import com.azure.communication.messages.models.MessageTemplateBindings;
+import com.azure.communication.messages.models.MessageTemplateText;
+import com.azure.communication.messages.models.MessageTemplateValue;
+import com.azure.communication.messages.models.MessageTemplateItem;
+import com.azure.communication.messages.models.MediaNotificationContent;
+import com.azure.communication.messages.models.TextNotificationContent;
+import com.azure.communication.messages.models.TemplateNotificationContent;
+import com.azure.communication.messages.models.SendMessageResult;
 import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateBindings;
 import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateBindingsComponent;
 import com.azure.communication.messages.models.channels.WhatsAppMessageTemplateItem;
@@ -110,7 +118,7 @@ public final class ReadmeSamples {
         //Update template parameter binding
         List<WhatsAppMessageTemplateBindingsComponent> components = new ArrayList<>();
         components.add(new WhatsAppMessageTemplateBindingsComponent("Days"));
-        MessageTemplateBindings bindings =new WhatsAppMessageTemplateBindings()
+        MessageTemplateBindings bindings = new WhatsAppMessageTemplateBindings()
             .setBody(components);
         template.setBindings(bindings);
 
@@ -122,7 +130,7 @@ public final class ReadmeSamples {
         SendMessageResult result = client.send(
             new TemplateNotificationContent("CHANNEL_ID", recipients, template));
 
-        result.getReceipts().forEach(r -> System.out.println("Message sent to:"+r.getTo() + " and message id:"+ r.getMessageId()));
+        result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
     }
     // END: readme-sample-sendTemplateMessage
 
@@ -140,7 +148,7 @@ public final class ReadmeSamples {
         SendMessageResult result = client.send(
             new TextNotificationContent("<CHANNEL_ID>", recipients, "Hello from ACS messaging"));
 
-        result.getReceipts().forEach(r -> System.out.println("Message sent to:"+r.getTo() + " and message id:"+ r.getMessageId()));
+        result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
     }
     // END: readme-sample-sendTextMessage
 
@@ -160,7 +168,7 @@ public final class ReadmeSamples {
         SendMessageResult result = client.send(
             new MediaNotificationContent("<CHANNEL_ID>", recipients, mediaUrl));
 
-        result.getReceipts().forEach(r -> System.out.println("Message sent to:"+r.getTo() + " and message id:"+ r.getMessageId()));
+        result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
     }
     // END: readme-sample-sendMediaMessage
 
@@ -174,12 +182,12 @@ public final class ReadmeSamples {
         PagedIterable<MessageTemplateItem> response = templateClient.listTemplates("<CHANNEL_ID>");
 
         response.stream().forEach(t -> {
-            WhatsAppMessageTemplateItem template = (WhatsAppMessageTemplateItem) t ;
+            WhatsAppMessageTemplateItem template = (WhatsAppMessageTemplateItem) t;
             System.out.println("===============================");
-            System.out.println("Template Name :: "+template.getName());
-            System.out.println("Template Language :: "+template.getLanguage());
-            System.out.println("Template Status :: "+template.getStatus());
-            System.out.println("Template Content :: "+template.getContent());
+            System.out.println("Template Name :: " + template.getName());
+            System.out.println("Template Language :: " + template.getLanguage());
+            System.out.println("Template Status :: " + template.getStatus());
+            System.out.println("Template Content :: " + template.getContent());
             System.out.println("===============================");
         });
         // END: readme-sample-ListTemplates

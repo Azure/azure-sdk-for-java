@@ -19,6 +19,7 @@
 # ensuring that all tests (recorded, live, etc.) are in a good state to ensure releases maintain quality and avoid
 # performance regressions or bugs. They are also responsible for smoke testing their library after every release.
 
+com.azure:azure-ai-content-safety # Tests owner: zhaiyutong
 com.azure:azure-ai-formrecognizer # Tests owner: samvaity
 com.azure:azure-ai-metricsadvisor # Tests owner: samvaity
 com.azure:azure-ai-textanalytics # Tests owner: mssfang

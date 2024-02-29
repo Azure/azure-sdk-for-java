@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Object containing the priming job ID. */
+/**
+ * Object containing the priming job ID.
+ */
 @Fluent
 public final class PrimingJobIdParameter {
     /*
@@ -17,13 +19,15 @@ public final class PrimingJobIdParameter {
     @JsonProperty(value = "primingJobId", required = true)
     private String primingJobId;
 
-    /** Creates an instance of PrimingJobIdParameter class. */
+    /**
+     * Creates an instance of PrimingJobIdParameter class.
+     */
     public PrimingJobIdParameter() {
     }
 
     /**
      * Get the primingJobId property: The unique identifier of the priming job.
-     *
+     * 
      * @return the primingJobId value.
      */
     public String primingJobId() {
@@ -32,7 +36,7 @@ public final class PrimingJobIdParameter {
 
     /**
      * Set the primingJobId property: The unique identifier of the priming job.
-     *
+     * 
      * @param primingJobId the primingJobId value to set.
      * @return the PrimingJobIdParameter object itself.
      */
@@ -43,15 +47,13 @@ public final class PrimingJobIdParameter {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (primingJobId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property primingJobId in model PrimingJobIdParameter"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property primingJobId in model PrimingJobIdParameter"));
         }
     }
 

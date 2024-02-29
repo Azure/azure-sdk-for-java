@@ -73,6 +73,12 @@
             "_justification": "File contains fake key used by test code."
         },
         {
+          "file":[
+            "sdk/identity/azure-identity/src/test/resources/pemCert.pem"
+          ],
+          "_justification": "Files contain private keys used by test code."
+        },
+        {
             "file": [
               "sdk/core/azure-core-test/src/main/resources/keystore.jks"
             ],

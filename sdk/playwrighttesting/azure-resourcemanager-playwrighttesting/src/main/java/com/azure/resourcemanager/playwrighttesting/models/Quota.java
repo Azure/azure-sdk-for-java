@@ -7,53 +7,48 @@ package com.azure.resourcemanager.playwrighttesting.models;
 import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.playwrighttesting.fluent.models.QuotaInner;
 
-/** An immutable client-side representation of Quota. */
+/**
+ * An immutable client-side representation of Quota.
+ */
 public interface Quota {
     /**
      * Gets the id property: Fully qualified resource Id for the resource.
-     *
+     * 
      * @return the id value.
      */
     String id();
 
     /**
      * Gets the name property: The name of the resource.
-     *
+     * 
      * @return the name value.
      */
     String name();
 
     /**
      * Gets the type property: The type of the resource.
-     *
+     * 
      * @return the type value.
      */
     String type();
 
     /**
+     * Gets the properties property: The resource-specific properties for this resource.
+     * 
+     * @return the properties value.
+     */
+    QuotaProperties properties();
+
+    /**
      * Gets the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     SystemData systemData();
 
     /**
-     * Gets the freeTrial property: The free-trial quota.
-     *
-     * @return the freeTrial value.
-     */
-    FreeTrialProperties freeTrial();
-
-    /**
-     * Gets the provisioningState property: The status of the last operation.
-     *
-     * @return the provisioningState value.
-     */
-    ProvisioningState provisioningState();
-
-    /**
      * Gets the inner com.azure.resourcemanager.playwrighttesting.fluent.models.QuotaInner object.
-     *
+     * 
      * @return the inner object.
      */
     QuotaInner innerModel();

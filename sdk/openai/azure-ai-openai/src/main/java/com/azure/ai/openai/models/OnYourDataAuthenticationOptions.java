@@ -19,14 +19,16 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = OnYourDataAuthenticationOptions.class)
 @JsonTypeName("OnYourDataAuthenticationOptions")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "APIKey", value = OnYourDataApiKeyAuthenticationOptions.class),
-    @JsonSubTypes.Type(name = "ConnectionString", value = OnYourDataConnectionStringAuthenticationOptions.class),
-    @JsonSubTypes.Type(name = "KeyAndKeyId", value = OnYourDataKeyAndKeyIdAuthenticationOptions.class),
+    @JsonSubTypes.Type(name = "api_key", value = OnYourDataApiKeyAuthenticationOptions.class),
+    @JsonSubTypes.Type(name = "connection_string", value = OnYourDataConnectionStringAuthenticationOptions.class),
+    @JsonSubTypes.Type(name = "key_and_key_id", value = OnYourDataKeyAndKeyIdAuthenticationOptions.class),
+    @JsonSubTypes.Type(name = "encoded_api_key", value = OnYourDataEncodedApiKeyAuthenticationOptions.class),
+    @JsonSubTypes.Type(name = "access_token", value = OnYourDataAccessTokenAuthenticationOptions.class),
     @JsonSubTypes.Type(
-        name = "SystemAssignedManagedIdentity",
+        name = "system_assigned_managed_identity",
         value = OnYourDataSystemAssignedManagedIdentityAuthenticationOptions.class),
     @JsonSubTypes.Type(
-        name = "UserAssignedManagedIdentity",
+        name = "user_assigned_managed_identity",
         value = OnYourDataUserAssignedManagedIdentityAuthenticationOptions.class) })
 @Immutable
 public class OnYourDataAuthenticationOptions {
