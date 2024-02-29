@@ -42,7 +42,7 @@
     <dependency>
       <groupId>org.slf4j</groupId>
       <artifactId>slf4j-api</artifactId>
-      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
+      <version>2.0.12</version> <!-- {x-version-update;org.slf4j:slf4j-api;external_dependency} -->
     </dependency>
 
     <dependency>
@@ -99,7 +99,7 @@
     <dependency>
       <groupId>org.apache.groovy</groupId>
       <artifactId>groovy</artifactId>
-      <version>4.0.15</version> <!-- {x-version-update;org.apache.groovy:groovy;external_dependency} -->
+      <version>4.0.18</version> <!-- {x-version-update;org.apache.groovy:groovy;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
