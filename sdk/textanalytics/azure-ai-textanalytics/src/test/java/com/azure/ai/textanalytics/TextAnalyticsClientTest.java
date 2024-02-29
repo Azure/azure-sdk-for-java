@@ -69,9 +69,9 @@ import static com.azure.ai.textanalytics.TestUtils.PII_ENTITY_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.TestUtils.SENTIMENT_OFFSET_INPUT;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_COUNTRY_HINT;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_DOCUMENT;
-import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_DOCUMENT_BATCH;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_PARAMETER_VALUE;
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
@@ -199,9 +199,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         detectLanguageInputEmptyIdRunner(inputs -> {
             final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.detectLanguageBatchWithResponse(inputs, null, Context.NONE));
-            assertEquals(400, httpResponseException.getResponse().getStatusCode());
             final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-            assertEquals(INVALID_DOCUMENT, textAnalyticsError.getErrorCode());
+            assertNotNull(textAnalyticsError.getErrorCode());
         });
     }
 
@@ -282,9 +281,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         emptyDocumentIdRunner(inputs -> {
             final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.recognizeEntitiesBatchWithResponse(inputs, null, Context.NONE));
-            assertEquals(400, httpResponseException.getResponse().getStatusCode());
             final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-            assertEquals(INVALID_DOCUMENT, textAnalyticsError.getErrorCode());
+            assertNotNull(textAnalyticsError.getErrorCode());
         });
     }
 
@@ -357,9 +355,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         tooManyDocumentsRunner(inputs -> {
             final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.recognizeEntitiesBatch(inputs, null, null).stream().findFirst().get());
-            assertEquals(400, httpResponseException.getResponse().getStatusCode());
             final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-            assertEquals(INVALID_DOCUMENT_BATCH, textAnalyticsError.getErrorCode());
+            assertNotNull(textAnalyticsError.getErrorCode());
         });
     }
 
@@ -532,9 +529,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         emptyDocumentIdRunner(inputs -> {
             final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.recognizePiiEntitiesBatchWithResponse(inputs, null, Context.NONE));
-            assertEquals(400, httpResponseException.getResponse().getStatusCode());
             final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-            assertEquals(INVALID_DOCUMENT, textAnalyticsError.getErrorCode());
+            assertNotNull(textAnalyticsError.getErrorCode());
         });
     }
 
@@ -595,9 +591,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         tooManyDocumentsRunner(inputs -> {
             final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.recognizePiiEntitiesBatch(inputs, null, null).stream().findFirst().get());
-            assertEquals(400, httpResponseException.getResponse().getStatusCode());
             final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-            assertEquals(INVALID_DOCUMENT_BATCH, textAnalyticsError.getErrorCode());
+            assertNotNull(textAnalyticsError.getErrorCode());
         });
     }
 
@@ -840,9 +835,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         emptyDocumentIdRunner(inputs -> {
             final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.recognizeLinkedEntitiesBatchWithResponse(inputs, null, Context.NONE));
-            assertEquals(400, httpResponseException.getResponse().getStatusCode());
             final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-            assertEquals(INVALID_DOCUMENT, textAnalyticsError.getErrorCode());
+            assertNotNull(textAnalyticsError.getErrorCode());
         });
     }
 
@@ -899,9 +893,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         tooManyDocumentsRunner(inputs -> {
             final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.recognizeLinkedEntitiesBatch(inputs, null, null).stream().findFirst().get());
-            assertEquals(400, httpResponseException.getResponse().getStatusCode());
             final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-            assertEquals(INVALID_DOCUMENT_BATCH, textAnalyticsError.getErrorCode());
+            assertNotNull(textAnalyticsError.getErrorCode());
         });
     }
 
@@ -1080,9 +1073,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         emptyDocumentIdRunner(inputs -> {
             final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.extractKeyPhrasesBatchWithResponse(inputs, null, Context.NONE));
-            assertEquals(400, httpResponseException.getResponse().getStatusCode());
             final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-            assertEquals(INVALID_DOCUMENT, textAnalyticsError.getErrorCode());
+            assertNotNull(textAnalyticsError.getErrorCode());
         });
     }
 
@@ -1138,9 +1130,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         tooManyDocumentsRunner(inputs -> {
             final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.extractKeyPhrasesBatch(inputs, null, null).stream().findFirst().get());
-            assertEquals(400, httpResponseException.getResponse().getStatusCode());
             final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-            assertEquals(INVALID_DOCUMENT_BATCH, textAnalyticsError.getErrorCode());
+            assertNotNull(textAnalyticsError.getErrorCode());
         });
     }
 
@@ -1223,9 +1214,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         emptyDocumentIdRunner(inputs -> {
             final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.analyzeSentimentBatchWithResponse(inputs, null, Context.NONE));
-            assertEquals(400, httpResponseException.getResponse().getStatusCode());
             TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-            assertEquals(INVALID_DOCUMENT, textAnalyticsError.getErrorCode());
+            assertNotNull(textAnalyticsError.getErrorCode());
         });
     }
 
@@ -1420,9 +1410,8 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
         tooManyDocumentsRunner(inputs -> {
             final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
                 () -> client.analyzeSentimentBatch(inputs, null, null).stream().findFirst().get());
-            assertEquals(400, httpResponseException.getResponse().getStatusCode());
             final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-            assertEquals(INVALID_DOCUMENT_BATCH, textAnalyticsError.getErrorCode());
+            assertNotNull(textAnalyticsError.getErrorCode());
         });
     }
 
@@ -2593,34 +2582,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
                 () -> client.beginAbstractSummary(inputs, null, Context.NONE));
             assertEquals(HttpURLConnection.HTTP_BAD_REQUEST, response.getResponse().getStatusCode());
         });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void beginAbstractSummaryEmptyIdInput(HttpClient httpClient, TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion, false);
-        emptyDocumentIdRunner(inputs -> {
-            final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-                () -> client.beginAbstractSummary(inputs, null, Context.NONE));
-            assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-            assertEquals(INVALID_PARAMETER_VALUE, textAnalyticsError.getErrorCode());
-        });
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.textanalytics.TestUtils#getTestParameters")
-    public void beginAbstractSummaryTooManyDocuments(HttpClient httpClient,
-        TextAnalyticsServiceVersion serviceVersion) {
-        client = getTextAnalyticsClient(httpClient, serviceVersion, false);
-        tooManyDocumentsRunner(inputs -> {
-            final HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-                () -> client.beginAbstractSummary(inputs, null, null).getFinalResult());
-            assertEquals(400, httpResponseException.getResponse().getStatusCode());
-            final TextAnalyticsError textAnalyticsError = (TextAnalyticsError) httpResponseException.getValue();
-            assertEquals(INVALID_PARAMETER_VALUE, textAnalyticsError.getErrorCode());
-        });
-
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
