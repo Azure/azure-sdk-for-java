@@ -158,18 +158,18 @@ org.springframework.security:spring-security-oauth2-resource-server;6.2.0
 org.springframework.security:spring-security-oauth2-core;6.2.0
 org.springframework.security:spring-security-oauth2-jose;6.2.0
 org.springframework.security:spring-security-web;6.2.0
-org.springframework:spring-beans;6.1.1
-org.springframework:spring-context-support;6.1.1
-org.springframework:spring-context;6.1.1
-org.springframework:spring-core;6.1.1
-org.springframework:spring-expression;6.1.1
-org.springframework:spring-jdbc;6.1.1
-org.springframework:spring-jms;6.1.1
-org.springframework:spring-messaging;6.1.1
-org.springframework:spring-tx;6.1.1
-org.springframework:spring-web;6.1.1
-org.springframework:spring-webmvc;6.1.1
-org.springframework:spring-test;6.1.1
+org.springframework:spring-beans;6.1.4
+org.springframework:spring-context-support;6.1.4
+org.springframework:spring-context;6.1.4
+org.springframework:spring-core;6.1.4
+org.springframework:spring-expression;6.1.4
+org.springframework:spring-jdbc;6.1.4
+org.springframework:spring-jms;6.1.4
+org.springframework:spring-messaging;6.1.4
+org.springframework:spring-tx;6.1.4
+org.springframework:spring-web;6.1.4
+org.springframework:spring-webmvc;6.1.4
+org.springframework:spring-test;6.1.4
 org.springframework.retry:spring-retry;2.0.4
 org.springframework.boot:spring-boot-starter-parent;3.2.0
 
@@ -439,4 +439,4 @@ jakarta.servlet:jakarta.servlet-api;6.0.0
 jakarta.xml.bind:jakarta.xml.bind-api;4.0.1
 org.springframework.boot:spring-boot-starter-log4j2;3.2.0
 org.springframework.cloud:spring-cloud-stream-test-binder;4.1.0
-org.springframework:spring-core-test;6.1.1
+org.springframework:spring-core-test;6.1.4

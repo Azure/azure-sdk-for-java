@@ -26,7 +26,7 @@
     <dependency>
       <groupId>org.springframework</groupId>
       <artifactId>spring-context</artifactId>
-      <version>6.1.1</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
+      <version>6.1.4</version> <!-- {x-version-update;org.springframework:spring-context;external_dependency} -->
     </dependency>
     <dependency>
       <groupId>org.springframework.boot</groupId>
@@ -200,7 +200,7 @@
                 <include>org.springframework.boot:spring-boot-configuration-processor:[3.2.0]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-configuration-processor;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter:[3.2.0]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter;external_dependency} -->
                 <include>org.springframework.boot:spring-boot-starter-log4j2:[3.2.0]</include> <!-- {x-include-update;org.springframework.boot:spring-boot-starter-log4j2;external_dependency} -->
-                <include>org.springframework:spring-context:[6.1.1]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
+                <include>org.springframework:spring-context:[6.1.4]</include> <!-- {x-include-update;org.springframework:spring-context;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
