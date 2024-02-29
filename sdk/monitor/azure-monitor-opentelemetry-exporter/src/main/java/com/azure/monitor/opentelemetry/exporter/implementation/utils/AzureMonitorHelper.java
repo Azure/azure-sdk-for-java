@@ -10,10 +10,8 @@ import com.azure.monitor.opentelemetry.exporter.implementation.logging.Diagnosti
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporter;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipeline;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryPipelineListener;
-import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.NonessentialStatsbeat;
 import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatModule;
 import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatTelemetryPipelineListener;
-import reactor.util.annotation.NonNull;
 
 import java.io.File;
 
@@ -26,7 +24,7 @@ public final class AzureMonitorHelper {
         if (tempDir == null) {
             telemetryPipelineListener =
                 new DiagnosticTelemetryPipelineListener(
-                    "Sending telemetry to the ingestion service", false, " (telemetry will be lost)");
+                    "Sending telemetry to the ingestion service", false, true, " (telemetry will be lost)");
         } else {
             telemetryPipelineListener =
                 TelemetryPipelineListener.composite(
@@ -35,8 +33,8 @@ public final class AzureMonitorHelper {
                     // will log if that retry from disk fails
                     new DiagnosticTelemetryPipelineListener(
                         "Sending telemetry to the ingestion service",
-                        false,
-                        " (telemetry will be stored to disk and retried)"),
+                        true,
+                        false, " (telemetry will be stored to disk and retried)"),
                     new LocalStorageTelemetryPipelineListener(
                         50, // default to 50MB
                         TempDirs.getSubDir(tempDir, "telemetry"),
