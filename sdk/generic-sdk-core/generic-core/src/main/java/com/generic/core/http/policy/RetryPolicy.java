@@ -53,8 +53,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
                     defaultMaxRetries = 3;
                 }
             } catch (NumberFormatException ignored) {
-                LOGGER.log(ClientLogger.LogLevel.VERBOSE,
-                    () -> PROPERTY_REQUEST_RETRY_COUNT + " was loaded but is an invalid "
+                LOGGER.atVerbose()
+                    .log(() -> PROPERTY_REQUEST_RETRY_COUNT + " was loaded but is an invalid "
                         + "number. Using 3 retries as the maximum.");
             }
         }

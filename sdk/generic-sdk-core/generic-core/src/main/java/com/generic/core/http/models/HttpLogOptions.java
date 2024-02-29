@@ -5,8 +5,10 @@ package com.generic.core.http.models;
 
 import com.generic.core.implementation.http.policy.HttpRequestLogger;
 import com.generic.core.implementation.http.policy.HttpResponseLogger;
+import com.generic.core.models.HeaderName;
 import com.generic.core.util.configuration.Configuration;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
@@ -21,33 +23,32 @@ import static com.generic.core.util.configuration.Configuration.getGlobalConfigu
  */
 public final class HttpLogOptions {
     private HttpLogDetailLevel logLevel;
-    private Set<String> allowedHeaderNames;
+    private List<HeaderName> allowedHeaderNames;
     private Set<String> allowedQueryParamNames;
-    private boolean prettyPrintBody;
     private HttpRequestLogger requestLogger;
     private HttpResponseLogger responseLogger;
-    private static final List<String> DEFAULT_HEADERS_ALLOWLIST = Arrays.asList(
-        "traceparent",
-        "Accept",
-        "Cache-Control",
-        "Connection",
-        "Content-Length",
-        "Content-Type",
-        "Date",
-        "ETag",
-        "Expires",
-        "If-Match",
-        "If-Modified-Since",
-        "If-None-Match",
-        "If-Unmodified-Since",
-        "Last-Modified",
-        "Pragma",
-        "Request-Id",
-        "Retry-After",
-        "Server",
-        "Transfer-Encoding",
-        "User-Agent",
-        "WWW-Authenticate"
+    private static final List<HeaderName> DEFAULT_HEADERS_ALLOWLIST = Arrays.asList(
+        HeaderName.TRACEPARENT,
+        HeaderName.ACCEPT,
+        HeaderName.CACHE_CONTROL,
+        HeaderName.CONNECTION,
+        HeaderName.CONTENT_LENGTH,
+        HeaderName.CONTENT_TYPE,
+        HeaderName.DATE,
+        HeaderName.ETAG,
+        HeaderName.EXPIRES,
+        HeaderName.IF_MATCH,
+        HeaderName.IF_MODIFIED_SINCE,
+        HeaderName.IF_NONE_MATCH,
+        HeaderName.IF_UNMODIFIED_SINCE,
+        HeaderName.LAST_MODIFIED,
+        HeaderName.PRAGMA,
+        HeaderName.CLIENT_REQUEST_ID,
+        HeaderName.RETRY_AFTER,
+        HeaderName.SERVER,
+        HeaderName.TRANSFER_ENCODING,
+        HeaderName.USER_AGENT,
+        HeaderName.WWW_AUTHENTICATE
     );
 
     private static final List<String> DEFAULT_QUERY_PARAMS_ALLOWLIST = Collections.singletonList(
@@ -59,7 +60,7 @@ public final class HttpLogOptions {
      */
     public HttpLogOptions() {
         logLevel = HttpLogDetailLevel.ENVIRONMENT_HTTP_LOG_DETAIL_LEVEL;
-        allowedHeaderNames = new HashSet<>(DEFAULT_HEADERS_ALLOWLIST);
+        allowedHeaderNames = new ArrayList<>(DEFAULT_HEADERS_ALLOWLIST);
         allowedQueryParamNames = new HashSet<>(DEFAULT_QUERY_PARAMS_ALLOWLIST);
     }
 
@@ -92,8 +93,8 @@ public final class HttpLogOptions {
      *
      * @return The list of allowed headers.
      */
-    public Set<String> getAllowedHeaderNames() {
-        return allowedHeaderNames;
+    public List<HeaderName> getAllowedHeaderNames() {
+        return Collections.unmodifiableList(allowedHeaderNames);
     }
 
     /**
@@ -110,8 +111,8 @@ public final class HttpLogOptions {
      *
      * @return The updated HttpLogOptions object.
      */
-    public HttpLogOptions setAllowedHeaderNames(final Set<String> allowedHeaderNames) {
-        this.allowedHeaderNames = allowedHeaderNames == null ? new HashSet<>() : allowedHeaderNames;
+    public HttpLogOptions setAllowedHeaderNames(final List<HeaderName> allowedHeaderNames) {
+        this.allowedHeaderNames = allowedHeaderNames == null ? new ArrayList<>() : allowedHeaderNames;
 
         return this;
     }
@@ -127,7 +128,7 @@ public final class HttpLogOptions {
      */
     public HttpLogOptions addAllowedHeaderName(final String allowedHeaderName) {
         Objects.requireNonNull(allowedHeaderName);
-        this.allowedHeaderNames.add(allowedHeaderName);
+        this.allowedHeaderNames.add(HeaderName.fromString(allowedHeaderName));
 
         return this;
     }
@@ -138,7 +139,7 @@ public final class HttpLogOptions {
      * @return The list of allowed query parameters.
      */
     public Set<String> getAllowedQueryParamNames() {
-        return allowedQueryParamNames;
+        return Collections.unmodifiableSet(allowedQueryParamNames);
     }
 
     /**
@@ -166,29 +167,6 @@ public final class HttpLogOptions {
     public HttpLogOptions addAllowedQueryParamName(final String allowedQueryParamName) {
         this.allowedQueryParamNames.add(allowedQueryParamName);
         this.getClass().getName();
-
-        return this;
-    }
-
-    /**
-     * Gets flag to allow pretty printing of message bodies.
-     *
-     * @return true if pretty printing of message bodies is allowed.
-     */
-    public boolean isPrettyPrintBody() {
-        return prettyPrintBody;
-    }
-
-    /**
-     * Sets flag to allow pretty printing of message bodies.
-     *
-     * @param prettyPrintBody If true, pretty prints message bodies when logging. If the detailLevel does not include
-     * body logging, this flag does nothing.
-     *
-     * @return The updated HttpLogOptions object.
-     */
-    public HttpLogOptions setPrettyPrintBody(boolean prettyPrintBody) {
-        this.prettyPrintBody = prettyPrintBody;
 
         return this;
     }
@@ -273,7 +251,7 @@ public final class HttpLogOptions {
         /**
          * Logs everything in HEADERS and BODY.
          */
-        BODY_AND_HEADERS;
+        BODYANDHEADERS;
 
         static final String BASIC_VALUE = "basic";
         static final String HEADERS_VALUE = "headers";
@@ -296,7 +274,7 @@ public final class HttpLogOptions {
             } else if (BODY_AND_HEADERS_VALUE.equalsIgnoreCase(detailLevel)
                 || BODYANDHEADERS_VALUE.equalsIgnoreCase(detailLevel)) {
 
-                logDetailLevel = BODY_AND_HEADERS;
+                logDetailLevel = BODYANDHEADERS;
             } else {
                 logDetailLevel = NONE;
             }
@@ -319,7 +297,7 @@ public final class HttpLogOptions {
          * @return Whether headers should be logged.
          */
         public boolean shouldLogHeaders() {
-            return this == HEADERS || this == BODY_AND_HEADERS;
+            return this == HEADERS || this == BODYANDHEADERS;
         }
 
         /**
@@ -328,7 +306,7 @@ public final class HttpLogOptions {
          * @return Whether a body should be logged.
          */
         public boolean shouldLogBody() {
-            return this == BODY || this == BODY_AND_HEADERS;
+            return this == BODY || this == BODYANDHEADERS;
         }
     }
 }

@@ -74,13 +74,20 @@ public final class DefaultLogger extends MarkerIgnoringBase {
 
     private DefaultLogger(String classPath, boolean ignored) {
         this.classPath = classPath;
-        int configuredLogLevel = fromEnvironment().getLogLevel();
-
-        isTraceEnabled = LogLevel.VERBOSE.getLogLevel() > configuredLogLevel;
-        isDebugEnabled = LogLevel.VERBOSE.getLogLevel() >= configuredLogLevel;
-        isInfoEnabled = LogLevel.INFORMATIONAL.getLogLevel() >= configuredLogLevel;
-        isWarnEnabled = LogLevel.WARNING.getLogLevel() >= configuredLogLevel;
-        isErrorEnabled = LogLevel.ERROR.getLogLevel() >= configuredLogLevel;
+        LogLevel configuredLogLevel = fromEnvironment();
+        if (configuredLogLevel.equals(LogLevel.NOTSET)) {
+            isTraceEnabled = false;
+            isDebugEnabled = false;
+            isInfoEnabled = false;
+            isWarnEnabled = false;
+            isErrorEnabled = false;
+        } else {
+            isTraceEnabled = LogLevel.isGreaterOrEqual(LogLevel.VERBOSE, configuredLogLevel);
+            isDebugEnabled = LogLevel.isGreaterOrEqual(LogLevel.VERBOSE, configuredLogLevel);
+            isInfoEnabled = LogLevel.isGreaterOrEqual(LogLevel.INFORMATIONAL, configuredLogLevel);
+            isWarnEnabled = LogLevel.isGreaterOrEqual(LogLevel.WARNING, configuredLogLevel);
+            isErrorEnabled = LogLevel.isGreaterOrEqual(LogLevel.ERROR, configuredLogLevel);
+        }
     }
 
     private static LogLevel fromEnvironment() {

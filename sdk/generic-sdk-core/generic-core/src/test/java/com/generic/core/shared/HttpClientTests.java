@@ -1492,7 +1492,7 @@ public abstract class HttpClientTests {
         final HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
             .policies(new HttpLoggingPolicy(new HttpLogOptions()
-                .setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODY_AND_HEADERS)))
+                .setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODYANDHEADERS)))
             .build();
 
         Response<HttpBinJSON> response =

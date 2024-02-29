@@ -42,8 +42,6 @@ import static com.generic.core.annotation.TypeConditions.FLUENT;
 public class ClientLogger {
     private final Logger logger;
     private final String globalContextSerialized;
-    private final boolean hasGlobalContext;
-
     private static final char CR = '\r';
     private static final char LF = '\n';
 
@@ -80,7 +78,6 @@ public class ClientLogger {
     /**
      * Retrieves a logger for the passed class name using the {@link LoggerFactory} with
      * context that will be populated on all log records produced with this logger.
-     *
      * <!-- src_embed com.generic.core.util.logging.clientlogger#globalcontext -->
      * <pre>
      * Map&lt;String, Object&gt; context = new HashMap&lt;&gt;&#40;&#41;;
@@ -100,55 +97,6 @@ public class ClientLogger {
         Logger initLogger = LoggerFactory.getLogger(className);
         logger = initLogger instanceof NOPLogger ? new DefaultLogger(className) : initLogger;
         globalContextSerialized = LoggingEventBuilder.writeJsonFragment(context);
-        hasGlobalContext = !CoreUtils.isNullOrEmpty(globalContextSerialized);
-    }
-
-    /**
-     * Logs a format-able message that uses {@code {}} as the placeholder at the given {@code logLevel}.
-     *
-     * <p><strong>Code samples</strong></p>
-     *
-     * <p>Logging with a specific log level</p>
-     *
-     * <!-- src_embed com.generic.core.util.logging.clientlogger.log -->
-     * <pre>
-     * logger.log&#40;LogLevel.VERBOSE,
-     *     &#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;&#41;;
-     * </pre>
-     * <!-- end com.generic.core.util.logging.clientlogger.log -->
-     *
-     * @param logLevel Logging level for the log message.
-     * @param message The format-able message to log.
-     */
-    public void log(LogLevel logLevel, Supplier<String> message) {
-        log(logLevel, message, null);
-    }
-
-    /**
-     * Logs a format-able message that uses {@code {}} as the placeholder at {@code verbose} log level.
-     *
-     * <p><strong>Code samples</strong></p>
-     *
-     * <p>Logging with a specific log level and exception</p>
-     *
-     * <!-- src_embed com.generic.core.util.logging.clientlogger.log#throwable -->
-     * <pre>
-     * Throwable illegalArgumentException = new IllegalArgumentException&#40;&quot;An invalid argument was encountered.&quot;&#41;;
-     * logger.log&#40;LogLevel.VERBOSE,
-     *     &#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;,
-     *     illegalArgumentException&#41;;
-     * </pre>
-     * <!-- end com.generic.core.util.logging.clientlogger.log#throwable -->
-     *
-     * @param logLevel Logging level for the log message.
-     * @param message The format-able message to log.
-     * @param throwable Throwable for the message. {@link Throwable}.
-     */
-    public void log(LogLevel logLevel, Supplier<String> message, Throwable throwable) {
-        if (message != null && canLogAtLevel(logLevel)) {
-            LoggingEventBuilder.create(logger, logLevel, globalContextSerialized, true)
-                .log(message, throwable);
-        }
     }
 
     /**
@@ -370,7 +318,7 @@ public class ClientLogger {
     public static final class LoggingEventBuilder {
         private static final JsonStringEncoder JSON_STRING_ENCODER = JsonStringEncoder.getInstance();
         private static final LoggingEventBuilder NOOP = new LoggingEventBuilder(null, null, null, false);
-        private static final String SDK_LOG_MESSAGE_KEY = "{\"sdk.message\":\"";
+        private static final String SDK_LOG_MESSAGE_KEY = "{\"message\":\"";
 
         private final Logger logger;
         private final LogLevel level;
@@ -526,7 +474,7 @@ public class ClientLogger {
         public void log(Supplier<String> messageSupplier) {
             if (this.isEnabled) {
                 String message = messageSupplier != null ? messageSupplier.get() : null;
-                performLogging(level, getMessageWithContext(message, null), (Throwable) null);
+                performLogging(level, removeNewLinesFromLogMessage(getMessageWithContext(message, null)), (Throwable) null);
             }
         }
 
@@ -539,7 +487,7 @@ public class ClientLogger {
         public void log(Supplier<String> messageSupplier, Throwable throwable) {
             if (this.isEnabled) {
                 String message = messageSupplier != null ? messageSupplier.get() : null;
-                performLogging(level, getMessageWithContext(message, throwable),
+                performLogging(level, removeNewLinesFromLogMessage(getMessageWithContext(message, throwable)),
                     logger.isDebugEnabled() ? throwable : null);
             }
         }
@@ -568,7 +516,7 @@ public class ClientLogger {
             Objects.requireNonNull(throwable, "'throwable' cannot be null.");
 
             if (this.isEnabled) {
-                performLogging(level, getMessageWithContext(null, throwable), logger.isDebugEnabled() ? throwable : null);
+                performLogging(level, removeNewLinesFromLogMessage(getMessageWithContext(null, throwable)), logger.isDebugEnabled() ? throwable : null);
             }
 
             return throwable;
@@ -586,7 +534,7 @@ public class ClientLogger {
             Objects.requireNonNull(runtimeException, "'runtimeException' cannot be null.");
 
             if (this.isEnabled) {
-                performLogging(level, getMessageWithContext(null, runtimeException),
+                performLogging(level, removeNewLinesFromLogMessage(getMessageWithContext(null, runtimeException)),
                     logger.isDebugEnabled() ? runtimeException : null);
 
             }
@@ -668,7 +616,7 @@ public class ClientLogger {
             }
 
             FormattingTuple tuple = MessageFormatter.arrayFormat(format, args);
-            String message = getMessageWithContext(tuple.getMessage(), throwable);
+            String message = getMessageWithContext(removeNewLinesFromLogMessage(tuple.getMessage()), throwable);
 
             performLogging(logLevel, message, tuple.getThrowable());
         }
@@ -780,11 +728,15 @@ public class ClientLogger {
         }
     }
 
-
     /**
      * Enum which represent logging levels used in Azure SDKs.
      */
     public enum LogLevel {
+        /**
+         * Indicates that no log level is set.
+         */
+        NOTSET(0, "0", "notSet"),
+
         /**
          * Indicates that log level is at verbose level.
          */
@@ -803,16 +755,11 @@ public class ClientLogger {
         /**
          * Indicates that log level is at error level.
          */
-        ERROR(4, "4", "err", "error"),
-
-        /**
-         * Indicates that no log level is set.
-         */
-        NOT_SET(5, "5");
-
+        ERROR(4, "4", "err", "error");
         private final int numericValue;
         private final String[] allowedLogLevelVariables;
         private static final HashMap<String, LogLevel> LOG_LEVEL_STRING_MAPPER = new HashMap<>();
+        private final String caseSensitive;
 
         static {
             for (LogLevel logLevel: LogLevel.values()) {
@@ -825,6 +772,7 @@ public class ClientLogger {
         LogLevel(int numericValue, String... allowedLogLevelVariables) {
             this.numericValue = numericValue;
             this.allowedLogLevelVariables = allowedLogLevelVariables;
+            this.caseSensitive = allowedLogLevelVariables[0];
         }
 
         /**
@@ -832,8 +780,12 @@ public class ClientLogger {
          *
          * @return The numeric representation of the log level.
          */
-        public int getLogLevel() {
+        private int getLevelCode() {
             return numericValue;
+        }
+
+        public static boolean isGreaterOrEqual(LogLevel level, LogLevel configuredLevel) {
+            return level.getLevelCode() >= configuredLevel.getLevelCode();
         }
 
         /**
@@ -853,7 +805,7 @@ public class ClientLogger {
          */
         public static LogLevel fromString(String logLevelVal) {
             if (logLevelVal == null) {
-                return LogLevel.NOT_SET;
+                return LogLevel.NOTSET;
             }
             String caseInsensitiveLogLevel = logLevelVal.toLowerCase(Locale.ROOT);
             if (!LOG_LEVEL_STRING_MAPPER.containsKey(caseInsensitiveLogLevel)) {
@@ -861,6 +813,15 @@ public class ClientLogger {
                     + logLevelVal);
             }
             return LOG_LEVEL_STRING_MAPPER.get(caseInsensitiveLogLevel);
+        }
+
+        /**
+         * Converts the log level to a string representation.
+         *
+         * @return The string representation of the log level.
+         */
+        public String toString() {
+            return caseSensitive;
         }
     }
 

@@ -11,9 +11,7 @@ import com.generic.core.http.pipeline.HttpPipelinePolicy;
 import com.generic.core.implementation.http.policy.HttpRequestLogger;
 import com.generic.core.implementation.http.policy.HttpResponseLogger;
 import com.generic.core.implementation.util.CoreUtils;
-import com.generic.core.implementation.util.ImplUtils;
 import com.generic.core.implementation.util.LoggingKeys;
-import com.generic.core.implementation.util.UrlBuilder;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Header;
 import com.generic.core.models.HeaderName;
@@ -24,6 +22,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.time.Duration;
 import java.util.Collections;
+import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -40,7 +39,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static final String APPLICATION_OCTET_STREAM = "application/octet-stream";
     private static final ClientLogger LOGGER = new ClientLogger(HttpLoggingPolicy.class);
     private final HttpLogOptions.HttpLogDetailLevel httpLogDetailLevel;
-    private final Set<String> allowedHeaderNames;
+    private final List<HeaderName> allowedHeaderNames;
     private final Set<String> allowedQueryParameterNames;
     private final HttpRequestLogger requestLogger;
     private final HttpResponseLogger responseLogger;
@@ -56,16 +55,13 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     public HttpLoggingPolicy(HttpLogOptions httpLogOptions) {
         if (httpLogOptions == null) {
             this.httpLogDetailLevel = HttpLogOptions.HttpLogDetailLevel.NONE;
-            this.allowedHeaderNames = Collections.emptySet();
+            this.allowedHeaderNames = Collections.emptyList();
             this.allowedQueryParameterNames = Collections.emptySet();
             this.requestLogger = new DefaultHttpRequestLogger();
             this.responseLogger = new DefaultHttpResponseLogger();
         } else {
             this.httpLogDetailLevel = httpLogOptions.getLogLevel();
-            this.allowedHeaderNames = httpLogOptions.getAllowedHeaderNames()
-                .stream()
-                .map(headerName -> headerName.toLowerCase(Locale.ROOT))
-                .collect(Collectors.toSet());
+            this.allowedHeaderNames = httpLogOptions.getAllowedHeaderNames();
             this.allowedQueryParameterNames = httpLogOptions.getAllowedQueryParamNames()
                 .stream()
                 .map(queryParamName -> queryParamName.toLowerCase(Locale.ROOT))
@@ -107,14 +103,14 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private ClientLogger.LoggingEventBuilder createBasicLoggingContext(ClientLogger logger, ClientLogger.LogLevel level, HttpRequest request) {
         ClientLogger.LoggingEventBuilder log = logger.atLevel(level);
         if (LOGGER.canLogAtLevel(level) && request != null) {
-            if (allowedHeaderNames.contains(CLIENT_REQUEST_ID.getCaseInsensitiveName())) {
+            if (allowedHeaderNames.contains(CLIENT_REQUEST_ID)) {
                 String clientRequestId = request.getHeaders().getValue(CLIENT_REQUEST_ID);
                 if (clientRequestId != null) {
                     log.addKeyValue(CLIENT_REQUEST_ID.getCaseInsensitiveName(), clientRequestId);
                 }
             }
 
-            if (allowedHeaderNames.contains(TRACEPARENT.getCaseInsensitiveName())) {
+            if (allowedHeaderNames.contains(TRACEPARENT)) {
                 String traceparent = request.getHeaders().getValue(TRACEPARENT);
                 if (traceparent != null) {
                     log.addKeyValue(TRACEPARENT.getCaseInsensitiveName(), traceparent);
@@ -220,8 +216,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 long contentLength = getContentLength(logger, response.getHeaders());
 
                 if (shouldBodyBeLogged(contentTypeHeader, contentLength)) {
-                    return new LoggingHttpResponse(response, logBuilder, logger,
-                        (int) contentLength, contentTypeHeader);
+                    return new LoggingHttpResponse(response, logBuilder
+                    );
                 }
             }
 
@@ -239,22 +235,41 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      */
     private static String getRedactedUrl(URL url, Set<String> allowedQueryParameterNames) {
         String query = url.getQuery();
-        if (CoreUtils.isNullOrEmpty(query)) {
-            // URL doesn't have a query string, just return the URL as-is.
-            return url.toString();
+        StringBuilder urlBuilder = new StringBuilder();
+
+        // Add the protocol, host and port to the urlBuilder
+        urlBuilder.append(url.getProtocol())
+            .append("://")
+            .append(url.getHost());
+
+        if (url.getPort() != -1) {
+            urlBuilder.append(":")
+                .append(url.getPort());
         }
 
-        // URL does have a query string that may need redactions.
-        // Use UrlBuilder to break apart the URL, clear the query string, and add the redacted query string.
-        UrlBuilder urlBuilder = ImplUtils.parseUrl(url, false);
+        // Add the path to the urlBuilder
+        urlBuilder.append(url.getPath());
 
-        CoreUtils.parseQueryParameters(query).forEachRemaining(queryParam -> {
-            if (allowedQueryParameterNames.contains(queryParam.getKey().toLowerCase(Locale.ROOT))) {
-                urlBuilder.addQueryParameter(queryParam.getKey(), queryParam.getValue());
-            } else {
-                urlBuilder.addQueryParameter(queryParam.getKey(), REDACTED_PLACEHOLDER);
-            }
-        });
+        if (query != null && !query.isEmpty()) {
+            urlBuilder.append("?");
+
+            // Parse and redact the query parameters
+            CoreUtils.parseQueryParameters(query).forEachRemaining(queryParam -> {
+                urlBuilder.append(queryParam.getKey());
+                urlBuilder.append("=");
+
+                if (allowedQueryParameterNames.contains(queryParam.getKey().toLowerCase(Locale.ROOT))) {
+                    urlBuilder.append(queryParam.getValue());
+                } else {
+                    urlBuilder.append(REDACTED_PLACEHOLDER);
+                }
+
+                urlBuilder.append("&");
+            });
+
+            // Remove the trailing '&'
+            urlBuilder.deleteCharAt(urlBuilder.length() - 1);
+        }
 
         return urlBuilder.toString();
     }
@@ -266,13 +281,13 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
      * @param sb StringBuilder that is generating the log message.
      * @param logLevel Log level the environment is configured to use.
      */
-    private static void addHeadersToLogMessage(Set<String> allowedHeaderNames, Headers headers,
+    private static void addHeadersToLogMessage(List<HeaderName> allowedHeaderNames, Headers headers,
                                                ClientLogger.LoggingEventBuilder logBuilder) {
         for (Header header : headers) {
             String headerName = header.getName();
-
-            logBuilder.addKeyValue(headerName, allowedHeaderNames.contains(headerName.toLowerCase(Locale.ROOT))
-                ? header.getValue() : REDACTED_PLACEHOLDER);
+            String headerValue = allowedHeaderNames.contains(HeaderName.fromString(headerName))
+                ? header.getValue() : REDACTED_PLACEHOLDER;
+            logBuilder.addKeyValue(headerName, headerValue);
         }
     }
 
@@ -295,8 +310,8 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         try {
             contentLength = Long.parseLong(contentLengthString);
         } catch (NumberFormatException | NullPointerException e) {
-            logger.log(ClientLogger.LogLevel.INFORMATIONAL,
-                    () -> "Could not parse the HTTP header content-length: '" + contentLengthString + "'.", e);
+            logger.atVerbose().log(() -> "Could not parse the HTTP header content-length: '"
+                + contentLengthString + "'.", e);
         }
 
         return contentLength;
@@ -344,8 +359,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         private final HttpResponse actualResponse;
         private final ClientLogger.LoggingEventBuilder logBuilder;
 
-        private LoggingHttpResponse(HttpResponse actualResponse, ClientLogger.LoggingEventBuilder logBuilder,
-                                    ClientLogger logger, int contentLength, String contentTypeHeader) {
+        private LoggingHttpResponse(HttpResponse actualResponse, ClientLogger.LoggingEventBuilder logBuilder) {
             super(actualResponse.getRequest());
 
             this.actualResponse = actualResponse;

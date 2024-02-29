@@ -60,7 +60,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
 
     private static HeaderName validateLocationHeader(String locationHeader) {
         if (CoreUtils.isNullOrEmpty(locationHeader)) {
-            LOGGER.log(ClientLogger.LogLevel.ERROR, () ->
+            LOGGER.atError().log(() ->
                 String.format("'locationHeader' provided as null will be defaulted to {%s}", HeaderName.LOCATION));
 
             return HeaderName.LOCATION;
@@ -71,7 +71,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
 
     private static Set<HttpMethod> validateAllowedMethods(Set<HttpMethod> allowedMethods) {
         if (CoreUtils.isNullOrEmpty(allowedMethods)) {
-            LOGGER.log(ClientLogger.LogLevel.ERROR, () ->
+            LOGGER.atError().log(() ->
                 String.format("'allowedMethods' provided as null will be defaulted to {%s}",
                     DEFAULT_REDIRECT_ALLOWED_METHODS));
 

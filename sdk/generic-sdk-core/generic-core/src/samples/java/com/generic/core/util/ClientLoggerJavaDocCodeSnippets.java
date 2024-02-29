@@ -41,13 +41,13 @@ public class ClientLoggerJavaDocCodeSnippets {
         // END: com.generic.core.util.logging.clientlogger.info#string-object
 
         // BEGIN: com.generic.core.util.logging.clientlogger.log
-        logger.log(ClientLogger.LogLevel.VERBOSE,
+        logger.atVerbose().log(
             () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "param1", "param2", "param3"));
         // END: com.generic.core.util.logging.clientlogger.log
 
         // BEGIN: com.generic.core.util.logging.clientlogger.log#throwable
         Throwable illegalArgumentException = new IllegalArgumentException("An invalid argument was encountered.");
-        logger.log(ClientLogger.LogLevel.VERBOSE,
+        logger.atVerbose().log(
             () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "param1", "param2", "param3"),
             illegalArgumentException);
         // END: com.generic.core.util.logging.clientlogger.log#throwable

@@ -187,6 +187,11 @@ public final class HeaderName implements ExpandableStringEnum<HeaderName> {
     /**
      * {@code client-request-id}
      */
+    public static final HeaderName REQUEST_ID = fromString("Request-Id");
+
+    /**
+     * {@code client-request-id}
+     */
     public static final HeaderName CLIENT_REQUEST_ID = fromString("client-request-id");
 
     /**
