@@ -26,7 +26,7 @@ public class AzureCliTokenTests {
         + "  \"tokenType\": \"Bearer\"\n"
         + "}";
 
-    String jsonWithoutExpires_On =  "{\n"
+    String jsonWithoutExpiresOnUnixTime =  "{\n"
         + "  \"accessToken\": \"tokenValue\",\n"
         + "  \"expiresOn\": \"2024-02-28 12:05:53.000000\",\n"
         + "  \"subscription\": \"subscriptionValue\",\n"
@@ -38,7 +38,7 @@ public class AzureCliTokenTests {
         ByteArrayOutputStream stream = new ByteArrayOutputStream();
 
         try {
-            try (JsonReader reader = JsonProviders.createReader(jsonWithoutExpires_On)) {
+            try (JsonReader reader = JsonProviders.createReader(jsonWithoutExpiresOnUnixTime)) {
                 AzureCliToken token = AzureCliToken.fromJson(reader);
                 JsonWriter writer = JsonProviders.createWriter(stream);
                 token.toJson(writer);
