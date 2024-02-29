@@ -37,7 +37,6 @@ extends:
     ServiceDirectory: core
     JavadocSafeJavaBuildVersion: '1.21'
     EnableBatchRelease: true
-    ReleaseDependsOnLiveTests: ${{ parameters.release_dependsonlivetests }}
     Artifacts:
       - name: azure-json
         groupId: com.azure
