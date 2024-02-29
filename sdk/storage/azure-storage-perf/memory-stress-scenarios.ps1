@@ -16,10 +16,11 @@ function Run-Scenario {
         [string] $ExtraFlags
     )
     Write-Host "Executing '$Scenario' with '$HeapSize' heap"
-    $output = Invoke-Expression "& '$JavaPath' -Xms$HeapSize -Xmx$HeapSize -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=$HeapDumpPath-oom.hprof -XX:+CrashOnOutOfMemoryError '$ExtraFlags' -jar '$PerfJarPath' $Scenario"
+    $invoke = "& '$JavaPath' -Xms$HeapSize -Xmx$HeapSize -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=$HeapDumpPath-oom.hprof -XX:+CrashOnOutOfMemoryError '$ExtraFlags' -jar '$PerfJarPath' $Scenario"
+    Write-Host "Invoking: $invoke"
+    Invoke-Expression $invoke
     if ($LASTEXITCODE -ne 0) {
         Write-Host "Scenario failed, exiting"
-        Write-Host $output
         exit 1
     }
 }
