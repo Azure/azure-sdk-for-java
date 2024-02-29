@@ -1746,6 +1746,15 @@ public class VirtualMachineOperationsTests extends ComputeManagementTest {
         Assertions.assertEquals(DeleteOptions.DELETE, vm.primaryNetworkInterfaceDeleteOptions());
         Assertions.assertTrue(vm.networkInterfaceIds().stream().allMatch(nicId -> DeleteOptions.DELETE.equals(vm.networkInterfaceDeleteOptions(nicId))));
         Assertions.assertTrue(vm.dataDisks().values().stream().allMatch(disk -> DeleteOptions.DELETE.equals(disk.deleteOptions())));
+
+        // update all to DETACH
+        vm.update()
+            .withDataDisksDeleteOptions(DeleteOptions.DETACH)
+            .withNetworkInterfacesDeleteOptions(DeleteOptions.DETACH)
+            .apply();
+
+        Assertions.assertTrue(vm.networkInterfaceIds().stream().allMatch(nicId -> DeleteOptions.DETACH.equals(vm.networkInterfaceDeleteOptions(nicId))));
+        Assertions.assertTrue(vm.dataDisks().values().stream().allMatch(disk -> DeleteOptions.DETACH.equals(disk.deleteOptions())));
     }
 
     @Test
