@@ -1,14 +1,11 @@
 # Release History
 
-## 2.36.0-beta.1 (Unreleased)
+## 2.36.0 (2024-02-29)
 
 ### Features Added
 
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
+- Supported encryption with Customer-managed keys using user-assigned service identity.
+- Supported `withExistingUserAssignedManagedServiceIdentity(String)` for `StorageAccount`. 
 
 ## 2.35.0 (2024-01-26)
 

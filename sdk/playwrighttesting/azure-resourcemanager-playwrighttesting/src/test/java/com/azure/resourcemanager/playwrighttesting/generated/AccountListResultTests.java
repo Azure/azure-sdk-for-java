@@ -7,6 +7,7 @@ package com.azure.resourcemanager.playwrighttesting.generated;
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.playwrighttesting.fluent.models.AccountInner;
 import com.azure.resourcemanager.playwrighttesting.models.AccountListResult;
+import com.azure.resourcemanager.playwrighttesting.models.AccountProperties;
 import com.azure.resourcemanager.playwrighttesting.models.EnablementStatus;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -16,39 +17,30 @@ import org.junit.jupiter.api.Assertions;
 public final class AccountListResultTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AccountListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"dashboardUri\":\"ithxqhabifpi\",\"regionalAffinity\":\"Enabled\",\"scalableExecution\":\"Enabled\",\"reporting\":\"Enabled\",\"provisioningState\":\"Failed\"},\"location\":\"pqxu\",\"tags\":{\"n\":\"y\"},\"id\":\"wby\",\"name\":\"rkxvdum\",\"type\":\"grtfwvu\"}],\"nextLink\":\"gaudcc\"}")
-                .toObject(AccountListResult.class);
+        AccountListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"dashboardUri\":\"ithxqhabifpi\",\"regionalAffinity\":\"Enabled\",\"scalableExecution\":\"Enabled\",\"reporting\":\"Enabled\",\"provisioningState\":\"Failed\"},\"location\":\"pqxu\",\"tags\":{\"n\":\"y\"},\"id\":\"wby\",\"name\":\"rkxvdum\",\"type\":\"grtfwvu\"}],\"nextLink\":\"gaudcc\"}")
+            .toObject(AccountListResult.class);
         Assertions.assertEquals("pqxu", model.value().get(0).location());
         Assertions.assertEquals("y", model.value().get(0).tags().get("n"));
-        Assertions.assertEquals(EnablementStatus.ENABLED, model.value().get(0).regionalAffinity());
-        Assertions.assertEquals(EnablementStatus.ENABLED, model.value().get(0).scalableExecution());
-        Assertions.assertEquals(EnablementStatus.ENABLED, model.value().get(0).reporting());
+        Assertions.assertEquals(EnablementStatus.ENABLED, model.value().get(0).properties().regionalAffinity());
+        Assertions.assertEquals(EnablementStatus.ENABLED, model.value().get(0).properties().scalableExecution());
+        Assertions.assertEquals(EnablementStatus.ENABLED, model.value().get(0).properties().reporting());
         Assertions.assertEquals("gaudcc", model.nextLink());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AccountListResult model =
-            new AccountListResult()
-                .withValue(
-                    Arrays
-                        .asList(
-                            new AccountInner()
-                                .withLocation("pqxu")
-                                .withTags(mapOf("n", "y"))
-                                .withRegionalAffinity(EnablementStatus.ENABLED)
-                                .withScalableExecution(EnablementStatus.ENABLED)
-                                .withReporting(EnablementStatus.ENABLED)))
-                .withNextLink("gaudcc");
+        AccountListResult model = new AccountListResult()
+            .withValue(Arrays.asList(new AccountInner().withLocation("pqxu").withTags(mapOf("n", "y"))
+                .withProperties(new AccountProperties().withRegionalAffinity(EnablementStatus.ENABLED)
+                    .withScalableExecution(EnablementStatus.ENABLED).withReporting(EnablementStatus.ENABLED))))
+            .withNextLink("gaudcc");
         model = BinaryData.fromObject(model).toObject(AccountListResult.class);
         Assertions.assertEquals("pqxu", model.value().get(0).location());
         Assertions.assertEquals("y", model.value().get(0).tags().get("n"));
-        Assertions.assertEquals(EnablementStatus.ENABLED, model.value().get(0).regionalAffinity());
-        Assertions.assertEquals(EnablementStatus.ENABLED, model.value().get(0).scalableExecution());
-        Assertions.assertEquals(EnablementStatus.ENABLED, model.value().get(0).reporting());
+        Assertions.assertEquals(EnablementStatus.ENABLED, model.value().get(0).properties().regionalAffinity());
+        Assertions.assertEquals(EnablementStatus.ENABLED, model.value().get(0).properties().scalableExecution());
+        Assertions.assertEquals(EnablementStatus.ENABLED, model.value().get(0).properties().reporting());
         Assertions.assertEquals("gaudcc", model.nextLink());
     }
 

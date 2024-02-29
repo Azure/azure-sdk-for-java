@@ -1,6 +1,10 @@
 # Release History
 
-## 2.36.0-beta.1 (Unreleased)
+## 2.36.0 (2024-02-29)
+
+### Features Added
+
+- Supported `withNetworkInterfacesDeleteOptions(DeleteOptions)` and `withDataDisksDeleteOptions(DeleteOptions)` for `VirtualMachine`.
 
 ### Other Changes
 
