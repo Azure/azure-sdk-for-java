@@ -493,15 +493,15 @@ public class ClientLogger {
         }
 
         /**
-         * Logs a format-able message that uses {@code {}} as the placeholder at {@code warning} log level.
+         * Logs the {@link Throwable} and returns it to be thrown.
          *
-         * @param format The format-able message to log.
-         * @param args Arguments for the message. If an exception is being logged, the last argument should be the {@link
-         * Throwable}.
+         * @param throwable Throwable to be logged and returned.
+         * @throws NullPointerException If {@code throwable} is {@code null}.
          */
-        public void log(String format, Object... args) {
+        public void log(Throwable throwable) {
+            Objects.requireNonNull(throwable, "'throwable' cannot be null.");
             if (this.isEnabled) {
-                performLogging(level, format, args);
+                performLogging(level, getMessageWithContext(null, throwable), logger.isDebugEnabled() ? throwable : null);
             }
         }
 
@@ -509,36 +509,33 @@ public class ClientLogger {
          * Logs the {@link Throwable} and returns it to be thrown.
          *
          * @param throwable Throwable to be logged and returned.
-         * @return The passed {@link Throwable}.
          * @throws NullPointerException If {@code throwable} is {@code null}.
          */
-        public Throwable log(Throwable throwable) {
+        public <T extends Throwable> void logAndThrow(Supplier<String> messageSupplier, T throwable) throws T {
+            Objects.requireNonNull(throwable, "'throwable' cannot be null.");
+
+            if (this.isEnabled) {
+                String message = messageSupplier != null ? messageSupplier.get() : null;
+                performLogging(level, removeNewLinesFromLogMessage(getMessageWithContext(message, throwable)), logger.isDebugEnabled() ? throwable : null);
+            }
+
+            throw throwable;
+        }
+
+        /**
+         * Logs the {@link Throwable} and returns it to be thrown.
+         *
+         * @param throwable Throwable to be logged and returned.
+         * @throws NullPointerException If {@code throwable} is {@code null}.
+         */
+        public <T extends Throwable> void logAndThrow(T throwable) throws T {
             Objects.requireNonNull(throwable, "'throwable' cannot be null.");
 
             if (this.isEnabled) {
                 performLogging(level, removeNewLinesFromLogMessage(getMessageWithContext(null, throwable)), logger.isDebugEnabled() ? throwable : null);
             }
 
-            return throwable;
-        }
-
-        /**
-         * Logs the {@link RuntimeException} and returns it to be thrown.
-         * This API covers the cases where a checked exception type needs to be thrown and logged.
-         *
-         * @param runtimeException RuntimeException to be logged and returned.
-         * @return The passed {@link RuntimeException}.
-         * @throws NullPointerException If {@code runtimeException} is {@code null}.
-         */
-        public RuntimeException log(RuntimeException runtimeException) {
-            Objects.requireNonNull(runtimeException, "'runtimeException' cannot be null.");
-
-            if (this.isEnabled) {
-                performLogging(level, removeNewLinesFromLogMessage(getMessageWithContext(null, runtimeException)),
-                    logger.isDebugEnabled() ? runtimeException : null);
-
-            }
-            return runtimeException;
+            throw throwable;
         }
 
         private String getMessageWithContext(String message, Throwable throwable) {

@@ -239,13 +239,13 @@ public class ProxyOptions {
         if (Boolean.parseBoolean(configuration.get(JAVA_SYSTEM_PROXY_PREREQUISITE))) {
             proxyOptions = attemptToLoadSystemProxy(configuration, createUnresolved, Configuration.PROPERTY_HTTPS_PROXY);
             if (proxyOptions != null) {
-                LOGGER.atVerbose().log("Using proxy created from HTTPS_PROXY environment variable.");
+                LOGGER.atVerbose().log(() -> "Using proxy created from HTTPS_PROXY environment variable.");
                 return proxyOptions;
             }
 
             proxyOptions = attemptToLoadSystemProxy(configuration, createUnresolved, Configuration.PROPERTY_HTTP_PROXY);
             if (proxyOptions != null) {
-                LOGGER.atVerbose().log("Using proxy created from HTTP_PROXY environment variable.");
+                LOGGER.atVerbose().log(() -> "Using proxy created from HTTP_PROXY environment variable.");
                 return proxyOptions;
             }
         }
@@ -257,13 +257,13 @@ public class ProxyOptions {
 
         proxyOptions = attemptToLoadJavaProxy(configuration, createUnresolved, HTTPS);
         if (proxyOptions != null) {
-            LOGGER.atVerbose().log("Using proxy created from JVM HTTPS system properties.");
+            LOGGER.atVerbose().log(() -> "Using proxy created from JVM HTTPS system properties.");
             return proxyOptions;
         }
 
         proxyOptions = attemptToLoadJavaProxy(configuration, createUnresolved, HTTP);
         if (proxyOptions != null) {
-            LOGGER.atVerbose().log("Using proxy created from JVM HTTP system properties.");
+            LOGGER.atVerbose().log(() -> "Using proxy created from JVM HTTP system properties.");
             return proxyOptions;
         }
 
@@ -298,7 +298,7 @@ public class ProxyOptions {
 
                 LOGGER.atVerbose()
                     .addKeyValue("regex", proxyOptions.nonProxyHosts)
-                    .log("Using non-proxy hosts");
+                    .log(() -> "Using non-proxy hosts");
             }
 
             String userInfo = proxyUrl.getUserInfo();
@@ -318,9 +318,9 @@ public class ProxyOptions {
 
             return proxyOptions;
         } catch (MalformedURLException ex) {
-            LOGGER.atWarning()
-                .addKeyValue("url", proxyProperty)
-                .log(INVALID_PROXY_URL);
+//            LOGGER.atWarning()
+//                .addKeyValue("url", proxyProperty)
+//                .logAndThrow(() -> INVALID_PROXY_URL, ex);
             return null;
         }
     }
@@ -383,7 +383,7 @@ public class ProxyOptions {
 
             LOGGER.atVerbose()
                 .addKeyValue("regex", proxyOptions.nonProxyHosts)
-                .log("Using non-proxy host regex");
+                .log(() -> "Using non-proxy host regex");
         }
 
         if (username != null && password != null) {

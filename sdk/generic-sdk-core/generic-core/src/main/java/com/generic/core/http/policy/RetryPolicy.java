@@ -264,15 +264,15 @@ public class RetryPolicy implements HttpPipelinePolicy {
         LOGGER.atVerbose()
             .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
             .addKeyValue(LoggingKeys.DURATION_MS_KEY, delayDuration.toMillis())
-            .log("Retrying.");
+            .log(() -> "Retrying.");
     }
 
     private static void logRetryExhausted(int tryCount) {
-        LOGGER.atInfo().addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount).log("Retry attempts have been exhausted.");
+        LOGGER.atInfo().addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount).log(() -> "Retry attempts have been exhausted.");
     }
 
     private static void logRetryWithError(ClientLogger.LoggingEventBuilder loggingEventBuilder, int tryCount,
         String format, Throwable throwable) {
-        loggingEventBuilder.addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount).log(format, throwable);
+        loggingEventBuilder.addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount).log(() -> format, throwable);
     }
 }

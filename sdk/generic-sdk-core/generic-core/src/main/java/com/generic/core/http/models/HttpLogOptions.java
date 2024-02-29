@@ -103,7 +103,7 @@ public final class HttpLogOptions {
      * <p>
      * This method sets the provided header names to be the allowed header names which will be logged for all HTTP
      * requests and responses, overwriting any previously configured headers. Additionally, users can use
-     * {@link HttpLogOptions#addAllowedHeaderName(String)} or {@link HttpLogOptions#getAllowedHeaderNames()} to add or
+     * {@link HttpLogOptions#addAllowedHeaderName(HeaderName)} or {@link HttpLogOptions#getAllowedHeaderNames()} to add or
      * remove more headers names to the existing set of allowed header names.
      * </p>
      *
@@ -126,9 +126,9 @@ public final class HttpLogOptions {
      *
      * @throws NullPointerException If {@code allowedHeaderName} is {@code null}.
      */
-    public HttpLogOptions addAllowedHeaderName(final String allowedHeaderName) {
+    public HttpLogOptions addAllowedHeaderName(final HeaderName allowedHeaderName) {
         Objects.requireNonNull(allowedHeaderName);
-        this.allowedHeaderNames.add(HeaderName.fromString(allowedHeaderName));
+        this.allowedHeaderNames.add(allowedHeaderName);
 
         return this;
     }
@@ -166,8 +166,6 @@ public final class HttpLogOptions {
      */
     public HttpLogOptions addAllowedQueryParamName(final String allowedQueryParamName) {
         this.allowedQueryParamNames.add(allowedQueryParamName);
-        this.getClass().getName();
-
         return this;
     }
 

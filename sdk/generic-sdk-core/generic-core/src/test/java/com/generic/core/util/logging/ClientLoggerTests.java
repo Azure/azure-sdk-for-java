@@ -466,7 +466,7 @@ public class ClientLoggerTests {
         setupLogLevel(LogLevel.VERBOSE.toString());
 
         new ClientLogger(ClientLoggerTests.class, globalContext)
-            .atWarning().log("message");;
+            .atWarning().log(() -> "message");;
 
         assertMessage(
             "{\"message\":\"message\",\"connectionId\":\"foo\",\"linkName\":1,\"anotherKey\":\"hello world\"}",
@@ -484,7 +484,7 @@ public class ClientLoggerTests {
         setupLogLevel(LogLevel.VERBOSE.toString());
 
         new ClientLogger(ClientLoggerTests.class, globalContext)
-            .atError().log("message");
+            .atError().log(() -> "message");
 
         assertMessage(
             "{\"message\":\"message\",\"connectionId\":\"foo\",\"linkName\":1,\"anotherKey\":\"hello world\"}",
@@ -501,7 +501,7 @@ public class ClientLoggerTests {
         setupLogLevel(LogLevel.INFORMATIONAL.toString());
 
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class, Collections.emptyMap());
-        logger.atWarning().log("Param 1: {}, Param 2: {}, Param 3: {}", "test1", "test2", "test3");
+        logger.atWarning().log(() -> "Param 1: {}, Param 2: {}, Param 3: {}", "test1", "test2", "test3");
 
         assertMessage(
             "{\"message\":\"Param 1: test1, Param 2: test2, Param 3: test3\"}",
@@ -541,7 +541,7 @@ public class ClientLoggerTests {
         logger.atInfo()
             .addKeyValue("local", true)
             .addKeyValue("connectionId", "conflict")
-            .log("Param 1: {}, Param 2: {}, Param 3: {}", "test1", "test2", "test3");
+            .log(() -> "Param 1: {}, Param 2: {}, Param 3: {}", "test1", "test2", "test3");
 
         assertMessage(
             "{\"message\":\"Param 1: test1, Param 2: test2, Param 3: test3\",\"connectionId\":\"foo\",\"linkName\":1,\"anotherKey\":\"hello world\",\"local\":true,\"connectionId\":\"conflict\"}",
@@ -642,7 +642,7 @@ public class ClientLoggerTests {
         logger.atVerbose()
             .addKeyValue("connection\nId" + System.lineSeparator(), "foo")
             .addKeyValue("link\r\nName", "test" + System.lineSeparator() + "me")
-            .log("multiline " + System.lineSeparator() + "message");
+            .log(() -> "multiline " + System.lineSeparator() + "message");
 
         String escapedNewLine = new String(JsonStringEncoder.getInstance().quoteAsString(System.lineSeparator()));
 
@@ -667,7 +667,7 @@ public class ClientLoggerTests {
 
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class, globalCtx);
 
-        logger.atVerbose().log("\"message\"");
+        logger.atVerbose().log(() -> "\"message\"");
 
         assertMessage(
             "{\"message\":\"\\\"message\\\"\",\"link\\tName\":1,\"another\\rKey\\n\":\"hello \\\"world\\\"\\r\\n\"}",
@@ -710,7 +710,7 @@ public class ClientLoggerTests {
             // this is technically invalid, but we should not throw because of logging in runtime
             .addKeyValue("connectionId", (Supplier<String>) null)
             .addKeyValue("linkName", () -> String.format("complex value %s", 123))
-            .log("test");
+            .log(() -> "test");
 
         assertMessage(
             "{\"message\":\"test\",\"connectionId\":null,\"linkName\":\"complex value 123\"}",
@@ -729,7 +729,7 @@ public class ClientLoggerTests {
 
         logger.atWarning()
             .addKeyValue("linkName", new LoggableObject("some complex object"))
-            .log("test");
+            .log(() -> "test");
 
         assertMessage(
             "{\"message\":\"test\",\"linkName\":\"some complex object\"}",
@@ -750,7 +750,7 @@ public class ClientLoggerTests {
         logger.atWarning()
             .addKeyValue("connectionId", () -> null)
             .addKeyValue("linkName", "bar")
-            .log("Param 1: {}, Param 2: {}, Param 3: {}", "test1", "test2", "test3");
+            .log(() -> "Param 1: {}, Param 2: {}, Param 3: {}", "test1", "test2", "test3");
 
         assertMessage(
             "{\"message\":\"Param 1: test1, Param 2: test2, Param 3: test3\",\"connectionId\":null,\"linkName\":\"bar\"}",
@@ -774,7 +774,7 @@ public class ClientLoggerTests {
         logger.atWarning()
             .addKeyValue("connectionId", "foo")
             .addKeyValue("linkName", "bar")
-            .log("hello {}", "world", runtimeException);
+            .log(() -> "hello {}", "world", runtimeException);
 
         String message = "{\"message\":\"hello world\",\"exception\":\"" + exceptionMessage + "\",\"connectionId\":\"foo\",\"linkName\":\"bar\"}";
         if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
@@ -832,7 +832,7 @@ public class ClientLoggerTests {
         logger.atWarning()
             .addKeyValue("connection\tId", "foo")
             .addKeyValue("linkName", "\rbar")
-            .log("hello {}, \"and\" {more}", "world", runtimeException);
+            .log(() -> "hello {}, \"and\" {more}", "world", runtimeException);
 
 
         String escapedExceptionMessage = "An exception \\tmessage with \\\"special characters\\\"\\r\\n";
@@ -864,7 +864,7 @@ public class ClientLoggerTests {
         assertSame(runtimeException, logger.atWarning()
             .addKeyValue("connectionId", "foo")
             .addKeyValue("linkName", "bar")
-            .log(runtimeException));
+            .log(() -> RuntimeException));
 
         String message = "{\"message\":\"\",\"exception\":\"" + exceptionMessage + "\",\"connectionId\":\"foo\",\"linkName\":\"bar\"}";
         if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
@@ -968,7 +968,7 @@ public class ClientLoggerTests {
         logger.atLevel(level)
             .addKeyValue("connectionId", "foo")
             .addKeyValue("linkName", "bar")
-            .log("message");
+            .log(() -> "message");
 
         assertMessage(
             "{\"message\":\"message\",\"connectionId\":\"foo\",\"linkName\":\"bar\"}",

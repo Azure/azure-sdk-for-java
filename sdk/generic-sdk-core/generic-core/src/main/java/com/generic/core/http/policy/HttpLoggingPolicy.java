@@ -95,7 +95,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             return response;
         } catch (RuntimeException e) {
             createBasicLoggingContext(logger, ClientLogger.LogLevel.WARNING, httpRequest)
-                .log("HTTP FAILED", e);
+                .log(() -> "HTTP FAILED", e);
             throw e;
         }
     }
@@ -148,7 +148,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
             if (request.getBody() == null) {
                 logBuilder.addKeyValue(LoggingKeys.CONTENT_LENGTH_KEY, 0)
-                    .log(REQUEST_LOG_MESSAGE);
+                    .log(() -> REQUEST_LOG_MESSAGE);
                 return;
             }
 
@@ -162,13 +162,13 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 return;
             }
 
-            logBuilder.log(REQUEST_LOG_MESSAGE);
+            logBuilder.log(() -> REQUEST_LOG_MESSAGE);
         }
     }
 
     private void logBody(HttpRequest request, ClientLogger.LoggingEventBuilder logBuilder) {
         logBuilder.addKeyValue(LoggingKeys.BODY_KEY, request.getBody().toString())
-                .log(REQUEST_LOG_MESSAGE);
+                .log(() -> REQUEST_LOG_MESSAGE);
     }
 
 
@@ -221,7 +221,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
                 }
             }
 
-            logBuilder.log(RESPONSE_LOG_MESSAGE);
+            logBuilder.log(() -> RESPONSE_LOG_MESSAGE);
 
             return response;
         }
@@ -396,7 +396,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
         private void doLog(String body) {
             logBuilder.addKeyValue("body", body)
-                .log(RESPONSE_LOG_MESSAGE);
+                .log(() -> RESPONSE_LOG_MESSAGE);
         }
     }
 }

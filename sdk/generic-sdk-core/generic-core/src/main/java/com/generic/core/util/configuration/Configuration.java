@@ -301,10 +301,10 @@ public class Configuration {
 
         if (value == null) {
             if (property.isRequired()) {
-                throw LOGGER.atError()
+                LOGGER.atError()
                     .addKeyValue("name", property.getName())
                     .addKeyValue("path", path)
-                    .log(new IllegalArgumentException("Missing required property."));
+                    .logAndThrow(new IllegalArgumentException("Missing required property."));
             }
             return property.getDefaultValue();
         }
@@ -312,12 +312,14 @@ public class Configuration {
         try {
             return property.getConverter().apply(value);
         } catch (RuntimeException ex) {
-            throw LOGGER.atError()
+            LOGGER.atError()
                 .addKeyValue("name", property.getName())
                 .addKeyValue("path", path)
                 .addKeyValue("value", property.getValueSanitizer().apply(value))
-                .log(ex);
+                .logAndThrow(ex);
         }
+        // it should never reach here
+        return null;
     }
 
     private String getLocalProperty(String name, Iterable<String> aliases, Function<String, String> valueSanitizer) {
@@ -331,7 +333,7 @@ public class Configuration {
                 .addKeyValue("name", name)
                 .addKeyValue("path", path)
                 .addKeyValue("value", () -> valueSanitizer.apply(value))
-                .log("Got property value by name.");
+                .log(() -> "Got property value by name.");
 
             return value;
         }
@@ -344,7 +346,7 @@ public class Configuration {
                     .addKeyValue("path", path)
                     .addKeyValue("alias", alias)
                     .addKeyValue("value", () -> valueSanitizer.apply(valueByAlias))
-                    .log("Got property value by alias.");
+                    .log(() -> "Got property value by alias.");
                 return valueByAlias;
             }
         }
@@ -379,7 +381,7 @@ public class Configuration {
                     .addKeyValue("name", property.getName())
                     .addKeyValue("systemProperty", systemProperty)
                     .addKeyValue("value", () -> property.getValueSanitizer().apply(value))
-                    .log("Got property from system property.");
+                    .log(() -> "Got property from system property.");
                 return value;
             }
         }
@@ -392,7 +394,7 @@ public class Configuration {
                     .addKeyValue("name", property.getName())
                     .addKeyValue("envVar", envVar)
                     .addKeyValue("value", () -> property.getValueSanitizer().apply(value))
-                    .log("Got property from environment variable.");
+                    .log(() -> "Got property from environment variable.");
                 return value;
             }
         }
@@ -416,14 +418,14 @@ public class Configuration {
 
             LOGGER.atVerbose()
                 .addKeyValue("name", prop.getKey())
-                .log("Got property from configuration source.");
+                .log(() -> "Got property from configuration source.");
 
             if (key != null && value != null) {
                 props.put(key, value);
             } else {
                 LOGGER.atWarning()
                     .addKeyValue("name", prop.getKey())
-                    .log("Key or value is null, property is ignored.");
+                    .log(() -> "Key or value is null, property is ignored.");
             }
         }
 
