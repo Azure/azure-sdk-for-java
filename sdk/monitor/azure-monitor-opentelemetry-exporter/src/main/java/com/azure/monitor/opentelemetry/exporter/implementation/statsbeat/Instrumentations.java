@@ -106,6 +106,7 @@ public class Instrumentations {
         INSTRUMENTATION_MAP.put("io.opentelemetry.runtime-telemetry-java8", 80);
         INSTRUMENTATION_MAP.put("io.opentelemetry.runtime-telemetry-java17", 81);
         INSTRUMENTATION_MAP.put("io.opentelemetry.pekko-http-1.0", 82);
+        INSTRUMENTATION_MAP.put("io.quarkus.opentelemetry", 83);
     }
 
     // encode BitSet to a long
