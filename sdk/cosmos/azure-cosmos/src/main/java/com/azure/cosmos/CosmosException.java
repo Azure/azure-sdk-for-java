@@ -16,7 +16,6 @@ import com.azure.cosmos.implementation.directconnectivity.Uri;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelAcquisitionTimeline;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdChannelStatistics;
 import com.azure.cosmos.implementation.directconnectivity.rntbd.RntbdEndpointStatistics;
-import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -184,7 +183,7 @@ public class CosmosException extends AzureException {
     protected CosmosException(int statusCode, String errorMessage) {
         this(statusCode, errorMessage, null, null);
         this.cosmosError = new CosmosError();
-        ModelBridgeInternal.setProperty(cosmosError, Constants.Properties.MESSAGE, errorMessage);
+        cosmosError.set(Constants.Properties.MESSAGE, errorMessage, CosmosItemSerializer.DEFAULT_SERIALIZER);
     }
 
     /**
@@ -489,8 +488,7 @@ public class CosmosException extends AzureException {
         if (cosmosError != null) {
             innerErrorMessage = cosmosError.getMessage();
             if (innerErrorMessage == null) {
-                innerErrorMessage = String.valueOf(
-                    ModelBridgeInternal.getObjectFromJsonSerializable(cosmosError, "Errors"));
+                innerErrorMessage = String.valueOf(cosmosError.get("Errors"));
             }
         }
         return innerErrorMessage;

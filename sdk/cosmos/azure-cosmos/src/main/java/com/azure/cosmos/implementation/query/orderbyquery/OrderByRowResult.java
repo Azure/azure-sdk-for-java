@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.implementation.query.orderbyquery;
 
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.Constants;
 import com.azure.cosmos.implementation.Document;
 import com.azure.cosmos.implementation.PartitionKeyRange;
@@ -45,7 +46,7 @@ public final class OrderByRowResult<T> extends Document {
         final Object object = super.get("payload");
         if  (!ObjectNode.class.isAssignableFrom(object.getClass())) {
             Document document = new Document();
-            ModelBridgeInternal.setProperty(document, Constants.Properties.VALUE, object);
+            document.set(Constants.Properties.VALUE, object, CosmosItemSerializer.DEFAULT_SERIALIZER);
             payload = document;
         } else {
             this.payload = super.getObject("payload", Document.class);

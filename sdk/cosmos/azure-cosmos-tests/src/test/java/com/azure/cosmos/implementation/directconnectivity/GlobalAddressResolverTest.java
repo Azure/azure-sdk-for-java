@@ -162,7 +162,7 @@ public class GlobalAddressResolverTest {
 
         DocumentCollection documentCollection = new DocumentCollection();
         documentCollection.setId("TestColl");
-        ModelBridgeInternal.setResourceId(documentCollection, "IXYFAOHEBPM=");
+        documentCollection.setResourceId("IXYFAOHEBPM=");
         documentCollection.setSelfLink("dbs/testDb/colls/TestColl");
 
         PartitionKeyRange range = new PartitionKeyRange(

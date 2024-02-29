@@ -2,29 +2,32 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.implementation;
 
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.fasterxml.jackson.databind.type.MapType;
 
 import java.util.Collection;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Set;
 
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
-public class JsonNodeMap implements Map<String, Object> {
+public class ObjectNodeMap implements Map<String, Object> {
     private final static ObjectMapper itemMapper = Utils.getSimpleObjectMapper();
-
+    public final static MapType JACKSON_MAP_TYPE = itemMapper.getTypeFactory().constructMapType(LinkedHashMap.class,
+        String.class, Object.class);
     private final Object thisLock = new Object();
-    private final JsonNode jsonNode;
-    private volatile Map<String, Object> jsonNodeAsMap = null;
+    private final ObjectNode jsonNode;
+    private volatile LinkedHashMap<String, Object> jsonNodeAsMap = null;
 
-    public JsonNodeMap(JsonNode jsonNode) {
+    public ObjectNodeMap(ObjectNode jsonNode) {
         checkNotNull(jsonNode, "Argument 'jsonNode' must not be null.");
 
         this.jsonNode = jsonNode;
     }
 
-    public JsonNode getJsonNode() {
+    public ObjectNode getObjectNode() {
         return this.jsonNode;
     }
 
@@ -39,7 +42,7 @@ public class JsonNodeMap implements Map<String, Object> {
                 return this.jsonNodeAsMap;
             }
 
-            return this.jsonNodeAsMap = itemMapper.convertValue(this.jsonNode, Map.class);
+            return this.jsonNodeAsMap = itemMapper.convertValue(this.jsonNode, JACKSON_MAP_TYPE);
         }
     }
 
@@ -109,11 +112,11 @@ public class JsonNodeMap implements Map<String, Object> {
             return true;
         }
 
-        if (!(o instanceof JsonNodeMap)) {
+        if (!(o instanceof ObjectNodeMap)) {
             return false;
         }
 
-        JsonNodeMap other = (JsonNodeMap)o;
+        ObjectNodeMap other = (ObjectNodeMap)o;
 
         return this.jsonNode.equals(other.jsonNode);
     }

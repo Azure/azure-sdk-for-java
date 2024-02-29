@@ -79,11 +79,11 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         // removes undefined
         InternalObjectNode expectedDocument = createdDocuments
             .stream()
-            .filter(d -> ModelBridgeInternal.getMapFromJsonSerializable(d).containsKey("propInt"))
+            .filter(d -> d.getMap().containsKey("propInt"))
             .min(Comparator.comparing(o -> String.valueOf(o.get("propInt")))).get();
 
         String query = String.format("SELECT * from root r where r.propInt = %d ORDER BY r.propInt ASC"
-            , ModelBridgeInternal.getIntFromJsonSerializable(expectedDocument,"propInt"));
+            , expectedDocument.getInt("propInt"));
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 
@@ -141,7 +141,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
         Comparator<Integer> validatorComparator = Comparator.nullsFirst(Comparator.<Integer>naturalOrder());
 
-        List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("propInt", d -> ModelBridgeInternal.getIntFromJsonSerializable(d,"propInt"), validatorComparator);
+        List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("propInt", d -> d.getInt("propInt"), validatorComparator);
         if ("DESC".equals(sortOrder)) {
             Collections.reverse(expectedResourceIds);
         }
@@ -171,8 +171,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
         List<Integer> expectedValues =
             sortDocumentsAndCollectValues("propInt",
-                                               d -> ModelBridgeInternal
-                                                        .getIntFromJsonSerializable(d, "propInt"),
+                                               d -> d.getInt("propInt"),
                                                validatorComparator);
         if ("DESC".equals(sortOrder)) {
             Collections.reverse(expectedValues);
@@ -215,8 +214,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
         List<Integer> expectedValues =
             sortDocumentsAndCollectValues("propInt",
-                d -> ModelBridgeInternal
-                    .getIntFromJsonSerializable(d, "propInt"),
+                d -> d.getInt("propInt"),
                 validatorComparator);
         if ("DESC".equals(sortOrder)) {
             Collections.reverse(expectedValues);
@@ -244,7 +242,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
 
         Comparator<Integer> validatorComparator = Comparator.nullsFirst(Comparator.<Integer>naturalOrder());
-        List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("propInt", d -> ModelBridgeInternal.getIntFromJsonSerializable(d,"propInt"), validatorComparator);
+        List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("propInt", d -> d.getInt("propInt"), validatorComparator);
         int expectedPageSize = expectedNumberOfPages(expectedResourceIds.size(), pageSize);
 
         FeedResponseListValidator<InternalObjectNode> validator = new FeedResponseListValidator.Builder<InternalObjectNode>()
@@ -267,7 +265,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
 
         Comparator<String> validatorComparator = Comparator.nullsFirst(Comparator.<String>naturalOrder());
-        List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("propStr", d -> ModelBridgeInternal.getStringFromJsonSerializable(d,"propStr"), validatorComparator);
+        List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("propStr", d -> d.getString("propStr"), validatorComparator);
         int expectedPageSize = expectedNumberOfPages(expectedResourceIds.size(), pageSize);
 
         FeedResponseListValidator<InternalObjectNode> validator = new FeedResponseListValidator.Builder<InternalObjectNode>()
@@ -407,7 +405,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         Comparator<Integer> validatorComparator = Comparator.nullsFirst(Comparator.<Integer>naturalOrder());
 
         List<String> expectedResourceIds =
-                sortDocumentsAndCollectResourceIds("propInt", d -> ModelBridgeInternal.getIntFromJsonSerializable(d,"propInt"), validatorComparator)
+                sortDocumentsAndCollectResourceIds("propInt", d -> d.getInt("propInt"), validatorComparator)
                 .stream().limit(topValue).collect(Collectors.toList());
 
         int expectedPageSize = expectedNumberOfPages(expectedResourceIds.size(), pageSize);
@@ -425,7 +423,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
     private <T> List<String> sortDocumentsAndCollectResourceIds(String propName, Function<InternalObjectNode, T> extractProp, Comparator<T> comparer) {
         return createdDocuments.stream()
-                               .filter(d -> ModelBridgeInternal.getMapFromJsonSerializable(d).containsKey(propName)) // removes undefined
+                               .filter(d -> d.getMap().containsKey(propName)) // removes undefined
                                .sorted((d1, d2) -> comparer.compare(extractProp.apply(d1), extractProp.apply(d2)))
                                .map(Resource::getResourceId).collect(Collectors.toList());
     }
@@ -434,9 +432,9 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
     private <T> List<T> sortDocumentsAndCollectValues(String propName,
                                                       Function<InternalObjectNode, T> extractProp, Comparator<T> comparer) {
         return createdDocuments.stream()
-                   .filter(d -> ModelBridgeInternal.getMapFromJsonSerializable(d).containsKey(propName)) // removes undefined
+                   .filter(d -> d.getMap().containsKey(propName)) // removes undefined
                    .sorted((d1, d2) -> comparer.compare(extractProp.apply(d1), extractProp.apply(d2)))
-                   .map(d -> (T)ModelBridgeInternal.getMapFromJsonSerializable(d).get(propName))
+                   .map(d -> (T)d.getMap().get(propName))
                    .collect(Collectors.toList());
     }
 
@@ -465,8 +463,8 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
 
         List<InternalObjectNode> expectedDocs = createdDocuments.stream()
-                                                                .filter(d -> (StringUtils.equals("duplicatePartitionKeyValue", ModelBridgeInternal.getStringFromJsonSerializable(d,"mypk"))))
-                                                                .filter(d -> (ModelBridgeInternal.getIntFromJsonSerializable(d,"propScopedPartitionInt") > 2)).collect(Collectors.toList());
+                                                                .filter(d -> (StringUtils.equals("duplicatePartitionKeyValue", d.getString("mypk"))))
+                                                                .filter(d -> (d.getInt("propScopedPartitionInt") > 2)).collect(Collectors.toList());
         int expectedPageSize = (expectedDocs.size() + preferredPageSize - 1) / preferredPageSize;
 
         assertThat(expectedDocs).hasSize(10 - 3);
@@ -475,8 +473,8 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
         validator = new FeedResponseListValidator.Builder<InternalObjectNode>()
             .containsExactly(expectedDocs.stream()
-                .sorted((e1, e2) -> Integer.compare(ModelBridgeInternal.getIntFromJsonSerializable(e1,"propScopedPartitionInt"),
-                    ModelBridgeInternal.getIntFromJsonSerializable(e2,"propScopedPartitionInt")))
+                .sorted((e1, e2) -> Integer.compare(e1.getInt("propScopedPartitionInt"),
+                    e2.getInt("propScopedPartitionInt")))
                 .map(d -> d.getResourceId()).collect(Collectors.toList()))
             .numberOfPages(expectedPageSize)
             .allPagesSatisfy(new FeedResponseValidator.Builder<InternalObjectNode>()
@@ -538,7 +536,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         Comparator<Integer> order = sortOrder.equals("ASC")?Comparator.naturalOrder():Comparator.reverseOrder();
         Comparator<Integer> validatorComparator = Comparator.nullsFirst(order);
 
-        List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("propInt", d -> ModelBridgeInternal.getIntFromJsonSerializable(d,"propInt"), validatorComparator);
+        List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("propInt", d -> d.getInt("propInt"), validatorComparator);
         this.queryWithContinuationTokensAndPageSizes(query, new int[] { 1, 5, 10, 100}, expectedResourceIds);
     }
 
@@ -551,7 +549,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         Comparator<String> order = sortOrder.equals("ASC")?Comparator.naturalOrder():Comparator.reverseOrder();
         Comparator<String> validatorComparator = Comparator.nullsFirst(order);
 
-        List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("id", d -> ModelBridgeInternal.getStringFromJsonSerializable(d,"id"), validatorComparator);
+        List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("id", d -> d.getString("id"), validatorComparator);
         this.queryWithContinuationTokensAndPageSizes(query, new int[] { 1, 5, 10, 100 }, expectedResourceIds);
     }
 
@@ -567,7 +565,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         }else{
             validatorComparator = Comparator.nullsFirst(Comparator.<String>reverseOrder());
         }
-        List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("id", d -> ModelBridgeInternal.getStringFromJsonSerializable(d,"id"), validatorComparator);
+        List<String> expectedResourceIds = sortDocumentsAndCollectResourceIds("id", d -> d.getString("id"), validatorComparator);
         this.assertInvalidContinuationToken(query, new int[] { 1, 5, 10, 100 }, expectedResourceIds);
     }
 
@@ -711,11 +709,11 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         // removes undefined
         InternalObjectNode expectedDocument = createdDocuments
             .stream()
-            .filter(d -> ModelBridgeInternal.getMapFromJsonSerializable(d).containsKey("propInt"))
+            .filter(d -> d.getMap().containsKey("propInt"))
             .min(Comparator.comparing(o -> String.valueOf(o.get("propInt")))).get();
 
         String query = String.format("SELECT * from root r where r.propInt = %d ORDER BY r.propInt ASC"
-            , ModelBridgeInternal.getIntFromJsonSerializable(expectedDocument,"propInt"));
+            , expectedDocument.getInt("propInt"));
 
         CosmosQueryRequestOptions options = new CosmosQueryRequestOptions();
 

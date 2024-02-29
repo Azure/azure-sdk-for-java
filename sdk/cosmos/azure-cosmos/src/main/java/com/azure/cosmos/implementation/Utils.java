@@ -557,17 +557,25 @@ public class Utils {
         }
     }
 
-    public static <T> T parse(JsonNode jsonNode, Class<T> itemClassType, CosmosItemSerializer itemSerializer) {
+    public static <T> T parse(ObjectNode jsonNode, Class<T> itemClassType, CosmosItemSerializer itemSerializer) {
         CosmosItemSerializer effectiveItemSerializer= itemSerializer == null ?
                 CosmosItemSerializer.DEFAULT_SERIALIZER : itemSerializer;
 
-        return effectiveItemSerializer.deserialize(new JsonNodeMap(jsonNode), itemClassType);
+        return effectiveItemSerializer.deserialize(new ObjectNodeMap(jsonNode), itemClassType);
     }
 
-    public static ByteBuffer serializeJsonToByteBuffer(ObjectMapper objectMapper, Object object) {
+    public static ByteBuffer serializeJsonToByteBuffer(CosmosItemSerializer serializer, Object object) {
         try {
             ByteBufferOutputStream byteBufferOutputStream = new ByteBufferOutputStream(ONE_KB);
-            objectMapper.writeValue(byteBufferOutputStream, object);
+            Map<String, Object> jsonTreeMap = serializer.serialize(object);
+
+            ObjectNode jsonNode;
+            if (jsonTreeMap instanceof ObjectNodeMap) {
+                jsonNode = ((ObjectNodeMap) jsonTreeMap).getObjectNode();
+            } else {
+                jsonNode = simpleObjectMapper.convertValue(object, ObjectNode.class);
+            }
+            simpleObjectMapper.writeValue(byteBufferOutputStream, jsonNode);
             return byteBufferOutputStream.asByteBuffer();
         } catch (IOException e) {
             // TODO moderakh: on serialization/deserialization failure we should throw CosmosException here and elsewhere

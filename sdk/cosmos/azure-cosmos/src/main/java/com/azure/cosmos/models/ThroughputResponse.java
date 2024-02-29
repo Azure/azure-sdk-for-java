@@ -23,7 +23,7 @@ public class ThroughputResponse extends CosmosResponse<ThroughputProperties> {
     public ThroughputProperties getProperties(){
         if (throughputProperties == null){
             Offer offer =
-                new Offer(ModelBridgeInternal.getPropertyBagFromJsonSerializable(offerResourceResponse.getResource()));
+                new Offer(offerResourceResponse.getResource().getPropertyBag());
             throughputProperties = new ThroughputProperties(offer);
         }
         return throughputProperties;

@@ -389,7 +389,7 @@ public class RxDocumentClientImplTest {
                 results
                         .stream()
                         .map(str -> new Document(str))
-                        .map(document -> ModelBridgeInternal.toObjectFromJsonSerializable(document, klass))
+                        .map(document -> document.toObject(klass))
                         .collect(Collectors.toList());
 
         return () -> Flux.just(ModelBridgeInternal.createFeedResponse(documentResults, headers));

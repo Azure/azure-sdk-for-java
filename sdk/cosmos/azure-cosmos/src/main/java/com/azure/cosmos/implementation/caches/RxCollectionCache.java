@@ -196,7 +196,7 @@ public abstract class RxCollectionCache {
         if (request.requestContext.resolvedCollectionRid != null) {
             // Here we will issue backend call only if cache wasn't already refreshed (if whatever is there corresponds to previously resolved collection rid).
             DocumentCollection obsoleteValue = new DocumentCollection();
-            ModelBridgeInternal.setResourceId(obsoleteValue, request.requestContext.resolvedCollectionRid);
+            obsoleteValue.setResourceId(request.requestContext.resolvedCollectionRid);
 
             mono = this.collectionInfoByNameCache.getAsync(
                     resourceFullName,

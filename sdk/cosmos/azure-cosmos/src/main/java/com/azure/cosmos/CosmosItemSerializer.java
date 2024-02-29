@@ -3,10 +3,10 @@
 
 package com.azure.cosmos;
 
-import com.azure.cosmos.implementation.JsonNodeMap;
+import com.azure.cosmos.implementation.ObjectNodeMap;
 import com.azure.cosmos.implementation.Utils;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
 import java.util.Map;
@@ -65,16 +65,16 @@ public abstract class CosmosItemSerializer {
                 return null;
             }
 
-            if (item instanceof JsonNode) {
-                return new JsonNodeMap((JsonNode)item);
+            if (item instanceof ObjectNode) {
+                return new ObjectNodeMap((ObjectNode)item);
             }
 
-            JsonNode jsonNode = objectMapper.convertValue(item, JsonNode.class);
-            if (jsonNode == null) {
+            ObjectNode objectNode = objectMapper.convertValue(item, ObjectNode.class);
+            if (objectNode == null) {
                 return null;
             }
 
-            return new JsonNodeMap(jsonNode);
+            return new ObjectNodeMap(objectNode);
         }
 
         /**
@@ -90,12 +90,12 @@ public abstract class CosmosItemSerializer {
                 return null;
             }
 
-            JsonNode jsonNode = null;
+            ObjectNode jsonNode = null;
             try {
-                if (jsonNodeMap instanceof JsonNodeMap) {
-                    jsonNode = ((JsonNodeMap)jsonNodeMap).getJsonNode();
+                if (jsonNodeMap instanceof ObjectNodeMap) {
+                    jsonNode = ((ObjectNodeMap)jsonNodeMap).getObjectNode();
                 } else {
-                    jsonNode = objectMapper.convertValue(jsonNodeMap, JsonNode.class);
+                    jsonNode = objectMapper.convertValue(jsonNodeMap, ObjectNode.class);
                 }
 
                 return objectMapper.treeToValue(jsonNode, classType);

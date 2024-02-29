@@ -489,7 +489,7 @@ public final class CosmosEncryptionAsyncContainer {
             cosmosEncryptionAsyncClient.getEffectiveItemSerializer(options.getCustomSerializer());
 
         return responseMessageMono.publishOn(encryptionScheduler).flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
-            this.encryptionProcessor.decrypt(cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse)))
+            this.encryptionProcessor.decrypt(cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse), effectiveItemSerializer))
             .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse, classType, effectiveItemSerializer)));
     }
 
@@ -734,7 +734,7 @@ public final class CosmosEncryptionAsyncContainer {
             .flatMap(encryptedIdPartitionKeyTuple ->
                 this.container.patchItem(encryptedIdPartitionKeyTuple.getT1(), encryptedIdPartitionKeyTuple.getT2(), encryptedCosmosPatchOperations, requestOptions, itemType).publishOn(encryptionScheduler).
                 flatMap(cosmosItemResponse -> setByteArrayContent((CosmosItemResponse<byte[]>) cosmosItemResponse,
-                    this.encryptionProcessor.decrypt(cosmosItemResponseBuilderAccessor.getByteArrayContent((CosmosItemResponse<byte[]>) cosmosItemResponse)))
+                    this.encryptionProcessor.decrypt(cosmosItemResponseBuilderAccessor.getByteArrayContent((CosmosItemResponse<byte[]>) cosmosItemResponse), effectiveItemSerializer))
                     .map(bytes -> this.responseFactory.createItemResponse((CosmosItemResponse<byte[]>) cosmosItemResponse,
                         itemType, effectiveItemSerializer))).onErrorResume(exception -> {
                 if (!isRetry && exception instanceof CosmosException) {
@@ -768,7 +768,7 @@ public final class CosmosEncryptionAsyncContainer {
     }
 
     <T> byte[] cosmosSerializerToStream(T item) {
-        return EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(), item);
+        return EncryptionUtils.serializeJsonToByteArray(getItemSerializer(), item);
     }
 
     CosmosItemSerializer getItemSerializer() {
@@ -831,13 +831,13 @@ public final class CosmosEncryptionAsyncContainer {
         this.setRequestHeaders(requestOptions);
         CosmosItemSerializer effectiveItemSerializer =
             cosmosEncryptionAsyncClient.getEffectiveItemSerializer(requestOptions.getCustomSerializer());
-        return this.encryptionProcessor.encrypt(streamPayload)
+        return this.encryptionProcessor.encrypt(streamPayload, effectiveItemSerializer)
             .flatMap(encryptedPayload -> this.container.createItem(
                 encryptedPayload,
                 requestOptions)
                 .publishOn(encryptionScheduler)
                 .flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
-                    this.encryptionProcessor.decrypt(cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse)))
+                    this.encryptionProcessor.decrypt(cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse), effectiveItemSerializer))
                     .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse,
                         itemClass, effectiveItemSerializer))).onErrorResume(exception -> {
                     if (!isRetry && exception instanceof CosmosException) {
@@ -868,7 +868,7 @@ public final class CosmosEncryptionAsyncContainer {
             .flatMap(encryptionSettings -> checkAndGetEncryptedPartitionKey(partitionKey, encryptionSettings))
             .flatMap(encryptedPartitionKey -> {
                 encryptedPK.set(encryptedPartitionKey);
-                return this.encryptionProcessor.encrypt(streamPayload);
+                return this.encryptionProcessor.encrypt(streamPayload, effectiveItemSerializer);
             });
 
         return encryptedPayloadMono
@@ -878,7 +878,7 @@ public final class CosmosEncryptionAsyncContainer {
                 requestOptions)
                 .publishOn(encryptionScheduler)
                 .flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
-                    this.encryptionProcessor.decrypt(cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse)))
+                    this.encryptionProcessor.decrypt(cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse), effectiveItemSerializer))
                     .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse,
                         itemClass, effectiveItemSerializer))).onErrorResume(exception -> {
                     if (!isRetry && exception instanceof CosmosException) {
@@ -901,13 +901,13 @@ public final class CosmosEncryptionAsyncContainer {
         this.setRequestHeaders(requestOptions);
         CosmosItemSerializer effectiveItemSerializer =
             cosmosEncryptionAsyncClient.getEffectiveItemSerializer(requestOptions.getCustomSerializer());
-        return this.encryptionProcessor.encrypt(streamPayload)
+        return this.encryptionProcessor.encrypt(streamPayload, effectiveItemSerializer)
             .flatMap(encryptedPayload -> this.container.upsertItem(
                 encryptedPayload,
                 requestOptions)
                 .publishOn(encryptionScheduler)
                 .flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
-                    this.encryptionProcessor.decrypt(cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse)))
+                    this.encryptionProcessor.decrypt(cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse), effectiveItemSerializer))
                     .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse, itemClass, effectiveItemSerializer)))
                 .onErrorResume(exception -> {
                     if (!isRetry && exception instanceof CosmosException) {
@@ -937,7 +937,7 @@ public final class CosmosEncryptionAsyncContainer {
             .flatMap(encryptionSettings -> checkAndGetEncryptedPartitionKey(partitionKey, encryptionSettings))
             .flatMap(encryptedPartitionKey -> {
                 encryptedPK.set(encryptedPartitionKey);
-                return this.encryptionProcessor.encrypt(streamPayload);
+                return this.encryptionProcessor.encrypt(streamPayload, effectiveItemSerializer);
             });
 
         return encryptedPayloadMono
@@ -947,7 +947,7 @@ public final class CosmosEncryptionAsyncContainer {
                 requestOptions)
                 .publishOn(encryptionScheduler)
                 .flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
-                    this.encryptionProcessor.decrypt(cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse)))
+                    this.encryptionProcessor.decrypt(cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse), effectiveItemSerializer))
                     .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse, itemClass, effectiveItemSerializer)))
                 .onErrorResume(exception -> {
                     if (!isRetry && exception instanceof CosmosException) {
@@ -982,7 +982,7 @@ public final class CosmosEncryptionAsyncContainer {
             .flatMap(encryptedIdPartitionKeyTuple -> {
                 encryptedId.set(encryptedIdPartitionKeyTuple.getT1());
                 encryptedPK.set(encryptedIdPartitionKeyTuple.getT2());
-                return this.encryptionProcessor.encrypt(streamPayload);
+                return this.encryptionProcessor.encrypt(streamPayload, effectiveItemSerializer);
             });
 
         return encryptedPayloadMono
@@ -993,7 +993,7 @@ public final class CosmosEncryptionAsyncContainer {
                 requestOptions)
                 .publishOn(encryptionScheduler)
                 .flatMap(cosmosItemResponse -> setByteArrayContent(cosmosItemResponse,
-                    this.encryptionProcessor.decrypt(cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse)))
+                    this.encryptionProcessor.decrypt(cosmosItemResponseBuilderAccessor.getByteArrayContent(cosmosItemResponse), effectiveItemSerializer))
                     .map(bytes -> this.responseFactory.createItemResponse(cosmosItemResponse, itemClass, effectiveItemSerializer)))
                 .onErrorResume(exception -> {
                     if (!isRetry && exception instanceof CosmosException) {

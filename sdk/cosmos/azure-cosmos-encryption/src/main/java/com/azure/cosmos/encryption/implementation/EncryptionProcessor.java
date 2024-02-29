@@ -5,6 +5,7 @@ package com.azure.cosmos.encryption.implementation;
 
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosAsyncContainer;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.encryption.CosmosEncryptionAsyncClient;
 import com.azure.cosmos.encryption.implementation.keyprovider.EncryptionKeyStoreProviderImpl;
 import com.azure.cosmos.encryption.implementation.mdesrc.cryptography.EncryptionType;
@@ -248,18 +249,19 @@ public class EncryptionProcessor {
         return encryptionSettings;
     }
 
-    public Mono<byte[]> encrypt(byte[] payload) {
+    public Mono<byte[]> encrypt(byte[] payload, CosmosItemSerializer itemSerializer) {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Encrypting byte[] of size [{}] on thread [{}]",
                 payload == null ? null : payload.length,
                 Thread.currentThread().getName());
         }
         ObjectNode itemJObj = Utils.parse(payload, ObjectNode.class);
-        return encrypt(itemJObj);
+        return encrypt(itemJObj, itemSerializer);
     }
 
-    public Mono<byte[]> encrypt(JsonNode itemJObj) {
-        return encryptObjectNode(itemJObj).map(encryptedObjectNode -> EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(), encryptedObjectNode));
+    public Mono<byte[]> encrypt(JsonNode itemJObj, CosmosItemSerializer itemSerializer) {
+        return encryptObjectNode(itemJObj).map(
+            encryptedObjectNode -> EncryptionUtils.serializeJsonToByteArray(itemSerializer, encryptedObjectNode));
     }
 
     public Mono<JsonNode> encryptPatchNode(JsonNode itemObj, String patchPropertyPath) {
@@ -497,7 +499,7 @@ public class EncryptionProcessor {
         return cipherTextWithTypeMarker;
     }
 
-    public Mono<Pair<byte[], JsonNode>> decrypt(byte[] input) {
+    public Mono<Pair<byte[], JsonNode>> decrypt(byte[] input, CosmosItemSerializer itemSerializer) {
         if (LOGGER.isDebugEnabled()) {
             LOGGER.debug("Encrypting byte[] of size [{}] on thread [{}]",
                 input == null ? null : input.length,
@@ -509,12 +511,12 @@ public class EncryptionProcessor {
         }
 
         ObjectNode itemJObj = Utils.parse(input, ObjectNode.class);
-        return decrypt(itemJObj);
+        return decrypt(itemJObj, itemSerializer);
     }
 
-    public Mono<Pair<byte[], JsonNode>> decrypt(JsonNode itemJObj) {
+    public Mono<Pair<byte[], JsonNode>> decrypt(JsonNode itemJObj, CosmosItemSerializer itemSerializer) {
         return decryptJsonNode(itemJObj).map(decryptedObjectNode -> Pair.of(
-            EncryptionUtils.serializeJsonToByteArray(EncryptionUtils.getSimpleObjectMapper(), decryptedObjectNode),
+            EncryptionUtils.serializeJsonToByteArray(itemSerializer, decryptedObjectNode),
             decryptedObjectNode));
     }
 

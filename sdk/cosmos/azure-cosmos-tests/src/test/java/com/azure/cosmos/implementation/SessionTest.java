@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.ConnectionMode;
 import com.azure.cosmos.ConsistencyLevel;
+import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.batch.ItemBatchOperation;
 import com.azure.cosmos.implementation.batch.SinglePartitionKeyServerBatchRequest;
 import com.azure.cosmos.implementation.directconnectivity.ReflectionUtils;
@@ -154,7 +155,7 @@ public class SessionTest extends TestSuiteBase {
         RequestOptions requestOptions = new RequestOptions();
         for (int i = 0; i < 10; i++) {
             Document document = newDocument();
-            document.set("mypk", document.getId());
+            document.set("mypk", document.getId(), CosmosItemSerializer.DEFAULT_SERIALIZER);
             requestOptions.setPartitionKey(new PartitionKey(document.getId()));
             documentCreated = spyClient.createDocument(getCollectionLink(isNameBased), document, requestOptions, false)
                 .block().getResource();
@@ -285,7 +286,7 @@ public class SessionTest extends TestSuiteBase {
         if(isNameBased) { // Batch only work with name based url
             spyClient.clearCapturedRequests();
             Document document = newDocument();
-            document.set("mypk", document.getId());
+            document.set("mypk", document.getId(), CosmosItemSerializer.DEFAULT_SERIALIZER);
             ItemBatchOperation<Document> itemBatchOperation = new ItemBatchOperation<Document>(CosmosItemOperationType.CREATE,
                 documentCreated.getId(), new PartitionKey(documentCreated.getId()), new RequestOptions(), document);
             List<ItemBatchOperation<Document>> itemBatchOperations = new ArrayList<>();
@@ -318,7 +319,7 @@ public class SessionTest extends TestSuiteBase {
         RequestOptions requestOptions = new RequestOptions();
         for (int i = 0; i < 10; i++) {
             Document document = newDocument();
-            document.set("mypk", document.getId());
+            document.set("mypk", document.getId(), CosmosItemSerializer.DEFAULT_SERIALIZER);
             requestOptions.setPartitionKey(new PartitionKey(document.getId()));
             documentCreated = spyClient.createDocument(getCollectionLink(isNameBased), document, requestOptions, false)
                 .block().getResource();
@@ -373,7 +374,7 @@ public class SessionTest extends TestSuiteBase {
         RequestOptions requestOptions = new RequestOptions();
         for (int i = 0; i < 10; i++) {
             Document document = newDocument();
-            document.set("mypk", document.getId());
+            document.set("mypk", document.getId(), CosmosItemSerializer.DEFAULT_SERIALIZER);
             requestOptions.setPartitionKey(new PartitionKey(document.getId()));
             spyClient.createDocument(getCollectionLink(isNameBased), document, requestOptions, false)
                 .block().getResource();
@@ -388,7 +389,7 @@ public class SessionTest extends TestSuiteBase {
     public void sessionTokenInDocumentRead(boolean isNameBased) throws UnsupportedEncodingException {
         Document document = new Document();
         document.setId(UUID.randomUUID().toString());
-        BridgeInternal.setProperty(document, "pk", "pk");
+        document.set("pk", "pk", CosmosItemSerializer.DEFAULT_SERIALIZER);
         document = spyClient.createDocument(getCollectionLink(isNameBased), document, null, false)
                 .block()
                 .getResource();

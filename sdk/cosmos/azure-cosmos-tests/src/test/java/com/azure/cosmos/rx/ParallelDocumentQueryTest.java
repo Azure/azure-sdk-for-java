@@ -93,7 +93,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         options.setMaxDegreeOfParallelism(2);
         CosmosPagedFlux<InternalObjectNode> queryObservable = createdCollection.queryItems(query, options, InternalObjectNode.class);
 
-        List<InternalObjectNode> expectedDocs = createdDocuments.stream().filter(d -> 99 == ModelBridgeInternal.getIntFromJsonSerializable(d,"prop") ).collect(Collectors.toList());
+        List<InternalObjectNode> expectedDocs = createdDocuments.stream().filter(d -> 99 == d.getInt("prop") ).collect(Collectors.toList());
         assertThat(expectedDocs).isNotEmpty();
 
         FeedResponseListValidator<InternalObjectNode> validator = new FeedResponseListValidator.Builder<InternalObjectNode>()
@@ -354,7 +354,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
         options.setMaxDegreeOfParallelism(2);
 
-        List<Integer> expectedValues = createdDocuments.stream().map(d -> ModelBridgeInternal.getIntFromJsonSerializable(d,"prop")).collect(Collectors.toList());
+        List<Integer> expectedValues = createdDocuments.stream().map(d -> d.getInt("prop")).collect(Collectors.toList());
 
         String query = "Select value c.prop from c";
 
@@ -374,7 +374,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
         List<Boolean> expectedValues = createdDocuments
                                            .stream()
-                                           .map(d -> ModelBridgeInternal.getBooleanFromJsonSerializable(d, "boolProp"))
+                                           .map(d -> d.getBoolean("boolProp"))
                                            .collect(Collectors.toList());
 
         String query = "Select value c.boolProp from c";
@@ -394,7 +394,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         options.setMaxDegreeOfParallelism(2);
 
         List<Double> expectedValues = createdDocuments.stream()
-                                           .map(d -> ModelBridgeInternal.getDoubleFromJsonSerializable(d, "_value"))
+                                           .map(d ->d.getDouble("_value"))
                                            .collect(Collectors.toList());
 
         String query = "Select value c._value from c";
@@ -437,9 +437,9 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
 
         List<Tuple> assertTuples = createdDocuments.stream()
             .map(internalObjectNode -> tuple(internalObjectNode.getId(),
-                ModelBridgeInternal.getObjectFromJsonSerializable(internalObjectNode, "mypk"),
-                ModelBridgeInternal.getObjectFromJsonSerializable(internalObjectNode, "prop"),
-                ModelBridgeInternal.getObjectFromJsonSerializable(internalObjectNode, "boolProp")))
+                internalObjectNode.getObject("mypk"),
+                internalObjectNode.getObject("prop"),
+                internalObjectNode.getObject("boolProp")))
             .collect(Collectors.toList());
 
         assertThat(fetchedResults).extracting(TestObject::getId,
@@ -456,7 +456,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         options.setMaxDegreeOfParallelism(2);
 
         List<NestedObject> expectedValues = createdDocuments.stream()
-            .map(d -> ModelBridgeInternal.toObjectFromJsonSerializable(d,TestObject.class))
+            .map(d -> d.toObject(TestObject.class))
             .map(d -> d.getNestedProp()).collect(Collectors.toList());
 
         String query = "Select value c.nestedProp from c";
@@ -691,7 +691,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         List<Pair<String, PartitionKey>> pairList = new ArrayList<>();
         for (int i = 0; i < createdDocuments.size(); i = i + 3) {
             pairList.add(Pair.of(createdDocuments.get(i).getId(),
-                new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(createdDocuments.get(i), "mypk"))));
+                new PartitionKey(createdDocuments.get(i).getObject("mypk"))));
         }
         FeedResponse<JsonNode> documentFeedResponse =
             ItemOperations.readManyAsync(createdCollection, pairList, JsonNode.class).block();
@@ -706,7 +706,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         for (int i = 0; i < createdDocuments.size(); i = i + 3) {
             itemIdentities.add(
                 new CosmosItemIdentity(
-                    new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(createdDocuments.get(i), "mypk")),
+                    new PartitionKey(createdDocuments.get(i).getObject("mypk")),
                     createdDocuments.get(i).getId()));
         }
         FeedResponse<JsonNode> documentFeedResponse =
@@ -725,7 +725,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         for (int i = 0; i < newItems.size(); i = i + 3) {
             itemIdentities.add(
                 new CosmosItemIdentity(
-                    new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(newItems.get(i), "id")),
+                    new PartitionKey(newItems.get(i).getObject("id")),
                     newItems.get(i).getId()));
         }
         FeedResponse<JsonNode> documentFeedResponse =
@@ -741,7 +741,7 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         for (int i = 0; i < createdDocuments.size(); i = i + 3) {
             itemIdentities.add(
                     new CosmosItemIdentity(
-                            new PartitionKey(ModelBridgeInternal.getObjectFromJsonSerializable(createdDocuments.get(i), "mypk")),
+                            new PartitionKey(createdDocuments.get(i).getObject("mypk")),
                             createdDocuments.get(i).getId()));
         }
 

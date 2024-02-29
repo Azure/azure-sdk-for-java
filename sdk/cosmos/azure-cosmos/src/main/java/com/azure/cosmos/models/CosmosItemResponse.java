@@ -141,7 +141,7 @@ public class CosmosItemResponse<T> {
                         return item;
                     } else {
                         Instant serializationStartTime = Instant.now();
-                        item = Utils.parse(this.resourceResponse.getBody(), itemClassType, itemSerializer);
+                        item = Utils.parse((ObjectNode)this.resourceResponse.getBody(), itemClassType, itemSerializer);
 
                         Instant serializationEndTime = Instant.now();
                         SerializationDiagnosticsContext.SerializationDiagnostics diagnostics = new SerializationDiagnosticsContext.SerializationDiagnostics(

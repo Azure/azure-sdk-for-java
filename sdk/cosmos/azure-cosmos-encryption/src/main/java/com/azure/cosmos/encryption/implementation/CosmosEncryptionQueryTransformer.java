@@ -5,11 +5,13 @@ package com.azure.cosmos.encryption.implementation;
 import com.azure.cosmos.BridgeInternal;
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.CosmosPagedFluxOptions;
-import com.azure.cosmos.implementation.JsonNodeMap;
+import com.azure.cosmos.implementation.ObjectNodeMap;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.implementation.query.Transformer;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 import reactor.core.scheduler.Scheduler;
@@ -62,7 +64,13 @@ public class CosmosEncryptionQueryTransformer<T> implements Transformer<T> {
                         List<Mono<JsonNode>> jsonNodeArrayMonoList =
                             page.getResults().stream().map(jsonNode -> decryptResponseNode(jsonNode)).collect(Collectors.toList());
                         return Flux.concat(jsonNodeArrayMonoList).map(
-                            item -> this.effectiveItemSerializer.deserialize(new JsonNodeMap(item), classType)
+                            item -> {
+                                if (item instanceof ObjectNode) {
+                                    return this.effectiveItemSerializer.deserialize(new ObjectNodeMap((ObjectNode) item), classType);
+                                }
+
+                                return Utils.getSimpleObjectMapper().convertValue(item, classType);
+                            }
                         ).collectList().map(itemList -> BridgeInternal.createFeedResponseWithQueryMetrics(itemList,
                             page.getResponseHeaders(),
                             BridgeInternal.queryMetricsFromFeedResponse(page),
