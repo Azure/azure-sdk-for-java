@@ -1,7 +1,9 @@
+$JavaPath = Join-Path -Path $Env:JAVA_HOME -ChildPath "bin" | Join-Path -ChildPath "java"
 $TargetDirPath = Join-Path -Path $PSScriptRoot -ChildPath "target"
 $PerfJarPath = Get-ChildItem -Path (Join-Path -Path $TargetDirPath -ChildPath "*") -Include azure-storage-perf-*-jar-with-dependencies.jar -File
+Copy-Item -Path $PerfJarPath -Destination (Join-Path -Path $env:Build.ArtifactStagingDirectory -ChildPath "azure-storage-perf.jar") -Force
 
-Invoke-Expression "& java -version"
+Invoke-Expression "& '$JavaPath' -version"
 
 function Run-Scenario {
     param (
@@ -15,7 +17,7 @@ function Run-Scenario {
         [string] $ExtraFlags
     )
     Write-Host "Executing '$Scenario' with '$HeapSize' heap"
-    $invoke = "& java -Xms$HeapSize -Xmx$HeapSize -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=$HeapDumpPath-oom.hprof -XX:+CrashOnOutOfMemoryError '$ExtraFlags' -jar '$PerfJarPath' $Scenario"
+    $invoke = "& '$JavaPath' -Xms$HeapSize -Xmx$HeapSize -XX:+HeapDumpOnOutOfMemoryError -XX:HeapDumpPath=$HeapDumpPath-oom.hprof -XX:+CrashOnOutOfMemoryError '$ExtraFlags' -jar '$PerfJarPath' $Scenario"
     Write-Host "Invoking: $invoke"
     Invoke-Expression $invoke
     if ($LASTEXITCODE -ne 0) {
