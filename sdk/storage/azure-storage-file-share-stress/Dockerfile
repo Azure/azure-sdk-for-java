@@ -34,7 +34,7 @@ RUN yum install -y procps
 
 # Copy target files from builder image
 WORKDIR /app
-COPY --from=builder /stress/sdk/storage/azure-storage-file-datalake-stress/target .
+COPY --from=builder /stress/sdk/storage/azure-storage-file-share-stress/target .
 
 # This is never executed (since job yaml overrides it)
 ENTRYPOINT ["bash"]

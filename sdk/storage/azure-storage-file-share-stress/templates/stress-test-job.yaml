@@ -33,7 +33,7 @@ spec:
           -XX:+HeapDumpOnOutOfMemoryError \
           -XX:HeapDumpPath="${DEBUG_SHARE}" \
           -Dreactor.schedulers.defaultBoundedElasticSize={{ .Stress.parallel }} \
-          -jar /app/azure-storage-file-datalake-stress-1.0.0-beta.1-jar-with-dependencies.jar \
+          -jar /app/azure-storage-file-share-stress-1.0.0-beta.1-jar-with-dependencies.jar \
           {{ .Stress.testScenario }} \
           --parallel {{ .Stress.parallel }} \
           --duration {{ mul 60 .Stress.durationMin }} \

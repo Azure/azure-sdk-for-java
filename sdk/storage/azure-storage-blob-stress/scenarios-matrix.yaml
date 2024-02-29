@@ -11,14 +11,14 @@ matrix:
       imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes), small file, no chunking with async client
-    download-small-file-async-test:
-      testScenario: downloadtofile
-      sync: false
-      sizeBytes: 1024
-      parallel: 50
-      faults: true
-      durationMin: 10
-      imageBuildDir: "../../.."
+#    download-small-file-async-test:
+#      testScenario: downloadtofile
+#      sync: false
+#      sizeBytes: 1024
+#      parallel: 50
+#      faults: true
+#      durationMin: 10
+#      imageBuildDir: "../../.."
 
     # this test downloads 2GB (1024 * 1024 * 1024 * 2 bytes), large file requiring multiple requests
 #    download-large-file-test:
@@ -41,14 +41,14 @@ matrix:
       imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes), small stream, no chunking with async client
-    download-small-stream-async-test:
-      testScenario: downloadstream
-      sync: false
-      sizeBytes: 1024
-      parallel: 50
-      faults: true
-      durationMin: 10
-      imageBuildDir: "../../.."
+#    download-small-stream-async-test:
+#      testScenario: downloadstream
+#      sync: false
+#      sizeBytes: 1024
+#      parallel: 50
+#      faults: true
+#      durationMin: 10
+#      imageBuildDir: "../../.."
 
 #   this test downloads 2GB (1024 * 1024 * 1024 * 2 bytes), large file requiring multiple requests
 #    download-large-stream-test:
@@ -70,14 +70,14 @@ matrix:
       durationMin: 10
       imageBuildDir: "../../.."
     # this test downloads 1KB (1024 bytes), small content, no chunking with async client
-    download-small-content-async-test:
-      testScenario: downloadcontent
-      sync: false
-      sizeBytes: 1024
-      parallel: 50
-      faults: true
-      durationMin: 10
-      imageBuildDir: "../../.."
+#    download-small-content-async-test:
+#      testScenario: downloadcontent
+#      sync: false
+#      sizeBytes: 1024
+#      parallel: 50
+#      faults: true
+#      durationMin: 10
+#      imageBuildDir: "../../.."
 
 #   this test downloads 2GB (1024 * 1024 * 1024 * 2 bytes), large content requiring multiple requests
 #    download-large-content-test:

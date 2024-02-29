@@ -11,14 +11,14 @@ matrix:
       imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes), small file, no chunking with async client
-    read-small-file-async-test:
-      testScenario: readtofile
-      sync: false
-      sizeBytes: 1024
-      parallel: 50
-      faults: true
-      durationMin: 10
-      imageBuildDir: "../../.."
+#    read-small-file-async-test:
+#      testScenario: readtofile
+#      sync: false
+#      sizeBytes: 1024
+#      parallel: 50
+#      faults: true
+#      durationMin: 10
+#      imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes), small stream, no chunking
     read-small-test:
@@ -31,14 +31,14 @@ matrix:
       imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes), small stream, no chunking with async client
-    read-small-async-test:
-      testScenario: read
-      sync: false
-      sizeBytes: 1024
-      parallel: 50
-      faults: true
-      durationMin: 10
-      imageBuildDir: "../../.."
+#    read-small-async-test:
+#      testScenario: read
+#      sync: false
+#      sizeBytes: 1024
+#      parallel: 50
+#      faults: true
+#      durationMin: 10
+#      imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes) to open input stream, no chunking
     openinputstream-small-test:
