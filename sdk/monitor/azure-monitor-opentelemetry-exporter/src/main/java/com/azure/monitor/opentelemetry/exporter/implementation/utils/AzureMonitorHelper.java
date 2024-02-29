@@ -35,7 +35,7 @@ public final class AzureMonitorHelper {
                     // will log if that retry from disk fails
                     new DiagnosticTelemetryPipelineListener(
                         "Sending telemetry to the ingestion service",
-                        true,
+                        false,
                         " (telemetry will be stored to disk and retried)"),
                     new LocalStorageTelemetryPipelineListener(
                         50, // default to 50MB
