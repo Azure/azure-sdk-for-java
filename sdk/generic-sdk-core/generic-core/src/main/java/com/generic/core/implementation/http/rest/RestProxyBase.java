@@ -38,8 +38,6 @@ import java.util.function.Consumer;
 
 public abstract class RestProxyBase {
     static final ResponseConstructorsCache RESPONSE_CONSTRUCTORS_CACHE = new ResponseConstructorsCache();
-    private static final ResponseExceptionConstructorCache RESPONSE_EXCEPTION_CONSTRUCTOR_CACHE =
-        new ResponseExceptionConstructorCache();
 
     // RestProxy is a commonly used class, use a static logger.
     static final ClientLogger LOGGER = new ClientLogger(RestProxyBase.class);
@@ -50,12 +48,13 @@ public abstract class RestProxyBase {
     final HttpResponseDecoder decoder;
 
     /**
-     * Create a RestProxy.
+     * Create a {@link RestProxyBase}.
      *
-     * @param httpPipeline The HttpPipelinePolicy and HttpClient httpPipeline that will be used to send HTTP requests.
-     * @param serializer The serializer that will be used to convert response bodies to POJOs.
-     * @param interfaceParser The parser that contains information about the interface describing REST API methods that
-     * this RestProxy "implements".
+     * @param httpPipeline The {@link HttpPipeline pipeline} that will be used to send {@link HttpRequest requests}.
+     * @param serializer The {@link ObjectSerializer serializer} that will be used to convert POJOs to and from request
+     * and response bodies.
+     * @param interfaceParser The {@link SwaggerInterfaceParser parser} that contains information about the interface
+     * describing REST API methods that this {@link RestProxyBase} implements.
      */
     public RestProxyBase(HttpPipeline httpPipeline, ObjectSerializer serializer,
                          SwaggerInterfaceParser interfaceParser) {
@@ -94,50 +93,48 @@ public abstract class RestProxyBase {
                                        ObjectSerializer objectSerializer) throws IOException;
 
     @SuppressWarnings({"unchecked"})
-    public Response<?> createResponse(HttpResponseDecoder.HttpDecodedResponse response, Type entityType,
+    public Response<?> createResponse(HttpResponseDecoder.HttpDecodedResponse decodedResponse, Type entityType,
                                       Object bodyAsObject) {
         final Class<? extends Response<?>> clazz = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
 
-        // Inspection of the response type needs to be performed to determine which course of action should be taken to
-        // instantiate the Response<?> from the HttpResponse.
-        //
-        // If the type is either the Response or PagedResponse interface from azure-core a new instance of either
-        // ResponseBase or PagedResponseBase can be returned.
+        // Inspection of the response type needs to be performed to determine the course of action: either cast the
+        // decoded response to Response or rely on reflection to create an appropriate Response subtype.
         if (clazz.equals(Response.class)) {
-            // For Response return the received HttpDecodedResponse cast to the class.
-            if (response.getValue() == null) {
-                response.setCachedBody(bodyAsObject);
+            if (decodedResponse.getValue() == null) {
+                decodedResponse.setCachedBody(bodyAsObject);
             }
 
-            return clazz.cast(response);
+            // Return the received decoded response cast to Response.
+            return clazz.cast(decodedResponse);
+        } else {
+            // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response
+            // subtype.
+            //
+            // Ideally, in the future the SDKs won't need to dabble in reflection here as the Response subtypes should
+            // be given a way to register their constructor as a callback method that consumes HttpDecodedResponse and
+            // the body as an Object.
+            ReflectiveInvoker constructorReflectiveInvoker = RESPONSE_CONSTRUCTORS_CACHE.get(clazz);
+
+            return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorReflectiveInvoker, decodedResponse, bodyAsObject);
         }
-
-        // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response subtype.
-        //
-        // Ideally, in the future the SDKs won't need to dabble in reflection here as the Response subtypes should be
-        // given a way to register their constructor as a callback method that consumes HttpDecodedResponse and the body
-        // as an Object.
-        ReflectiveInvoker constructorReflectiveInvoker = RESPONSE_CONSTRUCTORS_CACHE.get(clazz);
-
-        return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorReflectiveInvoker, response, bodyAsObject);
     }
 
     /**
-     * Create an HttpRequest for the provided Swagger method using the provided arguments.
+     * Create an {@link HttpRequest} for the provided Swagger method using the provided arguments.
      *
-     * @param methodParser The Swagger method parser to use.
+     * @param methodParser The {@link SwaggerMethodParser} to use.
+     * @param objectSerializer The {@link ObjectSerializer} to serialize the request body with.
      * @param args The arguments to use to populate the method's annotation values.
      *
-     * @return An HttpRequest.
+     * @return An {@link HttpRequest}.
      *
-     * @throws IOException If the body contents cannot be serialized.
+     * @throws IOException If the request body contents cannot be serialized.
      */
     HttpRequest createHttpRequest(SwaggerMethodParser methodParser, ObjectSerializer objectSerializer, Object[] args)
         throws IOException {
 
-        // Sometimes people pass in a full URL for the value of their PathParam annotated argument.
-        // This definitely happens in paging scenarios. In that case, just use the full URL and
-        // ignore the Host annotation.
+        // Sometimes people pass in a full URL for the value of their PathParam annotated argument. This definitely
+        // happens in paging scenarios. In that case, just use the full URL and ignore the Host annotation.
         final String path = methodParser.setPath(args, serializer);
         final UrlBuilder pathUrlBuilder = UrlBuilder.parse(path);
         final UrlBuilder urlBuilder;
@@ -170,7 +167,7 @@ public abstract class RestProxyBase {
         final URL url = urlBuilder.toUrl();
         final HttpRequest request =
             configRequest(new HttpRequest(methodParser.getHttpMethod(), url), methodParser, objectSerializer, args);
-        // Headers from Swagger method arguments always take precedence over inferred headers from body types
+        // Headers from Swagger method arguments always take precedence over inferred headers from body types.
         Headers httpHeaders = request.getHeaders();
 
         methodParser.setHeaders(args, httpHeaders, serializer);
@@ -179,17 +176,17 @@ public abstract class RestProxyBase {
     }
 
     private HttpRequest configRequest(HttpRequest request, SwaggerMethodParser methodParser,
-        ObjectSerializer objectSerializer, Object[] args) throws IOException {
+                                      ObjectSerializer objectSerializer, Object[] args) throws IOException {
         final Object bodyContentObject = methodParser.setBody(args, serializer);
 
         if (bodyContentObject == null) {
             request.getHeaders().set(HeaderName.CONTENT_LENGTH, "0");
         } else {
-            // We read the content type from the @BodyParam annotation
+            // We read the content type from the BodyParam annotation.
             String contentType = methodParser.getBodyContentType();
 
-            // If this is null or empty, the service interface definition is incomplete and should
-            // be fixed to ensure correct definitions are applied
+            // If this is null or empty, the service interface definition is incomplete and should be fixed to ensure
+            // correct definitions are applied.
             if (contentType == null || contentType.isEmpty()) {
                 if (bodyContentObject instanceof byte[] || bodyContentObject instanceof String) {
                     contentType = ContentType.APPLICATION_OCTET_STREAM;
@@ -207,11 +204,10 @@ public abstract class RestProxyBase {
                     request.getHeaders().set(HeaderName.CONTENT_LENGTH, binaryData.getLength().toString());
                 }
 
-                // The request body is not read here. The call to `toFluxByteBuffer()` lazily converts the underlying
-                // content of BinaryData to a Flux<ByteBuffer> which is then read by HttpClient implementations when
-                // sending the request to the service. There is no memory copy that happens here. Sources like
-                // InputStream, File and Flux<ByteBuffer> will not be eagerly copied into memory until it's required
-                // by the HttpClient implementations.
+                // The request body is not read here. BinaryData lazily converts the underlying content which is then
+                // read by HttpClient implementations when sending the request to the service. There is no memory
+                // copy that happens here. Sources like InputStream or File will not be eagerly copied into memory
+                // until it's required by the HttpClient implementations.
                 request.setBody(binaryData);
 
                 return request;
@@ -237,12 +233,13 @@ public abstract class RestProxyBase {
     }
 
     /**
-     * Creates an HttpResponseException exception using the details provided in http response and its content.
+     * Creates an {@link HttpResponseException} exception using the details provided in {@link HttpResponse} and its
+     * content.
      *
-     * @param unexpectedExceptionInformation The exception holding UnexpectedException's details.
-     * @param httpResponse The http response to parse when constructing exception
-     * @param responseContent The response body to use when constructing exception
-     * @param responseDecodedContent The decoded response content to use when constructing exception
+     * @param unexpectedExceptionInformation The unexpected exception details.
+     * @param httpResponse The {@link HttpResponse} to parse when constructing the exception.
+     * @param responseContent The response body to use when constructing the exception.
+     * @param responseDecodedContent The decoded response content to use when constructing the exception.
      *
      * @return The {@link HttpResponseException} created from the provided details.
      */
@@ -284,20 +281,20 @@ public abstract class RestProxyBase {
     }
 
     /**
-     * Whether {@code JsonSerializable} is supported and the {@code bodyContentClass} is an instance of it.
+     * Whether {@link JsonSerializable} is supported and the {@code bodyContentClass} is an instance of it.
      *
      * @param bodyContentClass The body content class.
      *
-     * @return Whether {@code bodyContentClass} can be used as {@code JsonSerializable}.
+     * @return Whether {@code bodyContentClass} can be used as {@link JsonSerializable}.
      */
     static boolean supportsJsonSerializable(Class<?> bodyContentClass) {
         return ReflectionSerializable.supportsJsonSerializable(bodyContentClass);
     }
 
     /**
-     * Serializes the {@code jsonSerializable} as an instance of {@code JsonSerializable}.
+     * Serializes the {@code jsonSerializable} as an instance of {@link JsonSerializable}.
      *
-     * @param jsonSerializable The {@code JsonSerializable} body content.
+     * @param jsonSerializable The {@link JsonSerializable} body content.
      *
      * @return The {@link ByteBuffer} representing the serialized {@code jsonSerializable}.
      *

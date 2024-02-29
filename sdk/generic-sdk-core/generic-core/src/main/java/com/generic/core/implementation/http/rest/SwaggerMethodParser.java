@@ -13,8 +13,8 @@ import com.generic.core.http.annotation.PathParam;
 import com.generic.core.http.annotation.QueryParam;
 import com.generic.core.http.annotation.UnexpectedResponseExceptionInformation;
 import com.generic.core.http.exception.HttpExceptionType;
-import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
+import com.generic.core.http.models.RequestOptions;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.http.ContentType;
 import com.generic.core.implementation.http.RestProxy;
@@ -27,8 +27,8 @@ import com.generic.core.implementation.util.UrlBuilder;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Context;
 import com.generic.core.models.ExpandableStringEnum;
+import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
-import com.generic.core.http.models.RequestOptions;
 import com.generic.core.util.ClientLogger;
 import com.generic.core.util.serializer.ObjectSerializer;
 
@@ -766,18 +766,17 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             return null;
         }
 
-        // Then, like ResponseBase, check if the return type is assignable to Response.
-        // If it is, begin walking up the super type hierarchy until the raw type implements Response.
-        // Then unwrap its only generic type.
+        // Then check if the return type is assignable to Response. If it is, begin walking up the super type hierarchy
+        // until the raw type implements Response. Then unwrap its only generic type.
         if (TypeUtil.isTypeOrSubTypeOf(returnType, Response.class)) {
-            // Handling for Response is slightly different as it is an interface unlike ResponseBase which is a class.
+            // Handling for Response is slightly different as it is an interface unlike HttpResponse which is a class.
             // The super class hierarchy needs be walked until the super class itself implements Response.
             returnType = walkSuperTypesUntil(returnType, type -> typeImplementsInterface(type, Response.class));
 
             return unwrapReturnType(TypeUtil.getTypeArgument(returnType));
         }
 
-        // Finally, there is no more unwrapping to perform and return The type as-is.
+        // Finally, there is no more unwrapping to perform and return the type as-is.
         return returnType;
     }
 
