@@ -94,7 +94,6 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             isStaticResource)
             .buildClient();
     }
-
     // Detect language
 
     /**
