@@ -23,7 +23,6 @@ import com.microsoft.aad.msal4j.MsalServiceException;
 import com.microsoft.aad.msal4j.PublicClientApplication;
 import com.microsoft.aad.msal4j.SilentParameters;
 import com.microsoft.aad.msal4j.UserNamePasswordParameters;
-
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.AdditionalMatchers;
@@ -47,12 +46,12 @@ import java.security.cert.X509Certificate;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.fail;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.anyBoolean;
@@ -91,24 +90,6 @@ public class IdentityClientTests {
                 })
                 .verifyComplete();
         });
-    }
-
-    @Test
-    public void testExpiresOnParsingAzureCli() {
-        // setup
-        Map<String, String> tokenDetails = new HashMap<>();
-
-        //Epoch equivalent of "2023-10-31 21:59:10.000000" is 1698814750;
-        String expiresOn = "2023-10-31 21:59:10.000000";
-        tokenDetails.put("expiresOn", expiresOn);
-        OffsetDateTime offsetDateTime = IdentityClientBase.getTokenExpiryOffsetDateTime(tokenDetails);
-        Assertions.assertEquals(offsetDateTime.toEpochSecond(),
-            IdentityClientBase.parseExpiresOnTime(expiresOn).toEpochSecond());
-
-        // Test the scenario with expires_on present, it should be given priority.
-        tokenDetails.put("expires_on", "1572371520");
-        offsetDateTime = IdentityClientBase.getTokenExpiryOffsetDateTime(tokenDetails);
-        Assertions.assertEquals(offsetDateTime.toEpochSecond(), 1572371520);
     }
 
     @Test
@@ -239,7 +220,7 @@ public class IdentityClientTests {
             .put("IDENTITY_ENDPOINT", endpoint)
             .put("IDENTITY_HEADER", secret)
             .put("IDENTITY_SERVER_THUMBPRINT", thumbprint));
-        String tokenJson = "{ \"access_token\" : \"token1\", \"expires_on\" : \"" + expiresOn.toEpochSecond() + "\" }";
+        String tokenJson = "{ \"access_token\" : \"token1\", \"expiresOnUnixTime\" : \"" + expiresOn.toEpochSecond() + "\" }";
 
         // mock
         IdentityClientOptions options = new IdentityClientOptions()
@@ -272,7 +253,7 @@ public class IdentityClientTests {
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("M/d/yyyy H:mm:ss XXX");
-        String tokenJson = "{ \"access_token\" : \"token1\", \"expires_on\" : \"" + expiresOn.format(dtf) + "\" }";
+        String tokenJson = "{ \"access_token\" : \"token1\", \"expiresOnUnixTime\" : \"" + expiresOn.format(dtf) + "\" }";
 
         // mock
         IdentityClientOptions options = new IdentityClientOptions()
@@ -344,7 +325,7 @@ public class IdentityClientTests {
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("M/d/yyyy H:mm:ss XXX");
-        String tokenJson = "{ \"access_token\" : \"token1\", \"expires_on\" : \"" + expiresOn.format(dtf) + "\" }";
+        String tokenJson = "{ \"access_token\" : \"token1\", \"expiresOnUnixTime\" : \"" + expiresOn.format(dtf) + "\" }";
 
 
         IdentityClientOptions options = new IdentityClientOptions()
@@ -372,7 +353,7 @@ public class IdentityClientTests {
         TokenRequestContext request = new TokenRequestContext().addScopes("https://management.azure.com");
         OffsetDateTime expiresOn = OffsetDateTime.now(ZoneOffset.UTC).plusHours(1);
         DateTimeFormatter dtf = DateTimeFormatter.ofPattern("M/d/yyyy H:mm:ss XXX");
-        String tokenJson = "{ \"access_token\" : \"token1\", \"expires_on\" : \"" + expiresOn.format(dtf) + "\" }";
+        String tokenJson = "{ \"access_token\" : \"token1\", \"expiresOnUnixTime\" : \"" + expiresOn.format(dtf) + "\" }";
 
 
         IdentityClientOptions options = new IdentityClientOptions()
