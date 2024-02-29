@@ -11,6 +11,7 @@ import com.azure.ai.textanalytics.models.AnalyzeHealthcareEntitiesOperationDetai
 import com.azure.ai.textanalytics.models.AnalyzeSentimentOptions;
 import com.azure.ai.textanalytics.models.CategorizedEntity;
 import com.azure.ai.textanalytics.models.ClassifyDocumentOperationDetail;
+import com.azure.ai.textanalytics.models.DetectedLanguage;
 import com.azure.ai.textanalytics.models.DocumentSentiment;
 import com.azure.ai.textanalytics.models.EntityConditionality;
 import com.azure.ai.textanalytics.models.ExtractiveSummaryOperationDetail;
@@ -48,20 +49,25 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
 import com.azure.core.util.IterableStream;
+import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollResponse;
 import com.azure.core.util.polling.SyncPoller;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 
 import java.net.HttpURLConnection;
+import java.time.Duration;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+import java.util.logging.Logger;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 import static com.azure.ai.textanalytics.TestUtils.CATEGORIZED_ENTITY_INPUTS;
 import static com.azure.ai.textanalytics.TestUtils.CUSTOM_ACTION_NAME;
@@ -108,6 +114,8 @@ import static com.azure.ai.textanalytics.TestUtils.getRecognizeHealthcareEntitie
 import static com.azure.ai.textanalytics.TestUtils.getRecognizeHealthcareEntitiesResult2;
 import static com.azure.ai.textanalytics.TestUtils.getRecognizeLinkedEntitiesResultCollection;
 import static com.azure.ai.textanalytics.TestUtils.getRecognizePiiEntitiesResultCollection;
+import static com.azure.ai.textanalytics.TestUtils.getTestParameters;
+import static com.azure.ai.textanalytics.implementation.Utility.DEFAULT_POLL_INTERVAL;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_COUNTRY_HINT;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_DOCUMENT;
 import static com.azure.ai.textanalytics.models.TextAnalyticsErrorCode.INVALID_DOCUMENT_BATCH;
@@ -119,6 +127,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
+    private static final ClientLogger LOGGER = new ClientLogger(TextAnalyticsClientTest.class);
     private TextAnalyticsClient client;
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {
@@ -136,6 +145,43 @@ public class TextAnalyticsClientTest extends TextAnalyticsClientTestBase {
             isStaticResource)
             .buildClient();
     }
+
+    @Override
+    protected void beforeTest() {
+        if (interceptorManager.isPlaybackMode()) {
+            durationTestMode = Duration.ofMillis(1);
+        } else {
+            durationTestMode = DEFAULT_POLL_INTERVAL;
+        }
+        interceptorManagerTestBase = interceptorManager;
+
+        Stream<Arguments> testParameters = getTestParameters();
+        testParameters.forEach((arguments) -> {
+            HttpClient newHttpClient = (HttpClient) arguments.get()[0];
+            TextAnalyticsServiceVersion newServiceVersion = (TextAnalyticsServiceVersion) arguments.get()[1];
+            client = getTextAnalyticsClient(
+                    newHttpClient,
+                    newServiceVersion, false);
+        });
+
+        // The service is not ready immediately after creation, wait for it to be ready.
+        Duration waitingTime = Duration.ofMinutes(5);
+        while (waitingTime.getSeconds() > 0) {
+            try {
+                client.detectLanguage("This is written in English.");
+                break;
+            } catch (Exception ex) {
+                // While service is not ready, keep it loop
+                try {
+                    Thread.sleep(5000);
+                } catch (InterruptedException e) {
+                    throw LOGGER.logExceptionAsError(new RuntimeException(e));
+                }
+                waitingTime = waitingTime.minusSeconds(5);
+            }
+        }
+    }
+
     // Detect language
 
     /**
