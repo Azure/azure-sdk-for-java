@@ -49,13 +49,18 @@ public final class StorageCommonTestUtils {
     static {
         HttpClient jdkHttpHttpClient;
         try {
-            Class<?> clazz = Class.forName("com.azure.core.http.jdk.httpclient.JdkHttpClientProvider");
-            jdkHttpHttpClient = (HttpClient) clazz.getDeclaredMethod("createInstance").invoke(null);
+            jdkHttpHttpClient = createJdkHttpClient();
         } catch (LinkageError | ReflectiveOperationException e) {
             jdkHttpHttpClient = null;
         }
 
         JDK_HTTP_HTTP_CLIENT = jdkHttpHttpClient;
+    }
+
+    @SuppressWarnings("deprecation")
+    private static HttpClient createJdkHttpClient() throws ReflectiveOperationException {
+        Class<?> clazz = Class.forName("com.azure.core.http.jdk.httpclient.JdkHttpClientProvider");
+        return  (HttpClient) clazz.getDeclaredMethod("createInstance").invoke(clazz.newInstance());
     }
 
     /**
