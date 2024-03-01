@@ -246,7 +246,7 @@ public class OpenAIAsyncClientTest extends OpenAIClientTestBase {
         client = getOpenAIAsyncClient(httpClient, serviceVersion);
         getImageGenerationRunner((deploymentId, options) ->
             StepVerifier.create(client.getImageGenerations(deploymentId, options))
-                .assertNext(OpenAIClientTestBase::assertImageGenerations)
+                .assertNext(OpenAIClientTestBase::assertImageGenerationsForAzure)
                 .verifyComplete());
     }
 

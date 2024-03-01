@@ -85,7 +85,6 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
     OpenAIClientBuilder getOpenAIClientBuilder(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         OpenAIClientBuilder builder = new OpenAIClientBuilder()
-                .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
                 .httpClient(httpClient)
                 .serviceVersion(serviceVersion);
 
@@ -529,6 +528,11 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         assertNotNull(data);
         ImageGenerationData imageGenerationData = data.get(0);
         assertNotNull(imageGenerationData);
+    }
+
+    static void assertImageGenerationsForAzure(ImageGenerations actual) {
+        assertImageGenerations(actual);
+        ImageGenerationData imageGenerationData = actual.getData().get(0);
         assertNotNull(imageGenerationData.getContentFilterResults());
         assertNotNull(imageGenerationData.getPromptFilterResults());
     }
