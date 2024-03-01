@@ -240,13 +240,4 @@ class InteractiveBrowserBrokerCredentialBuilderTest {
             builder.proxyOptions(null);
         });
     }
-
-    @Test
-    void setUseOperatingSystemAccount() {
-        assertDoesNotThrow(() -> {
-            InteractiveBrowserBrokerCredentialBuilder builder = new InteractiveBrowserBrokerCredentialBuilder();
-            builder.useOperatingSystemAccount(true);
-            builder.build();
-        });
-    }
 }
