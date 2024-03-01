@@ -657,8 +657,7 @@ class FunctionAppImpl
             siteConfigInner.withLinuxFxVersion(this.siteConfig.linuxFxVersion());
             siteConfigInner.withMinimumElasticInstanceCount(this.siteConfig.minimumElasticInstanceCount());
             siteConfigInner.withFunctionAppScaleLimit(this.siteConfig.functionAppScaleLimit());
-            siteConfigInner.withAppSettings(this.siteConfig.appSettings());
-//            siteConfigInner.withAppSettings(this.siteConfig.appSettings() == null ? new ArrayList<>() : this.siteConfig.appSettings());
+            siteConfigInner.withAppSettings(this.siteConfig.appSettings() == null ? new ArrayList<>() : this.siteConfig.appSettings());
             if (!appSettingsToAdd.isEmpty() || !appSettingsToRemove.isEmpty()) {
                 for (String settingToRemove : appSettingsToRemove) {
                     siteConfigInner.appSettings().removeIf(kvPair -> Objects.equals(settingToRemove, kvPair.name()));
