@@ -62,7 +62,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-xml</artifactId>
-      <version>1.0.0-beta.3</version> <!-- {x-version-update;unreleased_com.azure:azure-xml;dependency} -->
+      <version>1.0.0-beta.3</version> <!-- {x-version-update;com.azure:azure-xml;dependency} -->
     </dependency>
     <dependency>
       <groupId>org.junit.jupiter</groupId>
