@@ -16,7 +16,7 @@ import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkAr
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 
 public class PrimitiveJsonNodeMap implements Map<String, Object> {
-    public final static String VALUE_KEY = "__value__";
+    public final static String VALUE_KEY = "__primitive_json-node_value__";
     private final static ObjectMapper itemMapper = Utils.getSimpleObjectMapper();
     private final Object thisLock = new Object();
     private final JsonNode primitiveJsonNode;
