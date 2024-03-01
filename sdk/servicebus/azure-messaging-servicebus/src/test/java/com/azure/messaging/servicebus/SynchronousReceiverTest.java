@@ -12,8 +12,6 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.mockito.ArgumentCaptor;
-import org.mockito.Captor;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.MockitoAnnotations;
 import reactor.core.publisher.Mono;
@@ -39,10 +37,6 @@ public final class SynchronousReceiverTest {
     private static final ClientLogger LOGGER = new ClientLogger(SynchronousReceiverTest.class);
     private static final ServiceBusReceiverInstrumentation NO_INSTRUMENTATION = new ServiceBusReceiverInstrumentation(null, null,
         NAMESPACE, ENTITY_PATH, null, ReceiverKind.SYNC_RECEIVER);
-    @Mock
-    private ServiceBusReceiverAsyncClient asyncClient;
-    @Captor
-    private ArgumentCaptor<ServiceBusReceivedMessage> messageCaptor;
     private AutoCloseable mocksCloseable;
 
     @BeforeEach
@@ -63,6 +57,7 @@ public final class SynchronousReceiverTest {
     public void shouldErrorIterableStreamIfDisposed() {
         final int maxMessages = 1;
         final Duration maxWaitTime = Duration.ofMillis(500);
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
         final ReceiverOptions receiverOptions = ReceiverOptions.createNonSessionOptions(PEEK_LOCK, 0, Duration.ZERO, false);
 
         when((asyncClient.getReceiverOptions())).thenReturn(receiverOptions);
@@ -83,6 +78,7 @@ public final class SynchronousReceiverTest {
     public void shouldSubscribeToUpstreamOnlyOnce() {
         final int maxMessages = 1;
         final Duration maxWaitTime = Duration.ofMillis(250);
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
         final ReceiverOptions receiverOptions = ReceiverOptions.createNonSessionOptions(PEEK_LOCK, 0, Duration.ZERO, false);
         final TestPublisher<ServiceBusReceivedMessage> upstream = TestPublisher.create();
 
@@ -105,8 +101,10 @@ public final class SynchronousReceiverTest {
         final int prefetch = 0; // prefetch is disabled
         final int maxMessages = 5;
         final Duration maxWaitTime = Duration.ofMillis(250);
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
         final ServiceBusReceivedMessage message0 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceivedMessage message1 = mock(ServiceBusReceivedMessage.class);
+        final ArgumentCaptor<ServiceBusReceivedMessage> messageCaptor = ArgumentCaptor.forClass(ServiceBusReceivedMessage.class);
         final ReceiverOptions receiverOptions = ReceiverOptions.createNonSessionOptions(PEEK_LOCK, prefetch, Duration.ZERO, false);
         final Sinks.Many<ServiceBusReceivedMessage> upstream = Sinks.many().multicast().onBackpressureBuffer();
 
@@ -136,6 +134,7 @@ public final class SynchronousReceiverTest {
         final int prefetch = 1; // prefetch is enabled
         final int maxMessages = 5;
         final Duration maxWaitTime = Duration.ofMillis(250);
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
         final ServiceBusReceivedMessage message0 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceivedMessage message1 = mock(ServiceBusReceivedMessage.class);
         final ReceiverOptions receiverOptions = ReceiverOptions.createNonSessionOptions(PEEK_LOCK, prefetch, Duration.ZERO, false);
@@ -164,6 +163,7 @@ public final class SynchronousReceiverTest {
         final int prefetch = 0;
         final int maxMessages = 2;
         final Duration maxWaitTime = Duration.ofMillis(250);
+        final ServiceBusReceiverAsyncClient asyncClient = mock(ServiceBusReceiverAsyncClient.class);
         final ServiceBusReceivedMessage message0 = mock(ServiceBusReceivedMessage.class);
         final ServiceBusReceivedMessage message1 = mock(ServiceBusReceivedMessage.class);
         final ReceiverOptions receiverOptions = ReceiverOptions.createNonSessionOptions(PEEK_LOCK, prefetch, Duration.ZERO, false);

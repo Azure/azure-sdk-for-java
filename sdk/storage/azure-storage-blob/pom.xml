@@ -33,8 +33,6 @@
   </scm>
 
   <properties>
-    <src.dir>src/main/java</src.dir>
-    <test.dir>src/test/java</test.dir>
     <AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE>../azure-storage-common/ci.system.properties</AZURE_TEST_SYSTEM_PLAYBACK_PROPERTIES_FILE>
     <surefireXmx>8g</surefireXmx>
     <!-- Configures the Java 9+ run to perform the required module exports, opens, and reads that are necessary for testing but shouldn't be part of the module-info. -->
@@ -175,12 +173,6 @@
       <scope>test</scope>
     </dependency>
     <dependency>
-      <groupId>org.slf4j</groupId>
-      <artifactId>slf4j-simple</artifactId>
-      <version>1.7.36</version> <!-- {x-version-update;org.slf4j:slf4j-simple;external_dependency} -->
-      <scope>test</scope>
-    </dependency>
-    <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-core-http-okhttp</artifactId>
       <version>1.11.18</version> <!-- {x-version-update;com.azure:azure-core-http-okhttp;dependency} -->
@@ -189,14 +181,6 @@
   </dependencies>
 
   <build>
-    <sourceDirectory>src/main/java</sourceDirectory>
-    <testSourceDirectory>src/test/java</testSourceDirectory>
-    <testResources>
-      <testResource>
-        <directory>${basedir}/src/test/resources</directory>
-      </testResource>
-    </testResources>
-
     <plugins>
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
