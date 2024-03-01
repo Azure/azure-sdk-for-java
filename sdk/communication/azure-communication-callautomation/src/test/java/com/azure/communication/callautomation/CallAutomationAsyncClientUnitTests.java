@@ -115,7 +115,6 @@ public class CallAutomationAsyncClientUnitTests extends CallAutomationUnitTestBa
             )));
 
         AnswerCallOptions answerCallOptions = new AnswerCallOptions(CALL_INCOMING_CALL_CONTEXT, CALL_CALLBACK_URL)
-            .setMediaStreamingConfiguration(MEDIA_STREAMING_CONFIGURATION)
             .setTranscriptionConfiguration(TRANSCRIPTION_CONFIGURATION);
 
         Response<AnswerCallResult> answerCallResult = callAutomationAsyncClient.answerCallWithResponse(
