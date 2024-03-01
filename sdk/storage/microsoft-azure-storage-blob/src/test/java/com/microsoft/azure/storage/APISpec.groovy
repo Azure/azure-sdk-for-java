@@ -3,7 +3,6 @@
 
 package com.microsoft.azure.storage
 
-import com.azure.storage.common.test.shared.extensions.LiveOnly
 import com.microsoft.aad.adal4j.AuthenticationContext
 import com.microsoft.aad.adal4j.ClientCredential
 import com.microsoft.azure.storage.blob.*
@@ -18,6 +17,7 @@ import org.junit.Assume
 import org.spockframework.lang.ISpecificationContext
 import org.spockframework.runtime.model.parallel.ExecutionMode
 import spock.lang.Execution
+import spock.lang.IgnoreIf
 import spock.lang.Shared
 import spock.lang.Specification
 
@@ -26,7 +26,7 @@ import java.time.OffsetDateTime
 import java.util.concurrent.Executors
 
 @Execution(ExecutionMode.SAME_THREAD)
-@LiveOnly
+@IgnoreIf({ !getTestMode().equalsIgnoreCase("LIVE") })
 class APISpec extends Specification {
     static final String RECORD_MODE = "RECORD"
     static final String LIVE_MODE = "LIVE"
