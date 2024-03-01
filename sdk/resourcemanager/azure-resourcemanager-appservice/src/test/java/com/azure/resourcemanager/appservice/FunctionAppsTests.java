@@ -530,6 +530,10 @@ public class FunctionAppsTests extends AppServiceTest {
 //        Assertions.assertEquals("connectionValue", functionApp.getConnectionStrings().get("connectionName").value());
 
         functionApp.update()
+            .withPublicDockerHubImage("mcr.microsoft.com/azure-functions/dotnet7-quickstart-demo:1.0")
+            .apply();
+
+        functionApp.update()
             .withMaxReplicas(15)
             .apply();
 
@@ -547,7 +551,7 @@ public class FunctionAppsTests extends AppServiceTest {
     }
 
     @Test
-    @Disabled("need private registry image")
+//    @Disabled("need private registry image")
     public void canCreateAndUpdateFunctionAppOnAcaWithPrivateRegistryImage() {
         Region region = Region.US_EAST;
         ResourceGroup resourceGroup = appServiceManager.resourceManager()
@@ -569,7 +573,7 @@ public class FunctionAppsTests extends AppServiceTest {
             .withManagedEnvironmentId(managedEnvironmentId)
             .withMaxReplicas(10)
             .withMinReplicas(3)
-            .withPrivateRegistryImage("xiaofeiacr.azurecr.io/samples/nginx:latest", "xiaofeiacr.azurecr.io")
+            .withPrivateRegistryImage("samples/nginx:latest", "https://xiaofeiacr.azurecr.io")
             .withCredentials("xiaofeiacr", "PASSWORD")
             .withRuntimeVersion("4")
             .create();
@@ -584,6 +588,8 @@ public class FunctionAppsTests extends AppServiceTest {
 
         functionApp.update()
             .withMaxReplicas(15)
+            .withPrivateRegistryImage("xiaofeiacr.samples/nginx:latest", "https://xiaofeiacr.azurecr.io")
+            .withCredentials("xiaofeiacr", "PASSWORD")
             .withNewStorageAccount(generateRandomResourceName("as", 15), StorageAccountSkuType.STANDARD_LRS)
             .apply();
 
