@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.cosmos.kafka.connect.implementation.sink.idStrategy;
+package com.azure.cosmos.kafka.connect.implementation.sink.idstrategy;
 
 import java.util.Map;
 import java.util.regex.Pattern;

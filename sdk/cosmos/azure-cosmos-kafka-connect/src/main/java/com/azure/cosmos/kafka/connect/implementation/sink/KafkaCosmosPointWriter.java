@@ -93,8 +93,8 @@ public class KafkaCosmosPointWriter extends KafkaCosmosWriterBase {
                         });
             },
             (throwable) -> {
-                return KafkaCosmosExceptionsHelper.isNotFoundException(throwable) ||
-                    KafkaCosmosExceptionsHelper.isPreconditionFailedException(throwable);
+                return KafkaCosmosExceptionsHelper.isNotFoundException(throwable)
+                    || KafkaCosmosExceptionsHelper.isPreconditionFailedException(throwable);
             },
             sinkOperation
         );

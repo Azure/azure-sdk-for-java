@@ -42,7 +42,9 @@ public class SinkOperation {
         return this.retryCount.get();
     }
 
-    public void retry() { this.retryCount.incrementAndGet(); }
+    public void retry() {
+        this.retryCount.incrementAndGet();
+    }
 
     public Throwable getException() {
         return this.exception.get();

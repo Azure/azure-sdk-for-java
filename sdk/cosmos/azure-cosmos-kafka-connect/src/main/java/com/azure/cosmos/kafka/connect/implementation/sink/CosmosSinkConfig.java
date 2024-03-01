@@ -240,8 +240,7 @@ public class CosmosSinkConfig extends KafkaCosmosConfig {
                 idStrategyConfigGroupName,
                 idStrategyConfigGroupOrder++,
                 ConfigDef.Width.MEDIUM,
-                ID_STRATEGY_DISPLAY
-            );
+                ID_STRATEGY_DISPLAY);
     }
 
     private CosmosSinkWriteConfig parseWriteConfig() {

@@ -3,13 +3,13 @@
 
 package com.azure.cosmos.kafka.connect.implementation.sink;
 
-import com.azure.cosmos.kafka.connect.implementation.sink.idStrategy.AbstractIdStrategyConfig;
-import com.azure.cosmos.kafka.connect.implementation.sink.idStrategy.FullKeyStrategy;
-import com.azure.cosmos.kafka.connect.implementation.sink.idStrategy.IdStrategy;
-import com.azure.cosmos.kafka.connect.implementation.sink.idStrategy.KafkaMetadataStrategy;
-import com.azure.cosmos.kafka.connect.implementation.sink.idStrategy.ProvidedInKeyStrategy;
-import com.azure.cosmos.kafka.connect.implementation.sink.idStrategy.ProvidedInValueStrategy;
-import com.azure.cosmos.kafka.connect.implementation.sink.idStrategy.TemplateStrategy;
+import com.azure.cosmos.kafka.connect.implementation.sink.idstrategy.AbstractIdStrategyConfig;
+import com.azure.cosmos.kafka.connect.implementation.sink.idstrategy.FullKeyStrategy;
+import com.azure.cosmos.kafka.connect.implementation.sink.idstrategy.IdStrategy;
+import com.azure.cosmos.kafka.connect.implementation.sink.idstrategy.KafkaMetadataStrategy;
+import com.azure.cosmos.kafka.connect.implementation.sink.idstrategy.ProvidedInKeyStrategy;
+import com.azure.cosmos.kafka.connect.implementation.sink.idstrategy.ProvidedInValueStrategy;
+import com.azure.cosmos.kafka.connect.implementation.sink.idstrategy.TemplateStrategy;
 import org.apache.kafka.connect.data.Struct;
 import org.apache.kafka.connect.sink.SinkRecord;
 import org.slf4j.Logger;

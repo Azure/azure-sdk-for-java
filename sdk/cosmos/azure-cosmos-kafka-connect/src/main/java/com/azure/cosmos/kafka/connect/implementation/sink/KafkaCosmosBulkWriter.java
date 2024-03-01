@@ -37,7 +37,7 @@ public class KafkaCosmosBulkWriter extends KafkaCosmosWriterBase {
     private static final Logger LOGGER = LoggerFactory.getLogger(KafkaCosmosBulkWriter.class);
     private static final int MAX_DELAY_ON_408_REQUEST_TIMEOUT_IN_MS = 10000;
     private static final int MIN_DELAY_ON_408_REQUEST_TIMEOUT_IN_MS = 1000;
-    private static final Random random = new Random();
+    private static final Random RANDOM = new Random();
 
     private final CosmosSinkWriteConfig writeConfig;
     private final Sinks.EmitFailureHandler emitFailureHandler;
@@ -241,7 +241,7 @@ public class KafkaCosmosBulkWriter extends KafkaCosmosWriterBase {
         if (KafkaCosmosExceptionsHelper.isTimeoutException(exception)) {
             Duration delayDuration = Duration.ofMillis(
                 MIN_DELAY_ON_408_REQUEST_TIMEOUT_IN_MS
-                    + random.nextInt(MAX_DELAY_ON_408_REQUEST_TIMEOUT_IN_MS - MIN_DELAY_ON_408_REQUEST_TIMEOUT_IN_MS));
+                    + RANDOM.nextInt(MAX_DELAY_ON_408_REQUEST_TIMEOUT_IN_MS - MIN_DELAY_ON_408_REQUEST_TIMEOUT_IN_MS));
 
             return retryMono.delaySubscription(delayDuration);
         }
@@ -257,11 +257,11 @@ public class KafkaCosmosBulkWriter extends KafkaCosmosWriterBase {
         int effectiveStatusCode =
             itemResponse != null
                 ? itemResponse.getStatusCode()
-                : (exception != null && exception instanceof CosmosException ? ((CosmosException)exception).getStatusCode() : HttpConstants.StatusCodes.REQUEST_TIMEOUT);
+                : (exception != null && exception instanceof CosmosException ? ((CosmosException) exception).getStatusCode() : HttpConstants.StatusCodes.REQUEST_TIMEOUT);
         int effectiveSubStatusCode =
             itemResponse != null
                 ? itemResponse.getSubStatusCode()
-                : (exception != null && exception instanceof CosmosException ? ((CosmosException)exception).getSubStatusCode() : 0);
+                : (exception != null && exception instanceof CosmosException ? ((CosmosException) exception).getSubStatusCode() : 0);
 
         String errorMessage =
             String.format(

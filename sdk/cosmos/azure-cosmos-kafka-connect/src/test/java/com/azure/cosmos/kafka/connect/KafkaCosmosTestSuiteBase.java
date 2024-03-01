@@ -120,6 +120,15 @@ public class KafkaCosmosTestSuiteBase implements ITest {
         }
     }
 
+    @BeforeSuite(groups = { "unit" }, timeOut = SUITE_SETUP_TIMEOUT)
+    public static void beforeSuiteUnit() {
+        logger.info("beforeSuite for unit tests started");
+
+        databaseName = "KafkaCosmosTest-" + UUID.randomUUID();
+        multiPartitionContainerName = UUID.randomUUID().toString();
+        singlePartitionContainerName = UUID.randomUUID().toString();
+    }
+
     @AfterSuite(groups = { "kafka" }, timeOut = SUITE_SHUTDOWN_TIMEOUT)
     public static void afterSuite() {
 

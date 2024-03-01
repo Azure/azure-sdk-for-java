@@ -3,6 +3,10 @@
 
 package com.azure.cosmos.kafka.connect.implementation.sink.idStrategy;
 
+import com.azure.cosmos.kafka.connect.implementation.sink.idstrategy.IdStrategy;
+import com.azure.cosmos.kafka.connect.implementation.sink.idstrategy.ProvidedInConfig;
+import com.azure.cosmos.kafka.connect.implementation.sink.idstrategy.ProvidedInKeyStrategy;
+import com.azure.cosmos.kafka.connect.implementation.sink.idstrategy.ProvidedInValueStrategy;
 import org.apache.kafka.connect.data.Schema;
 import org.apache.kafka.connect.data.SchemaBuilder;
 import org.apache.kafka.connect.data.Struct;
