@@ -12,6 +12,7 @@ import com.azure.core.http.policy.RetryStrategy;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
+import com.azure.core.test.annotation.DoNotRecord;
 import com.azure.core.test.http.AssertingHttpClientBuilder;
 import com.azure.core.util.Context;
 import com.azure.core.util.serializer.TypeReference;
@@ -22,6 +23,7 @@ import com.azure.monitor.query.models.LogsBatchQueryResultCollection;
 import com.azure.monitor.query.models.LogsQueryOptions;
 import com.azure.monitor.query.models.LogsQueryResult;
 import com.azure.monitor.query.models.LogsQueryResultStatus;
+import com.azure.monitor.query.models.LogsTableCell;
 import com.azure.monitor.query.models.QueryTimeInterval;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Disabled;
@@ -33,11 +35,12 @@ import java.time.Duration;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneOffset;
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.LinkedHashMap;
 import java.util.List;
 
 import static com.azure.monitor.query.MonitorQueryTestUtils.QUERY_STRING;
+import static com.azure.monitor.query.MonitorQueryTestUtils.getAdditionalLogWorkspaceId;
 import static com.azure.monitor.query.MonitorQueryTestUtils.getLogResourceId;
 import static com.azure.monitor.query.MonitorQueryTestUtils.getLogWorkspaceId;
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -55,11 +58,14 @@ public class LogsQueryClientTest extends TestProxyTestBase {
 
     private String workspaceId;
 
+    private String additionalWorkspaceId;
+
     private String resourceId;
 
     @BeforeEach
     public void setup() {
         workspaceId = getLogWorkspaceId(interceptorManager.isPlaybackMode());
+        additionalWorkspaceId = getAdditionalLogWorkspaceId(interceptorManager.isPlaybackMode());
         resourceId = getLogResourceId(interceptorManager.isPlaybackMode());
         LogsQueryClientBuilder clientBuilder = new LogsQueryClientBuilder()
                 .retryPolicy(new RetryPolicy(new RetryStrategy() {
@@ -121,8 +127,8 @@ public class LogsQueryClientTest extends TestProxyTestBase {
     }
 
     @Test
+    @DoNotRecord
     public void testLogsQueryAllowPartialSuccess() {
-
         // Arrange
         final String query =  "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: "
             + "int, Long:long, Double: double, String: string, Timespan: timespan, Decimal: decimal, Dynamic: dynamic)\n"
@@ -198,13 +204,20 @@ public class LogsQueryClientTest extends TestProxyTestBase {
     }
 
     @Test
-    @EnabledIfEnvironmentVariable(named = "AZURE_TEST_MODE", matches = "PLAYBACK", disabledReason = "multi-workspace "
-            + "queries require sending logs to Azure Monitor first. So, run this test in playback mode only.")
     public void testMultipleWorkspaces() {
+        final String multipleWorkspacesQuery = "let dt = datatable (DateTime: datetime, Bool:bool, Guid: guid, Int: "
+            + "int, Long:long, Double: double, String: string, Timespan: timespan, Decimal: decimal, Dynamic: dynamic, TenantId: string)\n"
+            + "[datetime(2015-12-31 23:59:59.9), false, guid(74be27de-1e4e-49d9-b579-fe0b331d3642), 12345, 1, 12345.6789,"
+            + " 'string value', 10s, decimal(0.10101), dynamic({\"a\":123, \"b\":\"hello\", \"c\":[1,2,3], \"d\":{}}), \"" + workspaceId + "\""
+            + ", datetime(2015-12-31 23:59:59.9), false, guid(74be27de-1e4e-49d9-b579-fe0b331d3642), 12345, 1, 12345.6789,"
+            + " 'string value', 10s, decimal(0.10101), dynamic({\"a\":123, \"b\":\"hello\", \"c\":[1,2,3], \"d\":{}}), \"" + additionalWorkspaceId + "\"];"
+            + "range x from 1 to 2 step 1 | extend y=1 | join kind=fullouter dt on $left.y == $right.Long";
+
+        System.out.println(multipleWorkspacesQuery);
         LogsQueryResult queryResults = client.queryWorkspaceWithResponse(workspaceId,
-                "union * | where TimeGenerated > ago(100d) | project TenantId | summarize count() by TenantId", null,
+                multipleWorkspacesQuery, null,
                 new LogsQueryOptions()
-                        .setAdditionalWorkspaces(Arrays.asList("9dad0092-fd13-403a-b367-a189a090a541")), Context.NONE)
+                        .setAdditionalWorkspaces(Collections.singletonList(additionalWorkspaceId)), Context.NONE)
                 .getValue();
         assertEquals(1, queryResults.getAllTables().size());
         assertEquals(2, queryResults
@@ -212,9 +225,8 @@ public class LogsQueryClientTest extends TestProxyTestBase {
                 .get(0)
                 .getRows()
                 .stream()
-                .map(row -> {
-                    return row.getColumnValue("TenantId").get();
-                })
+                .map(row -> row.getColumnValue("TenantId").get())
+                .map(LogsTableCell::getValueAsString)
                 .distinct()
                 .count());
     }

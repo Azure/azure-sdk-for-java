@@ -15,6 +15,9 @@ public final class MonitorQueryTestUtils {
     private static final String LOG_WORKSPACE_ID = Configuration.getGlobalConfiguration()
         .get("AZURE_MONITOR_LOGS_WORKSPACE_ID");
 
+    private static final String ADDITIONAL_LOG_WORKSPACE_ID = Configuration.getGlobalConfiguration()
+        .get("AZURE_MONITOR_LOGS_ADDITIONAL_WORKSPACE_ID");
+
     private static final String LOG_RESOURCE_ID = Configuration.getGlobalConfiguration()
         .get("AZURE_MONITOR_LOGS_RESOURCE_ID");
 
@@ -41,6 +44,14 @@ public final class MonitorQueryTestUtils {
             return "d2d0e126-fa1e-4b0a-b647-250cdd471e68";
         } else {
             return LOG_WORKSPACE_ID;
+        }
+    }
+
+    public static String getAdditionalLogWorkspaceId(boolean isPlaybackMode) {
+        if (isPlaybackMode) {
+            return "d2d0e126-fa1e-4b0a-b647-250cdd471e68";
+        } else {
+            return ADDITIONAL_LOG_WORKSPACE_ID;
         }
     }
 
