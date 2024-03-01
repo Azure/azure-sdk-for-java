@@ -51,18 +51,30 @@ val dbResponse = clientFromCache.getDatabase(cosmosDatabaseName).read().block()
 assert(dbResponse.getProperties.getId.equals(cosmosDatabaseName))
 clientFromCache.close
 
+// read database with client retrieved from cache on the driver
+var clientFromCache = com.azure.cosmos.spark.udf.CosmosAsyncClientCache
+  .getCosmosClientFromCache(cfg)
+  .getClient
+  .asInstanceOf[azure_cosmos_spark.com.azure.cosmos.CosmosAsyncClient]
+val dbResponse = clientFromCache.getDatabase(cosmosDatabaseName).read().block()
+
+assert(dbResponse.getProperties.getId.equals(cosmosDatabaseName))
+clientFromCache.close
+
+
 // read database with client retrieved from cache on the executor
 val clientFromCacheFunc = com.azure.cosmos.spark.udf.CosmosAsyncClientCache
   .getCosmosClientFuncFromCache(cfg)
 
 sc.parallelize(Seq.empty[String]).foreachPartition(x => {
-  val clientFromCacheOnExecutor = clientFromCacheFunc()
+  val clientCacheItemOnExecutor = clientFromCacheFunc()
+  val clientFromCacheOnExecutor = clientCacheItemOnExecutor
     .getClient
     .asInstanceOf[azure_cosmos_spark.com.azure.cosmos.CosmosAsyncClient]
   val dbResponse = clientFromCacheOnExecutor.getDatabase(cosmosDatabaseName).read().block()
-
+  println(s"DB Name retrieved '${dbResponse.getProperties.getId}'")
   assert(dbResponse.getProperties.getId.equals(cosmosDatabaseName))
-  clientFromCacheOnExecutor.close
+  clientCacheItemOnExecutor.close
 })
 
 // COMMAND ----------
