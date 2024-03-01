@@ -551,7 +551,7 @@ public class FunctionAppsTests extends AppServiceTest {
     }
 
     @Test
-//    @Disabled("need private registry image")
+    @Disabled("need private registry image")
     public void canCreateAndUpdateFunctionAppOnAcaWithPrivateRegistryImage() {
         Region region = Region.US_EAST;
         ResourceGroup resourceGroup = appServiceManager.resourceManager()
@@ -588,7 +588,7 @@ public class FunctionAppsTests extends AppServiceTest {
 
         functionApp.update()
             .withMaxReplicas(15)
-            .withPrivateRegistryImage("xiaofeiacr.samples/nginx:latest", "https://xiaofeiacr.azurecr.io")
+            .withPrivateRegistryImage("xiaofeiacr.azurecr.io/samples/nginx:latest", "https://xiaofeiacr.azurecr.io")
             .withCredentials("xiaofeiacr", "PASSWORD")
             .withNewStorageAccount(generateRandomResourceName("as", 15), StorageAccountSkuType.STANDARD_LRS)
             .apply();
