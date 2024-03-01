@@ -126,11 +126,11 @@ public final class SynchronousReceiverTest {
         Assertions.assertEquals(Sinks.EmitResult.OK, emitResult);
         try {
             // The earlier receive() call has a timer-thread to complete the receiving when 'maxWaitTime' (250ms) expires.
-            // It is possible that when emitting 'message1' from the test-thread, the timer-thread is still in the drain-loop.
-            // In that case test-thread will continue to run the verification to see if 'release' is invoked,
-            // the timer-thread may not have called 'release' yet or is still doing it. This setup can make the check
-            // "verify(asyncClient).release(messageCaptor.capture())" to fail. So, the test-thread sleeps here giving
-            // some time for timer-thread to be done.
+            // It is possible that when test-thread signals 'message1' to drain-loop, the timer-thread is still in the
+            // drain-loop, resulting the test-thread to continue the test run concurrently with timer-thread.
+            // In such a setup, the "verify(asyncClient).release(messageCaptor.capture())" by test-thread will fail if
+            // the timer-thread is yet to call 'release'. So, the test-thread sleeps here giving some time for timer-thread
+            // to be done.
             Thread.sleep(500);
         } catch (InterruptedException e) {
             Assertions.fail(e);
@@ -166,7 +166,19 @@ public final class SynchronousReceiverTest {
         Assertions.assertEquals(1, list.size());
         Assertions.assertEquals(message0, list.get(0));
 
-        upstream.emitNext(message1, Sinks.EmitFailureHandler.FAIL_FAST);
+        final Sinks.EmitResult emitResult = upstream.tryEmitNext(message1);
+        Assertions.assertEquals(Sinks.EmitResult.OK, emitResult);
+        try {
+            // The earlier receive() call has a timer-thread to complete the receiving when 'maxWaitTime' (250ms) expires.
+            // It is possible that when test-thread signals 'message1' to drain-loop, the timer-thread is still in the
+            // drain-loop, resulting the test-thread to continue the test run concurrently with timer-thread.
+            // If the timer-thread calls 'release' (which it should not since prefetch is enabled) after the
+            // "verify(asyncClient, times(0)).release(any())" check by test-thread, then, the test won't catch this
+            // unexpected 'release' call. So, the test-thread sleeps here giving some time for timer-thread to be done.
+            Thread.sleep(250);
+        } catch (InterruptedException e) {
+            Assertions.fail(e);
+        }
         verify(asyncClient, times(0)).release(any());
     }
 
