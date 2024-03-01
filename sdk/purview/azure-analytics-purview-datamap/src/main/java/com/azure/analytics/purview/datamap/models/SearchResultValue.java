@@ -197,8 +197,7 @@ public final class SearchResultValue {
      * Get the searchHighlights property: A highlight list that consists of index fields id ,qualifiedName, name,
      * description, entityType. When the keyword appears in those fields, the value of
      * the field, attached with emphasis mark, is returned as an element of
-     * 
-     * @search.highlights.
+     * &#064;search.highlights.
      * 
      * @return the searchHighlights value.
      */

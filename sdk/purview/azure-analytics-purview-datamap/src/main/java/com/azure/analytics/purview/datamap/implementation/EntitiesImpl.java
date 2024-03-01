@@ -631,7 +631,8 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Mono<Response<BinaryData>> importBusinessMetadata(@HostParam("endpoint") String endpoint,
             @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
-            @BodyParam("multipart/form-data") BinaryData request, RequestOptions requestOptions, Context context);
+            @BodyParam("multipart/form-data") BinaryData businessMetadataOptions, RequestOptions requestOptions,
+            Context context);
 
         // @Multipart not supported by RestProxy
         @Post("/atlas/v2/entity/businessmetadata/import")
@@ -642,7 +643,8 @@ public final class EntitiesImpl {
         @UnexpectedResponseExceptionType(HttpResponseException.class)
         Response<BinaryData> importBusinessMetadataSync(@HostParam("endpoint") String endpoint,
             @HeaderParam("content-type") String contentType, @HeaderParam("accept") String accept,
-            @BodyParam("multipart/form-data") BinaryData request, RequestOptions requestOptions, Context context);
+            @BodyParam("multipart/form-data") BinaryData businessMetadataOptions, RequestOptions requestOptions,
+            Context context);
 
         @Delete("/atlas/v2/entity/guid/{guid}/labels")
         @ExpectedResponses({ 204 })
@@ -4611,7 +4613,7 @@ public final class EntitiesImpl {
      * request would look something like this
      * 
      * GET
-     * /v2/entity/bulk/uniqueAttribute/type/hive_db?attr_1:qualifiedName=db1@cl1&amp;attr_2:qualifiedName=db2@cl1
+     * /v2/entity/bulk/uniqueAttribute/type/hive_db?attr_1:qualifiedName=db1&#064;cl1&amp;attr_2:qualifiedName=db2&#064;cl1
      * 
      * Note:
      * at least one unique attribute must be provided.
@@ -4764,7 +4766,7 @@ public final class EntitiesImpl {
      * request would look something like this
      * 
      * GET
-     * /v2/entity/bulk/uniqueAttribute/type/hive_db?attr_1:qualifiedName=db1@cl1&amp;attr_2:qualifiedName=db2@cl1
+     * /v2/entity/bulk/uniqueAttribute/type/hive_db?attr_1:qualifiedName=db1&#064;cl1&amp;attr_2:qualifiedName=db2&#064;cl1
      * 
      * Note:
      * at least one unique attribute must be provided.
@@ -5393,7 +5395,7 @@ public final class EntitiesImpl {
      * }
      * }</pre>
      * 
-     * @param request The request parameter.
+     * @param businessMetadataOptions Business metadata to send to the service.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5402,12 +5404,12 @@ public final class EntitiesImpl {
      * @return bulk import result along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> importBusinessMetadataWithResponseAsync(BinaryData request,
+    public Mono<Response<BinaryData>> importBusinessMetadataWithResponseAsync(BinaryData businessMetadataOptions,
         RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
         return FluxUtil.withContext(context -> service.importBusinessMetadata(this.client.getEndpoint(), contentType,
-            accept, request, requestOptions, context));
+            accept, businessMetadataOptions, requestOptions, context));
     }
 
     /**
@@ -5431,7 +5433,7 @@ public final class EntitiesImpl {
      * }
      * }</pre>
      * 
-     * @param request The request parameter.
+     * @param businessMetadataOptions Business metadata to send to the service.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -5440,11 +5442,12 @@ public final class EntitiesImpl {
      * @return bulk import result along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<BinaryData> importBusinessMetadataWithResponse(BinaryData request, RequestOptions requestOptions) {
+    public Response<BinaryData> importBusinessMetadataWithResponse(BinaryData businessMetadataOptions,
+        RequestOptions requestOptions) {
         final String contentType = "multipart/form-data";
         final String accept = "application/json";
-        return service.importBusinessMetadataSync(this.client.getEndpoint(), contentType, accept, request,
-            requestOptions, Context.NONE);
+        return service.importBusinessMetadataSync(this.client.getEndpoint(), contentType, accept,
+            businessMetadataOptions, requestOptions, Context.NONE);
     }
 
     /**

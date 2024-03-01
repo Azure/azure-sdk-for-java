@@ -6,7 +6,6 @@ package com.azure.analytics.purview.datamap;
 
 import com.azure.analytics.purview.datamap.implementation.EntitiesImpl;
 import com.azure.analytics.purview.datamap.implementation.MultipartFormDataHelper;
-import com.azure.analytics.purview.datamap.implementation.models.ImportBusinessMetadataRequest;
 import com.azure.analytics.purview.datamap.models.AtlasClassification;
 import com.azure.analytics.purview.datamap.models.AtlasClassifications;
 import com.azure.analytics.purview.datamap.models.AtlasEntitiesWithExtInfo;
@@ -15,9 +14,9 @@ import com.azure.analytics.purview.datamap.models.AtlasEntityHeaders;
 import com.azure.analytics.purview.datamap.models.AtlasEntityWithExtInfo;
 import com.azure.analytics.purview.datamap.models.BulkImportResult;
 import com.azure.analytics.purview.datamap.models.BusinessAttributeUpdateBehavior;
+import com.azure.analytics.purview.datamap.models.BusinessMetadataOptions;
 import com.azure.analytics.purview.datamap.models.ClassificationAssociateOptions;
 import com.azure.analytics.purview.datamap.models.EntityMutationResult;
-import com.azure.analytics.purview.datamap.models.FileDetails;
 import com.azure.analytics.purview.datamap.models.MoveEntitiesOptions;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ReturnType;
@@ -1949,7 +1948,7 @@ public final class EntityClient {
      * request would look something like this
      * 
      * GET
-     * /v2/entity/bulk/uniqueAttribute/type/hive_db?attr_1:qualifiedName=db1@cl1&amp;attr_2:qualifiedName=db2@cl1
+     * /v2/entity/bulk/uniqueAttribute/type/hive_db?attr_1:qualifiedName=db1&#064;cl1&amp;attr_2:qualifiedName=db2&#064;cl1
      * 
      * Note:
      * at least one unique attribute must be provided.
@@ -2338,7 +2337,7 @@ public final class EntityClient {
      * }
      * }</pre>
      * 
-     * @param request The request parameter.
+     * @param businessMetadataOptions Business metadata to send to the service.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -2348,10 +2347,11 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<BinaryData> importBusinessMetadataWithResponse(BinaryData request, RequestOptions requestOptions) {
+    Response<BinaryData> importBusinessMetadataWithResponse(BinaryData businessMetadataOptions,
+        RequestOptions requestOptions) {
         // Protocol API requires serialization of parts with content-disposition and data, as operation
         // 'importBusinessMetadata' is 'multipart/form-data'
-        return this.serviceClient.importBusinessMetadataWithResponse(request, requestOptions);
+        return this.serviceClient.importBusinessMetadataWithResponse(businessMetadataOptions, requestOptions);
     }
 
     /**
@@ -3566,7 +3566,7 @@ public final class EntityClient {
      * request would look something like this
      * 
      * GET
-     * /v2/entity/bulk/uniqueAttribute/type/hive_db?attr_1:qualifiedName=db1@cl1&amp;attr_2:qualifiedName=db2@cl1
+     * /v2/entity/bulk/uniqueAttribute/type/hive_db?attr_1:qualifiedName=db1&#064;cl1&amp;attr_2:qualifiedName=db2&#064;cl1
      * 
      * Note:
      * at least one unique attribute must be provided.
@@ -3575,7 +3575,7 @@ public final class EntityClient {
      * @param minExtInfo Whether to return minimal information for referred entities.
      * @param ignoreRelationships Whether to ignore relationship attributes.
      * @param attrNQualifiedName Qualified name of an entity. E.g. to find 2 entities you can set
-     * attrs_1:qualifiedName=db1@cl1&amp;attrs_2:qualifiedName=db2@cl1. (This is only an
+     * attrs_1:qualifiedName=db1&#064;cl1&amp;attrs_2:qualifiedName=db2&#064;cl1. (This is only an
      * example. qualifiedName can be changed to other unique attributes).
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -3620,7 +3620,7 @@ public final class EntityClient {
      * request would look something like this
      * 
      * GET
-     * /v2/entity/bulk/uniqueAttribute/type/hive_db?attr_1:qualifiedName=db1@cl1&amp;attr_2:qualifiedName=db2@cl1
+     * /v2/entity/bulk/uniqueAttribute/type/hive_db?attr_1:qualifiedName=db1&#064;cl1&amp;attr_2:qualifiedName=db2&#064;cl1
      * 
      * Note:
      * at least one unique attribute must be provided.
@@ -3795,7 +3795,7 @@ public final class EntityClient {
     /**
      * Upload the file for creating Business Metadata in BULK.
      * 
-     * @param file InputStream of file.
+     * @param businessMetadataOptions Business metadata to send to the service.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -3806,14 +3806,13 @@ public final class EntityClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public BulkImportResult importBusinessMetadata(FileDetails file) {
+    public BulkImportResult importBusinessMetadata(BusinessMetadataOptions businessMetadataOptions) {
         // Generated convenience method for importBusinessMetadataWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        ImportBusinessMetadataRequest requestObj = new ImportBusinessMetadataRequest(file);
-        BinaryData request
-            = new MultipartFormDataHelper(requestOptions).serializeFileField("file", requestObj.getFile().getContent(),
-                requestObj.getFile().getContentType(), requestObj.getFile().getFilename()).end().getRequestBody();
-        return importBusinessMetadataWithResponse(request, requestOptions).getValue().toObject(BulkImportResult.class);
+        return importBusinessMetadataWithResponse(new MultipartFormDataHelper(requestOptions)
+            .serializeFileField("file", businessMetadataOptions.getFile().getContent(),
+                businessMetadataOptions.getFile().getContentType(), businessMetadataOptions.getFile().getFilename())
+            .end().getRequestBody(), requestOptions).getValue().toObject(BulkImportResult.class);
     }
 
     /**

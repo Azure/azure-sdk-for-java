@@ -71,7 +71,8 @@ public final class QueryResult {
     }
 
     /**
-     * Get the searchCountApproximate property: 'True' if the '@search.count' is an approximate value and vise versa.
+     * Get the searchCountApproximate property: 'True' if the '&#064;search.count' is an approximate value and vise
+     * versa.
      * 
      * @return the searchCountApproximate value.
      */
@@ -93,7 +94,7 @@ public final class QueryResult {
     /**
      * Get the searchFacets property: A facet list that consists of index fields assetType ,classification,
      * contactId, and label. When the facet is specified in the request, the value of
-     * the facet is returned as an element of @search.facets.
+     * the facet is returned as an element of &#064;search.facets.
      * 
      * @return the searchFacets value.
      */

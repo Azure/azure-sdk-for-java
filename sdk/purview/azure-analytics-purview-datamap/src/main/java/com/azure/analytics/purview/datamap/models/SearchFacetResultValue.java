@@ -12,7 +12,7 @@ import java.util.List;
 /**
  * A facet list that consists of index fields assetType ,classification,
  * contactId, and label. When the facet is specified in the request, the value of
- * the facet is returned as an element of @search.facets.
+ * the facet is returned as an element of &#064;search.facets.
  */
 @Immutable
 public final class SearchFacetResultValue {
