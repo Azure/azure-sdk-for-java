@@ -122,7 +122,19 @@ public final class SynchronousReceiverTest {
         Assertions.assertEquals(1, list.size());
         Assertions.assertEquals(message0, list.get(0));
 
-        upstream.emitNext(message1, Sinks.EmitFailureHandler.FAIL_FAST);
+        final Sinks.EmitResult emitResult = upstream.tryEmitNext(message1);
+        Assertions.assertEquals(Sinks.EmitResult.OK, emitResult);
+        try {
+            // The earlier receive() call has a timer-thread to complete the receiving when 'maxWaitTime' (250ms) expires.
+            // It is possible that when emitting 'message1' from the test-thread, the timer-thread is still in the drain-loop.
+            // In that case test-thread will continue to run the verification to see if 'release' is invoked,
+            // the timer-thread may not have called 'release' yet or is still doing it. This setup can make the check
+            // "verify(asyncClient).release(messageCaptor.capture())" to fail. So, the test-thread sleeps here giving
+            // some time for timer-thread to be done.
+            Thread.sleep(500);
+        } catch (InterruptedException e) {
+            LOGGER.warning("Exception while wait. ", e);
+        }
         verify(asyncClient).release(messageCaptor.capture());
         verify(asyncClient, times(1)).release(any());
         final ServiceBusReceivedMessage releasedMessage = messageCaptor.getValue();
