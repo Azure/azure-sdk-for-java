@@ -4,7 +4,6 @@ package com.azure.storage.common.test.shared;
 
 import com.azure.core.client.traits.HttpTrait;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.jdk.httpclient.JdkHttpClientProvider;
 import com.azure.core.http.netty.NettyAsyncHttpClientProvider;
 import com.azure.core.http.okhttp.OkHttpAsyncClientProvider;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -50,8 +49,9 @@ public final class StorageCommonTestUtils {
     static {
         HttpClient jdkHttpHttpClient;
         try {
-            jdkHttpHttpClient = new JdkHttpClientProvider().createInstance();
-        } catch (LinkageError | Exception e) {
+            Class<?> clazz = Class.forName("com.azure.core.http.jdk.httpclient.JdkHttpClientProvider");
+            jdkHttpHttpClient = (HttpClient) clazz.getDeclaredMethod("createInstance").invoke(null);
+        } catch (LinkageError | ReflectiveOperationException e) {
             jdkHttpHttpClient = null;
         }
 
