@@ -30,15 +30,13 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
 
     private final OperationLogger operationLogger;
     private final boolean logRetryableFailures;
-    private final boolean logOnException;
     private final String retryableFailureSuffix;
 
     // e.g. "Sending telemetry to the ingestion service"
     public DiagnosticTelemetryPipelineListener(
-        String operation, boolean logRetryableFailures, boolean logOnException, String retryableFailureSuffix) {
+        String operation, boolean logRetryableFailures, String retryableFailureSuffix) {
         operationLogger = new OperationLogger(FOR_CLASS, operation);
         this.logRetryableFailures = logRetryableFailures;
-        this.logOnException = logOnException;
         this.retryableFailureSuffix = retryableFailureSuffix;
     }
 
@@ -101,7 +99,7 @@ public class DiagnosticTelemetryPipelineListener implements TelemetryPipelineLis
     public void onException(TelemetryPipelineRequest request, String reason, Throwable throwable) {
         if (!NetworkFriendlyExceptions.logSpecialOneTimeFriendlyException(
             throwable, request.getUrl().toString(), friendlyExceptionThrown, logger)) {
-            if (logOnException) {
+            if (logRetryableFailures) {
                 operationLogger.recordFailure(
                     reason + retryableFailureSuffix,
                     throwable,
