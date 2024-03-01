@@ -22,7 +22,18 @@ import java.util.regex.Pattern;
 import java.util.regex.PatternSyntaxException;
 
 /**
- * This represents proxy configuration to be used in http clients.
+ * <p>Represents the proxy configuration to be used in HTTP clients.</p>
+ *
+ * <p>This class encapsulates the proxy settings, including the proxy type, address, and optional credentials. It
+ * provides methods to set and get these properties.</p>
+ *
+ * <p>This class is useful when you want to configure a proxy for an HTTP client. For example, you can use it to
+ * create a proxy with specific credentials, or to specify hosts that should bypass the proxy.</p>
+ *
+ * <p>Note: This class provides a {@link Type} enum to represent the proxy type, which can be HTTP, SOCKS4, or SOCKS5.</p>
+ *
+ * @see Type
+ * @see InetSocketAddress
  */
 public class ProxyOptions {
     private static final ClientLogger LOGGER = new ClientLogger(ProxyOptions.class);
