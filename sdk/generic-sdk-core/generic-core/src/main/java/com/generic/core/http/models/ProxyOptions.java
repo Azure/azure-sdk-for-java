@@ -318,9 +318,9 @@ public class ProxyOptions {
 
             return proxyOptions;
         } catch (MalformedURLException ex) {
-//            LOGGER.atWarning()
-//                .addKeyValue("url", proxyProperty)
-//                .logAndThrow(() -> INVALID_PROXY_URL, ex);
+            LOGGER.atWarning()
+                .addKeyValue("url", proxyProperty)
+                .log(() -> INVALID_PROXY_URL, ex);
             return null;
         }
     }

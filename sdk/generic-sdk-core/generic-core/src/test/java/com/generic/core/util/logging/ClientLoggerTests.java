@@ -392,7 +392,7 @@ public class ClientLoggerTests {
         logger.atWarning()
             .addKeyValue("connectionId", "foo")
             .addKeyValue("linkName", 1)
-            .log(message);
+            .log(() -> message);
 
         assertMessage(
             "{\"message\":\"Param 1: test1, Param 2: test2, Param 3: test3\",\"connectionId\":\"foo\",\"linkName\":1}",
@@ -501,7 +501,7 @@ public class ClientLoggerTests {
         setupLogLevel(LogLevel.INFORMATIONAL.toString());
 
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class, Collections.emptyMap());
-        logger.atWarning().log(() -> "Param 1: {}, Param 2: {}, Param 3: {}", "test1", "test2", "test3");
+        logger.atWarning().log(() -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
 
         assertMessage(
             "{\"message\":\"Param 1: test1, Param 2: test2, Param 3: test3\"}",
@@ -541,7 +541,8 @@ public class ClientLoggerTests {
         logger.atInfo()
             .addKeyValue("local", true)
             .addKeyValue("connectionId", "conflict")
-            .log(() -> "Param 1: {}, Param 2: {}, Param 3: {}", "test1", "test2", "test3");
+            .log(
+            () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
 
         assertMessage(
             "{\"message\":\"Param 1: test1, Param 2: test2, Param 3: test3\",\"connectionId\":\"foo\",\"linkName\":1,\"anotherKey\":\"hello world\",\"local\":true,\"connectionId\":\"conflict\"}",
@@ -560,7 +561,8 @@ public class ClientLoggerTests {
         setupLogLevel(logLevelToConfigure.toString());
         ClientLogger logger = new ClientLogger(ClientLoggerTests.class);
 
-        logger.atWarning().log(String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
+        logger.atWarning().log(
+                () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
 
         assertMessage(
             "{\"message\":\"Param 1: test1, Param 2: test2, Param 3: test3\"}",
@@ -622,7 +624,7 @@ public class ClientLoggerTests {
         logger.atVerbose()
             .addKeyValue("connectionId", "foo")
             .addKeyValue("linkName", true)
-            .log((String) null);
+            .log(() -> (String) null);
 
         assertMessage(
             "{\"message\":\"\",\"connectionId\":\"foo\",\"linkName\":true}",
@@ -750,7 +752,8 @@ public class ClientLoggerTests {
         logger.atWarning()
             .addKeyValue("connectionId", () -> null)
             .addKeyValue("linkName", "bar")
-            .log(() -> "Param 1: {}, Param 2: {}, Param 3: {}", "test1", "test2", "test3");
+            .log(
+            () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
 
         assertMessage(
             "{\"message\":\"Param 1: test1, Param 2: test2, Param 3: test3\",\"connectionId\":null,\"linkName\":\"bar\"}",
@@ -774,7 +777,7 @@ public class ClientLoggerTests {
         logger.atWarning()
             .addKeyValue("connectionId", "foo")
             .addKeyValue("linkName", "bar")
-            .log(() -> "hello {}", "world", runtimeException);
+            .log(() -> String.format("hello {%s}", "world", runtimeException));
 
         String message = "{\"message\":\"hello world\",\"exception\":\"" + exceptionMessage + "\",\"connectionId\":\"foo\",\"linkName\":\"bar\"}";
         if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
@@ -832,7 +835,7 @@ public class ClientLoggerTests {
         logger.atWarning()
             .addKeyValue("connection\tId", "foo")
             .addKeyValue("linkName", "\rbar")
-            .log(() -> "hello {}, \"and\" {more}", "world", runtimeException);
+            .log(() -> String.format("hello {%s}, \"and\" {more}", "world", runtimeException));
 
 
         String escapedExceptionMessage = "An exception \\tmessage with \\\"special characters\\\"\\r\\n";
@@ -864,7 +867,7 @@ public class ClientLoggerTests {
         assertSame(runtimeException, logger.atWarning()
             .addKeyValue("connectionId", "foo")
             .addKeyValue("linkName", "bar")
-            .log(() -> RuntimeException));
+            .log(null, runtimeException));
 
         String message = "{\"message\":\"\",\"exception\":\"" + exceptionMessage + "\",\"connectionId\":\"foo\",\"linkName\":\"bar\"}";
         if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
@@ -893,7 +896,7 @@ public class ClientLoggerTests {
         assertSame(ioException, logger.atWarning()
             .addKeyValue("connectionId", "foo")
             .addKeyValue("linkName", "bar")
-            .log(ioException));
+            .log(null, ioException));
 
         String message = "{\"message\":\"\",\"exception\":\"" + exceptionMessage + "\",\"connectionId\":\"foo\",\"linkName\":\"bar\"}";
         if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
@@ -998,16 +1001,16 @@ public class ClientLoggerTests {
 
         switch (logLevel) {
             case VERBOSE:
-                logHelper(() -> logger.atVerbose().log(logFormat), (args) -> logger.atVerbose().log(logFormat, args), arguments);
+                logHelper(() -> logger.atVerbose().log(() -> logFormat), (args) -> logger.atVerbose().log(() -> logFormat), arguments);
                 break;
             case INFORMATIONAL:
-                logHelper(() -> logger.atInfo().log(logFormat), (args) -> logger.atInfo().log(logFormat, args), arguments);
+                logHelper(() -> logger.atInfo().log(() -> logFormat), (args) -> logger.atInfo().log(() -> logFormat), arguments);
                 break;
             case WARNING:
-                logHelper(() -> logger.atWarning().log(logFormat), (args) -> logger.atWarning().log(logFormat, args), arguments);
+                logHelper(() -> logger.atWarning().log(() -> logFormat), (args) -> logger.atWarning().log(() -> logFormat), arguments);
                 break;
             case ERROR:
-                logHelper(() -> logger.atError().log(logFormat), (args) -> logger.atError().log(logFormat, args), arguments);
+                logHelper(() -> logger.atError().log(() -> logFormat), (args) -> logger.atError().log(() -> logFormat), arguments);
                 break;
             default:
                 break;

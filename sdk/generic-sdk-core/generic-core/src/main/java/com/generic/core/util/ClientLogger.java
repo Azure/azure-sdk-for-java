@@ -1,5 +1,7 @@
-package com.generic.core.util;// Copyright (c) Microsoft Corporation. All rights reserved.
+// Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
+
+package com.generic.core.util;
 
 import com.generic.core.annotation.Metadata;
 import com.generic.core.implementation.util.CoreUtils;
@@ -78,7 +80,11 @@ public class ClientLogger {
     /**
      * Retrieves a logger for the passed class name using the {@link LoggerFactory} with
      * context that will be populated on all log records produced with this logger.
-     * <!-- src_embed com.generic.core.util.logging.clientlogger#globalcontext -->
+     *
+     * <p><strong>Code samples</strong></p>
+     *
+     * <p>Logging with context.</p>
+     * * <!-- src_embed com.generic.core.util.logging.clientlogger#globalcontext -->
      * <pre>
      * Map&lt;String, Object&gt; context = new HashMap&lt;&gt;&#40;&#41;;
      * context.put&#40;&quot;connectionId&quot;, &quot;95a47cf&quot;&#41;;
@@ -90,7 +96,7 @@ public class ClientLogger {
      *
      * @param className Class name creating the logger.
      * @param context Context to be populated on every log record written with this logger.
-     *                Objects are serialized with {@code toString()} method.
+     * Objects are serialized with {@code toString()} method.
      * @throws RuntimeException when logging configuration is invalid depending on SLF4J implementation.
      */
     public ClientLogger(String className, Map<String, Object> context) {
@@ -215,7 +221,7 @@ public class ClientLogger {
      * <pre>
      * logger.atWarning&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
-     *     .log&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name, exception&#41;;
+     *     .log&#40;&#40;&#41; -&gt; &quot;A formattable message. Hello, &#123;&#125;&quot;, name, exception&#41;;
      * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger.atWarning -->
      *
@@ -238,7 +244,7 @@ public class ClientLogger {
      * <pre>
      * logger.atInfo&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
-     *     .log&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
+     *     .log&#40;&#40;&#41; -&gt; &quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
      * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger.atInfo -->
      *
@@ -281,10 +287,11 @@ public class ClientLogger {
      *
      * <!-- src_embed com.generic.core.util.logging.clientlogger.atLevel -->
      * <pre>
-     * LogLevel level = response.getStatusCode&#40;&#41; == 200 ? LogLevel.INFORMATIONAL : LogLevel.WARNING;
+     * ClientLogger.LogLevel level = response.getStatusCode&#40;&#41; == 200
+     *     ? ClientLogger.LogLevel.INFORMATIONAL : ClientLogger.LogLevel.WARNING;
      * logger.atLevel&#40;level&#41;
      *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
-     *     .log&#40;&quot;message&quot;&#41;;
+     *     .log&#40;&#40;&#41; -&gt; &quot;message&quot;&#41;;
      * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger.atLevel -->
      *
@@ -310,7 +317,7 @@ public class ClientLogger {
      *     .addKeyValue&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
      *     .addKeyValue&#40;&quot;key2&quot;, true&#41;
      *     .addKeyValue&#40;&quot;key3&quot;, &#40;&#41; -&gt; getName&#40;&#41;&#41;
-     *     .log&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
+     *     .log&#40;&#40;&#41; -&gt; &quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
      * </pre>
      * <!-- end com.generic.core.util.logging.loggingeventbuilder -->
      */
@@ -360,7 +367,7 @@ public class ClientLogger {
          * <pre>
          * logger.atInfo&#40;&#41;
          *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
-         *     .log&#40;&quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
+         *     .log&#40;&#40;&#41; -&gt; &quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
          * </pre>
          * <!-- end com.generic.core.util.logging.clientlogger.atInfo -->
          *
@@ -390,7 +397,7 @@ public class ClientLogger {
          * logger.atVerbose&#40;&#41;
          *     &#47;&#47; equivalent to addKeyValue&#40;&quot;key&quot;, &#40;&#41; -&gt; new LoggableObject&#40;&quot;string representation&quot;&#41;.toString&#40;&#41;
          *     .addKeyValue&#40;&quot;key&quot;, new LoggableObject&#40;&quot;string representation&quot;&#41;&#41;
-         *     .log&#40;&quot;Param 1: &#123;&#125;, Param 2: &#123;&#125;, Param 3: &#123;&#125;&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;;
+         *     .log&#40;&#40;&#41; -&gt; &quot;Param 1: &#123;&#125;, Param 2: &#123;&#125;, Param 3: &#123;&#125;&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;;
          * </pre>
          * <!-- end com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#object -->
          *
@@ -483,59 +490,15 @@ public class ClientLogger {
          *
          * @param messageSupplier string message supplier.
          * @param throwable {@link Throwable} for the message.
+         * @return The passed {@link Throwable}.
          */
-        public void log(Supplier<String> messageSupplier, Throwable throwable) {
+        public <T extends Throwable> T log(Supplier<String> messageSupplier, T throwable) {
             if (this.isEnabled) {
                 String message = messageSupplier != null ? messageSupplier.get() : null;
                 performLogging(level, removeNewLinesFromLogMessage(getMessageWithContext(message, throwable)),
                     logger.isDebugEnabled() ? throwable : null);
             }
-        }
-
-        /**
-         * Logs the {@link Throwable} and returns it to be thrown.
-         *
-         * @param throwable Throwable to be logged and returned.
-         * @throws NullPointerException If {@code throwable} is {@code null}.
-         */
-        public void log(Throwable throwable) {
-            Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-            if (this.isEnabled) {
-                performLogging(level, getMessageWithContext(null, throwable), logger.isDebugEnabled() ? throwable : null);
-            }
-        }
-
-        /**
-         * Logs the {@link Throwable} and returns it to be thrown.
-         *
-         * @param throwable Throwable to be logged and returned.
-         * @throws NullPointerException If {@code throwable} is {@code null}.
-         */
-        public <T extends Throwable> void logAndThrow(Supplier<String> messageSupplier, T throwable) throws T {
-            Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-
-            if (this.isEnabled) {
-                String message = messageSupplier != null ? messageSupplier.get() : null;
-                performLogging(level, removeNewLinesFromLogMessage(getMessageWithContext(message, throwable)), logger.isDebugEnabled() ? throwable : null);
-            }
-
-            throw throwable;
-        }
-
-        /**
-         * Logs the {@link Throwable} and returns it to be thrown.
-         *
-         * @param throwable Throwable to be logged and returned.
-         * @throws NullPointerException If {@code throwable} is {@code null}.
-         */
-        public <T extends Throwable> void logAndThrow(T throwable) throws T {
-            Objects.requireNonNull(throwable, "'throwable' cannot be null.");
-
-            if (this.isEnabled) {
-                performLogging(level, removeNewLinesFromLogMessage(getMessageWithContext(null, throwable)), logger.isDebugEnabled() ? throwable : null);
-            }
-
-            throw throwable;
+            return throwable;
         }
 
         private String getMessageWithContext(String message, Throwable throwable) {

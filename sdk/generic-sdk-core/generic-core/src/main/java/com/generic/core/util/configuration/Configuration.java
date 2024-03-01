@@ -301,10 +301,10 @@ public class Configuration {
 
         if (value == null) {
             if (property.isRequired()) {
-                LOGGER.atError()
+                throw LOGGER.atError()
                     .addKeyValue("name", property.getName())
                     .addKeyValue("path", path)
-                    .logAndThrow(new IllegalArgumentException("Missing required property."));
+                    .log(null, new IllegalArgumentException("Missing required property."));
             }
             return property.getDefaultValue();
         }
@@ -312,14 +312,12 @@ public class Configuration {
         try {
             return property.getConverter().apply(value);
         } catch (RuntimeException ex) {
-            LOGGER.atError()
+            throw LOGGER.atError()
                 .addKeyValue("name", property.getName())
                 .addKeyValue("path", path)
                 .addKeyValue("value", property.getValueSanitizer().apply(value))
-                .logAndThrow(ex);
+                .log(null, ex);
         }
-        // it should never reach here
-        return null;
     }
 
     private String getLocalProperty(String name, Iterable<String> aliases, Function<String, String> valueSanitizer) {
