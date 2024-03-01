@@ -42,7 +42,9 @@ public class CosmosDbSourceConnectorITest extends KafkaCosmosIntegrationTestSuit
         sourceConnectorConfig.put("kafka.connect.cosmos.source.containers.includeAll", "false");
         sourceConnectorConfig.put("kafka.connect.cosmos.source.containers.includedList", singlePartitionContainerName);
 
-        // TODO[this PR]: create the topic ahead of time
+        // Create topic ahead of time
+        kafkaCosmosConnectContainer.createTopic(singlePartitionContainerName, 1);
+
         CosmosSourceConfig sourceConfig = new CosmosSourceConfig(sourceConnectorConfig);
         CosmosAsyncClient client = CosmosClientStore.getCosmosClient(sourceConfig.getAccountConfig());
         CosmosAsyncContainer container = client.getDatabase(databaseName).getContainer(singlePartitionContainerName);

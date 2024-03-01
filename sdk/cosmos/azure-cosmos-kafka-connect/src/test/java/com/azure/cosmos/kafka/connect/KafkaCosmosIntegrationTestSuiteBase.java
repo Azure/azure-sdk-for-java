@@ -29,7 +29,7 @@ import static org.testng.AssertJUnit.fail;
 
 public class KafkaCosmosIntegrationTestSuiteBase extends KafkaCosmosTestSuiteBase {
     private static final Logger logger = LoggerFactory.getLogger(KafkaCosmosIntegrationTestSuiteBase.class);
-    private static final Duration DEFAULT_CONTAINER_START_UP_TIMEOUT = Duration.ofSeconds(120);
+    private static final Duration DEFAULT_CONTAINER_START_UP_TIMEOUT = Duration.ofMinutes(5);
 
     protected static Network network;
     protected static KafkaContainer kafkaContainer;
@@ -51,7 +51,7 @@ public class KafkaCosmosIntegrationTestSuiteBase extends KafkaCosmosTestSuiteBas
     }
 
     private static void setupDockerContainers() throws IOException, InterruptedException {
-        //createConnectorJar();
+        createConnectorJar();
 
         logger.info("Setting up docker containers...");
 

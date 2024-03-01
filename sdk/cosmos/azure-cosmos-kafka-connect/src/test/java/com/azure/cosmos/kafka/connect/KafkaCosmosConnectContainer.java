@@ -5,6 +5,8 @@ package com.azure.cosmos.kafka.connect;
 
 import com.azure.core.exception.ResourceNotFoundException;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.apache.kafka.clients.admin.AdminClient;
+import org.apache.kafka.clients.admin.NewTopic;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.kafka.connect.json.JsonDeserializer;
@@ -18,14 +20,16 @@ import org.testcontainers.containers.GenericContainer;
 import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.utility.DockerImageName;
 
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Properties;
 
 public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosConnectContainer> {
     private static final Logger logger = LoggerFactory.getLogger(KafkaCosmosConnectContainer.class);
     private static final int KAFKA_CONNECT_PORT = 8083;
-    private String effectiveBootStrapServer;
     private KafkaConsumer<String, JsonNode> kafkaConsumer;
+    private AdminClient adminClient;
+    private int replicationFactor = 1;
 
     public KafkaCosmosConnectContainer(final DockerImageName dockerImageName) {
         super(dockerImageName);
@@ -88,6 +92,7 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
         Properties consumerProperties = defaultConsumerConfig();
         consumerProperties.put("bootstrap.servers", localBootstrapServer);
         this.kafkaConsumer = new KafkaConsumer<>(consumerProperties);
+        this.adminClient = this.getAdminClient(localBootstrapServer);
         return self();
     }
 
@@ -99,6 +104,8 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
         consumerProperties.put("sasl.mechanism", "PLAIN");
 
         this.kafkaConsumer = new KafkaConsumer<>(consumerProperties);
+        this.adminClient = this.getAdminClient(KafkaCosmosTestConfigurations.BOOTSTRAP_SERVER);
+        this.replicationFactor = 3;
         return self();
     }
 
@@ -137,5 +144,16 @@ public class KafkaCosmosConnectContainer extends GenericContainer<KafkaCosmosCon
 
     public String getTarget() {
         return "http://" + getContainerIpAddress() + ":" + getMappedPort(KAFKA_CONNECT_PORT);
+    }
+
+    public void createTopic(String topicName, int numPartitions) {
+        this.adminClient.createTopics(
+            Arrays.asList(new NewTopic(topicName, numPartitions, (short) replicationFactor)));
+    }
+
+    private AdminClient getAdminClient(String bootstrapServer) {
+        Properties properties = new Properties();
+        properties.put("bootstrap.servers", bootstrapServer);
+        return AdminClient.create(properties);
     }
 }
