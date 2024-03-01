@@ -94,9 +94,9 @@ public class AzureCliToken implements JsonSerializable<AzureCliToken> {
 
     private OffsetDateTime parseExpiresOnTime(String time) {
         OffsetDateTime tokenExpiry;
-        String timeToSecond = time.substring(0, time.indexOf("."));
-        String timeJoinedWithT = String.join("T", timeToSecond.split(" "));
-        tokenExpiry = LocalDateTime.parse(timeJoinedWithT, DateTimeFormatter.ISO_LOCAL_DATE_TIME)
+
+        // parse the incoming date: 2024-02-28 12:05:53.000000
+        tokenExpiry = LocalDateTime.parse(time, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))
             .atZone(ZoneId.systemDefault())
             .toOffsetDateTime().withOffsetSameInstant(ZoneOffset.UTC);
         return tokenExpiry;
