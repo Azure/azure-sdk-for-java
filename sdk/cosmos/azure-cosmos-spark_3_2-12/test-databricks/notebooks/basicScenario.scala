@@ -42,14 +42,16 @@ spark.sql(s"ALTER TABLE cosmosCatalog.${cosmosDatabaseName}.${cosmosContainerNam
   s"SET TBLPROPERTIES('manualThroughput' = '1100')")
 
 // read database with client retrieved from cache on the driver
-val clientFromCache = com.azure.cosmos.spark.udf.CosmosAsyncClientCache
+val clientCacheItemFromCache = com.azure.cosmos.spark.udf.CosmosAsyncClientCache
   .getCosmosClientFromCache(cfg)
+
+val clientFromCache = clientCacheItemFromCache
   .getClient
   .asInstanceOf[azure_cosmos_spark.com.azure.cosmos.CosmosAsyncClient]
 val dbResponse = clientFromCache.getDatabase(cosmosDatabaseName).read().block()
 
 assert(dbResponse.getProperties.getId.equals(cosmosDatabaseName))
-clientFromCache.close
+clientCacheItemFromCache.close
 
 
 // read database with client retrieved from cache on the executor
