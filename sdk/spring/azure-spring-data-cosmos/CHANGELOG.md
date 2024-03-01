@@ -1,15 +1,12 @@
 ## Release History
 
-### 5.10.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 5.10.0 (2024-03-01)
 
 #### Bugs Fixed
 * Fixed `IllegalStateException` for `delete` - See [PR 39010](https://github.com/Azure/azure-sdk-for-java/pull/39010).
 
 #### Other Changes
+* Updated `azure-cosmos` to version `4.56.0`.
 
 ### 5.9.1 (2024-02-08)
 
