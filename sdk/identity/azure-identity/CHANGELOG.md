@@ -4,6 +4,9 @@
 
 ### Other Changes
 
+### Bugs fixed
+- Fixed an issue where the broker dependency library was being probed for when it shouldn't be, resulting in an erronous error message. [#39002](https://github.com/Azure/azure-sdk-for-java/pull/39002)
+
 #### Dependency Updates
 
 - Upgraded `azure-core` from `1.46.0` to version `1.47.0`.
