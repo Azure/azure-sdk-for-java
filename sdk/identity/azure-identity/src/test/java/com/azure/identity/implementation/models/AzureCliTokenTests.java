@@ -86,7 +86,35 @@ public class AzureCliTokenTests {
                 assertEquals("subscriptionValue", token.getSubscription());
                 assertEquals("tenantValue", token.getTenant());
                 assertEquals("Bearer", token.getTokenType());
+                // this test works fine with the hardcoded values since we don't care about the conversion through
+                // local time.
                 assertEquals(OffsetDateTime.parse("2024-02-28T20:05:53Z"), token.getTokenExpiration());
+            }
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    // This test validates the json parsing works both ways.
+    @Test
+    public void testDoubleRoundTrip() {
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        try (JsonReader reader = JsonProviders.createReader(jsonWithExpiresOnUnixTime)) {
+            AzureCliToken token = AzureCliToken.fromJson(reader);
+            JsonWriter writer = JsonProviders.createWriter(stream);
+            token.toJson(writer);
+            writer.close();
+
+            try (JsonReader reader2 = JsonProviders.createReader(stream.toByteArray())) {
+                AzureCliToken token2 = AzureCliToken.fromJson(reader2);
+                assertEquals("tokenValue", token2.getAccessToken());
+                assertEquals("2024-02-28 12:05:53.000000", token2.getExpiresOn());
+                assertEquals(1709150753, token2.getExpiresOnUnixTime());
+                assertEquals("subscriptionValue", token2.getSubscription());
+                assertEquals("tenantValue", token2.getTenant());
+                assertEquals("Bearer", token2.getTokenType());
+                assertEquals(OffsetDateTime.parse("2024-02-28T20:05:53Z"), token2.getTokenExpiration());
             }
         } catch (IOException e) {
             throw new RuntimeException(e);

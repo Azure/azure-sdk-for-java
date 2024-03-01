@@ -9,6 +9,7 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 
 import java.io.IOException;
+import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
@@ -18,45 +19,14 @@ import java.time.format.DateTimeFormatter;
 /**
  * A wrapper class for deserializing a token payload returned from the Azure CLI.
  */
-public class AzureCliToken implements JsonSerializable<AzureCliToken> {
-    private static final OffsetDateTime EPOCH = OffsetDateTime.of(1970, 1, 1, 0, 0, 0, 0, ZoneOffset.UTC);
-
+public final class AzureCliToken implements JsonSerializable<AzureCliToken> {
     private String accessToken;
     private String expiresOn;
     private Long expiresOnUnixTime;
     private String subscription;
     private String tenant;
     private String tokenType;
-
-    public AzureCliToken accessToken(String accessToken) {
-        this.accessToken = accessToken;
-        return this;
-    }
-
-    public AzureCliToken expiresOn(String expiresOn) {
-        this.expiresOn = expiresOn;
-        return this;
-    }
-
-    public AzureCliToken expiresOnUnixTime(Long expiresOnUnixTime) {
-        this.expiresOnUnixTime = expiresOnUnixTime;
-        return this;
-    }
-
-    public AzureCliToken subscription(String subscription) {
-        this.subscription = subscription;
-        return this;
-    }
-
-    public AzureCliToken tenant(String tenant) {
-        this.tenant = tenant;
-        return this;
-    }
-
-    public AzureCliToken tokenType(String tokenType) {
-        this.tokenType = tokenType;
-        return this;
-    }
+    private OffsetDateTime tokenExpiry;
 
     public String getAccessToken() {
         return accessToken;
@@ -83,18 +53,11 @@ public class AzureCliToken implements JsonSerializable<AzureCliToken> {
     }
 
     public OffsetDateTime getTokenExpiration() {
-        OffsetDateTime tokenExpiry;
-        if (getExpiresOnUnixTime() != null) {
-            tokenExpiry = EPOCH.plusSeconds(getExpiresOnUnixTime());
-        } else {
-            tokenExpiry = parseExpiresOnTime(getExpiresOn());
-        }
         return tokenExpiry;
     }
 
-    private OffsetDateTime parseExpiresOnTime(String time) {
+    private static OffsetDateTime parseExpiresOnTime(String time) {
         OffsetDateTime tokenExpiry;
-
         // parse the incoming date: 2024-02-28 12:05:53.000000
         tokenExpiry = LocalDateTime.parse(time, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSSSSS"))
             .atZone(ZoneId.systemDefault())
@@ -106,7 +69,7 @@ public class AzureCliToken implements JsonSerializable<AzureCliToken> {
         jsonWriter.writeStartObject();
         jsonWriter.writeStringField("accessToken", accessToken);
         jsonWriter.writeStringField("expiresOn", expiresOn);
-        jsonWriter.writeNumberField("expiresOnUnixTime", expiresOnUnixTime);
+        jsonWriter.writeNumberField("expires_on", expiresOnUnixTime);
         jsonWriter.writeStringField("subscription", subscription);
         jsonWriter.writeStringField("tenant", tenant);
         jsonWriter.writeStringField("tokenType", tokenType);
@@ -121,21 +84,28 @@ public class AzureCliToken implements JsonSerializable<AzureCliToken> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
                 if ("accessToken".equals(fieldName)) {
-                    tokenHolder.accessToken(reader.getString());
+                    tokenHolder.accessToken = reader.getString();
                 } else if ("expiresOn".equals(fieldName)) {
-                    tokenHolder.expiresOn(reader.getString());
+                    tokenHolder.expiresOn = reader.getString();
                 } else if ("expires_on".equals(fieldName)) {
-                    tokenHolder.expiresOnUnixTime(reader.getLong());
+                    tokenHolder.expiresOnUnixTime = reader.getLong();
                 } else if ("subscription".equals(fieldName)) {
-                    tokenHolder.subscription(reader.getString());
+                    tokenHolder.subscription = reader.getString();
                 } else if ("tenant".equals(fieldName)) {
-                    tokenHolder.tenant(reader.getString());
+                    tokenHolder.tenant = reader.getString();
                 } else if ("tokenType".equals(fieldName)) {
-                    tokenHolder.tokenType(reader.getString());
+                    tokenHolder.tokenType = reader.getString();
                 } else {
                     reader.skipChildren();
                 }
             }
+
+            if (tokenHolder.expiresOnUnixTime != null) {
+                tokenHolder.tokenExpiry = Instant.ofEpochSecond(tokenHolder.getExpiresOnUnixTime()).atOffset(ZoneOffset.UTC);
+            } else {
+                tokenHolder.tokenExpiry = parseExpiresOnTime(tokenHolder.getExpiresOn());
+            }
+
             return tokenHolder;
         });
     }
