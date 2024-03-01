@@ -31,7 +31,7 @@ public class KafkaCosmosTestConfigurations {
     public static final String DEFAULT_CONNECT_STATUS_STORAGE_REPLICATION_FACTOR = "1";
     public static final String DEFAULT_CONNECT_KEY_CONVERTER = "org.apache.kafka.connect.storage.StringConverter";
     public static final String DEFAULT_CONNECT_VALUE_CONVERTER = "org.apache.kafka.connect.json.JsonConverter";
-    public static final String DEFAULT_CONNECT_PLUGIN_PATH = "/usr/share/java,/kafka/connect/cosmos-connector";
+    public static final String DEFAULT_CONNECT_PLUGIN_PATH = "/kafka/connect/cosmos-connector";
     public static final String DEFAULT_CONNECT_REST_ADVERTISED_HOST_NAME = "connect";
 
     public final static String MASTER_KEY =
@@ -176,14 +176,14 @@ public class KafkaCosmosTestConfigurations {
 
     private static Properties loadProperties() {
         Path root = FileSystems.getDefault().getPath("").toAbsolutePath();
-        Path propertiesInProject = Paths.get(root.toString(),"../kafka-cosmos.properties");
+        Path propertiesInProject = Paths.get(root.toString(),"../kafka-cosmos-local.properties");
 
         Properties props = loadFromPathIfExists(propertiesInProject);
         if (props != null) {
             return props;
         }
 
-        Path propertiesInUserHome = Paths.get(System.getProperty("user.home"), "kafka-cosmos.properties");
+        Path propertiesInUserHome = Paths.get(System.getProperty("user.home"), "kafka-cosmos-local.properties");
         props = loadFromPathIfExists(propertiesInUserHome);
         if (props != null) {
             return props;
