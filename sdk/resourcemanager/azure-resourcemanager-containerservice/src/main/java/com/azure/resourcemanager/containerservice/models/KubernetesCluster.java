@@ -171,6 +171,7 @@ public interface KubernetesCluster
             DefinitionStages.WithAgentPool,
             DefinitionStages.WithNetworkProfile,
             DefinitionStages.WithAddOnProfiles,
+            DefinitionStages.WithPricingTier,
             KubernetesCluster.DefinitionStages.WithCreate {
     }
 
@@ -186,6 +187,33 @@ public interface KubernetesCluster
          * The stage of the Kubernetes cluster definition allowing to specify the resource group.
          */
         interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithVersion> {
+        }
+
+        /**
+         * The stage of the Kubernetes cluster definition allowing to specify AKS pricing tier.
+         */
+        interface WithPricingTier {
+
+            /**
+             * Specifies the pricing tier  the Kubernetes cluster is free.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withFreeTier();
+
+            /**
+             * Specifies the pricing tier  the Kubernetes cluster is standard.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withStandardTier();
+
+            /**
+             * Specifies the pricing tier  the Kubernetes cluster is premium.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withPremiumTier();
         }
 
         /**
@@ -581,6 +609,7 @@ public interface KubernetesCluster
                 WithLocalAccounts,
                 WithDiskEncryption,
                 WithAgentPoolResourceGroup,
+                WithPricingTier,
                 Resource.DefinitionWithTags<WithCreate> {
         }
     }
@@ -594,6 +623,8 @@ public interface KubernetesCluster
             UpdateStages.WithAutoScalerProfile,
             UpdateStages.WithAAD,
             UpdateStages.WithLocalAccounts,
+            UpdateStages.WithVersion,
+            UpdateStages.WithPricingTier,
             Resource.UpdateWithTags<KubernetesCluster.Update>,
             Appliable<KubernetesCluster> {
     }
@@ -726,6 +757,54 @@ public interface KubernetesCluster
              * @return the next stage
              */
             Update disableLocalAccounts();
+        }
+
+        /**
+         * The stage of the Kubernetes cluster definition allowing to specify AKS pricing tier.
+         */
+        interface WithPricingTier {
+
+            /**
+             * Specifies the pricing tier  the Kubernetes cluster is free.
+             *
+             * @return the next stage
+             */
+            Update withFreeTier();
+
+            /**
+             * Specifies the pricing tier  the Kubernetes cluster is standard.
+             *
+             * @return the next stage
+             */
+            Update withStandardTier();
+
+            /**
+             * Specifies the pricing tier  the Kubernetes cluster is premium.
+             *
+             * @return the next stage
+             */
+            Update withPremiumTier();
+        }
+
+        /**
+         * The stage of the Kubernetes cluster update allowing to specify orchestration type.
+         */
+        interface WithVersion {
+            /**
+             * Specifies the version for the Kubernetes cluster.
+             * Could retrieve from {@link KubernetesClusters#listOrchestrators(Region, ContainerServiceResourceTypes)}
+             *
+             * @param kubernetesVersion the kubernetes version
+             * @return the next stage
+             */
+            Update withVersion(String kubernetesVersion);
+
+            /**
+             * Uses the default version for the Kubernetes cluster.
+             *
+             * @return the next stage
+             */
+            Update withDefaultVersion();
         }
     }
 }

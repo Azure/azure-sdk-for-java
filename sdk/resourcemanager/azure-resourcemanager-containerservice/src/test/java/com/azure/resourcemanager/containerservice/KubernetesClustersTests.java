@@ -19,6 +19,7 @@ import com.azure.resourcemanager.containerservice.models.Format;
 import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentPool;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterSkuTier;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
 import com.azure.resourcemanager.containerservice.models.OSDiskType;
@@ -529,5 +530,344 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
 
         kubernetesCluster.refresh();
         Assertions.assertTrue(kubernetesCluster.agentPools().get(agentPoolName2).isFipsEnabled());
+    }
+
+    @Test
+    public void testUpdateVersion() {
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
+            .define(generateRandomResourceName("aks", 15))
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withDefaultVersion()
+            .withRootUsername("testaks")
+            .withSshKey(SSH_KEY)
+            .withSystemAssignedManagedServiceIdentity()
+            .defineAgentPool(generateRandomResourceName("ap", 15))
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .attach()
+            .withDnsPrefix(generateRandomResourceName("dns", 15))
+            .create();
+
+        kubernetesCluster.refresh();
+        Assertions.assertEquals("1.27", kubernetesCluster.version());
+
+        kubernetesCluster.update().withVersion("1.28.5").apply();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals("1.28.5", kubernetesCluster.version());
+    }
+
+    @Test
+    public void testCreateKubernetesClusterWithFreePricingTier() {
+        String aksName = generateRandomResourceName("aks", 15);
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
+            .define(aksName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withDefaultVersion()
+            .withRootUsername("testaks")
+            .withSshKey(SSH_KEY)
+            .withSystemAssignedManagedServiceIdentity()
+            .defineAgentPool(generateRandomResourceName("ap", 15))
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .attach()
+            .withDnsPrefix(generateRandomResourceName("dns", 15))
+            .withFreeTier()
+            .create();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals(ManagedClusterSkuTier.FREE, kubernetesCluster.innerModel().sku().tier());
+    }
+
+    @Test
+    public void testCreateKubernetesClusterWithStandardPricingTier() {
+        String aksName = generateRandomResourceName("aks", 15);
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
+            .define(aksName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withDefaultVersion()
+            .withRootUsername("testaks")
+            .withSshKey(SSH_KEY)
+            .withSystemAssignedManagedServiceIdentity()
+            .defineAgentPool(generateRandomResourceName("ap", 15))
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .attach()
+            .withDnsPrefix(generateRandomResourceName("dns", 15))
+            .withStandardTier()
+            .create();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals(ManagedClusterSkuTier.STANDARD, kubernetesCluster.innerModel().sku().tier());
+    }
+
+    @Test
+    public void testCreateKubernetesClusterWithPremiumPricingTier() {
+        String aksName = generateRandomResourceName("aks", 15);
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
+            .define(aksName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withDefaultVersion()
+            .withRootUsername("testaks")
+            .withSshKey(SSH_KEY)
+            .withSystemAssignedManagedServiceIdentity()
+            .defineAgentPool(generateRandomResourceName("ap", 15))
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .attach()
+            .withDnsPrefix(generateRandomResourceName("dns", 15))
+            .withPremiumTier()
+            .create();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals(ManagedClusterSkuTier.PREMIUM, kubernetesCluster.innerModel().sku().tier());
+    }
+
+    @Test
+    public void testUpdatePricingTierFromDefaultToFree() {
+        String aksName = generateRandomResourceName("aks", 15);
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
+            .define(aksName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withDefaultVersion()
+            .withRootUsername("testaks")
+            .withSshKey(SSH_KEY)
+            .withSystemAssignedManagedServiceIdentity()
+            .defineAgentPool(generateRandomResourceName("ap", 15))
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .attach()
+            .withDnsPrefix(generateRandomResourceName("dns", 15))
+            .create();
+        kubernetesCluster.refresh();
+        kubernetesCluster.update().withFreeTier().apply();
+        Assertions.assertEquals(ManagedClusterSkuTier.FREE, kubernetesCluster.innerModel().sku().tier());
+    }
+
+    @Test
+    public void testUpdatePricingTierFromDefaultToStandard() {
+        String aksName = generateRandomResourceName("aks", 15);
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
+            .define(aksName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withDefaultVersion()
+            .withRootUsername("testaks")
+            .withSshKey(SSH_KEY)
+            .withSystemAssignedManagedServiceIdentity()
+            .defineAgentPool(generateRandomResourceName("ap", 15))
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .attach()
+            .withDnsPrefix(generateRandomResourceName("dns", 15))
+            .create();
+        kubernetesCluster.refresh();
+        kubernetesCluster.update().withStandardTier().apply();
+        Assertions.assertEquals(ManagedClusterSkuTier.STANDARD, kubernetesCluster.innerModel().sku().tier());
+    }
+
+    @Test
+    public void testUpdatePricingTierFromDefaultToPremium() {
+        String aksName = generateRandomResourceName("aks", 15);
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
+            .define(aksName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withDefaultVersion()
+            .withRootUsername("testaks")
+            .withSshKey(SSH_KEY)
+            .withSystemAssignedManagedServiceIdentity()
+            .defineAgentPool(generateRandomResourceName("ap", 15))
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .attach()
+            .withDnsPrefix(generateRandomResourceName("dns", 15))
+            .create();
+        kubernetesCluster.refresh();
+        kubernetesCluster.update().withPremiumTier().apply();
+        Assertions.assertEquals(ManagedClusterSkuTier.PREMIUM, kubernetesCluster.innerModel().sku().tier());
+    }
+
+    @Test
+    public void  testUpdatePricingTierFromFreeToStandard() {
+        String aksName = generateRandomResourceName("aks", 15);
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
+            .define(aksName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withDefaultVersion()
+            .withRootUsername("testaks")
+            .withSshKey(SSH_KEY)
+            .withSystemAssignedManagedServiceIdentity()
+            .defineAgentPool(generateRandomResourceName("ap", 15))
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .attach()
+            .withDnsPrefix(generateRandomResourceName("dns", 15))
+            .withFreeTier()
+            .create();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals(ManagedClusterSkuTier.FREE, kubernetesCluster.innerModel().sku().tier());
+
+        kubernetesCluster.update().withStandardTier().apply();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals(ManagedClusterSkuTier.STANDARD, kubernetesCluster.innerModel().sku().tier());
+    }
+
+    @Test
+    public void  testUpdatePricingTierFromStandardToFree() {
+        String aksName = generateRandomResourceName("aks", 15);
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
+            .define(aksName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withDefaultVersion()
+            .withRootUsername("testaks")
+            .withSshKey(SSH_KEY)
+            .withSystemAssignedManagedServiceIdentity()
+            .defineAgentPool(generateRandomResourceName("ap", 15))
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .attach()
+            .withDnsPrefix(generateRandomResourceName("dns", 15))
+            .withStandardTier()
+            .create();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals(ManagedClusterSkuTier.STANDARD, kubernetesCluster.innerModel().sku().tier());
+
+        kubernetesCluster.update().withFreeTier().apply();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals(ManagedClusterSkuTier.FREE, kubernetesCluster.innerModel().sku().tier());
+    }
+
+    @Test
+    public void  testUpdatePricingTierFromFreeToPremium() {
+        String aksName = generateRandomResourceName("aks", 15);
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
+            .define(aksName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withDefaultVersion()
+            .withRootUsername("testaks")
+            .withSshKey(SSH_KEY)
+            .withSystemAssignedManagedServiceIdentity()
+            .defineAgentPool(generateRandomResourceName("ap", 15))
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .attach()
+            .withDnsPrefix(generateRandomResourceName("dns", 15))
+            .withFreeTier()
+            .create();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals(ManagedClusterSkuTier.FREE, kubernetesCluster.innerModel().sku().tier());
+
+        kubernetesCluster.update().withPremiumTier().apply();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals(ManagedClusterSkuTier.PREMIUM, kubernetesCluster.innerModel().sku().tier());
+    }
+
+    @Test
+    public void  testUpdatePricingTierFromPremiumToFree() {
+        String aksName = generateRandomResourceName("aks", 15);
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
+            .define(aksName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withDefaultVersion()
+            .withRootUsername("testaks")
+            .withSshKey(SSH_KEY)
+            .withSystemAssignedManagedServiceIdentity()
+            .defineAgentPool(generateRandomResourceName("ap", 15))
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .attach()
+            .withDnsPrefix(generateRandomResourceName("dns", 15))
+            .withPremiumTier()
+            .create();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals(ManagedClusterSkuTier.PREMIUM, kubernetesCluster.innerModel().sku().tier());
+
+        kubernetesCluster.update().withFreeTier().apply();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals(ManagedClusterSkuTier.FREE, kubernetesCluster.innerModel().sku().tier());
+    }
+
+    @Test
+    public void  testUpdatePricingTierFromStandardToPremium() {
+        String aksName = generateRandomResourceName("aks", 15);
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
+            .define(aksName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withDefaultVersion()
+            .withRootUsername("testaks")
+            .withSshKey(SSH_KEY)
+            .withSystemAssignedManagedServiceIdentity()
+            .defineAgentPool(generateRandomResourceName("ap", 15))
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .attach()
+            .withDnsPrefix(generateRandomResourceName("dns", 15))
+            .withStandardTier()
+            .create();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals(ManagedClusterSkuTier.STANDARD, kubernetesCluster.innerModel().sku().tier());
+
+        kubernetesCluster.update().withPremiumTier().apply();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals(ManagedClusterSkuTier.PREMIUM, kubernetesCluster.innerModel().sku().tier());
+    }
+
+    @Test
+    public void  testUpdatePricingTierFromPremiumToStandard() {
+        String aksName = generateRandomResourceName("aks", 15);
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
+            .define(aksName)
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withDefaultVersion()
+            .withRootUsername("testaks")
+            .withSshKey(SSH_KEY)
+            .withSystemAssignedManagedServiceIdentity()
+            .defineAgentPool(generateRandomResourceName("ap", 15))
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .attach()
+            .withDnsPrefix(generateRandomResourceName("dns", 15))
+            .withPremiumTier()
+            .create();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals(ManagedClusterSkuTier.PREMIUM, kubernetesCluster.innerModel().sku().tier());
+
+        kubernetesCluster.update().withStandardTier().apply();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals(ManagedClusterSkuTier.STANDARD, kubernetesCluster.innerModel().sku().tier());
     }
 }
