@@ -2,8 +2,6 @@
 
 ## 1.11.3 (2024-03-01)
 
-### Other Changes
-
 ### Bugs fixed
 - Fixed an issue where the broker dependency library was being probed for when it shouldn't be, resulting in an erronous error message. [#39002](https://github.com/Azure/azure-sdk-for-java/pull/39002)
 
