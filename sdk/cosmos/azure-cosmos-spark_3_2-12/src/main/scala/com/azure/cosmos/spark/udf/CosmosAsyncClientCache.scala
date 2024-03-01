@@ -24,8 +24,6 @@ object CosmosAsyncClientCache {
     val useEventualConsistency = readConfig.forceEventualConsistency
     val sparkEnvironmentInfo = CosmosClientConfiguration.getSparkEnvironmentInfo(SparkSession.getActiveSession)
 
-    // delay getting the client from cache here to allow this to be executed on executors
-    // as well - not just on the driver
     new CosmosAsyncClientCacheItem(effectiveUserConfig, useEventualConsistency, sparkEnvironmentInfo)
   }
 
