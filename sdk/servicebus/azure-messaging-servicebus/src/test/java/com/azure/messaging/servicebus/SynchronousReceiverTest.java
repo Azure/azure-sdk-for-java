@@ -133,7 +133,7 @@ public final class SynchronousReceiverTest {
             // some time for timer-thread to be done.
             Thread.sleep(500);
         } catch (InterruptedException e) {
-            LOGGER.warning("Exception while wait. ", e);
+            Assertions.fail(e);
         }
         verify(asyncClient).release(messageCaptor.capture());
         verify(asyncClient, times(1)).release(any());
