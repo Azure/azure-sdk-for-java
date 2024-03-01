@@ -23,7 +23,7 @@ public class HelloWorld {
         // Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
         String token = defaultAzureCredential
             .getToken(new TokenRequestContext()
-                .addScopes("https://redis.azure.com/.default")).block().getToken();
+                .addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default")).block().getToken();
 
         // Create Client Configuration
         Config config = new Config();

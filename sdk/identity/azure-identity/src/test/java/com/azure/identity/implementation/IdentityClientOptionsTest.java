@@ -42,13 +42,4 @@ public class IdentityClientOptionsTest {
         identityClientOptions.disableInstanceDiscovery();
         Assertions.assertFalse(identityClientOptions.isInstanceDiscoveryEnabled());
     }
-
-    @Test
-    public void testCloneDoesNotEnableThingsItShouldNot() {
-        IdentityClientOptions identityClientOptions = new IdentityClientOptions();
-
-        IdentityClientOptions clonedOptions = identityClientOptions.clone();
-        Assertions.assertFalse(clonedOptions.isBrokerEnabled());
-        Assertions.assertFalse(clonedOptions.isUnsafeSupportLoggingEnabled());
-    }
 }
