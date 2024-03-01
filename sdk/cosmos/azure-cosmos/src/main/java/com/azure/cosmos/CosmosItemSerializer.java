@@ -4,11 +4,15 @@
 package com.azure.cosmos;
 
 import com.azure.cosmos.implementation.ObjectNodeMap;
+import com.azure.cosmos.implementation.PrimitiveJsonNodeMap;
 import com.azure.cosmos.implementation.Utils;
+import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.JsonNodeType;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.io.IOException;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -69,12 +73,16 @@ public abstract class CosmosItemSerializer {
                 return new ObjectNodeMap((ObjectNode)item);
             }
 
-            ObjectNode objectNode = objectMapper.convertValue(item, ObjectNode.class);
-            if (objectNode == null) {
+            JsonNode jsonNode = objectMapper.convertValue(item, JsonNode.class);
+            if (jsonNode == null) {
                 return null;
             }
 
-            return new ObjectNodeMap(objectNode);
+            if (jsonNode.isObject()) {
+                return new ObjectNodeMap((ObjectNode)jsonNode);
+            }
+
+            return new PrimitiveJsonNodeMap(jsonNode);
         }
 
         /**

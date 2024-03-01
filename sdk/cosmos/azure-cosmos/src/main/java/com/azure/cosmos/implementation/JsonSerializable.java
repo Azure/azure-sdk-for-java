@@ -263,22 +263,24 @@ public class JsonSerializable {
             ModelBridgeInternal.populatePropertyBag(value);
             this.propertyBag.set(propertyName, ModelBridgeInternal.getJsonSerializable(value).propertyBag);
         } else {
-            // POJO, ObjectNode, number (includes int, float, double etc), boolean,
+            // Arrays, POJO, ObjectNode, number (includes int, float, double etc), boolean,
             // and string
-            Class<?> classType = value.getClass();
-            if (value instanceof String || classType.isPrimitive() || Primitives.isWrapperType(classType)) {
-
-                this.propertyBag.set(propertyName, OBJECT_MAPPER.convertValue(value, JsonNode.class));
+            Map<String, Object> jsonTreeMap = itemSerializer.serialize(value);
+            ObjectNode objectNode;
+            if (jsonTreeMap instanceof ObjectNodeMap) {
+                this.propertyBag.set(propertyName, ((ObjectNodeMap) jsonTreeMap).getObjectNode());
+            } else if (jsonTreeMap instanceof PrimitiveJsonNodeMap) {
+                this.propertyBag.set(propertyName, ((PrimitiveJsonNodeMap) jsonTreeMap).getPrimitiveJsonNode());
             } else {
-                Map<String, Object> jsonTreeMap = itemSerializer.serialize(value);
-                ObjectNode objectNode;
-                if (jsonTreeMap instanceof ObjectNodeMap) {
-                    objectNode = ((ObjectNodeMap) jsonTreeMap).getObjectNode();
+                if (jsonTreeMap.size() == 1 && jsonTreeMap.get(PrimitiveJsonNodeMap.VALUE_KEY) != null) {
+                    this.propertyBag.set(
+                        propertyName,
+                        OBJECT_MAPPER.convertValue(jsonTreeMap.get(PrimitiveJsonNodeMap.VALUE_KEY), JsonNode.class));
                 } else {
-                    objectNode = OBJECT_MAPPER.convertValue(jsonTreeMap, ObjectNode.class);
+                    this.propertyBag.set(
+                        propertyName,
+                        OBJECT_MAPPER.convertValue(jsonTreeMap, ObjectNode.class));
                 }
-
-                this.propertyBag.set(propertyName, objectNode);
             }
         }
     }
