@@ -119,13 +119,16 @@ public final class TestEnvironment {
 
     private static TestHttpClientType readHttpClientTypeFromEnvironment() {
         String httpClients = Configuration.getGlobalConfiguration().get("AZURE_TEST_HTTP_CLIENTS", "netty");
-        switch (httpClients.toLowerCase()) {
-            case "netty":
-                return TestHttpClientType.NETTY;
-            case "okhttp":
-                return TestHttpClientType.OK_HTTP;
-            default:
-                throw new IllegalArgumentException("Unknown value of AZURE_TEST_HTTP_CLIENTS: " + httpClients);
+        if (httpClients.contains("netty")) {
+            return TestHttpClientType.NETTY;
+        } else if (httpClients.contains("okhttp")) {
+            return TestHttpClientType.OK_HTTP;
+        } else if (httpClients.contains("Vertx")) {
+            return TestHttpClientType.VERTX;
+        } else if (httpClients.contains("JdkHttp")) {
+            return TestHttpClientType.JDK_HTTP;
+        } else {
+            throw new IllegalArgumentException("Unknown value of AZURE_TEST_HTTP_CLIENTS: " + httpClients);
         }
     }
 
