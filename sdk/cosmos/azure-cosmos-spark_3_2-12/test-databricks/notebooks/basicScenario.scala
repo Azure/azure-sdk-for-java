@@ -71,9 +71,9 @@ sc.parallelize(Seq.empty[String]).foreachPartition(x => {
   val clientFromCacheOnExecutor = clientCacheItemOnExecutor
     .getClient
     .asInstanceOf[azure_cosmos_spark.com.azure.cosmos.CosmosAsyncClient]
-  val dbResponse = clientFromCacheOnExecutor.getDatabase(cosmosDatabaseName).read().block()
-  println(s"DB Name retrieved '${dbResponse.getProperties.getId}'")
-  assert(dbResponse.getProperties.getId.equals(cosmosDatabaseName))
+  val dbResponseOnExecutor = clientFromCacheOnExecutor.getDatabase(cosmosDatabaseName).read().block()
+  println(s"DB Name retrieved '${dbResponseOnExecutor.getProperties.getId}'")
+  assert(dbResponseOnExecutor.getProperties.getId.equals(cosmosDatabaseName))
   clientCacheItemOnExecutor.close
 })
 
