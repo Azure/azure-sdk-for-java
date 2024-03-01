@@ -42,12 +42,14 @@ import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.FunctionDefinition;
+import com.azure.ai.openai.models.ImageGenerationData;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageGenerations;
 import com.azure.ai.openai.models.SpeechGenerationOptions;
 import com.azure.ai.openai.models.SpeechVoice;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
+import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.policy.HttpLogDetailLevel;
 import com.azure.core.http.policy.HttpLogOptions;
@@ -66,6 +68,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -226,6 +229,10 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
         testRunner.accept("dall-e-3",
                 new ImageGenerationOptions("A drawing of the Seattle skyline in the style of Van Gogh")
         );
+    }
+
+    void contentFilterInputExceptionRunner(BiConsumer<String, ImageGenerationOptions> testRunner) {
+        testRunner.accept("dall-e-3", new ImageGenerationOptions("Go kill yourself"));
     }
 
     void getChatFunctionRunnerForNonAzure(BiConsumer<String, ChatCompletionsOptions> testRunner) {
@@ -516,8 +523,13 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     static void assertImageGenerations(ImageGenerations actual) {
-        assertNotNull(actual.getData());
-        assertFalse(actual.getData().isEmpty());
+        assertNotNull(actual);
+        List<ImageGenerationData> data = actual.getData();
+        assertNotNull(data);
+        ImageGenerationData imageGenerationData = data.get(0);
+        assertNotNull(imageGenerationData);
+        assertNotNull(imageGenerationData.getContentFilterResults());
+        assertNotNull(imageGenerationData.getPromptFilterResults());
     }
 
     static <T> T assertFunctionCall(ChatChoice actual, String functionName, Class<T> myPropertiesClazz) {
@@ -644,6 +656,17 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     static void assertFunctionToolCallArgs(String argumentJson) {
         FutureTemperatureArguments functionArguments = BinaryData.fromString(argumentJson).toObject(FutureTemperatureArguments.class);
         assertNotNull(functionArguments);
+    }
+
+    static void validateImageGenerationContentFilteringException(HttpResponseException httpResponseException) {
+        // TODO: We need to add POJO for the error response
+        // https://github.com/Azure/azure-sdk-for-java/issues/39013
+        Map<String, Object> exceptionValue = (Map) httpResponseException.getValue();
+        Map<String, Object> error = (Map) exceptionValue.get("error");
+        Map<String, Object> innerError = (Map) error.get("inner_error");
+        ContentFilterResultDetailsForPrompt contentFilterResults = BinaryData.fromObject(
+                innerError.get("content_filter_results")).toObject(ContentFilterResultDetailsForPrompt.class);
+        assertNotNull(contentFilterResults);
     }
 
     protected static final String BATMAN_TRANSCRIPTION =
