@@ -5,6 +5,7 @@ package com.azure.cosmos.implementation;
 
 import com.azure.cosmos.CosmosItemSerializer;
 import com.azure.cosmos.implementation.directconnectivity.Address;
+import com.azure.cosmos.implementation.guava25.primitives.Primitives;
 import com.azure.cosmos.implementation.query.PartitionedQueryExecutionInfoInternal;
 import com.azure.cosmos.implementation.query.QueryInfo;
 import com.azure.cosmos.implementation.query.QueryItem;
@@ -263,16 +264,22 @@ public class JsonSerializable {
             this.propertyBag.set(propertyName, ModelBridgeInternal.getJsonSerializable(value).propertyBag);
         } else {
             // POJO, ObjectNode, number (includes int, float, double etc), boolean,
-            // and string.
-            Map<String, Object> jsonTreeMap = itemSerializer.serialize(value);
-            ObjectNode objectNode;
-            if (jsonTreeMap instanceof ObjectNodeMap) {
-                objectNode = ((ObjectNodeMap)jsonTreeMap).getObjectNode();
-            } else {
-                objectNode = OBJECT_MAPPER.convertValue(jsonTreeMap, ObjectNode.class);
-            }
+            // and string
+            Class<?> classType = value.getClass();
+            if (value instanceof String || classType.isPrimitive() || Primitives.isWrapperType(classType)) {
 
-            this.propertyBag.set(propertyName, objectNode);
+                this.propertyBag.set(propertyName, OBJECT_MAPPER.convertValue(value, JsonNode.class));
+            } else {
+                Map<String, Object> jsonTreeMap = itemSerializer.serialize(value);
+                ObjectNode objectNode;
+                if (jsonTreeMap instanceof ObjectNodeMap) {
+                    objectNode = ((ObjectNodeMap) jsonTreeMap).getObjectNode();
+                } else {
+                    objectNode = OBJECT_MAPPER.convertValue(jsonTreeMap, ObjectNode.class);
+                }
+
+                this.propertyBag.set(propertyName, objectNode);
+            }
         }
     }
 
