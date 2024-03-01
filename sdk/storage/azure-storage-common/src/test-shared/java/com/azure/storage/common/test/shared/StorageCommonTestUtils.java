@@ -45,7 +45,18 @@ public final class StorageCommonTestUtils {
     private static final HttpClient NETTY_HTTP_CLIENT = new NettyAsyncHttpClientProvider().createInstance();
     private static final HttpClient OK_HTTP_CLIENT = new OkHttpAsyncClientProvider().createInstance();
     private static final HttpClient VERTX_HTTP_CLIENT = new VertxAsyncHttpClientProvider().createInstance();
-    private static final HttpClient JDK_HTTP_HTTP_CLIENT = new JdkHttpClientProvider().createInstance();
+    private static final HttpClient JDK_HTTP_HTTP_CLIENT;
+
+    static {
+        HttpClient jdkHttpHttpClient;
+        try {
+            jdkHttpHttpClient = new JdkHttpClientProvider().createInstance();
+        } catch (LinkageError | Exception e) {
+            jdkHttpHttpClient = null;
+        }
+
+        JDK_HTTP_HTTP_CLIENT = jdkHttpHttpClient;
+    }
 
     /**
      * Gets the CRC32 for the given string.
