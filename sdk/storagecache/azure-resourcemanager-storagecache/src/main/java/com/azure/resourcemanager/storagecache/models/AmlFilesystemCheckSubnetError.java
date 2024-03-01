@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storagecache.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The error details provided when the checkAmlFSSubnets call fails. */
+/**
+ * The error details provided when the checkAmlFSSubnets call fails.
+ */
 @Fluent
 public final class AmlFilesystemCheckSubnetError {
     /*
@@ -16,13 +18,15 @@ public final class AmlFilesystemCheckSubnetError {
     @JsonProperty(value = "filesystemSubnet")
     private AmlFilesystemCheckSubnetErrorFilesystemSubnet filesystemSubnet;
 
-    /** Creates an instance of AmlFilesystemCheckSubnetError class. */
+    /**
+     * Creates an instance of AmlFilesystemCheckSubnetError class.
+     */
     public AmlFilesystemCheckSubnetError() {
     }
 
     /**
      * Get the filesystemSubnet property: The error details for the AML file system's subnet.
-     *
+     * 
      * @return the filesystemSubnet value.
      */
     public AmlFilesystemCheckSubnetErrorFilesystemSubnet filesystemSubnet() {
@@ -31,19 +35,19 @@ public final class AmlFilesystemCheckSubnetError {
 
     /**
      * Set the filesystemSubnet property: The error details for the AML file system's subnet.
-     *
+     * 
      * @param filesystemSubnet the filesystemSubnet value to set.
      * @return the AmlFilesystemCheckSubnetError object itself.
      */
-    public AmlFilesystemCheckSubnetError withFilesystemSubnet(
-        AmlFilesystemCheckSubnetErrorFilesystemSubnet filesystemSubnet) {
+    public AmlFilesystemCheckSubnetError
+        withFilesystemSubnet(AmlFilesystemCheckSubnetErrorFilesystemSubnet filesystemSubnet) {
         this.filesystemSubnet = filesystemSubnet;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
