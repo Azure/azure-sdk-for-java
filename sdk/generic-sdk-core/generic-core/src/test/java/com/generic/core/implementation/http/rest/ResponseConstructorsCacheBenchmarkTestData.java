@@ -9,7 +9,6 @@ import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.implementation.http.serializer.HttpResponseDecodeData;
-import com.generic.core.implementation.http.serializer.HttpResponseDecoder;
 import com.generic.core.implementation.util.UrlBuilder;
 import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
@@ -22,6 +21,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Optional;
+
+import static com.generic.core.implementation.http.serializer.HttpResponseBodyDecoder.decodeByteArray;
 
 class ResponseConstructorsCacheBenchmarkTestData {
     // Model type for Http content
@@ -71,7 +72,6 @@ class ResponseConstructorsCacheBenchmarkTestData {
     }
 
     private static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
-    private static final HttpResponseDecoder RESPONSE_DECODER = new HttpResponseDecoder(SERIALIZER);
     private static final HttpRequest HTTP_REQUEST = new HttpRequest(HttpMethod.GET, createUrl());
     private static final HeaderName HELLO = HeaderName.fromString("hello");
     private static final Headers RESPONSE_HEADERS = new Headers().set(HELLO, "world");
@@ -89,8 +89,8 @@ class ResponseConstructorsCacheBenchmarkTestData {
 
     ResponseConstructorsCacheBenchmarkTestData() {
         this.inputs = new Input[2];
-        this.inputs[0] = new Input(RESPONSE_DECODER, FooService.class, "getVoidResponse", VOID_RESPONSE, null);
-        this.inputs[1] = new Input(RESPONSE_DECODER, FooService.class, "getFooSimpleResponse", FOO_RESPONSE, FOO);
+        this.inputs[0] = new Input(FooService.class, "getVoidResponse", VOID_RESPONSE, null);
+        this.inputs[1] = new Input(FooService.class, "getFooSimpleResponse", FOO_RESPONSE, FOO);
     }
 
     Input[] inputs() {
@@ -118,25 +118,27 @@ class ResponseConstructorsCacheBenchmarkTestData {
         private final HttpResponse<?> httpResponse;
         private final Object bodyAsObject;
 
-        Input(HttpResponseDecoder decoder, Class<?> serviceClass, String methodName, HttpResponse<?> httpResponse,
-              Object bodyAsObject) {
+        Input(Class<?> serviceClass, String methodName, HttpResponse<?> httpResponse, Object bodyAsObject) {
+            httpResponse.setDeserializationCallback((body) ->
+                decodeByteArray(body.toBytes(), httpResponse, SERIALIZER, new HttpResponseDecodeData() {
+                    @Override
+                    public Type getReturnType() {
+                        return returnType;
+                    }
+
+                    @Override
+                    public boolean isExpectedResponseStatusCode(int statusCode) {
+                        return false;
+                    }
+
+                    @Override
+                    public boolean isHeadersEagerlyConverted() {
+                        return false;
+                    }
+                }));
+
             this.returnType = findMethod(serviceClass, methodName).getGenericReturnType();
-            this.httpResponse = decoder.decode(httpResponse, new HttpResponseDecodeData() {
-                @Override
-                public Type getReturnType() {
-                    return returnType;
-                }
-
-                @Override
-                public boolean isExpectedResponseStatusCode(int statusCode) {
-                    return false;
-                }
-
-                @Override
-                public boolean isHeadersEagerlyConverted() {
-                    return false;
-                }
-            });
+            this.httpResponse = httpResponse;
             this.bodyAsObject = bodyAsObject;
         }
 

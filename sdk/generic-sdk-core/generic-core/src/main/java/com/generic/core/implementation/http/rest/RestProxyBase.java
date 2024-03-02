@@ -15,7 +15,6 @@ import com.generic.core.implementation.ReflectiveInvoker;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.http.ContentType;
 import com.generic.core.implementation.http.UnexpectedExceptionInformation;
-import com.generic.core.implementation.http.serializer.HttpResponseDecoder;
 import com.generic.core.implementation.http.serializer.MalformedValueException;
 import com.generic.core.implementation.util.UrlBuilder;
 import com.generic.core.models.BinaryData;
@@ -45,7 +44,6 @@ public abstract class RestProxyBase {
     final HttpPipeline httpPipeline;
     final ObjectSerializer serializer;
     final SwaggerInterfaceParser interfaceParser;
-    final HttpResponseDecoder decoder;
 
     /**
      * Create a {@link RestProxyBase}.
@@ -61,7 +59,6 @@ public abstract class RestProxyBase {
         this.httpPipeline = httpPipeline;
         this.serializer = serializer;
         this.interfaceParser = interfaceParser;
-        this.decoder = new HttpResponseDecoder(this.serializer);
     }
 
     public final Object invoke(Object proxy, final Method method, RequestOptions options,

@@ -36,8 +36,6 @@ class OkHttpHttpClient implements HttpClient {
     private static final byte[] EMPTY_BODY = new byte[0];
     private static final RequestBody EMPTY_REQUEST_BODY = RequestBody.create(EMPTY_BODY);
 
-    private static final String HTTP_REQUEST_PROGRESS_REPORTER = "com.generic.core.http.request.progress.reporter";
-
     final OkHttpClient httpClient;
 
     OkHttpHttpClient(OkHttpClient httpClient) {
@@ -53,6 +51,7 @@ class OkHttpHttpClient implements HttpClient {
         Request okHttpRequest = toOkHttpRequest(request);
         try {
             Response okHttpResponse = httpClient.newCall(okHttpRequest).execute();
+
             return toHttpResponse(request, okHttpResponse, eagerlyReadResponse, ignoreResponseBody,
                 eagerlyConvertHeaders);
         } catch (IOException e) {

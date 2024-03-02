@@ -12,8 +12,6 @@ import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.implementation.TypeUtil;
-import com.generic.core.implementation.http.serializer.HttpResponseDecodeData;
-import com.generic.core.implementation.http.serializer.HttpResponseDecoder;
 import com.generic.core.implementation.util.Base64Url;
 import com.generic.core.models.BinaryData;
 import com.generic.core.util.serializer.ObjectSerializer;
@@ -27,8 +25,9 @@ import java.nio.ByteBuffer;
 import java.util.EnumSet;
 import java.util.function.Consumer;
 
-public class RestProxyImpl extends RestProxyBase {
+import static com.generic.core.implementation.http.serializer.HttpResponseBodyDecoder.decodeByteArray;
 
+public class RestProxyImpl extends RestProxyBase {
     /**
      * Create a {@link RestProxyImpl}.
      *
@@ -71,13 +70,12 @@ public class RestProxyImpl extends RestProxyBase {
         }
 
         final HttpResponse<?> response = send(request);
-        decodedResponse = this.decoder.decode(response, methodParser);
 
-        int statusCode = decodedResponse.getStatusCode();
+        response.setDeserializationCallback((body) ->
+            decodeByteArray(body.toBytes(), response, serializer, methodParser));
 
         try {
-            return handleRestReturnType(decodedResponse, methodParser, methodParser.getReturnType(), options,
-                errorOptions);
+            return handleRestReturnType(response, methodParser, methodParser.getReturnType(), options, errorOptions);
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
         }
@@ -96,10 +94,8 @@ public class RestProxyImpl extends RestProxyBase {
      *
      * @return The {@link HttpResponse decodedResponse}.
      */
-    private HttpResponse<?> ensureExpectedStatus(HttpResponse<?> decodedResponse,
-                                                                         SwaggerMethodParser methodParser,
-                                                                         RequestOptions options,
-                                                                         EnumSet<ErrorOptions> errorOptions) {
+    private HttpResponse<?> ensureExpectedStatus(HttpResponse<?> decodedResponse, SwaggerMethodParser methodParser,
+                                                 RequestOptions options, EnumSet<ErrorOptions> errorOptions) {
         int responseStatusCode = decodedResponse.getStatusCode();
 
         // If the response was success or configured to not return an error status when the request fails, return the

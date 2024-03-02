@@ -8,7 +8,6 @@ import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.implementation.ReflectionUtils;
 import com.generic.core.implementation.ReflectiveInvoker;
-import com.generic.core.implementation.http.serializer.HttpResponseDecoder;
 import com.generic.core.util.ClientLogger;
 
 import java.lang.reflect.Constructor;

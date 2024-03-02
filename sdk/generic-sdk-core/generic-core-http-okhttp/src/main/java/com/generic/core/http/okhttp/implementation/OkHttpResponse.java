@@ -32,7 +32,7 @@ public class OkHttpResponse extends HttpResponse<BinaryData> {
 
         // innerResponse.body() getter will not return null for server returned responses.
         // It can be null:
-        // [a]. if response is built manually with null body (e.g for mocking)
+        // [a]. if response is built manually with null body (e.g. for mocking)
         // [b]. for the cases described here
         // [ref](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response/body/).
         this.responseBody = response.body();
