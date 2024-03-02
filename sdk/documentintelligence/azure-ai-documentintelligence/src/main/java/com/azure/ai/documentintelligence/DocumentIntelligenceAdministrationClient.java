@@ -250,14 +250,6 @@ public final class DocumentIntelligenceAdministrationClient {
      *             code: String (Required)
      *             message: String (Required)
      *             target: String (Optional)
-     *             details (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *             innererror (Optional): {
-     *                 code: String (Optional)
-     *                 message: String (Optional)
-     *                 innererror (Optional): (recursive schema, see innererror above)
-     *             }
      *         }
      *     ]
      * }
@@ -326,14 +318,6 @@ public final class DocumentIntelligenceAdministrationClient {
      *             code: String (Required)
      *             message: String (Required)
      *             target: String (Optional)
-     *             details (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *             innererror (Optional): {
-     *                 code: String (Optional)
-     *                 message: String (Optional)
-     *                 innererror (Optional): (recursive schema, see innererror above)
-     *             }
      *         }
      *     ]
      * }
@@ -566,14 +550,6 @@ public final class DocumentIntelligenceAdministrationClient {
      *             code: String (Required)
      *             message: String (Required)
      *             target: String (Optional)
-     *             details (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *             innererror (Optional): {
-     *                 code: String (Optional)
-     *                 message: String (Optional)
-     *                 innererror (Optional): (recursive schema, see innererror above)
-     *             }
      *         }
      *     ]
      * }
@@ -624,14 +600,6 @@ public final class DocumentIntelligenceAdministrationClient {
      *             code: String (Required)
      *             message: String (Required)
      *             target: String (Optional)
-     *             details (Optional): [
-     *                 (recursive schema, see above)
-     *             ]
-     *             innererror (Optional): {
-     *                 code: String (Optional)
-     *                 message: String (Optional)
-     *                 innererror (Optional): (recursive schema, see innererror above)
-     *             }
      *         }
      *     ]
      * }
@@ -681,7 +649,7 @@ public final class DocumentIntelligenceAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DocumentModelBuildOperationDetails, DocumentModelBuildOperationDetails>
+    public SyncPoller<DocumentModelBuildOperationDetails, DocumentModelDetails>
         beginBuildDocumentModel(BuildDocumentModelRequest buildRequest) {
         // Generated convenience method for beginBuildDocumentModelWithModel
         RequestOptions requestOptions = new RequestOptions();
@@ -702,7 +670,7 @@ public final class DocumentIntelligenceAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DocumentModelComposeOperationDetails, DocumentModelComposeOperationDetails>
+    public SyncPoller<DocumentModelComposeOperationDetails, DocumentModelDetails>
         beginComposeModel(ComposeDocumentModelRequest composeRequest) {
         // Generated convenience method for beginComposeModelWithModel
         RequestOptions requestOptions = new RequestOptions();
@@ -747,8 +715,8 @@ public final class DocumentIntelligenceAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DocumentModelCopyToOperationDetails, DocumentModelCopyToOperationDetails>
-        beginCopyModelTo(String modelId, CopyAuthorization copyToRequest) {
+    public SyncPoller<DocumentModelCopyToOperationDetails, DocumentModelDetails> beginCopyModelTo(String modelId,
+        CopyAuthorization copyToRequest) {
         // Generated convenience method for beginCopyModelToWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginCopyModelToWithModel(modelId, BinaryData.fromObject(copyToRequest), requestOptions);
@@ -883,7 +851,7 @@ public final class DocumentIntelligenceAdministrationClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierBuildOperationDetails>
+    public SyncPoller<DocumentClassifierBuildOperationDetails, DocumentClassifierDetails>
         beginBuildClassifier(BuildDocumentClassifierRequest buildRequest) {
         // Generated convenience method for beginBuildClassifierWithModel
         RequestOptions requestOptions = new RequestOptions();

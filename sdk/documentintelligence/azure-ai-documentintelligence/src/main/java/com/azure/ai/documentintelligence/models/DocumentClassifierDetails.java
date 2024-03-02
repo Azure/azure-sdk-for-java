@@ -71,7 +71,7 @@ public final class DocumentClassifierDetails {
      */
     @Generated
     @JsonProperty(value = "warnings")
-    private List<Error> warnings;
+    private List<Warning> warnings;
 
     /**
      * Creates an instance of DocumentClassifierDetails class.
@@ -166,7 +166,7 @@ public final class DocumentClassifierDetails {
      * @return the warnings value.
      */
     @Generated
-    public List<Error> getWarnings() {
+    public List<Warning> getWarnings() {
         return this.warnings;
     }
 }
