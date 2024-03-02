@@ -93,15 +93,14 @@ public abstract class RestProxyBase {
                                        ObjectSerializer objectSerializer) throws IOException;
 
     @SuppressWarnings({"unchecked"})
-    public Response<?> createResponse(HttpResponseDecoder.HttpDecodedResponse decodedResponse, Type entityType,
-                                      Object bodyAsObject) {
+    public Response<?> createResponse(HttpResponse<?> decodedResponse, Type entityType, Object bodyAsObject) {
         final Class<? extends Response<?>> clazz = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
 
         // Inspection of the response type needs to be performed to determine the course of action: either cast the
         // decoded response to Response or rely on reflection to create an appropriate Response subtype.
         if (clazz.equals(Response.class)) {
             if (decodedResponse.getValue() == null) {
-                decodedResponse.setCachedBody(bodyAsObject);
+                decodedResponse.setDecodedBody(bodyAsObject);
             }
 
             // Return the received decoded response cast to Response.
@@ -244,7 +243,7 @@ public abstract class RestProxyBase {
      * @return The {@link HttpResponseException} created from the provided details.
      */
     public static HttpResponseException instantiateUnexpectedException(UnexpectedExceptionInformation unexpectedExceptionInformation,
-                                                                       HttpResponse httpResponse,
+                                                                       HttpResponse<?> httpResponse,
                                                                        byte[] responseContent,
                                                                        Object responseDecodedContent) {
         StringBuilder exceptionMessage = new StringBuilder("Status code ")

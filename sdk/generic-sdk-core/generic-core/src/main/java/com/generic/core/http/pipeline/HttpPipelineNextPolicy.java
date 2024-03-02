@@ -26,7 +26,7 @@ public class HttpPipelineNextPolicy {
      *
      * @return The response.
      */
-    public HttpResponse process() {
+    public HttpResponse<?> process() {
         HttpPipelinePolicy nextPolicy = state.getNextPolicy();
 
         if (nextPolicy == null) {

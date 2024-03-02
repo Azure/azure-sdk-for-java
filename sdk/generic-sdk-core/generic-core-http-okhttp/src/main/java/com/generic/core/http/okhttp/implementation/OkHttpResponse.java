@@ -14,14 +14,21 @@ import okhttp3.ResponseBody;
 /**
  * Base response class for OkHttp with implementations for response metadata.
  */
-public class OkHttpResponse extends HttpResponse {
+public class OkHttpResponse extends HttpResponse<BinaryData> {
     private final ResponseBody responseBody;
 
-    private BinaryData value;
-
     public OkHttpResponse(Response response, HttpRequest request, boolean eagerlyConvertHeaders, byte[] bodyBytes) {
-        super(request, response.code(), eagerlyConvertHeaders ? fromOkHttpHeaders(response.headers())
-            : new OkHttpToAzureCoreHttpHeadersWrapper(response.headers()), null);
+        super(request,
+            response.code(),
+            eagerlyConvertHeaders
+                ? fromOkHttpHeaders(response.headers())
+                : new OkHttpToAzureCoreHttpHeadersWrapper(response.headers()),
+            bodyBytes == null
+                ? response.body() == null
+                    ? EMPTY_BODY
+                    : BinaryData.fromStream(response.body().byteStream())
+                : BinaryData.fromBytes(bodyBytes),
+            true);
 
         // innerResponse.body() getter will not return null for server returned responses.
         // It can be null:
@@ -29,7 +36,6 @@ public class OkHttpResponse extends HttpResponse {
         // [b]. for the cases described here
         // [ref](https://square.github.io/okhttp/4.x/okhttp/okhttp3/-response/body/).
         this.responseBody = response.body();
-        this.value = bodyBytes == null ? null : BinaryData.fromBytes(bodyBytes);
     }
 
     /**
@@ -60,19 +66,6 @@ public class OkHttpResponse extends HttpResponse {
             httpHeaders.add(HeaderName.fromString(nameValuePair.getFirst()), nameValuePair.getSecond()));
 
         return httpHeaders;
-    }
-
-    @Override
-    public BinaryData getValue() {
-        if (this.value == null) {
-            if (this.responseBody == null) {
-                this.value = BinaryData.fromBytes(new byte[0]);
-            } else {
-                this.value = BinaryData.fromStream(this.responseBody.byteStream());
-            }
-        }
-
-        return this.value;
     }
 
     @Override

@@ -99,7 +99,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public HttpResponse process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+    public HttpResponse<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         try {
             return attempt(httpRequest, next, 0, null);
         } catch (IOException e) {
@@ -152,11 +152,11 @@ public class RetryPolicy implements HttpPipelinePolicy {
         }
     }
 
-    private HttpResponse attempt(final HttpRequest httpRequest, final HttpPipelineNextPolicy next,
-                                 final int tryCount, final List<Exception> suppressed) throws IOException {
+    private HttpResponse<?> attempt(final HttpRequest httpRequest, final HttpPipelineNextPolicy next,
+                                    final int tryCount, final List<Exception> suppressed) throws IOException {
         httpRequest.getMetadata().setRetryCount(tryCount + 1);
 
-        HttpResponse httpResponse;
+        HttpResponse<?> httpResponse;
 
         try {
             httpResponse = next.clone().process();
@@ -217,7 +217,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
     /*
      * Determines the delay duration that should be waited before retrying.
      */
-    private static Duration determineDelayDuration(HttpResponse response, int tryCount, RetryStrategy retryStrategy,
+    private static Duration determineDelayDuration(HttpResponse<?> response, int tryCount, RetryStrategy retryStrategy,
         Function<Headers, Duration> delayFromHeaders) {
         // If the retry after header hasn't been configured, attempt to look up the well-known headers.
         if (delayFromHeaders == null) {
@@ -233,8 +233,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
         return retryStrategy.calculateRetryDelay(tryCount);
     }
 
-    private boolean shouldRetryResponse(RetryStrategy retryStrategy, HttpResponse response, int tryCount,
-        List<Exception> retriedExceptions) {
+    private boolean shouldRetryResponse(RetryStrategy retryStrategy, HttpResponse<?> response, int tryCount,
+                                        List<Exception> retriedExceptions) {
         return tryCount < maxRetries && retryStrategy.shouldRetryCondition(
             new RequestRetryCondition(response, null, tryCount, retriedExceptions));
     }

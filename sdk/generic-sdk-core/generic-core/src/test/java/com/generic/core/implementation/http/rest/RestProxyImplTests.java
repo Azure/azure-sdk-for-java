@@ -83,7 +83,7 @@ public class RestProxyImplTests {
         private volatile boolean lastResponseClosed;
 
         @Override
-        public HttpResponse send(HttpRequest request) {
+        public HttpResponse<?> send(HttpRequest request) {
             boolean success = request.getUrl().getPath().equals("/my/url/path");
 
             if (request.getHttpMethod().equals(HttpMethod.POST)) {

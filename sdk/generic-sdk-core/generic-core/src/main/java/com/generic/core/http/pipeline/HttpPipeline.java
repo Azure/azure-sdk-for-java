@@ -66,7 +66,7 @@ public final class HttpPipeline {
      *
      * @return An {@link HttpResponse}.
      */
-    public HttpResponse send(HttpRequest request) {
+    public HttpResponse<?> send(HttpRequest request) {
         HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(new HttpPipelineCallState(this, request));
 
         return next.process();

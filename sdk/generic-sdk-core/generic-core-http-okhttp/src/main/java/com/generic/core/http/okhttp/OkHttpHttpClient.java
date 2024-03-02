@@ -45,7 +45,7 @@ class OkHttpHttpClient implements HttpClient {
     }
 
     @Override
-    public HttpResponse send(HttpRequest request) {
+    public HttpResponse<?> send(HttpRequest request) {
         boolean eagerlyConvertHeaders = request.getMetadata().isEagerlyConvertHeaders();
         boolean eagerlyReadResponse = request.getMetadata().isEagerlyReadResponse();
         boolean ignoreResponseBody = request.getMetadata().isIgnoreResponseBody();
@@ -139,7 +139,7 @@ class OkHttpHttpClient implements HttpClient {
         return contentLength;
     }
 
-    private static HttpResponse toHttpResponse(HttpRequest request, okhttp3.Response response,
+    private static HttpResponse<?> toHttpResponse(HttpRequest request, okhttp3.Response response,
                                                   boolean eagerlyReadResponse, boolean ignoreResponseBody,
                                                   boolean eagerlyConvertHeaders) throws IOException {
         /*// For now, eagerlyReadResponse and ignoreResponseBody works the same.

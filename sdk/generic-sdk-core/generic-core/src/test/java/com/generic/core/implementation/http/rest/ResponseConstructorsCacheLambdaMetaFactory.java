@@ -5,6 +5,7 @@ package com.generic.core.implementation.http.rest;
 
 import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.HttpResponse;
 import com.generic.core.implementation.http.serializer.HttpResponseDecoder;
 import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
@@ -108,7 +109,7 @@ final class ResponseConstructorsCacheLambdaMetaFactory {
          *
          * @return an instance of a {@link Response} implementation
          */
-        Response<?> invoke(final HttpResponseDecoder.HttpDecodedResponse decodedResponse, final Object bodyAsObject) {
+        Response<?> invoke(final HttpResponse<?> decodedResponse, final Object bodyAsObject) {
             final HttpRequest httpRequest = decodedResponse.getRequest();
             final int responseStatusCode = decodedResponse.getStatusCode();
             final Headers responseHeaders = decodedResponse.getHeaders();

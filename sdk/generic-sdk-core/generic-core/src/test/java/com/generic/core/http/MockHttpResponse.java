@@ -14,7 +14,7 @@ import java.io.ByteArrayOutputStream;
 
 import static com.generic.core.util.TestUtils.cloneByteArray;
 
-public class MockHttpResponse extends HttpResponse {
+public class MockHttpResponse extends HttpResponse<BinaryData> {
     private static final ObjectSerializer SERIALIZER = new DefaultJsonSerializer();
 
     /**
@@ -61,7 +61,8 @@ public class MockHttpResponse extends HttpResponse {
      * @param bodyBytes Contents of the response.
      */
     public MockHttpResponse(HttpRequest request, int statusCode, Headers headers, byte[] bodyBytes) {
-        super(request, statusCode, headers, bodyBytes == null ? null : BinaryData.fromBytes(cloneByteArray(bodyBytes)));
+        super(request, statusCode, headers, bodyBytes == null ? null : BinaryData.fromBytes(cloneByteArray(bodyBytes)),
+            true);
     }
 
     /**

@@ -60,7 +60,7 @@ public class KeyCredentialPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public HttpResponse process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+    public HttpResponse<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         if ("http".equals(httpRequest.getUrl().getProtocol())) {
             throw LOGGER.logThrowableAsError(
                 new IllegalStateException("Key credentials require HTTPS to prevent leaking the key."));

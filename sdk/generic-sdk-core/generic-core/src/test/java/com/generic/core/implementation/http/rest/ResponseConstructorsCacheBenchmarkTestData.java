@@ -7,7 +7,6 @@ import com.generic.core.http.MockHttpResponse;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
-import com.generic.core.implementation.http.SimpleResponse;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
 import com.generic.core.implementation.http.serializer.HttpResponseDecodeData;
 import com.generic.core.implementation.http.serializer.HttpResponseDecoder;
@@ -51,14 +50,14 @@ class ResponseConstructorsCacheBenchmarkTestData {
     }
 
     // 1. final VoidResponse               (Ctr_args: 3)
-    public static final class VoidResponse extends SimpleResponse<Void> {
+    public static final class VoidResponse extends HttpResponse<Void> {
         VoidResponse(HttpRequest request, int statusCode, Headers headers, Void value) {
             super(request, statusCode, headers, value);
         }
     }
 
-    // 2. SimpleResponse<Foo> Type         (Ctr_args: 4)
-    public static final class FooSimpleResponse extends SimpleResponse<Foo> {
+    // 2. HttpResponse<Foo> Type         (Ctr_args: 4)
+    public static final class FooSimpleResponse extends HttpResponse<Foo> {
         FooSimpleResponse(HttpRequest request, int statusCode, Headers headers, Foo value) {
             super(request, statusCode, headers, value);
         }
@@ -80,9 +79,9 @@ class ResponseConstructorsCacheBenchmarkTestData {
     private static final Foo FOO = new Foo().setName("foo1");
     private static final byte[] FOO_BYTE_ARRAY = asJsonByteArray(FOO);
     // MOCK RESPONSES
-    private static final HttpResponse VOID_RESPONSE = new MockHttpResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
+    private static final HttpResponse<?> VOID_RESPONSE = new MockHttpResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
         RESPONSE_HEADERS, null);
-    private static final HttpResponse FOO_RESPONSE = new MockHttpResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
+    private static final HttpResponse<?> FOO_RESPONSE = new MockHttpResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
         RESPONSE_HEADERS, FOO_BYTE_ARRAY);
 
     // ARRAY HOLDING TEST DATA
@@ -116,14 +115,13 @@ class ResponseConstructorsCacheBenchmarkTestData {
 
     static class Input {
         private final Type returnType;
-        private final HttpResponseDecoder.HttpDecodedResponse decodedResponse;
+        private final HttpResponse<?> httpResponse;
         private final Object bodyAsObject;
 
-        Input(HttpResponseDecoder decoder, Class<?> serviceClass, String methodName, HttpResponse httpResponse,
+        Input(HttpResponseDecoder decoder, Class<?> serviceClass, String methodName, HttpResponse<?> httpResponse,
               Object bodyAsObject) {
-
             this.returnType = findMethod(serviceClass, methodName).getGenericReturnType();
-            this.decodedResponse = decoder.decode(httpResponse, new HttpResponseDecodeData() {
+            this.httpResponse = decoder.decode(httpResponse, new HttpResponseDecodeData() {
                 @Override
                 public Type getReturnType() {
                     return returnType;
@@ -142,15 +140,15 @@ class ResponseConstructorsCacheBenchmarkTestData {
             this.bodyAsObject = bodyAsObject;
         }
 
-        Type returnType() {
+        Type getReturnType() {
             return this.returnType;
         }
 
-        HttpResponseDecoder.HttpDecodedResponse decodedResponse() {
-            return this.decodedResponse;
+        HttpResponse<?> getResponse() {
+            return this.httpResponse;
         }
 
-        Object bodyAsObject() {
+        Object getBodyAsObject() {
             return this.bodyAsObject;
         }
 

@@ -9,7 +9,7 @@ import com.generic.core.http.models.HttpResponse;
 
 public class NoOpHttpClient implements HttpClient {
     @Override
-    public HttpResponse send(HttpRequest request) {
+    public HttpResponse<?> send(HttpRequest request) {
         return null; // No-op
     }
 }

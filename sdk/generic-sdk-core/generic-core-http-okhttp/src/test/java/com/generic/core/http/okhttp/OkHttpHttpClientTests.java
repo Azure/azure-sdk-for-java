@@ -11,7 +11,6 @@ import com.generic.core.models.Header;
 import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 import com.generic.core.shared.LocalTestServer;
-
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -123,8 +122,9 @@ public class OkHttpHttpClientTests {
 
         for (int i = 0; i < numRequests; i++) {
             requests.add(() -> {
-                try (HttpResponse response = doRequest(client, "/long")) {
+                try (HttpResponse<?> response = doRequest(client, "/long")) {
                     byte[] body = response.getBody().toBytes();
+
                     TestUtils.assertArraysEqual(LONG_BODY, body);
 
                     return null;
@@ -149,7 +149,7 @@ public class OkHttpHttpClientTests {
         Headers headers = new Headers().set(singleValueHeaderName, singleValueHeaderValue)
             .set(multiValueHeaderName, multiValueHeaderValue);
 
-        HttpResponse response = client.send(
+        HttpResponse<?> response = client.send(
             new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH)).setHeaders(headers));
 
         assertEquals(200, response.getStatusCode());
@@ -192,7 +192,7 @@ public class OkHttpHttpClientTests {
         assertArrayEquals(expectedBody, bytes);
     }
 
-    private static HttpResponse doRequest(HttpClient client, String path) {
+    private static HttpResponse<?> doRequest(HttpClient client, String path) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
 
         return client.send(request);

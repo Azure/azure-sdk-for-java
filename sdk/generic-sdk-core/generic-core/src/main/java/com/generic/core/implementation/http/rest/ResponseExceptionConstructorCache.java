@@ -36,7 +36,7 @@ public final class ResponseExceptionConstructorCache {
 
     @SuppressWarnings("unchecked")
     public static <T extends HttpResponseException> T invoke(ReflectiveInvoker reflectiveInvoker,
-                                                             String exceptionMessage, HttpResponse httpResponse,
+                                                             String exceptionMessage, HttpResponse<?> httpResponse,
                                                              Object exceptionBody) {
         try {
             return (T) reflectiveInvoker.invokeWithArguments(exceptionMessage, httpResponse, exceptionBody);

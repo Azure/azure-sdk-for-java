@@ -81,7 +81,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
 
 
     @Override
-    public boolean shouldAttemptRedirect(HttpRequest httpRequest, HttpResponse httpResponse, int tryCount,
+    public boolean shouldAttemptRedirect(HttpRequest httpRequest, HttpResponse<?> httpResponse, int tryCount,
                                          Set<String> attemptedRedirectUrls) {
         if (isValidRedirectStatusCode(httpResponse.getStatusCode())
             && isValidRedirectCount(tryCount)
@@ -107,7 +107,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
     }
 
     @Override
-    public HttpRequest createRedirectRequest(HttpResponse httpResponse) {
+    public HttpRequest createRedirectRequest(HttpResponse<?> httpResponse) {
         return httpResponse.getRequest().setUrl(httpResponse.getHeaders().getValue(locationHeader));
     }
 
