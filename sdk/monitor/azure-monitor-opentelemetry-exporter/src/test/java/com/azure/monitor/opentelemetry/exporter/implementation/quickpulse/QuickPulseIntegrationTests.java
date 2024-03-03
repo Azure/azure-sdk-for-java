@@ -9,7 +9,6 @@ import com.azure.monitor.opentelemetry.exporter.implementation.builders.Exceptio
 import com.azure.monitor.opentelemetry.exporter.implementation.builders.ExceptionTelemetryBuilder;
 import com.azure.monitor.opentelemetry.exporter.implementation.configuration.ConnectionString;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
-import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 
 import java.util.Date;
@@ -62,7 +61,6 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
             "testSdkVersion");
     }
 
-    @Disabled
     @Test
     public void testPing() {
         QuickPulsePingSender quickPulsePingSender = getQuickPulsePingSender();
@@ -70,7 +68,6 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
         assertThat(quickPulseHeaderInfo.getQuickPulseStatus()).isEqualTo(QuickPulseStatus.QP_IS_ON);
     }
 
-    @Disabled
     @Test
     public void testPingWithAuthentication() {
         QuickPulsePingSender quickPulsePingSender = getQuickPulsePingSenderWithAuthentication();
@@ -78,7 +75,6 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
         assertThat(quickPulseHeaderInfo.getQuickPulseStatus()).isEqualTo(QuickPulseStatus.QP_IS_ON);
     }
 
-    @Disabled
     @Test
     public void testPingRequestBody() throws InterruptedException {
         CountDownLatch pingCountDown = new CountDownLatch(1);
@@ -92,7 +88,6 @@ public class QuickPulseIntegrationTests extends QuickPulseTestBase {
         assertTrue(pingCountDown.await(60, TimeUnit.SECONDS));
     }
 
-    @Disabled
     @Test
     public void testPostRequest() throws InterruptedException {
         ArrayBlockingQueue<HttpRequest> sendQueue = new ArrayBlockingQueue<>(256, true);
