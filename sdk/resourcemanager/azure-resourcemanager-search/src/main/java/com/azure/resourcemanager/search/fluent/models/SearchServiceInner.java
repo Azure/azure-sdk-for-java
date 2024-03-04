@@ -13,6 +13,7 @@ import com.azure.resourcemanager.search.models.Identity;
 import com.azure.resourcemanager.search.models.NetworkRuleSet;
 import com.azure.resourcemanager.search.models.ProvisioningState;
 import com.azure.resourcemanager.search.models.PublicNetworkAccess;
+import com.azure.resourcemanager.search.models.SearchDisabledDataExfiltrationOption;
 import com.azure.resourcemanager.search.models.SearchSemanticSearch;
 import com.azure.resourcemanager.search.models.SearchServiceStatus;
 import com.azure.resourcemanager.search.models.Sku;
@@ -20,7 +21,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Describes a search service and its current state. */
+/**
+ * Describes an Azure AI Search service and its current state.
+ */
 @Fluent
 public final class SearchServiceInner extends Resource {
     /*
@@ -30,7 +33,7 @@ public final class SearchServiceInner extends Resource {
     private SearchServiceProperties innerProperties;
 
     /*
-     * The SKU of the search service, which determines billing rate and capacity limits. This property is required when
+     * The SKU of the search service, which determines price tier and capacity limits. This property is required when
      * creating a new search service.
      */
     @JsonProperty(value = "sku")
@@ -42,13 +45,15 @@ public final class SearchServiceInner extends Resource {
     @JsonProperty(value = "identity")
     private Identity identity;
 
-    /** Creates an instance of SearchServiceInner class. */
+    /**
+     * Creates an instance of SearchServiceInner class.
+     */
     public SearchServiceInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the search service.
-     *
+     * 
      * @return the innerProperties value.
      */
     private SearchServiceProperties innerProperties() {
@@ -56,9 +61,9 @@ public final class SearchServiceInner extends Resource {
     }
 
     /**
-     * Get the sku property: The SKU of the search service, which determines billing rate and capacity limits. This
+     * Get the sku property: The SKU of the search service, which determines price tier and capacity limits. This
      * property is required when creating a new search service.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -66,9 +71,9 @@ public final class SearchServiceInner extends Resource {
     }
 
     /**
-     * Set the sku property: The SKU of the search service, which determines billing rate and capacity limits. This
+     * Set the sku property: The SKU of the search service, which determines price tier and capacity limits. This
      * property is required when creating a new search service.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the SearchServiceInner object itself.
      */
@@ -79,7 +84,7 @@ public final class SearchServiceInner extends Resource {
 
     /**
      * Get the identity property: The identity of the resource.
-     *
+     * 
      * @return the identity value.
      */
     public Identity identity() {
@@ -88,7 +93,7 @@ public final class SearchServiceInner extends Resource {
 
     /**
      * Set the identity property: The identity of the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the SearchServiceInner object itself.
      */
@@ -97,14 +102,18 @@ public final class SearchServiceInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SearchServiceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SearchServiceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -114,7 +123,7 @@ public final class SearchServiceInner extends Resource {
     /**
      * Get the replicaCount property: The number of replicas in the search service. If specified, it must be a value
      * between 1 and 12 inclusive for standard SKUs or between 1 and 3 inclusive for basic SKU.
-     *
+     * 
      * @return the replicaCount value.
      */
     public Integer replicaCount() {
@@ -124,7 +133,7 @@ public final class SearchServiceInner extends Resource {
     /**
      * Set the replicaCount property: The number of replicas in the search service. If specified, it must be a value
      * between 1 and 12 inclusive for standard SKUs or between 1 and 3 inclusive for basic SKU.
-     *
+     * 
      * @param replicaCount the replicaCount value to set.
      * @return the SearchServiceInner object itself.
      */
@@ -137,10 +146,10 @@ public final class SearchServiceInner extends Resource {
     }
 
     /**
-     * Get the partitionCount property: The number of partitions in the search service; if specified, it can be 1, 2, 3,
-     * 4, 6, or 12. Values greater than 1 are only valid for standard SKUs. For 'standard3' services with hostingMode
-     * set to 'highDensity', the allowed values are between 1 and 3.
-     *
+     * Get the partitionCount property: The number of partitions in the search service; if specified, it can be 1, 2,
+     * 3, 4, 6, or 12. Values greater than 1 are only valid for standard SKUs. For 'standard3' services with
+     * hostingMode set to 'highDensity', the allowed values are between 1 and 3.
+     * 
      * @return the partitionCount value.
      */
     public Integer partitionCount() {
@@ -148,10 +157,10 @@ public final class SearchServiceInner extends Resource {
     }
 
     /**
-     * Set the partitionCount property: The number of partitions in the search service; if specified, it can be 1, 2, 3,
-     * 4, 6, or 12. Values greater than 1 are only valid for standard SKUs. For 'standard3' services with hostingMode
-     * set to 'highDensity', the allowed values are between 1 and 3.
-     *
+     * Set the partitionCount property: The number of partitions in the search service; if specified, it can be 1, 2,
+     * 3, 4, 6, or 12. Values greater than 1 are only valid for standard SKUs. For 'standard3' services with
+     * hostingMode set to 'highDensity', the allowed values are between 1 and 3.
+     * 
      * @param partitionCount the partitionCount value to set.
      * @return the SearchServiceInner object itself.
      */
@@ -168,7 +177,7 @@ public final class SearchServiceInner extends Resource {
      * high density partitions that allow up to 1000 indexes, which is much higher than the maximum indexes allowed for
      * any other SKU. For the standard3 SKU, the value is either 'default' or 'highDensity'. For all other SKUs, this
      * value must be 'default'.
-     *
+     * 
      * @return the hostingMode value.
      */
     public HostingMode hostingMode() {
@@ -180,7 +189,7 @@ public final class SearchServiceInner extends Resource {
      * high density partitions that allow up to 1000 indexes, which is much higher than the maximum indexes allowed for
      * any other SKU. For the standard3 SKU, the value is either 'default' or 'highDensity'. For all other SKUs, this
      * value must be 'default'.
-     *
+     * 
      * @param hostingMode the hostingMode value to set.
      * @return the SearchServiceInner object itself.
      */
@@ -194,9 +203,9 @@ public final class SearchServiceInner extends Resource {
 
     /**
      * Get the publicNetworkAccess property: This value can be set to 'enabled' to avoid breaking changes on existing
-     * customer resources and templates. If set to 'disabled', traffic over public interface is not allowed, and private
-     * endpoint connections would be the exclusive access method.
-     *
+     * customer resources and templates. If set to 'disabled', traffic over public interface is not allowed, and
+     * private endpoint connections would be the exclusive access method.
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -205,9 +214,9 @@ public final class SearchServiceInner extends Resource {
 
     /**
      * Set the publicNetworkAccess property: This value can be set to 'enabled' to avoid breaking changes on existing
-     * customer resources and templates. If set to 'disabled', traffic over public interface is not allowed, and private
-     * endpoint connections would be the exclusive access method.
-     *
+     * customer resources and templates. If set to 'disabled', traffic over public interface is not allowed, and
+     * private endpoint connections would be the exclusive access method.
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the SearchServiceInner object itself.
      */
@@ -220,16 +229,16 @@ public final class SearchServiceInner extends Resource {
     }
 
     /**
-     * Get the status property: The status of the search service. Possible values include: 'running': The search service
-     * is running and no provisioning operations are underway. 'provisioning': The search service is being provisioned
-     * or scaled up or down. 'deleting': The search service is being deleted. 'degraded': The search service is
-     * degraded. This can occur when the underlying search units are not healthy. The search service is most likely
-     * operational, but performance might be slow and some requests might be dropped. 'disabled': The search service is
-     * disabled. In this state, the service will reject all API requests. 'error': The search service is in an error
-     * state. If your service is in the degraded, disabled, or error states, Microsoft is actively investigating the
-     * underlying issue. Dedicated services in these states are still chargeable based on the number of search units
-     * provisioned.
-     *
+     * Get the status property: The status of the search service. Possible values include: 'running': The search
+     * service is running and no provisioning operations are underway. 'provisioning': The search service is being
+     * provisioned or scaled up or down. 'deleting': The search service is being deleted. 'degraded': The search
+     * service is degraded. This can occur when the underlying search units are not healthy. The search service is most
+     * likely operational, but performance might be slow and some requests might be dropped. 'disabled': The search
+     * service is disabled. In this state, the service will reject all API requests. 'error': The search service is in
+     * an error state. 'stopped': The search service is in a subscription that's disabled. If your service is in the
+     * degraded, disabled, or error states, it means the Azure AI Search team is actively investigating the underlying
+     * issue. Dedicated services in these states are still chargeable based on the number of search units provisioned.
+     * 
      * @return the status value.
      */
     public SearchServiceStatus status() {
@@ -238,7 +247,7 @@ public final class SearchServiceInner extends Resource {
 
     /**
      * Get the statusDetails property: The details of the search service status.
-     *
+     * 
      * @return the statusDetails value.
      */
     public String statusDetails() {
@@ -246,14 +255,14 @@ public final class SearchServiceInner extends Resource {
     }
 
     /**
-     * Get the provisioningState property: The state of the last provisioning operation performed on the search service.
-     * Provisioning is an intermediate state that occurs while service capacity is being established. After capacity is
-     * set up, provisioningState changes to either 'succeeded' or 'failed'. Client applications can poll provisioning
-     * status (the recommended polling interval is from 30 seconds to one minute) by using the Get Search Service
-     * operation to see when an operation is completed. If you are using the free service, this value tends to come back
-     * as 'succeeded' directly in the call to Create search service. This is because the free service uses capacity that
-     * is already set up.
-     *
+     * Get the provisioningState property: The state of the last provisioning operation performed on the search
+     * service. Provisioning is an intermediate state that occurs while service capacity is being established. After
+     * capacity is set up, provisioningState changes to either 'succeeded' or 'failed'. Client applications can poll
+     * provisioning status (the recommended polling interval is from 30 seconds to one minute) by using the Get Search
+     * Service operation to see when an operation is completed. If you are using the free service, this value tends to
+     * come back as 'succeeded' directly in the call to Create search service. This is because the free service uses
+     * capacity that is already set up.
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -261,8 +270,9 @@ public final class SearchServiceInner extends Resource {
     }
 
     /**
-     * Get the networkRuleSet property: Network-specific rules that determine how the search service may be reached.
-     *
+     * Get the networkRuleSet property: Network specific rules that determine how the Azure AI Search service may be
+     * reached.
+     * 
      * @return the networkRuleSet value.
      */
     public NetworkRuleSet networkRuleSet() {
@@ -270,8 +280,9 @@ public final class SearchServiceInner extends Resource {
     }
 
     /**
-     * Set the networkRuleSet property: Network-specific rules that determine how the search service may be reached.
-     *
+     * Set the networkRuleSet property: Network specific rules that determine how the Azure AI Search service may be
+     * reached.
+     * 
      * @param networkRuleSet the networkRuleSet value to set.
      * @return the SearchServiceInner object itself.
      */
@@ -284,9 +295,37 @@ public final class SearchServiceInner extends Resource {
     }
 
     /**
+     * Get the disabledDataExfiltrationOptions property: A list of data exfiltration scenarios that are explicitly
+     * disallowed for the search service. Currently, the only supported value is 'All' to disable all possible data
+     * export scenarios with more fine grained controls planned for the future.
+     * 
+     * @return the disabledDataExfiltrationOptions value.
+     */
+    public List<SearchDisabledDataExfiltrationOption> disabledDataExfiltrationOptions() {
+        return this.innerProperties() == null ? null : this.innerProperties().disabledDataExfiltrationOptions();
+    }
+
+    /**
+     * Set the disabledDataExfiltrationOptions property: A list of data exfiltration scenarios that are explicitly
+     * disallowed for the search service. Currently, the only supported value is 'All' to disable all possible data
+     * export scenarios with more fine grained controls planned for the future.
+     * 
+     * @param disabledDataExfiltrationOptions the disabledDataExfiltrationOptions value to set.
+     * @return the SearchServiceInner object itself.
+     */
+    public SearchServiceInner withDisabledDataExfiltrationOptions(
+        List<SearchDisabledDataExfiltrationOption> disabledDataExfiltrationOptions) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new SearchServiceProperties();
+        }
+        this.innerProperties().withDisabledDataExfiltrationOptions(disabledDataExfiltrationOptions);
+        return this;
+    }
+
+    /**
      * Get the encryptionWithCmk property: Specifies any policy regarding encryption of resources (such as indexes)
      * using customer manager keys within a search service.
-     *
+     * 
      * @return the encryptionWithCmk value.
      */
     public EncryptionWithCmk encryptionWithCmk() {
@@ -296,7 +335,7 @@ public final class SearchServiceInner extends Resource {
     /**
      * Set the encryptionWithCmk property: Specifies any policy regarding encryption of resources (such as indexes)
      * using customer manager keys within a search service.
-     *
+     * 
      * @param encryptionWithCmk the encryptionWithCmk value to set.
      * @return the SearchServiceInner object itself.
      */
@@ -309,9 +348,9 @@ public final class SearchServiceInner extends Resource {
     }
 
     /**
-     * Get the disableLocalAuth property: When set to true, calls to the search service will not be permitted to utilize
-     * API keys for authentication. This cannot be set to true if 'dataPlaneAuthOptions' are defined.
-     *
+     * Get the disableLocalAuth property: When set to true, calls to the search service will not be permitted to
+     * utilize API keys for authentication. This cannot be set to true if 'dataPlaneAuthOptions' are defined.
+     * 
      * @return the disableLocalAuth value.
      */
     public Boolean disableLocalAuth() {
@@ -319,9 +358,9 @@ public final class SearchServiceInner extends Resource {
     }
 
     /**
-     * Set the disableLocalAuth property: When set to true, calls to the search service will not be permitted to utilize
-     * API keys for authentication. This cannot be set to true if 'dataPlaneAuthOptions' are defined.
-     *
+     * Set the disableLocalAuth property: When set to true, calls to the search service will not be permitted to
+     * utilize API keys for authentication. This cannot be set to true if 'dataPlaneAuthOptions' are defined.
+     * 
      * @param disableLocalAuth the disableLocalAuth value to set.
      * @return the SearchServiceInner object itself.
      */
@@ -336,7 +375,7 @@ public final class SearchServiceInner extends Resource {
     /**
      * Get the authOptions property: Defines the options for how the data plane API of a search service authenticates
      * requests. This cannot be set if 'disableLocalAuth' is set to true.
-     *
+     * 
      * @return the authOptions value.
      */
     public DataPlaneAuthOptions authOptions() {
@@ -346,7 +385,7 @@ public final class SearchServiceInner extends Resource {
     /**
      * Set the authOptions property: Defines the options for how the data plane API of a search service authenticates
      * requests. This cannot be set if 'disableLocalAuth' is set to true.
-     *
+     * 
      * @param authOptions the authOptions value to set.
      * @return the SearchServiceInner object itself.
      */
@@ -359,18 +398,9 @@ public final class SearchServiceInner extends Resource {
     }
 
     /**
-     * Get the privateEndpointConnections property: The list of private endpoint connections to the search service.
-     *
-     * @return the privateEndpointConnections value.
-     */
-    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
-        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
-    }
-
-    /**
      * Get the semanticSearch property: Sets options that control the availability of semantic search. This
-     * configuration is only possible for certain search SKUs in certain locations.
-     *
+     * configuration is only possible for certain Azure AI Search SKUs in certain locations.
+     * 
      * @return the semanticSearch value.
      */
     public SearchSemanticSearch semanticSearch() {
@@ -379,8 +409,8 @@ public final class SearchServiceInner extends Resource {
 
     /**
      * Set the semanticSearch property: Sets options that control the availability of semantic search. This
-     * configuration is only possible for certain search SKUs in certain locations.
-     *
+     * configuration is only possible for certain Azure AI Search SKUs in certain locations.
+     * 
      * @param semanticSearch the semanticSearch value to set.
      * @return the SearchServiceInner object itself.
      */
@@ -393,9 +423,19 @@ public final class SearchServiceInner extends Resource {
     }
 
     /**
-     * Get the sharedPrivateLinkResources property: The list of shared private link resources managed by the search
+     * Get the privateEndpointConnections property: The list of private endpoint connections to the Azure AI Search
      * service.
-     *
+     * 
+     * @return the privateEndpointConnections value.
+     */
+    public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
+        return this.innerProperties() == null ? null : this.innerProperties().privateEndpointConnections();
+    }
+
+    /**
+     * Get the sharedPrivateLinkResources property: The list of shared private link resources managed by the Azure AI
+     * Search service.
+     * 
      * @return the sharedPrivateLinkResources value.
      */
     public List<SharedPrivateLinkResourceInner> sharedPrivateLinkResources() {
@@ -403,8 +443,18 @@ public final class SearchServiceInner extends Resource {
     }
 
     /**
+     * Get the etag property: A system generated property representing the service's etag that can be for optimistic
+     * concurrency control during updates.
+     * 
+     * @return the etag value.
+     */
+    public String etag() {
+        return this.innerProperties() == null ? null : this.innerProperties().etag();
+    }
+
+    /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

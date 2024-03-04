@@ -9,8 +9,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
- * Describes the properties of a supported private link resource for the search service. For a given API version, this
- * represents the 'supported' groupIds when creating a shared private link resource.
+ * Describes the properties of a supported private link resource for the Azure AI Search service. For a given API
+ * version, this represents the 'supported' groupIds when creating a shared private link resource.
  */
 @Immutable
 public final class PrivateLinkResourceProperties {
@@ -33,18 +33,20 @@ public final class PrivateLinkResourceProperties {
     private List<String> requiredZoneNames;
 
     /*
-     * The list of resources that are onboarded to private link service and that are supported by search.
+     * The list of resources that are onboarded to private link service, that are supported by Azure AI Search.
      */
     @JsonProperty(value = "shareablePrivateLinkResourceTypes", access = JsonProperty.Access.WRITE_ONLY)
     private List<ShareablePrivateLinkResourceType> shareablePrivateLinkResourceTypes;
 
-    /** Creates an instance of PrivateLinkResourceProperties class. */
+    /**
+     * Creates an instance of PrivateLinkResourceProperties class.
+     */
     public PrivateLinkResourceProperties() {
     }
 
     /**
      * Get the groupId property: The group ID of the private link resource.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -53,7 +55,7 @@ public final class PrivateLinkResourceProperties {
 
     /**
      * Get the requiredMembers property: The list of required members of the private link resource.
-     *
+     * 
      * @return the requiredMembers value.
      */
     public List<String> requiredMembers() {
@@ -62,7 +64,7 @@ public final class PrivateLinkResourceProperties {
 
     /**
      * Get the requiredZoneNames property: The list of required DNS zone names of the private link resource.
-     *
+     * 
      * @return the requiredZoneNames value.
      */
     public List<String> requiredZoneNames() {
@@ -71,8 +73,8 @@ public final class PrivateLinkResourceProperties {
 
     /**
      * Get the shareablePrivateLinkResourceTypes property: The list of resources that are onboarded to private link
-     * service and that are supported by search.
-     *
+     * service, that are supported by Azure AI Search.
+     * 
      * @return the shareablePrivateLinkResourceTypes value.
      */
     public List<ShareablePrivateLinkResourceType> shareablePrivateLinkResourceTypes() {
@@ -81,7 +83,7 @@ public final class PrivateLinkResourceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

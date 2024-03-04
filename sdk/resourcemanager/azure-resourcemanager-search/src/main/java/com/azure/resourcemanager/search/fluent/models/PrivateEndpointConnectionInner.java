@@ -9,23 +9,27 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.search.models.PrivateEndpointConnectionProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes an existing private endpoint connection to the search service. */
+/**
+ * Describes an existing private endpoint connection to the Azure AI Search service.
+ */
 @Fluent
 public final class PrivateEndpointConnectionInner extends ProxyResource {
     /*
-     * Describes the properties of an existing private endpoint connection to the search service.
+     * Describes the properties of an existing private endpoint connection to the Azure AI Search service.
      */
     @JsonProperty(value = "properties")
     private PrivateEndpointConnectionProperties properties;
 
-    /** Creates an instance of PrivateEndpointConnectionInner class. */
+    /**
+     * Creates an instance of PrivateEndpointConnectionInner class.
+     */
     public PrivateEndpointConnectionInner() {
     }
 
     /**
-     * Get the properties property: Describes the properties of an existing private endpoint connection to the search
-     * service.
-     *
+     * Get the properties property: Describes the properties of an existing private endpoint connection to the Azure AI
+     * Search service.
+     * 
      * @return the properties value.
      */
     public PrivateEndpointConnectionProperties properties() {
@@ -33,9 +37,9 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
     }
 
     /**
-     * Set the properties property: Describes the properties of an existing private endpoint connection to the search
-     * service.
-     *
+     * Set the properties property: Describes the properties of an existing private endpoint connection to the Azure AI
+     * Search service.
+     * 
      * @param properties the properties value to set.
      * @return the PrivateEndpointConnectionInner object itself.
      */
@@ -46,7 +50,7 @@ public final class PrivateEndpointConnectionInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

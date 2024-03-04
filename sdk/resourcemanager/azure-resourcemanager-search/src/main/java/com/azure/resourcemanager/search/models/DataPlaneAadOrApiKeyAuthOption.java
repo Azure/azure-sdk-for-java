@@ -8,7 +8,8 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Indicates that either the API key or an access token from a Microsoft Entra ID tenant can be used for authentication.
+ * Indicates that either the API key or an access token from a Microsoft Entra ID tenant can be used for
+ * authentication.
  */
 @Fluent
 public final class DataPlaneAadOrApiKeyAuthOption {
@@ -19,14 +20,16 @@ public final class DataPlaneAadOrApiKeyAuthOption {
     @JsonProperty(value = "aadAuthFailureMode")
     private AadAuthFailureMode aadAuthFailureMode;
 
-    /** Creates an instance of DataPlaneAadOrApiKeyAuthOption class. */
+    /**
+     * Creates an instance of DataPlaneAadOrApiKeyAuthOption class.
+     */
     public DataPlaneAadOrApiKeyAuthOption() {
     }
 
     /**
      * Get the aadAuthFailureMode property: Describes what response the data plane API of a search service would send
      * for requests that failed authentication.
-     *
+     * 
      * @return the aadAuthFailureMode value.
      */
     public AadAuthFailureMode aadAuthFailureMode() {
@@ -36,7 +39,7 @@ public final class DataPlaneAadOrApiKeyAuthOption {
     /**
      * Set the aadAuthFailureMode property: Describes what response the data plane API of a search service would send
      * for requests that failed authentication.
-     *
+     * 
      * @param aadAuthFailureMode the aadAuthFailureMode value to set.
      * @return the DataPlaneAadOrApiKeyAuthOption object itself.
      */
@@ -47,7 +50,7 @@ public final class DataPlaneAadOrApiKeyAuthOption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

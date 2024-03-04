@@ -9,11 +9,13 @@ import com.azure.resourcemanager.search.fluent.models.PrivateEndpointConnectionI
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response containing a list of Private Endpoint connections. */
+/**
+ * Response containing a list of private endpoint connections.
+ */
 @Immutable
 public final class PrivateEndpointConnectionListResult {
     /*
-     * The list of Private Endpoint connections.
+     * The list of private endpoint connections.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateEndpointConnectionInner> value;
@@ -25,13 +27,15 @@ public final class PrivateEndpointConnectionListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of PrivateEndpointConnectionListResult class. */
+    /**
+     * Creates an instance of PrivateEndpointConnectionListResult class.
+     */
     public PrivateEndpointConnectionListResult() {
     }
 
     /**
-     * Get the value property: The list of Private Endpoint connections.
-     *
+     * Get the value property: The list of private endpoint connections.
+     * 
      * @return the value value.
      */
     public List<PrivateEndpointConnectionInner> value() {
@@ -41,7 +45,7 @@ public final class PrivateEndpointConnectionListResult {
     /**
      * Get the nextLink property: Request URL that can be used to query next page of private endpoint connections.
      * Returned when the total number of requested private endpoint connections exceed maximum page size.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -50,7 +54,7 @@ public final class PrivateEndpointConnectionListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

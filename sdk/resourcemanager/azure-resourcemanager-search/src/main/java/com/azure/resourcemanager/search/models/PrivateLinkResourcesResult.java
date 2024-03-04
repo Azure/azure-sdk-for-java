@@ -9,7 +9,9 @@ import com.azure.resourcemanager.search.fluent.models.PrivateLinkResourceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response containing a list of supported Private Link Resources. */
+/**
+ * Response containing a list of supported Private Link Resources.
+ */
 @Immutable
 public final class PrivateLinkResourcesResult {
     /*
@@ -18,13 +20,15 @@ public final class PrivateLinkResourcesResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<PrivateLinkResourceInner> value;
 
-    /** Creates an instance of PrivateLinkResourcesResult class. */
+    /**
+     * Creates an instance of PrivateLinkResourcesResult class.
+     */
     public PrivateLinkResourcesResult() {
     }
 
     /**
      * Get the value property: The list of supported Private Link Resources.
-     *
+     * 
      * @return the value value.
      */
     public List<PrivateLinkResourceInner> value() {
@@ -33,7 +37,7 @@ public final class PrivateLinkResourcesResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
