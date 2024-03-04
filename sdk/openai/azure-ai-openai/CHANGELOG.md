@@ -46,7 +46,6 @@
 - Added new properties `ImageGenerationContentFilterResults contentFilterResults` and `ImageGenerationPromptFilterResults promptFilterResults`
   in `ImageGenerationData` class to support filtering results.
 - Added new property `suffix` in `CompletionsOptions` class to support suffix for completions.
-- Made `ContentFilterResult` and `ContentFilterDetectionResult` constructor as public constructor.
 
 ## 1.0.0-beta.6 (2023-12-11)
 

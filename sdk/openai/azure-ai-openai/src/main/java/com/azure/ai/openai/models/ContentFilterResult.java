@@ -36,7 +36,7 @@ public final class ContentFilterResult {
      */
     @Generated
     @JsonCreator
-    public ContentFilterResult(@JsonProperty(value = "severity") ContentFilterSeverity severity,
+    private ContentFilterResult(@JsonProperty(value = "severity") ContentFilterSeverity severity,
         @JsonProperty(value = "filtered") boolean filtered) {
         this.severity = severity;
         this.filtered = filtered;
