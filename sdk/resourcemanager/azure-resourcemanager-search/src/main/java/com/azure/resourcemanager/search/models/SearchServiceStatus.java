@@ -13,30 +13,50 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * 'deleting': The search service is being deleted. 'degraded': The search service is degraded. This can occur when the
  * underlying search units are not healthy. The search service is most likely operational, but performance might be slow
  * and some requests might be dropped. 'disabled': The search service is disabled. In this state, the service will
- * reject all API requests. 'error': The search service is in an error state. If your service is in the degraded,
- * disabled, or error states, Microsoft is actively investigating the underlying issue. Dedicated services in these
- * states are still chargeable based on the number of search units provisioned.
+ * reject all API requests. 'error': The search service is in an error state. 'stopped': The search service is in a
+ * subscription that's disabled. If your service is in the degraded, disabled, or error states, it means the Azure AI
+ * Search team is actively investigating the underlying issue. Dedicated services in these states are still chargeable
+ * based on the number of search units provisioned.
  */
 public enum SearchServiceStatus {
-    /** Enum value running. */
+    /**
+     * Enum value running.
+     */
     RUNNING("running"),
 
-    /** Enum value provisioning. */
+    /**
+     * Enum value provisioning.
+     */
     PROVISIONING("provisioning"),
 
-    /** Enum value deleting. */
+    /**
+     * Enum value deleting.
+     */
     DELETING("deleting"),
 
-    /** Enum value degraded. */
+    /**
+     * Enum value degraded.
+     */
     DEGRADED("degraded"),
 
-    /** Enum value disabled. */
+    /**
+     * Enum value disabled.
+     */
     DISABLED("disabled"),
 
-    /** Enum value error. */
-    ERROR("error");
+    /**
+     * Enum value error.
+     */
+    ERROR("error"),
 
-    /** The actual serialized value for a SearchServiceStatus instance. */
+    /**
+     * Enum value stopped.
+     */
+    STOPPED("stopped");
+
+    /**
+     * The actual serialized value for a SearchServiceStatus instance.
+     */
     private final String value;
 
     SearchServiceStatus(String value) {
@@ -45,7 +65,7 @@ public enum SearchServiceStatus {
 
     /**
      * Parses a serialized value to a SearchServiceStatus instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed SearchServiceStatus object, or null if unable to parse.
      */
@@ -63,7 +83,9 @@ public enum SearchServiceStatus {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

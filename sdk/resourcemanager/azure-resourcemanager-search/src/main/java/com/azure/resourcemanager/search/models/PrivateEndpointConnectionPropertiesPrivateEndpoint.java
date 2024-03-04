@@ -7,22 +7,26 @@ package com.azure.resourcemanager.search.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The private endpoint resource from Microsoft.Network provider. */
+/**
+ * The private endpoint resource from Microsoft.Network provider.
+ */
 @Fluent
 public final class PrivateEndpointConnectionPropertiesPrivateEndpoint {
     /*
-     * The resource id of the private endpoint resource from Microsoft.Network provider.
+     * The resource ID of the private endpoint resource from Microsoft.Network provider.
      */
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of PrivateEndpointConnectionPropertiesPrivateEndpoint class. */
+    /**
+     * Creates an instance of PrivateEndpointConnectionPropertiesPrivateEndpoint class.
+     */
     public PrivateEndpointConnectionPropertiesPrivateEndpoint() {
     }
 
     /**
-     * Get the id property: The resource id of the private endpoint resource from Microsoft.Network provider.
-     *
+     * Get the id property: The resource ID of the private endpoint resource from Microsoft.Network provider.
+     * 
      * @return the id value.
      */
     public String id() {
@@ -30,8 +34,8 @@ public final class PrivateEndpointConnectionPropertiesPrivateEndpoint {
     }
 
     /**
-     * Set the id property: The resource id of the private endpoint resource from Microsoft.Network provider.
-     *
+     * Set the id property: The resource ID of the private endpoint resource from Microsoft.Network provider.
+     * 
      * @param id the id value to set.
      * @return the PrivateEndpointConnectionPropertiesPrivateEndpoint object itself.
      */
@@ -42,7 +46,7 @@ public final class PrivateEndpointConnectionPropertiesPrivateEndpoint {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

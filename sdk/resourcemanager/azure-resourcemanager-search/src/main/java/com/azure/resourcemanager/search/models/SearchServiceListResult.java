@@ -9,7 +9,9 @@ import com.azure.resourcemanager.search.fluent.models.SearchServiceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response containing a list of search services. */
+/**
+ * Response containing a list of Azure AI Search services.
+ */
 @Immutable
 public final class SearchServiceListResult {
     /*
@@ -25,13 +27,15 @@ public final class SearchServiceListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of SearchServiceListResult class. */
+    /**
+     * Creates an instance of SearchServiceListResult class.
+     */
     public SearchServiceListResult() {
     }
 
     /**
      * Get the value property: The list of search services.
-     *
+     * 
      * @return the value value.
      */
     public List<SearchServiceInner> value() {
@@ -41,7 +45,7 @@ public final class SearchServiceListResult {
     /**
      * Get the nextLink property: Request URL that can be used to query next page of search services. Returned when the
      * total number of requested search services exceed maximum page size.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -50,7 +54,7 @@ public final class SearchServiceListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

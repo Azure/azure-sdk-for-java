@@ -13,13 +13,19 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * the value is either 'default' or 'highDensity'. For all other SKUs, this value must be 'default'.
  */
 public enum HostingMode {
-    /** Enum value default. */
+    /**
+     * Enum value default.
+     */
     DEFAULT("default"),
 
-    /** Enum value highDensity. */
+    /**
+     * Enum value highDensity.
+     */
     HIGH_DENSITY("highDensity");
 
-    /** The actual serialized value for a HostingMode instance. */
+    /**
+     * The actual serialized value for a HostingMode instance.
+     */
     private final String value;
 
     HostingMode(String value) {
@@ -28,7 +34,7 @@ public enum HostingMode {
 
     /**
      * Parses a serialized value to a HostingMode instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed HostingMode object, or null if unable to parse.
      */
@@ -46,7 +52,9 @@ public enum HostingMode {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

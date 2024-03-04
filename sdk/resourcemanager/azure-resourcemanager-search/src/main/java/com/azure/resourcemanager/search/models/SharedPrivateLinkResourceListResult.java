@@ -9,11 +9,13 @@ import com.azure.resourcemanager.search.fluent.models.SharedPrivateLinkResourceI
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response containing a list of Shared Private Link Resources. */
+/**
+ * Response containing a list of shared private link resources.
+ */
 @Fluent
 public final class SharedPrivateLinkResourceListResult {
     /*
-     * The list of Shared Private Link Resources.
+     * The list of shared private link resources.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SharedPrivateLinkResourceInner> value;
@@ -24,13 +26,15 @@ public final class SharedPrivateLinkResourceListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of SharedPrivateLinkResourceListResult class. */
+    /**
+     * Creates an instance of SharedPrivateLinkResourceListResult class.
+     */
     public SharedPrivateLinkResourceListResult() {
     }
 
     /**
-     * Get the value property: The list of Shared Private Link Resources.
-     *
+     * Get the value property: The list of shared private link resources.
+     * 
      * @return the value value.
      */
     public List<SharedPrivateLinkResourceInner> value() {
@@ -39,7 +43,7 @@ public final class SharedPrivateLinkResourceListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of shared private link resources, if there are any.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -48,7 +52,7 @@ public final class SharedPrivateLinkResourceListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of shared private link resources, if there are any.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the SharedPrivateLinkResourceListResult object itself.
      */
@@ -59,7 +63,7 @@ public final class SharedPrivateLinkResourceListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

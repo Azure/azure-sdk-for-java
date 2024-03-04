@@ -9,7 +9,9 @@ import com.azure.resourcemanager.search.fluent.models.QuotaUsageResultInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response containing the quota usage information for all the supported SKUs of Azure AI Search. */
+/**
+ * Response containing the quota usage information for all the supported SKUs of Azure AI Search.
+ */
 @Immutable
 public final class QuotaUsagesListResult {
     /*
@@ -25,13 +27,15 @@ public final class QuotaUsagesListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of QuotaUsagesListResult class. */
+    /**
+     * Creates an instance of QuotaUsagesListResult class.
+     */
     public QuotaUsagesListResult() {
     }
 
     /**
      * Get the value property: The quota usages for the SKUs supported by Azure AI Search.
-     *
+     * 
      * @return the value value.
      */
     public List<QuotaUsageResultInner> value() {
@@ -41,7 +45,7 @@ public final class QuotaUsagesListResult {
     /**
      * Get the nextLink property: Request URL that can be used to query next page of quota usages. Returned when the
      * total number of requested quota usages exceed maximum page size.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -50,7 +54,7 @@ public final class QuotaUsagesListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

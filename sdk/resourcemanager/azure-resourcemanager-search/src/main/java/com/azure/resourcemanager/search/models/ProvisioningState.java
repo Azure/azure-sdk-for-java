@@ -16,16 +16,24 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * service. This is because the free service uses capacity that is already set up.
  */
 public enum ProvisioningState {
-    /** Enum value succeeded. */
+    /**
+     * Enum value succeeded.
+     */
     SUCCEEDED("succeeded"),
 
-    /** Enum value provisioning. */
+    /**
+     * Enum value provisioning.
+     */
     PROVISIONING("provisioning"),
 
-    /** Enum value failed. */
+    /**
+     * Enum value failed.
+     */
     FAILED("failed");
 
-    /** The actual serialized value for a ProvisioningState instance. */
+    /**
+     * The actual serialized value for a ProvisioningState instance.
+     */
     private final String value;
 
     ProvisioningState(String value) {
@@ -34,7 +42,7 @@ public enum ProvisioningState {
 
     /**
      * Parses a serialized value to a ProvisioningState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed ProvisioningState object, or null if unable to parse.
      */
@@ -52,7 +60,9 @@ public enum ProvisioningState {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

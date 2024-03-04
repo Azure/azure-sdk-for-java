@@ -4,48 +4,61 @@
 
 package com.azure.resourcemanager.search.models;
 
+import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
 
-/** The identity type. */
-public enum IdentityType {
-    /** Enum value None. */
-    NONE("None"),
+/**
+ * The type of identity used for the resource. The type 'SystemAssigned, UserAssigned' includes both an identity created
+ * by the system and a set of user assigned identities. The type 'None' will remove all identities from the service.
+ */
+public final class IdentityType extends ExpandableStringEnum<IdentityType> {
+    /**
+     * Static value None for IdentityType.
+     */
+    public static final IdentityType NONE = fromString("None");
 
-    /** Enum value SystemAssigned. */
-    SYSTEM_ASSIGNED("SystemAssigned");
+    /**
+     * Static value SystemAssigned for IdentityType.
+     */
+    public static final IdentityType SYSTEM_ASSIGNED = fromString("SystemAssigned");
 
-    /** The actual serialized value for a IdentityType instance. */
-    private final String value;
+    /**
+     * Static value UserAssigned for IdentityType.
+     */
+    public static final IdentityType USER_ASSIGNED = fromString("UserAssigned");
 
-    IdentityType(String value) {
-        this.value = value;
+    /**
+     * Static value SystemAssigned, UserAssigned for IdentityType.
+     */
+    public static final IdentityType SYSTEM_ASSIGNED_USER_ASSIGNED = fromString("SystemAssigned, UserAssigned");
+
+    /**
+     * Creates a new instance of IdentityType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public IdentityType() {
     }
 
     /**
-     * Parses a serialized value to a IdentityType instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed IdentityType object, or null if unable to parse.
+     * Creates or finds a IdentityType from its string representation.
+     * 
+     * @param name a name to look for.
+     * @return the corresponding IdentityType.
      */
     @JsonCreator
-    public static IdentityType fromString(String value) {
-        if (value == null) {
-            return null;
-        }
-        IdentityType[] items = IdentityType.values();
-        for (IdentityType item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public static IdentityType fromString(String name) {
+        return fromString(name, IdentityType.class);
     }
 
-    /** {@inheritDoc} */
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    /**
+     * Gets known IdentityType values.
+     * 
+     * @return known IdentityType values.
+     */
+    public static Collection<IdentityType> values() {
+        return values(IdentityType.class);
     }
 }
