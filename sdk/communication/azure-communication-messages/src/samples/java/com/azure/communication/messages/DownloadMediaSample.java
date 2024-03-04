@@ -1,3 +1,6 @@
+// Copyright (c) Microsoft Corporation. All rights reserved.
+// Licensed under the MIT License.
+
 package com.azure.communication.messages;
 
 import com.azure.core.http.HttpHeaderName;
@@ -9,12 +12,12 @@ import java.io.IOException;
 import java.io.InputStream;
 
 public class DownloadMediaSample {
-    private static final String connectionString = System.getenv("ACS_CONNECTION_STRING");
+    private static final String CONNECTION_STRING = System.getenv("ACS_CONNECTION_STRING");
 
     public static void main(String[] args) throws IOException {
 
         NotificationMessagesClient messagesClient = new NotificationMessagesClientBuilder()
-            .connectionString(connectionString)
+            .connectionString(CONNECTION_STRING)
             .buildClient();
 
         Response<BinaryData> response = messagesClient.downloadMediaWithResponse("<MEDIA_ID>", null);

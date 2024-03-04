@@ -58,7 +58,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-communication-messages</artifactId>
-    <version>1.0.0-beta.1</version>
+    <version>1.0.0</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -160,7 +160,7 @@ private void sendTemplateMessage() {
     //Update template parameter binding
     List<WhatsAppMessageTemplateBindingsComponent> components = new ArrayList<>();
     components.add(new WhatsAppMessageTemplateBindingsComponent("Days"));
-    MessageTemplateBindings bindings =new WhatsAppMessageTemplateBindings()
+    MessageTemplateBindings bindings = new WhatsAppMessageTemplateBindings()
         .setBody(components);
     template.setBindings(bindings);
 
@@ -172,7 +172,7 @@ private void sendTemplateMessage() {
     SendMessageResult result = client.send(
         new TemplateNotificationContent("CHANNEL_ID", recipients, template));
 
-    result.getReceipts().forEach(r -> System.out.println("Message sent to:"+r.getTo() + " and message id:"+ r.getMessageId()));
+    result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
 }
 ```
 
@@ -190,7 +190,7 @@ private void sendTextMessage() {
     SendMessageResult result = client.send(
         new TextNotificationContent("<CHANNEL_ID>", recipients, "Hello from ACS messaging"));
 
-    result.getReceipts().forEach(r -> System.out.println("Message sent to:"+r.getTo() + " and message id:"+ r.getMessageId()));
+    result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
 }
 ```
 
@@ -210,7 +210,7 @@ public void sendMediaMessage() {
     SendMessageResult result = client.send(
         new MediaNotificationContent("<CHANNEL_ID>", recipients, mediaUrl));
 
-    result.getReceipts().forEach(r -> System.out.println("Message sent to:"+r.getTo() + " and message id:"+ r.getMessageId()));
+    result.getReceipts().forEach(r -> System.out.println("Message sent to:" + r.getTo() + " and message id:" + r.getMessageId()));
 }
 ```
 ### Get Template List for given channel example:
@@ -223,12 +223,12 @@ MessageTemplateClient templateClient =
 PagedIterable<MessageTemplateItem> response = templateClient.listTemplates("<CHANNEL_ID>");
 
 response.stream().forEach(t -> {
-    WhatsAppMessageTemplateItem template = (WhatsAppMessageTemplateItem) t ;
+    WhatsAppMessageTemplateItem template = (WhatsAppMessageTemplateItem) t;
     System.out.println("===============================");
-    System.out.println("Template Name :: "+template.getName());
-    System.out.println("Template Language :: "+template.getLanguage());
-    System.out.println("Template Status :: "+template.getStatus());
-    System.out.println("Template Content :: "+template.getContent());
+    System.out.println("Template Name :: " + template.getName());
+    System.out.println("Template Language :: " + template.getLanguage());
+    System.out.println("Template Status :: " + template.getStatus());
+    System.out.println("Template Content :: " + template.getContent());
     System.out.println("===============================");
 });
 ```

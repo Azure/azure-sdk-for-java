@@ -21,11 +21,11 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = AzureChatExtensionConfiguration.class)
 @JsonTypeName("AzureChatExtensionConfiguration")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureCognitiveSearch", value = AzureCognitiveSearchChatExtensionConfiguration.class),
-    @JsonSubTypes.Type(name = "AzureMLIndex", value = AzureMachineLearningIndexChatExtensionConfiguration.class),
-    @JsonSubTypes.Type(name = "AzureCosmosDB", value = AzureCosmosDBChatExtensionConfiguration.class),
-    @JsonSubTypes.Type(name = "Elasticsearch", value = ElasticsearchChatExtensionConfiguration.class),
-    @JsonSubTypes.Type(name = "Pinecone", value = PineconeChatExtensionConfiguration.class) })
+    @JsonSubTypes.Type(name = "azure_search", value = AzureSearchChatExtensionConfiguration.class),
+    @JsonSubTypes.Type(name = "azure_ml_index", value = AzureMachineLearningIndexChatExtensionConfiguration.class),
+    @JsonSubTypes.Type(name = "azure_cosmos_db", value = AzureCosmosDBChatExtensionConfiguration.class),
+    @JsonSubTypes.Type(name = "elasticsearch", value = ElasticsearchChatExtensionConfiguration.class),
+    @JsonSubTypes.Type(name = "pinecone", value = PineconeChatExtensionConfiguration.class) })
 @Immutable
 public class AzureChatExtensionConfiguration {
 
