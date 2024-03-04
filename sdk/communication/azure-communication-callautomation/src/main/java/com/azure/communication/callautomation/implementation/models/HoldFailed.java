@@ -7,9 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The failed to remove participant event. */
+/** The HoldFailed model. */
 @Fluent
-public final class RemoveParticipantFailed {
+public final class HoldFailed {
     /*
      * Call connection ID.
      */
@@ -23,8 +23,7 @@ public final class RemoveParticipantFailed {
     private String serverCallId;
 
     /*
-     * Correlation ID for event to call correlation. Also called ChainId for
-     * skype chain ID.
+     * Correlation ID for event to call correlation.
      */
     @JsonProperty(value = "correlationId")
     private String correlationId;
@@ -42,12 +41,6 @@ public final class RemoveParticipantFailed {
     @JsonProperty(value = "resultInformation")
     private ResultInformation resultInformation;
 
-    /*
-     * Participant
-     */
-    @JsonProperty(value = "participant")
-    private CommunicationIdentifierModel participant;
-
     /**
      * Get the callConnectionId property: Call connection ID.
      *
@@ -61,9 +54,9 @@ public final class RemoveParticipantFailed {
      * Set the callConnectionId property: Call connection ID.
      *
      * @param callConnectionId the callConnectionId value to set.
-     * @return the RemoveParticipantFailed object itself.
+     * @return the HoldFailed object itself.
      */
-    public RemoveParticipantFailed setCallConnectionId(String callConnectionId) {
+    public HoldFailed setCallConnectionId(String callConnectionId) {
         this.callConnectionId = callConnectionId;
         return this;
     }
@@ -81,16 +74,15 @@ public final class RemoveParticipantFailed {
      * Set the serverCallId property: Server call ID.
      *
      * @param serverCallId the serverCallId value to set.
-     * @return the RemoveParticipantFailed object itself.
+     * @return the HoldFailed object itself.
      */
-    public RemoveParticipantFailed setServerCallId(String serverCallId) {
+    public HoldFailed setServerCallId(String serverCallId) {
         this.serverCallId = serverCallId;
         return this;
     }
 
     /**
-     * Get the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
-     * ID.
+     * Get the correlationId property: Correlation ID for event to call correlation.
      *
      * @return the correlationId value.
      */
@@ -99,13 +91,12 @@ public final class RemoveParticipantFailed {
     }
 
     /**
-     * Set the correlationId property: Correlation ID for event to call correlation. Also called ChainId for skype chain
-     * ID.
+     * Set the correlationId property: Correlation ID for event to call correlation.
      *
      * @param correlationId the correlationId value to set.
-     * @return the RemoveParticipantFailed object itself.
+     * @return the HoldFailed object itself.
      */
-    public RemoveParticipantFailed setCorrelationId(String correlationId) {
+    public HoldFailed setCorrelationId(String correlationId) {
         this.correlationId = correlationId;
         return this;
     }
@@ -125,9 +116,9 @@ public final class RemoveParticipantFailed {
      * the response event.
      *
      * @param operationContext the operationContext value to set.
-     * @return the RemoveParticipantFailed object itself.
+     * @return the HoldFailed object itself.
      */
-    public RemoveParticipantFailed setOperationContext(String operationContext) {
+    public HoldFailed setOperationContext(String operationContext) {
         this.operationContext = operationContext;
         return this;
     }
@@ -145,30 +136,10 @@ public final class RemoveParticipantFailed {
      * Set the resultInformation property: Contains the resulting SIP code, sub-code and message.
      *
      * @param resultInformation the resultInformation value to set.
-     * @return the RemoveParticipantFailed object itself.
+     * @return the HoldFailed object itself.
      */
-    public RemoveParticipantFailed setResultInformation(ResultInformation resultInformation) {
+    public HoldFailed setResultInformation(ResultInformation resultInformation) {
         this.resultInformation = resultInformation;
-        return this;
-    }
-
-    /**
-     * Get the participant property: Participant.
-     *
-     * @return the participant value.
-     */
-    public CommunicationIdentifierModel getParticipant() {
-        return this.participant;
-    }
-
-    /**
-     * Set the participant property: Participant.
-     *
-     * @param participant the participant value to set.
-     * @return the RemoveParticipantFailed object itself.
-     */
-    public RemoveParticipantFailed setParticipant(CommunicationIdentifierModel participant) {
-        this.participant = participant;
         return this;
     }
 }

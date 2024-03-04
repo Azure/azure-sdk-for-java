@@ -42,12 +42,6 @@ public final class CallConnectionPropertiesInternal {
     private String callbackUri;
 
     /*
-     * SubscriptionId for media streaming
-     */
-    @JsonProperty(value = "mediaSubscriptionId")
-    private String mediaSubscriptionId;
-
-    /*
      * SubscriptionId for transcription
      */
     @JsonProperty(value = "dataSubscriptionId")
@@ -85,12 +79,6 @@ public final class CallConnectionPropertiesInternal {
      */
     @JsonProperty(value = "answeredBy")
     private CommunicationUserIdentifierModel answeredBy;
-
-    /*
-     * The original PSTN target of the incoming Call.
-     */
-    @JsonProperty(value = "originalPstnTarget")
-    private PhoneNumberIdentifierModel originalPstnTarget;
 
     /**
      * Get the callConnectionId property: The call connection id.
@@ -190,26 +178,6 @@ public final class CallConnectionPropertiesInternal {
      */
     public CallConnectionPropertiesInternal setCallbackUri(String callbackUri) {
         this.callbackUri = callbackUri;
-        return this;
-    }
-
-    /**
-     * Get the mediaSubscriptionId property: SubscriptionId for media streaming.
-     *
-     * @return the mediaSubscriptionId value.
-     */
-    public String getMediaSubscriptionId() {
-        return this.mediaSubscriptionId;
-    }
-
-    /**
-     * Set the mediaSubscriptionId property: SubscriptionId for media streaming.
-     *
-     * @param mediaSubscriptionId the mediaSubscriptionId value to set.
-     * @return the CallConnectionPropertiesInternal object itself.
-     */
-    public CallConnectionPropertiesInternal setMediaSubscriptionId(String mediaSubscriptionId) {
-        this.mediaSubscriptionId = mediaSubscriptionId;
         return this;
     }
 
@@ -334,26 +302,6 @@ public final class CallConnectionPropertiesInternal {
      */
     public CallConnectionPropertiesInternal setAnsweredBy(CommunicationUserIdentifierModel answeredBy) {
         this.answeredBy = answeredBy;
-        return this;
-    }
-
-    /**
-     * Get the originalPstnTarget property: The original PSTN target of the incoming Call.
-     *
-     * @return the originalPstnTarget value.
-     */
-    public PhoneNumberIdentifierModel getOriginalPstnTarget() {
-        return this.originalPstnTarget;
-    }
-
-    /**
-     * Set the originalPstnTarget property: The original PSTN target of the incoming Call.
-     *
-     * @param originalPstnTarget the originalPstnTarget value to set.
-     * @return the CallConnectionPropertiesInternal object itself.
-     */
-    public CallConnectionPropertiesInternal setOriginalPstnTarget(PhoneNumberIdentifierModel originalPstnTarget) {
-        this.originalPstnTarget = originalPstnTarget;
         return this;
     }
 }

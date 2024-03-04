@@ -17,7 +17,6 @@ import com.azure.communication.callautomation.models.RecognitionChoice;
 import com.azure.communication.callautomation.models.RecognizeInputType;
 import com.azure.communication.callautomation.models.SendDtmfTonesOptions;
 import com.azure.communication.callautomation.models.SsmlSource;
-import com.azure.communication.callautomation.models.StartHoldMusicOptions;
 import com.azure.communication.callautomation.models.StartTranscriptionOptions;
 import com.azure.communication.callautomation.models.StopTranscriptionOptions;
 import com.azure.communication.callautomation.models.TextSource;
@@ -369,32 +368,6 @@ public class CallMediaAsyncUnitTests {
         StepVerifier.create(
                 callMedia.startRecognizingWithResponse(recognizeOptions))
             .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
-            .verifyComplete();
-    }
-
-    @Test
-    public void startHoldMusicWithResponseTest() {
-
-        callMedia = getMockCallMedia(200);
-        StartHoldMusicOptions options = new StartHoldMusicOptions(
-            new CommunicationUserIdentifier("id"),
-            new TextSource().setText("audio to play"));
-        StepVerifier.create(
-                callMedia.startHoldMusicWithResponse(options))
-            .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
-            .verifyComplete();
-    }
-
-    @Test
-    public void stopHoldMusicWithResponseTest() {
-
-        callMedia = getMockCallMedia(200);
-        StepVerifier.create(
-                callMedia.stopHoldMusicWithResponse(
-                    new CommunicationUserIdentifier("id"),
-                    "operationalContext"
-                ))
-            .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
             .verifyComplete();
     }
 

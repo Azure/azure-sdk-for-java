@@ -18,10 +18,7 @@ import java.util.Map;
         property = "kind",
         defaultImpl = BaseDialog.class)
 @JsonTypeName("BaseDialog")
-@JsonSubTypes({
-    @JsonSubTypes.Type(name = "AzureOpenAI", value = AzureOpenAIDialog.class),
-    @JsonSubTypes.Type(name = "PowerVirtualAgents", value = PowerVirtualAgentsDialog.class)
-})
+@JsonSubTypes({@JsonSubTypes.Type(name = "PowerVirtualAgents", value = PowerVirtualAgentsDialog.class)})
 @Fluent
 public class BaseDialog {
     /*
