@@ -9,7 +9,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.Reco
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Collection of recovery point details. */
+/**
+ * Collection of recovery point details.
+ */
 @Fluent
 public final class RecoveryPointCollection {
     /*
@@ -24,13 +26,15 @@ public final class RecoveryPointCollection {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of RecoveryPointCollection class. */
+    /**
+     * Creates an instance of RecoveryPointCollection class.
+     */
     public RecoveryPointCollection() {
     }
 
     /**
      * Get the value property: The recovery point details.
-     *
+     * 
      * @return the value value.
      */
     public List<RecoveryPointInner> value() {
@@ -39,7 +43,7 @@ public final class RecoveryPointCollection {
 
     /**
      * Set the value property: The recovery point details.
-     *
+     * 
      * @param value the value value to set.
      * @return the RecoveryPointCollection object itself.
      */
@@ -50,7 +54,7 @@ public final class RecoveryPointCollection {
 
     /**
      * Get the nextLink property: The value of next link.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class RecoveryPointCollection {
 
     /**
      * Set the nextLink property: The value of next link.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the RecoveryPointCollection object itself.
      */
@@ -70,7 +74,7 @@ public final class RecoveryPointCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

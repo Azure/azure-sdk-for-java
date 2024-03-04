@@ -32,8 +32,8 @@ def sdk_automation_typespec(config: dict) -> List[dict]:
     if 'relatedTypeSpecProjectFolder' not in config:
         return packages
 
-    head_sha = config['headSha']
-    repo_url = config['repoHttpsUrl']
+    head_sha: str = config['headSha']
+    repo_url: str = config['repoHttpsUrl']
 
     tsp_projects = config['relatedTypeSpecProjectFolder']
     if isinstance(tsp_projects, str):
@@ -54,7 +54,8 @@ def sdk_automation_typespec(config: dict) -> List[dict]:
             script_return = output_str.splitlines()[-1] # the path to sdk folder
             sdk_folder = os.path.relpath(script_return, sdk_root)
             logging.info('SDK folder: ' + sdk_folder)
-            succeeded = True
+            if sdk_folder:
+                succeeded = True
         except subprocess.CalledProcessError as error:
             logging.error(f'TypeSpec-Project-Process.ps1 fail: {error}')
 

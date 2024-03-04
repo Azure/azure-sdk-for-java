@@ -4,10 +4,12 @@
 
 package com.azure.ai.contentsafety;
 
+import com.azure.core.util.ServiceVersion;
+
 /**
  * Service version of ContentSafetyClient.
  */
-public enum ContentSafetyServiceVersion implements com.azure.core.util.ServiceVersion {
+public enum ContentSafetyServiceVersion implements ServiceVersion {
     /**
      * Enum value 2023-10-01.
      */

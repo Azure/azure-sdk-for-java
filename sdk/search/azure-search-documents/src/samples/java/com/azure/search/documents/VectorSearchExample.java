@@ -31,6 +31,7 @@ import com.azure.search.documents.models.QueryAnswerType;
 import com.azure.search.documents.models.QueryCaption;
 import com.azure.search.documents.models.QueryCaptionResult;
 import com.azure.search.documents.models.QueryCaptionType;
+import com.azure.search.documents.models.QueryType;
 import com.azure.search.documents.models.SearchOptions;
 import com.azure.search.documents.models.SearchResult;
 import com.azure.search.documents.models.SemanticSearchOptions;
@@ -58,7 +59,7 @@ import static com.azure.search.documents.TestHelpers.waitForIndexing;
  */
 public class VectorSearchExample {
     /**
-     * From the Azure portal, get your Azure Cognitive Search service URL and API key,
+     * From the Azure portal, get your Azure AI Search service URL and API key,
      * and set the values of these environment variables:
      */
     private static final String ENDPOINT = Configuration.getGlobalConfiguration().get("AZURE_COGNITIVE_SEARCH_ENDPOINT");
@@ -244,6 +245,7 @@ public class VectorSearchExample {
             .setFields("DescriptionVector");
 
         SearchOptions searchOptions = new SearchOptions()
+            .setQueryType(QueryType.SEMANTIC)
             .setVectorSearchOptions(new VectorSearchOptions()
                 .setQueries(vectorizableQuery))
             .setSemanticSearchOptions(new SemanticSearchOptions()

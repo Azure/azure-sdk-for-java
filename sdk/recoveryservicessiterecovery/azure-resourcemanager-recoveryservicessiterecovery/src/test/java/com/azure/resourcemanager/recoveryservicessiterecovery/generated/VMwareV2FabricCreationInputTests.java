@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class VMwareV2FabricCreationInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        VMwareV2FabricCreationInput model =
-            BinaryData
-                .fromString(
-                    "{\"instanceType\":\"VMwareV2\",\"vmwareSiteId\":\"ptchdwyq\",\"physicalSiteId\":\"dqimlgbbfjm\",\"migrationSolutionId\":\"gjvxlhmpmhe\"}")
-                .toObject(VMwareV2FabricCreationInput.class);
+        VMwareV2FabricCreationInput model = BinaryData.fromString(
+            "{\"instanceType\":\"VMwareV2\",\"vmwareSiteId\":\"ptchdwyq\",\"physicalSiteId\":\"dqimlgbbfjm\",\"migrationSolutionId\":\"gjvxlhmpmhe\"}")
+            .toObject(VMwareV2FabricCreationInput.class);
         Assertions.assertEquals("ptchdwyq", model.vmwareSiteId());
         Assertions.assertEquals("dqimlgbbfjm", model.physicalSiteId());
         Assertions.assertEquals("gjvxlhmpmhe", model.migrationSolutionId());
@@ -23,11 +21,8 @@ public final class VMwareV2FabricCreationInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        VMwareV2FabricCreationInput model =
-            new VMwareV2FabricCreationInput()
-                .withVmwareSiteId("ptchdwyq")
-                .withPhysicalSiteId("dqimlgbbfjm")
-                .withMigrationSolutionId("gjvxlhmpmhe");
+        VMwareV2FabricCreationInput model = new VMwareV2FabricCreationInput().withVmwareSiteId("ptchdwyq")
+            .withPhysicalSiteId("dqimlgbbfjm").withMigrationSolutionId("gjvxlhmpmhe");
         model = BinaryData.fromObject(model).toObject(VMwareV2FabricCreationInput.class);
         Assertions.assertEquals("ptchdwyq", model.vmwareSiteId());
         Assertions.assertEquals("dqimlgbbfjm", model.physicalSiteId());

@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * on a public Azure OpenAI endpoint call for embeddings.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
-@JsonTypeName("Endpoint")
+@JsonTypeName("endpoint")
 @Immutable
 public final class OnYourDataEndpointVectorizationSource extends OnYourDataVectorizationSource {
 

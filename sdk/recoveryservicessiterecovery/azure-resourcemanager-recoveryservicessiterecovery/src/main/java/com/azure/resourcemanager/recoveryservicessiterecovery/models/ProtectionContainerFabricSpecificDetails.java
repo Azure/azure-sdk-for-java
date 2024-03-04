@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Base class for fabric specific details of container. */
+/**
+ * Base class for fabric specific details of container.
+ */
 @Immutable
 public final class ProtectionContainerFabricSpecificDetails {
     /*
@@ -16,13 +18,15 @@ public final class ProtectionContainerFabricSpecificDetails {
     @JsonProperty(value = "instanceType", access = JsonProperty.Access.WRITE_ONLY)
     private String instanceType;
 
-    /** Creates an instance of ProtectionContainerFabricSpecificDetails class. */
+    /**
+     * Creates an instance of ProtectionContainerFabricSpecificDetails class.
+     */
     public ProtectionContainerFabricSpecificDetails() {
     }
 
     /**
      * Get the instanceType property: Gets the class type. Overridden in derived classes.
-     *
+     * 
      * @return the instanceType value.
      */
     public String instanceType() {
@@ -31,7 +35,7 @@ public final class ProtectionContainerFabricSpecificDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

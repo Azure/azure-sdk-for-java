@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Update network mapping input. */
+/**
+ * Update network mapping input.
+ */
 @Fluent
 public final class UpdateNetworkMappingInput {
     /*
@@ -16,13 +18,15 @@ public final class UpdateNetworkMappingInput {
     @JsonProperty(value = "properties")
     private UpdateNetworkMappingInputProperties properties;
 
-    /** Creates an instance of UpdateNetworkMappingInput class. */
+    /**
+     * Creates an instance of UpdateNetworkMappingInput class.
+     */
     public UpdateNetworkMappingInput() {
     }
 
     /**
      * Get the properties property: The input properties needed to update network mapping.
-     *
+     * 
      * @return the properties value.
      */
     public UpdateNetworkMappingInputProperties properties() {
@@ -31,7 +35,7 @@ public final class UpdateNetworkMappingInput {
 
     /**
      * Set the properties property: The input properties needed to update network mapping.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the UpdateNetworkMappingInput object itself.
      */
@@ -42,7 +46,7 @@ public final class UpdateNetworkMappingInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -23,7 +23,7 @@ import java.util.Objects;
  * </p>
  *
  * @see <a href="http://docs.oasis-open.org/amqp/core/v1.0/os/amqp-core-messaging-v1.0-os.html#type-rejected">Rejected
- *     outcome</a>
+ * outcome</a>
  */
 @Fluent
 public final class RejectedDeliveryOutcome extends DeliveryOutcome {

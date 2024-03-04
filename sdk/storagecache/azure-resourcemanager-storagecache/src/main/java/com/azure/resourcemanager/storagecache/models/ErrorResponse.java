@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storagecache.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the format of Error response. */
+/**
+ * Describes the format of Error response.
+ */
 @Fluent
 public final class ErrorResponse {
     /*
@@ -22,13 +24,15 @@ public final class ErrorResponse {
     @JsonProperty(value = "message")
     private String message;
 
-    /** Creates an instance of ErrorResponse class. */
+    /**
+     * Creates an instance of ErrorResponse class.
+     */
     public ErrorResponse() {
     }
 
     /**
      * Get the code property: Error code.
-     *
+     * 
      * @return the code value.
      */
     public String code() {
@@ -37,7 +41,7 @@ public final class ErrorResponse {
 
     /**
      * Set the code property: Error code.
-     *
+     * 
      * @param code the code value to set.
      * @return the ErrorResponse object itself.
      */
@@ -48,7 +52,7 @@ public final class ErrorResponse {
 
     /**
      * Get the message property: Error message indicating why the operation failed.
-     *
+     * 
      * @return the message value.
      */
     public String message() {
@@ -57,7 +61,7 @@ public final class ErrorResponse {
 
     /**
      * Set the message property: Error message indicating why the operation failed.
-     *
+     * 
      * @param message the message value to set.
      * @return the ErrorResponse object itself.
      */
@@ -68,7 +72,7 @@ public final class ErrorResponse {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

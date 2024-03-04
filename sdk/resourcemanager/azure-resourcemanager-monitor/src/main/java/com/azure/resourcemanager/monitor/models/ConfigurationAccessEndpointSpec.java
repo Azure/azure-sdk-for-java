@@ -7,7 +7,9 @@ package com.azure.resourcemanager.monitor.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Definition of the endpoint used for accessing configuration. */
+/**
+ * Definition of the endpoint used for accessing configuration.
+ */
 @Immutable
 public class ConfigurationAccessEndpointSpec {
     /*
@@ -16,13 +18,15 @@ public class ConfigurationAccessEndpointSpec {
     @JsonProperty(value = "endpoint", access = JsonProperty.Access.WRITE_ONLY)
     private String endpoint;
 
-    /** Creates an instance of ConfigurationAccessEndpointSpec class. */
+    /**
+     * Creates an instance of ConfigurationAccessEndpointSpec class.
+     */
     public ConfigurationAccessEndpointSpec() {
     }
 
     /**
      * Get the endpoint property: The endpoint. This property is READ-ONLY.
-     *
+     * 
      * @return the endpoint value.
      */
     public String endpoint() {
@@ -31,7 +35,7 @@ public class ConfigurationAccessEndpointSpec {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

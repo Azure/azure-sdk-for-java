@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storagecache.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Localized information describing this usage model. */
+/**
+ * Localized information describing this usage model.
+ */
 @Fluent
 public final class UsageModelDisplay {
     /*
@@ -16,13 +18,15 @@ public final class UsageModelDisplay {
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of UsageModelDisplay class. */
+    /**
+     * Creates an instance of UsageModelDisplay class.
+     */
     public UsageModelDisplay() {
     }
 
     /**
      * Get the description property: String to display for this usage model.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -31,7 +35,7 @@ public final class UsageModelDisplay {
 
     /**
      * Set the description property: String to display for this usage model.
-     *
+     * 
      * @param description the description value to set.
      * @return the UsageModelDisplay object itself.
      */
@@ -42,7 +46,7 @@ public final class UsageModelDisplay {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** The log profile resource. */
+/**
+ * The log profile resource.
+ */
 @Fluent
 public final class LogProfileResourceInner extends Resource {
     /*
@@ -21,27 +23,33 @@ public final class LogProfileResourceInner extends Resource {
     @JsonProperty(value = "properties", required = true)
     private LogProfileProperties innerProperties = new LogProfileProperties();
 
-    /** Creates an instance of LogProfileResourceInner class. */
+    /**
+     * Creates an instance of LogProfileResourceInner class.
+     */
     public LogProfileResourceInner() {
     }
 
     /**
      * Get the innerProperties property: The log profile properties of the resource.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LogProfileProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LogProfileResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public LogProfileResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -51,7 +59,7 @@ public final class LogProfileResourceInner extends Resource {
     /**
      * Get the storageAccountId property: the resource id of the storage account to which you would like to send the
      * Activity Log.
-     *
+     * 
      * @return the storageAccountId value.
      */
     public String storageAccountId() {
@@ -61,7 +69,7 @@ public final class LogProfileResourceInner extends Resource {
     /**
      * Set the storageAccountId property: the resource id of the storage account to which you would like to send the
      * Activity Log.
-     *
+     * 
      * @param storageAccountId the storageAccountId value to set.
      * @return the LogProfileResourceInner object itself.
      */
@@ -77,7 +85,7 @@ public final class LogProfileResourceInner extends Resource {
      * Get the serviceBusRuleId property: The service bus rule ID of the service bus namespace in which you would like
      * to have Event Hubs created for streaming the Activity Log. The rule ID is of the format: '{service bus resource
      * ID}/authorizationrules/{key name}'.
-     *
+     * 
      * @return the serviceBusRuleId value.
      */
     public String serviceBusRuleId() {
@@ -88,7 +96,7 @@ public final class LogProfileResourceInner extends Resource {
      * Set the serviceBusRuleId property: The service bus rule ID of the service bus namespace in which you would like
      * to have Event Hubs created for streaming the Activity Log. The rule ID is of the format: '{service bus resource
      * ID}/authorizationrules/{key name}'.
-     *
+     * 
      * @param serviceBusRuleId the serviceBusRuleId value to set.
      * @return the LogProfileResourceInner object itself.
      */
@@ -103,7 +111,7 @@ public final class LogProfileResourceInner extends Resource {
     /**
      * Get the locations property: List of regions for which Activity Log events should be stored or streamed. It is a
      * comma separated list of valid ARM locations including the 'global' location.
-     *
+     * 
      * @return the locations value.
      */
     public List<String> locations() {
@@ -113,7 +121,7 @@ public final class LogProfileResourceInner extends Resource {
     /**
      * Set the locations property: List of regions for which Activity Log events should be stored or streamed. It is a
      * comma separated list of valid ARM locations including the 'global' location.
-     *
+     * 
      * @param locations the locations value to set.
      * @return the LogProfileResourceInner object itself.
      */
@@ -128,7 +136,7 @@ public final class LogProfileResourceInner extends Resource {
     /**
      * Get the categories property: the categories of the logs. These categories are created as is convenient to the
      * user. Some values are: 'Write', 'Delete', and/or 'Action.'.
-     *
+     * 
      * @return the categories value.
      */
     public List<String> categories() {
@@ -138,7 +146,7 @@ public final class LogProfileResourceInner extends Resource {
     /**
      * Set the categories property: the categories of the logs. These categories are created as is convenient to the
      * user. Some values are: 'Write', 'Delete', and/or 'Action.'.
-     *
+     * 
      * @param categories the categories value to set.
      * @return the LogProfileResourceInner object itself.
      */
@@ -152,7 +160,7 @@ public final class LogProfileResourceInner extends Resource {
 
     /**
      * Get the retentionPolicy property: the retention policy for the events in the log.
-     *
+     * 
      * @return the retentionPolicy value.
      */
     public RetentionPolicy retentionPolicy() {
@@ -161,7 +169,7 @@ public final class LogProfileResourceInner extends Resource {
 
     /**
      * Set the retentionPolicy property: the retention policy for the events in the log.
-     *
+     * 
      * @param retentionPolicy the retentionPolicy value to set.
      * @return the LogProfileResourceInner object itself.
      */
@@ -175,15 +183,13 @@ public final class LogProfileResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (innerProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerProperties in model LogProfileResourceInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerProperties in model LogProfileResourceInner"));
         } else {
             innerProperties().validate();
         }

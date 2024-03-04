@@ -21,52 +21,42 @@ public final class StorageClassificationsImpl implements StorageClassifications 
 
     private final com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager;
 
-    public StorageClassificationsImpl(
-        StorageClassificationsClient innerClient,
+    public StorageClassificationsImpl(StorageClassificationsClient innerClient,
         com.azure.resourcemanager.recoveryservicessiterecovery.SiteRecoveryManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public PagedIterable<StorageClassification> listByReplicationFabrics(
-        String resourceName, String resourceGroupName, String fabricName) {
-        PagedIterable<StorageClassificationInner> inner =
-            this.serviceClient().listByReplicationFabrics(resourceName, resourceGroupName, fabricName);
-        return Utils.mapPage(inner, inner1 -> new StorageClassificationImpl(inner1, this.manager()));
+    public PagedIterable<StorageClassification> listByReplicationFabrics(String resourceName, String resourceGroupName,
+        String fabricName) {
+        PagedIterable<StorageClassificationInner> inner
+            = this.serviceClient().listByReplicationFabrics(resourceName, resourceGroupName, fabricName);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageClassificationImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<StorageClassification> listByReplicationFabrics(
-        String resourceName, String resourceGroupName, String fabricName, Context context) {
-        PagedIterable<StorageClassificationInner> inner =
-            this.serviceClient().listByReplicationFabrics(resourceName, resourceGroupName, fabricName, context);
-        return Utils.mapPage(inner, inner1 -> new StorageClassificationImpl(inner1, this.manager()));
+    public PagedIterable<StorageClassification> listByReplicationFabrics(String resourceName, String resourceGroupName,
+        String fabricName, Context context) {
+        PagedIterable<StorageClassificationInner> inner
+            = this.serviceClient().listByReplicationFabrics(resourceName, resourceGroupName, fabricName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageClassificationImpl(inner1, this.manager()));
     }
 
-    public Response<StorageClassification> getWithResponse(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String storageClassificationName,
-        Context context) {
-        Response<StorageClassificationInner> inner =
-            this
-                .serviceClient()
-                .getWithResponse(resourceName, resourceGroupName, fabricName, storageClassificationName, context);
+    public Response<StorageClassification> getWithResponse(String resourceName, String resourceGroupName,
+        String fabricName, String storageClassificationName, Context context) {
+        Response<StorageClassificationInner> inner = this.serviceClient().getWithResponse(resourceName,
+            resourceGroupName, fabricName, storageClassificationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new StorageClassificationImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public StorageClassification get(
-        String resourceName, String resourceGroupName, String fabricName, String storageClassificationName) {
-        StorageClassificationInner inner =
-            this.serviceClient().get(resourceName, resourceGroupName, fabricName, storageClassificationName);
+    public StorageClassification get(String resourceName, String resourceGroupName, String fabricName,
+        String storageClassificationName) {
+        StorageClassificationInner inner
+            = this.serviceClient().get(resourceName, resourceGroupName, fabricName, storageClassificationName);
         if (inner != null) {
             return new StorageClassificationImpl(inner, this.manager());
         } else {
@@ -76,13 +66,13 @@ public final class StorageClassificationsImpl implements StorageClassifications 
 
     public PagedIterable<StorageClassification> list(String resourceName, String resourceGroupName) {
         PagedIterable<StorageClassificationInner> inner = this.serviceClient().list(resourceName, resourceGroupName);
-        return Utils.mapPage(inner, inner1 -> new StorageClassificationImpl(inner1, this.manager()));
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageClassificationImpl(inner1, this.manager()));
     }
 
     public PagedIterable<StorageClassification> list(String resourceName, String resourceGroupName, Context context) {
-        PagedIterable<StorageClassificationInner> inner =
-            this.serviceClient().list(resourceName, resourceGroupName, context);
-        return Utils.mapPage(inner, inner1 -> new StorageClassificationImpl(inner1, this.manager()));
+        PagedIterable<StorageClassificationInner> inner
+            = this.serviceClient().list(resourceName, resourceGroupName, context);
+        return ResourceManagerUtils.mapPage(inner, inner1 -> new StorageClassificationImpl(inner1, this.manager()));
     }
 
     private StorageClassificationsClient serviceClient() {

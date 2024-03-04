@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Input definition for switch provider input properties. */
+/**
+ * Input definition for switch provider input properties.
+ */
 @Fluent
 public final class SwitchProviderInputProperties {
     /*
@@ -22,13 +24,15 @@ public final class SwitchProviderInputProperties {
     @JsonProperty(value = "providerSpecificDetails")
     private SwitchProviderSpecificInput providerSpecificDetails;
 
-    /** Creates an instance of SwitchProviderInputProperties class. */
+    /**
+     * Creates an instance of SwitchProviderInputProperties class.
+     */
     public SwitchProviderInputProperties() {
     }
 
     /**
      * Get the targetInstanceType property: Target provider type.
-     *
+     * 
      * @return the targetInstanceType value.
      */
     public String targetInstanceType() {
@@ -37,7 +41,7 @@ public final class SwitchProviderInputProperties {
 
     /**
      * Set the targetInstanceType property: Target provider type.
-     *
+     * 
      * @param targetInstanceType the targetInstanceType value to set.
      * @return the SwitchProviderInputProperties object itself.
      */
@@ -48,7 +52,7 @@ public final class SwitchProviderInputProperties {
 
     /**
      * Get the providerSpecificDetails property: Provider specific settings.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public SwitchProviderSpecificInput providerSpecificDetails() {
@@ -57,19 +61,19 @@ public final class SwitchProviderInputProperties {
 
     /**
      * Set the providerSpecificDetails property: Provider specific settings.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the SwitchProviderInputProperties object itself.
      */
-    public SwitchProviderInputProperties withProviderSpecificDetails(
-        SwitchProviderSpecificInput providerSpecificDetails) {
+    public SwitchProviderInputProperties
+        withProviderSpecificDetails(SwitchProviderSpecificInput providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,32 +8,57 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The type of the column data. */
+/**
+ * The type of the column data.
+ */
 public final class KnownColumnDefinitionType extends ExpandableStringEnum<KnownColumnDefinitionType> {
-    /** Static value string for KnownColumnDefinitionType. */
+    /**
+     * Static value string for KnownColumnDefinitionType.
+     */
     public static final KnownColumnDefinitionType STRING = fromString("string");
 
-    /** Static value int for KnownColumnDefinitionType. */
+    /**
+     * Static value int for KnownColumnDefinitionType.
+     */
     public static final KnownColumnDefinitionType INT = fromString("int");
 
-    /** Static value long for KnownColumnDefinitionType. */
+    /**
+     * Static value long for KnownColumnDefinitionType.
+     */
     public static final KnownColumnDefinitionType LONG = fromString("long");
 
-    /** Static value real for KnownColumnDefinitionType. */
+    /**
+     * Static value real for KnownColumnDefinitionType.
+     */
     public static final KnownColumnDefinitionType REAL = fromString("real");
 
-    /** Static value boolean for KnownColumnDefinitionType. */
+    /**
+     * Static value boolean for KnownColumnDefinitionType.
+     */
     public static final KnownColumnDefinitionType BOOLEAN = fromString("boolean");
 
-    /** Static value datetime for KnownColumnDefinitionType. */
+    /**
+     * Static value datetime for KnownColumnDefinitionType.
+     */
     public static final KnownColumnDefinitionType DATETIME = fromString("datetime");
 
-    /** Static value dynamic for KnownColumnDefinitionType. */
+    /**
+     * Static value dynamic for KnownColumnDefinitionType.
+     */
     public static final KnownColumnDefinitionType DYNAMIC = fromString("dynamic");
 
     /**
+     * Creates a new instance of KnownColumnDefinitionType value.
+     * 
+     * @deprecated Use the {@link #fromString(String)} factory method.
+     */
+    @Deprecated
+    public KnownColumnDefinitionType() {
+    }
+
+    /**
      * Creates or finds a KnownColumnDefinitionType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding KnownColumnDefinitionType.
      */
@@ -44,7 +69,7 @@ public final class KnownColumnDefinitionType extends ExpandableStringEnum<KnownC
 
     /**
      * Gets known KnownColumnDefinitionType values.
-     *
+     * 
      * @return known KnownColumnDefinitionType values.
      */
     public static Collection<KnownColumnDefinitionType> values() {

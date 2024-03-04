@@ -13,22 +13,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ReverseReplicationInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ReverseReplicationInput model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"failoverDirection\":\"aojfm\",\"providerSpecificDetails\":{\"instanceType\":\"ReverseReplicationProviderSpecificInput\"}}}")
-                .toObject(ReverseReplicationInput.class);
+        ReverseReplicationInput model = BinaryData.fromString(
+            "{\"properties\":{\"failoverDirection\":\"aojfm\",\"providerSpecificDetails\":{\"instanceType\":\"ReverseReplicationProviderSpecificInput\"}}}")
+            .toObject(ReverseReplicationInput.class);
         Assertions.assertEquals("aojfm", model.properties().failoverDirection());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ReverseReplicationInput model =
-            new ReverseReplicationInput()
-                .withProperties(
-                    new ReverseReplicationInputProperties()
-                        .withFailoverDirection("aojfm")
-                        .withProviderSpecificDetails(new ReverseReplicationProviderSpecificInput()));
+        ReverseReplicationInput model = new ReverseReplicationInput()
+            .withProperties(new ReverseReplicationInputProperties().withFailoverDirection("aojfm")
+                .withProviderSpecificDetails(new ReverseReplicationProviderSpecificInput()));
         model = BinaryData.fromObject(model).toObject(ReverseReplicationInput.class);
         Assertions.assertEquals("aojfm", model.properties().failoverDirection());
     }

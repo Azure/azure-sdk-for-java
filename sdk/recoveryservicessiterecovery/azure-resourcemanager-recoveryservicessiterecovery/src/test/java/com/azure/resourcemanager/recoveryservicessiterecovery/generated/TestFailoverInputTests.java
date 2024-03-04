@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class TestFailoverInputTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TestFailoverInput model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"failoverDirection\":\"chvcyyysfgdo\",\"networkType\":\"ubiipuipwoqonma\",\"networkId\":\"ekni\",\"providerSpecificDetails\":{\"instanceType\":\"TestFailoverProviderSpecificInput\"}}}")
-                .toObject(TestFailoverInput.class);
+        TestFailoverInput model = BinaryData.fromString(
+            "{\"properties\":{\"failoverDirection\":\"chvcyyysfgdo\",\"networkType\":\"ubiipuipwoqonma\",\"networkId\":\"ekni\",\"providerSpecificDetails\":{\"instanceType\":\"TestFailoverProviderSpecificInput\"}}}")
+            .toObject(TestFailoverInput.class);
         Assertions.assertEquals("chvcyyysfgdo", model.properties().failoverDirection());
         Assertions.assertEquals("ubiipuipwoqonma", model.properties().networkType());
         Assertions.assertEquals("ekni", model.properties().networkId());
@@ -25,14 +23,9 @@ public final class TestFailoverInputTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TestFailoverInput model =
-            new TestFailoverInput()
-                .withProperties(
-                    new TestFailoverInputProperties()
-                        .withFailoverDirection("chvcyyysfgdo")
-                        .withNetworkType("ubiipuipwoqonma")
-                        .withNetworkId("ekni")
-                        .withProviderSpecificDetails(new TestFailoverProviderSpecificInput()));
+        TestFailoverInput model = new TestFailoverInput().withProperties(
+            new TestFailoverInputProperties().withFailoverDirection("chvcyyysfgdo").withNetworkType("ubiipuipwoqonma")
+                .withNetworkId("ekni").withProviderSpecificDetails(new TestFailoverProviderSpecificInput()));
         model = BinaryData.fromObject(model).toObject(TestFailoverInput.class);
         Assertions.assertEquals("chvcyyysfgdo", model.properties().failoverDirection());
         Assertions.assertEquals("ubiipuipwoqonma", model.properties().networkType());

@@ -131,6 +131,7 @@ public class QuorumReader {
         ReadMode readMode) {
         final MutableVolatile<Boolean> shouldRetryOnSecondary = new MutableVolatile<>(false);
         final MutableVolatile<Boolean> hasPerformedReadFromPrimary = new MutableVolatile<>(false);
+        final MutableVolatile<Boolean> includePrimary = new MutableVolatile<>(false);
 
         return Flux.defer(
             // the following will be repeated till the repeat().takeUntil(.) condition is satisfied.
@@ -141,7 +142,11 @@ public class QuorumReader {
 
                 shouldRetryOnSecondary.v = false;
                 Mono<ReadQuorumResult> secondaryQuorumReadResultObs =
-                    this.readQuorumAsync(entity, readQuorumValue, false, readMode);
+                    this.readQuorumAsync(
+                        entity,
+                        readQuorumValue,
+                        includePrimary.v,
+                        readMode);
 
                     return secondaryQuorumReadResultObs.flux().flatMap(
                     secondaryQuorumReadResult -> {
@@ -149,7 +154,7 @@ public class QuorumReader {
                         switch (secondaryQuorumReadResult.quorumResult) {
                             case QuorumMet:
                                 try {
-                                            return Flux.just(secondaryQuorumReadResult.getResponse());
+                                    return Flux.just(secondaryQuorumReadResult.getResponse());
                                 } catch (CosmosException e) {
                                     return Flux.error(e);
                                 }
@@ -203,36 +208,58 @@ public class QuorumReader {
 
                             case QuorumNotSelected:
                                 if (hasPerformedReadFromPrimary.v) {
-                                    logger.warn("QuorumNotSelected: Primary read already attempted. Quorum could not be selected after retrying on secondaries.");
-                                    return Flux.error(new GoneException(RMResources.ReadQuorumNotMet, HttpConstants.SubStatusCodes.READ_QUORUM_NOT_MET));
+                                    logger.warn(
+                                        "QuorumNotSelected: Primary read already attempted. Quorum could not be "
+                                        + "selected after retrying on secondaries. ReadQuorumResult StoreResponses: {}",
+                                        String.join(";", secondaryQuorumReadResult.storeResponses));
+                                    return Flux.error(
+                                        new GoneException(
+                                            RMResources.ReadQuorumNotMet,
+                                            HttpConstants.SubStatusCodes.READ_QUORUM_NOT_MET));
                                 }
 
-                                logger.warn("QuorumNotSelected: Quorum could not be selected with read quorum of {}", readQuorumValue);
-                                Mono<ReadPrimaryResult> responseObs = this.readPrimaryAsync(entity, readQuorumValue, false);
+                                logger.warn(
+                                    "QuorumNotSelected: Quorum could not be selected with read quorum of {}, "
+                                    + "ReadQuorumResult StoreResponses: {}",
+                                    readQuorumValue,
+                                    String.join(";", secondaryQuorumReadResult.storeResponses));
+                                Mono<ReadPrimaryResult> responseObs = this.readPrimaryAsync(
+                                    entity, readQuorumValue, false);
 
                                         return responseObs.flux().flatMap(
                                     response -> {
                                         if (response.isSuccessful && response.shouldRetryOnSecondary) {
-                                            assert false : "QuorumNotSelected: PrimaryResult has both Successful and shouldRetryOnSecondary flags set";
-                                            logger.error("PrimaryResult has both Successful and shouldRetryOnSecondary flags set");
+                                            assert false : "QuorumNotSelected: PrimaryResult has both Successful and "
+                                            + "shouldRetryOnSecondary flags set";
+                                            logger.error(
+                                                "PrimaryResult has both Successful and shouldRetryOnSecondary "
+                                                + "flags set. ReadQuorumResult StoreResponses: {}",
+                                                String.join(";", secondaryQuorumReadResult.storeResponses));
                                         } else if (response.isSuccessful) {
                                             logger.debug("QuorumNotSelected: ReadPrimary successful");
                                             try {
-                                                            return Flux.just(response.getResponse());
+                                                return Flux.just(response.getResponse());
                                             } catch (CosmosException e) {
                                                 return Flux.error(e);
                                             }
                                         } else if (response.shouldRetryOnSecondary) {
                                             shouldRetryOnSecondary.v = true;
-                                            logger.warn("QuorumNotSelected: ReadPrimary did not succeed. Will retry on secondary.");
+                                            logger.warn("QuorumNotSelected: ReadPrimary did not succeed. Will retry "
+                                                + "on secondary. ReadQuorumResult StoreResponses: {}",
+                                                String.join(";", secondaryQuorumReadResult.storeResponses));
                                             hasPerformedReadFromPrimary.v = true;
+                                            // We have failed to select a quorum before - could very well happen again
+                                            // especially with reduced replica set size (1 Primary and 2 Secondaries
+                                            // left, one Secondary might be unreachable - due to endpoint health like
+                                            // service-side crashes or network/connectivity issues). Including the
+                                            // Primary replica even for quorum selection in this case for the retry
+                                            includePrimary.v = true;
                                         } else {
                                             logger.warn("QuorumNotSelected: Could not get successful response from ReadPrimary");
                                             return Flux.error(new GoneException(String.format(RMResources.ReadQuorumNotMet, readQuorumValue), HttpConstants.SubStatusCodes.READ_QUORUM_NOT_MET));
                                         }
 
-                                                    return Flux.empty();
-
+                                        return Flux.empty();
                                     }
                                 );
 
@@ -324,7 +351,22 @@ public class QuorumReader {
 
             return responseResultObs.flatMap(
                 responseResult -> {
-                    List<String> storeResponses = responseResult.stream().map(response -> response.toString()).collect(Collectors.toList());
+                    List<String> storeResponses = responseResult
+                        .stream()
+                        .map(response -> {
+                            StoreResponse storeResponse = response.getStoreResponse();
+                            if (storeResponse == null) {
+                                return response.storePhysicalAddress + " -> n/a";
+                            }
+
+                            return response.storePhysicalAddress
+                                + " -> "
+                                + storeResponse.getStatus()
+                                + "("
+                                + storeResponse.getActivityId()
+                                + ")";
+                        })
+                        .collect(Collectors.toList());
                     int responseCount = (int) responseResult.stream().filter(response -> response.isValid).count();
                     if (responseCount < readQuorum) {
                         return Mono.just(Pair.of(new ReadQuorumResult(entity.requestContext.requestChargeTracker,

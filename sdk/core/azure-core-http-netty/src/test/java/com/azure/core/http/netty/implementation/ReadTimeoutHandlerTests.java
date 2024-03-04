@@ -3,21 +3,15 @@
 
 package com.azure.core.http.netty.implementation;
 
+import com.azure.core.http.netty.mocking.MockChannelHandlerContext;
+import com.azure.core.http.netty.mocking.MockEventExecutor;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.util.concurrent.DefaultEventExecutor;
-import io.netty.util.concurrent.EventExecutor;
 import org.junit.jupiter.api.Test;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.ArgumentMatchers.anyLong;
-import static org.mockito.ArgumentMatchers.eq;
-import static org.mockito.Mockito.atLeast;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.never;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
-import static org.mockito.internal.verification.VerificationModeFactory.times;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
  * Tests {@link ReadTimeoutHandler}.
@@ -27,38 +21,31 @@ public class ReadTimeoutHandlerTests {
     public void noTimeoutDoesNotAddWatcher() {
         ReadTimeoutHandler readTimeoutHandler = new ReadTimeoutHandler(0);
 
-        EventExecutor eventExecutor = mock(EventExecutor.class);
-        when(eventExecutor.scheduleAtFixedRate(any(), anyLong(), anyLong(), any())).thenReturn(null);
-
-        ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
-        when(ctx.executor()).thenReturn(eventExecutor);
+        MockEventExecutor eventExecutor = new MockEventExecutor();
+        ChannelHandlerContext ctx = new MockChannelHandlerContext(eventExecutor);
 
         readTimeoutHandler.handlerAdded(ctx);
 
-        verify(eventExecutor, never()).scheduleAtFixedRate(any(), anyLong(), anyLong(), any());
+        assertEquals(0, eventExecutor.getScheduleAtFixedRateCallCount());
     }
 
     @Test
     public void timeoutAddsWatcher() {
         ReadTimeoutHandler readTimeoutHandler = new ReadTimeoutHandler(1);
 
-        EventExecutor eventExecutor = mock(EventExecutor.class);
-        when(eventExecutor.scheduleAtFixedRate(any(), eq(1L), eq(1L), any())).thenReturn(null);
-
-        ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
-        when(ctx.executor()).thenReturn(eventExecutor);
+        MockEventExecutor eventExecutor = new MockEventExecutor();
+        ChannelHandlerContext ctx = new MockChannelHandlerContext(eventExecutor);
 
         readTimeoutHandler.handlerAdded(ctx);
 
-        verify(eventExecutor, times(1)).scheduleAtFixedRate(any(), eq(1L), eq(1L), any());
+        assertEquals(1, eventExecutor.getScheduleAtFixedRateCallCount(1, 1));
     }
 
     @Test
     public void removingHandlerCancelsTimeout() {
         ReadTimeoutHandler readTimeoutHandler = new ReadTimeoutHandler(100);
 
-        ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
-        when(ctx.executor()).thenReturn(new DefaultEventExecutor());
+        ChannelHandlerContext ctx = new MockChannelHandlerContext(new DefaultEventExecutor());
 
         readTimeoutHandler.handlerAdded(ctx);
         readTimeoutHandler.handlerRemoved(ctx);
@@ -70,23 +57,21 @@ public class ReadTimeoutHandlerTests {
     public void readTimesOut() {
         ReadTimeoutHandler readTimeoutHandler = new ReadTimeoutHandler(100);
 
-        ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
-        when(ctx.executor()).thenReturn(new DefaultEventExecutor());
+        MockChannelHandlerContext ctx = new MockChannelHandlerContext(new DefaultEventExecutor());
 
         readTimeoutHandler.handlerAdded(ctx);
 
         // Fake that the scheduled timer completed before any read operations happened.
         readTimeoutHandler.readTimeoutRunnable(ctx);
 
-        verify(ctx, atLeast(1)).fireExceptionCaught(any());
+        assertTrue(ctx.getFireExceptionCaughtCallCount() >= 1);
     }
 
     @Test
     public void readingUpdatesTimeout() {
         ReadTimeoutHandler readTimeoutHandler = new ReadTimeoutHandler(500);
 
-        ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
-        when(ctx.executor()).thenReturn(new DefaultEventExecutor());
+        MockChannelHandlerContext ctx = new MockChannelHandlerContext(new DefaultEventExecutor());
 
         readTimeoutHandler.handlerAdded(ctx);
 
@@ -97,6 +82,6 @@ public class ReadTimeoutHandlerTests {
 
         readTimeoutHandler.handlerRemoved(ctx);
 
-        verify(ctx, never()).fireExceptionCaught(any());
+        assertEquals(0, ctx.getFireExceptionCaughtCallCount());
     }
 }

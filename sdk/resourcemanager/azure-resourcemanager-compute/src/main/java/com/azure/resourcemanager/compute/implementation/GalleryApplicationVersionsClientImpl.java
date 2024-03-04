@@ -192,7 +192,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
         } else {
             galleryApplicationVersion.validate();
         }
-        final String apiVersion = "2022-08-03";
+        final String apiVersion = "2023-07-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -253,7 +253,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
         } else {
             galleryApplicationVersion.validate();
         }
-        final String apiVersion = "2022-08-03";
+        final String apiVersion = "2023-07-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.createOrUpdate(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -400,7 +400,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
         GalleryApplicationVersionInner galleryApplicationVersion) {
         return beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryApplicationName,
             galleryApplicationVersionName, galleryApplicationVersion).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -428,7 +428,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
         GalleryApplicationVersionInner galleryApplicationVersion, Context context) {
         return beginCreateOrUpdateAsync(resourceGroupName, galleryName, galleryApplicationName,
             galleryApplicationVersionName, galleryApplicationVersion, context).last()
-                .flatMap(this.client::getLroFinalResultOrError);
+            .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
@@ -532,7 +532,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
         } else {
             galleryApplicationVersion.validate();
         }
-        final String apiVersion = "2022-08-03";
+        final String apiVersion = "2023-07-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -592,7 +592,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
         } else {
             galleryApplicationVersion.validate();
         }
-        final String apiVersion = "2022-08-03";
+        final String apiVersion = "2023-07-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -853,7 +853,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
             return Mono.error(new IllegalArgumentException(
                 "Parameter galleryApplicationVersionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-03";
+        final String apiVersion = "2023-07-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(),
@@ -905,7 +905,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
             return Mono.error(new IllegalArgumentException(
                 "Parameter galleryApplicationVersionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-03";
+        final String apiVersion = "2023-07-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, galleryName,
@@ -1018,7 +1018,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
             return Mono.error(new IllegalArgumentException(
                 "Parameter galleryApplicationVersionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-03";
+        final String apiVersion = "2023-07-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1067,7 +1067,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
             return Mono.error(new IllegalArgumentException(
                 "Parameter galleryApplicationVersionName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-03";
+        final String apiVersion = "2023-07-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
@@ -1276,7 +1276,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
             return Mono.error(
                 new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-03";
+        final String apiVersion = "2023-07-03";
         final String accept = "application/json";
         return FluxUtil
             .withContext(
@@ -1323,7 +1323,7 @@ public final class GalleryApplicationVersionsClientImpl implements GalleryApplic
             return Mono.error(
                 new IllegalArgumentException("Parameter galleryApplicationName is required and cannot be null."));
         }
-        final String apiVersion = "2022-08-03";
+        final String apiVersion = "2023-07-03";
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service

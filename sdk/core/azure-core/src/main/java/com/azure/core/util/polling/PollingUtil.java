@@ -32,8 +32,8 @@ class PollingUtil {
     private static final ClientLogger LOGGER = new ClientLogger(PollingUtil.class);
 
     static <T> PollResponse<T> pollingLoop(PollingContext<T> pollingContext, Duration operationTimeout,
-        Duration waitTimeout, LongRunningOperationStatus statusToWaitFor, Function<PollingContext<T>,
-        PollResponse<T>> pollOperation, Duration pollInterval, boolean isWaitForStatus) {
+        Duration waitTimeout, LongRunningOperationStatus statusToWaitFor,
+        Function<PollingContext<T>, PollResponse<T>> pollOperation, Duration pollInterval, boolean isWaitForStatus) {
         boolean timeBound = operationTimeout != null && waitTimeout != null;
         long operationTimeoutMills = timeBound ? operationTimeout.toMillis() : -1;
         long waitTimeoutMillis = timeBound ? waitTimeout.toMillis() : -1;
@@ -68,8 +68,8 @@ class PollingUtil {
                 }
 
                 try {
-                    long pollTimeout = timeBound
-                        ? Math.min(operationTimeoutMills, waitTimeoutMillis - elapsedTime) : -1;
+                    long pollTimeout
+                        = timeBound ? Math.min(operationTimeoutMills, waitTimeoutMillis - elapsedTime) : -1;
                     intermediatePollResponse = ImplUtils.getResultWithTimeout(pollOp, pollTimeout);
                     pollingContext.setLatestResponse(intermediatePollResponse);
                 } catch (InterruptedException | ExecutionException | TimeoutException e) {
@@ -99,11 +99,14 @@ class PollingUtil {
             cxt -> Mono.defer(() -> pollOperation.apply(cxt))
                 .delaySubscription(getDelay(cxt.getLatestResponse(), pollInterval))
                 .switchIfEmpty(Mono.error(() -> new IllegalStateException("PollOperation returned Mono.empty().")))
-                .repeat().takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
+                .repeat()
+                .takeUntil(currentPollResponse -> currentPollResponse.getStatus().isComplete())
                 .concatMap(currentPollResponse -> {
                     cxt.setLatestResponse(currentPollResponse);
                     return Mono.just(new AsyncPollResponse<>(cxt, cancelOperation, fetchResultOperation));
-                }), cxt -> { });
+                }),
+            cxt -> {
+            });
     }
 
     /**
