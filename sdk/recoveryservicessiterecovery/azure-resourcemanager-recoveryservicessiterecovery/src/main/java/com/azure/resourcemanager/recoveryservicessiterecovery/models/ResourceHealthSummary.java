@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Base class to define the health summary of the resources contained under an Arm resource. */
+/**
+ * Base class to define the health summary of the resources contained under an Arm resource.
+ */
 @Fluent
 public final class ResourceHealthSummary {
     /*
@@ -32,13 +34,15 @@ public final class ResourceHealthSummary {
     @JsonInclude(value = JsonInclude.Include.NON_NULL, content = JsonInclude.Include.ALWAYS)
     private Map<String, Integer> categorizedResourceCounts;
 
-    /** Creates an instance of ResourceHealthSummary class. */
+    /**
+     * Creates an instance of ResourceHealthSummary class.
+     */
     public ResourceHealthSummary() {
     }
 
     /**
      * Get the resourceCount property: The count of total resources under the container.
-     *
+     * 
      * @return the resourceCount value.
      */
     public Integer resourceCount() {
@@ -47,7 +51,7 @@ public final class ResourceHealthSummary {
 
     /**
      * Set the resourceCount property: The count of total resources under the container.
-     *
+     * 
      * @param resourceCount the resourceCount value to set.
      * @return the ResourceHealthSummary object itself.
      */
@@ -58,7 +62,7 @@ public final class ResourceHealthSummary {
 
     /**
      * Get the issues property: The list of summary of health errors across the resources under the container.
-     *
+     * 
      * @return the issues value.
      */
     public List<HealthErrorSummary> issues() {
@@ -67,7 +71,7 @@ public final class ResourceHealthSummary {
 
     /**
      * Set the issues property: The list of summary of health errors across the resources under the container.
-     *
+     * 
      * @param issues the issues value to set.
      * @return the ResourceHealthSummary object itself.
      */
@@ -78,7 +82,7 @@ public final class ResourceHealthSummary {
 
     /**
      * Get the categorizedResourceCounts property: The categorized resource counts.
-     *
+     * 
      * @return the categorizedResourceCounts value.
      */
     public Map<String, Integer> categorizedResourceCounts() {
@@ -87,7 +91,7 @@ public final class ResourceHealthSummary {
 
     /**
      * Set the categorizedResourceCounts property: The categorized resource counts.
-     *
+     * 
      * @param categorizedResourceCounts the categorizedResourceCounts value to set.
      * @return the ResourceHealthSummary object itself.
      */
@@ -98,7 +102,7 @@ public final class ResourceHealthSummary {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -6,23 +6,22 @@ package com.azure.resourcemanager.storagecache.generated;
 
 import com.azure.resourcemanager.storagecache.models.AmlFilesystemArchiveInfo;
 
-/** Samples for AmlFilesystems Archive. */
+/**
+ * Samples for AmlFilesystems Archive.
+ */
 public final class AmlFilesystemsArchiveSamples {
     /*
-     * x-ms-original-file: specification/storagecache/resource-manager/Microsoft.StorageCache/stable/2023-05-01/examples/amlFilesystems_Archive.json
+     * x-ms-original-file:
+     * specification/storagecache/resource-manager/Microsoft.StorageCache/preview/2023-11-01-preview/examples/
+     * amlFilesystems_Archive.json
      */
     /**
      * Sample code: amlFilesystems_Archive.
-     *
+     * 
      * @param manager Entry point to StorageCacheManager.
      */
     public static void amlFilesystemsArchive(com.azure.resourcemanager.storagecache.StorageCacheManager manager) {
-        manager
-            .amlFilesystems()
-            .archiveWithResponse(
-                "scgroup",
-                "sc",
-                new AmlFilesystemArchiveInfo().withFilesystemPath("/"),
-                com.azure.core.util.Context.NONE);
+        manager.amlFilesystems().archiveWithResponse("scgroup", "sc",
+            new AmlFilesystemArchiveInfo().withFilesystemPath("/"), com.azure.core.util.Context.NONE);
     }
 }

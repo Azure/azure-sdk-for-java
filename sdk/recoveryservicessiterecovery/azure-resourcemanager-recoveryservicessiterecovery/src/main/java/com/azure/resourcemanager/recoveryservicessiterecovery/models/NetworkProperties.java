@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Network Properties. */
+/**
+ * Network Properties.
+ */
 @Fluent
 public final class NetworkProperties {
     /*
@@ -35,13 +37,15 @@ public final class NetworkProperties {
     @JsonProperty(value = "networkType")
     private String networkType;
 
-    /** Creates an instance of NetworkProperties class. */
+    /**
+     * Creates an instance of NetworkProperties class.
+     */
     public NetworkProperties() {
     }
 
     /**
      * Get the fabricType property: The Fabric Type.
-     *
+     * 
      * @return the fabricType value.
      */
     public String fabricType() {
@@ -50,7 +54,7 @@ public final class NetworkProperties {
 
     /**
      * Set the fabricType property: The Fabric Type.
-     *
+     * 
      * @param fabricType the fabricType value to set.
      * @return the NetworkProperties object itself.
      */
@@ -61,7 +65,7 @@ public final class NetworkProperties {
 
     /**
      * Get the subnets property: The List of subnets.
-     *
+     * 
      * @return the subnets value.
      */
     public List<Subnet> subnets() {
@@ -70,7 +74,7 @@ public final class NetworkProperties {
 
     /**
      * Set the subnets property: The List of subnets.
-     *
+     * 
      * @param subnets the subnets value to set.
      * @return the NetworkProperties object itself.
      */
@@ -81,7 +85,7 @@ public final class NetworkProperties {
 
     /**
      * Get the friendlyName property: The Friendly Name.
-     *
+     * 
      * @return the friendlyName value.
      */
     public String friendlyName() {
@@ -90,7 +94,7 @@ public final class NetworkProperties {
 
     /**
      * Set the friendlyName property: The Friendly Name.
-     *
+     * 
      * @param friendlyName the friendlyName value to set.
      * @return the NetworkProperties object itself.
      */
@@ -101,7 +105,7 @@ public final class NetworkProperties {
 
     /**
      * Get the networkType property: The Network Type.
-     *
+     * 
      * @return the networkType value.
      */
     public String networkType() {
@@ -110,7 +114,7 @@ public final class NetworkProperties {
 
     /**
      * Set the networkType property: The Network Type.
-     *
+     * 
      * @param networkType the networkType value to set.
      * @return the NetworkProperties object itself.
      */
@@ -121,7 +125,7 @@ public final class NetworkProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

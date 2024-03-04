@@ -24,7 +24,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 public class JacksonAdapterXmlSerializableTests {
     private static final SerializerAdapter ADAPTER = JacksonAdapter.createDefaultSerializerAdapter();
     private static final SimpleXmlSerializable OBJECT = new SimpleXmlSerializable(true, 10, 10.0, "10");
-    private static final String XML = "<?xml version='1.0' encoding='utf-8'?>"
+    private static final String XML = "<?xml version='1.0' encoding='UTF-8'?>"
         + "<SimpleXml boolean=\"true\" decimal=\"10.0\"><int>10</int><string>10</string></SimpleXml>";
 
     @Test

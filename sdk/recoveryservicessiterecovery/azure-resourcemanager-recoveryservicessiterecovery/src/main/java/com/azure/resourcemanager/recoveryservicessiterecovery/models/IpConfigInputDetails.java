@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The IpConfigInputDetails model. */
+/**
+ * The IpConfigInputDetails model.
+ */
 @Fluent
 public final class IpConfigInputDetails {
     /*
@@ -77,13 +79,15 @@ public final class IpConfigInputDetails {
     @JsonProperty(value = "tfoLBBackendAddressPoolIds")
     private List<String> tfoLBBackendAddressPoolIds;
 
-    /** Creates an instance of IpConfigInputDetails class. */
+    /**
+     * Creates an instance of IpConfigInputDetails class.
+     */
     public IpConfigInputDetails() {
     }
 
     /**
      * Get the ipConfigName property: The ipConfigName property.
-     *
+     * 
      * @return the ipConfigName value.
      */
     public String ipConfigName() {
@@ -92,7 +96,7 @@ public final class IpConfigInputDetails {
 
     /**
      * Set the ipConfigName property: The ipConfigName property.
-     *
+     * 
      * @param ipConfigName the ipConfigName value to set.
      * @return the IpConfigInputDetails object itself.
      */
@@ -103,7 +107,7 @@ public final class IpConfigInputDetails {
 
     /**
      * Get the isPrimary property: The isPrimary property.
-     *
+     * 
      * @return the isPrimary value.
      */
     public Boolean isPrimary() {
@@ -112,7 +116,7 @@ public final class IpConfigInputDetails {
 
     /**
      * Set the isPrimary property: The isPrimary property.
-     *
+     * 
      * @param isPrimary the isPrimary value to set.
      * @return the IpConfigInputDetails object itself.
      */
@@ -123,7 +127,7 @@ public final class IpConfigInputDetails {
 
     /**
      * Get the isSeletedForFailover property: The isSeletedForFailover property.
-     *
+     * 
      * @return the isSeletedForFailover value.
      */
     public Boolean isSeletedForFailover() {
@@ -132,7 +136,7 @@ public final class IpConfigInputDetails {
 
     /**
      * Set the isSeletedForFailover property: The isSeletedForFailover property.
-     *
+     * 
      * @param isSeletedForFailover the isSeletedForFailover value to set.
      * @return the IpConfigInputDetails object itself.
      */
@@ -143,7 +147,7 @@ public final class IpConfigInputDetails {
 
     /**
      * Get the recoverySubnetName property: The recoverySubnetName property.
-     *
+     * 
      * @return the recoverySubnetName value.
      */
     public String recoverySubnetName() {
@@ -152,7 +156,7 @@ public final class IpConfigInputDetails {
 
     /**
      * Set the recoverySubnetName property: The recoverySubnetName property.
-     *
+     * 
      * @param recoverySubnetName the recoverySubnetName value to set.
      * @return the IpConfigInputDetails object itself.
      */
@@ -163,7 +167,7 @@ public final class IpConfigInputDetails {
 
     /**
      * Get the recoveryStaticIpAddress property: The recoveryStaticIPAddress property.
-     *
+     * 
      * @return the recoveryStaticIpAddress value.
      */
     public String recoveryStaticIpAddress() {
@@ -172,7 +176,7 @@ public final class IpConfigInputDetails {
 
     /**
      * Set the recoveryStaticIpAddress property: The recoveryStaticIPAddress property.
-     *
+     * 
      * @param recoveryStaticIpAddress the recoveryStaticIpAddress value to set.
      * @return the IpConfigInputDetails object itself.
      */
@@ -183,7 +187,7 @@ public final class IpConfigInputDetails {
 
     /**
      * Get the recoveryPublicIpAddressId property: The recoveryPublicIPAddressId property.
-     *
+     * 
      * @return the recoveryPublicIpAddressId value.
      */
     public String recoveryPublicIpAddressId() {
@@ -192,7 +196,7 @@ public final class IpConfigInputDetails {
 
     /**
      * Set the recoveryPublicIpAddressId property: The recoveryPublicIPAddressId property.
-     *
+     * 
      * @param recoveryPublicIpAddressId the recoveryPublicIpAddressId value to set.
      * @return the IpConfigInputDetails object itself.
      */
@@ -203,7 +207,7 @@ public final class IpConfigInputDetails {
 
     /**
      * Get the recoveryLBBackendAddressPoolIds property: The recoveryLBBackendAddressPoolIds property.
-     *
+     * 
      * @return the recoveryLBBackendAddressPoolIds value.
      */
     public List<String> recoveryLBBackendAddressPoolIds() {
@@ -212,7 +216,7 @@ public final class IpConfigInputDetails {
 
     /**
      * Set the recoveryLBBackendAddressPoolIds property: The recoveryLBBackendAddressPoolIds property.
-     *
+     * 
      * @param recoveryLBBackendAddressPoolIds the recoveryLBBackendAddressPoolIds value to set.
      * @return the IpConfigInputDetails object itself.
      */
@@ -223,7 +227,7 @@ public final class IpConfigInputDetails {
 
     /**
      * Get the tfoSubnetName property: The tfoSubnetName property.
-     *
+     * 
      * @return the tfoSubnetName value.
      */
     public String tfoSubnetName() {
@@ -232,7 +236,7 @@ public final class IpConfigInputDetails {
 
     /**
      * Set the tfoSubnetName property: The tfoSubnetName property.
-     *
+     * 
      * @param tfoSubnetName the tfoSubnetName value to set.
      * @return the IpConfigInputDetails object itself.
      */
@@ -243,7 +247,7 @@ public final class IpConfigInputDetails {
 
     /**
      * Get the tfoStaticIpAddress property: The tfoStaticIPAddress property.
-     *
+     * 
      * @return the tfoStaticIpAddress value.
      */
     public String tfoStaticIpAddress() {
@@ -252,7 +256,7 @@ public final class IpConfigInputDetails {
 
     /**
      * Set the tfoStaticIpAddress property: The tfoStaticIPAddress property.
-     *
+     * 
      * @param tfoStaticIpAddress the tfoStaticIpAddress value to set.
      * @return the IpConfigInputDetails object itself.
      */
@@ -263,7 +267,7 @@ public final class IpConfigInputDetails {
 
     /**
      * Get the tfoPublicIpAddressId property: The tfoPublicIPAddressId property.
-     *
+     * 
      * @return the tfoPublicIpAddressId value.
      */
     public String tfoPublicIpAddressId() {
@@ -272,7 +276,7 @@ public final class IpConfigInputDetails {
 
     /**
      * Set the tfoPublicIpAddressId property: The tfoPublicIPAddressId property.
-     *
+     * 
      * @param tfoPublicIpAddressId the tfoPublicIpAddressId value to set.
      * @return the IpConfigInputDetails object itself.
      */
@@ -283,7 +287,7 @@ public final class IpConfigInputDetails {
 
     /**
      * Get the tfoLBBackendAddressPoolIds property: The tfoLBBackendAddressPoolIds property.
-     *
+     * 
      * @return the tfoLBBackendAddressPoolIds value.
      */
     public List<String> tfoLBBackendAddressPoolIds() {
@@ -292,7 +296,7 @@ public final class IpConfigInputDetails {
 
     /**
      * Set the tfoLBBackendAddressPoolIds property: The tfoLBBackendAddressPoolIds property.
-     *
+     * 
      * @param tfoLBBackendAddressPoolIds the tfoLBBackendAddressPoolIds value to set.
      * @return the IpConfigInputDetails object itself.
      */
@@ -303,7 +307,7 @@ public final class IpConfigInputDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

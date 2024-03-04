@@ -15,13 +15,15 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.fluent.models.Netw
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.CreateNetworkMappingInput;
 import com.azure.resourcemanager.recoveryservicessiterecovery.models.UpdateNetworkMappingInput;
 
-/** An instance of this class provides access to all the operations defined in ReplicationNetworkMappingsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in ReplicationNetworkMappingsClient.
+ */
 public interface ReplicationNetworkMappingsClient {
     /**
      * Gets all the network mappings under a network.
-     *
-     * <p>Lists all ASR network mappings for the specified network.
-     *
+     * 
+     * Lists all ASR network mappings for the specified network.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -32,14 +34,14 @@ public interface ReplicationNetworkMappingsClient {
      * @return list of network mappings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkMappingInner> listByReplicationNetworks(
-        String resourceName, String resourceGroupName, String fabricName, String networkName);
+    PagedIterable<NetworkMappingInner> listByReplicationNetworks(String resourceName, String resourceGroupName,
+        String fabricName, String networkName);
 
     /**
      * Gets all the network mappings under a network.
-     *
-     * <p>Lists all ASR network mappings for the specified network.
-     *
+     * 
+     * Lists all ASR network mappings for the specified network.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -51,14 +53,14 @@ public interface ReplicationNetworkMappingsClient {
      * @return list of network mappings as paginated response with {@link PagedIterable}.
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    PagedIterable<NetworkMappingInner> listByReplicationNetworks(
-        String resourceName, String resourceGroupName, String fabricName, String networkName, Context context);
+    PagedIterable<NetworkMappingInner> listByReplicationNetworks(String resourceName, String resourceGroupName,
+        String fabricName, String networkName, Context context);
 
     /**
      * Gets network mapping by name.
-     *
-     * <p>Gets the details of an ASR network mapping.
-     *
+     * 
+     * Gets the details of an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -71,19 +73,14 @@ public interface ReplicationNetworkMappingsClient {
      * @return the details of an ASR network mapping along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<NetworkMappingInner> getWithResponse(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        Context context);
+    Response<NetworkMappingInner> getWithResponse(String resourceName, String resourceGroupName, String fabricName,
+        String networkName, String networkMappingName, Context context);
 
     /**
      * Gets network mapping by name.
-     *
-     * <p>Gets the details of an ASR network mapping.
-     *
+     * 
+     * Gets the details of an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -95,18 +92,14 @@ public interface ReplicationNetworkMappingsClient {
      * @return the details of an ASR network mapping.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkMappingInner get(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
+    NetworkMappingInner get(String resourceName, String resourceGroupName, String fabricName, String networkName,
         String networkMappingName);
 
     /**
      * Creates network mapping.
-     *
-     * <p>The operation to create an ASR network mapping.
-     *
+     * 
+     * The operation to create an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -119,19 +112,15 @@ public interface ReplicationNetworkMappingsClient {
      * @return the {@link SyncPoller} for polling of network Mapping model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkMappingInner>, NetworkMappingInner> beginCreate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
+    SyncPoller<PollResult<NetworkMappingInner>, NetworkMappingInner> beginCreate(String resourceName,
+        String resourceGroupName, String fabricName, String networkName, String networkMappingName,
         CreateNetworkMappingInput input);
 
     /**
      * Creates network mapping.
-     *
-     * <p>The operation to create an ASR network mapping.
-     *
+     * 
+     * The operation to create an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -145,20 +134,15 @@ public interface ReplicationNetworkMappingsClient {
      * @return the {@link SyncPoller} for polling of network Mapping model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkMappingInner>, NetworkMappingInner> beginCreate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        CreateNetworkMappingInput input,
-        Context context);
+    SyncPoller<PollResult<NetworkMappingInner>, NetworkMappingInner> beginCreate(String resourceName,
+        String resourceGroupName, String fabricName, String networkName, String networkMappingName,
+        CreateNetworkMappingInput input, Context context);
 
     /**
      * Creates network mapping.
-     *
-     * <p>The operation to create an ASR network mapping.
-     *
+     * 
+     * The operation to create an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -171,19 +155,14 @@ public interface ReplicationNetworkMappingsClient {
      * @return network Mapping model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkMappingInner create(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        CreateNetworkMappingInput input);
+    NetworkMappingInner create(String resourceName, String resourceGroupName, String fabricName, String networkName,
+        String networkMappingName, CreateNetworkMappingInput input);
 
     /**
      * Creates network mapping.
-     *
-     * <p>The operation to create an ASR network mapping.
-     *
+     * 
+     * The operation to create an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -197,20 +176,14 @@ public interface ReplicationNetworkMappingsClient {
      * @return network Mapping model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkMappingInner create(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        CreateNetworkMappingInput input,
-        Context context);
+    NetworkMappingInner create(String resourceName, String resourceGroupName, String fabricName, String networkName,
+        String networkMappingName, CreateNetworkMappingInput input, Context context);
 
     /**
      * Delete network mapping.
-     *
-     * <p>The operation to delete a network mapping.
-     *
+     * 
+     * The operation to delete a network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -222,18 +195,14 @@ public interface ReplicationNetworkMappingsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName, String fabricName,
+        String networkName, String networkMappingName);
 
     /**
      * Delete network mapping.
-     *
-     * <p>The operation to delete a network mapping.
-     *
+     * 
+     * The operation to delete a network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -246,19 +215,14 @@ public interface ReplicationNetworkMappingsClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceName, String resourceGroupName, String fabricName,
+        String networkName, String networkMappingName, Context context);
 
     /**
      * Delete network mapping.
-     *
-     * <p>The operation to delete a network mapping.
-     *
+     * 
+     * The operation to delete a network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -269,18 +233,14 @@ public interface ReplicationNetworkMappingsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
+    void delete(String resourceName, String resourceGroupName, String fabricName, String networkName,
         String networkMappingName);
 
     /**
      * Delete network mapping.
-     *
-     * <p>The operation to delete a network mapping.
-     *
+     * 
+     * The operation to delete a network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -292,19 +252,14 @@ public interface ReplicationNetworkMappingsClient {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    void delete(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        Context context);
+    void delete(String resourceName, String resourceGroupName, String fabricName, String networkName,
+        String networkMappingName, Context context);
 
     /**
      * Updates network mapping.
-     *
-     * <p>The operation to update an ASR network mapping.
-     *
+     * 
+     * The operation to update an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -317,19 +272,15 @@ public interface ReplicationNetworkMappingsClient {
      * @return the {@link SyncPoller} for polling of network Mapping model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkMappingInner>, NetworkMappingInner> beginUpdate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
+    SyncPoller<PollResult<NetworkMappingInner>, NetworkMappingInner> beginUpdate(String resourceName,
+        String resourceGroupName, String fabricName, String networkName, String networkMappingName,
         UpdateNetworkMappingInput input);
 
     /**
      * Updates network mapping.
-     *
-     * <p>The operation to update an ASR network mapping.
-     *
+     * 
+     * The operation to update an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -343,20 +294,15 @@ public interface ReplicationNetworkMappingsClient {
      * @return the {@link SyncPoller} for polling of network Mapping model.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<NetworkMappingInner>, NetworkMappingInner> beginUpdate(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        UpdateNetworkMappingInput input,
-        Context context);
+    SyncPoller<PollResult<NetworkMappingInner>, NetworkMappingInner> beginUpdate(String resourceName,
+        String resourceGroupName, String fabricName, String networkName, String networkMappingName,
+        UpdateNetworkMappingInput input, Context context);
 
     /**
      * Updates network mapping.
-     *
-     * <p>The operation to update an ASR network mapping.
-     *
+     * 
+     * The operation to update an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -369,19 +315,14 @@ public interface ReplicationNetworkMappingsClient {
      * @return network Mapping model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkMappingInner update(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        UpdateNetworkMappingInput input);
+    NetworkMappingInner update(String resourceName, String resourceGroupName, String fabricName, String networkName,
+        String networkMappingName, UpdateNetworkMappingInput input);
 
     /**
      * Updates network mapping.
-     *
-     * <p>The operation to update an ASR network mapping.
-     *
+     * 
+     * The operation to update an ASR network mapping.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Primary fabric name.
@@ -395,20 +336,14 @@ public interface ReplicationNetworkMappingsClient {
      * @return network Mapping model.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    NetworkMappingInner update(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String networkName,
-        String networkMappingName,
-        UpdateNetworkMappingInput input,
-        Context context);
+    NetworkMappingInner update(String resourceName, String resourceGroupName, String fabricName, String networkName,
+        String networkMappingName, UpdateNetworkMappingInput input, Context context);
 
     /**
      * Gets all the network mappings under a vault.
-     *
-     * <p>Lists all ASR network mappings in the vault.
-     *
+     * 
+     * Lists all ASR network mappings in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -421,9 +356,9 @@ public interface ReplicationNetworkMappingsClient {
 
     /**
      * Gets all the network mappings under a vault.
-     *
-     * <p>Lists all ASR network mappings in the vault.
-     *
+     * 
+     * Lists all ASR network mappings in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.

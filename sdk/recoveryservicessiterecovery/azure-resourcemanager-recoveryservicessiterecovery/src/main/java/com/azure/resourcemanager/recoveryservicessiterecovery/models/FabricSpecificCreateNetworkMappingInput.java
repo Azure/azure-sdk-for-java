@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Input details specific to fabrics during Network Mapping. */
+/**
+ * Input details specific to fabrics during Network Mapping.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -19,17 +21,18 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureToAzure", value = AzureToAzureCreateNetworkMappingInput.class),
     @JsonSubTypes.Type(name = "VmmToAzure", value = VmmToAzureCreateNetworkMappingInput.class),
-    @JsonSubTypes.Type(name = "VmmToVmm", value = VmmToVmmCreateNetworkMappingInput.class)
-})
+    @JsonSubTypes.Type(name = "VmmToVmm", value = VmmToVmmCreateNetworkMappingInput.class) })
 @Immutable
 public class FabricSpecificCreateNetworkMappingInput {
-    /** Creates an instance of FabricSpecificCreateNetworkMappingInput class. */
+    /**
+     * Creates an instance of FabricSpecificCreateNetworkMappingInput class.
+     */
     public FabricSpecificCreateNetworkMappingInput() {
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

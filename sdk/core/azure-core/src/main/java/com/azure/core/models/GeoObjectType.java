@@ -9,7 +9,20 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Represents the type of GeoJSON object.
+ * <p>Represents the type of a GeoJSON object.</p>
+ *
+ * <p>This class encapsulates the type of a GeoJSON object. It provides constants for the different types of
+ * GeoJSON objects, such as {@link #POINT}, {@link #MULTI_POINT}, {@link #POLYGON}, {@link #MULTI_POLYGON},
+ * {@link #LINE_STRING}, {@link #MULTI_LINE_STRING}, and {@link #GEOMETRY_COLLECTION}.</p>
+ *
+ * <p>Each GeoJSON object type is represented by an instance of this class. You can use the
+ * {@link #fromString(String)} method to create or get a GeoObjectType from its string representation,
+ * and the {@link #values()} method to get all known GeoObjectType values.</p>
+ *
+ * <p>This class is useful when you want to work with GeoJSON objects and need to specify or check the type of a
+ * GeoJSON object.</p>
+ *
+ * @see ExpandableStringEnum
  */
 public final class GeoObjectType extends ExpandableStringEnum<GeoObjectType> {
     /**

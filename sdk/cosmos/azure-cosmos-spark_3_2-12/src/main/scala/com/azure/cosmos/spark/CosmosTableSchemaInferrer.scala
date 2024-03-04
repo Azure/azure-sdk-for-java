@@ -118,11 +118,15 @@ private object CosmosTableSchemaInferrer
         throughputControlClientCacheItemOpt)
 
     if (cosmosInferenceConfig.inferSchemaEnabled) {
-      SparkUtils.safeOpenConnectionInitCaches(sourceContainer, (msg, e) => logWarning(msg, e))
       val queryOptions = new CosmosQueryRequestOptions()
       queryOptions.setMaxBufferedItemCount(cosmosInferenceConfig.inferSchemaSamplingSize)
       queryOptions.setDedicatedGatewayRequestOptions(cosmosReadConfig.dedicatedGatewayRequestOptions)
-      ThroughputControlHelper.populateThroughputControlGroupName(queryOptions, cosmosReadConfig.throughputControlConfig)
+      ThroughputControlHelper.populateThroughputControlGroupName(
+        ImplementationBridgeHelpers
+          .CosmosQueryRequestOptionsHelper
+          .getCosmosQueryRequestOptionsAccessor
+          .getImpl(queryOptions),
+        cosmosReadConfig.throughputControlConfig)
 
       val queryText = cosmosInferenceConfig.inferSchemaQuery match {
         case None =>

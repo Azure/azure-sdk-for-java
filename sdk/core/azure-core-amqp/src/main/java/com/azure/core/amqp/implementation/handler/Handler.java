@@ -21,8 +21,8 @@ import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextW
  */
 public abstract class Handler extends BaseHandler implements Closeable {
     // The flux streaming state of the amqp endpoint (connection, session, link) from this handler receives events.
-    private final Sinks.Many<EndpointState> endpointStates = Sinks.many().replay()
-        .latestOrDefault(EndpointState.UNINITIALIZED);
+    private final Sinks.Many<EndpointState> endpointStates
+        = Sinks.many().replay().latestOrDefault(EndpointState.UNINITIALIZED);
     // The flag indicating if the endpointStates Flux reached terminal state (error-ed or completed).
     private final AtomicBoolean isTerminal = new AtomicBoolean();
     private final String connectionId;
@@ -120,8 +120,7 @@ public abstract class Handler extends BaseHandler implements Closeable {
 
                 return true;
             } else {
-                addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
-                    .log("Could not emit error.", error);
+                addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult).log("Could not emit error.", error);
 
                 return false;
             }
@@ -161,8 +160,7 @@ public abstract class Handler extends BaseHandler implements Closeable {
 
                 return true;
             } else {
-                addSignalTypeAndResult(logger.atInfo(), signalType, emitResult)
-                    .log("Could not emit complete.");
+                addSignalTypeAndResult(logger.atInfo(), signalType, emitResult).log("Could not emit complete.");
 
                 return false;
             }

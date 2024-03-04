@@ -102,14 +102,11 @@ public class ExpandableStringEnumTests {
         TestStringEnum testStringEnum = TestStringEnum.fromString("test");
         TestStringEnum2 testStringEnum2 = TestStringEnum2.fromString("test");
 
-        return Stream.of(
-            Arguments.of(testStringEnum, null, false),
-            Arguments.of(testStringEnum, testStringEnum2, false),
-            Arguments.of(testStringEnum, testStringEnum, true),
+        return Stream.of(Arguments.of(testStringEnum, null, false),
+            Arguments.of(testStringEnum, testStringEnum2, false), Arguments.of(testStringEnum, testStringEnum, true),
             Arguments.of(testStringEnum2, testStringEnum2, true),
             Arguments.of(testStringEnum, TestStringEnum.fromString("test"), true),
-            Arguments.of(testStringEnum, TestStringEnum.fromString("test2"), false)
-        );
+            Arguments.of(testStringEnum, TestStringEnum.fromString("test2"), false));
     }
 
     public static final class TestStringEnum extends ExpandableStringEnum<TestStringEnum> {

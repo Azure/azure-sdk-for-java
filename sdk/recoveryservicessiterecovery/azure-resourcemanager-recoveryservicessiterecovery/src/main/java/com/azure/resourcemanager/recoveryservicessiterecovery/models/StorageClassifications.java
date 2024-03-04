@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of StorageClassifications. */
+/**
+ * Resource collection API of StorageClassifications.
+ */
 public interface StorageClassifications {
     /**
      * Gets the list of storage classification objects under a fabric.
-     *
-     * <p>Lists the storage classifications available in the specified fabric.
-     *
+     * 
+     * Lists the storage classifications available in the specified fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Site name of interest.
@@ -23,14 +25,14 @@ public interface StorageClassifications {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of storage details as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<StorageClassification> listByReplicationFabrics(
-        String resourceName, String resourceGroupName, String fabricName);
+    PagedIterable<StorageClassification> listByReplicationFabrics(String resourceName, String resourceGroupName,
+        String fabricName);
 
     /**
      * Gets the list of storage classification objects under a fabric.
-     *
-     * <p>Lists the storage classifications available in the specified fabric.
-     *
+     * 
+     * Lists the storage classifications available in the specified fabric.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Site name of interest.
@@ -40,14 +42,14 @@ public interface StorageClassifications {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of storage details as paginated response with {@link PagedIterable}.
      */
-    PagedIterable<StorageClassification> listByReplicationFabrics(
-        String resourceName, String resourceGroupName, String fabricName, Context context);
+    PagedIterable<StorageClassification> listByReplicationFabrics(String resourceName, String resourceGroupName,
+        String fabricName, Context context);
 
     /**
      * Gets the details of a storage classification.
-     *
-     * <p>Gets the details of the specified storage classification.
-     *
+     * 
+     * Gets the details of the specified storage classification.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -58,18 +60,14 @@ public interface StorageClassifications {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the specified storage classification along with {@link Response}.
      */
-    Response<StorageClassification> getWithResponse(
-        String resourceName,
-        String resourceGroupName,
-        String fabricName,
-        String storageClassificationName,
-        Context context);
+    Response<StorageClassification> getWithResponse(String resourceName, String resourceGroupName, String fabricName,
+        String storageClassificationName, Context context);
 
     /**
      * Gets the details of a storage classification.
-     *
-     * <p>Gets the details of the specified storage classification.
-     *
+     * 
+     * Gets the details of the specified storage classification.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param fabricName Fabric name.
@@ -79,14 +77,14 @@ public interface StorageClassifications {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the details of the specified storage classification.
      */
-    StorageClassification get(
-        String resourceName, String resourceGroupName, String fabricName, String storageClassificationName);
+    StorageClassification get(String resourceName, String resourceGroupName, String fabricName,
+        String storageClassificationName);
 
     /**
      * Gets the list of storage classification objects under a vault.
-     *
-     * <p>Lists the storage classifications in the vault.
-     *
+     * 
+     * Lists the storage classifications in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -98,9 +96,9 @@ public interface StorageClassifications {
 
     /**
      * Gets the list of storage classification objects under a vault.
-     *
-     * <p>Lists the storage classifications in the vault.
-     *
+     * 
+     * Lists the storage classifications in the vault.
+     * 
      * @param resourceName The name of the recovery services vault.
      * @param resourceGroupName The name of the resource group where the recovery services vault is present.
      * @param context The context to associate with this operation.

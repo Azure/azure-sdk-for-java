@@ -47,12 +47,14 @@ public class OpenTelemetryTracingBenchmark {
 
     @Benchmark
     public void noHttpTracing() {
-        NO_TRACING_PIPELINE.sendSync(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), com.azure.core.util.Context.NONE);
+        NO_TRACING_PIPELINE.sendSync(new HttpRequest(HttpMethod.GET, "http://localhost/hello"),
+            com.azure.core.util.Context.NONE);
     }
 
     @Benchmark
     public void disabledHttpTracing() {
-        DISABLED_TRACING_PIPELINE.sendSync(new HttpRequest(HttpMethod.GET, "http://localhost/hello"), com.azure.core.util.Context.NONE);
+        DISABLED_TRACING_PIPELINE.sendSync(new HttpRequest(HttpMethod.GET, "http://localhost/hello"),
+            com.azure.core.util.Context.NONE);
     }
 
     @Benchmark
@@ -66,8 +68,7 @@ public class OpenTelemetryTracingBenchmark {
             HttpPolicyProviders.addAfterRetryPolicies(policies);
         }
 
-        return new HttpPipelineBuilder()
-            .policies(policies.toArray(new HttpPipelinePolicy[0]))
+        return new HttpPipelineBuilder().policies(policies.toArray(new HttpPipelinePolicy[0]))
             .httpClient(request -> Mono.just(new MockHttpResponse(request, 200)))
             .tracer(tracer)
             .build();

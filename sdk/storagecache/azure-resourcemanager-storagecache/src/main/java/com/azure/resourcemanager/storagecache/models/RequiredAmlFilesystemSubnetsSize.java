@@ -6,19 +6,21 @@ package com.azure.resourcemanager.storagecache.models;
 
 import com.azure.resourcemanager.storagecache.fluent.models.RequiredAmlFilesystemSubnetsSizeInner;
 
-/** An immutable client-side representation of RequiredAmlFilesystemSubnetsSize. */
+/**
+ * An immutable client-side representation of RequiredAmlFilesystemSubnetsSize.
+ */
 public interface RequiredAmlFilesystemSubnetsSize {
     /**
      * Gets the filesystemSubnetSize property: The number of available IP addresses that are required for the AML file
      * system.
-     *
+     * 
      * @return the filesystemSubnetSize value.
      */
     Integer filesystemSubnetSize();
 
     /**
      * Gets the inner com.azure.resourcemanager.storagecache.fluent.models.RequiredAmlFilesystemSubnetsSizeInner object.
-     *
+     * 
      * @return the inner object.
      */
     RequiredAmlFilesystemSubnetsSizeInner innerModel();

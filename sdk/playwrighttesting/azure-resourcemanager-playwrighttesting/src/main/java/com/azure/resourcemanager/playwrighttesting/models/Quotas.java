@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Quotas. */
+/**
+ * Resource collection API of Quotas.
+ */
 public interface Quotas {
     /**
      * List quotas for a given subscription Id.
-     *
+     * 
      * @param location The location of quota in ARM Normalized format like eastus, southeastasia etc.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -23,7 +25,7 @@ public interface Quotas {
 
     /**
      * List quotas for a given subscription Id.
-     *
+     * 
      * @param location The location of quota in ARM Normalized format like eastus, southeastasia etc.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -35,7 +37,7 @@ public interface Quotas {
 
     /**
      * Get quota by name.
-     *
+     * 
      * @param location The location of quota in ARM Normalized format like eastus, southeastasia etc.
      * @param name The quota name.
      * @param context The context to associate with this operation.
@@ -48,7 +50,7 @@ public interface Quotas {
 
     /**
      * Get quota by name.
-     *
+     * 
      * @param location The location of quota in ARM Normalized format like eastus, southeastasia etc.
      * @param name The quota name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

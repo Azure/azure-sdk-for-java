@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** VMwareCbt disk input for update. */
+/**
+ * VMwareCbt disk input for update.
+ */
 @Fluent
 public final class VMwareCbtUpdateDiskInput {
     /*
@@ -29,13 +31,15 @@ public final class VMwareCbtUpdateDiskInput {
     @JsonProperty(value = "isOSDisk")
     private String isOSDisk;
 
-    /** Creates an instance of VMwareCbtUpdateDiskInput class. */
+    /**
+     * Creates an instance of VMwareCbtUpdateDiskInput class.
+     */
     public VMwareCbtUpdateDiskInput() {
     }
 
     /**
      * Get the diskId property: The disk Id.
-     *
+     * 
      * @return the diskId value.
      */
     public String diskId() {
@@ -44,7 +48,7 @@ public final class VMwareCbtUpdateDiskInput {
 
     /**
      * Set the diskId property: The disk Id.
-     *
+     * 
      * @param diskId the diskId value to set.
      * @return the VMwareCbtUpdateDiskInput object itself.
      */
@@ -55,7 +59,7 @@ public final class VMwareCbtUpdateDiskInput {
 
     /**
      * Get the targetDiskName property: The target disk name.
-     *
+     * 
      * @return the targetDiskName value.
      */
     public String targetDiskName() {
@@ -64,7 +68,7 @@ public final class VMwareCbtUpdateDiskInput {
 
     /**
      * Set the targetDiskName property: The target disk name.
-     *
+     * 
      * @param targetDiskName the targetDiskName value to set.
      * @return the VMwareCbtUpdateDiskInput object itself.
      */
@@ -75,7 +79,7 @@ public final class VMwareCbtUpdateDiskInput {
 
     /**
      * Get the isOSDisk property: A value indicating whether the disk is the OS disk.
-     *
+     * 
      * @return the isOSDisk value.
      */
     public String isOSDisk() {
@@ -84,7 +88,7 @@ public final class VMwareCbtUpdateDiskInput {
 
     /**
      * Set the isOSDisk property: A value indicating whether the disk is the OS disk.
-     *
+     * 
      * @param isOSDisk the isOSDisk value to set.
      * @return the VMwareCbtUpdateDiskInput object itself.
      */
@@ -95,14 +99,13 @@ public final class VMwareCbtUpdateDiskInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (diskId() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property diskId in model VMwareCbtUpdateDiskInput"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property diskId in model VMwareCbtUpdateDiskInput"));
         }
     }
 

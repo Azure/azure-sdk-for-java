@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Recovery plan planned failover input properties. */
+/**
+ * Recovery plan planned failover input properties.
+ */
 @Fluent
 public final class RecoveryPlanPlannedFailoverInputProperties {
     /*
@@ -24,13 +26,15 @@ public final class RecoveryPlanPlannedFailoverInputProperties {
     @JsonProperty(value = "providerSpecificDetails")
     private List<RecoveryPlanProviderSpecificFailoverInput> providerSpecificDetails;
 
-    /** Creates an instance of RecoveryPlanPlannedFailoverInputProperties class. */
+    /**
+     * Creates an instance of RecoveryPlanPlannedFailoverInputProperties class.
+     */
     public RecoveryPlanPlannedFailoverInputProperties() {
     }
 
     /**
      * Get the failoverDirection property: The failover direction.
-     *
+     * 
      * @return the failoverDirection value.
      */
     public PossibleOperationsDirections failoverDirection() {
@@ -39,19 +43,19 @@ public final class RecoveryPlanPlannedFailoverInputProperties {
 
     /**
      * Set the failoverDirection property: The failover direction.
-     *
+     * 
      * @param failoverDirection the failoverDirection value to set.
      * @return the RecoveryPlanPlannedFailoverInputProperties object itself.
      */
-    public RecoveryPlanPlannedFailoverInputProperties withFailoverDirection(
-        PossibleOperationsDirections failoverDirection) {
+    public RecoveryPlanPlannedFailoverInputProperties
+        withFailoverDirection(PossibleOperationsDirections failoverDirection) {
         this.failoverDirection = failoverDirection;
         return this;
     }
 
     /**
      * Get the providerSpecificDetails property: The provider specific properties.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public List<RecoveryPlanProviderSpecificFailoverInput> providerSpecificDetails() {
@@ -60,28 +64,25 @@ public final class RecoveryPlanPlannedFailoverInputProperties {
 
     /**
      * Set the providerSpecificDetails property: The provider specific properties.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the RecoveryPlanPlannedFailoverInputProperties object itself.
      */
-    public RecoveryPlanPlannedFailoverInputProperties withProviderSpecificDetails(
-        List<RecoveryPlanProviderSpecificFailoverInput> providerSpecificDetails) {
+    public RecoveryPlanPlannedFailoverInputProperties
+        withProviderSpecificDetails(List<RecoveryPlanProviderSpecificFailoverInput> providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (failoverDirection() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property failoverDirection in model"
-                            + " RecoveryPlanPlannedFailoverInputProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property failoverDirection in model RecoveryPlanPlannedFailoverInputProperties"));
         }
         if (providerSpecificDetails() != null) {
             providerSpecificDetails().forEach(e -> e.validate());

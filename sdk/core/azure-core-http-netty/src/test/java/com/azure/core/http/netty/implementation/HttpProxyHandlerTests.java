@@ -3,6 +3,9 @@
 
 package com.azure.core.http.netty.implementation;
 
+import com.azure.core.http.netty.mocking.MockAttribute;
+import com.azure.core.http.netty.mocking.MockChannel;
+import com.azure.core.http.netty.mocking.MockChannelHandlerContext;
 import com.azure.core.util.AuthorizationChallengeHandler;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -18,14 +21,10 @@ import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.handler.proxy.ProxyConnectException;
 import io.netty.util.Attribute;
-import io.netty.util.AttributeKey;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mockito;
 
 import java.net.InetSocketAddress;
 import java.util.Collections;
@@ -47,10 +46,6 @@ import static org.junit.jupiter.api.Assertions.assertIterableEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
-import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 /**
  * Tests {@link HttpProxyHandler}.
@@ -66,11 +61,6 @@ public class HttpProxyHandlerTests {
     private static final String ORIGINAL_NONCE = "7ypf/xlj9XXwfDPEoM4URrv/xwf94BcCAzFZH4GiTo0v";
     private static final String UPDATED_NONCE = "FQhe/qaU925kfnzjCev0ciny7QMkPqMAFRtzCUYo5tdS";
 
-    @AfterEach
-    public void cleanupInlineMocks() {
-        Mockito.framework().clearInlineMock(this);
-    }
-
     /**
      * Tests that constructing {@link HttpProxyHandler} throws a {@link NullPointerException} when passed a
      * {@code null} proxy.
@@ -85,8 +75,8 @@ public class HttpProxyHandlerTests {
      */
     @Test
     public void protocolIsHttp() {
-        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(new InetSocketAddress("localhost", 8888),
-            null, null);
+        HttpProxyHandler proxyAuthenticationHandler
+            = new HttpProxyHandler(new InetSocketAddress("localhost", 8888), null, null);
 
         assertEquals("http", proxyAuthenticationHandler.protocol());
     }
@@ -96,28 +86,21 @@ public class HttpProxyHandlerTests {
      */
     @Test
     public void authSchemeIsNoneBeforeHandlingChallenge() {
-        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(new InetSocketAddress("localhost", 8888),
-            null, null);
+        HttpProxyHandler proxyAuthenticationHandler
+            = new HttpProxyHandler(new InetSocketAddress("localhost", 8888), null, null);
 
         assertEquals("none", proxyAuthenticationHandler.authScheme());
     }
 
     @ParameterizedTest
     @MethodSource("authSchemeIsDeterminedByAuthorizationTypeSupplier")
-    @SuppressWarnings("unchecked")
     public void authSchemeIsDeterminedByAuthorizationType(ChallengeHolder challengeHolder, String expectedAuthScheme)
         throws Exception {
         HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(new InetSocketAddress("localhost", 8888),
             new AuthorizationChallengeHandler("1", "1"), new AtomicReference<>(challengeHolder));
 
-        Attribute<String> attribute = mock(Attribute.class);
-
-        Channel channel = mock(Channel.class);
-        when(channel.attr(any(AttributeKey.class))).thenReturn(attribute);
-
-        ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
-        when(ctx.connect(any(), any(), any())).thenReturn(null);
-        when(ctx.channel()).thenReturn(channel);
+        Channel channel = new MockChannel(new MockAttribute<>(null));
+        ChannelHandlerContext ctx = new MockChannelHandlerContext(channel);
 
         proxyAuthenticationHandler.connect(ctx, new InetSocketAddress("localhost", 80), null, null);
         proxyAuthenticationHandler.newInitialMessage(ctx);
@@ -133,8 +116,7 @@ public class HttpProxyHandlerTests {
             Arguments.of(new ChallengeHolder(false, Collections.singletonList(PARSED_DIGEST_CHALLENGE)), DIGEST),
 
             // ChallengeHolder containing both Basic and Digest challenge.
-            Arguments.of(new ChallengeHolder(true, Collections.singletonList(PARSED_DIGEST_CHALLENGE)), DIGEST)
-        );
+            Arguments.of(new ChallengeHolder(true, Collections.singletonList(PARSED_DIGEST_CHALLENGE)), DIGEST));
     }
 
     /**
@@ -146,11 +128,10 @@ public class HttpProxyHandlerTests {
      */
     @Test
     public void connectMessageDoesNotHaveAuthorizationWhenUsingAnonymousProxy() throws Exception {
-        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(new InetSocketAddress("localhost", 8888),
-            null, null);
+        HttpProxyHandler proxyAuthenticationHandler
+            = new HttpProxyHandler(new InetSocketAddress("localhost", 8888), null, null);
 
-        ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
-        when(ctx.connect(any(), any(), any())).thenReturn(null);
+        ChannelHandlerContext ctx = new MockChannelHandlerContext((Channel) null);
 
         proxyAuthenticationHandler.connect(ctx, new InetSocketAddress("localhost", 80), null, null);
         FullHttpRequest request = (FullHttpRequest) proxyAuthenticationHandler.newInitialMessage(null);
@@ -166,8 +147,7 @@ public class HttpProxyHandlerTests {
         HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(new InetSocketAddress("localhost", 8888),
             new AuthorizationChallengeHandler("1", "1"), new AtomicReference<>());
 
-        ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
-        when(ctx.connect(any(), any(), any())).thenReturn(null);
+        ChannelHandlerContext ctx = new MockChannelHandlerContext((Channel) null);
 
         proxyAuthenticationHandler.connect(ctx, new InetSocketAddress("localhost", 80), null, null);
         FullHttpRequest request = (FullHttpRequest) proxyAuthenticationHandler.newInitialMessage(null);
@@ -179,10 +159,10 @@ public class HttpProxyHandlerTests {
      */
     @Test
     public void nonHttpResponseIsIgnoredInResponseHandler() throws ProxyConnectException {
-        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(new InetSocketAddress("localhost", 8888),
-            null, null);
+        HttpProxyHandler proxyAuthenticationHandler
+            = new HttpProxyHandler(new InetSocketAddress("localhost", 8888), null, null);
 
-        assertFalse(proxyAuthenticationHandler.handleResponse(mock(ChannelHandlerContext.class), "random"));
+        assertFalse(proxyAuthenticationHandler.handleResponse(new MockChannelHandlerContext((Channel) null), "random"));
     }
 
     /**
@@ -190,23 +170,15 @@ public class HttpProxyHandlerTests {
      * {@link RuntimeException}.
      */
     @Test
-    @SuppressWarnings("unchecked")
     public void multipleHttpResponsesThrowsException() throws ProxyConnectException {
-        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(new InetSocketAddress("localhost", 8888),
-            null, null);
+        HttpProxyHandler proxyAuthenticationHandler
+            = new HttpProxyHandler(new InetSocketAddress("localhost", 8888), null, null);
 
-        Attribute<String> attribute = mock(Attribute.class);
-        when(attribute.get()).thenReturn(null);
+        Channel channel = new MockChannel(new MockAttribute<>(null));
+        ChannelHandlerContext ctx = new MockChannelHandlerContext(channel);
 
-        Channel channel = mock(Channel.class);
-        when(channel.attr(any(AttributeKey.class))).thenReturn(attribute);
-
-        ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
-        when(ctx.channel()).thenReturn(channel);
-
-        HttpResponse response = mock(HttpResponse.class);
-        when(response.status()).thenReturn(HttpResponseStatus.OK);
-        when(response.headers()).thenReturn(EmptyHttpHeaders.INSTANCE);
+        HttpResponse response
+            = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, EmptyHttpHeaders.INSTANCE);
 
         assertFalse(proxyAuthenticationHandler.handleResponse(ctx, response));
         assertThrows(RuntimeException.class, () -> proxyAuthenticationHandler.handleResponse(ctx, response));
@@ -218,11 +190,11 @@ public class HttpProxyHandlerTests {
      */
     @Test
     public void lastHttpContentWithoutResponseThrows() {
-        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(new InetSocketAddress("localhost", 8888),
-            null, null);
+        HttpProxyHandler proxyAuthenticationHandler
+            = new HttpProxyHandler(new InetSocketAddress("localhost", 8888), null, null);
 
         assertThrows(ProxyConnectException.class, () -> proxyAuthenticationHandler
-            .handleResponse(mock(ChannelHandlerContext.class), LastHttpContent.EMPTY_LAST_CONTENT));
+            .handleResponse(new MockChannelHandlerContext((Channel) null), LastHttpContent.EMPTY_LAST_CONTENT));
     }
 
     /**
@@ -231,8 +203,8 @@ public class HttpProxyHandlerTests {
      */
     @Test
     public void lastHttpContentWithoutValidStatusDoesNotThrowOnFirstAttempt() throws ProxyConnectException {
-        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(new InetSocketAddress("localhost", 8888),
-            null, null);
+        HttpProxyHandler proxyAuthenticationHandler
+            = new HttpProxyHandler(new InetSocketAddress("localhost", 8888), null, null);
 
         HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.CONFLICT);
 
@@ -253,8 +225,8 @@ public class HttpProxyHandlerTests {
             new AuthorizationChallengeHandler("1", "1"), proxyChallengeHolder);
 
         HttpHeaders headers = new DefaultHttpHeaders().add(PROXY_AUTHENTICATE, proxyAuthenticateChallenges);
-        HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1,
-            HttpResponseStatus.PROXY_AUTHENTICATION_REQUIRED, headers);
+        HttpResponse response
+            = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.PROXY_AUTHENTICATION_REQUIRED, headers);
 
         assertFalse(proxyAuthenticationHandler.handleResponse(null, response));
 
@@ -272,10 +244,10 @@ public class HttpProxyHandlerTests {
         Map<String, String> anotherParsedDigestChallenge = parseDigestChallenge(anotherDigestChallenge);
 
         ChallengeHolder basicOnlyHolder = new ChallengeHolder(true, Collections.emptyList());
-        ChallengeHolder digestOnlyHolder = new ChallengeHolder(false,
-            Collections.singletonList(PARSED_DIGEST_CHALLENGE));
-        ChallengeHolder basicAndDigestHolder = new ChallengeHolder(true,
-            Collections.singletonList(PARSED_DIGEST_CHALLENGE));
+        ChallengeHolder digestOnlyHolder
+            = new ChallengeHolder(false, Collections.singletonList(PARSED_DIGEST_CHALLENGE));
+        ChallengeHolder basicAndDigestHolder
+            = new ChallengeHolder(true, Collections.singletonList(PARSED_DIGEST_CHALLENGE));
         ChallengeHolder multipleDigestHolder = new ChallengeHolder(false,
             Stream.of(PARSED_DIGEST_CHALLENGE, anotherParsedDigestChallenge).collect(Collectors.toList()));
         ChallengeHolder basicAndMultipleDigestHolder = new ChallengeHolder(true,
@@ -297,9 +269,9 @@ public class HttpProxyHandlerTests {
                 multipleDigestHolder),
 
             // Basic and multiple Digest Proxy-Authenticate challenges.
-            Arguments.of(Stream.of(basicChallenge, DIGEST_CHALLENGE, anotherDigestChallenge)
-                .collect(Collectors.toList()), basicAndMultipleDigestHolder)
-        );
+            Arguments.of(
+                Stream.of(basicChallenge, DIGEST_CHALLENGE, anotherDigestChallenge).collect(Collectors.toList()),
+                basicAndMultipleDigestHolder));
     }
 
     /**
@@ -308,27 +280,20 @@ public class HttpProxyHandlerTests {
      */
     @ParameterizedTest
     @MethodSource("authorizationIsAppliedSupplier")
-    @SuppressWarnings("unchecked")
     public void authorizationIsApplied(ChallengeHolder challengeHolder, Predicate<String> expectedPredicate)
         throws Exception {
         HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(new InetSocketAddress("localhost", 8888),
             new AuthorizationChallengeHandler("1", "1"), new AtomicReference<>(challengeHolder));
 
-        Attribute<String> attribute = mock(Attribute.class);
-        ArgumentCaptor<String> setCapture = ArgumentCaptor.forClass(String.class);
-
-        Channel channel = mock(Channel.class);
-        when(channel.attr(any(AttributeKey.class))).thenReturn(attribute);
-
-        ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
-        when(ctx.channel()).thenReturn(channel);
+        Attribute<String> attribute = new MockAttribute<>(null);
+        Channel channel = new MockChannel(attribute);
+        ChannelHandlerContext ctx = new MockChannelHandlerContext(channel);
 
         proxyAuthenticationHandler.connect(ctx, new InetSocketAddress("localhost", 80), null, null);
         FullHttpRequest fullHttpRequest = (FullHttpRequest) proxyAuthenticationHandler.newInitialMessage(ctx);
         assertNotNull(fullHttpRequest);
         assertTrue(expectedPredicate.test(fullHttpRequest.headers().get(PROXY_AUTHORIZATION)));
-        verify(attribute).set(setCapture.capture());
-        assertTrue(expectedPredicate.test(setCapture.getValue()));
+        assertTrue(expectedPredicate.test(attribute.get()));
     }
 
     public static Stream<Arguments> authorizationIsAppliedSupplier() {
@@ -344,8 +309,8 @@ public class HttpProxyHandlerTests {
                 digestPredicate),
 
             // ChallengeHolder containing both Basic and Digest challenge.
-            Arguments.of(new ChallengeHolder(true, Collections.singletonList(PARSED_DIGEST_CHALLENGE)), digestPredicate)
-        );
+            Arguments.of(new ChallengeHolder(true, Collections.singletonList(PARSED_DIGEST_CHALLENGE)),
+                digestPredicate));
     }
 
     /**
@@ -354,27 +319,20 @@ public class HttpProxyHandlerTests {
      */
     @ParameterizedTest
     @MethodSource("authorizationCanBePipelinedSupplier")
-    @SuppressWarnings("unchecked")
     public void authorizationCanBePipelined(AuthorizationChallengeHandler challengeHandler,
         Predicate<String> expectedPredicate) throws Exception {
-        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(new InetSocketAddress("localhost", 8888),
-            challengeHandler, new AtomicReference<>());
+        HttpProxyHandler proxyAuthenticationHandler
+            = new HttpProxyHandler(new InetSocketAddress("localhost", 8888), challengeHandler, new AtomicReference<>());
 
-        Attribute<String> attribute = mock(Attribute.class);
-        ArgumentCaptor<String> setCapture = ArgumentCaptor.forClass(String.class);
-
-        Channel channel = mock(Channel.class);
-        when(channel.attr(any(AttributeKey.class))).thenReturn(attribute);
-
-        ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
-        when(ctx.channel()).thenReturn(channel);
+        Attribute<String> attribute = new MockAttribute<>(null);
+        Channel channel = new MockChannel(attribute);
+        ChannelHandlerContext ctx = new MockChannelHandlerContext(channel);
 
         proxyAuthenticationHandler.connect(ctx, new InetSocketAddress("localhost", 80), null, null);
         FullHttpRequest fullHttpRequest = (FullHttpRequest) proxyAuthenticationHandler.newInitialMessage(ctx);
         assertNotNull(fullHttpRequest);
         assertTrue(expectedPredicate.test(fullHttpRequest.headers().get(PROXY_AUTHORIZATION)));
-        verify(attribute).set(setCapture.capture());
-        assertTrue(expectedPredicate.test(setCapture.getValue()));
+        assertTrue(expectedPredicate.test(attribute.get()));
     }
 
     public static Stream<Arguments> authorizationCanBePipelinedSupplier() {
@@ -392,8 +350,7 @@ public class HttpProxyHandlerTests {
             Arguments.of(basicChallengeHandler, basicPredicate),
 
             // Pipelined Digest authorization.
-            Arguments.of(digestChallengeHandler, digestPredicate)
-        );
+            Arguments.of(digestChallengeHandler, digestPredicate));
     }
 
     /**
@@ -401,33 +358,25 @@ public class HttpProxyHandlerTests {
      * {@code Proxy-Authorization} header or update the {@link AuthorizationChallengeHandler}.
      */
     @Test
-    @SuppressWarnings("unchecked")
     public void nullOrEmptyProxyAuthenticateInfoIsIgnored() throws ProxyConnectException {
         AuthorizationChallengeHandler challengeHandler = new AuthorizationChallengeHandler("1", "1");
         challengeHandler.handleDigest(HttpMethod.CONNECT.name(), "/",
             Collections.singletonList(PARSED_DIGEST_CHALLENGE), () -> new byte[0]);
 
-        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(new InetSocketAddress("localhost", 8888),
-            challengeHandler, new AtomicReference<>());
+        HttpProxyHandler proxyAuthenticationHandler
+            = new HttpProxyHandler(new InetSocketAddress("localhost", 8888), challengeHandler, new AtomicReference<>());
 
-        HttpResponse response = mock(HttpResponse.class);
-        when(response.status()).thenReturn(HttpResponseStatus.OK);
-        when(response.headers()).thenReturn(EmptyHttpHeaders.INSTANCE);
+        HttpResponse response
+            = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, EmptyHttpHeaders.INSTANCE);
 
-        Attribute<String> attribute = mock(Attribute.class);
-        when(attribute.get()).thenReturn(null);
-
-        Channel channel = mock(Channel.class);
-        when(channel.attr(any(AttributeKey.class))).thenReturn(attribute);
-
-        ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
-        when(ctx.channel()).thenReturn(channel);
+        Channel channel = new MockChannel(new MockAttribute<>(null));
+        ChannelHandlerContext ctx = new MockChannelHandlerContext(channel);
 
         proxyAuthenticationHandler.handleResponse(ctx, response);
         String challengeResponse = challengeHandler.handleDigest(HttpMethod.CONNECT.name(), "/",
             Collections.singletonList(PARSED_DIGEST_CHALLENGE), () -> new byte[0]);
-        String nonce = AuthorizationChallengeHandler.parseAuthenticationOrAuthorizationHeader(challengeResponse)
-            .get("nonce");
+        String nonce
+            = AuthorizationChallengeHandler.parseAuthenticationOrAuthorizationHeader(challengeResponse).get("nonce");
 
         assertEquals(ORIGINAL_NONCE, nonce);
     }
@@ -437,38 +386,29 @@ public class HttpProxyHandlerTests {
      * Proxy-Authorization} header sent to the server but doesn't update the {@link AuthorizationChallengeHandler}.
      */
     @Test
-    @SuppressWarnings("unchecked")
     public void proxyAuthenticateInfoValidatesProxyAuthorization() throws ProxyConnectException {
         AuthorizationChallengeHandler challengeHandler = new AuthorizationChallengeHandler("1", "1");
         String authorizationHeader = challengeHandler.handleDigest(HttpMethod.CONNECT.name(), "/",
             Collections.singletonList(PARSED_DIGEST_CHALLENGE), () -> new byte[0]);
-        String cnonce = AuthorizationChallengeHandler.parseAuthenticationOrAuthorizationHeader(authorizationHeader)
-            .get("cnonce");
+        String cnonce
+            = AuthorizationChallengeHandler.parseAuthenticationOrAuthorizationHeader(authorizationHeader).get("cnonce");
 
-        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(new InetSocketAddress("localhost", 8888),
-            challengeHandler, new AtomicReference<>());
+        HttpProxyHandler proxyAuthenticationHandler
+            = new HttpProxyHandler(new InetSocketAddress("localhost", 8888), challengeHandler, new AtomicReference<>());
 
-        HttpHeaders headers = mock(HttpHeaders.class);
-        when(headers.get(PROXY_AUTHENTICATION_INFO)).thenReturn("nc=00000001, cnonce=\"" + cnonce + "\"");
+        HttpHeaders headers
+            = new DefaultHttpHeaders().set(PROXY_AUTHENTICATION_INFO, "nc=00000001, cnonce=\"" + cnonce + "\"");
 
-        HttpResponse response = mock(HttpResponse.class);
-        when(response.status()).thenReturn(HttpResponseStatus.OK);
-        when(response.headers()).thenReturn(headers);
+        HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, headers);
 
-        Attribute<String> attribute = mock(Attribute.class);
-        when(attribute.get()).thenReturn(authorizationHeader);
-
-        Channel channel = mock(Channel.class);
-        when(channel.attr(any(AttributeKey.class))).thenReturn(attribute);
-
-        ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
-        when(ctx.channel()).thenReturn(channel);
+        Channel channel = new MockChannel(new MockAttribute<>(authorizationHeader));
+        ChannelHandlerContext ctx = new MockChannelHandlerContext(channel);
 
         proxyAuthenticationHandler.handleResponse(ctx, response);
         String challengeResponse = challengeHandler.handleDigest(HttpMethod.CONNECT.name(), "/",
             Collections.singletonList(PARSED_DIGEST_CHALLENGE), () -> new byte[0]);
-        String nonce = AuthorizationChallengeHandler.parseAuthenticationOrAuthorizationHeader(challengeResponse)
-            .get("nonce");
+        String nonce
+            = AuthorizationChallengeHandler.parseAuthenticationOrAuthorizationHeader(challengeResponse).get("nonce");
 
         assertEquals(ORIGINAL_NONCE, nonce);
     }
@@ -478,30 +418,21 @@ public class HttpProxyHandlerTests {
      * sent in the {@code Proxy-Authorization} header will throw a {@link IllegalStateException}.
      */
     @Test
-    @SuppressWarnings("unchecked")
     public void proxyAuthenticateInfoFailsValidation() {
         AuthorizationChallengeHandler challengeHandler = new AuthorizationChallengeHandler("1", "1");
         String authorizationHeader = challengeHandler.handleDigest(HttpMethod.CONNECT.name(), "/",
             Collections.singletonList(PARSED_DIGEST_CHALLENGE), () -> new byte[0]);
 
-        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(new InetSocketAddress("localhost", 8888),
-            challengeHandler, new AtomicReference<>());
+        HttpProxyHandler proxyAuthenticationHandler
+            = new HttpProxyHandler(new InetSocketAddress("localhost", 8888), challengeHandler, new AtomicReference<>());
 
-        HttpHeaders headers = mock(HttpHeaders.class);
-        when(headers.get(PROXY_AUTHENTICATION_INFO)).thenReturn("nc=00000001, cnonce=\"incorrectCnonce\"");
+        HttpHeaders headers
+            = new DefaultHttpHeaders().set(PROXY_AUTHENTICATION_INFO, "nc=00000001, cnonce=\"incorrectCnonce\"");
 
-        HttpResponse response = mock(HttpResponse.class);
-        when(response.status()).thenReturn(HttpResponseStatus.OK);
-        when(response.headers()).thenReturn(headers);
+        HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, headers);
 
-        Attribute<String> attribute = mock(Attribute.class);
-        when(attribute.get()).thenReturn(authorizationHeader);
-
-        Channel channel = mock(Channel.class);
-        when(channel.attr(any(AttributeKey.class))).thenReturn(attribute);
-
-        ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
-        when(ctx.channel()).thenReturn(channel);
+        Channel channel = new MockChannel(new MockAttribute<>(authorizationHeader));
+        ChannelHandlerContext ctx = new MockChannelHandlerContext(channel);
 
         assertThrows(IllegalStateException.class, () -> proxyAuthenticationHandler.handleResponse(ctx, response));
     }
@@ -511,37 +442,28 @@ public class HttpProxyHandlerTests {
      * nextnonce} value will update the {@link AuthorizationChallengeHandler}.
      */
     @Test
-    @SuppressWarnings("unchecked")
     public void proxyAuthenticateInfoUpdatesNonce() throws ProxyConnectException {
         Map<String, String> challengeCopy = new HashMap<>(PARSED_DIGEST_CHALLENGE);
         AuthorizationChallengeHandler challengeHandler = new AuthorizationChallengeHandler("1", "1");
         challengeHandler.handleDigest(HttpMethod.CONNECT.name(), "/", Collections.singletonList(challengeCopy),
             () -> new byte[0]);
 
-        HttpProxyHandler proxyAuthenticationHandler = new HttpProxyHandler(new InetSocketAddress("localhost", 8888),
-            challengeHandler, new AtomicReference<>());
+        HttpProxyHandler proxyAuthenticationHandler
+            = new HttpProxyHandler(new InetSocketAddress("localhost", 8888), challengeHandler, new AtomicReference<>());
 
-        HttpHeaders headers = mock(HttpHeaders.class);
-        when(headers.get(PROXY_AUTHENTICATION_INFO)).thenReturn("nextnonce=\"" + UPDATED_NONCE + "\"");
+        HttpHeaders headers
+            = new DefaultHttpHeaders().add(PROXY_AUTHENTICATION_INFO, "nextnonce=\"" + UPDATED_NONCE + "\"");
 
-        HttpResponse response = mock(HttpResponse.class);
-        when(response.status()).thenReturn(HttpResponseStatus.OK);
-        when(response.headers()).thenReturn(headers);
+        HttpResponse response = new DefaultHttpResponse(HttpVersion.HTTP_1_1, HttpResponseStatus.OK, headers);
 
-        Attribute<String> attribute = mock(Attribute.class);
-        when(attribute.get()).thenReturn(null);
-
-        Channel channel = mock(Channel.class);
-        when(channel.attr(any(AttributeKey.class))).thenReturn(attribute);
-
-        ChannelHandlerContext ctx = mock(ChannelHandlerContext.class);
-        when(ctx.channel()).thenReturn(channel);
+        Channel channel = new MockChannel(new MockAttribute<>(null));
+        ChannelHandlerContext ctx = new MockChannelHandlerContext(channel);
 
         proxyAuthenticationHandler.handleResponse(ctx, response);
-        String challengeResponse = challengeHandler.attemptToPipelineAuthorization(HttpMethod.CONNECT.name(), "/",
-            () -> new byte[0]);
-        String nonce = AuthorizationChallengeHandler.parseAuthenticationOrAuthorizationHeader(challengeResponse)
-            .get("nonce");
+        String challengeResponse
+            = challengeHandler.attemptToPipelineAuthorization(HttpMethod.CONNECT.name(), "/", () -> new byte[0]);
+        String nonce
+            = AuthorizationChallengeHandler.parseAuthenticationOrAuthorizationHeader(challengeResponse).get("nonce");
 
         assertEquals(UPDATED_NONCE, nonce);
     }

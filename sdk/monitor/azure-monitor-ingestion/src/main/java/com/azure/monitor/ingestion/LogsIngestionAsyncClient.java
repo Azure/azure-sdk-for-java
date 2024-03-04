@@ -41,7 +41,8 @@ import static com.azure.monitor.ingestion.implementation.Utils.getConcurrency;
 import static com.azure.monitor.ingestion.implementation.Utils.gzipRequest;
 
 /**
- * This class provides an asynchronous client for uploading custom logs to an Azure Monitor Log Analytics workspace.
+ * <p>This class provides an asynchronous client for uploading custom logs to an Azure Monitor Log Analytics workspace.
+ * This client encapsulates REST API calls, used to send data to a Log Analytics workspace, into a set of asynchronous operations.</p>
  *
  * <h2>Getting Started</h2>
  *
@@ -65,6 +66,24 @@ import static com.azure.monitor.ingestion.implementation.Utils.gzipRequest;
  *         .buildAsyncClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.monitor.ingestion.LogsIngestionAsyncClient.instantiation -->
+ *
+ * <h3>Client Usage</h3>
+ *
+ * <p>
+ *     For additional information on how to use this client, see the following method documentation:
+ * </p>
+ *
+ * <ul>
+ *     <li>
+ *         {@link LogsIngestionAsyncClient#upload(String, String, Iterable) upload(String, String, Iterable)} - Uploads logs to a Log Analytics workspace.
+ *     </li>
+ *     <li>
+ *         {@link LogsIngestionAsyncClient#upload(String, String, Iterable, LogsUploadOptions) upload(String, String, Iterable, LogsUploadOptions)} - Uploads logs to a Log Analytics workspace with options to configure the upload request.
+ *     </li>
+ *     <li>
+ *         {@link LogsIngestionAsyncClient#uploadWithResponse(String, String, BinaryData, RequestOptions) uploadWithResponse(String, String, BinaryData, RequestOptions)} - Uploads logs to a Log Analytics workspace with options to configure the HTTP request.
+ *     </li>
+ * </ul>
  *
  * @see LogsIngestionClientBuilder
  * @see LogsIngestionClient

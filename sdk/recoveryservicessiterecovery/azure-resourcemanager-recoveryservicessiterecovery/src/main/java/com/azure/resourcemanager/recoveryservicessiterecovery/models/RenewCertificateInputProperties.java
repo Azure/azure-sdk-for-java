@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Renew Certificate input properties. */
+/**
+ * Renew Certificate input properties.
+ */
 @Fluent
 public final class RenewCertificateInputProperties {
     /*
@@ -16,13 +18,15 @@ public final class RenewCertificateInputProperties {
     @JsonProperty(value = "renewCertificateType")
     private String renewCertificateType;
 
-    /** Creates an instance of RenewCertificateInputProperties class. */
+    /**
+     * Creates an instance of RenewCertificateInputProperties class.
+     */
     public RenewCertificateInputProperties() {
     }
 
     /**
      * Get the renewCertificateType property: Renew certificate type.
-     *
+     * 
      * @return the renewCertificateType value.
      */
     public String renewCertificateType() {
@@ -31,7 +35,7 @@ public final class RenewCertificateInputProperties {
 
     /**
      * Set the renewCertificateType property: Renew certificate type.
-     *
+     * 
      * @param renewCertificateType the renewCertificateType value to set.
      * @return the RenewCertificateInputProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class RenewCertificateInputProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

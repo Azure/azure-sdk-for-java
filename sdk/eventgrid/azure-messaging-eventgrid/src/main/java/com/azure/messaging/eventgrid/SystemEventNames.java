@@ -80,6 +80,18 @@ import com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueDelete
 import com.azure.messaging.eventgrid.systemevents.AppConfigurationKeyValueModifiedEventData;
 import com.azure.messaging.eventgrid.systemevents.AppConfigurationSnapshotCreatedEventData;
 import com.azure.messaging.eventgrid.systemevents.AppConfigurationSnapshotModifiedEventData;
+import com.azure.messaging.eventgrid.systemevents.AvsClusterCreatedEventData;
+import com.azure.messaging.eventgrid.systemevents.AvsClusterDeletedEventData;
+import com.azure.messaging.eventgrid.systemevents.AvsClusterFailedEventData;
+import com.azure.messaging.eventgrid.systemevents.AvsClusterUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.AvsClusterUpdatingEventData;
+import com.azure.messaging.eventgrid.systemevents.AvsPrivateCloudFailedEventData;
+import com.azure.messaging.eventgrid.systemevents.AvsPrivateCloudUpdatedEventData;
+import com.azure.messaging.eventgrid.systemevents.AvsPrivateCloudUpdatingEventData;
+import com.azure.messaging.eventgrid.systemevents.AvsScriptExecutionCancelledEventData;
+import com.azure.messaging.eventgrid.systemevents.AvsScriptExecutionFailedEventData;
+import com.azure.messaging.eventgrid.systemevents.AvsScriptExecutionFinishedEventData;
+import com.azure.messaging.eventgrid.systemevents.AvsScriptExecutionStartedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryChartPushedEventData;
 import com.azure.messaging.eventgrid.systemevents.ContainerRegistryImageDeletedEventData;
@@ -188,6 +200,8 @@ import com.azure.messaging.eventgrid.systemevents.StorageDirectoryCreatedEventDa
 import com.azure.messaging.eventgrid.systemevents.StorageDirectoryDeletedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageDirectoryRenamedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageLifecyclePolicyCompletedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageTaskAssignmentCompletedEventData;
+import com.azure.messaging.eventgrid.systemevents.StorageTaskAssignmentQueuedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageTaskCompletedEventData;
 import com.azure.messaging.eventgrid.systemevents.StorageTaskQueuedEventData;
 import com.azure.messaging.eventgrid.systemevents.SubscriptionDeletedEventData;
@@ -635,6 +649,66 @@ public final class SystemEventNames {
      * Schema of the Data property of an EventGridEvent for a Microsoft.AppConfiguration.SnapshotModified event.
      */
     public static final String APP_CONFIGURATION_SNAPSHOT_MODIFIED = "Microsoft.AppConfiguration.SnapshotModified";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.AVS.ClusterCreated event.
+     */
+    public static final String AVS_CLUSTER_CREATED = "Microsoft.AVS.ClusterCreated";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.AVS.ClusterDeleted event.
+     */
+    public static final String AVS_CLUSTER_DELETED = "Microsoft.AVS.ClusterDeleted";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.AVS.ClusterFailed event.
+     */
+    public static final String AVS_CLUSTER_FAILED = "Microsoft.AVS.ClusterFailed";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.AVS.ClusterUpdated event.
+     */
+    public static final String AVS_CLUSTER_UPDATED = "Microsoft.AVS.ClusterUpdated";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.AVS.ClusterUpdating event.
+     */
+    public static final String AVS_CLUSTER_UPDATING = "Microsoft.AVS.ClusterUpdating";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.AVS.PrivateCloudFailed event.
+     */
+    public static final String AVS_PRIVATE_CLOUD_FAILED = "Microsoft.AVS.PrivateCloudFailed";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.AVS.PrivateCloudUpdated event.
+     */
+    public static final String AVS_PRIVATE_CLOUD_UPDATED = "Microsoft.AVS.PrivateCloudUpdated";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.AVS.PrivateCloudUpdating event.
+     */
+    public static final String AVS_PRIVATE_CLOUD_UPDATING = "Microsoft.AVS.PrivateCloudUpdating";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.AVS.ScriptExecutionCancelled event.
+     */
+    public static final String AVS_SCRIPT_EXECUTION_CANCELLED = "Microsoft.AVS.ScriptExecutionCancelled";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.AVS.ScriptExecutionFailed event.
+     */
+    public static final String AVS_SCRIPT_EXECUTION_FAILED = "Microsoft.AVS.ScriptExecutionFailed";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.AVS.ScriptExecutionFinished event.
+     */
+    public static final String AVS_SCRIPT_EXECUTION_FINISHED = "Microsoft.AVS.ScriptExecutionFinished";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for a Microsoft.AVS.ScriptExecutionStarted event.
+     */
+    public static final String AVS_SCRIPT_EXECUTION_STARTED = "Microsoft.AVS.ScriptExecutionStarted";
 
     /**
      * Schema of the Data property of an EventGridEvent for a Microsoft.ContainerRegistry.ChartDeleted event.
@@ -1248,6 +1322,16 @@ public final class SystemEventNames {
     public static final String STORAGE_LIFECYCLE_POLICY_COMPLETED = "Microsoft.Storage.LifecyclePolicyCompleted";
 
     /**
+     * Schema of the Data property of an EventGridEvent for an Microsoft.Storage.StorageTaskAssignmentCompleted event.
+     */
+    public static final String STORAGE_TASK_ASSIGNMENT_COMPLETED = "Microsoft.Storage.StorageTaskAssignmentCompleted";
+
+    /**
+     * Schema of the Data property of an EventGridEvent for an Microsoft.Storage.StorageTaskAssignmentQueued event.
+     */
+    public static final String STORAGE_TASK_ASSIGNMENT_QUEUED = "Microsoft.Storage.StorageTaskAssignmentQueued";
+
+    /**
      * Schema of the Data property of an EventGridEvent for an Microsoft.Storage.StorageTaskCompleted event.
      */
     public static final String STORAGE_TASK_COMPLETED = "Microsoft.Storage.StorageTaskCompleted";
@@ -1442,6 +1526,18 @@ public final class SystemEventNames {
             put(APP_CONFIGURATION_KEY_VALUE_MODIFIED, AppConfigurationKeyValueModifiedEventData.class);
             put(APP_CONFIGURATION_SNAPSHOT_CREATED, AppConfigurationSnapshotCreatedEventData.class);
             put(APP_CONFIGURATION_SNAPSHOT_MODIFIED, AppConfigurationSnapshotModifiedEventData.class);
+            put(AVS_CLUSTER_CREATED, AvsClusterCreatedEventData.class);
+            put(AVS_CLUSTER_DELETED, AvsClusterDeletedEventData.class);
+            put(AVS_CLUSTER_FAILED, AvsClusterFailedEventData.class);
+            put(AVS_CLUSTER_UPDATED, AvsClusterUpdatedEventData.class);
+            put(AVS_CLUSTER_UPDATING, AvsClusterUpdatingEventData.class);
+            put(AVS_PRIVATE_CLOUD_FAILED, AvsPrivateCloudFailedEventData.class);
+            put(AVS_PRIVATE_CLOUD_UPDATED, AvsPrivateCloudUpdatedEventData.class);
+            put(AVS_PRIVATE_CLOUD_UPDATING, AvsPrivateCloudUpdatingEventData.class);
+            put(AVS_SCRIPT_EXECUTION_CANCELLED, AvsScriptExecutionCancelledEventData.class);
+            put(AVS_SCRIPT_EXECUTION_FAILED, AvsScriptExecutionFailedEventData.class);
+            put(AVS_SCRIPT_EXECUTION_FINISHED, AvsScriptExecutionFinishedEventData.class);
+            put(AVS_SCRIPT_EXECUTION_STARTED, AvsScriptExecutionStartedEventData.class);
             put(CONTAINER_REGISTRY_CHART_DELETED, ContainerRegistryChartDeletedEventData.class);
             put(CONTAINER_REGISTRY_CHART_PUSHED, ContainerRegistryChartPushedEventData.class);
             put(CONTAINER_REGISTRY_IMAGE_DELETED, ContainerRegistryImageDeletedEventData.class);
@@ -1561,6 +1657,8 @@ public final class SystemEventNames {
             put(STORAGE_DIRECTORY_DELETED, StorageDirectoryDeletedEventData.class);
             put(STORAGE_DIRECTORY_RENAMED, StorageDirectoryRenamedEventData.class);
             put(STORAGE_LIFECYCLE_POLICY_COMPLETED, StorageLifecyclePolicyCompletedEventData.class);
+            put(STORAGE_TASK_ASSIGNMENT_COMPLETED, StorageTaskAssignmentCompletedEventData.class);
+            put(STORAGE_TASK_ASSIGNMENT_QUEUED, StorageTaskAssignmentQueuedEventData.class);
             put(STORAGE_TASK_COMPLETED, StorageTaskCompletedEventData.class);
             put(STORAGE_TASK_QUEUED, StorageTaskQueuedEventData.class);
             put(EVENT_GRID_SUBSCRIPTION_DELETED, SubscriptionDeletedEventData.class);
