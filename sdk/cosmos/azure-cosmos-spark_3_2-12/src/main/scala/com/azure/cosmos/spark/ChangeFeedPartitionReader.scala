@@ -73,7 +73,9 @@ private case class ChangeFeedPartitionReader
     if (diagnosticsConfig.mode.isDefined &&
       diagnosticsConfig.mode.get.equalsIgnoreCase(classOf[DetailedFeedDiagnosticsProvider].getName)) {
 
-      Option.apply(cosmosAsyncContainer.read().block().getProperties.getPartitionKeyDefinition)
+      Option.apply(SparkBridgeImplementationInternal
+        .getContainerPropertiesFromCollectionCache(cosmosAsyncContainer)
+        .getPartitionKeyDefinition)
     } else {
       None
     }

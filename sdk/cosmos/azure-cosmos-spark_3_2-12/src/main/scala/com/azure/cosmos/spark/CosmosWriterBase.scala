@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.implementation.SparkBridgeImplementationInternal
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import org.apache.spark.TaskContext
 import org.apache.spark.broadcast.Broadcast
@@ -53,7 +54,8 @@ private abstract class CosmosWriterBase(
       clientCacheItem,
       throughputControlClientCacheItemOpt)
 
-  private val containerDefinition = container.read().block().getProperties
+  private val containerDefinition = SparkBridgeImplementationInternal
+    .getContainerPropertiesFromCollectionCache(container)
   private val partitionKeyDefinition = containerDefinition.getPartitionKeyDefinition
 
   private val writer = if (cosmosWriteConfig.bulkEnabled) {

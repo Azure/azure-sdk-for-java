@@ -111,7 +111,8 @@ private case class ItemsPartitionReader
     if (shouldLogDetailedFeedDiagnostics() || readConfig.readManyFilteringConfig.readManyFilteringEnabled) {
       Some(
         TransientErrorsRetryPolicy.executeWithRetry(() => {
-          cosmosAsyncContainer.read().block().getProperties.getPartitionKeyDefinition
+          SparkBridgeImplementationInternal
+            .getContainerPropertiesFromCollectionCache(cosmosAsyncContainer).getPartitionKeyDefinition
         }))
     } else {
       None

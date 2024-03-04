@@ -7,10 +7,10 @@ import com.azure.cosmos.implementation.ImplementationBridgeHelpers.CosmosClientB
 import com.azure.cosmos.implementation.changefeed.common.{ChangeFeedMode, ChangeFeedStartFromInternal, ChangeFeedState, ChangeFeedStateV1}
 import com.azure.cosmos.implementation.query.CompositeContinuationToken
 import com.azure.cosmos.implementation.routing.Range
-import com.azure.cosmos.models.{FeedRange, PartitionKey, PartitionKeyBuilder, PartitionKeyDefinition, SparkModelBridgeInternal}
+import com.azure.cosmos.models.{CosmosContainerProperties, FeedRange, PartitionKey, PartitionKeyBuilder, PartitionKeyDefinition, SparkModelBridgeInternal}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.spark.{ChangeFeedOffset, NormalizedRange}
-import com.azure.cosmos.{CosmosAsyncClient, CosmosClientBuilder, DirectConnectionConfig, SparkBridgeInternal}
+import com.azure.cosmos.{CosmosAsyncClient, CosmosAsyncContainer, CosmosClientBuilder, DirectConnectionConfig, SparkBridgeInternal}
 import com.fasterxml.jackson.databind.ObjectMapper
 
 import scala.collection.mutable
@@ -21,6 +21,10 @@ import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
 private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTrait {
+  private val containerPropertiesAccessor = ImplementationBridgeHelpers
+    .CosmosContainerPropertiesHelper
+    .getCosmosContainerPropertiesAccessor
+
   def setMetadataCacheSnapshot(cosmosClientBuilder: CosmosClientBuilder,
                                metadataCache: CosmosClientMetadataCachesSnapshot): Unit = {
 
@@ -385,6 +389,21 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
 
     if (System.getProperty("azure.cosmos.directTcp.defaultOptions") == null) {
       System.setProperty("azure.cosmos.directTcp.defaultOptions", overrideJson)
+    }
+  }
+
+  def getContainerPropertiesFromCollectionCache(container: CosmosAsyncContainer): CosmosContainerProperties = {
+    val documentCollectionHolder = container
+      .getDatabase
+      .getDocClientWrapper
+      .getCollectionCache
+      .resolveByRidAsync(null, container.getLinkWithoutTrailingSlash, null)
+      .block()
+
+    if (documentCollectionHolder.v != null) {
+      containerPropertiesAccessor.create(documentCollectionHolder.v)
+    } else {
+      container.read().block().getProperties
     }
   }
 }
