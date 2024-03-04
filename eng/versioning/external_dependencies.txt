@@ -267,7 +267,7 @@ com.diffplug.spotless:spotless-maven-plugin;2.30.0
 com.github.javaparser:javaparser-core;3.24.2
 com.google.code.findbugs:jsr305;3.0.2
 com.microsoft.azure:azure-webapp-maven-plugin;1.14.0
-com.nimbusds:nimbus-jose-jwt;9.31
+com.nimbusds:nimbus-jose-jwt;9.37.3
 com.puppycrawl.tools:checkstyle;9.3
 com.toasttab.android:gummy-bears-api-26;0.5.1
 commons-io:commons-io;2.11.0
@@ -393,6 +393,9 @@ cosmos_org.scalastyle:scalastyle-maven-plugin;1.0.0
 cosmos_org.apache.kafka:connect-api;3.6.0
 # Cosmos Kafka connector tests only
 cosmos_org.apache.kafka:connect-runtime;3.6.0
+cosmos_org.testcontainers:testcontainers;1.19.5
+cosmos_org.testcontainers:kafka;1.19.5
+cosmos_org.sourcelab:kafka-connect-client;4.0.4
 # Maven Tools for Cosmos Kafka connector only
 cosmos_io.confluent:kafka-connect-maven-plugin;0.12.0
 
