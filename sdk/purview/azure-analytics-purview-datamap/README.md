@@ -42,6 +42,7 @@ See [DataMap APIs][https://learn.microsoft.com/rest/api/purview/datamapdataplane
 
 ### Get Type Definition By Name
 ```java com.azure.analytics.purview.datamap.readme
+
 ClientSecretCredential cred = new ClientSecretCredentialBuilder()
     .tenantId(Configuration.getGlobalConfiguration().get("TENANT_ID"))
     .authorityHost(Configuration.getGlobalConfiguration().get("AUTHORITY_HOST"))
