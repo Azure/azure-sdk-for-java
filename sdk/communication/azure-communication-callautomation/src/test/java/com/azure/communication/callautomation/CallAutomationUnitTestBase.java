@@ -16,10 +16,6 @@ import com.azure.communication.callautomation.implementation.models.CallConnecti
 import com.azure.communication.callautomation.implementation.models.CallParticipantInternal;
 import com.azure.communication.callautomation.implementation.models.GetParticipantsResponseInternal;
 import com.azure.communication.callautomation.implementation.models.DialogStateResponse;
-import com.azure.communication.callautomation.models.MediaStreamingAudioChannel;
-import com.azure.communication.callautomation.models.MediaStreamingOptions;
-import com.azure.communication.callautomation.models.MediaStreamingContent;
-import com.azure.communication.callautomation.models.MediaStreamingTransport;
 import com.azure.communication.callautomation.models.TranscriptionOptions;
 import com.azure.communication.callautomation.models.TranscriptionTransportType;
 import com.azure.communication.common.CommunicationUserIdentifier;
@@ -51,13 +47,6 @@ public class CallAutomationUnitTestBase {
     static final String DATA_SUBSCRIPTION_ID = "dataSubscriptionId";
     static final String DIALOG_ID = "dialogId";
     static final String BOT_APP_ID = "botAppId";
-
-    static final MediaStreamingOptions MEDIA_STREAMING_CONFIGURATION = new MediaStreamingOptions(
-        "https://websocket.url.com",
-        MediaStreamingTransport.WEBSOCKET,
-        MediaStreamingContent.AUDIO,
-        MediaStreamingAudioChannel.MIXED
-    );
 
     static final TranscriptionOptions TRANSCRIPTION_CONFIGURATION = new TranscriptionOptions(
         "https://websocket.url.com",
