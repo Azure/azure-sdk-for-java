@@ -46,11 +46,11 @@ spec:
           code=$?; \
           kill `pidof dotnet`; \
           exit $code;
-          imagePullPolicy: Always
-          resources:
-            limits:
-              memory: {{ default "1Gi" .Stress.memory }}
-              cpu: {{ default 1 .Stress.cores }}
-          {{- include "stress-test-addons.container-env" . | nindent 6 }}
+      imagePullPolicy: Always
+      resources:
+        limits:
+          memory: {{ default "1Gi" .Stress.memory }}
+          cpu: {{ default 1 .Stress.cores }}
+      {{- include "stress-test-addons.container-env" . | nindent 6 }}
 
 {{- end -}}

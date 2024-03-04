@@ -32,7 +32,7 @@ public class Download extends ShareScenarioBase<StorageStressOptions> {
     @Override
     protected void runInternal(Context span) throws IOException {
         try (CrcOutputStream outputStream = new CrcOutputStream()) {
-            syncClient.downloadWithResponse(outputStream, null, false, null, span);
+            syncClient.downloadWithResponse(outputStream, null, null, null, span);
             outputStream.close();
             originalContent.checkMatch(outputStream.getContentInfo(), span).block();
         }
@@ -40,7 +40,7 @@ public class Download extends ShareScenarioBase<StorageStressOptions> {
 
     @Override
     protected Mono<Void> runInternalAsync(Context span) {
-        return asyncClient.downloadWithResponse(null, false)
+        return asyncClient.downloadWithResponse(null, null)
             .flatMap(response -> originalContent.checkMatch(response.getValue(), span));
     }
 

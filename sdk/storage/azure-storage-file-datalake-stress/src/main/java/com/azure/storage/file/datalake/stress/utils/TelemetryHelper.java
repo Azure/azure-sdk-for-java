@@ -223,16 +223,20 @@ public class TelemetryHelper {
      */
     public void recordStart(StorageStressOptions options) {
         String storageDataLakePackageVersion = "storagePackageVersion";
-        try {
-            Class<?> storageDatalakePackage = Class.forName(DataLakeServiceClientBuilder.class.getName());
-            storageDataLakePackageVersion = storageDatalakePackage.getPackage().getImplementationVersion();
-
-            if (storageDataLakePackageVersion == null) {
-                storageDataLakePackageVersion = "null";
-            }
-        } catch (ClassNotFoundException e) {
-            logger.warning("could not find DataLakeServiceClientBuilder class", e);
-        }
+        String packageVersion = "12.18.1";
+        // Figure out the version of the storage package implementation version returns as null. Hardcoding the version
+        // for now.
+        storageDataLakePackageVersion += "/" + packageVersion;
+//        try {
+//            Class<?> storageDatalakePackage = Class.forName(DataLakeServiceClientBuilder.class.getName());
+//            storageDataLakePackageVersion = storageDatalakePackage.getPackage().getImplementationVersion();
+//
+//            if (storageDataLakePackageVersion == null) {
+//                storageDataLakePackageVersion = "null";
+//            }
+//        } catch (ClassNotFoundException e) {
+//            logger.warning("could not find DataLakeServiceClientBuilder class", e);
+//        }
 
         Span before = startSampledInSpan("before run");
         before.setAttribute(AttributeKey.longKey("durationSec"), options.getDuration());

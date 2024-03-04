@@ -222,17 +222,21 @@ public class TelemetryHelper {
      * @param options test parameters
      */
     public void recordStart(StorageStressOptions options) {
-        String storageBlobPackageVersion = "storagePackageVersion";
-        try {
-            Class<?> storageBlobBusPackage = Class.forName(BlobServiceClientBuilder.class.getName());
-            storageBlobPackageVersion = storageBlobBusPackage.getPackage().getImplementationVersion();
-
-            if (storageBlobPackageVersion == null) {
-                storageBlobPackageVersion = "null";
-            }
-        } catch (ClassNotFoundException e) {
-            logger.warning("could not find BlobServiceClientBuilder class", e);
-        }
+        String storageBlobPackageVersion = "azure-storage-blob";
+        String packageVersion = "12.25.1";
+        // Figure out the version of the storage package implementation version returns as null. Hardcoding the version
+        // for now.
+        storageBlobPackageVersion += "/" + packageVersion;
+//        try {
+//            Class<?> storageBlobBusPackage = Class.forName(BlobServiceClientBuilder.class.getName());
+//            storageBlobPackageVersion = storageBlobBusPackage.getPackage().getImplementationVersion();
+//
+//            if (storageBlobPackageVersion == null) {
+//                storageBlobPackageVersion = "null";
+//            }
+//        } catch (ClassNotFoundException e) {
+//            logger.warning("could not find BlobServiceClientBuilder class", e);
+//        }
 
         Span before = startSampledInSpan("before run");
         before.setAttribute(AttributeKey.longKey("durationSec"), options.getDuration());

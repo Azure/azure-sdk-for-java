@@ -222,18 +222,21 @@ public class TelemetryHelper {
      * @param options test parameters
      */
     public void recordStart(StorageStressOptions options) {
-        String storageFileSharePackageVersion = "storagePackageVersion";
-        try {
-            // why is this null? need to investigate
-            Class<?> storageSharePackage = Class.forName(ShareServiceClientBuilder.class.getName());
-            storageFileSharePackageVersion = storageSharePackage.getPackage().getImplementationVersion();
+        String storageFileSharePackageVersion = "azure-storage-file-share";
+        String packageVersion = "12.21.1";
+        // Figure out the version of the storage package implementation version returns as null. Hardcoding the version
+        // for now.
+        storageFileSharePackageVersion += "/" + packageVersion;
+//        try {
+//            Class<?> storageSharePackage = Class.forName(ShareServiceClientBuilder.class.getName());
+//            storageFileSharePackageVersion = storageSharePackage.getPackage().getImplementationVersion();
 
-            if (storageFileSharePackageVersion == null) {
-                storageFileSharePackageVersion = "null";
-            }
-        } catch (ClassNotFoundException e) {
-            logger.warning("could not find ShareServiceClientBuilder class", e);
-        }
+//            if (storageFileSharePackageVersion == null) {
+//                storageFileSharePackageVersion = "null";
+//            }
+//        } catch (Exception e) {
+//            logger.warning("could not find the version for azure-storage-file-share", e);
+//        }
 
         Span before = startSampledInSpan("before run");
         before.setAttribute(AttributeKey.longKey("durationSec"), options.getDuration());
