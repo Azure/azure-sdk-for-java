@@ -67,6 +67,34 @@ public interface SyncPoller<T, U> {
     PollResponse<T> waitForCompletion(Duration timeout);
 
     /**
+     * Wait for polling to complete with a timeout. The polling is considered complete based on status defined in
+     * {@link LongRunningOperationStatus} or if one of the timeouts expire.
+     * <p>
+     * The {@code operationTimeout} is applied to each individual poll operation to time it out if the polling operation
+     * takes too long. If a poll operation times out a {@link RuntimeException} wrapping a {@link TimeoutException} will
+     * be thrown.
+     * <p>
+     * The {@code waitTimeout} is used to determine when the wait for should stop. If polling doesn't reach a completion
+     * state before the {@code waitTimeout} elapses a {@link RuntimeException} wrapping a {@link TimeoutException} will
+     * be thrown.
+     * <p>
+     * If this method isn't overridden by the implementation then this method is effectively equivalent to calling
+     * {@link #waitForCompletion(Duration) waitForCompletion(waitTimeout)}.
+     *
+     * @param operationTimeout The duration to wait for each individual poll operation to complete.
+     * @param waitTimeout The duration to wait for polling completion.
+     * @return The final poll response.
+     * @throws NullPointerException If {@code operationTimeout} or {@code waitTimeout} is null.
+     * @throws IllegalArgumentException If {@code operationTimeout} or {@code waitTimeout} is zero or negative or if
+     * {@code operationTimeout} is greater than {@code waitTimeout}.
+     * @throws RuntimeException If polling doesn't complete before the {@code waitTimeout} elapses.
+     * ({@link RuntimeException#getCause()} should be a {@link TimeoutException}).
+     */
+    default PollResponse<T> waitForCompletion(Duration operationTimeout, Duration waitTimeout) {
+        return waitForCompletion(waitTimeout);
+    }
+
+    /**
      * Wait for the given {@link LongRunningOperationStatus} to receive.
      * <p>
      * This operation will wait indefinitely until the {@code statusToWaitFor} is received or a
@@ -106,6 +134,42 @@ public interface SyncPoller<T, U> {
     PollResponse<T> waitUntil(Duration timeout, LongRunningOperationStatus statusToWaitFor);
 
     /**
+     * Wait for the given {@link LongRunningOperationStatus} with a timeout.
+     * <p>
+     * Polling will continue until a response is returned with a {@link LongRunningOperationStatus} matching
+     * {@code statusToWaitFor}, a {@link LongRunningOperationStatus#isComplete()} state is reached, or the timeout
+     * expires.
+     * <p>
+     * The {@code operationTimeout} is applied to each individual poll operation to time it out if the polling operation
+     * takes too long. The {@code waitTimeout} is used to determine when the wait for should stop. Unlike
+     * {@link #waitForCompletion(Duration, Duration)} or {@link #getFinalResult(Duration, Duration)}, when a timeout
+     * elapses a {@link RuntimeException} wrapping a {@link TimeoutException} will not be thrown. Instead, the last poll
+     * response will be returned. This is because unlike a completion state, a wait for state may be skipped if the
+     * state is reached and completed before a poll operation is executed. For example, if a long-running operation has
+     * the flow {@code A -> B -> C -> D} and the {@code statusToWaitFor} is {@code B} and the first poll request returns
+     * state {@code A} but in the time between polls state {@code B} completes, then the next poll request will return
+     * state {@code C} and the {@code statusToWaitFor} will never be returned.
+     * <p>
+     * This may return null if no poll operation completes within the timeout.
+     * <p>
+     * If this method isn't overridden by the implementation then this method is effectively equivalent to calling
+     * {@link #waitUntil(Duration, LongRunningOperationStatus)}.
+     *
+     * @param operationTimeout The duration to wait for each individual poll operation to complete.
+     * @param waitTimeout The duration to wait for polling completion.
+     * @param statusToWaitFor the desired {@link LongRunningOperationStatus} to block for.
+     * @return {@link PollResponse} whose {@link PollResponse#getStatus()} matches {@code statusToWaitFor}, or null if
+     * no response was returned within the timeout.
+     * @throws NullPointerException if {@code statusToWaitFor} or {@code timeout} is {@code null}.
+     * @throws IllegalArgumentException if {@code timeout} is zero or negative or if {@code operationTimeout} is greater
+     * than {@code waitTimeout}.
+     */
+    default PollResponse<T> waitUntil(Duration operationTimeout, Duration waitTimeout,
+        LongRunningOperationStatus statusToWaitFor) {
+        return waitUntil(waitTimeout, statusToWaitFor);
+    }
+
+    /**
      * Retrieve the final result of the long-running operation.
      * <p>
      * If polling hasn't completed this will wait indefinitely until polling completes.
@@ -138,6 +202,35 @@ public interface SyncPoller<T, U> {
      * ({@link RuntimeException#getCause()} should be a {@link TimeoutException}).
      */
     default U getFinalResult(Duration timeout) {
+        waitForCompletion(timeout);
+        return getFinalResult();
+    }
+
+    /**
+     * Retrieve the final result of the long-running operation.
+     * <p>
+     * The {@code operationTimeout} is applied to each individual poll operation to time it out if the polling operation
+     * takes too long. If a poll operation times out a {@link RuntimeException} wrapping a {@link TimeoutException} will
+     * be thrown.
+     * <p>
+     * The {@code waitTimeout} is used to determine when the wait for should stop. If polling doesn't reach a completion
+     * state before the {@code waitTimeout} elapses a {@link RuntimeException} wrapping a {@link TimeoutException} will
+     * be thrown.
+     * <p>
+     * If this method isn't overridden by the implementation then this method is effectively equivalent to calling
+     * {@link #waitForCompletion(Duration, Duration)} then {@link #getFinalResult()}.
+     *
+     * @param operationTimeout The duration to wait for each individual poll operation to complete.
+     * @param waitTimeout The duration to wait for polling completion.
+     * @return The final poll response.
+     * @throws NullPointerException If {@code operationTimeout} or {@code waitTimeout} is null.
+     * @throws IllegalArgumentException If {@code operationTimeout} or {@code waitTimeout} is zero or negative or if
+     * {@code operationTimeout} is greater than {@code waitTimeout}.
+     * @throws RuntimeException If polling doesn't complete before the {@code waitTimeout} elapses.
+     * ({@link RuntimeException#getCause()} should be a {@link TimeoutException}).
+     */
+    default U getFinalResult(Duration operationTimeout, Duration waitTimeout) {
+        waitForCompletion(operationTimeout, waitTimeout);
         return getFinalResult();
     }
 
