@@ -987,8 +987,12 @@ public class ConsistencyTestsBase extends TestSuiteBase {
 
         Field fieldCollectionResourceIdToRegionScopedSessionTokens1 = RegionScopedSessionContainer.class.getDeclaredField("collectionResourceIdToRegionScopedSessionTokens");
         Field fieldCollectionNameToCollectionResourceId1 = RegionScopedSessionContainer.class.getDeclaredField("collectionNameToCollectionResourceId");
+        Field fieldPkRangeIdToRegionLevelProgress = PartitionKeyRangeIdToSessionTokens.class.getDeclaredField("partitionKeyRangeIdToSessionTokens");
+
         fieldCollectionResourceIdToRegionScopedSessionTokens1.setAccessible(true);
         fieldCollectionNameToCollectionResourceId1.setAccessible(true);
+        fieldPkRangeIdToRegionLevelProgress.setAccessible(true);
+
         ConcurrentHashMap<Long, PartitionKeyRangeIdToSessionTokens> collectionResourceIdToSessionTokens1 =
             (ConcurrentHashMap<Long, PartitionKeyRangeIdToSessionTokens>) fieldCollectionResourceIdToRegionScopedSessionTokens1.get(regionScopedSessionContainer1);
         ConcurrentHashMap<String, Long> collectionNameToCollectionResourceId1 = (ConcurrentHashMap<String, Long>) fieldCollectionNameToCollectionResourceId1.get(regionScopedSessionContainer1);
@@ -1008,15 +1012,33 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         }
 
         // get keys, and compare entries
-        for (Long resourceId : collectionResourceIdToSessionTokens1.keySet()) {
-            if (!collectionResourceIdToSessionTokens1.get(resourceId).equals(collectionResourceIdToSessionTokens2.get(resourceId))) {
-                return false;
-            }
-        }
-
         for (String collectionName : collectionNameToCollectionResourceId1.keySet()) {
-            if (!collectionNameToCollectionResourceId1.get(collectionName).equals(collectionNameToCollectionResourceId2.get(collectionName))) {
-                return false;
+            PartitionKeyRangeIdToSessionTokens partitionKeyRangeIdToSessionTokens1 = collectionResourceIdToSessionTokens1.get(collectionNameToCollectionResourceId1.get(collectionName));
+            PartitionKeyRangeIdToSessionTokens partitionKeyRangeIdToSessionTokens2 = collectionResourceIdToSessionTokens2.get(collectionNameToCollectionResourceId1.get(collectionName));
+
+            ConcurrentHashMap<String, ConcurrentHashMap<String, PartitionKeyRangeIdToSessionTokens.RegionLevelProgress>> pkRangeIdToRegionLevelProgressMappings1 = (ConcurrentHashMap<String, ConcurrentHashMap<String, PartitionKeyRangeIdToSessionTokens.RegionLevelProgress>>) fieldPkRangeIdToRegionLevelProgress.get(partitionKeyRangeIdToSessionTokens1);
+            ConcurrentHashMap<String, ConcurrentHashMap<String, PartitionKeyRangeIdToSessionTokens.RegionLevelProgress>> pkRangeIdToRegionLevelProgressMappings2 = (ConcurrentHashMap<String, ConcurrentHashMap<String, PartitionKeyRangeIdToSessionTokens.RegionLevelProgress>>) fieldPkRangeIdToRegionLevelProgress.get(partitionKeyRangeIdToSessionTokens2);
+
+            for (String pkRangeId : pkRangeIdToRegionLevelProgressMappings1.keySet()) {
+                ConcurrentHashMap<String, PartitionKeyRangeIdToSessionTokens.RegionLevelProgress> regionToProgressMappings1 = pkRangeIdToRegionLevelProgressMappings1.get(pkRangeId);
+                ConcurrentHashMap<String, PartitionKeyRangeIdToSessionTokens.RegionLevelProgress> regionToProgressMappings2 = pkRangeIdToRegionLevelProgressMappings2.get(pkRangeId);
+
+                for (String regionOrProgressScope : regionToProgressMappings1.keySet()) {
+                    PartitionKeyRangeIdToSessionTokens.RegionLevelProgress regionLevelProgress1 = regionToProgressMappings1.get(regionOrProgressScope);
+                    PartitionKeyRangeIdToSessionTokens.RegionLevelProgress regionLevelProgress2 = regionToProgressMappings2.get(regionOrProgressScope);
+
+                    if (regionLevelProgress1 != null && regionLevelProgress2 == null
+                        || regionLevelProgress1 == null && regionLevelProgress2 != null) {
+                        return false;
+                    }
+
+                    if (regionLevelProgress1 != null && regionLevelProgress2 != null) {
+
+                        return regionLevelProgress1.getMaxGlobalLsnSeen() == regionLevelProgress2.getMaxGlobalLsnSeen()
+                            && regionLevelProgress1.getMaxLocalLsnSeen() == regionLevelProgress2.getMaxLocalLsnSeen()
+                            && regionLevelProgress1.getVectorSessionToken().equals(regionLevelProgress2.getVectorSessionToken());
+                    }
+                }
             }
         }
 

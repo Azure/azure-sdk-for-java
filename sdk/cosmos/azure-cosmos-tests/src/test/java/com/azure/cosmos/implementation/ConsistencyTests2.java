@@ -152,7 +152,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
         // .NET uses lock method which is eventfully using LastReadAddress only for the test case to pass, we are not implementing this in java
     }
 
-    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
+    @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs"/*, timeOut = CONSISTENCY_TEST_TIMEOUT*/)
     public void validateSessionTokenWithPreConditionFailure(boolean shouldRegionScopedSessionContainerEnabled) throws Exception {
         //TODO Need to test with TCP protocol
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057

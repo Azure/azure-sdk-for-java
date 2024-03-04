@@ -10,6 +10,7 @@ import com.azure.cosmos.implementation.routing.RegionNameToRegionIdMap;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
@@ -50,17 +51,12 @@ public class PartitionKeyRangeIdToSessionTokens {
 
         this.partitionKeyRangeIdToSessionTokens.compute(partitionKeyRangeId, (partitionKeyRangeIdAsKey, regionToSessionTokenAsVal) -> {
 
-            // identify whether regionRoutedTo has a regionId mapping in session token
-            // if regionRoutedTo doesn't exist in mappings add global session token
-            VectorSessionToken vectorSessionToken = (VectorSessionToken) parsedSessionToken;
-
-            UnmodifiableMap<Integer, Long> localLsnByRegion = vectorSessionToken.getLocalLsnByRegion();
-            int regionId = RegionNameToRegionIdMap.getRegionId(regionRoutedTo);
-
             try {
                 if (regionToSessionTokenAsVal == null) {
                     regionToSessionTokenAsVal = new ConcurrentHashMap<>();
                 }
+
+                VectorSessionToken vectorSessionToken = (VectorSessionToken) parsedSessionToken;
 
                 // store the global representation of the session token
                 regionToSessionTokenAsVal.merge("global", new RegionLevelProgress(Long.MIN_VALUE, Long.MIN_VALUE, vectorSessionToken), (regionLevelProgressExisting, regionLevelPrgressNew) -> {
@@ -71,21 +67,28 @@ public class PartitionKeyRangeIdToSessionTokens {
                     return new RegionLevelProgress(Long.MIN_VALUE, Long.MIN_VALUE, (VectorSessionToken) existingVectorSessionToken.merge(newVectorSessionToken));
                 });
 
-                 if (regionId != -1) {
+                // identify whether regionRoutedTo has a regionId mapping in session token
+                // if regionRoutedTo doesn't exist in mappings add global session token
+                UnmodifiableMap<Integer, Long> localLsnByRegion = vectorSessionToken.getLocalLsnByRegion();
+                String normalizedRegionRoutedTo = regionRoutedTo.toLowerCase(Locale.ROOT).trim().replace(" ", "");
+
+                int regionId = RegionNameToRegionIdMap.getRegionId(normalizedRegionRoutedTo);
+
+                if (regionId != -1) {
                     long localLsn = localLsnByRegion.getOrDefault(regionId, Long.MIN_VALUE);
 
                     // regionId maps to a satellite region
                     if (localLsn != Long.MIN_VALUE) {
-                        regionToSessionTokenAsVal.put(regionRoutedTo, new RegionLevelProgress(parsedSessionToken.getLSN(), localLsn, null));
+                        regionToSessionTokenAsVal.put(normalizedRegionRoutedTo, new RegionLevelProgress(parsedSessionToken.getLSN(), localLsn, null));
                     }
                     // regionId maps to a hub region
                     else {
-                        regionToSessionTokenAsVal.put(regionRoutedTo, new RegionLevelProgress(parsedSessionToken.getLSN(), Long.MIN_VALUE, null));
+                        regionToSessionTokenAsVal.put(normalizedRegionRoutedTo, new RegionLevelProgress(parsedSessionToken.getLSN(), Long.MIN_VALUE, null));
                     }
 
                     // store the session token in parsed form if obtained from the firstEffectivePreferredReadableRegion
                     if (regionRoutedTo.equals(firstEffectivePreferredReadableRegion)) {
-                        regionToSessionTokenAsVal.put(regionRoutedTo, new RegionLevelProgress(parsedSessionToken.getLSN(), localLsn, vectorSessionToken));
+                        regionToSessionTokenAsVal.put(normalizedRegionRoutedTo, new RegionLevelProgress(parsedSessionToken.getLSN(), localLsn, vectorSessionToken));
                     }
                 }
 
@@ -110,11 +113,12 @@ public class PartitionKeyRangeIdToSessionTokens {
         }
 
         RegionLevelProgress baseLevelProgress = resolvePartitionKeyRangeIdBasedProgress(partitionKeyRangeId, firstEffectivePreferredReadableRegion);
-        VectorSessionToken baseSessionToken = baseLevelProgress.vectorSessionToken;
 
-        if (baseSessionToken == null) {
+        if (baseLevelProgress == null || baseLevelProgress.vectorSessionToken == null) {
             return globalSessionToken;
         }
+
+        VectorSessionToken baseSessionToken = baseLevelProgress.vectorSessionToken;
 
         long globalLsn = -1;
         UnmodifiableMap<Integer, Long> localLsnByRegion = globalSessionToken.getLocalLsnByRegion();
@@ -122,7 +126,6 @@ public class PartitionKeyRangeIdToSessionTokens {
 
         StringBuilder sbPartOne = new StringBuilder();
         StringBuilder sbPartTwo = new StringBuilder();
-
 
         for (Map.Entry<Integer, Long> localLsnByRegionEntry : localLsnByRegion.entrySet()) {
 

@@ -39,13 +39,13 @@ public class RegionScopedSessionContainer implements ISessionContainer {
     private final String hostName;
     private boolean disableSessionCapturing;
     private final GlobalEndpointManager globalEndpointManager;
-    private final AtomicReference<String> firstPreferredWritableRegionCached;
+    private final AtomicReference<String> firstPreferredReadableRegionCached;
 
     public RegionScopedSessionContainer(final String hostName, boolean disableSessionCapturing, GlobalEndpointManager globalEndpointManager) {
         this.hostName = hostName;
         this.disableSessionCapturing = disableSessionCapturing;
         this.globalEndpointManager = globalEndpointManager;
-        this.firstPreferredWritableRegionCached = new AtomicReference<>(StringUtils.EMPTY);
+        this.firstPreferredReadableRegionCached = new AtomicReference<>(StringUtils.EMPTY);
         this.partitionKeyBasedBloomFilter = new PartitionKeyBasedBloomFilter();
     }
 
@@ -182,8 +182,8 @@ public class RegionScopedSessionContainer implements ISessionContainer {
         Utils.ValueHolder<PartitionKeyInternal> partitionKeyInternal = Utils.ValueHolder.initialize(null);
         Utils.ValueHolder<PartitionKeyDefinition> partitionKeyDefinition = Utils.ValueHolder.initialize(null);
 
-        if (this.firstPreferredWritableRegionCached.get().equals(StringUtils.EMPTY)) {
-            this.firstPreferredWritableRegionCached.set(extractFirstEffectivePreferredReadableRegion(this.globalEndpointManager));
+        if (this.firstPreferredReadableRegionCached.get().equals(StringUtils.EMPTY)) {
+            this.firstPreferredReadableRegionCached.set(extractFirstEffectivePreferredReadableRegion(this.globalEndpointManager));
         }
 
         if (shouldUseBloomFilter(
@@ -194,13 +194,13 @@ public class RegionScopedSessionContainer implements ISessionContainer {
 
             return SessionTokenHelper.resolvePartitionLocalSessionToken(request, this.partitionKeyBasedBloomFilter,
                 partitionKeyRangeIdToSessionTokens, partitionKeyInternal.v, partitionKeyDefinition.v,
-                collectionRid, partitionKeyRangeId, this.firstPreferredWritableRegionCached.get(), true);
+                collectionRid, partitionKeyRangeId, this.firstPreferredReadableRegionCached.get(), true);
 
         }
 
         return SessionTokenHelper.resolvePartitionLocalSessionToken(request, this.partitionKeyBasedBloomFilter,
             partitionKeyRangeIdToSessionTokens, partitionKeyInternal.v, partitionKeyDefinition.v,
-            collectionRid, partitionKeyRangeId, this.firstPreferredWritableRegionCached.get(), false);
+            collectionRid, partitionKeyRangeId, this.firstPreferredReadableRegionCached.get(), false);
     }
 
     @Override
@@ -328,13 +328,13 @@ public class RegionScopedSessionContainer implements ISessionContainer {
         PartitionKeyInternal partitionKeyInternal,
         PartitionKeyDefinition partitionKeyDefinition) {
 
-        if (Strings.isNullOrEmpty(this.firstPreferredWritableRegionCached.get())) {
-            this.firstPreferredWritableRegionCached.set(extractFirstEffectivePreferredReadableRegion(this.globalEndpointManager));
+        if (Strings.isNullOrEmpty(this.firstPreferredReadableRegionCached.get())) {
+            this.firstPreferredReadableRegionCached.set(extractFirstEffectivePreferredReadableRegion(this.globalEndpointManager));
         }
 
         this.partitionKeyBasedBloomFilter.tryRecordPartitionKey(
             collectionRid,
-            this.firstPreferredWritableRegionCached.get(),
+            this.firstPreferredReadableRegionCached.get(),
             regionRoutedTo,
             partitionKeyInternal,
             partitionKeyDefinition);
@@ -346,7 +346,7 @@ public class RegionScopedSessionContainer implements ISessionContainer {
         String partitionKeyRangeId,
         String regionRoutedTo) {
 
-        partitionKeyRangeIdToSessionTokens.tryRecordSessionToken(parsedSessionToken, partitionKeyRangeId, this.firstPreferredWritableRegionCached.get(), regionRoutedTo);
+        partitionKeyRangeIdToSessionTokens.tryRecordSessionToken(parsedSessionToken, partitionKeyRangeId, this.firstPreferredReadableRegionCached.get(), regionRoutedTo);
     }
 
     private void addSessionToken(RxDocumentServiceRequest request, ResourceId resourceId, String partitionKeyRangeId, ISessionToken parsedSessionToken) {
@@ -356,8 +356,8 @@ public class RegionScopedSessionContainer implements ISessionContainer {
         PartitionKeyRangeIdToSessionTokens partitionKeyRangeIdToSessionTokens
             = this.collectionResourceIdToRegionScopedSessionTokens.get(collectionResourceId);
 
-        if (this.firstPreferredWritableRegionCached.get().equals(StringUtils.EMPTY)) {
-            this.firstPreferredWritableRegionCached.set(extractFirstEffectivePreferredReadableRegion(this.globalEndpointManager));
+        if (this.firstPreferredReadableRegionCached.get().equals(StringUtils.EMPTY)) {
+            this.firstPreferredReadableRegionCached.set(extractFirstEffectivePreferredReadableRegion(this.globalEndpointManager));
         }
 
         String regionRoutedTo = null;
@@ -373,7 +373,6 @@ public class RegionScopedSessionContainer implements ISessionContainer {
         if (partitionKeyRangeIdToSessionTokens != null) {
 
             if (shouldUseBloomFilter(this.globalEndpointManager, request, partitionKeyInternal, partitionKeyDefinition)) {
-                // this.partitionKeyBasedBloomFilter.tryInitializeBloomFilter();
                 this.recordPartitionKeyInBloomFilter(
                     collectionResourceId,
                     regionRoutedTo,
