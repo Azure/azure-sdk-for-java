@@ -296,12 +296,12 @@
       <testResource>
         <directory>src/test/resources</directory>
       </testResource>
-<!--      <testResource>-->
-<!--        <directory>${project.parent.relativePath}</directory>-->
-<!--        <includes>-->
-<!--          <include>simplelogger.properties</include>-->
-<!--        </includes>-->
-<!--      </testResource>-->
+      <testResource>
+        <directory>${project.parent.relativePath}</directory>
+        <includes>
+          <include>simplelogger.properties</include>
+        </includes>
+      </testResource>
     </testResources>
 
     <plugins>
