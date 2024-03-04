@@ -99,6 +99,9 @@ public class PartitionKeyRangeIdToSessionTokens {
         });
     }
 
+    // TODO: Some design considerations
+    // TODO: Format of session token can change to include GCN in the future
+    // TODO: Session token resolution could be encapsulated in "resolver" classes and the "resolver" classes could be injected here
     public ISessionToken tryResolveSessionToken(
         Set<String> lesserPreferredRegionsPkProbablyRequestedFrom,
         String partitionKeyRangeId,
