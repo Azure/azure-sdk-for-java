@@ -33,8 +33,6 @@ import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 public class ContainerRegistryTokenServiceTest {
-
-    private HttpPipeline httpPipeline = mock(HttpPipeline.class);
     private AuthenticationsImpl authenticationsImpl = mock(AuthenticationsImpl.class);
     private AccessTokenCacheImpl refreshTokenCache;
     private TokenCredential refreshTokenCredential = mock(TokenCredential.class);
