@@ -25,7 +25,7 @@
 - Replaced `String` property `name` by `ChatCompletionsFunctionToolSelection` property `function` in `ChatCompletionsNamedFunctionToolSelection`
 - Made `embeddingDependency` as a required parameter in `AzureCosmosDBChatExtensionParameters` and `PineconeChatExtensionParameters` class, and removed setter method.
 - Removed `vectorFields` and `imageVectorFields` from `PineconeFieldMappingOptions` class, and made `contentField` as required parameter.
-- Hid `getAudioTranscriptionAsPlainTextWithResponse` and `getAudioTranslationAsPlainTextWithResponse` methods from `OpenAIClient` and `OpenAIAsyncClient` classes.
+- Removed `getAudioTranscriptionAsPlainTextWithResponse` and `getAudioTranslationAsPlainTextWithResponse` methods from `OpenAIClient` and `OpenAIAsyncClient` classes.
 - Made `ImageGeneration` constructor as private.
 - Made `ImageGenerationData` constructor as private and removed setter methods.
 
