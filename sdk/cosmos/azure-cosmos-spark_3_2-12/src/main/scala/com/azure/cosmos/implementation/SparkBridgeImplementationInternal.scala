@@ -361,20 +361,26 @@ private[cosmos] object SparkBridgeImplementationInternal extends BasicLoggingTra
   }
 
   def overrideDefaultTcpOptionsForSparkUsage(): Unit = {
-    val overrideJson = "{\"timeoutDetectionEnabled\": true, \"timeoutDetectionDisableCPUThreshold\": 70.0," +
-      "\"timeoutDetectionTimeLimit\": \"PT600S\", \"timeoutDetectionHighFrequencyThreshold\": 100," +
+    val overrideJson = "{\"timeoutDetectionEnabled\": true, \"timeoutDetectionDisableCPUThreshold\": 75.0," +
+      "\"timeoutDetectionTimeLimit\": \"PT90S\", \"timeoutDetectionHighFrequencyThreshold\": 10," +
       "\"timeoutDetectionHighFrequencyTimeLimit\": \"PT30S\", \"timeoutDetectionOnWriteThreshold\": 10," +
-      "\"timeoutDetectionOnWriteTimeLimit\": \"PT600s\", \"tcpNetworkRequestTimeout\": \"PT10S\", " +
-      "\"connectTimeout\": \"PT30S\"}"
+      "\"timeoutDetectionOnWriteTimeLimit\": \"PT90s\", \"tcpNetworkRequestTimeout\": \"PT7S\", " +
+      "\"connectTimeout\": \"PT10S\"}"
 
     if (System.getProperty("reactor.netty.tcp.sslHandshakeTimeout") == null) {
-      System.setProperty("reactor.netty.tcp.sslHandshakeTimeout", "45000");
+      System.setProperty("reactor.netty.tcp.sslHandshakeTimeout", "20000");
     }
 
     if (System.getProperty(Configs.HTTP_MAX_REQUEST_TIMEOUT) == null) {
       System.setProperty(
         Configs.HTTP_MAX_REQUEST_TIMEOUT,
         "70");
+    }
+
+    if (System.getProperty(Configs.HTTP_DEFAULT_CONNECTION_POOL_SIZE) == null) {
+      System.setProperty(
+        Configs.HTTP_DEFAULT_CONNECTION_POOL_SIZE,
+        "25000");
     }
 
     if (System.getProperty("azure.cosmos.directTcp.defaultOptions") == null) {
