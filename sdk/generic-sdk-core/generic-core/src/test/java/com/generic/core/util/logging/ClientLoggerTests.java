@@ -120,19 +120,6 @@ public class ClientLoggerTests {
         assertTrue(logValues.contains(expectedMessage));
     }
 
-    @ParameterizedTest
-    @MethodSource("singleLevelCheckSupplier")
-    public void logFormattedMessage(LogLevel logLevelToConfigure, LogLevel logLevelToUse, boolean logContainsMessage) {
-        String logMessage = "This is a test";
-        String logFormat = "{} is a {}";
-
-        setupLogLevel(logLevelToConfigure.toString());
-        logMessage(new ClientLogger(ClientLoggerTests.class), logLevelToUse, logFormat, "This", "test");
-
-        String logValues = byteArraySteamToString(logCaptureStream);
-        assertEquals(logContainsMessage, logValues.contains(logMessage));
-    }
-
     /**
      * Tests whether a log will contain the exception message when the ClientLogger and message are configured to the
      * passed log levels.
@@ -173,7 +160,7 @@ public class ClientLoggerTests {
         }
 
         String logValues = byteArraySteamToString(logCaptureStream);
-        assertEquals(logContainsMessage, logValues.contains(exceptionMessage + System.lineSeparator()));
+        assertEquals(logContainsMessage, logValues.contains(exceptionMessage));
         assertEquals(logContainsStackTrace, logValues.contains(ioException.getStackTrace()[0].toString()));
     }
 
@@ -298,7 +285,7 @@ public class ClientLoggerTests {
         logger.atInfo().log(() -> message);
 
         String logValues = byteArraySteamToString(logCaptureStream);
-        assertTrue(logValues.contains("{\"message\":Param 1: test1, Param 2: test2, Param 3: test3"));
+        assertTrue(logValues.contains("{\"message\":\"Param 1: test1, Param 2: test2, Param 3: test3\"}"));
     }
 
     @ParameterizedTest
@@ -649,7 +636,7 @@ public class ClientLoggerTests {
         String escapedNewLine = new String(JsonStringEncoder.getInstance().quoteAsString(System.lineSeparator()));
 
         assertMessage(
-            "{\"message\":\"multiline " + escapedNewLine + "message\",\"connection\\nId" + escapedNewLine + "\":\"foo\",\"link\\r\\nName\":\"test" + escapedNewLine + "me\"}",
+            "{\"message\":\"multiline " + "message\",\"connection\\nId" + escapedNewLine + "\":\"foo\",\"link\\r\\nName\":\"test" + escapedNewLine + "me\"}",
             byteArraySteamToString(logCaptureStream),
             LogLevel.VERBOSE,
             LogLevel.INFORMATIONAL);
@@ -777,7 +764,7 @@ public class ClientLoggerTests {
         logger.atWarning()
             .addKeyValue("connectionId", "foo")
             .addKeyValue("linkName", "bar")
-            .log(() -> String.format("hello {%s}", "world", runtimeException));
+            .log(() -> String.format("hello %s", "world"), runtimeException);
 
         String message = "{\"message\":\"hello world\",\"exception\":\"" + exceptionMessage + "\",\"connectionId\":\"foo\",\"linkName\":\"bar\"}";
         if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
@@ -835,7 +822,7 @@ public class ClientLoggerTests {
         logger.atWarning()
             .addKeyValue("connection\tId", "foo")
             .addKeyValue("linkName", "\rbar")
-            .log(() -> String.format("hello {%s}, \"and\" {more}", "world", runtimeException));
+            .log(() -> String.format("hello %s, \"and\" {more}", "world"), runtimeException);
 
 
         String escapedExceptionMessage = "An exception \\tmessage with \\\"special characters\\\"\\r\\n";
@@ -994,6 +981,44 @@ public class ClientLoggerTests {
         EnvironmentConfiguration.getGlobalConfiguration().remove(PROPERTY_LOG_LEVEL);
     }
 
+    private void logMessage(ClientLogger logger, LogLevel logLevel, String logFormat, RuntimeException runtimeException) {
+        if (logLevel == null) {
+            return;
+        }
+
+        switch (logLevel) {
+            case VERBOSE:
+                if (runtimeException != null) {
+                    logHelper(() -> logger.atVerbose().log(() -> logFormat, runtimeException), (args) -> logger.atVerbose().log(() -> logFormat, runtimeException), runtimeException);
+                } else {
+                    logHelper(() -> logger.atVerbose().log(() -> logFormat), (args) -> logger.atVerbose().log(() -> logFormat), new Object[]{});
+                }
+                break;
+            case INFORMATIONAL:
+                if (runtimeException != null) {
+                    logHelper(() -> logger.atInfo().log(() -> logFormat, runtimeException), (args) -> logger.atInfo().log(() -> logFormat, runtimeException), runtimeException);
+                } else {
+                    logHelper(() -> logger.atInfo().log(() -> logFormat), (args) -> logger.atInfo().log(() -> logFormat), new Object[]{});
+                }
+                break;
+            case WARNING:
+                if (runtimeException != null) {
+                    logHelper(() -> logger.atWarning().log(() -> logFormat, runtimeException), (args) -> logger.atWarning().log(() -> logFormat, runtimeException), runtimeException);
+                } else {
+                    logHelper(() -> logger.atWarning().log(() -> logFormat), (args) -> logger.atWarning().log(() -> logFormat), new Object[]{});
+                }
+                break;
+            case ERROR:
+                if (runtimeException != null) {
+                    logHelper(() -> logger.atError().log(() -> logFormat, runtimeException), (args) -> logger.atError().log(() -> logFormat, runtimeException), runtimeException);
+                } else {
+                    logHelper(() -> logger.atError().log(() -> logFormat), (args) -> logger.atError().log(() -> logFormat), new Object[]{});
+                }
+                break;
+            default:
+                break;
+        }
+    }
     private void logMessage(ClientLogger logger, LogLevel logLevel, String logFormat, Object... arguments) {
         if (logLevel == null) {
             return;

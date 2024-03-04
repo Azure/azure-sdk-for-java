@@ -10,8 +10,6 @@ import com.generic.core.util.configuration.Configuration;
 import com.generic.json.implementation.jackson.core.io.JsonStringEncoder;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.slf4j.helpers.FormattingTuple;
-import org.slf4j.helpers.MessageFormatter;
 import org.slf4j.helpers.NOPLogger;
 
 import java.util.ArrayList;
@@ -71,7 +69,7 @@ public class ClientLogger {
      *
      * @param clazz Class creating the logger.
      * @param context Context to be populated on every log record written with this logger.
-     *                Objects are serialized with {@code toString()} method.
+     * Objects are serialized with {@code toString()} method.
      */
     public ClientLogger(Class<?> clazz, Map<String, Object> context) {
         this(clazz.getName(), context);
@@ -480,8 +478,11 @@ public class ClientLogger {
          */
         public void log(Supplier<String> messageSupplier) {
             if (this.isEnabled) {
-                String message = messageSupplier != null ? messageSupplier.get() : null;
-                performLogging(level, removeNewLinesFromLogMessage(getMessageWithContext(message, null)), (Throwable) null);
+                String message = messageSupplier != null ? removeNewLinesFromLogMessage(messageSupplier.get()) : null;
+                String messageWithContext = getMessageWithContext(message, null);
+                if (!messageWithContext.equals("{\"message\":\"\"}")) {
+                    performLogging(level, messageWithContext, (Throwable) null);
+                }
             }
         }
 
@@ -494,9 +495,12 @@ public class ClientLogger {
          */
         public <T extends Throwable> T log(Supplier<String> messageSupplier, T throwable) {
             if (this.isEnabled) {
-                String message = messageSupplier != null ? messageSupplier.get() : null;
-                performLogging(level, removeNewLinesFromLogMessage(getMessageWithContext(message, throwable)),
-                    logger.isDebugEnabled() ? throwable : null);
+                String message = messageSupplier != null ? removeNewLinesFromLogMessage(messageSupplier.get()) : null;
+                String messageWithContext = getMessageWithContext(message, null);
+                if (!messageWithContext.equals("{\"message\":\"\"}")) {
+                    performLogging(level, getMessageWithContext(message, throwable),
+                        logger.isDebugEnabled() ? throwable : null);
+                }
             }
             return throwable;
         }
@@ -547,38 +551,6 @@ public class ClientLogger {
             }
 
             this.context.add(new ContextKeyValuePair(key, value));
-        }
-
-        /*
-         * Performs the logging.
-         *
-         * @param format Formattable message.
-         * @param args Arguments for the message, if an exception is being logged the last argument should be the
-         * {@link Throwable}.
-         */
-        private void performLogging(LogLevel logLevel, String format, Object... args) {
-            Throwable throwable = null;
-            if (doesArgsHaveThrowable(args)) {
-                Object throwableObj = args[args.length - 1];
-
-                // This is true from before but is needed to appease SpotBugs.
-                if (throwableObj instanceof Throwable) {
-                    throwable = (Throwable) throwableObj;
-                }
-
-                /*
-                 * Environment is logging at a level higher than verbose, strip out the throwable as it would log its
-                 * stack trace which is only expected when logging at a verbose level.
-                 */
-                if (!logger.isDebugEnabled()) {
-                    args = removeThrowable(args);
-                }
-            }
-
-            FormattingTuple tuple = MessageFormatter.arrayFormat(format, args);
-            String message = getMessageWithContext(removeNewLinesFromLogMessage(tuple.getMessage()), throwable);
-
-            performLogging(logLevel, message, tuple.getThrowable());
         }
 
         private void performLogging(LogLevel logLevel, String message, Throwable throwable) {

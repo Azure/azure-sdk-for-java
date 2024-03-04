@@ -236,7 +236,7 @@ public final class HttpLogOptions {
         BASIC,
 
         /**
-         * Logs everything in BASIC, plus all the request and response headers.
+         * Logs everything in BASIC, plus all allowed request and response headers.
          */
         HEADERS,
 
