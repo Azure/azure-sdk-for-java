@@ -33,7 +33,7 @@ public final class StartRecordingOptions {
 
     private List<ChannelAffinity> channelAffinity;
 
-    private ExternalStorage externalStorage;
+    private RecordingStorage recordingStorage;
 
     /**
      * Constructor
@@ -139,7 +139,7 @@ public final class StartRecordingOptions {
      *
      * @return pause on start.
      */
-    public Boolean getPauseOnStart() {
+    public Boolean isPauseOnStart() {
         return pauseOnStart;
     }
 
@@ -183,22 +183,22 @@ public final class StartRecordingOptions {
     }
 
     /**
-     * Get the externalStorage property: Used to specify external storage for call recording
+     * Get the recordingStorage property: Used to specify recording storage for call recording
      *
-     * @return the externalStorage value.
+     * @return the recordingStorage value.
      */
-    public ExternalStorage getExternalStorage() {
-        return this.externalStorage;
+    public RecordingStorage getRecordingStorage() {
+        return this.recordingStorage;
     }
 
     /**
-     * Set the externalStorage property: Used to specify external storage for call recording
+     * Set the recordingStorage property: Used to specify recording storage for call recording
      *
-     * @param externalStorage the external storage for call recording
+     * @param recordingStorage the recording storage for call recording
      * @return the StartRecordingOptions object itself.
      */
-    public StartRecordingOptions setExternalStorage(ExternalStorage externalStorage) {
-        this.externalStorage = externalStorage;
+    public StartRecordingOptions setRecordingStorage(RecordingStorage recordingStorage) {
+        this.recordingStorage = recordingStorage;
         return this;
     }
 

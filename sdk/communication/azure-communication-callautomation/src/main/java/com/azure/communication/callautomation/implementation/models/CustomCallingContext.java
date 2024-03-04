@@ -8,24 +8,32 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The CustomCallingContext model. */
+/**
+ * The custom calling context which will be sent to the target.
+ */
 @Fluent
 public final class CustomCallingContext {
     /*
-     * Dictionary of <string>
+     * Custom calling context VoiP headers
      */
     @JsonProperty(value = "voipHeaders")
     private Map<String, String> voipHeaders;
 
     /*
-     * Dictionary of <string>
+     * Custom calling context SIP headers
      */
     @JsonProperty(value = "sipHeaders")
     private Map<String, String> sipHeaders;
 
     /**
-     * Get the voipHeaders property: Dictionary of &lt;string&gt;.
-     *
+     * Creates an instance of CustomCallingContext class.
+     */
+    public CustomCallingContext() {
+    }
+
+    /**
+     * Get the voipHeaders property: Custom calling context VoiP headers.
+     * 
      * @return the voipHeaders value.
      */
     public Map<String, String> getVoipHeaders() {
@@ -33,8 +41,8 @@ public final class CustomCallingContext {
     }
 
     /**
-     * Set the voipHeaders property: Dictionary of &lt;string&gt;.
-     *
+     * Set the voipHeaders property: Custom calling context VoiP headers.
+     * 
      * @param voipHeaders the voipHeaders value to set.
      * @return the CustomCallingContext object itself.
      */
@@ -44,8 +52,8 @@ public final class CustomCallingContext {
     }
 
     /**
-     * Get the sipHeaders property: Dictionary of &lt;string&gt;.
-     *
+     * Get the sipHeaders property: Custom calling context SIP headers.
+     * 
      * @return the sipHeaders value.
      */
     public Map<String, String> getSipHeaders() {
@@ -53,8 +61,8 @@ public final class CustomCallingContext {
     }
 
     /**
-     * Set the sipHeaders property: Dictionary of &lt;string&gt;.
-     *
+     * Set the sipHeaders property: Custom calling context SIP headers.
+     * 
      * @param sipHeaders the sipHeaders value to set.
      * @return the CustomCallingContext object itself.
      */

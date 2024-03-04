@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The request payload for rejecting the call. */
+/**
+ * The request payload for rejecting the call.
+ */
 @Fluent
 public final class RejectCallRequestInternal {
     /*
@@ -23,8 +25,14 @@ public final class RejectCallRequestInternal {
     private CallRejectReasonInternal callRejectReason;
 
     /**
+     * Creates an instance of RejectCallRequestInternal class.
+     */
+    public RejectCallRequestInternal() {
+    }
+
+    /**
      * Get the incomingCallContext property: The context associated with the call.
-     *
+     * 
      * @return the incomingCallContext value.
      */
     public String getIncomingCallContext() {
@@ -33,7 +41,7 @@ public final class RejectCallRequestInternal {
 
     /**
      * Set the incomingCallContext property: The context associated with the call.
-     *
+     * 
      * @param incomingCallContext the incomingCallContext value to set.
      * @return the RejectCallRequestInternal object itself.
      */
@@ -44,7 +52,7 @@ public final class RejectCallRequestInternal {
 
     /**
      * Get the callRejectReason property: The rejection reason.
-     *
+     * 
      * @return the callRejectReason value.
      */
     public CallRejectReasonInternal getCallRejectReason() {
@@ -53,7 +61,7 @@ public final class RejectCallRequestInternal {
 
     /**
      * Set the callRejectReason property: The rejection reason.
-     *
+     * 
      * @param callRejectReason the callRejectReason value to set.
      * @return the RejectCallRequestInternal object itself.
      */

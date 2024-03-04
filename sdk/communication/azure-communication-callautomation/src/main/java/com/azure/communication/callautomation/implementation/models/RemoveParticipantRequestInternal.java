@@ -7,7 +7,9 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The remove participant by identifier request. */
+/**
+ * The remove participant by identifier request.
+ */
 @Fluent
 public final class RemoveParticipantRequestInternal {
     /*
@@ -17,24 +19,28 @@ public final class RemoveParticipantRequestInternal {
     private CommunicationIdentifierModel participantToRemove;
 
     /*
-     * Used by customers when calling mid-call actions to correlate the request
-     * to the response event.
+     * Used by customers when calling mid-call actions to correlate the request to the response event.
      */
     @JsonProperty(value = "operationContext")
     private String operationContext;
 
     /*
-     * Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation.
-     * This setup is per-action. If this is not set, the default callback URI
-     * set by CreateCall/AnswerCall will be used.
+     * Set a callback URI that overrides the default callback URI set by CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
      */
     @JsonProperty(value = "operationCallbackUri")
     private String operationCallbackUri;
 
     /**
+     * Creates an instance of RemoveParticipantRequestInternal class.
+     */
+    public RemoveParticipantRequestInternal() {
+    }
+
+    /**
      * Get the participantToRemove property: The participants to be removed from the call.
-     *
+     * 
      * @return the participantToRemove value.
      */
     public CommunicationIdentifierModel getParticipantToRemove() {
@@ -43,7 +49,7 @@ public final class RemoveParticipantRequestInternal {
 
     /**
      * Set the participantToRemove property: The participants to be removed from the call.
-     *
+     * 
      * @param participantToRemove the participantToRemove value to set.
      * @return the RemoveParticipantRequestInternal object itself.
      */
@@ -55,7 +61,7 @@ public final class RemoveParticipantRequestInternal {
     /**
      * Get the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     *
+     * 
      * @return the operationContext value.
      */
     public String getOperationContext() {
@@ -65,7 +71,7 @@ public final class RemoveParticipantRequestInternal {
     /**
      * Set the operationContext property: Used by customers when calling mid-call actions to correlate the request to
      * the response event.
-     *
+     * 
      * @param operationContext the operationContext value to set.
      * @return the RemoveParticipantRequestInternal object itself.
      */
@@ -76,9 +82,10 @@ public final class RemoveParticipantRequestInternal {
 
     /**
      * Get the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
-     * set by CreateCall/AnswerCall will be used.
-     *
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
+     * 
      * @return the operationCallbackUri value.
      */
     public String getOperationCallbackUri() {
@@ -87,9 +94,10 @@ public final class RemoveParticipantRequestInternal {
 
     /**
      * Set the operationCallbackUri property: Set a callback URI that overrides the default callback URI set by
-     * CreateCall/AnswerCall for this operation. This setup is per-action. If this is not set, the default callback URI
-     * set by CreateCall/AnswerCall will be used.
-     *
+     * CreateCall/AnswerCall for this operation.
+     * This setup is per-action. If this is not set, the default callback URI set by CreateCall/AnswerCall will be
+     * used.
+     * 
      * @param operationCallbackUri the operationCallbackUri value to set.
      * @return the RemoveParticipantRequestInternal object itself.
      */

@@ -7,34 +7,39 @@ package com.azure.communication.callautomation.implementation.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A Microsoft Teams user. */
+/**
+ * A Microsoft Teams user.
+ */
 @Fluent
 public final class MicrosoftTeamsUserIdentifierModel {
     /*
-     * The Id of the Microsoft Teams user. If not anonymous, this is the AAD
-     * object Id of the user.
+     * The Id of the Microsoft Teams user. If not anonymous, this is the AAD object Id of the user.
      */
     @JsonProperty(value = "userId", required = true)
     private String userId;
 
     /*
-     * True if the Microsoft Teams user is anonymous. By default false if
-     * missing.
+     * True if the Microsoft Teams user is anonymous. By default false if missing.
      */
     @JsonProperty(value = "isAnonymous")
     private Boolean isAnonymous;
 
     /*
-     * The cloud that the Microsoft Teams user belongs to. By default 'public'
-     * if missing.
+     * The cloud that the Microsoft Teams user belongs to. By default 'public' if missing.
      */
     @JsonProperty(value = "cloud")
     private CommunicationCloudEnvironmentModel cloud;
 
     /**
+     * Creates an instance of MicrosoftTeamsUserIdentifierModel class.
+     */
+    public MicrosoftTeamsUserIdentifierModel() {
+    }
+
+    /**
      * Get the userId property: The Id of the Microsoft Teams user. If not anonymous, this is the AAD object Id of the
      * user.
-     *
+     * 
      * @return the userId value.
      */
     public String getUserId() {
@@ -44,7 +49,7 @@ public final class MicrosoftTeamsUserIdentifierModel {
     /**
      * Set the userId property: The Id of the Microsoft Teams user. If not anonymous, this is the AAD object Id of the
      * user.
-     *
+     * 
      * @param userId the userId value to set.
      * @return the MicrosoftTeamsUserIdentifierModel object itself.
      */
@@ -55,7 +60,7 @@ public final class MicrosoftTeamsUserIdentifierModel {
 
     /**
      * Get the isAnonymous property: True if the Microsoft Teams user is anonymous. By default false if missing.
-     *
+     * 
      * @return the isAnonymous value.
      */
     public Boolean isAnonymous() {
@@ -64,7 +69,7 @@ public final class MicrosoftTeamsUserIdentifierModel {
 
     /**
      * Set the isAnonymous property: True if the Microsoft Teams user is anonymous. By default false if missing.
-     *
+     * 
      * @param isAnonymous the isAnonymous value to set.
      * @return the MicrosoftTeamsUserIdentifierModel object itself.
      */
@@ -75,7 +80,7 @@ public final class MicrosoftTeamsUserIdentifierModel {
 
     /**
      * Get the cloud property: The cloud that the Microsoft Teams user belongs to. By default 'public' if missing.
-     *
+     * 
      * @return the cloud value.
      */
     public CommunicationCloudEnvironmentModel getCloud() {
@@ -84,7 +89,7 @@ public final class MicrosoftTeamsUserIdentifierModel {
 
     /**
      * Set the cloud property: The cloud that the Microsoft Teams user belongs to. By default 'public' if missing.
-     *
+     * 
      * @param cloud the cloud value to set.
      * @return the MicrosoftTeamsUserIdentifierModel object itself.
      */
