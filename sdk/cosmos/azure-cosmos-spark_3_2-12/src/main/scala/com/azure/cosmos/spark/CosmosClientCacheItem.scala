@@ -9,4 +9,5 @@ private[spark] trait CosmosClientCacheItem extends AutoCloseable {
   def cosmosClient: CosmosAsyncClient
   def sparkCatalogClient: CosmosCatalogClient
   def context: String
+  def getRefCount: Long
 }

@@ -1,14 +1,9 @@
 ## Release History
 
-### 4.29.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
+### 4.28.1 (2024-03-01)
 
 #### Bugs Fixed
-
-#### Other Changes
+* Fixed the UserAgent suffix when using a client retrieved via UDF `CosmosAsyncClientCache.getCosmosClientFuncFromCache` on an executor. - See [PR 39045](https://github.com/Azure/azure-sdk-for-java/pull/39045)
 
 ### 4.28.0 (2024-02-26)
 
