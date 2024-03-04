@@ -270,7 +270,7 @@ public final class FieldBuilder {
             return searchField;
         }
 
-        boolean key, hidden, filterable, sortable, facetable;
+        boolean key, hidden, filterable, sortable, facetable, stored;
         boolean searchable = searchableField != null;
         String analyzerName = null;
         String searchAnalyzerName = null;
@@ -283,6 +283,7 @@ public final class FieldBuilder {
         if (simpleField != null) {
             key = simpleField.isKey();
             hidden = simpleField.isHidden();
+            stored = simpleField.isStored();
             filterable = simpleField.isFilterable();
             sortable = simpleField.isSortable();
             facetable = simpleField.isFacetable();
@@ -290,6 +291,7 @@ public final class FieldBuilder {
         } else {
             key = searchableField.isKey();
             hidden = searchableField.isHidden();
+            stored = searchableField.isStored();
             filterable = searchableField.isFilterable();
             sortable = searchableField.isSortable();
             facetable = searchableField.isFacetable();
@@ -354,6 +356,7 @@ public final class FieldBuilder {
             .setFilterable(filterable)
             .setSortable(sortable)
             .setFacetable(facetable)
+            .setStored(stored)
             .setVectorSearchDimensions(vectorSearchDimensions)
             .setVectorSearchProfileName(vectorSearchProfileName);
 
