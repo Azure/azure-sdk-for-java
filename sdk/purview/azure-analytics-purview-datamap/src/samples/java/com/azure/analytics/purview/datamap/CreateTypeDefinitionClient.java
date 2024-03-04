@@ -12,7 +12,7 @@ import com.azure.identity.ClientSecretCredentialBuilder;
 public final class CreateTypeDefinitionClient {
 
     public static void main(String[] args) {
-        // BEGIN:com.azure.analytics.purview.datamap.createtypedefinitionclient
+
         ClientSecretCredential cred = new ClientSecretCredentialBuilder()
             .tenantId(Configuration.getGlobalConfiguration().get("TENANT_ID"))
             .authorityHost(Configuration.getGlobalConfiguration().get("AUTHORITY_HOST"))
@@ -23,6 +23,7 @@ public final class CreateTypeDefinitionClient {
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
             .credential(cred);
 
+        // BEGIN:com.azure.analytics.purview.datamap.createtypedefinitionclient
         TypeDefinitionClient typeDefinitionClient = clientBuilder.buildTypeDefinitionClient();
         AtlasEntityDef type = typeDefinitionClient.getEntityByName("AtlasGlossary");
         // END:com.azure.analytics.purview.datamap.createtypedefinitionclient
