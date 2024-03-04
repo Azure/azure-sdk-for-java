@@ -1,6 +1,6 @@
-# Azure PurviewDataMap client library for Java
+# Azure Purview DataMap client library for Java
 
-Microsoft Purview Data Map provides the foundation for data discovery and data governance. Microsoft Purview Data Map is a cloud native PaaS service that captures metadata about enterprise data present in analytics and operation systems on-premises and cloud. Azure PurviewDataMap client provides a set of APIs in Purview Data Map Data Plane. For a full list of APIs, please refer to [Data Map API](https://learn.microsoft.com/rest/api/purview/datamapdataplane/operation-groups?view=rest-purview-datamapdataplane-2023-09-01).
+Microsoft Purview Data Map provides the foundation for data discovery and data governance. Microsoft Purview Data Map is a cloud native PaaS service that captures metadata about enterprise data present in analytics and operation systems on-premises and cloud. Azure Purview DataMap client provides a set of APIs in Purview Data Map Data Plane. For a full list of APIs, please refer to [Data Map API](https://learn.microsoft.com/rest/api/purview/datamapdataplane/operation-groups?view=rest-purview-datamapdataplane-2023-09-01).
 
 This package contains Microsoft Azure PurviewDataMap client library.
 
@@ -35,6 +35,8 @@ Various documentation is available to help you get started
 [Azure Identity][azure_identity] package provides the default implementation for authenticating the client.
 
 ## Key concepts
+
+See [DataMap APIs][https://learn.microsoft.com/rest/api/purview/datamapdataplane/operation-groups?view=rest-purview-datamapdataplane-2023-09-01] for general introduction the API scenarios.
 
 ## Examples
 
