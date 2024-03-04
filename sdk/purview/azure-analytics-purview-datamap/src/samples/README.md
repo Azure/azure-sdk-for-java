@@ -4,8 +4,7 @@ languages:
     - java
 products:
     - azure
-    - azure-purview-services
-    - azure-analytics-purview-datamap
+urlFragment: purview-datamap-java-samples
 ---
 
 # Azure Purview DataMap Samples client library for Java
