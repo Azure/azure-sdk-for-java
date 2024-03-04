@@ -40,7 +40,7 @@ See [DataMap APIs][https://learn.microsoft.com/rest/api/purview/datamapdataplane
 
 ## Examples
 
-### Create DataMap Client
+### Get Type Definition By Name
 ```java com.azure.analytics.purview.datamap.readme
 ClientSecretCredential cred = new ClientSecretCredentialBuilder()
     .tenantId(Configuration.getGlobalConfiguration().get("TENANT_ID"))
@@ -51,9 +51,7 @@ ClientSecretCredential cred = new ClientSecretCredentialBuilder()
 DataMapClientBuilder clientBuilder = new DataMapClientBuilder()
     .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
     .credential(cred);
-```
-### Get Type Definition By Name
-```java com.azure.analytics.purview.datamap.createtypedefinitionclient
+
 TypeDefinitionClient typeDefinitionClient = clientBuilder.buildTypeDefinitionClient();
 AtlasEntityDef type = typeDefinitionClient.getEntityByName("AtlasGlossary");
 ```

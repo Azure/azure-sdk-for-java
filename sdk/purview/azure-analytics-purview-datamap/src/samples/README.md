@@ -35,4 +35,4 @@ Following section document various examples.
 
 <!-- LINKS -->
 <!-- FIX LINK BRANCH AFTER PR MERGE -->
-[sample_CreateTypeDefinitionClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/purview/azure-analytics-purview-datamap/src/samples/java/com/azure/analytics/purview/datamap/CreateTypeDefinitionClient.java
+[sample_CreateTypeDefinitionClient]: https://github.com/Azure/azure-sdk-for-java/blob/main/sdk/purview/azure-analytics-purview-datamap/src/samples/java/com/azure/analytics/purview/datamap/ReadmeSamples.java
