@@ -27,6 +27,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 public class PollingWithTimeoutTests {
     private static final Duration TEN_MILLIS = Duration.ofMillis(10);
     private static final Duration HUNDRED_MILLIS = Duration.ofMillis(100);
+    private static final Duration ONE_SECOND = Duration.ofSeconds(1);
     private static final Duration FIVE_SECONDS = Duration.ofSeconds(5);
 
     private static final PollResponse<TestResponse> ACTIVATION_RESPONSE
@@ -96,7 +97,7 @@ public class PollingWithTimeoutTests {
 
         long start = System.currentTimeMillis();
         RuntimeException exception
-            = assertThrows(RuntimeException.class, () -> poller.waitForCompletion(HUNDRED_MILLIS, FIVE_SECONDS));
+            = assertThrows(RuntimeException.class, () -> poller.waitForCompletion(ONE_SECOND, FIVE_SECONDS));
         long end = System.currentTimeMillis();
 
         assertTrue(hasBeenRan.get(), "Expected poll operation to have been ran at least once.");
@@ -159,7 +160,7 @@ public class PollingWithTimeoutTests {
 
         long start = System.currentTimeMillis();
         PollResponse<TestResponse> pollResponse
-            = assertDoesNotThrow(() -> poller.waitUntil(HUNDRED_MILLIS, FIVE_SECONDS, SUCCESSFULLY_COMPLETED));
+            = assertDoesNotThrow(() -> poller.waitUntil(ONE_SECOND, FIVE_SECONDS, SUCCESSFULLY_COMPLETED));
         long end = System.currentTimeMillis();
 
         assertTrue(hasBeenRan.get(), "Expected poll operation to have been ran at least once.");
@@ -210,7 +211,7 @@ public class PollingWithTimeoutTests {
 
         long start = System.currentTimeMillis();
         RuntimeException exception
-            = assertThrows(RuntimeException.class, () -> poller.waitForCompletion(HUNDRED_MILLIS, FIVE_SECONDS));
+            = assertThrows(RuntimeException.class, () -> poller.waitForCompletion(ONE_SECOND, FIVE_SECONDS));
         long end = System.currentTimeMillis();
 
         assertTrue(hasBeenRan.get(), "Expected poll operation to have been ran at least once.");
@@ -286,7 +287,7 @@ public class PollingWithTimeoutTests {
 
         long start = System.currentTimeMillis();
         RuntimeException exception
-            = assertThrows(RuntimeException.class, () -> poller.waitForCompletion(HUNDRED_MILLIS, FIVE_SECONDS));
+            = assertThrows(RuntimeException.class, () -> poller.waitForCompletion(ONE_SECOND, FIVE_SECONDS));
         long end = System.currentTimeMillis();
 
         assertTrue(hasBeenRan.get(), "Expected poll operation to have been ran at least once.");
@@ -350,7 +351,7 @@ public class PollingWithTimeoutTests {
 
         long start = System.currentTimeMillis();
         PollResponse<TestResponse> pollResponse
-            = assertDoesNotThrow(() -> poller.waitUntil(HUNDRED_MILLIS, FIVE_SECONDS, SUCCESSFULLY_COMPLETED));
+            = assertDoesNotThrow(() -> poller.waitUntil(ONE_SECOND, FIVE_SECONDS, SUCCESSFULLY_COMPLETED));
         long end = System.currentTimeMillis();
 
         assertTrue(hasBeenRan.get(), "Expected poll operation to have been ran at least once.");
@@ -414,7 +415,7 @@ public class PollingWithTimeoutTests {
 
         long start = System.currentTimeMillis();
         RuntimeException exception
-            = assertThrows(RuntimeException.class, () -> poller.getFinalResult(HUNDRED_MILLIS, FIVE_SECONDS));
+            = assertThrows(RuntimeException.class, () -> poller.getFinalResult(ONE_SECOND, FIVE_SECONDS));
         long end = System.currentTimeMillis();
 
         assertTrue(hasBeenRan.get(), "Expected poll operation to have been ran at least once.");
