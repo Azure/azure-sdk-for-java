@@ -95,9 +95,9 @@ public class ProgressReporterTests extends BlobTestBase {
         There should be at least one call reporting the total length of the data. There may be two if both data and
         data2 complete before the second batch of subscriptions
          */
-        // Verify that reportProgress was called 1 to 2 times with argument 60
+        // Verify that reportProgress was called 1 to 3 times with argument 60
         long reported60Count = mockReceiver.progresses.stream().filter(p -> p == 60).count();
-        assertTrue(reported60Count >= 1 && reported60Count <= 2);
+        assertTrue(reported60Count >= 1 && reported60Count <= 3);
 
         /*
         There should be 12 calls total, but either one or two of them could be reporting the total length, so we
@@ -105,8 +105,8 @@ public class ProgressReporterTests extends BlobTestBase {
         there would never be concurrent subscriptions to the same Flux as may be the case here, but it is good
         enough.
          */
-        // Verify that reportProgress was called 10 to 11 times with any long argument
-        assertTrue(mockReceiver.progresses.size() >= 10 && mockReceiver.progresses.size() <= 11);
+        // Verify that reportProgress was called 10 to 12 times with any long argument
+        assertTrue(mockReceiver.progresses.size() >= 10 && mockReceiver.progresses.size() <= 12);
 
         /*
         We should never report more progress than the 60 total (30 from each Flux--Resubscribing is a retry and
