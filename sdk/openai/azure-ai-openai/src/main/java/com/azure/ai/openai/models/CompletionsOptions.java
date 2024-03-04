@@ -563,4 +563,33 @@ public final class CompletionsOptions {
         this.model = model;
         return this;
     }
+
+    /*
+     * The suffix that comes after a completion of inserted text
+     */
+    @Generated
+    @JsonProperty(value = "suffix")
+    private String suffix;
+
+    /**
+     * Get the suffix property: The suffix that comes after a completion of inserted text.
+     *
+     * @return the suffix value.
+     */
+    @Generated
+    public String getSuffix() {
+        return this.suffix;
+    }
+
+    /**
+     * Set the suffix property: The suffix that comes after a completion of inserted text.
+     *
+     * @param suffix the suffix value to set.
+     * @return the CompletionsOptions object itself.
+     */
+    @Generated
+    public CompletionsOptions setSuffix(String suffix) {
+        this.suffix = suffix;
+        return this;
+    }
 }
