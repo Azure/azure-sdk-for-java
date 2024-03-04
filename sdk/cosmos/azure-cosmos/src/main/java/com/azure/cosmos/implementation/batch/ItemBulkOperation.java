@@ -92,7 +92,9 @@ public final class ItemBulkOperation<TInternal, TContext> extends CosmosItemOper
                 jsonSerializable.set(
                     BatchRequestResponseConstants.FIELD_RESOURCE_BODY,
                     this.getItemInternal(),
-                    this.getRequestOptions().getEffectiveItemSerializer());
+                    this.getRequestOptions() != null
+                        ? this.getRequestOptions().getEffectiveItemSerializer()
+                        : CosmosItemSerializer.DEFAULT_SERIALIZER);
             }
         }
 
