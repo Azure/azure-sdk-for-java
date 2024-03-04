@@ -251,6 +251,11 @@ public class KubernetesClusterImpl
     }
 
     @Override
+    public ManagedClusterSku sku() {
+        return this.innerModel().sku();
+    }
+
+    @Override
     public String systemAssignedManagedServiceIdentityPrincipalId() {
         String objectId = null;
         if (this.innerModel().identityProfile() != null) {

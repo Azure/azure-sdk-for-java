@@ -96,6 +96,9 @@ public interface KubernetesCluster
     /** @return the power state */
     PowerState powerState();
 
+    /** @return the SKU of a Managed Cluster */
+    ManagedClusterSku sku();
+
     /**
      * @return the System Assigned Managed Service Identity specific Active Directory service principal ID
      *     assigned to the Kubernetes cluster.
@@ -190,26 +193,26 @@ public interface KubernetesCluster
         }
 
         /**
-         * The stage of the Kubernetes cluster definition allowing to specify AKS pricing tier.
+         * The stage of the Kubernetes cluster definition allowing to specify a tier for the managed cluster SKU.
          */
         interface WithPricingTier {
 
             /**
-             * Specifies the pricing tier  the Kubernetes cluster is free.
+             * Specifies the tier of the managed cluster SKU is free.
              *
              * @return the next stage of the definition
              */
             WithCreate withFreeTier();
 
             /**
-             * Specifies the pricing tier  the Kubernetes cluster is standard.
+             * Specifies the tier of the managed cluster SKU is standard.
              *
              * @return the next stage of the definition
              */
             WithCreate withStandardTier();
 
             /**
-             * Specifies the pricing tier  the Kubernetes cluster is premium.
+             * Specifies the tier of the managed cluster SKU is premium.
              *
              * @return the next stage of the definition
              */
@@ -760,26 +763,26 @@ public interface KubernetesCluster
         }
 
         /**
-         * The stage of the Kubernetes cluster definition allowing to specify AKS pricing tier.
+         * The stage of the Kubernetes cluster update allowing to specify a tier for the managed cluster SKU.
          */
         interface WithPricingTier {
 
             /**
-             * Specifies the pricing tier  the Kubernetes cluster is free.
+             * Specifies the tier of the managed cluster SKU is free.
              *
              * @return the next stage
              */
             Update withFreeTier();
 
             /**
-             * Specifies the pricing tier  the Kubernetes cluster is standard.
+             * Specifies the tier of the managed cluster SKU is standard.
              *
              * @return the next stage
              */
             Update withStandardTier();
 
             /**
-             * Specifies the pricing tier  the Kubernetes cluster is premium.
+             * Specifies the tier of the managed cluster SKU is premium.
              *
              * @return the next stage
              */
