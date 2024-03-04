@@ -987,14 +987,14 @@ public class ConsistencyTestsBase extends TestSuiteBase {
 
         Field fieldCollectionResourceIdToRegionScopedSessionTokens1 = RegionScopedSessionContainer.class.getDeclaredField("collectionResourceIdToRegionScopedSessionTokens");
         Field fieldCollectionNameToCollectionResourceId1 = RegionScopedSessionContainer.class.getDeclaredField("collectionNameToCollectionResourceId");
-        Field fieldPkRangeIdToRegionLevelProgress = PartitionKeyRangeIdToSessionTokens.class.getDeclaredField("partitionKeyRangeIdToSessionTokens");
+        Field fieldPkRangeIdToRegionLevelProgress = PartitionScopedRegionLevelProgress.class.getDeclaredField("partitionKeyRangeIdToSessionTokens");
 
         fieldCollectionResourceIdToRegionScopedSessionTokens1.setAccessible(true);
         fieldCollectionNameToCollectionResourceId1.setAccessible(true);
         fieldPkRangeIdToRegionLevelProgress.setAccessible(true);
 
-        ConcurrentHashMap<Long, PartitionKeyRangeIdToSessionTokens> collectionResourceIdToSessionTokens1 =
-            (ConcurrentHashMap<Long, PartitionKeyRangeIdToSessionTokens>) fieldCollectionResourceIdToRegionScopedSessionTokens1.get(regionScopedSessionContainer1);
+        ConcurrentHashMap<Long, PartitionScopedRegionLevelProgress> collectionResourceIdToSessionTokens1 =
+            (ConcurrentHashMap<Long, PartitionScopedRegionLevelProgress>) fieldCollectionResourceIdToRegionScopedSessionTokens1.get(regionScopedSessionContainer1);
         ConcurrentHashMap<String, Long> collectionNameToCollectionResourceId1 = (ConcurrentHashMap<String, Long>) fieldCollectionNameToCollectionResourceId1.get(regionScopedSessionContainer1);
 
 
@@ -1002,8 +1002,8 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         Field fieldCollectionNameToCollectionResourceId2 = RegionScopedSessionContainer.class.getDeclaredField("collectionNameToCollectionResourceId");
         fieldCollectionResourceIdToRegionScopedSessionTokens2.setAccessible(true);
         fieldCollectionNameToCollectionResourceId2.setAccessible(true);
-        ConcurrentHashMap<Long, PartitionKeyRangeIdToSessionTokens> collectionResourceIdToSessionTokens2 =
-            (ConcurrentHashMap<Long, PartitionKeyRangeIdToSessionTokens>) fieldCollectionResourceIdToRegionScopedSessionTokens2.get(regionScopedSessionContainer2);
+        ConcurrentHashMap<Long, PartitionScopedRegionLevelProgress> collectionResourceIdToSessionTokens2 =
+            (ConcurrentHashMap<Long, PartitionScopedRegionLevelProgress>) fieldCollectionResourceIdToRegionScopedSessionTokens2.get(regionScopedSessionContainer2);
         ConcurrentHashMap<String, Long> collectionNameToCollectionResourceId2 = (ConcurrentHashMap<String, Long>) fieldCollectionNameToCollectionResourceId2.get(regionScopedSessionContainer2);
 
         if (collectionResourceIdToSessionTokens1.size() != collectionResourceIdToSessionTokens2.size() ||
@@ -1013,19 +1013,19 @@ public class ConsistencyTestsBase extends TestSuiteBase {
 
         // get keys, and compare entries
         for (String collectionName : collectionNameToCollectionResourceId1.keySet()) {
-            PartitionKeyRangeIdToSessionTokens partitionKeyRangeIdToSessionTokens1 = collectionResourceIdToSessionTokens1.get(collectionNameToCollectionResourceId1.get(collectionName));
-            PartitionKeyRangeIdToSessionTokens partitionKeyRangeIdToSessionTokens2 = collectionResourceIdToSessionTokens2.get(collectionNameToCollectionResourceId1.get(collectionName));
+            PartitionScopedRegionLevelProgress partitionScopedRegionLevelProgress1 = collectionResourceIdToSessionTokens1.get(collectionNameToCollectionResourceId1.get(collectionName));
+            PartitionScopedRegionLevelProgress partitionScopedRegionLevelProgress2 = collectionResourceIdToSessionTokens2.get(collectionNameToCollectionResourceId1.get(collectionName));
 
-            ConcurrentHashMap<String, ConcurrentHashMap<String, PartitionKeyRangeIdToSessionTokens.RegionLevelProgress>> pkRangeIdToRegionLevelProgressMappings1 = (ConcurrentHashMap<String, ConcurrentHashMap<String, PartitionKeyRangeIdToSessionTokens.RegionLevelProgress>>) fieldPkRangeIdToRegionLevelProgress.get(partitionKeyRangeIdToSessionTokens1);
-            ConcurrentHashMap<String, ConcurrentHashMap<String, PartitionKeyRangeIdToSessionTokens.RegionLevelProgress>> pkRangeIdToRegionLevelProgressMappings2 = (ConcurrentHashMap<String, ConcurrentHashMap<String, PartitionKeyRangeIdToSessionTokens.RegionLevelProgress>>) fieldPkRangeIdToRegionLevelProgress.get(partitionKeyRangeIdToSessionTokens2);
+            ConcurrentHashMap<String, ConcurrentHashMap<String, PartitionScopedRegionLevelProgress.RegionLevelProgress>> pkRangeIdToRegionLevelProgressMappings1 = (ConcurrentHashMap<String, ConcurrentHashMap<String, PartitionScopedRegionLevelProgress.RegionLevelProgress>>) fieldPkRangeIdToRegionLevelProgress.get(partitionScopedRegionLevelProgress1);
+            ConcurrentHashMap<String, ConcurrentHashMap<String, PartitionScopedRegionLevelProgress.RegionLevelProgress>> pkRangeIdToRegionLevelProgressMappings2 = (ConcurrentHashMap<String, ConcurrentHashMap<String, PartitionScopedRegionLevelProgress.RegionLevelProgress>>) fieldPkRangeIdToRegionLevelProgress.get(partitionScopedRegionLevelProgress2);
 
             for (String pkRangeId : pkRangeIdToRegionLevelProgressMappings1.keySet()) {
-                ConcurrentHashMap<String, PartitionKeyRangeIdToSessionTokens.RegionLevelProgress> regionToProgressMappings1 = pkRangeIdToRegionLevelProgressMappings1.get(pkRangeId);
-                ConcurrentHashMap<String, PartitionKeyRangeIdToSessionTokens.RegionLevelProgress> regionToProgressMappings2 = pkRangeIdToRegionLevelProgressMappings2.get(pkRangeId);
+                ConcurrentHashMap<String, PartitionScopedRegionLevelProgress.RegionLevelProgress> regionToProgressMappings1 = pkRangeIdToRegionLevelProgressMappings1.get(pkRangeId);
+                ConcurrentHashMap<String, PartitionScopedRegionLevelProgress.RegionLevelProgress> regionToProgressMappings2 = pkRangeIdToRegionLevelProgressMappings2.get(pkRangeId);
 
                 for (String regionOrProgressScope : regionToProgressMappings1.keySet()) {
-                    PartitionKeyRangeIdToSessionTokens.RegionLevelProgress regionLevelProgress1 = regionToProgressMappings1.get(regionOrProgressScope);
-                    PartitionKeyRangeIdToSessionTokens.RegionLevelProgress regionLevelProgress2 = regionToProgressMappings2.get(regionOrProgressScope);
+                    PartitionScopedRegionLevelProgress.RegionLevelProgress regionLevelProgress1 = regionToProgressMappings1.get(regionOrProgressScope);
+                    PartitionScopedRegionLevelProgress.RegionLevelProgress regionLevelProgress2 = regionToProgressMappings2.get(regionOrProgressScope);
 
                     if (regionLevelProgress1 != null && regionLevelProgress2 == null
                         || regionLevelProgress1 == null && regionLevelProgress2 != null) {

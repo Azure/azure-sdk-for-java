@@ -16,18 +16,20 @@ import java.util.Objects;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
 
-public class PartitionKeyRangeIdToSessionTokens {
+public class PartitionScopedRegionLevelProgress {
 
-    private static final Logger logger = LoggerFactory.getLogger(PartitionKeyRangeIdToSessionTokens.class);
+    private static final Logger logger = LoggerFactory.getLogger(PartitionScopedRegionLevelProgress.class);
 
-    private final ConcurrentHashMap<String, ConcurrentHashMap<String, RegionLevelProgress>> partitionKeyRangeIdToSessionTokens;
+    private final ConcurrentHashMap<String, ConcurrentHashMap<String, RegionLevelProgress>> partitionKeyRangeIdToRegionLevelProgress;
 
-    public PartitionKeyRangeIdToSessionTokens() {
-        this.partitionKeyRangeIdToSessionTokens = new ConcurrentHashMap<>();
+    private final static String GlobalProgressKey = "global";
+
+    public PartitionScopedRegionLevelProgress() {
+        this.partitionKeyRangeIdToRegionLevelProgress = new ConcurrentHashMap<>();
     }
 
-    public ConcurrentHashMap<String, ConcurrentHashMap<String, RegionLevelProgress>> getPartitionKeyRangeIdToSessionTokens() {
-        return this.partitionKeyRangeIdToSessionTokens;
+    public ConcurrentHashMap<String, ConcurrentHashMap<String, RegionLevelProgress>> getPartitionKeyRangeIdToRegionLevelProgress() {
+        return this.partitionKeyRangeIdToRegionLevelProgress;
     }
 
     @Override
@@ -38,31 +40,31 @@ public class PartitionKeyRangeIdToSessionTokens {
         if (o == null || getClass() != o.getClass()) {
             return false;
         }
-        PartitionKeyRangeIdToSessionTokens that = (PartitionKeyRangeIdToSessionTokens) o;
-        return Objects.equals(this.partitionKeyRangeIdToSessionTokens, that.partitionKeyRangeIdToSessionTokens);
+        PartitionScopedRegionLevelProgress that = (PartitionScopedRegionLevelProgress) o;
+        return Objects.equals(this.partitionKeyRangeIdToRegionLevelProgress, that.partitionKeyRangeIdToRegionLevelProgress);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(partitionKeyRangeIdToSessionTokens);
+        return Objects.hash(partitionKeyRangeIdToRegionLevelProgress);
     }
 
     public void tryRecordSessionToken(ISessionToken parsedSessionToken, String partitionKeyRangeId, String firstEffectivePreferredReadableRegion, String regionRoutedTo) {
 
-        this.partitionKeyRangeIdToSessionTokens.compute(partitionKeyRangeId, (partitionKeyRangeIdAsKey, regionToSessionTokenAsVal) -> {
+        this.partitionKeyRangeIdToRegionLevelProgress.compute(partitionKeyRangeId, (partitionKeyRangeIdAsKey, regionLevelProgressAsVal) -> {
 
             try {
-                if (regionToSessionTokenAsVal == null) {
-                    regionToSessionTokenAsVal = new ConcurrentHashMap<>();
+                if (regionLevelProgressAsVal == null) {
+                    regionLevelProgressAsVal = new ConcurrentHashMap<>();
                 }
 
                 VectorSessionToken vectorSessionToken = (VectorSessionToken) parsedSessionToken;
 
-                // store the global representation of the session token
-                regionToSessionTokenAsVal.merge("global", new RegionLevelProgress(Long.MIN_VALUE, Long.MIN_VALUE, vectorSessionToken), (regionLevelProgressExisting, regionLevelPrgressNew) -> {
+                // store the max progress of the session token for a given physical partition
+                regionLevelProgressAsVal.merge(GlobalProgressKey, new RegionLevelProgress(Long.MIN_VALUE, Long.MIN_VALUE, vectorSessionToken), (regionLevelProgressExisting, regionLevelProgressNew) -> {
 
                     VectorSessionToken existingVectorSessionToken = regionLevelProgressExisting.vectorSessionToken;
-                    VectorSessionToken newVectorSessionToken = regionLevelPrgressNew.vectorSessionToken;
+                    VectorSessionToken newVectorSessionToken = regionLevelProgressNew.vectorSessionToken;
 
                     return new RegionLevelProgress(Long.MIN_VALUE, Long.MIN_VALUE, (VectorSessionToken) existingVectorSessionToken.merge(newVectorSessionToken));
                 });
@@ -79,38 +81,40 @@ public class PartitionKeyRangeIdToSessionTokens {
 
                     // regionId maps to a satellite region
                     if (localLsn != Long.MIN_VALUE) {
-                        regionToSessionTokenAsVal.put(normalizedRegionRoutedTo, new RegionLevelProgress(parsedSessionToken.getLSN(), localLsn, null));
+                        regionLevelProgressAsVal.put(normalizedRegionRoutedTo, new RegionLevelProgress(parsedSessionToken.getLSN(), localLsn, null));
                     }
                     // regionId maps to a hub region
                     else {
-                        regionToSessionTokenAsVal.put(normalizedRegionRoutedTo, new RegionLevelProgress(parsedSessionToken.getLSN(), Long.MIN_VALUE, null));
+                        regionLevelProgressAsVal.put(normalizedRegionRoutedTo, new RegionLevelProgress(parsedSessionToken.getLSN(), Long.MIN_VALUE, null));
                     }
 
                     // store the session token in parsed form if obtained from the firstEffectivePreferredReadableRegion
+                    // possibly overwrite
                     if (regionRoutedTo.equals(firstEffectivePreferredReadableRegion)) {
-                        regionToSessionTokenAsVal.put(normalizedRegionRoutedTo, new RegionLevelProgress(parsedSessionToken.getLSN(), localLsn, vectorSessionToken));
+                        regionLevelProgressAsVal.put(normalizedRegionRoutedTo, new RegionLevelProgress(parsedSessionToken.getLSN(), localLsn, vectorSessionToken));
                     }
                 }
 
-                return regionToSessionTokenAsVal;
+                return regionLevelProgressAsVal;
             } catch (CosmosException e) {
                 throw new IllegalStateException(e);
             }
         });
     }
 
-    // TODO: Some design considerations
-    // TODO: Format of session token can change to include GCN in the future
-    // TODO: Session token resolution could be encapsulated in "resolver" classes and the "resolver" classes could be injected here
     public ISessionToken tryResolveSessionToken(
         Set<String> lesserPreferredRegionsPkProbablyRequestedFrom,
         String partitionKeyRangeId,
         String firstEffectivePreferredReadableRegion,
         boolean canUseRegionScopedSessionTokens) {
 
-        RegionLevelProgress globalLevelProgress = resolvePartitionKeyRangeIdBasedProgress(partitionKeyRangeId, "global");
+        RegionLevelProgress globalLevelProgress = resolvePartitionKeyRangeIdBasedProgress(partitionKeyRangeId, GlobalProgressKey);
         VectorSessionToken globalSessionToken = globalLevelProgress.vectorSessionToken;
 
+        // if region level scoping is not allowed, then resolve to the global session token
+        // region level scoping is allowed in the following cases:
+        //      1. when the request is targeted to a specific logical partition
+        //      2. when multiple write locations are configured
         if (!canUseRegionScopedSessionTokens) {
             return globalSessionToken;
         }
@@ -133,7 +137,6 @@ public class PartitionKeyRangeIdToSessionTokens {
         for (Map.Entry<Integer, Long> localLsnByRegionEntry : localLsnByRegion.entrySet()) {
 
             int regionId = localLsnByRegionEntry.getKey();
-            long localLsnForRegionId = localLsnByRegionEntry.getValue();
             String normalizedRegionName = RegionNameToRegionIdMap.getRegionName(regionId);
 
             // the regionId to normalizedRegionName does not exist
@@ -144,20 +147,20 @@ public class PartitionKeyRangeIdToSessionTokens {
             if (lesserPreferredRegionsPkProbablyRequestedFrom.contains(normalizedRegionName)) {
                 RegionLevelProgress satelliteRegionProgress = this.resolvePartitionKeyRangeIdBasedProgress(partitionKeyRangeId, normalizedRegionName);
                 globalLsn = Math.max(globalLsn, satelliteRegionProgress.maxGlobalLsnSeen);
-                sbPartTwo.append("#");
+                sbPartTwo.append(VectorSessionToken.SegmentSeparator);
                 sbPartTwo.append(regionId);
-                sbPartTwo.append("=");
+                sbPartTwo.append(VectorSessionToken.RegionProgressSeparator);
                 sbPartTwo.append(satelliteRegionProgress.maxLocalLsnSeen);
             } else {
-                sbPartTwo.append("#");
+                sbPartTwo.append(VectorSessionToken.SegmentSeparator);
                 sbPartTwo.append(regionId);
-                sbPartTwo.append("=");
+                sbPartTwo.append(VectorSessionToken.RegionProgressSeparator);
                 sbPartTwo.append(-1);
             }
         }
 
         sbPartOne.append(version);
-        sbPartOne.append("#");
+        sbPartOne.append(VectorSessionToken.SegmentSeparator);
         sbPartOne.append(globalLsn);
 
         Utils.ValueHolder<ISessionToken> resolvedSessionToken = new Utils.ValueHolder<>(null);
@@ -171,11 +174,11 @@ public class PartitionKeyRangeIdToSessionTokens {
     }
 
     public boolean isPartitionKeyRangeIdPresent(String partitionKeyRangeId) {
-        return this.partitionKeyRangeIdToSessionTokens.containsKey(partitionKeyRangeId);
+        return this.partitionKeyRangeIdToRegionLevelProgress.containsKey(partitionKeyRangeId);
     }
 
     private RegionLevelProgress resolvePartitionKeyRangeIdBasedProgress(String partitionKeyRangeId, String progressScope) {
-        return this.partitionKeyRangeIdToSessionTokens.get(partitionKeyRangeId).get(progressScope);
+        return this.partitionKeyRangeIdToRegionLevelProgress.get(partitionKeyRangeId).get(progressScope);
     }
 
     static class RegionLevelProgress {

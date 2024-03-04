@@ -30,8 +30,8 @@ import static com.azure.cosmos.implementation.Utils.ValueHolder;
  */
 public class VectorSessionToken implements ISessionToken {
     private final static Logger logger = LoggerFactory.getLogger(VectorSessionToken.class);
-    private final static char SegmentSeparator = '#';
-    private final static char RegionProgressSeparator = '=';
+    public final static char SegmentSeparator = '#';
+    public final static char RegionProgressSeparator = '=';
 
     private final long version;
     private final long globalLsn;
