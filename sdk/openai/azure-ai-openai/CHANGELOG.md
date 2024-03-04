@@ -14,8 +14,6 @@
 
 ### Breaking Changes
 
-"On Your Data" changes:
-
 - Introduced a new type `AzureChatExtensionDataSourceResponseCitation` for a more structured representation of citation data.
 - Correspondingly, updated `AzureChatExtensionsMessageContext`:
   - Replaced `messages` with `citations` of type `AzureChatExtensionDataSourceResponseCitation`.
@@ -28,6 +26,8 @@
 - Made `embeddingDependency` as a required parameter in `AzureCosmosDBChatExtensionParameters` and `PineconeChatExtensionParameters` class, and removed setter method.
 - Removed `vectorFields` and `imageVectorFields` from `PineconeFieldMappingOptions` class, and made `contentField` as required parameter.
 - Hid `getAudioTranscriptionAsPlainTextWithResponse` and `getAudioTranslationAsPlainTextWithResponse` methods from `OpenAIClient` and `OpenAIAsyncClient` classes.
+- Made `ImageGeneration` constructor as private.
+- Made `ImageGenerationData` constructor as private and removed setter methods.
 
 ### Bugs Fixed
 
