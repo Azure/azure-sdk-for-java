@@ -119,7 +119,7 @@ public class ContainerApiTests extends BlobTestBase {
         cc.createWithResponse(metadata, null, null, null);
         Response<BlobContainerProperties> response = cc.getPropertiesWithResponse(null, null, null);
 
-        assertEquals(response.getValue().getMetadata(), metadata);
+        assertEquals(metadata, response.getValue().getMetadata());
     }
 
     private static Stream<Arguments> createMetadataSupplier() {
@@ -214,7 +214,7 @@ public class ContainerApiTests extends BlobTestBase {
         Response<Boolean> result = cc.createIfNotExistsWithResponse(options, null, null);
         Response<BlobContainerProperties> response = cc.getPropertiesWithResponse(null, null, null);
 
-        assertEquals(response.getValue().getMetadata(), metadata);
+        assertEquals(metadata, response.getValue().getMetadata());
         assertTrue(result.getValue());
     }
 

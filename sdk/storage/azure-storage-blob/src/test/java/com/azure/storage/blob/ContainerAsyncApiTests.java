@@ -118,7 +118,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
 
         ccAsync.createWithResponse(metadata, null).block();
         StepVerifier.create(ccAsync.getPropertiesWithResponse(null))
-            .assertNext(r -> assertEquals(r.getValue().getMetadata(), metadata))
+            .assertNext(r -> assertEquals(metadata, r.getValue().getMetadata()))
             .verifyComplete();
     }
 
@@ -222,7 +222,7 @@ public class ContainerAsyncApiTests extends BlobTestBase {
             .verifyComplete();
 
         StepVerifier.create(ccAsync.getPropertiesWithResponse(null))
-            .assertNext(r -> assertEquals(r.getValue().getMetadata(), metadata))
+            .assertNext(r -> assertEquals(metadata, r.getValue().getMetadata()))
             .verifyComplete();
     }
 
