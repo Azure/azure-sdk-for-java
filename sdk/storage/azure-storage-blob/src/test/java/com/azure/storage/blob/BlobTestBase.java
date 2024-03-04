@@ -171,12 +171,12 @@ public class BlobTestBase extends TestProxyTestBase {
         primaryBlobServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getPrimaryAccount());
         alternateBlobServiceClient = getServiceClient(ENVIRONMENT.getSecondaryAccount());
         alternateBlobServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getSecondaryAccount());
-//        premiumBlobServiceClient = getServiceClient(ENVIRONMENT.getPremiumAccount());
-//        premiumBlobServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getPremiumAccount());
-//        versionedBlobServiceClient = getServiceClient(ENVIRONMENT.getVersionedAccount());
-//        versionedBlobServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getVersionedAccount());
-//        softDeleteServiceClient = getServiceClient(ENVIRONMENT.getSoftDeleteAccount());
-//        softDeleteServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getSoftDeleteAccount());
+        premiumBlobServiceClient = getServiceClient(ENVIRONMENT.getPremiumAccount());
+        premiumBlobServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getPremiumAccount());
+        versionedBlobServiceClient = getServiceClient(ENVIRONMENT.getVersionedAccount());
+        versionedBlobServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getVersionedAccount());
+        softDeleteServiceClient = getServiceClient(ENVIRONMENT.getSoftDeleteAccount());
+        softDeleteServiceAsyncClient = getServiceAsyncClient(ENVIRONMENT.getSoftDeleteAccount());
 
         containerName = generateContainerName();
         cc = primaryBlobServiceClient.getBlobContainerClient(containerName);
