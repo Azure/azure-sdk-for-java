@@ -8,9 +8,10 @@ import com.azure.core.util.Configuration;
 import com.azure.identity.ClientSecretCredential;
 import com.azure.identity.ClientSecretCredentialBuilder;
 
-public final class ReadmeSamples {
-    public void readmeSamples() {
-        // BEGIN: com.azure.analytics.purview.datamap.readme
+public final class CreateTypeDefinitionClient {
+
+    public static void main(String[] args) {
+        // BEGIN:com.azure.analytics.purview.datama.createtypedefinitionclient
         ClientSecretCredential cred = new ClientSecretCredentialBuilder()
             .tenantId(Configuration.getGlobalConfiguration().get("TENANT_ID"))
             .authorityHost(Configuration.getGlobalConfiguration().get("AUTHORITY_HOST"))
@@ -20,6 +21,9 @@ public final class ReadmeSamples {
         DataMapClientBuilder clientBuilder = new DataMapClientBuilder()
             .endpoint(Configuration.getGlobalConfiguration().get("ENDPOINT"))
             .credential(cred);
-        // END: com.azure.analytics.purview.datamap.readme
+
+        TypeDefinitionClient typeDefinitionClient = typeDefinitionClientbuilder.buildTypeDefinitionClient();
+        AtlasEntityDef type = typeDefinitionClient.getEntityByName("AtlasGlossary");
+        // END:com.azure.analytics.purview.datama.createtypedefinitionclient
     }
 }
