@@ -17,12 +17,12 @@ import java.util.function.Function;
 public class HttpResponse<T> implements Response<T>, Closeable {
     protected static final BinaryData EMPTY_BODY = BinaryData.fromBytes(new byte[0]);
 
+    private final Function<Response<?>, ?> deserializationCallback;
     private final Headers headers;
     private final HttpRequest request;
     private final int statusCode;
 
     private BinaryData body;
-    private Function<BinaryData, Object> deserializationCallback;
     private T value;
 
     /**
@@ -38,6 +38,7 @@ public class HttpResponse<T> implements Response<T>, Closeable {
         this.statusCode = statusCode;
         this.headers = headers;
         this.value = value;
+        this.deserializationCallback = request == null ? null : request.getResponseDeserializationCallback();
     }
 
     /**
@@ -60,25 +61,8 @@ public class HttpResponse<T> implements Response<T>, Closeable {
         } else {
             this.value = (T) value;
         }
-    }
 
-    /**
-     * Creates an instance of {@link HttpResponse}.
-     *
-     * @param request The {@link HttpRequest} that resulted in this {@link HttpResponse}.
-     * @param statusCode The response status code.
-     * @param headers The response {@link Headers}.
-     * @param body A {@link BinaryData} holding the response's raw body.
-     * @param deserializationCallback A {@link Function} to handle the raw body's deserialization. This callback will
-     * be called the first time {@link #getValue()} is called.
-     */
-    public HttpResponse(HttpRequest request, int statusCode, Headers headers, BinaryData body,
-                        Function<BinaryData, Object> deserializationCallback) {
-        this.request = request;
-        this.statusCode = statusCode;
-        this.headers = headers;
-        this.body = body;
-        this.deserializationCallback = deserializationCallback;
+        this.deserializationCallback = request == null ? null : request.getResponseDeserializationCallback();
     }
 
     /**
@@ -124,15 +108,7 @@ public class HttpResponse<T> implements Response<T>, Closeable {
      */
     @SuppressWarnings("unchecked")
     public T getDecodedBody() {
-        T decodedBody = null;
-
-        if (value == null && body != null) {
-            decodedBody = (T) deserializationCallback.apply(body);
-        } else if (value instanceof BinaryData) {
-            decodedBody = (T) deserializationCallback.apply((BinaryData) value);
-        }
-
-        return decodedBody;
+        return (T) deserializationCallback.apply(this);
     }
 
     /**
@@ -162,10 +138,6 @@ public class HttpResponse<T> implements Response<T>, Closeable {
         }
 
         return body;
-    }
-
-    public void setDeserializationCallback(Function<BinaryData, Object> deserializationCallback) {
-        this.deserializationCallback = deserializationCallback;
     }
 
     /**

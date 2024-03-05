@@ -69,10 +69,16 @@ public class RestProxyImpl extends RestProxyBase {
             request.setBody(RestProxyUtils.validateLength(request));
         }
 
-        final HttpResponse<?> response = send(request);
+        if (request.getResponseDeserializationCallback() == null) {
+            request.setResponseDeserializationCallback((response) -> {
+                HttpResponse<?> httpResponse = (HttpResponse<?>) response;
+                byte[] bodyBytes = httpResponse.getBody().toBytes();
 
-        response.setDeserializationCallback((body) ->
-            decodeByteArray(body.toBytes(), response, serializer, methodParser));
+                return decodeByteArray(bodyBytes, httpResponse, serializer, methodParser);
+            });
+        }
+
+        final HttpResponse<?> response = send(request);
 
         try {
             return handleRestReturnType(response, methodParser, methodParser.getReturnType(), options, errorOptions);
