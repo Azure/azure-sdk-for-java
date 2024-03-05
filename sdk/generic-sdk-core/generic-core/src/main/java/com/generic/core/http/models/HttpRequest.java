@@ -248,7 +248,7 @@ public class HttpRequest {
      *
      * @return The {@link Function} that will handle the {@link Response} body's deserialization.
      */
-    public Function<Response<?>, ?> getResponseDeserializationCallback() {
+    public Function<Response<?>, ?> getResponseBodyDeserializationCallback() {
         return deserializationCallback;
     }
 
@@ -260,7 +260,7 @@ public class HttpRequest {
      *
      * @return The updated {@link HttpRequest}.
      */
-    public HttpRequest setResponseDeserializationCallback(Function<Response<?>, ?> deserializationCallback) {
+    public HttpRequest setResponsBodyDeserializationCallback(Function<Response<?>, ?> deserializationCallback) {
         this.deserializationCallback = deserializationCallback;
 
         return this;

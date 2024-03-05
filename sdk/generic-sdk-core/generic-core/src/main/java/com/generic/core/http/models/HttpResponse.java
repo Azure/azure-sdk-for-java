@@ -38,7 +38,9 @@ public class HttpResponse<T> implements Response<T>, Closeable {
         this.statusCode = statusCode;
         this.headers = headers;
         this.value = value;
-        this.deserializationCallback = request == null ? null : request.getResponseDeserializationCallback();
+        this.deserializationCallback = request == null
+            ? Response::getValue
+            : request.getResponseBodyDeserializationCallback();
     }
 
     /**
@@ -62,7 +64,9 @@ public class HttpResponse<T> implements Response<T>, Closeable {
             this.value = (T) value;
         }
 
-        this.deserializationCallback = request == null ? null : request.getResponseDeserializationCallback();
+        this.deserializationCallback = request == null
+            ? Response::getValue
+            : request.getResponseBodyDeserializationCallback();
     }
 
     /**

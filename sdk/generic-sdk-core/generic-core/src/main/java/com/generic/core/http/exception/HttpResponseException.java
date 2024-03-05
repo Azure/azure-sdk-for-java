@@ -37,9 +37,9 @@ public final class HttpResponseException extends RuntimeException {
                                  final Object value) {
         super(message);
 
-        this.value = value;
         this.response = response;
         this.type = type;
+        this.value = value;
     }
 
     /**
@@ -54,9 +54,9 @@ public final class HttpResponseException extends RuntimeException {
                                  final Throwable cause) {
         super(message, cause);
 
-        this.value = null;
         this.response = response;
         this.type = type;
+        this.value = null;
     }
 
     /**
@@ -75,9 +75,9 @@ public final class HttpResponseException extends RuntimeException {
                                  final boolean writableStackTrace) {
         super(message, cause, enableSuppression, writableStackTrace);
 
-        this.value = value;
         this.response = response;
         this.type = type;
+        this.value = value;
     }
 
     /**

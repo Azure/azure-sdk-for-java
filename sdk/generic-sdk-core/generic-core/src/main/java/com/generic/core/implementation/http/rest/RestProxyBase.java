@@ -30,7 +30,6 @@ import java.io.UncheckedIOException;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.net.URL;
-import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.EnumSet;
 import java.util.function.Consumer;
@@ -66,7 +65,6 @@ public abstract class RestProxyBase {
                                SwaggerMethodParser methodParser, Object[] args) {
         try {
             HttpRequest request = createHttpRequest(methodParser, serializer, args);
-
             Context context = methodParser.setContext(args);
             context = RestProxyUtils.mergeRequestOptionsContext(context, options);
 
@@ -90,28 +88,28 @@ public abstract class RestProxyBase {
                                        ObjectSerializer objectSerializer) throws IOException;
 
     @SuppressWarnings({"unchecked"})
-    public Response<?> createResponse(HttpResponse<?> decodedResponse, Type entityType, Object bodyAsObject) {
+    public Response<?> createResponse(HttpResponse<?> httpResponse, Type entityType, Object bodyAsObject) {
         final Class<? extends Response<?>> clazz = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
 
         // Inspection of the response type needs to be performed to determine the course of action: either cast the
-        // decoded response to Response or rely on reflection to create an appropriate Response subtype.
+        // HttpResponse to Response or rely on reflection to create an appropriate Response subtype.
         if (clazz.equals(Response.class)) {
-            if (decodedResponse.getValue() == null) {
-                decodedResponse.setDecodedBody(bodyAsObject);
+            if (httpResponse.getValue() == null) {
+                httpResponse.setDecodedBody(bodyAsObject);
             }
 
-            // Return the received decoded response cast to Response.
-            return clazz.cast(decodedResponse);
+            // Return the HttpResponse cast to Response.
+            return clazz.cast(httpResponse);
         } else {
             // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response
             // subtype.
             //
             // Ideally, in the future the SDKs won't need to dabble in reflection here as the Response subtypes should
-            // be given a way to register their constructor as a callback method that consumes HttpDecodedResponse and
-            // the body as an Object.
+            // be given a way to register their constructor as a callback method that consumes HttpResponse and the
+            // body as an Object.
             ReflectiveInvoker constructorReflectiveInvoker = RESPONSE_CONSTRUCTORS_CACHE.get(clazz);
 
-            return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorReflectiveInvoker, decodedResponse, bodyAsObject);
+            return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorReflectiveInvoker, httpResponse, bodyAsObject);
         }
     }
 
@@ -234,15 +232,15 @@ public abstract class RestProxyBase {
      *
      * @param unexpectedExceptionInformation The unexpected exception details.
      * @param httpResponse The {@link HttpResponse} to parse when constructing the exception.
-     * @param responseContent The response body to use when constructing the exception.
-     * @param responseDecodedContent The decoded response content to use when constructing the exception.
+     * @param responseBody The response body to use when constructing the exception.
+     * @param responseDecodedBody The decoded response body to use when constructing the exception.
      *
      * @return The {@link HttpResponseException} created from the provided details.
      */
     public static HttpResponseException instantiateUnexpectedException(UnexpectedExceptionInformation unexpectedExceptionInformation,
                                                                        HttpResponse<?> httpResponse,
-                                                                       byte[] responseContent,
-                                                                       Object responseDecodedContent) {
+                                                                       byte[] responseBody,
+                                                                       Object responseDecodedBody) {
         StringBuilder exceptionMessage = new StringBuilder("Status code ")
             .append(httpResponse.getStatusCode())
             .append(", ");
@@ -253,27 +251,27 @@ public abstract class RestProxyBase {
             String contentLength = httpResponse.getHeaders().getValue(HeaderName.CONTENT_LENGTH);
 
             exceptionMessage.append("(").append(contentLength).append("-byte body)");
-        } else if (responseContent == null || responseContent.length == 0) {
+        } else if (responseBody == null || responseBody.length == 0) {
             exceptionMessage.append("(empty body)");
         } else {
-            exceptionMessage.append('\"').append(new String(responseContent, StandardCharsets.UTF_8)).append('\"');
+            exceptionMessage.append('\"').append(new String(responseBody, StandardCharsets.UTF_8)).append('\"');
         }
 
-        // If the decoded response content is on of these exception types there was a failure in creating the actual
+        // If the decoded response body is on of these exception types there was a failure in creating the actual
         // exception body type. In this case return an HttpResponseException to maintain the exception having a
         // reference to the HttpResponse and information about what caused the deserialization failure.
-        if (responseDecodedContent instanceof IOException
-            || responseDecodedContent instanceof MalformedValueException
-            || responseDecodedContent instanceof IllegalStateException) {
+        if (responseDecodedBody instanceof IOException
+            || responseDecodedBody instanceof MalformedValueException
+            || responseDecodedBody instanceof IllegalStateException) {
 
             return new HttpResponseException(exceptionMessage.toString(), httpResponse, null,
-                (Throwable) responseDecodedContent);
+                (Throwable) responseDecodedBody);
         }
 
         HttpExceptionType exceptionType = unexpectedExceptionInformation.getExceptionType();
 
         return new HttpResponseException(exceptionMessage.toString(), httpResponse, exceptionType,
-            responseDecodedContent);
+            responseDecodedBody);
     }
 
     /**
@@ -285,18 +283,5 @@ public abstract class RestProxyBase {
      */
     static boolean supportsJsonSerializable(Class<?> bodyContentClass) {
         return ReflectionSerializable.supportsJsonSerializable(bodyContentClass);
-    }
-
-    /**
-     * Serializes the {@code jsonSerializable} as an instance of {@link JsonSerializable}.
-     *
-     * @param jsonSerializable The {@link JsonSerializable} body content.
-     *
-     * @return The {@link ByteBuffer} representing the serialized {@code jsonSerializable}.
-     *
-     * @throws IOException If an error occurs during serialization.
-     */
-    static ByteBuffer serializeAsJsonSerializable(JsonSerializable<?> jsonSerializable) throws IOException {
-        return ReflectionSerializable.serializeJsonSerializableToByteBuffer(jsonSerializable);
     }
 }
