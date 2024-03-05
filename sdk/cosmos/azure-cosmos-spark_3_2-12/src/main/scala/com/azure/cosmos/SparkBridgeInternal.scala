@@ -98,8 +98,8 @@ private[cosmos] object SparkBridgeInternal {
       .resolveByNameAsync(null, container.getLinkWithoutTrailingSlash, null)
       .block()
 
-    if (documentCollectionHolder.v != null) {
-      containerPropertiesAccessor.create(documentCollectionHolder.v)
+    if (documentCollectionHolder != null) {
+      containerPropertiesAccessor.create(documentCollectionHolder)
     } else {
       container.read().block().getProperties
     }
