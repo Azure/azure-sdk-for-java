@@ -10,7 +10,6 @@
 - Added a property, `valueSelectionGroup` to `DocumentField` model.
 
 ### Breaking Changes
-### Breaking Changes
 - The Azure Document Intelligence Client Library, now targets the Azure AI Document Intelligence service API version `"2024-02-29-preview"`.
 Please note that support for `2023-10-31-preview` has been discontinued.
 
