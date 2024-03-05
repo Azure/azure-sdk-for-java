@@ -1,14 +1,13 @@
 ## Release History
 
-### 4.29.0-beta.1 (Unreleased)
-
-#### Features Added
-
-#### Breaking Changes
-
-#### Bugs Fixed
+### 4.28.2 (2024-03-05)
 
 #### Other Changes
+* Reduced the number of `GET Collection` requests - especially when using Spark streaming with many, short-lived micro batches. - See [PR 39076](https://github.com/Azure/azure-sdk-for-java/pull/39076)
+
+### 4.28.1 (2024-03-01)
+#### Bugs Fixed
+* Fixed the UserAgent suffix when using a client retrieved via UDF `CosmosAsyncClientCache.getCosmosClientFuncFromCache` on an executor. - See [PR 39045](https://github.com/Azure/azure-sdk-for-java/pull/39045)
 
 ### 4.28.0 (2024-02-26)
 

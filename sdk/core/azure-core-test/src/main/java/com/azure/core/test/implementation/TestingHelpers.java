@@ -8,6 +8,9 @@ import com.azure.core.test.TestMode;
 import com.azure.core.util.Configuration;
 import com.azure.core.util.logging.ClientLogger;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Locale;
 
 /**
@@ -40,5 +43,21 @@ public final class TestingHelpers {
 
         LOGGER.info("Environment variable '{}' has not been set yet. Using 'Playback' mode.", AZURE_TEST_MODE);
         return TestMode.PLAYBACK;
+    }
+
+    /**
+     * Copies the data from the input stream to the output stream.
+     *
+     * @param source The input stream to copy from.
+     * @param destination The output stream to copy to.
+     * @throws IOException If an I/O error occurs.
+     */
+    public static void copy(InputStream source, OutputStream destination) throws IOException {
+        byte[] buffer = new byte[8192];
+        int read;
+
+        while ((read = source.read(buffer, 0, buffer.length)) != -1) {
+            destination.write(buffer, 0, read);
+        }
     }
 }
