@@ -130,6 +130,13 @@ public class Configs {
         "COSMOS.DEFAULT_SESSION_TOKEN_MISMATCH_IN_REGION-RETRY_TIME_IN_MILLISECONDS";
     private static final int DEFAULT_MIN_IN_REGION_RETRY_TIME_FOR_WRITES_MS = 500;
 
+    // RegionScopedSessionContainer related constants
+    private static final String DEFAULT_PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT_NAME = "COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT";
+    private static final int DEFAULT_PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT = 5_000_000;
+    private static final String DEFAULT_PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE_NAME = "COSMOS.PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE";
+    private static final double DEFAULT_PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE = 0.001;
+
+
     // Whether to process the response on a different thread
     private static final String SWITCH_OFF_IO_THREAD_FOR_RESPONSE_NAME = "COSMOS.SWITCH_OFF_IO_THREAD_FOR_RESPONSE";
     private static final boolean DEFAULT_SWITCH_OFF_IO_THREAD_FOR_RESPONSE = false;
@@ -430,6 +437,14 @@ public class Configs {
         }
     }
 
+    private static double getDoubleValue(String val, double defaultValue) {
+        if (StringUtils.isEmpty(val)) {
+            return defaultValue;
+        } else {
+            return Double.valueOf(val);
+        }
+    }
+
     private static boolean getBooleanValue(String val, boolean defaultValue) {
         if (StringUtils.isEmpty(val)) {
             return defaultValue;
@@ -500,5 +515,13 @@ public class Configs {
 
     public static boolean isRegionScopedSessionTokenCapturingEnabled() {
         return getBooleanValue(System.getProperty(IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED), DEFAULT_IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED);
+    }
+
+    public static int getPkBasedBloomFilterExpectedInsertionCount() {
+        return getIntValue(System.getProperty(DEFAULT_PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT_NAME), DEFAULT_PK_BASED_BLOOM_FILTER_EXPECTED_INSERTION_COUNT);
+    }
+
+    public static double getPkBasedBloomFilterExpectedFfpRate() {
+        return getDoubleValue(System.getProperty(DEFAULT_PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE_NAME), DEFAULT_PK_BASED_BLOOM_FILTER_EXPECTED_FFP_RATE);
     }
 }

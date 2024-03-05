@@ -21,8 +21,8 @@ import java.util.concurrent.atomic.AtomicBoolean;
 
 public class PartitionKeyBasedBloomFilter {
 
-    private static final int EXPECTED_INSERTIONS = 5_000_000;
-    private static final double ALLOWED_FALSE_POSITIVE_RATE = 0.001;
+    private static final int EXPECTED_INSERTIONS = Configs.getPkBasedBloomFilterExpectedInsertionCount();
+    private static final double ALLOWED_FALSE_POSITIVE_RATE = Configs.getPkBasedBloomFilterExpectedFfpRate();
     private BloomFilter<PartitionKeyBasedBloomFilterType> pkBasedBloomFilter;
     private final Set<String> recordedRegions;
     private final AtomicBoolean isBloomFilterInitialized;
