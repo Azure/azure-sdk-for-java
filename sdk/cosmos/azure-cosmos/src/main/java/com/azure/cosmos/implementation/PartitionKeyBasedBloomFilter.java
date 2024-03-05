@@ -43,12 +43,6 @@ public class PartitionKeyBasedBloomFilter {
         this.pkBasedBloomFilter = BloomFilter.create(this.funnel, EXPECTED_INSERTIONS, ALLOWED_FALSE_POSITIVE_RATE);
     }
 
-//    public void tryInitializeBloomFilter() {
-//        if (this.isBloomFilterInitialized.compareAndSet(false, true)) {
-//            this.pkBasedBloomFilter = BloomFilter.create(this.funnel, EXPECTED_INSERTIONS, ALLOWED_FALSE_POSITIVE_RATE);
-//        }
-//    }
-
     public void tryRecordPartitionKey(
         Long collectionRid,
         String firstPreferredWritableRegion,
