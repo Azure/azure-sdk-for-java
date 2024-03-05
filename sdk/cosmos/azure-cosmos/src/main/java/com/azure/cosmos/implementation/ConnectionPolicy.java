@@ -29,7 +29,6 @@ public final class ConnectionPolicy {
     private boolean multipleWriteRegionsEnabled;
     private List<String> preferredRegions;
     private Supplier<CosmosExcludedRegions> excludedRegionsSupplier;
-
     private boolean readRequestsFallbackEnabled;
     private ThrottlingRetryOptions throttlingRetryOptions;
     private String userAgentSuffix;
