@@ -5,9 +5,7 @@ package com.azure.cosmos.implementation.routing;
 
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
 
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 
 public class RegionNameToRegionIdMap {
     private static final Map<String, Integer> regionNameToRegionIdMappings = new HashMap<String, Integer>() {

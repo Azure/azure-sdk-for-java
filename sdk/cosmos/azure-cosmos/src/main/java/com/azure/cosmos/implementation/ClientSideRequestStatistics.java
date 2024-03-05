@@ -25,10 +25,12 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ConcurrentLinkedDeque;
 import java.util.stream.Collectors;
 
@@ -54,7 +56,6 @@ public class ClientSideRequestStatistics {
     private SerializationDiagnosticsContext serializationDiagnosticsContext;
     private int requestPayloadSizeInBytes = 0;
     private final String userAgent;
-
     private double samplingRateSnapshot = 1;
 
     public ClientSideRequestStatistics(DiagnosticsClientContext diagnosticsClientContext) {
@@ -206,7 +207,10 @@ public class ClientSideRequestStatistics {
             this.recordRetryContextEndTime();
 
             if (locationEndPoint != null) {
-                this.regionsContacted.add(globalEndpointManager.getRegionName(locationEndPoint, rxDocumentServiceRequest.getOperationType()));
+
+                String regionContactedInner = globalEndpointManager.getRegionName(locationEndPoint, rxDocumentServiceRequest.getOperationType());
+
+                this.regionsContacted.add(regionContactedInner);
                 this.locationEndpointsContacted.add(locationEndPoint);
             }
 
