@@ -3,6 +3,9 @@
 
 package com.azure.communication.jobrouter.models;
 
+import com.azure.core.annotation.Generated;
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 import java.util.List;
 import java.util.Map;
 
@@ -48,6 +51,11 @@ public final class CreateWorkerOptions {
      * A flag indicating this worker is open to receive offers or not.
      */
     private Boolean availableForOffers;
+
+    /*
+     * If this is set, the worker will only receive up to this many new offers at a time.
+     */
+    private Integer maxConcurrentOffers;
 
     /**
      * Constructor for CreateWorkerOptions.
@@ -117,6 +125,18 @@ public final class CreateWorkerOptions {
     }
 
     /**
+     * Set the maxConcurrentOffers property: If this is set, the worker will only receive up to this many new offers at
+     * a time.
+     *
+     * @param maxConcurrentOffers the maxConcurrentOffers value to set.
+     * @return this
+     */
+    public CreateWorkerOptions setMaxConcurrentOffers(Integer maxConcurrentOffers) {
+        this.maxConcurrentOffers = maxConcurrentOffers;
+        return this;
+    }
+
+    /**
      * Returns id.
      * @return id
      */
@@ -170,5 +190,15 @@ public final class CreateWorkerOptions {
      */
     public Boolean isAvailableForOffers() {
         return this.availableForOffers;
+    }
+
+    /**
+     * Get the maxConcurrentOffers property: If this is set, the worker will only receive up to this many new offers at
+     * a time.
+     *
+     * @return the maxConcurrentOffers value.
+     */
+    public Integer getMaxConcurrentOffers() {
+        return this.maxConcurrentOffers;
     }
 }
