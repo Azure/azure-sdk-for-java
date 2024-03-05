@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.2 (2024-03-07)
+## 1.0.0-beta.2 (2024-03-06)
 
 ### Features Added
 - Support `retry-header` in `DocumentIntelligenceAdministrationClient` and `DocumentIntelligenceClient` for retrying failed polling operations.
