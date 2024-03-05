@@ -3,7 +3,7 @@
 ### 4.28.2 (2024-03-05)
 
 #### Other Changes
-* Reduced the number of `GET Collection` requests - especially when using Spark streaming with many, hort-lived micro batches. - See [PR 39076](https://github.com/Azure/azure-sdk-for-java/pull/39076)
+* Reduced the number of `GET Collection` requests - especially when using Spark streaming with many, short-lived micro batches. - See [PR 39076](https://github.com/Azure/azure-sdk-for-java/pull/39076)
 
 ### 4.28.1 (2024-03-01)
 #### Bugs Fixed
