@@ -3,9 +3,6 @@
 
 package com.azure.communication.jobrouter.models;
 
-import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
-
 import java.util.List;
 import java.util.Map;
 
