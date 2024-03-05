@@ -446,21 +446,25 @@ public class KubernetesClusterImpl
     }
 
     @Override
-    public KubernetesClusterImpl withFreeTier() {
+    public KubernetesClusterImpl withFreeSku() {
+        if (!this.isInCreateMode() && ManagedClusterSkuTier.PREMIUM.equals(this.innerModel().sku().tier())) {
+            this.innerModel().withSupportPlan(KubernetesSupportPlan.KUBERNETES_OFFICIAL);
+        }
         this.innerModel().withSku(new ManagedClusterSku().withTier(ManagedClusterSkuTier.FREE).withName(ManagedClusterSkuName.BASE));
-        this.innerModel().withSupportPlan(KubernetesSupportPlan.KUBERNETES_OFFICIAL);
         return this;
     }
 
     @Override
-    public KubernetesClusterImpl withStandardTier() {
+    public KubernetesClusterImpl withStandardSku() {
+        if (!this.isInCreateMode() && ManagedClusterSkuTier.PREMIUM.equals(this.innerModel().sku().tier())) {
+            this.innerModel().withSupportPlan(KubernetesSupportPlan.KUBERNETES_OFFICIAL);
+        }
         this.innerModel().withSku(new ManagedClusterSku().withTier(ManagedClusterSkuTier.STANDARD).withName(ManagedClusterSkuName.BASE));
-        this.innerModel().withSupportPlan(KubernetesSupportPlan.KUBERNETES_OFFICIAL);
         return this;
     }
 
     @Override
-    public KubernetesClusterImpl withPremiumTier() {
+    public KubernetesClusterImpl withPremiumSku() {
         this.innerModel().withSku(new ManagedClusterSku().withTier(ManagedClusterSkuTier.PREMIUM).withName(ManagedClusterSkuName.BASE));
         this.innerModel().withSupportPlan(KubernetesSupportPlan.AKSLONG_TERM_SUPPORT);
         return this;

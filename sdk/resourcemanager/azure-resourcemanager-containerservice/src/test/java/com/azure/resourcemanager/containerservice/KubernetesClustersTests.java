@@ -533,7 +533,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
     }
 
     @Test
-    public void testUpdateVersion() {
+    public void testUpdateVersionFromDefaultToSpecified() {
         KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
             .define(generateRandomResourceName("aks", 15))
             .withRegion(Region.US_EAST)
@@ -579,8 +579,8 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .withDnsPrefix(generateRandomResourceName("dns", 15))
             .create();
         kubernetesCluster.refresh();
-        kubernetesCluster.update().withFreeTier().apply();
-        Assertions.assertEquals(ManagedClusterSkuTier.FREE, kubernetesCluster.innerModel().sku().tier());
+        kubernetesCluster.update().withFreeSku().apply();
+        Assertions.assertEquals(ManagedClusterSkuTier.FREE, kubernetesCluster.sku().tier());
     }
 
     @Test
@@ -603,8 +603,8 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .withDnsPrefix(generateRandomResourceName("dns", 15))
             .create();
         kubernetesCluster.refresh();
-        kubernetesCluster.update().withStandardTier().apply();
-        Assertions.assertEquals(ManagedClusterSkuTier.STANDARD, kubernetesCluster.innerModel().sku().tier());
+        kubernetesCluster.update().withStandardSku().apply();
+        Assertions.assertEquals(ManagedClusterSkuTier.STANDARD, kubernetesCluster.sku().tier());
     }
 
     @Test
@@ -627,8 +627,8 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .withDnsPrefix(generateRandomResourceName("dns", 15))
             .create();
         kubernetesCluster.refresh();
-        kubernetesCluster.update().withPremiumTier().apply();
-        Assertions.assertEquals(ManagedClusterSkuTier.PREMIUM, kubernetesCluster.innerModel().sku().tier());
+        kubernetesCluster.update().withPremiumSku().apply();
+        Assertions.assertEquals(ManagedClusterSkuTier.PREMIUM, kubernetesCluster.sku().tier());
     }
 
     @Test
@@ -649,14 +649,14 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .withAgentPoolMode(AgentPoolMode.SYSTEM)
             .attach()
             .withDnsPrefix(generateRandomResourceName("dns", 15))
-            .withFreeTier()
+            .withFreeSku()
             .create();
         kubernetesCluster.refresh();
-        Assertions.assertEquals(ManagedClusterSkuTier.FREE, kubernetesCluster.innerModel().sku().tier());
+        Assertions.assertEquals(ManagedClusterSkuTier.FREE, kubernetesCluster.sku().tier());
 
-        kubernetesCluster.update().withStandardTier().apply();
+        kubernetesCluster.update().withStandardSku().apply();
         kubernetesCluster.refresh();
-        Assertions.assertEquals(ManagedClusterSkuTier.STANDARD, kubernetesCluster.innerModel().sku().tier());
+        Assertions.assertEquals(ManagedClusterSkuTier.STANDARD, kubernetesCluster.sku().tier());
     }
 
     @Test
@@ -677,14 +677,14 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .withAgentPoolMode(AgentPoolMode.SYSTEM)
             .attach()
             .withDnsPrefix(generateRandomResourceName("dns", 15))
-            .withStandardTier()
+            .withStandardSku()
             .create();
         kubernetesCluster.refresh();
-        Assertions.assertEquals(ManagedClusterSkuTier.STANDARD, kubernetesCluster.innerModel().sku().tier());
+        Assertions.assertEquals(ManagedClusterSkuTier.STANDARD, kubernetesCluster.sku().tier());
 
-        kubernetesCluster.update().withFreeTier().apply();
+        kubernetesCluster.update().withFreeSku().apply();
         kubernetesCluster.refresh();
-        Assertions.assertEquals(ManagedClusterSkuTier.FREE, kubernetesCluster.innerModel().sku().tier());
+        Assertions.assertEquals(ManagedClusterSkuTier.FREE, kubernetesCluster.sku().tier());
     }
 
     @Test
@@ -705,14 +705,14 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .withAgentPoolMode(AgentPoolMode.SYSTEM)
             .attach()
             .withDnsPrefix(generateRandomResourceName("dns", 15))
-            .withFreeTier()
+            .withFreeSku()
             .create();
         kubernetesCluster.refresh();
-        Assertions.assertEquals(ManagedClusterSkuTier.FREE, kubernetesCluster.innerModel().sku().tier());
+        Assertions.assertEquals(ManagedClusterSkuTier.FREE, kubernetesCluster.sku().tier());
 
-        kubernetesCluster.update().withPremiumTier().apply();
+        kubernetesCluster.update().withPremiumSku().apply();
         kubernetesCluster.refresh();
-        Assertions.assertEquals(ManagedClusterSkuTier.PREMIUM, kubernetesCluster.innerModel().sku().tier());
+        Assertions.assertEquals(ManagedClusterSkuTier.PREMIUM, kubernetesCluster.sku().tier());
     }
 
     @Test
@@ -733,14 +733,14 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .withAgentPoolMode(AgentPoolMode.SYSTEM)
             .attach()
             .withDnsPrefix(generateRandomResourceName("dns", 15))
-            .withPremiumTier()
+            .withPremiumSku()
             .create();
         kubernetesCluster.refresh();
-        Assertions.assertEquals(ManagedClusterSkuTier.PREMIUM, kubernetesCluster.innerModel().sku().tier());
+        Assertions.assertEquals(ManagedClusterSkuTier.PREMIUM, kubernetesCluster.sku().tier());
 
-        kubernetesCluster.update().withFreeTier().apply();
+        kubernetesCluster.update().withFreeSku().apply();
         kubernetesCluster.refresh();
-        Assertions.assertEquals(ManagedClusterSkuTier.FREE, kubernetesCluster.innerModel().sku().tier());
+        Assertions.assertEquals(ManagedClusterSkuTier.FREE, kubernetesCluster.sku().tier());
     }
 
     @Test
@@ -761,14 +761,14 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .withAgentPoolMode(AgentPoolMode.SYSTEM)
             .attach()
             .withDnsPrefix(generateRandomResourceName("dns", 15))
-            .withStandardTier()
+            .withStandardSku()
             .create();
         kubernetesCluster.refresh();
-        Assertions.assertEquals(ManagedClusterSkuTier.STANDARD, kubernetesCluster.innerModel().sku().tier());
+        Assertions.assertEquals(ManagedClusterSkuTier.STANDARD, kubernetesCluster.sku().tier());
 
-        kubernetesCluster.update().withPremiumTier().apply();
+        kubernetesCluster.update().withPremiumSku().apply();
         kubernetesCluster.refresh();
-        Assertions.assertEquals(ManagedClusterSkuTier.PREMIUM, kubernetesCluster.innerModel().sku().tier());
+        Assertions.assertEquals(ManagedClusterSkuTier.PREMIUM, kubernetesCluster.sku().tier());
     }
 
     @Test
@@ -789,13 +789,13 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .withAgentPoolMode(AgentPoolMode.SYSTEM)
             .attach()
             .withDnsPrefix(generateRandomResourceName("dns", 15))
-            .withPremiumTier()
+            .withPremiumSku()
             .create();
         kubernetesCluster.refresh();
-        Assertions.assertEquals(ManagedClusterSkuTier.PREMIUM, kubernetesCluster.innerModel().sku().tier());
+        Assertions.assertEquals(ManagedClusterSkuTier.PREMIUM, kubernetesCluster.sku().tier());
 
-        kubernetesCluster.update().withStandardTier().apply();
+        kubernetesCluster.update().withStandardSku().apply();
         kubernetesCluster.refresh();
-        Assertions.assertEquals(ManagedClusterSkuTier.STANDARD, kubernetesCluster.innerModel().sku().tier());
+        Assertions.assertEquals(ManagedClusterSkuTier.STANDARD, kubernetesCluster.sku().tier());
     }
 }

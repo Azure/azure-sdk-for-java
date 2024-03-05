@@ -174,7 +174,7 @@ public interface KubernetesCluster
             DefinitionStages.WithAgentPool,
             DefinitionStages.WithNetworkProfile,
             DefinitionStages.WithAddOnProfiles,
-            DefinitionStages.WithPricingTier,
+            DefinitionStages.WithManagedClusterSku,
             KubernetesCluster.DefinitionStages.WithCreate {
     }
 
@@ -193,30 +193,33 @@ public interface KubernetesCluster
         }
 
         /**
-         * The stage of the Kubernetes cluster definition allowing to specify a tier for the managed cluster SKU.
+         * The stage of the Kubernetes cluster definition allowing to specify the managed cluster SKU.
+         * Enabling and disabling LTS is a combination of moving your cluster to the Premium tier,
+         * as well as enabling long-term support. Both must either be turned on or off.
+         * Refer to: https://learn.microsoft.com/en-us/azure/aks/long-term-support#aks-support-types
          */
-        interface WithPricingTier {
+        interface WithManagedClusterSku {
 
             /**
-             * Specifies the tier of the managed cluster SKU is free.
+             * Specifies the managed cluster SKU is free.
              *
              * @return the next stage of the definition
              */
-            WithCreate withFreeTier();
+            WithCreate withFreeSku();
 
             /**
-             * Specifies the tier of the managed cluster SKU is standard.
+             * Specifies the managed cluster SKU is standard.
              *
              * @return the next stage of the definition
              */
-            WithCreate withStandardTier();
+            WithCreate withStandardSku();
 
             /**
-             * Specifies the tier of the managed cluster SKU is premium.
+             * Specifies the managed cluster SKU is premium.
              *
              * @return the next stage of the definition
              */
-            WithCreate withPremiumTier();
+            WithCreate withPremiumSku();
         }
 
         /**
@@ -612,7 +615,7 @@ public interface KubernetesCluster
                 WithLocalAccounts,
                 WithDiskEncryption,
                 WithAgentPoolResourceGroup,
-                WithPricingTier,
+                WithManagedClusterSku,
                 Resource.DefinitionWithTags<WithCreate> {
         }
     }
@@ -627,7 +630,7 @@ public interface KubernetesCluster
             UpdateStages.WithAAD,
             UpdateStages.WithLocalAccounts,
             UpdateStages.WithVersion,
-            UpdateStages.WithPricingTier,
+            UpdateStages.WithManagedClusterSku,
             Resource.UpdateWithTags<KubernetesCluster.Update>,
             Appliable<KubernetesCluster> {
     }
@@ -763,30 +766,33 @@ public interface KubernetesCluster
         }
 
         /**
-         * The stage of the Kubernetes cluster update allowing to specify a tier for the managed cluster SKU.
+         * The stage of the Kubernetes cluster update allowing to specify the managed cluster SKU.
+         * Enabling and disabling LTS is a combination of moving your cluster to the Premium tier,
+         * as well as enabling long-term support. Both must either be turned on or off.
+         * Refer to: https://learn.microsoft.com/en-us/azure/aks/long-term-support#enable-lts-on-an-existing-cluster
          */
-        interface WithPricingTier {
+        interface WithManagedClusterSku {
 
             /**
-             * Specifies the tier of the managed cluster SKU is free.
+             * Specifies the managed cluster SKU is free.
              *
              * @return the next stage
              */
-            Update withFreeTier();
+            Update withFreeSku();
 
             /**
-             * Specifies the tier of the managed cluster SKU is standard.
+             * Specifies the managed cluster SKU is standard.
              *
              * @return the next stage
              */
-            Update withStandardTier();
+            Update withStandardSku();
 
             /**
-             * Specifies the tier of the managed cluster SKU is premium.
+             * Specifies the managed cluster SKU is premium.
              *
              * @return the next stage
              */
-            Update withPremiumTier();
+            Update withPremiumSku();
         }
 
         /**
@@ -801,13 +807,6 @@ public interface KubernetesCluster
              * @return the next stage
              */
             Update withVersion(String kubernetesVersion);
-
-            /**
-             * Uses the default version for the Kubernetes cluster.
-             *
-             * @return the next stage
-             */
-            Update withDefaultVersion();
         }
     }
 }
