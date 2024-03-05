@@ -644,7 +644,9 @@ public final class OpenAIAsyncClient {
      * such as 'jtokkit' to compute the tokens. See sample for more details.
      * </p>
      *
-     * <p><strong>Code Samples</strong></p>
+     * <p>
+     * <strong>Code Samples</strong>
+     * </p>
      * <!-- src_embed com.azure.ai.openai.OpenAIAsyncClient.getChatCompletionsStream#String-ChatCompletionsOptions -->
      * <pre>
      * String deploymentOrModelId = &quot;gpt-4-1106-preview&quot;;
