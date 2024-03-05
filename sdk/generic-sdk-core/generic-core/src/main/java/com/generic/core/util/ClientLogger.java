@@ -142,26 +142,6 @@ public class ClientLogger {
         return throwable;
     }
 
-    /*
-     * @param args The arguments passed to evaluate suppliers in args.
-     * @return Return the argument with evaluated supplier
-     */
-    Object[] evaluateSupplierArgument(Object[] args) {
-        if (isSupplierLogging(args)) {
-            args[0] = ((Supplier<?>) args[0]).get();
-        }
-        return args;
-    }
-
-    /*
-     * @param args The arguments passed to determine supplier evaluation
-     * @return Determines if it is supplier logging
-     */
-    boolean isSupplierLogging(Object[] args) {
-        return (args.length == 1 && args[0] instanceof Supplier)
-            || (args.length == 2 && args[0] instanceof Supplier && (args[1] instanceof Throwable || args[1] == null));
-    }
-
     /**
      * Determines if the app or environment logger support logging at the given log level.
      *
@@ -479,8 +459,8 @@ public class ClientLogger {
         public void log(Supplier<String> messageSupplier) {
             if (this.isEnabled) {
                 String message = messageSupplier != null ? removeNewLinesFromLogMessage(messageSupplier.get()) : null;
-                String messageWithContext = getMessageWithContext(message, null);
-                if (!messageWithContext.equals("{\"message\":\"\"}")) {
+                String messageWithContext = getMessageWithContext(message, (Throwable) null);
+                if (!messageWithContext.equals("{\"message\":\"\"")) {
                     performLogging(level, messageWithContext, (Throwable) null);
                 }
             }
@@ -496,10 +476,9 @@ public class ClientLogger {
         public <T extends Throwable> T log(Supplier<String> messageSupplier, T throwable) {
             if (this.isEnabled) {
                 String message = messageSupplier != null ? removeNewLinesFromLogMessage(messageSupplier.get()) : null;
-                String messageWithContext = getMessageWithContext(message, null);
+                String messageWithContext = getMessageWithContext(message, throwable);
                 if (!messageWithContext.equals("{\"message\":\"\"}")) {
-                    performLogging(level, getMessageWithContext(message, throwable),
-                        logger.isDebugEnabled() ? throwable : null);
+                    performLogging(level, messageWithContext, logger.isDebugEnabled() ? throwable : null);
                 }
             }
             return throwable;
@@ -519,7 +498,7 @@ public class ClientLogger {
             sb.append('"');
 
             if (throwable != null) {
-                sb.append(",\"exception\":");
+                sb.append(",\"exception.message\":");
 
                 String exceptionMessage = throwable.getMessage();
                 if (exceptionMessage != null) {
@@ -541,7 +520,6 @@ public class ClientLogger {
                 }
             }
 
-            sb.append('}');
             return sb.toString();
         }
 

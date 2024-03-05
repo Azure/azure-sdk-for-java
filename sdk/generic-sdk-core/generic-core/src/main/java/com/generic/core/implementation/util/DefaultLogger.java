@@ -378,10 +378,10 @@ public final class DefaultLogger extends MarkerIgnoringBase {
             .append(WHITESPACE)
             .append(classPath)
             .append(HYPHEN)
-            .append(message)
+            .append(addExceptionStacktrace(message, t))
             .append(System.lineSeparator());
 
-        writeWithThrowable(stringBuilder, t);
+        System.out.print(stringBuilder.toString());
     }
 
     /**
@@ -442,21 +442,17 @@ public final class DefaultLogger extends MarkerIgnoringBase {
         return new String(bytes, StandardCharsets.UTF_8);
     }
 
-    /**
-     * Write the log message with throwable stack trace if any.
-     *
-     * @param stringBuilder Take the log messages.
-     * @param t The exception whose stack trace should be logged
-     */
-    void writeWithThrowable(StringBuilder stringBuilder, Throwable t) {
+    private String addExceptionStacktrace(String message, Throwable t) {
         if (t != null) {
-            StringWriter sw = new StringWriter();
-            try (PrintWriter pw = new PrintWriter(sw)) {
-                t.printStackTrace(pw);
-                stringBuilder.append(sw);
-            }
+            message += "\",\"exception.stacktrace\":\"" + getStackTrace(t) + "\"";
         }
-        System.out.print(stringBuilder.toString());
+        return message + "}";
+    }
+    private String getStackTrace(Throwable t) {
+        StringWriter sw = new StringWriter();
+        PrintWriter pw = new PrintWriter(sw);
+        t.printStackTrace(pw);
+        return sw.toString().trim();
     }
 
     private static void zeroPad(int value, byte[] bytes, int index) {
