@@ -53,8 +53,8 @@ public class RetryPolicy implements HttpPipelinePolicy {
                     defaultMaxRetries = 3;
                 }
             } catch (NumberFormatException ignored) {
-                LOGGER.log(ClientLogger.LogLevel.VERBOSE,
-                    () -> PROPERTY_REQUEST_RETRY_COUNT + " was loaded but is an invalid "
+                LOGGER.atVerbose()
+                    .log(() -> PROPERTY_REQUEST_RETRY_COUNT + " was loaded but is an invalid "
                         + "number. Using 3 retries as the maximum.");
             }
         }
@@ -76,7 +76,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
      * @param retryOptions The {@link RetryOptions} used to configure this {@link RetryPolicy}.
      * @throws NullPointerException If {@code retryOptions} is null.
      */
-    RetryPolicy(RetryOptions retryOptions) {
+    public RetryPolicy(RetryOptions retryOptions) {
         this(ImplUtils.getRetryStrategyFromOptions(retryOptions), retryOptions.getMaxRetries(),
             retryOptions.getDelayFromHeaders());
     }
@@ -264,15 +264,15 @@ public class RetryPolicy implements HttpPipelinePolicy {
         LOGGER.atVerbose()
             .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
             .addKeyValue(LoggingKeys.DURATION_MS_KEY, delayDuration.toMillis())
-            .log("Retrying.");
+            .log(() -> "Retrying.");
     }
 
     private static void logRetryExhausted(int tryCount) {
-        LOGGER.atInfo().addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount).log("Retry attempts have been exhausted.");
+        LOGGER.atInfo().addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount).log(() -> "Retry attempts have been exhausted.");
     }
 
     private static void logRetryWithError(ClientLogger.LoggingEventBuilder loggingEventBuilder, int tryCount,
         String format, Throwable throwable) {
-        loggingEventBuilder.addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount).log(format, throwable);
+        loggingEventBuilder.addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount).log(() -> format, throwable);
     }
 }

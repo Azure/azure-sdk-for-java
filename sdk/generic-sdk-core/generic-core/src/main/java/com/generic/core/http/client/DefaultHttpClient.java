@@ -210,7 +210,7 @@ class DefaultHttpClient implements HttpClient {
                 if (listener != null) {
                     processTextEventStream(httpRequest, connection, listener);
                 } else {
-                    LOGGER.log(ClientLogger.LogLevel.INFORMATIONAL, () -> "No listener attached to the server sent "
+                    LOGGER.atInfo().log(() -> "No listener attached to the server sent "
                         + "event http request. Treating response as regular response.");
                 }
                 return new DefaultHttpClientResponse(httpRequest, responseCode, responseHeaders);

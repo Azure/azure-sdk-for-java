@@ -18,14 +18,14 @@ public abstract class ReflectionUtils {
     static {
         ReflectionUtilsApi instance;
         try {
-            LOGGER.log(ClientLogger.LogLevel.VERBOSE, () -> "Attempting to use java.lang.invoke package to handle reflection.");
+            LOGGER.atVerbose().log(() -> "Attempting to use java.lang.invoke package to handle reflection.");
             instance = new ReflectionUtilsMethodHandle();
-            LOGGER.log(ClientLogger.LogLevel.VERBOSE, () -> "Successfully used java.lang.invoke package to handle reflection.");
+            LOGGER.atVerbose().log(() -> "Successfully used java.lang.invoke package to handle reflection.");
         } catch (LinkageError ignored) {
-            LOGGER.log(ClientLogger.LogLevel.VERBOSE, () -> "Failed to use java.lang.invoke package to handle reflection. Falling back to "
+            LOGGER.atVerbose().log(() -> "Failed to use java.lang.invoke package to handle reflection. Falling back to "
                 + "java.lang.reflect package to handle reflection.");
             instance = new ReflectionUtilsClassic();
-            LOGGER.log(ClientLogger.LogLevel.VERBOSE, () -> "Successfully used java.lang.reflect package to handle reflection.");
+            LOGGER.atVerbose().log(() -> "Successfully used java.lang.reflect package to handle reflection.");
         }
 
         INSTANCE = instance;

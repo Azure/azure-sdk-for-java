@@ -231,7 +231,7 @@ public final class ConfigurationBuilder {
             if (additionalConfigurations.containsKey(key)) {
                 LOGGER.atWarning()
                     .addKeyValue("name", key)
-                    .log("Property with the same name already exists, value will be overwritten.");
+                    .log(() -> "Property with the same name already exists, value will be overwritten.");
             }
 
             additionalConfigurations.put(key, value);
@@ -253,7 +253,7 @@ public final class ConfigurationBuilder {
                 if (allConfigurations.containsKey(prop.getKey())) {
                     LOGGER.atWarning()
                         .addKeyValue("name", prop.getKey())
-                        .log("Property with the same name already exists, value will be overwritten.");
+                        .log(() -> "Property with the same name already exists, value will be overwritten.");
                 }
 
                 if (hasPrefix(prop.getKey(), source)) {
