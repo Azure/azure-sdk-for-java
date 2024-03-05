@@ -434,3 +434,7 @@ spring_com.microsoft.azure:azure;1.34.0
 
 # sdk\spring\spring-cloud-azure-service\pom.xml
 spring_redis.clients:jedis;3.8.0
+
+## Open AI
+# sdk\openai\azure-ai-openai\pom.xml
+com.knuddels:jtokkit;1.0.0
