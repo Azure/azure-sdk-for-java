@@ -16,7 +16,7 @@ import java.time.OffsetDateTime;
 @Immutable
 public final class AnalyzeResultOperation {
     /*
-     * Operation status.
+     * Operation status. notStarted, running, succeeded, or failed
      */
     @Generated
     @JsonProperty(value = "status")
@@ -68,7 +68,7 @@ public final class AnalyzeResultOperation {
     }
 
     /**
-     * Get the status property: Operation status.
+     * Get the status property: Operation status. notStarted, running, succeeded, or failed.
      * 
      * @return the status value.
      */
