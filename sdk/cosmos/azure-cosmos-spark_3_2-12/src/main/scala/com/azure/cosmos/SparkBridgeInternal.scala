@@ -3,10 +3,10 @@
 
 package com.azure.cosmos
 
-import com.azure.cosmos.implementation.{DocumentCollection, PartitionKeyRange, SparkBridgeImplementationInternal}
+import com.azure.cosmos.implementation.{DocumentCollection, ImplementationBridgeHelpers, PartitionKeyRange, SparkBridgeImplementationInternal}
 import com.azure.cosmos.implementation.feedranges.FeedRangeEpkImpl
 import com.azure.cosmos.implementation.routing.Range
-import com.azure.cosmos.models.{CosmosQueryRequestOptions, FeedRange, ModelBridgeInternal}
+import com.azure.cosmos.models.{CosmosContainerProperties, CosmosQueryRequestOptions, FeedRange, ModelBridgeInternal}
 import com.azure.cosmos.spark.NormalizedRange
 
 import java.time.Duration
@@ -17,6 +17,9 @@ import scala.collection.JavaConverters._
 // scalastyle:on underscore.import
 
 private[cosmos] object SparkBridgeInternal {
+  private val containerPropertiesAccessor = ImplementationBridgeHelpers
+    .CosmosContainerPropertiesHelper
+    .getCosmosContainerPropertiesAccessor
 
   //scalastyle:off null
   val defaultQueryRequestOptions: CosmosQueryRequestOptions = null
@@ -85,5 +88,20 @@ private[cosmos] object SparkBridgeInternal {
       .getCollectionCache()
       .resolveByNameAsync(null, link, null, obsoleteValue)
       .block()
+  }
+
+  def getContainerPropertiesFromCollectionCache(container: CosmosAsyncContainer): CosmosContainerProperties = {
+    val documentCollectionHolder = container
+      .getDatabase
+      .getDocClientWrapper
+      .getCollectionCache
+      .resolveByRidAsync(null, container.getLinkWithoutTrailingSlash, null)
+      .block()
+
+    if (documentCollectionHolder.v != null) {
+      containerPropertiesAccessor.create(documentCollectionHolder.v)
+    } else {
+      container.read().block().getProperties
+    }
   }
 }

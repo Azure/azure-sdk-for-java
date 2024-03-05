@@ -3,8 +3,9 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.SparkBridgeInternal
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
-import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, SparkBridgeImplementationInternal, SparkRowItem}
+import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, SparkRowItem}
 import com.azure.cosmos.models.{CosmosItemIdentity, CosmosReadManyRequestOptions, ModelBridgeInternal, PartitionKey, PartitionKeyDefinition}
 import com.azure.cosmos.spark.BulkWriter.getThreadInfo
 import com.azure.cosmos.spark.CosmosTableSchemaInferrer.IdAttributeName
@@ -106,7 +107,7 @@ private[spark] case class ItemsPartitionReaderWithReadMany
 
   private val partitionKeyDefinition: PartitionKeyDefinition = {
     TransientErrorsRetryPolicy.executeWithRetry(() => {
-      SparkBridgeImplementationInternal
+      SparkBridgeInternal
         .getContainerPropertiesFromCollectionCache(cosmosAsyncContainer).getPartitionKeyDefinition
     })
   }

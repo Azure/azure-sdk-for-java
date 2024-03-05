@@ -68,7 +68,7 @@ class CreateSpark2ContinuationsFromChangeFeedOffset extends UDF2[Map[String, Str
       .getDatabase(databaseName)
       .getContainer(containerName)
 
-    val expectedContainerResourceId = SparkBridgeImplementationInternal
+    val expectedContainerResourceId = SparkBridgeInternal
       .getContainerPropertiesFromCollectionCache(container)
       .getResourceId
 

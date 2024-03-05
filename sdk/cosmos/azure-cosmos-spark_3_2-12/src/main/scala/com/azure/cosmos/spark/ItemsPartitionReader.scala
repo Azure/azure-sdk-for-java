@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.SparkBridgeInternal
 import com.azure.cosmos.implementation.spark.{OperationContextAndListenerTuple, OperationListener}
 import com.azure.cosmos.implementation.{ImplementationBridgeHelpers, SparkBridgeImplementationInternal, SparkRowItem, Strings}
 import com.azure.cosmos.models.{CosmosParameterizedQuery, CosmosQueryRequestOptions, ModelBridgeInternal, PartitionKey, PartitionKeyDefinition}
@@ -111,7 +112,7 @@ private case class ItemsPartitionReader
     if (shouldLogDetailedFeedDiagnostics() || readConfig.readManyFilteringConfig.readManyFilteringEnabled) {
       Some(
         TransientErrorsRetryPolicy.executeWithRetry(() => {
-          SparkBridgeImplementationInternal
+          SparkBridgeInternal
             .getContainerPropertiesFromCollectionCache(cosmosAsyncContainer).getPartitionKeyDefinition
         }))
     } else {

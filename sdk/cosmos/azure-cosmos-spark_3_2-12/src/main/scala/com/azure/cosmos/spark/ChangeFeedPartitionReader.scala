@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.SparkBridgeInternal
 import com.azure.cosmos.implementation.spark.OperationContextAndListenerTuple
 import com.azure.cosmos.implementation.{ChangeFeedSparkRowItem, ImplementationBridgeHelpers, SparkBridgeImplementationInternal, Strings}
 import com.azure.cosmos.models.{CosmosChangeFeedRequestOptions, ModelBridgeInternal, PartitionKeyDefinition}
@@ -73,7 +74,7 @@ private case class ChangeFeedPartitionReader
     if (diagnosticsConfig.mode.isDefined &&
       diagnosticsConfig.mode.get.equalsIgnoreCase(classOf[DetailedFeedDiagnosticsProvider].getName)) {
 
-      Option.apply(SparkBridgeImplementationInternal
+      Option.apply(SparkBridgeInternal
         .getContainerPropertiesFromCollectionCache(cosmosAsyncContainer)
         .getPartitionKeyDefinition)
     } else {
