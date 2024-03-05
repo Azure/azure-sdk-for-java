@@ -199,7 +199,7 @@ public class ClientLogger {
      * <pre>
      * logger.atWarning&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
-     *     .log&#40;&#40;&#41; -&gt; &quot;A formattable message. Hello, &#123;&#125;&quot;, name, exception&#41;;
+     *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;A formattable message. Hello, %s&quot;, name&#41;, exception&#41;;
      * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger.atWarning -->
      *
@@ -222,7 +222,7 @@ public class ClientLogger {
      * <pre>
      * logger.atInfo&#40;&#41;
      *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
-     *     .log&#40;&#40;&#41; -&gt; &quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
+     *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;A formattable message. Hello, %s&quot;, name&#41;&#41;;
      * </pre>
      * <!-- end com.generic.core.util.logging.clientlogger.atInfo -->
      *
@@ -294,8 +294,8 @@ public class ClientLogger {
      * logger.atInfo&#40;&#41;
      *     .addKeyValue&#40;&quot;key1&quot;, &quot;value1&quot;&#41;
      *     .addKeyValue&#40;&quot;key2&quot;, true&#41;
-     *     .addKeyValue&#40;&quot;key3&quot;, &#40;&#41; -&gt; getName&#40;&#41;&#41;
-     *     .log&#40;&#40;&#41; -&gt; &quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
+     *     .addKeyValue&#40;&quot;key3&quot;, this::getName&#41;
+     *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;A formattable message. Hello, %s&quot;, name&#41;&#41;;
      * </pre>
      * <!-- end com.generic.core.util.logging.loggingeventbuilder -->
      */
@@ -345,7 +345,7 @@ public class ClientLogger {
          * <pre>
          * logger.atInfo&#40;&#41;
          *     .addKeyValue&#40;&quot;key&quot;, &quot;value&quot;&#41;
-         *     .log&#40;&#40;&#41; -&gt; &quot;A formattable message. Hello, &#123;&#125;&quot;, name&#41;;
+         *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;A formattable message. Hello, %s&quot;, name&#41;&#41;;
          * </pre>
          * <!-- end com.generic.core.util.logging.clientlogger.atInfo -->
          *
@@ -375,7 +375,7 @@ public class ClientLogger {
          * logger.atVerbose&#40;&#41;
          *     &#47;&#47; equivalent to addKeyValue&#40;&quot;key&quot;, &#40;&#41; -&gt; new LoggableObject&#40;&quot;string representation&quot;&#41;.toString&#40;&#41;
          *     .addKeyValue&#40;&quot;key&quot;, new LoggableObject&#40;&quot;string representation&quot;&#41;&#41;
-         *     .log&#40;&#40;&#41; -&gt; &quot;Param 1: &#123;&#125;, Param 2: &#123;&#125;, Param 3: &#123;&#125;&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;;
+         *     .log&#40;&#40;&#41; -&gt; String.format&#40;&quot;Param 1: %s, Param 2: %s, Param 3: %s&quot;, &quot;param1&quot;, &quot;param2&quot;, &quot;param3&quot;&#41;&#41;;
          * </pre>
          * <!-- end com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#object -->
          *
@@ -460,7 +460,7 @@ public class ClientLogger {
             if (this.isEnabled) {
                 String message = messageSupplier != null ? removeNewLinesFromLogMessage(messageSupplier.get()) : null;
                 String messageWithContext = getMessageWithContext(message, (Throwable) null);
-                if (!messageWithContext.equals("{\"message\":\"\"")) {
+                if (!"{\"message\":\"\"".equals(messageWithContext)) {
                     performLogging(level, messageWithContext, (Throwable) null);
                 }
             }
@@ -471,13 +471,15 @@ public class ClientLogger {
          *
          * @param messageSupplier string message supplier.
          * @param throwable {@link Throwable} for the message.
+         * @param <T> Type of the Throwable being logged.
+         *
          * @return The passed {@link Throwable}.
          */
         public <T extends Throwable> T log(Supplier<String> messageSupplier, T throwable) {
             if (this.isEnabled) {
                 String message = messageSupplier != null ? removeNewLinesFromLogMessage(messageSupplier.get()) : null;
                 String messageWithContext = getMessageWithContext(message, throwable);
-                if (!messageWithContext.equals("{\"message\":\"\"}")) {
+                if (!"{\"message\":\"\"}".equals(messageWithContext)) {
                     performLogging(level, messageWithContext, logger.isDebugEnabled() ? throwable : null);
                 }
             }
@@ -694,6 +696,12 @@ public class ClientLogger {
             return numericValue;
         }
 
+        /**
+         * Compares the passed log level with the configured log level and returns true if the passed log level is greater
+         * @param level The log level to compare.
+         * @param configuredLevel The configured log level.
+         * @return True if the passed log level is greater or equal to the configured log level, false otherwise.
+         */
         public static boolean isGreaterOrEqual(LogLevel level, LogLevel configuredLevel) {
             return level.getLevelCode() >= configuredLevel.getLevelCode();
         }

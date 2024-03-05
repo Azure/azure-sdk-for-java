@@ -4,8 +4,6 @@
 package com.generic.core.implementation.util;
 
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
@@ -138,25 +136,5 @@ public final class CoreUtils {
         }
 
         return ImplUtils.bomAwareToString(bytes, 0, bytes.length, contentType);
-    }
-
-    /**
-     * Utility method for parsing query parameters one-by-one without the use of string splitting.
-     * <p>
-     * This method provides an optimization over parsing query parameters with {@link String#split(String)} or a
-     * {@link java.util.regex.Pattern} as it doesn't allocate any arrays to maintain values, instead it parses the query
-     * parameters linearly.
-     * <p>
-     * Query parameter parsing works the following way, {@code key=value} will turn into an immutable {@link Map.Entry}
-     * where the {@link Map.Entry#getKey()} is {@code key} and the {@link Map.Entry#getValue()} is {@code value}. For
-     * query parameters without a value, {@code key=} or just {@code key}, the value will be an empty string.
-     *
-     * @param queryParameters The query parameter string.
-     * @return An {@link Iterator} over the query parameter key-value pairs.
-     */
-    public static Iterator<Map.Entry<String, String>> parseQueryParameters(String queryParameters) {
-        return (CoreUtils.isNullOrEmpty(queryParameters))
-            ? Collections.emptyIterator()
-            : new ImplUtils.QueryParameterIterator(queryParameters);
     }
 }

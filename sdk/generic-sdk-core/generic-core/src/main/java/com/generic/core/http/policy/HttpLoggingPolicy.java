@@ -254,18 +254,26 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             urlBuilder.append("?");
 
             // Parse and redact the query parameters
-            CoreUtils.parseQueryParameters(query).forEachRemaining(queryParam -> {
-                urlBuilder.append(queryParam.getKey());
-                urlBuilder.append("=");
+            String[] queryParams = query.split("&");
+            for (String param : queryParams) {
+                String[] keyValue = param.split("=");
 
-                if (allowedQueryParameterNames.contains(queryParam.getKey().toLowerCase(Locale.ROOT))) {
-                    urlBuilder.append(queryParam.getValue());
-                } else {
-                    urlBuilder.append(REDACTED_PLACEHOLDER);
+                if (keyValue.length == 2) {
+                    String key = keyValue[0];
+                    String value = keyValue[1];
+
+                    urlBuilder.append(key);
+                    urlBuilder.append("=");
+
+                    if (allowedQueryParameterNames.contains(key.toLowerCase(Locale.ROOT))) {
+                        urlBuilder.append(value);
+                    } else {
+                        urlBuilder.append(REDACTED_PLACEHOLDER);
+                    }
+
+                    urlBuilder.append("&");
                 }
-
-                urlBuilder.append("&");
-            });
+            }
 
             // Remove the trailing '&'
             urlBuilder.deleteCharAt(urlBuilder.length() - 1);

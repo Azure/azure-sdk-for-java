@@ -442,7 +442,7 @@ public class ClientLoggerTests {
         setupLogLevel(LogLevel.VERBOSE.toString());
 
         new ClientLogger(ClientLoggerTests.class, globalContext)
-            .atWarning().log(() -> "message");;
+            .atWarning().log(() -> "message");
 
         assertMessage(
             "{\"message\":\"message\",\"connectionId\":\"foo\",\"linkName\":1,\"anotherKey\":\"hello world\"}",
@@ -517,8 +517,8 @@ public class ClientLoggerTests {
         logger.atInfo()
             .addKeyValue("local", true)
             .addKeyValue("connectionId", "conflict")
-            .log(
-            () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
+            .log(() ->
+                String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
 
         assertMessage(
             "{\"message\":\"Param 1: test1, Param 2: test2, Param 3: test3\",\"connectionId\":\"foo\",\"linkName\":1,\"anotherKey\":\"hello world\",\"local\":true,\"connectionId\":\"conflict\"}",
@@ -728,8 +728,8 @@ public class ClientLoggerTests {
         logger.atWarning()
             .addKeyValue("connectionId", () -> null)
             .addKeyValue("linkName", "bar")
-            .log(
-            () -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
+            .log(() ->
+                String.format("Param 1: %s, Param 2: %s, Param 3: %s", "test1", "test2", "test3"));
 
         assertMessage(
             "{\"message\":\"Param 1: test1, Param 2: test2, Param 3: test3\",\"connectionId\":null,\"linkName\":\"bar\"}",
@@ -821,7 +821,7 @@ public class ClientLoggerTests {
         String expectedMessage = "{\"message\":\"hello world, \\\"and\\\" {more}\",\"exception.message\":\"" + escapedExceptionMessage + "\",\"connection\\tId\":\"foo\",\"linkName\":\"\\rbar\"}";
         if (logLevelToConfigure.equals(LogLevel.VERBOSE)) {
             expectedMessage = expectedMessage.substring(0, expectedMessage.length() - 1);
-             expectedMessage += "\",\"exception.stacktrace\":\"" + runtimeException + System.lineSeparator() + "\tat " + runtimeException.getStackTrace()[0].toString() + "\"}";
+            expectedMessage += "\",\"exception.stacktrace\":\"" + runtimeException + System.lineSeparator() + "\tat " + runtimeException.getStackTrace()[0].toString() + "\"}";
         }
 
         assertMessage(
