@@ -430,5 +430,5 @@ public class CallConnectionAsyncUnitTests extends CallAutomationUnitTestBase {
         assertNotNull(response);
         assertEquals(202, response.getStatusCode());
         assertNotNull(response.getValue());
-    } 
+    }
 }
