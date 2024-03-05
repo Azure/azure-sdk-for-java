@@ -7,11 +7,17 @@ import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
+import com.azure.core.util.CoreUtils;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.LongRunningOperationStatus;
 import com.azure.core.util.polling.PollingContext;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.json.JsonProviders;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -24,7 +30,7 @@ import java.util.Objects;
  * A type representing state of Azure Resource Manager (ARM) long-running-operation (LRO)
  * and it's polling.
  */
-public final class PollingState {
+public final class PollingState implements JsonSerializable<PollingState> {
     @JsonIgnore
     private static final ClientLogger LOGGER = new ClientLogger(PollingState.class);
     @JsonIgnore
@@ -112,13 +118,12 @@ public final class PollingState {
     public static <T> PollingState from(SerializerAdapter serializerAdapter, PollingContext<T> context) {
         Objects.requireNonNull(serializerAdapter, "'serializerAdapter' cannot be null.");
         String value = context.getData(KEY);
-        if (value == null || "".equalsIgnoreCase(value)) {
+        if (CoreUtils.isNullOrEmpty(value)) {
             throw LOGGER.logExceptionAsError(
                 new IllegalArgumentException("The provided context does not contain" + " serialized PollingState."));
         }
-        try {
-            PollingState pollingState
-                = serializerAdapter.deserialize(value, PollingState.class, SerializerEncoding.JSON);
+        try (JsonReader jsonReader = JsonProviders.createReader(value)) {
+            PollingState pollingState = PollingState.fromJson(jsonReader);
             return pollingState.setSerializer(serializerAdapter);
         } catch (IOException ioe) {
             throw LOGGER.logExceptionAsError(
@@ -137,12 +142,12 @@ public final class PollingState {
      */
     public static PollingState from(SerializerAdapter serializerAdapter, String value) {
         Objects.requireNonNull(serializerAdapter, "'serializerAdapter' cannot be null.");
-        if (value == null || "".equalsIgnoreCase(value)) {
+        if (CoreUtils.isNullOrEmpty(value)) {
             throw LOGGER.logExceptionAsError(new IllegalArgumentException("'value' is required"));
         }
-        try {
-            PollingState pollingState
-                = serializerAdapter.deserialize(value, PollingState.class, SerializerEncoding.JSON);
+
+        try (JsonReader jsonReader = JsonProviders.createReader(value)) {
+            PollingState pollingState = PollingState.fromJson(jsonReader);
             return pollingState.setSerializer(serializerAdapter);
         } catch (IOException ioe) {
             throw LOGGER.logExceptionAsError(new RuntimeException("Failed to deserialize '" + value, ioe));
@@ -287,8 +292,7 @@ public final class PollingState {
     PollingState update(int pollResponseStatusCode, HttpHeaders pollResponseHeaders, String pollResponseBody) {
         switch (this.pollingType) {
             case AZURE_ASYNC_OPERATION_POLL:
-                this.azureAsyncOperationData.update(pollResponseStatusCode, pollResponseHeaders, pollResponseBody,
-                    this.serializerAdapter);
+                this.azureAsyncOperationData.update(pollResponseStatusCode, pollResponseHeaders, pollResponseBody);
                 break;
 
             case LOCATION_POLL:
@@ -296,8 +300,7 @@ public final class PollingState {
                 break;
 
             case PROVISIONING_STATE_POLL:
-                this.provisioningStateData.update(pollResponseStatusCode, pollResponseHeaders, pollResponseBody,
-                    this.serializerAdapter);
+                this.provisioningStateData.update(pollResponseStatusCode, pollResponseHeaders, pollResponseBody);
                 break;
 
             default:
@@ -425,7 +428,7 @@ public final class PollingState {
     private PollingState initializeDataFor200StatusCode(HttpHeaders lroResponseHeaders, String lroResponseBody) {
         assertStatusCode(200);
         if (this.isPutOrPatchLro()) {
-            String value = ProvisioningStateData.tryParseProvisioningState(lroResponseBody, this.serializerAdapter);
+            String value = ProvisioningStateData.tryParseProvisioningState(lroResponseBody);
             if (value != null && !ProvisioningState.SUCCEEDED.equalsIgnoreCase(value)) {
                 final URL azAsyncOpUrl = Util.getAzureAsyncOperationUrl(lroResponseHeaders, LOGGER, true);
                 if (azAsyncOpUrl == null) {
@@ -460,7 +463,7 @@ public final class PollingState {
                     "<POST|DELETE, 201, AzureAsyncOperation> combination violate ARM guideline, "
                         + "defaulting to async operation based polling.");
             }
-            String value = ProvisioningStateData.tryParseProvisioningState(lroResponseBody, this.serializerAdapter);
+            String value = ProvisioningStateData.tryParseProvisioningState(lroResponseBody);
             if (!ProvisioningState.SUCCEEDED.equalsIgnoreCase(value)) {
                 return this.setData(new AzureAsyncOperationData(this.lroRequestMethod, this.lroOperationUri,
                     azAsyncOpUrl, locationUrl));
@@ -474,7 +477,7 @@ public final class PollingState {
                 "Location will be ignored on <201, Location, No AzureAsyncOperation> combination.");
         }
         if (this.isPutOrPatchLro()) {
-            String value = ProvisioningStateData.tryParseProvisioningState(lroResponseBody, this.serializerAdapter);
+            String value = ProvisioningStateData.tryParseProvisioningState(lroResponseBody);
             if (value != null && !ProvisioningState.SUCCEEDED.equalsIgnoreCase(value)) {
                 return this.setData(new ProvisioningStateData(this.lroOperationUri, value));
             } else {
@@ -581,5 +584,71 @@ public final class PollingState {
         this.lroResponseStatusCode = lroResponseStatusCode;
         this.pollDelay = pollDelay;
         this.lastResponseBody = lroResponseBody;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeStringField("pollingType", Objects.toString(pollingType, null))
+            .writeIntField("lroResponseStatusCode", lroResponseStatusCode)
+            .writeStringField("lroRequestMethod", Objects.toString(lroRequestMethod, null))
+            .writeStringField("lroOperationUri", Objects.toString(lroOperationUri, null))
+            .writeStringField("pollDelay", Objects.toString(pollDelay, null))
+            .writeJsonField("asyncOperationData", azureAsyncOperationData)
+            .writeJsonField("locationData", locationData)
+            .writeJsonField("provisioningData", provisioningStateData)
+            .writeJsonField("synchronouslySucceededLroData", synchronouslySucceededLroData)
+            .writeJsonField("synchronouslyFailedLroData", (JsonSerializable<?>) synchronouslyFailedLroData)
+            .writeStringField("lastResponseBody", lastResponseBody)
+            .writeEndObject();
+    }
+
+    /**
+     * Reads a JSON stream into a {@link PollingState}.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @return The {@link PollingState} that the JSON stream represented, may return null.
+     * @throws IOException If a {@link PollingState} fails to be read from the {@code jsonReader}.
+     */
+    @SuppressWarnings("deprecation")
+    public static PollingState fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            PollingState pollingState = new PollingState();
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("pollingType".equals(fieldName)) {
+                    pollingState.pollingType = PollingType.valueOf(reader.getString());
+                } else if ("lroResponseStatusCode".equals(fieldName)) {
+                    pollingState.lroResponseStatusCode = reader.getInt();
+                } else if ("lroRequestMethod".equals(fieldName)) {
+                    pollingState.lroRequestMethod = HttpMethod.valueOf(reader.getString());
+                } else if ("lroOperationUri".equals(fieldName)) {
+                    pollingState.lroOperationUri
+                        = reader.getNullable(nonNullReader -> new URL(nonNullReader.getString()));
+                } else if ("pollDelay".equals(fieldName)) {
+                    pollingState.pollDelay
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("asyncOperationData".equals(fieldName)) {
+                    pollingState.azureAsyncOperationData = AzureAsyncOperationData.fromJson(reader);
+                } else if ("locationData".equals(fieldName)) {
+                    pollingState.locationData = LocationData.fromJson(reader);
+                } else if ("provisioningData".equals(fieldName)) {
+                    pollingState.provisioningStateData = ProvisioningStateData.fromJson(reader);
+                } else if ("synchronouslySucceededLroData".equals(fieldName)) {
+                    pollingState.synchronouslySucceededLroData = SynchronouslySucceededLroData.fromJson(reader);
+                } else if ("synchronouslyFailedLroData".equals(fieldName)) {
+                    pollingState.synchronouslyFailedLroData = SynchronouslyFailedLroData.fromJson(reader);
+                } else if ("lastResponseBody".equals(fieldName)) {
+                    pollingState.lastResponseBody = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return pollingState;
+        });
     }
 }

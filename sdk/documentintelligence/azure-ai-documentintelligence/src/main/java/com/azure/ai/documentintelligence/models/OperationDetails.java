@@ -38,7 +38,7 @@ public class OperationDetails {
     private String operationId;
 
     /*
-     * Operation status.
+     * Operation status. notStarted, running, completed, or failed
      */
     @Generated
     @JsonProperty(value = "status")
@@ -124,7 +124,7 @@ public class OperationDetails {
     }
 
     /**
-     * Get the status property: Operation status.
+     * Get the status property: Operation status. notStarted, running, completed, or failed.
      * 
      * @return the status value.
      */
