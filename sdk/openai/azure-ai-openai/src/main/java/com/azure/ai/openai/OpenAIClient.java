@@ -681,8 +681,56 @@ public final class OpenAIClient {
     }
 
     /**
-     * Gets chat completions for the provided chat messages. Chat completions support a wide variety of tasks and
-     * generate text that continues from or "completes" provided prompt data.
+     * Gets chat completions for the provided chat messages in streaming mode. Chat completions support a wide variety
+     * of tasks and generate text that continues from or "completes" provided prompt data.
+     * <p>
+     * Note: This SDK does not support tokenizer for the chat completions stream API. User can use an external library,
+     * such as 'jtokkit' to compute the tokens. See sample for more details.
+     * </p>
+     *
+     * <p><strong>Code Samples</strong></p>
+     * <!-- src_embed com.azure.ai.openai.OpenAIClient.getChatCompletionsStream#String-ChatCompletionsOptions -->
+     * <pre>
+     * String deploymentOrModelId = &quot;gpt-4-1106-preview&quot;;
+     * List&lt;ChatRequestMessage&gt; chatMessages = new ArrayList&lt;&gt;&#40;&#41;;
+     * chatMessages.add&#40;new ChatRequestSystemMessage&#40;&quot;You are a helpful assistant. You will talk like a pirate.&quot;&#41;&#41;;
+     * chatMessages.add&#40;new ChatRequestUserMessage&#40;&quot;Can you help me?&quot;&#41;&#41;;
+     * chatMessages.add&#40;new ChatRequestAssistantMessage&#40;&quot;Of course, me hearty! What can I do for ye?&quot;&#41;&#41;;
+     * chatMessages.add&#40;new ChatRequestUserMessage&#40;&quot;What's the best way to train a parrot?&quot;&#41;&#41;;
+     *
+     * AtomicInteger tokenCount = new AtomicInteger&#40;&#41;;
+     * openAIClient
+     *         .getChatCompletionsStream&#40;deploymentOrModelId, new ChatCompletionsOptions&#40;chatMessages&#41;&#41;
+     *         .stream&#40;&#41;
+     *         &#47;&#47; Remove .skip&#40;1&#41; when using Non-Azure OpenAI API
+     *         &#47;&#47; Note: the first chat completions can be ignored when using Azure OpenAI service which is a known service bug.
+     *         &#47;&#47; TODO: remove .skip&#40;1&#41; after service fixes the issue.
+     *         .skip&#40;1&#41;
+     *         .forEach&#40;chatCompletions -&gt; &#123;
+     *             ChatResponseMessage delta = chatCompletions.getChoices&#40;&#41;.get&#40;0&#41;.getDelta&#40;&#41;;
+     *             if &#40;delta.getRole&#40;&#41; != null&#41; &#123;
+     *                 System.out.println&#40;&quot;Role = &quot; + delta.getRole&#40;&#41;&#41;;
+     *             &#125;
+     *             if &#40;delta.getContent&#40;&#41; != null&#41; &#123;
+     *                 String content = delta.getContent&#40;&#41;;
+     *                 System.out.print&#40;content&#41;;
+     *
+     *                 &#47;&#47; Token Computation:
+     *                 &#47;&#47; Compute the token count for the given input.
+     *                 &#47;&#47; For cl100k_base and p50k_base encodings, use 'jtokkit' library to compute the token count.
+     *                 &#47;&#47; https:&#47;&#47;github.com&#47;knuddelsgmbh&#47;jtokkit
+     *                 &#47;&#47; For r50k_base &#40;gpt2&#41; encodings, use 'gpt2-tokenizer-java' library to compute the token count.
+     *                 &#47;&#47; https:&#47;&#47;github.com&#47;hyunwoongko&#47;gpt2-tokenizer-java
+     *                 &#47;&#47; We use 'jtokkit' library to compute the token count for this sample.
+     *                 EncodingRegistry registry = Encodings.newDefaultEncodingRegistry&#40;&#41;;
+     *                 Encoding enc = registry.getEncoding&#40;EncodingType.CL100K_BASE&#41;;
+     *                 tokenCount.addAndGet&#40;enc.countTokens&#40;content&#41;&#41;;
+     *             &#125;
+     *         &#125;&#41;;
+     * &#47;&#47; Use https:&#47;&#47;platform.openai.com&#47;tokenizer to verify the token count
+     * System.out.println&#40;&quot;&#92;nTotal token count: &quot; + tokenCount.get&#40;&#41;&#41;;
+     * </pre>
+     * <!-- end com.azure.ai.openai.OpenAIClient.getChatCompletionsStream#String-ChatCompletionsOptions -->
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
