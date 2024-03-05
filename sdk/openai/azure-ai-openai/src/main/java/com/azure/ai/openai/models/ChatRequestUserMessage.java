@@ -51,7 +51,6 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      *
      * @param content The plain text content associated with the message.
      */
-    @JsonCreator
     public ChatRequestUserMessage(String content) {
         this(BinaryData.fromString(content));
     }
@@ -61,7 +60,6 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      *
      * @param content The collection of structured content associated with the message.
      */
-    @JsonCreator
     public ChatRequestUserMessage(ChatMessageContentItem[] content) {
         this(BinaryData.fromObject(Arrays.stream(content).map(BinaryData::fromObject).collect(Collectors.toList())));
     }
@@ -71,7 +69,6 @@ public final class ChatRequestUserMessage extends ChatRequestMessage {
      *
      * @param content The collection of structured content associated with the message.
      */
-    @JsonCreator
     public ChatRequestUserMessage(List<ChatMessageContentItem> content) {
         this(BinaryData.fromObject(content.stream().map(BinaryData::fromObject).collect(Collectors.toList())));
     }

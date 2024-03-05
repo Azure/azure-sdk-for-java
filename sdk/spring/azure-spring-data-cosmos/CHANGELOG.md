@@ -1,14 +1,28 @@
 ## Release History
 
-### 3.43.0-beta.1 (Unreleased)
+### 3.44.0-beta.1 (Unreleased)
 
 #### Features Added
 
 #### Breaking Changes
 
 #### Bugs Fixed
+* Fixed `IllegalStateException` for `delete` - See [PR 38996](https://github.com/Azure/azure-sdk-for-java/pull/38996). 
 
 #### Other Changes
+
+### 5.10.0 (2024-03-01)
+
+#### Bugs Fixed
+* Fixed `IllegalStateException` for `delete` - See [PR 39010](https://github.com/Azure/azure-sdk-for-java/pull/39010).
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.56.0`.
+
+### 3.43.0 (2024-02-28)
+
+#### Other Changes
+* Updated `azure-cosmos` to version `4.56.0`.
 
 ### 5.9.1 (2024-02-08)
 

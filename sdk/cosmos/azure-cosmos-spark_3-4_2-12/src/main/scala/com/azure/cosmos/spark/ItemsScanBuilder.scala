@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.spark
 
+import com.azure.cosmos.SparkBridgeInternal
 import com.azure.cosmos.models.PartitionKeyDefinition
 import com.azure.cosmos.spark.diagnostics.LoggerHelper
 import org.apache.spark.broadcast.Broadcast
@@ -64,7 +65,9 @@ private case class ItemsScanBuilder(session: SparkSession,
               clientCacheItems(0).get,
               clientCacheItems(1))
 
-          container.read().block().getProperties.getPartitionKeyDefinition()
+          SparkBridgeInternal
+            .getContainerPropertiesFromCollectionCache(container)
+            .getPartitionKeyDefinition()
         })
     })
   }
