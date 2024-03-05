@@ -254,7 +254,7 @@ chatCompletionsStream
     });
 ```
 Note: We don't support tokenizer in streaming chat completions but the token can be computed by using the
-external library [jtokkit](jtokkit).
+external library [jtokkit][jtokkit].
 
 For a complete example and how to compute tokens in streaming chat completions, see sample [Streaming Chat Completions][sample_get_chat_completions_streaming].
 
