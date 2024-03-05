@@ -249,8 +249,7 @@ public final class DiagnosticsProvider {
         try {
             this.endSpanCore(signal, cosmosCtx, statusCode, actualItemCount, requestCharge, diagnostics);
         } catch (Throwable error) {
-            LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ", error);
-            System.exit(9901);
+            this.handleErrors(error, 9901);
         }
     }
 
@@ -363,8 +362,7 @@ public final class DiagnosticsProvider {
                 context,
                 false);
         } catch (Throwable error) {
-            LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ", error);
-            System.exit(9905);
+            this.handleErrors(error, 9905);
         }
     }
 
@@ -382,8 +380,7 @@ public final class DiagnosticsProvider {
                 context,
                 isForcedEmptyCompletion);
         } catch (Throwable error) {
-            LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ", error);
-            System.exit(9904);
+            this.handleErrors(error, 9904);
         }
     }
 
@@ -397,8 +394,7 @@ public final class DiagnosticsProvider {
         try {
             this.recordPageCore(cosmosCtx, diagnostics, actualItemCount, requestCharge);
         } catch (Throwable error) {
-            LOGGER.error("Unexpected exception in DiagnosticsProvider.recordPage. ", error);
-            System.exit(9902);
+            this.handleErrors(error, 9902);
         }
     }
 
@@ -433,8 +429,7 @@ public final class DiagnosticsProvider {
             this.recordFeedResponseConsumerLatencyCore(
                 context, cosmosCtx, feedResponseConsumerLatency);
         } catch (Throwable error) {
-            LOGGER.error("Unexpected exception in DiagnosticsProvider.recordFeedResponseConsumerLatency. ", error);
-            System.exit(9902);
+            this.handleErrors(error, 9902);
         }
     }
 
@@ -486,7 +481,11 @@ public final class DiagnosticsProvider {
         // but there is some risk given that diagnostic handlers are custom code of course
         if (this.diagnosticHandlers != null && this.diagnosticHandlers.size() > 0) {
             for (CosmosDiagnosticsHandler handler: this.diagnosticHandlers) {
-                handler.handleDiagnostics(cosmosCtx, context);
+                try {
+                    handler.handleDiagnostics(cosmosCtx, context);
+                } catch (Exception e) {
+                    LOGGER.warn("HandledDiagnostics failed. ", e);
+                }
             }
         }
     }
@@ -1451,6 +1450,17 @@ public final class DiagnosticsProvider {
         }
 
         return prettifiedCallstack;
+    }
+
+    private void handleErrors(Throwable throwable, int systemExitCode) {
+        if (throwable instanceof Error) {
+            LOGGER.error("Unexpected error in DiagnosticsProvider.endSpan. ",  throwable);
+            System.err.println("Unexpected error in DiagnosticsProvider.endSpan. " + throwable);
+            System.exit(systemExitCode);
+        } else {
+            LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ",  throwable);
+            throw new RuntimeException(throwable);
+        }
     }
 
     private static final class EnabledNoOpTracer implements Tracer {

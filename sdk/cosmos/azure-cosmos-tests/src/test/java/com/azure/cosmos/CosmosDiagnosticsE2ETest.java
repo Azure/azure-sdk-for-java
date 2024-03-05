@@ -34,6 +34,7 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.Assertions.fail;
@@ -265,6 +266,28 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         System.setProperty("COSMOS.USE_LEGACY_TRACING", "false");
     }
 
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void nullPointerDiagnosticsHandler() {
+        NullPointerDiagnosticsHandle capturingHandler = new NullPointerDiagnosticsHandle();
+
+        CosmosClientBuilder builder = this
+            .getClientBuilder()
+            .clientTelemetryConfig(new CosmosClientTelemetryConfig().diagnosticsHandler(capturingHandler));
+
+        CosmosContainer container = this.getContainer(builder);
+
+        AtomicBoolean systemExited = new AtomicBoolean(false);
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                systemExited.set(true);
+            }
+        });
+
+        executeTestCase(container);
+        assertThat(systemExited.get()).isFalse();
+    }
+
     private void executeTestCase(CosmosContainer container) {
         String id = UUID.randomUUID().toString();
         CosmosItemResponse<ObjectNode> response = container.createItem(
@@ -414,6 +437,14 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
 
         public List<String> getLoggedMessages() {
             return this.loggedMessages;
+        }
+    }
+
+    private static class NullPointerDiagnosticsHandle implements CosmosDiagnosticsHandler {
+
+        @Override
+        public void handleDiagnostics(CosmosDiagnosticsContext diagnosticsContext, Context traceContext) {
+            throw new NullPointerException("NullPointerDiagnosticsHandle");
         }
     }
 }
