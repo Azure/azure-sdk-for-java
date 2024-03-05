@@ -36,7 +36,7 @@ public final class AzureMonitorHelper {
                     new DiagnosticTelemetryPipelineListener(
                         "Sending telemetry to the ingestion service",
                         false,
-                        " (telemetry will be stored to disk and retried)"),
+                        ""),
                     new LocalStorageTelemetryPipelineListener(
                         50, // default to 50MB
                         TempDirs.getSubDir(tempDir, "telemetry"),
