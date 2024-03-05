@@ -88,6 +88,8 @@
       <Class name="com.azure.core.implementation.jackson.AdditionalPropertiesSerializer" />
       <Class name="com.azure.core.implementation.jackson.FlatteningDeserializer" />
       <Class name="com.azure.core.implementation.jackson.FlatteningSerializer" />
+      <Class name="com.azure.core.implementation.jackson.JsonSerializableDeserializer" />
+      <Class name="com.azure.core.implementation.jackson.JsonSerializableSerializer" />
       <Class name="com.azure.core.implementation.logging.DefaultLogger" />
     </Or>
   </Match>

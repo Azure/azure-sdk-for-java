@@ -124,4 +124,33 @@ public final class SpeechGenerationOptions {
         this.speed = speed;
         return this;
     }
+
+    /*
+     * The model to use for this text-to-speech request.
+     */
+    @Generated
+    @JsonProperty(value = "model")
+    private String model;
+
+    /**
+     * Get the model property: The model to use for this text-to-speech request.
+     *
+     * @return the model value.
+     */
+    @Generated
+    public String getModel() {
+        return this.model;
+    }
+
+    /**
+     * Set the model property: The model to use for this text-to-speech request.
+     *
+     * @param model the model value to set.
+     * @return the SpeechGenerationOptions object itself.
+     */
+    @Generated
+    public SpeechGenerationOptions setModel(String model) {
+        this.model = model;
+        return this;
+    }
 }

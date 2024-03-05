@@ -43,4 +43,10 @@
       </And>
     </Or>
   </Match>
+
+  <Match>
+    <Bug pattern="EI_EXPOSE_STATIC_REP2" />
+    <Class name="com.azure.core.management.implementation.ProxyResourceAccessHelper" />
+    <Method name="setAccessor" />
+  </Match>
 </FindBugsFilter>

@@ -41,7 +41,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
-public class DocumentModelAdminClientTest extends DocumentAdministrationClientTestBase {
+public class DocumentModelAdministrationClientTest extends DocumentAdministrationClientTestBase {
     private DocumentIntelligenceAdministrationClient client;
 
     private DocumentIntelligenceAdministrationClient getModelAdministrationClient(HttpClient httpClient,

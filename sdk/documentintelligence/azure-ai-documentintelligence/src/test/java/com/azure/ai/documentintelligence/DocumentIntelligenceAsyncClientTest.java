@@ -37,7 +37,7 @@ import static com.azure.ai.documentintelligence.TestUtils.RECEIPT_CONTOSO_JPG;
 import static com.azure.ai.documentintelligence.TestUtils.W2_JPG;
 import static com.azure.ai.documentintelligence.TestUtils.urlRunner;
 
-public class DocumentAnalysisAsyncClientTest extends DocumentAnalysisClientTestBase {
+public class DocumentIntelligenceAsyncClientTest extends DocumentIntelligenceClientTestBase {
 
     private DocumentIntelligenceAsyncClient client;
 
