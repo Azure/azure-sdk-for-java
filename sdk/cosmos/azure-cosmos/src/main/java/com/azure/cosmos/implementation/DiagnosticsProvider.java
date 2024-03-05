@@ -429,7 +429,7 @@ public final class DiagnosticsProvider {
             this.recordFeedResponseConsumerLatencyCore(
                 context, cosmosCtx, feedResponseConsumerLatency);
         } catch (Throwable error) {
-            this.handleErrors(error, 9902);
+            this.handleErrors(error, 9903);
         }
     }
 
@@ -484,7 +484,7 @@ public final class DiagnosticsProvider {
                 try {
                     handler.handleDiagnostics(cosmosCtx, context);
                 } catch (Exception e) {
-                    LOGGER.warn("HandledDiagnostics failed. ", e);
+                    LOGGER.error("HandledDiagnostics failed. ", e);
                 }
             }
         }
