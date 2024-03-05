@@ -29,6 +29,14 @@ public interface NetworkInterface
     /** @return the primary IP configuration of this network interface */
     NicIpConfiguration primaryIPConfiguration();
 
+    /**
+     * Gets the specified ip configuration
+     *
+     * @param ipConfigName the name of th specified ip configuration
+     * @return the specified IP configuration of this network interface
+     */
+    NicIpConfiguration specifiedIPConfiguration(String ipConfigName);
+
     /** The entirety of the network interface definition. */
     interface Definition
         extends DefinitionStages.Blank,
@@ -256,6 +264,17 @@ public interface NetworkInterface
             WithCreate withAcceleratedNetworking();
         }
 
+        /** The stage of the definition allowing to specify delete options for the public ip address. */
+        interface WithPublicIPAddressDeleteOptions {
+            /**
+             * Sets delete options for public ip address.
+             *
+             * @param deleteOptions the delete options for primary network interfaces
+             * @return the next stage of the definition
+             */
+            WithCreate withPublicIPAddressDeleteOptions(DeleteOptions deleteOptions);
+        }
+
         /**
          * The stage of the network interface definition which contains all the minimum required inputs for the resource
          * to be created, but also allows for any other optional settings to be specified.
@@ -268,7 +287,8 @@ public interface NetworkInterface
                 WithSecondaryIPConfiguration,
                 WithAcceleratedNetworking,
                 WithLoadBalancer,
-                WithApplicationSecurityGroup {
+                WithApplicationSecurityGroup,
+                WithPublicIPAddressDeleteOptions {
             /**
              * Enables IP forwarding in the network interface.
              *
@@ -576,6 +596,19 @@ public interface NetworkInterface
              */
             Update withoutLoadBalancerInboundNatRules();
         }
+
+        /** The stage of the network interface update allowing to update delete option of the public ip address. */
+        interface WithSpecifiedNicSpecifiedPipDeleteOption {
+            /**
+             * Update delete option for specified public ip address of specified network interface ip config.
+             *
+             * @param deleteOptions what happens to the public IP address when the VM using it is deleted
+             * @param publicIpAddress an object of existing public ip address
+             * @param ipConfigName the name of specified network interface ip config
+             * @return the next stage of the update
+             */
+            Update withSpecifiedNicSpecifiedPipDeleteOption(DeleteOptions deleteOptions, PublicIpAddress publicIpAddress, String ipConfigName);
+        }
     }
 
     /** The template for an update operation, containing all the settings that can be modified. */
@@ -591,6 +624,7 @@ public interface NetworkInterface
             UpdateStages.WithIPConfiguration,
             UpdateStages.WithLoadBalancer,
             UpdateStages.WithAcceleratedNetworking,
-            UpdateStages.WithApplicationSecurityGroup {
+            UpdateStages.WithApplicationSecurityGroup,
+            UpdateStages.WithSpecifiedNicSpecifiedPipDeleteOption {
     }
 }

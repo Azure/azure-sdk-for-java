@@ -6,6 +6,7 @@ package com.azure.resourcemanager.network;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.network.fluent.models.NatGatewayInner;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
+import com.azure.resourcemanager.network.models.DeleteOptions;
 import com.azure.resourcemanager.network.models.NatGatewaySku;
 import com.azure.resourcemanager.network.models.NatGatewaySkuName;
 import com.azure.resourcemanager.network.models.Network;
@@ -13,6 +14,7 @@ import com.azure.resourcemanager.network.models.NetworkInterface;
 import com.azure.resourcemanager.network.models.NetworkInterfaces;
 import com.azure.resourcemanager.network.models.Networks;
 import com.azure.resourcemanager.network.models.NicIpConfiguration;
+import com.azure.resourcemanager.network.models.PublicIpAddress;
 import com.azure.resourcemanager.network.models.Subnet;
 import com.azure.resourcemanager.resources.fluentcore.arm.ResourceUtils;
 import com.azure.resourcemanager.resources.fluentcore.model.Creatable;
@@ -26,6 +28,7 @@ import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.util.Arrays;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -507,6 +510,116 @@ public class NetworkInterfaceOperationsTests extends NetworkManagementTest {
 
         Subnet subnet2 = network.subnets().get(subnet2Name);
         Assertions.assertEquals(gateway2.id(), subnet2.natGatewayId());
+    }
+
+    @Test
+    public void createNetWorkInterfaceWorkWithDeleteOption() {
+        String subnetName = generateRandomResourceName("subnet-", 15);
+        PublicIpAddress publicIPAddress1 =
+            networkManager
+                .publicIpAddresses()
+                .define(generateRandomResourceName("pip-", 15))
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withDynamicIP()
+                .create();
+
+        PublicIpAddress publicIPAddress2 =
+            networkManager
+                .publicIpAddresses()
+                .define(generateRandomResourceName("pip-", 15))
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withDynamicIP()
+                .create();
+
+        Network vnet = networkManager.networks()
+            .define(generateRandomResourceName("vnet-", 15))
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet(subnetName, "10.0.0.0/28")
+            .create();
+
+        NetworkInterface nic = networkManager.networkInterfaces()
+            .define(generateRandomResourceName("nic-", 15))
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withExistingPrimaryNetwork(vnet)
+            .withSubnet(subnetName)
+            .withPrimaryPrivateIPAddressDynamic()
+            .withExistingPrimaryPublicIPAddress(publicIPAddress1)
+            .defineSecondaryIPConfiguration("secondary")
+            .withExistingNetwork(vnet)
+            .withSubnet(subnetName)
+            .withPrivateIpAddressDynamic()
+            .withExistingPublicIpAddress(publicIPAddress2)
+            .attach()
+            .withPublicIPAddressDeleteOptions(DeleteOptions.DELETE)
+            .create();
+
+        nic.refresh();
+        List<DeleteOptions> deleteOptionsList = new ArrayList<>();
+        nic.innerModel().ipConfigurations()
+            .forEach(ipConfig -> deleteOptionsList.add(ipConfig.publicIpAddress().deleteOption()));
+
+        Assertions.assertEquals(2, deleteOptionsList.size());
+        deleteOptionsList.forEach(deleteOptions -> Assertions.assertEquals(DeleteOptions.DELETE, deleteOptions));
+    }
+
+    @Test
+    public void updateNetWorkInterfaceWorkWithDeleteOption() {
+        String subnetName = generateRandomResourceName("subnet-", 15);
+        PublicIpAddress publicIPAddress1 =
+            networkManager
+                .publicIpAddresses()
+                .define(generateRandomResourceName("pip-", 15))
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withDynamicIP()
+                .create();
+
+        PublicIpAddress publicIPAddress2 =
+            networkManager
+                .publicIpAddresses()
+                .define(generateRandomResourceName("pip-", 15))
+                .withRegion(Region.US_EAST)
+                .withNewResourceGroup(rgName)
+                .withDynamicIP()
+                .create();
+
+        Network vnet = networkManager.networks()
+            .define(generateRandomResourceName("vnet-", 15))
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withAddressSpace("10.0.0.0/28")
+            .withSubnet(subnetName, "10.0.0.0/28")
+            .create();
+
+        NetworkInterface nic = networkManager.networkInterfaces()
+            .define(generateRandomResourceName("nic-", 15))
+            .withRegion(Region.US_EAST)
+            .withNewResourceGroup(rgName)
+            .withExistingPrimaryNetwork(vnet)
+            .withSubnet(subnetName)
+            .withPrimaryPrivateIPAddressDynamic()
+            .withExistingPrimaryPublicIPAddress(publicIPAddress1)
+            .defineSecondaryIPConfiguration("secondary")
+            .withExistingNetwork(vnet)
+            .withSubnet(subnetName)
+            .withPrivateIpAddressDynamic()
+            .withExistingPublicIpAddress(publicIPAddress2)
+            .attach()
+            .withPublicIPAddressDeleteOptions(DeleteOptions.DELETE)
+            .create();
+
+        nic.update().withSpecifiedNicSpecifiedPipDeleteOption(DeleteOptions.DETACH, publicIPAddress1, "primary").apply();
+        nic.refresh();
+        Assertions.assertEquals(DeleteOptions.DETACH, nic.primaryIPConfiguration().innerModel().publicIpAddress().deleteOption());
+
+        nic.update().withSpecifiedNicSpecifiedPipDeleteOption(DeleteOptions.DETACH, publicIPAddress2, "secondary").apply();
+        nic.refresh();
+        Assertions.assertEquals(DeleteOptions.DETACH, nic.specifiedIPConfiguration("secondary").innerModel().publicIpAddress().deleteOption());
     }
 
     private NatGatewayInner createNatGateway() {
