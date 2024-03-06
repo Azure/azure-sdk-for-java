@@ -52,9 +52,7 @@ public final class RedirectPolicy implements HttpPipelinePolicy {
         // Make sure the context is not modified during retry, except for the URL
         Response<?> response = next.clone().process();
 
-        if (redirectStrategy.shouldAttemptRedirect(httpRequest, response, redirectAttempt,
-            attemptedRedirectUrls)) {
-
+        if (redirectStrategy.shouldAttemptRedirect(httpRequest, response, redirectAttempt, attemptedRedirectUrls)) {
             HttpRequest redirectRequestCopy = createRedirectRequest(response);
 
             return attemptRedirect(redirectRequestCopy, next, redirectAttempt + 1, attemptedRedirectUrls);
