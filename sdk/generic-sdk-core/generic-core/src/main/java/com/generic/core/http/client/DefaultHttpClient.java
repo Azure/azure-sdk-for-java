@@ -11,6 +11,7 @@ import com.generic.core.http.models.ServerSentEvent;
 import com.generic.core.http.models.ServerSentEventListener;
 import com.generic.core.implementation.AccessibleByteArrayOutputStream;
 import com.generic.core.implementation.http.ContentType;
+import com.generic.core.implementation.http.HttpResponse;
 import com.generic.core.implementation.util.ServerSentEventHelper;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Header;
@@ -223,8 +224,8 @@ class DefaultHttpClient implements HttpClient {
             } else {
                 AccessibleByteArrayOutputStream outputStream = getAccessibleByteArrayOutputStream(connection);
 
-                return Response.createRawResponse(httpRequest, responseCode, responseHeaders,
-                    BinaryData.fromByteBuffer(outputStream.toByteBuffer()));
+                return new HttpResponse<>(httpRequest, responseCode, responseHeaders,
+                    BinaryData.fromByteBuffer(outputStream.toByteBuffer()), true);
             }
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
@@ -589,7 +590,7 @@ class DefaultHttpClient implements HttpClient {
 
             BinaryData body = BinaryData.fromByteBuffer(ByteBuffer.wrap(bodyString.toString().getBytes()));
 
-            return Response.createRawResponse(httpRequest, statusCode, headers, body);
+            return new HttpResponse<>(httpRequest, statusCode, headers, body, true);
         }
     }
 }

@@ -73,18 +73,4 @@ public interface Response<T> extends Closeable {
     static <T> Response<T> create(HttpRequest request, int statusCode, Headers headers, T value) {
         return new HttpResponse<>(request, statusCode, headers, value);
     }
-
-    /**
-     * A static method that creates a default {@link Response} implementation containing a raw body.
-     *
-     * @param request The request which resulted in this response.
-     * @param statusCode The response status code.
-     * @param headers The response headers.
-     * @param body The raw body of the response.
-     *
-     * @return A default {@link Response} implementation.
-     */
-    static Response<?> createRawResponse(HttpRequest request, int statusCode, Headers headers, BinaryData body) {
-        return new HttpResponse<>(request, statusCode, headers, body, true);
-    }
 }
