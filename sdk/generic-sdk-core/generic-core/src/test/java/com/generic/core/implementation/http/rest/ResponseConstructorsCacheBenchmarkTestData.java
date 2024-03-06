@@ -4,6 +4,7 @@
 package com.generic.core.implementation.http.rest;
 
 import com.generic.core.http.MockHttpResponse;
+import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
@@ -81,10 +82,8 @@ class ResponseConstructorsCacheBenchmarkTestData {
     private static final Type voidType = findMethod(FooService.class, "getVoidResponse").getGenericReturnType();
     private static final Type fooType = findMethod(FooService.class, "getFooSimpleResponse").getGenericReturnType();
     // MOCK RESPONSES
-    private static final HttpResponse<?> VOID_RESPONSE =
-        prepareMockResponse(HTTP_REQUEST.copy(), voidType, null);
-    private static final HttpResponse<?> FOO_RESPONSE =
-        prepareMockResponse(HTTP_REQUEST.copy(), fooType, FOO_BYTE_ARRAY);
+    private static final Response<?> VOID_RESPONSE = prepareMockResponse(HTTP_REQUEST.copy(), voidType, null);
+    private static final Response<?> FOO_RESPONSE = prepareMockResponse(HTTP_REQUEST.copy(), fooType, FOO_BYTE_ARRAY);
 
     // ARRAY HOLDING TEST DATA
     private final Input[] inputs;
@@ -117,12 +116,12 @@ class ResponseConstructorsCacheBenchmarkTestData {
 
     static class Input {
         private final Type returnType;
-        private final HttpResponse<?> httpResponse;
+        private final Response<?> response;
         private final Object bodyAsObject;
 
-        Input(HttpResponse<?> httpResponse, Type returnType, Object bodyAsObject) {
+        Input(Response<?> response, Type returnType, Object bodyAsObject) {
             this.returnType = returnType;
-            this.httpResponse = httpResponse;
+            this.response = response;
             this.bodyAsObject = bodyAsObject;
         }
 
@@ -130,8 +129,8 @@ class ResponseConstructorsCacheBenchmarkTestData {
             return this.returnType;
         }
 
-        HttpResponse<?> getResponse() {
-            return this.httpResponse;
+        Response<?> getResponse() {
+            return this.response;
         }
 
         Object getBodyAsObject() {
@@ -152,27 +151,23 @@ class ResponseConstructorsCacheBenchmarkTestData {
     }
 
     private static MockHttpResponse prepareMockResponse(HttpRequest request, Type returnType, byte[] bodyBytes) {
-        request.setResponsBodyDeserializationCallback((response) -> {
-            HttpResponse<?> httpResponse = (HttpResponse<?>) response;
+        request.setResponsBodyDeserializationCallback((response) ->
+            decodeByteArray(response.getBody().toBytes(), response, SERIALIZER, new HttpResponseDecodeData() {
+                @Override
+                public Type getReturnType() {
+                    return returnType;
+                }
 
-            return decodeByteArray(httpResponse.getBody().toBytes(), httpResponse, SERIALIZER,
-                new HttpResponseDecodeData() {
-                    @Override
-                    public Type getReturnType() {
-                        return returnType;
-                    }
+                @Override
+                public boolean isExpectedResponseStatusCode(int statusCode) {
+                    return false;
+                }
 
-                    @Override
-                    public boolean isExpectedResponseStatusCode(int statusCode) {
-                        return false;
-                    }
-
-                    @Override
-                    public boolean isHeadersEagerlyConverted() {
-                        return false;
-                    }
-                });
-        });
+                @Override
+                public boolean isHeadersEagerlyConverted() {
+                    return false;
+                }
+            }));
 
         return new MockHttpResponse(request, RESPONSE_STATUS_CODE, RESPONSE_HEADERS, bodyBytes);
     }

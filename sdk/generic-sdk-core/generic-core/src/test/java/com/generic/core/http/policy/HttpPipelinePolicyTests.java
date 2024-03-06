@@ -4,10 +4,10 @@
 package com.generic.core.http.policy;
 
 import com.generic.core.http.NoOpHttpClient;
+import com.generic.core.http.Response;
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
 import com.generic.core.http.pipeline.HttpPipelineNextPolicy;
@@ -91,6 +91,7 @@ public class HttpPipelinePolicyTests {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
+
             return null;
         };
         URL url = createUrl("http://localhost/");
@@ -107,7 +108,7 @@ public class HttpPipelinePolicyTests {
         final AtomicInteger syncCalls = new AtomicInteger();
 
         @Override
-        public HttpResponse<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
             syncCalls.incrementAndGet();
 
             return next.process();
@@ -118,7 +119,7 @@ public class HttpPipelinePolicyTests {
         final AtomicInteger syncCalls = new AtomicInteger();
 
         @Override
-        public HttpResponse<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+        public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
             syncCalls.incrementAndGet();
 
             return next.process();

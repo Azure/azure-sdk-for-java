@@ -3,8 +3,8 @@
 
 package com.generic.core.http.policy;
 
+import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.HttpResponse;
 
 import java.util.Set;
 
@@ -23,21 +23,21 @@ public interface RedirectStrategy {
      * Determines if the url should be redirected between each try.
      *
      * @param httpRequest The {@link HttpRequest HTTP request}.
-     * @param httpResponse The {@link HttpResponse} containing the redirect URL present in the headers.
+     * @param response The {@link Response} containing the redirect URL present in the headers.
      * @param tryCount Redirect attempts so far.
      * @param attemptedRedirectUrls Attempted redirect locations used so far.
      *
      * @return {@code true} if the request should be redirected, {@code false} otherwise.
      */
-    boolean shouldAttemptRedirect(HttpRequest httpRequest, HttpResponse<?> httpResponse, int tryCount,
+    boolean shouldAttemptRedirect(HttpRequest httpRequest, Response<?> response, int tryCount,
                                   Set<String> attemptedRedirectUrls);
 
     /**
      * Creates an {@link HttpRequest request} for the redirect attempt.
      *
-     * @param httpResponse The {@link HttpResponse} containing the redirect url present in the response headers
+     * @param response The {@link Response} containing the redirect url present in the response headers
      *
      * @return The modified {@link HttpRequest} to redirect the incoming request.
      */
-    HttpRequest createRedirectRequest(HttpResponse<?> httpResponse);
+    HttpRequest createRedirectRequest(Response<?> response);
 }

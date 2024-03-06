@@ -3,8 +3,8 @@
 
 package com.generic.core.http.okhttp.implementation;
 
-import com.generic.core.models.HeaderName;
 import com.generic.core.models.Header;
+import com.generic.core.models.HeaderName;
 import okhttp3.Headers;
 
 import java.util.Iterator;
@@ -18,13 +18,13 @@ import java.util.stream.Stream;
  * (as these headers are the result of an OkHttp response), we do so in any case, given the additional implementation
  * cost is minimal.
  */
-public final class OkHttpToAzureCoreHttpHeadersWrapper extends com.generic.core.models.Headers {
+public final class OkHttpToGenericCoreHttpHeadersWrapper extends com.generic.core.models.Headers {
     private final Headers okhttpHeaders;
 
     private com.generic.core.models.Headers coreHeaders;
     private boolean converted = false;
 
-    public OkHttpToAzureCoreHttpHeadersWrapper(Headers okhttpHeaders) {
+    public OkHttpToGenericCoreHttpHeadersWrapper(Headers okhttpHeaders) {
         this.okhttpHeaders = okhttpHeaders;
         this.coreHeaders = new com.generic.core.models.Headers(okhttpHeaders.size() * 2);
     }

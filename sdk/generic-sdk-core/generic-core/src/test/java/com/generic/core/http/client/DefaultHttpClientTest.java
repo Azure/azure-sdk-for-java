@@ -3,9 +3,9 @@
 
 package com.generic.core.http.client;
 
+import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.ServerSentEvent;
 import com.generic.core.http.models.ServerSentEventListener;
 import com.generic.core.implementation.http.ContentType;
@@ -15,7 +15,6 @@ import com.generic.core.models.Header;
 import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 import com.generic.core.shared.LocalTestServer;
-import org.eclipse.jetty.server.Response;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -112,7 +111,7 @@ public class DefaultHttpClientTest {
         server.start();
     }
 
-    private static void sendSSEResponseWithDataOnly(Response resp) throws IOException {
+    private static void sendSSEResponseWithDataOnly(org.eclipse.jetty.server.Response resp) throws IOException {
         resp.addHeader("Content-Type", ContentType.TEXT_EVENT_STREAM);
         resp.getOutputStream().write(("data: YHOO\n" + "data: +2\n" + "data: 10\n" + "\n").getBytes());
         resp.flushBuffer();
@@ -123,7 +122,7 @@ public class DefaultHttpClientTest {
             + "data: This is the second message, it\n" + "data: has two lines.\n" + "id: 2\n\n" + "data:  third event";
     }
 
-    private static void sendSSEResponseWithRetry(Response resp) throws IOException {
+    private static void sendSSEResponseWithRetry(org.eclipse.jetty.server.Response resp) throws IOException {
         resp.addHeader("Content-Type", ContentType.TEXT_EVENT_STREAM);
         resp.getOutputStream().write(addServerSentEventWithRetry().getBytes());
         resp.flushBuffer();
@@ -133,7 +132,7 @@ public class DefaultHttpClientTest {
         return "data: This is the second message, it\n" + "data: has two lines.\n" + "id: 2\n\n" + "data:  third event";
     }
 
-    private static void sendSSELastEventIdResponse(Response resp) throws IOException {
+    private static void sendSSELastEventIdResponse(org.eclipse.jetty.server.Response resp) throws IOException {
         resp.addHeader("Content-Type", ContentType.TEXT_EVENT_STREAM);
         resp.getOutputStream().write(addServerSentEventLast().getBytes());
         resp.flushBuffer();
@@ -150,7 +149,7 @@ public class DefaultHttpClientTest {
     public void testFlowableWhenServerReturnsBodyAndNoErrorsWhenHttp500Returned() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
-        try (HttpResponse<?> response = doRequest(client, "/error")) {
+        try (Response<?> response = doRequest(client, "/error")) {
             assertEquals(500, response.getStatusCode());
 
             String responseBodyAsString = response.getBody().toString();
@@ -168,7 +167,7 @@ public class DefaultHttpClientTest {
 
         for (int i = 0; i < numRequests; i++) {
             requests.add(() -> {
-                try (HttpResponse<?> response = doRequest(client, "/error")) {
+                try (Response<?> response = doRequest(client, "/error")) {
                     byte[] body = response.getBody().toBytes();
 
                     assertArraysEqual(LONG_BODY, body);
@@ -197,8 +196,9 @@ public class DefaultHttpClientTest {
         Headers headers = new Headers().set(singleValueHeaderName, singleValueHeaderValue)
             .set(multiValueHeaderName, multiValueHeaderValue);
 
-        try (HttpResponse<?> response = client.send(
-            new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH)).setHeaders(headers))) {
+        try (Response<?> response = client.send(new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH))
+            .setHeaders(headers))) {
+
             assertEquals(200, response.getStatusCode());
 
             Headers responseHeaders = response.getHeaders();
@@ -219,7 +219,7 @@ public class DefaultHttpClientTest {
     public void testBufferedResponse() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
-        try (HttpResponse<?> response = getResponse(client, "/short", Context.NONE)) {
+        try (Response<?> response = getResponse(client, "/short", Context.NONE)) {
             assertArrayEquals(SHORT_BODY, response.getBody().toBytes());
         }
     }
@@ -228,7 +228,7 @@ public class DefaultHttpClientTest {
     public void testEmptyBufferResponse() throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
 
-        try (HttpResponse<?> response = getResponse(client, "/empty", Context.NONE)) {
+        try (Response<?> response = getResponse(client, "/empty", Context.NONE)) {
             assertEquals(0L, response.getBody().getLength());
         }
     }
@@ -242,7 +242,7 @@ public class DefaultHttpClientTest {
         request.getHeaders().set(HeaderName.CONTENT_LENGTH, String.valueOf(contentChunk.length() * (repetitions + 1)));
         request.setBody(BinaryData.fromString(contentChunk));
 
-        try (HttpResponse<?> response = client.send(request)) {
+        try (Response<?> response = client.send(request)) {
             assertArrayEquals(SHORT_BODY, response.getBody().toBytes());
         }
     }
@@ -357,7 +357,7 @@ public class DefaultHttpClientTest {
             })));
     }
 
-    private static HttpResponse<?> getResponse(HttpClient client, String path, Context context) {
+    private static Response<?> getResponse(HttpClient client, String path, Context context) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
 
         request.getMetadata().setContext(context);
@@ -384,14 +384,15 @@ public class DefaultHttpClientTest {
         return longBody;
     }
 
-    private static void checkBodyReceived(byte[] expectedBody, String path) {
+    private static void checkBodyReceived(byte[] expectedBody, String path) throws IOException {
         HttpClient client = new DefaultHttpClientBuilder().build();
-        byte[] response = doRequest(client, path).getBody().toBytes();
 
-        assertArrayEquals(expectedBody, response);
+        try (Response<?> response = doRequest(client, path)) {
+            assertArrayEquals(expectedBody, response.getBody().toBytes());
+        }
     }
 
-    private static HttpResponse<?> doRequest(HttpClient client, String path) {
+    private static Response<?> doRequest(HttpClient client, String path) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
 
         return client.send(request);

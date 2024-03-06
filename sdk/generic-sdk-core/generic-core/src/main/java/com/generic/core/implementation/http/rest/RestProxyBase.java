@@ -88,28 +88,28 @@ public abstract class RestProxyBase {
                                        ObjectSerializer objectSerializer) throws IOException;
 
     @SuppressWarnings({"unchecked"})
-    public Response<?> createResponse(HttpResponse<?> httpResponse, Type entityType, Object bodyAsObject) {
+    public Response<?> createResponseIfNecessary(Response<?> response, Type entityType, Object bodyAsObject) {
         final Class<? extends Response<?>> clazz = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
 
-        // Inspection of the response type needs to be performed to determine the course of action: either cast the
-        // HttpResponse to Response or rely on reflection to create an appropriate Response subtype.
+        // Inspection of the response type needs to be performed to determine the course of action: either return the
+        // Response or rely on reflection to create an appropriate Response subtype.
         if (clazz.equals(Response.class)) {
-            if (httpResponse.getValue() == null) {
-                httpResponse.setDecodedBody(bodyAsObject);
+            if (response.getValue() == null) {
+                ((HttpResponse<?>) response).setDecodedBody(bodyAsObject);
             }
 
-            // Return the HttpResponse cast to Response.
-            return clazz.cast(httpResponse);
+            // Return the Response.
+            return response;
         } else {
             // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response
             // subtype.
             //
             // Ideally, in the future the SDKs won't need to dabble in reflection here as the Response subtypes should
-            // be given a way to register their constructor as a callback method that consumes HttpResponse and the
-            // body as an Object.
+            // be given a way to register their constructor as a callback method that consumes Response and the body as
+            // an Object.
             ReflectiveInvoker constructorReflectiveInvoker = RESPONSE_CONSTRUCTORS_CACHE.get(clazz);
 
-            return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorReflectiveInvoker, httpResponse, bodyAsObject);
+            return RESPONSE_CONSTRUCTORS_CACHE.invoke(constructorReflectiveInvoker, response, bodyAsObject);
         }
     }
 
@@ -227,28 +227,27 @@ public abstract class RestProxyBase {
     }
 
     /**
-     * Creates an {@link HttpResponseException} exception using the details provided in {@link HttpResponse} and its
+     * Creates an {@link HttpResponseException} exception using the details provided in {@link Response} and its
      * content.
      *
      * @param unexpectedExceptionInformation The unexpected exception details.
-     * @param httpResponse The {@link HttpResponse} to parse when constructing the exception.
+     * @param response The {@link Response} to parse when constructing the exception.
      * @param responseBody The response body to use when constructing the exception.
      * @param responseDecodedBody The decoded response body to use when constructing the exception.
      *
      * @return The {@link HttpResponseException} created from the provided details.
      */
     public static HttpResponseException instantiateUnexpectedException(UnexpectedExceptionInformation unexpectedExceptionInformation,
-                                                                       HttpResponse<?> httpResponse,
-                                                                       byte[] responseBody,
+                                                                       Response<?> response, byte[] responseBody,
                                                                        Object responseDecodedBody) {
         StringBuilder exceptionMessage = new StringBuilder("Status code ")
-            .append(httpResponse.getStatusCode())
+            .append(response.getStatusCode())
             .append(", ");
 
-        final String contentType = httpResponse.getHeaders().getValue(HeaderName.CONTENT_TYPE);
+        final String contentType = response.getHeaders().getValue(HeaderName.CONTENT_TYPE);
 
         if ("application/octet-stream".equalsIgnoreCase(contentType)) {
-            String contentLength = httpResponse.getHeaders().getValue(HeaderName.CONTENT_LENGTH);
+            String contentLength = response.getHeaders().getValue(HeaderName.CONTENT_LENGTH);
 
             exceptionMessage.append("(").append(contentLength).append("-byte body)");
         } else if (responseBody == null || responseBody.length == 0) {
@@ -259,18 +258,18 @@ public abstract class RestProxyBase {
 
         // If the decoded response body is on of these exception types there was a failure in creating the actual
         // exception body type. In this case return an HttpResponseException to maintain the exception having a
-        // reference to the HttpResponse and information about what caused the deserialization failure.
+        // reference to the Response and information about what caused the deserialization failure.
         if (responseDecodedBody instanceof IOException
             || responseDecodedBody instanceof MalformedValueException
             || responseDecodedBody instanceof IllegalStateException) {
 
-            return new HttpResponseException(exceptionMessage.toString(), httpResponse, null,
+            return new HttpResponseException(exceptionMessage.toString(), response, null,
                 (Throwable) responseDecodedBody);
         }
 
         HttpExceptionType exceptionType = unexpectedExceptionInformation.getExceptionType();
 
-        return new HttpResponseException(exceptionMessage.toString(), httpResponse, exceptionType,
+        return new HttpResponseException(exceptionMessage.toString(), response, exceptionType,
             responseDecodedBody);
     }
 

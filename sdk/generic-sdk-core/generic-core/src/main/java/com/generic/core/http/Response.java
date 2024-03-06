@@ -5,15 +5,18 @@ package com.generic.core.http;
 
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
+import com.generic.core.models.BinaryData;
 import com.generic.core.models.Headers;
+
+import java.io.Closeable;
+import java.io.IOException;
 
 /**
  * REST response with a strongly-typed content specified.
  *
  * @param <T> The deserialized type of the response content, available from {@link #getValue()}.
  */
-public interface Response<T> {
-
+public interface Response<T> extends Closeable {
     /**
      * Gets the response status code.
      *
@@ -41,6 +44,20 @@ public interface Response<T> {
      * @return The deserialized value of this response.
      */
     T getValue();
+
+    /**
+     * Gets the {@link BinaryData} that represents the raw body of the response.
+     *
+     * @return The {@link BinaryData} containing the response body.
+     */
+    BinaryData getBody();
+
+    /**
+     * Closes the response content stream, if any.
+     */
+    default void close() throws IOException {
+        this.getBody().close();
+    }
 
     /**
      * A static method that creates a default {@link Response} implementation.

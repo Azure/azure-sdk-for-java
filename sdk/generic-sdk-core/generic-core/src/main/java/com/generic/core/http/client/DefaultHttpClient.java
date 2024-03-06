@@ -3,6 +3,7 @@
 
 package com.generic.core.http.client;
 
+import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
@@ -67,10 +68,10 @@ class DefaultHttpClient implements HttpClient {
      *
      * @param httpRequest The {@link HttpRequest} being sent.
      *
-     * @return The corresponding {@link HttpResponse}.
+     * @return The corresponding {@link Response}.
      */
     @Override
-    public HttpResponse<?> send(HttpRequest httpRequest) {
+    public Response<?> send(HttpRequest httpRequest) {
         if (httpRequest.getHttpMethod() == HttpMethod.PATCH) {
             return sendPatchViaSocket(httpRequest);
         }
@@ -87,9 +88,9 @@ class DefaultHttpClient implements HttpClient {
      *
      * @param httpRequest The {@link HttpRequest} being sent.
      *
-     * @return The corresponding {@link HttpResponse}.
+     * @return The corresponding {@link Response}.
      */
-    private HttpResponse<?> sendPatchViaSocket(HttpRequest httpRequest) {
+    private Response<?> sendPatchViaSocket(HttpRequest httpRequest) {
         try {
             return SocketClient.sendPatchRequest(httpRequest);
         } catch (IOException e) {
@@ -202,9 +203,9 @@ class DefaultHttpClient implements HttpClient {
      * @param httpRequest The {@link HttpRequest} being sent.
      * @param connection The {@link HttpURLConnection} used to send the request.
      *
-     * @return An instance of {@link HttpResponse}.
+     * @return An instance of {@link Response}.
      */
-    private HttpResponse<?> receiveResponse(HttpRequest httpRequest, HttpURLConnection connection) {
+    private Response<?> receiveResponse(HttpRequest httpRequest, HttpURLConnection connection) {
         try {
             int responseCode = connection.getResponseCode();
             Headers responseHeaders = getResponseHeaders(connection);
@@ -452,12 +453,12 @@ class DefaultHttpClient implements HttpClient {
          *
          * @param httpRequest The {@link HttpRequest} being sent.
          *
-         * @return An instance of {@link HttpResponse}.
+         * @return An instance of {@link Response}.
          *
          * @throws ProtocolException If the protocol is not {@code HTTP} or {@code HTTPS}.
          * @throws IOException If an I/O error occurs.
          */
-        public static HttpResponse<?> sendPatchRequest(HttpRequest httpRequest) throws IOException {
+        public static Response<?> sendPatchRequest(HttpRequest httpRequest) throws IOException {
             final URL requestUrl = httpRequest.getUrl();
             final String protocol = requestUrl.getProtocol();
             final String host = requestUrl.getHost();
@@ -482,15 +483,15 @@ class DefaultHttpClient implements HttpClient {
 
         /**
          * Calls {@link #buildAndSend} to send a {@link String} representation of the request across the output stream,
-         * then calls buildResponse to get an instance of {@link HttpResponse} from the input stream.
+         * then calls buildResponse to get an instance of {@link Response} from the input stream.
          *
-         * @param httpRequest The {@link HttpRequest} being sent..
+         * @param httpRequest The {@link HttpRequest} being sent.
          * @param socket An instance of the SocketClient.
          *
-         * @return an instance of HttpUrlConnectionResponse.
+         * @return An instance of {@link Response}.
          */
         @SuppressWarnings("deprecation")
-        private static HttpResponse<?> doInputOutput(HttpRequest httpRequest, Socket socket) throws IOException {
+        private static Response<?> doInputOutput(HttpRequest httpRequest, Socket socket) throws IOException {
             httpRequest.getHeaders().set(HeaderName.HOST, httpRequest.getUrl().getHost());
 
             if (!"keep-alive".equalsIgnoreCase(httpRequest.getHeaders().getValue(HeaderName.CONNECTION))) {
@@ -504,7 +505,7 @@ class DefaultHttpClient implements HttpClient {
 
                 buildAndSend(httpRequest, out);
 
-                HttpResponse<?> response = buildResponse(httpRequest, in);
+                Response<?> response = buildResponse(httpRequest, in);
                 Header locationHeader = response.getHeaders().get(HeaderName.LOCATION);
                 String redirectLocation = (locationHeader == null) ? null : locationHeader.getValue();
 
@@ -553,18 +554,16 @@ class DefaultHttpClient implements HttpClient {
 
         /**
          * Reads the response from the input stream and extracts the information needed to construct an instance of
-         * {@link HttpResponse}.
+         * {@link Response}.
          *
          * @param httpRequest The {@link HttpRequest} being sent.
          * @param reader A {@link BufferedReader} created from the input stream from the socket.
          *
-         * @return An instance of {@link HttpResponse}.
+         * @return An instance of {@link Response}.
          *
          * @throws IOException If an I/O error occurs.
          */
-        private static HttpResponse<?> buildResponse(HttpRequest httpRequest, BufferedReader reader)
-            throws IOException {
-
+        private static Response<?> buildResponse(HttpRequest httpRequest, BufferedReader reader) throws IOException {
             String statusLine = reader.readLine();
             int dotIndex = statusLine.indexOf('.');
             int statusCode = Integer.parseInt(statusLine.substring(dotIndex + 3, dotIndex + 6));

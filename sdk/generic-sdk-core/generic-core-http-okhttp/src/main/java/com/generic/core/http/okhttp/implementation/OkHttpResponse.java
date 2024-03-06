@@ -22,7 +22,7 @@ public class OkHttpResponse extends HttpResponse<BinaryData> {
             response.code(),
             eagerlyConvertHeaders
                 ? fromOkHttpHeaders(response.headers())
-                : new OkHttpToAzureCoreHttpHeadersWrapper(response.headers()),
+                : new OkHttpToGenericCoreHttpHeadersWrapper(response.headers()),
             bodyBytes == null
                 ? response.body() == null
                     ? EMPTY_BODY

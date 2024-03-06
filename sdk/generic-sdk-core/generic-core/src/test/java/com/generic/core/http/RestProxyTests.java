@@ -11,7 +11,6 @@ import com.generic.core.http.annotation.PathParam;
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
@@ -95,7 +94,7 @@ public class RestProxyTests {
         assertEquals(200, response.getStatusCode());
     }
 
-    // TODO (vcolin7): Re-enable this test if we ever compose HttpResponse into a stream Response type.
+    // TODO (vcolin7): Re-enable this test if we ever have a stream Response type.
     /*@Test
     public void streamResponseShouldHaveHttpResponseReference() {
         LocalHttpClient client = new LocalHttpClient();
@@ -108,7 +107,6 @@ public class RestProxyTests {
 
         streamResponse.close();
 
-        // This indirectly tests that StreamResponse has HttpResponse reference.
         assertTrue(client.closeCalledOnResponse);
     }*/
 
@@ -247,7 +245,7 @@ public class RestProxyTests {
         private volatile boolean closeCalledOnResponse;
 
         @Override
-        public HttpResponse<?> send(HttpRequest request) {
+        public Response<?> send(HttpRequest request) {
             lastHttpRequest = request;
             boolean success = request.getUrl().getPath().equals("/my/url/path");
 

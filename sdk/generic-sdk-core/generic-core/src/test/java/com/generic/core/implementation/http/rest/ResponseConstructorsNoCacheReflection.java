@@ -5,7 +5,6 @@ package com.generic.core.implementation.http.rest;
 
 import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.HttpResponse;
 import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
 
@@ -43,11 +42,11 @@ class ResponseConstructorsNoCacheReflection {
         return null;
     }
 
-    Response<?> invoke(final Constructor<? extends Response<?>> constructor,
-                       final HttpResponse<?> decodedResponse, final Object bodyAsObject) {
-        final HttpRequest httpRequest = decodedResponse.getRequest();
-        final int responseStatusCode = decodedResponse.getStatusCode();
-        final Headers responseHeaders = decodedResponse.getHeaders();
+    Response<?> invoke(final Constructor<? extends Response<?>> constructor, final Response<?> response,
+                       final Object bodyAsObject) {
+        final HttpRequest httpRequest = response.getRequest();
+        final int responseStatusCode = response.getStatusCode();
+        final Headers responseHeaders = response.getHeaders();
         final int paramCount = constructor.getParameterCount();
 
         try {

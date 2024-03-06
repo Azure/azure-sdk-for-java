@@ -16,7 +16,6 @@ import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.exception.HttpResponseException;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
@@ -247,7 +246,6 @@ public abstract class HttpClientTests {
     @Test
     public void bomWithDifferentHeader() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
-
         String actual = CoreUtils.bomAwareToString(sendRequest(BOM_WITH_DIFFERENT_HEADER).toBytes(), "charset=utf-16");
 
         assertEquals(expected, actual);
@@ -260,7 +258,7 @@ public abstract class HttpClientTests {
     public void canAccessResponseBody() {
         BinaryData requestBody = BinaryData.fromString("test body");
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE)).setBody(requestBody);
-        Supplier<HttpResponse<?>> responseSupplier = () -> createHttpClient().send(request);
+        Supplier<Response<?>> responseSupplier = () -> createHttpClient().send(request);
 
         assertEquals(requestBody.toString(), responseSupplier.get().getBody().toString());
         assertArrayEquals(requestBody.toBytes(), responseSupplier.get().getBody().toBytes());
@@ -275,9 +273,10 @@ public abstract class HttpClientTests {
     public void bufferedResponseCanBeReadMultipleTimes() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE)).setBody(requestBody);
+
         request.getMetadata().setEagerlyReadResponse(true);
 
-        try (HttpResponse<?> response = createHttpClient().send(request)) {
+        try (Response<?> response = createHttpClient().send(request)) {
             // Read response twice using all accessors.
             assertEquals(requestBody.toString(), response.getBody().toString());
             assertEquals(requestBody.toString(), response.getBody().toString());
@@ -300,9 +299,10 @@ public abstract class HttpClientTests {
     public void eagerlyConvertedHeadersAreHeaders() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE)).setBody(requestBody);
+
         request.getMetadata().setEagerlyConvertHeaders(true);
 
-        try (HttpResponse<?> response = createHttpClient().send(request)) {
+        try (Response<?> response = createHttpClient().send(request)) {
             // Validate getHeaders type is Headers (not instanceof)
             assertEquals(Headers.class, response.getHeaders().getClass());
         }
@@ -319,7 +319,7 @@ public abstract class HttpClientTests {
     public void canSendBinaryData(BinaryData requestBody, byte[] expectedResponseBody) throws IOException {
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE)).setBody(requestBody);
 
-        try (HttpResponse<?> response = createHttpClient().send(request)) {
+        try (Response<?> response = createHttpClient().send(request)) {
             assertArrayEquals(expectedResponseBody, response.getBody().toBytes());
         }
     }
@@ -345,10 +345,10 @@ public abstract class HttpClientTests {
                 ProgressReporter.withProgressListener(progress::set))
             .getContext();
 
-        HttpResponse<?> httpResponse = createHttpClient()
+        Response<?> response = createHttpClient()
             .send(request);
 
-        byte[] responseBytes = httpResponse
+        byte[] responseBytes = response
             .getBodyAsByteArray()
             .block();
 
@@ -413,10 +413,9 @@ public abstract class HttpClientTests {
     }
 
     private BinaryData sendRequest(String requestPath) {
-        HttpResponse<?> httpResponse = createHttpClient()
-            .send(new HttpRequest(HttpMethod.GET, getRequestUrl(requestPath)));
+        Response<?> response = createHttpClient().send(new HttpRequest(HttpMethod.GET, getRequestUrl(requestPath)));
 
-        return httpResponse.getBody();
+        return response.getBody();
     }
 
     /**

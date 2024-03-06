@@ -8,7 +8,6 @@ import com.generic.core.models.BinaryData;
 import com.generic.core.models.Headers;
 
 import java.io.Closeable;
-import java.io.IOException;
 import java.util.function.Function;
 
 /**
@@ -49,7 +48,7 @@ public class HttpResponse<T> implements Response<T>, Closeable {
      * @param request The {@link HttpRequest} that resulted in this {@link HttpResponse}.
      * @param statusCode The response status code.
      * @param headers The response {@link Headers}.
-     * @param value The response body.
+     * @param value The response value.
      * @param isRawResponse Indicates whether the value provided needs to be deserialized.
      */
     @SuppressWarnings("unchecked")
@@ -142,12 +141,5 @@ public class HttpResponse<T> implements Response<T>, Closeable {
         }
 
         return body;
-    }
-
-    /**
-     * Closes the response content stream, if any.
-     */
-    @Override
-    public void close() throws IOException {
     }
 }
