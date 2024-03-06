@@ -1,7 +1,7 @@
 matrix:
   scenarios:
     # this test downloads 1KB (1024 bytes), small file, no chunking
-    download-file-test:
+    download-to-file-test:
       testScenario: downloadtofile
       sync: true
       sizeBytes: 1024
@@ -11,7 +11,7 @@ matrix:
       imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes), small file, no chunking with async client
-    download-file-async-test:
+    download-to-file-async-test:
       testScenario: downloadtofile
       sync: false
       sizeBytes: 1024
@@ -21,7 +21,7 @@ matrix:
       imageBuildDir: "../../.."
 
     # this test downloads 50MB (1024 * 1024 * 50), large file requiring multiple requests
-    download-file-large-test:
+    download-large-file-test:
       testScenario: downloadtofile
       sync: true
       sizeBytes: "52428800"
@@ -30,9 +30,9 @@ matrix:
       durationMin: 25
       imageBuildDir: "../../.."
 
-    # this test downloads 1KB (1024 bytes), small stream, no chunking
-    download-stream-test:
-      testScenario: downloadstream
+    # this test downloads 1KB (1024 bytes), no chunking
+    download-small-test:
+      testScenario: download
       sync: true
       sizeBytes: 1024
       parallel: 50
@@ -40,9 +40,9 @@ matrix:
       durationMin: 10
       imageBuildDir: "../../.."
 
-    # this test downloads 1KB (1024 bytes), small stream, no chunking with async client
-    download-stream-async-test:
-      testScenario: downloadstream
+    # this test downloads 1KB (1024 bytes), no chunking with async client
+    download-small-async-test:
+      testScenario: download
       sync: false
       sizeBytes: 1024
       parallel: 50
@@ -51,43 +51,13 @@ matrix:
       imageBuildDir: "../../.."
 
 #   this test downloads 50MB (1024 * 1024 * 50), requiring multiple requests
-    download-stream-large-test:
-      testScenario: downloadstream
+    download-large-test:
+      testScenario: download
       sync: true
       sizeBytes: "52428800"
       parallel: 10
       faults: true
       durationMin: 25
-      imageBuildDir: "../../.."
-
-    # this test downloads 1KB (1024 bytes), small content, no chunking
-    download-content-test:
-      testScenario: downloadcontent
-      sync: true
-      sizeBytes: 1024
-      parallel: 50
-      faults: true
-      durationMin: 10
-      imageBuildDir: "../../.."
-
-    # this test downloads 1KB (1024 bytes), small content, no chunking with async client
-    download-content-async-test:
-      testScenario: downloadcontent
-      sync: false
-      sizeBytes: 1024
-      parallel: 50
-      faults: true
-      durationMin: 10
-      imageBuildDir: "../../.."
-
-#   this test downloads 50MB (1024 * 1024 * 50), large content requiring multiple requests
-    download-content-large-test:
-      testScenario: downloadcontent
-      sync: true
-      sizeBytes: "52428800"
-      parallel: 10
-      faults: true
-      durationMin: 10
       imageBuildDir: "../../.."
 
 #   this test downloads 1KB (1024 bytes) to open input stream, no chunking
@@ -101,7 +71,7 @@ matrix:
       imageBuildDir: "../../.."
 
 #   this test downloads 50MB (1024 * 1024 * 50) to open input stream requiring multiple requests
-    inputstream-large-test:
+    inputstreamlarge-test:
       testScenario: openinputstream
       sync: true
       sizeBytes: "52428800"
@@ -111,8 +81,8 @@ matrix:
       imageBuildDir: "../../.."
 
 #   this test downloads 1KB (1024 bytes) to seekablebytechannel, no chunking
-    bytechannel-small-test:
-      testScenario: openseekablebytechannelread
+    bytechannel-test:
+      testScenario: getfileseekablebytechannelread
       sync: true
       sizeBytes: 1024
       parallel: 50
@@ -122,10 +92,10 @@ matrix:
 
 #   this test downloads 50MB (1024 * 1024 * 50) to seekablebytechannel requiring multiple requests
     bytechannel-large-test:
-      testScenario: openseekablebytechannelread
+      testScenario: getfileseekablebytechannelread
       sync: true
       sizeBytes: "52428800"
-      parallel: 50
+      parallel: 10
       faults: true
       durationMin: 25
       imageBuildDir: "../../.."

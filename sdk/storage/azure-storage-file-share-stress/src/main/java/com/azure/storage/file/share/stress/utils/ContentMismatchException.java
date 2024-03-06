@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.file.datalake.stress.utils;
+package com.azure.storage.file.share.stress.utils;
 
 public class ContentMismatchException extends RuntimeException {
     public ContentMismatchException() {

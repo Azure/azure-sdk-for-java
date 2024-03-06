@@ -1,14 +1,14 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.azure.storage.file.datalake.stress;
+package com.azure.storage.file.share.stress;
 
 import com.azure.core.util.BinaryData;
 import com.azure.core.util.Context;
 import com.azure.core.util.logging.ClientLogger;
-import com.azure.storage.file.datalake.DataLakeFileAsyncClient;
-import com.azure.storage.file.datalake.DataLakeFileClient;
-import com.azure.storage.file.datalake.stress.utils.OriginalContent;
+import com.azure.storage.file.share.ShareFileAsyncClient;
+import com.azure.storage.file.share.ShareFileClient;
+import com.azure.storage.file.share.stress.utils.OriginalContent;
 import com.azure.storage.stress.StorageStressOptions;
 import reactor.core.publisher.Mono;
 
@@ -18,42 +18,41 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.UUID;
 
-public class ReadToFile extends DataLakeScenarioBase<StorageStressOptions> {
-    private static final ClientLogger LOGGER = new ClientLogger(ReadToFile.class);
+public class DownloadToFile extends ShareScenarioBase<StorageStressOptions> {
+    private static final ClientLogger LOGGER = new ClientLogger(DownloadToFile.class);
     private final OriginalContent originalContent = new OriginalContent();
     private final Path directoryPath;
-    private final DataLakeFileClient syncClient;
-    private final DataLakeFileAsyncClient asyncClient;
-    private final DataLakeFileAsyncClient asyncNoFaultClient;
+    private final ShareFileClient syncClient;
+    private final ShareFileAsyncClient asyncClient;
+    private final ShareFileAsyncClient asyncNoFaultClient;
 
-    public ReadToFile(StorageStressOptions options) {
+    public DownloadToFile(StorageStressOptions options) {
         super(options);
         this.directoryPath = getTempPath("test");
         String fileName = generateFileName();
-        this.syncClient = getSyncFileSystemClient().getFileClient(fileName);
-        this.asyncClient = getAsyncFileSystemClient().getFileAsyncClient(fileName);
-        this.asyncNoFaultClient = getAsyncFileSystemAsyncClientNoFault().getFileAsyncClient(fileName);
+        this.syncClient = getSyncShareClient().getFileClient(fileName);
+        this.asyncClient = getAsyncShareClient().getFileClient(fileName);
+        this.asyncNoFaultClient = getAsyncShareClientNoFault().getFileClient(fileName);
     }
 
     @Override
     protected void runInternal(Context span) {
         Path downloadPath = directoryPath.resolve(UUID.randomUUID() + ".txt");
         try {
-            syncClient.readToFileWithResponse(downloadPath.toString(), null, null, null, null, false, null, null, span);
+            syncClient.downloadToFileWithResponse(downloadPath.toString(), null, null, span);
             originalContent.checkMatch(BinaryData.fromFile(downloadPath), span).block();
         } finally {
             deleteFile(downloadPath);
         }
-
     }
 
     @Override
     protected Mono<Void> runInternalAsync(Context span) {
         return Mono.using(
             () -> directoryPath.resolve(UUID.randomUUID() + ".txt"),
-            path -> asyncClient.readToFile(path.toString())
+            path -> asyncClient.downloadToFile(path.toString())
                 .flatMap(ignored -> originalContent.checkMatch(BinaryData.fromFile(path), span)),
-            ReadToFile::deleteFile);
+            DownloadToFile::deleteFile);
     }
 
     @Override

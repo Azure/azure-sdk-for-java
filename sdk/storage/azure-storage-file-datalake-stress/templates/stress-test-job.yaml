@@ -40,17 +40,17 @@ spec:
           --size {{ .Stress.sizeBytes }} \
           {{ ternary "--sync" "" .Stress.sync }} \
           {{ ternary "--faults" "" .Stress.faults }} \
-          {{ ternary "--requestFaulted" "" .Stress.requestFaulted }} \
+          {{ ternary "--requestFaulted" "" (default false .Stress.requestFaulted) }} \
           --warmup 0 \
           2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.testScenario }}-`date +%s`.log"; \
           code=$?; \
-          kill `pidof dotnet`; \
+          kill `pidof http-fault-injector`; \
           exit $code;
-          imagePullPolicy: Always
-          resources:
-            limits:
-              memory: {{ default "1Gi" .Stress.memory }}
-              cpu: {{ default 1 .Stress.cores }}
-          {{- include "stress-test-addons.container-env" . | nindent 6 }}
+      imagePullPolicy: Always
+      resources:
+        limits:
+          memory: {{ default "1Gi" .Stress.memory }}
+          cpu: {{ default 1 .Stress.cores }}
+      {{- include "stress-test-addons.container-env" . | nindent 6 }}
 
 {{- end -}}

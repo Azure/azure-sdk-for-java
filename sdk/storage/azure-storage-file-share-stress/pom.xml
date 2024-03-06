@@ -5,7 +5,7 @@
   <modelVersion>4.0.0</modelVersion>
 
   <groupId>com.azure</groupId>
-  <artifactId>azure-storage-file-datalake-stress</artifactId>
+  <artifactId>azure-storage-file-share-stress</artifactId>
   <packaging>jar</packaging>
   <version>1.0.0-beta.1</version>
 
@@ -39,8 +39,8 @@
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
-      <artifactId>azure-storage-file-datalake</artifactId>
-      <version>12.18.1</version> <!-- {x-version-update;com.azure:azure-storage-file-datalake;current} -->
+      <artifactId>azure-storage-file-share</artifactId>
+      <version>12.21.1</version> <!-- {x-version-update;com.azure:azure-storage-file-share;current} -->
     </dependency>
     <dependency>
       <groupId>com.azure</groupId>
@@ -87,7 +87,7 @@
             <configuration>
               <archive>
                 <manifest>
-                  <mainClass>com.azure.storage.file.datalake.stress.App</mainClass>
+                  <mainClass>com.azure.storage.file.share.stress.App</mainClass>
                 </manifest>
               </archive>
               <descriptorRefs>
