@@ -64,6 +64,8 @@ public final class SpanDataMapper {
     // this is needed until Azure SDK moves to latest OTel semantic conventions
     private static final String COSMOS = "Cosmos";
 
+    private static final long USE_INGESTION_SAMPLING = -1;
+
     private static final Mappings MAPPINGS;
 
     // TODO (trask) add to generated ContextTagKeys class
@@ -837,12 +839,14 @@ public final class SpanDataMapper {
     }
 
     private static void setItemCount(AbstractTelemetryBuilder telemetryBuilder, long itemCount) {
-        telemetryBuilder.setSampleRate(100.0f / itemCount);
+        if (itemCount != USE_INGESTION_SAMPLING) {
+            telemetryBuilder.setSampleRate(100.0f / itemCount);
+        }
     }
 
     private static long getItemCount(SpanData span) {
         Long itemCount = span.getAttributes().get(AiSemanticAttributes.ITEM_COUNT);
-        return itemCount == null ? 1 : itemCount;
+        return itemCount == null ? USE_INGESTION_SAMPLING : itemCount;
     }
 
     private static void addLinks(AbstractTelemetryBuilder telemetryBuilder, List<LinkData> links) {

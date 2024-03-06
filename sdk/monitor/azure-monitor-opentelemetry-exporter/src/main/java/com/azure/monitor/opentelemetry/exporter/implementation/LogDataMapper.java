@@ -38,6 +38,8 @@ public class LogDataMapper {
     private static final AttributeKey<String> LOG4J_MARKER = stringKey("log4j.marker");
     private static final AttributeKey<List<String>> LOGBACK_MARKER = stringArrayKey("logback.marker");
 
+    private static final long USE_INGESTION_SAMPLING = -1;
+
     private static final Mappings MAPPINGS;
 
     static {
@@ -213,12 +215,14 @@ public class LogDataMapper {
 
 
     private static void setItemCount(AbstractTelemetryBuilder telemetryBuilder, long itemCount) {
-        telemetryBuilder.setSampleRate(100.0f / itemCount);
+        if (itemCount != USE_INGESTION_SAMPLING) {
+            telemetryBuilder.setSampleRate(100.0f / itemCount);
+        }
     }
 
     private static long getItemCount(LogRecordData log) {
         Long itemCount = log.getAttributes().get(AiSemanticAttributes.ITEM_COUNT);
-        return itemCount == null ? 1 : itemCount;
+        return itemCount == null ? USE_INGESTION_SAMPLING : itemCount;
     }
 
     private static void setFunctionExtraTraceAttributes(
