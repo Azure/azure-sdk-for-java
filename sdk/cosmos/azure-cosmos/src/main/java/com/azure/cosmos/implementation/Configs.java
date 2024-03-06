@@ -171,6 +171,10 @@ public class Configs {
 
     public static final String TCP_CONNECTION_ACQUISITION_TIMEOUT_IN_MS = "COSMOS.TCP_CONNECTION_ACQUISITION_TIMEOUT_IN_MS";
 
+    // Error handling strategy in diagnostics provider
+    public static final String DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR = "COSMOS.DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR";
+    public static final boolean DEFAULT_DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR = true;
+
     public Configs() {
         this.sslContext = sslContextInit();
     }
@@ -493,5 +497,11 @@ public class Configs {
                 defaultValueInMs
             )
         );
+    }
+
+    public static boolean shouldDiagnosticsProviderSystemExitOnError() {
+        return getJVMConfigAsBoolean(
+            DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR,
+            DEFAULT_DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR);
     }
 }

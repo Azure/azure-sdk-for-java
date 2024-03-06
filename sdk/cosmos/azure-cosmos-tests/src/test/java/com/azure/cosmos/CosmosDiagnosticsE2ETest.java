@@ -5,6 +5,7 @@ package com.azure.cosmos;
 
 import com.azure.core.util.Context;
 import com.azure.cosmos.implementation.ConsoleLoggingRegistryFactory;
+import com.azure.cosmos.implementation.DiagnosticsProviderJvmFatalErrorMapper;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
@@ -29,6 +30,8 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
 import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
+import reactor.core.publisher.Mono;
+import reactor.core.scheduler.Schedulers;
 
 import java.time.Duration;
 import java.util.ArrayList;
@@ -288,6 +291,75 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         assertThat(systemExited.get()).isFalse();
     }
 
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void OOMDiagnosticsHandler() throws InterruptedException {
+        // validate when false, System.exit will not be called
+        System.setProperty("COSMOS.DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR", "false");
+
+        try {
+            OOMDiagnosticsHandle capturingHandler = new OOMDiagnosticsHandle();
+
+            CosmosClientBuilder builder = this
+                .getClientBuilder()
+                .clientTelemetryConfig(new CosmosClientTelemetryConfig().diagnosticsHandler(capturingHandler));
+
+            CosmosContainer container = this.getContainer(builder);
+
+            AtomicBoolean systemExited = new AtomicBoolean(false);
+            Runtime.getRuntime().addShutdownHook(new Thread() {
+                @Override
+                public void run() {
+                    systemExited.set(true);
+                }
+            });
+
+            // with OOM exception, if no system.exit is called, the reactor thread will hang
+            // so put it in different thead
+            Mono.just(this)
+                .doOnNext(t -> executeTestCase(container))
+                .subscribeOn(Schedulers.parallel())
+                .subscribe();
+
+            Thread.sleep(2000);
+            assertThat(systemExited.get()).isFalse();
+        } finally {
+            System.clearProperty("COSMOS.DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR");
+        }
+    }
+
+    @Test(groups = { "emulator" }, timeOut = TIMEOUT)
+    public void OOMDiagnosticsHandlerWithErrorMapper() {
+        DiagnosticsProviderJvmFatalErrorMapper
+            .getMapper()
+            .registerFatalErrorMapper((error) -> new NullPointerException("test"));
+
+        // validate when false, System.exit will not be called
+        OOMDiagnosticsHandle capturingHandler = new OOMDiagnosticsHandle();
+
+        CosmosClientBuilder builder = this
+            .getClientBuilder()
+            .clientTelemetryConfig(new CosmosClientTelemetryConfig().diagnosticsHandler(capturingHandler));
+
+        CosmosContainer container = this.getContainer(builder);
+
+        AtomicBoolean systemExited = new AtomicBoolean(false);
+        Runtime.getRuntime().addShutdownHook(new Thread() {
+            @Override
+            public void run() {
+                systemExited.set(true);
+            }
+        });
+
+        try {
+            executeTestCase(container);
+            fail("should fail with RuntimeException");
+
+        } catch (RuntimeException e) {
+            assertThat(e.getCause() instanceof NullPointerException).isTrue();
+            assertThat(systemExited.get()).isFalse();
+        }
+    }
+
     private void executeTestCase(CosmosContainer container) {
         String id = UUID.randomUUID().toString();
         CosmosItemResponse<ObjectNode> response = container.createItem(
@@ -445,6 +517,14 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
         @Override
         public void handleDiagnostics(CosmosDiagnosticsContext diagnosticsContext, Context traceContext) {
             throw new NullPointerException("NullPointerDiagnosticsHandle");
+        }
+    }
+
+    private static class OOMDiagnosticsHandle implements CosmosDiagnosticsHandler {
+
+        @Override
+        public void handleDiagnostics(CosmosDiagnosticsContext diagnosticsContext, Context traceContext) {
+            throw new OutOfMemoryError("OOMDiagnosticsHandle");
         }
     }
 }

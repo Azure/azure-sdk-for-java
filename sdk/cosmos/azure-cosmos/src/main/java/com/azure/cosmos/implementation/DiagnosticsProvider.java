@@ -94,6 +94,7 @@ public final class DiagnosticsProvider {
     private final CosmosTracer cosmosTracer;
 
     private final CosmosClientTelemetryConfig telemetryConfig;
+    private final boolean shouldSystemExitOnError;
 
 
     public DiagnosticsProvider(
@@ -139,6 +140,7 @@ public final class DiagnosticsProvider {
 
         this.propagatingMono = new PropagatingMono();
         this.propagatingFlux = new PropagatingFlux();
+        this.shouldSystemExitOnError = Configs.shouldDiagnosticsProviderSystemExitOnError();
     }
 
     public boolean isEnabled() {
@@ -1454,12 +1456,34 @@ public final class DiagnosticsProvider {
 
     private void handleErrors(Throwable throwable, int systemExitCode) {
         if (throwable instanceof Error) {
-            LOGGER.error("Unexpected error in DiagnosticsProvider.endSpan. ",  throwable);
-            System.err.println("Unexpected error in DiagnosticsProvider.endSpan. " + throwable);
-            System.exit(systemExitCode);
+            handleFatalError((Error) throwable, systemExitCode);
         } else {
             LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ",  throwable);
             throw new RuntimeException(throwable);
+        }
+    }
+
+    private void handleFatalError(Error error, int systemExitCode) {
+        Exception exception = DiagnosticsProviderJvmFatalErrorMapper.getMapper().mapFatalError(error);
+        if (exception != null) {
+            String errorMessage = "Runtime exception mapped from fatal error " + error;
+            throw new RuntimeException(errorMessage, exception);
+        }
+
+        // there is no mapping, handle error
+        if (this.shouldSystemExitOnError) {
+            LOGGER.error("Unexpected error in DiagnosticsProvider.endSpan. Calling System.exit({})...", systemExitCode, error);
+            System.err.println(
+                String.format(
+                    "Unexpected error in DiagnosticsProvider.endSpan. Calling System.exit(%d)... %s",
+                    systemExitCode,
+                    error)
+            );
+
+            System.exit(systemExitCode);
+        } else {
+            // bubble up the error
+            throw error;
         }
     }
 
