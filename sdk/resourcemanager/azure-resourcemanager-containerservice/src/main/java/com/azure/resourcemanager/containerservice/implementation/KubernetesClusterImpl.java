@@ -28,6 +28,7 @@ import com.azure.resourcemanager.containerservice.models.CredentialResult;
 import com.azure.resourcemanager.containerservice.models.Format;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentPool;
+import com.azure.resourcemanager.containerservice.models.KubernetesSupportPlan;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAadProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAddonProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterAgentPoolProfile;
@@ -35,6 +36,9 @@ import com.azure.resourcemanager.containerservice.models.ManagedClusterApiServer
 import com.azure.resourcemanager.containerservice.models.ManagedClusterIdentity;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterServicePrincipalProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterSku;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterSkuName;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterSkuTier;
 import com.azure.resourcemanager.containerservice.models.PowerState;
 import com.azure.resourcemanager.containerservice.models.ResourceIdentityType;
 import com.azure.resourcemanager.containerservice.models.UserAssignedIdentity;
@@ -247,6 +251,11 @@ public class KubernetesClusterImpl
     }
 
     @Override
+    public ManagedClusterSku sku() {
+        return this.innerModel().sku();
+    }
+
+    @Override
     public String systemAssignedManagedServiceIdentityPrincipalId() {
         String objectId = null;
         if (this.innerModel().identityProfile() != null) {
@@ -434,6 +443,31 @@ public class KubernetesClusterImpl
         this.adminKubeConfigs = null;
         this.userKubeConfigs = null;
         this.formatUserKubeConfigsMap.clear();
+    }
+
+    @Override
+    public KubernetesClusterImpl withFreeSku() {
+        if (!this.isInCreateMode() && ManagedClusterSkuTier.PREMIUM.equals(this.innerModel().sku().tier())) {
+            this.innerModel().withSupportPlan(KubernetesSupportPlan.KUBERNETES_OFFICIAL);
+        }
+        this.innerModel().withSku(new ManagedClusterSku().withTier(ManagedClusterSkuTier.FREE).withName(ManagedClusterSkuName.BASE));
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterImpl withStandardSku() {
+        if (!this.isInCreateMode() && ManagedClusterSkuTier.PREMIUM.equals(this.innerModel().sku().tier())) {
+            this.innerModel().withSupportPlan(KubernetesSupportPlan.KUBERNETES_OFFICIAL);
+        }
+        this.innerModel().withSku(new ManagedClusterSku().withTier(ManagedClusterSkuTier.STANDARD).withName(ManagedClusterSkuName.BASE));
+        return this;
+    }
+
+    @Override
+    public KubernetesClusterImpl withPremiumSku() {
+        this.innerModel().withSku(new ManagedClusterSku().withTier(ManagedClusterSkuTier.PREMIUM).withName(ManagedClusterSkuName.BASE));
+        this.innerModel().withSupportPlan(KubernetesSupportPlan.AKSLONG_TERM_SUPPORT);
+        return this;
     }
 
     @Override
