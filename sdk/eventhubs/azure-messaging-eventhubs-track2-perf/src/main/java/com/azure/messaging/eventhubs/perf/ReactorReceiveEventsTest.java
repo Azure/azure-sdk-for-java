@@ -95,7 +95,7 @@ public class ReactorReceiveEventsTest extends ServiceTest<EventHubsReceiveOption
         final PerfMessageSerializer messageSerializer = new PerfMessageSerializer();
         connection = new ReactorConnection(connectionId,
             connectionOptions, provider, handlerProvider, linkProvider, tokenManagerProvider,
-            messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND, false);
+            messageSerializer, SenderSettleMode.SETTLED, ReceiverSettleMode.SECOND, false, false);
 
         return Mono.empty();
     }
