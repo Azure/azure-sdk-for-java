@@ -100,11 +100,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
 
     @Override
     public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
-        try {
-            return attempt(httpRequest, next, 0, null);
-        } catch (IOException e) {
-            throw new UncheckedIOException(e);
-        }
+        return attempt(httpRequest, next, 0, null);
     }
 
     /*
@@ -154,7 +150,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     private Response<?> attempt(final HttpRequest httpRequest, final HttpPipelineNextPolicy next, final int tryCount,
-                                final List<Exception> suppressed) throws IOException {
+                                final List<Exception> suppressed) {
         httpRequest.getMetadata().setRetryCount(tryCount + 1);
 
         Response<?> response;
