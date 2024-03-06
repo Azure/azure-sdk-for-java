@@ -4,8 +4,6 @@
 package com.generic.core.implementation.http.rest;
 
 import com.generic.core.http.Response;
-import com.generic.core.http.client.HttpClient;
-import com.generic.core.http.exception.HttpResponseException;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.RequestOptions;
@@ -27,14 +25,14 @@ import java.util.function.Consumer;
 import static com.generic.core.implementation.http.serializer.HttpResponseBodyDecoder.decodeByteArray;
 
 public class RestProxyImpl extends RestProxyBase {
+
     /**
-     * Create a {@link RestProxyImpl}.
+     * Create a RestProxy.
      *
-     * @param httpPipeline The {@link HttpPipeline pipeline} that will be used to send {@link HttpRequest requests}.
-     * @param serializer The {@link ObjectSerializer serializer} that will be used to convert POJOs to and from request
-     * and response bodies.
-     * @param interfaceParser The {@link SwaggerInterfaceParser parser} that contains information about the interface
-     * describing REST API methods that this {@link RestProxyImpl} implements.
+     * @param httpPipeline The HttpPipelinePolicy and HttpClient httpPipeline that will be used to send HTTP requests.
+     * @param serializer The serializer that will be used to convert response bodies to POJOs.
+     * @param interfaceParser The parser that contains information about the interface describing REST API methods
+     * to be used.
      */
     public RestProxyImpl(HttpPipeline httpPipeline, ObjectSerializer serializer,
                          SwaggerInterfaceParser interfaceParser) {
@@ -42,11 +40,11 @@ public class RestProxyImpl extends RestProxyBase {
     }
 
     /**
-     * Send the provided request, applying any request policies provided to the {@link HttpClient} instance.
+     * Send the provided request, applying any request policies provided to the HttpClient instance.
      *
-     * @param request The {@link HttpRequest} to send.
+     * @param request the HTTP request to send.
      *
-     * @return The resulting {@link Response} from sending the {@link HttpRequest}.
+     * @return A {@link Response}.
      */
     Response<?> send(HttpRequest request) {
         return httpPipeline.send(request);
@@ -56,8 +54,8 @@ public class RestProxyImpl extends RestProxyBase {
     @Override
     public Object invoke(Object proxy, Method method, RequestOptions options, EnumSet<ErrorOptions> errorOptions,
                          Consumer<HttpRequest> requestCallback, SwaggerMethodParser methodParser, HttpRequest request) {
-        // If RequestOptions were provided, apply the request callback operations before validating the body. This is
-        // because the callbacks may mutate the request body.
+        // If there is 'RequestOptions' apply its request callback operations before validating the body.
+        // This is because the callbacks may mutate the request body.
         if (options != null && requestCallback != null) {
             requestCallback.accept(request);
         }
@@ -98,17 +96,17 @@ public class RestProxyImpl extends RestProxyBase {
     }
 
     /**
-     * Ensures the provided {@link Response} has an allowed status code, or create an {@link HttpResponseException} if
-     * it does not.
+     * Create a publisher that (1) emits error if the provided response {@code decodedResponse} has 'disallowed status
+     * code' OR (2) emits provided response if it's status code ia allowed.
      *
-     * <p>'allowed status code' is one of the status code defined in the provided {@link SwaggerMethodParser} or is in
-     * the int[] of additional allowed status codes.</p>
+     * <p>'disallowed status code' is one of the status code defined in the provided SwaggerMethodParser or is in the int[]
+     * of additional allowed status codes.</p>
      *
-     * @param response The {@link Response} to check.
-     * @param methodParser The {@link SwaggerMethodParser} that contains information about the service interface method
-     * that initiated the {@link HttpRequest}.
+     * @param response The Response to check.
+     * @param methodParser The method parser that contains information about the service interface method that initiated
+     * the HTTP request.
      *
-     * @return The {@link Response}.
+     * @return The decodedResponse.
      */
     private Response<?> ensureExpectedStatus(Response<?> response, SwaggerMethodParser methodParser,
                                              RequestOptions options, EnumSet<ErrorOptions> errorOptions) {
@@ -134,35 +132,6 @@ public class RestProxyImpl extends RestProxyBase {
             throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                 response, responseBytes, response.getValue());
         }
-    }
-
-    /**
-     * Handle the provided {@link Response} and return the deserialized value.
-     *
-     * @param response The {@link Response} to the original {@link HttpRequest}.
-     * @param methodParser The {@link SwaggerMethodParser} that the request originates from.
-     * @param returnType The {@link Type} of value that will be returned.
-     *
-     * @return The deserialized result.
-     */
-    private Object handleRestReturnType(Response<?> response, SwaggerMethodParser methodParser, Type returnType,
-                                        RequestOptions options, EnumSet<ErrorOptions> errorOptions) throws IOException {
-        final Response<?> expectedResponse = ensureExpectedStatus(response, methodParser, options, errorOptions);
-        final Object result;
-
-        if (TypeUtil.isTypeOrSubTypeOf(returnType, void.class) || TypeUtil.isTypeOrSubTypeOf(returnType, Void.class)) {
-            try {
-                expectedResponse.close();
-            } catch (IOException e) {
-                throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-            }
-
-            result = null;
-        } else {
-            result = handleRestResponseReturnType(response, methodParser, returnType);
-        }
-
-        return result;
     }
 
     private Object handleRestResponseReturnType(Response<?> response, SwaggerMethodParser methodParser,
@@ -222,10 +191,10 @@ public class RestProxyImpl extends RestProxyBase {
         } else if (TypeUtil.isTypeOrSubTypeOf(entityType, BinaryData.class)) {
             // BinaryData
             //
-            // The raw response is directly used to create an instance of BinaryData which then provides different
-            // methods to read the response. The reading of the response is delayed until BinaryData is read and
-            // depending on which format the content is converted into, the response is not necessarily fully copied
-            // into memory resulting in lesser overall memory usage.
+            // The raw response is directly used to create an instance of BinaryData which then provides
+            // different methods to read the response. The reading of the response is delayed until BinaryData
+            // is read and depending on which format the content is converted into, the response is not necessarily
+            // fully copied into memory resulting in lesser overall memory usage.
             result = response.getBody();
         } else {
             if (methodParser.isResponseBodyIgnored()) {
@@ -241,7 +210,37 @@ public class RestProxyImpl extends RestProxyBase {
         return result;
     }
 
-    public void updateRequest(RequestDataConfiguration requestDataConfiguration, ObjectSerializer objectSerializer) {
+    /**
+     * Handle the provided HTTP response and return the deserialized value.
+     *
+     * @param response The HTTP response to the original HTTP request.
+     * @param methodParser The SwaggerMethodParser that the request originates from.
+     * @param returnType The type of value that will be returned.
+     *
+     * @return The deserialized result.
+     */
+    private Object handleRestReturnType(Response<?> response, SwaggerMethodParser methodParser, Type returnType,
+                                        RequestOptions options, EnumSet<ErrorOptions> errorOptions) throws IOException {
+        final Response<?> expectedResponse = ensureExpectedStatus(response, methodParser, options, errorOptions);
+        final Object result;
+
+        if (TypeUtil.isTypeOrSubTypeOf(returnType, void.class) || TypeUtil.isTypeOrSubTypeOf(returnType, Void.class)) {
+            try {
+                expectedResponse.close();
+            } catch (IOException e) {
+                throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
+            }
+
+            result = null;
+        } else {
+            result = handleRestResponseReturnType(response, methodParser, returnType);
+        }
+
+        return result;
+    }
+
+    public void updateRequest(RequestDataConfiguration requestDataConfiguration, ObjectSerializer serializerAdapter) {
+
         boolean isJson = requestDataConfiguration.isJson();
         HttpRequest request = requestDataConfiguration.getHttpRequest();
         Object bodyContentObject = requestDataConfiguration.getBodyContent();
@@ -253,12 +252,11 @@ public class RestProxyImpl extends RestProxyBase {
         // Attempt to use JsonSerializable or XmlSerializable in a separate block.
         if (supportsJsonSerializable(bodyContentObject.getClass())) {
             request.setBody(BinaryData.fromObject(bodyContentObject));
-
             return;
         }
 
         if (isJson) {
-            request.setBody(BinaryData.fromObject(bodyContentObject, objectSerializer));
+            request.setBody(BinaryData.fromObject(bodyContentObject, serializerAdapter));
         } else if (bodyContentObject instanceof byte[]) {
             request.setBody(BinaryData.fromBytes((byte[]) bodyContentObject));
         } else if (bodyContentObject instanceof String) {
@@ -273,7 +271,7 @@ public class RestProxyImpl extends RestProxyBase {
                 request.setBody(BinaryData.fromBytes(array));
             }
         } else {
-            request.setBody(BinaryData.fromObject(bodyContentObject, objectSerializer));
+            request.setBody(BinaryData.fromObject(bodyContentObject, serializerAdapter));
         }
     }
 }

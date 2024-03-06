@@ -80,7 +80,6 @@ public class DefaultHttpClientTest {
                 resp.getOutputStream().write(SHORT_BODY);
             } else if (get && RETURN_HEADERS_AS_IS_PATH.equals(path)) {
                 List<String> headerNames = Collections.list(req.getHeaderNames());
-
                 headerNames.forEach(headerName -> {
                     List<String> headerValues = Collections.list(req.getHeaders(headerName));
                     headerValues.forEach(headerValue -> resp.addHeader(headerName, headerValue));
@@ -151,27 +150,24 @@ public class DefaultHttpClientTest {
 
         try (Response<?> response = doRequest(client, "/error")) {
             assertEquals(500, response.getStatusCode());
-
             String responseBodyAsString = response.getBody().toString();
-
             assertTrue(responseBodyAsString.contains("error"));
         }
+
     }
 
     @Test
     public void testConcurrentRequests() throws InterruptedException {
         int numRequests = 100; // 100 = 1GB of data read
         HttpClient client = new DefaultHttpClientBuilder().build();
+
         ForkJoinPool pool = new ForkJoinPool();
         List<Callable<Void>> requests = new ArrayList<>(numRequests);
-
         for (int i = 0; i < numRequests; i++) {
             requests.add(() -> {
                 try (Response<?> response = doRequest(client, "/error")) {
                     byte[] body = response.getBody().toBytes();
-
                     assertArraysEqual(LONG_BODY, body);
-
                     return null;
                 }
             });
@@ -179,7 +175,6 @@ public class DefaultHttpClientTest {
 
         pool.invokeAll(requests);
         pool.shutdown();
-
         assertTrue(pool.awaitTermination(60, TimeUnit.SECONDS));
     }
 
@@ -196,9 +191,8 @@ public class DefaultHttpClientTest {
         Headers headers = new Headers().set(singleValueHeaderName, singleValueHeaderValue)
             .set(multiValueHeaderName, multiValueHeaderValue);
 
-        try (Response<?> response = client.send(new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH))
-            .setHeaders(headers))) {
-
+        try (Response<?> response = client.send(
+            new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH)).setHeaders(headers))) {
             assertEquals(200, response.getStatusCode());
 
             Headers responseHeaders = response.getHeaders();
@@ -359,7 +353,6 @@ public class DefaultHttpClientTest {
 
     private static Response<?> getResponse(HttpClient client, String path, Context context) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
-
         request.getMetadata().setContext(context);
 
         return client.send(request);

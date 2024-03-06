@@ -60,16 +60,17 @@ final class ResponseConstructorsCacheLambdaMetaFactory {
 
             if (paramCount >= 3 && paramCount <= 4) {
                 try {
-                    MethodHandle ctrMethodHandle = LOOKUP.unreflectConstructor(constructor);
-
                     if (paramCount == 3) {
+                        MethodHandle ctrMethodHandle = LOOKUP.unreflectConstructor(constructor);
                         return new ResponseConstructor(3, LambdaMetafactory.metafactory(LOOKUP, "apply",
-                            ResponseFunc3.METHOD_TYPE, ResponseFunc3.SIGNATURE, ctrMethodHandle,
-                            ctrMethodHandle.type()).getTarget());
+                                ResponseFunc3.METHOD_TYPE, ResponseFunc3.SIGNATURE, ctrMethodHandle, ctrMethodHandle.type())
+                            .getTarget());
                     } else {
+                        MethodHandle ctrMethodHandle = LOOKUP.unreflectConstructor(constructor);
+
                         return new ResponseConstructor(4, LambdaMetafactory.metafactory(LOOKUP, "apply",
-                            ResponseFunc4.METHOD_TYPE, ResponseFunc4.SIGNATURE, ctrMethodHandle,
-                            ctrMethodHandle.type()).getTarget());
+                                ResponseFunc4.METHOD_TYPE, ResponseFunc4.SIGNATURE, ctrMethodHandle, ctrMethodHandle.type())
+                            .getTarget());
                     }
                 } catch (Throwable t) {
                     throw logger.logThrowableAsError(new RuntimeException(t));

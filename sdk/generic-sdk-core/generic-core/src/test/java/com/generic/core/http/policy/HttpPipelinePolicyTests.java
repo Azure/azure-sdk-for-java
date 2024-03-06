@@ -91,7 +91,6 @@ public class HttpPipelinePolicyTests {
             } catch (InterruptedException e) {
                 throw new RuntimeException(e);
             }
-
             return null;
         };
         URL url = createUrl("http://localhost/");
@@ -103,6 +102,7 @@ public class HttpPipelinePolicyTests {
 
         pipeline.send(new HttpRequest(HttpMethod.GET, url));
     }
+
 
     private static class SyncPolicy implements HttpPipelinePolicy {
         final AtomicInteger syncCalls = new AtomicInteger();

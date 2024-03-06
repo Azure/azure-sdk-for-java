@@ -691,8 +691,8 @@ public class SwaggerMethodParserTests {
     }
 
     private static Stream<Arguments> returnTypeSupplierForDecodableAndEagerReading(boolean nonBinaryTypeStatus,
-                                                                                   boolean binaryTypeStatus,
-                                                                                   boolean voidTypeStatus) {
+                                                                                    boolean binaryTypeStatus,
+                                                                                    boolean voidTypeStatus) {
         return Stream.of(
             // Unknown response type can't be determined to be decodable.
             Arguments.of(null, false),

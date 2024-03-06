@@ -11,6 +11,7 @@ import com.generic.core.models.Header;
 import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
 import com.generic.core.shared.LocalTestServer;
+
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
@@ -124,7 +125,6 @@ public class OkHttpHttpClientTests {
             requests.add(() -> {
                 try (Response<?> response = doRequest(client, "/long")) {
                     byte[] body = response.getBody().toBytes();
-
                     TestUtils.assertArraysEqual(LONG_BODY, body);
 
                     return null;

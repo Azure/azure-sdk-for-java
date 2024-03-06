@@ -34,7 +34,7 @@ public class OkHttpResponse<T> implements Response<T> {
         this.statusCode = response.code();
         this.headers = eagerlyConvertHeaders
             ? fromOkHttpHeaders(response.headers())
-            : new OkHttpToGenericCoreHttpHeadersWrapper(response.headers());
+            : new OkHttpToAzureCoreHttpHeadersWrapper(response.headers());
         // innerResponse.body() getter will not return null for server returned responses.
         // It can be null:
         // [a]. if response is built manually with null body (e.g. for mocking)

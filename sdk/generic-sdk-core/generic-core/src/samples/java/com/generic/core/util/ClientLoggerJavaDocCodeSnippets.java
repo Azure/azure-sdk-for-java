@@ -14,10 +14,12 @@ import java.util.Map;
  * Code snippets for {@link ClientLogger} javadocs
  */
 public class ClientLoggerJavaDocCodeSnippets {
+
     /**
      * Code snippets to show usage of {@link ClientLogger} at all log levels
      */
     public void loggingSnippets() {
+
         ClientLogger logger = new ClientLogger(ClientLoggerJavaDocCodeSnippets.class);
         String name = getName();
 
@@ -106,7 +108,7 @@ public class ClientLoggerJavaDocCodeSnippets {
         }
         // END: com.generic.core.util.logging.clientlogger.atError#deffered-value
 
-        Response<Void> response = Response.create(null, 200, null, null);
+        Response<Void> response = getResponse();
         // BEGIN: com.generic.core.util.logging.clientlogger.atLevel
         ClientLogger.LogLevel level = response.getStatusCode() == 200
             ? ClientLogger.LogLevel.INFORMATIONAL : ClientLogger.LogLevel.WARNING;
@@ -135,6 +137,10 @@ public class ClientLoggerJavaDocCodeSnippets {
             .addKeyValue("key", new LoggableObject("string representation"))
             .log(() -> String.format("Param 1: %s, Param 2: %s, Param 3: %s", "param1", "param2", "param3"));
         // END: com.generic.core.util.logging.clientlogger.atverbose.addKeyValue#object
+    }
+
+    private Response<Void> getResponse() {
+        return Response.create(null, 200, null, null);
     }
 
     /**

@@ -22,15 +22,17 @@ public final class ResponseConstructorsCache {
     private static final String THREE_PARAM_ERROR = "Failed to deserialize 3-parameter response.";
     private static final String FOUR_PARAM_ERROR = "Failed to deserialize 4-parameter response.";
     private static final String INVALID_PARAM_COUNT = "Response constructor with expected parameters not found.";
+
     private static final Map<Class<?>, ReflectiveInvoker> CACHE = new ConcurrentHashMap<>();
+
     private static final ClientLogger LOGGER = new ClientLogger(ResponseConstructorsCache.class);
 
     /**
      * Identify the suitable {@link ReflectiveInvoker} to construct the given response class.
      *
      * @param responseClass The response class.
-     * @return The {@link ReflectiveInvoker} that is capable of constructing an instance of the class or null if no
-     * handle is found.
+     * @return The {@link ReflectiveInvoker} that is capable of constructing an instance of the class or null if no handle is
+     * found.
      */
     public ReflectiveInvoker get(Class<? extends Response<?>> responseClass) {
         return CACHE.computeIfAbsent(responseClass, ResponseConstructorsCache::locateResponseConstructor);
@@ -51,14 +53,13 @@ public final class ResponseConstructorsCache {
      * amount of resources.
      *
      * @param responseClass The response class.
-     * @return The {@link ReflectiveInvoker} that is capable of constructing an instance of the class or null if no
-     * handle is found.
+     * @return The {@link ReflectiveInvoker} that is capable of constructing an instance of the class or null if no handle is
+     * found.
      */
     private static ReflectiveInvoker locateResponseConstructor(Class<?> responseClass) {
         Constructor<?>[] constructors = responseClass.getDeclaredConstructors();
         // Sort constructors in the "descending order" of parameter count.
         Arrays.sort(constructors, Comparator.comparing(Constructor::getParameterCount, (a, b) -> b - a));
-
         for (Constructor<?> constructor : constructors) {
             final int paramCount = constructor.getParameterCount();
             if (paramCount >= 3 && paramCount <= 5) {
@@ -86,8 +87,8 @@ public final class ResponseConstructorsCache {
         // Before this was returning null, but in all cases where null is returned from this method an exception would
         // be thrown later. Instead, just throw here to properly use computeIfAbsent by not inserting a null key-value
         // pair that would cause the computation to always be performed.
-        throw LOGGER.logThrowableAsError(
-            new RuntimeException("Cannot find suitable constructor for class " + responseClass));
+        throw LOGGER.logThrowableAsError(new RuntimeException("Cannot find suitable constructor for class "
+            + responseClass));
     }
 
     /**
@@ -103,7 +104,6 @@ public final class ResponseConstructorsCache {
         final int responseStatusCode = response.getStatusCode();
 
         final int paramCount = reflectiveInvoker.getParameterCount();
-
         switch (paramCount) {
             case 3:
                 return constructResponse(reflectiveInvoker, THREE_PARAM_ERROR, httpRequest, responseStatusCode,
@@ -116,8 +116,7 @@ public final class ResponseConstructorsCache {
         }
     }
 
-    private static Response<?> constructResponse(ReflectiveInvoker reflectiveInvoker, String exceptionMessage,
-                                                 Object... params) {
+    private static Response<?> constructResponse(ReflectiveInvoker reflectiveInvoker, String exceptionMessage, Object... params) {
         try {
             return (Response<?>) reflectiveInvoker.invokeStatic(params);
         } catch (Exception exception) {

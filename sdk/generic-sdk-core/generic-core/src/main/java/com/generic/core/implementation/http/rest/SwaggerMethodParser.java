@@ -776,7 +776,7 @@ public class SwaggerMethodParser implements HttpResponseDecodeData {
             return unwrapReturnType(TypeUtil.getTypeArgument(returnType));
         }
 
-        // Finally, there is no more unwrapping to perform and return the type as-is.
+        // Finally, there is no more unwrapping to perform and return The type as-is.
         return returnType;
     }
 

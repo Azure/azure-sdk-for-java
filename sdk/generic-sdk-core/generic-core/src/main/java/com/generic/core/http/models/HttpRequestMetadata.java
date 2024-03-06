@@ -39,12 +39,10 @@ public final class HttpRequestMetadata {
      * Sets the {@link Context} associated with the request.
      *
      * @param context The {@link Context} associated with the request.
-     *
      * @return The updated {@link HttpRequestMetadata} object.
      */
     public HttpRequestMetadata setContext(Context context) {
         this.context = context;
-
         return this;
     }
 
@@ -61,12 +59,10 @@ public final class HttpRequestMetadata {
      * Sets the number of times the request has been retried.
      *
      * @param retryCount The number of times the request has been retried.
-     *
      * @return The updated {@link HttpRequestMetadata} object.
      */
     public HttpRequestMetadata setRetryCount(int retryCount) {
         this.retryCount = retryCount;
-
         return this;
     }
 
@@ -83,12 +79,10 @@ public final class HttpRequestMetadata {
      * Sets the {@link ClientLogger} used to log during the request and response.
      *
      * @param requestLogger The {@link ClientLogger} used to log during the request and response.
-     *
      * @return The updated {@link HttpRequestMetadata} object.
      */
     public HttpRequestMetadata setRequestLogger(ClientLogger requestLogger) {
         this.requestLogger = requestLogger;
-
         return this;
     }
 
@@ -105,12 +99,10 @@ public final class HttpRequestMetadata {
      * Sets whether the response headers should be eagerly converted.
      *
      * @param eagerlyConvertHeaders Whether the response headers should be eagerly converted.
-     *
      * @return The updated {@link HttpRequestMetadata} object.
      */
     public HttpRequestMetadata setEagerlyConvertHeaders(boolean eagerlyConvertHeaders) {
         this.eagerlyConvertHeaders = eagerlyConvertHeaders;
-
         return this;
     }
 
@@ -127,12 +119,10 @@ public final class HttpRequestMetadata {
      * Sets whether the response body should be eagerly read.
      *
      * @param eagerlyReadResponse Whether the response body should be eagerly read.
-     *
      * @return The updated {@link HttpRequestMetadata} object.
      */
     public HttpRequestMetadata setEagerlyReadResponse(boolean eagerlyReadResponse) {
         this.eagerlyReadResponse = eagerlyReadResponse;
-
         return this;
     }
 
@@ -149,12 +139,10 @@ public final class HttpRequestMetadata {
      * Sets whether the response body should be ignored.
      *
      * @param ignoreResponseBody Whether the response body should be ignored.
-     *
      * @return The updated {@link HttpRequestMetadata} object.
      */
     public HttpRequestMetadata setIgnoreResponseBody(boolean ignoreResponseBody) {
         this.ignoreResponseBody = ignoreResponseBody;
-
         return this;
     }
 
@@ -165,7 +153,6 @@ public final class HttpRequestMetadata {
      */
     public HttpRequestMetadata copy() {
         HttpRequestMetadata copy = new HttpRequestMetadata();
-
         copy.context = context;
         copy.retryCount = retryCount;
         copy.requestLogger = requestLogger;

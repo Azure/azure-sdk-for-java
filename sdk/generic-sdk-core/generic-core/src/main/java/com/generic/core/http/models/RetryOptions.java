@@ -36,13 +36,11 @@ public final class RetryOptions {
     public RetryOptions(int maxRetries, Duration baseDelay, Duration maxDelay) {
         Objects.requireNonNull(baseDelay, "'baseDelay' cannot be null.");
         Objects.requireNonNull(maxDelay, "'maxDelay' cannot be null.");
-
         if (maxRetries < 0) {
             LOGGER.atVerbose()
                 .log(() -> "Max retries cannot be less than 0. Using 3 retries as the maximum.");
             maxRetries = 3;
         }
-
         this.baseDelay = baseDelay;
         this.maxDelay = maxDelay;
         this.maxRetries = maxRetries;
@@ -58,13 +56,11 @@ public final class RetryOptions {
      */
     public RetryOptions(int maxRetries, Duration fixedDelay) {
         Objects.requireNonNull(fixedDelay, "'fixedDelay' cannot be null.");
-
         if (maxRetries < 0) {
             LOGGER.atVerbose()
                 .log(() -> "Max retries cannot be less than 0. Using 3 retries as the maximum.");
             maxRetries = 3;
         }
-
         this.maxRetries = maxRetries;
         this.fixedDelay = fixedDelay;
         this.baseDelay = null;
@@ -123,12 +119,10 @@ public final class RetryOptions {
      *
      * @param shouldRetryCondition The predicate that determines if a retry should be attempted for the given
      * {@link Response}.
-     *
      * @return The updated {@link RetryOptions} object.
      */
     public RetryOptions setShouldRetryCondition(Predicate<RequestRetryCondition> shouldRetryCondition) {
         this.shouldRetryCondition = shouldRetryCondition;
-
         return this;
     }
 
@@ -147,7 +141,6 @@ public final class RetryOptions {
      */
     public RetryOptions setDelayFromHeaders(Function<Headers, Duration> delayFromHeaders) {
         this.delayFromHeaders = delayFromHeaders;
-
         return this;
     }
 }

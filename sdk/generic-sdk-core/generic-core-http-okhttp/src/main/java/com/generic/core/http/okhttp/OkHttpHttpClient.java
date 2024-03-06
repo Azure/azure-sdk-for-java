@@ -27,12 +27,15 @@ import java.io.IOException;
 import java.io.UncheckedIOException;
 
 /**
- * {@link HttpClient} implementation for OkHttp.
+ * HttpClient implementation for OkHttp.
  */
 class OkHttpHttpClient implements HttpClient {
+
     private static final ClientLogger LOGGER = new ClientLogger(OkHttpHttpClient.class);
     private static final byte[] EMPTY_BODY = new byte[0];
     private static final RequestBody EMPTY_REQUEST_BODY = RequestBody.create(EMPTY_BODY);
+
+    private static final String HTTP_REQUEST_PROGRESS_REPORTER = "com.generic.core.http.request.progress.reporter";
 
     final OkHttpClient httpClient;
 
@@ -47,10 +50,8 @@ class OkHttpHttpClient implements HttpClient {
         boolean ignoreResponseBody = request.getMetadata().isIgnoreResponseBody();
 
         Request okHttpRequest = toOkHttpRequest(request);
-
         try {
             okhttp3.Response okHttpResponse = httpClient.newCall(okHttpRequest).execute();
-
             return toResponse(request, okHttpResponse, eagerlyReadResponse, ignoreResponseBody,
                 eagerlyConvertHeaders);
         } catch (IOException e) {
@@ -65,7 +66,7 @@ class OkHttpHttpClient implements HttpClient {
      *
      * @return Th eOkHttp request.
      */
-    private Request toOkHttpRequest(HttpRequest request) {
+    private okhttp3.Request toOkHttpRequest(HttpRequest request) {
         Request.Builder requestBuilder = new Request.Builder()
             .url(request.getUrl());
 
@@ -89,12 +90,12 @@ class OkHttpHttpClient implements HttpClient {
     }
 
     /**
-     * Create a {@link RequestBody} from the given {@link BinaryData}.
+     * Create a Mono of okhttp3.RequestBody from the given BinaryData.
      *
-     * @param bodyContent The request body content.
-     * @param headers The {@link Headers} associated with the original request.
+     * @param bodyContent The request body content
+     * @param headers the headers associated with the original request
      *
-     * @return A {@link RequestBody} created from the given {@link BinaryData}.
+     * @return The Mono emitting okhttp request
      */
     private RequestBody toOkHttpRequestBody(BinaryData bodyContent, Headers headers) {
         if (bodyContent == null) {
@@ -152,7 +153,7 @@ class OkHttpHttpClient implements HttpClient {
                 body.close();
             }
 
-            return new OkHttpBufferedResponse(response, request, eagerlyConvertHeaders, EMPTY_BODY);
+            return new OkHttpResponse(response, request, eagerlyConvertHeaders, EMPTY_BODY);
         }*/
 
         // Use a buffered response when we are eagerly reading the response from the network and the body isn't empty.

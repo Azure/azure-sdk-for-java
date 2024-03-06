@@ -41,9 +41,7 @@ public class RedirectPolicyTest {
                 @Override
                 public Response<?> send(HttpRequest request) {
                     if (request.getUrl().toString().equals("http://localhost/")) {
-                        Headers httpHeader =
-                            new Headers().set(HeaderName.fromString("Location"), "http://redirecthost/");
-
+                        Headers httpHeader = new Headers().set(HeaderName.fromString("Location"), "http://redirecthost/");
                         return new MockHttpResponse(request, 308, httpHeader);
                     } else {
                         return new MockHttpResponse(request, 200);
@@ -96,8 +94,7 @@ public class RedirectPolicyTest {
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
-            .policies(new RedirectPolicy(
-                new DefaultRedirectStrategy(5, HeaderName.LOCATION.toString(), EnumSet.of(HttpMethod.GET))))
+            .policies(new RedirectPolicy(new DefaultRedirectStrategy(5, HeaderName.LOCATION.toString(), EnumSet.of(HttpMethod.GET))))
             .build();
 
         try (Response<?> response = sendRequest(pipeline, HttpMethod.GET)) {
@@ -120,9 +117,7 @@ public class RedirectPolicyTest {
 
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
-            .policies(new RedirectPolicy(
-                new DefaultRedirectStrategy(5, HeaderName.LOCATION.toString(),
-                    EnumSet.of(HttpMethod.GET, HttpMethod.HEAD))))
+            .policies(new RedirectPolicy(new DefaultRedirectStrategy(5, HeaderName.LOCATION.toString(), EnumSet.of(HttpMethod.GET, HttpMethod.HEAD))))
             .build();
 
         try (Response<?> response = sendRequest(pipeline, HttpMethod.POST)) {
@@ -186,8 +181,7 @@ public class RedirectPolicyTest {
     public void redirectForProvidedHeader() throws Exception {
         final int[] requestCount = {1};
         RecordingHttpClient httpClient = new RecordingHttpClient(request -> {
-            Headers httpHeader =
-                new Headers().set(HeaderName.fromString("Location1"), "http://redirecthost/" + requestCount[0]);
+            Headers httpHeader = new Headers().set(HeaderName.fromString("Location1"), "http://redirecthost/" + requestCount[0]);
 
             requestCount[0]++;
 

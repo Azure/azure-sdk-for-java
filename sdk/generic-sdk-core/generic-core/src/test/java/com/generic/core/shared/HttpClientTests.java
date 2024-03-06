@@ -247,6 +247,7 @@ public abstract class HttpClientTests {
     @Test
     public void bomWithDifferentHeader() {
         String expected = new String(EXPECTED_RETURN_BYTES, StandardCharsets.UTF_8);
+
         String actual = CoreUtils.bomAwareToString(sendRequest(BOM_WITH_DIFFERENT_HEADER).toBytes(), "charset=utf-16");
 
         assertEquals(expected, actual);
@@ -254,6 +255,7 @@ public abstract class HttpClientTests {
 
     /**
      * Tests that unbuffered response body can be accessed.
+     *
      */
     @Test
     public void canAccessResponseBody() {
@@ -274,7 +276,6 @@ public abstract class HttpClientTests {
     public void bufferedResponseCanBeReadMultipleTimes() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE)).setBody(requestBody);
-
         request.getMetadata().setEagerlyReadResponse(true);
 
         try (Response<?> response = createHttpClient().send(request)) {
@@ -300,7 +301,6 @@ public abstract class HttpClientTests {
     public void eagerlyConvertedHeadersAreHeaders() throws IOException {
         BinaryData requestBody = BinaryData.fromString("test body");
         HttpRequest request = new HttpRequest(HttpMethod.PUT, getRequestUrl(ECHO_RESPONSE)).setBody(requestBody);
-
         request.getMetadata().setEagerlyConvertHeaders(true);
 
         try (Response<?> response = createHttpClient().send(request)) {

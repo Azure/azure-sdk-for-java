@@ -25,7 +25,7 @@ import java.util.Optional;
 
 import static com.generic.core.implementation.http.serializer.HttpResponseBodyDecoder.decodeByteArray;
 
-class ResponseConstructorsCacheBenchmarkTestData {
+class ResponseConstructorsCacheBenchMarkTestData {
     // Model type for Http content
     static final class Foo {
         private String name;
@@ -88,7 +88,7 @@ class ResponseConstructorsCacheBenchmarkTestData {
     // ARRAY HOLDING TEST DATA
     private final Input[] inputs;
 
-    ResponseConstructorsCacheBenchmarkTestData() {
+    ResponseConstructorsCacheBenchMarkTestData() {
         this.inputs = new Input[2];
         this.inputs[0] = new Input(VOID_RESPONSE, voidType, null);
         this.inputs[1] = new Input(FOO_RESPONSE, fooType, FOO);

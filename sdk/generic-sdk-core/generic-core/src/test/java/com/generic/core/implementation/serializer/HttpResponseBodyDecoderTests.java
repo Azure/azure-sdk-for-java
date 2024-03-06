@@ -58,14 +58,17 @@ public class HttpResponseBodyDecoderTests {
     public void invalidHttpResponse(Response<?> response) {
         assertThrows(NullPointerException.class,
             () -> HttpResponseBodyDecoder.decodeByteArray(null, response, null, null));
+
     }
 
     private static Stream<Arguments> invalidHttpResponseSupplier() {
         return Stream.of(
             // Null response.
             Arguments.of((Response<?>) null),
+
             // Response without a request.
             Arguments.of(new MockHttpResponse(null, 200)),
+
             // Response with a request that is missing the HttpMethod.
             Arguments.of(new MockHttpResponse(new HttpRequest(null, "https://example.com"), 200))
         );
@@ -76,7 +79,6 @@ public class HttpResponseBodyDecoderTests {
     public void errorResponse(Response<?> response, HttpResponseDecodeData decodeData,
                               boolean isEmpty, Object expected) {
         BinaryData body = response.getBody();
-
         HttpResponseBodyDecoder.decodeByteArray(body.toBytes(), response, SERIALIZER, decodeData);
 
         if (!isEmpty) {
@@ -127,7 +129,6 @@ public class HttpResponseBodyDecoderTests {
         HttpResponseDecodeData decodeData = new MockHttpResponseDecodeData(200);
 
         Response<?> response = new MockHttpResponse(HEAD_REQUEST, 200);
-
         assertNull(HttpResponseBodyDecoder.decodeByteArray(null, response, SERIALIZER, decodeData));
     }
 
@@ -271,7 +272,6 @@ public class HttpResponseBodyDecoderTests {
         HttpResponseDecodeData responseStringReturn = new MockHttpResponseDecodeData(200, responseString, true);
 
         HttpResponseDecodeData headDecodeData = new MockHttpResponseDecodeData(200, null, false);
-
         return Stream.of(
             Arguments.of(badResponse, badResponseData, Object.class),
             Arguments.of(headResponse, headDecodeData, null),

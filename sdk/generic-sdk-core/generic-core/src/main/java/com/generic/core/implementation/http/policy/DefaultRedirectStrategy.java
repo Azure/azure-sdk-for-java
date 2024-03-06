@@ -23,10 +23,12 @@ import java.util.Set;
  */
 public final class DefaultRedirectStrategy implements RedirectStrategy {
     private static final ClientLogger LOGGER = new ClientLogger(DefaultRedirectStrategy.class);
+
     private static final int DEFAULT_MAX_REDIRECT_ATTEMPTS = 3;
     private static final int PERMANENT_REDIRECT_STATUS_CODE = 308;
     private static final int TEMPORARY_REDIRECT_STATUS_CODE = 307;
     private static final Set<HttpMethod> DEFAULT_REDIRECT_ALLOWED_METHODS = EnumSet.of(HttpMethod.GET, HttpMethod.HEAD);
+
     private static final String REDIRECT_URLS_KEY = "redirectUrls";
 
     private final int maxAttempts;

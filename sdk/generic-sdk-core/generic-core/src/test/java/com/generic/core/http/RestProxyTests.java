@@ -94,7 +94,7 @@ public class RestProxyTests {
         assertEquals(200, response.getStatusCode());
     }
 
-    // TODO (vcolin7): Re-enable this test if we ever have a stream Response type.
+    // TODO (vcolin7): Re-enable this test if we ever compose HttpResponse into a stream Response type.
     /*@Test
     public void streamResponseShouldHaveHttpResponseReference() {
         LocalHttpClient client = new LocalHttpClient();
@@ -107,6 +107,7 @@ public class RestProxyTests {
 
         streamResponse.close();
 
+        // This indirectly tests that StreamResponse has HttpResponse reference.
         assertTrue(client.closeCalledOnResponse);
     }*/
 
@@ -324,10 +325,7 @@ public class RestProxyTests {
     @Test
     public void doesNotChangeEncodedPath() {
         String nextLinkUrl =
-            "https://management.azure.com:443/subscriptions/000/resourceGroups/rg/providers/Microsoft.Compute/"
-                + "virtualMachineScaleSets/vmss1/virtualMachines?api-version=2021-11-01&$skiptoken=Mzk4YzFjMzM"
-                + "tM2IwMC00OWViLWI2NGYtNjg4ZTRmZGQ1Nzc2IS9TdWJzY3JpcHRpb25zL2VjMGFhNWY3LTllNzgtNDBjOS04NWNkLT"
-                + "UzNWM2MzA1YjM4MC9SZXNvdXJjZUdyb3Vwcy9SRy1XRUlEWFUtVk1TUy9WTVNjYWxlU2V0cy9WTVNTMS9WTXMvNzc=";
+            "https://management.azure.com:443/subscriptions/000/resourceGroups/rg/providers/Microsoft.Compute/virtualMachineScaleSets/vmss1/virtualMachines?api-version=2021-11-01&$skiptoken=Mzk4YzFjMzMtM2IwMC00OWViLWI2NGYtNjg4ZTRmZGQ1Nzc2IS9TdWJzY3JpcHRpb25zL2VjMGFhNWY3LTllNzgtNDBjOS04NWNkLTUzNWM2MzA1YjM4MC9SZXNvdXJjZUdyb3Vwcy9SRy1XRUlEWFUtVk1TUy9WTVNjYWxlU2V0cy9WTVNTMS9WTXMvNzc=";
         HttpPipeline pipeline = new HttpPipelineBuilder()
             .httpClient((request) -> {
                 assertEquals(nextLinkUrl, request.getUrl().toString());

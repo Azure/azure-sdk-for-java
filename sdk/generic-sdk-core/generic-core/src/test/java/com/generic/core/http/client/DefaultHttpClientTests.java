@@ -3,13 +3,15 @@
 
 package com.generic.core.http.client;
 
-import com.generic.core.shared.HttpClientTests;
-import com.generic.core.shared.HttpClientTestsServer;
-import com.generic.core.shared.LocalTestServer;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 
+import com.generic.core.shared.HttpClientTests;
+import com.generic.core.shared.HttpClientTestsServer;
+import com.generic.core.shared.LocalTestServer;
+
 public class DefaultHttpClientTests extends HttpClientTests {
+
     private static LocalTestServer server;
     @BeforeAll
     public static void startTestServer() {
@@ -23,7 +25,6 @@ public class DefaultHttpClientTests extends HttpClientTests {
             server.stop();
         }
     }
-
     @Override
     protected HttpClient createHttpClient() {
         return new DefaultHttpClientProvider().createInstance();

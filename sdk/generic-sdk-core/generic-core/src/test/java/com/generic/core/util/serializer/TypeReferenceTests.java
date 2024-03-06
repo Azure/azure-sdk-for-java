@@ -36,7 +36,9 @@ public class TypeReferenceTests {
     @SuppressWarnings("rawtypes")
     @Test
     public void createTypeReferenceWithoutType() {
-        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () -> new TypeReference() {});
+        IllegalArgumentException thrown = assertThrows(IllegalArgumentException.class, () ->
+            new TypeReference() {
+            });
 
         assertEquals("Type constructed without type information.", thrown.getMessage());
     }

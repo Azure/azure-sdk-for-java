@@ -169,7 +169,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
     private void logBody(HttpRequest request, ClientLogger.LoggingEventBuilder logBuilder) {
         logBuilder.addKeyValue(LoggingKeys.BODY_KEY, request.getBody().toString())
-            .log(() -> REQUEST_LOG_MESSAGE);
+                .log(() -> REQUEST_LOG_MESSAGE);
     }
 
 

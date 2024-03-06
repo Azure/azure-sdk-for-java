@@ -18,7 +18,7 @@ import java.util.function.Function;
 import static com.generic.core.annotation.TypeConditions.FLUENT;
 
 /**
- * The outgoing {@link HttpRequest}. It provides ways to construct it with {@link HttpMethod}, {@link URL},
+ * The outgoing Http request. It provides ways to construct {@link HttpRequest} with {@link HttpMethod}, {@link URL},
  * {@link Header} and request body.
  */
 @Metadata(conditions = FLUENT)
@@ -35,10 +35,10 @@ public class HttpRequest {
     private Function<Response<?>, ?> deserializationCallback;
 
     /**
-     * Create a new {@link HttpRequest} instance.
+     * Create a new HttpRequest instance.
      *
-     * @param httpMethod The HTTP request {@link HttpMethod method}.
-     * @param url The target address to send the {@link HttpRequest request} to.
+     * @param httpMethod The HTTP request method.
+     * @param url The target address to send the request to.
      */
     public HttpRequest(HttpMethod httpMethod, URL url) {
         this.httpMethod = httpMethod;
@@ -48,12 +48,12 @@ public class HttpRequest {
     }
 
     /**
-     * Create a new {@link HttpRequest} instance.
+     * Create a new HttpRequest instance.
      *
-     * @param httpMethod The HTTP request {@link HttpMethod method}.
-     * @param url The target address to send the {@link HttpRequest request} to.
+     * @param httpMethod The HTTP request method.
+     * @param url The target address to send the request to.
      *
-     * @throws IllegalArgumentException If {@code url} is {@code null} or it cannot be parsed into a valid {@link URL}.
+     * @throws IllegalArgumentException If {@code url} is null or it cannot be parsed into a valid URL.
      */
     public HttpRequest(HttpMethod httpMethod, String url) {
         this.httpMethod = httpMethod;
@@ -65,20 +65,20 @@ public class HttpRequest {
     }
 
     /**
-     * Get the {@link HttpRequest request's} {@link HttpMethod}.
+     * Get the request method.
      *
-     * @return The {@link HttpRequest request's} {@link HttpMethod}.
+     * @return The request method.
      */
     public HttpMethod getHttpMethod() {
         return httpMethod;
     }
 
     /**
-     * Set the request {@link HttpMethod}.
+     * Set the request method.
      *
-     * @param httpMethod The request {@link HttpMethod}.
+     * @param httpMethod The request method.
      *
-     * @return The updated {@link HttpRequest}.
+     * @return This HttpRequest.
      */
     public HttpRequest setHttpMethod(HttpMethod httpMethod) {
         this.httpMethod = httpMethod;
@@ -87,7 +87,7 @@ public class HttpRequest {
     }
 
     /**
-     * Get the target address for the {@link HttpRequest request}.
+     * Get the target address.
      *
      * @return The target address.
      */
@@ -96,11 +96,11 @@ public class HttpRequest {
     }
 
     /**
-     * Set the target address to send the {@link HttpRequest request} to.
+     * Set the target address to send the request to.
      *
-     * @param url The target address as a {@link URL}.
+     * @param url target address as {@link URL}.
      *
-     * @return The updated {@link HttpRequest}.
+     * @return This HttpRequest.
      */
     public HttpRequest setUrl(URL url) {
         this.url = url;
@@ -109,11 +109,11 @@ public class HttpRequest {
     }
 
     /**
-     * Set the target address to send the {@link HttpRequest request} to.
+     * Set the target address to send the request to.
      *
      * @param url Target address as {@link URL}.
      *
-     * @return The updated {@link HttpRequest}.
+     * @return This HttpRequest.
      */
     @SuppressWarnings("deprecation")
     public HttpRequest setUrl(String url) {
@@ -129,20 +129,20 @@ public class HttpRequest {
     }
 
     /**
-     * Get the {@link HttpRequest request} {@link Headers}.
+     * Get the request headers.
      *
-     * @return The {@link Headers} to be sent.
+     * @return The Headers to be sent.
      */
     public Headers getHeaders() {
         return headers;
     }
 
     /**
-     * Set the {@link HttpRequest request} {@link Headers}.
+     * Set the request headers.
      *
-     * @param headers The {@link Headers} to set.
+     * @param headers The set of headers.
      *
-     * @return The updated {@link HttpRequest}.
+     * @return This HttpRequest.
      */
     public HttpRequest setHeaders(Headers headers) {
         this.headers = headers;
@@ -151,7 +151,7 @@ public class HttpRequest {
     }
 
     /**
-     * Get the {@link HttpRequest request} content.
+     * Get the request content.
      *
      * @return The content to be sent.
      */
@@ -160,21 +160,21 @@ public class HttpRequest {
     }
 
     /**
-     * Set the {@link HttpRequest request} content.
+     * Set request content.
+     * <p>
+     * If provided content has known length, i.e. {@link BinaryData#getLength()} returns non-null then Content-Length
+     * header is updated. Otherwise, if provided content has unknown length, i.e. {@link BinaryData#getLength()} returns
+     * null then the caller must set the Content-Length header to indicate the length of the content, or use
+     * Transfer-Encoding: chunked.
      *
-     * <p>If the provided content has a known length (i.e. {@link BinaryData#getLength()} returns non-null), then the
-     * {@code Content-Length} header is updated. Otherwise, if the provided content has an unknown length
-     * (i.e. {@link BinaryData#getLength()} returns {@code null}), then the caller must set the {@code Content-Length}
-     * header to indicate the length of the content, or use the {@code transfer-encoding: chunked} header.</p>
+     * @param content The request content.
      *
-     * @param content The {@link HttpRequest request} content.
-     *
-     * @return The updated {@link HttpRequest}.
+     * @return This HttpRequest.
      */
     public HttpRequest setBody(BinaryData content) {
         this.body = content;
 
-        // TODO (alzimmer): Should the Content-Length header be removed if the content is null?
+        // TODO (alzimmer): should the Content-Length header be removed if content is null?
         if (content != null && content.getLength() != null) {
             headers.set(HeaderName.CONTENT_LENGTH, String.valueOf(content.getLength()));
         }
@@ -183,34 +183,33 @@ public class HttpRequest {
     }
 
     /**
-     * Get the {@link HttpRequest request} {@link HttpRequestMetadata metadata}.
+     * Get the request metadata.
      *
-     * @return The {@link HttpRequest request} {@link HttpRequestMetadata metadata}.
+     * @return The request metadata.
      */
     public HttpRequestMetadata getMetadata() {
         return metadata;
     }
 
     /**
-     * Set the {@link HttpRequest request} {@link HttpRequestMetadata metadata}.
+     * Set the request metadata.
      *
-     * @param metadata The {@link HttpRequest request} {@link HttpRequestMetadata metadata}.
-     * @return The updated {@link HttpRequest}.
+     * @param metadata The request metadata.
+     * @return This HttpRequest.
      */
     public HttpRequest setMetadata(HttpRequestMetadata metadata) {
         this.metadata = metadata;
-
         return this;
     }
 
     /**
-     * Creates a copy of the {@link HttpRequest request}.
+     * Creates a copy of the request.
+     * <p>
+     * The main purpose of this is so that this HttpRequest can be changed and the resulting HttpRequest can be a
+     * backup. This means that the cloned Headers and body must not be able to change from side effects of this
+     * HttpRequest.
      *
-     * <p>The main purpose of this is so that this {@link HttpRequest} can be changed and the resulting
-     * {@link HttpRequest} can be a backup. This means that the cloned {@link Headers} and body must not be able to
-     * change from side effects of this {@link HttpRequest}.</p>
-     *
-     * @return A new {@link HttpRequest} instance with cloned instances of all mutable properties.
+     * @return A new HTTP request instance with cloned instances of all mutable properties.
      */
     public HttpRequest copy() {
         return new HttpRequest(httpMethod, url)
@@ -220,21 +219,17 @@ public class HttpRequest {
     }
 
     /**
-     * Get the specified event stream {@link ServerSentEventListener listener} for this {@link HttpRequest request}.
-     *
-     * @return The {@link ServerSentEventListener listener} for this {@link HttpRequest request}.
+     * Get the specified event stream listener for this request.
+     * @return the listener for this request.
      */
     public ServerSentEventListener getServerSentEventListener() {
         return serverSentEventListener;
     }
 
     /**
-     * Set an event stream {@link ServerSentEventListener listener} for this {@link HttpRequest request}.
-     *
-     * @param serverSentEventListener The {@link ServerSentEventListener listener} to set for this
-     * {@link HttpRequest request}.
-     *
-     * @return The updated {@link HttpRequest}.
+     * Set an event stream listener for this request.
+     * @param serverSentEventListener the listener to set for this request.
+     * @return This HttpRequest.
      */
     public HttpRequest setServerSentEventListener(ServerSentEventListener serverSentEventListener) {
         this.serverSentEventListener = serverSentEventListener;

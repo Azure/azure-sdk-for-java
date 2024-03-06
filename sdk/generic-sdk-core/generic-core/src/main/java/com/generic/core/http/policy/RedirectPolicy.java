@@ -18,7 +18,7 @@ import java.util.Set;
 
 /**
  * A {@link HttpPipelinePolicy} that redirects a {@link HttpRequest} when an HTTP Redirect is received as a
- * {@link Response}.
+ * {@link Response response}.
  */
 public final class RedirectPolicy implements HttpPipelinePolicy {
     private static final ClientLogger LOGGER = new ClientLogger(RedirectPolicy.class);

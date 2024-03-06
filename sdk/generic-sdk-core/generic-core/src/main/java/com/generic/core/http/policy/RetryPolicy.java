@@ -140,7 +140,6 @@ public class RetryPolicy implements HttpPipelinePolicy {
         default boolean shouldRetryCondition(RequestRetryCondition requestRetryCondition) {
             if (requestRetryCondition.getResponse() != null) {
                 int code = requestRetryCondition.getResponse().getStatusCode();
-
                 return (code == HttpURLConnection.HTTP_CLIENT_TIMEOUT || (code >= HttpURLConnection.HTTP_INTERNAL_ERROR
                     && code != HttpURLConnection.HTTP_NOT_IMPLEMENTED && code != HttpURLConnection.HTTP_VERSION));
             } else {
@@ -222,7 +221,6 @@ public class RetryPolicy implements HttpPipelinePolicy {
         }
 
         Duration delay = delayFromHeaders.apply(response.getHeaders());
-
         if (delay != null) {
             return delay;
         }
@@ -274,9 +272,7 @@ public class RetryPolicy implements HttpPipelinePolicy {
     }
 
     private static void logRetryWithError(ClientLogger.LoggingEventBuilder loggingEventBuilder, int tryCount,
-                                          String format, Throwable throwable) {
-        loggingEventBuilder
-            .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
-            .log(() -> format, throwable);
+        String format, Throwable throwable) {
+        loggingEventBuilder.addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount).log(() -> format, throwable);
     }
 }
