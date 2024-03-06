@@ -7,6 +7,7 @@ import com.azure.cosmos.implementation.guava25.base.Function;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.concurrent.atomic.AtomicLong;
 import java.util.concurrent.atomic.AtomicReference;
 
 public class DiagnosticsProviderJvmFatalErrorMapper {
@@ -15,9 +16,11 @@ public class DiagnosticsProviderJvmFatalErrorMapper {
         new DiagnosticsProviderJvmFatalErrorMapper();
 
     private final AtomicReference<Function<Error, Exception>> fatalErrorMapper;
+    private final AtomicLong mapperExecutionCount;
 
     public DiagnosticsProviderJvmFatalErrorMapper() {
         this.fatalErrorMapper = new AtomicReference<>();
+        this.mapperExecutionCount = new AtomicLong(0);
     }
 
     public void registerFatalErrorMapper(Function<Error, Exception> fatalErrorMapper) {
@@ -26,15 +29,27 @@ public class DiagnosticsProviderJvmFatalErrorMapper {
     }
 
     public Exception mapFatalError(Error error) {
-        if (error == null) {
+        if (error == null || this.fatalErrorMapper.get() == null) {
             return null;
         }
 
-        if (this.fatalErrorMapper.get() != null) {
-            Exception mappedException = this.fatalErrorMapper.get().apply(error);
-            LOGGER.info("Mapping from Error {} to Exception {}", error.getClass(), mappedException.getClass());
+        return this.mapToException(error);
+    }
 
-            return mappedException;
+    private Exception mapToException(Error error) {
+        try {
+            // increase counter when mapper func being called, this info will be reflected in diagnostics as well
+            this.mapperExecutionCount.getAndIncrement();
+
+            Exception mappedException = this.fatalErrorMapper.get().apply(error);
+            if (mappedException != null) {
+                LOGGER.info("Mapping from Error {} to Exception {}", error.getClass(), mappedException.getClass());
+                return mappedException;
+            } else {
+                LOGGER.info("Mapped exception being null.");
+            }
+        } catch (Exception mapException) {
+            LOGGER.error("Map fatal error failed. ", mapException);
         }
 
         return null;
@@ -42,5 +57,9 @@ public class DiagnosticsProviderJvmFatalErrorMapper {
 
     public static DiagnosticsProviderJvmFatalErrorMapper getMapper() {
         return diagnosticsProviderJvmFatalErrorMapper;
+    }
+
+    public long getMapperExecutionCount() {
+        return mapperExecutionCount.get();
     }
 }

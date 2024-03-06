@@ -9,6 +9,7 @@ import com.azure.cosmos.implementation.DiagnosticsProviderJvmFatalErrorMapper;
 import com.azure.cosmos.implementation.Exceptions;
 import com.azure.cosmos.implementation.OperationType;
 import com.azure.cosmos.implementation.ResourceType;
+import com.azure.cosmos.implementation.Utils;
 import com.azure.cosmos.models.CosmosChangeFeedRequestOptions;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
@@ -328,13 +329,13 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
     }
 
     @Test(groups = { "emulator" }, timeOut = TIMEOUT)
-    public void OOMDiagnosticsHandlerWithErrorMapper() {
+    public void OOMDiagnosticsHandlerWithErrorMapper() throws JsonProcessingException {
         DiagnosticsProviderJvmFatalErrorMapper
             .getMapper()
             .registerFatalErrorMapper((error) -> new NullPointerException("test"));
 
         // validate when false, System.exit will not be called
-        OOMDiagnosticsHandle capturingHandler = new OOMDiagnosticsHandle();
+        OOMDiagnosticsHandle capturingHandler = new OOMDiagnosticsHandle(ResourceType.Document, OperationType.Create);
 
         CosmosClientBuilder builder = this
             .getClientBuilder()
@@ -358,6 +359,13 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
             assertThat(e.getCause() instanceof NullPointerException).isTrue();
             assertThat(systemExited.get()).isFalse();
         }
+
+        // doing an upsert and verify in the diagnostics contain mapper execution count
+        CosmosDiagnostics cosmosDiagnostics =
+            container.upsertItem(getDocumentDefinition(UUID.randomUUID().toString())).getDiagnostics();
+        ObjectNode cosmosDiagnosticsNode = (ObjectNode) Utils.getSimpleObjectMapper().readTree(cosmosDiagnostics.toString());
+        assertThat(cosmosDiagnosticsNode.get("jvmFatalErrorMapperExecutionCount")).isNotNull();
+        assertThat(cosmosDiagnosticsNode.get("jvmFatalErrorMapperExecutionCount").asLong()).isGreaterThan(0);
     }
 
     private void executeTestCase(CosmosContainer container) {
@@ -521,10 +529,30 @@ public class CosmosDiagnosticsE2ETest extends TestSuiteBase {
     }
 
     private static class OOMDiagnosticsHandle implements CosmosDiagnosticsHandler {
+        private ResourceType resourceType;
+        private OperationType operationType;
+        private final boolean oomLimitByResourceAndOperationType;
+
+        public OOMDiagnosticsHandle(ResourceType resourceType, OperationType operationType) {
+            this.resourceType = resourceType;
+            this.operationType = operationType;
+            this.oomLimitByResourceAndOperationType = true;
+        }
+
+        public OOMDiagnosticsHandle() {
+            this.oomLimitByResourceAndOperationType = false;
+        }
 
         @Override
         public void handleDiagnostics(CosmosDiagnosticsContext diagnosticsContext, Context traceContext) {
-            throw new OutOfMemoryError("OOMDiagnosticsHandle");
+            if (this.oomLimitByResourceAndOperationType) {
+                if (diagnosticsContext.getOperationType() == this.operationType.toString()
+                    && diagnosticsContext.getResourceType() == this.resourceType.toString()) {
+                    throw new OutOfMemoryError("OOMDiagnosticsHandle");
+                }
+            } else {
+                throw new OutOfMemoryError("OOMDiagnosticsHandle");
+            }
         }
     }
 }

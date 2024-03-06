@@ -500,8 +500,13 @@ public class Configs {
     }
 
     public static boolean shouldDiagnosticsProviderSystemExitOnError() {
-        return getJVMConfigAsBoolean(
-            DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR,
-            DEFAULT_DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR);
+        String shouldSystemExit =
+            System.getProperty(
+                DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR,
+                firstNonNull(
+                    emptyToNull(System.getenv().get(DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR)),
+                    String.valueOf(DEFAULT_DIAGNOSTICS_PROVIDER_SYSTEM_EXIT_ON_ERROR)));
+
+        return Boolean.parseBoolean(shouldSystemExit);
     }
 }
