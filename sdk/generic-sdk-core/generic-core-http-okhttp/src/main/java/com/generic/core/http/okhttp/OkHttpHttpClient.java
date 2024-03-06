@@ -163,10 +163,10 @@ class OkHttpHttpClient implements HttpClient {
             try (ResponseBody body = response.body()) {
                 byte[] bytes = (body != null) ? body.bytes() : EMPTY_BODY;
 
-                return new OkHttpResponse(response, request, eagerlyConvertHeaders, bytes);
+                return new OkHttpResponse<>(response, request, eagerlyConvertHeaders, bytes);
             }
         } else {
-            return new OkHttpResponse(response, request, eagerlyConvertHeaders, null);
+            return new OkHttpResponse<>(response, request, eagerlyConvertHeaders, null);
         }
     }
 }

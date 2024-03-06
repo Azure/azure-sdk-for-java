@@ -11,7 +11,6 @@ import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.implementation.TypeUtil;
-import com.generic.core.implementation.http.HttpResponse;
 import com.generic.core.implementation.util.Base64Url;
 import com.generic.core.models.BinaryData;
 import com.generic.core.util.serializer.ObjectSerializer;
@@ -68,13 +67,25 @@ public class RestProxyImpl extends RestProxyBase {
         }
 
         if (options == null || options.getResponseBodyDeserializationCallback() == null) {
-            request.setResponsBodyDeserializationCallback((response) -> {
-                byte[] bodyBytes = response.getBody().toBytes();
+            request.setResponseBodyDeserializationCallback((response) -> {
+                Type bodyType = methodParser.getReturnType();
 
-                return decodeByteArray(bodyBytes, response, serializer, methodParser);
+                if (TypeUtil.isTypeOrSubTypeOf(bodyType, Response.class)) {
+                    if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
+                        if (response.getBody().toBytes().length == 0) {
+                            return null;
+                        } else {
+                            return response.getBody();
+                        }
+                    } else {
+                        bodyType = TypeUtil.getRestResponseBodyType(methodParser.getReturnType());
+                    }
+                }
+
+                return handleBodyReturnType(response, methodParser, bodyType);
             });
         } else {
-            request.setResponsBodyDeserializationCallback(options.getResponseBodyDeserializationCallback());
+            request.setResponseBodyDeserializationCallback(options.getResponseBodyDeserializationCallback());
         }
 
         final Response<?> response = send(request);
@@ -119,10 +130,9 @@ public class RestProxyImpl extends RestProxyBase {
             throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
                 response, null, null);
         } else {
-            Object decodedBody = ((HttpResponse<?>) response).getDecodedBody();
             // Create an exception response containing the decoded response body.
             throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
-                response, responseBytes, decodedBody);
+                response, responseBytes, response.getValue());
         }
     }
 
@@ -179,6 +189,8 @@ public class RestProxyImpl extends RestProxyBase {
                 return responseToReturn;
             }
         } else {
+            // When not handling a Response subtype, we need to eagerly read the response body to construct the correct
+            // return type.
             return handleBodyReturnType(response, methodParser, entityType);
         }
     }
@@ -216,8 +228,14 @@ public class RestProxyImpl extends RestProxyBase {
             // into memory resulting in lesser overall memory usage.
             result = response.getBody();
         } else {
-            // Deserialized Object
-            result = ((HttpResponse<?>) response).getDecodedBody();
+            if (methodParser.isResponseBodyIgnored()) {
+                result = null;
+            } else if (methodParser.isResponseEagerlyRead()) {
+                // This triggers the Response's deserialization callback.
+                result = decodeByteArray(response.getBody().toBytes(), response, serializer, methodParser);
+            } else {
+                result = null;
+            }
         }
 
         return result;

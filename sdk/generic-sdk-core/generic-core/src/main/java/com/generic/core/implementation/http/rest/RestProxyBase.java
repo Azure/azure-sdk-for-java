@@ -13,7 +13,6 @@ import com.generic.core.implementation.ReflectionSerializable;
 import com.generic.core.implementation.ReflectiveInvoker;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.http.ContentType;
-import com.generic.core.implementation.http.HttpResponse;
 import com.generic.core.implementation.http.UnexpectedExceptionInformation;
 import com.generic.core.implementation.http.serializer.MalformedValueException;
 import com.generic.core.implementation.util.UrlBuilder;
@@ -94,10 +93,6 @@ public abstract class RestProxyBase {
         // Inspection of the response type needs to be performed to determine the course of action: either return the
         // Response or rely on reflection to create an appropriate Response subtype.
         if (clazz.equals(Response.class)) {
-            if (response.getValue() == null) {
-                ((HttpResponse<?>) response).setDecodedBody(bodyAsObject);
-            }
-
             // Return the Response.
             return response;
         } else {

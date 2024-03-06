@@ -15,13 +15,14 @@ import java.util.function.Function;
  * The response of an {@link HttpRequest}.
  */
 public class HttpResponse<T> implements Response<T>, Closeable {
-    protected static final BinaryData EMPTY_BODY = BinaryData.fromBytes(new byte[0]);
+    private static final BinaryData EMPTY_BODY = BinaryData.fromBytes(new byte[0]);
 
     private final Function<Response<?>, ?> deserializationCallback;
     private final Headers headers;
     private final HttpRequest request;
     private final int statusCode;
 
+    private boolean isBodyDeserialized = false;
     private BinaryData body;
     private T value;
 
@@ -39,7 +40,7 @@ public class HttpResponse<T> implements Response<T>, Closeable {
         this.headers = headers;
         this.value = value;
         this.deserializationCallback = request == null
-            ? Response::getValue
+            ? (response -> this.value)
             : request.getResponseBodyDeserializationCallback();
     }
 
@@ -65,7 +66,7 @@ public class HttpResponse<T> implements Response<T>, Closeable {
         }
 
         this.deserializationCallback = request == null
-            ? Response::getValue
+            ? (response -> this.value)
             : request.getResponseBodyDeserializationCallback();
     }
 
@@ -101,28 +102,14 @@ public class HttpResponse<T> implements Response<T>, Closeable {
      *
      * @return The value of this response.
      */
+    @SuppressWarnings("unchecked")
     public T getValue() {
+        if (!isBodyDeserialized) {
+            value = (T) deserializationCallback.apply(this);
+            isBodyDeserialized = true;
+        }
+
         return value;
-    }
-
-    /**
-     * Gets the deserialized value of this response.
-     *
-     * @return The deserialized value of this response.
-     */
-    @SuppressWarnings("unchecked")
-    public T getDecodedBody() {
-        return (T) deserializationCallback.apply(this);
-    }
-
-    /**
-     * Set a value for this response.
-     *
-     * @param decodedBody The response value.
-     */
-    @SuppressWarnings("unchecked")
-    public void setDecodedBody(Object decodedBody) {
-        this.value = (T) decodedBody;
     }
 
     /**

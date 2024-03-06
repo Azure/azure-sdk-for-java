@@ -151,7 +151,7 @@ class ResponseConstructorsCacheBenchmarkTestData {
     }
 
     private static MockHttpResponse prepareMockResponse(HttpRequest request, Type returnType, byte[] bodyBytes) {
-        request.setResponsBodyDeserializationCallback((response) ->
+        request.setResponseBodyDeserializationCallback((response) ->
             decodeByteArray(response.getBody().toBytes(), response, SERIALIZER, new HttpResponseDecodeData() {
                 @Override
                 public Type getReturnType() {

@@ -260,7 +260,7 @@ public class HttpRequest {
      *
      * @return The updated {@link HttpRequest}.
      */
-    public HttpRequest setResponsBodyDeserializationCallback(Function<Response<?>, ?> deserializationCallback) {
+    public HttpRequest setResponseBodyDeserializationCallback(Function<Response<?>, ?> deserializationCallback) {
         this.deserializationCallback = deserializationCallback;
 
         return this;
