@@ -1,10 +1,9 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.implementation.http;
+package com.generic.core.http.models;
 
 import com.generic.core.http.Response;
-import com.generic.core.http.models.HttpRequest;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Headers;
 
@@ -15,7 +14,7 @@ import java.util.function.Function;
  * The response of an {@link HttpRequest}.
  */
 public class HttpResponse<T> implements Response<T>, Closeable {
-    private static final BinaryData EMPTY_BODY = BinaryData.fromBytes(new byte[0]);
+    protected static final BinaryData EMPTY_BODY = BinaryData.fromBytes(new byte[0]);
 
     private final Function<Response<?>, ?> deserializationCallback;
     private final Headers headers;
