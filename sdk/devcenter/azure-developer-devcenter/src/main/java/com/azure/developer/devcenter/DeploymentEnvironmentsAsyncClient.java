@@ -810,8 +810,8 @@ public final class DeploymentEnvironmentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<OperationStatus, OperationStatus> beginCreateOrUpdateEnvironment(String projectName,
-        String userId, String environmentName, Environment body) {
+    public PollerFlux<OperationStatus, Environment> beginCreateOrUpdateEnvironment(String projectName, String userId,
+        String environmentName, Environment body) {
         // Generated convenience method for beginCreateOrUpdateEnvironmentWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginCreateOrUpdateEnvironmentWithModelAsync(projectName, userId, environmentName,

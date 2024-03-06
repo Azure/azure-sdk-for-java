@@ -1459,8 +1459,8 @@ public final class DevBoxesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<OperationStatus, OperationStatus> beginCreateDevBox(String projectName, String userId,
-        String devBoxName, DevBox body) {
+    public SyncPoller<OperationStatus, DevBox> beginCreateDevBox(String projectName, String userId, String devBoxName,
+        DevBox body) {
         // Generated convenience method for beginCreateDevBoxWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginCreateDevBoxWithModel(projectName, userId, devBoxName, BinaryData.fromObject(body),
@@ -1507,8 +1507,7 @@ public final class DevBoxesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<OperationStatus, OperationStatus> beginStartDevBox(String projectName, String userId,
-        String devBoxName) {
+    public SyncPoller<OperationStatus, Void> beginStartDevBox(String projectName, String userId, String devBoxName) {
         // Generated convenience method for beginStartDevBoxWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginStartDevBoxWithModel(projectName, userId, devBoxName, requestOptions);
@@ -1532,8 +1531,8 @@ public final class DevBoxesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<OperationStatus, OperationStatus> beginStopDevBox(String projectName, String userId,
-        String devBoxName, Boolean hibernate) {
+    public SyncPoller<OperationStatus, Void> beginStopDevBox(String projectName, String userId, String devBoxName,
+        Boolean hibernate) {
         // Generated convenience method for beginStopDevBoxWithModel
         RequestOptions requestOptions = new RequestOptions();
         if (hibernate != null) {
@@ -1559,8 +1558,7 @@ public final class DevBoxesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<OperationStatus, OperationStatus> beginStopDevBox(String projectName, String userId,
-        String devBoxName) {
+    public SyncPoller<OperationStatus, Void> beginStopDevBox(String projectName, String userId, String devBoxName) {
         // Generated convenience method for beginStopDevBoxWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginStopDevBoxWithModel(projectName, userId, devBoxName, requestOptions);
@@ -1583,8 +1581,7 @@ public final class DevBoxesClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<OperationStatus, OperationStatus> beginRestartDevBox(String projectName, String userId,
-        String devBoxName) {
+    public SyncPoller<OperationStatus, Void> beginRestartDevBox(String projectName, String userId, String devBoxName) {
         // Generated convenience method for beginRestartDevBoxWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginRestartDevBoxWithModel(projectName, userId, devBoxName, requestOptions);

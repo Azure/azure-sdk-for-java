@@ -1541,8 +1541,8 @@ public final class DevBoxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<OperationStatus, OperationStatus> beginCreateDevBox(String projectName, String userId,
-        String devBoxName, DevBox body) {
+    public PollerFlux<OperationStatus, DevBox> beginCreateDevBox(String projectName, String userId, String devBoxName,
+        DevBox body) {
         // Generated convenience method for beginCreateDevBoxWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginCreateDevBoxWithModelAsync(projectName, userId, devBoxName,
@@ -1589,8 +1589,7 @@ public final class DevBoxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<OperationStatus, OperationStatus> beginStartDevBox(String projectName, String userId,
-        String devBoxName) {
+    public PollerFlux<OperationStatus, Void> beginStartDevBox(String projectName, String userId, String devBoxName) {
         // Generated convenience method for beginStartDevBoxWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginStartDevBoxWithModelAsync(projectName, userId, devBoxName, requestOptions);
@@ -1614,8 +1613,8 @@ public final class DevBoxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<OperationStatus, OperationStatus> beginStopDevBox(String projectName, String userId,
-        String devBoxName, Boolean hibernate) {
+    public PollerFlux<OperationStatus, Void> beginStopDevBox(String projectName, String userId, String devBoxName,
+        Boolean hibernate) {
         // Generated convenience method for beginStopDevBoxWithModel
         RequestOptions requestOptions = new RequestOptions();
         if (hibernate != null) {
@@ -1641,8 +1640,7 @@ public final class DevBoxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<OperationStatus, OperationStatus> beginStopDevBox(String projectName, String userId,
-        String devBoxName) {
+    public PollerFlux<OperationStatus, Void> beginStopDevBox(String projectName, String userId, String devBoxName) {
         // Generated convenience method for beginStopDevBoxWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginStopDevBoxWithModelAsync(projectName, userId, devBoxName, requestOptions);
@@ -1665,8 +1663,7 @@ public final class DevBoxesAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<OperationStatus, OperationStatus> beginRestartDevBox(String projectName, String userId,
-        String devBoxName) {
+    public PollerFlux<OperationStatus, Void> beginRestartDevBox(String projectName, String userId, String devBoxName) {
         // Generated convenience method for beginRestartDevBoxWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginRestartDevBoxWithModelAsync(projectName, userId, devBoxName, requestOptions);

@@ -45,6 +45,7 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.developer.devcenter.DevCenterServiceVersion;
+import com.azure.developer.devcenter.models.Environment;
 import com.azure.developer.devcenter.models.OperationStatus;
 import java.time.Duration;
 import java.util.List;
@@ -1557,7 +1558,7 @@ public final class DeploymentEnvironmentsClientImpl {
      * @return the {@link PollerFlux} for polling of properties of an environment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<OperationStatus, OperationStatus> beginCreateOrUpdateEnvironmentWithModelAsync(String projectName,
+    public PollerFlux<OperationStatus, Environment> beginCreateOrUpdateEnvironmentWithModelAsync(String projectName,
         String userId, String environmentName, BinaryData body, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.createOrUpdateEnvironmentWithResponseAsync(projectName, userId, environmentName, body,
@@ -1567,7 +1568,7 @@ public final class DeploymentEnvironmentsClientImpl {
                 .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(OperationStatus.class), TypeReference.createInstance(OperationStatus.class));
+            TypeReference.createInstance(OperationStatus.class), TypeReference.createInstance(Environment.class));
     }
 
     /**
@@ -1640,7 +1641,7 @@ public final class DeploymentEnvironmentsClientImpl {
      * @return the {@link SyncPoller} for polling of properties of an environment.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<OperationStatus, OperationStatus> beginCreateOrUpdateEnvironmentWithModel(String projectName,
+    public SyncPoller<OperationStatus, Environment> beginCreateOrUpdateEnvironmentWithModel(String projectName,
         String userId, String environmentName, BinaryData body, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.createOrUpdateEnvironmentWithResponse(projectName, userId, environmentName, body,
@@ -1650,7 +1651,7 @@ public final class DeploymentEnvironmentsClientImpl {
                 .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(OperationStatus.class), TypeReference.createInstance(OperationStatus.class));
+            TypeReference.createInstance(OperationStatus.class), TypeReference.createInstance(Environment.class));
     }
 
     /**

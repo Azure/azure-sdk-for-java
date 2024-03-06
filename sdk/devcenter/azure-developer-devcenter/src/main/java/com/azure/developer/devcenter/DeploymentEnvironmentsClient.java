@@ -767,8 +767,8 @@ public final class DeploymentEnvironmentsClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<OperationStatus, OperationStatus> beginCreateOrUpdateEnvironment(String projectName,
-        String userId, String environmentName, Environment body) {
+    public SyncPoller<OperationStatus, Environment> beginCreateOrUpdateEnvironment(String projectName, String userId,
+        String environmentName, Environment body) {
         // Generated convenience method for beginCreateOrUpdateEnvironmentWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginCreateOrUpdateEnvironmentWithModel(projectName, userId, environmentName,

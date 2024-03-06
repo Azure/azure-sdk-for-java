@@ -46,6 +46,7 @@ import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerAdapter;
 import com.azure.core.util.serializer.TypeReference;
 import com.azure.developer.devcenter.DevCenterServiceVersion;
+import com.azure.developer.devcenter.models.DevBox;
 import com.azure.developer.devcenter.models.OperationStatus;
 import java.time.Duration;
 import java.time.OffsetDateTime;
@@ -3350,8 +3351,8 @@ public final class DevBoxesClientImpl {
      * @return the {@link PollerFlux} for polling of a Dev Box.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<OperationStatus, OperationStatus> beginCreateDevBoxWithModelAsync(String projectName,
-        String userId, String devBoxName, BinaryData body, RequestOptions requestOptions) {
+    public PollerFlux<OperationStatus, DevBox> beginCreateDevBoxWithModelAsync(String projectName, String userId,
+        String devBoxName, BinaryData body, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.createDevBoxWithResponseAsync(projectName, userId, devBoxName, body, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
@@ -3359,7 +3360,7 @@ public final class DevBoxesClientImpl {
                 .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(OperationStatus.class), TypeReference.createInstance(OperationStatus.class));
+            TypeReference.createInstance(OperationStatus.class), TypeReference.createInstance(DevBox.class));
     }
 
     /**
@@ -3476,7 +3477,7 @@ public final class DevBoxesClientImpl {
      * @return the {@link SyncPoller} for polling of a Dev Box.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<OperationStatus, OperationStatus> beginCreateDevBoxWithModel(String projectName, String userId,
+    public SyncPoller<OperationStatus, DevBox> beginCreateDevBoxWithModel(String projectName, String userId,
         String devBoxName, BinaryData body, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.createDevBoxWithResponse(projectName, userId, devBoxName, body, requestOptions),
@@ -3485,7 +3486,7 @@ public final class DevBoxesClientImpl {
                 .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(OperationStatus.class), TypeReference.createInstance(OperationStatus.class));
+            TypeReference.createInstance(OperationStatus.class), TypeReference.createInstance(DevBox.class));
     }
 
     /**
@@ -3964,8 +3965,8 @@ public final class DevBoxesClientImpl {
      * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<OperationStatus, OperationStatus> beginStartDevBoxWithModelAsync(String projectName,
-        String userId, String devBoxName, RequestOptions requestOptions) {
+    public PollerFlux<OperationStatus, Void> beginStartDevBoxWithModelAsync(String projectName, String userId,
+        String devBoxName, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.startDevBoxWithResponseAsync(projectName, userId, devBoxName, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
@@ -3973,7 +3974,7 @@ public final class DevBoxesClientImpl {
                 .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(OperationStatus.class), TypeReference.createInstance(OperationStatus.class));
+            TypeReference.createInstance(OperationStatus.class), TypeReference.createInstance(Void.class));
     }
 
     /**
@@ -4010,7 +4011,7 @@ public final class DevBoxesClientImpl {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<OperationStatus, OperationStatus> beginStartDevBoxWithModel(String projectName, String userId,
+    public SyncPoller<OperationStatus, Void> beginStartDevBoxWithModel(String projectName, String userId,
         String devBoxName, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.startDevBoxWithResponse(projectName, userId, devBoxName, requestOptions),
@@ -4019,7 +4020,7 @@ public final class DevBoxesClientImpl {
                 .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(OperationStatus.class), TypeReference.createInstance(OperationStatus.class));
+            TypeReference.createInstance(OperationStatus.class), TypeReference.createInstance(Void.class));
     }
 
     /**
@@ -4326,7 +4327,7 @@ public final class DevBoxesClientImpl {
      * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<OperationStatus, OperationStatus> beginStopDevBoxWithModelAsync(String projectName, String userId,
+    public PollerFlux<OperationStatus, Void> beginStopDevBoxWithModelAsync(String projectName, String userId,
         String devBoxName, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.stopDevBoxWithResponseAsync(projectName, userId, devBoxName, requestOptions),
@@ -4335,7 +4336,7 @@ public final class DevBoxesClientImpl {
                 .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(OperationStatus.class), TypeReference.createInstance(OperationStatus.class));
+            TypeReference.createInstance(OperationStatus.class), TypeReference.createInstance(Void.class));
     }
 
     /**
@@ -4391,7 +4392,7 @@ public final class DevBoxesClientImpl {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<OperationStatus, OperationStatus> beginStopDevBoxWithModel(String projectName, String userId,
+    public SyncPoller<OperationStatus, Void> beginStopDevBoxWithModel(String projectName, String userId,
         String devBoxName, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.stopDevBoxWithResponse(projectName, userId, devBoxName, requestOptions),
@@ -4400,7 +4401,7 @@ public final class DevBoxesClientImpl {
                 .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(OperationStatus.class), TypeReference.createInstance(OperationStatus.class));
+            TypeReference.createInstance(OperationStatus.class), TypeReference.createInstance(Void.class));
     }
 
     /**
@@ -4612,8 +4613,8 @@ public final class DevBoxesClientImpl {
      * @return the {@link PollerFlux} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<OperationStatus, OperationStatus> beginRestartDevBoxWithModelAsync(String projectName,
-        String userId, String devBoxName, RequestOptions requestOptions) {
+    public PollerFlux<OperationStatus, Void> beginRestartDevBoxWithModelAsync(String projectName, String userId,
+        String devBoxName, RequestOptions requestOptions) {
         return PollerFlux.create(Duration.ofSeconds(1),
             () -> this.restartDevBoxWithResponseAsync(projectName, userId, devBoxName, requestOptions),
             new DefaultPollingStrategy<>(new PollingStrategyOptions(this.getHttpPipeline())
@@ -4621,7 +4622,7 @@ public final class DevBoxesClientImpl {
                 .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(OperationStatus.class), TypeReference.createInstance(OperationStatus.class));
+            TypeReference.createInstance(OperationStatus.class), TypeReference.createInstance(Void.class));
     }
 
     /**
@@ -4658,7 +4659,7 @@ public final class DevBoxesClientImpl {
      * @return the {@link SyncPoller} for polling of the current status of an async operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<OperationStatus, OperationStatus> beginRestartDevBoxWithModel(String projectName, String userId,
+    public SyncPoller<OperationStatus, Void> beginRestartDevBoxWithModel(String projectName, String userId,
         String devBoxName, RequestOptions requestOptions) {
         return SyncPoller.createPoller(Duration.ofSeconds(1),
             () -> this.restartDevBoxWithResponse(projectName, userId, devBoxName, requestOptions),
@@ -4667,7 +4668,7 @@ public final class DevBoxesClientImpl {
                 .setContext(requestOptions != null && requestOptions.getContext() != null ? requestOptions.getContext()
                     : Context.NONE)
                 .setServiceVersion(this.getServiceVersion().getVersion())),
-            TypeReference.createInstance(OperationStatus.class), TypeReference.createInstance(OperationStatus.class));
+            TypeReference.createInstance(OperationStatus.class), TypeReference.createInstance(Void.class));
     }
 
     /**
