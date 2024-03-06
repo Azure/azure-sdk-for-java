@@ -9,6 +9,7 @@ import com.azure.core.amqp.exception.AmqpException;
 import com.azure.core.util.logging.ClientLogger;
 import reactor.core.Disposable;
 import reactor.core.publisher.Mono;
+import reactor.core.publisher.Sinks;
 import reactor.util.retry.Retry;
 
 import java.time.Duration;
@@ -18,6 +19,7 @@ import java.util.Objects;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.TimeoutException;
 
+import static reactor.core.publisher.Sinks.EmitFailureHandler.FAIL_FAST;
 import static com.azure.core.amqp.implementation.ClientConstants.CALL_SITE_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.CONNECTION_ID_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.INTERVAL_KEY;
@@ -38,7 +40,7 @@ public final class RequestResponseChannelCache implements Disposable {
     private static final String IS_CACHE_TERMINATED_KEY = "isCacheTerminated";
     private static final String IS_CONNECTION_TERMINATED_KEY = "isConnectionTerminated";
     private static final String TRY_COUNT_KEY = "tryCount";
-
+    private final Sinks.Empty<Void> isClosedMono = Sinks.empty();
     private final ClientLogger logger;
     private final ReactorConnection connection;
     private final Duration activationTimeout;
@@ -75,6 +77,8 @@ public final class RequestResponseChannelCache implements Disposable {
         final Mono<RequestResponseChannel> newChannel = Mono.defer(() -> {
             final RecoveryTerminatedException terminatedError = checkRecoveryTerminated("new-channel");
             if (terminatedError != null) {
+                // The RecoveryTerminatedException is inspected in retryWhenSpec(..) and propagated down as
+                // RequestResponseChannelClosedException.
                 return Mono.error(terminatedError);
             }
             return connection.newRequestResponseChannel(sessionName, linksName, entityPath);
@@ -144,26 +148,43 @@ public final class RequestResponseChannelCache implements Disposable {
     }
 
     /**
-     * Terminate the cache such that it is no longer possible to obtain RequestResponseChannel using {@link this#get()}.
+     * Terminate the cache such that it is no longer possible to obtain RequestResponseChannel using {@link #get()}.
      * If there is a current (cached) RequestResponseChannel then it will be closed.
      */
     @Override
     public void dispose() {
-        final RequestResponseChannel channel;
+        closeAsync().subscribe();
+    }
+
+    /**
+     * Terminate the cache such that it is no longer possible to obtain RequestResponseChannel using {@link this#get()}.
+     * If there is a current (cached) RequestResponseChannel then it will be closed.
+     *
+     * @return a Mono that completes when the cache is terminated.
+     */
+    Mono<Void> closeAsync() {
+        final RequestResponseChannel cached;
         synchronized (lock) {
             if (terminated) {
-                return;
+                return isClosedMono.asMono();
             }
             terminated = true;
-            channel = currentChannel;
+            cached = currentChannel;
         }
 
-        if (channel != null && !channel.isDisposed()) {
-            logger.atInfo().log("Closing the cached channel and Terminating the channel recovery support.");
-            channel.closeAsync().subscribe();
-        } else {
-            logger.atInfo().log("Terminating the channel recovery support.");
+        if (cached == null || cached.isDisposed()) {
+            logger.atInfo().log("closing the channel-cache.");
+            isClosedMono.emitEmpty(FAIL_FAST);
+            return isClosedMono.asMono();
         }
+
+        cached.closeAsync().doOnEach(signal -> {
+            if (signal.isOnError() || signal.isOnComplete()) {
+                logger.atInfo().log("closing the cached channel and the channel-cache.");
+                isClosedMono.emitEmpty(FAIL_FAST);
+            }
+        });
+        return isClosedMono.asMono();
     }
 
     @Override
