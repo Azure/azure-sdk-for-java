@@ -1444,8 +1444,10 @@ public class FullFidelityChangeFeedProcessorTest extends TestSuiteBase {
     void validateChangeFeedProcessorContext(ChangeFeedProcessorContext changeFeedProcessorContext) {
 
         String leaseToken = changeFeedProcessorContext.getLeaseToken();
-
         assertThat(leaseToken).isNotNull();
+        assertThat(changeFeedProcessorContext.getRequestCharge()).isGreaterThanOrEqualTo(0d);
+        assertThat(changeFeedProcessorContext.getSessionToken()).isNotEmpty();
+        assertThat(changeFeedProcessorContext.getDiagnostics()).isNotNull();
     }
 
     private Consumer<List<ChangeFeedProcessorItem>> fullFidelityChangeFeedProcessorHandler(Map<String, ChangeFeedProcessorItem> receivedDocuments) {
