@@ -6,6 +6,7 @@ package com.azure.communication.callautomation;
 import com.azure.communication.callautomation.models.CallMediaRecognizeOptions;
 import com.azure.communication.callautomation.models.ContinuousDtmfRecognitionOptions;
 import com.azure.communication.callautomation.models.DtmfTone;
+import com.azure.communication.callautomation.models.HoldOptions;
 import com.azure.communication.callautomation.models.PlayOptions;
 import com.azure.communication.callautomation.models.PlayToAllOptions;
 import com.azure.communication.callautomation.models.SendDtmfTonesOptions;
@@ -215,6 +216,53 @@ public final class CallMedia {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> stopContinuousDtmfRecognitionWithResponse(ContinuousDtmfRecognitionOptions options, Context context) {
         return callMediaAsync.stopContinuousDtmfRecognitionWithResponseInternal(options, context).block();
+    }
+     /**
+     * Holds participant in call.
+     * @param targetParticipant the target.
+     * @param playSourceInfo audio to play.
+     * @return Response for successful operation.
+    */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Void hold(CommunicationIdentifier targetParticipant,
+                               PlaySource playSourceInfo) {
+        return callMediaAsync.hold(targetParticipant, playSourceInfo).block();
+    }
+
+    /**
+     * Holds participant in call.
+     * @param options - Different options to pass to the request.
+     * @param context Context
+     * @return Response for successful operation.
+    */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> holdWithResponse(HoldOptions options,
+                                                     Context context) {
+        return callMediaAsync.holdWithResponseInternal(options, context).block();
+    }
+
+    /**
+     * Removes hold from participant in call.
+     * @param targetParticipant the target.
+     * @return Response for successful operation.
+    */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Void unhold(CommunicationIdentifier targetParticipant) {
+        return callMediaAsync.unhold(targetParticipant).block();
+    }
+
+    /**
+     * Removes hold from participant in call.
+     * @param targetParticipant the target.
+     * @param operationContext operational context.
+     * @param context Context.
+     * @return Response for successful operation.
+    */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> unholdWithResponse(CommunicationIdentifier targetParticipant,
+                                                     String operationContext,
+                                                     Context context) {
+        return callMediaAsync.unholdWithResponseInternal(targetParticipant, operationContext, context).block();
     }
 
     /**
