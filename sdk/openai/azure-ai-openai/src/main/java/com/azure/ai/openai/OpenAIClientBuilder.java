@@ -269,7 +269,7 @@ public final class OpenAIClientBuilder implements HttpTrait<OpenAIClientBuilder>
         this.retryPolicy = retryPolicy;
         return this;
     }
-
+    
     /**
      * Builds an instance of OpenAIClientImpl with the provided parameters.
      *
@@ -327,7 +327,7 @@ public final class OpenAIClientBuilder implements HttpTrait<OpenAIClientBuilder>
     private NonAzureOpenAIClientImpl buildInnerNonAzureOpenAIClient() {
         HttpPipeline localPipeline = (pipeline != null) ? pipeline : createHttpPipeline();
         NonAzureOpenAIClientImpl client
-            = new NonAzureOpenAIClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter());
+            = new NonAzureOpenAIClientImpl(localPipeline, JacksonAdapter.createDefaultSerializerAdapter(),endpoint);
         return client;
     }
 
