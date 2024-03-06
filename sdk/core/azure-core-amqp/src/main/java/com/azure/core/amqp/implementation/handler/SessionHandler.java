@@ -52,6 +52,15 @@ public class SessionHandler extends Handler {
     }
 
     /**
+     * Gets the name of the session.
+     *
+     * @return the session name.
+     */
+    public String getSessionName() {
+        return sessionName;
+    }
+
+    /**
      * Gets the error context of the session.
      *
      * @return The error context of the session.
