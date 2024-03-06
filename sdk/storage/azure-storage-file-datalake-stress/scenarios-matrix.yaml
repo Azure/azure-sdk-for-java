@@ -11,14 +11,24 @@ matrix:
       imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes), small file, no chunking with async client
-#    read-small-file-async-test:
-#      testScenario: readtofile
-#      sync: false
-#      sizeBytes: 1024
-#      parallel: 50
-#      faults: true
-#      durationMin: 10
-#      imageBuildDir: "../../.."
+    read-small-file-async-test:
+      testScenario: readtofile
+      sync: false
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test downloads 50MB (1024 * 1024 * 50), large file requiring multiple requests
+    read-large-file-test:
+      testScenario: readtofile
+      sync: false
+      sizeBytes: "52428800"
+      parallel: 10
+      faults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes), small stream, no chunking
     read-small-test:
@@ -31,14 +41,24 @@ matrix:
       imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes), small stream, no chunking with async client
-#    read-small-async-test:
-#      testScenario: read
-#      sync: false
-#      sizeBytes: 1024
-#      parallel: 50
-#      faults: true
-#      durationMin: 10
-#      imageBuildDir: "../../.."
+    read-small-async-test:
+      testScenario: read
+      sync: false
+      sizeBytes: 1024
+      parallel: 50
+      faults: true
+      durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test downloads 50MB (1024 * 1024 * 50), large stream requiring multiple requests
+    read-large-test:
+      testScenario: read
+      sync: false
+      sizeBytes: "52428800"
+      parallel: 10
+      faults: true
+      durationMin: 25
+      imageBuildDir: "../../.."
 
     # this test downloads 1KB (1024 bytes) to open input stream, no chunking
     openinputstream-small-test:
@@ -48,4 +68,14 @@ matrix:
       parallel: 50
       faults: true
       durationMin: 10
+      imageBuildDir: "../../.."
+
+    # this test downloads 50MB (1024 * 1024 * 50) to open input stream requiring multiple requests
+    openinputstream-large-test:
+      testScenario: openinputstream
+      sync: true
+      sizeBytes: "52428800"
+      parallel: 10
+      faults: true
+      durationMin: 25
       imageBuildDir: "../../.."

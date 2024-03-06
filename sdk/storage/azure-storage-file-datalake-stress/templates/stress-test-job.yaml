@@ -44,7 +44,7 @@ spec:
           --warmup 0 \
           2>&1 | tee -a "${DEBUG_SHARE}/{{ .Stress.testScenario }}-`date +%s`.log"; \
           code=$?; \
-          kill `pidof dotnet`; \
+          kill `pidof http-fault-injector`; \
           exit $code;
       imagePullPolicy: Always
       resources:
