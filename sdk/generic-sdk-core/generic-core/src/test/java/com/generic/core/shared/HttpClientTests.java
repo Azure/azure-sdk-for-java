@@ -14,6 +14,7 @@ import com.generic.core.http.annotation.QueryParam;
 import com.generic.core.http.annotation.UnexpectedResponseExceptionInformation;
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.exception.HttpResponseException;
+import com.generic.core.http.models.HttpLogOptions;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.RequestOptions;
@@ -1488,8 +1489,8 @@ public abstract class HttpClientTests {
         // Order in which policies applied will be the order in which they added to builder
         final HttpPipeline httpPipeline = new HttpPipelineBuilder()
             .httpClient(httpClient)
-            .policies(new HttpLoggingPolicy(new HttpLoggingPolicy.HttpLogOptions()
-                .setLogLevel(HttpLoggingPolicy.HttpLogOptions.HttpLogDetailLevel.BODY_AND_HEADERS)))
+            .policies(new HttpLoggingPolicy(new HttpLogOptions()
+                .setLogLevel(HttpLogOptions.HttpLogDetailLevel.BODYANDHEADERS)))
             .build();
 
         Response<HttpBinJSON> response =

@@ -58,8 +58,8 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
 
     private static HeaderName validateLocationHeader(String locationHeader) {
         if (CoreUtils.isNullOrEmpty(locationHeader)) {
-            LOGGER.log(ClientLogger.LogLevel.ERROR, () ->
-                String.format("'locationHeader' provided as null will be defaulted to {%s}", HeaderName.LOCATION));
+            LOGGER.atError().log(() ->
+                    "'locationHeader' provided as null will be defaulted to {" + HeaderName.LOCATION + "}");
 
             return HeaderName.LOCATION;
         } else {
@@ -69,7 +69,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
 
     private static Set<HttpMethod> validateAllowedMethods(Set<HttpMethod> allowedMethods) {
         if (CoreUtils.isNullOrEmpty(allowedMethods)) {
-            LOGGER.log(ClientLogger.LogLevel.ERROR, () ->
+            LOGGER.atError().log(() ->
                 String.format("'allowedMethods' provided as null will be defaulted to {%s}",
                     DEFAULT_REDIRECT_ALLOWED_METHODS));
 
@@ -93,7 +93,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
                 LOGGER.atVerbose()
                     .addKeyValue(LoggingKeys.TRY_COUNT_KEY, tryCount)
                     .addKeyValue(REDIRECT_URLS_KEY, attemptedRedirectUrls::toString)
-                    .log("Redirecting.");
+                    .log(() -> "Redirecting.");
 
                 attemptedRedirectUrls.add(redirectUrl);
 
@@ -130,7 +130,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
         if (attemptedRedirectUrls.contains(redirectUrl)) {
             LOGGER.atError()
                 .addKeyValue(LoggingKeys.REDIRECT_URL_KEY, redirectUrl)
-                .log("Request was redirected more than once to the same URL.");
+                .log(() -> "Request was redirected more than once to the same URL.");
 
             return true;
         }
@@ -149,7 +149,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
         if (tryCount >= getMaxAttempts()) {
             LOGGER.atError()
                 .addKeyValue("maxAttempts", getMaxAttempts())
-                .log("Redirect attempts have been exhausted.");
+                .log(() -> "Redirect attempts have been exhausted.");
 
             return false;
         }
@@ -170,7 +170,7 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
         } else {
             LOGGER.atError()
                 .addKeyValue(LoggingKeys.HTTP_METHOD_KEY, httpMethod)
-                .log("Request was redirected from an invalid redirect allowed method.");
+                .log(() -> "Request was redirected from an invalid redirect allowed method.");
 
             return false;
         }

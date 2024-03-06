@@ -72,7 +72,7 @@ public final class HttpResponseBodyDecoder {
                     // - IOException is thrown when the deserializer cannot read the response body.
                     //
                     // Return the exception as the body type, RestProxyBase will handle this later.
-                    LOGGER.log(ClientLogger.LogLevel.WARNING, () -> "Failed to deserialize the error entity.", e);
+                    LOGGER.atWarning().log(() -> "Failed to deserialize the error entity.", e);
 
                     return e;
                 } else {

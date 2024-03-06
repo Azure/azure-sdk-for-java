@@ -38,8 +38,8 @@ public final class RetryOptions {
         Objects.requireNonNull(maxDelay, "'maxDelay' cannot be null.");
 
         if (maxRetries < 0) {
-            LOGGER.log(ClientLogger.LogLevel.VERBOSE,
-                () -> "Max retries cannot be less than 0. Using 3 retries as the maximum.");
+            LOGGER.atVerbose()
+                .log(() -> "Max retries cannot be less than 0. Using 3 retries as the maximum.");
             maxRetries = 3;
         }
 
@@ -60,8 +60,8 @@ public final class RetryOptions {
         Objects.requireNonNull(fixedDelay, "'fixedDelay' cannot be null.");
 
         if (maxRetries < 0) {
-            LOGGER.log(ClientLogger.LogLevel.VERBOSE,
-                () -> "Max retries cannot be less than 0. Using 3 retries as the maximum.");
+            LOGGER.atVerbose()
+                .log(() -> "Max retries cannot be less than 0. Using 3 retries as the maximum.");
             maxRetries = 3;
         }
 

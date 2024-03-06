@@ -112,6 +112,8 @@ known_content_issues:
   - ['sdk/boms/azure-sdk-bom/README.md', '#3113']
   - ['sdk/boms/azure-sdk-template-bom/README.md', '#3113']
   - ['sdk/core/README.md', '#3113']
+  - ['sdk/generic-sdk-core/README.md', '#3113']
+  - ['sdk/generic-core/README.md', '#3113']
   - ['sdk/core/azure-core-experimental/README.md', '#3113']
   - ['sdk/cognitiveservices/ms-azure-cs-textanalytics/README.md', '#3113']
   - ['sdk/cosmos/faq/README.md', '#3113']
