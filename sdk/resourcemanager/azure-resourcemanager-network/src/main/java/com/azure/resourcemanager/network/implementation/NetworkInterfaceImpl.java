@@ -9,6 +9,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.NetworkManager;
 import com.azure.resourcemanager.network.fluent.models.ApplicationSecurityGroupInner;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
+import com.azure.resourcemanager.network.models.DeleteOptions;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.LoadBalancer;
 import com.azure.resourcemanager.network.models.Network;
@@ -60,6 +61,8 @@ class NetworkInterfaceImpl
     private NetworkSecurityGroup existingNetworkSecurityGroupToAssociate;
     /** cached related resources. */
     private NetworkSecurityGroup networkSecurityGroup;
+    /** the delete option of public ip address */
+    private DeleteOptions publicIpAddressDeleteOption;
 
     NetworkInterfaceImpl(String name, NetworkInterfaceInner innerModel, final NetworkManager networkManager) {
         super(name, innerModel, networkManager);
@@ -563,9 +566,15 @@ class NetworkInterfaceImpl
                 .withNetworkSecurityGroup(new NetworkSecurityGroupInner().withId(networkSecurityGroup.id()));
         }
 
-        NicIpConfigurationImpl.ensureConfigurations(this.nicIPConfigurations.values());
+        NicIpConfigurationImpl.ensureConfigurations(this.nicIPConfigurations.values(), this.publicIpAddressDeleteOption);
 
         // Reset and update IP configs
         this.innerModel().withIpConfigurations(innersFromWrappers(this.nicIPConfigurations.values()));
+    }
+
+    @Override
+    public NetworkInterfaceImpl withPublicIPAddressDeleteOptions(DeleteOptions deleteOptions) {
+        this.publicIpAddressDeleteOption = deleteOptions;
+        return this;
     }
 }

@@ -9,6 +9,7 @@ import com.azure.resourcemanager.network.fluent.models.ApplicationSecurityGroupI
 import com.azure.resourcemanager.network.models.ApplicationGateway;
 import com.azure.resourcemanager.network.models.ApplicationGatewayBackendAddressPool;
 import com.azure.resourcemanager.network.models.ApplicationSecurityGroup;
+import com.azure.resourcemanager.network.models.DeleteOptions;
 import com.azure.resourcemanager.network.models.IpAllocationMethod;
 import com.azure.resourcemanager.network.models.IpVersion;
 import com.azure.resourcemanager.network.models.LoadBalancer;
@@ -265,6 +266,14 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
         }
     }
 
+    protected static void ensureConfigurations(Collection<NicIpConfiguration> nicIPConfigurations, DeleteOptions deleteOptions) {
+        for (NicIpConfiguration nicIPConfiguration : nicIPConfigurations) {
+            NicIpConfigurationImpl config = (NicIpConfigurationImpl) nicIPConfiguration;
+            config.innerModel().withSubnet(config.subnetToAssociate());
+            config.innerModel().withPublicIpAddress(config.publicIPToAssociate(deleteOptions));
+        }
+    }
+
     // Creates a creatable public IP address definition with the given name and DNS label.
     private Creatable<PublicIpAddress> prepareCreatablePublicIP(String name, String leafDnsLabel) {
         PublicIpAddress.DefinitionStages.WithGroup definitionWithGroup =
@@ -346,6 +355,37 @@ class NicIpConfigurationImpl extends NicIpConfigurationBaseImpl<NetworkInterface
         if (pipId != null) {
             return new PublicIpAddressInner().withId(pipId);
         } else if (!this.isInCreateMode) {
+            return this.innerModel().publicIpAddress();
+        } else {
+            return null;
+        }
+    }
+
+        /**
+     * Get the SubResource instance representing a public IP that needs to be associated with the IP configuration.
+     *
+     * <p>null will be returned if withoutPublicIP() is specified in the update fluent chain or user did't opt for
+     * public IP in create fluent chain. In case of update chain, if withoutPublicIP(..) is not specified then existing
+     * associated (if any) public IP will be returned.
+     *
+     * @return public IP SubResource
+     */
+    private PublicIpAddressInner publicIPToAssociate(DeleteOptions deleteOptions) {
+        String pipId = null;
+        if (this.removePrimaryPublicIPAssociation) {
+            return null;
+        } else if (this.creatablePublicIPKey != null) {
+            pipId = ((PublicIpAddress) this.parent().createdDependencyResource(this.creatablePublicIPKey)).id();
+        } else if (this.existingPublicIPAddressIdToAssociate != null) {
+            pipId = this.existingPublicIPAddressIdToAssociate;
+        }
+
+        if (pipId != null) {
+            return new PublicIpAddressInner().withId(pipId).withDeleteOption(deleteOptions);
+        } else if (!this.isInCreateMode) {
+            if (Objects.nonNull(this.innerModel().publicIpAddress())) {
+                return this.innerModel().publicIpAddress().withDeleteOption(deleteOptions);
+            }
             return this.innerModel().publicIpAddress();
         } else {
             return null;
