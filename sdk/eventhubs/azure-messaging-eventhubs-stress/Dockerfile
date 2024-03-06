@@ -6,7 +6,7 @@ RUN yum update -y
 RUN mkdir /stress-eh
 WORKDIR /stress-eh
 
-ADD ./.vscode /stress-sb/.vscode
+ADD ./.vscode /stress-eh/.vscode
 ADD ./sdk/tools /stress-eh/sdk/tools
 ADD ./sdk/parents /stress-eh/sdk/parents
 ADD ./sdk/core /stress-eh/sdk/core

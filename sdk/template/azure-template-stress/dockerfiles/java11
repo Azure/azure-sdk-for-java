@@ -9,7 +9,7 @@ RUN yum -y update
 RUN mkdir /stress
 WORKDIR /stress
 
-ADD ./.vscode /stress-sb/.vscode
+ADD ./.vscode /stress/.vscode
 ADD ./sdk/tools /stress/sdk/tools
 ADD ./eng /stress/eng
 ADD ./common /stress/common
