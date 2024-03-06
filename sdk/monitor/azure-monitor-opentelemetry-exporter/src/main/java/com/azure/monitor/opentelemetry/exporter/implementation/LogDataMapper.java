@@ -38,8 +38,6 @@ public class LogDataMapper {
     private static final AttributeKey<String> LOG4J_MARKER = stringKey("log4j.marker");
     private static final AttributeKey<List<String>> LOGBACK_MARKER = stringArrayKey("logback.marker");
 
-    private static final long USE_INGESTION_SAMPLING = -1;
-
     private static final Mappings MAPPINGS;
 
     static {
@@ -112,7 +110,7 @@ public class LogDataMapper {
         }
     }
 
-    private TelemetryItem createMessageTelemetryItem(LogRecordData log, long itemCount) {
+    private TelemetryItem createMessageTelemetryItem(LogRecordData log, @Nullable Long itemCount) {
         MessageTelemetryBuilder telemetryBuilder = MessageTelemetryBuilder.create();
         telemetryInitializer.accept(telemetryBuilder, log.getResource());
 
@@ -142,7 +140,7 @@ public class LogDataMapper {
     }
 
     private TelemetryItem createExceptionTelemetryItem(
-        LogRecordData log, String stack, long itemCount) {
+        LogRecordData log, String stack, @Nullable Long itemCount) {
         ExceptionTelemetryBuilder telemetryBuilder = ExceptionTelemetryBuilder.create();
         telemetryInitializer.accept(telemetryBuilder, log.getResource());
 
@@ -214,15 +212,15 @@ public class LogDataMapper {
     }
 
 
-    private static void setItemCount(AbstractTelemetryBuilder telemetryBuilder, long itemCount) {
-        if (itemCount != USE_INGESTION_SAMPLING) {
+    private static void setItemCount(AbstractTelemetryBuilder telemetryBuilder, @Nullable Long itemCount) {
+        if (itemCount != null) {
             telemetryBuilder.setSampleRate(100.0f / itemCount);
         }
     }
 
-    private static long getItemCount(LogRecordData log) {
-        Long itemCount = log.getAttributes().get(AiSemanticAttributes.ITEM_COUNT);
-        return itemCount == null ? USE_INGESTION_SAMPLING : itemCount;
+    @Nullable
+    private static Long getItemCount(LogRecordData log) {
+        return log.getAttributes().get(AiSemanticAttributes.ITEM_COUNT);
     }
 
     private static void setFunctionExtraTraceAttributes(
