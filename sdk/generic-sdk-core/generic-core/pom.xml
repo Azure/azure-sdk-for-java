@@ -66,6 +66,8 @@
       --add-reads com.generic.core=ALL-UNNAMED
 
       --add-exports com.generic.core/com.generic.core.shared=ALL-UNNAMED
+      --add-exports com.generic.core/com.generic.core.implementation=ALL-UNNAMED
+
     </javaModulesSurefireArgLine>
 
     <!-- If JMH benchmarking was ran Checkstyle may fail on jmh_benchmark generated classes, ignore them. -->

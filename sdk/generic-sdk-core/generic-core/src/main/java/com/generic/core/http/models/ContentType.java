@@ -1,7 +1,7 @@
 // Copyright (c) Microsoft Corporation. All rights reserved.
 // Licensed under the MIT License.
 
-package com.generic.core.implementation.http;
+package com.generic.core.http.models;
 
 /**
  * The different values that commonly used for Content-Type header.

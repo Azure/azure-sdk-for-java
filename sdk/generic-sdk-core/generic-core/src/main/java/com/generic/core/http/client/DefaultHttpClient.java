@@ -10,7 +10,7 @@ import com.generic.core.http.models.ProxyOptions;
 import com.generic.core.http.models.ServerSentEvent;
 import com.generic.core.http.models.ServerSentEventListener;
 import com.generic.core.implementation.AccessibleByteArrayOutputStream;
-import com.generic.core.implementation.http.ContentType;
+import com.generic.core.http.models.ContentType;
 import com.generic.core.implementation.util.ServerSentEventHelper;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Header;

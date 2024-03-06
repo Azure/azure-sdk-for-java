@@ -16,7 +16,7 @@ import com.generic.core.http.exception.HttpExceptionType;
 import com.generic.core.models.HeaderName;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.implementation.TypeUtil;
-import com.generic.core.implementation.http.ContentType;
+import com.generic.core.http.models.ContentType;
 import com.generic.core.implementation.http.RestProxy;
 import com.generic.core.implementation.http.UnexpectedExceptionInformation;
 import com.generic.core.implementation.http.serializer.HttpResponseDecodeData;

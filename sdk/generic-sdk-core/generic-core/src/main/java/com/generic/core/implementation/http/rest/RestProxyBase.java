@@ -13,7 +13,7 @@ import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.implementation.ReflectionSerializable;
 import com.generic.core.implementation.ReflectiveInvoker;
 import com.generic.core.implementation.TypeUtil;
-import com.generic.core.implementation.http.ContentType;
+import com.generic.core.http.models.ContentType;
 import com.generic.core.implementation.http.SimpleResponse;
 import com.generic.core.implementation.http.UnexpectedExceptionInformation;
 import com.generic.core.implementation.http.serializer.HttpResponseDecoder;
