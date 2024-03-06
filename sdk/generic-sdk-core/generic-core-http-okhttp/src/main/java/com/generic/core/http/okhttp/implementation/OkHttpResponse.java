@@ -3,11 +3,11 @@
 
 package com.generic.core.http.okhttp.implementation;
 
+import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.HeaderName;
-import okhttp3.Headers;
-import okhttp3.Response;
+import com.generic.core.models.Headers;
 import okhttp3.ResponseBody;
 
 import java.util.function.Function;
@@ -15,12 +15,12 @@ import java.util.function.Function;
 /**
  * Base response class for OkHttp with implementations for response metadata.
  */
-public class OkHttpResponse<T> implements com.generic.core.http.Response<T> {
+public class OkHttpResponse<T> implements Response<T> {
     private static final BinaryData EMPTY_BODY = BinaryData.fromBytes(new byte[0]);
 
     private final BinaryData body;
-    private final Function<com.generic.core.http.Response<?>, ?> deserializationCallback;
-    private final com.generic.core.models.Headers headers;
+    private final Function<Response<?>, ?> deserializationCallback;
+    private final Headers headers;
     private final HttpRequest request;
     private final int statusCode;
     private final ResponseBody responseBody;
@@ -28,7 +28,8 @@ public class OkHttpResponse<T> implements com.generic.core.http.Response<T> {
     private boolean isBodyDeserialized = false;
     private T value;
 
-    public OkHttpResponse(Response response, HttpRequest request, boolean eagerlyConvertHeaders, byte[] bodyBytes) {
+    public OkHttpResponse(okhttp3.Response response, HttpRequest request, boolean eagerlyConvertHeaders,
+                          byte[] bodyBytes) {
         this.request = request;
         this.statusCode = response.code();
         this.headers = eagerlyConvertHeaders
@@ -51,13 +52,13 @@ public class OkHttpResponse<T> implements com.generic.core.http.Response<T> {
     }
 
     /**
-     * Creates {@link com.generic.core.models.Headers Generic Core's headers} from {@link Headers OkHttp headers}.
+     * Creates {@link Headers Generic Core's headers} from {@link okhttp3.Headers OkHttp headers}.
      *
-     * @param okHttpHeaders {@link Headers OkHttp headers}.
+     * @param okHttpHeaders {@link okhttp3.Headers OkHttp headers}.
      *
-     * @return {@link com.generic.core.models.Headers Generic Core's headers}.
+     * @return {@link Headers Generic Core's headers}.
      */
-    static com.generic.core.models.Headers fromOkHttpHeaders(Headers okHttpHeaders) {
+    static Headers fromOkHttpHeaders(okhttp3.Headers okHttpHeaders) {
         /*
          * While OkHttp's Headers class offers a method which converts the headers into a Map<String, List<String>>,
          * which matches one of the setters in our HttpHeaders, the method implicitly lower cases header names while
@@ -65,8 +66,7 @@ public class OkHttpResponse<T> implements com.generic.core.http.Response<T> {
          * case-insensitive per their definition RFC but this could cause issues when/if the headers are used in
          * serialization or deserialization as casing may matter.
          */
-        com.generic.core.models.Headers httpHeaders =
-            new com.generic.core.models.Headers((int) (okHttpHeaders.size() / 0.75F));
+        Headers httpHeaders = new Headers((int) (okHttpHeaders.size() / 0.75F));
 
         /*
          * Use OkHttp's Headers.forEach() instead of the names and values approach. forEach() allows for a single
@@ -86,7 +86,7 @@ public class OkHttpResponse<T> implements com.generic.core.http.Response<T> {
     }
 
     @Override
-    public com.generic.core.models.Headers getHeaders() {
+    public Headers getHeaders() {
         return this.headers;
     }
 

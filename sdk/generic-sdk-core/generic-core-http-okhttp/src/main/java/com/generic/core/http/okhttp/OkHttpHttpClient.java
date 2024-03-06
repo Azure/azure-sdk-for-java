@@ -3,6 +3,7 @@
 
 package com.generic.core.http.okhttp;
 
+import com.generic.core.http.Response;
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
@@ -20,7 +21,6 @@ import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
-import okhttp3.Response;
 import okhttp3.ResponseBody;
 
 import java.io.IOException;
@@ -30,7 +30,6 @@ import java.io.UncheckedIOException;
  * {@link HttpClient} implementation for OkHttp.
  */
 class OkHttpHttpClient implements HttpClient {
-
     private static final ClientLogger LOGGER = new ClientLogger(OkHttpHttpClient.class);
     private static final byte[] EMPTY_BODY = new byte[0];
     private static final RequestBody EMPTY_REQUEST_BODY = RequestBody.create(EMPTY_BODY);
@@ -42,7 +41,7 @@ class OkHttpHttpClient implements HttpClient {
     }
 
     @Override
-    public com.generic.core.http.Response<?> send(HttpRequest request) {
+    public Response<?> send(HttpRequest request) {
         boolean eagerlyConvertHeaders = request.getMetadata().isEagerlyConvertHeaders();
         boolean eagerlyReadResponse = request.getMetadata().isEagerlyReadResponse();
         boolean ignoreResponseBody = request.getMetadata().isIgnoreResponseBody();
@@ -50,7 +49,7 @@ class OkHttpHttpClient implements HttpClient {
         Request okHttpRequest = toOkHttpRequest(request);
 
         try {
-            Response okHttpResponse = httpClient.newCall(okHttpRequest).execute();
+            okhttp3.Response okHttpResponse = httpClient.newCall(okHttpRequest).execute();
 
             return toResponse(request, okHttpResponse, eagerlyReadResponse, ignoreResponseBody,
                 eagerlyConvertHeaders);
@@ -66,7 +65,7 @@ class OkHttpHttpClient implements HttpClient {
      *
      * @return Th eOkHttp request.
      */
-    private okhttp3.Request toOkHttpRequest(HttpRequest request) {
+    private Request toOkHttpRequest(HttpRequest request) {
         Request.Builder requestBuilder = new Request.Builder()
             .url(request.getUrl());
 
@@ -90,12 +89,12 @@ class OkHttpHttpClient implements HttpClient {
     }
 
     /**
-     * Create a Mono of okhttp3.RequestBody from the given BinaryData.
+     * Create a {@link RequestBody} from the given {@link BinaryData}.
      *
-     * @param bodyContent The request body content
-     * @param headers the headers associated with the original request
+     * @param bodyContent The request body content.
+     * @param headers The {@link Headers} associated with the original request.
      *
-     * @return The Mono emitting okhttp request
+     * @return A {@link RequestBody} created from the given {@link BinaryData}.
      */
     private RequestBody toOkHttpRequestBody(BinaryData bodyContent, Headers headers) {
         if (bodyContent == null) {
@@ -138,10 +137,8 @@ class OkHttpHttpClient implements HttpClient {
         return contentLength;
     }
 
-    private static com.generic.core.http.Response<?> toResponse(HttpRequest request, Response response,
-                                                                boolean eagerlyReadResponse,
-                                                                boolean ignoreResponseBody,
-                                                                boolean eagerlyConvertHeaders) throws IOException {
+    private static Response<?> toResponse(HttpRequest request, okhttp3.Response response, boolean eagerlyReadResponse,
+                                          boolean ignoreResponseBody, boolean eagerlyConvertHeaders) throws IOException {
         /*// For now, eagerlyReadResponse and ignoreResponseBody works the same.
         if (ignoreResponseBody) {
             ResponseBody body = response.body();
