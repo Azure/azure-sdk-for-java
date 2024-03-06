@@ -217,12 +217,13 @@ public final class CallMedia {
     public Response<Void> stopContinuousDtmfRecognitionWithResponse(ContinuousDtmfRecognitionOptions options, Context context) {
         return callMediaAsync.stopContinuousDtmfRecognitionWithResponseInternal(options, context).block();
     }
-     /**
+
+    /**
      * Holds participant in call.
      * @param targetParticipant the target.
      * @param playSourceInfo audio to play.
      * @return Response for successful operation.
-    */
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Void hold(CommunicationIdentifier targetParticipant,
                                PlaySource playSourceInfo) {
@@ -234,7 +235,7 @@ public final class CallMedia {
      * @param options - Different options to pass to the request.
      * @param context Context
      * @return Response for successful operation.
-    */
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> holdWithResponse(HoldOptions options,
                                                      Context context) {
@@ -245,7 +246,7 @@ public final class CallMedia {
      * Removes hold from participant in call.
      * @param targetParticipant the target.
      * @return Response for successful operation.
-    */
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Void unhold(CommunicationIdentifier targetParticipant) {
         return callMediaAsync.unhold(targetParticipant).block();
@@ -257,7 +258,7 @@ public final class CallMedia {
      * @param operationContext operational context.
      * @param context Context.
      * @return Response for successful operation.
-    */
+     */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<Void> unholdWithResponse(CommunicationIdentifier targetParticipant,
                                                      String operationContext,
