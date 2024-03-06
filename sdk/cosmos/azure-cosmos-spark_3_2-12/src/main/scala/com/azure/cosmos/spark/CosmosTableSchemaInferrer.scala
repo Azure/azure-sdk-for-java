@@ -2,8 +2,8 @@
 // Licensed under the MIT License.
 package com.azure.cosmos.spark
 
-import com.azure.cosmos.{CosmosAsyncContainer, SparkBridgeInternal}
-import com.azure.cosmos.implementation.{ImplementationBridgeHelpers}
+import com.azure.cosmos.CosmosAsyncContainer
+import com.azure.cosmos.implementation.ImplementationBridgeHelpers
 import com.azure.cosmos.models.{CosmosQueryRequestOptions, FeedRange, PartitionKeyDefinition}
 import com.azure.cosmos.spark.diagnostics.BasicLoggingTrait
 import com.azure.cosmos.util.CosmosPagedIterable
@@ -188,8 +188,7 @@ private object CosmosTableSchemaInferrer
                                                      readManyFilteringConfig: CosmosReadManyFilteringConfig): String = {
     val partitionKeyDefinition =
       TransientErrorsRetryPolicy.executeWithRetry[PartitionKeyDefinition](() => {
-        SparkBridgeInternal
-          .getContainerPropertiesFromCollectionCache(cosmosContainer).getPartitionKeyDefinition
+        cosmosContainer.read().block().getProperties.getPartitionKeyDefinition
       })
 
     CosmosReadManyFilteringConfig

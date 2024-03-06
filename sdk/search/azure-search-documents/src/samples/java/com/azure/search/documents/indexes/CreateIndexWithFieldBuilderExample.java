@@ -8,7 +8,6 @@ import com.azure.core.util.Configuration;
 import com.azure.search.documents.indexes.models.FieldBuilderOptions;
 import com.azure.search.documents.indexes.models.SearchField;
 import com.azure.search.documents.indexes.models.SearchIndex;
-import com.azure.search.documents.indexes.models.SearchFieldDataType;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -33,15 +32,11 @@ public class CreateIndexWithFieldBuilderExample {
         // with @SimpleField or @SearchableField.
         List<SearchField> indexFields = SearchIndexClient.buildSearchFields(Hotel.class, new FieldBuilderOptions());
         String indexName = "hotels";
-        List<SearchField> searchFieldList = new ArrayList<>();
-        searchFieldList.add(new SearchField("hotelId", SearchFieldDataType.STRING)
-	                            .setKey(true)
-	                            .setFilterable(true)
-	                            .setSortable(true));
-        SearchIndex newIndex = new SearchIndex(indexName, indexFields)
-	                            .setFields(searchFieldList);
-         // Create index.
+        SearchIndex newIndex = new SearchIndex(indexName, indexFields);
+
+        // Create index.
         client.createIndex(newIndex);
+
         // Cleanup index resource.
         client.deleteIndex(indexName);
     }

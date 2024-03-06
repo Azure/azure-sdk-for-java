@@ -207,19 +207,7 @@ public class OpenAISyncClientTest extends OpenAIClientTestBase {
     @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
     public void testGenerateImage(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         client = getOpenAIClient(httpClient, serviceVersion);
-        getImageGenerationRunner((deploymentId, options) ->
-                assertImageGenerationsForAzure(client.getImageGenerations(deploymentId, options)));
-    }
-
-    @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)
-    @MethodSource("com.azure.ai.openai.TestUtils#getTestParameters")
-    public void testContentFilterInputExceptionInImageGeneration(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
-        client = getOpenAIClient(httpClient, serviceVersion);
-        contentFilterInputExceptionRunner((deploymentId, options) -> {
-            HttpResponseException httpResponseException = assertThrows(HttpResponseException.class,
-                    () -> client.getImageGenerations(deploymentId, options));
-            validateImageGenerationContentFilteringException(httpResponseException);
-        });
+        getImageGenerationRunner((deploymentId, options) -> assertImageGenerations(client.getImageGenerations(deploymentId, options)));
     }
 
     @ParameterizedTest(name = DISPLAY_NAME_WITH_ARGUMENTS)

@@ -329,10 +329,8 @@ for (SearchResult searchResult : SEARCH_CLIENT.search("luxury")) {
 Define a `Hotel` class.
 
 ```java readme-sample-hotelclass
-public static class Hotel {
-    @SimpleField(isKey = true, isFilterable = true, isSortable = true)
+public class Hotel {
     private String id;
-    @SearchableField(isFilterable = true, isSortable = true)
     private String name;
 
     public String getId() {

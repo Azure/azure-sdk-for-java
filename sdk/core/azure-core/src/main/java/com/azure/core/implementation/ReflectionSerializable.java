@@ -13,8 +13,6 @@ import com.azure.json.JsonWriter;
 import javax.xml.stream.XMLStreamException;
 import java.io.IOException;
 import java.io.OutputStream;
-import java.lang.reflect.Method;
-import java.lang.reflect.Modifier;
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 import java.util.Map;
@@ -107,30 +105,7 @@ public final class ReflectionSerializable {
      * @return Whether {@code bodyContentClass} can be used as {@code JsonSerializable}.
      */
     public static boolean supportsJsonSerializable(Class<?> bodyContentClass) {
-        if (!JsonSerializable.class.isAssignableFrom(bodyContentClass)) {
-            return false;
-        }
-
-        boolean hasFromJson = false;
-        boolean hasToJson = false;
-        for (Method method : bodyContentClass.getDeclaredMethods()) {
-            if (method.getName().equals("fromJson")
-                && (method.getModifiers() & Modifier.STATIC) != 0
-                && method.getParameterCount() == 1
-                && method.getParameterTypes()[0].equals(JsonReader.class)) {
-                hasFromJson = true;
-            } else if (method.getName().equals("toJson")
-                && method.getParameterCount() == 1
-                && method.getParameterTypes()[0].equals(JsonWriter.class)) {
-                hasToJson = true;
-            }
-
-            if (hasFromJson && hasToJson) {
-                return true;
-            }
-        }
-
-        return false;
+        return JsonSerializable.class.isAssignableFrom(bodyContentClass);
     }
 
     /**

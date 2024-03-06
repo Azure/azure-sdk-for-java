@@ -83,9 +83,7 @@ private class ChangeFeedBatch
             s"-> offset: '$offsetJson'.")
 
           val changeFeedStateBase64 = ChangeFeedOffset.fromJson(offsetJson).changeFeedState
-          val expectedContainerResourceId = SparkBridgeInternal
-            .getContainerPropertiesFromCollectionCache(container)
-            .getResourceId
+          val expectedContainerResourceId = container.read().block().getProperties.getResourceId
           val offsetIsValid = SparkBridgeImplementationInternal.validateCollectionRidOfChangeFeedState(
             changeFeedStateBase64,
             expectedContainerResourceId,

@@ -610,7 +610,6 @@ public class ImplementationBridgeHelpers {
         }
 
         public interface CosmosContainerPropertiesAccessor {
-            CosmosContainerProperties create(DocumentCollection documentCollection);
             String getSelfLink(CosmosContainerProperties cosmosContainerProperties);
             void setSelfLink(CosmosContainerProperties cosmosContainerProperties, String selfLink);
         }

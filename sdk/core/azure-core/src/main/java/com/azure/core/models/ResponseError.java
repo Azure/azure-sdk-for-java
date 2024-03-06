@@ -192,17 +192,17 @@ public final class ResponseError implements JsonSerializable<ResponseError> {
                 String fieldName = reader.getFieldName();
                 reader.nextToken();
 
-                if ("code".equalsIgnoreCase(fieldName)) {
+                if ("code".equals(fieldName)) {
                     code = reader.getString();
                     codeFound = true;
-                } else if ("message".equalsIgnoreCase(fieldName)) {
+                } else if ("message".equals(fieldName)) {
                     message = reader.getString();
                     messageFound = true;
-                } else if ("target".equalsIgnoreCase(fieldName)) {
+                } else if ("target".equals(fieldName)) {
                     target = reader.getString();
-                } else if ("innererror".equalsIgnoreCase(fieldName)) {
+                } else if ("innererror".equals(fieldName)) {
                     innerError = ResponseInnerError.fromJson(reader);
-                } else if ("details".equalsIgnoreCase(fieldName)) {
+                } else if ("details".equals(fieldName)) {
                     errorDetails = reader.readArray(ResponseError::fromJson);
                 } else {
                     reader.skipChildren();

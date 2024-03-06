@@ -13,7 +13,6 @@ trigger:
       - sdk/purview/pom.xml
       - sdk/purview/azure-analytics-purview-administration/pom.xml
       - sdk/purview/azure-analytics-purview-catalog/pom.xml
-      - sdk/purview/azure-analytics-purview-datamap/pom.xml
       - sdk/purview/azure-analytics-purview-scanning/pom.xml
       - sdk/purview/azure-analytics-purview-sharing/pom.xml
       - sdk/purview/azure-analytics-purview-workflow/pom.xml
@@ -33,7 +32,6 @@ pr:
       - sdk/purview/pom.xml
       - sdk/purview/azure-analytics-purview-administration/pom.xml
       - sdk/purview/azure-analytics-purview-catalog/pom.xml
-      - sdk/purview/azure-analytics-purview-datamap/pom.xml
       - sdk/purview/azure-analytics-purview-scanning/pom.xml
       - sdk/purview/azure-analytics-purview-sharing/pom.xml
       - sdk/purview/azure-analytics-purview-workflow/pom.xml
@@ -47,10 +45,6 @@ parameters:
     default: true
   - name: release_azureanalyticspurviewcatalog
     displayName: azure-analytics-purview-catalog
-    type: boolean
-    default: true
-  - name: release_azureanalyticspurviewdatamap
-    displayName: azure-analytics-purview-datamap
     type: boolean
     default: true
   - name: release_azureanalyticspurviewscanning
@@ -84,10 +78,6 @@ extends:
         groupId: com.azure
         safeName: azureanalyticspurviewcatalog
         releaseInBatch: ${{ parameters.release_azureanalyticspurviewcatalog }}
-      - name: azure-analytics-purview-datamap
-        groupId: com.azure
-        safeName: azureanalyticspurviewdatamap
-        releaseInBatch: ${{ parameters.release_azureanalyticspurviewdatamap }}
       - name: azure-analytics-purview-scanning
         groupId: com.azure
         safeName: azureanalyticspurviewscanning

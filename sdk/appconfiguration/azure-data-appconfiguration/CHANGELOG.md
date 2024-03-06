@@ -1,16 +1,6 @@
 # Release History
 
-## 1.6.0-beta.2 (Unreleased)
-
-### Features Added
-
-### Breaking Changes
-
-### Bugs Fixed
-
-### Other Changes
-
-## 1.6.0-beta.1 (2024-03-04)
+## 1.6.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -20,6 +10,11 @@
   response.
   Use the new parameter `matchConditions` in the `SettingSelector` to assign the page ETags in the request to service.
 
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
 
 ## 1.5.2 (2024-02-20)
 

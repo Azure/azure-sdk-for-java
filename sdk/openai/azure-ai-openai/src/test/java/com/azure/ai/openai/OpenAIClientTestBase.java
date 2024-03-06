@@ -42,15 +42,15 @@ import com.azure.ai.openai.models.Embeddings;
 import com.azure.ai.openai.models.EmbeddingsOptions;
 import com.azure.ai.openai.models.FunctionCall;
 import com.azure.ai.openai.models.FunctionDefinition;
-import com.azure.ai.openai.models.ImageGenerationData;
 import com.azure.ai.openai.models.ImageGenerationOptions;
 import com.azure.ai.openai.models.ImageGenerations;
 import com.azure.ai.openai.models.SpeechGenerationOptions;
 import com.azure.ai.openai.models.SpeechVoice;
 import com.azure.core.credential.AzureKeyCredential;
 import com.azure.core.credential.KeyCredential;
-import com.azure.core.exception.HttpResponseException;
 import com.azure.core.http.HttpClient;
+import com.azure.core.http.policy.HttpLogDetailLevel;
+import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.test.TestMode;
 import com.azure.core.test.TestProxyTestBase;
@@ -66,7 +66,6 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
 import java.util.function.BiConsumer;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -83,8 +82,9 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
     OpenAIClientBuilder getOpenAIClientBuilder(HttpClient httpClient, OpenAIServiceVersion serviceVersion) {
         OpenAIClientBuilder builder = new OpenAIClientBuilder()
-                .httpClient(httpClient)
-                .serviceVersion(serviceVersion);
+            .httpLogOptions(new HttpLogOptions().setLogLevel(HttpLogDetailLevel.BODY_AND_HEADERS))
+            .httpClient(httpClient)
+            .serviceVersion(serviceVersion);
 
         if (getTestMode() != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
@@ -93,24 +93,24 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder
-                    .endpoint("https://localhost:8080")
-                    .credential(new AzureKeyCredential(FAKE_API_KEY));
+                .endpoint("https://localhost:8080")
+                .credential(new AzureKeyCredential(FAKE_API_KEY));
         } else if (getTestMode() == TestMode.RECORD) {
             builder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
-                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")));
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
+                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")));
         } else {
             builder
-                    .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
-                    .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")));
+                .endpoint(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_ENDPOINT"))
+                .credential(new AzureKeyCredential(Configuration.getGlobalConfiguration().get("AZURE_OPENAI_KEY")));
         }
         return builder;
     }
 
     OpenAIClientBuilder getNonAzureOpenAIClientBuilder(HttpClient httpClient) {
         OpenAIClientBuilder builder = new OpenAIClientBuilder()
-                .httpClient(httpClient);
+            .httpClient(httpClient);
 
         if (getTestMode() != TestMode.LIVE) {
             addTestRecordCustomSanitizers();
@@ -119,24 +119,24 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
         if (getTestMode() == TestMode.PLAYBACK) {
             builder
-                    .credential(new KeyCredential(FAKE_API_KEY));
+                .credential(new KeyCredential(FAKE_API_KEY));
         } else if (getTestMode() == TestMode.RECORD) {
             builder
-                    .addPolicy(interceptorManager.getRecordPolicy())
-                    .credential(new KeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY")));
+                .addPolicy(interceptorManager.getRecordPolicy())
+                .credential(new KeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY")));
         } else {
             builder
-                    .credential(new KeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY")));
+                .credential(new KeyCredential(Configuration.getGlobalConfiguration().get("NON_AZURE_OPENAI_KEY")));
         }
         return builder;
     }
 
     private void addTestRecordCustomSanitizers() {
         interceptorManager.addSanitizers(Arrays.asList(
-                new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
-                new TestProxySanitizer("$..endpoint", null, "https://REDACTED", TestProxySanitizerType.BODY_KEY),
-                new TestProxySanitizer("Content-Type", "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
-                        "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER)
+            new TestProxySanitizer("$..key", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("$..endpoint", null, "https://REDACTED", TestProxySanitizerType.BODY_KEY),
+            new TestProxySanitizer("Content-Type", "(^multipart\\/form-data; boundary=[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{2})",
+                "multipart\\/form-data; boundary=BOUNDARY", TestProxySanitizerType.HEADER)
         ));
     }
 
@@ -152,8 +152,8 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
             return azureCognitiveSearchKey;
         } else {
             throw new IllegalStateException(
-                    "No Azure Cognitive Search API key found. "
-                            + "Please set the appropriate environment variable to use this value.");
+                "No Azure Cognitive Search API key found. "
+                    + "Please set the appropriate environment variable to use this value.");
         }
     }
 
@@ -211,7 +211,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
 
     void getChatCompletionsAzureChatSearchRunner(BiConsumer<String, ChatCompletionsOptions> testRunner) {
         ChatCompletionsOptions chatCompletionsOptions = new ChatCompletionsOptions(
-                Arrays.asList(new ChatRequestUserMessage("What does PR complete mean?")));
+            Arrays.asList(new ChatRequestUserMessage("What does PR complete mean?")));
         testRunner.accept("gpt-35-turbo-16k", chatCompletionsOptions);
     }
 
@@ -222,15 +222,10 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     void getEmbeddingRunnerForNonAzure(BiConsumer<String, EmbeddingsOptions> testRunner) {
         testRunner.accept("text-embedding-ada-002", new EmbeddingsOptions(Arrays.asList("Your text string goes here")));
     }
-
     void getImageGenerationRunner(BiConsumer<String, ImageGenerationOptions> testRunner) {
         testRunner.accept("dall-e-3",
                 new ImageGenerationOptions("A drawing of the Seattle skyline in the style of Van Gogh")
         );
-    }
-
-    void contentFilterInputExceptionRunner(BiConsumer<String, ImageGenerationOptions> testRunner) {
-        testRunner.accept("dall-e-3", new ImageGenerationOptions("Go kill yourself"));
     }
 
     void getChatFunctionRunnerForNonAzure(BiConsumer<String, ChatCompletionsOptions> testRunner) {
@@ -293,7 +288,7 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     void textToSpeechRunnerForNonAzure(BiConsumer<String, SpeechGenerationOptions> testRunner) {
         testRunner.accept("tts-1", getSpeechGenerationOptions());
     }
-
+    
     private static AudioTranslationOptions getAudioTranslationOptions(String fileName) {
         byte[] file = BinaryData.fromFile(openTestResourceFile(fileName)).toBytes();
         AudioTranslationOptions translationOptions = new AudioTranslationOptions(file);
@@ -521,18 +516,8 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     }
 
     static void assertImageGenerations(ImageGenerations actual) {
-        assertNotNull(actual);
-        List<ImageGenerationData> data = actual.getData();
-        assertNotNull(data);
-        ImageGenerationData imageGenerationData = data.get(0);
-        assertNotNull(imageGenerationData);
-    }
-
-    static void assertImageGenerationsForAzure(ImageGenerations actual) {
-        assertImageGenerations(actual);
-        ImageGenerationData imageGenerationData = actual.getData().get(0);
-        assertNotNull(imageGenerationData.getContentFilterResults());
-        assertNotNull(imageGenerationData.getPromptFilterResults());
+        assertNotNull(actual.getData());
+        assertFalse(actual.getData().isEmpty());
     }
 
     static <T> T assertFunctionCall(ChatChoice actual, String functionName, Class<T> myPropertiesClazz) {
@@ -659,20 +644,6 @@ public abstract class OpenAIClientTestBase extends TestProxyTestBase {
     static void assertFunctionToolCallArgs(String argumentJson) {
         FutureTemperatureArguments functionArguments = BinaryData.fromString(argumentJson).toObject(FutureTemperatureArguments.class);
         assertNotNull(functionArguments);
-    }
-
-    static void validateImageGenerationContentFilteringException(HttpResponseException httpResponseException) {
-        // TODO: We need to add POJO for the error response
-        // https://github.com/Azure/azure-sdk-for-java/issues/39013
-        @SuppressWarnings("unchecked")
-        Map<String, Object> exceptionValue = (Map) httpResponseException.getValue();
-        @SuppressWarnings("unchecked")
-        Map<String, Object> error = (Map) exceptionValue.get("error");
-        @SuppressWarnings("unchecked")
-        Map<String, Object> innerError = (Map) error.get("inner_error");
-        ContentFilterResultDetailsForPrompt contentFilterResults = BinaryData.fromObject(
-                innerError.get("content_filter_results")).toObject(ContentFilterResultDetailsForPrompt.class);
-        assertNotNull(contentFilterResults);
     }
 
     protected static final String BATMAN_TRANSCRIPTION =

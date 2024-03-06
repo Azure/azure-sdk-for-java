@@ -3,7 +3,6 @@
 
 module com.azure.core.management {
     requires transitive com.azure.core;
-    requires com.azure.json;
 
     exports com.azure.core.management;
     exports com.azure.core.management.polling;

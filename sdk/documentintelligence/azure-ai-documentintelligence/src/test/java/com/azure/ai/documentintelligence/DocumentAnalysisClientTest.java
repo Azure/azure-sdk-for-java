@@ -39,7 +39,7 @@ import static com.azure.ai.documentintelligence.TestUtils.MULTIPAGE_INVOICE_PDF;
 import static com.azure.ai.documentintelligence.TestUtils.RECEIPT_CONTOSO_JPG;
 import static com.azure.ai.documentintelligence.TestUtils.urlRunner;
 
-public class DocumentIntelligenceClientTest extends DocumentIntelligenceClientTestBase {
+public class DocumentAnalysisClientTest extends DocumentAnalysisClientTestBase {
     private DocumentIntelligenceClient client;
 
     private HttpClient buildSyncAssertingClient(HttpClient httpClient) {

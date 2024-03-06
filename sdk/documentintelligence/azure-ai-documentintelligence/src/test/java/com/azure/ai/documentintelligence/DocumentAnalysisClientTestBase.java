@@ -37,7 +37,7 @@ import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.assertNull;
 
-public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBase {
+public abstract class DocumentAnalysisClientTestBase extends TestProxyTestBase {
     static final String ENCODED_EMPTY_SPACE =
         "{\"urlSource\":\"https://fakeuri.com/blank%20space\"}";
 
@@ -191,7 +191,8 @@ public abstract class DocumentIntelligenceClientTestBase extends TestProxyTestBa
         assertNotNull(analyzeResult.getDocuments());
         assertEquals(1, analyzeResult.getDocuments().size());
         Map<String, DocumentField> invoicePage1Fields = analyzeResult.getDocuments().get(0).getFields();
-        assertNotNull(invoicePage1Fields.get("CustomerAddress")
+        assertEquals("1020 Enterprise Way\n"
+            + "Sunnayvale, CA 87659", invoicePage1Fields.get("CustomerAddress")
             .getValueAddress().getStreetAddress());
         assertNotNull(invoicePage1Fields.get("CustomerAddress").getConfidence());
         assertEquals("Microsoft", invoicePage1Fields.get("CustomerAddressRecipient")

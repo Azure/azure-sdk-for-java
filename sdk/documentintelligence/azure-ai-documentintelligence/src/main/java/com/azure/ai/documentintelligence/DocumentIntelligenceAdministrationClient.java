@@ -231,7 +231,7 @@ public final class DocumentIntelligenceAdministrationClient {
      *             buildMode: String(template/neural) (Optional)
      *             fieldSchema (Required): {
      *                 String (Required): {
-     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
+     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean) (Required)
      *                     description: String (Optional)
      *                     example: String (Optional)
      *                     items (Optional): (recursive schema, see items above)
@@ -245,13 +245,6 @@ public final class DocumentIntelligenceAdministrationClient {
      *             }
      *         }
      *     }
-     *     warnings (Optional): [
-     *          (Optional){
-     *             code: String (Required)
-     *             message: String (Required)
-     *             target: String (Optional)
-     *         }
-     *     ]
      * }
      * }</pre>
      * 
@@ -299,7 +292,7 @@ public final class DocumentIntelligenceAdministrationClient {
      *             buildMode: String(template/neural) (Optional)
      *             fieldSchema (Required): {
      *                 String (Required): {
-     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean/selectionGroup) (Required)
+     *                     type: String(string/date/time/phoneNumber/number/integer/selectionMark/countryRegion/signature/array/object/currency/address/boolean) (Required)
      *                     description: String (Optional)
      *                     example: String (Optional)
      *                     items (Optional): (recursive schema, see items above)
@@ -313,13 +306,6 @@ public final class DocumentIntelligenceAdministrationClient {
      *             }
      *         }
      *     }
-     *     warnings (Optional): [
-     *          (Optional){
-     *             code: String (Required)
-     *             message: String (Required)
-     *             target: String (Optional)
-     *         }
-     *     ]
      * }
      * }</pre>
      * 
@@ -393,7 +379,7 @@ public final class DocumentIntelligenceAdministrationClient {
      * <pre>{@code
      * {
      *     operationId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
+     *     status: String(notStarted/running/failed/succeeded/canceled) (Required)
      *     percentCompleted: Integer (Optional)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -440,7 +426,7 @@ public final class DocumentIntelligenceAdministrationClient {
      * <pre>{@code
      * {
      *     operationId: String (Required)
-     *     status: String(notStarted/running/failed/succeeded/completed/canceled) (Required)
+     *     status: String(notStarted/running/failed/succeeded/canceled) (Required)
      *     percentCompleted: Integer (Optional)
      *     createdDateTime: OffsetDateTime (Required)
      *     lastUpdatedDateTime: OffsetDateTime (Required)
@@ -487,7 +473,6 @@ public final class DocumentIntelligenceAdministrationClient {
      * {
      *     classifierId: String (Required)
      *     description: String (Optional)
-     *     baseClassifierId: String (Optional)
      *     docTypes (Required): {
      *         String (Required): {
      *             sourceKind: String(url/base64/azureBlob/azureBlobFileList) (Optional)
@@ -531,7 +516,6 @@ public final class DocumentIntelligenceAdministrationClient {
      *     createdDateTime: OffsetDateTime (Required)
      *     expirationDateTime: OffsetDateTime (Optional)
      *     apiVersion: String (Required)
-     *     baseClassifierId: String (Optional)
      *     docTypes (Required): {
      *         String (Required): {
      *             sourceKind: String(url/base64/azureBlob/azureBlobFileList) (Optional)
@@ -545,13 +529,6 @@ public final class DocumentIntelligenceAdministrationClient {
      *             }
      *         }
      *     }
-     *     warnings (Optional): [
-     *          (Optional){
-     *             code: String (Required)
-     *             message: String (Required)
-     *             target: String (Optional)
-     *         }
-     *     ]
      * }
      * }</pre>
      * 
@@ -581,7 +558,6 @@ public final class DocumentIntelligenceAdministrationClient {
      *     createdDateTime: OffsetDateTime (Required)
      *     expirationDateTime: OffsetDateTime (Optional)
      *     apiVersion: String (Required)
-     *     baseClassifierId: String (Optional)
      *     docTypes (Required): {
      *         String (Required): {
      *             sourceKind: String(url/base64/azureBlob/azureBlobFileList) (Optional)
@@ -595,13 +571,6 @@ public final class DocumentIntelligenceAdministrationClient {
      *             }
      *         }
      *     }
-     *     warnings (Optional): [
-     *          (Optional){
-     *             code: String (Required)
-     *             message: String (Required)
-     *             target: String (Optional)
-     *         }
-     *     ]
      * }
      * }</pre>
      * 

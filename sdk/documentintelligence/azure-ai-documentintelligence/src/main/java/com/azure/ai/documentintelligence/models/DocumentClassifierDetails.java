@@ -9,7 +9,6 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
-import java.util.List;
 import java.util.Map;
 
 /**
@@ -53,25 +52,11 @@ public final class DocumentClassifierDetails {
     private String apiVersion;
 
     /*
-     * Base classifierId on top of which the classifier was trained.
-     */
-    @Generated
-    @JsonProperty(value = "baseClassifierId")
-    private String baseClassifierId;
-
-    /*
      * List of document types to classify against.
      */
     @Generated
     @JsonProperty(value = "docTypes")
     private Map<String, ClassifierDocumentTypeDetails> docTypes;
-
-    /*
-     * List of warnings encountered while building the classifier.
-     */
-    @Generated
-    @JsonProperty(value = "warnings")
-    private List<Warning> warnings;
 
     /**
      * Creates an instance of DocumentClassifierDetails class.
@@ -141,16 +126,6 @@ public final class DocumentClassifierDetails {
     }
 
     /**
-     * Get the baseClassifierId property: Base classifierId on top of which the classifier was trained.
-     * 
-     * @return the baseClassifierId value.
-     */
-    @Generated
-    public String getBaseClassifierId() {
-        return this.baseClassifierId;
-    }
-
-    /**
      * Get the docTypes property: List of document types to classify against.
      * 
      * @return the docTypes value.
@@ -158,15 +133,5 @@ public final class DocumentClassifierDetails {
     @Generated
     public Map<String, ClassifierDocumentTypeDetails> getDocTypes() {
         return this.docTypes;
-    }
-
-    /**
-     * Get the warnings property: List of warnings encountered while building the classifier.
-     * 
-     * @return the warnings value.
-     */
-    @Generated
-    public List<Warning> getWarnings() {
-        return this.warnings;
     }
 }
