@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ReplicaTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        Replica model =
-            BinaryData
-                .fromString(
-                    "{\"role\":\"AsyncReplica\",\"capacity\":1026391011,\"replicationState\":\"Updating\",\"promoteMode\":\"switchover\",\"promoteOption\":\"planned\"}")
-                .toObject(Replica.class);
+        Replica model = BinaryData.fromString(
+            "{\"role\":\"AsyncReplica\",\"capacity\":1026391011,\"replicationState\":\"Updating\",\"promoteMode\":\"switchover\",\"promoteOption\":\"planned\"}")
+            .toObject(Replica.class);
         Assertions.assertEquals(ReplicationRole.ASYNC_REPLICA, model.role());
         Assertions.assertEquals(ReadReplicaPromoteMode.SWITCHOVER, model.promoteMode());
         Assertions.assertEquals(ReplicationPromoteOption.PLANNED, model.promoteOption());
@@ -26,11 +24,8 @@ public final class ReplicaTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        Replica model =
-            new Replica()
-                .withRole(ReplicationRole.ASYNC_REPLICA)
-                .withPromoteMode(ReadReplicaPromoteMode.SWITCHOVER)
-                .withPromoteOption(ReplicationPromoteOption.PLANNED);
+        Replica model = new Replica().withRole(ReplicationRole.ASYNC_REPLICA)
+            .withPromoteMode(ReadReplicaPromoteMode.SWITCHOVER).withPromoteOption(ReplicationPromoteOption.PLANNED);
         model = BinaryData.fromObject(model).toObject(Replica.class);
         Assertions.assertEquals(ReplicationRole.ASYNC_REPLICA, model.role());
         Assertions.assertEquals(ReadReplicaPromoteMode.SWITCHOVER, model.promoteMode());

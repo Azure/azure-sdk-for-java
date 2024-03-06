@@ -19,8 +19,7 @@ public class CosmosResponseFactory {
     public <T> CosmosItemResponse<T> createItemResponse(CosmosItemResponse<byte[]> responseMessage,
                                                         Class<T> classType) {
         return cosmosItemResponseBuilderAccessor.createCosmosItemResponse(
-            cosmosItemResponseBuilderAccessor.getResourceResponse(responseMessage),
-            cosmosItemResponseBuilderAccessor.getByteArrayContent(responseMessage),
+            responseMessage,
             classType,
             new ItemDeserializer.JsonDeserializer());
     }

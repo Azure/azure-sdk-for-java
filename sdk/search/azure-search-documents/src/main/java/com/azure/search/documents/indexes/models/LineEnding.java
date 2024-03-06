@@ -14,29 +14,38 @@ import java.util.Collection;
  * "space".
  */
 public final class LineEnding extends ExpandableStringEnum<LineEnding> {
-    /** Lines are separated by a single space character. */
+    /**
+     * Lines are separated by a single space character.
+     */
     public static final LineEnding SPACE = fromString("space");
 
-    /** Lines are separated by a carriage return ('\r') character. */
+    /**
+     * Lines are separated by a carriage return ('\r') character.
+     */
     public static final LineEnding CARRIAGE_RETURN = fromString("carriageReturn");
 
-    /** Lines are separated by a single line feed ('\n') character. */
+    /**
+     * Lines are separated by a single line feed ('\n') character.
+     */
     public static final LineEnding LINE_FEED = fromString("lineFeed");
 
-    /** Lines are separated by a carriage return and a line feed ('\r\n') character. */
+    /**
+     * Lines are separated by a carriage return and a line feed ('\r\n') character.
+     */
     public static final LineEnding CARRIAGE_RETURN_LINE_FEED = fromString("carriageReturnLineFeed");
 
     /**
      * Creates a new instance of LineEnding value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public LineEnding() {}
+    public LineEnding() {
+    }
 
     /**
      * Creates or finds a LineEnding from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding LineEnding.
      */
@@ -46,7 +55,7 @@ public final class LineEnding extends ExpandableStringEnum<LineEnding> {
 
     /**
      * Gets known LineEnding values.
-     *
+     * 
      * @return known LineEnding values.
      */
     public static Collection<LineEnding> values() {

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.containerregistry.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The result of get log link operation. */
+/**
+ * The result of get log link operation.
+ */
 @Fluent
 public final class RunGetLogResultInner {
     /*
@@ -22,13 +24,15 @@ public final class RunGetLogResultInner {
     @JsonProperty(value = "logArtifactLink")
     private String logArtifactLink;
 
-    /** Creates an instance of RunGetLogResultInner class. */
+    /**
+     * Creates an instance of RunGetLogResultInner class.
+     */
     public RunGetLogResultInner() {
     }
 
     /**
      * Get the logLink property: The link to logs for a run on a azure container registry.
-     *
+     * 
      * @return the logLink value.
      */
     public String logLink() {
@@ -37,7 +41,7 @@ public final class RunGetLogResultInner {
 
     /**
      * Set the logLink property: The link to logs for a run on a azure container registry.
-     *
+     * 
      * @param logLink the logLink value to set.
      * @return the RunGetLogResultInner object itself.
      */
@@ -48,7 +52,7 @@ public final class RunGetLogResultInner {
 
     /**
      * Get the logArtifactLink property: The link to logs in registry for a run on a azure container registry.
-     *
+     * 
      * @return the logArtifactLink value.
      */
     public String logArtifactLink() {
@@ -57,7 +61,7 @@ public final class RunGetLogResultInner {
 
     /**
      * Set the logArtifactLink property: The link to logs in registry for a run on a azure container registry.
-     *
+     * 
      * @param logArtifactLink the logArtifactLink value to set.
      * @return the RunGetLogResultInner object itself.
      */
@@ -68,7 +72,7 @@ public final class RunGetLogResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

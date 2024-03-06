@@ -177,7 +177,7 @@ final class RntbdRequestHeaders extends RntbdTokenStream<RntbdRequestHeader> {
     }
 
     private RntbdRequestHeaders(ByteBuf in) {
-        super(RntbdRequestHeader.set, RntbdRequestHeader.map, in);
+        super(RntbdRequestHeader.set, RntbdRequestHeader.map, in, RntbdRequestHeader.class);
     }
 
     // endregion

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.AvailablePrivateEndpointT
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An array of available PrivateEndpoint types. */
+/**
+ * An array of available PrivateEndpoint types.
+ */
 @Fluent
 public final class AvailablePrivateEndpointTypesResult {
     /*
@@ -24,13 +26,15 @@ public final class AvailablePrivateEndpointTypesResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of AvailablePrivateEndpointTypesResult class. */
+    /**
+     * Creates an instance of AvailablePrivateEndpointTypesResult class.
+     */
     public AvailablePrivateEndpointTypesResult() {
     }
 
     /**
      * Get the value property: An array of available privateEndpoint type.
-     *
+     * 
      * @return the value value.
      */
     public List<AvailablePrivateEndpointTypeInner> value() {
@@ -39,7 +43,7 @@ public final class AvailablePrivateEndpointTypesResult {
 
     /**
      * Set the value property: An array of available privateEndpoint type.
-     *
+     * 
      * @param value the value value to set.
      * @return the AvailablePrivateEndpointTypesResult object itself.
      */
@@ -50,7 +54,7 @@ public final class AvailablePrivateEndpointTypesResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class AvailablePrivateEndpointTypesResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

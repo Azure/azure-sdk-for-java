@@ -31,40 +31,29 @@ public final class EmailServicesListByResourceGroupMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"provisioningState\":\"Updating\",\"dataLocation\":\"jzbexilzznfq\"},\"location\":\"vwpm\",\"tags\":{\"jhwqytjrybnw\":\"ruoujmk\",\"enq\":\"ewgdrjervn\",\"ndoygmifthnzdnd\":\"eh\",\"nayqi\":\"l\"},\"id\":\"ynduha\",\"name\":\"hqlkthumaqo\",\"type\":\"bgycduiertgccym\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"provisioningState\":\"Succeeded\",\"dataLocation\":\"bobzdopcjwvnhd\"},\"location\":\"wmgxcxrsl\",\"tags\":{\"qsluicp\":\"twuoegrpkhjwni\"},\"id\":\"ggkzzlvmbmpa\",\"name\":\"modfvuefywsbpfvm\",\"type\":\"yhrfouyftaakcpw\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        CommunicationManager manager =
-            CommunicationManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        CommunicationManager manager = CommunicationManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<EmailServiceResource> response =
-            manager.emailServices().listByResourceGroup("t", com.azure.core.util.Context.NONE);
+        PagedIterable<EmailServiceResource> response
+            = manager.emailServices().listByResourceGroup("pkeqdcvdrhvoo", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("vwpm", response.iterator().next().location());
-        Assertions.assertEquals("ruoujmk", response.iterator().next().tags().get("jhwqytjrybnw"));
-        Assertions.assertEquals("jzbexilzznfq", response.iterator().next().dataLocation());
+        Assertions.assertEquals("wmgxcxrsl", response.iterator().next().location());
+        Assertions.assertEquals("twuoegrpkhjwni", response.iterator().next().tags().get("qsluicp"));
+        Assertions.assertEquals("bobzdopcjwvnhd", response.iterator().next().dataLocation());
     }
 }

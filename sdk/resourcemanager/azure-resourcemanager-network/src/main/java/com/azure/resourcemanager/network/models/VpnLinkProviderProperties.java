@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** List of properties of a link provider. */
+/**
+ * List of properties of a link provider.
+ */
 @Fluent
 public final class VpnLinkProviderProperties {
     /*
@@ -22,13 +24,15 @@ public final class VpnLinkProviderProperties {
     @JsonProperty(value = "linkSpeedInMbps")
     private Integer linkSpeedInMbps;
 
-    /** Creates an instance of VpnLinkProviderProperties class. */
+    /**
+     * Creates an instance of VpnLinkProviderProperties class.
+     */
     public VpnLinkProviderProperties() {
     }
 
     /**
      * Get the linkProviderName property: Name of the link provider.
-     *
+     * 
      * @return the linkProviderName value.
      */
     public String linkProviderName() {
@@ -37,7 +41,7 @@ public final class VpnLinkProviderProperties {
 
     /**
      * Set the linkProviderName property: Name of the link provider.
-     *
+     * 
      * @param linkProviderName the linkProviderName value to set.
      * @return the VpnLinkProviderProperties object itself.
      */
@@ -48,7 +52,7 @@ public final class VpnLinkProviderProperties {
 
     /**
      * Get the linkSpeedInMbps property: Link speed.
-     *
+     * 
      * @return the linkSpeedInMbps value.
      */
     public Integer linkSpeedInMbps() {
@@ -57,7 +61,7 @@ public final class VpnLinkProviderProperties {
 
     /**
      * Set the linkSpeedInMbps property: Link speed.
-     *
+     * 
      * @param linkSpeedInMbps the linkSpeedInMbps value to set.
      * @return the VpnLinkProviderProperties object itself.
      */
@@ -68,7 +72,7 @@ public final class VpnLinkProviderProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

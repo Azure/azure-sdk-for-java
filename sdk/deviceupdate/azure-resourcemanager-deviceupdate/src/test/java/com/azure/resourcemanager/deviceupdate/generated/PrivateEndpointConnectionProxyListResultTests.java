@@ -6,70 +6,126 @@ package com.azure.resourcemanager.deviceupdate.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceupdate.fluent.models.PrivateEndpointConnectionProxyInner;
+import com.azure.resourcemanager.deviceupdate.models.ConnectionDetails;
+import com.azure.resourcemanager.deviceupdate.models.GroupConnectivityInformation;
 import com.azure.resourcemanager.deviceupdate.models.PrivateEndpointConnectionProxyListResult;
+import com.azure.resourcemanager.deviceupdate.models.PrivateLinkServiceConnection;
+import com.azure.resourcemanager.deviceupdate.models.PrivateLinkServiceConnectionState;
+import com.azure.resourcemanager.deviceupdate.models.PrivateLinkServiceProxy;
+import com.azure.resourcemanager.deviceupdate.models.PrivateLinkServiceProxyRemotePrivateEndpointConnection;
 import com.azure.resourcemanager.deviceupdate.models.RemotePrivateEndpoint;
 import java.util.Arrays;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.Test;
 
 public final class PrivateEndpointConnectionProxyListResultTests {
-    @Test
-    public void testDeserialize() {
-        PrivateEndpointConnectionProxyListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"properties\":{\"provisioningState\":\"Failed\"},\"eTag\":\"bxetqgtzxdpn\",\"remotePrivateEndpoint\":{\"id\":\"qwxrjfeallnw\",\"location\":\"bisnja\",\"immutableSubscriptionId\":\"mngnzscxaqw\",\"immutableResourceId\":\"chcbonqvpkvlrxnj\",\"vnetTrafficTag\":\"seiphe\",\"manualPrivateLinkServiceConnections\":[],\"privateLinkServiceConnections\":[],\"privateLinkServiceProxies\":[],\"connectionDetails\":[]},\"status\":\"yyien\",\"id\":\"bdlwtgrhpdjpj\",\"name\":\"masxazjpqyegu\",\"type\":\"lhbxxhejjzzvdud\"},{\"properties\":{\"provisioningState\":\"Creating\"},\"eTag\":\"hotwmcynpwlbjnp\",\"remotePrivateEndpoint\":{\"id\":\"ftadehxnltyfs\",\"location\":\"pusuesn\",\"immutableSubscriptionId\":\"dejbavo\",\"immutableResourceId\":\"zdmohctbqvu\",\"vnetTrafficTag\":\"xdn\",\"manualPrivateLinkServiceConnections\":[],\"privateLinkServiceConnections\":[],\"privateLinkServiceProxies\":[],\"connectionDetails\":[]},\"status\":\"ujjugwdkcglh\",\"id\":\"lazjdyggdtjixhbk\",\"name\":\"ofqweykhmenevfye\",\"type\":\"fwhybcibvy\"}],\"nextLink\":\"c\"}")
-                .toObject(PrivateEndpointConnectionProxyListResult.class);
-        Assertions.assertEquals("qwxrjfeallnw", model.value().get(0).remotePrivateEndpoint().id());
-        Assertions.assertEquals("bisnja", model.value().get(0).remotePrivateEndpoint().location());
-        Assertions.assertEquals("mngnzscxaqw", model.value().get(0).remotePrivateEndpoint().immutableSubscriptionId());
-        Assertions.assertEquals("chcbonqvpkvlrxnj", model.value().get(0).remotePrivateEndpoint().immutableResourceId());
-        Assertions.assertEquals("seiphe", model.value().get(0).remotePrivateEndpoint().vnetTrafficTag());
-        Assertions.assertEquals("yyien", model.value().get(0).status());
-        Assertions.assertEquals("c", model.nextLink());
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        PrivateEndpointConnectionProxyListResult model = BinaryData.fromString(
+            "{\"value\":[{\"properties\":{\"provisioningState\":\"Deleting\"},\"eTag\":\"hqyudxorrqnbpoc\",\"remotePrivateEndpoint\":{\"id\":\"i\",\"location\":\"rvkdvjsllrm\",\"immutableSubscriptionId\":\"d\",\"immutableResourceId\":\"atkpnp\",\"vnetTrafficTag\":\"exxbczwtr\",\"manualPrivateLinkServiceConnections\":[{\"name\":\"zb\",\"groupIds\":[\"sovmyokacspkwl\",\"zdobpxjmflbvvnch\",\"kcciwwzjuqkhr\"],\"requestMessage\":\"jiwkuofoskghsau\"},{\"name\":\"mjmvxieduugidyjr\",\"groupIds\":[\"y\"],\"requestMessage\":\"svexcsonpclhoco\"}],\"privateLinkServiceConnections\":[{\"name\":\"ev\",\"groupIds\":[\"gz\",\"buhfmvfaxkffeiit\"],\"requestMessage\":\"vmezy\"},{\"name\":\"hxmzsbbzoggig\",\"groupIds\":[\"burvjxxjnspy\",\"ptkoenkoukn\",\"udwtiukbl\",\"ngkpocipazy\"],\"requestMessage\":\"egukgjnpiucg\"}],\"privateLinkServiceProxies\":[{\"id\":\"qzntypm\",\"remotePrivateLinkServiceConnectionState\":{},\"remotePrivateEndpointConnection\":{},\"groupConnectivityInformation\":[{},{},{},{}]},{\"id\":\"drqjsdpy\",\"remotePrivateLinkServiceConnectionState\":{},\"remotePrivateEndpointConnection\":{},\"groupConnectivityInformation\":[{},{}]},{\"id\":\"de\",\"remotePrivateLinkServiceConnectionState\":{},\"remotePrivateEndpointConnection\":{},\"groupConnectivityInformation\":[{},{},{}]}],\"connectionDetails\":[{\"id\":\"fsj\",\"privateIpAddress\":\"gzfbishcbk\",\"linkIdentifier\":\"jdeyeamdpha\",\"groupId\":\"lpbuxwgipwhonowk\",\"memberName\":\"hwankixzbinjepu\"}]},\"status\":\"mryw\",\"id\":\"uzoqft\",\"name\":\"yqzrnkcqvyxlw\",\"type\":\"zlsico\"}],\"nextLink\":\"qqn\"}")
+            .toObject(PrivateEndpointConnectionProxyListResult.class);
+        Assertions.assertEquals("i", model.value().get(0).remotePrivateEndpoint().id());
+        Assertions.assertEquals("rvkdvjsllrm", model.value().get(0).remotePrivateEndpoint().location());
+        Assertions.assertEquals("d", model.value().get(0).remotePrivateEndpoint().immutableSubscriptionId());
+        Assertions.assertEquals("atkpnp", model.value().get(0).remotePrivateEndpoint().immutableResourceId());
+        Assertions.assertEquals("exxbczwtr", model.value().get(0).remotePrivateEndpoint().vnetTrafficTag());
+        Assertions.assertEquals("zb",
+            model.value().get(0).remotePrivateEndpoint().manualPrivateLinkServiceConnections().get(0).name());
+        Assertions.assertEquals("sovmyokacspkwl", model.value().get(0).remotePrivateEndpoint()
+            .manualPrivateLinkServiceConnections().get(0).groupIds().get(0));
+        Assertions.assertEquals("jiwkuofoskghsau",
+            model.value().get(0).remotePrivateEndpoint().manualPrivateLinkServiceConnections().get(0).requestMessage());
+        Assertions.assertEquals("ev",
+            model.value().get(0).remotePrivateEndpoint().privateLinkServiceConnections().get(0).name());
+        Assertions.assertEquals("gz",
+            model.value().get(0).remotePrivateEndpoint().privateLinkServiceConnections().get(0).groupIds().get(0));
+        Assertions.assertEquals("vmezy",
+            model.value().get(0).remotePrivateEndpoint().privateLinkServiceConnections().get(0).requestMessage());
+        Assertions.assertEquals("qzntypm",
+            model.value().get(0).remotePrivateEndpoint().privateLinkServiceProxies().get(0).id());
+        Assertions.assertEquals("mryw", model.value().get(0).status());
+        Assertions.assertEquals("qqn", model.nextLink());
     }
 
-    @Test
-    public void testSerialize() {
-        PrivateEndpointConnectionProxyListResult model =
-            new PrivateEndpointConnectionProxyListResult()
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
+        PrivateEndpointConnectionProxyListResult model
+            = new PrivateEndpointConnectionProxyListResult()
                 .withValue(
                     Arrays
                         .asList(
                             new PrivateEndpointConnectionProxyInner()
                                 .withRemotePrivateEndpoint(
-                                    new RemotePrivateEndpoint()
-                                        .withId("qwxrjfeallnw")
-                                        .withLocation("bisnja")
-                                        .withImmutableSubscriptionId("mngnzscxaqw")
-                                        .withImmutableResourceId("chcbonqvpkvlrxnj")
-                                        .withVnetTrafficTag("seiphe")
-                                        .withManualPrivateLinkServiceConnections(Arrays.asList())
-                                        .withPrivateLinkServiceConnections(Arrays.asList())
-                                        .withPrivateLinkServiceProxies(Arrays.asList())
-                                        .withConnectionDetails(Arrays.asList()))
-                                .withStatus("yyien"),
-                            new PrivateEndpointConnectionProxyInner()
-                                .withRemotePrivateEndpoint(
-                                    new RemotePrivateEndpoint()
-                                        .withId("ftadehxnltyfs")
-                                        .withLocation("pusuesn")
-                                        .withImmutableSubscriptionId("dejbavo")
-                                        .withImmutableResourceId("zdmohctbqvu")
-                                        .withVnetTrafficTag("xdn")
-                                        .withManualPrivateLinkServiceConnections(Arrays.asList())
-                                        .withPrivateLinkServiceConnections(Arrays.asList())
-                                        .withPrivateLinkServiceProxies(Arrays.asList())
-                                        .withConnectionDetails(Arrays.asList()))
-                                .withStatus("ujjugwdkcglh")))
-                .withNextLink("c");
+                                    new RemotePrivateEndpoint().withId("i").withLocation("rvkdvjsllrm")
+                                        .withImmutableSubscriptionId("d").withImmutableResourceId("atkpnp")
+                                        .withVnetTrafficTag("exxbczwtr")
+                                        .withManualPrivateLinkServiceConnections(Arrays.asList(
+                                            new PrivateLinkServiceConnection().withName("zb")
+                                                .withGroupIds(Arrays.asList("sovmyokacspkwl", "zdobpxjmflbvvnch",
+                                                    "kcciwwzjuqkhr"))
+                                                .withRequestMessage("jiwkuofoskghsau"),
+                                            new PrivateLinkServiceConnection()
+                                                .withName("mjmvxieduugidyjr").withGroupIds(Arrays.asList("y"))
+                                                .withRequestMessage("svexcsonpclhoco")))
+                                        .withPrivateLinkServiceConnections(Arrays.asList(
+                                            new PrivateLinkServiceConnection().withName("ev")
+                                                .withGroupIds(Arrays.asList("gz", "buhfmvfaxkffeiit"))
+                                                .withRequestMessage("vmezy"),
+                                            new PrivateLinkServiceConnection().withName("hxmzsbbzoggig")
+                                                .withGroupIds(Arrays.asList("burvjxxjnspy", "ptkoenkoukn", "udwtiukbl",
+                                                    "ngkpocipazy"))
+                                                .withRequestMessage("egukgjnpiucg")))
+                                        .withPrivateLinkServiceProxies(Arrays.asList(new PrivateLinkServiceProxy()
+                                            .withId("qzntypm")
+                                            .withRemotePrivateLinkServiceConnectionState(
+                                                new PrivateLinkServiceConnectionState())
+                                            .withRemotePrivateEndpointConnection(
+                                                new PrivateLinkServiceProxyRemotePrivateEndpointConnection())
+                                            .withGroupConnectivityInformation(
+                                                Arrays.asList(new GroupConnectivityInformation(),
+                                                    new GroupConnectivityInformation(),
+                                                    new GroupConnectivityInformation(),
+                                                    new GroupConnectivityInformation())),
+                                            new PrivateLinkServiceProxy().withId("drqjsdpy")
+                                                .withRemotePrivateLinkServiceConnectionState(
+                                                    new PrivateLinkServiceConnectionState())
+                                                .withRemotePrivateEndpointConnection(
+                                                    new PrivateLinkServiceProxyRemotePrivateEndpointConnection())
+                                                .withGroupConnectivityInformation(
+                                                    Arrays.asList(new GroupConnectivityInformation(),
+                                                        new GroupConnectivityInformation())),
+                                            new PrivateLinkServiceProxy().withId("de")
+                                                .withRemotePrivateLinkServiceConnectionState(
+                                                    new PrivateLinkServiceConnectionState())
+                                                .withRemotePrivateEndpointConnection(
+                                                    new PrivateLinkServiceProxyRemotePrivateEndpointConnection())
+                                                .withGroupConnectivityInformation(
+                                                    Arrays.asList(new GroupConnectivityInformation(),
+                                                        new GroupConnectivityInformation(),
+                                                        new GroupConnectivityInformation()))))
+                                        .withConnectionDetails(Arrays.asList(new ConnectionDetails())))
+                                .withStatus("mryw")))
+                .withNextLink("qqn");
         model = BinaryData.fromObject(model).toObject(PrivateEndpointConnectionProxyListResult.class);
-        Assertions.assertEquals("qwxrjfeallnw", model.value().get(0).remotePrivateEndpoint().id());
-        Assertions.assertEquals("bisnja", model.value().get(0).remotePrivateEndpoint().location());
-        Assertions.assertEquals("mngnzscxaqw", model.value().get(0).remotePrivateEndpoint().immutableSubscriptionId());
-        Assertions.assertEquals("chcbonqvpkvlrxnj", model.value().get(0).remotePrivateEndpoint().immutableResourceId());
-        Assertions.assertEquals("seiphe", model.value().get(0).remotePrivateEndpoint().vnetTrafficTag());
-        Assertions.assertEquals("yyien", model.value().get(0).status());
-        Assertions.assertEquals("c", model.nextLink());
+        Assertions.assertEquals("i", model.value().get(0).remotePrivateEndpoint().id());
+        Assertions.assertEquals("rvkdvjsllrm", model.value().get(0).remotePrivateEndpoint().location());
+        Assertions.assertEquals("d", model.value().get(0).remotePrivateEndpoint().immutableSubscriptionId());
+        Assertions.assertEquals("atkpnp", model.value().get(0).remotePrivateEndpoint().immutableResourceId());
+        Assertions.assertEquals("exxbczwtr", model.value().get(0).remotePrivateEndpoint().vnetTrafficTag());
+        Assertions.assertEquals("zb",
+            model.value().get(0).remotePrivateEndpoint().manualPrivateLinkServiceConnections().get(0).name());
+        Assertions.assertEquals("sovmyokacspkwl", model.value().get(0).remotePrivateEndpoint()
+            .manualPrivateLinkServiceConnections().get(0).groupIds().get(0));
+        Assertions.assertEquals("jiwkuofoskghsau",
+            model.value().get(0).remotePrivateEndpoint().manualPrivateLinkServiceConnections().get(0).requestMessage());
+        Assertions.assertEquals("ev",
+            model.value().get(0).remotePrivateEndpoint().privateLinkServiceConnections().get(0).name());
+        Assertions.assertEquals("gz",
+            model.value().get(0).remotePrivateEndpoint().privateLinkServiceConnections().get(0).groupIds().get(0));
+        Assertions.assertEquals("vmezy",
+            model.value().get(0).remotePrivateEndpoint().privateLinkServiceConnections().get(0).requestMessage());
+        Assertions.assertEquals("qzntypm",
+            model.value().get(0).remotePrivateEndpoint().privateLinkServiceProxies().get(0).id());
+        Assertions.assertEquals("mryw", model.value().get(0).status());
+        Assertions.assertEquals("qqn", model.nextLink());
     }
 }

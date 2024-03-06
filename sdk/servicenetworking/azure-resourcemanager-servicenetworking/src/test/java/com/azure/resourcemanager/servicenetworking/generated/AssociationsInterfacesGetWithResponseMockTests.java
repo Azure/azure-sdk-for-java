@@ -31,44 +31,30 @@ public final class AssociationsInterfacesGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"shwankixzbinje\"},\"provisioningState\":\"Deleting\"},\"location\":\"mryw\",\"tags\":{\"yx\":\"oqftiyqzrnkcq\",\"nwvlryavwhheunmm\":\"whzlsicohoq\",\"koklya\":\"hgyxzkonoc\",\"ewrmjmwvvjektc\":\"uconuqszfkbey\"},\"id\":\"senhwlrs\",\"name\":\"frzpwvlqdqgb\",\"type\":\"qylihkaetckt\"}";
+        String responseStr
+            = "{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"zrnkcqvyxlwh\"},\"provisioningState\":\"Accepted\"},\"location\":\"cohoq\",\"tags\":{\"gyxzk\":\"vlryavwhheunmmq\"},\"id\":\"noc\",\"name\":\"koklya\",\"type\":\"uconuqszfkbey\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        TrafficControllerManager manager =
-            TrafficControllerManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        TrafficControllerManager manager = TrafficControllerManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        Association response =
-            manager
-                .associationsInterfaces()
-                .getWithResponse("bkh", "jdeyeamdpha", "alpbuxwgipwhon", com.azure.core.util.Context.NONE)
-                .getValue();
+        Association response = manager.associationsInterfaces()
+            .getWithResponse("kix", "bin", "eputtmrywnuzoqf", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("mryw", response.location());
-        Assertions.assertEquals("oqftiyqzrnkcq", response.tags().get("yx"));
-        Assertions.assertEquals(AssociationType.SUBNETS, response.associationType());
-        Assertions.assertEquals("shwankixzbinje", response.subnet().id());
+        Assertions.assertEquals("cohoq", response.location());
+        Assertions.assertEquals("vlryavwhheunmmq", response.tags().get("gyxzk"));
+        Assertions.assertEquals(AssociationType.SUBNETS, response.properties().associationType());
+        Assertions.assertEquals("zrnkcqvyxlwh", response.properties().subnet().id());
     }
 }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.network.fluent.models.PrivateEndpointIpConfigurationProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An IP Configuration of the private endpoint. */
+/**
+ * An IP Configuration of the private endpoint.
+ */
 @Fluent
 public final class PrivateEndpointIpConfiguration {
     /*
@@ -35,13 +37,15 @@ public final class PrivateEndpointIpConfiguration {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of PrivateEndpointIpConfiguration class. */
+    /**
+     * Creates an instance of PrivateEndpointIpConfiguration class.
+     */
     public PrivateEndpointIpConfiguration() {
     }
 
     /**
      * Get the innerProperties property: Properties of private endpoint IP configurations.
-     *
+     * 
      * @return the innerProperties value.
      */
     private PrivateEndpointIpConfigurationProperties innerProperties() {
@@ -50,7 +54,7 @@ public final class PrivateEndpointIpConfiguration {
 
     /**
      * Get the name property: The name of the resource that is unique within a resource group.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -59,7 +63,7 @@ public final class PrivateEndpointIpConfiguration {
 
     /**
      * Set the name property: The name of the resource that is unique within a resource group.
-     *
+     * 
      * @param name the name value to set.
      * @return the PrivateEndpointIpConfiguration object itself.
      */
@@ -70,7 +74,7 @@ public final class PrivateEndpointIpConfiguration {
 
     /**
      * Get the type property: The resource type.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -79,7 +83,7 @@ public final class PrivateEndpointIpConfiguration {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -89,7 +93,7 @@ public final class PrivateEndpointIpConfiguration {
     /**
      * Get the groupId property: The ID of a group obtained from the remote resource that this private endpoint should
      * connect to.
-     *
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -99,7 +103,7 @@ public final class PrivateEndpointIpConfiguration {
     /**
      * Set the groupId property: The ID of a group obtained from the remote resource that this private endpoint should
      * connect to.
-     *
+     * 
      * @param groupId the groupId value to set.
      * @return the PrivateEndpointIpConfiguration object itself.
      */
@@ -114,7 +118,7 @@ public final class PrivateEndpointIpConfiguration {
     /**
      * Get the memberName property: The member name of a group obtained from the remote resource that this private
      * endpoint should connect to.
-     *
+     * 
      * @return the memberName value.
      */
     public String memberName() {
@@ -124,7 +128,7 @@ public final class PrivateEndpointIpConfiguration {
     /**
      * Set the memberName property: The member name of a group obtained from the remote resource that this private
      * endpoint should connect to.
-     *
+     * 
      * @param memberName the memberName value to set.
      * @return the PrivateEndpointIpConfiguration object itself.
      */
@@ -138,7 +142,7 @@ public final class PrivateEndpointIpConfiguration {
 
     /**
      * Get the privateIpAddress property: A private ip address obtained from the private endpoint's subnet.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -147,7 +151,7 @@ public final class PrivateEndpointIpConfiguration {
 
     /**
      * Set the privateIpAddress property: A private ip address obtained from the private endpoint's subnet.
-     *
+     * 
      * @param privateIpAddress the privateIpAddress value to set.
      * @return the PrivateEndpointIpConfiguration object itself.
      */
@@ -161,7 +165,7 @@ public final class PrivateEndpointIpConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

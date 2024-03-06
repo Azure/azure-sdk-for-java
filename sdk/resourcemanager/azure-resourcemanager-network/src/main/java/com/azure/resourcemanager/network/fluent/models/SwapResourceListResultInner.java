@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** SwapResource List with single entry to represent slot type on the specified cloud service. */
+/**
+ * SwapResource List with single entry to represent slot type on the specified cloud service.
+ */
 @Fluent
 public final class SwapResourceListResultInner {
     /*
@@ -17,13 +19,15 @@ public final class SwapResourceListResultInner {
     @JsonProperty(value = "value")
     private List<SwapResourceInner> value;
 
-    /** Creates an instance of SwapResourceListResultInner class. */
+    /**
+     * Creates an instance of SwapResourceListResultInner class.
+     */
     public SwapResourceListResultInner() {
     }
 
     /**
      * Get the value property: The value property.
-     *
+     * 
      * @return the value value.
      */
     public List<SwapResourceInner> value() {
@@ -32,7 +36,7 @@ public final class SwapResourceListResultInner {
 
     /**
      * Set the value property: The value property.
-     *
+     * 
      * @param value the value value to set.
      * @return the SwapResourceListResultInner object itself.
      */
@@ -43,7 +47,7 @@ public final class SwapResourceListResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

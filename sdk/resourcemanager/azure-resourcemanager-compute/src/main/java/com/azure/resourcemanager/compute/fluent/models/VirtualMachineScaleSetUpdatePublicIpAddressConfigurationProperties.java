@@ -10,7 +10,9 @@ import com.azure.resourcemanager.compute.models.DeleteOptions;
 import com.azure.resourcemanager.compute.models.VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a virtual machines scale set IP Configuration's PublicIPAddress configuration. */
+/**
+ * Describes a virtual machines scale set IP Configuration's PublicIPAddress configuration.
+ */
 @Fluent
 public final class VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties {
     /*
@@ -37,13 +39,15 @@ public final class VirtualMachineScaleSetUpdatePublicIpAddressConfigurationPrope
     @JsonProperty(value = "deleteOption")
     private DeleteOptions deleteOption;
 
-    /** Creates an instance of VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties class. */
+    /**
+     * Creates an instance of VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties class.
+     */
     public VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties() {
     }
 
     /**
      * Get the idleTimeoutInMinutes property: The idle timeout of the public IP address.
-     *
+     * 
      * @return the idleTimeoutInMinutes value.
      */
     public Integer idleTimeoutInMinutes() {
@@ -52,19 +56,19 @@ public final class VirtualMachineScaleSetUpdatePublicIpAddressConfigurationPrope
 
     /**
      * Set the idleTimeoutInMinutes property: The idle timeout of the public IP address.
-     *
+     * 
      * @param idleTimeoutInMinutes the idleTimeoutInMinutes value to set.
      * @return the VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties object itself.
      */
-    public VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties withIdleTimeoutInMinutes(
-        Integer idleTimeoutInMinutes) {
+    public VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties
+        withIdleTimeoutInMinutes(Integer idleTimeoutInMinutes) {
         this.idleTimeoutInMinutes = idleTimeoutInMinutes;
         return this;
     }
 
     /**
      * Get the dnsSettings property: The dns settings to be applied on the publicIP addresses .
-     *
+     * 
      * @return the dnsSettings value.
      */
     public VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings() {
@@ -73,19 +77,19 @@ public final class VirtualMachineScaleSetUpdatePublicIpAddressConfigurationPrope
 
     /**
      * Set the dnsSettings property: The dns settings to be applied on the publicIP addresses .
-     *
+     * 
      * @param dnsSettings the dnsSettings value to set.
      * @return the VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties object itself.
      */
-    public VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties withDnsSettings(
-        VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings) {
+    public VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties
+        withDnsSettings(VirtualMachineScaleSetPublicIpAddressConfigurationDnsSettings dnsSettings) {
         this.dnsSettings = dnsSettings;
         return this;
     }
 
     /**
      * Get the publicIpPrefix property: The PublicIPPrefix from which to allocate publicIP addresses.
-     *
+     * 
      * @return the publicIpPrefix value.
      */
     public SubResource publicIpPrefix() {
@@ -94,19 +98,19 @@ public final class VirtualMachineScaleSetUpdatePublicIpAddressConfigurationPrope
 
     /**
      * Set the publicIpPrefix property: The PublicIPPrefix from which to allocate publicIP addresses.
-     *
+     * 
      * @param publicIpPrefix the publicIpPrefix value to set.
      * @return the VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties object itself.
      */
-    public VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties withPublicIpPrefix(
-        SubResource publicIpPrefix) {
+    public VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties
+        withPublicIpPrefix(SubResource publicIpPrefix) {
         this.publicIpPrefix = publicIpPrefix;
         return this;
     }
 
     /**
      * Get the deleteOption property: Specify what happens to the public IP when the VM is deleted.
-     *
+     * 
      * @return the deleteOption value.
      */
     public DeleteOptions deleteOption() {
@@ -115,19 +119,19 @@ public final class VirtualMachineScaleSetUpdatePublicIpAddressConfigurationPrope
 
     /**
      * Set the deleteOption property: Specify what happens to the public IP when the VM is deleted.
-     *
+     * 
      * @param deleteOption the deleteOption value to set.
      * @return the VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties object itself.
      */
-    public VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties withDeleteOption(
-        DeleteOptions deleteOption) {
+    public VirtualMachineScaleSetUpdatePublicIpAddressConfigurationProperties
+        withDeleteOption(DeleteOptions deleteOption) {
         this.deleteOption = deleteOption;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

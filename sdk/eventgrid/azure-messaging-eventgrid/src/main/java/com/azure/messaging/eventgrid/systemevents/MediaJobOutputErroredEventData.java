@@ -5,6 +5,10 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -13,20 +17,69 @@ import java.util.Map;
  */
 @Fluent
 public final class MediaJobOutputErroredEventData extends MediaJobOutputStateChangeEventData {
-    /** Creates an instance of MediaJobOutputErroredEventData class. */
-    public MediaJobOutputErroredEventData() {}
+    /**
+     * Creates an instance of MediaJobOutputErroredEventData class.
+     */
+    public MediaJobOutputErroredEventData() {
+    }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MediaJobOutputErroredEventData setOutput(MediaJobOutput output) {
         super.setOutput(output);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MediaJobOutputErroredEventData setJobCorrelationData(Map<String, String> jobCorrelationData) {
         super.setJobCorrelationData(jobCorrelationData);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeJsonField("output", getOutput());
+        jsonWriter.writeMapField("jobCorrelationData", getJobCorrelationData(),
+            (writer, element) -> writer.writeString(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MediaJobOutputErroredEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MediaJobOutputErroredEventData if the JsonReader was pointing to an instance of it, or
+     * null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the MediaJobOutputErroredEventData.
+     */
+    public static MediaJobOutputErroredEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            MediaJobOutputErroredEventData deserializedMediaJobOutputErroredEventData
+                = new MediaJobOutputErroredEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("previousState".equals(fieldName)) {
+                    deserializedMediaJobOutputErroredEventData
+                        .setPreviousState(MediaJobState.fromString(reader.getString()));
+                } else if ("output".equals(fieldName)) {
+                    deserializedMediaJobOutputErroredEventData.setOutput(MediaJobOutput.fromJson(reader));
+                } else if ("jobCorrelationData".equals(fieldName)) {
+                    Map<String, String> jobCorrelationData = reader.readMap(reader1 -> reader1.getString());
+                    deserializedMediaJobOutputErroredEventData.setJobCorrelationData(jobCorrelationData);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedMediaJobOutputErroredEventData;
+        });
     }
 }

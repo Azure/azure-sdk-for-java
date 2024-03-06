@@ -51,7 +51,7 @@ public final class RecognizeOptionsInternal {
      * Defines Ivr choices for recognize.
      */
     @JsonProperty(value = "choices")
-    private List<RecognizeChoiceInternal> choices;
+    private List<RecognitionChoiceInternal> choices;
 
     /*
      * Defines continuous speech recognition option.
@@ -184,7 +184,7 @@ public final class RecognizeOptionsInternal {
      *
      * @return the choices value.
      */
-    public List<RecognizeChoiceInternal> getChoices() {
+    public List<RecognitionChoiceInternal> getChoices() {
         return this.choices;
     }
 
@@ -194,7 +194,7 @@ public final class RecognizeOptionsInternal {
      * @param choices the choices value to set.
      * @return the RecognizeOptionsInternal object itself.
      */
-    public RecognizeOptionsInternal setChoices(List<RecognizeChoiceInternal> choices) {
+    public RecognizeOptionsInternal setChoices(List<RecognitionChoiceInternal> choices) {
         this.choices = choices;
         return this;
     }

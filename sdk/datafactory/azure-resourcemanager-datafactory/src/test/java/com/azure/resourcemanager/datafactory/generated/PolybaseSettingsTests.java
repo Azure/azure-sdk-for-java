@@ -14,25 +14,19 @@ import org.junit.jupiter.api.Assertions;
 public final class PolybaseSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PolybaseSettings model =
-            BinaryData
-                .fromString(
-                    "{\"rejectType\":\"value\",\"rejectValue\":\"dataocrddqxhegcolh\",\"rejectSampleValue\":\"datacklqrunqwcrkkaby\",\"useTypeDefault\":\"datay\",\"\":{\"jypo\":\"datapywgjgfbsfsvayg\",\"ymf\":\"datakiptnwpwskckc\",\"plkpemxc\":\"dataxpgvqioqrebwarl\",\"earwtkrbscwb\":\"datareqaqvspsy\"}}")
-                .toObject(PolybaseSettings.class);
-        Assertions.assertEquals(PolybaseSettingsRejectType.VALUE, model.rejectType());
+        PolybaseSettings model = BinaryData.fromString(
+            "{\"rejectType\":\"percentage\",\"rejectValue\":\"dataekygnepjyuxqdrp\",\"rejectSampleValue\":\"datayxjqranpztla\",\"useTypeDefault\":\"datapfzsf\",\"\":{\"cavk\":\"dataapbrwviovvyhso\"}}")
+            .toObject(PolybaseSettings.class);
+        Assertions.assertEquals(PolybaseSettingsRejectType.PERCENTAGE, model.rejectType());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        PolybaseSettings model =
-            new PolybaseSettings()
-                .withRejectType(PolybaseSettingsRejectType.VALUE)
-                .withRejectValue("dataocrddqxhegcolh")
-                .withRejectSampleValue("datacklqrunqwcrkkaby")
-                .withUseTypeDefault("datay")
-                .withAdditionalProperties(mapOf());
+        PolybaseSettings model = new PolybaseSettings().withRejectType(PolybaseSettingsRejectType.PERCENTAGE)
+            .withRejectValue("dataekygnepjyuxqdrp").withRejectSampleValue("datayxjqranpztla")
+            .withUseTypeDefault("datapfzsf").withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(PolybaseSettings.class);
-        Assertions.assertEquals(PolybaseSettingsRejectType.VALUE, model.rejectType());
+        Assertions.assertEquals(PolybaseSettingsRejectType.PERCENTAGE, model.rejectType());
     }
 
     // Use "Map.of" if available

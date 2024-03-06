@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The settings for the long term backup. */
+/**
+ * The settings for the long term backup.
+ */
 @Fluent
 public final class BackupSettings {
     /*
@@ -17,13 +19,15 @@ public final class BackupSettings {
     @JsonProperty(value = "backupName", required = true)
     private String backupName;
 
-    /** Creates an instance of BackupSettings class. */
+    /**
+     * Creates an instance of BackupSettings class.
+     */
     public BackupSettings() {
     }
 
     /**
      * Get the backupName property: Backup Name for the current backup.
-     *
+     * 
      * @return the backupName value.
      */
     public String backupName() {
@@ -32,7 +36,7 @@ public final class BackupSettings {
 
     /**
      * Set the backupName property: Backup Name for the current backup.
-     *
+     * 
      * @param backupName the backupName value to set.
      * @return the BackupSettings object itself.
      */
@@ -43,14 +47,13 @@ public final class BackupSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (backupName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property backupName in model BackupSettings"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property backupName in model BackupSettings"));
         }
     }
 

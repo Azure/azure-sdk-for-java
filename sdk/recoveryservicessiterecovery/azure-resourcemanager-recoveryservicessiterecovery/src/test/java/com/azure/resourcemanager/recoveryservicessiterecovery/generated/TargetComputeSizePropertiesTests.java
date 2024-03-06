@@ -13,11 +13,9 @@ import org.junit.jupiter.api.Assertions;
 public final class TargetComputeSizePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TargetComputeSizeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"ajjziuxxpshne\",\"friendlyName\":\"ulfgslqu\",\"cpuCoresCount\":471639164,\"vCPUsAvailable\":1232938726,\"memoryInGB\":97.2663718138851,\"maxDataDiskCount\":1732882534,\"maxNicsCount\":203229589,\"errors\":[{\"message\":\"a\",\"severity\":\"juohminyflnorw\"},{\"message\":\"uvwpklvxwmyg\",\"severity\":\"pgpqchiszepnnb\"},{\"message\":\"rxgibbd\",\"severity\":\"confozauors\"},{\"message\":\"okwbqplh\",\"severity\":\"nuuepzlrp\"}],\"highIopsSupported\":\"zsoldwey\",\"hyperVGenerations\":[\"unvmnnr\",\"rbior\",\"talywjhhgdnhxms\",\"v\"]}")
-                .toObject(TargetComputeSizeProperties.class);
+        TargetComputeSizeProperties model = BinaryData.fromString(
+            "{\"name\":\"ajjziuxxpshne\",\"friendlyName\":\"ulfgslqu\",\"cpuCoresCount\":471639164,\"vCPUsAvailable\":1232938726,\"memoryInGB\":97.2663718138851,\"maxDataDiskCount\":1732882534,\"maxNicsCount\":203229589,\"errors\":[{\"message\":\"a\",\"severity\":\"juohminyflnorw\"},{\"message\":\"uvwpklvxwmyg\",\"severity\":\"pgpqchiszepnnb\"},{\"message\":\"rxgibbd\",\"severity\":\"confozauors\"},{\"message\":\"okwbqplh\",\"severity\":\"nuuepzlrp\"}],\"highIopsSupported\":\"zsoldwey\",\"hyperVGenerations\":[\"unvmnnr\",\"rbior\",\"talywjhhgdnhxms\",\"v\"]}")
+            .toObject(TargetComputeSizeProperties.class);
         Assertions.assertEquals("ajjziuxxpshne", model.name());
         Assertions.assertEquals("ulfgslqu", model.friendlyName());
         Assertions.assertEquals(471639164, model.cpuCoresCount());
@@ -32,23 +30,15 @@ public final class TargetComputeSizePropertiesTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        TargetComputeSizeProperties model =
-            new TargetComputeSizeProperties()
-                .withName("ajjziuxxpshne")
-                .withFriendlyName("ulfgslqu")
-                .withCpuCoresCount(471639164)
-                .withMemoryInGB(97.2663718138851D)
-                .withMaxDataDiskCount(1732882534)
-                .withMaxNicsCount(203229589)
-                .withErrors(
-                    Arrays
-                        .asList(
-                            new ComputeSizeErrorDetails().withMessage("a").withSeverity("juohminyflnorw"),
-                            new ComputeSizeErrorDetails().withMessage("uvwpklvxwmyg").withSeverity("pgpqchiszepnnb"),
-                            new ComputeSizeErrorDetails().withMessage("rxgibbd").withSeverity("confozauors"),
-                            new ComputeSizeErrorDetails().withMessage("okwbqplh").withSeverity("nuuepzlrp")))
-                .withHighIopsSupported("zsoldwey")
-                .withHyperVGenerations(Arrays.asList("unvmnnr", "rbior", "talywjhhgdnhxms", "v"));
+        TargetComputeSizeProperties model = new TargetComputeSizeProperties().withName("ajjziuxxpshne")
+            .withFriendlyName("ulfgslqu").withCpuCoresCount(471639164).withMemoryInGB(97.2663718138851D)
+            .withMaxDataDiskCount(1732882534).withMaxNicsCount(203229589)
+            .withErrors(Arrays.asList(new ComputeSizeErrorDetails().withMessage("a").withSeverity("juohminyflnorw"),
+                new ComputeSizeErrorDetails().withMessage("uvwpklvxwmyg").withSeverity("pgpqchiszepnnb"),
+                new ComputeSizeErrorDetails().withMessage("rxgibbd").withSeverity("confozauors"),
+                new ComputeSizeErrorDetails().withMessage("okwbqplh").withSeverity("nuuepzlrp")))
+            .withHighIopsSupported("zsoldwey")
+            .withHyperVGenerations(Arrays.asList("unvmnnr", "rbior", "talywjhhgdnhxms", "v"));
         model = BinaryData.fromObject(model).toObject(TargetComputeSizeProperties.class);
         Assertions.assertEquals("ajjziuxxpshne", model.name());
         Assertions.assertEquals("ulfgslqu", model.friendlyName());

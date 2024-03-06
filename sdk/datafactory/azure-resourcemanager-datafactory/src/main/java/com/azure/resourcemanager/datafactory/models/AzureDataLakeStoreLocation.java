@@ -8,23 +8,31 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The location of azure data lake store dataset. */
+/**
+ * The location of azure data lake store dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureDataLakeStoreLocation")
 @Fluent
 public final class AzureDataLakeStoreLocation extends DatasetLocation {
-    /** Creates an instance of AzureDataLakeStoreLocation class. */
+    /**
+     * Creates an instance of AzureDataLakeStoreLocation class.
+     */
     public AzureDataLakeStoreLocation() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataLakeStoreLocation withFolderPath(Object folderPath) {
         super.withFolderPath(folderPath);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDataLakeStoreLocation withFileName(Object fileName) {
         super.withFileName(fileName);
@@ -33,7 +41,7 @@ public final class AzureDataLakeStoreLocation extends DatasetLocation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -18,6 +18,11 @@ public final class TokenCachePersistenceOptions {
     private String name;
 
     /**
+     * Constructs an instance of TokenCachePersistenceOptions.
+     */
+    public TokenCachePersistenceOptions() { }
+
+    /**
      * Allows to use an unprotected file specified by <code>cacheFileLocation()</code> instead of
      * Gnome keyring on Linux. This is restricted by default. For other platforms this setting currently doesn't apply.
      *

@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.fluent.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Vpn Profile Response for package generation. */
+/**
+ * Vpn Profile Response for package generation.
+ */
 @Fluent
 public final class VpnProfileResponseInner {
     /*
@@ -16,13 +18,15 @@ public final class VpnProfileResponseInner {
     @JsonProperty(value = "profileUrl")
     private String profileUrl;
 
-    /** Creates an instance of VpnProfileResponseInner class. */
+    /**
+     * Creates an instance of VpnProfileResponseInner class.
+     */
     public VpnProfileResponseInner() {
     }
 
     /**
      * Get the profileUrl property: URL to the VPN profile.
-     *
+     * 
      * @return the profileUrl value.
      */
     public String profileUrl() {
@@ -31,7 +35,7 @@ public final class VpnProfileResponseInner {
 
     /**
      * Set the profileUrl property: URL to the VPN profile.
-     *
+     * 
      * @param profileUrl the profileUrl value to set.
      * @return the VpnProfileResponseInner object itself.
      */
@@ -42,7 +46,7 @@ public final class VpnProfileResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

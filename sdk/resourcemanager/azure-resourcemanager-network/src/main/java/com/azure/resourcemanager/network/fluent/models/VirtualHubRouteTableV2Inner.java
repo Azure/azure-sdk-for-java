@@ -11,7 +11,9 @@ import com.azure.resourcemanager.network.models.VirtualHubRouteV2;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** VirtualHubRouteTableV2 Resource. */
+/**
+ * VirtualHubRouteTableV2 Resource.
+ */
 @Fluent
 public final class VirtualHubRouteTableV2Inner extends SubResource {
     /*
@@ -32,13 +34,15 @@ public final class VirtualHubRouteTableV2Inner extends SubResource {
     @JsonProperty(value = "etag", access = JsonProperty.Access.WRITE_ONLY)
     private String etag;
 
-    /** Creates an instance of VirtualHubRouteTableV2Inner class. */
+    /**
+     * Creates an instance of VirtualHubRouteTableV2Inner class.
+     */
     public VirtualHubRouteTableV2Inner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the virtual hub route table v2.
-     *
+     * 
      * @return the innerProperties value.
      */
     private VirtualHubRouteTableV2Properties innerProperties() {
@@ -48,7 +52,7 @@ public final class VirtualHubRouteTableV2Inner extends SubResource {
     /**
      * Get the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -58,7 +62,7 @@ public final class VirtualHubRouteTableV2Inner extends SubResource {
     /**
      * Set the name property: The name of the resource that is unique within a resource group. This name can be used to
      * access the resource.
-     *
+     * 
      * @param name the name value to set.
      * @return the VirtualHubRouteTableV2Inner object itself.
      */
@@ -69,14 +73,16 @@ public final class VirtualHubRouteTableV2Inner extends SubResource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
         return this.etag;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public VirtualHubRouteTableV2Inner withId(String id) {
         super.withId(id);
@@ -85,7 +91,7 @@ public final class VirtualHubRouteTableV2Inner extends SubResource {
 
     /**
      * Get the routes property: List of all routes.
-     *
+     * 
      * @return the routes value.
      */
     public List<VirtualHubRouteV2> routes() {
@@ -94,7 +100,7 @@ public final class VirtualHubRouteTableV2Inner extends SubResource {
 
     /**
      * Set the routes property: List of all routes.
-     *
+     * 
      * @param routes the routes value to set.
      * @return the VirtualHubRouteTableV2Inner object itself.
      */
@@ -108,7 +114,7 @@ public final class VirtualHubRouteTableV2Inner extends SubResource {
 
     /**
      * Get the attachedConnections property: List of all connections attached to this route table v2.
-     *
+     * 
      * @return the attachedConnections value.
      */
     public List<String> attachedConnections() {
@@ -117,7 +123,7 @@ public final class VirtualHubRouteTableV2Inner extends SubResource {
 
     /**
      * Set the attachedConnections property: List of all connections attached to this route table v2.
-     *
+     * 
      * @param attachedConnections the attachedConnections value to set.
      * @return the VirtualHubRouteTableV2Inner object itself.
      */
@@ -131,7 +137,7 @@ public final class VirtualHubRouteTableV2Inner extends SubResource {
 
     /**
      * Get the provisioningState property: The provisioning state of the virtual hub route table v2 resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -140,7 +146,7 @@ public final class VirtualHubRouteTableV2Inner extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

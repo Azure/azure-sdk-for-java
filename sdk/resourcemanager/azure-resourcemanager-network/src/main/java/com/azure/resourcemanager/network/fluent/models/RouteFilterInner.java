@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Route Filter Resource. */
+/**
+ * Route Filter Resource.
+ */
 @Fluent
 public final class RouteFilterInner extends Resource {
     /*
@@ -32,13 +34,15 @@ public final class RouteFilterInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of RouteFilterInner class. */
+    /**
+     * Creates an instance of RouteFilterInner class.
+     */
     public RouteFilterInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the route filter.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RouteFilterPropertiesFormat innerProperties() {
@@ -47,7 +51,7 @@ public final class RouteFilterInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -56,7 +60,7 @@ public final class RouteFilterInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -65,7 +69,7 @@ public final class RouteFilterInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the RouteFilterInner object itself.
      */
@@ -74,14 +78,18 @@ public final class RouteFilterInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RouteFilterInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public RouteFilterInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -90,7 +98,7 @@ public final class RouteFilterInner extends Resource {
 
     /**
      * Get the rules property: Collection of RouteFilterRules contained within a route filter.
-     *
+     * 
      * @return the rules value.
      */
     public List<RouteFilterRuleInner> rules() {
@@ -99,7 +107,7 @@ public final class RouteFilterInner extends Resource {
 
     /**
      * Set the rules property: Collection of RouteFilterRules contained within a route filter.
-     *
+     * 
      * @param rules the rules value to set.
      * @return the RouteFilterInner object itself.
      */
@@ -113,7 +121,7 @@ public final class RouteFilterInner extends Resource {
 
     /**
      * Get the peerings property: A collection of references to express route circuit peerings.
-     *
+     * 
      * @return the peerings value.
      */
     public List<ExpressRouteCircuitPeeringInner> peerings() {
@@ -122,7 +130,7 @@ public final class RouteFilterInner extends Resource {
 
     /**
      * Get the ipv6Peerings property: A collection of references to express route circuit ipv6 peerings.
-     *
+     * 
      * @return the ipv6Peerings value.
      */
     public List<ExpressRouteCircuitPeeringInner> ipv6Peerings() {
@@ -131,7 +139,7 @@ public final class RouteFilterInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the route filter resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -140,7 +148,7 @@ public final class RouteFilterInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

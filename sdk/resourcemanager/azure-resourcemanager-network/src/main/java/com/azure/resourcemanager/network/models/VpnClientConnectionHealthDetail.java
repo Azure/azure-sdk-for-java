@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** VPN client connection health detail. */
+/**
+ * VPN client connection health detail.
+ */
 @Immutable
 public final class VpnClientConnectionHealthDetail {
     /*
@@ -82,13 +84,15 @@ public final class VpnClientConnectionHealthDetail {
     @JsonProperty(value = "maxPacketsPerSecond", access = JsonProperty.Access.WRITE_ONLY)
     private Long maxPacketsPerSecond;
 
-    /** Creates an instance of VpnClientConnectionHealthDetail class. */
+    /**
+     * Creates an instance of VpnClientConnectionHealthDetail class.
+     */
     public VpnClientConnectionHealthDetail() {
     }
 
     /**
      * Get the vpnConnectionId property: The vpn client Id.
-     *
+     * 
      * @return the vpnConnectionId value.
      */
     public String vpnConnectionId() {
@@ -97,7 +101,7 @@ public final class VpnClientConnectionHealthDetail {
 
     /**
      * Get the vpnConnectionDuration property: The duration time of a connected vpn client.
-     *
+     * 
      * @return the vpnConnectionDuration value.
      */
     public Long vpnConnectionDuration() {
@@ -106,7 +110,7 @@ public final class VpnClientConnectionHealthDetail {
 
     /**
      * Get the vpnConnectionTime property: The start time of a connected vpn client.
-     *
+     * 
      * @return the vpnConnectionTime value.
      */
     public String vpnConnectionTime() {
@@ -115,7 +119,7 @@ public final class VpnClientConnectionHealthDetail {
 
     /**
      * Get the publicIpAddress property: The public Ip of a connected vpn client.
-     *
+     * 
      * @return the publicIpAddress value.
      */
     public String publicIpAddress() {
@@ -124,7 +128,7 @@ public final class VpnClientConnectionHealthDetail {
 
     /**
      * Get the privateIpAddress property: The assigned private Ip of a connected vpn client.
-     *
+     * 
      * @return the privateIpAddress value.
      */
     public String privateIpAddress() {
@@ -133,7 +137,7 @@ public final class VpnClientConnectionHealthDetail {
 
     /**
      * Get the vpnUsername property: The user name of a connected vpn client.
-     *
+     * 
      * @return the vpnUsername value.
      */
     public String vpnUsername() {
@@ -142,7 +146,7 @@ public final class VpnClientConnectionHealthDetail {
 
     /**
      * Get the maxBandwidth property: The max band width.
-     *
+     * 
      * @return the maxBandwidth value.
      */
     public Long maxBandwidth() {
@@ -151,7 +155,7 @@ public final class VpnClientConnectionHealthDetail {
 
     /**
      * Get the egressPacketsTransferred property: The egress packets per second.
-     *
+     * 
      * @return the egressPacketsTransferred value.
      */
     public Long egressPacketsTransferred() {
@@ -160,7 +164,7 @@ public final class VpnClientConnectionHealthDetail {
 
     /**
      * Get the egressBytesTransferred property: The egress bytes per second.
-     *
+     * 
      * @return the egressBytesTransferred value.
      */
     public Long egressBytesTransferred() {
@@ -169,7 +173,7 @@ public final class VpnClientConnectionHealthDetail {
 
     /**
      * Get the ingressPacketsTransferred property: The ingress packets per second.
-     *
+     * 
      * @return the ingressPacketsTransferred value.
      */
     public Long ingressPacketsTransferred() {
@@ -178,7 +182,7 @@ public final class VpnClientConnectionHealthDetail {
 
     /**
      * Get the ingressBytesTransferred property: The ingress bytes per second.
-     *
+     * 
      * @return the ingressBytesTransferred value.
      */
     public Long ingressBytesTransferred() {
@@ -187,7 +191,7 @@ public final class VpnClientConnectionHealthDetail {
 
     /**
      * Get the maxPacketsPerSecond property: The max packets transferred per second.
-     *
+     * 
      * @return the maxPacketsPerSecond value.
      */
     public Long maxPacketsPerSecond() {
@@ -196,7 +200,7 @@ public final class VpnClientConnectionHealthDetail {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

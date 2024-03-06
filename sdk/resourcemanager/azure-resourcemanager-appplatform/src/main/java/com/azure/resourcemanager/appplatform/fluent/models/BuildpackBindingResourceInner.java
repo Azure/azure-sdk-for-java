@@ -10,7 +10,9 @@ import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.appplatform.models.BuildpackBindingProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Buildpack Binding Resource object. */
+/**
+ * Buildpack Binding Resource object.
+ */
 @Fluent
 public final class BuildpackBindingResourceInner extends ProxyResource {
     /*
@@ -26,8 +28,14 @@ public final class BuildpackBindingResourceInner extends ProxyResource {
     private SystemData systemData;
 
     /**
+     * Creates an instance of BuildpackBindingResourceInner class.
+     */
+    public BuildpackBindingResourceInner() {
+    }
+
+    /**
      * Get the properties property: Properties of a buildpack binding.
-     *
+     * 
      * @return the properties value.
      */
     public BuildpackBindingProperties properties() {
@@ -36,7 +44,7 @@ public final class BuildpackBindingResourceInner extends ProxyResource {
 
     /**
      * Set the properties property: Properties of a buildpack binding.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the BuildpackBindingResourceInner object itself.
      */
@@ -47,7 +55,7 @@ public final class BuildpackBindingResourceInner extends ProxyResource {
 
     /**
      * Get the systemData property: Metadata pertaining to creation and last modification of the resource.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
@@ -56,7 +64,7 @@ public final class BuildpackBindingResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

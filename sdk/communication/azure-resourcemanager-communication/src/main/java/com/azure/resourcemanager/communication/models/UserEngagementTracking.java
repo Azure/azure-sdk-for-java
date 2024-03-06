@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Describes whether user engagement tracking is enabled or disabled. */
+/**
+ * Describes whether user engagement tracking is enabled or disabled.
+ */
 public final class UserEngagementTracking extends ExpandableStringEnum<UserEngagementTracking> {
-    /** Static value Disabled for UserEngagementTracking. */
+    /**
+     * Static value Disabled for UserEngagementTracking.
+     */
     public static final UserEngagementTracking DISABLED = fromString("Disabled");
 
-    /** Static value Enabled for UserEngagementTracking. */
+    /**
+     * Static value Enabled for UserEngagementTracking.
+     */
     public static final UserEngagementTracking ENABLED = fromString("Enabled");
 
     /**
      * Creates a new instance of UserEngagementTracking value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class UserEngagementTracking extends ExpandableStringEnum<UserEngag
 
     /**
      * Creates or finds a UserEngagementTracking from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding UserEngagementTracking.
      */
@@ -38,7 +44,7 @@ public final class UserEngagementTracking extends ExpandableStringEnum<UserEngag
 
     /**
      * Gets known UserEngagementTracking values.
-     *
+     * 
      * @return known UserEngagementTracking values.
      */
     public static Collection<UserEngagementTracking> values() {

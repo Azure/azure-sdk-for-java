@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.VirtualHubEffectiveRoute;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** EffectiveRoutes List. */
+/**
+ * EffectiveRoutes List.
+ */
 @Fluent
 public final class VirtualHubEffectiveRouteListInner {
     /*
@@ -18,13 +20,15 @@ public final class VirtualHubEffectiveRouteListInner {
     @JsonProperty(value = "value")
     private List<VirtualHubEffectiveRoute> value;
 
-    /** Creates an instance of VirtualHubEffectiveRouteListInner class. */
+    /**
+     * Creates an instance of VirtualHubEffectiveRouteListInner class.
+     */
     public VirtualHubEffectiveRouteListInner() {
     }
 
     /**
      * Get the value property: The list of effective routes configured on the virtual hub or the specified resource.
-     *
+     * 
      * @return the value value.
      */
     public List<VirtualHubEffectiveRoute> value() {
@@ -33,7 +37,7 @@ public final class VirtualHubEffectiveRouteListInner {
 
     /**
      * Set the value property: The list of effective routes configured on the virtual hub or the specified resource.
-     *
+     * 
      * @param value the value value to set.
      * @return the VirtualHubEffectiveRouteListInner object itself.
      */
@@ -44,7 +48,7 @@ public final class VirtualHubEffectiveRouteListInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

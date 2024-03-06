@@ -12,8 +12,7 @@ public final class ExposureControlResponseImpl implements ExposureControlRespons
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    ExposureControlResponseImpl(
-        ExposureControlResponseInner innerObject,
+    ExposureControlResponseImpl(ExposureControlResponseInner innerObject,
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

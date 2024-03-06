@@ -11,7 +11,9 @@ import com.azure.resourcemanager.cosmos.models.MongoDBCollectionGetPropertiesRes
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** An Azure Cosmos DB MongoDB collection. */
+/**
+ * An Azure Cosmos DB MongoDB collection.
+ */
 @Fluent
 public final class MongoDBCollectionGetResultsInner extends ArmResourceProperties {
     /*
@@ -20,27 +22,33 @@ public final class MongoDBCollectionGetResultsInner extends ArmResourcePropertie
     @JsonProperty(value = "properties")
     private MongoDBCollectionGetProperties innerProperties;
 
-    /** Creates an instance of MongoDBCollectionGetResultsInner class. */
+    /**
+     * Creates an instance of MongoDBCollectionGetResultsInner class.
+     */
     public MongoDBCollectionGetResultsInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of an Azure Cosmos DB MongoDB collection.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MongoDBCollectionGetProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDBCollectionGetResultsInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDBCollectionGetResultsInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -49,7 +57,7 @@ public final class MongoDBCollectionGetResultsInner extends ArmResourcePropertie
 
     /**
      * Get the resource property: The resource property.
-     *
+     * 
      * @return the resource value.
      */
     public MongoDBCollectionGetPropertiesResource resource() {
@@ -58,7 +66,7 @@ public final class MongoDBCollectionGetResultsInner extends ArmResourcePropertie
 
     /**
      * Set the resource property: The resource property.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the MongoDBCollectionGetResultsInner object itself.
      */
@@ -72,7 +80,7 @@ public final class MongoDBCollectionGetResultsInner extends ArmResourcePropertie
 
     /**
      * Get the options property: The options property.
-     *
+     * 
      * @return the options value.
      */
     public MongoDBCollectionGetPropertiesOptions options() {
@@ -81,7 +89,7 @@ public final class MongoDBCollectionGetResultsInner extends ArmResourcePropertie
 
     /**
      * Set the options property: The options property.
-     *
+     * 
      * @param options the options value to set.
      * @return the MongoDBCollectionGetResultsInner object itself.
      */
@@ -95,7 +103,7 @@ public final class MongoDBCollectionGetResultsInner extends ArmResourcePropertie
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

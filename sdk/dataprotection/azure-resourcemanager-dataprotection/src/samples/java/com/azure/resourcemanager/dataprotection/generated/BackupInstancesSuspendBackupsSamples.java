@@ -4,14 +4,18 @@
 
 package com.azure.resourcemanager.dataprotection.generated;
 
-/** Samples for BackupInstances SuspendBackups. */
+/**
+ * Samples for BackupInstances SuspendBackups.
+ */
 public final class BackupInstancesSuspendBackupsSamples {
     /*
-     * x-ms-original-file: specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-05-01/examples/BackupInstanceOperations/SuspendBackups.json
+     * x-ms-original-file:
+     * specification/dataprotection/resource-manager/Microsoft.DataProtection/stable/2023-11-01/examples/
+     * BackupInstanceOperations/SuspendBackups.json
      */
     /**
      * Sample code: SuspendBackups.
-     *
+     * 
      * @param manager Entry point to DataProtectionManager.
      */
     public static void suspendBackups(com.azure.resourcemanager.dataprotection.DataProtectionManager manager) {

@@ -5,6 +5,7 @@
 package com.azure.resourcemanager.deviceupdate.fluent.models;
 
 import com.azure.core.annotation.Fluent;
+import com.azure.resourcemanager.deviceupdate.models.Encryption;
 import com.azure.resourcemanager.deviceupdate.models.Location;
 import com.azure.resourcemanager.deviceupdate.models.ProvisioningState;
 import com.azure.resourcemanager.deviceupdate.models.PublicNetworkAccess;
@@ -12,7 +13,9 @@ import com.azure.resourcemanager.deviceupdate.models.Sku;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Device Update account properties. */
+/**
+ * Device Update account properties.
+ */
 @Fluent
 public final class AccountProperties {
     /*
@@ -46,14 +49,26 @@ public final class AccountProperties {
     private Sku sku;
 
     /*
+     * CMK encryption at rest properties
+     */
+    @JsonProperty(value = "encryption")
+    private Encryption encryption;
+
+    /*
      * Device Update account primary and failover location details
      */
     @JsonProperty(value = "locations", access = JsonProperty.Access.WRITE_ONLY)
     private List<Location> locations;
 
     /**
+     * Creates an instance of AccountProperties class.
+     */
+    public AccountProperties() {
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -62,7 +77,7 @@ public final class AccountProperties {
 
     /**
      * Get the hostname property: API host name.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -71,7 +86,7 @@ public final class AccountProperties {
 
     /**
      * Get the publicNetworkAccess property: Whether or not public network access is allowed for the account.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -80,7 +95,7 @@ public final class AccountProperties {
 
     /**
      * Set the publicNetworkAccess property: Whether or not public network access is allowed for the account.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the AccountProperties object itself.
      */
@@ -91,7 +106,7 @@ public final class AccountProperties {
 
     /**
      * Get the privateEndpointConnections property: List of private endpoint connections associated with the account.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -100,19 +115,19 @@ public final class AccountProperties {
 
     /**
      * Set the privateEndpointConnections property: List of private endpoint connections associated with the account.
-     *
+     * 
      * @param privateEndpointConnections the privateEndpointConnections value to set.
      * @return the AccountProperties object itself.
      */
-    public AccountProperties withPrivateEndpointConnections(
-        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+    public AccountProperties
+        withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
         this.privateEndpointConnections = privateEndpointConnections;
         return this;
     }
 
     /**
      * Get the sku property: Device Update Sku.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -121,7 +136,7 @@ public final class AccountProperties {
 
     /**
      * Set the sku property: Device Update Sku.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the AccountProperties object itself.
      */
@@ -131,8 +146,28 @@ public final class AccountProperties {
     }
 
     /**
+     * Get the encryption property: CMK encryption at rest properties.
+     * 
+     * @return the encryption value.
+     */
+    public Encryption encryption() {
+        return this.encryption;
+    }
+
+    /**
+     * Set the encryption property: CMK encryption at rest properties.
+     * 
+     * @param encryption the encryption value to set.
+     * @return the AccountProperties object itself.
+     */
+    public AccountProperties withEncryption(Encryption encryption) {
+        this.encryption = encryption;
+        return this;
+    }
+
+    /**
      * Get the locations property: Device Update account primary and failover location details.
-     *
+     * 
      * @return the locations value.
      */
     public List<Location> locations() {
@@ -141,12 +176,15 @@ public final class AccountProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (privateEndpointConnections() != null) {
             privateEndpointConnections().forEach(e -> e.validate());
+        }
+        if (encryption() != null) {
+            encryption().validate();
         }
         if (locations() != null) {
             locations().forEach(e -> e.validate());

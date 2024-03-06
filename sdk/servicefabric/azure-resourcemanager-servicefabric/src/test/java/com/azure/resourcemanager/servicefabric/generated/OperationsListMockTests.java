@@ -31,44 +31,33 @@ public final class OperationsListMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"name\":\"gbrn\",\"isDataAction\":false,\"display\":{\"provider\":\"pn\",\"resource\":\"azej\",\"operation\":\"qkagfhsxt\",\"description\":\"ugzxnf\"},\"origin\":\"zpxdt\",\"nextLink\":\"dm\"}]}";
+        String responseStr
+            = "{\"value\":[{\"name\":\"kpnb\",\"isDataAction\":false,\"display\":{\"provider\":\"joqkagfhsxt\",\"resource\":\"ugzxnf\",\"operation\":\"zpxdt\",\"description\":\"dm\"},\"origin\":\"j\",\"nextLink\":\"wuenvr\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        ServiceFabricManager manager =
-            ServiceFabricManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        ServiceFabricManager manager = ServiceFabricManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
         PagedIterable<OperationResult> response = manager.operations().list(com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("gbrn", response.iterator().next().name());
+        Assertions.assertEquals("kpnb", response.iterator().next().name());
         Assertions.assertEquals(false, response.iterator().next().isDataAction());
-        Assertions.assertEquals("pn", response.iterator().next().display().provider());
-        Assertions.assertEquals("azej", response.iterator().next().display().resource());
-        Assertions.assertEquals("qkagfhsxt", response.iterator().next().display().operation());
-        Assertions.assertEquals("ugzxnf", response.iterator().next().display().description());
-        Assertions.assertEquals("zpxdt", response.iterator().next().origin());
-        Assertions.assertEquals("dm", response.iterator().next().nextLink());
+        Assertions.assertEquals("joqkagfhsxt", response.iterator().next().display().provider());
+        Assertions.assertEquals("ugzxnf", response.iterator().next().display().resource());
+        Assertions.assertEquals("zpxdt", response.iterator().next().display().operation());
+        Assertions.assertEquals("dm", response.iterator().next().display().description());
+        Assertions.assertEquals("j", response.iterator().next().origin());
+        Assertions.assertEquals("wuenvr", response.iterator().next().nextLink());
     }
 }

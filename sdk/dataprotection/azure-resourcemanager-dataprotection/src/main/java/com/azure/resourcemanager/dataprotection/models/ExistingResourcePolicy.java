@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Gets or sets the Conflict Policy property. This property sets policy during conflict of resources during restore. */
+/**
+ * Gets or sets the Conflict Policy property. This property sets policy during conflict of resources during restore.
+ */
 public final class ExistingResourcePolicy extends ExpandableStringEnum<ExistingResourcePolicy> {
-    /** Static value Skip for ExistingResourcePolicy. */
+    /**
+     * Static value Skip for ExistingResourcePolicy.
+     */
     public static final ExistingResourcePolicy SKIP = fromString("Skip");
 
-    /** Static value Patch for ExistingResourcePolicy. */
+    /**
+     * Static value Patch for ExistingResourcePolicy.
+     */
     public static final ExistingResourcePolicy PATCH = fromString("Patch");
 
     /**
      * Creates a new instance of ExistingResourcePolicy value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class ExistingResourcePolicy extends ExpandableStringEnum<ExistingR
 
     /**
      * Creates or finds a ExistingResourcePolicy from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ExistingResourcePolicy.
      */
@@ -38,7 +44,7 @@ public final class ExistingResourcePolicy extends ExpandableStringEnum<ExistingR
 
     /**
      * Gets known ExistingResourcePolicy values.
-     *
+     * 
      * @return known ExistingResourcePolicy values.
      */
     public static Collection<ExistingResourcePolicy> values() {

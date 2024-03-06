@@ -15,19 +15,22 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class ServiceArtifactReference {
     /*
      * The service artifact reference id in the form of
-     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/serviceArtifacts/{serviceArtifactName}/vmArtifactsProfiles/{vmArtifactsProfilesName}
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName
+     * }/serviceArtifacts/{serviceArtifactName}/vmArtifactsProfiles/{vmArtifactsProfilesName}
      */
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of ServiceArtifactReference class. */
+    /**
+     * Creates an instance of ServiceArtifactReference class.
+     */
     public ServiceArtifactReference() {
     }
 
     /**
      * Get the id property: The service artifact reference id in the form of
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/serviceArtifacts/{serviceArtifactName}/vmArtifactsProfiles/{vmArtifactsProfilesName}.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -37,7 +40,7 @@ public final class ServiceArtifactReference {
     /**
      * Set the id property: The service artifact reference id in the form of
      * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/galleries/{galleryName}/serviceArtifacts/{serviceArtifactName}/vmArtifactsProfiles/{vmArtifactsProfilesName}.
-     *
+     * 
      * @param id the id value to set.
      * @return the ServiceArtifactReference object itself.
      */
@@ -48,7 +51,7 @@ public final class ServiceArtifactReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -12,15 +12,15 @@ import org.junit.jupiter.api.Assertions;
 public final class FactoryUpdatePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FactoryUpdateProperties model =
-            BinaryData.fromString("{\"publicNetworkAccess\":\"Disabled\"}").toObject(FactoryUpdateProperties.class);
+        FactoryUpdateProperties model
+            = BinaryData.fromString("{\"publicNetworkAccess\":\"Disabled\"}").toObject(FactoryUpdateProperties.class);
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        FactoryUpdateProperties model =
-            new FactoryUpdateProperties().withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
+        FactoryUpdateProperties model
+            = new FactoryUpdateProperties().withPublicNetworkAccess(PublicNetworkAccess.DISABLED);
         model = BinaryData.fromObject(model).toObject(FactoryUpdateProperties.class);
         Assertions.assertEquals(PublicNetworkAccess.DISABLED, model.publicNetworkAccess());
     }

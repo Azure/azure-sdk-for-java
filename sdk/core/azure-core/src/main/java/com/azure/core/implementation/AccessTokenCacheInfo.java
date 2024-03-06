@@ -7,9 +7,12 @@ import com.azure.core.credential.AccessToken;
 
 import java.time.OffsetDateTime;
 
+/**
+ * The Access Token Cache Info.
+ */
 public class AccessTokenCacheInfo {
-    private AccessToken cache;
-    private OffsetDateTime nextTokenRefresh;
+    private final AccessToken cache;
+    private final OffsetDateTime nextTokenRefresh;
 
     /**
      * Create an Instance of Access Token Cache Info.

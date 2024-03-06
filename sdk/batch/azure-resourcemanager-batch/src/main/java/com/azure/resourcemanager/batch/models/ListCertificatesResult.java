@@ -9,7 +9,9 @@ import com.azure.resourcemanager.batch.fluent.models.CertificateInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Values returned by the List operation. */
+/**
+ * Values returned by the List operation.
+ */
 @Fluent
 public final class ListCertificatesResult {
     /*
@@ -24,13 +26,15 @@ public final class ListCertificatesResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of ListCertificatesResult class. */
+    /**
+     * Creates an instance of ListCertificatesResult class.
+     */
     public ListCertificatesResult() {
     }
 
     /**
      * Get the value property: The collection of returned certificates.
-     *
+     * 
      * @return the value value.
      */
     public List<CertificateInner> value() {
@@ -39,7 +43,7 @@ public final class ListCertificatesResult {
 
     /**
      * Set the value property: The collection of returned certificates.
-     *
+     * 
      * @param value the value value to set.
      * @return the ListCertificatesResult object itself.
      */
@@ -50,7 +54,7 @@ public final class ListCertificatesResult {
 
     /**
      * Get the nextLink property: The continuation token.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ListCertificatesResult {
 
     /**
      * Set the nextLink property: The continuation token.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the ListCertificatesResult object itself.
      */
@@ -70,7 +74,7 @@ public final class ListCertificatesResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

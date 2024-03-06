@@ -41,143 +41,105 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in InstancesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in InstancesClient.
+ */
 public final class InstancesClientImpl implements InstancesClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final InstancesService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DeviceUpdateImpl client;
 
     /**
      * Initializes an instance of InstancesClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     InstancesClientImpl(DeviceUpdateImpl client) {
-        this.service =
-            RestProxy.create(InstancesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(InstancesService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
     /**
-     * The interface defining all the services for DeviceUpdateInstances to be used by the proxy service to perform REST
-     * calls.
+     * The interface defining all the services for DeviceUpdateInstances to be used by the proxy service to perform
+     * REST calls.
      */
     @Host("{$host}")
     @ServiceInterface(name = "DeviceUpdateInstance")
-    private interface InstancesService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate"
-                + "/accounts/{accountName}/instances")
-        @ExpectedResponses({200})
+    public interface InstancesService {
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/accounts/{accountName}/instances")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<InstanceList>> listByAccount(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("accountName") String accountName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<InstanceList>> listByAccount(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("accountName") String accountName,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate"
-                + "/accounts/{accountName}/instances/{instanceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/accounts/{accountName}/instances/{instanceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<InstanceInner>> get(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("accountName") String accountName,
-            @PathParam("instanceName") String instanceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<InstanceInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("accountName") String accountName,
+            @PathParam("instanceName") String instanceName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Head(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate"
-                + "/accounts/{accountName}/instances/{instanceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Head("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/accounts/{accountName}/instances/{instanceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Void>> head(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("accountName") String accountName,
-            @PathParam("instanceName") String instanceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Void>> head(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("accountName") String accountName,
+            @PathParam("instanceName") String instanceName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Put(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate"
-                + "/accounts/{accountName}/instances/{instanceName}")
-        @ExpectedResponses({201})
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/accounts/{accountName}/instances/{instanceName}")
+        @ExpectedResponses({ 201 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> create(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("accountName") String accountName,
-            @PathParam("instanceName") String instanceName,
-            @BodyParam("application/json") InstanceInner instance,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("accountName") String accountName,
+            @PathParam("instanceName") String instanceName, @BodyParam("application/json") InstanceInner instance,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Delete(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate"
-                + "/accounts/{accountName}/instances/{instanceName}")
-        @ExpectedResponses({200, 202, 204})
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/accounts/{accountName}/instances/{instanceName}")
+        @ExpectedResponses({ 200, 202, 204 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<Flux<ByteBuffer>>> delete(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("accountName") String accountName,
-            @PathParam("instanceName") String instanceName,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("accountName") String accountName,
+            @PathParam("instanceName") String instanceName, @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
-        @Patch(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate"
-                + "/accounts/{accountName}/instances/{instanceName}")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DeviceUpdate/accounts/{accountName}/instances/{instanceName}")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<InstanceInner>> update(
-            @HostParam("$host") String endpoint,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("accountName") String accountName,
-            @PathParam("instanceName") String instanceName,
-            @BodyParam("application/json") TagUpdate tagUpdatePayload,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<InstanceInner>> update(@HostParam("$host") String endpoint,
+            @PathParam("resourceGroupName") String resourceGroupName, @QueryParam("api-version") String apiVersion,
+            @PathParam("subscriptionId") String subscriptionId, @PathParam("accountName") String accountName,
+            @PathParam("instanceName") String instanceName, @BodyParam("application/json") TagUpdate tagUpdatePayload,
+            @HeaderParam("Accept") String accept, Context context);
 
-        @Headers({"Content-Type: application/json"})
+        @Headers({ "Content-Type: application/json" })
         @Get("{nextLink}")
-        @ExpectedResponses({200})
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<InstanceList>> listByAccountNext(
-            @PathParam(value = "nextLink", encoded = true) String nextLink,
-            @HostParam("$host") String endpoint,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<Response<InstanceList>> listByAccountNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Returns instances for the given account name.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -186,55 +148,35 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return list of Instances along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<InstanceInner>> listByAccountSinglePageAsync(
-        String resourceGroupName, String accountName) {
+    private Mono<PagedResponse<InstanceInner>> listByAccountSinglePageAsync(String resourceGroupName,
+        String accountName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .listByAccount(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accountName,
-                            accept,
-                            context))
-            .<PagedResponse<InstanceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .withContext(context -> service.listByAccount(this.client.getEndpoint(), resourceGroupName,
+                this.client.getApiVersion(), this.client.getSubscriptionId(), accountName, accept, context))
+            .<PagedResponse<InstanceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns instances for the given account name.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param context The context to associate with this operation.
@@ -244,23 +186,19 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return list of Instances along with {@link PagedResponse} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<PagedResponse<InstanceInner>> listByAccountSinglePageAsync(
-        String resourceGroupName, String accountName, Context context) {
+    private Mono<PagedResponse<InstanceInner>> listByAccountSinglePageAsync(String resourceGroupName,
+        String accountName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -268,28 +206,15 @@ public final class InstancesClientImpl implements InstancesClient {
         final String accept = "application/json";
         context = this.client.mergeContext(context);
         return service
-            .listByAccount(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accountName,
-                accept,
-                context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+            .listByAccount(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+                this.client.getSubscriptionId(), accountName, accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 
     /**
      * Returns instances for the given account name.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -299,14 +224,13 @@ public final class InstancesClientImpl implements InstancesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InstanceInner> listByAccountAsync(String resourceGroupName, String accountName) {
-        return new PagedFlux<>(
-            () -> listByAccountSinglePageAsync(resourceGroupName, accountName),
+        return new PagedFlux<>(() -> listByAccountSinglePageAsync(resourceGroupName, accountName),
             nextLink -> listByAccountNextSinglePageAsync(nextLink));
     }
 
     /**
      * Returns instances for the given account name.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param context The context to associate with this operation.
@@ -317,14 +241,13 @@ public final class InstancesClientImpl implements InstancesClient {
      */
     @ServiceMethod(returns = ReturnType.COLLECTION)
     private PagedFlux<InstanceInner> listByAccountAsync(String resourceGroupName, String accountName, Context context) {
-        return new PagedFlux<>(
-            () -> listByAccountSinglePageAsync(resourceGroupName, accountName, context),
+        return new PagedFlux<>(() -> listByAccountSinglePageAsync(resourceGroupName, accountName, context),
             nextLink -> listByAccountNextSinglePageAsync(nextLink, context));
     }
 
     /**
      * Returns instances for the given account name.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -339,7 +262,7 @@ public final class InstancesClientImpl implements InstancesClient {
 
     /**
      * Returns instances for the given account name.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param context The context to associate with this operation.
@@ -355,7 +278,7 @@ public final class InstancesClientImpl implements InstancesClient {
 
     /**
      * Returns instance details for the given instance and account name.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -365,23 +288,19 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return device Update instance details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<InstanceInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String instanceName) {
+    private Mono<Response<InstanceInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String instanceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -392,23 +311,14 @@ public final class InstancesClientImpl implements InstancesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accountName,
-                            instanceName,
-                            accept,
-                            context))
+                context -> service.get(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), accountName, instanceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Returns instance details for the given instance and account name.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -419,23 +329,19 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return device Update instance details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<InstanceInner>> getWithResponseAsync(
-        String resourceGroupName, String accountName, String instanceName, Context context) {
+    private Mono<Response<InstanceInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String instanceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -445,21 +351,13 @@ public final class InstancesClientImpl implements InstancesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accountName,
-                instanceName,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accountName, instanceName, accept, context);
     }
 
     /**
      * Returns instance details for the given instance and account name.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -476,23 +374,7 @@ public final class InstancesClientImpl implements InstancesClient {
 
     /**
      * Returns instance details for the given instance and account name.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param accountName Account name.
-     * @param instanceName Instance name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return device Update instance details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public InstanceInner get(String resourceGroupName, String accountName, String instanceName) {
-        return getAsync(resourceGroupName, accountName, instanceName).block();
-    }
-
-    /**
-     * Returns instance details for the given instance and account name.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -503,14 +385,30 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return device Update instance details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<InstanceInner> getWithResponse(
-        String resourceGroupName, String accountName, String instanceName, Context context) {
+    public Response<InstanceInner> getWithResponse(String resourceGroupName, String accountName, String instanceName,
+        Context context) {
         return getWithResponseAsync(resourceGroupName, accountName, instanceName, context).block();
     }
 
     /**
+     * Returns instance details for the given instance and account name.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param accountName Account name.
+     * @param instanceName Instance name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return device Update instance details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public InstanceInner get(String resourceGroupName, String accountName, String instanceName) {
+        return getWithResponse(resourceGroupName, accountName, instanceName, Context.NONE).getValue();
+    }
+
+    /**
      * Checks whether instance exists.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -520,23 +418,19 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> headWithResponseAsync(
-        String resourceGroupName, String accountName, String instanceName) {
+    private Mono<Response<Void>> headWithResponseAsync(String resourceGroupName, String accountName,
+        String instanceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -547,23 +441,14 @@ public final class InstancesClientImpl implements InstancesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .head(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accountName,
-                            instanceName,
-                            accept,
-                            context))
+                context -> service.head(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), accountName, instanceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Checks whether instance exists.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -574,23 +459,19 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Void>> headWithResponseAsync(
-        String resourceGroupName, String accountName, String instanceName, Context context) {
+    private Mono<Response<Void>> headWithResponseAsync(String resourceGroupName, String accountName,
+        String instanceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -600,21 +481,13 @@ public final class InstancesClientImpl implements InstancesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .head(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accountName,
-                instanceName,
-                accept,
-                context);
+        return service.head(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accountName, instanceName, accept, context);
     }
 
     /**
      * Checks whether instance exists.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -630,22 +503,7 @@ public final class InstancesClientImpl implements InstancesClient {
 
     /**
      * Checks whether instance exists.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param accountName Account name.
-     * @param instanceName Instance name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public void head(String resourceGroupName, String accountName, String instanceName) {
-        headAsync(resourceGroupName, accountName, instanceName).block();
-    }
-
-    /**
-     * Checks whether instance exists.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -656,14 +514,29 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return the {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> headWithResponse(
-        String resourceGroupName, String accountName, String instanceName, Context context) {
+    public Response<Void> headWithResponse(String resourceGroupName, String accountName, String instanceName,
+        Context context) {
         return headWithResponseAsync(resourceGroupName, accountName, instanceName, context).block();
     }
 
     /**
+     * Checks whether instance exists.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param accountName Account name.
+     * @param instanceName Instance name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void head(String resourceGroupName, String accountName, String instanceName) {
+        headWithResponse(resourceGroupName, accountName, instanceName, Context.NONE);
+    }
+
+    /**
      * Creates or updates instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -674,23 +547,19 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return device Update instance details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String accountName, String instanceName, InstanceInner instance) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String accountName,
+        String instanceName, InstanceInner instance) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -706,24 +575,14 @@ public final class InstancesClientImpl implements InstancesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .create(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accountName,
-                            instanceName,
-                            instance,
-                            accept,
-                            context))
+                context -> service.create(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), accountName, instanceName, instance, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Creates or updates instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -735,23 +594,19 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return device Update instance details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(
-        String resourceGroupName, String accountName, String instanceName, InstanceInner instance, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String accountName,
+        String instanceName, InstanceInner instance, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -766,22 +621,13 @@ public final class InstancesClientImpl implements InstancesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .create(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accountName,
-                instanceName,
-                instance,
-                accept,
-                context);
+        return service.create(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accountName, instanceName, instance, accept, context);
     }
 
     /**
      * Creates or updates instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -792,23 +638,17 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return the {@link PollerFlux} for polling of device Update instance details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<InstanceInner>, InstanceInner> beginCreateAsync(
-        String resourceGroupName, String accountName, String instanceName, InstanceInner instance) {
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, accountName, instanceName, instance);
-        return this
-            .client
-            .<InstanceInner, InstanceInner>getLroResult(
-                mono,
-                this.client.getHttpPipeline(),
-                InstanceInner.class,
-                InstanceInner.class,
-                this.client.getContext());
+    private PollerFlux<PollResult<InstanceInner>, InstanceInner> beginCreateAsync(String resourceGroupName,
+        String accountName, String instanceName, InstanceInner instance) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, accountName, instanceName, instance);
+        return this.client.<InstanceInner, InstanceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            InstanceInner.class, InstanceInner.class, this.client.getContext());
     }
 
     /**
      * Creates or updates instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -820,20 +660,18 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return the {@link PollerFlux} for polling of device Update instance details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<InstanceInner>, InstanceInner> beginCreateAsync(
-        String resourceGroupName, String accountName, String instanceName, InstanceInner instance, Context context) {
+    private PollerFlux<PollResult<InstanceInner>, InstanceInner> beginCreateAsync(String resourceGroupName,
+        String accountName, String instanceName, InstanceInner instance, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            createWithResponseAsync(resourceGroupName, accountName, instanceName, instance, context);
-        return this
-            .client
-            .<InstanceInner, InstanceInner>getLroResult(
-                mono, this.client.getHttpPipeline(), InstanceInner.class, InstanceInner.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, accountName, instanceName, instance, context);
+        return this.client.<InstanceInner, InstanceInner>getLroResult(mono, this.client.getHttpPipeline(),
+            InstanceInner.class, InstanceInner.class, context);
     }
 
     /**
      * Creates or updates instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -844,14 +682,14 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return the {@link SyncPoller} for polling of device Update instance details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<InstanceInner>, InstanceInner> beginCreate(
-        String resourceGroupName, String accountName, String instanceName, InstanceInner instance) {
-        return beginCreateAsync(resourceGroupName, accountName, instanceName, instance).getSyncPoller();
+    public SyncPoller<PollResult<InstanceInner>, InstanceInner> beginCreate(String resourceGroupName,
+        String accountName, String instanceName, InstanceInner instance) {
+        return this.beginCreateAsync(resourceGroupName, accountName, instanceName, instance).getSyncPoller();
     }
 
     /**
      * Creates or updates instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -863,14 +701,14 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return the {@link SyncPoller} for polling of device Update instance details.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<InstanceInner>, InstanceInner> beginCreate(
-        String resourceGroupName, String accountName, String instanceName, InstanceInner instance, Context context) {
-        return beginCreateAsync(resourceGroupName, accountName, instanceName, instance, context).getSyncPoller();
+    public SyncPoller<PollResult<InstanceInner>, InstanceInner> beginCreate(String resourceGroupName,
+        String accountName, String instanceName, InstanceInner instance, Context context) {
+        return this.beginCreateAsync(resourceGroupName, accountName, instanceName, instance, context).getSyncPoller();
     }
 
     /**
      * Creates or updates instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -881,16 +719,15 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return device Update instance details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InstanceInner> createAsync(
-        String resourceGroupName, String accountName, String instanceName, InstanceInner instance) {
-        return beginCreateAsync(resourceGroupName, accountName, instanceName, instance)
-            .last()
+    private Mono<InstanceInner> createAsync(String resourceGroupName, String accountName, String instanceName,
+        InstanceInner instance) {
+        return beginCreateAsync(resourceGroupName, accountName, instanceName, instance).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -902,16 +739,15 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return device Update instance details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InstanceInner> createAsync(
-        String resourceGroupName, String accountName, String instanceName, InstanceInner instance, Context context) {
-        return beginCreateAsync(resourceGroupName, accountName, instanceName, instance, context)
-            .last()
+    private Mono<InstanceInner> createAsync(String resourceGroupName, String accountName, String instanceName,
+        InstanceInner instance, Context context) {
+        return beginCreateAsync(resourceGroupName, accountName, instanceName, instance, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Creates or updates instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -922,14 +758,14 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return device Update instance details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public InstanceInner create(
-        String resourceGroupName, String accountName, String instanceName, InstanceInner instance) {
+    public InstanceInner create(String resourceGroupName, String accountName, String instanceName,
+        InstanceInner instance) {
         return createAsync(resourceGroupName, accountName, instanceName, instance).block();
     }
 
     /**
      * Creates or updates instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -941,14 +777,14 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return device Update instance details.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public InstanceInner create(
-        String resourceGroupName, String accountName, String instanceName, InstanceInner instance, Context context) {
+    public InstanceInner create(String resourceGroupName, String accountName, String instanceName,
+        InstanceInner instance, Context context) {
         return createAsync(resourceGroupName, accountName, instanceName, instance, context).block();
     }
 
     /**
      * Deletes instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -958,23 +794,19 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String instanceName) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String instanceName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -985,23 +817,14 @@ public final class InstancesClientImpl implements InstancesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .delete(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accountName,
-                            instanceName,
-                            accept,
-                            context))
+                context -> service.delete(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), accountName, instanceName, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Deletes instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -1012,23 +835,19 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String accountName, String instanceName, Context context) {
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String instanceName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1038,21 +857,13 @@ public final class InstancesClientImpl implements InstancesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .delete(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accountName,
-                instanceName,
-                accept,
-                context);
+        return service.delete(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accountName, instanceName, accept, context);
     }
 
     /**
      * Deletes instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -1062,18 +873,16 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String accountName, String instanceName) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        String instanceName) {
         Mono<Response<Flux<ByteBuffer>>> mono = deleteWithResponseAsync(resourceGroupName, accountName, instanceName);
-        return this
-            .client
-            .<Void, Void>getLroResult(
-                mono, this.client.getHttpPipeline(), Void.class, Void.class, this.client.getContext());
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
     }
 
     /**
      * Deletes instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -1084,19 +893,18 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String accountName, String instanceName, Context context) {
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        String instanceName, Context context) {
         context = this.client.mergeContext(context);
-        Mono<Response<Flux<ByteBuffer>>> mono =
-            deleteWithResponseAsync(resourceGroupName, accountName, instanceName, context);
-        return this
-            .client
-            .<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class, context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, accountName, instanceName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
     }
 
     /**
      * Deletes instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -1106,14 +914,14 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String instanceName) {
-        return beginDeleteAsync(resourceGroupName, accountName, instanceName).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String instanceName) {
+        return this.beginDeleteAsync(resourceGroupName, accountName, instanceName).getSyncPoller();
     }
 
     /**
      * Deletes instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -1124,14 +932,14 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String accountName, String instanceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, instanceName, context).getSyncPoller();
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String instanceName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, accountName, instanceName, context).getSyncPoller();
     }
 
     /**
      * Deletes instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -1142,14 +950,13 @@ public final class InstancesClientImpl implements InstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String instanceName) {
-        return beginDeleteAsync(resourceGroupName, accountName, instanceName)
-            .last()
+        return beginDeleteAsync(resourceGroupName, accountName, instanceName).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -1161,14 +968,13 @@ public final class InstancesClientImpl implements InstancesClient {
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String instanceName, Context context) {
-        return beginDeleteAsync(resourceGroupName, accountName, instanceName, context)
-            .last()
+        return beginDeleteAsync(resourceGroupName, accountName, instanceName, context).last()
             .flatMap(this.client::getLroFinalResultOrError);
     }
 
     /**
      * Deletes instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -1183,7 +989,7 @@ public final class InstancesClientImpl implements InstancesClient {
 
     /**
      * Deletes instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -1199,7 +1005,7 @@ public final class InstancesClientImpl implements InstancesClient {
 
     /**
      * Updates instance's tags.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -1210,23 +1016,19 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return device Update instance details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<InstanceInner>> updateWithResponseAsync(
-        String resourceGroupName, String accountName, String instanceName, TagUpdate tagUpdatePayload) {
+    private Mono<Response<InstanceInner>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String instanceName, TagUpdate tagUpdatePayload) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1243,24 +1045,14 @@ public final class InstancesClientImpl implements InstancesClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .update(
-                            this.client.getEndpoint(),
-                            resourceGroupName,
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            accountName,
-                            instanceName,
-                            tagUpdatePayload,
-                            accept,
-                            context))
+                context -> service.update(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+                    this.client.getSubscriptionId(), accountName, instanceName, tagUpdatePayload, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Updates instance's tags.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -1272,27 +1064,19 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return device Update instance details along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<InstanceInner>> updateWithResponseAsync(
-        String resourceGroupName,
-        String accountName,
-        String instanceName,
-        TagUpdate tagUpdatePayload,
-        Context context) {
+    private Mono<Response<InstanceInner>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String instanceName, TagUpdate tagUpdatePayload, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
                 .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (accountName == null) {
             return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
@@ -1308,22 +1092,13 @@ public final class InstancesClientImpl implements InstancesClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .update(
-                this.client.getEndpoint(),
-                resourceGroupName,
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                accountName,
-                instanceName,
-                tagUpdatePayload,
-                accept,
-                context);
+        return service.update(this.client.getEndpoint(), resourceGroupName, this.client.getApiVersion(),
+            this.client.getSubscriptionId(), accountName, instanceName, tagUpdatePayload, accept, context);
     }
 
     /**
      * Updates instance's tags.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -1334,33 +1109,15 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return device Update instance details on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<InstanceInner> updateAsync(
-        String resourceGroupName, String accountName, String instanceName, TagUpdate tagUpdatePayload) {
+    private Mono<InstanceInner> updateAsync(String resourceGroupName, String accountName, String instanceName,
+        TagUpdate tagUpdatePayload) {
         return updateWithResponseAsync(resourceGroupName, accountName, instanceName, tagUpdatePayload)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Updates instance's tags.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param accountName Account name.
-     * @param instanceName Instance name.
-     * @param tagUpdatePayload Updated tags.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return device Update instance details.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public InstanceInner update(
-        String resourceGroupName, String accountName, String instanceName, TagUpdate tagUpdatePayload) {
-        return updateAsync(resourceGroupName, accountName, instanceName, tagUpdatePayload).block();
-    }
-
-    /**
-     * Updates instance's tags.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -1372,20 +1129,36 @@ public final class InstancesClientImpl implements InstancesClient {
      * @return device Update instance details along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<InstanceInner> updateWithResponse(
-        String resourceGroupName,
-        String accountName,
-        String instanceName,
-        TagUpdate tagUpdatePayload,
-        Context context) {
+    public Response<InstanceInner> updateWithResponse(String resourceGroupName, String accountName, String instanceName,
+        TagUpdate tagUpdatePayload, Context context) {
         return updateWithResponseAsync(resourceGroupName, accountName, instanceName, tagUpdatePayload, context).block();
     }
 
     /**
+     * Updates instance's tags.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param accountName Account name.
+     * @param instanceName Instance name.
+     * @param tagUpdatePayload Updated tags.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return device Update instance details.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public InstanceInner update(String resourceGroupName, String accountName, String instanceName,
+        TagUpdate tagUpdatePayload) {
+        return updateWithResponse(resourceGroupName, accountName, instanceName, tagUpdatePayload, Context.NONE)
+            .getValue();
+    }
+
+    /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -1397,31 +1170,23 @@ public final class InstancesClientImpl implements InstancesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         return FluxUtil
             .withContext(context -> service.listByAccountNext(nextLink, this.client.getEndpoint(), accept, context))
-            .<PagedResponse<InstanceInner>>map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null))
+            .<PagedResponse<InstanceInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get the next page of items.
-     *
+     * 
      * @param nextLink The URL to get the next list of items
-     *     <p>The nextLink parameter.
+     * 
+     * The nextLink parameter.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
@@ -1434,23 +1199,13 @@ public final class InstancesClientImpl implements InstancesClient {
             return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
         }
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .listByAccountNext(nextLink, this.client.getEndpoint(), accept, context)
-            .map(
-                res ->
-                    new PagedResponseBase<>(
-                        res.getRequest(),
-                        res.getStatusCode(),
-                        res.getHeaders(),
-                        res.getValue().value(),
-                        res.getValue().nextLink(),
-                        null));
+        return service.listByAccountNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

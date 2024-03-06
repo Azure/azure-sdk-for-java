@@ -147,7 +147,7 @@
     <dependency>
       <groupId>org.bouncycastle</groupId>
       <artifactId>bcprov-jdk15to18</artifactId>
-      <version>1.76</version> <!-- {x-version-update;org.bouncycastle:bcprov-jdk15to18;external_dependency} -->
+      <version>1.77</version> <!-- {x-version-update;org.bouncycastle:bcprov-jdk15to18;external_dependency} -->
       <scope>test</scope>
     </dependency>
   </dependencies>
@@ -174,7 +174,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-compiler-plugin</artifactId>
-        <version>3.10.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
+        <version>3.12.1</version> <!-- {x-version-update;org.apache.maven.plugins:maven-compiler-plugin;external_dependency} -->
         <configuration>
           <source>1.7</source>
           <target>1.7</target>

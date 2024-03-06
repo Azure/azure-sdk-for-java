@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Specifies the HyperVGeneration Type associated with a resource. */
+/**
+ * Specifies the HyperVGeneration Type associated with a resource.
+ */
 public final class HyperVGenerationType extends ExpandableStringEnum<HyperVGenerationType> {
-    /** Static value V1 for HyperVGenerationType. */
+    /**
+     * Static value V1 for HyperVGenerationType.
+     */
     public static final HyperVGenerationType V1 = fromString("V1");
 
-    /** Static value V2 for HyperVGenerationType. */
+    /**
+     * Static value V2 for HyperVGenerationType.
+     */
     public static final HyperVGenerationType V2 = fromString("V2");
 
     /**
      * Creates a new instance of HyperVGenerationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class HyperVGenerationType extends ExpandableStringEnum<HyperVGener
 
     /**
      * Creates or finds a HyperVGenerationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HyperVGenerationType.
      */
@@ -38,7 +44,7 @@ public final class HyperVGenerationType extends ExpandableStringEnum<HyperVGener
 
     /**
      * Gets known HyperVGenerationType values.
-     *
+     * 
      * @return known HyperVGenerationType values.
      */
     public static Collection<HyperVGenerationType> values() {

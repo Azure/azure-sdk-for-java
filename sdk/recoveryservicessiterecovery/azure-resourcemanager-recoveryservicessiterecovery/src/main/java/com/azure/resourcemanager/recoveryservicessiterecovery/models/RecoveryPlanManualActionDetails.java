@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Recovery plan manual action details. */
+/**
+ * Recovery plan manual action details.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("ManualActionDetails")
 @Fluent
@@ -20,13 +22,15 @@ public final class RecoveryPlanManualActionDetails extends RecoveryPlanActionDet
     @JsonProperty(value = "description")
     private String description;
 
-    /** Creates an instance of RecoveryPlanManualActionDetails class. */
+    /**
+     * Creates an instance of RecoveryPlanManualActionDetails class.
+     */
     public RecoveryPlanManualActionDetails() {
     }
 
     /**
      * Get the description property: The manual action description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -35,7 +39,7 @@ public final class RecoveryPlanManualActionDetails extends RecoveryPlanActionDet
 
     /**
      * Set the description property: The manual action description.
-     *
+     * 
      * @param description the description value to set.
      * @return the RecoveryPlanManualActionDetails object itself.
      */
@@ -46,7 +50,7 @@ public final class RecoveryPlanManualActionDetails extends RecoveryPlanActionDet
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

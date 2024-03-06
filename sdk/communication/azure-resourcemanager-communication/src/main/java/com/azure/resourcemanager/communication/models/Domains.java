@@ -8,13 +8,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Domains. */
+/**
+ * Resource collection API of Domains.
+ */
 public interface Domains {
     /**
      * Get
-     *
-     * <p>Get the Domains resource and its properties.
-     *
+     * 
+     * Get the Domains resource and its properties.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -24,14 +26,14 @@ public interface Domains {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the Domains resource and its properties along with {@link Response}.
      */
-    Response<DomainResource> getWithResponse(
-        String resourceGroupName, String emailServiceName, String domainName, Context context);
+    Response<DomainResource> getWithResponse(String resourceGroupName, String emailServiceName, String domainName,
+        Context context);
 
     /**
      * Get
-     *
-     * <p>Get the Domains resource and its properties.
-     *
+     * 
+     * Get the Domains resource and its properties.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -44,9 +46,9 @@ public interface Domains {
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a Domains resource.
-     *
+     * 
+     * Operation to delete a Domains resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -58,9 +60,9 @@ public interface Domains {
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a Domains resource.
-     *
+     * 
+     * Operation to delete a Domains resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -73,24 +75,24 @@ public interface Domains {
 
     /**
      * List by EmailService
-     *
-     * <p>Handles requests to list all Domains resources under the parent EmailServices resource.
-     *
+     * 
+     * Handles requests to list all Domains resources under the parent EmailServices resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Domains resource and a possible link for next set as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
     PagedIterable<DomainResource> listByEmailServiceResource(String resourceGroupName, String emailServiceName);
 
     /**
      * List by EmailService
-     *
-     * <p>Handles requests to list all Domains resources under the parent EmailServices resource.
-     *
+     * 
+     * Handles requests to list all Domains resources under the parent EmailServices resource.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param context The context to associate with this operation.
@@ -98,16 +100,16 @@ public interface Domains {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return object that includes an array of Domains resource and a possible link for next set as paginated response
-     *     with {@link PagedIterable}.
+     * with {@link PagedIterable}.
      */
-    PagedIterable<DomainResource> listByEmailServiceResource(
-        String resourceGroupName, String emailServiceName, Context context);
+    PagedIterable<DomainResource> listByEmailServiceResource(String resourceGroupName, String emailServiceName,
+        Context context);
 
     /**
      * Initiate Verification
-     *
-     * <p>Initiate verification of DNS record.
-     *
+     * 
+     * Initiate verification of DNS record.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -116,14 +118,14 @@ public interface Domains {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void initiateVerification(
-        String resourceGroupName, String emailServiceName, String domainName, VerificationParameter parameters);
+    void initiateVerification(String resourceGroupName, String emailServiceName, String domainName,
+        VerificationParameter parameters);
 
     /**
      * Initiate Verification
-     *
-     * <p>Initiate verification of DNS record.
-     *
+     * 
+     * Initiate verification of DNS record.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -133,18 +135,14 @@ public interface Domains {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void initiateVerification(
-        String resourceGroupName,
-        String emailServiceName,
-        String domainName,
-        VerificationParameter parameters,
-        Context context);
+    void initiateVerification(String resourceGroupName, String emailServiceName, String domainName,
+        VerificationParameter parameters, Context context);
 
     /**
      * Cancel Verification
-     *
-     * <p>Cancel verification of DNS record.
-     *
+     * 
+     * Cancel verification of DNS record.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -153,14 +151,14 @@ public interface Domains {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void cancelVerification(
-        String resourceGroupName, String emailServiceName, String domainName, VerificationParameter parameters);
+    void cancelVerification(String resourceGroupName, String emailServiceName, String domainName,
+        VerificationParameter parameters);
 
     /**
      * Cancel Verification
-     *
-     * <p>Cancel verification of DNS record.
-     *
+     * 
+     * Cancel verification of DNS record.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param emailServiceName The name of the EmailService resource.
      * @param domainName The name of the Domains resource.
@@ -170,18 +168,14 @@ public interface Domains {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void cancelVerification(
-        String resourceGroupName,
-        String emailServiceName,
-        String domainName,
-        VerificationParameter parameters,
-        Context context);
+    void cancelVerification(String resourceGroupName, String emailServiceName, String domainName,
+        VerificationParameter parameters, Context context);
 
     /**
      * Get
-     *
-     * <p>Get the Domains resource and its properties.
-     *
+     * 
+     * Get the Domains resource and its properties.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -192,9 +186,9 @@ public interface Domains {
 
     /**
      * Get
-     *
-     * <p>Get the Domains resource and its properties.
-     *
+     * 
+     * Get the Domains resource and its properties.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -206,9 +200,9 @@ public interface Domains {
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a Domains resource.
-     *
+     * 
+     * Operation to delete a Domains resource.
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -218,9 +212,9 @@ public interface Domains {
 
     /**
      * Delete
-     *
-     * <p>Operation to delete a Domains resource.
-     *
+     * 
+     * Operation to delete a Domains resource.
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -231,7 +225,7 @@ public interface Domains {
 
     /**
      * Begins definition for a new DomainResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new DomainResource definition.
      */

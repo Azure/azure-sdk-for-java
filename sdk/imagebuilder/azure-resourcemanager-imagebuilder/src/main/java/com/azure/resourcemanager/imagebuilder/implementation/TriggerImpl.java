@@ -60,20 +60,14 @@ public final class TriggerImpl implements Trigger, Trigger.Definition, Trigger.U
     }
 
     public Trigger create() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTriggers()
-                .createOrUpdate(resourceGroupName, imageTemplateName, triggerName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getTriggers().createOrUpdate(resourceGroupName,
+            imageTemplateName, triggerName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Trigger create(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTriggers()
-                .createOrUpdate(resourceGroupName, imageTemplateName, triggerName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getTriggers().createOrUpdate(resourceGroupName,
+            imageTemplateName, triggerName, this.innerModel(), context);
         return this;
     }
 
@@ -88,48 +82,34 @@ public final class TriggerImpl implements Trigger, Trigger.Definition, Trigger.U
     }
 
     public Trigger apply() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTriggers()
-                .createOrUpdate(resourceGroupName, imageTemplateName, triggerName, this.innerModel(), Context.NONE);
+        this.innerObject = serviceManager.serviceClient().getTriggers().createOrUpdate(resourceGroupName,
+            imageTemplateName, triggerName, this.innerModel(), Context.NONE);
         return this;
     }
 
     public Trigger apply(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTriggers()
-                .createOrUpdate(resourceGroupName, imageTemplateName, triggerName, this.innerModel(), context);
+        this.innerObject = serviceManager.serviceClient().getTriggers().createOrUpdate(resourceGroupName,
+            imageTemplateName, triggerName, this.innerModel(), context);
         return this;
     }
 
     TriggerImpl(TriggerInner innerObject, com.azure.resourcemanager.imagebuilder.ImageBuilderManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
-        this.resourceGroupName = Utils.getValueFromIdByName(innerObject.id(), "resourceGroups");
-        this.imageTemplateName = Utils.getValueFromIdByName(innerObject.id(), "imageTemplates");
-        this.triggerName = Utils.getValueFromIdByName(innerObject.id(), "triggers");
+        this.resourceGroupName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "resourceGroups");
+        this.imageTemplateName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "imageTemplates");
+        this.triggerName = ResourceManagerUtils.getValueFromIdByName(innerObject.id(), "triggers");
     }
 
     public Trigger refresh() {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTriggers()
-                .getWithResponse(resourceGroupName, imageTemplateName, triggerName, Context.NONE)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getTriggers()
+            .getWithResponse(resourceGroupName, imageTemplateName, triggerName, Context.NONE).getValue();
         return this;
     }
 
     public Trigger refresh(Context context) {
-        this.innerObject =
-            serviceManager
-                .serviceClient()
-                .getTriggers()
-                .getWithResponse(resourceGroupName, imageTemplateName, triggerName, context)
-                .getValue();
+        this.innerObject = serviceManager.serviceClient().getTriggers()
+            .getWithResponse(resourceGroupName, imageTemplateName, triggerName, context).getValue();
         return this;
     }
 

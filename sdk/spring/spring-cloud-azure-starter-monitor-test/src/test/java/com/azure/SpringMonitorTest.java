@@ -21,6 +21,7 @@ import io.opentelemetry.sdk.resources.Resource;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
 import io.opentelemetry.semconv.ResourceAttributes;
 import org.jetbrains.annotations.NotNull;
+import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.ObjectProvider;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -167,8 +168,7 @@ class SpringMonitorTest {
         TelemetryItem firstLogTelemetry = logs.get(0);
         MonitorDomain logBaseData = firstLogTelemetry.getData().getBaseData();
         MessageData logData = (MessageData) logBaseData;
-        assertThat(logData.getMessage())
-            .isEqualTo("Initializing Spring DispatcherServlet 'dispatcherServlet'");
+        assertThat(logData.getMessage()).startsWith("Starting SpringMonitorTest using");
         assertThat(logData.getSeverityLevel()).isEqualTo(SeverityLevel.INFORMATION);
 
         // SQL telemetry

@@ -29,7 +29,7 @@ import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextW
 /**
  * Schedules the proton-j reactor to continuously run work.
  */
-class ReactorExecutor implements AsyncCloseable {
+public class ReactorExecutor implements AsyncCloseable {
     private final ClientLogger logger;
     private final AtomicBoolean hasStarted = new AtomicBoolean();
     private final AtomicBoolean isDisposed = new AtomicBoolean();
@@ -56,7 +56,7 @@ class ReactorExecutor implements AsyncCloseable {
      * Starts the reactor and will begin processing any reactor events until there are no longer any left or {@link
      * #closeAsync()} is called.
      */
-    void start() {
+    public void start() {
         if (isDisposed.get()) {
             logger.warning("Cannot start reactor when executor has been disposed.");
             return;
@@ -103,31 +103,31 @@ class ReactorExecutor implements AsyncCloseable {
                 }
             }
         } catch (HandlerException handlerException) {
-            Throwable cause = handlerException.getCause() == null
-                ? handlerException
-                : handlerException.getCause();
+            Throwable cause = handlerException.getCause() == null ? handlerException : handlerException.getCause();
 
-            logger.warning("Unhandled exception while processing events in reactor, report this error.", handlerException);
+            logger.warning("Unhandled exception while processing events in reactor, report this error.",
+                handlerException);
 
             final String message = !CoreUtils.isNullOrEmpty(cause.getMessage())
                 ? cause.getMessage()
                 : !CoreUtils.isNullOrEmpty(handlerException.getMessage())
-                ? handlerException.getMessage()
-                : "Reactor encountered unrecoverable error";
+                    ? handlerException.getMessage()
+                    : "Reactor encountered unrecoverable error";
 
             final AmqpException exception;
             final AmqpErrorContext errorContext = new AmqpErrorContext(hostname);
 
             if (cause instanceof UnresolvedAddressException) {
                 exception = new AmqpException(true,
-                    String.format(Locale.US, "%s. This is usually caused by incorrect hostname or network "
+                    String.format(Locale.US,
+                        "%s. This is usually caused by incorrect hostname or network "
                             + "configuration. Check correctness of namespace information. %s",
                         message, StringUtil.getTrackingIdAndTimeToLog()),
                     cause, errorContext);
             } else {
                 exception = new AmqpException(true,
-                    String.format(Locale.US, "%s, %s", message, StringUtil.getTrackingIdAndTimeToLog()),
-                    cause, errorContext);
+                    String.format(Locale.US, "%s, %s", message, StringUtil.getTrackingIdAndTimeToLog()), cause,
+                    errorContext);
             }
 
             this.exceptionHandler.onConnectionError(exception);
@@ -137,8 +137,8 @@ class ReactorExecutor implements AsyncCloseable {
                     logger.verbose("Scheduling reactor to complete pending tasks.");
                     scheduleCompletePendingTasks();
                 } else {
-                    final String reason =
-                        "Stopping the reactor because thread was interrupted or the reactor has no more events to "
+                    final String reason
+                        = "Stopping the reactor because thread was interrupted or the reactor has no more events to "
                             + "process.";
 
                     logger.info(reason);
@@ -161,7 +161,9 @@ class ReactorExecutor implements AsyncCloseable {
 
                 reactor.stop();
             } catch (HandlerException e) {
-                logger.atWarning().log(() -> StringUtil.toStackTraceString(e, "scheduleCompletePendingTasks - exception occurred while  processing events."));
+                logger.atWarning()
+                    .log(() -> StringUtil.toStackTraceString(e,
+                        "scheduleCompletePendingTasks - exception occurred while  processing events."));
             } finally {
                 try {
                     reactor.free();
@@ -186,7 +188,8 @@ class ReactorExecutor implements AsyncCloseable {
         logger.verbose("Completing close and disposing scheduler. {}", reason);
         scheduler.dispose();
         isClosedMono.emitEmpty((signalType, emitResult) -> {
-            addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult).log("Unable to emit close event on reactor");
+            addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
+                .log("Unable to emit close event on reactor");
             return false;
         });
         exceptionHandler.onConnectionShutdown(new AmqpShutdownSignal(false, initiatedByClient, reason));

@@ -13,32 +13,29 @@ import org.junit.jupiter.api.Assertions;
 public final class JobSubTaskTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        JobSubTask model =
-            BinaryData
-                .fromString(
-                    "{\"additionalDetails\":{\"bexilzznfqqnv\":\"fbjfdtwssotftpvj\",\"ujmkcjhwqy\":\"pmqtaru\"},\"taskId\":1656357002,\"taskName\":\"r\",\"taskProgress\":\"n\",\"taskStatus\":\"jewgdrjerv\"}")
-                .toObject(JobSubTask.class);
-        Assertions.assertEquals("fbjfdtwssotftpvj", model.additionalDetails().get("bexilzznfqqnv"));
-        Assertions.assertEquals(1656357002, model.taskId());
-        Assertions.assertEquals("r", model.taskName());
-        Assertions.assertEquals("jewgdrjerv", model.taskStatus());
+        JobSubTask model = BinaryData.fromString(
+            "{\"additionalDetails\":{\"bsrfbj\":\"hsqfsubcgjbirxbp\",\"otftpvjzbexilz\":\"dtws\",\"qtaruoujmkcjhwq\":\"nfqqnvwp\",\"ervnaenqpehi\":\"tjrybnwjewgdr\"},\"taskId\":681452902,\"taskName\":\"oygmift\",\"taskProgress\":\"zdnds\",\"taskStatus\":\"gnayqigynduh\"}")
+            .toObject(JobSubTask.class);
+        Assertions.assertEquals("hsqfsubcgjbirxbp", model.additionalDetails().get("bsrfbj"));
+        Assertions.assertEquals(681452902, model.taskId());
+        Assertions.assertEquals("oygmift", model.taskName());
+        Assertions.assertEquals("gnayqigynduh", model.taskStatus());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        JobSubTask model =
-            new JobSubTask()
-                .withAdditionalDetails(mapOf("bexilzznfqqnv", "fbjfdtwssotftpvj", "ujmkcjhwqy", "pmqtaru"))
-                .withTaskId(1656357002)
-                .withTaskName("r")
-                .withTaskStatus("jewgdrjerv");
+        JobSubTask model = new JobSubTask()
+            .withAdditionalDetails(mapOf("bsrfbj", "hsqfsubcgjbirxbp", "otftpvjzbexilz", "dtws", "qtaruoujmkcjhwq",
+                "nfqqnvwp", "ervnaenqpehi", "tjrybnwjewgdr"))
+            .withTaskId(681452902).withTaskName("oygmift").withTaskStatus("gnayqigynduh");
         model = BinaryData.fromObject(model).toObject(JobSubTask.class);
-        Assertions.assertEquals("fbjfdtwssotftpvj", model.additionalDetails().get("bexilzznfqqnv"));
-        Assertions.assertEquals(1656357002, model.taskId());
-        Assertions.assertEquals("r", model.taskName());
-        Assertions.assertEquals("jewgdrjerv", model.taskStatus());
+        Assertions.assertEquals("hsqfsubcgjbirxbp", model.additionalDetails().get("bsrfbj"));
+        Assertions.assertEquals(681452902, model.taskId());
+        Assertions.assertEquals("oygmift", model.taskName());
+        Assertions.assertEquals("gnayqigynduh", model.taskStatus());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

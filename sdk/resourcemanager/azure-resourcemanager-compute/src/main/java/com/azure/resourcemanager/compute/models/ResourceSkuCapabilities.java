@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes The SKU capabilities object. */
+/**
+ * Describes The SKU capabilities object.
+ */
 @Immutable
 public final class ResourceSkuCapabilities {
     /*
@@ -22,13 +24,15 @@ public final class ResourceSkuCapabilities {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private String value;
 
-    /** Creates an instance of ResourceSkuCapabilities class. */
+    /**
+     * Creates an instance of ResourceSkuCapabilities class.
+     */
     public ResourceSkuCapabilities() {
     }
 
     /**
      * Get the name property: An invariant to describe the feature.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class ResourceSkuCapabilities {
 
     /**
      * Get the value property: An invariant if the feature is measured by quantity.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -46,7 +50,7 @@ public final class ResourceSkuCapabilities {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

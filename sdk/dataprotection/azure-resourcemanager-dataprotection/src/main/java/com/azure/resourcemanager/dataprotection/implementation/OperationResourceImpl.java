@@ -15,8 +15,7 @@ public final class OperationResourceImpl implements OperationResource {
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    OperationResourceImpl(
-        OperationResourceInner innerObject,
+    OperationResourceImpl(OperationResourceInner innerObject,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

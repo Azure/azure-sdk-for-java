@@ -28,4 +28,10 @@ public interface ReactiveRoleRepository extends ReactiveCosmosRepository<Role, S
 
     @Query(value = "select * from c where (NOT IS_DEFINED(@name) OR c.name = @name)")
     Flux<Role> annotatedFindRoleByNameOptional(@Param("name") Optional<String> name);
+
+    @Query(value = "select * \n from c where \n c.name = @name \n")
+    Flux<Role> annotatedFindRoleByNameWithSort(@Param("name") String name, Sort sort);
+
+    @Query(value = "select * \n from c \n where c.name = @name \n")
+    Flux<Role> annotatedFindRoleByNameWithSort2(@Param("name") String name, Sort sort);
 }

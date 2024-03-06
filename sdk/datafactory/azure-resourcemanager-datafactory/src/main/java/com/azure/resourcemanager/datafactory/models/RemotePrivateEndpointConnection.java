@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A remote private endpoint connection. */
+/**
+ * A remote private endpoint connection.
+ */
 @Fluent
 public final class RemotePrivateEndpointConnection {
     /*
@@ -28,13 +30,15 @@ public final class RemotePrivateEndpointConnection {
     @JsonProperty(value = "privateLinkServiceConnectionState")
     private PrivateLinkConnectionState privateLinkServiceConnectionState;
 
-    /** Creates an instance of RemotePrivateEndpointConnection class. */
+    /**
+     * Creates an instance of RemotePrivateEndpointConnection class.
+     */
     public RemotePrivateEndpointConnection() {
     }
 
     /**
      * Get the provisioningState property: The provisioningState property.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -43,7 +47,7 @@ public final class RemotePrivateEndpointConnection {
 
     /**
      * Get the privateEndpoint property: PrivateEndpoint of a remote private endpoint connection.
-     *
+     * 
      * @return the privateEndpoint value.
      */
     public ArmIdWrapper privateEndpoint() {
@@ -52,7 +56,7 @@ public final class RemotePrivateEndpointConnection {
 
     /**
      * Set the privateEndpoint property: PrivateEndpoint of a remote private endpoint connection.
-     *
+     * 
      * @param privateEndpoint the privateEndpoint value to set.
      * @return the RemotePrivateEndpointConnection object itself.
      */
@@ -63,7 +67,7 @@ public final class RemotePrivateEndpointConnection {
 
     /**
      * Get the privateLinkServiceConnectionState property: The state of a private link connection.
-     *
+     * 
      * @return the privateLinkServiceConnectionState value.
      */
     public PrivateLinkConnectionState privateLinkServiceConnectionState() {
@@ -72,19 +76,19 @@ public final class RemotePrivateEndpointConnection {
 
     /**
      * Set the privateLinkServiceConnectionState property: The state of a private link connection.
-     *
+     * 
      * @param privateLinkServiceConnectionState the privateLinkServiceConnectionState value to set.
      * @return the RemotePrivateEndpointConnection object itself.
      */
-    public RemotePrivateEndpointConnection withPrivateLinkServiceConnectionState(
-        PrivateLinkConnectionState privateLinkServiceConnectionState) {
+    public RemotePrivateEndpointConnection
+        withPrivateLinkServiceConnectionState(PrivateLinkConnectionState privateLinkServiceConnectionState) {
         this.privateLinkServiceConnectionState = privateLinkServiceConnectionState;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

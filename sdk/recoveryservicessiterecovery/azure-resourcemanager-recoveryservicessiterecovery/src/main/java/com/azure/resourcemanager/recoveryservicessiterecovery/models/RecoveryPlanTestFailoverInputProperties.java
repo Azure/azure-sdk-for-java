@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Recovery plan test failover input properties. */
+/**
+ * Recovery plan test failover input properties.
+ */
 @Fluent
 public final class RecoveryPlanTestFailoverInputProperties {
     /*
@@ -36,13 +38,15 @@ public final class RecoveryPlanTestFailoverInputProperties {
     @JsonProperty(value = "providerSpecificDetails")
     private List<RecoveryPlanProviderSpecificFailoverInput> providerSpecificDetails;
 
-    /** Creates an instance of RecoveryPlanTestFailoverInputProperties class. */
+    /**
+     * Creates an instance of RecoveryPlanTestFailoverInputProperties class.
+     */
     public RecoveryPlanTestFailoverInputProperties() {
     }
 
     /**
      * Get the failoverDirection property: The failover direction.
-     *
+     * 
      * @return the failoverDirection value.
      */
     public PossibleOperationsDirections failoverDirection() {
@@ -51,19 +55,19 @@ public final class RecoveryPlanTestFailoverInputProperties {
 
     /**
      * Set the failoverDirection property: The failover direction.
-     *
+     * 
      * @param failoverDirection the failoverDirection value to set.
      * @return the RecoveryPlanTestFailoverInputProperties object itself.
      */
-    public RecoveryPlanTestFailoverInputProperties withFailoverDirection(
-        PossibleOperationsDirections failoverDirection) {
+    public RecoveryPlanTestFailoverInputProperties
+        withFailoverDirection(PossibleOperationsDirections failoverDirection) {
         this.failoverDirection = failoverDirection;
         return this;
     }
 
     /**
      * Get the networkType property: The network type to be used for test failover.
-     *
+     * 
      * @return the networkType value.
      */
     public String networkType() {
@@ -72,7 +76,7 @@ public final class RecoveryPlanTestFailoverInputProperties {
 
     /**
      * Set the networkType property: The network type to be used for test failover.
-     *
+     * 
      * @param networkType the networkType value to set.
      * @return the RecoveryPlanTestFailoverInputProperties object itself.
      */
@@ -83,7 +87,7 @@ public final class RecoveryPlanTestFailoverInputProperties {
 
     /**
      * Get the networkId property: The Id of the network to be used for test failover.
-     *
+     * 
      * @return the networkId value.
      */
     public String networkId() {
@@ -92,7 +96,7 @@ public final class RecoveryPlanTestFailoverInputProperties {
 
     /**
      * Set the networkId property: The Id of the network to be used for test failover.
-     *
+     * 
      * @param networkId the networkId value to set.
      * @return the RecoveryPlanTestFailoverInputProperties object itself.
      */
@@ -103,7 +107,7 @@ public final class RecoveryPlanTestFailoverInputProperties {
 
     /**
      * Get the providerSpecificDetails property: The provider specific properties.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public List<RecoveryPlanProviderSpecificFailoverInput> providerSpecificDetails() {
@@ -112,34 +116,29 @@ public final class RecoveryPlanTestFailoverInputProperties {
 
     /**
      * Set the providerSpecificDetails property: The provider specific properties.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the RecoveryPlanTestFailoverInputProperties object itself.
      */
-    public RecoveryPlanTestFailoverInputProperties withProviderSpecificDetails(
-        List<RecoveryPlanProviderSpecificFailoverInput> providerSpecificDetails) {
+    public RecoveryPlanTestFailoverInputProperties
+        withProviderSpecificDetails(List<RecoveryPlanProviderSpecificFailoverInput> providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (failoverDirection() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property failoverDirection in model"
-                            + " RecoveryPlanTestFailoverInputProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property failoverDirection in model RecoveryPlanTestFailoverInputProperties"));
         }
         if (networkType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property networkType in model RecoveryPlanTestFailoverInputProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property networkType in model RecoveryPlanTestFailoverInputProperties"));
         }
         if (providerSpecificDetails() != null) {
             providerSpecificDetails().forEach(e -> e.validate());

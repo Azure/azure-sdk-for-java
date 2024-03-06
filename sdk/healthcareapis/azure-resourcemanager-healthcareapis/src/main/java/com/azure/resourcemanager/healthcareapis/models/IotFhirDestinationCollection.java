@@ -9,7 +9,9 @@ import com.azure.resourcemanager.healthcareapis.fluent.models.IotFhirDestination
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A collection of IoT Connector FHIR destinations. */
+/**
+ * A collection of IoT Connector FHIR destinations.
+ */
 @Fluent
 public final class IotFhirDestinationCollection {
     /*
@@ -25,8 +27,14 @@ public final class IotFhirDestinationCollection {
     private List<IotFhirDestinationInner> value;
 
     /**
+     * Creates an instance of IotFhirDestinationCollection class.
+     */
+    public IotFhirDestinationCollection() {
+    }
+
+    /**
      * Get the nextLink property: The link used to get the next page of IoT FHIR destinations.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -35,7 +43,7 @@ public final class IotFhirDestinationCollection {
 
     /**
      * Set the nextLink property: The link used to get the next page of IoT FHIR destinations.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the IotFhirDestinationCollection object itself.
      */
@@ -46,7 +54,7 @@ public final class IotFhirDestinationCollection {
 
     /**
      * Get the value property: The list of IoT Connector FHIR destinations.
-     *
+     * 
      * @return the value value.
      */
     public List<IotFhirDestinationInner> value() {
@@ -55,7 +63,7 @@ public final class IotFhirDestinationCollection {
 
     /**
      * Set the value property: The list of IoT Connector FHIR destinations.
-     *
+     * 
      * @param value the value value to set.
      * @return the IotFhirDestinationCollection object itself.
      */
@@ -66,7 +74,7 @@ public final class IotFhirDestinationCollection {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Defines the security admin configuration properties. */
+/**
+ * Defines the security admin configuration properties.
+ */
 @Fluent
 public final class SecurityAdminConfigurationPropertiesFormat {
     /*
@@ -37,13 +39,15 @@ public final class SecurityAdminConfigurationPropertiesFormat {
     @JsonProperty(value = "resourceGuid", access = JsonProperty.Access.WRITE_ONLY)
     private String resourceGuid;
 
-    /** Creates an instance of SecurityAdminConfigurationPropertiesFormat class. */
+    /**
+     * Creates an instance of SecurityAdminConfigurationPropertiesFormat class.
+     */
     public SecurityAdminConfigurationPropertiesFormat() {
     }
 
     /**
      * Get the description property: A description of the security configuration.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -52,7 +56,7 @@ public final class SecurityAdminConfigurationPropertiesFormat {
 
     /**
      * Set the description property: A description of the security configuration.
-     *
+     * 
      * @param description the description value to set.
      * @return the SecurityAdminConfigurationPropertiesFormat object itself.
      */
@@ -63,7 +67,7 @@ public final class SecurityAdminConfigurationPropertiesFormat {
 
     /**
      * Get the applyOnNetworkIntentPolicyBasedServices property: Enum list of network intent policy based services.
-     *
+     * 
      * @return the applyOnNetworkIntentPolicyBasedServices value.
      */
     public List<NetworkIntentPolicyBasedService> applyOnNetworkIntentPolicyBasedServices() {
@@ -72,7 +76,7 @@ public final class SecurityAdminConfigurationPropertiesFormat {
 
     /**
      * Set the applyOnNetworkIntentPolicyBasedServices property: Enum list of network intent policy based services.
-     *
+     * 
      * @param applyOnNetworkIntentPolicyBasedServices the applyOnNetworkIntentPolicyBasedServices value to set.
      * @return the SecurityAdminConfigurationPropertiesFormat object itself.
      */
@@ -84,7 +88,7 @@ public final class SecurityAdminConfigurationPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -93,7 +97,7 @@ public final class SecurityAdminConfigurationPropertiesFormat {
 
     /**
      * Get the resourceGuid property: Unique identifier for this resource.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -102,7 +106,7 @@ public final class SecurityAdminConfigurationPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

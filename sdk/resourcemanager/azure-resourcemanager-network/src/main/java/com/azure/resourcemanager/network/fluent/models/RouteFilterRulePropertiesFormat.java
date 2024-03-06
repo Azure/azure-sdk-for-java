@@ -12,7 +12,9 @@ import com.azure.resourcemanager.network.models.RouteFilterRuleType;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Route Filter Rule Resource. */
+/**
+ * Route Filter Rule Resource.
+ */
 @Fluent
 public final class RouteFilterRulePropertiesFormat {
     /*
@@ -39,13 +41,15 @@ public final class RouteFilterRulePropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of RouteFilterRulePropertiesFormat class. */
+    /**
+     * Creates an instance of RouteFilterRulePropertiesFormat class.
+     */
     public RouteFilterRulePropertiesFormat() {
     }
 
     /**
      * Get the access property: The access type of the rule.
-     *
+     * 
      * @return the access value.
      */
     public Access access() {
@@ -54,7 +58,7 @@ public final class RouteFilterRulePropertiesFormat {
 
     /**
      * Set the access property: The access type of the rule.
-     *
+     * 
      * @param access the access value to set.
      * @return the RouteFilterRulePropertiesFormat object itself.
      */
@@ -65,7 +69,7 @@ public final class RouteFilterRulePropertiesFormat {
 
     /**
      * Get the routeFilterRuleType property: The rule type of the rule.
-     *
+     * 
      * @return the routeFilterRuleType value.
      */
     public RouteFilterRuleType routeFilterRuleType() {
@@ -74,7 +78,7 @@ public final class RouteFilterRulePropertiesFormat {
 
     /**
      * Set the routeFilterRuleType property: The rule type of the rule.
-     *
+     * 
      * @param routeFilterRuleType the routeFilterRuleType value to set.
      * @return the RouteFilterRulePropertiesFormat object itself.
      */
@@ -86,7 +90,7 @@ public final class RouteFilterRulePropertiesFormat {
     /**
      * Get the communities property: The collection for bgp community values to filter on. e.g.
      * ['12076:5010','12076:5020'].
-     *
+     * 
      * @return the communities value.
      */
     public List<String> communities() {
@@ -96,7 +100,7 @@ public final class RouteFilterRulePropertiesFormat {
     /**
      * Set the communities property: The collection for bgp community values to filter on. e.g.
      * ['12076:5010','12076:5020'].
-     *
+     * 
      * @param communities the communities value to set.
      * @return the RouteFilterRulePropertiesFormat object itself.
      */
@@ -107,7 +111,7 @@ public final class RouteFilterRulePropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the route filter rule resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -116,27 +120,21 @@ public final class RouteFilterRulePropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (access() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property access in model RouteFilterRulePropertiesFormat"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property access in model RouteFilterRulePropertiesFormat"));
         }
         if (routeFilterRuleType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property routeFilterRuleType in model RouteFilterRulePropertiesFormat"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property routeFilterRuleType in model RouteFilterRulePropertiesFormat"));
         }
         if (communities() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property communities in model RouteFilterRulePropertiesFormat"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property communities in model RouteFilterRulePropertiesFormat"));
         }
     }
 

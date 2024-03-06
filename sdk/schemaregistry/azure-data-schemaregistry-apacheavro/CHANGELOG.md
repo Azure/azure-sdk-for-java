@@ -10,6 +10,15 @@
 
 ### Other Changes
 
+## 1.1.12 (2023-11-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core` from `1.44.1` to version `1.45.0`.
+- Upgraded `azure-data-schemaregistry` from `1.4.0` to version `1.4.1`.
+
 ## 1.1.11 (2023-10-24)
 
 ### Other Changes

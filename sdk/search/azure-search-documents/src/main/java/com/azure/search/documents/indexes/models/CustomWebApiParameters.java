@@ -11,12 +11,14 @@ import com.azure.json.JsonReader;
 import com.azure.json.JsonSerializable;
 import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
+import com.azure.search.documents.indexes.implementation.CoreToCodegenBridgeUtils;
 import java.io.IOException;
 import java.time.Duration;
 import java.util.Map;
-import java.util.Objects;
 
-/** Specifies the properties for connecting to a user-defined vectorizer. */
+/**
+ * Specifies the properties for connecting to a user-defined vectorizer.
+ */
 @Fluent
 public final class CustomWebApiParameters implements JsonSerializable<CustomWebApiParameters> {
     /*
@@ -42,7 +44,7 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
     /*
      * Applies to custom endpoints that connect to external code in an Azure function or some other application that
      * provides the transformations. This value should be the application ID created for the function or app when it
-     * was registered with Azure Active Directory. When specified, the vectorization connects to the function or app
+     * was registered with Microsoft Entra ID. When specified, the vectorization connects to the function or app
      * using a managed ID (either system or user-assigned) of the search service and the access token of the function
      * or app, using this value as the resource id for creating the scope of the access token.
      */
@@ -55,8 +57,11 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
      */
     private SearchIndexerDataIdentity authIdentity;
 
-    /** Creates an instance of CustomWebApiParameters class. */
-    public CustomWebApiParameters() {}
+    /**
+     * Creates an instance of CustomWebApiParameters class.
+     */
+    public CustomWebApiParameters() {
+    }
 
     /**
      * Get the uri property: The URI of the Web API providing the vectorizer.
@@ -141,10 +146,10 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
     /**
      * Get the authResourceId property: Applies to custom endpoints that connect to external code in an Azure function
      * or some other application that provides the transformations. This value should be the application ID created for
-     * the function or app when it was registered with Azure Active Directory. When specified, the vectorization
-     * connects to the function or app using a managed ID (either system or user-assigned) of the search service and the
-     * access token of the function or app, using this value as the resource id for creating the scope of the access
-     * token.
+     * the function or app when it was registered with Microsoft Entra ID. When specified, the vectorization
+     * connects to the function or app using a managed ID (either system or user-assigned) of the search service and
+     * the access token of the function or app, using this value as the resource id for creating the scope of the
+     * access token.
      *
      * @return the authResourceId value.
      */
@@ -155,10 +160,10 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
     /**
      * Set the authResourceId property: Applies to custom endpoints that connect to external code in an Azure function
      * or some other application that provides the transformations. This value should be the application ID created for
-     * the function or app when it was registered with Azure Active Directory. When specified, the vectorization
-     * connects to the function or app using a managed ID (either system or user-assigned) of the search service and the
-     * access token of the function or app, using this value as the resource id for creating the scope of the access
-     * token.
+     * the function or app when it was registered with Microsoft Entra ID. When specified, the vectorization
+     * connects to the function or app using a managed ID (either system or user-assigned) of the search service and
+     * the access token of the function or app, using this value as the resource id for creating the scope of the
+     * access token.
      *
      * @param authResourceId the authResourceId value to set.
      * @return the CustomWebApiParameters object itself.
@@ -200,7 +205,7 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
         jsonWriter.writeStringField("uri", this.uri);
         jsonWriter.writeMapField("httpHeaders", this.httpHeaders, (writer, element) -> writer.writeString(element));
         jsonWriter.writeStringField("httpMethod", this.httpMethod);
-        jsonWriter.writeStringField("timeout", Objects.toString(this.timeout, null));
+        jsonWriter.writeStringField("timeout", CoreToCodegenBridgeUtils.durationToStringWithDays(this.timeout));
         jsonWriter.writeStringField("authResourceId", this.authResourceId);
         jsonWriter.writeJsonField("authIdentity", this.authIdentity);
         return jsonWriter.writeEndObject();
@@ -211,38 +216,36 @@ public final class CustomWebApiParameters implements JsonSerializable<CustomWebA
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of CustomWebApiParameters if the JsonReader was pointing to an instance of it, or null if it
-     *     was pointing to JSON null.
+     * was pointing to JSON null.
      * @throws IOException If an error occurs while reading the CustomWebApiParameters.
      */
     public static CustomWebApiParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    CustomWebApiParameters deserializedCustomWebApiParameters = new CustomWebApiParameters();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            CustomWebApiParameters deserializedCustomWebApiParameters = new CustomWebApiParameters();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("uri".equals(fieldName)) {
-                            deserializedCustomWebApiParameters.uri = reader.getString();
-                        } else if ("httpHeaders".equals(fieldName)) {
-                            Map<String, String> httpHeaders = reader.readMap(reader1 -> reader1.getString());
-                            deserializedCustomWebApiParameters.httpHeaders = httpHeaders;
-                        } else if ("httpMethod".equals(fieldName)) {
-                            deserializedCustomWebApiParameters.httpMethod = reader.getString();
-                        } else if ("timeout".equals(fieldName)) {
-                            deserializedCustomWebApiParameters.timeout =
-                                    reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
-                        } else if ("authResourceId".equals(fieldName)) {
-                            deserializedCustomWebApiParameters.authResourceId = reader.getString();
-                        } else if ("authIdentity".equals(fieldName)) {
-                            deserializedCustomWebApiParameters.authIdentity =
-                                    SearchIndexerDataIdentity.fromJson(reader);
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
+                if ("uri".equals(fieldName)) {
+                    deserializedCustomWebApiParameters.uri = reader.getString();
+                } else if ("httpHeaders".equals(fieldName)) {
+                    Map<String, String> httpHeaders = reader.readMap(reader1 -> reader1.getString());
+                    deserializedCustomWebApiParameters.httpHeaders = httpHeaders;
+                } else if ("httpMethod".equals(fieldName)) {
+                    deserializedCustomWebApiParameters.httpMethod = reader.getString();
+                } else if ("timeout".equals(fieldName)) {
+                    deserializedCustomWebApiParameters.timeout
+                        = reader.getNullable(nonNullReader -> Duration.parse(nonNullReader.getString()));
+                } else if ("authResourceId".equals(fieldName)) {
+                    deserializedCustomWebApiParameters.authResourceId = reader.getString();
+                } else if ("authIdentity".equals(fieldName)) {
+                    deserializedCustomWebApiParameters.authIdentity = SearchIndexerDataIdentity.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
 
-                    return deserializedCustomWebApiParameters;
-                });
+            return deserializedCustomWebApiParameters;
+        });
     }
 }

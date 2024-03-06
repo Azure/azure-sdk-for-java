@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Schema of a CDC table in terms of column names and their corresponding data types. */
+/**
+ * Schema of a CDC table in terms of column names and their corresponding data types.
+ */
 @Fluent
 public final class MapperTableSchema {
     /*
@@ -22,13 +24,15 @@ public final class MapperTableSchema {
     @JsonProperty(value = "dataType")
     private String dataType;
 
-    /** Creates an instance of MapperTableSchema class. */
+    /**
+     * Creates an instance of MapperTableSchema class.
+     */
     public MapperTableSchema() {
     }
 
     /**
      * Get the name property: Name of the column.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class MapperTableSchema {
 
     /**
      * Set the name property: Name of the column.
-     *
+     * 
      * @param name the name value to set.
      * @return the MapperTableSchema object itself.
      */
@@ -48,7 +52,7 @@ public final class MapperTableSchema {
 
     /**
      * Get the dataType property: Data type of the column.
-     *
+     * 
      * @return the dataType value.
      */
     public String dataType() {
@@ -57,7 +61,7 @@ public final class MapperTableSchema {
 
     /**
      * Set the dataType property: Data type of the column.
-     *
+     * 
      * @param dataType the dataType value to set.
      * @return the MapperTableSchema object itself.
      */
@@ -68,7 +72,7 @@ public final class MapperTableSchema {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

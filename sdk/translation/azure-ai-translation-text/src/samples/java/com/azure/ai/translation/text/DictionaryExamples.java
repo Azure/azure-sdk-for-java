@@ -28,8 +28,8 @@ public class DictionaryExamples {
                 .region(region)
                 .endpoint("https://api.cognitive.microsofttranslator.com")
                 .buildClient();
-		
-		// BEGIN: getTextTranslationDictionaryExamples
+
+        // BEGIN: getTextTranslationDictionaryExamples
         String sourceLanguage = "en";
         String targetLanguage = "es";
         List<DictionaryExampleTextItem> content = new ArrayList<>();
@@ -41,6 +41,6 @@ public class DictionaryExamples {
             System.out.println("For the given input " + dictionaryEntry.getExamples().size() + " entries were found in the dictionary.");
             System.out.println("Example: '" + dictionaryEntry.getExamples().get(0).getTargetPrefix() + dictionaryEntry.getExamples().get(0).getTargetTerm() + dictionaryEntry.getExamples().get(0).getTargetSuffix());
         }
-		// END: getTextTranslationDictionaryExamples
+        // END: getTextTranslationDictionaryExamples
     }
 }

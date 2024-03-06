@@ -5,36 +5,41 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.Map;
 
-/** Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobClosed event. */
+/**
+ * Schema of the Data property of an EventGridEvent for a Microsoft.Communication.RouterJobClosed event.
+ */
 @Fluent
 public final class AcsRouterJobClosedEventData extends AcsRouterJobEventData {
     /*
      * Router Job Closed Assignment Id
      */
-    @JsonProperty(value = "assignmentId")
     private String assignmentId;
 
     /*
      * Router Job Closed Worker Id
      */
-    @JsonProperty(value = "workerId")
     private String workerId;
 
     /*
      * Router Job Closed Disposition Code
      */
-    @JsonProperty(value = "dispositionCode")
     private String dispositionCode;
 
-    /** Creates an instance of AcsRouterJobClosedEventData class. */
-    public AcsRouterJobClosedEventData() {}
+    /**
+     * Creates an instance of AcsRouterJobClosedEventData class.
+     */
+    public AcsRouterJobClosedEventData() {
+    }
 
     /**
      * Get the assignmentId property: Router Job Closed Assignment Id.
-     *
+     * 
      * @return the assignmentId value.
      */
     public String getAssignmentId() {
@@ -43,7 +48,7 @@ public final class AcsRouterJobClosedEventData extends AcsRouterJobEventData {
 
     /**
      * Set the assignmentId property: Router Job Closed Assignment Id.
-     *
+     * 
      * @param assignmentId the assignmentId value to set.
      * @return the AcsRouterJobClosedEventData object itself.
      */
@@ -54,7 +59,7 @@ public final class AcsRouterJobClosedEventData extends AcsRouterJobEventData {
 
     /**
      * Get the workerId property: Router Job Closed Worker Id.
-     *
+     * 
      * @return the workerId value.
      */
     public String getWorkerId() {
@@ -63,7 +68,7 @@ public final class AcsRouterJobClosedEventData extends AcsRouterJobEventData {
 
     /**
      * Set the workerId property: Router Job Closed Worker Id.
-     *
+     * 
      * @param workerId the workerId value to set.
      * @return the AcsRouterJobClosedEventData object itself.
      */
@@ -74,7 +79,7 @@ public final class AcsRouterJobClosedEventData extends AcsRouterJobEventData {
 
     /**
      * Get the dispositionCode property: Router Job Closed Disposition Code.
-     *
+     * 
      * @return the dispositionCode value.
      */
     public String getDispositionCode() {
@@ -83,7 +88,7 @@ public final class AcsRouterJobClosedEventData extends AcsRouterJobEventData {
 
     /**
      * Set the dispositionCode property: Router Job Closed Disposition Code.
-     *
+     * 
      * @param dispositionCode the dispositionCode value to set.
      * @return the AcsRouterJobClosedEventData object itself.
      */
@@ -92,45 +97,116 @@ public final class AcsRouterJobClosedEventData extends AcsRouterJobEventData {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobClosedEventData setQueueId(String queueId) {
         super.setQueueId(queueId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobClosedEventData setLabels(Map<String, String> labels) {
         super.setLabels(labels);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobClosedEventData setTags(Map<String, String> tags) {
         super.setTags(tags);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobClosedEventData setJobId(String jobId) {
         super.setJobId(jobId);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobClosedEventData setChannelReference(String channelReference) {
         super.setChannelReference(channelReference);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AcsRouterJobClosedEventData setChannelId(String channelId) {
         super.setChannelId(channelId);
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("jobId", getJobId());
+        jsonWriter.writeStringField("channelReference", getChannelReference());
+        jsonWriter.writeStringField("channelId", getChannelId());
+        jsonWriter.writeStringField("queueId", getQueueId());
+        jsonWriter.writeMapField("labels", getLabels(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeMapField("tags", getTags(), (writer, element) -> writer.writeString(element));
+        jsonWriter.writeStringField("assignmentId", this.assignmentId);
+        jsonWriter.writeStringField("workerId", this.workerId);
+        jsonWriter.writeStringField("dispositionCode", this.dispositionCode);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AcsRouterJobClosedEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AcsRouterJobClosedEventData if the JsonReader was pointing to an instance of it, or null
+     * if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the AcsRouterJobClosedEventData.
+     */
+    public static AcsRouterJobClosedEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AcsRouterJobClosedEventData deserializedAcsRouterJobClosedEventData = new AcsRouterJobClosedEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("jobId".equals(fieldName)) {
+                    deserializedAcsRouterJobClosedEventData.setJobId(reader.getString());
+                } else if ("channelReference".equals(fieldName)) {
+                    deserializedAcsRouterJobClosedEventData.setChannelReference(reader.getString());
+                } else if ("channelId".equals(fieldName)) {
+                    deserializedAcsRouterJobClosedEventData.setChannelId(reader.getString());
+                } else if ("queueId".equals(fieldName)) {
+                    deserializedAcsRouterJobClosedEventData.setQueueId(reader.getString());
+                } else if ("labels".equals(fieldName)) {
+                    Map<String, String> labels = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsRouterJobClosedEventData.setLabels(labels);
+                } else if ("tags".equals(fieldName)) {
+                    Map<String, String> tags = reader.readMap(reader1 -> reader1.getString());
+                    deserializedAcsRouterJobClosedEventData.setTags(tags);
+                } else if ("assignmentId".equals(fieldName)) {
+                    deserializedAcsRouterJobClosedEventData.assignmentId = reader.getString();
+                } else if ("workerId".equals(fieldName)) {
+                    deserializedAcsRouterJobClosedEventData.workerId = reader.getString();
+                } else if ("dispositionCode".equals(fieldName)) {
+                    deserializedAcsRouterJobClosedEventData.dispositionCode = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAcsRouterJobClosedEventData;
+        });
     }
 }

@@ -1,6 +1,41 @@
 # Release History
 
-## 2.33.0-beta.1 (Unreleased)
+## 2.37.0-beta.1 (Unreleased)
+
+### Features Added
+
+### Breaking Changes
+
+### Bugs Fixed
+
+### Other Changes
+
+## 2.36.0 (2024-02-29)
+
+### Features Added
+
+- Supported encryption with Customer-managed keys using user-assigned service identity.
+- Supported `withExistingUserAssignedManagedServiceIdentity(String)` for `StorageAccount`. 
+
+## 2.35.0 (2024-01-26)
+
+### Features Added
+
+- Supported user-assigned service identity for `StorageAccount` in create and update. 
+
+### Other Changes
+
+- Added dependency of `azure-resourcemanager-msi` and `azure-resourcemanager-authorization`.
+
+## 2.34.0 (2023-12-22)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
+
+## 2.33.0 (2023-11-24)
 
 ### Features Added
 

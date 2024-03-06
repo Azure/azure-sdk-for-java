@@ -10,11 +10,9 @@ import com.azure.resourcemanager.batch.fluent.models.SupportedSkuInner;
 public final class SupportedSkuInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SupportedSkuInner model =
-            BinaryData
-                .fromString(
-                    "{\"name\":\"uhrhcffcyddgl\",\"familyName\":\"t\",\"capabilities\":[{\"name\":\"wpyeicxmqciwqvh\",\"value\":\"ixuigdtopbobj\"},{\"name\":\"hm\",\"value\":\"u\"},{\"name\":\"a\",\"value\":\"rzayv\"}]}")
-                .toObject(SupportedSkuInner.class);
+        SupportedSkuInner model = BinaryData.fromString(
+            "{\"name\":\"uhrhcffcyddgl\",\"familyName\":\"t\",\"capabilities\":[{\"name\":\"wpyeicxmqciwqvh\",\"value\":\"ixuigdtopbobj\"},{\"name\":\"hm\",\"value\":\"u\"},{\"name\":\"a\",\"value\":\"rzayv\"}]}")
+            .toObject(SupportedSkuInner.class);
     }
 
     @org.junit.jupiter.api.Test

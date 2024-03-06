@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** This class represents the group task details when parent child relationship exists in the drill down. */
+/**
+ * This class represents the group task details when parent child relationship exists in the drill down.
+ */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
     include = JsonTypeInfo.As.PROPERTY,
@@ -20,8 +22,7 @@ import java.util.List;
 @JsonTypeName("GroupTaskDetails")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "InlineWorkflowTaskDetails", value = InlineWorkflowTaskDetails.class),
-    @JsonSubTypes.Type(name = "RecoveryPlanGroupTaskDetails", value = RecoveryPlanGroupTaskDetails.class)
-})
+    @JsonSubTypes.Type(name = "RecoveryPlanGroupTaskDetails", value = RecoveryPlanGroupTaskDetails.class) })
 @Fluent
 public class GroupTaskDetails {
     /*
@@ -30,13 +31,15 @@ public class GroupTaskDetails {
     @JsonProperty(value = "childTasks")
     private List<AsrTask> childTasks;
 
-    /** Creates an instance of GroupTaskDetails class. */
+    /**
+     * Creates an instance of GroupTaskDetails class.
+     */
     public GroupTaskDetails() {
     }
 
     /**
      * Get the childTasks property: The child tasks.
-     *
+     * 
      * @return the childTasks value.
      */
     public List<AsrTask> childTasks() {
@@ -45,7 +48,7 @@ public class GroupTaskDetails {
 
     /**
      * Set the childTasks property: The child tasks.
-     *
+     * 
      * @param childTasks the childTasks value to set.
      * @return the GroupTaskDetails object itself.
      */
@@ -56,7 +59,7 @@ public class GroupTaskDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

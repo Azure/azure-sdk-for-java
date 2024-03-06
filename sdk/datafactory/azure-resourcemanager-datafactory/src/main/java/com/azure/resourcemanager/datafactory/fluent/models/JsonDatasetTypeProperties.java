@@ -10,7 +10,9 @@ import com.azure.resourcemanager.datafactory.models.DatasetCompression;
 import com.azure.resourcemanager.datafactory.models.DatasetLocation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Json dataset properties. */
+/**
+ * Json dataset properties.
+ */
 @Fluent
 public final class JsonDatasetTypeProperties {
     /*
@@ -34,13 +36,15 @@ public final class JsonDatasetTypeProperties {
     @JsonProperty(value = "compression")
     private DatasetCompression compression;
 
-    /** Creates an instance of JsonDatasetTypeProperties class. */
+    /**
+     * Creates an instance of JsonDatasetTypeProperties class.
+     */
     public JsonDatasetTypeProperties() {
     }
 
     /**
      * Get the location property: The location of the json data storage.
-     *
+     * 
      * @return the location value.
      */
     public DatasetLocation location() {
@@ -49,7 +53,7 @@ public final class JsonDatasetTypeProperties {
 
     /**
      * Set the location property: The location of the json data storage.
-     *
+     * 
      * @param location the location value to set.
      * @return the JsonDatasetTypeProperties object itself.
      */
@@ -63,7 +67,7 @@ public final class JsonDatasetTypeProperties {
      * is UTF-8, unless BOM denotes another Unicode encoding. Refer to the name column of the table in the following
      * link to set supported values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @return the encodingName value.
      */
     public Object encodingName() {
@@ -75,7 +79,7 @@ public final class JsonDatasetTypeProperties {
      * is UTF-8, unless BOM denotes another Unicode encoding. Refer to the name column of the table in the following
      * link to set supported values: https://msdn.microsoft.com/library/system.text.encoding.aspx. Type: string (or
      * Expression with resultType string).
-     *
+     * 
      * @param encodingName the encodingName value to set.
      * @return the JsonDatasetTypeProperties object itself.
      */
@@ -86,7 +90,7 @@ public final class JsonDatasetTypeProperties {
 
     /**
      * Get the compression property: The data compression method used for the json dataset.
-     *
+     * 
      * @return the compression value.
      */
     public DatasetCompression compression() {
@@ -95,7 +99,7 @@ public final class JsonDatasetTypeProperties {
 
     /**
      * Set the compression property: The data compression method used for the json dataset.
-     *
+     * 
      * @param compression the compression value to set.
      * @return the JsonDatasetTypeProperties object itself.
      */
@@ -106,15 +110,13 @@ public final class JsonDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (location() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property location in model JsonDatasetTypeProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property location in model JsonDatasetTypeProperties"));
         } else {
             location().validate();
         }

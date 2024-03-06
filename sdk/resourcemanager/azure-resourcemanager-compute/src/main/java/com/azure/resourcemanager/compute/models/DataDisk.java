@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a data disk. */
+/**
+ * Describes a data disk.
+ */
 @Fluent
 public final class DataDisk {
     /*
@@ -114,14 +116,16 @@ public final class DataDisk {
     @JsonProperty(value = "deleteOption")
     private DiskDeleteOptionTypes deleteOption;
 
-    /** Creates an instance of DataDisk class. */
+    /**
+     * Creates an instance of DataDisk class.
+     */
     public DataDisk() {
     }
 
     /**
      * Get the lun property: Specifies the logical unit number of the data disk. This value is used to identify data
      * disks within the VM and therefore must be unique for each data disk attached to a VM.
-     *
+     * 
      * @return the lun value.
      */
     public int lun() {
@@ -131,7 +135,7 @@ public final class DataDisk {
     /**
      * Set the lun property: Specifies the logical unit number of the data disk. This value is used to identify data
      * disks within the VM and therefore must be unique for each data disk attached to a VM.
-     *
+     * 
      * @param lun the lun value to set.
      * @return the DataDisk object itself.
      */
@@ -142,7 +146,7 @@ public final class DataDisk {
 
     /**
      * Get the name property: The disk name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -151,7 +155,7 @@ public final class DataDisk {
 
     /**
      * Set the name property: The disk name.
-     *
+     * 
      * @param name the name value to set.
      * @return the DataDisk object itself.
      */
@@ -162,7 +166,7 @@ public final class DataDisk {
 
     /**
      * Get the vhd property: The virtual hard disk.
-     *
+     * 
      * @return the vhd value.
      */
     public VirtualHardDisk vhd() {
@@ -171,7 +175,7 @@ public final class DataDisk {
 
     /**
      * Set the vhd property: The virtual hard disk.
-     *
+     * 
      * @param vhd the vhd value to set.
      * @return the DataDisk object itself.
      */
@@ -184,7 +188,7 @@ public final class DataDisk {
      * Get the image property: The source user image virtual hard disk. The virtual hard disk will be copied before
      * being attached to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not
      * exist.
-     *
+     * 
      * @return the image value.
      */
     public VirtualHardDisk image() {
@@ -195,7 +199,7 @@ public final class DataDisk {
      * Set the image property: The source user image virtual hard disk. The virtual hard disk will be copied before
      * being attached to the virtual machine. If SourceImage is provided, the destination virtual hard drive must not
      * exist.
-     *
+     * 
      * @param image the image value to set.
      * @return the DataDisk object itself.
      */
@@ -207,7 +211,7 @@ public final class DataDisk {
     /**
      * Get the caching property: Specifies the caching requirements. Possible values are: **None,** **ReadOnly,**
      * **ReadWrite.** The defaulting behavior is: **None for Standard storage. ReadOnly for Premium storage.**.
-     *
+     * 
      * @return the caching value.
      */
     public CachingTypes caching() {
@@ -217,7 +221,7 @@ public final class DataDisk {
     /**
      * Set the caching property: Specifies the caching requirements. Possible values are: **None,** **ReadOnly,**
      * **ReadWrite.** The defaulting behavior is: **None for Standard storage. ReadOnly for Premium storage.**.
-     *
+     * 
      * @param caching the caching value to set.
      * @return the DataDisk object itself.
      */
@@ -227,9 +231,9 @@ public final class DataDisk {
     }
 
     /**
-     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
-     * disk.
-     *
+     * Get the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
+     * the disk.
+     * 
      * @return the writeAcceleratorEnabled value.
      */
     public Boolean writeAcceleratorEnabled() {
@@ -237,9 +241,9 @@ public final class DataDisk {
     }
 
     /**
-     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on the
-     * disk.
-     *
+     * Set the writeAcceleratorEnabled property: Specifies whether writeAccelerator should be enabled or disabled on
+     * the disk.
+     * 
      * @param writeAcceleratorEnabled the writeAcceleratorEnabled value to set.
      * @return the DataDisk object itself.
      */
@@ -254,7 +258,7 @@ public final class DataDisk {
      * **FromImage.** This value is used when you are using an image to create the virtual machine. If you are using a
      * platform image, you should also use the imageReference element described above. If you are using a marketplace
      * image, you should also use the plan element previously described.
-     *
+     * 
      * @return the createOption value.
      */
     public DiskCreateOptionTypes createOption() {
@@ -267,7 +271,7 @@ public final class DataDisk {
      * **FromImage.** This value is used when you are using an image to create the virtual machine. If you are using a
      * platform image, you should also use the imageReference element described above. If you are using a marketplace
      * image, you should also use the plan element previously described.
-     *
+     * 
      * @param createOption the createOption value to set.
      * @return the DataDisk object itself.
      */
@@ -280,7 +284,7 @@ public final class DataDisk {
      * Get the diskSizeGB property: Specifies the size of an empty data disk in gigabytes. This element can be used to
      * overwrite the size of the disk in a virtual machine image. The property 'diskSizeGB' is the number of bytes x
      * 1024^3 for the disk and the value cannot be larger than 1023.
-     *
+     * 
      * @return the diskSizeGB value.
      */
     public Integer diskSizeGB() {
@@ -291,7 +295,7 @@ public final class DataDisk {
      * Set the diskSizeGB property: Specifies the size of an empty data disk in gigabytes. This element can be used to
      * overwrite the size of the disk in a virtual machine image. The property 'diskSizeGB' is the number of bytes x
      * 1024^3 for the disk and the value cannot be larger than 1023.
-     *
+     * 
      * @param diskSizeGB the diskSizeGB value to set.
      * @return the DataDisk object itself.
      */
@@ -302,7 +306,7 @@ public final class DataDisk {
 
     /**
      * Get the managedDisk property: The managed disk parameters.
-     *
+     * 
      * @return the managedDisk value.
      */
     public ManagedDiskParameters managedDisk() {
@@ -311,7 +315,7 @@ public final class DataDisk {
 
     /**
      * Set the managedDisk property: The managed disk parameters.
-     *
+     * 
      * @param managedDisk the managedDisk value to set.
      * @return the DataDisk object itself.
      */
@@ -323,7 +327,7 @@ public final class DataDisk {
     /**
      * Get the toBeDetached property: Specifies whether the data disk is in process of detachment from the
      * VirtualMachine/VirtualMachineScaleset.
-     *
+     * 
      * @return the toBeDetached value.
      */
     public Boolean toBeDetached() {
@@ -333,7 +337,7 @@ public final class DataDisk {
     /**
      * Set the toBeDetached property: Specifies whether the data disk is in process of detachment from the
      * VirtualMachine/VirtualMachineScaleset.
-     *
+     * 
      * @param toBeDetached the toBeDetached value to set.
      * @return the DataDisk object itself.
      */
@@ -343,10 +347,10 @@ public final class DataDisk {
     }
 
     /**
-     * Get the diskIopsReadWrite property: Specifies the Read-Write IOPS for the managed disk when StorageAccountType is
-     * UltraSSD_LRS. Returned only for VirtualMachine ScaleSet VM disks. Can be updated only via updates to the
+     * Get the diskIopsReadWrite property: Specifies the Read-Write IOPS for the managed disk when StorageAccountType
+     * is UltraSSD_LRS. Returned only for VirtualMachine ScaleSet VM disks. Can be updated only via updates to the
      * VirtualMachine Scale Set.
-     *
+     * 
      * @return the diskIopsReadWrite value.
      */
     public Long diskIopsReadWrite() {
@@ -357,7 +361,7 @@ public final class DataDisk {
      * Get the diskMBpsReadWrite property: Specifies the bandwidth in MB per second for the managed disk when
      * StorageAccountType is UltraSSD_LRS. Returned only for VirtualMachine ScaleSet VM disks. Can be updated only via
      * updates to the VirtualMachine Scale Set.
-     *
+     * 
      * @return the diskMBpsReadWrite value.
      */
     public Long diskMBpsReadWrite() {
@@ -373,7 +377,7 @@ public final class DataDisk {
      * flushed when using this detach behavior. **This feature is still in preview** mode and is not supported for
      * VirtualMachineScaleSet. To force-detach a data disk update toBeDetached to 'true' along with setting
      * detachOption: 'ForceDetach'.
-     *
+     * 
      * @return the detachOption value.
      */
     public DiskDetachOptionTypes detachOption() {
@@ -389,7 +393,7 @@ public final class DataDisk {
      * flushed when using this detach behavior. **This feature is still in preview** mode and is not supported for
      * VirtualMachineScaleSet. To force-detach a data disk update toBeDetached to 'true' along with setting
      * detachOption: 'ForceDetach'.
-     *
+     * 
      * @param detachOption the detachOption value to set.
      * @return the DataDisk object itself.
      */
@@ -402,7 +406,7 @@ public final class DataDisk {
      * Get the deleteOption property: Specifies whether data disk should be deleted or detached upon VM deletion.
      * Possible values are: **Delete.** If this value is used, the data disk is deleted when VM is deleted. **Detach.**
      * If this value is used, the data disk is retained after VM is deleted. The default value is set to **Detach**.
-     *
+     * 
      * @return the deleteOption value.
      */
     public DiskDeleteOptionTypes deleteOption() {
@@ -413,7 +417,7 @@ public final class DataDisk {
      * Set the deleteOption property: Specifies whether data disk should be deleted or detached upon VM deletion.
      * Possible values are: **Delete.** If this value is used, the data disk is deleted when VM is deleted. **Detach.**
      * If this value is used, the data disk is retained after VM is deleted. The default value is set to **Detach**.
-     *
+     * 
      * @param deleteOption the deleteOption value to set.
      * @return the DataDisk object itself.
      */
@@ -424,7 +428,7 @@ public final class DataDisk {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
@@ -435,9 +439,8 @@ public final class DataDisk {
             image().validate();
         }
         if (createOption() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property createOption in model DataDisk"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property createOption in model DataDisk"));
         }
         if (managedDisk() != null) {
             managedDisk().validate();

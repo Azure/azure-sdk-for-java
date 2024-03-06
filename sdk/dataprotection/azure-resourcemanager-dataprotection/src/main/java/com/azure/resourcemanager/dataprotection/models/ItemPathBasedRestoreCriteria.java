@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Prefix criteria to be used to during restore. */
+/**
+ * Prefix criteria to be used to during restore.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "objectType")
 @JsonTypeName("ItemPathBasedRestoreCriteria")
 @Fluent
@@ -36,14 +38,16 @@ public final class ItemPathBasedRestoreCriteria extends ItemLevelRestoreCriteria
     @JsonProperty(value = "subItemPathPrefix")
     private List<String> subItemPathPrefix;
 
-    /** Creates an instance of ItemPathBasedRestoreCriteria class. */
+    /**
+     * Creates an instance of ItemPathBasedRestoreCriteria class.
+     */
     public ItemPathBasedRestoreCriteria() {
     }
 
     /**
-     * Get the itemPath property: The path of the item to be restored. It could be the full path of the item or the path
-     * relative to the backup item.
-     *
+     * Get the itemPath property: The path of the item to be restored. It could be the full path of the item or the
+     * path relative to the backup item.
+     * 
      * @return the itemPath value.
      */
     public String itemPath() {
@@ -51,9 +55,9 @@ public final class ItemPathBasedRestoreCriteria extends ItemLevelRestoreCriteria
     }
 
     /**
-     * Set the itemPath property: The path of the item to be restored. It could be the full path of the item or the path
-     * relative to the backup item.
-     *
+     * Set the itemPath property: The path of the item to be restored. It could be the full path of the item or the
+     * path relative to the backup item.
+     * 
      * @param itemPath the itemPath value to set.
      * @return the ItemPathBasedRestoreCriteria object itself.
      */
@@ -63,8 +67,9 @@ public final class ItemPathBasedRestoreCriteria extends ItemLevelRestoreCriteria
     }
 
     /**
-     * Get the isPathRelativeToBackupItem property: Flag to specify if the path is relative to backup item or full path.
-     *
+     * Get the isPathRelativeToBackupItem property: Flag to specify if the path is relative to backup item or full
+     * path.
+     * 
      * @return the isPathRelativeToBackupItem value.
      */
     public boolean isPathRelativeToBackupItem() {
@@ -72,8 +77,9 @@ public final class ItemPathBasedRestoreCriteria extends ItemLevelRestoreCriteria
     }
 
     /**
-     * Set the isPathRelativeToBackupItem property: Flag to specify if the path is relative to backup item or full path.
-     *
+     * Set the isPathRelativeToBackupItem property: Flag to specify if the path is relative to backup item or full
+     * path.
+     * 
      * @param isPathRelativeToBackupItem the isPathRelativeToBackupItem value to set.
      * @return the ItemPathBasedRestoreCriteria object itself.
      */
@@ -85,7 +91,7 @@ public final class ItemPathBasedRestoreCriteria extends ItemLevelRestoreCriteria
     /**
      * Get the subItemPathPrefix property: The list of prefix strings to be used as filter criteria during restore.
      * These are relative to the item path specified.
-     *
+     * 
      * @return the subItemPathPrefix value.
      */
     public List<String> subItemPathPrefix() {
@@ -95,7 +101,7 @@ public final class ItemPathBasedRestoreCriteria extends ItemLevelRestoreCriteria
     /**
      * Set the subItemPathPrefix property: The list of prefix strings to be used as filter criteria during restore.
      * These are relative to the item path specified.
-     *
+     * 
      * @param subItemPathPrefix the subItemPathPrefix value to set.
      * @return the ItemPathBasedRestoreCriteria object itself.
      */
@@ -106,17 +112,15 @@ public final class ItemPathBasedRestoreCriteria extends ItemLevelRestoreCriteria
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (itemPath() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property itemPath in model ItemPathBasedRestoreCriteria"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property itemPath in model ItemPathBasedRestoreCriteria"));
         }
     }
 

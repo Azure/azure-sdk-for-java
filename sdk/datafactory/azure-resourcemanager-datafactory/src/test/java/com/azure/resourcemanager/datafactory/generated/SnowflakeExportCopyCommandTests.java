@@ -12,19 +12,17 @@ import java.util.Map;
 public final class SnowflakeExportCopyCommandTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SnowflakeExportCopyCommand model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SnowflakeExportCopyCommand\",\"additionalCopyOptions\":{\"fqyqvh\":\"dataqsohehhtltwvijd\"},\"additionalFormatOptions\":{\"xqfghlos\":\"datayvhrenozl\",\"esa\":\"dataopmkpcmtsban\"},\"\":{\"eog\":\"dataewrljmlodstzvtfy\",\"xhcygfg\":\"databsyni\",\"aosttbwap\":\"datamdbazggr\"}}")
-                .toObject(SnowflakeExportCopyCommand.class);
+        SnowflakeExportCopyCommand model = BinaryData.fromString(
+            "{\"type\":\"SnowflakeExportCopyCommand\",\"additionalCopyOptions\":{\"xoyllx\":\"dataahlqmcboxgpmmz\"},\"additionalFormatOptions\":{\"yrhynl\":\"datahzylspz\",\"yhqrasxeomjq\":\"datatriaecvagudrhad\",\"bhzdjvdyrzijggb\":\"datahbkxiuhia\",\"icrutyhmf\":\"datadpzgvqfznxzal\"},\"\":{\"ghqdlj\":\"datailaytjywfqzwn\"}}")
+            .toObject(SnowflakeExportCopyCommand.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SnowflakeExportCopyCommand model =
-            new SnowflakeExportCopyCommand()
-                .withAdditionalCopyOptions(mapOf("fqyqvh", "dataqsohehhtltwvijd"))
-                .withAdditionalFormatOptions(mapOf("xqfghlos", "datayvhrenozl", "esa", "dataopmkpcmtsban"));
+        SnowflakeExportCopyCommand model
+            = new SnowflakeExportCopyCommand().withAdditionalCopyOptions(mapOf("xoyllx", "dataahlqmcboxgpmmz"))
+                .withAdditionalFormatOptions(mapOf("yrhynl", "datahzylspz", "yhqrasxeomjq", "datatriaecvagudrhad",
+                    "bhzdjvdyrzijggb", "datahbkxiuhia", "icrutyhmf", "datadpzgvqfznxzal"));
         model = BinaryData.fromObject(model).toObject(SnowflakeExportCopyCommand.class);
     }
 

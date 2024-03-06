@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A matching criteria which matches routes based on route prefix, community, and AS path. */
+/**
+ * A matching criteria which matches routes based on route prefix, community, and AS path.
+ */
 @Fluent
 public final class Criterion {
     /*
@@ -35,13 +37,15 @@ public final class Criterion {
     @JsonProperty(value = "matchCondition")
     private RouteMapMatchCondition matchCondition;
 
-    /** Creates an instance of Criterion class. */
+    /**
+     * Creates an instance of Criterion class.
+     */
     public Criterion() {
     }
 
     /**
      * Get the routePrefix property: List of route prefixes which this criteria matches.
-     *
+     * 
      * @return the routePrefix value.
      */
     public List<String> routePrefix() {
@@ -50,7 +54,7 @@ public final class Criterion {
 
     /**
      * Set the routePrefix property: List of route prefixes which this criteria matches.
-     *
+     * 
      * @param routePrefix the routePrefix value to set.
      * @return the Criterion object itself.
      */
@@ -61,7 +65,7 @@ public final class Criterion {
 
     /**
      * Get the community property: List of BGP communities which this criteria matches.
-     *
+     * 
      * @return the community value.
      */
     public List<String> community() {
@@ -70,7 +74,7 @@ public final class Criterion {
 
     /**
      * Set the community property: List of BGP communities which this criteria matches.
-     *
+     * 
      * @param community the community value to set.
      * @return the Criterion object itself.
      */
@@ -81,7 +85,7 @@ public final class Criterion {
 
     /**
      * Get the asPath property: List of AS paths which this criteria matches.
-     *
+     * 
      * @return the asPath value.
      */
     public List<String> asPath() {
@@ -90,7 +94,7 @@ public final class Criterion {
 
     /**
      * Set the asPath property: List of AS paths which this criteria matches.
-     *
+     * 
      * @param asPath the asPath value to set.
      * @return the Criterion object itself.
      */
@@ -101,7 +105,7 @@ public final class Criterion {
 
     /**
      * Get the matchCondition property: Match condition to apply RouteMap rules.
-     *
+     * 
      * @return the matchCondition value.
      */
     public RouteMapMatchCondition matchCondition() {
@@ -110,7 +114,7 @@ public final class Criterion {
 
     /**
      * Set the matchCondition property: Match condition to apply RouteMap rules.
-     *
+     * 
      * @param matchCondition the matchCondition value to set.
      * @return the Criterion object itself.
      */
@@ -121,7 +125,7 @@ public final class Criterion {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -12,8 +12,7 @@ public final class IntegrationRuntimeNodeIpAddressImpl implements IntegrationRun
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    IntegrationRuntimeNodeIpAddressImpl(
-        IntegrationRuntimeNodeIpAddressInner innerObject,
+    IntegrationRuntimeNodeIpAddressImpl(IntegrationRuntimeNodeIpAddressInner innerObject,
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;

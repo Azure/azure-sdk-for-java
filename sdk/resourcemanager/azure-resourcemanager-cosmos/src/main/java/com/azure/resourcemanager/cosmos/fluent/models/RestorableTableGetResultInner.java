@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.resourcemanager.cosmos.models.RestorableTablePropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** An Azure Cosmos DB Table event. */
+/**
+ * An Azure Cosmos DB Table event.
+ */
 @Fluent
 public final class RestorableTableGetResultInner {
     /*
@@ -35,13 +37,15 @@ public final class RestorableTableGetResultInner {
     @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
     private String type;
 
-    /** Creates an instance of RestorableTableGetResultInner class. */
+    /**
+     * Creates an instance of RestorableTableGetResultInner class.
+     */
     public RestorableTableGetResultInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of a Table event.
-     *
+     * 
      * @return the innerProperties value.
      */
     private RestorableTableProperties innerProperties() {
@@ -50,7 +54,7 @@ public final class RestorableTableGetResultInner {
 
     /**
      * Get the id property: The unique resource Identifier of the ARM resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -59,7 +63,7 @@ public final class RestorableTableGetResultInner {
 
     /**
      * Get the name property: The name of the ARM resource.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -68,7 +72,7 @@ public final class RestorableTableGetResultInner {
 
     /**
      * Get the type property: The type of Azure resource.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -77,7 +81,7 @@ public final class RestorableTableGetResultInner {
 
     /**
      * Get the resource property: The resource of an Azure Cosmos DB Table event.
-     *
+     * 
      * @return the resource value.
      */
     public RestorableTablePropertiesResource resource() {
@@ -86,7 +90,7 @@ public final class RestorableTableGetResultInner {
 
     /**
      * Set the resource property: The resource of an Azure Cosmos DB Table event.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the RestorableTableGetResultInner object itself.
      */
@@ -100,7 +104,7 @@ public final class RestorableTableGetResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

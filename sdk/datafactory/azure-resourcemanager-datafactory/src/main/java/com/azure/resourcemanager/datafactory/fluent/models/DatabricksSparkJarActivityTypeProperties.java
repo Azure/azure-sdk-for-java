@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Databricks SparkJar activity properties. */
+/**
+ * Databricks SparkJar activity properties.
+ */
 @Fluent
 public final class DatabricksSparkJarActivityTypeProperties {
     /*
@@ -32,14 +34,16 @@ public final class DatabricksSparkJarActivityTypeProperties {
     @JsonProperty(value = "libraries")
     private List<Map<String, Object>> libraries;
 
-    /** Creates an instance of DatabricksSparkJarActivityTypeProperties class. */
+    /**
+     * Creates an instance of DatabricksSparkJarActivityTypeProperties class.
+     */
     public DatabricksSparkJarActivityTypeProperties() {
     }
 
     /**
      * Get the mainClassName property: The full name of the class containing the main method to be executed. This class
      * must be contained in a JAR provided as a library. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the mainClassName value.
      */
     public Object mainClassName() {
@@ -49,7 +53,7 @@ public final class DatabricksSparkJarActivityTypeProperties {
     /**
      * Set the mainClassName property: The full name of the class containing the main method to be executed. This class
      * must be contained in a JAR provided as a library. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param mainClassName the mainClassName value to set.
      * @return the DatabricksSparkJarActivityTypeProperties object itself.
      */
@@ -60,7 +64,7 @@ public final class DatabricksSparkJarActivityTypeProperties {
 
     /**
      * Get the parameters property: Parameters that will be passed to the main method.
-     *
+     * 
      * @return the parameters value.
      */
     public List<Object> parameters() {
@@ -69,7 +73,7 @@ public final class DatabricksSparkJarActivityTypeProperties {
 
     /**
      * Set the parameters property: Parameters that will be passed to the main method.
-     *
+     * 
      * @param parameters the parameters value to set.
      * @return the DatabricksSparkJarActivityTypeProperties object itself.
      */
@@ -80,7 +84,7 @@ public final class DatabricksSparkJarActivityTypeProperties {
 
     /**
      * Get the libraries property: A list of libraries to be installed on the cluster that will execute the job.
-     *
+     * 
      * @return the libraries value.
      */
     public List<Map<String, Object>> libraries() {
@@ -89,7 +93,7 @@ public final class DatabricksSparkJarActivityTypeProperties {
 
     /**
      * Set the libraries property: A list of libraries to be installed on the cluster that will execute the job.
-     *
+     * 
      * @param libraries the libraries value to set.
      * @return the DatabricksSparkJarActivityTypeProperties object itself.
      */
@@ -100,15 +104,13 @@ public final class DatabricksSparkJarActivityTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (mainClassName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property mainClassName in model DatabricksSparkJarActivityTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property mainClassName in model DatabricksSparkJarActivityTypeProperties"));
         }
     }
 

@@ -10,24 +10,17 @@ import com.azure.resourcemanager.datafactory.models.HubspotSource;
 public final class HubspotSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        HubspotSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"HubspotSource\",\"query\":\"dataclkbwkmwdrvkb\",\"queryTimeout\":\"datavnnvk\",\"additionalColumns\":\"datazldzzjj\",\"sourceRetryCount\":\"datahjqengopdvnzn\",\"sourceRetryWait\":\"dataiodaj\",\"maxConcurrentConnections\":\"dataszdyv\",\"disableMetricsCollection\":\"dataiufbw\",\"\":{\"edbhnkl\":\"datawhnzhsmu\"}}")
-                .toObject(HubspotSource.class);
+        HubspotSource model = BinaryData.fromString(
+            "{\"type\":\"HubspotSource\",\"query\":\"dataaomy\",\"queryTimeout\":\"dataxrw\",\"additionalColumns\":\"databyaavfm\",\"sourceRetryCount\":\"dataamncuhxz\",\"sourceRetryWait\":\"dataakxyhuetztorh\",\"maxConcurrentConnections\":\"datau\",\"disableMetricsCollection\":\"datasszhsewjqgzlo\",\"\":{\"ur\":\"datax\"}}")
+            .toObject(HubspotSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        HubspotSource model =
-            new HubspotSource()
-                .withSourceRetryCount("datahjqengopdvnzn")
-                .withSourceRetryWait("dataiodaj")
-                .withMaxConcurrentConnections("dataszdyv")
-                .withDisableMetricsCollection("dataiufbw")
-                .withQueryTimeout("datavnnvk")
-                .withAdditionalColumns("datazldzzjj")
-                .withQuery("dataclkbwkmwdrvkb");
+        HubspotSource model
+            = new HubspotSource().withSourceRetryCount("dataamncuhxz").withSourceRetryWait("dataakxyhuetztorh")
+                .withMaxConcurrentConnections("datau").withDisableMetricsCollection("datasszhsewjqgzlo")
+                .withQueryTimeout("dataxrw").withAdditionalColumns("databyaavfm").withQuery("dataaomy");
         model = BinaryData.fromObject(model).toObject(HubspotSource.class);
     }
 }

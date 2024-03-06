@@ -23,8 +23,7 @@ public final class ResourceGuardsImpl implements ResourceGuards {
 
     private final com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager;
 
-    public ResourceGuardsImpl(
-        ResourceGuardsClient innerClient,
+    public ResourceGuardsImpl(ResourceGuardsClient innerClient,
         com.azure.resourcemanager.dataprotection.DataProtectionManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
@@ -46,20 +45,17 @@ public final class ResourceGuardsImpl implements ResourceGuards {
     }
 
     public PagedIterable<ResourceGuardResource> listByResourceGroup(String resourceGroupName, Context context) {
-        PagedIterable<ResourceGuardResourceInner> inner =
-            this.serviceClient().listByResourceGroup(resourceGroupName, context);
+        PagedIterable<ResourceGuardResourceInner> inner
+            = this.serviceClient().listByResourceGroup(resourceGroupName, context);
         return Utils.mapPage(inner, inner1 -> new ResourceGuardResourceImpl(inner1, this.manager()));
     }
 
-    public Response<ResourceGuardResource> getByResourceGroupWithResponse(
-        String resourceGroupName, String resourceGuardsName, Context context) {
-        Response<ResourceGuardResourceInner> inner =
-            this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceGuardsName, context);
+    public Response<ResourceGuardResource> getByResourceGroupWithResponse(String resourceGroupName,
+        String resourceGuardsName, Context context) {
+        Response<ResourceGuardResourceInner> inner
+            = this.serviceClient().getByResourceGroupWithResponse(resourceGroupName, resourceGuardsName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new ResourceGuardResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -67,8 +63,8 @@ public final class ResourceGuardsImpl implements ResourceGuards {
     }
 
     public ResourceGuardResource getByResourceGroup(String resourceGroupName, String resourceGuardsName) {
-        ResourceGuardResourceInner inner =
-            this.serviceClient().getByResourceGroup(resourceGroupName, resourceGuardsName);
+        ResourceGuardResourceInner inner
+            = this.serviceClient().getByResourceGroup(resourceGroupName, resourceGuardsName);
         if (inner != null) {
             return new ResourceGuardResourceImpl(inner, this.manager());
         } else {
@@ -76,8 +72,8 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         }
     }
 
-    public Response<Void> deleteByResourceGroupWithResponse(
-        String resourceGroupName, String resourceGuardsName, Context context) {
+    public Response<Void> deleteByResourceGroupWithResponse(String resourceGroupName, String resourceGuardsName,
+        Context context) {
         return this.serviceClient().deleteWithResponse(resourceGroupName, resourceGuardsName, context);
     }
 
@@ -85,118 +81,107 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         this.serviceClient().delete(resourceGroupName, resourceGuardsName);
     }
 
-    public PagedIterable<DppBaseResource> getDisableSoftDeleteRequestsObjects(
-        String resourceGroupName, String resourceGuardsName) {
-        PagedIterable<DppBaseResourceInner> inner =
-            this.serviceClient().getDisableSoftDeleteRequestsObjects(resourceGroupName, resourceGuardsName);
+    public PagedIterable<DppBaseResource> getDisableSoftDeleteRequestsObjects(String resourceGroupName,
+        String resourceGuardsName) {
+        PagedIterable<DppBaseResourceInner> inner
+            = this.serviceClient().getDisableSoftDeleteRequestsObjects(resourceGroupName, resourceGuardsName);
         return Utils.mapPage(inner, inner1 -> new DppBaseResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DppBaseResource> getDisableSoftDeleteRequestsObjects(
-        String resourceGroupName, String resourceGuardsName, Context context) {
-        PagedIterable<DppBaseResourceInner> inner =
-            this.serviceClient().getDisableSoftDeleteRequestsObjects(resourceGroupName, resourceGuardsName, context);
+    public PagedIterable<DppBaseResource> getDisableSoftDeleteRequestsObjects(String resourceGroupName,
+        String resourceGuardsName, Context context) {
+        PagedIterable<DppBaseResourceInner> inner
+            = this.serviceClient().getDisableSoftDeleteRequestsObjects(resourceGroupName, resourceGuardsName, context);
         return Utils.mapPage(inner, inner1 -> new DppBaseResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DppBaseResource> getDeleteResourceGuardProxyRequestsObjects(
-        String resourceGroupName, String resourceGuardsName) {
-        PagedIterable<DppBaseResourceInner> inner =
-            this.serviceClient().getDeleteResourceGuardProxyRequestsObjects(resourceGroupName, resourceGuardsName);
+    public PagedIterable<DppBaseResource> getDeleteResourceGuardProxyRequestsObjects(String resourceGroupName,
+        String resourceGuardsName) {
+        PagedIterable<DppBaseResourceInner> inner
+            = this.serviceClient().getDeleteResourceGuardProxyRequestsObjects(resourceGroupName, resourceGuardsName);
         return Utils.mapPage(inner, inner1 -> new DppBaseResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DppBaseResource> getDeleteResourceGuardProxyRequestsObjects(
-        String resourceGroupName, String resourceGuardsName, Context context) {
-        PagedIterable<DppBaseResourceInner> inner =
-            this
-                .serviceClient()
-                .getDeleteResourceGuardProxyRequestsObjects(resourceGroupName, resourceGuardsName, context);
+    public PagedIterable<DppBaseResource> getDeleteResourceGuardProxyRequestsObjects(String resourceGroupName,
+        String resourceGuardsName, Context context) {
+        PagedIterable<DppBaseResourceInner> inner = this.serviceClient()
+            .getDeleteResourceGuardProxyRequestsObjects(resourceGroupName, resourceGuardsName, context);
         return Utils.mapPage(inner, inner1 -> new DppBaseResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DppBaseResource> getBackupSecurityPinRequestsObjects(
-        String resourceGroupName, String resourceGuardsName) {
-        PagedIterable<DppBaseResourceInner> inner =
-            this.serviceClient().getBackupSecurityPinRequestsObjects(resourceGroupName, resourceGuardsName);
+    public PagedIterable<DppBaseResource> getBackupSecurityPinRequestsObjects(String resourceGroupName,
+        String resourceGuardsName) {
+        PagedIterable<DppBaseResourceInner> inner
+            = this.serviceClient().getBackupSecurityPinRequestsObjects(resourceGroupName, resourceGuardsName);
         return Utils.mapPage(inner, inner1 -> new DppBaseResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DppBaseResource> getBackupSecurityPinRequestsObjects(
-        String resourceGroupName, String resourceGuardsName, Context context) {
-        PagedIterable<DppBaseResourceInner> inner =
-            this.serviceClient().getBackupSecurityPinRequestsObjects(resourceGroupName, resourceGuardsName, context);
+    public PagedIterable<DppBaseResource> getBackupSecurityPinRequestsObjects(String resourceGroupName,
+        String resourceGuardsName, Context context) {
+        PagedIterable<DppBaseResourceInner> inner
+            = this.serviceClient().getBackupSecurityPinRequestsObjects(resourceGroupName, resourceGuardsName, context);
         return Utils.mapPage(inner, inner1 -> new DppBaseResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DppBaseResource> getDeleteProtectedItemRequestsObjects(
-        String resourceGroupName, String resourceGuardsName) {
-        PagedIterable<DppBaseResourceInner> inner =
-            this.serviceClient().getDeleteProtectedItemRequestsObjects(resourceGroupName, resourceGuardsName);
+    public PagedIterable<DppBaseResource> getDeleteProtectedItemRequestsObjects(String resourceGroupName,
+        String resourceGuardsName) {
+        PagedIterable<DppBaseResourceInner> inner
+            = this.serviceClient().getDeleteProtectedItemRequestsObjects(resourceGroupName, resourceGuardsName);
         return Utils.mapPage(inner, inner1 -> new DppBaseResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DppBaseResource> getDeleteProtectedItemRequestsObjects(
-        String resourceGroupName, String resourceGuardsName, Context context) {
-        PagedIterable<DppBaseResourceInner> inner =
-            this.serviceClient().getDeleteProtectedItemRequestsObjects(resourceGroupName, resourceGuardsName, context);
+    public PagedIterable<DppBaseResource> getDeleteProtectedItemRequestsObjects(String resourceGroupName,
+        String resourceGuardsName, Context context) {
+        PagedIterable<DppBaseResourceInner> inner = this.serviceClient()
+            .getDeleteProtectedItemRequestsObjects(resourceGroupName, resourceGuardsName, context);
         return Utils.mapPage(inner, inner1 -> new DppBaseResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DppBaseResource> getUpdateProtectionPolicyRequestsObjects(
-        String resourceGroupName, String resourceGuardsName) {
-        PagedIterable<DppBaseResourceInner> inner =
-            this.serviceClient().getUpdateProtectionPolicyRequestsObjects(resourceGroupName, resourceGuardsName);
+    public PagedIterable<DppBaseResource> getUpdateProtectionPolicyRequestsObjects(String resourceGroupName,
+        String resourceGuardsName) {
+        PagedIterable<DppBaseResourceInner> inner
+            = this.serviceClient().getUpdateProtectionPolicyRequestsObjects(resourceGroupName, resourceGuardsName);
         return Utils.mapPage(inner, inner1 -> new DppBaseResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DppBaseResource> getUpdateProtectionPolicyRequestsObjects(
-        String resourceGroupName, String resourceGuardsName, Context context) {
-        PagedIterable<DppBaseResourceInner> inner =
-            this
-                .serviceClient()
-                .getUpdateProtectionPolicyRequestsObjects(resourceGroupName, resourceGuardsName, context);
+    public PagedIterable<DppBaseResource> getUpdateProtectionPolicyRequestsObjects(String resourceGroupName,
+        String resourceGuardsName, Context context) {
+        PagedIterable<DppBaseResourceInner> inner = this.serviceClient()
+            .getUpdateProtectionPolicyRequestsObjects(resourceGroupName, resourceGuardsName, context);
         return Utils.mapPage(inner, inner1 -> new DppBaseResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DppBaseResource> getUpdateProtectedItemRequestsObjects(
-        String resourceGroupName, String resourceGuardsName) {
-        PagedIterable<DppBaseResourceInner> inner =
-            this.serviceClient().getUpdateProtectedItemRequestsObjects(resourceGroupName, resourceGuardsName);
+    public PagedIterable<DppBaseResource> getUpdateProtectedItemRequestsObjects(String resourceGroupName,
+        String resourceGuardsName) {
+        PagedIterable<DppBaseResourceInner> inner
+            = this.serviceClient().getUpdateProtectedItemRequestsObjects(resourceGroupName, resourceGuardsName);
         return Utils.mapPage(inner, inner1 -> new DppBaseResourceImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<DppBaseResource> getUpdateProtectedItemRequestsObjects(
-        String resourceGroupName, String resourceGuardsName, Context context) {
-        PagedIterable<DppBaseResourceInner> inner =
-            this.serviceClient().getUpdateProtectedItemRequestsObjects(resourceGroupName, resourceGuardsName, context);
+    public PagedIterable<DppBaseResource> getUpdateProtectedItemRequestsObjects(String resourceGroupName,
+        String resourceGuardsName, Context context) {
+        PagedIterable<DppBaseResourceInner> inner = this.serviceClient()
+            .getUpdateProtectedItemRequestsObjects(resourceGroupName, resourceGuardsName, context);
         return Utils.mapPage(inner, inner1 -> new DppBaseResourceImpl(inner1, this.manager()));
     }
 
-    public Response<DppBaseResource> getDefaultDisableSoftDeleteRequestsObjectWithResponse(
-        String resourceGroupName, String resourceGuardsName, String requestName, Context context) {
-        Response<DppBaseResourceInner> inner =
-            this
-                .serviceClient()
-                .getDefaultDisableSoftDeleteRequestsObjectWithResponse(
-                    resourceGroupName, resourceGuardsName, requestName, context);
+    public Response<DppBaseResource> getDefaultDisableSoftDeleteRequestsObjectWithResponse(String resourceGroupName,
+        String resourceGuardsName, String requestName, Context context) {
+        Response<DppBaseResourceInner> inner
+            = this.serviceClient().getDefaultDisableSoftDeleteRequestsObjectWithResponse(resourceGroupName,
+                resourceGuardsName, requestName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DppBaseResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public DppBaseResource getDefaultDisableSoftDeleteRequestsObject(
-        String resourceGroupName, String resourceGuardsName, String requestName) {
-        DppBaseResourceInner inner =
-            this
-                .serviceClient()
-                .getDefaultDisableSoftDeleteRequestsObject(resourceGroupName, resourceGuardsName, requestName);
+    public DppBaseResource getDefaultDisableSoftDeleteRequestsObject(String resourceGroupName,
+        String resourceGuardsName, String requestName) {
+        DppBaseResourceInner inner = this.serviceClient().getDefaultDisableSoftDeleteRequestsObject(resourceGroupName,
+            resourceGuardsName, requestName);
         if (inner != null) {
             return new DppBaseResourceImpl(inner, this.manager());
         } else {
@@ -206,28 +191,21 @@ public final class ResourceGuardsImpl implements ResourceGuards {
 
     public Response<DppBaseResource> getDefaultDeleteResourceGuardProxyRequestsObjectWithResponse(
         String resourceGroupName, String resourceGuardsName, String requestName, Context context) {
-        Response<DppBaseResourceInner> inner =
-            this
-                .serviceClient()
-                .getDefaultDeleteResourceGuardProxyRequestsObjectWithResponse(
-                    resourceGroupName, resourceGuardsName, requestName, context);
+        Response<DppBaseResourceInner> inner
+            = this.serviceClient().getDefaultDeleteResourceGuardProxyRequestsObjectWithResponse(resourceGroupName,
+                resourceGuardsName, requestName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DppBaseResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public DppBaseResource getDefaultDeleteResourceGuardProxyRequestsObject(
-        String resourceGroupName, String resourceGuardsName, String requestName) {
-        DppBaseResourceInner inner =
-            this
-                .serviceClient()
-                .getDefaultDeleteResourceGuardProxyRequestsObject(resourceGroupName, resourceGuardsName, requestName);
+    public DppBaseResource getDefaultDeleteResourceGuardProxyRequestsObject(String resourceGroupName,
+        String resourceGuardsName, String requestName) {
+        DppBaseResourceInner inner = this.serviceClient()
+            .getDefaultDeleteResourceGuardProxyRequestsObject(resourceGroupName, resourceGuardsName, requestName);
         if (inner != null) {
             return new DppBaseResourceImpl(inner, this.manager());
         } else {
@@ -235,30 +213,23 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         }
     }
 
-    public Response<DppBaseResource> getDefaultBackupSecurityPinRequestsObjectWithResponse(
-        String resourceGroupName, String resourceGuardsName, String requestName, Context context) {
-        Response<DppBaseResourceInner> inner =
-            this
-                .serviceClient()
-                .getDefaultBackupSecurityPinRequestsObjectWithResponse(
-                    resourceGroupName, resourceGuardsName, requestName, context);
+    public Response<DppBaseResource> getDefaultBackupSecurityPinRequestsObjectWithResponse(String resourceGroupName,
+        String resourceGuardsName, String requestName, Context context) {
+        Response<DppBaseResourceInner> inner
+            = this.serviceClient().getDefaultBackupSecurityPinRequestsObjectWithResponse(resourceGroupName,
+                resourceGuardsName, requestName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DppBaseResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public DppBaseResource getDefaultBackupSecurityPinRequestsObject(
-        String resourceGroupName, String resourceGuardsName, String requestName) {
-        DppBaseResourceInner inner =
-            this
-                .serviceClient()
-                .getDefaultBackupSecurityPinRequestsObject(resourceGroupName, resourceGuardsName, requestName);
+    public DppBaseResource getDefaultBackupSecurityPinRequestsObject(String resourceGroupName,
+        String resourceGuardsName, String requestName) {
+        DppBaseResourceInner inner = this.serviceClient().getDefaultBackupSecurityPinRequestsObject(resourceGroupName,
+            resourceGuardsName, requestName);
         if (inner != null) {
             return new DppBaseResourceImpl(inner, this.manager());
         } else {
@@ -266,30 +237,23 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         }
     }
 
-    public Response<DppBaseResource> getDefaultDeleteProtectedItemRequestsObjectWithResponse(
-        String resourceGroupName, String resourceGuardsName, String requestName, Context context) {
-        Response<DppBaseResourceInner> inner =
-            this
-                .serviceClient()
-                .getDefaultDeleteProtectedItemRequestsObjectWithResponse(
-                    resourceGroupName, resourceGuardsName, requestName, context);
+    public Response<DppBaseResource> getDefaultDeleteProtectedItemRequestsObjectWithResponse(String resourceGroupName,
+        String resourceGuardsName, String requestName, Context context) {
+        Response<DppBaseResourceInner> inner
+            = this.serviceClient().getDefaultDeleteProtectedItemRequestsObjectWithResponse(resourceGroupName,
+                resourceGuardsName, requestName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DppBaseResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public DppBaseResource getDefaultDeleteProtectedItemRequestsObject(
-        String resourceGroupName, String resourceGuardsName, String requestName) {
-        DppBaseResourceInner inner =
-            this
-                .serviceClient()
-                .getDefaultDeleteProtectedItemRequestsObject(resourceGroupName, resourceGuardsName, requestName);
+    public DppBaseResource getDefaultDeleteProtectedItemRequestsObject(String resourceGroupName,
+        String resourceGuardsName, String requestName) {
+        DppBaseResourceInner inner = this.serviceClient().getDefaultDeleteProtectedItemRequestsObject(resourceGroupName,
+            resourceGuardsName, requestName);
         if (inner != null) {
             return new DppBaseResourceImpl(inner, this.manager());
         } else {
@@ -299,28 +263,21 @@ public final class ResourceGuardsImpl implements ResourceGuards {
 
     public Response<DppBaseResource> getDefaultUpdateProtectionPolicyRequestsObjectWithResponse(
         String resourceGroupName, String resourceGuardsName, String requestName, Context context) {
-        Response<DppBaseResourceInner> inner =
-            this
-                .serviceClient()
-                .getDefaultUpdateProtectionPolicyRequestsObjectWithResponse(
-                    resourceGroupName, resourceGuardsName, requestName, context);
+        Response<DppBaseResourceInner> inner
+            = this.serviceClient().getDefaultUpdateProtectionPolicyRequestsObjectWithResponse(resourceGroupName,
+                resourceGuardsName, requestName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DppBaseResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public DppBaseResource getDefaultUpdateProtectionPolicyRequestsObject(
-        String resourceGroupName, String resourceGuardsName, String requestName) {
-        DppBaseResourceInner inner =
-            this
-                .serviceClient()
-                .getDefaultUpdateProtectionPolicyRequestsObject(resourceGroupName, resourceGuardsName, requestName);
+    public DppBaseResource getDefaultUpdateProtectionPolicyRequestsObject(String resourceGroupName,
+        String resourceGuardsName, String requestName) {
+        DppBaseResourceInner inner = this.serviceClient()
+            .getDefaultUpdateProtectionPolicyRequestsObject(resourceGroupName, resourceGuardsName, requestName);
         if (inner != null) {
             return new DppBaseResourceImpl(inner, this.manager());
         } else {
@@ -328,30 +285,23 @@ public final class ResourceGuardsImpl implements ResourceGuards {
         }
     }
 
-    public Response<DppBaseResource> getDefaultUpdateProtectedItemRequestsObjectWithResponse(
-        String resourceGroupName, String resourceGuardsName, String requestName, Context context) {
-        Response<DppBaseResourceInner> inner =
-            this
-                .serviceClient()
-                .getDefaultUpdateProtectedItemRequestsObjectWithResponse(
-                    resourceGroupName, resourceGuardsName, requestName, context);
+    public Response<DppBaseResource> getDefaultUpdateProtectedItemRequestsObjectWithResponse(String resourceGroupName,
+        String resourceGuardsName, String requestName, Context context) {
+        Response<DppBaseResourceInner> inner
+            = this.serviceClient().getDefaultUpdateProtectedItemRequestsObjectWithResponse(resourceGroupName,
+                resourceGuardsName, requestName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new DppBaseResourceImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public DppBaseResource getDefaultUpdateProtectedItemRequestsObject(
-        String resourceGroupName, String resourceGuardsName, String requestName) {
-        DppBaseResourceInner inner =
-            this
-                .serviceClient()
-                .getDefaultUpdateProtectedItemRequestsObject(resourceGroupName, resourceGuardsName, requestName);
+    public DppBaseResource getDefaultUpdateProtectedItemRequestsObject(String resourceGroupName,
+        String resourceGuardsName, String requestName) {
+        DppBaseResourceInner inner = this.serviceClient().getDefaultUpdateProtectedItemRequestsObject(resourceGroupName,
+            resourceGuardsName, requestName);
         if (inner != null) {
             return new DppBaseResourceImpl(inner, this.manager());
         } else {
@@ -362,19 +312,13 @@ public final class ResourceGuardsImpl implements ResourceGuards {
     public ResourceGuardResource getById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String resourceGuardsName = Utils.getValueFromIdByName(id, "resourceGuards");
         if (resourceGuardsName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGuards'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGuards'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, resourceGuardsName, Context.NONE).getValue();
     }
@@ -382,19 +326,13 @@ public final class ResourceGuardsImpl implements ResourceGuards {
     public Response<ResourceGuardResource> getByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String resourceGuardsName = Utils.getValueFromIdByName(id, "resourceGuards");
         if (resourceGuardsName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGuards'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGuards'.", id)));
         }
         return this.getByResourceGroupWithResponse(resourceGroupName, resourceGuardsName, context);
     }
@@ -402,19 +340,13 @@ public final class ResourceGuardsImpl implements ResourceGuards {
     public void deleteById(String id) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String resourceGuardsName = Utils.getValueFromIdByName(id, "resourceGuards");
         if (resourceGuardsName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGuards'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGuards'.", id)));
         }
         this.deleteByResourceGroupWithResponse(resourceGroupName, resourceGuardsName, Context.NONE);
     }
@@ -422,19 +354,13 @@ public final class ResourceGuardsImpl implements ResourceGuards {
     public Response<Void> deleteByIdWithResponse(String id, Context context) {
         String resourceGroupName = Utils.getValueFromIdByName(id, "resourceGroups");
         if (resourceGroupName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGroups'.", id)));
         }
         String resourceGuardsName = Utils.getValueFromIdByName(id, "resourceGuards");
         if (resourceGuardsName == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        String
-                            .format("The resource ID '%s' is not valid. Missing path segment 'resourceGuards'.", id)));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                String.format("The resource ID '%s' is not valid. Missing path segment 'resourceGuards'.", id)));
         }
         return this.deleteByResourceGroupWithResponse(resourceGroupName, resourceGuardsName, context);
     }

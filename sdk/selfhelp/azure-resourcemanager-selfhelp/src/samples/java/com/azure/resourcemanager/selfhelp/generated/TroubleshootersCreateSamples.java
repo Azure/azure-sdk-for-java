@@ -7,27 +7,25 @@ package com.azure.resourcemanager.selfhelp.generated;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Troubleshooters Create. */
+/**
+ * Samples for Troubleshooters Create.
+ */
 public final class TroubleshootersCreateSamples {
     /*
-     * x-ms-original-file: specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/Troubleshooter_Create.json
+     * x-ms-original-file:
+     * specification/help/resource-manager/Microsoft.Help/preview/2023-09-01-preview/examples/Troubleshooter_Create.json
      */
     /**
      * Sample code: Troubleshooters_Create.
-     *
+     * 
      * @param manager Entry point to SelfHelpManager.
      */
     public static void troubleshootersCreate(com.azure.resourcemanager.selfhelp.SelfHelpManager manager) {
-        manager
-            .troubleshooters()
-            .define("abf168ed-1b54-454a-86f6-e4b62253d3b1")
-            .withExistingScope(
-                "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp")
+        manager.troubleshooters().define("abf168ed-1b54-454a-86f6-e4b62253d3b1").withExistingScope(
+            "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp")
             .withSolutionId("SampleTroubleshooterSolutionId")
-            .withParameters(
-                mapOf(
-                    "ResourceURI",
-                    "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp"))
+            .withParameters(mapOf("ResourceURI",
+                "subscriptions/mySubscription/resourcegroups/myresourceGroup/providers/Microsoft.KeyVault/vaults/test-keyvault-rp"))
             .create();
     }
 

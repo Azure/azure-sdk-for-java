@@ -6,20 +6,17 @@ package com.azure.resourcemanager.deviceupdate.generated;
 
 import com.azure.core.util.BinaryData;
 import com.azure.resourcemanager.deviceupdate.models.OperationListResult;
-import org.junit.jupiter.api.Test;
 
 public final class OperationListResultTests {
-    @Test
-    public void testDeserialize() {
-        OperationListResult model =
-            BinaryData
-                .fromString(
-                    "{\"value\":[{\"name\":\"mefqsgzvahapjyzh\",\"isDataAction\":false,\"display\":{\"provider\":\"cjrvxdjzlmwlxkv\",\"resource\":\"fhzovawjvzunluth\",\"operation\":\"prnxipeil\",\"description\":\"zuaejxd\"},\"origin\":\"user\",\"actionType\":\"Internal\"}],\"nextLink\":\"bbtdzumvee\"}")
-                .toObject(OperationListResult.class);
+    @org.junit.jupiter.api.Test
+    public void testDeserialize() throws Exception {
+        OperationListResult model = BinaryData.fromString(
+            "{\"value\":[{\"name\":\"kif\",\"isDataAction\":false,\"display\":{\"provider\":\"qujmqlgkf\",\"resource\":\"ndo\",\"operation\":\"n\",\"description\":\"jcntuj\"},\"origin\":\"user,system\",\"actionType\":\"Internal\"},{\"name\":\"ftwwaezkojvdc\",\"isDataAction\":true,\"display\":{\"provider\":\"ouicybxarzgszu\",\"resource\":\"x\",\"operation\":\"q\",\"description\":\"idoamciodhkha\"},\"origin\":\"system\",\"actionType\":\"Internal\"}],\"nextLink\":\"bon\"}")
+            .toObject(OperationListResult.class);
     }
 
-    @Test
-    public void testSerialize() {
+    @org.junit.jupiter.api.Test
+    public void testSerialize() throws Exception {
         OperationListResult model = new OperationListResult();
         model = BinaryData.fromObject(model).toObject(OperationListResult.class);
     }

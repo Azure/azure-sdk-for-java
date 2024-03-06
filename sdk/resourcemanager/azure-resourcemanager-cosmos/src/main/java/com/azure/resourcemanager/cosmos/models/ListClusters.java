@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.ClusterResourceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of managed Cassandra clusters. */
+/**
+ * List of managed Cassandra clusters.
+ */
 @Fluent
 public final class ListClusters {
     /*
@@ -18,13 +20,15 @@ public final class ListClusters {
     @JsonProperty(value = "value")
     private List<ClusterResourceInner> value;
 
-    /** Creates an instance of ListClusters class. */
+    /**
+     * Creates an instance of ListClusters class.
+     */
     public ListClusters() {
     }
 
     /**
      * Get the value property: Container for the array of clusters.
-     *
+     * 
      * @return the value value.
      */
     public List<ClusterResourceInner> value() {
@@ -33,7 +37,7 @@ public final class ListClusters {
 
     /**
      * Set the value property: Container for the array of clusters.
-     *
+     * 
      * @param value the value value to set.
      * @return the ListClusters object itself.
      */
@@ -44,7 +48,7 @@ public final class ListClusters {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

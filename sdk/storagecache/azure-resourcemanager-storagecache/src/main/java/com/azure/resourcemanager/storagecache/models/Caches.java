@@ -9,11 +9,13 @@ import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 import java.util.List;
 
-/** Resource collection API of Caches. */
+/**
+ * Resource collection API of Caches.
+ */
 public interface Caches {
     /**
      * Returns all caches the user has access to under a subscription.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of the request to list caches as paginated response with {@link PagedIterable}.
@@ -22,7 +24,7 @@ public interface Caches {
 
     /**
      * Returns all caches the user has access to under a subscription.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -33,7 +35,7 @@ public interface Caches {
 
     /**
      * Returns all caches the user has access to under a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -44,7 +46,7 @@ public interface Caches {
 
     /**
      * Returns all caches the user has access to under a resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -56,10 +58,10 @@ public interface Caches {
 
     /**
      * Schedules a cache for deletion.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -68,10 +70,10 @@ public interface Caches {
 
     /**
      * Schedules a cache for deletion.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -81,10 +83,10 @@ public interface Caches {
 
     /**
      * Returns a cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -95,10 +97,10 @@ public interface Caches {
 
     /**
      * Returns a cache.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -108,10 +110,10 @@ public interface Caches {
 
     /**
      * Tells a cache to write generate debug info for support to process.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -120,10 +122,10 @@ public interface Caches {
 
     /**
      * Tells a cache to write generate debug info for support to process.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -134,10 +136,10 @@ public interface Caches {
     /**
      * Tells a cache to write all dirty data to the Storage Target(s). During the flush, clients will see errors
      * returned until the flush is complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -147,10 +149,10 @@ public interface Caches {
     /**
      * Tells a cache to write all dirty data to the Storage Target(s). During the flush, clients will see errors
      * returned until the flush is complete.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -160,10 +162,10 @@ public interface Caches {
 
     /**
      * Tells a Stopped state cache to transition to Active state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -172,10 +174,10 @@ public interface Caches {
 
     /**
      * Tells a Stopped state cache to transition to Active state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -185,10 +187,10 @@ public interface Caches {
 
     /**
      * Tells an Active cache to transition to Stopped state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -197,10 +199,10 @@ public interface Caches {
 
     /**
      * Tells an Active cache to transition to Stopped state.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -210,10 +212,10 @@ public interface Caches {
 
     /**
      * Create a priming job. This operation is only allowed when the cache is healthy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -222,10 +224,10 @@ public interface Caches {
 
     /**
      * Create a priming job. This operation is only allowed when the cache is healthy.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @param primingjob Object containing the definition of a priming job.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -236,10 +238,10 @@ public interface Caches {
 
     /**
      * Schedule a priming job for deletion.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -248,25 +250,25 @@ public interface Caches {
 
     /**
      * Schedule a priming job for deletion.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @param primingJobId Object containing the priming job ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void stopPrimingJob(
-        String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId, Context context);
+    void stopPrimingJob(String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId,
+        Context context);
 
     /**
      * Schedule a priming job to be paused.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -275,25 +277,25 @@ public interface Caches {
 
     /**
      * Schedule a priming job to be paused.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @param primingJobId Object containing the priming job ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void pausePrimingJob(
-        String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId, Context context);
+    void pausePrimingJob(String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId,
+        Context context);
 
     /**
      * Resumes a paused priming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -302,25 +304,25 @@ public interface Caches {
 
     /**
      * Resumes a paused priming job.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @param primingJobId Object containing the priming job ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void resumePrimingJob(
-        String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId, Context context);
+    void resumePrimingJob(String resourceGroupName, String cacheName, PrimingJobIdParameter primingJobId,
+        Context context);
 
     /**
      * Upgrade a cache's firmware if a new version is available. Otherwise, this operation has no effect.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -329,10 +331,10 @@ public interface Caches {
 
     /**
      * Upgrade a cache's firmware if a new version is available. Otherwise, this operation has no effect.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -342,10 +344,10 @@ public interface Caches {
 
     /**
      * Update cache space allocation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
@@ -354,25 +356,22 @@ public interface Caches {
 
     /**
      * Update cache space allocation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param cacheName Name of cache. Length of name must not be greater than 80 and chars must be from the
-     *     [-0-9a-zA-Z_] char class.
+     * [-0-9a-zA-Z_] char class.
      * @param spaceAllocation List containing storage target cache space percentage allocations.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void spaceAllocation(
-        String resourceGroupName,
-        String cacheName,
-        List<StorageTargetSpaceAllocation> spaceAllocation,
+    void spaceAllocation(String resourceGroupName, String cacheName, List<StorageTargetSpaceAllocation> spaceAllocation,
         Context context);
 
     /**
      * Returns a cache.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -383,7 +382,7 @@ public interface Caches {
 
     /**
      * Returns a cache.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -395,7 +394,7 @@ public interface Caches {
 
     /**
      * Schedules a cache for deletion.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -405,7 +404,7 @@ public interface Caches {
 
     /**
      * Schedules a cache for deletion.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -416,7 +415,7 @@ public interface Caches {
 
     /**
      * Begins definition for a new Cache resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Cache definition.
      */

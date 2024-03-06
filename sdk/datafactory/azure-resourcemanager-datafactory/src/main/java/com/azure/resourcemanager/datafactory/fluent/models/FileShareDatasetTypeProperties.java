@@ -9,7 +9,9 @@ import com.azure.resourcemanager.datafactory.models.DatasetCompression;
 import com.azure.resourcemanager.datafactory.models.DatasetStorageFormat;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** On-premises file system dataset properties. */
+/**
+ * On-premises file system dataset properties.
+ */
 @Fluent
 public final class FileShareDatasetTypeProperties {
     /*
@@ -55,14 +57,16 @@ public final class FileShareDatasetTypeProperties {
     @JsonProperty(value = "compression")
     private DatasetCompression compression;
 
-    /** Creates an instance of FileShareDatasetTypeProperties class. */
+    /**
+     * Creates an instance of FileShareDatasetTypeProperties class.
+     */
     public FileShareDatasetTypeProperties() {
     }
 
     /**
-     * Get the folderPath property: The path of the on-premises file system. Type: string (or Expression with resultType
-     * string).
-     *
+     * Get the folderPath property: The path of the on-premises file system. Type: string (or Expression with
+     * resultType string).
+     * 
      * @return the folderPath value.
      */
     public Object folderPath() {
@@ -70,9 +74,9 @@ public final class FileShareDatasetTypeProperties {
     }
 
     /**
-     * Set the folderPath property: The path of the on-premises file system. Type: string (or Expression with resultType
-     * string).
-     *
+     * Set the folderPath property: The path of the on-premises file system. Type: string (or Expression with
+     * resultType string).
+     * 
      * @param folderPath the folderPath value to set.
      * @return the FileShareDatasetTypeProperties object itself.
      */
@@ -84,7 +88,7 @@ public final class FileShareDatasetTypeProperties {
     /**
      * Get the fileName property: The name of the on-premises file system. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the fileName value.
      */
     public Object fileName() {
@@ -94,7 +98,7 @@ public final class FileShareDatasetTypeProperties {
     /**
      * Set the fileName property: The name of the on-premises file system. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param fileName the fileName value to set.
      * @return the FileShareDatasetTypeProperties object itself.
      */
@@ -106,7 +110,7 @@ public final class FileShareDatasetTypeProperties {
     /**
      * Get the modifiedDatetimeStart property: The start of file's modified datetime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the modifiedDatetimeStart value.
      */
     public Object modifiedDatetimeStart() {
@@ -116,7 +120,7 @@ public final class FileShareDatasetTypeProperties {
     /**
      * Set the modifiedDatetimeStart property: The start of file's modified datetime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param modifiedDatetimeStart the modifiedDatetimeStart value to set.
      * @return the FileShareDatasetTypeProperties object itself.
      */
@@ -128,7 +132,7 @@ public final class FileShareDatasetTypeProperties {
     /**
      * Get the modifiedDatetimeEnd property: The end of file's modified datetime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the modifiedDatetimeEnd value.
      */
     public Object modifiedDatetimeEnd() {
@@ -138,7 +142,7 @@ public final class FileShareDatasetTypeProperties {
     /**
      * Set the modifiedDatetimeEnd property: The end of file's modified datetime. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param modifiedDatetimeEnd the modifiedDatetimeEnd value to set.
      * @return the FileShareDatasetTypeProperties object itself.
      */
@@ -149,7 +153,7 @@ public final class FileShareDatasetTypeProperties {
 
     /**
      * Get the format property: The format of the files.
-     *
+     * 
      * @return the format value.
      */
     public DatasetStorageFormat format() {
@@ -158,7 +162,7 @@ public final class FileShareDatasetTypeProperties {
 
     /**
      * Set the format property: The format of the files.
-     *
+     * 
      * @param format the format value to set.
      * @return the FileShareDatasetTypeProperties object itself.
      */
@@ -170,7 +174,7 @@ public final class FileShareDatasetTypeProperties {
     /**
      * Get the fileFilter property: Specify a filter to be used to select a subset of files in the folderPath rather
      * than all files. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the fileFilter value.
      */
     public Object fileFilter() {
@@ -180,7 +184,7 @@ public final class FileShareDatasetTypeProperties {
     /**
      * Set the fileFilter property: Specify a filter to be used to select a subset of files in the folderPath rather
      * than all files. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param fileFilter the fileFilter value to set.
      * @return the FileShareDatasetTypeProperties object itself.
      */
@@ -191,7 +195,7 @@ public final class FileShareDatasetTypeProperties {
 
     /**
      * Get the compression property: The data compression method used for the file system.
-     *
+     * 
      * @return the compression value.
      */
     public DatasetCompression compression() {
@@ -200,7 +204,7 @@ public final class FileShareDatasetTypeProperties {
 
     /**
      * Set the compression property: The data compression method used for the file system.
-     *
+     * 
      * @param compression the compression value to set.
      * @return the FileShareDatasetTypeProperties object itself.
      */
@@ -211,7 +215,7 @@ public final class FileShareDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

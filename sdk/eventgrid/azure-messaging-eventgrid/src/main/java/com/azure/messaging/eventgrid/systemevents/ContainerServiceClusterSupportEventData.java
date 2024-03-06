@@ -5,23 +5,32 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Schema of common properties of cluster support events. */
+/**
+ * Schema of common properties of cluster support events.
+ */
 @Fluent
-public class ContainerServiceClusterSupportEventData {
+public class ContainerServiceClusterSupportEventData
+    implements JsonSerializable<ContainerServiceClusterSupportEventData> {
     /*
      * The Kubernetes version of the ManagedCluster resource
      */
-    @JsonProperty(value = "kubernetesVersion")
     private String kubernetesVersion;
 
-    /** Creates an instance of ContainerServiceClusterSupportEventData class. */
-    public ContainerServiceClusterSupportEventData() {}
+    /**
+     * Creates an instance of ContainerServiceClusterSupportEventData class.
+     */
+    public ContainerServiceClusterSupportEventData() {
+    }
 
     /**
      * Get the kubernetesVersion property: The Kubernetes version of the ManagedCluster resource.
-     *
+     * 
      * @return the kubernetesVersion value.
      */
     public String getKubernetesVersion() {
@@ -30,12 +39,46 @@ public class ContainerServiceClusterSupportEventData {
 
     /**
      * Set the kubernetesVersion property: The Kubernetes version of the ManagedCluster resource.
-     *
+     * 
      * @param kubernetesVersion the kubernetesVersion value to set.
      * @return the ContainerServiceClusterSupportEventData object itself.
      */
     public ContainerServiceClusterSupportEventData setKubernetesVersion(String kubernetesVersion) {
         this.kubernetesVersion = kubernetesVersion;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kubernetesVersion", this.kubernetesVersion);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ContainerServiceClusterSupportEventData from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ContainerServiceClusterSupportEventData if the JsonReader was pointing to an instance of
+     * it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the ContainerServiceClusterSupportEventData.
+     */
+    public static ContainerServiceClusterSupportEventData fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            ContainerServiceClusterSupportEventData deserializedContainerServiceClusterSupportEventData
+                = new ContainerServiceClusterSupportEventData();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("kubernetesVersion".equals(fieldName)) {
+                    deserializedContainerServiceClusterSupportEventData.kubernetesVersion = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedContainerServiceClusterSupportEventData;
+        });
     }
 }

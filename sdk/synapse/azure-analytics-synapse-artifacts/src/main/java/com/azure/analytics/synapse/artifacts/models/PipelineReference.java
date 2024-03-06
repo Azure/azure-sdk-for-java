@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Pipeline reference type. */
+/**
+ * Pipeline reference type.
+ */
 @Fluent
 public final class PipelineReference {
     /*
@@ -28,12 +30,15 @@ public final class PipelineReference {
     @JsonProperty(value = "name")
     private String name;
 
-    /** Creates an instance of PipelineReference class. */
-    public PipelineReference() {}
+    /**
+     * Creates an instance of PipelineReference class.
+     */
+    public PipelineReference() {
+    }
 
     /**
      * Get the type property: Pipeline reference type.
-     *
+     * 
      * @return the type value.
      */
     public PipelineReferenceType getType() {
@@ -42,7 +47,7 @@ public final class PipelineReference {
 
     /**
      * Set the type property: Pipeline reference type.
-     *
+     * 
      * @param type the type value to set.
      * @return the PipelineReference object itself.
      */
@@ -53,7 +58,7 @@ public final class PipelineReference {
 
     /**
      * Get the referenceName property: Reference pipeline name.
-     *
+     * 
      * @return the referenceName value.
      */
     public String getReferenceName() {
@@ -62,7 +67,7 @@ public final class PipelineReference {
 
     /**
      * Set the referenceName property: Reference pipeline name.
-     *
+     * 
      * @param referenceName the referenceName value to set.
      * @return the PipelineReference object itself.
      */
@@ -73,7 +78,7 @@ public final class PipelineReference {
 
     /**
      * Get the name property: Reference name.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -82,7 +87,7 @@ public final class PipelineReference {
 
     /**
      * Set the name property: Reference name.
-     *
+     * 
      * @param name the name value to set.
      * @return the PipelineReference object itself.
      */

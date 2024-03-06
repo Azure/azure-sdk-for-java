@@ -19,7 +19,7 @@ public final class WebAppsUpdateSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateWebApp(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getWebApps().updateWithResponse("testrg123", "sitef6141",
+        azure.webApps().manager().serviceClient().getWebApps().update("testrg123", "sitef6141",
             new SitePatchResourceInner().withServerFarmId(
                 "/subscriptions/34adfa4f-cedf-4dc0-ba29-b6d1a69ab345/resourceGroups/testrg123/providers/Microsoft.Web/serverfarms/DefaultAsp"),
             com.azure.core.util.Context.NONE);

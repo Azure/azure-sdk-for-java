@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.models.ArmProxyResource;
 import com.azure.resourcemanager.cosmos.models.ClientEncryptionKeyGetPropertiesResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Client Encryption Key. */
+/**
+ * Client Encryption Key.
+ */
 @Fluent
 public final class ClientEncryptionKeyGetResultsInner extends ArmProxyResource {
     /*
@@ -18,13 +20,15 @@ public final class ClientEncryptionKeyGetResultsInner extends ArmProxyResource {
     @JsonProperty(value = "properties")
     private ClientEncryptionKeyGetProperties innerProperties;
 
-    /** Creates an instance of ClientEncryptionKeyGetResultsInner class. */
+    /**
+     * Creates an instance of ClientEncryptionKeyGetResultsInner class.
+     */
     public ClientEncryptionKeyGetResultsInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of a ClientEncryptionKey.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ClientEncryptionKeyGetProperties innerProperties() {
@@ -33,7 +37,7 @@ public final class ClientEncryptionKeyGetResultsInner extends ArmProxyResource {
 
     /**
      * Get the resource property: The resource property.
-     *
+     * 
      * @return the resource value.
      */
     public ClientEncryptionKeyGetPropertiesResource resource() {
@@ -42,7 +46,7 @@ public final class ClientEncryptionKeyGetResultsInner extends ArmProxyResource {
 
     /**
      * Set the resource property: The resource property.
-     *
+     * 
      * @param resource the resource value to set.
      * @return the ClientEncryptionKeyGetResultsInner object itself.
      */
@@ -56,7 +60,7 @@ public final class ClientEncryptionKeyGetResultsInner extends ArmProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

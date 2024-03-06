@@ -7,16 +7,44 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.polling.implementation.PollContextRequiredException;
 
 import java.time.Duration;
-import java.util.NoSuchElementException;
 import java.util.Objects;
+import java.util.concurrent.Semaphore;
 import java.util.function.BiFunction;
 import java.util.function.Function;
+
+import static com.azure.core.util.polling.PollingUtil.validatePollInterval;
+import static com.azure.core.util.polling.PollingUtil.validateTimeout;
 
 /**
  * Simple implementation of {@link SyncPoller}.
  *
+ * <p>This class provides a simple implementation of the {@link SyncPoller} interface for long-running operations.
+ * It provides synchronous polling with a regular interval.</p>
+ *
+ * <p>Long-running operations are operations such as the creation or deletion of a resource, which take a significant
+ * amount of time to complete. These operations are typically handled asynchronously, with the client initiating the
+ * operation and then polling the service at intervals to determine whether the operation has completed.</p>
+ *
+ * <p><strong>Code Sample: Using a SimpleSyncPoller to poll until the operation is successfully completed</strong></p>
+ *
+ * <!-- src_embed com.azure.core.util.polling.simpleSyncPoller.instantiationAndPoll -->
+ * <pre>
+ * LongRunningOperationStatus operationStatus = syncPoller.poll&#40;&#41;.getStatus&#40;&#41;;
+ * while &#40;operationStatus != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41; &#123;
+ *     System.out.println&#40;&quot;Polling status: &quot; + operationStatus.toString&#40;&#41;&#41;;
+ *     System.out.println&#40;&quot;Polling response: &quot; + operationStatus.toString&#40;&#41;&#41;;
+ *     operationStatus = syncPoller.poll&#40;&#41;.getStatus&#40;&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.core.util.polling.simpleSyncPoller.instantiationAndPoll -->
+ *
  * @param <T> The type of poll response value
  * @param <U> The type of the final result of the long running operation
+ *
+ * @see com.azure.core.util.polling
+ * @see SyncPoller
+ * @see PollResponse
+ * @see LongRunningOperationStatus
  */
 final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
     private static final ClientLogger LOGGER = new ClientLogger(SimpleSyncPoller.class);
@@ -25,6 +53,7 @@ final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
     private final Function<PollingContext<T>, U> fetchResultOperation;
     private final PollResponse<T> activationResponse;
     private final PollingContext<T> pollingContext = new PollingContext<>();
+    private final Semaphore pollingSemaphore = new Semaphore(1);
     private volatile PollingContext<T> terminalPollContext;
     private volatile Duration pollInterval;
 
@@ -32,36 +61,34 @@ final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
      * Creates SimpleSyncPoller.
      *
      * @param pollInterval the polling interval.
-     * @param syncActivationOperation the operation to synchronously activate (start) the long running operation,
-     *     this operation will be called with a new {@link PollingContext}.
-     * @param pollOperation the operation to poll the current state of long running operation, this parameter
-     *     is required and the operation will be called with current {@link PollingContext}.
-     * @param cancelOperation a {@link Function} that represents the operation to cancel the long running operation
-     *     if service supports cancellation, this parameter is required and if service does not support cancellation
-     *     then the implementer should return Mono.error with an error message indicating absence of cancellation
-     *     support, the operation will be called with current {@link PollingContext}.
-     * @param fetchResultOperation a {@link Function} that represents the  operation to retrieve final result of
-     *     the long running operation if service support it, this parameter is required and operation will be called
-     *     current {@link PollingContext}, if service does not have an api to fetch final result and if final result
-     *     is same as final poll response value then implementer can choose to simply return value from provided
-     *     final poll response.
+     * @param syncActivationOperation the operation to synchronously activate (start) the long-running operation, this
+     * operation will be called with a new {@link PollingContext}.
+     * @param pollOperation the operation to poll the current state of long-running operation, this parameter is
+     * required and the operation will be called with current {@link PollingContext}.
+     * @param cancelOperation a {@link Function} that represents the operation to cancel the long-running operation if
+     * service supports cancellation, this parameter is required and if service does not support cancellation then the
+     * implementer should throw an error with an error message indicating absence of cancellation support, the operation
+     * will be called with current {@link PollingContext}.
+     * @param fetchResultOperation a {@link Function} that represents the  operation to retrieve final result of the
+     * long-running operation if service support it, this parameter is required and operation will be called current
+     * {@link PollingContext}, if service does not have an api to fetch final result and if final result is same as
+     * final poll response value then implementer can choose to simply return value from provided final poll response.
      */
-    SimpleSyncPoller(Duration pollInterval,
-                     Function<PollingContext<T>, PollResponse<T>> syncActivationOperation,
-                     Function<PollingContext<T>, PollResponse<T>> pollOperation,
-                     BiFunction<PollingContext<T>, PollResponse<T>, T> cancelOperation,
-                     Function<PollingContext<T>, U> fetchResultOperation) {
+    SimpleSyncPoller(Duration pollInterval, Function<PollingContext<T>, PollResponse<T>> syncActivationOperation,
+        Function<PollingContext<T>, PollResponse<T>> pollOperation,
+        BiFunction<PollingContext<T>, PollResponse<T>, T> cancelOperation,
+        Function<PollingContext<T>, U> fetchResultOperation) {
         Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
         if (pollInterval.isNegative() || pollInterval.isZero()) {
-            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(
-                "Negative or zero value for 'defaultPollInterval' is not allowed."));
+            throw LOGGER.logExceptionAsWarning(
+                new IllegalArgumentException("Negative or zero value for 'defaultPollInterval' is not allowed."));
         }
         this.pollInterval = pollInterval;
         Objects.requireNonNull(syncActivationOperation, "'syncActivationOperation' cannot be null.");
         this.pollOperation = Objects.requireNonNull(pollOperation, "'pollOperation' cannot be null.");
         this.cancelOperation = Objects.requireNonNull(cancelOperation, "'cancelOperation' cannot be null.");
-        this.fetchResultOperation = Objects.requireNonNull(fetchResultOperation,
-            "'fetchResultOperation' cannot be null.");
+        this.fetchResultOperation
+            = Objects.requireNonNull(fetchResultOperation, "'fetchResultOperation' cannot be null.");
         this.activationResponse = syncActivationOperation.apply(this.pollingContext);
         this.pollingContext.setOnetimeActivationResponse(this.activationResponse);
         this.pollingContext.setLatestResponse(this.activationResponse);
@@ -71,14 +98,23 @@ final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
     }
 
     @Override
-    public synchronized PollResponse<T> poll() {
-        PollResponse<T> response = this.pollOperation
-            .apply(this.pollingContext);
-        this.pollingContext.setLatestResponse(response);
-        if (response.getStatus().isComplete()) {
-            this.terminalPollContext = this.pollingContext.copy();
+    public PollResponse<T> poll() {
+        try {
+            pollingSemaphore.acquire();
+        } catch (InterruptedException e) {
+            throw LOGGER.logExceptionAsError(new RuntimeException(e));
         }
-        return response;
+
+        try {
+            PollResponse<T> response = this.pollOperation.apply(this.pollingContext);
+            this.pollingContext.setLatestResponse(response);
+            if (response.getStatus().isComplete()) {
+                this.terminalPollContext = this.pollingContext.copy();
+            }
+            return response;
+        } finally {
+            pollingSemaphore.release();
+        }
     }
 
     @Override
@@ -88,11 +124,8 @@ final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
 
     @Override
     public PollResponse<T> waitForCompletion(Duration timeout) {
-        Objects.requireNonNull(timeout, "'timeout' cannot be null.");
-        if (timeout.isNegative() || timeout.isZero()) {
-            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(
-                "Negative or zero value for timeout is not allowed."));
-        }
+        validateTimeout(timeout, LOGGER);
+
         return waitForCompletionHelper(timeout);
     }
 
@@ -104,28 +137,23 @@ final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
 
     @Override
     public PollResponse<T> waitUntil(Duration timeout, LongRunningOperationStatus statusToWaitFor) {
-        Objects.requireNonNull(timeout, "'timeout' cannot be null.");
-        if (timeout.isNegative() || timeout.isZero()) {
-            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(
-                "Negative or zero value for timeout is not allowed."));
-        }
+        validateTimeout(timeout, LOGGER);
+
         Objects.requireNonNull(statusToWaitFor, "'statusToWaitFor' cannot be null.");
         return waitUntilHelper(timeout, statusToWaitFor);
     }
 
-
     private PollResponse<T> waitUntilHelper(Duration timeout, LongRunningOperationStatus statusToWaitFor) {
         PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
-        if (currentTerminalPollContext != null
-            && currentTerminalPollContext.getLatestResponse().getStatus() == statusToWaitFor) {
+        if (currentTerminalPollContext != null) {
+            // If the terminal poll context is not null, then the operation has already completed.
+            // Don't attempt to waitUntil status as it will never happen.
             return currentTerminalPollContext.getLatestResponse();
         } else {
             PollingContext<T> context = this.pollingContext.copy();
-            PollResponse<T> pollResponse = PollingUtil.pollingLoop(context, timeout, statusToWaitFor, pollOperation, pollInterval);
-            if (!pollResponse.getStatus().equals(statusToWaitFor)) {
-                throw LOGGER.logExceptionAsError(new NoSuchElementException("Polling completed without"
-                    + " receiving the given status '" + statusToWaitFor + "'."));
-            }
+            PollResponse<T> pollResponse
+                = PollingUtil.pollingLoop(context, timeout, statusToWaitFor, pollOperation, pollInterval, true);
+
             if (pollResponse.getStatus().isComplete()) {
                 this.terminalPollContext = context;
             }
@@ -136,24 +164,36 @@ final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
     private PollResponse<T> waitForCompletionHelper(Duration timeout) {
         PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
         if (currentTerminalPollContext != null) {
+            // If the terminal poll context is not null, then the operation has already completed.
             return currentTerminalPollContext.getLatestResponse();
-        } else {
-            PollingContext<T> context = this.pollingContext.copy();
-            PollResponse<T> pollResponse = PollingUtil.pollingLoop(context, timeout, null, pollOperation, pollInterval);
-            this.terminalPollContext = context;
-            return pollResponse;
         }
+
+        PollingContext<T> context = this.pollingContext.copy();
+        PollResponse<T> pollResponse
+            = PollingUtil.pollingLoop(context, timeout, null, pollOperation, pollInterval, false);
+        this.terminalPollContext = context;
+        return pollResponse;
     }
 
     @Override
     public U getFinalResult() {
+        return getFinalResultHelper(null);
+    }
+
+    @Override
+    public U getFinalResult(Duration timeout) {
+        validateTimeout(timeout, LOGGER);
+        return getFinalResultHelper(timeout);
+    }
+
+    private U getFinalResultHelper(Duration timeout) {
         PollingContext<T> currentTerminalPollContext = this.terminalPollContext;
         if (currentTerminalPollContext != null) {
-            return this.fetchResultOperation
-                .apply(currentTerminalPollContext);
+            // If the terminal poll context is not null, then the operation has already completed.
+            return this.fetchResultOperation.apply(currentTerminalPollContext);
         } else {
             PollingContext<T> context = this.pollingContext.copy();
-            PollingUtil.pollingLoop(context, null, null, pollOperation, pollInterval);
+            PollingUtil.pollingLoop(context, timeout, null, pollOperation, pollInterval, false);
             this.terminalPollContext = context;
             return getFinalResult();
         }
@@ -169,21 +209,15 @@ final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
                 this.cancelOperation.apply(null, this.activationResponse);
             } catch (PollContextRequiredException crp) {
                 PollingContext<T> context2 = this.pollingContext.copy();
-                PollingUtil.pollingLoop(pollingContext, null, null, pollOperation, pollInterval);
-                this.cancelOperation
-                    .apply(context2, this.activationResponse);
+                PollingUtil.pollingLoop(pollingContext, null, null, pollOperation, pollInterval, false);
+                this.cancelOperation.apply(context2, this.activationResponse);
             }
         }
     }
 
     @Override
     public SyncPoller<T, U> setPollInterval(Duration pollInterval) {
-        Objects.requireNonNull(pollInterval, "'pollInterval' cannot be null.");
-        if (pollInterval.isNegative() || pollInterval.isZero()) {
-            throw LOGGER.logExceptionAsWarning(new IllegalArgumentException(
-                "Negative or zero value for 'pollInterval' is not allowed."));
-        }
-        this.pollInterval = pollInterval;
+        this.pollInterval = validatePollInterval(pollInterval, LOGGER);
         return this;
     }
 }

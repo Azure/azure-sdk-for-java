@@ -10,13 +10,13 @@ import com.azure.resourcemanager.datafactory.models.SsisExecutionParameter;
 public final class SsisExecutionParameterTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SsisExecutionParameter model =
-            BinaryData.fromString("{\"value\":\"datadqvdivzjyxsjbl\"}").toObject(SsisExecutionParameter.class);
+        SsisExecutionParameter model
+            = BinaryData.fromString("{\"value\":\"dataghtkdcuf\"}").toObject(SsisExecutionParameter.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SsisExecutionParameter model = new SsisExecutionParameter().withValue("datadqvdivzjyxsjbl");
+        SsisExecutionParameter model = new SsisExecutionParameter().withValue("dataghtkdcuf");
         model = BinaryData.fromObject(model).toObject(SsisExecutionParameter.class);
     }
 }

@@ -10,13 +10,15 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.hardwaresecuritymodules.fluent.models.DedicatedHsmOperationInner;
 
-/** An instance of this class provides access to all the operations defined in OperationsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationsClient.
+ */
 public interface OperationsClient {
     /**
      * Get a list of Dedicated HSM operations.
-     *
+     * 
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
-     *     by server.
+     * by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Dedicated HSM operations as paginated response with {@link PagedIterable}.
      */
@@ -25,11 +27,11 @@ public interface OperationsClient {
 
     /**
      * Get a list of Dedicated HSM operations.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.resourcemanager.hardwaresecuritymodules.models.ErrorException thrown if the request is rejected
-     *     by server.
+     * by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of Dedicated HSM operations as paginated response with {@link PagedIterable}.
      */

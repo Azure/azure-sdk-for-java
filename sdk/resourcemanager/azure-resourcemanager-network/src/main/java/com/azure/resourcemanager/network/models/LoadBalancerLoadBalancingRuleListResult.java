@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.LoadBalancingRuleInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListLoadBalancingRule API service call. */
+/**
+ * Response for ListLoadBalancingRule API service call.
+ */
 @Fluent
 public final class LoadBalancerLoadBalancingRuleListResult {
     /*
@@ -24,13 +26,15 @@ public final class LoadBalancerLoadBalancingRuleListResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of LoadBalancerLoadBalancingRuleListResult class. */
+    /**
+     * Creates an instance of LoadBalancerLoadBalancingRuleListResult class.
+     */
     public LoadBalancerLoadBalancingRuleListResult() {
     }
 
     /**
      * Get the value property: A list of load balancing rules in a load balancer.
-     *
+     * 
      * @return the value value.
      */
     public List<LoadBalancingRuleInner> value() {
@@ -39,7 +43,7 @@ public final class LoadBalancerLoadBalancingRuleListResult {
 
     /**
      * Set the value property: A list of load balancing rules in a load balancer.
-     *
+     * 
      * @param value the value value to set.
      * @return the LoadBalancerLoadBalancingRuleListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class LoadBalancerLoadBalancingRuleListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class LoadBalancerLoadBalancingRuleListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

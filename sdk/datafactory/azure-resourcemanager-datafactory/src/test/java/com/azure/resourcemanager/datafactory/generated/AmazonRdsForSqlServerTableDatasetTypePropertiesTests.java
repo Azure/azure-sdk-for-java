@@ -10,18 +10,15 @@ import com.azure.resourcemanager.datafactory.fluent.models.AmazonRdsForSqlServer
 public final class AmazonRdsForSqlServerTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AmazonRdsForSqlServerTableDatasetTypeProperties model =
-            BinaryData
-                .fromString("{\"schema\":\"dataasupcvqgxcvwio\",\"table\":\"datacmcgmlmpnvq\"}")
+        AmazonRdsForSqlServerTableDatasetTypeProperties model
+            = BinaryData.fromString("{\"schema\":\"dataasupcvqgxcvwio\",\"table\":\"datacmcgmlmpnvq\"}")
                 .toObject(AmazonRdsForSqlServerTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AmazonRdsForSqlServerTableDatasetTypeProperties model =
-            new AmazonRdsForSqlServerTableDatasetTypeProperties()
-                .withSchema("dataasupcvqgxcvwio")
-                .withTable("datacmcgmlmpnvq");
+        AmazonRdsForSqlServerTableDatasetTypeProperties model = new AmazonRdsForSqlServerTableDatasetTypeProperties()
+            .withSchema("dataasupcvqgxcvwio").withTable("datacmcgmlmpnvq");
         model = BinaryData.fromObject(model).toObject(AmazonRdsForSqlServerTableDatasetTypeProperties.class);
     }
 }

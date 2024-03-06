@@ -8,23 +8,31 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The location of HDFS. */
+/**
+ * The location of HDFS.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("HdfsLocation")
 @Fluent
 public final class HdfsLocation extends DatasetLocation {
-    /** Creates an instance of HdfsLocation class. */
+    /**
+     * Creates an instance of HdfsLocation class.
+     */
     public HdfsLocation() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HdfsLocation withFolderPath(Object folderPath) {
         super.withFolderPath(folderPath);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public HdfsLocation withFileName(Object fileName) {
         super.withFileName(fileName);
@@ -33,7 +41,7 @@ public final class HdfsLocation extends DatasetLocation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -90,6 +90,16 @@ public final class StatsbeatTestUtils {
         INSTRUMENTATION_MAP_DECODING.put(69, "io.opentelemetry.play-ws-2.0");
         INSTRUMENTATION_MAP_DECODING.put(70, "io.opentelemetry.play-ws-2.1");
         INSTRUMENTATION_MAP_DECODING.put(71, "io.opentelemetry.vertx-kafka-client-3.5");
+        INSTRUMENTATION_MAP_DECODING.put(72, "io.opentelemetry.hikaricp-3.0");
+        INSTRUMENTATION_MAP_DECODING.put(73, "io.opentelemetry.micrometer-1.5");
+        INSTRUMENTATION_MAP_DECODING.put(74, "io.opentelemetry.kafka-clients-2.6");
+        INSTRUMENTATION_MAP_DECODING.put(75, "io.opentelemetry.spring-kafka-2.7");
+        INSTRUMENTATION_MAP_DECODING.put(76, "io.opentelemetry.spring-web-3.1");
+        INSTRUMENTATION_MAP_DECODING.put(77, "io.opentelemetry.spring-webmvc-5.3");
+        INSTRUMENTATION_MAP_DECODING.put(78, "io.opentelemetry.spring-webmvc-6.0");
+        INSTRUMENTATION_MAP_DECODING.put(79, "io.opentelemetry.spring-webflux-5.3");
+        INSTRUMENTATION_MAP_DECODING.put(80, "io.opentelemetry.runtime-telemetry-java8");
+        INSTRUMENTATION_MAP_DECODING.put(81, "io.opentelemetry.runtime-telemetry-java17");
 
         FEATURE_MAP_DECODING = new HashMap<>();
         FEATURE_MAP_DECODING.put(0, Feature.JAVA_VENDOR_ORACLE);

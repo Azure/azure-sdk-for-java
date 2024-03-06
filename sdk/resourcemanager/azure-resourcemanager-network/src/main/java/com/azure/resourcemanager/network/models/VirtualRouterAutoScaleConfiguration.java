@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The VirtualHub Router autoscale configuration. */
+/**
+ * The VirtualHub Router autoscale configuration.
+ */
 @Fluent
 public final class VirtualRouterAutoScaleConfiguration {
     /*
@@ -16,13 +18,15 @@ public final class VirtualRouterAutoScaleConfiguration {
     @JsonProperty(value = "minCapacity")
     private Integer minCapacity;
 
-    /** Creates an instance of VirtualRouterAutoScaleConfiguration class. */
+    /**
+     * Creates an instance of VirtualRouterAutoScaleConfiguration class.
+     */
     public VirtualRouterAutoScaleConfiguration() {
     }
 
     /**
      * Get the minCapacity property: The minimum number of scale units for VirtualHub Router.
-     *
+     * 
      * @return the minCapacity value.
      */
     public Integer minCapacity() {
@@ -31,7 +35,7 @@ public final class VirtualRouterAutoScaleConfiguration {
 
     /**
      * Set the minCapacity property: The minimum number of scale units for VirtualHub Router.
-     *
+     * 
      * @param minCapacity the minCapacity value to set.
      * @return the VirtualRouterAutoScaleConfiguration object itself.
      */
@@ -42,7 +46,7 @@ public final class VirtualRouterAutoScaleConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -17,8 +17,7 @@ public final class TriggerQueryResponseImpl implements TriggerQueryResponse {
 
     private final com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager;
 
-    TriggerQueryResponseImpl(
-        TriggerQueryResponseInner innerObject,
+    TriggerQueryResponseImpl(TriggerQueryResponseInner innerObject,
         com.azure.resourcemanager.datafactory.DataFactoryManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -27,12 +26,8 @@ public final class TriggerQueryResponseImpl implements TriggerQueryResponse {
     public List<TriggerResource> value() {
         List<TriggerResourceInner> inner = this.innerModel().value();
         if (inner != null) {
-            return Collections
-                .unmodifiableList(
-                    inner
-                        .stream()
-                        .map(inner1 -> new TriggerResourceImpl(inner1, this.manager()))
-                        .collect(Collectors.toList()));
+            return Collections.unmodifiableList(inner.stream()
+                .map(inner1 -> new TriggerResourceImpl(inner1, this.manager())).collect(Collectors.toList()));
         } else {
             return Collections.emptyList();
         }

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** InMageRcm appliance details. */
+/**
+ * InMageRcm appliance details.
+ */
 @Immutable
 public final class InMageRcmApplianceDetails {
     /*
@@ -77,13 +79,15 @@ public final class InMageRcmApplianceDetails {
     @JsonProperty(value = "switchProviderBlockingErrorDetails", access = JsonProperty.Access.WRITE_ONLY)
     private List<InMageRcmFabricSwitchProviderBlockingErrorDetails> switchProviderBlockingErrorDetails;
 
-    /** Creates an instance of InMageRcmApplianceDetails class. */
+    /**
+     * Creates an instance of InMageRcmApplianceDetails class.
+     */
     public InMageRcmApplianceDetails() {
     }
 
     /**
      * Get the id property: The appliance Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -92,7 +96,7 @@ public final class InMageRcmApplianceDetails {
 
     /**
      * Get the name property: The appliance name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -101,7 +105,7 @@ public final class InMageRcmApplianceDetails {
 
     /**
      * Get the fabricArmId property: The fabric ARM Id.
-     *
+     * 
      * @return the fabricArmId value.
      */
     public String fabricArmId() {
@@ -110,7 +114,7 @@ public final class InMageRcmApplianceDetails {
 
     /**
      * Get the processServer property: The process server.
-     *
+     * 
      * @return the processServer value.
      */
     public ProcessServerDetails processServer() {
@@ -119,7 +123,7 @@ public final class InMageRcmApplianceDetails {
 
     /**
      * Get the rcmProxy property: The of RCM proxy.
-     *
+     * 
      * @return the rcmProxy value.
      */
     public RcmProxyDetails rcmProxy() {
@@ -128,7 +132,7 @@ public final class InMageRcmApplianceDetails {
 
     /**
      * Get the pushInstaller property: The push installer.
-     *
+     * 
      * @return the pushInstaller value.
      */
     public PushInstallerDetails pushInstaller() {
@@ -137,7 +141,7 @@ public final class InMageRcmApplianceDetails {
 
     /**
      * Get the replicationAgent property: The replication agent.
-     *
+     * 
      * @return the replicationAgent value.
      */
     public ReplicationAgentDetails replicationAgent() {
@@ -146,7 +150,7 @@ public final class InMageRcmApplianceDetails {
 
     /**
      * Get the reprotectAgent property: The reprotect agent.
-     *
+     * 
      * @return the reprotectAgent value.
      */
     public ReprotectAgentDetails reprotectAgent() {
@@ -155,7 +159,7 @@ public final class InMageRcmApplianceDetails {
 
     /**
      * Get the marsAgent property: The Mars agent.
-     *
+     * 
      * @return the marsAgent value.
      */
     public MarsAgentDetails marsAgent() {
@@ -164,7 +168,7 @@ public final class InMageRcmApplianceDetails {
 
     /**
      * Get the dra property: The DRA.
-     *
+     * 
      * @return the dra value.
      */
     public DraDetails dra() {
@@ -173,7 +177,7 @@ public final class InMageRcmApplianceDetails {
 
     /**
      * Get the switchProviderBlockingErrorDetails property: The switch provider blocking error information.
-     *
+     * 
      * @return the switchProviderBlockingErrorDetails value.
      */
     public List<InMageRcmFabricSwitchProviderBlockingErrorDetails> switchProviderBlockingErrorDetails() {
@@ -182,7 +186,7 @@ public final class InMageRcmApplianceDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

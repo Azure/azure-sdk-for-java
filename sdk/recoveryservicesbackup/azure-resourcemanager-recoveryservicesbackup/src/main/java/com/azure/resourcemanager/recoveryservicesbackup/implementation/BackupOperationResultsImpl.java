@@ -17,15 +17,14 @@ public final class BackupOperationResultsImpl implements BackupOperationResults 
 
     private final com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager;
 
-    public BackupOperationResultsImpl(
-        BackupOperationResultsClient innerClient,
+    public BackupOperationResultsImpl(BackupOperationResultsClient innerClient,
         com.azure.resourcemanager.recoveryservicesbackup.RecoveryServicesBackupManager serviceManager) {
         this.innerClient = innerClient;
         this.serviceManager = serviceManager;
     }
 
-    public Response<Void> getWithResponse(
-        String vaultName, String resourceGroupName, String operationId, Context context) {
+    public Response<Void> getWithResponse(String vaultName, String resourceGroupName, String operationId,
+        Context context) {
         return this.serviceClient().getWithResponse(vaultName, resourceGroupName, operationId, context);
     }
 

@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Spark job definition. */
+/**
+ * Spark job definition.
+ */
 @Fluent
 public final class SparkJobDefinition {
     /*
@@ -61,14 +63,18 @@ public final class SparkJobDefinition {
     /*
      * Spark job definition.
      */
-    @JsonIgnore private Map<String, Object> additionalProperties;
+    @JsonIgnore
+    private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of SparkJobDefinition class. */
-    public SparkJobDefinition() {}
+    /**
+     * Creates an instance of SparkJobDefinition class.
+     */
+    public SparkJobDefinition() {
+    }
 
     /**
      * Get the description property: The description of the Spark job definition.
-     *
+     * 
      * @return the description value.
      */
     public String getDescription() {
@@ -77,7 +83,7 @@ public final class SparkJobDefinition {
 
     /**
      * Set the description property: The description of the Spark job definition.
-     *
+     * 
      * @param description the description value to set.
      * @return the SparkJobDefinition object itself.
      */
@@ -88,7 +94,7 @@ public final class SparkJobDefinition {
 
     /**
      * Get the targetBigDataPool property: Big data pool reference.
-     *
+     * 
      * @return the targetBigDataPool value.
      */
     public BigDataPoolReference getTargetBigDataPool() {
@@ -97,7 +103,7 @@ public final class SparkJobDefinition {
 
     /**
      * Set the targetBigDataPool property: Big data pool reference.
-     *
+     * 
      * @param targetBigDataPool the targetBigDataPool value to set.
      * @return the SparkJobDefinition object itself.
      */
@@ -108,7 +114,7 @@ public final class SparkJobDefinition {
 
     /**
      * Get the targetSparkConfiguration property: The spark configuration of the spark job.
-     *
+     * 
      * @return the targetSparkConfiguration value.
      */
     public SparkConfigurationReference getTargetSparkConfiguration() {
@@ -117,7 +123,7 @@ public final class SparkJobDefinition {
 
     /**
      * Set the targetSparkConfiguration property: The spark configuration of the spark job.
-     *
+     * 
      * @param targetSparkConfiguration the targetSparkConfiguration value to set.
      * @return the SparkJobDefinition object itself.
      */
@@ -128,7 +134,7 @@ public final class SparkJobDefinition {
 
     /**
      * Get the requiredSparkVersion property: The required Spark version of the application.
-     *
+     * 
      * @return the requiredSparkVersion value.
      */
     public String getRequiredSparkVersion() {
@@ -137,7 +143,7 @@ public final class SparkJobDefinition {
 
     /**
      * Set the requiredSparkVersion property: The required Spark version of the application.
-     *
+     * 
      * @param requiredSparkVersion the requiredSparkVersion value to set.
      * @return the SparkJobDefinition object itself.
      */
@@ -148,7 +154,7 @@ public final class SparkJobDefinition {
 
     /**
      * Get the language property: The language of the Spark application.
-     *
+     * 
      * @return the language value.
      */
     public String getLanguage() {
@@ -157,7 +163,7 @@ public final class SparkJobDefinition {
 
     /**
      * Set the language property: The language of the Spark application.
-     *
+     * 
      * @param language the language value to set.
      * @return the SparkJobDefinition object itself.
      */
@@ -168,7 +174,7 @@ public final class SparkJobDefinition {
 
     /**
      * Get the jobProperties property: The properties of the Spark job.
-     *
+     * 
      * @return the jobProperties value.
      */
     public SparkJobProperties getJobProperties() {
@@ -177,7 +183,7 @@ public final class SparkJobDefinition {
 
     /**
      * Set the jobProperties property: The properties of the Spark job.
-     *
+     * 
      * @param jobProperties the jobProperties value to set.
      * @return the SparkJobDefinition object itself.
      */
@@ -189,7 +195,7 @@ public final class SparkJobDefinition {
     /**
      * Get the folder property: The folder that this Spark job definition is in. If not specified, this Spark job
      * definition will appear at the root level.
-     *
+     * 
      * @return the folder value.
      */
     public SparkJobDefinitionFolder getFolder() {
@@ -199,7 +205,7 @@ public final class SparkJobDefinition {
     /**
      * Set the folder property: The folder that this Spark job definition is in. If not specified, this Spark job
      * definition will appear at the root level.
-     *
+     * 
      * @param folder the folder value to set.
      * @return the SparkJobDefinition object itself.
      */
@@ -210,7 +216,7 @@ public final class SparkJobDefinition {
 
     /**
      * Get the additionalProperties property: Spark job definition.
-     *
+     * 
      * @return the additionalProperties value.
      */
     @JsonAnyGetter
@@ -220,7 +226,7 @@ public final class SparkJobDefinition {
 
     /**
      * Set the additionalProperties property: Spark job definition.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the SparkJobDefinition object itself.
      */

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.healthcareapis.models.OperationDisplay;
 import com.azure.resourcemanager.healthcareapis.models.OperationProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Service REST API operation. */
+/**
+ * Service REST API operation.
+ */
 @Fluent
 public final class OperationDetailInner {
     /*
@@ -20,8 +22,8 @@ public final class OperationDetailInner {
     private String name;
 
     /*
-     * Whether the operation applies to data-plane. This is "true" for
-     * data-plane operations and "false" for ARM/control-plane operations.
+     * Whether the operation applies to data-plane. This is "true" for data-plane operations and "false" for
+     * ARM/control-plane operations.
      */
     @JsonProperty(value = "isDataAction", access = JsonProperty.Access.WRITE_ONLY)
     private Boolean isDataAction;
@@ -39,8 +41,7 @@ public final class OperationDetailInner {
     private String origin;
 
     /*
-     * Enum. Indicates the action type. "Internal" refers to actions that are
-     * for internal only APIs.
+     * Enum. Indicates the action type. "Internal" refers to actions that are for internal only APIs.
      */
     @JsonProperty(value = "actionType", access = JsonProperty.Access.WRITE_ONLY)
     private ActionType actionType;
@@ -52,8 +53,14 @@ public final class OperationDetailInner {
     private OperationProperties properties;
 
     /**
+     * Creates an instance of OperationDetailInner class.
+     */
+    public OperationDetailInner() {
+    }
+
+    /**
      * Get the name property: Name of the operation.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -63,7 +70,7 @@ public final class OperationDetailInner {
     /**
      * Get the isDataAction property: Whether the operation applies to data-plane. This is "true" for data-plane
      * operations and "false" for ARM/control-plane operations.
-     *
+     * 
      * @return the isDataAction value.
      */
     public Boolean isDataAction() {
@@ -72,7 +79,7 @@ public final class OperationDetailInner {
 
     /**
      * Get the display property: Display of the operation.
-     *
+     * 
      * @return the display value.
      */
     public OperationDisplay display() {
@@ -81,7 +88,7 @@ public final class OperationDetailInner {
 
     /**
      * Set the display property: Display of the operation.
-     *
+     * 
      * @param display the display value to set.
      * @return the OperationDetailInner object itself.
      */
@@ -92,7 +99,7 @@ public final class OperationDetailInner {
 
     /**
      * Get the origin property: Default value is 'user,system'.
-     *
+     * 
      * @return the origin value.
      */
     public String origin() {
@@ -102,7 +109,7 @@ public final class OperationDetailInner {
     /**
      * Get the actionType property: Enum. Indicates the action type. "Internal" refers to actions that are for internal
      * only APIs.
-     *
+     * 
      * @return the actionType value.
      */
     public ActionType actionType() {
@@ -111,7 +118,7 @@ public final class OperationDetailInner {
 
     /**
      * Get the properties property: Properties of the operation.
-     *
+     * 
      * @return the properties value.
      */
     public OperationProperties properties() {
@@ -120,7 +127,7 @@ public final class OperationDetailInner {
 
     /**
      * Set the properties property: Properties of the operation.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the OperationDetailInner object itself.
      */
@@ -131,7 +138,7 @@ public final class OperationDetailInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

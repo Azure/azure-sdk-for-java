@@ -5,35 +5,41 @@
 package com.azure.ai.metricsadvisor.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** The AzureTableParameter model. */
+/**
+ * The AzureTableParameter model.
+ */
 @Fluent
-public final class AzureTableParameter {
+public final class AzureTableParameter implements JsonSerializable<AzureTableParameter> {
     /*
      * The connection string of this Azure Table
      */
-    @JsonProperty(value = "connectionString")
     private String connectionString;
 
     /*
      * A table name in this Azure Table
      */
-    @JsonProperty(value = "table", required = true)
     private String table;
 
     /*
      * The statement to query this table. Please find syntax and details from Azure Table documents.
      */
-    @JsonProperty(value = "query", required = true)
     private String query;
 
-    /** Creates an instance of AzureTableParameter class. */
-    public AzureTableParameter() {}
+    /**
+     * Creates an instance of AzureTableParameter class.
+     */
+    public AzureTableParameter() {
+    }
 
     /**
      * Get the connectionString property: The connection string of this Azure Table.
-     *
+     * 
      * @return the connectionString value.
      */
     public String getConnectionString() {
@@ -42,7 +48,7 @@ public final class AzureTableParameter {
 
     /**
      * Set the connectionString property: The connection string of this Azure Table.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the AzureTableParameter object itself.
      */
@@ -53,7 +59,7 @@ public final class AzureTableParameter {
 
     /**
      * Get the table property: A table name in this Azure Table.
-     *
+     * 
      * @return the table value.
      */
     public String getTable() {
@@ -62,7 +68,7 @@ public final class AzureTableParameter {
 
     /**
      * Set the table property: A table name in this Azure Table.
-     *
+     * 
      * @param table the table value to set.
      * @return the AzureTableParameter object itself.
      */
@@ -74,7 +80,7 @@ public final class AzureTableParameter {
     /**
      * Get the query property: The statement to query this table. Please find syntax and details from Azure Table
      * documents.
-     *
+     * 
      * @return the query value.
      */
     public String getQuery() {
@@ -84,12 +90,52 @@ public final class AzureTableParameter {
     /**
      * Set the query property: The statement to query this table. Please find syntax and details from Azure Table
      * documents.
-     *
+     * 
      * @param query the query value to set.
      * @return the AzureTableParameter object itself.
      */
     public AzureTableParameter setQuery(String query) {
         this.query = query;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("table", this.table);
+        jsonWriter.writeStringField("query", this.query);
+        jsonWriter.writeStringField("connectionString", this.connectionString);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of AzureTableParameter from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of AzureTableParameter if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the AzureTableParameter.
+     */
+    public static AzureTableParameter fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            AzureTableParameter deserializedAzureTableParameter = new AzureTableParameter();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("table".equals(fieldName)) {
+                    deserializedAzureTableParameter.table = reader.getString();
+                } else if ("query".equals(fieldName)) {
+                    deserializedAzureTableParameter.query = reader.getString();
+                } else if ("connectionString".equals(fieldName)) {
+                    deserializedAzureTableParameter.connectionString = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedAzureTableParameter;
+        });
     }
 }

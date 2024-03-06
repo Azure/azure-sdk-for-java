@@ -10,16 +10,15 @@ import com.azure.resourcemanager.datafactory.fluent.models.WebTableDatasetTypePr
 public final class WebTableDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        WebTableDatasetTypeProperties model =
-            BinaryData
-                .fromString("{\"index\":\"datatcbiich\",\"path\":\"dataudsozodwjcfqoy\"}")
+        WebTableDatasetTypeProperties model
+            = BinaryData.fromString("{\"index\":\"datatcbiich\",\"path\":\"dataudsozodwjcfqoy\"}")
                 .toObject(WebTableDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        WebTableDatasetTypeProperties model =
-            new WebTableDatasetTypeProperties().withIndex("datatcbiich").withPath("dataudsozodwjcfqoy");
+        WebTableDatasetTypeProperties model
+            = new WebTableDatasetTypeProperties().withIndex("datatcbiich").withPath("dataudsozodwjcfqoy");
         model = BinaryData.fromObject(model).toObject(WebTableDatasetTypeProperties.class);
     }
 }

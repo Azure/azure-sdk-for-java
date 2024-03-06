@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Azure Table dataset properties. */
+/**
+ * Azure Table dataset properties.
+ */
 @Fluent
 public final class AzureTableDatasetTypeProperties {
     /*
@@ -17,14 +19,16 @@ public final class AzureTableDatasetTypeProperties {
     @JsonProperty(value = "tableName", required = true)
     private Object tableName;
 
-    /** Creates an instance of AzureTableDatasetTypeProperties class. */
+    /**
+     * Creates an instance of AzureTableDatasetTypeProperties class.
+     */
     public AzureTableDatasetTypeProperties() {
     }
 
     /**
      * Get the tableName property: The table name of the Azure Table storage. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the tableName value.
      */
     public Object tableName() {
@@ -34,7 +38,7 @@ public final class AzureTableDatasetTypeProperties {
     /**
      * Set the tableName property: The table name of the Azure Table storage. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the AzureTableDatasetTypeProperties object itself.
      */
@@ -45,15 +49,13 @@ public final class AzureTableDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (tableName() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property tableName in model AzureTableDatasetTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property tableName in model AzureTableDatasetTypeProperties"));
         }
     }
 

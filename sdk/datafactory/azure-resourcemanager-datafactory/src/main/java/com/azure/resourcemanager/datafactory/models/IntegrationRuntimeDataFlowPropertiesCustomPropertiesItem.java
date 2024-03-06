@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem model. */
+/**
+ * The IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem model.
+ */
 @Fluent
 public final class IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem {
     /*
@@ -22,13 +24,15 @@ public final class IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem {
     @JsonProperty(value = "value")
     private String value;
 
-    /** Creates an instance of IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem class. */
+    /**
+     * Creates an instance of IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem class.
+     */
     public IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem() {
     }
 
     /**
      * Get the name property: Name of custom property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +41,7 @@ public final class IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem {
 
     /**
      * Set the name property: Name of custom property.
-     *
+     * 
      * @param name the name value to set.
      * @return the IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem object itself.
      */
@@ -48,7 +52,7 @@ public final class IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem {
 
     /**
      * Get the value property: Value of custom property.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -57,7 +61,7 @@ public final class IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem {
 
     /**
      * Set the value property: Value of custom property.
-     *
+     * 
      * @param value the value value to set.
      * @return the IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem object itself.
      */
@@ -68,7 +72,7 @@ public final class IntegrationRuntimeDataFlowPropertiesCustomPropertiesItem {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

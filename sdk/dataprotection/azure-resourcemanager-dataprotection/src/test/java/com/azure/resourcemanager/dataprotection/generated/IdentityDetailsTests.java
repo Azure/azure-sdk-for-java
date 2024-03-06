@@ -11,20 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class IdentityDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IdentityDetails model =
-            BinaryData
-                .fromString("{\"useSystemAssignedIdentity\":true,\"userAssignedIdentityArmUrl\":\"ermclfplphoxuscr\"}")
-                .toObject(IdentityDetails.class);
+        IdentityDetails model = BinaryData
+            .fromString("{\"useSystemAssignedIdentity\":true,\"userAssignedIdentityArmUrl\":\"ermclfplphoxuscr\"}")
+            .toObject(IdentityDetails.class);
         Assertions.assertEquals(true, model.useSystemAssignedIdentity());
         Assertions.assertEquals("ermclfplphoxuscr", model.userAssignedIdentityArmUrl());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IdentityDetails model =
-            new IdentityDetails()
-                .withUseSystemAssignedIdentity(true)
-                .withUserAssignedIdentityArmUrl("ermclfplphoxuscr");
+        IdentityDetails model = new IdentityDetails().withUseSystemAssignedIdentity(true)
+            .withUserAssignedIdentityArmUrl("ermclfplphoxuscr");
         model = BinaryData.fromObject(model).toObject(IdentityDetails.class);
         Assertions.assertEquals(true, model.useSystemAssignedIdentity());
         Assertions.assertEquals("ermclfplphoxuscr", model.userAssignedIdentityArmUrl());

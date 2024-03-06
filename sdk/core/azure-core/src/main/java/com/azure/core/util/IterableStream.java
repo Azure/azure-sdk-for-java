@@ -15,7 +15,9 @@ import java.util.stream.StreamSupport;
  * This class provides utility to iterate over values using standard 'for-each' style loops or to convert them into a
  * {@link Stream} and operate in that fashion.
  *
- * <p><strong>Code sample using Stream</strong></p>
+ * <p>
+ * <strong>Code sample using Stream</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.util.iterableStream.stream -->
  * <pre>
@@ -30,7 +32,9 @@ import java.util.stream.StreamSupport;
  * </pre>
  * <!-- end com.azure.core.util.iterableStream.stream -->
  *
- * <p><strong>Code sample using Iterator</strong></p>
+ * <p>
+ * <strong>Code sample using Iterator</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.util.iterableStream.iterator.while -->
  * <pre>
@@ -45,7 +49,9 @@ import java.util.stream.StreamSupport;
  * </pre>
  * <!-- end com.azure.core.util.iterableStream.iterator.while -->
  *
- * <p><strong>Code sample using Stream and filter</strong></p>
+ * <p>
+ * <strong>Code sample using Stream and filter</strong>
+ * </p>
  *
  * <!-- src_embed com.azure.core.util.iterableStream.stream.filter -->
  * <pre>
@@ -102,9 +108,7 @@ public class IterableStream<T> implements Iterable<T> {
      * @return {@link Stream} of value {@code T}.
      */
     public Stream<T> stream() {
-        return (flux != null)
-            ? flux.toStream(DEFAULT_BATCH_SIZE)
-            : StreamSupport.stream(iterable.spliterator(), false);
+        return (flux != null) ? flux.toStream(DEFAULT_BATCH_SIZE) : StreamSupport.stream(iterable.spliterator(), false);
     }
 
     /**
@@ -114,9 +118,7 @@ public class IterableStream<T> implements Iterable<T> {
      */
     @Override
     public Iterator<T> iterator() {
-        return (flux != null)
-            ? flux.toIterable(DEFAULT_BATCH_SIZE).iterator()
-            : iterable.iterator();
+        return (flux != null) ? flux.toIterable(DEFAULT_BATCH_SIZE).iterator() : iterable.iterator();
     }
 
     /**

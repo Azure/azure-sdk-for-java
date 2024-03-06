@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The CassandraClusterPublicStatusDataCentersItem model. */
+/**
+ * The CassandraClusterPublicStatusDataCentersItem model.
+ */
 @Fluent
 public final class CassandraClusterPublicStatusDataCentersItem {
     /*
@@ -29,13 +31,15 @@ public final class CassandraClusterPublicStatusDataCentersItem {
     @JsonProperty(value = "nodes")
     private List<CassandraClusterPublicStatusDataCentersItemNode> nodes;
 
-    /** Creates an instance of CassandraClusterPublicStatusDataCentersItem class. */
+    /**
+     * Creates an instance of CassandraClusterPublicStatusDataCentersItem class.
+     */
     public CassandraClusterPublicStatusDataCentersItem() {
     }
 
     /**
      * Get the name property: The name of this Datacenter.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -44,7 +48,7 @@ public final class CassandraClusterPublicStatusDataCentersItem {
 
     /**
      * Set the name property: The name of this Datacenter.
-     *
+     * 
      * @param name the name value to set.
      * @return the CassandraClusterPublicStatusDataCentersItem object itself.
      */
@@ -55,7 +59,7 @@ public final class CassandraClusterPublicStatusDataCentersItem {
 
     /**
      * Get the seedNodes property: A list of all seed nodes in the cluster, managed and unmanaged.
-     *
+     * 
      * @return the seedNodes value.
      */
     public List<String> seedNodes() {
@@ -64,7 +68,7 @@ public final class CassandraClusterPublicStatusDataCentersItem {
 
     /**
      * Set the seedNodes property: A list of all seed nodes in the cluster, managed and unmanaged.
-     *
+     * 
      * @param seedNodes the seedNodes value to set.
      * @return the CassandraClusterPublicStatusDataCentersItem object itself.
      */
@@ -75,7 +79,7 @@ public final class CassandraClusterPublicStatusDataCentersItem {
 
     /**
      * Get the nodes property: The nodes property.
-     *
+     * 
      * @return the nodes value.
      */
     public List<CassandraClusterPublicStatusDataCentersItemNode> nodes() {
@@ -84,19 +88,19 @@ public final class CassandraClusterPublicStatusDataCentersItem {
 
     /**
      * Set the nodes property: The nodes property.
-     *
+     * 
      * @param nodes the nodes value to set.
      * @return the CassandraClusterPublicStatusDataCentersItem object itself.
      */
-    public CassandraClusterPublicStatusDataCentersItem withNodes(
-        List<CassandraClusterPublicStatusDataCentersItemNode> nodes) {
+    public CassandraClusterPublicStatusDataCentersItem
+        withNodes(List<CassandraClusterPublicStatusDataCentersItemNode> nodes) {
         this.nodes = nodes;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

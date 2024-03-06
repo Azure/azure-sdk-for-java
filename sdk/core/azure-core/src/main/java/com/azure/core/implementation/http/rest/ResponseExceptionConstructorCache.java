@@ -16,13 +16,15 @@ import java.util.concurrent.ConcurrentHashMap;
  * A concurrent cache of {@link HttpResponseException} {@link ReflectiveInvoker} constructors.
  */
 public final class ResponseExceptionConstructorCache {
-    private static final Map<Class<? extends HttpResponseException>, ReflectiveInvoker> CACHE = new ConcurrentHashMap<>();
+    private static final Map<Class<? extends HttpResponseException>, ReflectiveInvoker> CACHE
+        = new ConcurrentHashMap<>();
     private static final ClientLogger LOGGER = new ClientLogger(ResponseExceptionConstructorCache.class);
 
     /**
      * Identifies the suitable {@link ReflectiveInvoker} to construct the given exception class.
      *
      * @param exceptionClass The exception class.
+     * @param exceptionBodyType The type of the exception body.
      * @return The {@link ReflectiveInvoker} that is capable of constructing an instance of the class, or null if no handle
      * is found.
      */

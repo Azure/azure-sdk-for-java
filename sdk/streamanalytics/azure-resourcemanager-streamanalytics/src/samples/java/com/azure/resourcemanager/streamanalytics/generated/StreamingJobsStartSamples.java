@@ -4,69 +4,64 @@
 
 package com.azure.resourcemanager.streamanalytics.generated;
 
-import com.azure.core.util.Context;
 import com.azure.resourcemanager.streamanalytics.models.OutputStartMode;
 import com.azure.resourcemanager.streamanalytics.models.StartStreamingJobParameters;
 import java.time.OffsetDateTime;
 
-/** Samples for StreamingJobs Start. */
+/**
+ * Samples for StreamingJobs Start.
+ */
 public final class StreamingJobsStartSamples {
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/StreamingJob_Start_JobStartTime.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * StreamingJob_Start_JobStartTime.json
      */
     /**
      * Sample code: Start a streaming job with JobStartTime output start mode.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void startAStreamingJobWithJobStartTimeOutputStartMode(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager
-            .streamingJobs()
-            .start(
-                "sjrg6936",
-                "sj59",
-                new StartStreamingJobParameters().withOutputStartMode(OutputStartMode.JOB_START_TIME),
-                Context.NONE);
+        manager.streamingJobs().start("sjrg6936", "sj59",
+            new StartStreamingJobParameters().withOutputStartMode(OutputStartMode.JOB_START_TIME),
+            com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/StreamingJob_Start_CustomTime.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * StreamingJob_Start_CustomTime.json
      */
     /**
      * Sample code: Start a streaming job with CustomTime output start mode.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void startAStreamingJobWithCustomTimeOutputStartMode(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager
-            .streamingJobs()
+        manager.streamingJobs()
             .start(
-                "sjrg6936",
-                "sj59",
-                new StartStreamingJobParameters()
-                    .withOutputStartMode(OutputStartMode.CUSTOM_TIME)
+                "sjrg6936", "sj59", new StartStreamingJobParameters().withOutputStartMode(OutputStartMode.CUSTOM_TIME)
                     .withOutputStartTime(OffsetDateTime.parse("2012-12-12T12:12:12Z")),
-                Context.NONE);
+                com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/stable/2020-03-01/examples/StreamingJob_Start_LastOutputEventTime.json
+     * x-ms-original-file:
+     * specification/streamanalytics/resource-manager/Microsoft.StreamAnalytics/preview/2021-10-01-preview/examples/
+     * StreamingJob_Start_LastOutputEventTime.json
      */
     /**
      * Sample code: Start a streaming job with LastOutputEventTime output start mode.
-     *
+     * 
      * @param manager Entry point to StreamAnalyticsManager.
      */
     public static void startAStreamingJobWithLastOutputEventTimeOutputStartMode(
         com.azure.resourcemanager.streamanalytics.StreamAnalyticsManager manager) {
-        manager
-            .streamingJobs()
-            .start(
-                "sjrg6936",
-                "sj59",
-                new StartStreamingJobParameters().withOutputStartMode(OutputStartMode.LAST_OUTPUT_EVENT_TIME),
-                Context.NONE);
+        manager.streamingJobs().start("sjrg6936", "sj59",
+            new StartStreamingJobParameters().withOutputStartMode(OutputStartMode.LAST_OUTPUT_EVENT_TIME),
+            com.azure.core.util.Context.NONE);
     }
 }

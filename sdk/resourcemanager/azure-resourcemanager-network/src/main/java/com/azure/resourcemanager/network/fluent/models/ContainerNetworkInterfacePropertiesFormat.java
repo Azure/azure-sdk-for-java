@@ -12,7 +12,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of container network interface. */
+/**
+ * Properties of container network interface.
+ */
 @Fluent
 public final class ContainerNetworkInterfacePropertiesFormat {
     /*
@@ -39,14 +41,16 @@ public final class ContainerNetworkInterfacePropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ContainerNetworkInterfacePropertiesFormat class. */
+    /**
+     * Creates an instance of ContainerNetworkInterfacePropertiesFormat class.
+     */
     public ContainerNetworkInterfacePropertiesFormat() {
     }
 
     /**
      * Get the containerNetworkInterfaceConfiguration property: Container network interface configuration from which
      * this container network interface is created.
-     *
+     * 
      * @return the containerNetworkInterfaceConfiguration value.
      */
     public ContainerNetworkInterfaceConfiguration containerNetworkInterfaceConfiguration() {
@@ -55,7 +59,7 @@ public final class ContainerNetworkInterfacePropertiesFormat {
 
     /**
      * Get the container property: Reference to the container to which this container network interface is attached.
-     *
+     * 
      * @return the container value.
      */
     public Container container() {
@@ -64,7 +68,7 @@ public final class ContainerNetworkInterfacePropertiesFormat {
 
     /**
      * Set the container property: Reference to the container to which this container network interface is attached.
-     *
+     * 
      * @param container the container value to set.
      * @return the ContainerNetworkInterfacePropertiesFormat object itself.
      */
@@ -75,7 +79,7 @@ public final class ContainerNetworkInterfacePropertiesFormat {
 
     /**
      * Get the ipConfigurations property: Reference to the ip configuration on this container nic.
-     *
+     * 
      * @return the ipConfigurations value.
      */
     public List<ContainerNetworkInterfaceIpConfiguration> ipConfigurations() {
@@ -84,7 +88,7 @@ public final class ContainerNetworkInterfacePropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the container network interface resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -93,7 +97,7 @@ public final class ContainerNetworkInterfacePropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

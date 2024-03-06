@@ -10,7 +10,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** A DDoS custom policy in a resource group. */
+/**
+ * A DDoS custom policy in a resource group.
+ */
 @Fluent
 public final class DdosCustomPolicyInner extends Resource {
     /*
@@ -31,13 +33,15 @@ public final class DdosCustomPolicyInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of DdosCustomPolicyInner class. */
+    /**
+     * Creates an instance of DdosCustomPolicyInner class.
+     */
     public DdosCustomPolicyInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the DDoS custom policy.
-     *
+     * 
      * @return the innerProperties value.
      */
     private DdosCustomPolicyPropertiesFormat innerProperties() {
@@ -46,7 +50,7 @@ public final class DdosCustomPolicyInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -55,7 +59,7 @@ public final class DdosCustomPolicyInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -64,7 +68,7 @@ public final class DdosCustomPolicyInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the DdosCustomPolicyInner object itself.
      */
@@ -73,14 +77,18 @@ public final class DdosCustomPolicyInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DdosCustomPolicyInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DdosCustomPolicyInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -91,7 +99,7 @@ public final class DdosCustomPolicyInner extends Resource {
      * Get the resourceGuid property: The resource GUID property of the DDoS custom policy resource. It uniquely
      * identifies the resource, even if the user changes its name or migrate the resource across subscriptions or
      * resource groups.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -100,7 +108,7 @@ public final class DdosCustomPolicyInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the DDoS custom policy resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -109,7 +117,7 @@ public final class DdosCustomPolicyInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

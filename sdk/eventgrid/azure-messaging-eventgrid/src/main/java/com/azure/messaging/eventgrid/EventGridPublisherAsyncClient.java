@@ -147,6 +147,8 @@ import static com.azure.core.util.FluxUtil.withContext;
  *
  * @see EventGridEvent
  * @see com.azure.core.models.CloudEvent
+ *
+ * @param <T> The type of the event to publish. One of {@link EventGridEvent} or {@link com.azure.core.models.CloudEvent}.
  */
 @ServiceClient(builder = EventGridPublisherClientBuilder.class, isAsync = true)
 public final class EventGridPublisherAsyncClient<T> {

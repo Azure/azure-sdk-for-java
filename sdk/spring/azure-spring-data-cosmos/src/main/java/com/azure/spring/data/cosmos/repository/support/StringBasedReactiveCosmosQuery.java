@@ -93,7 +93,7 @@ public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery 
             }
         }
 
-        SqlQuerySpec querySpec = new SqlQuerySpec(expandedQuery, sqlParameters);
+        SqlQuerySpec querySpec = new SqlQuerySpec(stripExtraWhitespaceFromString(expandedQuery), sqlParameters);
         if (isCountQuery()) {
             final String container = ((SimpleReactiveCosmosEntityMetadata<?>) getQueryMethod().getEntityInformation()).getContainerName();
             final Mono<Long> mono = this.operations.count(querySpec, container);
@@ -103,6 +103,10 @@ public class StringBasedReactiveCosmosQuery extends AbstractReactiveCosmosQuery 
                                                     processor.getReturnedType().getReturnedType());
             return flux;
         }
+    }
+
+    private String stripExtraWhitespaceFromString(String input) {
+        return input.replaceAll("\\s+{1,}", " ").trim();
     }
 
     @Override

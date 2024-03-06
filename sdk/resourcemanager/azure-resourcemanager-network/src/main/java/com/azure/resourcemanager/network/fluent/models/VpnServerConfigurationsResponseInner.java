@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** VpnServerConfigurations list associated with VirtualWan Response. */
+/**
+ * VpnServerConfigurations list associated with VirtualWan Response.
+ */
 @Fluent
 public final class VpnServerConfigurationsResponseInner {
     /*
@@ -17,13 +19,15 @@ public final class VpnServerConfigurationsResponseInner {
     @JsonProperty(value = "vpnServerConfigurationResourceIds")
     private List<String> vpnServerConfigurationResourceIds;
 
-    /** Creates an instance of VpnServerConfigurationsResponseInner class. */
+    /**
+     * Creates an instance of VpnServerConfigurationsResponseInner class.
+     */
     public VpnServerConfigurationsResponseInner() {
     }
 
     /**
      * Get the vpnServerConfigurationResourceIds property: List of VpnServerConfigurations associated with VirtualWan.
-     *
+     * 
      * @return the vpnServerConfigurationResourceIds value.
      */
     public List<String> vpnServerConfigurationResourceIds() {
@@ -32,19 +36,19 @@ public final class VpnServerConfigurationsResponseInner {
 
     /**
      * Set the vpnServerConfigurationResourceIds property: List of VpnServerConfigurations associated with VirtualWan.
-     *
+     * 
      * @param vpnServerConfigurationResourceIds the vpnServerConfigurationResourceIds value to set.
      * @return the VpnServerConfigurationsResponseInner object itself.
      */
-    public VpnServerConfigurationsResponseInner withVpnServerConfigurationResourceIds(
-        List<String> vpnServerConfigurationResourceIds) {
+    public VpnServerConfigurationsResponseInner
+        withVpnServerConfigurationResourceIds(List<String> vpnServerConfigurationResourceIds) {
         this.vpnServerConfigurationResourceIds = vpnServerConfigurationResourceIds;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

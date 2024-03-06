@@ -19,11 +19,9 @@ import org.junit.jupiter.api.Assertions;
 public final class BackupResourceVaultConfigResourceInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BackupResourceVaultConfigResourceInner model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"storageModelType\":\"Invalid\",\"storageType\":\"ReadAccessGeoZoneRedundant\",\"storageTypeState\":\"Invalid\",\"enhancedSecurityState\":\"Invalid\",\"softDeleteFeatureState\":\"AlwaysON\",\"softDeleteRetentionPeriodInDays\":1491222167,\"resourceGuardOperationRequests\":[\"zaqsqsycbkbfk\",\"ukdkexxppofmxa\",\"c\",\"jpgd\"],\"isSoftDeleteFeatureStateEditable\":true},\"eTag\":\"jjxhvpmo\",\"location\":\"exhd\",\"tags\":{\"jnxqbzvddntwn\":\"bqe\"},\"id\":\"eic\",\"name\":\"twnpzaoqvuhrhcf\",\"type\":\"cyddglmjthjqk\"}")
-                .toObject(BackupResourceVaultConfigResourceInner.class);
+        BackupResourceVaultConfigResourceInner model = BinaryData.fromString(
+            "{\"properties\":{\"storageModelType\":\"Invalid\",\"storageType\":\"ReadAccessGeoZoneRedundant\",\"storageTypeState\":\"Invalid\",\"enhancedSecurityState\":\"Invalid\",\"softDeleteFeatureState\":\"AlwaysON\",\"softDeleteRetentionPeriodInDays\":1491222167,\"resourceGuardOperationRequests\":[\"zaqsqsycbkbfk\",\"ukdkexxppofmxa\",\"c\",\"jpgd\"],\"isSoftDeleteFeatureStateEditable\":true},\"eTag\":\"jjxhvpmo\",\"location\":\"exhd\",\"tags\":{\"jnxqbzvddntwn\":\"bqe\"},\"id\":\"eic\",\"name\":\"twnpzaoqvuhrhcf\",\"type\":\"cyddglmjthjqk\"}")
+            .toObject(BackupResourceVaultConfigResourceInner.class);
         Assertions.assertEquals("exhd", model.location());
         Assertions.assertEquals("bqe", model.tags().get("jnxqbzvddntwn"));
         Assertions.assertEquals(StorageType.INVALID, model.properties().storageModelType());
@@ -39,22 +37,16 @@ public final class BackupResourceVaultConfigResourceInnerTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BackupResourceVaultConfigResourceInner model =
-            new BackupResourceVaultConfigResourceInner()
-                .withLocation("exhd")
-                .withTags(mapOf("jnxqbzvddntwn", "bqe"))
-                .withProperties(
-                    new BackupResourceVaultConfig()
-                        .withStorageModelType(StorageType.INVALID)
-                        .withStorageType(StorageType.READ_ACCESS_GEO_ZONE_REDUNDANT)
-                        .withStorageTypeState(StorageTypeState.INVALID)
-                        .withEnhancedSecurityState(EnhancedSecurityState.INVALID)
-                        .withSoftDeleteFeatureState(SoftDeleteFeatureState.ALWAYS_ON)
-                        .withSoftDeleteRetentionPeriodInDays(1491222167)
-                        .withResourceGuardOperationRequests(
-                            Arrays.asList("zaqsqsycbkbfk", "ukdkexxppofmxa", "c", "jpgd"))
-                        .withIsSoftDeleteFeatureStateEditable(true))
-                .withEtag("jjxhvpmo");
+        BackupResourceVaultConfigResourceInner model = new BackupResourceVaultConfigResourceInner().withLocation("exhd")
+            .withTags(mapOf("jnxqbzvddntwn", "bqe"))
+            .withProperties(new BackupResourceVaultConfig().withStorageModelType(StorageType.INVALID)
+                .withStorageType(StorageType.READ_ACCESS_GEO_ZONE_REDUNDANT)
+                .withStorageTypeState(StorageTypeState.INVALID).withEnhancedSecurityState(EnhancedSecurityState.INVALID)
+                .withSoftDeleteFeatureState(SoftDeleteFeatureState.ALWAYS_ON)
+                .withSoftDeleteRetentionPeriodInDays(1491222167)
+                .withResourceGuardOperationRequests(Arrays.asList("zaqsqsycbkbfk", "ukdkexxppofmxa", "c", "jpgd"))
+                .withIsSoftDeleteFeatureStateEditable(true))
+            .withEtag("jjxhvpmo");
         model = BinaryData.fromObject(model).toObject(BackupResourceVaultConfigResourceInner.class);
         Assertions.assertEquals("exhd", model.location());
         Assertions.assertEquals("bqe", model.tags().get("jnxqbzvddntwn"));

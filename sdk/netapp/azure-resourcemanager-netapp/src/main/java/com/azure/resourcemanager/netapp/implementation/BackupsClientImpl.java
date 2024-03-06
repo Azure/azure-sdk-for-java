@@ -4,38 +4,61 @@
 
 package com.azure.resourcemanager.netapp.implementation;
 
+import com.azure.core.annotation.BodyParam;
+import com.azure.core.annotation.Delete;
 import com.azure.core.annotation.ExpectedResponses;
 import com.azure.core.annotation.Get;
 import com.azure.core.annotation.HeaderParam;
 import com.azure.core.annotation.Headers;
 import com.azure.core.annotation.Host;
 import com.azure.core.annotation.HostParam;
+import com.azure.core.annotation.Patch;
 import com.azure.core.annotation.PathParam;
+import com.azure.core.annotation.Put;
 import com.azure.core.annotation.QueryParam;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceInterface;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.annotation.UnexpectedResponseExceptionType;
+import com.azure.core.http.rest.PagedFlux;
+import com.azure.core.http.rest.PagedIterable;
+import com.azure.core.http.rest.PagedResponse;
+import com.azure.core.http.rest.PagedResponseBase;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.RestProxy;
 import com.azure.core.management.exception.ManagementException;
+import com.azure.core.management.polling.PollResult;
 import com.azure.core.util.Context;
 import com.azure.core.util.FluxUtil;
+import com.azure.core.util.polling.PollerFlux;
+import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.netapp.fluent.BackupsClient;
+import com.azure.resourcemanager.netapp.fluent.models.BackupInner;
+import com.azure.resourcemanager.netapp.fluent.models.BackupStatusInner;
 import com.azure.resourcemanager.netapp.fluent.models.RestoreStatusInner;
+import com.azure.resourcemanager.netapp.models.BackupPatch;
+import com.azure.resourcemanager.netapp.models.BackupsList;
+import java.nio.ByteBuffer;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in BackupsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in BackupsClient.
+ */
 public final class BackupsClientImpl implements BackupsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final BackupsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final NetAppManagementClientImpl client;
 
     /**
      * Initializes an instance of BackupsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     BackupsClientImpl(NetAppManagementClientImpl client) {
@@ -50,28 +73,91 @@ public final class BackupsClientImpl implements BackupsClient {
     @Host("{$host}")
     @ServiceInterface(name = "NetAppManagementClie")
     public interface BackupsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/restoreStatus")
-        @ExpectedResponses({200})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/latestBackupStatus/current")
+        @ExpectedResponses({ 200 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<Response<RestoreStatusInner>> getVolumeRestoreStatus(
-            @HostParam("$host") String endpoint,
+        Mono<Response<BackupStatusInner>> getLatestStatus(@HostParam("$host") String endpoint,
             @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("resourceGroupName") String resourceGroupName,
-            @PathParam("accountName") String accountName,
-            @PathParam("poolName") String poolName,
-            @PathParam("volumeName") String volumeName,
-            @QueryParam("api-version") String apiVersion,
-            @HeaderParam("Accept") String accept,
-            Context context);
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/capacityPools/{poolName}/volumes/{volumeName}/restoreStatus")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<RestoreStatusInner>> getVolumeRestoreStatus(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("poolName") String poolName, @PathParam("volumeName") String volumeName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}/backups")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<BackupsList>> listByVault(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("backupVaultName") String backupVaultName, @QueryParam("$filter") String filter,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}/backups/{backupName}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<BackupInner>> get(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("backupVaultName") String backupVaultName, @PathParam("backupName") String backupName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Put("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}/backups/{backupName}")
+        @ExpectedResponses({ 200, 201 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> create(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("backupVaultName") String backupVaultName, @PathParam("backupName") String backupName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BackupInner body,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Patch("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}/backups/{backupName}")
+        @ExpectedResponses({ 200, 202 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> update(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("backupVaultName") String backupVaultName, @PathParam("backupName") String backupName,
+            @QueryParam("api-version") String apiVersion, @BodyParam("application/json") BackupPatch body,
+            @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Delete("/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.NetApp/netAppAccounts/{accountName}/backupVaults/{backupVaultName}/backups/{backupName}")
+        @ExpectedResponses({ 202, 204 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<Flux<ByteBuffer>>> delete(@HostParam("$host") String endpoint,
+            @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("resourceGroupName") String resourceGroupName, @PathParam("accountName") String accountName,
+            @PathParam("backupVaultName") String backupVaultName, @PathParam("backupName") String backupName,
+            @QueryParam("api-version") String apiVersion, @HeaderParam("Accept") String accept, Context context);
+
+        @Headers({ "Content-Type: application/json" })
+        @Get("{nextLink}")
+        @ExpectedResponses({ 200 })
+        @UnexpectedResponseExceptionType(ManagementException.class)
+        Mono<Response<BackupsList>> listByVaultNext(@PathParam(value = "nextLink", encoded = true) String nextLink,
+            @HostParam("$host") String endpoint, @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
-     * Get volume's restore status
-     *
-     * <p>Get the status of the restore for a volume.
-     *
+     * Get the latest backup status of a volume
+     * 
+     * Get the latest status of the backup for a volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -79,23 +165,174 @@ public final class BackupsClientImpl implements BackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the restore for a volume along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the latest status of the backup for a volume along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RestoreStatusInner>> getVolumeRestoreStatusWithResponseAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName) {
+    private Mono<Response<BackupStatusInner>> getLatestStatusWithResponseAsync(String resourceGroupName,
+        String accountName, String poolName, String volumeName) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
             return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.getLatestStatus(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the latest backup status of a volume
+     * 
+     * Get the latest status of the backup for a volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the latest status of the backup for a volume along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<BackupStatusInner>> getLatestStatusWithResponseAsync(String resourceGroupName,
+        String accountName, String poolName, String volumeName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (poolName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter poolName is required and cannot be null."));
+        }
+        if (volumeName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter volumeName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.getLatestStatus(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Get the latest backup status of a volume
+     * 
+     * Get the latest status of the backup for a volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the latest status of the backup for a volume on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<BackupStatusInner> getLatestStatusAsync(String resourceGroupName, String accountName, String poolName,
+        String volumeName) {
+        return getLatestStatusWithResponseAsync(resourceGroupName, accountName, poolName, volumeName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Get the latest backup status of a volume
+     * 
+     * Get the latest status of the backup for a volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the latest status of the backup for a volume along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BackupStatusInner> getLatestStatusWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context) {
+        return getLatestStatusWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, context).block();
+    }
+
+    /**
+     * Get the latest backup status of a volume
+     * 
+     * Get the latest status of the backup for a volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the latest status of the backup for a volume.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BackupStatusInner getLatestStatus(String resourceGroupName, String accountName, String poolName,
+        String volumeName) {
+        return getLatestStatusWithResponse(resourceGroupName, accountName, poolName, volumeName, Context.NONE)
+            .getValue();
+    }
+
+    /**
+     * Get volume's restore status
+     * 
+     * Get the status of the restore for a volume.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param poolName The name of the capacity pool.
+     * @param volumeName The name of the volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the status of the restore for a volume along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<RestoreStatusInner>> getVolumeRestoreStatusWithResponseAsync(String resourceGroupName,
+        String accountName, String poolName, String volumeName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -113,26 +350,16 @@ public final class BackupsClientImpl implements BackupsClient {
         final String accept = "application/json";
         return FluxUtil
             .withContext(
-                context ->
-                    service
-                        .getVolumeRestoreStatus(
-                            this.client.getEndpoint(),
-                            this.client.getSubscriptionId(),
-                            resourceGroupName,
-                            accountName,
-                            poolName,
-                            volumeName,
-                            this.client.getApiVersion(),
-                            accept,
-                            context))
+                context -> service.getVolumeRestoreStatus(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                    resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Get volume's restore status
-     *
-     * <p>Get the status of the restore for a volume.
-     *
+     * 
+     * Get the status of the restore for a volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -141,23 +368,19 @@ public final class BackupsClientImpl implements BackupsClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the status of the restore for a volume along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the status of the restore for a volume along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<Response<RestoreStatusInner>> getVolumeRestoreStatusWithResponseAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
+    private Mono<Response<RestoreStatusInner>> getVolumeRestoreStatusWithResponseAsync(String resourceGroupName,
+        String accountName, String poolName, String volumeName, Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (resourceGroupName == null) {
             return Mono
@@ -174,24 +397,15 @@ public final class BackupsClientImpl implements BackupsClient {
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .getVolumeRestoreStatus(
-                this.client.getEndpoint(),
-                this.client.getSubscriptionId(),
-                resourceGroupName,
-                accountName,
-                poolName,
-                volumeName,
-                this.client.getApiVersion(),
-                accept,
-                context);
+        return service.getVolumeRestoreStatus(this.client.getEndpoint(), this.client.getSubscriptionId(),
+            resourceGroupName, accountName, poolName, volumeName, this.client.getApiVersion(), accept, context);
     }
 
     /**
      * Get volume's restore status
-     *
-     * <p>Get the status of the restore for a volume.
-     *
+     * 
+     * Get the status of the restore for a volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -202,17 +416,17 @@ public final class BackupsClientImpl implements BackupsClient {
      * @return the status of the restore for a volume on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<RestoreStatusInner> getVolumeRestoreStatusAsync(
-        String resourceGroupName, String accountName, String poolName, String volumeName) {
+    private Mono<RestoreStatusInner> getVolumeRestoreStatusAsync(String resourceGroupName, String accountName,
+        String poolName, String volumeName) {
         return getVolumeRestoreStatusWithResponseAsync(resourceGroupName, accountName, poolName, volumeName)
             .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
      * Get volume's restore status
-     *
-     * <p>Get the status of the restore for a volume.
-     *
+     * 
+     * Get the status of the restore for a volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -224,17 +438,17 @@ public final class BackupsClientImpl implements BackupsClient {
      * @return the status of the restore for a volume along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<RestoreStatusInner> getVolumeRestoreStatusWithResponse(
-        String resourceGroupName, String accountName, String poolName, String volumeName, Context context) {
+    public Response<RestoreStatusInner> getVolumeRestoreStatusWithResponse(String resourceGroupName, String accountName,
+        String poolName, String volumeName, Context context) {
         return getVolumeRestoreStatusWithResponseAsync(resourceGroupName, accountName, poolName, volumeName, context)
             .block();
     }
 
     /**
      * Get volume's restore status
-     *
-     * <p>Get the status of the restore for a volume.
-     *
+     * 
+     * Get the status of the restore for a volume.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param accountName The name of the NetApp account.
      * @param poolName The name of the capacity pool.
@@ -245,9 +459,1304 @@ public final class BackupsClientImpl implements BackupsClient {
      * @return the status of the restore for a volume.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public RestoreStatusInner getVolumeRestoreStatus(
-        String resourceGroupName, String accountName, String poolName, String volumeName) {
+    public RestoreStatusInner getVolumeRestoreStatus(String resourceGroupName, String accountName, String poolName,
+        String volumeName) {
         return getVolumeRestoreStatusWithResponse(resourceGroupName, accountName, poolName, volumeName, Context.NONE)
             .getValue();
+    }
+
+    /**
+     * List Backups
+     * 
+     * List all backups Under a Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param filter An option to specify the VolumeResourceId. If present, then only returns the backups under the
+     * specified volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Backups along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BackupInner>> listByVaultSinglePageAsync(String resourceGroupName, String accountName,
+        String backupVaultName, String filter) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (backupVaultName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listByVault(this.client.getEndpoint(), this.client.getSubscriptionId(),
+                resourceGroupName, accountName, backupVaultName, filter, this.client.getApiVersion(), accept, context))
+            .<PagedResponse<BackupInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * List Backups
+     * 
+     * List all backups Under a Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param filter An option to specify the VolumeResourceId. If present, then only returns the backups under the
+     * specified volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Backups along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BackupInner>> listByVaultSinglePageAsync(String resourceGroupName, String accountName,
+        String backupVaultName, String filter, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (backupVaultName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service
+            .listByVault(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+                backupVaultName, filter, this.client.getApiVersion(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
+    }
+
+    /**
+     * List Backups
+     * 
+     * List all backups Under a Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param filter An option to specify the VolumeResourceId. If present, then only returns the backups under the
+     * specified volume.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Backups as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<BackupInner> listByVaultAsync(String resourceGroupName, String accountName,
+        String backupVaultName, String filter) {
+        return new PagedFlux<>(
+            () -> listByVaultSinglePageAsync(resourceGroupName, accountName, backupVaultName, filter),
+            nextLink -> listByVaultNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * List Backups
+     * 
+     * List all backups Under a Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Backups as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<BackupInner> listByVaultAsync(String resourceGroupName, String accountName,
+        String backupVaultName) {
+        final String filter = null;
+        return new PagedFlux<>(
+            () -> listByVaultSinglePageAsync(resourceGroupName, accountName, backupVaultName, filter),
+            nextLink -> listByVaultNextSinglePageAsync(nextLink));
+    }
+
+    /**
+     * List Backups
+     * 
+     * List all backups Under a Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param filter An option to specify the VolumeResourceId. If present, then only returns the backups under the
+     * specified volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Backups as paginated response with {@link PagedFlux}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    private PagedFlux<BackupInner> listByVaultAsync(String resourceGroupName, String accountName,
+        String backupVaultName, String filter, Context context) {
+        return new PagedFlux<>(
+            () -> listByVaultSinglePageAsync(resourceGroupName, accountName, backupVaultName, filter, context),
+            nextLink -> listByVaultNextSinglePageAsync(nextLink, context));
+    }
+
+    /**
+     * List Backups
+     * 
+     * List all backups Under a Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Backups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BackupInner> listByVault(String resourceGroupName, String accountName,
+        String backupVaultName) {
+        final String filter = null;
+        return new PagedIterable<>(listByVaultAsync(resourceGroupName, accountName, backupVaultName, filter));
+    }
+
+    /**
+     * List Backups
+     * 
+     * List all backups Under a Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param filter An option to specify the VolumeResourceId. If present, then only returns the backups under the
+     * specified volume.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Backups as paginated response with {@link PagedIterable}.
+     */
+    @ServiceMethod(returns = ReturnType.COLLECTION)
+    public PagedIterable<BackupInner> listByVault(String resourceGroupName, String accountName, String backupVaultName,
+        String filter, Context context) {
+        return new PagedIterable<>(listByVaultAsync(resourceGroupName, accountName, backupVaultName, filter, context));
+    }
+
+    /**
+     * Describe the Backup under Backup Vault
+     * 
+     * Get the specified Backup under Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Backup under Backup Vault along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<BackupInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String backupVaultName, String backupName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (backupVaultName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    accountName, backupVaultName, backupName, this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Describe the Backup under Backup Vault
+     * 
+     * Get the specified Backup under Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Backup under Backup Vault along with {@link Response} on successful completion of
+     * {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<BackupInner>> getWithResponseAsync(String resourceGroupName, String accountName,
+        String backupVaultName, String backupName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (backupVaultName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.get(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName, accountName,
+            backupVaultName, backupName, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Describe the Backup under Backup Vault
+     * 
+     * Get the specified Backup under Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Backup under Backup Vault on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<BackupInner> getAsync(String resourceGroupName, String accountName, String backupVaultName,
+        String backupName) {
+        return getWithResponseAsync(resourceGroupName, accountName, backupVaultName, backupName)
+            .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Describe the Backup under Backup Vault
+     * 
+     * Get the specified Backup under Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Backup under Backup Vault along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<BackupInner> getWithResponse(String resourceGroupName, String accountName, String backupVaultName,
+        String backupName, Context context) {
+        return getWithResponseAsync(resourceGroupName, accountName, backupVaultName, backupName, context).block();
+    }
+
+    /**
+     * Describe the Backup under Backup Vault
+     * 
+     * Get the specified Backup under Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the specified Backup under Backup Vault.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BackupInner get(String resourceGroupName, String accountName, String backupVaultName, String backupName) {
+        return getWithResponse(resourceGroupName, accountName, backupVaultName, backupName, Context.NONE).getValue();
+    }
+
+    /**
+     * Create a backup
+     * 
+     * Create a backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @param body Backup object supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup under a Backup Vault along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String accountName,
+        String backupVaultName, String backupName, BackupInner body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (backupVaultName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    accountName, backupVaultName, backupName, this.client.getApiVersion(), body, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Create a backup
+     * 
+     * Create a backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @param body Backup object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup under a Backup Vault along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> createWithResponseAsync(String resourceGroupName, String accountName,
+        String backupVaultName, String backupName, BackupInner body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (backupVaultName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (body == null) {
+            return Mono.error(new IllegalArgumentException("Parameter body is required and cannot be null."));
+        } else {
+            body.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.create(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, backupVaultName, backupName, this.client.getApiVersion(), body, accept, context);
+    }
+
+    /**
+     * Create a backup
+     * 
+     * Create a backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @param body Backup object supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of backup under a Backup Vault.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<BackupInner>, BackupInner> beginCreateAsync(String resourceGroupName,
+        String accountName, String backupVaultName, String backupName, BackupInner body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, accountName, backupVaultName, backupName, body);
+        return this.client.<BackupInner, BackupInner>getLroResult(mono, this.client.getHttpPipeline(),
+            BackupInner.class, BackupInner.class, this.client.getContext());
+    }
+
+    /**
+     * Create a backup
+     * 
+     * Create a backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @param body Backup object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of backup under a Backup Vault.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<BackupInner>, BackupInner> beginCreateAsync(String resourceGroupName,
+        String accountName, String backupVaultName, String backupName, BackupInner body, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = createWithResponseAsync(resourceGroupName, accountName, backupVaultName, backupName, body, context);
+        return this.client.<BackupInner, BackupInner>getLroResult(mono, this.client.getHttpPipeline(),
+            BackupInner.class, BackupInner.class, context);
+    }
+
+    /**
+     * Create a backup
+     * 
+     * Create a backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @param body Backup object supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of backup under a Backup Vault.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<BackupInner>, BackupInner> beginCreate(String resourceGroupName, String accountName,
+        String backupVaultName, String backupName, BackupInner body) {
+        return this.beginCreateAsync(resourceGroupName, accountName, backupVaultName, backupName, body).getSyncPoller();
+    }
+
+    /**
+     * Create a backup
+     * 
+     * Create a backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @param body Backup object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of backup under a Backup Vault.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<BackupInner>, BackupInner> beginCreate(String resourceGroupName, String accountName,
+        String backupVaultName, String backupName, BackupInner body, Context context) {
+        return this.beginCreateAsync(resourceGroupName, accountName, backupVaultName, backupName, body, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Create a backup
+     * 
+     * Create a backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @param body Backup object supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup under a Backup Vault on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<BackupInner> createAsync(String resourceGroupName, String accountName, String backupVaultName,
+        String backupName, BackupInner body) {
+        return beginCreateAsync(resourceGroupName, accountName, backupVaultName, backupName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create a backup
+     * 
+     * Create a backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @param body Backup object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup under a Backup Vault on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<BackupInner> createAsync(String resourceGroupName, String accountName, String backupVaultName,
+        String backupName, BackupInner body, Context context) {
+        return beginCreateAsync(resourceGroupName, accountName, backupVaultName, backupName, body, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Create a backup
+     * 
+     * Create a backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @param body Backup object supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup under a Backup Vault.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BackupInner create(String resourceGroupName, String accountName, String backupVaultName, String backupName,
+        BackupInner body) {
+        return createAsync(resourceGroupName, accountName, backupVaultName, backupName, body).block();
+    }
+
+    /**
+     * Create a backup
+     * 
+     * Create a backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @param body Backup object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup under a Backup Vault.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BackupInner create(String resourceGroupName, String accountName, String backupVaultName, String backupName,
+        BackupInner body, Context context) {
+        return createAsync(resourceGroupName, accountName, backupVaultName, backupName, body, context).block();
+    }
+
+    /**
+     * Patch a backup
+     * 
+     * Patch a Backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @param body Backup object supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup under a Backup Vault along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String backupVaultName, String backupName, BackupPatch body) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (backupVaultName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (body != null) {
+            body.validate();
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    accountName, backupVaultName, backupName, this.client.getApiVersion(), body, accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Patch a backup
+     * 
+     * Patch a Backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @param body Backup object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup under a Backup Vault along with {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> updateWithResponseAsync(String resourceGroupName, String accountName,
+        String backupVaultName, String backupName, BackupPatch body, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (backupVaultName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        if (body != null) {
+            body.validate();
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.update(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, backupVaultName, backupName, this.client.getApiVersion(), body, accept, context);
+    }
+
+    /**
+     * Patch a backup
+     * 
+     * Patch a Backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @param body Backup object supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of backup under a Backup Vault.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<BackupInner>, BackupInner> beginUpdateAsync(String resourceGroupName,
+        String accountName, String backupVaultName, String backupName, BackupPatch body) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, accountName, backupVaultName, backupName, body);
+        return this.client.<BackupInner, BackupInner>getLroResult(mono, this.client.getHttpPipeline(),
+            BackupInner.class, BackupInner.class, this.client.getContext());
+    }
+
+    /**
+     * Patch a backup
+     * 
+     * Patch a Backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of backup under a Backup Vault.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<BackupInner>, BackupInner> beginUpdateAsync(String resourceGroupName,
+        String accountName, String backupVaultName, String backupName) {
+        final BackupPatch body = null;
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, accountName, backupVaultName, backupName, body);
+        return this.client.<BackupInner, BackupInner>getLroResult(mono, this.client.getHttpPipeline(),
+            BackupInner.class, BackupInner.class, this.client.getContext());
+    }
+
+    /**
+     * Patch a backup
+     * 
+     * Patch a Backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @param body Backup object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of backup under a Backup Vault.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<BackupInner>, BackupInner> beginUpdateAsync(String resourceGroupName,
+        String accountName, String backupVaultName, String backupName, BackupPatch body, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = updateWithResponseAsync(resourceGroupName, accountName, backupVaultName, backupName, body, context);
+        return this.client.<BackupInner, BackupInner>getLroResult(mono, this.client.getHttpPipeline(),
+            BackupInner.class, BackupInner.class, context);
+    }
+
+    /**
+     * Patch a backup
+     * 
+     * Patch a Backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of backup under a Backup Vault.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<BackupInner>, BackupInner> beginUpdate(String resourceGroupName, String accountName,
+        String backupVaultName, String backupName) {
+        final BackupPatch body = null;
+        return this.beginUpdateAsync(resourceGroupName, accountName, backupVaultName, backupName, body).getSyncPoller();
+    }
+
+    /**
+     * Patch a backup
+     * 
+     * Patch a Backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @param body Backup object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of backup under a Backup Vault.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<BackupInner>, BackupInner> beginUpdate(String resourceGroupName, String accountName,
+        String backupVaultName, String backupName, BackupPatch body, Context context) {
+        return this.beginUpdateAsync(resourceGroupName, accountName, backupVaultName, backupName, body, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Patch a backup
+     * 
+     * Patch a Backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @param body Backup object supplied in the body of the operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup under a Backup Vault on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<BackupInner> updateAsync(String resourceGroupName, String accountName, String backupVaultName,
+        String backupName, BackupPatch body) {
+        return beginUpdateAsync(resourceGroupName, accountName, backupVaultName, backupName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Patch a backup
+     * 
+     * Patch a Backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup under a Backup Vault on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<BackupInner> updateAsync(String resourceGroupName, String accountName, String backupVaultName,
+        String backupName) {
+        final BackupPatch body = null;
+        return beginUpdateAsync(resourceGroupName, accountName, backupVaultName, backupName, body).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Patch a backup
+     * 
+     * Patch a Backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @param body Backup object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup under a Backup Vault on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<BackupInner> updateAsync(String resourceGroupName, String accountName, String backupVaultName,
+        String backupName, BackupPatch body, Context context) {
+        return beginUpdateAsync(resourceGroupName, accountName, backupVaultName, backupName, body, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Patch a backup
+     * 
+     * Patch a Backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup under a Backup Vault.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BackupInner update(String resourceGroupName, String accountName, String backupVaultName, String backupName) {
+        final BackupPatch body = null;
+        return updateAsync(resourceGroupName, accountName, backupVaultName, backupName, body).block();
+    }
+
+    /**
+     * Patch a backup
+     * 
+     * Patch a Backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @param body Backup object supplied in the body of the operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return backup under a Backup Vault.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public BackupInner update(String resourceGroupName, String accountName, String backupVaultName, String backupName,
+        BackupPatch body, Context context) {
+        return updateAsync(resourceGroupName, accountName, backupVaultName, backupName, body, context).block();
+    }
+
+    /**
+     * Delete backup
+     * 
+     * Delete a Backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String backupVaultName, String backupName) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (backupVaultName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(
+                context -> service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+                    accountName, backupVaultName, backupName, this.client.getApiVersion(), accept, context))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Delete backup
+     * 
+     * Delete a Backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String accountName,
+        String backupVaultName, String backupName, Context context) {
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        if (this.client.getSubscriptionId() == null) {
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+        }
+        if (resourceGroupName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null."));
+        }
+        if (accountName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter accountName is required and cannot be null."));
+        }
+        if (backupVaultName == null) {
+            return Mono
+                .error(new IllegalArgumentException("Parameter backupVaultName is required and cannot be null."));
+        }
+        if (backupName == null) {
+            return Mono.error(new IllegalArgumentException("Parameter backupName is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.delete(this.client.getEndpoint(), this.client.getSubscriptionId(), resourceGroupName,
+            accountName, backupVaultName, backupName, this.client.getApiVersion(), accept, context);
+    }
+
+    /**
+     * Delete backup
+     * 
+     * Delete a Backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        String backupVaultName, String backupName) {
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, accountName, backupVaultName, backupName);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            this.client.getContext());
+    }
+
+    /**
+     * Delete backup
+     * 
+     * Delete a Backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link PollerFlux} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    private PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String accountName,
+        String backupVaultName, String backupName, Context context) {
+        context = this.client.mergeContext(context);
+        Mono<Response<Flux<ByteBuffer>>> mono
+            = deleteWithResponseAsync(resourceGroupName, accountName, backupVaultName, backupName, context);
+        return this.client.<Void, Void>getLroResult(mono, this.client.getHttpPipeline(), Void.class, Void.class,
+            context);
+    }
+
+    /**
+     * Delete backup
+     * 
+     * Delete a Backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String backupVaultName, String backupName) {
+        return this.beginDeleteAsync(resourceGroupName, accountName, backupVaultName, backupName).getSyncPoller();
+    }
+
+    /**
+     * Delete backup
+     * 
+     * Delete a Backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link SyncPoller} for polling of long-running operation.
+     */
+    @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
+    public SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String accountName,
+        String backupVaultName, String backupName, Context context) {
+        return this.beginDeleteAsync(resourceGroupName, accountName, backupVaultName, backupName, context)
+            .getSyncPoller();
+    }
+
+    /**
+     * Delete backup
+     * 
+     * Delete a Backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String backupVaultName,
+        String backupName) {
+        return beginDeleteAsync(resourceGroupName, accountName, backupVaultName, backupName).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Delete backup
+     * 
+     * Delete a Backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return A {@link Mono} that completes when a successful response is received.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<Void> deleteAsync(String resourceGroupName, String accountName, String backupVaultName,
+        String backupName, Context context) {
+        return beginDeleteAsync(resourceGroupName, accountName, backupVaultName, backupName, context).last()
+            .flatMap(this.client::getLroFinalResultOrError);
+    }
+
+    /**
+     * Delete backup
+     * 
+     * Delete a Backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String accountName, String backupVaultName, String backupName) {
+        deleteAsync(resourceGroupName, accountName, backupVaultName, backupName).block();
+    }
+
+    /**
+     * Delete backup
+     * 
+     * Delete a Backup under the Backup Vault.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param accountName The name of the NetApp account.
+     * @param backupVaultName The name of the Backup Vault.
+     * @param backupName The name of the backup.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public void delete(String resourceGroupName, String accountName, String backupVaultName, String backupName,
+        Context context) {
+        deleteAsync(resourceGroupName, accountName, backupVaultName, backupName, context).block();
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Backups along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BackupInner>> listByVaultNextSinglePageAsync(String nextLink) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        return FluxUtil
+            .withContext(context -> service.listByVaultNext(nextLink, this.client.getEndpoint(), accept, context))
+            .<PagedResponse<BackupInner>>map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(),
+                res.getHeaders(), res.getValue().value(), res.getValue().nextLink(), null))
+            .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
+    }
+
+    /**
+     * Get the next page of items.
+     * 
+     * @param nextLink The URL to get the next list of items
+     * 
+     * The nextLink parameter.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return list of Backups along with {@link PagedResponse} on successful completion of {@link Mono}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    private Mono<PagedResponse<BackupInner>> listByVaultNextSinglePageAsync(String nextLink, Context context) {
+        if (nextLink == null) {
+            return Mono.error(new IllegalArgumentException("Parameter nextLink is required and cannot be null."));
+        }
+        if (this.client.getEndpoint() == null) {
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
+        }
+        final String accept = "application/json";
+        context = this.client.mergeContext(context);
+        return service.listByVaultNext(nextLink, this.client.getEndpoint(), accept, context)
+            .map(res -> new PagedResponseBase<>(res.getRequest(), res.getStatusCode(), res.getHeaders(),
+                res.getValue().value(), res.getValue().nextLink(), null));
     }
 }

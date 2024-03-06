@@ -7,28 +7,32 @@ package com.azure.resourcemanager.batch.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties used to create a user account on a Windows node. */
+/**
+ * Properties used to create a user account on a Windows node.
+ */
 @Fluent
 public final class WindowsUserConfiguration {
     /*
      * Login mode for user
-     *
+     * 
      * Specifies login mode for the user. The default value for VirtualMachineConfiguration pools is interactive mode
      * and for CloudServiceConfiguration pools is batch mode.
      */
     @JsonProperty(value = "loginMode")
     private LoginMode loginMode;
 
-    /** Creates an instance of WindowsUserConfiguration class. */
+    /**
+     * Creates an instance of WindowsUserConfiguration class.
+     */
     public WindowsUserConfiguration() {
     }
 
     /**
      * Get the loginMode property: Login mode for user
-     *
-     * <p>Specifies login mode for the user. The default value for VirtualMachineConfiguration pools is interactive mode
+     * 
+     * Specifies login mode for the user. The default value for VirtualMachineConfiguration pools is interactive mode
      * and for CloudServiceConfiguration pools is batch mode.
-     *
+     * 
      * @return the loginMode value.
      */
     public LoginMode loginMode() {
@@ -37,10 +41,10 @@ public final class WindowsUserConfiguration {
 
     /**
      * Set the loginMode property: Login mode for user
-     *
-     * <p>Specifies login mode for the user. The default value for VirtualMachineConfiguration pools is interactive mode
+     * 
+     * Specifies login mode for the user. The default value for VirtualMachineConfiguration pools is interactive mode
      * and for CloudServiceConfiguration pools is batch mode.
-     *
+     * 
      * @param loginMode the loginMode value to set.
      * @return the WindowsUserConfiguration object itself.
      */
@@ -51,7 +55,7 @@ public final class WindowsUserConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

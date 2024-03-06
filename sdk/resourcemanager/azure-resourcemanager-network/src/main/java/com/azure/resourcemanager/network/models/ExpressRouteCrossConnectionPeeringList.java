@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.ExpressRouteCrossConnecti
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListPeering API service call retrieves all peerings that belong to an ExpressRouteCrossConnection. */
+/**
+ * Response for ListPeering API service call retrieves all peerings that belong to an ExpressRouteCrossConnection.
+ */
 @Fluent
 public final class ExpressRouteCrossConnectionPeeringList {
     /*
@@ -24,13 +26,15 @@ public final class ExpressRouteCrossConnectionPeeringList {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ExpressRouteCrossConnectionPeeringList class. */
+    /**
+     * Creates an instance of ExpressRouteCrossConnectionPeeringList class.
+     */
     public ExpressRouteCrossConnectionPeeringList() {
     }
 
     /**
      * Get the value property: The peerings in an express route cross connection.
-     *
+     * 
      * @return the value value.
      */
     public List<ExpressRouteCrossConnectionPeeringInner> value() {
@@ -39,7 +43,7 @@ public final class ExpressRouteCrossConnectionPeeringList {
 
     /**
      * Set the value property: The peerings in an express route cross connection.
-     *
+     * 
      * @param value the value value to set.
      * @return the ExpressRouteCrossConnectionPeeringList object itself.
      */
@@ -50,7 +54,7 @@ public final class ExpressRouteCrossConnectionPeeringList {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class ExpressRouteCrossConnectionPeeringList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

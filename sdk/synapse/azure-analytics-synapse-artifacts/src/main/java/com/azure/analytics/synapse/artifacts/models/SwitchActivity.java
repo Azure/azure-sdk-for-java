@@ -41,13 +41,16 @@ public class SwitchActivity extends ControlActivity {
     @JsonProperty(value = "typeProperties.defaultActivities")
     private List<Activity> defaultActivities;
 
-    /** Creates an instance of SwitchActivity class. */
-    public SwitchActivity() {}
+    /**
+     * Creates an instance of SwitchActivity class.
+     */
+    public SwitchActivity() {
+    }
 
     /**
      * Get the on property: An expression that would evaluate to a string or integer. This is used to determine the
      * block of activities in cases that will be executed.
-     *
+     * 
      * @return the on value.
      */
     public Expression getOn() {
@@ -57,7 +60,7 @@ public class SwitchActivity extends ControlActivity {
     /**
      * Set the on property: An expression that would evaluate to a string or integer. This is used to determine the
      * block of activities in cases that will be executed.
-     *
+     * 
      * @param on the on value to set.
      * @return the SwitchActivity object itself.
      */
@@ -69,7 +72,7 @@ public class SwitchActivity extends ControlActivity {
     /**
      * Get the cases property: List of cases that correspond to expected values of the 'on' property. This is an
      * optional property and if not provided, the activity will execute activities provided in defaultActivities.
-     *
+     * 
      * @return the cases value.
      */
     public List<SwitchCase> getCases() {
@@ -79,7 +82,7 @@ public class SwitchActivity extends ControlActivity {
     /**
      * Set the cases property: List of cases that correspond to expected values of the 'on' property. This is an
      * optional property and if not provided, the activity will execute activities provided in defaultActivities.
-     *
+     * 
      * @param cases the cases value to set.
      * @return the SwitchActivity object itself.
      */
@@ -91,7 +94,7 @@ public class SwitchActivity extends ControlActivity {
     /**
      * Get the defaultActivities property: List of activities to execute if no case condition is satisfied. This is an
      * optional property and if not provided, the activity will exit without any action.
-     *
+     * 
      * @return the defaultActivities value.
      */
     public List<Activity> getDefaultActivities() {
@@ -101,7 +104,7 @@ public class SwitchActivity extends ControlActivity {
     /**
      * Set the defaultActivities property: List of activities to execute if no case condition is satisfied. This is an
      * optional property and if not provided, the activity will exit without any action.
-     *
+     * 
      * @param defaultActivities the defaultActivities value to set.
      * @return the SwitchActivity object itself.
      */
@@ -110,42 +113,54 @@ public class SwitchActivity extends ControlActivity {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SwitchActivity setName(String name) {
         super.setName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SwitchActivity setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SwitchActivity setState(ActivityState state) {
         super.setState(state);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SwitchActivity setOnInactiveMarkAs(ActivityOnInactiveMarkAs onInactiveMarkAs) {
         super.setOnInactiveMarkAs(onInactiveMarkAs);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SwitchActivity setDependsOn(List<ActivityDependency> dependsOn) {
         super.setDependsOn(dependsOn);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public SwitchActivity setUserProperties(List<UserProperty> userProperties) {
         super.setUserProperties(userProperties);

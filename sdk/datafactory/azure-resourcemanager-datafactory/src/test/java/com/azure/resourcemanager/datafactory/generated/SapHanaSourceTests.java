@@ -11,27 +11,18 @@ import com.azure.resourcemanager.datafactory.models.SapHanaSource;
 public final class SapHanaSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapHanaSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"SapHanaSource\",\"query\":\"datacjubaddlmjquli\",\"packetSize\":\"datarc\",\"partitionOption\":\"datathluzey\",\"partitionSettings\":{\"partitionColumnName\":\"dataezkyfy\"},\"queryTimeout\":\"datanreasuwepqegty\",\"additionalColumns\":\"datayc\",\"sourceRetryCount\":\"dataufutfqffw\",\"sourceRetryWait\":\"datajgjrykshiz\",\"maxConcurrentConnections\":\"datasw\",\"disableMetricsCollection\":\"dataye\",\"\":{\"meftlgjrfkqf\":\"datakzwqzwsguipqq\"}}")
-                .toObject(SapHanaSource.class);
+        SapHanaSource model = BinaryData.fromString(
+            "{\"type\":\"SapHanaSource\",\"query\":\"datauybdzrxbckx\",\"packetSize\":\"datanzowguirhexj\",\"partitionOption\":\"datayhmktpy\",\"partitionSettings\":{\"partitionColumnName\":\"datacpkoamqfdtbao\"},\"queryTimeout\":\"dataaofkcvhh\",\"additionalColumns\":\"datavkuuikrsi\",\"sourceRetryCount\":\"datarwsj\",\"sourceRetryWait\":\"dataxenxjvapd\",\"maxConcurrentConnections\":\"datafvygrfy\",\"disableMetricsCollection\":\"datanxuacfmbyn\",\"\":{\"tcyzuzvbqbroyrw\":\"datamjmurocryfuv\",\"kffsupwcslz\":\"datatbbfweozkb\"}}")
+            .toObject(SapHanaSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapHanaSource model =
-            new SapHanaSource()
-                .withSourceRetryCount("dataufutfqffw")
-                .withSourceRetryWait("datajgjrykshiz")
-                .withMaxConcurrentConnections("datasw")
-                .withDisableMetricsCollection("dataye")
-                .withQueryTimeout("datanreasuwepqegty")
-                .withAdditionalColumns("datayc")
-                .withQuery("datacjubaddlmjquli")
-                .withPacketSize("datarc")
-                .withPartitionOption("datathluzey")
-                .withPartitionSettings(new SapHanaPartitionSettings().withPartitionColumnName("dataezkyfy"));
+        SapHanaSource model = new SapHanaSource().withSourceRetryCount("datarwsj").withSourceRetryWait("dataxenxjvapd")
+            .withMaxConcurrentConnections("datafvygrfy").withDisableMetricsCollection("datanxuacfmbyn")
+            .withQueryTimeout("dataaofkcvhh").withAdditionalColumns("datavkuuikrsi").withQuery("datauybdzrxbckx")
+            .withPacketSize("datanzowguirhexj").withPartitionOption("datayhmktpy")
+            .withPartitionSettings(new SapHanaPartitionSettings().withPartitionColumnName("datacpkoamqfdtbao"));
         model = BinaryData.fromObject(model).toObject(SapHanaSource.class);
     }
 }

@@ -15,22 +15,17 @@ import org.junit.jupiter.api.Assertions;
 public final class ActivityDependencyTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ActivityDependency model =
-            BinaryData
-                .fromString(
-                    "{\"activity\":\"wcoezbrhub\",\"dependencyConditions\":[\"Succeeded\"],\"\":{\"okkqfqjbvleo\":\"dataygo\"}}")
-                .toObject(ActivityDependency.class);
+        ActivityDependency model = BinaryData.fromString(
+            "{\"activity\":\"wcoezbrhub\",\"dependencyConditions\":[\"Succeeded\"],\"\":{\"okkqfqjbvleo\":\"dataygo\"}}")
+            .toObject(ActivityDependency.class);
         Assertions.assertEquals("wcoezbrhub", model.activity());
         Assertions.assertEquals(DependencyCondition.SUCCEEDED, model.dependencyConditions().get(0));
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ActivityDependency model =
-            new ActivityDependency()
-                .withActivity("wcoezbrhub")
-                .withDependencyConditions(Arrays.asList(DependencyCondition.SUCCEEDED))
-                .withAdditionalProperties(mapOf());
+        ActivityDependency model = new ActivityDependency().withActivity("wcoezbrhub")
+            .withDependencyConditions(Arrays.asList(DependencyCondition.SUCCEEDED)).withAdditionalProperties(mapOf());
         model = BinaryData.fromObject(model).toObject(ActivityDependency.class);
         Assertions.assertEquals("wcoezbrhub", model.activity());
         Assertions.assertEquals(DependencyCondition.SUCCEEDED, model.dependencyConditions().get(0));

@@ -21,18 +21,6 @@
     },
     {
       "owner": "yungezz",
-      "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageFunctionAppSourceControl.java",
-      "githubPath": "Azure-Samples/app-service-java-configure-deployment-sources-for-functions",
-      "description": "Getting started on configuring deployment sources for Functions using Java"
-    },
-    {
-      "owner": "yungezz",
-      "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageFunctionAppWithAuthentication.java",
-      "githubPath": "Azure-Samples/app-service-java-manage-authentication-for-functions",
-      "description": "Getting started on managing authentication for Functions using Java"
-    },
-    {
-      "owner": "yungezz",
       "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageFunctionAppWithDomainSsl.java",
       "githubPath": "Azure-Samples/app-service-java-manage-functions-with-custom-domains",
       "description": "Getting started on managing Functions with custom domains using Java"
@@ -54,12 +42,6 @@
       "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageLinuxWebAppCosmosDbByMsi.java",
       "githubPath": "Azure-Samples/app-service-java-access-key-vault-convenience-for-web-apps-on-linux",
       "description": "Getting started on on safeguarding Web app secrets in Key Vault on Linux using Java"
-    },
-    {
-      "owner": "yungezz",
-      "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageLinuxWebAppSourceControl.java",
-      "githubPath": "Azure-Samples/app-service-java-configure-deployment-sources-for-web-apps-on-linux",
-      "description": "Getting started on configuring deployment sources for Web Apps on Linux using Java"
     },
     {
       "owner": "yungezz",
@@ -120,18 +102,6 @@
       "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageWebAppSlots.java",
       "githubPath": "Azure-Samples/app-service-java-manage-staging-and-production-slots-for-web-apps",
       "description": "Getting started on managing staging and product slots for Web Apps using Java"
-    },
-    {
-      "owner": "yungezz",
-      "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageWebAppSourceControl.java",
-      "githubPath": "Azure-Samples/app-service-java-configure-deployment-sources-for-web-apps",
-      "description": "Getting started on configuring deployment sources for Web Apps using Java"
-    },
-    {
-      "owner": "yungezz",
-      "filePath": "azure-resourcemanager-samples/src/main/java/com/azure/resourcemanager/appservice/samples/ManageWebAppSourceControlAsync.java",
-      "githubPath": "Azure-Samples/app-service-java-configure-deployment-sources-for-web-apps-async",
-      "description": "Getting started on configuring deployment sources for Web Apps using Java asynchronously"
     },
     {
       "owner": "yungezz",

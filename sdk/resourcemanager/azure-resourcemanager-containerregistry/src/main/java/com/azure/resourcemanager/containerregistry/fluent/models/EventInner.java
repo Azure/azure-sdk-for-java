@@ -9,7 +9,9 @@ import com.azure.resourcemanager.containerregistry.models.EventRequestMessage;
 import com.azure.resourcemanager.containerregistry.models.EventResponseMessage;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The event for a webhook. */
+/**
+ * The event for a webhook.
+ */
 @Fluent
 public final class EventInner extends EventInfoInner {
     /*
@@ -24,13 +26,15 @@ public final class EventInner extends EventInfoInner {
     @JsonProperty(value = "eventResponseMessage")
     private EventResponseMessage eventResponseMessage;
 
-    /** Creates an instance of EventInner class. */
+    /**
+     * Creates an instance of EventInner class.
+     */
     public EventInner() {
     }
 
     /**
      * Get the eventRequestMessage property: The event request message sent to the service URI.
-     *
+     * 
      * @return the eventRequestMessage value.
      */
     public EventRequestMessage eventRequestMessage() {
@@ -39,7 +43,7 @@ public final class EventInner extends EventInfoInner {
 
     /**
      * Set the eventRequestMessage property: The event request message sent to the service URI.
-     *
+     * 
      * @param eventRequestMessage the eventRequestMessage value to set.
      * @return the EventInner object itself.
      */
@@ -50,7 +54,7 @@ public final class EventInner extends EventInfoInner {
 
     /**
      * Get the eventResponseMessage property: The event response message received from the service URI.
-     *
+     * 
      * @return the eventResponseMessage value.
      */
     public EventResponseMessage eventResponseMessage() {
@@ -59,7 +63,7 @@ public final class EventInner extends EventInfoInner {
 
     /**
      * Set the eventResponseMessage property: The event response message received from the service URI.
-     *
+     * 
      * @param eventResponseMessage the eventResponseMessage value to set.
      * @return the EventInner object itself.
      */
@@ -68,7 +72,9 @@ public final class EventInner extends EventInfoInner {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EventInner withId(String id) {
         super.withId(id);
@@ -77,7 +83,7 @@ public final class EventInner extends EventInfoInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

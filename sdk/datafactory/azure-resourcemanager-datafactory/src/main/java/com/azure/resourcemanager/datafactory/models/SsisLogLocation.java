@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.fluent.models.SsisLogLocationTypeProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SSIS package execution log location. */
+/**
+ * SSIS package execution log location.
+ */
 @Fluent
 public final class SsisLogLocation {
     /*
@@ -30,14 +32,16 @@ public final class SsisLogLocation {
     @JsonProperty(value = "typeProperties", required = true)
     private SsisLogLocationTypeProperties innerTypeProperties = new SsisLogLocationTypeProperties();
 
-    /** Creates an instance of SsisLogLocation class. */
+    /**
+     * Creates an instance of SsisLogLocation class.
+     */
     public SsisLogLocation() {
     }
 
     /**
      * Get the logPath property: The SSIS package execution log path. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the logPath value.
      */
     public Object logPath() {
@@ -47,7 +51,7 @@ public final class SsisLogLocation {
     /**
      * Set the logPath property: The SSIS package execution log path. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param logPath the logPath value to set.
      * @return the SsisLogLocation object itself.
      */
@@ -58,7 +62,7 @@ public final class SsisLogLocation {
 
     /**
      * Get the type property: The type of SSIS log location.
-     *
+     * 
      * @return the type value.
      */
     public SsisLogLocationType type() {
@@ -67,7 +71,7 @@ public final class SsisLogLocation {
 
     /**
      * Set the type property: The type of SSIS log location.
-     *
+     * 
      * @param type the type value to set.
      * @return the SsisLogLocation object itself.
      */
@@ -78,7 +82,7 @@ public final class SsisLogLocation {
 
     /**
      * Get the innerTypeProperties property: SSIS package execution log location properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private SsisLogLocationTypeProperties innerTypeProperties() {
@@ -87,7 +91,7 @@ public final class SsisLogLocation {
 
     /**
      * Get the accessCredential property: The package execution log access credential.
-     *
+     * 
      * @return the accessCredential value.
      */
     public SsisAccessCredential accessCredential() {
@@ -96,7 +100,7 @@ public final class SsisLogLocation {
 
     /**
      * Set the accessCredential property: The package execution log access credential.
-     *
+     * 
      * @param accessCredential the accessCredential value to set.
      * @return the SsisLogLocation object itself.
      */
@@ -112,7 +116,7 @@ public final class SsisLogLocation {
      * Get the logRefreshInterval property: Specifies the interval to refresh log. The default interval is 5 minutes.
      * Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @return the logRefreshInterval value.
      */
     public Object logRefreshInterval() {
@@ -123,7 +127,7 @@ public final class SsisLogLocation {
      * Set the logRefreshInterval property: Specifies the interval to refresh log. The default interval is 5 minutes.
      * Type: string (or Expression with resultType string), pattern:
      * ((\d+)\.)?(\d\d):(60|([0-5][0-9])):(60|([0-5][0-9])).
-     *
+     * 
      * @param logRefreshInterval the logRefreshInterval value to set.
      * @return the SsisLogLocation object itself.
      */
@@ -137,25 +141,21 @@ public final class SsisLogLocation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (logPath() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property logPath in model SsisLogLocation"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property logPath in model SsisLogLocation"));
         }
         if (type() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property type in model SsisLogLocation"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property type in model SsisLogLocation"));
         }
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model SsisLogLocation"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property innerTypeProperties in model SsisLogLocation"));
         } else {
             innerTypeProperties().validate();
         }

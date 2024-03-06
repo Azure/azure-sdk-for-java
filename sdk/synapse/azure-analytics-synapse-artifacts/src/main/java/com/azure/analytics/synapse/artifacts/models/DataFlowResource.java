@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Data flow resource type. */
+/**
+ * Data flow resource type.
+ */
 @Fluent
 public final class DataFlowResource extends SubResource {
     /*
@@ -16,12 +18,15 @@ public final class DataFlowResource extends SubResource {
     @JsonProperty(value = "properties", required = true)
     private DataFlow properties;
 
-    /** Creates an instance of DataFlowResource class. */
-    public DataFlowResource() {}
+    /**
+     * Creates an instance of DataFlowResource class.
+     */
+    public DataFlowResource() {
+    }
 
     /**
      * Get the properties property: Data flow properties.
-     *
+     * 
      * @return the properties value.
      */
     public DataFlow getProperties() {
@@ -30,7 +35,7 @@ public final class DataFlowResource extends SubResource {
 
     /**
      * Set the properties property: Data flow properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DataFlowResource object itself.
      */

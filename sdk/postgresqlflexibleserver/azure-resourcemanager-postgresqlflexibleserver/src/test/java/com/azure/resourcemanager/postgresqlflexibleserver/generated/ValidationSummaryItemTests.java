@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class ValidationSummaryItemTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ValidationSummaryItem model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"uruv\",\"state\":\"Succeeded\",\"messages\":[{\"state\":\"Warning\",\"message\":\"xwabmqoe\"}]}")
-                .toObject(ValidationSummaryItem.class);
+        ValidationSummaryItem model = BinaryData.fromString(
+            "{\"type\":\"uruv\",\"state\":\"Succeeded\",\"messages\":[{\"state\":\"Warning\",\"message\":\"xwabmqoe\"}]}")
+            .toObject(ValidationSummaryItem.class);
         Assertions.assertEquals("uruv", model.type());
         Assertions.assertEquals(ValidationState.SUCCEEDED, model.state());
         Assertions.assertEquals(ValidationState.WARNING, model.messages().get(0).state());
@@ -27,12 +25,9 @@ public final class ValidationSummaryItemTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ValidationSummaryItem model =
-            new ValidationSummaryItem()
-                .withType("uruv")
-                .withState(ValidationState.SUCCEEDED)
-                .withMessages(
-                    Arrays.asList(new ValidationMessage().withState(ValidationState.WARNING).withMessage("xwabmqoe")));
+        ValidationSummaryItem model
+            = new ValidationSummaryItem().withType("uruv").withState(ValidationState.SUCCEEDED).withMessages(
+                Arrays.asList(new ValidationMessage().withState(ValidationState.WARNING).withMessage("xwabmqoe")));
         model = BinaryData.fromObject(model).toObject(ValidationSummaryItem.class);
         Assertions.assertEquals("uruv", model.type());
         Assertions.assertEquals(ValidationState.SUCCEEDED, model.state());

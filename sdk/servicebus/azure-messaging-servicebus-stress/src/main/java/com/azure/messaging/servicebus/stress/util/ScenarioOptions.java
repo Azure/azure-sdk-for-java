@@ -46,7 +46,7 @@ public class ScenarioOptions {
     @Value("${ANNOTATION:#{null}}")
     private String annotation;
 
-    @Value("${MESSAGE_SIZE_IN_BYTES:128}")
+    @Value("${MESSAGE_SIZE_IN_BYTES:16}")
     private int messageSize;
 
     @Value("${START_DELAY_MINUTES:0}")

@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Destination port behavior. */
+/**
+ * Destination port behavior.
+ */
 public final class DestinationPortBehavior extends ExpandableStringEnum<DestinationPortBehavior> {
-    /** Static value None for DestinationPortBehavior. */
+    /**
+     * Static value None for DestinationPortBehavior.
+     */
     public static final DestinationPortBehavior NONE = fromString("None");
 
-    /** Static value ListenIfAvailable for DestinationPortBehavior. */
+    /**
+     * Static value ListenIfAvailable for DestinationPortBehavior.
+     */
     public static final DestinationPortBehavior LISTEN_IF_AVAILABLE = fromString("ListenIfAvailable");
 
     /**
      * Creates a new instance of DestinationPortBehavior value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class DestinationPortBehavior extends ExpandableStringEnum<Destinat
 
     /**
      * Creates or finds a DestinationPortBehavior from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding DestinationPortBehavior.
      */
@@ -38,7 +44,7 @@ public final class DestinationPortBehavior extends ExpandableStringEnum<Destinat
 
     /**
      * Gets known DestinationPortBehavior values.
-     *
+     * 
      * @return known DestinationPortBehavior values.
      */
     public static Collection<DestinationPortBehavior> values() {

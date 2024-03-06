@@ -11,11 +11,9 @@ import org.junit.jupiter.api.Assertions;
 public final class SenderUsernamePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SenderUsernameProperties model =
-            BinaryData
-                .fromString(
-                    "{\"dataLocation\":\"gshwankixz\",\"username\":\"injep\",\"displayName\":\"tmryw\",\"provisioningState\":\"Running\"}")
-                .toObject(SenderUsernameProperties.class);
+        SenderUsernameProperties model = BinaryData.fromString(
+            "{\"dataLocation\":\"gshwankixz\",\"username\":\"injep\",\"displayName\":\"tmryw\",\"provisioningState\":\"Running\"}")
+            .toObject(SenderUsernameProperties.class);
         Assertions.assertEquals("injep", model.username());
         Assertions.assertEquals("tmryw", model.displayName());
     }

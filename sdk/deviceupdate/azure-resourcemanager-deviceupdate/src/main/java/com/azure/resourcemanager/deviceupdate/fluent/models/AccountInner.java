@@ -6,6 +6,8 @@ package com.azure.resourcemanager.deviceupdate.fluent.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
+import com.azure.core.management.SystemData;
+import com.azure.resourcemanager.deviceupdate.models.Encryption;
 import com.azure.resourcemanager.deviceupdate.models.Location;
 import com.azure.resourcemanager.deviceupdate.models.ManagedServiceIdentity;
 import com.azure.resourcemanager.deviceupdate.models.ProvisioningState;
@@ -15,7 +17,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** Device Update account details. */
+/**
+ * Device Update account details.
+ */
 @Fluent
 public final class AccountInner extends Resource {
     /*
@@ -30,9 +34,21 @@ public final class AccountInner extends Resource {
     @JsonProperty(value = "identity")
     private ManagedServiceIdentity identity;
 
+    /*
+     * Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     */
+    @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
+    private SystemData systemData;
+
+    /**
+     * Creates an instance of AccountInner class.
+     */
+    public AccountInner() {
+    }
+
     /**
      * Get the innerProperties property: Device Update account properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private AccountProperties innerProperties() {
@@ -41,7 +57,7 @@ public final class AccountInner extends Resource {
 
     /**
      * Get the identity property: The type of identity used for the resource.
-     *
+     * 
      * @return the identity value.
      */
     public ManagedServiceIdentity identity() {
@@ -50,7 +66,7 @@ public final class AccountInner extends Resource {
 
     /**
      * Set the identity property: The type of identity used for the resource.
-     *
+     * 
      * @param identity the identity value to set.
      * @return the AccountInner object itself.
      */
@@ -59,14 +75,27 @@ public final class AccountInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
+     * 
+     * @return the systemData value.
+     */
+    public SystemData systemData() {
+        return this.systemData;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccountInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AccountInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -75,7 +104,7 @@ public final class AccountInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -84,7 +113,7 @@ public final class AccountInner extends Resource {
 
     /**
      * Get the hostname property: API host name.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -93,7 +122,7 @@ public final class AccountInner extends Resource {
 
     /**
      * Get the publicNetworkAccess property: Whether or not public network access is allowed for the account.
-     *
+     * 
      * @return the publicNetworkAccess value.
      */
     public PublicNetworkAccess publicNetworkAccess() {
@@ -102,7 +131,7 @@ public final class AccountInner extends Resource {
 
     /**
      * Set the publicNetworkAccess property: Whether or not public network access is allowed for the account.
-     *
+     * 
      * @param publicNetworkAccess the publicNetworkAccess value to set.
      * @return the AccountInner object itself.
      */
@@ -116,7 +145,7 @@ public final class AccountInner extends Resource {
 
     /**
      * Get the privateEndpointConnections property: List of private endpoint connections associated with the account.
-     *
+     * 
      * @return the privateEndpointConnections value.
      */
     public List<PrivateEndpointConnectionInner> privateEndpointConnections() {
@@ -125,12 +154,12 @@ public final class AccountInner extends Resource {
 
     /**
      * Set the privateEndpointConnections property: List of private endpoint connections associated with the account.
-     *
+     * 
      * @param privateEndpointConnections the privateEndpointConnections value to set.
      * @return the AccountInner object itself.
      */
-    public AccountInner withPrivateEndpointConnections(
-        List<PrivateEndpointConnectionInner> privateEndpointConnections) {
+    public AccountInner
+        withPrivateEndpointConnections(List<PrivateEndpointConnectionInner> privateEndpointConnections) {
         if (this.innerProperties() == null) {
             this.innerProperties = new AccountProperties();
         }
@@ -140,7 +169,7 @@ public final class AccountInner extends Resource {
 
     /**
      * Get the sku property: Device Update Sku.
-     *
+     * 
      * @return the sku value.
      */
     public Sku sku() {
@@ -149,7 +178,7 @@ public final class AccountInner extends Resource {
 
     /**
      * Set the sku property: Device Update Sku.
-     *
+     * 
      * @param sku the sku value to set.
      * @return the AccountInner object itself.
      */
@@ -162,8 +191,31 @@ public final class AccountInner extends Resource {
     }
 
     /**
+     * Get the encryption property: CMK encryption at rest properties.
+     * 
+     * @return the encryption value.
+     */
+    public Encryption encryption() {
+        return this.innerProperties() == null ? null : this.innerProperties().encryption();
+    }
+
+    /**
+     * Set the encryption property: CMK encryption at rest properties.
+     * 
+     * @param encryption the encryption value to set.
+     * @return the AccountInner object itself.
+     */
+    public AccountInner withEncryption(Encryption encryption) {
+        if (this.innerProperties() == null) {
+            this.innerProperties = new AccountProperties();
+        }
+        this.innerProperties().withEncryption(encryption);
+        return this;
+    }
+
+    /**
      * Get the locations property: Device Update account primary and failover location details.
-     *
+     * 
      * @return the locations value.
      */
     public List<Location> locations() {
@@ -172,7 +224,7 @@ public final class AccountInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

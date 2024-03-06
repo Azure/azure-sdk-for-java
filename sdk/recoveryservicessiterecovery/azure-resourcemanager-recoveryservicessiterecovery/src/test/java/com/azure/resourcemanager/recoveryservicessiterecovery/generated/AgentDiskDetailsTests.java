@@ -10,11 +10,9 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.AgentDiskDe
 public final class AgentDiskDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AgentDiskDetails model =
-            BinaryData
-                .fromString(
-                    "{\"diskId\":\"nxakckyw\",\"diskName\":\"x\",\"isOSDisk\":\"abjkdtfohfao\",\"capacityInBytes\":5659515679437313606,\"lunId\":1355433605}")
-                .toObject(AgentDiskDetails.class);
+        AgentDiskDetails model = BinaryData.fromString(
+            "{\"diskId\":\"nxakckyw\",\"diskName\":\"x\",\"isOSDisk\":\"abjkdtfohfao\",\"capacityInBytes\":5659515679437313606,\"lunId\":1355433605}")
+            .toObject(AgentDiskDetails.class);
     }
 
     @org.junit.jupiter.api.Test

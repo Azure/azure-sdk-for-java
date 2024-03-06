@@ -22,8 +22,8 @@ public final class WebAppsUpdateApplicationSettingsSamples {
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void updateAppSettings(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure.webApps().manager().serviceClient().getWebApps().updateApplicationSettingsWithResponse("testrg123",
-            "sitef6141", new StringDictionaryInner().withProperties(mapOf("Setting1", "Value1", "Setting2", "Value2")),
+        azure.webApps().manager().serviceClient().getWebApps().updateApplicationSettings("testrg123", "sitef6141",
+            new StringDictionaryInner().withProperties(mapOf("Setting1", "Value1", "Setting2", "Value2")),
             com.azure.core.util.Context.NONE);
     }
 

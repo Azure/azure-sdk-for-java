@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** A list pipeline runs. */
+/**
+ * A list pipeline runs.
+ */
 @Fluent
 public final class PipelineRunsQueryResponseInner {
     /*
@@ -24,13 +26,15 @@ public final class PipelineRunsQueryResponseInner {
     @JsonProperty(value = "continuationToken")
     private String continuationToken;
 
-    /** Creates an instance of PipelineRunsQueryResponseInner class. */
+    /**
+     * Creates an instance of PipelineRunsQueryResponseInner class.
+     */
     public PipelineRunsQueryResponseInner() {
     }
 
     /**
      * Get the value property: List of pipeline runs.
-     *
+     * 
      * @return the value value.
      */
     public List<PipelineRunInner> value() {
@@ -39,7 +43,7 @@ public final class PipelineRunsQueryResponseInner {
 
     /**
      * Set the value property: List of pipeline runs.
-     *
+     * 
      * @param value the value value to set.
      * @return the PipelineRunsQueryResponseInner object itself.
      */
@@ -49,9 +53,9 @@ public final class PipelineRunsQueryResponseInner {
     }
 
     /**
-     * Get the continuationToken property: The continuation token for getting the next page of results, if any remaining
-     * results exist, null otherwise.
-     *
+     * Get the continuationToken property: The continuation token for getting the next page of results, if any
+     * remaining results exist, null otherwise.
+     * 
      * @return the continuationToken value.
      */
     public String continuationToken() {
@@ -59,9 +63,9 @@ public final class PipelineRunsQueryResponseInner {
     }
 
     /**
-     * Set the continuationToken property: The continuation token for getting the next page of results, if any remaining
-     * results exist, null otherwise.
-     *
+     * Set the continuationToken property: The continuation token for getting the next page of results, if any
+     * remaining results exist, null otherwise.
+     * 
      * @param continuationToken the continuationToken value to set.
      * @return the PipelineRunsQueryResponseInner object itself.
      */
@@ -72,15 +76,13 @@ public final class PipelineRunsQueryResponseInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model PipelineRunsQueryResponseInner"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property value in model PipelineRunsQueryResponseInner"));
         } else {
             value().forEach(e -> e.validate());
         }

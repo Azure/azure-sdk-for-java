@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Compute properties for data flow activity. */
+/**
+ * Compute properties for data flow activity.
+ */
 @Fluent
 public final class ExecuteDataFlowActivityTypePropertiesCompute {
     /*
@@ -24,14 +26,16 @@ public final class ExecuteDataFlowActivityTypePropertiesCompute {
     @JsonProperty(value = "coreCount")
     private Object coreCount;
 
-    /** Creates an instance of ExecuteDataFlowActivityTypePropertiesCompute class. */
+    /**
+     * Creates an instance of ExecuteDataFlowActivityTypePropertiesCompute class.
+     */
     public ExecuteDataFlowActivityTypePropertiesCompute() {
     }
 
     /**
      * Get the computeType property: Compute type of the cluster which will execute data flow job. Possible values
      * include: 'General', 'MemoryOptimized', 'ComputeOptimized'. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the computeType value.
      */
     public Object computeType() {
@@ -41,7 +45,7 @@ public final class ExecuteDataFlowActivityTypePropertiesCompute {
     /**
      * Set the computeType property: Compute type of the cluster which will execute data flow job. Possible values
      * include: 'General', 'MemoryOptimized', 'ComputeOptimized'. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param computeType the computeType value to set.
      * @return the ExecuteDataFlowActivityTypePropertiesCompute object itself.
      */
@@ -53,7 +57,7 @@ public final class ExecuteDataFlowActivityTypePropertiesCompute {
     /**
      * Get the coreCount property: Core count of the cluster which will execute data flow job. Supported values are: 8,
      * 16, 32, 48, 80, 144 and 272. Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @return the coreCount value.
      */
     public Object coreCount() {
@@ -63,7 +67,7 @@ public final class ExecuteDataFlowActivityTypePropertiesCompute {
     /**
      * Set the coreCount property: Core count of the cluster which will execute data flow job. Supported values are: 8,
      * 16, 32, 48, 80, 144 and 272. Type: integer (or Expression with resultType integer).
-     *
+     * 
      * @param coreCount the coreCount value to set.
      * @return the ExecuteDataFlowActivityTypePropertiesCompute object itself.
      */
@@ -74,7 +78,7 @@ public final class ExecuteDataFlowActivityTypePropertiesCompute {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

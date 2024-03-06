@@ -53,4 +53,9 @@ class InfinityPartitionKeyComponent implements IPartitionKeyComponent {
     public IPartitionKeyComponent truncate() {
         return this;
     }
+
+    @Override
+    public Object toObject() {
+        throw new UnsupportedOperationException("toObject is not supported for InfinityPartitionKeyComponent");
+    }
 }

@@ -34,10 +34,7 @@ public final class LocationsImpl implements Locations {
     public Response<BatchLocationQuota> getQuotasWithResponse(String locationName, Context context) {
         Response<BatchLocationQuotaInner> inner = this.serviceClient().getQuotasWithResponse(locationName, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new BatchLocationQuotaImpl(inner.getValue(), this.manager()));
         } else {
             return null;
@@ -58,10 +55,10 @@ public final class LocationsImpl implements Locations {
         return Utils.mapPage(inner, inner1 -> new SupportedSkuImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SupportedSku> listSupportedVirtualMachineSkus(
-        String locationName, Integer maxresults, String filter, Context context) {
-        PagedIterable<SupportedSkuInner> inner =
-            this.serviceClient().listSupportedVirtualMachineSkus(locationName, maxresults, filter, context);
+    public PagedIterable<SupportedSku> listSupportedVirtualMachineSkus(String locationName, Integer maxresults,
+        String filter, Context context) {
+        PagedIterable<SupportedSkuInner> inner
+            = this.serviceClient().listSupportedVirtualMachineSkus(locationName, maxresults, filter, context);
         return Utils.mapPage(inner, inner1 -> new SupportedSkuImpl(inner1, this.manager()));
     }
 
@@ -70,30 +67,27 @@ public final class LocationsImpl implements Locations {
         return Utils.mapPage(inner, inner1 -> new SupportedSkuImpl(inner1, this.manager()));
     }
 
-    public PagedIterable<SupportedSku> listSupportedCloudServiceSkus(
-        String locationName, Integer maxresults, String filter, Context context) {
-        PagedIterable<SupportedSkuInner> inner =
-            this.serviceClient().listSupportedCloudServiceSkus(locationName, maxresults, filter, context);
+    public PagedIterable<SupportedSku> listSupportedCloudServiceSkus(String locationName, Integer maxresults,
+        String filter, Context context) {
+        PagedIterable<SupportedSkuInner> inner
+            = this.serviceClient().listSupportedCloudServiceSkus(locationName, maxresults, filter, context);
         return Utils.mapPage(inner, inner1 -> new SupportedSkuImpl(inner1, this.manager()));
     }
 
-    public Response<CheckNameAvailabilityResult> checkNameAvailabilityWithResponse(
-        String locationName, CheckNameAvailabilityParameters parameters, Context context) {
-        Response<CheckNameAvailabilityResultInner> inner =
-            this.serviceClient().checkNameAvailabilityWithResponse(locationName, parameters, context);
+    public Response<CheckNameAvailabilityResult> checkNameAvailabilityWithResponse(String locationName,
+        CheckNameAvailabilityParameters parameters, Context context) {
+        Response<CheckNameAvailabilityResultInner> inner
+            = this.serviceClient().checkNameAvailabilityWithResponse(locationName, parameters, context);
         if (inner != null) {
-            return new SimpleResponse<>(
-                inner.getRequest(),
-                inner.getStatusCode(),
-                inner.getHeaders(),
+            return new SimpleResponse<>(inner.getRequest(), inner.getStatusCode(), inner.getHeaders(),
                 new CheckNameAvailabilityResultImpl(inner.getValue(), this.manager()));
         } else {
             return null;
         }
     }
 
-    public CheckNameAvailabilityResult checkNameAvailability(
-        String locationName, CheckNameAvailabilityParameters parameters) {
+    public CheckNameAvailabilityResult checkNameAvailability(String locationName,
+        CheckNameAvailabilityParameters parameters) {
         CheckNameAvailabilityResultInner inner = this.serviceClient().checkNameAvailability(locationName, parameters);
         if (inner != null) {
             return new CheckNameAvailabilityResultImpl(inner, this.manager());

@@ -8,7 +8,6 @@ stages:
       Clouds: 'Preview'
       SupportedClouds: 'Preview,UsGov,China'
       TimeoutInMinutes: 60
-      MaxParallel: 7
       CloudConfig:
         Preview:
           SubscriptionConfiguration: $(sub-config-azure-cloud-test-resources-preview)

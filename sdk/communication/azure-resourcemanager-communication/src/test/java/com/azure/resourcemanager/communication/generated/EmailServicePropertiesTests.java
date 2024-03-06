@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class EmailServicePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EmailServiceProperties model =
-            BinaryData
-                .fromString("{\"provisioningState\":\"Updating\",\"dataLocation\":\"zgpphrcgyncocpe\"}")
+        EmailServiceProperties model
+            = BinaryData.fromString("{\"provisioningState\":\"Updating\",\"dataLocation\":\"zgpphrcgyncocpe\"}")
                 .toObject(EmailServiceProperties.class);
         Assertions.assertEquals("zgpphrcgyncocpe", model.dataLocation());
     }

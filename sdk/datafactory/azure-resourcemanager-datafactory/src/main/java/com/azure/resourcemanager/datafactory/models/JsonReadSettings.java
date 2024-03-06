@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** Json read settings. */
+/**
+ * Json read settings.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("JsonReadSettings")
 @Fluent
@@ -20,13 +22,15 @@ public final class JsonReadSettings extends FormatReadSettings {
     @JsonProperty(value = "compressionProperties")
     private CompressionReadSettings compressionProperties;
 
-    /** Creates an instance of JsonReadSettings class. */
+    /**
+     * Creates an instance of JsonReadSettings class.
+     */
     public JsonReadSettings() {
     }
 
     /**
      * Get the compressionProperties property: Compression settings.
-     *
+     * 
      * @return the compressionProperties value.
      */
     public CompressionReadSettings compressionProperties() {
@@ -35,7 +39,7 @@ public final class JsonReadSettings extends FormatReadSettings {
 
     /**
      * Set the compressionProperties property: Compression settings.
-     *
+     * 
      * @param compressionProperties the compressionProperties value to set.
      * @return the JsonReadSettings object itself.
      */
@@ -46,7 +50,7 @@ public final class JsonReadSettings extends FormatReadSettings {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

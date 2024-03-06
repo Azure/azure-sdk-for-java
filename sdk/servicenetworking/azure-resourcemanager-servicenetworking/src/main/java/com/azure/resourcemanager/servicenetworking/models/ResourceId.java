@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Resource ID definition used by parent to reference child resources. */
+/**
+ * Resource ID definition used by parent to reference child resources.
+ */
 @Fluent
 public final class ResourceId {
     /*
@@ -17,13 +19,15 @@ public final class ResourceId {
     @JsonProperty(value = "id", required = true)
     private String id;
 
-    /** Creates an instance of ResourceId class. */
+    /**
+     * Creates an instance of ResourceId class.
+     */
     public ResourceId() {
     }
 
     /**
      * Get the id property: Resource ID of child resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -32,7 +36,7 @@ public final class ResourceId {
 
     /**
      * Set the id property: Resource ID of child resource.
-     *
+     * 
      * @param id the id value to set.
      * @return the ResourceId object itself.
      */
@@ -43,7 +47,7 @@ public final class ResourceId {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

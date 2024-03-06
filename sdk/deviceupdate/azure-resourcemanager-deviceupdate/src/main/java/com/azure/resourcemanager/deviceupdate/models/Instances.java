@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Instances. */
+/**
+ * Resource collection API of Instances.
+ */
 public interface Instances {
     /**
      * Returns instances for the given account name.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface Instances {
 
     /**
      * Returns instances for the given account name.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param context The context to associate with this operation.
@@ -37,7 +39,22 @@ public interface Instances {
 
     /**
      * Returns instance details for the given instance and account name.
-     *
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param accountName Account name.
+     * @param instanceName Instance name.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return device Update instance details along with {@link Response}.
+     */
+    Response<Instance> getWithResponse(String resourceGroupName, String accountName, String instanceName,
+        Context context);
+
+    /**
+     * Returns instance details for the given instance and account name.
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -49,35 +66,8 @@ public interface Instances {
     Instance get(String resourceGroupName, String accountName, String instanceName);
 
     /**
-     * Returns instance details for the given instance and account name.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param accountName Account name.
-     * @param instanceName Instance name.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return device Update instance details along with {@link Response}.
-     */
-    Response<Instance> getWithResponse(
-        String resourceGroupName, String accountName, String instanceName, Context context);
-
-    /**
      * Checks whether instance exists.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param accountName Account name.
-     * @param instanceName Instance name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     */
-    void head(String resourceGroupName, String accountName, String instanceName);
-
-    /**
-     * Checks whether instance exists.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -90,8 +80,20 @@ public interface Instances {
     Response<Void> headWithResponse(String resourceGroupName, String accountName, String instanceName, Context context);
 
     /**
+     * Checks whether instance exists.
+     * 
+     * @param resourceGroupName The resource group name.
+     * @param accountName Account name.
+     * @param instanceName Instance name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     */
+    void head(String resourceGroupName, String accountName, String instanceName);
+
+    /**
      * Deletes instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -103,7 +105,7 @@ public interface Instances {
 
     /**
      * Deletes instance.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param accountName Account name.
      * @param instanceName Instance name.
@@ -116,7 +118,7 @@ public interface Instances {
 
     /**
      * Returns instance details for the given instance and account name.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -127,7 +129,7 @@ public interface Instances {
 
     /**
      * Returns instance details for the given instance and account name.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -139,7 +141,7 @@ public interface Instances {
 
     /**
      * Deletes instance.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -149,7 +151,7 @@ public interface Instances {
 
     /**
      * Deletes instance.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -160,7 +162,7 @@ public interface Instances {
 
     /**
      * Begins definition for a new Instance resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new Instance definition.
      */

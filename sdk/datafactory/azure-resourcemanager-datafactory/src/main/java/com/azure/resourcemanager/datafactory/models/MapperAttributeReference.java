@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Attribute reference details for the referred column. */
+/**
+ * Attribute reference details for the referred column.
+ */
 @Fluent
 public final class MapperAttributeReference {
     /*
@@ -28,13 +30,15 @@ public final class MapperAttributeReference {
     @JsonProperty(value = "entityConnectionReference")
     private MapperConnectionReference entityConnectionReference;
 
-    /** Creates an instance of MapperAttributeReference class. */
+    /**
+     * Creates an instance of MapperAttributeReference class.
+     */
     public MapperAttributeReference() {
     }
 
     /**
      * Get the name property: Name of the column.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,7 +47,7 @@ public final class MapperAttributeReference {
 
     /**
      * Set the name property: Name of the column.
-     *
+     * 
      * @param name the name value to set.
      * @return the MapperAttributeReference object itself.
      */
@@ -54,7 +58,7 @@ public final class MapperAttributeReference {
 
     /**
      * Get the entity property: Name of the table.
-     *
+     * 
      * @return the entity value.
      */
     public String entity() {
@@ -63,7 +67,7 @@ public final class MapperAttributeReference {
 
     /**
      * Set the entity property: Name of the table.
-     *
+     * 
      * @param entity the entity value to set.
      * @return the MapperAttributeReference object itself.
      */
@@ -74,7 +78,7 @@ public final class MapperAttributeReference {
 
     /**
      * Get the entityConnectionReference property: The connection reference for the connection.
-     *
+     * 
      * @return the entityConnectionReference value.
      */
     public MapperConnectionReference entityConnectionReference() {
@@ -83,7 +87,7 @@ public final class MapperAttributeReference {
 
     /**
      * Set the entityConnectionReference property: The connection reference for the connection.
-     *
+     * 
      * @param entityConnectionReference the entityConnectionReference value to set.
      * @return the MapperAttributeReference object itself.
      */
@@ -94,7 +98,7 @@ public final class MapperAttributeReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

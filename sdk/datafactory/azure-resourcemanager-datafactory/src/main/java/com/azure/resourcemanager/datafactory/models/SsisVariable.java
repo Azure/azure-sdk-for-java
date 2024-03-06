@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Ssis variable. */
+/**
+ * Ssis variable.
+ */
 @Fluent
 public final class SsisVariable {
     /*
@@ -52,13 +54,15 @@ public final class SsisVariable {
     @JsonProperty(value = "sensitiveValue")
     private String sensitiveValue;
 
-    /** Creates an instance of SsisVariable class. */
+    /**
+     * Creates an instance of SsisVariable class.
+     */
     public SsisVariable() {
     }
 
     /**
      * Get the id property: Variable id.
-     *
+     * 
      * @return the id value.
      */
     public Long id() {
@@ -67,7 +71,7 @@ public final class SsisVariable {
 
     /**
      * Set the id property: Variable id.
-     *
+     * 
      * @param id the id value to set.
      * @return the SsisVariable object itself.
      */
@@ -78,7 +82,7 @@ public final class SsisVariable {
 
     /**
      * Get the name property: Variable name.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -87,7 +91,7 @@ public final class SsisVariable {
 
     /**
      * Set the name property: Variable name.
-     *
+     * 
      * @param name the name value to set.
      * @return the SsisVariable object itself.
      */
@@ -98,7 +102,7 @@ public final class SsisVariable {
 
     /**
      * Get the description property: Variable description.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -107,7 +111,7 @@ public final class SsisVariable {
 
     /**
      * Set the description property: Variable description.
-     *
+     * 
      * @param description the description value to set.
      * @return the SsisVariable object itself.
      */
@@ -118,7 +122,7 @@ public final class SsisVariable {
 
     /**
      * Get the dataType property: Variable type.
-     *
+     * 
      * @return the dataType value.
      */
     public String dataType() {
@@ -127,7 +131,7 @@ public final class SsisVariable {
 
     /**
      * Set the dataType property: Variable type.
-     *
+     * 
      * @param dataType the dataType value to set.
      * @return the SsisVariable object itself.
      */
@@ -138,7 +142,7 @@ public final class SsisVariable {
 
     /**
      * Get the sensitive property: Whether variable is sensitive.
-     *
+     * 
      * @return the sensitive value.
      */
     public Boolean sensitive() {
@@ -147,7 +151,7 @@ public final class SsisVariable {
 
     /**
      * Set the sensitive property: Whether variable is sensitive.
-     *
+     * 
      * @param sensitive the sensitive value to set.
      * @return the SsisVariable object itself.
      */
@@ -158,7 +162,7 @@ public final class SsisVariable {
 
     /**
      * Get the value property: Variable value.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -167,7 +171,7 @@ public final class SsisVariable {
 
     /**
      * Set the value property: Variable value.
-     *
+     * 
      * @param value the value value to set.
      * @return the SsisVariable object itself.
      */
@@ -178,7 +182,7 @@ public final class SsisVariable {
 
     /**
      * Get the sensitiveValue property: Variable sensitive value.
-     *
+     * 
      * @return the sensitiveValue value.
      */
     public String sensitiveValue() {
@@ -187,7 +191,7 @@ public final class SsisVariable {
 
     /**
      * Set the sensitiveValue property: Variable sensitive value.
-     *
+     * 
      * @param sensitiveValue the sensitiveValue value to set.
      * @return the SsisVariable object itself.
      */
@@ -198,7 +202,7 @@ public final class SsisVariable {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

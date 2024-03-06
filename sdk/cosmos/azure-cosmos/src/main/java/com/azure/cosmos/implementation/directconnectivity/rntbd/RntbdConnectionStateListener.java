@@ -171,11 +171,15 @@ public class RntbdConnectionStateListener {
 
         AtomicBoolean isRequestCancelledOnTimeout = request.requestContext.isRequestCancelledOnTimeout();
 
+        boolean shouldRefreshForException = shouldRefreshForException(exception);
+        logger.trace("attemptBackgroundRefresh - isRequestCancelledOnTimeout: {}, shouldRefreshForException: {}", isRequestCancelledOnTimeout, shouldRefreshForException);
         if (isRequestCancelledOnTimeout == null
             || !isRequestCancelledOnTimeout.get()
-            || !shouldRefreshForException(exception)) {
+            || !shouldRefreshForException) {
             return;
         }
+
+        logger.trace("attemptBackgroundRefresh - isE2E timeout set");
 
         final boolean forceAddressRefresh = request.requestContext.forceRefreshAddressCache;
 

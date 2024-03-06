@@ -4,6 +4,7 @@ package com.azure.cosmos.models;
 
 import com.azure.cosmos.implementation.Resource;
 import com.azure.cosmos.implementation.UserDefinedFunction;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import java.time.Instant;
 import java.util.List;
@@ -38,10 +39,10 @@ public final class CosmosUserDefinedFunctionProperties {
     /**
      * Constructor.
      *
-     * @param jsonString the JSON string that represents the cosmos user defined function properties.
+     * @param jsonNode the JSON node that represents the cosmos user defined function properties.
      */
-    CosmosUserDefinedFunctionProperties(String jsonString) {
-        this.userDefinedFunction = new UserDefinedFunction(jsonString);
+    CosmosUserDefinedFunctionProperties(ObjectNode jsonNode) {
+        this.userDefinedFunction = new UserDefinedFunction(jsonNode);
     }
 
     /**
@@ -118,7 +119,7 @@ public final class CosmosUserDefinedFunctionProperties {
     }
 
     static List<CosmosUserDefinedFunctionProperties> getFromV2Results(List<UserDefinedFunction> results) {
-        return results.stream().map(udf -> new CosmosUserDefinedFunctionProperties(udf.toJson()))
+        return results.stream().map(udf -> new CosmosUserDefinedFunctionProperties(udf.getPropertyBag()))
                    .collect(Collectors.toList());
     }
 }

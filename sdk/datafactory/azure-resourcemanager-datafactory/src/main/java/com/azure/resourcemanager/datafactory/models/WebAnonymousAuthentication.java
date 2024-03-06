@@ -8,16 +8,22 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A WebLinkedService that uses anonymous authentication to communicate with an HTTP endpoint. */
+/**
+ * A WebLinkedService that uses anonymous authentication to communicate with an HTTP endpoint.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "authenticationType")
 @JsonTypeName("Anonymous")
 @Fluent
 public final class WebAnonymousAuthentication extends WebLinkedServiceTypeProperties {
-    /** Creates an instance of WebAnonymousAuthentication class. */
+    /**
+     * Creates an instance of WebAnonymousAuthentication class.
+     */
     public WebAnonymousAuthentication() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public WebAnonymousAuthentication withUrl(Object url) {
         super.withUrl(url);
@@ -26,7 +32,7 @@ public final class WebAnonymousAuthentication extends WebLinkedServiceTypeProper
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

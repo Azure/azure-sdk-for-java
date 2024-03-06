@@ -7,7 +7,9 @@ package com.azure.resourcemanager.netapp.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SubscriptionQuotaItem Properties. */
+/**
+ * SubscriptionQuotaItem Properties.
+ */
 @Immutable
 public final class SubscriptionQuotaItemProperties {
     /*
@@ -22,13 +24,15 @@ public final class SubscriptionQuotaItemProperties {
     @JsonProperty(value = "default", access = JsonProperty.Access.WRITE_ONLY)
     private Integer defaultProperty;
 
-    /** Creates an instance of SubscriptionQuotaItemProperties class. */
+    /**
+     * Creates an instance of SubscriptionQuotaItemProperties class.
+     */
     public SubscriptionQuotaItemProperties() {
     }
 
     /**
      * Get the current property: The current quota value.
-     *
+     * 
      * @return the current value.
      */
     public Integer current() {
@@ -37,7 +41,7 @@ public final class SubscriptionQuotaItemProperties {
 
     /**
      * Get the defaultProperty property: The default quota value.
-     *
+     * 
      * @return the defaultProperty value.
      */
     public Integer defaultProperty() {
@@ -46,7 +50,7 @@ public final class SubscriptionQuotaItemProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

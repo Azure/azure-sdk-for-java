@@ -20,9 +20,11 @@ import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextW
  * Base class for all proton-j handlers.
  */
 public abstract class Handler extends BaseHandler implements Closeable {
+    // The flux streaming state of the amqp endpoint (connection, session, link) from this handler receives events.
+    private final Sinks.Many<EndpointState> endpointStates
+        = Sinks.many().replay().latestOrDefault(EndpointState.UNINITIALIZED);
+    // The flag indicating if the endpointStates Flux reached terminal state (error-ed or completed).
     private final AtomicBoolean isTerminal = new AtomicBoolean();
-    private final Sinks.Many<EndpointState> endpointStates = Sinks.many().replay()
-        .latestOrDefault(EndpointState.UNINITIALIZED);
     private final String connectionId;
     private final String hostname;
 
@@ -106,7 +108,7 @@ public abstract class Handler extends BaseHandler implements Closeable {
      *
      * @param error The error to emit.
      */
-    void onError(Throwable error) {
+    public void onError(Throwable error) {
         if (isTerminal.getAndSet(true)) {
             return;
         }
@@ -118,8 +120,7 @@ public abstract class Handler extends BaseHandler implements Closeable {
 
                 return true;
             } else {
-                addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult)
-                    .log("Could not emit error.", error);
+                addSignalTypeAndResult(logger.atVerbose(), signalType, emitResult).log("Could not emit error.", error);
 
                 return false;
             }
@@ -159,8 +160,7 @@ public abstract class Handler extends BaseHandler implements Closeable {
 
                 return true;
             } else {
-                addSignalTypeAndResult(logger.atInfo(), signalType, emitResult)
-                    .log("Could not emit complete.");
+                addSignalTypeAndResult(logger.atInfo(), signalType, emitResult).log("Could not emit complete.");
 
                 return false;
             }

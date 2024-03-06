@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The Dynamics entity dataset. */
+/**
+ * The Dynamics entity dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("DynamicsEntity")
 @JsonFlatten
@@ -24,12 +26,16 @@ public class DynamicsEntityDataset extends Dataset {
     @JsonProperty(value = "typeProperties.entityName")
     private Object entityName;
 
-    /** Creates an instance of DynamicsEntityDataset class. */
-    public DynamicsEntityDataset() {}
+    /**
+     * Creates an instance of DynamicsEntityDataset class.
+     */
+    public DynamicsEntityDataset() {
+    }
 
     /**
-     * Get the entityName property: The logical name of the entity. Type: string (or Expression with resultType string).
-     *
+     * Get the entityName property: The logical name of the entity. Type: string (or Expression with resultType
+     * string).
+     * 
      * @return the entityName value.
      */
     public Object getEntityName() {
@@ -37,8 +43,9 @@ public class DynamicsEntityDataset extends Dataset {
     }
 
     /**
-     * Set the entityName property: The logical name of the entity. Type: string (or Expression with resultType string).
-     *
+     * Set the entityName property: The logical name of the entity. Type: string (or Expression with resultType
+     * string).
+     * 
      * @param entityName the entityName value to set.
      * @return the DynamicsEntityDataset object itself.
      */
@@ -47,49 +54,63 @@ public class DynamicsEntityDataset extends Dataset {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsEntityDataset setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsEntityDataset setStructure(Object structure) {
         super.setStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsEntityDataset setSchema(Object schema) {
         super.setSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsEntityDataset setLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.setLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsEntityDataset setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsEntityDataset setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public DynamicsEntityDataset setFolder(DatasetFolder folder) {
         super.setFolder(folder);

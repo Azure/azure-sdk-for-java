@@ -6,21 +6,29 @@ package com.azure.resourcemanager.cosmos.models;
 
 import com.azure.core.annotation.Fluent;
 
-/** The MongoDBDatabaseGetPropertiesOptions model. */
+/**
+ * The MongoDBDatabaseGetPropertiesOptions model.
+ */
 @Fluent
 public final class MongoDBDatabaseGetPropertiesOptions extends OptionsResource {
-    /** Creates an instance of MongoDBDatabaseGetPropertiesOptions class. */
+    /**
+     * Creates an instance of MongoDBDatabaseGetPropertiesOptions class.
+     */
     public MongoDBDatabaseGetPropertiesOptions() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDBDatabaseGetPropertiesOptions withThroughput(Integer throughput) {
         super.withThroughput(throughput);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public MongoDBDatabaseGetPropertiesOptions withAutoscaleSettings(AutoscaleSettings autoscaleSettings) {
         super.withAutoscaleSettings(autoscaleSettings);
@@ -29,7 +37,7 @@ public final class MongoDBDatabaseGetPropertiesOptions extends OptionsResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

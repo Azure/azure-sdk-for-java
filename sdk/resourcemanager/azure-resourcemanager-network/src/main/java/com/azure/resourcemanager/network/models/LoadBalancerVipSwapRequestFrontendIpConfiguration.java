@@ -9,7 +9,9 @@ import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.network.fluent.models.LoadBalancerVipSwapRequestFrontendIpConfigurationProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** VIP swap request's frontend IP configuration object. */
+/**
+ * VIP swap request's frontend IP configuration object.
+ */
 @Fluent
 public final class LoadBalancerVipSwapRequestFrontendIpConfiguration {
     /*
@@ -24,13 +26,15 @@ public final class LoadBalancerVipSwapRequestFrontendIpConfiguration {
     @JsonProperty(value = "properties")
     private LoadBalancerVipSwapRequestFrontendIpConfigurationProperties innerProperties;
 
-    /** Creates an instance of LoadBalancerVipSwapRequestFrontendIpConfiguration class. */
+    /**
+     * Creates an instance of LoadBalancerVipSwapRequestFrontendIpConfiguration class.
+     */
     public LoadBalancerVipSwapRequestFrontendIpConfiguration() {
     }
 
     /**
      * Get the id property: The ID of frontend IP configuration resource.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -39,7 +43,7 @@ public final class LoadBalancerVipSwapRequestFrontendIpConfiguration {
 
     /**
      * Set the id property: The ID of frontend IP configuration resource.
-     *
+     * 
      * @param id the id value to set.
      * @return the LoadBalancerVipSwapRequestFrontendIpConfiguration object itself.
      */
@@ -50,7 +54,7 @@ public final class LoadBalancerVipSwapRequestFrontendIpConfiguration {
 
     /**
      * Get the innerProperties property: The properties of VIP swap request's frontend IP configuration object.
-     *
+     * 
      * @return the innerProperties value.
      */
     private LoadBalancerVipSwapRequestFrontendIpConfigurationProperties innerProperties() {
@@ -59,7 +63,7 @@ public final class LoadBalancerVipSwapRequestFrontendIpConfiguration {
 
     /**
      * Get the publicIpAddress property: A reference to public IP address resource.
-     *
+     * 
      * @return the publicIpAddress value.
      */
     public SubResource publicIpAddress() {
@@ -68,7 +72,7 @@ public final class LoadBalancerVipSwapRequestFrontendIpConfiguration {
 
     /**
      * Set the publicIpAddress property: A reference to public IP address resource.
-     *
+     * 
      * @param publicIpAddress the publicIpAddress value to set.
      * @return the LoadBalancerVipSwapRequestFrontendIpConfiguration object itself.
      */
@@ -82,7 +86,7 @@ public final class LoadBalancerVipSwapRequestFrontendIpConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

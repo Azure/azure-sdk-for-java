@@ -10,7 +10,9 @@ import com.azure.resourcemanager.cosmos.models.Role;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** An Azure Cosmos DB User Definition. */
+/**
+ * An Azure Cosmos DB User Definition.
+ */
 @Fluent
 public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
     /*
@@ -19,13 +21,15 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
     @JsonProperty(value = "properties")
     private MongoUserDefinitionResource innerProperties;
 
-    /** Creates an instance of MongoUserDefinitionGetResultsInner class. */
+    /**
+     * Creates an instance of MongoUserDefinitionGetResultsInner class.
+     */
     public MongoUserDefinitionGetResultsInner() {
     }
 
     /**
      * Get the innerProperties property: Properties related to the User Definition.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MongoUserDefinitionResource innerProperties() {
@@ -34,7 +38,7 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Get the username property: The user name for User Definition.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -43,7 +47,7 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Set the username property: The user name for User Definition.
-     *
+     * 
      * @param username the username value to set.
      * @return the MongoUserDefinitionGetResultsInner object itself.
      */
@@ -57,7 +61,7 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Get the password property: The password for User Definition. Response does not contain user password.
-     *
+     * 
      * @return the password value.
      */
     public String password() {
@@ -66,7 +70,7 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Set the password property: The password for User Definition. Response does not contain user password.
-     *
+     * 
      * @param password the password value to set.
      * @return the MongoUserDefinitionGetResultsInner object itself.
      */
@@ -80,7 +84,7 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Get the databaseName property: The database name for which access is being granted for this User Definition.
-     *
+     * 
      * @return the databaseName value.
      */
     public String databaseName() {
@@ -89,7 +93,7 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Set the databaseName property: The database name for which access is being granted for this User Definition.
-     *
+     * 
      * @param databaseName the databaseName value to set.
      * @return the MongoUserDefinitionGetResultsInner object itself.
      */
@@ -103,7 +107,7 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Get the customData property: A custom definition for the USer Definition.
-     *
+     * 
      * @return the customData value.
      */
     public String customData() {
@@ -112,7 +116,7 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Set the customData property: A custom definition for the USer Definition.
-     *
+     * 
      * @param customData the customData value to set.
      * @return the MongoUserDefinitionGetResultsInner object itself.
      */
@@ -126,7 +130,7 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Get the roles property: The set of roles inherited by the User Definition.
-     *
+     * 
      * @return the roles value.
      */
     public List<Role> roles() {
@@ -135,7 +139,7 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Set the roles property: The set of roles inherited by the User Definition.
-     *
+     * 
      * @param roles the roles value to set.
      * @return the MongoUserDefinitionGetResultsInner object itself.
      */
@@ -149,7 +153,7 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Get the mechanisms property: The Mongo Auth mechanism. For now, we only support auth mechanism SCRAM-SHA-256.
-     *
+     * 
      * @return the mechanisms value.
      */
     public String mechanisms() {
@@ -158,7 +162,7 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Set the mechanisms property: The Mongo Auth mechanism. For now, we only support auth mechanism SCRAM-SHA-256.
-     *
+     * 
      * @param mechanisms the mechanisms value to set.
      * @return the MongoUserDefinitionGetResultsInner object itself.
      */
@@ -172,7 +176,7 @@ public final class MongoUserDefinitionGetResultsInner extends ArmProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

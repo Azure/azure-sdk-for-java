@@ -3,7 +3,6 @@
 
 package com.azure.core.util.io;
 
-
 import com.azure.core.TestByteArrayOutputStream;
 import com.azure.core.http.HttpMethod;
 import com.azure.core.http.HttpRequest;
@@ -107,15 +106,16 @@ public class IOUtilsTest {
         byte[] written = new byte[data.length];
         MockAsynchronousFileChannel mockAsynchronousFileChannel = new MockAsynchronousFileChannel(written);
 
-        Function<Integer, Flux<ByteBuffer>> fluxSupplier = offset -> Flux.generate(() -> offset, (currentOffset, sink) -> {
-            int size = Math.min(4096, data.length - currentOffset);
-            if (size > 0) {
-                sink.next(ByteBuffer.wrap(data, currentOffset, size));
-            } else {
-                sink.complete();
-            }
-            return currentOffset + size;
-        });
+        Function<Integer, Flux<ByteBuffer>> fluxSupplier
+            = offset -> Flux.generate(() -> offset, (currentOffset, sink) -> {
+                int size = Math.min(4096, data.length - currentOffset);
+                if (size > 0) {
+                    sink.next(ByteBuffer.wrap(data, currentOffset, size));
+                } else {
+                    sink.complete();
+                }
+                return currentOffset + size;
+            });
         AtomicInteger retries = new AtomicInteger();
         ConcurrentLinkedQueue<Long> offsets = new ConcurrentLinkedQueue<>();
         ConcurrentLinkedQueue<Throwable> throwables = new ConcurrentLinkedQueue<>();
@@ -127,18 +127,19 @@ public class IOUtilsTest {
             retries.incrementAndGet();
             offsets.add(offset);
             throwables.add(throwable);
-            MockFluxHttpResponse newHttpResponse = new MockFluxHttpResponse(MOCK_REQUEST,
-                fluxSupplier.apply(offset.intValue()));
+            MockFluxHttpResponse newHttpResponse
+                = new MockFluxHttpResponse(MOCK_REQUEST, fluxSupplier.apply(offset.intValue()));
             responses.add(newHttpResponse);
             return Mono.just(new StreamResponse(newHttpResponse));
         };
 
-        try (FaultyAsynchronousByteChannel channel = new FaultyAsynchronousByteChannel(
-            IOUtils.toAsynchronousByteChannel(mockAsynchronousFileChannel, 0),
-            () -> new IOException("KABOOM"), 3, 16384)) {
+        try (FaultyAsynchronousByteChannel channel
+            = new FaultyAsynchronousByteChannel(IOUtils.toAsynchronousByteChannel(mockAsynchronousFileChannel, 0),
+                () -> new IOException("KABOOM"), 3, 16384)) {
 
-            StepVerifier.create(IOUtils.transferStreamResponseToAsynchronousByteChannel(
-                    channel, initialResponse, onErrorResume, null, 5))
+            StepVerifier
+                .create(IOUtils.transferStreamResponseToAsynchronousByteChannel(channel, initialResponse, onErrorResume,
+                    null, 5))
                 .verifyComplete();
         }
 
@@ -162,15 +163,16 @@ public class IOUtilsTest {
         byte[] written = new byte[1024];
         MockAsynchronousFileChannel mockAsynchronousFileChannel = new MockAsynchronousFileChannel(written);
 
-        Function<Integer, Flux<ByteBuffer>> fluxSupplier = offset -> Flux.generate(() -> offset, (currentOffset, sink) -> {
-            int size = Math.min(256, data.length - currentOffset);
-            if (size > 0) {
-                sink.next(ByteBuffer.wrap(data, currentOffset, size));
-            } else {
-                sink.complete();
-            }
-            return currentOffset + size;
-        });
+        Function<Integer, Flux<ByteBuffer>> fluxSupplier
+            = offset -> Flux.generate(() -> offset, (currentOffset, sink) -> {
+                int size = Math.min(256, data.length - currentOffset);
+                if (size > 0) {
+                    sink.next(ByteBuffer.wrap(data, currentOffset, size));
+                } else {
+                    sink.complete();
+                }
+                return currentOffset + size;
+            });
         AtomicInteger retries = new AtomicInteger();
         ConcurrentLinkedQueue<Long> offsets = new ConcurrentLinkedQueue<>();
         ConcurrentLinkedQueue<Throwable> throwables = new ConcurrentLinkedQueue<>();
@@ -182,18 +184,19 @@ public class IOUtilsTest {
             retries.incrementAndGet();
             offsets.add(offset);
             throwables.add(throwable);
-            MockFluxHttpResponse newHttpResponse = new MockFluxHttpResponse(MOCK_REQUEST,
-                fluxSupplier.apply(offset.intValue()));
+            MockFluxHttpResponse newHttpResponse
+                = new MockFluxHttpResponse(MOCK_REQUEST, fluxSupplier.apply(offset.intValue()));
             responses.add(newHttpResponse);
             return Mono.just(new StreamResponse(newHttpResponse));
         };
 
-        try (FaultyAsynchronousByteChannel channel = new FaultyAsynchronousByteChannel(
-            IOUtils.toAsynchronousByteChannel(mockAsynchronousFileChannel, 0),
-            () -> new IOException("KABOOM"), 3, 1024)) {
+        try (FaultyAsynchronousByteChannel channel
+            = new FaultyAsynchronousByteChannel(IOUtils.toAsynchronousByteChannel(mockAsynchronousFileChannel, 0),
+                () -> new IOException("KABOOM"), 3, 1024)) {
 
-            StepVerifier.create(IOUtils.transferStreamResponseToAsynchronousByteChannel(
-                    channel, initialResponse, onErrorResume, null, 2))
+            StepVerifier
+                .create(IOUtils.transferStreamResponseToAsynchronousByteChannel(channel, initialResponse, onErrorResume,
+                    null, 2))
                 .expectErrorMessage("KABOOM")
                 .verify();
         }

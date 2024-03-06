@@ -11,19 +11,17 @@ import org.junit.jupiter.api.Assertions;
 public final class EnvironmentSettingTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        EnvironmentSetting model =
-            BinaryData
-                .fromString("{\"name\":\"rthzvaytdwkqbrqu\",\"value\":\"axhexiilivp\"}")
-                .toObject(EnvironmentSetting.class);
-        Assertions.assertEquals("rthzvaytdwkqbrqu", model.name());
-        Assertions.assertEquals("axhexiilivp", model.value());
+        EnvironmentSetting model = BinaryData.fromString("{\"name\":\"eqidbqfatpx\",\"value\":\"rxcyjmoad\"}")
+            .toObject(EnvironmentSetting.class);
+        Assertions.assertEquals("eqidbqfatpx", model.name());
+        Assertions.assertEquals("rxcyjmoad", model.value());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        EnvironmentSetting model = new EnvironmentSetting().withName("rthzvaytdwkqbrqu").withValue("axhexiilivp");
+        EnvironmentSetting model = new EnvironmentSetting().withName("eqidbqfatpx").withValue("rxcyjmoad");
         model = BinaryData.fromObject(model).toObject(EnvironmentSetting.class);
-        Assertions.assertEquals("rthzvaytdwkqbrqu", model.name());
-        Assertions.assertEquals("axhexiilivp", model.value());
+        Assertions.assertEquals("eqidbqfatpx", model.name());
+        Assertions.assertEquals("rxcyjmoad", model.value());
     }
 }

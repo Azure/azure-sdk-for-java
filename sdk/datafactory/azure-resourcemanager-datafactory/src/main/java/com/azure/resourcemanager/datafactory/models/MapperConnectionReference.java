@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Source or target connection reference details. */
+/**
+ * Source or target connection reference details.
+ */
 @Fluent
 public final class MapperConnectionReference {
     /*
@@ -22,13 +24,15 @@ public final class MapperConnectionReference {
     @JsonProperty(value = "type")
     private ConnectionType type;
 
-    /** Creates an instance of MapperConnectionReference class. */
+    /**
+     * Creates an instance of MapperConnectionReference class.
+     */
     public MapperConnectionReference() {
     }
 
     /**
      * Get the connectionName property: Name of the connection.
-     *
+     * 
      * @return the connectionName value.
      */
     public String connectionName() {
@@ -37,7 +41,7 @@ public final class MapperConnectionReference {
 
     /**
      * Set the connectionName property: Name of the connection.
-     *
+     * 
      * @param connectionName the connectionName value to set.
      * @return the MapperConnectionReference object itself.
      */
@@ -48,7 +52,7 @@ public final class MapperConnectionReference {
 
     /**
      * Get the type property: Type of connection via linked service or dataset.
-     *
+     * 
      * @return the type value.
      */
     public ConnectionType type() {
@@ -57,7 +61,7 @@ public final class MapperConnectionReference {
 
     /**
      * Set the type property: Type of connection via linked service or dataset.
-     *
+     * 
      * @param type the type value to set.
      * @return the MapperConnectionReference object itself.
      */
@@ -68,7 +72,7 @@ public final class MapperConnectionReference {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

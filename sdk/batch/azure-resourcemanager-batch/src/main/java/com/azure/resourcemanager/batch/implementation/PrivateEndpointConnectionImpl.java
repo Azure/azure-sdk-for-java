@@ -17,8 +17,8 @@ public final class PrivateEndpointConnectionImpl implements PrivateEndpointConne
 
     private final com.azure.resourcemanager.batch.BatchManager serviceManager;
 
-    PrivateEndpointConnectionImpl(
-        PrivateEndpointConnectionInner innerObject, com.azure.resourcemanager.batch.BatchManager serviceManager) {
+    PrivateEndpointConnectionImpl(PrivateEndpointConnectionInner innerObject,
+        com.azure.resourcemanager.batch.BatchManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

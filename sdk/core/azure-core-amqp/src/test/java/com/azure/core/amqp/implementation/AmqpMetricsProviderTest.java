@@ -39,7 +39,6 @@ public class AmqpMetricsProviderTest {
     private static final String ENTITY_NAME = "name";
     private static final String ENTITY_PATH = "name/and/partition";
 
-
     @Test
     public void nullNamespaceIsOk() {
         assertDoesNotThrow(() -> new AmqpMetricsProvider(null, null, null));
@@ -59,7 +58,8 @@ public class AmqpMetricsProviderTest {
         assertDoesNotThrow(() -> provider.recordSend(0, DeliveryState.DeliveryStateType.Accepted));
         assertDoesNotThrow(() -> provider.recordSend(0, null));
         assertDoesNotThrow(() -> provider.trackPrefetchSequenceNumber(() -> Long.valueOf(1)));
-        assertDoesNotThrow(() -> provider.recordHandlerError(AmqpMetricsProvider.ErrorSource.TRANSPORT, new ErrorCondition(TIMEOUT_SYMBOL, "")));
+        assertDoesNotThrow(() -> provider.recordHandlerError(AmqpMetricsProvider.ErrorSource.TRANSPORT,
+            new ErrorCondition(TIMEOUT_SYMBOL, "")));
         assertDoesNotThrow(() -> provider.recordHandlerError(null, new ErrorCondition(TIMEOUT_SYMBOL, "")));
 
         assertEquals(0, meter.getCounters().size());
@@ -80,7 +80,8 @@ public class AmqpMetricsProviderTest {
         assertDoesNotThrow(() -> provider.recordSend(0, DeliveryState.DeliveryStateType.Accepted));
         assertDoesNotThrow(() -> provider.recordSend(0, null));
         assertDoesNotThrow(() -> provider.trackPrefetchSequenceNumber(() -> Long.valueOf(1)));
-        assertDoesNotThrow(() -> provider.recordHandlerError(AmqpMetricsProvider.ErrorSource.LINK, new ErrorCondition(TIMEOUT_SYMBOL, "")));
+        assertDoesNotThrow(() -> provider.recordHandlerError(AmqpMetricsProvider.ErrorSource.LINK,
+            new ErrorCondition(TIMEOUT_SYMBOL, "")));
         assertDoesNotThrow(() -> provider.recordHandlerError(null, new ErrorCondition(TIMEOUT_SYMBOL, "")));
     }
 
@@ -237,7 +238,8 @@ public class AmqpMetricsProviderTest {
 
     private Message createMessage(Object seqNo) {
         Message msg = Proton.message();
-        MessageAnnotations annotations = new MessageAnnotations(Collections.singletonMap(Symbol.valueOf("x-opt-sequence-number"), seqNo));
+        MessageAnnotations annotations
+            = new MessageAnnotations(Collections.singletonMap(Symbol.valueOf("x-opt-sequence-number"), seqNo));
         msg.setMessageAnnotations(annotations);
         msg.setBody(new AmqpValue("body"));
 
@@ -301,7 +303,8 @@ public class AmqpMetricsProviderTest {
         assertEquals("com.microsoft:timeout", measurement1.getAttributes().get(ClientConstants.ERROR_CONDITION_KEY));
     }
 
-    public void assertCommonAttributes(Map<String, Object> actual, String expectedNamespace, String expectedEntityName, String expectedEntityPath) {
+    public void assertCommonAttributes(Map<String, Object> actual, String expectedNamespace, String expectedEntityName,
+        String expectedEntityPath) {
         assertEquals(expectedNamespace, actual.get(ClientConstants.HOSTNAME_KEY));
         if (expectedEntityName != null) {
             assertEquals(expectedEntityName, actual.get(ClientConstants.ENTITY_NAME_KEY));

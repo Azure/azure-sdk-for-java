@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Rule to filter client IP address. */
+/**
+ * Rule to filter client IP address.
+ */
 @Fluent
 public final class IpRule {
     /*
@@ -19,20 +21,21 @@ public final class IpRule {
 
     /*
      * The IP address or IP address range to filter
-     *
+     * 
      * IPv4 address, or IPv4 address range in CIDR format.
      */
     @JsonProperty(value = "value", required = true)
     private String value;
 
-    /** Creates an instance of IpRule class. */
+    /**
+     * Creates an instance of IpRule class.
+     */
     public IpRule() {
-        action = "Allow";
     }
 
     /**
      * Get the action property: Action when client IP address is matched.
-     *
+     * 
      * @return the action value.
      */
     public String action() {
@@ -41,7 +44,7 @@ public final class IpRule {
 
     /**
      * Set the action property: Action when client IP address is matched.
-     *
+     * 
      * @param action the action value to set.
      * @return the IpRule object itself.
      */
@@ -52,9 +55,9 @@ public final class IpRule {
 
     /**
      * Get the value property: The IP address or IP address range to filter
-     *
-     * <p>IPv4 address, or IPv4 address range in CIDR format.
-     *
+     * 
+     * IPv4 address, or IPv4 address range in CIDR format.
+     * 
      * @return the value value.
      */
     public String value() {
@@ -63,9 +66,9 @@ public final class IpRule {
 
     /**
      * Set the value property: The IP address or IP address range to filter
-     *
-     * <p>IPv4 address, or IPv4 address range in CIDR format.
-     *
+     * 
+     * IPv4 address, or IPv4 address range in CIDR format.
+     * 
      * @param value the value value to set.
      * @return the IpRule object itself.
      */
@@ -76,7 +79,7 @@ public final class IpRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

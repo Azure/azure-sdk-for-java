@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Details of the customer managed key associated with the workspace. */
+/**
+ * Details of the customer managed key associated with the workspace.
+ */
 @Fluent
 public final class CustomerManagedKeyDetails {
     /*
@@ -22,12 +24,15 @@ public final class CustomerManagedKeyDetails {
     @JsonProperty(value = "key")
     private WorkspaceKeyDetails key;
 
-    /** Creates an instance of CustomerManagedKeyDetails class. */
-    public CustomerManagedKeyDetails() {}
+    /**
+     * Creates an instance of CustomerManagedKeyDetails class.
+     */
+    public CustomerManagedKeyDetails() {
+    }
 
     /**
      * Get the status property: The customer managed key status on the workspace.
-     *
+     * 
      * @return the status value.
      */
     public String getStatus() {
@@ -36,7 +41,7 @@ public final class CustomerManagedKeyDetails {
 
     /**
      * Get the key property: The key object of the workspace.
-     *
+     * 
      * @return the key value.
      */
     public WorkspaceKeyDetails getKey() {
@@ -45,7 +50,7 @@ public final class CustomerManagedKeyDetails {
 
     /**
      * Set the key property: The key object of the workspace.
-     *
+     * 
      * @param key the key value to set.
      * @return the CustomerManagedKeyDetails object itself.
      */

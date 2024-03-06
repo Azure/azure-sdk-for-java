@@ -15,14 +15,17 @@ import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.http.rest.Response;
 import reactor.core.publisher.Mono;
 
-/** Initializes a new instance of the asynchronous ArtifactsClient type. */
+/**
+ * Initializes a new instance of the asynchronous ArtifactsClient type.
+ */
 @ServiceClient(builder = ArtifactsClientBuilder.class, isAsync = true)
 public final class BigDataPoolsAsyncClient {
-    @Generated private final BigDataPoolsImpl serviceClient;
+    @Generated
+    private final BigDataPoolsImpl serviceClient;
 
     /**
      * Initializes an instance of BigDataPoolsAsyncClient class.
-     *
+     * 
      * @param serviceClient the service client implementation.
      */
     @Generated
@@ -32,7 +35,7 @@ public final class BigDataPoolsAsyncClient {
 
     /**
      * List Big Data Pools.
-     *
+     * 
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Big Data pools along with {@link Response} on successful completion of {@link Mono}.
@@ -45,7 +48,7 @@ public final class BigDataPoolsAsyncClient {
 
     /**
      * List Big Data Pools.
-     *
+     * 
      * @throws ErrorContractException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return collection of Big Data pools on successful completion of {@link Mono}.
@@ -58,7 +61,7 @@ public final class BigDataPoolsAsyncClient {
 
     /**
      * Get Big Data Pool.
-     *
+     * 
      * @param bigDataPoolName The Big Data Pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.
@@ -73,7 +76,7 @@ public final class BigDataPoolsAsyncClient {
 
     /**
      * Get Big Data Pool.
-     *
+     * 
      * @param bigDataPoolName The Big Data Pool name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws ErrorContractException thrown if the request is rejected by server.

@@ -10,9 +10,8 @@ import com.azure.resourcemanager.datafactory.fluent.models.TriggerSubscriptionOp
 public final class TriggerSubscriptionOperationStatusInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        TriggerSubscriptionOperationStatusInner model =
-            BinaryData
-                .fromString("{\"triggerName\":\"n\",\"status\":\"Provisioning\"}")
+        TriggerSubscriptionOperationStatusInner model
+            = BinaryData.fromString("{\"triggerName\":\"n\",\"status\":\"Provisioning\"}")
                 .toObject(TriggerSubscriptionOperationStatusInner.class);
     }
 

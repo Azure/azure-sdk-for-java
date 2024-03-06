@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** name and value of HTTP/S header to insert. */
+/**
+ * name and value of HTTP/S header to insert.
+ */
 @Fluent
 public final class FirewallPolicyHttpHeaderToInsert {
     /*
@@ -22,13 +24,15 @@ public final class FirewallPolicyHttpHeaderToInsert {
     @JsonProperty(value = "headerValue")
     private String headerValue;
 
-    /** Creates an instance of FirewallPolicyHttpHeaderToInsert class. */
+    /**
+     * Creates an instance of FirewallPolicyHttpHeaderToInsert class.
+     */
     public FirewallPolicyHttpHeaderToInsert() {
     }
 
     /**
      * Get the headerName property: Contains the name of the header.
-     *
+     * 
      * @return the headerName value.
      */
     public String headerName() {
@@ -37,7 +41,7 @@ public final class FirewallPolicyHttpHeaderToInsert {
 
     /**
      * Set the headerName property: Contains the name of the header.
-     *
+     * 
      * @param headerName the headerName value to set.
      * @return the FirewallPolicyHttpHeaderToInsert object itself.
      */
@@ -48,7 +52,7 @@ public final class FirewallPolicyHttpHeaderToInsert {
 
     /**
      * Get the headerValue property: Contains the value of the header.
-     *
+     * 
      * @return the headerValue value.
      */
     public String headerValue() {
@@ -57,7 +61,7 @@ public final class FirewallPolicyHttpHeaderToInsert {
 
     /**
      * Set the headerValue property: Contains the value of the header.
-     *
+     * 
      * @param headerValue the headerValue value to set.
      * @return the FirewallPolicyHttpHeaderToInsert object itself.
      */
@@ -68,7 +72,7 @@ public final class FirewallPolicyHttpHeaderToInsert {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

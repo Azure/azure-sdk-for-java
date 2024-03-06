@@ -7,9 +7,11 @@ package com.azure.resourcemanager.healthcareapis.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Setting indicating whether the service has a managed identity associated with it. */
+/**
+ * Setting indicating whether the service has a managed identity associated with it.
+ */
 @Fluent
-public class ServicesResourceIdentity {
+public final class ServicesResourceIdentity {
     /*
      * The principal ID of the resource identity.
      */
@@ -23,15 +25,20 @@ public class ServicesResourceIdentity {
     private String tenantId;
 
     /*
-     * Type of identity being specified, currently SystemAssigned and None are
-     * allowed.
+     * Type of identity being specified, currently SystemAssigned and None are allowed.
      */
     @JsonProperty(value = "type")
     private ManagedServiceIdentityType type;
 
     /**
+     * Creates an instance of ServicesResourceIdentity class.
+     */
+    public ServicesResourceIdentity() {
+    }
+
+    /**
      * Get the principalId property: The principal ID of the resource identity.
-     *
+     * 
      * @return the principalId value.
      */
     public String principalId() {
@@ -40,7 +47,7 @@ public class ServicesResourceIdentity {
 
     /**
      * Get the tenantId property: The tenant ID of the resource.
-     *
+     * 
      * @return the tenantId value.
      */
     public String tenantId() {
@@ -49,7 +56,7 @@ public class ServicesResourceIdentity {
 
     /**
      * Get the type property: Type of identity being specified, currently SystemAssigned and None are allowed.
-     *
+     * 
      * @return the type value.
      */
     public ManagedServiceIdentityType type() {
@@ -58,7 +65,7 @@ public class ServicesResourceIdentity {
 
     /**
      * Set the type property: Type of identity being specified, currently SystemAssigned and None are allowed.
-     *
+     * 
      * @param type the type value to set.
      * @return the ServicesResourceIdentity object itself.
      */
@@ -69,7 +76,7 @@ public class ServicesResourceIdentity {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

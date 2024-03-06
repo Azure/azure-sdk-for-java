@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Enumerates possible state of Triggers. */
+/**
+ * Enumerates possible state of Triggers.
+ */
 public final class TriggerRuntimeState extends ExpandableStringEnum<TriggerRuntimeState> {
-    /** Static value Started for TriggerRuntimeState. */
+    /**
+     * Static value Started for TriggerRuntimeState.
+     */
     public static final TriggerRuntimeState STARTED = fromString("Started");
 
-    /** Static value Stopped for TriggerRuntimeState. */
+    /**
+     * Static value Stopped for TriggerRuntimeState.
+     */
     public static final TriggerRuntimeState STOPPED = fromString("Stopped");
 
-    /** Static value Disabled for TriggerRuntimeState. */
+    /**
+     * Static value Disabled for TriggerRuntimeState.
+     */
     public static final TriggerRuntimeState DISABLED = fromString("Disabled");
 
     /**
      * Creates a new instance of TriggerRuntimeState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class TriggerRuntimeState extends ExpandableStringEnum<TriggerRunti
 
     /**
      * Creates or finds a TriggerRuntimeState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding TriggerRuntimeState.
      */
@@ -41,7 +49,7 @@ public final class TriggerRuntimeState extends ExpandableStringEnum<TriggerRunti
 
     /**
      * Gets known TriggerRuntimeState values.
-     *
+     * 
      * @return known TriggerRuntimeState values.
      */
     public static Collection<TriggerRuntimeState> values() {

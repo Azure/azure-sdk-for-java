@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of the CDC attribute mapping. Note: 'Advanced' mapping type is also saved as 'Derived'. */
+/**
+ * Type of the CDC attribute mapping. Note: 'Advanced' mapping type is also saved as 'Derived'.
+ */
 public final class MappingType extends ExpandableStringEnum<MappingType> {
-    /** Static value Direct for MappingType. */
+    /**
+     * Static value Direct for MappingType.
+     */
     public static final MappingType DIRECT = fromString("Direct");
 
-    /** Static value Derived for MappingType. */
+    /**
+     * Static value Derived for MappingType.
+     */
     public static final MappingType DERIVED = fromString("Derived");
 
-    /** Static value Aggregate for MappingType. */
+    /**
+     * Static value Aggregate for MappingType.
+     */
     public static final MappingType AGGREGATE = fromString("Aggregate");
 
     /**
      * Creates a new instance of MappingType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class MappingType extends ExpandableStringEnum<MappingType> {
 
     /**
      * Creates or finds a MappingType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MappingType.
      */
@@ -41,7 +49,7 @@ public final class MappingType extends ExpandableStringEnum<MappingType> {
 
     /**
      * Gets known MappingType values.
-     *
+     * 
      * @return known MappingType values.
      */
     public static Collection<MappingType> values() {

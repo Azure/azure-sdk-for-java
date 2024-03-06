@@ -13,7 +13,9 @@ import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of Backend address pool settings of an application gateway. */
+/**
+ * Properties of Backend address pool settings of an application gateway.
+ */
 @Fluent
 public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
     /*
@@ -102,13 +104,15 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of ApplicationGatewayBackendHttpSettingsPropertiesFormat class. */
+    /**
+     * Creates an instance of ApplicationGatewayBackendHttpSettingsPropertiesFormat class.
+     */
     public ApplicationGatewayBackendHttpSettingsPropertiesFormat() {
     }
 
     /**
      * Get the port property: The destination port on the backend.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -117,7 +121,7 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
 
     /**
      * Set the port property: The destination port on the backend.
-     *
+     * 
      * @param port the port value to set.
      * @return the ApplicationGatewayBackendHttpSettingsPropertiesFormat object itself.
      */
@@ -128,7 +132,7 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
 
     /**
      * Get the protocol property: The protocol used to communicate with the backend.
-     *
+     * 
      * @return the protocol value.
      */
     public ApplicationGatewayProtocol protocol() {
@@ -137,7 +141,7 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
 
     /**
      * Set the protocol property: The protocol used to communicate with the backend.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the ApplicationGatewayBackendHttpSettingsPropertiesFormat object itself.
      */
@@ -148,7 +152,7 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
 
     /**
      * Get the cookieBasedAffinity property: Cookie based affinity.
-     *
+     * 
      * @return the cookieBasedAffinity value.
      */
     public ApplicationGatewayCookieBasedAffinity cookieBasedAffinity() {
@@ -157,12 +161,12 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
 
     /**
      * Set the cookieBasedAffinity property: Cookie based affinity.
-     *
+     * 
      * @param cookieBasedAffinity the cookieBasedAffinity value to set.
      * @return the ApplicationGatewayBackendHttpSettingsPropertiesFormat object itself.
      */
-    public ApplicationGatewayBackendHttpSettingsPropertiesFormat withCookieBasedAffinity(
-        ApplicationGatewayCookieBasedAffinity cookieBasedAffinity) {
+    public ApplicationGatewayBackendHttpSettingsPropertiesFormat
+        withCookieBasedAffinity(ApplicationGatewayCookieBasedAffinity cookieBasedAffinity) {
         this.cookieBasedAffinity = cookieBasedAffinity;
         return this;
     }
@@ -170,7 +174,7 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
     /**
      * Get the requestTimeout property: Request timeout in seconds. Application Gateway will fail the request if
      * response is not received within RequestTimeout. Acceptable values are from 1 second to 86400 seconds.
-     *
+     * 
      * @return the requestTimeout value.
      */
     public Integer requestTimeout() {
@@ -180,7 +184,7 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
     /**
      * Set the requestTimeout property: Request timeout in seconds. Application Gateway will fail the request if
      * response is not received within RequestTimeout. Acceptable values are from 1 second to 86400 seconds.
-     *
+     * 
      * @param requestTimeout the requestTimeout value to set.
      * @return the ApplicationGatewayBackendHttpSettingsPropertiesFormat object itself.
      */
@@ -191,7 +195,7 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
 
     /**
      * Get the probe property: Probe resource of an application gateway.
-     *
+     * 
      * @return the probe value.
      */
     public SubResource probe() {
@@ -200,7 +204,7 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
 
     /**
      * Set the probe property: Probe resource of an application gateway.
-     *
+     * 
      * @param probe the probe value to set.
      * @return the ApplicationGatewayBackendHttpSettingsPropertiesFormat object itself.
      */
@@ -212,7 +216,7 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
     /**
      * Get the authenticationCertificates property: Array of references to application gateway authentication
      * certificates.
-     *
+     * 
      * @return the authenticationCertificates value.
      */
     public List<SubResource> authenticationCertificates() {
@@ -222,19 +226,19 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
     /**
      * Set the authenticationCertificates property: Array of references to application gateway authentication
      * certificates.
-     *
+     * 
      * @param authenticationCertificates the authenticationCertificates value to set.
      * @return the ApplicationGatewayBackendHttpSettingsPropertiesFormat object itself.
      */
-    public ApplicationGatewayBackendHttpSettingsPropertiesFormat withAuthenticationCertificates(
-        List<SubResource> authenticationCertificates) {
+    public ApplicationGatewayBackendHttpSettingsPropertiesFormat
+        withAuthenticationCertificates(List<SubResource> authenticationCertificates) {
         this.authenticationCertificates = authenticationCertificates;
         return this;
     }
 
     /**
      * Get the trustedRootCertificates property: Array of references to application gateway trusted root certificates.
-     *
+     * 
      * @return the trustedRootCertificates value.
      */
     public List<SubResource> trustedRootCertificates() {
@@ -243,19 +247,19 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
 
     /**
      * Set the trustedRootCertificates property: Array of references to application gateway trusted root certificates.
-     *
+     * 
      * @param trustedRootCertificates the trustedRootCertificates value to set.
      * @return the ApplicationGatewayBackendHttpSettingsPropertiesFormat object itself.
      */
-    public ApplicationGatewayBackendHttpSettingsPropertiesFormat withTrustedRootCertificates(
-        List<SubResource> trustedRootCertificates) {
+    public ApplicationGatewayBackendHttpSettingsPropertiesFormat
+        withTrustedRootCertificates(List<SubResource> trustedRootCertificates) {
         this.trustedRootCertificates = trustedRootCertificates;
         return this;
     }
 
     /**
      * Get the connectionDraining property: Connection draining of the backend http settings resource.
-     *
+     * 
      * @return the connectionDraining value.
      */
     public ApplicationGatewayConnectionDraining connectionDraining() {
@@ -264,19 +268,19 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
 
     /**
      * Set the connectionDraining property: Connection draining of the backend http settings resource.
-     *
+     * 
      * @param connectionDraining the connectionDraining value to set.
      * @return the ApplicationGatewayBackendHttpSettingsPropertiesFormat object itself.
      */
-    public ApplicationGatewayBackendHttpSettingsPropertiesFormat withConnectionDraining(
-        ApplicationGatewayConnectionDraining connectionDraining) {
+    public ApplicationGatewayBackendHttpSettingsPropertiesFormat
+        withConnectionDraining(ApplicationGatewayConnectionDraining connectionDraining) {
         this.connectionDraining = connectionDraining;
         return this;
     }
 
     /**
      * Get the hostname property: Host header to be sent to the backend servers.
-     *
+     * 
      * @return the hostname value.
      */
     public String hostname() {
@@ -285,7 +289,7 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
 
     /**
      * Set the hostname property: Host header to be sent to the backend servers.
-     *
+     * 
      * @param hostname the hostname value to set.
      * @return the ApplicationGatewayBackendHttpSettingsPropertiesFormat object itself.
      */
@@ -297,7 +301,7 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
     /**
      * Get the pickHostnameFromBackendAddress property: Whether to pick host header should be picked from the host name
      * of the backend server. Default value is false.
-     *
+     * 
      * @return the pickHostnameFromBackendAddress value.
      */
     public Boolean pickHostnameFromBackendAddress() {
@@ -307,19 +311,19 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
     /**
      * Set the pickHostnameFromBackendAddress property: Whether to pick host header should be picked from the host name
      * of the backend server. Default value is false.
-     *
+     * 
      * @param pickHostnameFromBackendAddress the pickHostnameFromBackendAddress value to set.
      * @return the ApplicationGatewayBackendHttpSettingsPropertiesFormat object itself.
      */
-    public ApplicationGatewayBackendHttpSettingsPropertiesFormat withPickHostnameFromBackendAddress(
-        Boolean pickHostnameFromBackendAddress) {
+    public ApplicationGatewayBackendHttpSettingsPropertiesFormat
+        withPickHostnameFromBackendAddress(Boolean pickHostnameFromBackendAddress) {
         this.pickHostnameFromBackendAddress = pickHostnameFromBackendAddress;
         return this;
     }
 
     /**
      * Get the affinityCookieName property: Cookie name to use for the affinity cookie.
-     *
+     * 
      * @return the affinityCookieName value.
      */
     public String affinityCookieName() {
@@ -328,7 +332,7 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
 
     /**
      * Set the affinityCookieName property: Cookie name to use for the affinity cookie.
-     *
+     * 
      * @param affinityCookieName the affinityCookieName value to set.
      * @return the ApplicationGatewayBackendHttpSettingsPropertiesFormat object itself.
      */
@@ -339,7 +343,7 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
 
     /**
      * Get the probeEnabled property: Whether the probe is enabled. Default value is false.
-     *
+     * 
      * @return the probeEnabled value.
      */
     public Boolean probeEnabled() {
@@ -348,7 +352,7 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
 
     /**
      * Set the probeEnabled property: Whether the probe is enabled. Default value is false.
-     *
+     * 
      * @param probeEnabled the probeEnabled value to set.
      * @return the ApplicationGatewayBackendHttpSettingsPropertiesFormat object itself.
      */
@@ -360,7 +364,7 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
     /**
      * Get the path property: Path which should be used as a prefix for all HTTP requests. Null means no path will be
      * prefixed. Default value is null.
-     *
+     * 
      * @return the path value.
      */
     public String path() {
@@ -370,7 +374,7 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
     /**
      * Set the path property: Path which should be used as a prefix for all HTTP requests. Null means no path will be
      * prefixed. Default value is null.
-     *
+     * 
      * @param path the path value to set.
      * @return the ApplicationGatewayBackendHttpSettingsPropertiesFormat object itself.
      */
@@ -381,7 +385,7 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the backend HTTP settings resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -390,7 +394,7 @@ public final class ApplicationGatewayBackendHttpSettingsPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

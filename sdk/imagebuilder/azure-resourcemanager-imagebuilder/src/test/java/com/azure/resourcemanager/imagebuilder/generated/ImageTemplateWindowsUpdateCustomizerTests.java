@@ -12,29 +12,25 @@ import org.junit.jupiter.api.Assertions;
 public final class ImageTemplateWindowsUpdateCustomizerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ImageTemplateWindowsUpdateCustomizer model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"WindowsUpdate\",\"searchCriteria\":\"dpuozmyz\",\"filters\":[\"gf\",\"axbezyiuo\",\"ktwh\"],\"updateLimit\":291798162,\"name\":\"zywqsmbsu\"}")
-                .toObject(ImageTemplateWindowsUpdateCustomizer.class);
-        Assertions.assertEquals("zywqsmbsu", model.name());
-        Assertions.assertEquals("dpuozmyz", model.searchCriteria());
-        Assertions.assertEquals("gf", model.filters().get(0));
-        Assertions.assertEquals(291798162, model.updateLimit());
+        ImageTemplateWindowsUpdateCustomizer model = BinaryData.fromString(
+            "{\"type\":\"WindowsUpdate\",\"searchCriteria\":\"kdvjsll\",\"filters\":[\"vdfwatkpn\",\"ulexxbczwtr\",\"wiqzbqjvsovmyo\",\"acspkwl\"],\"updateLimit\":1196709774,\"name\":\"bpxjmfl\"}")
+            .toObject(ImageTemplateWindowsUpdateCustomizer.class);
+        Assertions.assertEquals("bpxjmfl", model.name());
+        Assertions.assertEquals("kdvjsll", model.searchCriteria());
+        Assertions.assertEquals("vdfwatkpn", model.filters().get(0));
+        Assertions.assertEquals(1196709774, model.updateLimit());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ImageTemplateWindowsUpdateCustomizer model =
-            new ImageTemplateWindowsUpdateCustomizer()
-                .withName("zywqsmbsu")
-                .withSearchCriteria("dpuozmyz")
-                .withFilters(Arrays.asList("gf", "axbezyiuo", "ktwh"))
-                .withUpdateLimit(291798162);
+        ImageTemplateWindowsUpdateCustomizer model
+            = new ImageTemplateWindowsUpdateCustomizer().withName("bpxjmfl").withSearchCriteria("kdvjsll")
+                .withFilters(Arrays.asList("vdfwatkpn", "ulexxbczwtr", "wiqzbqjvsovmyo", "acspkwl"))
+                .withUpdateLimit(1196709774);
         model = BinaryData.fromObject(model).toObject(ImageTemplateWindowsUpdateCustomizer.class);
-        Assertions.assertEquals("zywqsmbsu", model.name());
-        Assertions.assertEquals("dpuozmyz", model.searchCriteria());
-        Assertions.assertEquals("gf", model.filters().get(0));
-        Assertions.assertEquals(291798162, model.updateLimit());
+        Assertions.assertEquals("bpxjmfl", model.name());
+        Assertions.assertEquals("kdvjsll", model.searchCriteria());
+        Assertions.assertEquals("vdfwatkpn", model.filters().get(0));
+        Assertions.assertEquals(1196709774, model.updateLimit());
     }
 }

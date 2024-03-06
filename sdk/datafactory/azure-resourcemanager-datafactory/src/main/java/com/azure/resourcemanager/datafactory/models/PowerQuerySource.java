@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Power query source. */
+/**
+ * Power query source.
+ */
 @Fluent
 public final class PowerQuerySource extends DataFlowSource {
     /*
@@ -16,13 +18,15 @@ public final class PowerQuerySource extends DataFlowSource {
     @JsonProperty(value = "script")
     private String script;
 
-    /** Creates an instance of PowerQuerySource class. */
+    /**
+     * Creates an instance of PowerQuerySource class.
+     */
     public PowerQuerySource() {
     }
 
     /**
      * Get the script property: source script.
-     *
+     * 
      * @return the script value.
      */
     public String script() {
@@ -31,7 +35,7 @@ public final class PowerQuerySource extends DataFlowSource {
 
     /**
      * Set the script property: source script.
-     *
+     * 
      * @param script the script value to set.
      * @return the PowerQuerySource object itself.
      */
@@ -40,42 +44,54 @@ public final class PowerQuerySource extends DataFlowSource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PowerQuerySource withSchemaLinkedService(LinkedServiceReference schemaLinkedService) {
         super.withSchemaLinkedService(schemaLinkedService);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PowerQuerySource withName(String name) {
         super.withName(name);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PowerQuerySource withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PowerQuerySource withDataset(DatasetReference dataset) {
         super.withDataset(dataset);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PowerQuerySource withLinkedService(LinkedServiceReference linkedService) {
         super.withLinkedService(linkedService);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public PowerQuerySource withFlowlet(DataFlowReference flowlet) {
         super.withFlowlet(flowlet);
@@ -84,7 +100,7 @@ public final class PowerQuerySource extends DataFlowSource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

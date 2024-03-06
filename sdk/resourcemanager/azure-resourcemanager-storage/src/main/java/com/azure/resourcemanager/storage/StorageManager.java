@@ -5,6 +5,7 @@ package com.azure.resourcemanager.storage;
 
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpPipeline;
+import com.azure.resourcemanager.authorization.AuthorizationManager;
 import com.azure.resourcemanager.resources.fluentcore.arm.AzureConfigurable;
 import com.azure.resourcemanager.resources.fluentcore.arm.Manager;
 import com.azure.core.management.profile.AzureProfile;
@@ -36,6 +37,12 @@ public final class StorageManager extends Manager<StorageManagementClient> {
     private BlobContainers blobContainers;
     private BlobServices blobServices;
     private ManagementPolicies managementPolicies;
+    private final AuthorizationManager authorizationManager;
+
+    /** @return the authorization manager */
+    public AuthorizationManager authorizationManager() {
+        return authorizationManager;
+    }
 
     /**
      * Get a Configurable instance that can be used to create StorageManager with optional configuration.
@@ -100,12 +107,13 @@ public final class StorageManager extends Manager<StorageManagementClient> {
                 .endpoint(profile.getEnvironment().getResourceManagerEndpoint())
                 .subscriptionId(profile.getSubscriptionId())
                 .buildClient());
+        authorizationManager = AuthorizationManager.authenticate(httpPipeline, profile);
     }
 
     /** @return the storage account management API entry point */
     public StorageAccounts storageAccounts() {
         if (storageAccounts == null) {
-            storageAccounts = new StorageAccountsImpl(this);
+            storageAccounts = new StorageAccountsImpl(this, this.authorizationManager);
         }
         return storageAccounts;
     }

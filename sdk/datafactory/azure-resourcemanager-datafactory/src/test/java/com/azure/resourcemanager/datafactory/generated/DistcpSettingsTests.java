@@ -10,20 +10,15 @@ import com.azure.resourcemanager.datafactory.models.DistcpSettings;
 public final class DistcpSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DistcpSettings model =
-            BinaryData
-                .fromString(
-                    "{\"resourceManagerEndpoint\":\"datae\",\"tempScriptPath\":\"datayiwzou\",\"distcpOptions\":\"dataamdgff\"}")
-                .toObject(DistcpSettings.class);
+        DistcpSettings model = BinaryData.fromString(
+            "{\"resourceManagerEndpoint\":\"datafk\",\"tempScriptPath\":\"datadwzvhtgfdy\",\"distcpOptions\":\"dataphlwmivazfnbzcjm\"}")
+            .toObject(DistcpSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DistcpSettings model =
-            new DistcpSettings()
-                .withResourceManagerEndpoint("datae")
-                .withTempScriptPath("datayiwzou")
-                .withDistcpOptions("dataamdgff");
+        DistcpSettings model = new DistcpSettings().withResourceManagerEndpoint("datafk")
+            .withTempScriptPath("datadwzvhtgfdy").withDistcpOptions("dataphlwmivazfnbzcjm");
         model = BinaryData.fromObject(model).toObject(DistcpSettings.class);
     }
 }

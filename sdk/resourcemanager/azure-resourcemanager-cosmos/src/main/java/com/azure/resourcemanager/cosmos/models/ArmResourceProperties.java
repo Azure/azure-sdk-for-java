@@ -8,21 +8,29 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.management.Resource;
 import java.util.Map;
 
-/** The core properties of ARM resources. */
+/**
+ * The core properties of ARM resources.
+ */
 @Fluent
 public class ArmResourceProperties extends Resource {
-    /** Creates an instance of ArmResourceProperties class. */
+    /**
+     * Creates an instance of ArmResourceProperties class.
+     */
     public ArmResourceProperties() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ArmResourceProperties withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ArmResourceProperties withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -31,7 +39,7 @@ public class ArmResourceProperties extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

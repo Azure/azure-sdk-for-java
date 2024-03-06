@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Custom setup script properties for a managed dedicated integration runtime. */
+/**
+ * Custom setup script properties for a managed dedicated integration runtime.
+ */
 @Fluent
 public final class IntegrationRuntimeCustomSetupScriptProperties {
     /*
@@ -22,13 +24,15 @@ public final class IntegrationRuntimeCustomSetupScriptProperties {
     @JsonProperty(value = "sasToken")
     private SecureString sasToken;
 
-    /** Creates an instance of IntegrationRuntimeCustomSetupScriptProperties class. */
+    /**
+     * Creates an instance of IntegrationRuntimeCustomSetupScriptProperties class.
+     */
     public IntegrationRuntimeCustomSetupScriptProperties() {
     }
 
     /**
      * Get the blobContainerUri property: The URI of the Azure blob container that contains the custom setup script.
-     *
+     * 
      * @return the blobContainerUri value.
      */
     public String blobContainerUri() {
@@ -37,7 +41,7 @@ public final class IntegrationRuntimeCustomSetupScriptProperties {
 
     /**
      * Set the blobContainerUri property: The URI of the Azure blob container that contains the custom setup script.
-     *
+     * 
      * @param blobContainerUri the blobContainerUri value to set.
      * @return the IntegrationRuntimeCustomSetupScriptProperties object itself.
      */
@@ -48,7 +52,7 @@ public final class IntegrationRuntimeCustomSetupScriptProperties {
 
     /**
      * Get the sasToken property: The SAS token of the Azure blob container.
-     *
+     * 
      * @return the sasToken value.
      */
     public SecureString sasToken() {
@@ -57,7 +61,7 @@ public final class IntegrationRuntimeCustomSetupScriptProperties {
 
     /**
      * Set the sasToken property: The SAS token of the Azure blob container.
-     *
+     * 
      * @param sasToken the sasToken value to set.
      * @return the IntegrationRuntimeCustomSetupScriptProperties object itself.
      */
@@ -68,7 +72,7 @@ public final class IntegrationRuntimeCustomSetupScriptProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

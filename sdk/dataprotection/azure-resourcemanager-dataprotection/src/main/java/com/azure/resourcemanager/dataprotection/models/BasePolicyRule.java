@@ -13,8 +13,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * BasePolicyRule
- *
- * <p>BasePolicy Rule.
+ * 
+ * BasePolicy Rule.
  */
 @JsonTypeInfo(
     use = JsonTypeInfo.Id.NAME,
@@ -24,8 +24,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 @JsonTypeName("BasePolicyRule")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "AzureBackupRule", value = AzureBackupRule.class),
-    @JsonSubTypes.Type(name = "AzureRetentionRule", value = AzureRetentionRule.class)
-})
+    @JsonSubTypes.Type(name = "AzureRetentionRule", value = AzureRetentionRule.class) })
 @Fluent
 public class BasePolicyRule {
     /*
@@ -34,13 +33,15 @@ public class BasePolicyRule {
     @JsonProperty(value = "name", required = true)
     private String name;
 
-    /** Creates an instance of BasePolicyRule class. */
+    /**
+     * Creates an instance of BasePolicyRule class.
+     */
     public BasePolicyRule() {
     }
 
     /**
      * Get the name property: The name property.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -49,7 +50,7 @@ public class BasePolicyRule {
 
     /**
      * Set the name property: The name property.
-     *
+     * 
      * @param name the name value to set.
      * @return the BasePolicyRule object itself.
      */
@@ -60,14 +61,13 @@ public class BasePolicyRule {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property name in model BasePolicyRule"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model BasePolicyRule"));
         }
     }
 

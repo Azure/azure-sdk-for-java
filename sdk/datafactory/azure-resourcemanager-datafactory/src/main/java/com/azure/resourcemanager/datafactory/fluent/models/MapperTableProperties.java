@@ -10,7 +10,9 @@ import com.azure.resourcemanager.datafactory.models.MapperTableSchema;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties for a CDC table. */
+/**
+ * Properties for a CDC table.
+ */
 @Fluent
 public final class MapperTableProperties {
     /*
@@ -25,13 +27,15 @@ public final class MapperTableProperties {
     @JsonProperty(value = "dslConnectorProperties")
     private List<MapperDslConnectorProperties> dslConnectorProperties;
 
-    /** Creates an instance of MapperTableProperties class. */
+    /**
+     * Creates an instance of MapperTableProperties class.
+     */
     public MapperTableProperties() {
     }
 
     /**
      * Get the schema property: List of columns for the source table.
-     *
+     * 
      * @return the schema value.
      */
     public List<MapperTableSchema> schema() {
@@ -40,7 +44,7 @@ public final class MapperTableProperties {
 
     /**
      * Set the schema property: List of columns for the source table.
-     *
+     * 
      * @param schema the schema value to set.
      * @return the MapperTableProperties object itself.
      */
@@ -51,7 +55,7 @@ public final class MapperTableProperties {
 
     /**
      * Get the dslConnectorProperties property: List of name/value pairs for connection properties.
-     *
+     * 
      * @return the dslConnectorProperties value.
      */
     public List<MapperDslConnectorProperties> dslConnectorProperties() {
@@ -60,7 +64,7 @@ public final class MapperTableProperties {
 
     /**
      * Set the dslConnectorProperties property: List of name/value pairs for connection properties.
-     *
+     * 
      * @param dslConnectorProperties the dslConnectorProperties value to set.
      * @return the MapperTableProperties object itself.
      */
@@ -71,7 +75,7 @@ public final class MapperTableProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

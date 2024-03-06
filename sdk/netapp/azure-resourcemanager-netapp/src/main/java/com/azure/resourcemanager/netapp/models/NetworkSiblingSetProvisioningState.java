@@ -8,23 +8,33 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Gets the status of the NetworkSiblingSet at the time the operation was called. */
+/**
+ * Gets the status of the NetworkSiblingSet at the time the operation was called.
+ */
 public final class NetworkSiblingSetProvisioningState extends ExpandableStringEnum<NetworkSiblingSetProvisioningState> {
-    /** Static value Succeeded for NetworkSiblingSetProvisioningState. */
+    /**
+     * Static value Succeeded for NetworkSiblingSetProvisioningState.
+     */
     public static final NetworkSiblingSetProvisioningState SUCCEEDED = fromString("Succeeded");
 
-    /** Static value Failed for NetworkSiblingSetProvisioningState. */
+    /**
+     * Static value Failed for NetworkSiblingSetProvisioningState.
+     */
     public static final NetworkSiblingSetProvisioningState FAILED = fromString("Failed");
 
-    /** Static value Canceled for NetworkSiblingSetProvisioningState. */
+    /**
+     * Static value Canceled for NetworkSiblingSetProvisioningState.
+     */
     public static final NetworkSiblingSetProvisioningState CANCELED = fromString("Canceled");
 
-    /** Static value Updating for NetworkSiblingSetProvisioningState. */
+    /**
+     * Static value Updating for NetworkSiblingSetProvisioningState.
+     */
     public static final NetworkSiblingSetProvisioningState UPDATING = fromString("Updating");
 
     /**
      * Creates a new instance of NetworkSiblingSetProvisioningState value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -33,7 +43,7 @@ public final class NetworkSiblingSetProvisioningState extends ExpandableStringEn
 
     /**
      * Creates or finds a NetworkSiblingSetProvisioningState from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding NetworkSiblingSetProvisioningState.
      */
@@ -44,7 +54,7 @@ public final class NetworkSiblingSetProvisioningState extends ExpandableStringEn
 
     /**
      * Gets known NetworkSiblingSetProvisioningState values.
-     *
+     * 
      * @return known NetworkSiblingSetProvisioningState values.
      */
     public static Collection<NetworkSiblingSetProvisioningState> values() {

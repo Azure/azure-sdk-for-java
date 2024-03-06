@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of Triggers. */
+/**
+ * Resource collection API of Triggers.
+ */
 public interface Triggers {
     /**
      * Lists triggers.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface Triggers {
 
     /**
      * Lists triggers.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param context The context to associate with this operation.
@@ -37,7 +39,7 @@ public interface Triggers {
 
     /**
      * Query triggers.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param filterParameters Parameters to filter the triggers.
@@ -47,12 +49,12 @@ public interface Triggers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a query of triggers along with {@link Response}.
      */
-    Response<TriggerQueryResponse> queryByFactoryWithResponse(
-        String resourceGroupName, String factoryName, TriggerFilterParameters filterParameters, Context context);
+    Response<TriggerQueryResponse> queryByFactoryWithResponse(String resourceGroupName, String factoryName,
+        TriggerFilterParameters filterParameters, Context context);
 
     /**
      * Query triggers.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param filterParameters Parameters to filter the triggers.
@@ -61,29 +63,29 @@ public interface Triggers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a query of triggers.
      */
-    TriggerQueryResponse queryByFactory(
-        String resourceGroupName, String factoryName, TriggerFilterParameters filterParameters);
+    TriggerQueryResponse queryByFactory(String resourceGroupName, String factoryName,
+        TriggerFilterParameters filterParameters);
 
     /**
      * Gets a trigger.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
      * @param ifNoneMatch ETag of the trigger entity. Should only be specified for get. If the ETag matches the existing
-     *     entity tag, or if * was provided, then no content will be returned.
+     * entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a trigger along with {@link Response}.
      */
-    Response<TriggerResource> getWithResponse(
-        String resourceGroupName, String factoryName, String triggerName, String ifNoneMatch, Context context);
+    Response<TriggerResource> getWithResponse(String resourceGroupName, String factoryName, String triggerName,
+        String ifNoneMatch, Context context);
 
     /**
      * Gets a trigger.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
@@ -96,7 +98,7 @@ public interface Triggers {
 
     /**
      * Deletes a trigger.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
@@ -106,12 +108,12 @@ public interface Triggers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> deleteWithResponse(
-        String resourceGroupName, String factoryName, String triggerName, Context context);
+    Response<Void> deleteWithResponse(String resourceGroupName, String factoryName, String triggerName,
+        Context context);
 
     /**
      * Deletes a trigger.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
@@ -123,7 +125,7 @@ public interface Triggers {
 
     /**
      * Subscribe event trigger to events.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
@@ -132,12 +134,12 @@ public interface Triggers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the response of a trigger subscription operation.
      */
-    TriggerSubscriptionOperationStatus subscribeToEvents(
-        String resourceGroupName, String factoryName, String triggerName);
+    TriggerSubscriptionOperationStatus subscribeToEvents(String resourceGroupName, String factoryName,
+        String triggerName);
 
     /**
      * Subscribe event trigger to events.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
@@ -147,12 +149,12 @@ public interface Triggers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the response of a trigger subscription operation.
      */
-    TriggerSubscriptionOperationStatus subscribeToEvents(
-        String resourceGroupName, String factoryName, String triggerName, Context context);
+    TriggerSubscriptionOperationStatus subscribeToEvents(String resourceGroupName, String factoryName,
+        String triggerName, Context context);
 
     /**
      * Get a trigger's event subscription status.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
@@ -162,12 +164,12 @@ public interface Triggers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a trigger's event subscription status along with {@link Response}.
      */
-    Response<TriggerSubscriptionOperationStatus> getEventSubscriptionStatusWithResponse(
-        String resourceGroupName, String factoryName, String triggerName, Context context);
+    Response<TriggerSubscriptionOperationStatus> getEventSubscriptionStatusWithResponse(String resourceGroupName,
+        String factoryName, String triggerName, Context context);
 
     /**
      * Get a trigger's event subscription status.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
@@ -176,12 +178,12 @@ public interface Triggers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a trigger's event subscription status.
      */
-    TriggerSubscriptionOperationStatus getEventSubscriptionStatus(
-        String resourceGroupName, String factoryName, String triggerName);
+    TriggerSubscriptionOperationStatus getEventSubscriptionStatus(String resourceGroupName, String factoryName,
+        String triggerName);
 
     /**
      * Unsubscribe event trigger from events.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
@@ -190,12 +192,12 @@ public interface Triggers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the response of a trigger subscription operation.
      */
-    TriggerSubscriptionOperationStatus unsubscribeFromEvents(
-        String resourceGroupName, String factoryName, String triggerName);
+    TriggerSubscriptionOperationStatus unsubscribeFromEvents(String resourceGroupName, String factoryName,
+        String triggerName);
 
     /**
      * Unsubscribe event trigger from events.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
@@ -205,12 +207,12 @@ public interface Triggers {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return defines the response of a trigger subscription operation.
      */
-    TriggerSubscriptionOperationStatus unsubscribeFromEvents(
-        String resourceGroupName, String factoryName, String triggerName, Context context);
+    TriggerSubscriptionOperationStatus unsubscribeFromEvents(String resourceGroupName, String factoryName,
+        String triggerName, Context context);
 
     /**
      * Starts a trigger.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
@@ -222,7 +224,7 @@ public interface Triggers {
 
     /**
      * Starts a trigger.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
@@ -235,7 +237,7 @@ public interface Triggers {
 
     /**
      * Stops a trigger.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
@@ -247,7 +249,7 @@ public interface Triggers {
 
     /**
      * Stops a trigger.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
@@ -260,7 +262,7 @@ public interface Triggers {
 
     /**
      * Gets a trigger.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -271,10 +273,10 @@ public interface Triggers {
 
     /**
      * Gets a trigger.
-     *
+     * 
      * @param id the resource ID.
      * @param ifNoneMatch ETag of the trigger entity. Should only be specified for get. If the ETag matches the existing
-     *     entity tag, or if * was provided, then no content will be returned.
+     * entity tag, or if * was provided, then no content will be returned.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -285,7 +287,7 @@ public interface Triggers {
 
     /**
      * Deletes a trigger.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -295,7 +297,7 @@ public interface Triggers {
 
     /**
      * Deletes a trigger.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -307,7 +309,7 @@ public interface Triggers {
 
     /**
      * Begins definition for a new TriggerResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new TriggerResource definition.
      */

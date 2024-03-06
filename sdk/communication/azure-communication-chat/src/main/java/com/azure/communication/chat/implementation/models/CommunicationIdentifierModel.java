@@ -9,11 +9,17 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Identifies a participant in Azure Communication services. A participant is, for example, a phone number or an Azure
- * communication user. This model must be interpreted as a union: Apart from rawId, at most one further property may be
- * set.
+ * communication user. This model is polymorphic: Apart from kind and rawId, at most one further property may be set
+ * which must match the kind enum value.
  */
 @Fluent
 public final class CommunicationIdentifierModel {
+    /*
+     * The identifier kind. Only required in responses.
+     */
+    @JsonProperty(value = "kind")
+    private CommunicationIdentifierModelKind kind;
+
     /*
      * Raw Id of the identifier. Optional in requests, required in responses.
      */
@@ -37,6 +43,26 @@ public final class CommunicationIdentifierModel {
      */
     @JsonProperty(value = "microsoftTeamsUser")
     private MicrosoftTeamsUserIdentifierModel microsoftTeamsUser;
+
+    /**
+     * Get the kind property: The identifier kind. Only required in responses.
+     *
+     * @return the kind value.
+     */
+    public CommunicationIdentifierModelKind getKind() {
+        return this.kind;
+    }
+
+    /**
+     * Set the kind property: The identifier kind. Only required in responses.
+     *
+     * @param kind the kind value to set.
+     * @return the CommunicationIdentifierModel object itself.
+     */
+    public CommunicationIdentifierModel setKind(CommunicationIdentifierModelKind kind) {
+        this.kind = kind;
+        return this;
+    }
 
     /**
      * Get the rawId property: Raw Id of the identifier. Optional in requests, required in responses.

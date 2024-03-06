@@ -14,7 +14,6 @@ import com.azure.json.JsonWriter;
 import java.io.IOException;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Objects;
 
 /**
  * A dictionary of index projection-specific configuration properties. Each name is the name of a specific property.
@@ -22,7 +21,7 @@ import java.util.Objects;
  */
 @Fluent
 public final class SearchIndexerIndexProjectionsParameters
-        implements JsonSerializable<SearchIndexerIndexProjectionsParameters> {
+    implements JsonSerializable<SearchIndexerIndexProjectionsParameters> {
     /*
      * Defines behavior of the index projections in relation to the rest of the indexer.
      */
@@ -34,13 +33,16 @@ public final class SearchIndexerIndexProjectionsParameters
      */
     private Map<String, Object> additionalProperties;
 
-    /** Creates an instance of SearchIndexerIndexProjectionsParameters class. */
-    public SearchIndexerIndexProjectionsParameters() {}
+    /**
+     * Creates an instance of SearchIndexerIndexProjectionsParameters class.
+     */
+    public SearchIndexerIndexProjectionsParameters() {
+    }
 
     /**
      * Get the projectionMode property: Defines behavior of the index projections in relation to the rest of the
      * indexer.
-     *
+     * 
      * @return the projectionMode value.
      */
     public IndexProjectionMode getProjectionMode() {
@@ -50,7 +52,7 @@ public final class SearchIndexerIndexProjectionsParameters
     /**
      * Set the projectionMode property: Defines behavior of the index projections in relation to the rest of the
      * indexer.
-     *
+     * 
      * @param projectionMode the projectionMode value to set.
      * @return the SearchIndexerIndexProjectionsParameters object itself.
      */
@@ -62,7 +64,7 @@ public final class SearchIndexerIndexProjectionsParameters
     /**
      * Get the additionalProperties property: A dictionary of index projection-specific configuration properties. Each
      * name is the name of a specific property. Each value must be of a primitive type.
-     *
+     * 
      * @return the additionalProperties value.
      */
     public Map<String, Object> getAdditionalProperties() {
@@ -72,7 +74,7 @@ public final class SearchIndexerIndexProjectionsParameters
     /**
      * Set the additionalProperties property: A dictionary of index projection-specific configuration properties. Each
      * name is the name of a specific property. Each value must be of a primitive type.
-     *
+     * 
      * @param additionalProperties the additionalProperties value to set.
      * @return the SearchIndexerIndexProjectionsParameters object itself.
      */
@@ -84,7 +86,8 @@ public final class SearchIndexerIndexProjectionsParameters
     @Override
     public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
         jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("projectionMode", Objects.toString(this.projectionMode, null));
+        jsonWriter.writeStringField("projectionMode",
+            this.projectionMode == null ? null : this.projectionMode.toString());
         if (additionalProperties != null) {
             for (Map.Entry<String, Object> additionalProperty : additionalProperties.entrySet()) {
                 jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
@@ -95,36 +98,35 @@ public final class SearchIndexerIndexProjectionsParameters
 
     /**
      * Reads an instance of SearchIndexerIndexProjectionsParameters from the JsonReader.
-     *
+     * 
      * @param jsonReader The JsonReader being read.
      * @return An instance of SearchIndexerIndexProjectionsParameters if the JsonReader was pointing to an instance of
-     *     it, or null if it was pointing to JSON null.
+     * it, or null if it was pointing to JSON null.
      * @throws IOException If an error occurs while reading the SearchIndexerIndexProjectionsParameters.
      */
     public static SearchIndexerIndexProjectionsParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    SearchIndexerIndexProjectionsParameters deserializedSearchIndexerIndexProjectionsParameters =
-                            new SearchIndexerIndexProjectionsParameters();
-                    Map<String, Object> additionalProperties = null;
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
+        return jsonReader.readObject(reader -> {
+            SearchIndexerIndexProjectionsParameters deserializedSearchIndexerIndexProjectionsParameters
+                = new SearchIndexerIndexProjectionsParameters();
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
 
-                        if ("projectionMode".equals(fieldName)) {
-                            deserializedSearchIndexerIndexProjectionsParameters.projectionMode =
-                                    IndexProjectionMode.fromString(reader.getString());
-                        } else {
-                            if (additionalProperties == null) {
-                                additionalProperties = new LinkedHashMap<>();
-                            }
-
-                            additionalProperties.put(fieldName, reader.readUntyped());
-                        }
+                if ("projectionMode".equals(fieldName)) {
+                    deserializedSearchIndexerIndexProjectionsParameters.projectionMode
+                        = IndexProjectionMode.fromString(reader.getString());
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
                     }
-                    deserializedSearchIndexerIndexProjectionsParameters.additionalProperties = additionalProperties;
 
-                    return deserializedSearchIndexerIndexProjectionsParameters;
-                });
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            deserializedSearchIndexerIndexProjectionsParameters.additionalProperties = additionalProperties;
+
+            return deserializedSearchIndexerIndexProjectionsParameters;
+        });
     }
 }

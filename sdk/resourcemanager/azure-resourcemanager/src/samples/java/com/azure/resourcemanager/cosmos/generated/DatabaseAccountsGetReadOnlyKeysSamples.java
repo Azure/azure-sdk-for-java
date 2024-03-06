@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.cosmos.generated;
 
-/** Samples for DatabaseAccounts GetReadOnlyKeys. */
+/**
+ * Samples for DatabaseAccounts GetReadOnlyKeys.
+ */
 public final class DatabaseAccountsGetReadOnlyKeysSamples {
     /*
-     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-04-15/examples/CosmosDBDatabaseAccountListReadOnlyKeys.json
+     * x-ms-original-file: specification/cosmos-db/resource-manager/Microsoft.DocumentDB/stable/2023-11-15/examples/
+     * CosmosDBDatabaseAccountListReadOnlyKeys.json
      */
     /**
      * Sample code: CosmosDBDatabaseAccountListReadOnlyKeys.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void cosmosDBDatabaseAccountListReadOnlyKeys(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .cosmosDBAccounts()
-            .manager()
-            .serviceClient()
-            .getDatabaseAccounts()
-            .getReadOnlyKeysWithResponse("rg1", "ddb1", com.azure.core.util.Context.NONE);
+        azure.cosmosDBAccounts().manager().serviceClient().getDatabaseAccounts().getReadOnlyKeysWithResponse("rg1",
+            "ddb1", com.azure.core.util.Context.NONE);
     }
 }

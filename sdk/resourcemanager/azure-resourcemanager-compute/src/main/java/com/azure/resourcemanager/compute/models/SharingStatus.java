@@ -8,12 +8,14 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Sharing status of current gallery. */
+/**
+ * Sharing status of current gallery.
+ */
 @Fluent
 public final class SharingStatus {
     /*
      * The sharing state of the gallery.
-     *
+     * 
      * Aggregated sharing state of current gallery.
      */
     @JsonProperty(value = "aggregatedState", access = JsonProperty.Access.WRITE_ONLY)
@@ -25,15 +27,17 @@ public final class SharingStatus {
     @JsonProperty(value = "summary")
     private List<RegionalSharingStatus> summary;
 
-    /** Creates an instance of SharingStatus class. */
+    /**
+     * Creates an instance of SharingStatus class.
+     */
     public SharingStatus() {
     }
 
     /**
      * Get the aggregatedState property: The sharing state of the gallery.
-     *
-     * <p>Aggregated sharing state of current gallery.
-     *
+     * 
+     * Aggregated sharing state of current gallery.
+     * 
      * @return the aggregatedState value.
      */
     public SharingState aggregatedState() {
@@ -42,7 +46,7 @@ public final class SharingStatus {
 
     /**
      * Get the summary property: Summary of all regional sharing status.
-     *
+     * 
      * @return the summary value.
      */
     public List<RegionalSharingStatus> summary() {
@@ -51,7 +55,7 @@ public final class SharingStatus {
 
     /**
      * Set the summary property: Summary of all regional sharing status.
-     *
+     * 
      * @param summary the summary value to set.
      * @return the SharingStatus object itself.
      */
@@ -62,7 +66,7 @@ public final class SharingStatus {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

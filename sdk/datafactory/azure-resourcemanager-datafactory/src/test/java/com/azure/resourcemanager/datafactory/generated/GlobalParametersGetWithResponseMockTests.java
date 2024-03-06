@@ -31,42 +31,28 @@ public final class GlobalParametersGetWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"dewf\":{\"type\":\"Array\",\"value\":\"databmqgimwivqph\"},\"zzak\":{\"type\":\"Int\",\"value\":\"dataajpojz\"},\"vykysavevnerpyzu\":{\"type\":\"Object\",\"value\":\"datatwnhpcfsqdzi\"},\"ot\":{\"type\":\"Object\",\"value\":\"datavinvryxwzxj\"}},\"name\":\"iwm\",\"type\":\"dxw\",\"etag\":\"mda\",\"id\":\"giglkinsrysga\"}";
+        String responseStr
+            = "{\"properties\":{\"oydzmbv\":{\"type\":\"Object\",\"value\":\"datapbbwicteqwjlynlr\"},\"otozxadk\":{\"type\":\"Bool\",\"value\":\"dataadxs\"}},\"name\":\"aptv\",\"type\":\"y\",\"etag\":\"gvzevpypkfvw\",\"id\":\"vxjxvspubfke\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DataFactoryManager manager =
-            DataFactoryManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        GlobalParameterResource response =
-            manager
-                .globalParameters()
-                .getWithResponse("wasktzrdxxsbbd", "okjnbcdnjexcyhs", "vairau", com.azure.core.util.Context.NONE)
-                .getValue();
+        GlobalParameterResource response = manager.globalParameters()
+            .getWithResponse("rd", "onovveouwixtefd", "qprhzsaquha", com.azure.core.util.Context.NONE).getValue();
 
-        Assertions.assertEquals("giglkinsrysga", response.id());
-        Assertions.assertEquals(GlobalParameterType.ARRAY, response.properties().get("dewf").type());
+        Assertions.assertEquals("vxjxvspubfke", response.id());
+        Assertions.assertEquals(GlobalParameterType.OBJECT, response.properties().get("oydzmbv").type());
     }
 }

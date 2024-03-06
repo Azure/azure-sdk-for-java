@@ -11,8 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ManagedIdentityTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ManagedIdentityTypeProperties model =
-            BinaryData.fromString("{\"resourceId\":\"i\"}").toObject(ManagedIdentityTypeProperties.class);
+        ManagedIdentityTypeProperties model
+            = BinaryData.fromString("{\"resourceId\":\"i\"}").toObject(ManagedIdentityTypeProperties.class);
         Assertions.assertEquals("i", model.resourceId());
     }
 

@@ -47,7 +47,7 @@ import reactor.util.retry.Retry;
 /** The base for app service tests. */
 public class AppServiceTest extends ResourceManagerTestProxyTestBase {
 
-    private static final ClientLogger LOGGER = new ClientLogger(AppServiceTest.class);
+    static final ClientLogger LOGGER = new ClientLogger(AppServiceTest.class);
 
     protected ResourceManager resourceManager;
     protected KeyVaultManager keyVaultManager;

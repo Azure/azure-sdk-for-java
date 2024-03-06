@@ -5,6 +5,8 @@
 package com.azure.resourcemanager.datafactory.generated;
 
 import com.azure.core.util.BinaryData;
+import com.azure.resourcemanager.datafactory.models.CompressionReadSettings;
+import com.azure.resourcemanager.datafactory.models.ParquetReadSettings;
 import com.azure.resourcemanager.datafactory.models.ParquetSource;
 import com.azure.resourcemanager.datafactory.models.StoreReadSettings;
 import java.util.HashMap;
@@ -13,27 +15,22 @@ import java.util.Map;
 public final class ParquetSourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ParquetSource model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"ParquetSource\",\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"datayph\",\"disableMetricsCollection\":\"datarxrpahp\",\"\":{\"qllolnxhsupilhx\":\"datakfenmiflky\",\"y\":\"dataabli\",\"isydhardx\":\"dataomgse\"}},\"additionalColumns\":\"dataluqfffglf\",\"sourceRetryCount\":\"dataqakierxuvprbjxew\",\"sourceRetryWait\":\"datacuveljfarinu\",\"maxConcurrentConnections\":\"dataiztgddah\",\"disableMetricsCollection\":\"datavkkjtdhmigkwa\",\"\":{\"ylsijqygof\":\"datagie\",\"af\":\"datahdaehxvvifd\",\"uxs\":\"datakysym\",\"szrbttz\":\"datamllbpegcetezaap\"}}")
-                .toObject(ParquetSource.class);
+        ParquetSource model = BinaryData.fromString(
+            "{\"type\":\"ParquetSource\",\"storeSettings\":{\"type\":\"StoreReadSettings\",\"maxConcurrentConnections\":\"datagadkrknyyjngdf\",\"disableMetricsCollection\":\"datacjfqmyfgwbuxq\",\"\":{\"xzyj\":\"datagbqsv\"}},\"formatSettings\":{\"type\":\"ParquetReadSettings\",\"compressionProperties\":{\"type\":\"CompressionReadSettings\",\"\":{\"xrsky\":\"datamqutgxdlznfokc\"}},\"\":{\"teikktret\":\"datapp\",\"nvb\":\"datatsygzjplaxxfnrlt\"}},\"additionalColumns\":\"dataotghxkrrpmgdoli\",\"sourceRetryCount\":\"datazsglavdtttyd\",\"sourceRetryWait\":\"dataomz\",\"maxConcurrentConnections\":\"datakjq\",\"disableMetricsCollection\":\"datahbypwmveyrciked\",\"\":{\"sz\":\"datafjuqowuicvjy\",\"lwkcgu\":\"dataleuqxhmr\"}}")
+            .toObject(ParquetSource.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ParquetSource model =
-            new ParquetSource()
-                .withSourceRetryCount("dataqakierxuvprbjxew")
-                .withSourceRetryWait("datacuveljfarinu")
-                .withMaxConcurrentConnections("dataiztgddah")
-                .withDisableMetricsCollection("datavkkjtdhmigkwa")
-                .withStoreSettings(
-                    new StoreReadSettings()
-                        .withMaxConcurrentConnections("datayph")
-                        .withDisableMetricsCollection("datarxrpahp")
-                        .withAdditionalProperties(mapOf("type", "StoreReadSettings")))
-                .withAdditionalColumns("dataluqfffglf");
+        ParquetSource model
+            = new ParquetSource().withSourceRetryCount("datazsglavdtttyd").withSourceRetryWait("dataomz")
+                .withMaxConcurrentConnections("datakjq").withDisableMetricsCollection("datahbypwmveyrciked")
+                .withStoreSettings(new StoreReadSettings().withMaxConcurrentConnections("datagadkrknyyjngdf")
+                    .withDisableMetricsCollection("datacjfqmyfgwbuxq")
+                    .withAdditionalProperties(mapOf("type", "StoreReadSettings")))
+                .withFormatSettings(new ParquetReadSettings().withCompressionProperties(
+                    new CompressionReadSettings().withAdditionalProperties(mapOf("type", "CompressionReadSettings"))))
+                .withAdditionalColumns("dataotghxkrrpmgdoli");
         model = BinaryData.fromObject(model).toObject(ParquetSource.class);
     }
 

@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of BackupInstances. */
+/**
+ * Resource collection API of BackupInstances.
+ */
 public interface BackupInstances {
     /**
      * Gets a backup instances belonging to a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface BackupInstances {
 
     /**
      * Gets a backup instances belonging to a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param context The context to associate with this operation.
@@ -37,7 +39,7 @@ public interface BackupInstances {
 
     /**
      * Gets a backup instance with name in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -47,12 +49,12 @@ public interface BackupInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a backup instance with name in a backup vault along with {@link Response}.
      */
-    Response<BackupInstanceResource> getWithResponse(
-        String resourceGroupName, String vaultName, String backupInstanceName, Context context);
+    Response<BackupInstanceResource> getWithResponse(String resourceGroupName, String vaultName,
+        String backupInstanceName, Context context);
 
     /**
      * Gets a backup instance with name in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -65,7 +67,7 @@ public interface BackupInstances {
 
     /**
      * Delete a backup instance in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -77,7 +79,7 @@ public interface BackupInstances {
 
     /**
      * Delete a backup instance in a backup vault.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -90,7 +92,7 @@ public interface BackupInstances {
 
     /**
      * Trigger adhoc backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -100,12 +102,12 @@ public interface BackupInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operationJobExtendedInfo.
      */
-    OperationJobExtendedInfo adhocBackup(
-        String resourceGroupName, String vaultName, String backupInstanceName, TriggerBackupRequest parameters);
+    OperationJobExtendedInfo adhocBackup(String resourceGroupName, String vaultName, String backupInstanceName,
+        TriggerBackupRequest parameters);
 
     /**
      * Trigger adhoc backup.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -116,16 +118,12 @@ public interface BackupInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operationJobExtendedInfo.
      */
-    OperationJobExtendedInfo adhocBackup(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        TriggerBackupRequest parameters,
-        Context context);
+    OperationJobExtendedInfo adhocBackup(String resourceGroupName, String vaultName, String backupInstanceName,
+        TriggerBackupRequest parameters, Context context);
 
     /**
      * Validate whether adhoc backup will be successful or not.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
@@ -134,12 +132,12 @@ public interface BackupInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operationJobExtendedInfo.
      */
-    OperationJobExtendedInfo validateForBackup(
-        String resourceGroupName, String vaultName, ValidateForBackupRequest parameters);
+    OperationJobExtendedInfo validateForBackup(String resourceGroupName, String vaultName,
+        ValidateForBackupRequest parameters);
 
     /**
      * Validate whether adhoc backup will be successful or not.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param parameters Request body for operation.
@@ -149,12 +147,12 @@ public interface BackupInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operationJobExtendedInfo.
      */
-    OperationJobExtendedInfo validateForBackup(
-        String resourceGroupName, String vaultName, ValidateForBackupRequest parameters, Context context);
+    OperationJobExtendedInfo validateForBackup(String resourceGroupName, String vaultName,
+        ValidateForBackupRequest parameters, Context context);
 
     /**
      * Get result of backup instance creation operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -165,12 +163,12 @@ public interface BackupInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of backup instance creation operation along with {@link Response}.
      */
-    Response<BackupInstanceResource> getBackupInstanceOperationResultWithResponse(
-        String resourceGroupName, String vaultName, String backupInstanceName, String operationId, Context context);
+    Response<BackupInstanceResource> getBackupInstanceOperationResultWithResponse(String resourceGroupName,
+        String vaultName, String backupInstanceName, String operationId, Context context);
 
     /**
      * Get result of backup instance creation operation.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -180,12 +178,70 @@ public interface BackupInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return result of backup instance creation operation.
      */
-    BackupInstanceResource getBackupInstanceOperationResult(
-        String resourceGroupName, String vaultName, String backupInstanceName, String operationId);
+    BackupInstanceResource getBackupInstanceOperationResult(String resourceGroupName, String vaultName,
+        String backupInstanceName, String operationId);
+
+    /**
+     * Triggers Cross Region Restore for BackupInstance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param parameters Request body for trigger CRR operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operationJobExtendedInfo.
+     */
+    OperationJobExtendedInfo triggerCrossRegionRestore(String resourceGroupName, String location,
+        CrossRegionRestoreRequestObject parameters);
+
+    /**
+     * Triggers Cross Region Restore for BackupInstance.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param parameters Request body for trigger CRR operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operationJobExtendedInfo.
+     */
+    OperationJobExtendedInfo triggerCrossRegionRestore(String resourceGroupName, String location,
+        CrossRegionRestoreRequestObject parameters, Context context);
+
+    /**
+     * Validates whether Cross Region Restore can be triggered for DataSource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param parameters Request body for operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operationJobExtendedInfo.
+     */
+    OperationJobExtendedInfo validateCrossRegionRestore(String resourceGroupName, String location,
+        ValidateCrossRegionRestoreRequestObject parameters);
+
+    /**
+     * Validates whether Cross Region Restore can be triggered for DataSource.
+     * 
+     * @param resourceGroupName The name of the resource group. The name is case insensitive.
+     * @param location The name of the Azure region.
+     * @param parameters Request body for operation.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return operationJobExtendedInfo.
+     */
+    OperationJobExtendedInfo validateCrossRegionRestore(String resourceGroupName, String location,
+        ValidateCrossRegionRestoreRequestObject parameters, Context context);
 
     /**
      * rehydrate recovery point for restore for a BackupInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -194,15 +250,12 @@ public interface BackupInstances {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void triggerRehydrate(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
+    void triggerRehydrate(String resourceGroupName, String vaultName, String backupInstanceName,
         AzureBackupRehydrationRequest parameters);
 
     /**
      * rehydrate recovery point for restore for a BackupInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -212,16 +265,12 @@ public interface BackupInstances {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void triggerRehydrate(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        AzureBackupRehydrationRequest parameters,
-        Context context);
+    void triggerRehydrate(String resourceGroupName, String vaultName, String backupInstanceName,
+        AzureBackupRehydrationRequest parameters, Context context);
 
     /**
      * Triggers restore for a BackupInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -231,12 +280,12 @@ public interface BackupInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operationJobExtendedInfo.
      */
-    OperationJobExtendedInfo triggerRestore(
-        String resourceGroupName, String vaultName, String backupInstanceName, AzureBackupRestoreRequest parameters);
+    OperationJobExtendedInfo triggerRestore(String resourceGroupName, String vaultName, String backupInstanceName,
+        AzureBackupRestoreRequest parameters);
 
     /**
      * Triggers restore for a BackupInstance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -247,16 +296,12 @@ public interface BackupInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operationJobExtendedInfo.
      */
-    OperationJobExtendedInfo triggerRestore(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        AzureBackupRestoreRequest parameters,
-        Context context);
+    OperationJobExtendedInfo triggerRestore(String resourceGroupName, String vaultName, String backupInstanceName,
+        AzureBackupRestoreRequest parameters, Context context);
 
     /**
      * This operation will resume backups for backup instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -268,7 +313,7 @@ public interface BackupInstances {
 
     /**
      * This operation will resume backups for backup instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -281,7 +326,7 @@ public interface BackupInstances {
 
     /**
      * This operation will resume protection for a stopped backup instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -293,7 +338,7 @@ public interface BackupInstances {
 
     /**
      * This operation will resume protection for a stopped backup instance.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -306,7 +351,7 @@ public interface BackupInstances {
 
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -318,7 +363,7 @@ public interface BackupInstances {
 
     /**
      * This operation will stop protection of a backup instance and data will be held forever.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -332,7 +377,7 @@ public interface BackupInstances {
     /**
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
      * latest Recovery point, which will be retained forever).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -345,7 +390,7 @@ public interface BackupInstances {
     /**
      * This operation will stop backup for a backup instance and retains the backup data as per the policy (except
      * latest Recovery point, which will be retained forever).
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -357,9 +402,9 @@ public interface BackupInstances {
     void suspendBackups(String resourceGroupName, String vaultName, String backupInstanceName, Context context);
 
     /**
-     * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
-     * instance to valid state.
-     *
+     * Sync backup instance again in case of failure
+     * This action will retry last failed operation and will bring backup instance to valid state.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -368,13 +413,13 @@ public interface BackupInstances {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void syncBackupInstance(
-        String resourceGroupName, String vaultName, String backupInstanceName, SyncBackupInstanceRequest parameters);
+    void syncBackupInstance(String resourceGroupName, String vaultName, String backupInstanceName,
+        SyncBackupInstanceRequest parameters);
 
     /**
-     * Sync backup instance again in case of failure This action will retry last failed operation and will bring backup
-     * instance to valid state.
-     *
+     * Sync backup instance again in case of failure
+     * This action will retry last failed operation and will bring backup instance to valid state.
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -384,16 +429,12 @@ public interface BackupInstances {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
-    void syncBackupInstance(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        SyncBackupInstanceRequest parameters,
-        Context context);
+    void syncBackupInstance(String resourceGroupName, String vaultName, String backupInstanceName,
+        SyncBackupInstanceRequest parameters, Context context);
 
     /**
      * Validates if Restore can be triggered for a DataSource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -403,12 +444,12 @@ public interface BackupInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operationJobExtendedInfo.
      */
-    OperationJobExtendedInfo validateForRestore(
-        String resourceGroupName, String vaultName, String backupInstanceName, ValidateRestoreRequestObject parameters);
+    OperationJobExtendedInfo validateForRestore(String resourceGroupName, String vaultName, String backupInstanceName,
+        ValidateRestoreRequestObject parameters);
 
     /**
      * Validates if Restore can be triggered for a DataSource.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param vaultName The name of the backup vault.
      * @param backupInstanceName The name of the backup instance.
@@ -419,16 +460,12 @@ public interface BackupInstances {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return operationJobExtendedInfo.
      */
-    OperationJobExtendedInfo validateForRestore(
-        String resourceGroupName,
-        String vaultName,
-        String backupInstanceName,
-        ValidateRestoreRequestObject parameters,
-        Context context);
+    OperationJobExtendedInfo validateForRestore(String resourceGroupName, String vaultName, String backupInstanceName,
+        ValidateRestoreRequestObject parameters, Context context);
 
     /**
      * Gets a backup instance with name in a backup vault.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -439,7 +476,7 @@ public interface BackupInstances {
 
     /**
      * Gets a backup instance with name in a backup vault.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -451,7 +488,7 @@ public interface BackupInstances {
 
     /**
      * Delete a backup instance in a backup vault.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -461,7 +498,7 @@ public interface BackupInstances {
 
     /**
      * Delete a backup instance in a backup vault.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -472,7 +509,7 @@ public interface BackupInstances {
 
     /**
      * Begins definition for a new BackupInstanceResource resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new BackupInstanceResource definition.
      */

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Sap ECC OData resource dataset properties. */
+/**
+ * Sap ECC OData resource dataset properties.
+ */
 @Fluent
 public final class SapEccResourceDatasetTypeProperties {
     /*
@@ -17,13 +19,16 @@ public final class SapEccResourceDatasetTypeProperties {
     @JsonProperty(value = "path", required = true)
     private Object path;
 
-    /** Creates an instance of SapEccResourceDatasetTypeProperties class. */
+    /**
+     * Creates an instance of SapEccResourceDatasetTypeProperties class.
+     */
     public SapEccResourceDatasetTypeProperties() {
     }
 
     /**
-     * Get the path property: The path of the SAP ECC OData entity. Type: string (or Expression with resultType string).
-     *
+     * Get the path property: The path of the SAP ECC OData entity. Type: string (or Expression with resultType
+     * string).
+     * 
      * @return the path value.
      */
     public Object path() {
@@ -31,8 +36,9 @@ public final class SapEccResourceDatasetTypeProperties {
     }
 
     /**
-     * Set the path property: The path of the SAP ECC OData entity. Type: string (or Expression with resultType string).
-     *
+     * Set the path property: The path of the SAP ECC OData entity. Type: string (or Expression with resultType
+     * string).
+     * 
      * @param path the path value to set.
      * @return the SapEccResourceDatasetTypeProperties object itself.
      */
@@ -43,15 +49,13 @@ public final class SapEccResourceDatasetTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (path() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property path in model SapEccResourceDatasetTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property path in model SapEccResourceDatasetTypeProperties"));
         }
     }
 

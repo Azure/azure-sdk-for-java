@@ -10,7 +10,9 @@ import com.azure.resourcemanager.hybridcontainerservice.fluent.models.HybridIden
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** List of hybridIdentityMetadata. */
+/**
+ * List of hybridIdentityMetadata.
+ */
 @Fluent
 public final class HybridIdentityMetadataList {
     /*
@@ -25,13 +27,15 @@ public final class HybridIdentityMetadataList {
     @JsonProperty(value = "value", required = true)
     private List<HybridIdentityMetadataInner> value;
 
-    /** Creates an instance of HybridIdentityMetadataList class. */
+    /**
+     * Creates an instance of HybridIdentityMetadataList class.
+     */
     public HybridIdentityMetadataList() {
     }
 
     /**
      * Get the nextLink property: Url to follow for getting next page of hybridIdentityMetadata.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -40,7 +44,7 @@ public final class HybridIdentityMetadataList {
 
     /**
      * Set the nextLink property: Url to follow for getting next page of hybridIdentityMetadata.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the HybridIdentityMetadataList object itself.
      */
@@ -51,7 +55,7 @@ public final class HybridIdentityMetadataList {
 
     /**
      * Get the value property: Array of hybridIdentityMetadata.
-     *
+     * 
      * @return the value value.
      */
     public List<HybridIdentityMetadataInner> value() {
@@ -60,7 +64,7 @@ public final class HybridIdentityMetadataList {
 
     /**
      * Set the value property: Array of hybridIdentityMetadata.
-     *
+     * 
      * @param value the value value to set.
      * @return the HybridIdentityMetadataList object itself.
      */
@@ -71,15 +75,13 @@ public final class HybridIdentityMetadataList {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model HybridIdentityMetadataList"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model HybridIdentityMetadataList"));
         } else {
             value().forEach(e -> e.validate());
         }

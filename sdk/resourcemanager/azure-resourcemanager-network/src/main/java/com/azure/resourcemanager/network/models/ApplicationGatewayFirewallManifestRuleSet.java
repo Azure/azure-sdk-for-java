@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Properties of the web application firewall rule set. */
+/**
+ * Properties of the web application firewall rule set.
+ */
 @Fluent
 public final class ApplicationGatewayFirewallManifestRuleSet {
     /*
@@ -42,13 +44,15 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
     @JsonProperty(value = "ruleGroups", required = true)
     private List<ApplicationGatewayFirewallRuleGroup> ruleGroups;
 
-    /** Creates an instance of ApplicationGatewayFirewallManifestRuleSet class. */
+    /**
+     * Creates an instance of ApplicationGatewayFirewallManifestRuleSet class.
+     */
     public ApplicationGatewayFirewallManifestRuleSet() {
     }
 
     /**
      * Get the ruleSetType property: The type of the web application firewall rule set.
-     *
+     * 
      * @return the ruleSetType value.
      */
     public String ruleSetType() {
@@ -57,7 +61,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Set the ruleSetType property: The type of the web application firewall rule set.
-     *
+     * 
      * @param ruleSetType the ruleSetType value to set.
      * @return the ApplicationGatewayFirewallManifestRuleSet object itself.
      */
@@ -68,7 +72,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Get the ruleSetVersion property: The version of the web application firewall rule set type.
-     *
+     * 
      * @return the ruleSetVersion value.
      */
     public String ruleSetVersion() {
@@ -77,7 +81,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Set the ruleSetVersion property: The version of the web application firewall rule set type.
-     *
+     * 
      * @param ruleSetVersion the ruleSetVersion value to set.
      * @return the ApplicationGatewayFirewallManifestRuleSet object itself.
      */
@@ -88,7 +92,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Get the status property: The rule set status.
-     *
+     * 
      * @return the status value.
      */
     public ApplicationGatewayRuleSetStatusOptions status() {
@@ -97,7 +101,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Set the status property: The rule set status.
-     *
+     * 
      * @param status the status value to set.
      * @return the ApplicationGatewayFirewallManifestRuleSet object itself.
      */
@@ -108,7 +112,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Get the tiers property: Tier of an application gateway that support the rule set.
-     *
+     * 
      * @return the tiers value.
      */
     public List<ApplicationGatewayTierTypes> tiers() {
@@ -117,7 +121,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Set the tiers property: Tier of an application gateway that support the rule set.
-     *
+     * 
      * @param tiers the tiers value to set.
      * @return the ApplicationGatewayFirewallManifestRuleSet object itself.
      */
@@ -128,7 +132,7 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Get the ruleGroups property: The rule groups of the web application firewall rule set.
-     *
+     * 
      * @return the ruleGroups value.
      */
     public List<ApplicationGatewayFirewallRuleGroup> ruleGroups() {
@@ -137,39 +141,33 @@ public final class ApplicationGatewayFirewallManifestRuleSet {
 
     /**
      * Set the ruleGroups property: The rule groups of the web application firewall rule set.
-     *
+     * 
      * @param ruleGroups the ruleGroups value to set.
      * @return the ApplicationGatewayFirewallManifestRuleSet object itself.
      */
-    public ApplicationGatewayFirewallManifestRuleSet withRuleGroups(
-        List<ApplicationGatewayFirewallRuleGroup> ruleGroups) {
+    public ApplicationGatewayFirewallManifestRuleSet
+        withRuleGroups(List<ApplicationGatewayFirewallRuleGroup> ruleGroups) {
         this.ruleGroups = ruleGroups;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (ruleSetType() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ruleSetType in model ApplicationGatewayFirewallManifestRuleSet"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property ruleSetType in model ApplicationGatewayFirewallManifestRuleSet"));
         }
         if (ruleSetVersion() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ruleSetVersion in model ApplicationGatewayFirewallManifestRuleSet"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property ruleSetVersion in model ApplicationGatewayFirewallManifestRuleSet"));
         }
         if (ruleGroups() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property ruleGroups in model ApplicationGatewayFirewallManifestRuleSet"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property ruleGroups in model ApplicationGatewayFirewallManifestRuleSet"));
         } else {
             ruleGroups().forEach(e -> e.validate());
         }

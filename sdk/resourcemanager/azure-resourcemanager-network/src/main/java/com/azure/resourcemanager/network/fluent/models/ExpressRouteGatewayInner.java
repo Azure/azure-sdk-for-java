@@ -13,7 +13,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
-/** ExpressRoute gateway resource. */
+/**
+ * ExpressRoute gateway resource.
+ */
 @Fluent
 public final class ExpressRouteGatewayInner extends Resource {
     /*
@@ -34,13 +36,15 @@ public final class ExpressRouteGatewayInner extends Resource {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of ExpressRouteGatewayInner class. */
+    /**
+     * Creates an instance of ExpressRouteGatewayInner class.
+     */
     public ExpressRouteGatewayInner() {
     }
 
     /**
      * Get the innerProperties property: Properties of the express route gateway.
-     *
+     * 
      * @return the innerProperties value.
      */
     private ExpressRouteGatewayProperties innerProperties() {
@@ -49,7 +53,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Get the etag property: A unique read-only string that changes whenever the resource is updated.
-     *
+     * 
      * @return the etag value.
      */
     public String etag() {
@@ -58,7 +62,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Get the id property: Resource ID.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -67,7 +71,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Set the id property: Resource ID.
-     *
+     * 
      * @param id the id value to set.
      * @return the ExpressRouteGatewayInner object itself.
      */
@@ -76,14 +80,18 @@ public final class ExpressRouteGatewayInner extends Resource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExpressRouteGatewayInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ExpressRouteGatewayInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -92,7 +100,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Get the autoScaleConfiguration property: Configuration for auto scaling.
-     *
+     * 
      * @return the autoScaleConfiguration value.
      */
     public ExpressRouteGatewayPropertiesAutoScaleConfiguration autoScaleConfiguration() {
@@ -101,12 +109,12 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Set the autoScaleConfiguration property: Configuration for auto scaling.
-     *
+     * 
      * @param autoScaleConfiguration the autoScaleConfiguration value to set.
      * @return the ExpressRouteGatewayInner object itself.
      */
-    public ExpressRouteGatewayInner withAutoScaleConfiguration(
-        ExpressRouteGatewayPropertiesAutoScaleConfiguration autoScaleConfiguration) {
+    public ExpressRouteGatewayInner
+        withAutoScaleConfiguration(ExpressRouteGatewayPropertiesAutoScaleConfiguration autoScaleConfiguration) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ExpressRouteGatewayProperties();
         }
@@ -116,7 +124,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Get the expressRouteConnections property: List of ExpressRoute connections to the ExpressRoute gateway.
-     *
+     * 
      * @return the expressRouteConnections value.
      */
     public List<ExpressRouteConnectionInner> expressRouteConnections() {
@@ -125,12 +133,12 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Set the expressRouteConnections property: List of ExpressRoute connections to the ExpressRoute gateway.
-     *
+     * 
      * @param expressRouteConnections the expressRouteConnections value to set.
      * @return the ExpressRouteGatewayInner object itself.
      */
-    public ExpressRouteGatewayInner withExpressRouteConnections(
-        List<ExpressRouteConnectionInner> expressRouteConnections) {
+    public ExpressRouteGatewayInner
+        withExpressRouteConnections(List<ExpressRouteConnectionInner> expressRouteConnections) {
         if (this.innerProperties() == null) {
             this.innerProperties = new ExpressRouteGatewayProperties();
         }
@@ -140,7 +148,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Get the provisioningState property: The provisioning state of the express route gateway resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -149,7 +157,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Get the virtualHub property: The Virtual Hub where the ExpressRoute gateway is or will be deployed.
-     *
+     * 
      * @return the virtualHub value.
      */
     public VirtualHubId virtualHub() {
@@ -158,7 +166,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Set the virtualHub property: The Virtual Hub where the ExpressRoute gateway is or will be deployed.
-     *
+     * 
      * @param virtualHub the virtualHub value to set.
      * @return the ExpressRouteGatewayInner object itself.
      */
@@ -173,7 +181,7 @@ public final class ExpressRouteGatewayInner extends Resource {
     /**
      * Get the allowNonVirtualWanTraffic property: Configures this gateway to accept traffic from non Virtual WAN
      * networks.
-     *
+     * 
      * @return the allowNonVirtualWanTraffic value.
      */
     public Boolean allowNonVirtualWanTraffic() {
@@ -183,7 +191,7 @@ public final class ExpressRouteGatewayInner extends Resource {
     /**
      * Set the allowNonVirtualWanTraffic property: Configures this gateway to accept traffic from non Virtual WAN
      * networks.
-     *
+     * 
      * @param allowNonVirtualWanTraffic the allowNonVirtualWanTraffic value to set.
      * @return the ExpressRouteGatewayInner object itself.
      */
@@ -197,7 +205,7 @@ public final class ExpressRouteGatewayInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

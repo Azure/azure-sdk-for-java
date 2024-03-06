@@ -11,7 +11,9 @@ import com.azure.resourcemanager.network.models.AzureFirewallPacketCaptureRule;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Packet capture parameters on azure firewall. */
+/**
+ * Packet capture parameters on azure firewall.
+ */
 @Fluent
 public final class FirewallPacketCaptureParametersFormat {
     /*
@@ -56,13 +58,15 @@ public final class FirewallPacketCaptureParametersFormat {
     @JsonProperty(value = "filters")
     private List<AzureFirewallPacketCaptureRule> filters;
 
-    /** Creates an instance of FirewallPacketCaptureParametersFormat class. */
+    /**
+     * Creates an instance of FirewallPacketCaptureParametersFormat class.
+     */
     public FirewallPacketCaptureParametersFormat() {
     }
 
     /**
      * Get the durationInSeconds property: Duration of packet capture in seconds.
-     *
+     * 
      * @return the durationInSeconds value.
      */
     public Integer durationInSeconds() {
@@ -71,7 +75,7 @@ public final class FirewallPacketCaptureParametersFormat {
 
     /**
      * Set the durationInSeconds property: Duration of packet capture in seconds.
-     *
+     * 
      * @param durationInSeconds the durationInSeconds value to set.
      * @return the FirewallPacketCaptureParametersFormat object itself.
      */
@@ -82,7 +86,7 @@ public final class FirewallPacketCaptureParametersFormat {
 
     /**
      * Get the numberOfPacketsToCapture property: Number of packets to be captured.
-     *
+     * 
      * @return the numberOfPacketsToCapture value.
      */
     public Integer numberOfPacketsToCapture() {
@@ -91,7 +95,7 @@ public final class FirewallPacketCaptureParametersFormat {
 
     /**
      * Set the numberOfPacketsToCapture property: Number of packets to be captured.
-     *
+     * 
      * @param numberOfPacketsToCapture the numberOfPacketsToCapture value to set.
      * @return the FirewallPacketCaptureParametersFormat object itself.
      */
@@ -102,7 +106,7 @@ public final class FirewallPacketCaptureParametersFormat {
 
     /**
      * Get the sasUrl property: Upload capture location.
-     *
+     * 
      * @return the sasUrl value.
      */
     public String sasUrl() {
@@ -111,7 +115,7 @@ public final class FirewallPacketCaptureParametersFormat {
 
     /**
      * Set the sasUrl property: Upload capture location.
-     *
+     * 
      * @param sasUrl the sasUrl value to set.
      * @return the FirewallPacketCaptureParametersFormat object itself.
      */
@@ -122,7 +126,7 @@ public final class FirewallPacketCaptureParametersFormat {
 
     /**
      * Get the fileName property: Name of file to be uploaded to sasURL.
-     *
+     * 
      * @return the fileName value.
      */
     public String fileName() {
@@ -131,7 +135,7 @@ public final class FirewallPacketCaptureParametersFormat {
 
     /**
      * Set the fileName property: Name of file to be uploaded to sasURL.
-     *
+     * 
      * @param fileName the fileName value to set.
      * @return the FirewallPacketCaptureParametersFormat object itself.
      */
@@ -142,7 +146,7 @@ public final class FirewallPacketCaptureParametersFormat {
 
     /**
      * Get the protocol property: The protocol of packets to capture.
-     *
+     * 
      * @return the protocol value.
      */
     public AzureFirewallNetworkRuleProtocol protocol() {
@@ -151,7 +155,7 @@ public final class FirewallPacketCaptureParametersFormat {
 
     /**
      * Set the protocol property: The protocol of packets to capture.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the FirewallPacketCaptureParametersFormat object itself.
      */
@@ -162,7 +166,7 @@ public final class FirewallPacketCaptureParametersFormat {
 
     /**
      * Get the flags property: The tcp-flag type to be captured. Used with protocol TCP.
-     *
+     * 
      * @return the flags value.
      */
     public List<AzureFirewallPacketCaptureFlags> flags() {
@@ -171,7 +175,7 @@ public final class FirewallPacketCaptureParametersFormat {
 
     /**
      * Set the flags property: The tcp-flag type to be captured. Used with protocol TCP.
-     *
+     * 
      * @param flags the flags value to set.
      * @return the FirewallPacketCaptureParametersFormat object itself.
      */
@@ -182,7 +186,7 @@ public final class FirewallPacketCaptureParametersFormat {
 
     /**
      * Get the filters property: Rules to filter packet captures.
-     *
+     * 
      * @return the filters value.
      */
     public List<AzureFirewallPacketCaptureRule> filters() {
@@ -191,7 +195,7 @@ public final class FirewallPacketCaptureParametersFormat {
 
     /**
      * Set the filters property: Rules to filter packet captures.
-     *
+     * 
      * @param filters the filters value to set.
      * @return the FirewallPacketCaptureParametersFormat object itself.
      */
@@ -202,7 +206,7 @@ public final class FirewallPacketCaptureParametersFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

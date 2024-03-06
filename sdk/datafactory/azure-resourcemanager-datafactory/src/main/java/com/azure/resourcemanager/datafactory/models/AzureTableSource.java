@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** A copy activity Azure Table source. */
+/**
+ * A copy activity Azure Table source.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureTableSource")
 @Fluent
@@ -26,14 +28,16 @@ public final class AzureTableSource extends TabularSource {
     @JsonProperty(value = "azureTableSourceIgnoreTableNotFound")
     private Object azureTableSourceIgnoreTableNotFound;
 
-    /** Creates an instance of AzureTableSource class. */
+    /**
+     * Creates an instance of AzureTableSource class.
+     */
     public AzureTableSource() {
     }
 
     /**
      * Get the azureTableSourceQuery property: Azure Table source query. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the azureTableSourceQuery value.
      */
     public Object azureTableSourceQuery() {
@@ -43,7 +47,7 @@ public final class AzureTableSource extends TabularSource {
     /**
      * Set the azureTableSourceQuery property: Azure Table source query. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param azureTableSourceQuery the azureTableSourceQuery value to set.
      * @return the AzureTableSource object itself.
      */
@@ -55,7 +59,7 @@ public final class AzureTableSource extends TabularSource {
     /**
      * Get the azureTableSourceIgnoreTableNotFound property: Azure Table source ignore table not found. Type: boolean
      * (or Expression with resultType boolean).
-     *
+     * 
      * @return the azureTableSourceIgnoreTableNotFound value.
      */
     public Object azureTableSourceIgnoreTableNotFound() {
@@ -65,7 +69,7 @@ public final class AzureTableSource extends TabularSource {
     /**
      * Set the azureTableSourceIgnoreTableNotFound property: Azure Table source ignore table not found. Type: boolean
      * (or Expression with resultType boolean).
-     *
+     * 
      * @param azureTableSourceIgnoreTableNotFound the azureTableSourceIgnoreTableNotFound value to set.
      * @return the AzureTableSource object itself.
      */
@@ -74,42 +78,54 @@ public final class AzureTableSource extends TabularSource {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableSource withQueryTimeout(Object queryTimeout) {
         super.withQueryTimeout(queryTimeout);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableSource withAdditionalColumns(Object additionalColumns) {
         super.withAdditionalColumns(additionalColumns);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableSource withSourceRetryCount(Object sourceRetryCount) {
         super.withSourceRetryCount(sourceRetryCount);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableSource withSourceRetryWait(Object sourceRetryWait) {
         super.withSourceRetryWait(sourceRetryWait);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableSource withMaxConcurrentConnections(Object maxConcurrentConnections) {
         super.withMaxConcurrentConnections(maxConcurrentConnections);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureTableSource withDisableMetricsCollection(Object disableMetricsCollection) {
         super.withDisableMetricsCollection(disableMetricsCollection);
@@ -118,7 +134,7 @@ public final class AzureTableSource extends TabularSource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

@@ -5,15 +5,13 @@
 package com.azure.resourcemanager.servicenetworking.generated;
 
 import com.azure.core.util.BinaryData;
-import com.azure.resourcemanager.servicenetworking.fluent.models.FrontendProperties;
+import com.azure.resourcemanager.servicenetworking.models.FrontendProperties;
 
 public final class FrontendPropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        FrontendProperties model =
-            BinaryData
-                .fromString("{\"fqdn\":\"hzgpphrcgyncocpe\",\"provisioningState\":\"Canceled\"}")
-                .toObject(FrontendProperties.class);
+        FrontendProperties model = BinaryData.fromString("{\"fqdn\":\"nbdxk\",\"provisioningState\":\"Provisioning\"}")
+            .toObject(FrontendProperties.class);
     }
 
     @org.junit.jupiter.api.Test

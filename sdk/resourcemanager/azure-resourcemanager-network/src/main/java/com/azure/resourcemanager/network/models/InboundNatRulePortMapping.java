@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Individual port mappings for inbound NAT rule created for backend pool. */
+/**
+ * Individual port mappings for inbound NAT rule created for backend pool.
+ */
 @Immutable
 public final class InboundNatRulePortMapping {
     /*
@@ -34,13 +36,15 @@ public final class InboundNatRulePortMapping {
     @JsonProperty(value = "backendPort", access = JsonProperty.Access.WRITE_ONLY)
     private Integer backendPort;
 
-    /** Creates an instance of InboundNatRulePortMapping class. */
+    /**
+     * Creates an instance of InboundNatRulePortMapping class.
+     */
     public InboundNatRulePortMapping() {
     }
 
     /**
      * Get the inboundNatRuleName property: Name of inbound NAT rule.
-     *
+     * 
      * @return the inboundNatRuleName value.
      */
     public String inboundNatRuleName() {
@@ -49,7 +53,7 @@ public final class InboundNatRulePortMapping {
 
     /**
      * Get the protocol property: The reference to the transport protocol used by the inbound NAT rule.
-     *
+     * 
      * @return the protocol value.
      */
     public TransportProtocol protocol() {
@@ -58,7 +62,7 @@ public final class InboundNatRulePortMapping {
 
     /**
      * Get the frontendPort property: Frontend port.
-     *
+     * 
      * @return the frontendPort value.
      */
     public Integer frontendPort() {
@@ -67,7 +71,7 @@ public final class InboundNatRulePortMapping {
 
     /**
      * Get the backendPort property: Backend port.
-     *
+     * 
      * @return the backendPort value.
      */
     public Integer backendPort() {
@@ -76,7 +80,7 @@ public final class InboundNatRulePortMapping {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

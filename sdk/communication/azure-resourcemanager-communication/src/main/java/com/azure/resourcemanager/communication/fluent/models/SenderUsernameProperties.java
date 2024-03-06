@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.communication.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A class that describes the properties of a SenderUsername resource. */
+/**
+ * A class that describes the properties of a SenderUsername resource.
+ */
 @Fluent
 public final class SenderUsernameProperties {
     /*
@@ -36,13 +38,15 @@ public final class SenderUsernameProperties {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of SenderUsernameProperties class. */
+    /**
+     * Creates an instance of SenderUsernameProperties class.
+     */
     public SenderUsernameProperties() {
     }
 
     /**
      * Get the dataLocation property: The location where the SenderUsername resource data is stored at rest.
-     *
+     * 
      * @return the dataLocation value.
      */
     public String dataLocation() {
@@ -51,7 +55,7 @@ public final class SenderUsernameProperties {
 
     /**
      * Get the username property: A sender senderUsername to be used when sending emails.
-     *
+     * 
      * @return the username value.
      */
     public String username() {
@@ -60,7 +64,7 @@ public final class SenderUsernameProperties {
 
     /**
      * Set the username property: A sender senderUsername to be used when sending emails.
-     *
+     * 
      * @param username the username value to set.
      * @return the SenderUsernameProperties object itself.
      */
@@ -71,7 +75,7 @@ public final class SenderUsernameProperties {
 
     /**
      * Get the displayName property: The display name for the senderUsername.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -80,7 +84,7 @@ public final class SenderUsernameProperties {
 
     /**
      * Set the displayName property: The display name for the senderUsername.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the SenderUsernameProperties object itself.
      */
@@ -92,7 +96,7 @@ public final class SenderUsernameProperties {
     /**
      * Get the provisioningState property: Provisioning state of the resource. Unknown is the default state for
      * Communication Services.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -101,15 +105,13 @@ public final class SenderUsernameProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (username() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property username in model SenderUsernameProperties"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property username in model SenderUsernameProperties"));
         }
     }
 

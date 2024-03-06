@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** A data flow transformation. */
+/**
+ * A data flow transformation.
+ */
 @Fluent
 public class Transformation {
     /*
@@ -40,12 +42,15 @@ public class Transformation {
     @JsonProperty(value = "flowlet")
     private DataFlowReference flowlet;
 
-    /** Creates an instance of Transformation class. */
-    public Transformation() {}
+    /**
+     * Creates an instance of Transformation class.
+     */
+    public Transformation() {
+    }
 
     /**
      * Get the name property: Transformation name.
-     *
+     * 
      * @return the name value.
      */
     public String getName() {
@@ -54,7 +59,7 @@ public class Transformation {
 
     /**
      * Set the name property: Transformation name.
-     *
+     * 
      * @param name the name value to set.
      * @return the Transformation object itself.
      */
@@ -65,7 +70,7 @@ public class Transformation {
 
     /**
      * Get the description property: Transformation description.
-     *
+     * 
      * @return the description value.
      */
     public String getDescription() {
@@ -74,7 +79,7 @@ public class Transformation {
 
     /**
      * Set the description property: Transformation description.
-     *
+     * 
      * @param description the description value to set.
      * @return the Transformation object itself.
      */
@@ -85,7 +90,7 @@ public class Transformation {
 
     /**
      * Get the dataset property: Dataset reference.
-     *
+     * 
      * @return the dataset value.
      */
     public DatasetReference getDataset() {
@@ -94,7 +99,7 @@ public class Transformation {
 
     /**
      * Set the dataset property: Dataset reference.
-     *
+     * 
      * @param dataset the dataset value to set.
      * @return the Transformation object itself.
      */
@@ -105,7 +110,7 @@ public class Transformation {
 
     /**
      * Get the linkedService property: Linked service reference.
-     *
+     * 
      * @return the linkedService value.
      */
     public LinkedServiceReference getLinkedService() {
@@ -114,7 +119,7 @@ public class Transformation {
 
     /**
      * Set the linkedService property: Linked service reference.
-     *
+     * 
      * @param linkedService the linkedService value to set.
      * @return the Transformation object itself.
      */
@@ -125,7 +130,7 @@ public class Transformation {
 
     /**
      * Get the flowlet property: Flowlet Reference.
-     *
+     * 
      * @return the flowlet value.
      */
     public DataFlowReference getFlowlet() {
@@ -134,7 +139,7 @@ public class Transformation {
 
     /**
      * Set the flowlet property: Flowlet Reference.
-     *
+     * 
      * @param flowlet the flowlet value to set.
      * @return the Transformation object itself.
      */

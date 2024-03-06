@@ -91,6 +91,7 @@ class ServiceBusSessionManagerTest {
     private final FluxSink<Message> messageSink = messageProcessor.sink(FluxSink.OverflowStrategy.BUFFER);
 
     private ServiceBusConnectionProcessor connectionProcessor;
+    private ConnectionCacheWrapper connectionCacheWrapper;
     private ServiceBusSessionManager sessionManager;
     private AutoCloseable mocksCloseable;
 
@@ -134,10 +135,11 @@ class ServiceBusSessionManagerTest {
         when(connection.getManagementNode(ENTITY_PATH, ENTITY_TYPE))
             .thenReturn(Mono.just(managementNode));
 
-        connectionProcessor =
+        final ServiceBusConnectionProcessor connectionProcessor =
             Flux.<ServiceBusAmqpConnection>create(sink -> sink.next(connection))
                 .subscribeWith(new ServiceBusConnectionProcessor(connectionOptions.getFullyQualifiedNamespace(),
                     connectionOptions.getRetry()));
+        connectionCacheWrapper = new ConnectionCacheWrapper(connectionProcessor);
     }
 
     @AfterEach
@@ -165,7 +167,7 @@ class ServiceBusSessionManagerTest {
     void properties() {
         // Arrange
         ReceiverOptions receiverOptions = createUnnamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, 5, SESSION_IDLE_TIMEOUT);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionCacheWrapper,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER, NOOP_TRACER);
 
         // Act & Assert
@@ -176,7 +178,7 @@ class ServiceBusSessionManagerTest {
     void receiveNull() {
         // Arrange
         ReceiverOptions receiverOptions = createUnnamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, 5, SESSION_IDLE_TIMEOUT);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionCacheWrapper,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER, NOOP_TRACER);
 
         // Act & Assert
@@ -192,7 +194,7 @@ class ServiceBusSessionManagerTest {
     void singleUnnamedSession() {
         // Arrange
         ReceiverOptions receiverOptions = createUnnamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false, 5, SESSION_IDLE_TIMEOUT);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionCacheWrapper,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER, NOOP_TRACER);
 
         final String sessionId = "session-1";
@@ -247,7 +249,7 @@ class ServiceBusSessionManagerTest {
         // Arrange
         ReceiverOptions receiverOptions = createUnnamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false,
             1, SESSION_IDLE_TIMEOUT);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionCacheWrapper,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER, NOOP_TRACER);
 
         final String sessionId = "session-1";
@@ -305,7 +307,7 @@ class ServiceBusSessionManagerTest {
         // Arrange
         final ReceiverOptions receiverOptions = createUnnamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, true,
             5, SESSION_IDLE_TIMEOUT);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionCacheWrapper,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER, NOOP_TRACER);
 
         final int numberOfMessages = 5;
@@ -434,7 +436,7 @@ class ServiceBusSessionManagerTest {
         final ReceiverOptions receiverOptions = createUnnamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, Duration.ZERO, false,
             1, SESSION_IDLE_TIMEOUT);
 
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionCacheWrapper,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER, NOOP_TRACER);
 
         final String sessionId = "session-1";
@@ -506,7 +508,7 @@ class ServiceBusSessionManagerTest {
         // Arrange
         ReceiverOptions receiverOptions = createUnnamedSessionOptions(ServiceBusReceiveMode.PEEK_LOCK, 1, MAX_LOCK_RENEWAL, false,
             2, SESSION_IDLE_TIMEOUT);
-        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionProcessor,
+        sessionManager = new ServiceBusSessionManager(ENTITY_PATH, ENTITY_TYPE, connectionCacheWrapper,
             messageSerializer, receiverOptions, CLIENT_IDENTIFIER, NOOP_TRACER);
 
         final String sessionId = "session-1";

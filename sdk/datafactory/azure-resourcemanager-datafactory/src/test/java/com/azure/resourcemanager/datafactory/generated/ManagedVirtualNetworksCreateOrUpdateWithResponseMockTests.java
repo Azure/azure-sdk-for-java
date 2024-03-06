@@ -33,47 +33,31 @@ public final class ManagedVirtualNetworksCreateOrUpdateWithResponseMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"vNetId\":\"jxqintjhvcorobmq\",\"alias\":\"zipzkkleazkc\",\"\":{\"vofhpgu\":\"dataq\",\"wyfsqg\":\"dataibk\",\"cxazvrmu\":\"datass\"}},\"name\":\"jegohp\",\"type\":\"rmh\",\"etag\":\"tknbruszq\",\"id\":\"dmefsxmdmlowesi\"}";
+        String responseStr
+            = "{\"properties\":{\"vNetId\":\"yiivoixefn\",\"alias\":\"fewqnznctnmkits\",\"\":{\"ounugxnz\":\"dataopevqsabo\",\"ggalvorz\":\"dataq\",\"mqnbaerggq\":\"datadysndiexbskw\"}},\"name\":\"haxqvbzz\",\"type\":\"orengkunydgw\",\"etag\":\"oharvjfzzvj\",\"id\":\"cduwuintiib\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        DataFactoryManager manager =
-            DataFactoryManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        DataFactoryManager manager = DataFactoryManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        ManagedVirtualNetworkResource response =
-            manager
-                .managedVirtualNetworks()
-                .define("ncvnoqwgnllicovv")
-                .withExistingFactory("fm", "psvww")
+        ManagedVirtualNetworkResource response
+            = manager.managedVirtualNetworks().define("txubebb").withExistingFactory("degvxz", "o")
                 .withProperties(
-                    new ManagedVirtualNetwork()
-                        .withAdditionalProperties(mapOf("vNetId", "obfnbdpaoijxqgf", "alias", "trvvhxjfkpu")))
-                .withIfMatch("uxo")
-                .create();
+                    new ManagedVirtualNetwork().withAdditionalProperties(mapOf("vNetId", "yde", "alias", "yefgnib")))
+                .withIfMatch("ovbrf").create();
 
-        Assertions.assertEquals("dmefsxmdmlowesi", response.id());
+        Assertions.assertEquals("cduwuintiib", response.id());
     }
 
     // Use "Map.of" if available

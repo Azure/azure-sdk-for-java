@@ -10,16 +10,15 @@ import com.azure.resourcemanager.datafactory.fluent.models.SapOdpResourceDataset
 public final class SapOdpResourceDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        SapOdpResourceDatasetTypeProperties model =
-            BinaryData
-                .fromString("{\"context\":\"datamgbf\",\"objectName\":\"datadquyyaes\"}")
+        SapOdpResourceDatasetTypeProperties model
+            = BinaryData.fromString("{\"context\":\"datamgbf\",\"objectName\":\"datadquyyaes\"}")
                 .toObject(SapOdpResourceDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        SapOdpResourceDatasetTypeProperties model =
-            new SapOdpResourceDatasetTypeProperties().withContext("datamgbf").withObjectName("datadquyyaes");
+        SapOdpResourceDatasetTypeProperties model
+            = new SapOdpResourceDatasetTypeProperties().withContext("datamgbf").withObjectName("datadquyyaes");
         model = BinaryData.fromObject(model).toObject(SapOdpResourceDatasetTypeProperties.class);
     }
 }

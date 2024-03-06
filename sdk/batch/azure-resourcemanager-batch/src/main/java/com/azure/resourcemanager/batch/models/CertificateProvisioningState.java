@@ -7,18 +7,28 @@ package com.azure.resourcemanager.batch.models;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
-/** Defines values for CertificateProvisioningState. */
+/**
+ * Defines values for CertificateProvisioningState.
+ */
 public enum CertificateProvisioningState {
-    /** Enum value Succeeded. */
+    /**
+     * Enum value Succeeded.
+     */
     SUCCEEDED("Succeeded"),
 
-    /** Enum value Deleting. */
+    /**
+     * Enum value Deleting.
+     */
     DELETING("Deleting"),
 
-    /** Enum value Failed. */
+    /**
+     * Enum value Failed.
+     */
     FAILED("Failed");
 
-    /** The actual serialized value for a CertificateProvisioningState instance. */
+    /**
+     * The actual serialized value for a CertificateProvisioningState instance.
+     */
     private final String value;
 
     CertificateProvisioningState(String value) {
@@ -27,7 +37,7 @@ public enum CertificateProvisioningState {
 
     /**
      * Parses a serialized value to a CertificateProvisioningState instance.
-     *
+     * 
      * @param value the serialized value to parse.
      * @return the parsed CertificateProvisioningState object, or null if unable to parse.
      */
@@ -45,7 +55,9 @@ public enum CertificateProvisioningState {
         return null;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @JsonValue
     @Override
     public String toString() {

@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.models.ApplicationGatewayFirewallRuleSe
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ApplicationGatewayAvailableWafRuleSets API service call. */
+/**
+ * Response for ApplicationGatewayAvailableWafRuleSets API service call.
+ */
 @Fluent
 public final class ApplicationGatewayAvailableWafRuleSetsResultInner {
     /*
@@ -18,13 +20,15 @@ public final class ApplicationGatewayAvailableWafRuleSetsResultInner {
     @JsonProperty(value = "value")
     private List<ApplicationGatewayFirewallRuleSet> value;
 
-    /** Creates an instance of ApplicationGatewayAvailableWafRuleSetsResultInner class. */
+    /**
+     * Creates an instance of ApplicationGatewayAvailableWafRuleSetsResultInner class.
+     */
     public ApplicationGatewayAvailableWafRuleSetsResultInner() {
     }
 
     /**
      * Get the value property: The list of application gateway rule sets.
-     *
+     * 
      * @return the value value.
      */
     public List<ApplicationGatewayFirewallRuleSet> value() {
@@ -33,7 +37,7 @@ public final class ApplicationGatewayAvailableWafRuleSetsResultInner {
 
     /**
      * Set the value property: The list of application gateway rule sets.
-     *
+     * 
      * @param value the value value to set.
      * @return the ApplicationGatewayAvailableWafRuleSetsResultInner object itself.
      */
@@ -44,7 +48,7 @@ public final class ApplicationGatewayAvailableWafRuleSetsResultInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

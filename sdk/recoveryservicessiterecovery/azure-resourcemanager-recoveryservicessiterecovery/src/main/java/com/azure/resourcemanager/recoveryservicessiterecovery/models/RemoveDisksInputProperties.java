@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Remove Disk input properties. */
+/**
+ * Remove Disk input properties.
+ */
 @Fluent
 public final class RemoveDisksInputProperties {
     /*
@@ -17,7 +19,9 @@ public final class RemoveDisksInputProperties {
     @JsonProperty(value = "providerSpecificDetails")
     private RemoveDisksProviderSpecificInput providerSpecificDetails;
 
-    /** Creates an instance of RemoveDisksInputProperties class. */
+    /**
+     * Creates an instance of RemoveDisksInputProperties class.
+     */
     public RemoveDisksInputProperties() {
     }
 
@@ -25,7 +29,7 @@ public final class RemoveDisksInputProperties {
      * Get the providerSpecificDetails property: The ReplicationProviderInput. For HyperVReplicaAzure provider, it will
      * be AzureEnableProtectionInput object. For San provider, it will be SanEnableProtectionInput object. For
      * HyperVReplicaAzure provider, it can be null.
-     *
+     * 
      * @return the providerSpecificDetails value.
      */
     public RemoveDisksProviderSpecificInput providerSpecificDetails() {
@@ -36,19 +40,19 @@ public final class RemoveDisksInputProperties {
      * Set the providerSpecificDetails property: The ReplicationProviderInput. For HyperVReplicaAzure provider, it will
      * be AzureEnableProtectionInput object. For San provider, it will be SanEnableProtectionInput object. For
      * HyperVReplicaAzure provider, it can be null.
-     *
+     * 
      * @param providerSpecificDetails the providerSpecificDetails value to set.
      * @return the RemoveDisksInputProperties object itself.
      */
-    public RemoveDisksInputProperties withProviderSpecificDetails(
-        RemoveDisksProviderSpecificInput providerSpecificDetails) {
+    public RemoveDisksInputProperties
+        withProviderSpecificDetails(RemoveDisksProviderSpecificInput providerSpecificDetails) {
         this.providerSpecificDetails = providerSpecificDetails;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -8,28 +8,37 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The authentication type to use. */
+/**
+ * The authentication type to use.
+ */
 public final class ImpalaAuthenticationType extends ExpandableStringEnum<ImpalaAuthenticationType> {
-    /** Static value Anonymous for ImpalaAuthenticationType. */
+    /**
+     * Static value Anonymous for ImpalaAuthenticationType.
+     */
     public static final ImpalaAuthenticationType ANONYMOUS = fromString("Anonymous");
 
-    /** Static value SASLUsername for ImpalaAuthenticationType. */
+    /**
+     * Static value SASLUsername for ImpalaAuthenticationType.
+     */
     public static final ImpalaAuthenticationType SASL_USERNAME = fromString("SASLUsername");
 
-    /** Static value UsernameAndPassword for ImpalaAuthenticationType. */
+    /**
+     * Static value UsernameAndPassword for ImpalaAuthenticationType.
+     */
     public static final ImpalaAuthenticationType USERNAME_AND_PASSWORD = fromString("UsernameAndPassword");
 
     /**
      * Creates a new instance of ImpalaAuthenticationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public ImpalaAuthenticationType() {}
+    public ImpalaAuthenticationType() {
+    }
 
     /**
      * Creates or finds a ImpalaAuthenticationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ImpalaAuthenticationType.
      */
@@ -40,7 +49,7 @@ public final class ImpalaAuthenticationType extends ExpandableStringEnum<ImpalaA
 
     /**
      * Gets known ImpalaAuthenticationType values.
-     *
+     * 
      * @return known ImpalaAuthenticationType values.
      */
     public static Collection<ImpalaAuthenticationType> values() {

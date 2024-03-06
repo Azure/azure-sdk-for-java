@@ -3,15 +3,14 @@
 
 package com.azure.storage.file.share.perf.core;
 
+import com.azure.core.util.CoreUtils;
 import com.azure.perf.test.core.PerfStressOptions;
 import com.azure.storage.file.share.ShareAsyncClient;
 import com.azure.storage.file.share.ShareClient;
 import reactor.core.publisher.Mono;
 
-import java.util.UUID;
-
 public abstract class ShareTest<TOptions extends PerfStressOptions> extends ServiceTest<TOptions> {
-    private static final String SHARE_NAME = "perfstress-sharev11-" + UUID.randomUUID().toString();
+    private static final String SHARE_NAME = "perfstress-sharev11-" + CoreUtils.randomUuid();
 
     protected final ShareClient shareClient;
     protected final ShareAsyncClient shareAsyncClient;
@@ -19,7 +18,7 @@ public abstract class ShareTest<TOptions extends PerfStressOptions> extends Serv
     public ShareTest(TOptions options) {
         super(options);
         // Setup the container clients
-        String shareName = "perfstress-sharev11-" + UUID.randomUUID().toString();
+        String shareName = "perfstress-sharev11-" + CoreUtils.randomUuid();
         shareClient = shareServiceClient.getShareClient(shareName);
         shareAsyncClient = shareServiceAsyncClient.getShareAsyncClient(shareName);
     }

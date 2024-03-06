@@ -12,7 +12,9 @@ import com.azure.json.JsonToken;
 import com.azure.json.JsonWriter;
 import java.io.IOException;
 
-/** Represents a synonym map definition. */
+/**
+ * Represents a synonym map definition.
+ */
 @Fluent
 public final class SynonymMap implements JsonSerializable<SynonymMap> {
 
@@ -46,9 +48,10 @@ public final class SynonymMap implements JsonSerializable<SynonymMap> {
      */
     private String eTag;
 
-    /** Creates an instance of SynonymMap class. */
+    /**
+     * Creates an instance of SynonymMap class.
+     */
     public SynonymMap() {
-        format = "solr";
     }
 
     /**
@@ -150,32 +153,31 @@ public final class SynonymMap implements JsonSerializable<SynonymMap> {
      *
      * @param jsonReader The JsonReader being read.
      * @return An instance of SynonymMap if the JsonReader was pointing to an instance of it, or null if it was pointing
-     *     to JSON null.
+     * to JSON null.
      * @throws IOException If an error occurs while reading the SynonymMap.
      */
     public static SynonymMap fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(
-                reader -> {
-                    SynonymMap deserializedSynonymMap = new SynonymMap();
-                    while (reader.nextToken() != JsonToken.END_OBJECT) {
-                        String fieldName = reader.getFieldName();
-                        reader.nextToken();
-                        if ("name".equals(fieldName)) {
-                            deserializedSynonymMap.name = reader.getString();
-                        } else if ("format".equals(fieldName)) {
-                            deserializedSynonymMap.format = reader.getString();
-                        } else if ("synonyms".equals(fieldName)) {
-                            deserializedSynonymMap.synonyms = reader.getString();
-                        } else if ("encryptionKey".equals(fieldName)) {
-                            deserializedSynonymMap.encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
-                        } else if ("@odata.etag".equals(fieldName)) {
-                            deserializedSynonymMap.eTag = reader.getString();
-                        } else {
-                            reader.skipChildren();
-                        }
-                    }
-                    return deserializedSynonymMap;
-                });
+        return jsonReader.readObject(reader -> {
+            SynonymMap deserializedSynonymMap = new SynonymMap();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    deserializedSynonymMap.name = reader.getString();
+                } else if ("format".equals(fieldName)) {
+                    deserializedSynonymMap.format = reader.getString();
+                } else if ("synonyms".equals(fieldName)) {
+                    deserializedSynonymMap.synonyms = reader.getString();
+                } else if ("encryptionKey".equals(fieldName)) {
+                    deserializedSynonymMap.encryptionKey = SearchResourceEncryptionKey.fromJson(reader);
+                } else if ("@odata.etag".equals(fieldName)) {
+                    deserializedSynonymMap.eTag = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedSynonymMap;
+        });
     }
 
     /**
@@ -192,7 +194,7 @@ public final class SynonymMap implements JsonSerializable<SynonymMap> {
      *
      * @param name The name of the synonym map.
      * @param synonyms A series of synonym rules in the specified synonym map format. The rules must be separated by
-     *     newlines.
+     * newlines.
      */
     public SynonymMap(String name, String synonyms) {
         this.format = "solr";

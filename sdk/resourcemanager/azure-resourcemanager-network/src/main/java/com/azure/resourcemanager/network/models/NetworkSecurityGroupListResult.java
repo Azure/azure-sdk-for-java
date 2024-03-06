@@ -9,7 +9,9 @@ import com.azure.resourcemanager.network.fluent.models.NetworkSecurityGroupInner
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response for ListNetworkSecurityGroups API service call. */
+/**
+ * Response for ListNetworkSecurityGroups API service call.
+ */
 @Fluent
 public final class NetworkSecurityGroupListResult {
     /*
@@ -24,13 +26,15 @@ public final class NetworkSecurityGroupListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of NetworkSecurityGroupListResult class. */
+    /**
+     * Creates an instance of NetworkSecurityGroupListResult class.
+     */
     public NetworkSecurityGroupListResult() {
     }
 
     /**
      * Get the value property: A list of NetworkSecurityGroup resources.
-     *
+     * 
      * @return the value value.
      */
     public List<NetworkSecurityGroupInner> value() {
@@ -39,7 +43,7 @@ public final class NetworkSecurityGroupListResult {
 
     /**
      * Set the value property: A list of NetworkSecurityGroup resources.
-     *
+     * 
      * @param value the value value to set.
      * @return the NetworkSecurityGroupListResult object itself.
      */
@@ -50,7 +54,7 @@ public final class NetworkSecurityGroupListResult {
 
     /**
      * Get the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -59,7 +63,7 @@ public final class NetworkSecurityGroupListResult {
 
     /**
      * Set the nextLink property: The URL to get the next set of results.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the NetworkSecurityGroupListResult object itself.
      */
@@ -70,7 +74,7 @@ public final class NetworkSecurityGroupListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

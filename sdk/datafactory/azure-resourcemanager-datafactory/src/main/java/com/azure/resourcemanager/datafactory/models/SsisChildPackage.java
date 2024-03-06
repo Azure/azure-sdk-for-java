@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** SSIS embedded child package. */
+/**
+ * SSIS embedded child package.
+ */
 @Fluent
 public final class SsisChildPackage {
     /*
@@ -35,14 +37,16 @@ public final class SsisChildPackage {
     @JsonProperty(value = "packageLastModifiedDate")
     private String packageLastModifiedDate;
 
-    /** Creates an instance of SsisChildPackage class. */
+    /**
+     * Creates an instance of SsisChildPackage class.
+     */
     public SsisChildPackage() {
     }
 
     /**
      * Get the packagePath property: Path for embedded child package. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the packagePath value.
      */
     public Object packagePath() {
@@ -52,7 +56,7 @@ public final class SsisChildPackage {
     /**
      * Set the packagePath property: Path for embedded child package. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param packagePath the packagePath value to set.
      * @return the SsisChildPackage object itself.
      */
@@ -63,7 +67,7 @@ public final class SsisChildPackage {
 
     /**
      * Get the packageName property: Name for embedded child package.
-     *
+     * 
      * @return the packageName value.
      */
     public String packageName() {
@@ -72,7 +76,7 @@ public final class SsisChildPackage {
 
     /**
      * Set the packageName property: Name for embedded child package.
-     *
+     * 
      * @param packageName the packageName value to set.
      * @return the SsisChildPackage object itself.
      */
@@ -84,7 +88,7 @@ public final class SsisChildPackage {
     /**
      * Get the packageContent property: Content for embedded child package. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the packageContent value.
      */
     public Object packageContent() {
@@ -94,7 +98,7 @@ public final class SsisChildPackage {
     /**
      * Set the packageContent property: Content for embedded child package. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param packageContent the packageContent value to set.
      * @return the SsisChildPackage object itself.
      */
@@ -105,7 +109,7 @@ public final class SsisChildPackage {
 
     /**
      * Get the packageLastModifiedDate property: Last modified date for embedded child package.
-     *
+     * 
      * @return the packageLastModifiedDate value.
      */
     public String packageLastModifiedDate() {
@@ -114,7 +118,7 @@ public final class SsisChildPackage {
 
     /**
      * Set the packageLastModifiedDate property: Last modified date for embedded child package.
-     *
+     * 
      * @param packageLastModifiedDate the packageLastModifiedDate value to set.
      * @return the SsisChildPackage object itself.
      */
@@ -125,19 +129,17 @@ public final class SsisChildPackage {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (packagePath() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property packagePath in model SsisChildPackage"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property packagePath in model SsisChildPackage"));
         }
         if (packageContent() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property packageContent in model SsisChildPackage"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property packageContent in model SsisChildPackage"));
         }
     }
 

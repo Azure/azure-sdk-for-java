@@ -13,9 +13,17 @@ import static com.azure.core.amqp.implementation.AmqpLoggingUtils.createContextW
 import static com.azure.core.amqp.implementation.ClientConstants.HOSTNAME_KEY;
 import static com.azure.core.amqp.implementation.ClientConstants.NOT_APPLICABLE;
 
+/**
+ * Global IOHandler for all AMQP connections. This handler is responsible for handling the transport_closed event.
+ */
 public class GlobalIOHandler extends IOHandler {
     private final ClientLogger logger;
 
+    /**
+     * Creates an instance of GlobalIOHandler.
+     *
+     * @param connectionId The connection identifier.
+     */
     public GlobalIOHandler(final String connectionId) {
         this.logger = new ClientLogger(GlobalIOHandler.class, createContextWithConnectionId(connectionId));
     }

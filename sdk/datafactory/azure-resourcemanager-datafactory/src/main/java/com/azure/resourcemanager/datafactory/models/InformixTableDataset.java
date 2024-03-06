@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** The Informix table dataset. */
+/**
+ * The Informix table dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("InformixTable")
 @Fluent
@@ -23,62 +25,78 @@ public final class InformixTableDataset extends Dataset {
     @JsonProperty(value = "typeProperties")
     private InformixTableDatasetTypeProperties innerTypeProperties;
 
-    /** Creates an instance of InformixTableDataset class. */
+    /**
+     * Creates an instance of InformixTableDataset class.
+     */
     public InformixTableDataset() {
     }
 
     /**
      * Get the innerTypeProperties property: Informix table dataset properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private InformixTableDatasetTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InformixTableDataset withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InformixTableDataset withStructure(Object structure) {
         super.withStructure(structure);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InformixTableDataset withSchema(Object schema) {
         super.withSchema(schema);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InformixTableDataset withLinkedServiceName(LinkedServiceReference linkedServiceName) {
         super.withLinkedServiceName(linkedServiceName);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InformixTableDataset withParameters(Map<String, ParameterSpecification> parameters) {
         super.withParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InformixTableDataset withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public InformixTableDataset withFolder(DatasetFolder folder) {
         super.withFolder(folder);
@@ -87,7 +105,7 @@ public final class InformixTableDataset extends Dataset {
 
     /**
      * Get the tableName property: The Informix table name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the tableName value.
      */
     public Object tableName() {
@@ -96,7 +114,7 @@ public final class InformixTableDataset extends Dataset {
 
     /**
      * Set the tableName property: The Informix table name. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param tableName the tableName value to set.
      * @return the InformixTableDataset object itself.
      */
@@ -110,7 +128,7 @@ public final class InformixTableDataset extends Dataset {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

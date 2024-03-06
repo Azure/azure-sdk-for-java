@@ -10,8 +10,8 @@ import java.time.OffsetDateTime;
 
 /**
  * RecoveryPointDataStoreDetails
- *
- * <p>RecoveryPoint datastore details.
+ * 
+ * RecoveryPoint datastore details.
  */
 @Fluent
 public final class RecoveryPointDataStoreDetails {
@@ -69,13 +69,15 @@ public final class RecoveryPointDataStoreDetails {
     @JsonProperty(value = "rehydrationStatus", access = JsonProperty.Access.WRITE_ONLY)
     private RehydrationStatus rehydrationStatus;
 
-    /** Creates an instance of RecoveryPointDataStoreDetails class. */
+    /**
+     * Creates an instance of RecoveryPointDataStoreDetails class.
+     */
     public RecoveryPointDataStoreDetails() {
     }
 
     /**
      * Get the creationTime property: The creationTime property.
-     *
+     * 
      * @return the creationTime value.
      */
     public OffsetDateTime creationTime() {
@@ -84,7 +86,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Set the creationTime property: The creationTime property.
-     *
+     * 
      * @param creationTime the creationTime value to set.
      * @return the RecoveryPointDataStoreDetails object itself.
      */
@@ -95,7 +97,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Get the expiryTime property: The expiryTime property.
-     *
+     * 
      * @return the expiryTime value.
      */
     public OffsetDateTime expiryTime() {
@@ -104,7 +106,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Set the expiryTime property: The expiryTime property.
-     *
+     * 
      * @param expiryTime the expiryTime value to set.
      * @return the RecoveryPointDataStoreDetails object itself.
      */
@@ -115,7 +117,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Get the id property: The id property.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -124,7 +126,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Set the id property: The id property.
-     *
+     * 
      * @param id the id value to set.
      * @return the RecoveryPointDataStoreDetails object itself.
      */
@@ -135,7 +137,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Get the metadata property: The metaData property.
-     *
+     * 
      * @return the metadata value.
      */
     public String metadata() {
@@ -144,7 +146,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Set the metadata property: The metaData property.
-     *
+     * 
      * @param metadata the metadata value to set.
      * @return the RecoveryPointDataStoreDetails object itself.
      */
@@ -155,7 +157,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Get the state property: The state property.
-     *
+     * 
      * @return the state value.
      */
     public String state() {
@@ -164,7 +166,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Set the state property: The state property.
-     *
+     * 
      * @param state the state value to set.
      * @return the RecoveryPointDataStoreDetails object itself.
      */
@@ -175,7 +177,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Get the type property: The type property.
-     *
+     * 
      * @return the type value.
      */
     public String type() {
@@ -184,7 +186,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Set the type property: The type property.
-     *
+     * 
      * @param type the type value to set.
      * @return the RecoveryPointDataStoreDetails object itself.
      */
@@ -195,7 +197,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Get the visible property: The visible property.
-     *
+     * 
      * @return the visible value.
      */
     public Boolean visible() {
@@ -204,7 +206,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Set the visible property: The visible property.
-     *
+     * 
      * @param visible the visible value to set.
      * @return the RecoveryPointDataStoreDetails object itself.
      */
@@ -215,7 +217,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Get the rehydrationExpiryTime property: The rehydrationExpiryTime property.
-     *
+     * 
      * @return the rehydrationExpiryTime value.
      */
     public OffsetDateTime rehydrationExpiryTime() {
@@ -224,7 +226,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Get the rehydrationStatus property: The rehydrationStatus property.
-     *
+     * 
      * @return the rehydrationStatus value.
      */
     public RehydrationStatus rehydrationStatus() {
@@ -233,7 +235,7 @@ public final class RecoveryPointDataStoreDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

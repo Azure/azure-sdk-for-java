@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The state of integration runtime auto update. */
+/**
+ * The state of integration runtime auto update.
+ */
 public final class IntegrationRuntimeAutoUpdate extends ExpandableStringEnum<IntegrationRuntimeAutoUpdate> {
-    /** Static value On for IntegrationRuntimeAutoUpdate. */
+    /**
+     * Static value On for IntegrationRuntimeAutoUpdate.
+     */
     public static final IntegrationRuntimeAutoUpdate ON = fromString("On");
 
-    /** Static value Off for IntegrationRuntimeAutoUpdate. */
+    /**
+     * Static value Off for IntegrationRuntimeAutoUpdate.
+     */
     public static final IntegrationRuntimeAutoUpdate OFF = fromString("Off");
 
     /**
      * Creates a new instance of IntegrationRuntimeAutoUpdate value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class IntegrationRuntimeAutoUpdate extends ExpandableStringEnum<Int
 
     /**
      * Creates or finds a IntegrationRuntimeAutoUpdate from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IntegrationRuntimeAutoUpdate.
      */
@@ -38,7 +44,7 @@ public final class IntegrationRuntimeAutoUpdate extends ExpandableStringEnum<Int
 
     /**
      * Gets known IntegrationRuntimeAutoUpdate values.
-     *
+     * 
      * @return known IntegrationRuntimeAutoUpdate values.
      */
     public static Collection<IntegrationRuntimeAutoUpdate> values() {

@@ -10,7 +10,9 @@ import com.azure.resourcemanager.compute.models.ResourceInstanceViewStatus;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** InstanceView of CloudService as a whole. */
+/**
+ * InstanceView of CloudService as a whole.
+ */
 @Fluent
 public final class CloudServiceInstanceViewInner {
     /*
@@ -38,13 +40,15 @@ public final class CloudServiceInstanceViewInner {
     @JsonProperty(value = "statuses", access = JsonProperty.Access.WRITE_ONLY)
     private List<ResourceInstanceViewStatus> statuses;
 
-    /** Creates an instance of CloudServiceInstanceViewInner class. */
+    /**
+     * Creates an instance of CloudServiceInstanceViewInner class.
+     */
     public CloudServiceInstanceViewInner() {
     }
 
     /**
      * Get the roleInstance property: Instance view statuses.
-     *
+     * 
      * @return the roleInstance value.
      */
     public InstanceViewStatusesSummary roleInstance() {
@@ -53,7 +57,7 @@ public final class CloudServiceInstanceViewInner {
 
     /**
      * Set the roleInstance property: Instance view statuses.
-     *
+     * 
      * @param roleInstance the roleInstance value to set.
      * @return the CloudServiceInstanceViewInner object itself.
      */
@@ -64,7 +68,7 @@ public final class CloudServiceInstanceViewInner {
 
     /**
      * Get the sdkVersion property: The version of the SDK that was used to generate the package for the cloud service.
-     *
+     * 
      * @return the sdkVersion value.
      */
     public String sdkVersion() {
@@ -75,7 +79,7 @@ public final class CloudServiceInstanceViewInner {
      * Get the privateIds property: Specifies a list of unique identifiers generated internally for the cloud service.
      * &lt;br /&gt;&lt;br /&gt; NOTE: If you are using Azure Diagnostics extension, this property can be used as
      * 'DeploymentId' for querying details.
-     *
+     * 
      * @return the privateIds value.
      */
     public List<String> privateIds() {
@@ -84,7 +88,7 @@ public final class CloudServiceInstanceViewInner {
 
     /**
      * Get the statuses property: The statuses property.
-     *
+     * 
      * @return the statuses value.
      */
     public List<ResourceInstanceViewStatus> statuses() {
@@ -93,7 +97,7 @@ public final class CloudServiceInstanceViewInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

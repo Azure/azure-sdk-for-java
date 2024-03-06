@@ -7,7 +7,9 @@ package com.azure.analytics.synapse.artifacts.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Managed Virtual Network reference type. */
+/**
+ * Managed Virtual Network reference type.
+ */
 @Fluent
 public final class ManagedVirtualNetworkReference {
     /*
@@ -22,14 +24,15 @@ public final class ManagedVirtualNetworkReference {
     @JsonProperty(value = "referenceName", required = true)
     private String referenceName;
 
-    /** Creates an instance of ManagedVirtualNetworkReference class. */
+    /**
+     * Creates an instance of ManagedVirtualNetworkReference class.
+     */
     public ManagedVirtualNetworkReference() {
-        type = "ManagedVirtualNetworkReference";
     }
 
     /**
      * Get the type property: Managed Virtual Network reference type.
-     *
+     * 
      * @return the type value.
      */
     public String getType() {
@@ -38,7 +41,7 @@ public final class ManagedVirtualNetworkReference {
 
     /**
      * Set the type property: Managed Virtual Network reference type.
-     *
+     * 
      * @param type the type value to set.
      * @return the ManagedVirtualNetworkReference object itself.
      */
@@ -49,7 +52,7 @@ public final class ManagedVirtualNetworkReference {
 
     /**
      * Get the referenceName property: Reference ManagedVirtualNetwork name.
-     *
+     * 
      * @return the referenceName value.
      */
     public String getReferenceName() {
@@ -58,7 +61,7 @@ public final class ManagedVirtualNetworkReference {
 
     /**
      * Set the referenceName property: Reference ManagedVirtualNetwork name.
-     *
+     * 
      * @param referenceName the referenceName value to set.
      * @return the ManagedVirtualNetworkReference object itself.
      */

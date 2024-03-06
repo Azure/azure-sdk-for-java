@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a parameter in fabric settings of the cluster. */
+/**
+ * Describes a parameter in fabric settings of the cluster.
+ */
 @Fluent
 public final class SettingsParameterDescription {
     /*
@@ -23,13 +25,15 @@ public final class SettingsParameterDescription {
     @JsonProperty(value = "value", required = true)
     private String value;
 
-    /** Creates an instance of SettingsParameterDescription class. */
+    /**
+     * Creates an instance of SettingsParameterDescription class.
+     */
     public SettingsParameterDescription() {
     }
 
     /**
      * Get the name property: The parameter name of fabric setting.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -38,7 +42,7 @@ public final class SettingsParameterDescription {
 
     /**
      * Set the name property: The parameter name of fabric setting.
-     *
+     * 
      * @param name the name value to set.
      * @return the SettingsParameterDescription object itself.
      */
@@ -49,7 +53,7 @@ public final class SettingsParameterDescription {
 
     /**
      * Get the value property: The parameter value of fabric setting.
-     *
+     * 
      * @return the value value.
      */
     public String value() {
@@ -58,7 +62,7 @@ public final class SettingsParameterDescription {
 
     /**
      * Set the value property: The parameter value of fabric setting.
-     *
+     * 
      * @param value the value value to set.
      * @return the SettingsParameterDescription object itself.
      */
@@ -69,21 +73,17 @@ public final class SettingsParameterDescription {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (name() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property name in model SettingsParameterDescription"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property name in model SettingsParameterDescription"));
         }
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property value in model SettingsParameterDescription"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model SettingsParameterDescription"));
         }
     }
 

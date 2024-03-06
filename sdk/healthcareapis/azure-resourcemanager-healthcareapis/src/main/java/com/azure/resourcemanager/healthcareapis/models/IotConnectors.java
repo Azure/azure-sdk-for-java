@@ -8,11 +8,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of IotConnectors. */
+/**
+ * Resource collection API of IotConnectors.
+ */
 public interface IotConnectors {
     /**
      * Lists all IoT Connectors for the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -24,7 +26,7 @@ public interface IotConnectors {
 
     /**
      * Lists all IoT Connectors for the given workspace.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param context The context to associate with this operation.
@@ -37,7 +39,22 @@ public interface IotConnectors {
 
     /**
      * Gets the properties of the specified IoT Connector.
-     *
+     * 
+     * @param resourceGroupName The name of the resource group that contains the service instance.
+     * @param workspaceName The name of workspace resource.
+     * @param iotConnectorName The name of IoT Connector resource.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the properties of the specified IoT Connector along with {@link Response}.
+     */
+    Response<IotConnector> getWithResponse(String resourceGroupName, String workspaceName, String iotConnectorName,
+        Context context);
+
+    /**
+     * Gets the properties of the specified IoT Connector.
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param workspaceName The name of workspace resource.
      * @param iotConnectorName The name of IoT Connector resource.
@@ -49,23 +66,8 @@ public interface IotConnectors {
     IotConnector get(String resourceGroupName, String workspaceName, String iotConnectorName);
 
     /**
-     * Gets the properties of the specified IoT Connector.
-     *
-     * @param resourceGroupName The name of the resource group that contains the service instance.
-     * @param workspaceName The name of workspace resource.
-     * @param iotConnectorName The name of IoT Connector resource.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the properties of the specified IoT Connector along with {@link Response}.
-     */
-    Response<IotConnector> getWithResponse(
-        String resourceGroupName, String workspaceName, String iotConnectorName, Context context);
-
-    /**
      * Deletes an IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param iotConnectorName The name of IoT Connector resource.
      * @param workspaceName The name of workspace resource.
@@ -77,7 +79,7 @@ public interface IotConnectors {
 
     /**
      * Deletes an IoT Connector.
-     *
+     * 
      * @param resourceGroupName The name of the resource group that contains the service instance.
      * @param iotConnectorName The name of IoT Connector resource.
      * @param workspaceName The name of workspace resource.
@@ -90,7 +92,7 @@ public interface IotConnectors {
 
     /**
      * Gets the properties of the specified IoT Connector.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -101,7 +103,7 @@ public interface IotConnectors {
 
     /**
      * Gets the properties of the specified IoT Connector.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -113,7 +115,7 @@ public interface IotConnectors {
 
     /**
      * Deletes an IoT Connector.
-     *
+     * 
      * @param id the resource ID.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -123,7 +125,7 @@ public interface IotConnectors {
 
     /**
      * Deletes an IoT Connector.
-     *
+     * 
      * @param id the resource ID.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -134,7 +136,7 @@ public interface IotConnectors {
 
     /**
      * Begins definition for a new IotConnector resource.
-     *
+     * 
      * @param name resource name.
      * @return the first stage of the new IotConnector definition.
      */

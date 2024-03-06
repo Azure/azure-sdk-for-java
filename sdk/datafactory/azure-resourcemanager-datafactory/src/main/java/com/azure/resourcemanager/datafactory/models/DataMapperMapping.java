@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Source and target table mapping details. */
+/**
+ * Source and target table mapping details.
+ */
 @Fluent
 public final class DataMapperMapping {
     /*
@@ -40,13 +42,15 @@ public final class DataMapperMapping {
     @JsonProperty(value = "sourceDenormalizeInfo")
     private Object sourceDenormalizeInfo;
 
-    /** Creates an instance of DataMapperMapping class. */
+    /**
+     * Creates an instance of DataMapperMapping class.
+     */
     public DataMapperMapping() {
     }
 
     /**
      * Get the targetEntityName property: Name of the target table.
-     *
+     * 
      * @return the targetEntityName value.
      */
     public String targetEntityName() {
@@ -55,7 +59,7 @@ public final class DataMapperMapping {
 
     /**
      * Set the targetEntityName property: Name of the target table.
-     *
+     * 
      * @param targetEntityName the targetEntityName value to set.
      * @return the DataMapperMapping object itself.
      */
@@ -66,7 +70,7 @@ public final class DataMapperMapping {
 
     /**
      * Get the sourceEntityName property: Name of the source table.
-     *
+     * 
      * @return the sourceEntityName value.
      */
     public String sourceEntityName() {
@@ -75,7 +79,7 @@ public final class DataMapperMapping {
 
     /**
      * Set the sourceEntityName property: Name of the source table.
-     *
+     * 
      * @param sourceEntityName the sourceEntityName value to set.
      * @return the DataMapperMapping object itself.
      */
@@ -86,7 +90,7 @@ public final class DataMapperMapping {
 
     /**
      * Get the sourceConnectionReference property: The connection reference for the source connection.
-     *
+     * 
      * @return the sourceConnectionReference value.
      */
     public MapperConnectionReference sourceConnectionReference() {
@@ -95,7 +99,7 @@ public final class DataMapperMapping {
 
     /**
      * Set the sourceConnectionReference property: The connection reference for the source connection.
-     *
+     * 
      * @param sourceConnectionReference the sourceConnectionReference value to set.
      * @return the DataMapperMapping object itself.
      */
@@ -106,7 +110,7 @@ public final class DataMapperMapping {
 
     /**
      * Get the attributeMappingInfo property: This holds the user provided attribute mapping information.
-     *
+     * 
      * @return the attributeMappingInfo value.
      */
     public MapperAttributeMappings attributeMappingInfo() {
@@ -115,7 +119,7 @@ public final class DataMapperMapping {
 
     /**
      * Set the attributeMappingInfo property: This holds the user provided attribute mapping information.
-     *
+     * 
      * @param attributeMappingInfo the attributeMappingInfo value to set.
      * @return the DataMapperMapping object itself.
      */
@@ -127,7 +131,7 @@ public final class DataMapperMapping {
     /**
      * Get the sourceDenormalizeInfo property: This holds the source denormalization information used while joining
      * multiple sources.
-     *
+     * 
      * @return the sourceDenormalizeInfo value.
      */
     public Object sourceDenormalizeInfo() {
@@ -137,7 +141,7 @@ public final class DataMapperMapping {
     /**
      * Set the sourceDenormalizeInfo property: This holds the source denormalization information used while joining
      * multiple sources.
-     *
+     * 
      * @param sourceDenormalizeInfo the sourceDenormalizeInfo value to set.
      * @return the DataMapperMapping object itself.
      */
@@ -148,7 +152,7 @@ public final class DataMapperMapping {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

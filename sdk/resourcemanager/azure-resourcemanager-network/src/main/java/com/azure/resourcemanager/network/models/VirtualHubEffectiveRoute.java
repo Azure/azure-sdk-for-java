@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The effective route configured on the virtual hub or specified resource. */
+/**
+ * The effective route configured on the virtual hub or specified resource.
+ */
 @Fluent
 public final class VirtualHubEffectiveRoute {
     /*
@@ -41,13 +43,15 @@ public final class VirtualHubEffectiveRoute {
     @JsonProperty(value = "routeOrigin")
     private String routeOrigin;
 
-    /** Creates an instance of VirtualHubEffectiveRoute class. */
+    /**
+     * Creates an instance of VirtualHubEffectiveRoute class.
+     */
     public VirtualHubEffectiveRoute() {
     }
 
     /**
      * Get the addressPrefixes property: The list of address prefixes.
-     *
+     * 
      * @return the addressPrefixes value.
      */
     public List<String> addressPrefixes() {
@@ -56,7 +60,7 @@ public final class VirtualHubEffectiveRoute {
 
     /**
      * Set the addressPrefixes property: The list of address prefixes.
-     *
+     * 
      * @param addressPrefixes the addressPrefixes value to set.
      * @return the VirtualHubEffectiveRoute object itself.
      */
@@ -67,7 +71,7 @@ public final class VirtualHubEffectiveRoute {
 
     /**
      * Get the nextHops property: The list of next hops.
-     *
+     * 
      * @return the nextHops value.
      */
     public List<String> nextHops() {
@@ -76,7 +80,7 @@ public final class VirtualHubEffectiveRoute {
 
     /**
      * Set the nextHops property: The list of next hops.
-     *
+     * 
      * @param nextHops the nextHops value to set.
      * @return the VirtualHubEffectiveRoute object itself.
      */
@@ -87,7 +91,7 @@ public final class VirtualHubEffectiveRoute {
 
     /**
      * Get the nextHopType property: The type of the next hop.
-     *
+     * 
      * @return the nextHopType value.
      */
     public String nextHopType() {
@@ -96,7 +100,7 @@ public final class VirtualHubEffectiveRoute {
 
     /**
      * Set the nextHopType property: The type of the next hop.
-     *
+     * 
      * @param nextHopType the nextHopType value to set.
      * @return the VirtualHubEffectiveRoute object itself.
      */
@@ -107,7 +111,7 @@ public final class VirtualHubEffectiveRoute {
 
     /**
      * Get the asPath property: The ASPath of this route.
-     *
+     * 
      * @return the asPath value.
      */
     public String asPath() {
@@ -116,7 +120,7 @@ public final class VirtualHubEffectiveRoute {
 
     /**
      * Set the asPath property: The ASPath of this route.
-     *
+     * 
      * @param asPath the asPath value to set.
      * @return the VirtualHubEffectiveRoute object itself.
      */
@@ -127,7 +131,7 @@ public final class VirtualHubEffectiveRoute {
 
     /**
      * Get the routeOrigin property: The origin of this route.
-     *
+     * 
      * @return the routeOrigin value.
      */
     public String routeOrigin() {
@@ -136,7 +140,7 @@ public final class VirtualHubEffectiveRoute {
 
     /**
      * Set the routeOrigin property: The origin of this route.
-     *
+     * 
      * @param routeOrigin the routeOrigin value to set.
      * @return the VirtualHubEffectiveRoute object itself.
      */
@@ -147,7 +151,7 @@ public final class VirtualHubEffectiveRoute {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

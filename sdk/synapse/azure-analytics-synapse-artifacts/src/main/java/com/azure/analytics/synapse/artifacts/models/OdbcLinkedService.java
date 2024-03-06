@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Open Database Connectivity (ODBC) linked service. */
+/**
+ * Open Database Connectivity (ODBC) linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Odbc")
 @JsonFlatten
@@ -57,13 +59,16 @@ public class OdbcLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.encryptedCredential")
     private Object encryptedCredential;
 
-    /** Creates an instance of OdbcLinkedService class. */
-    public OdbcLinkedService() {}
+    /**
+     * Creates an instance of OdbcLinkedService class.
+     */
+    public OdbcLinkedService() {
+    }
 
     /**
      * Get the connectionString property: The non-access credential portion of the connection string as well as an
      * optional encrypted credential. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the connectionString value.
      */
     public Object getConnectionString() {
@@ -73,7 +78,7 @@ public class OdbcLinkedService extends LinkedService {
     /**
      * Set the connectionString property: The non-access credential portion of the connection string as well as an
      * optional encrypted credential. Type: string, SecureString or AzureKeyVaultSecretReference.
-     *
+     * 
      * @param connectionString the connectionString value to set.
      * @return the OdbcLinkedService object itself.
      */
@@ -85,7 +90,7 @@ public class OdbcLinkedService extends LinkedService {
     /**
      * Get the authenticationType property: Type of authentication used to connect to the ODBC data store. Possible
      * values are: Anonymous and Basic. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the authenticationType value.
      */
     public Object getAuthenticationType() {
@@ -95,7 +100,7 @@ public class OdbcLinkedService extends LinkedService {
     /**
      * Set the authenticationType property: Type of authentication used to connect to the ODBC data store. Possible
      * values are: Anonymous and Basic. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the OdbcLinkedService object itself.
      */
@@ -107,7 +112,7 @@ public class OdbcLinkedService extends LinkedService {
     /**
      * Get the credential property: The access credential portion of the connection string specified in driver-specific
      * property-value format.
-     *
+     * 
      * @return the credential value.
      */
     public SecretBase getCredential() {
@@ -117,7 +122,7 @@ public class OdbcLinkedService extends LinkedService {
     /**
      * Set the credential property: The access credential portion of the connection string specified in driver-specific
      * property-value format.
-     *
+     * 
      * @param credential the credential value to set.
      * @return the OdbcLinkedService object itself.
      */
@@ -129,7 +134,7 @@ public class OdbcLinkedService extends LinkedService {
     /**
      * Get the userName property: User name for Basic authentication. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the userName value.
      */
     public Object getUserName() {
@@ -139,7 +144,7 @@ public class OdbcLinkedService extends LinkedService {
     /**
      * Set the userName property: User name for Basic authentication. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param userName the userName value to set.
      * @return the OdbcLinkedService object itself.
      */
@@ -150,7 +155,7 @@ public class OdbcLinkedService extends LinkedService {
 
     /**
      * Get the password property: Password for Basic authentication.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase getPassword() {
@@ -159,7 +164,7 @@ public class OdbcLinkedService extends LinkedService {
 
     /**
      * Set the password property: Password for Basic authentication.
-     *
+     * 
      * @param password the password value to set.
      * @return the OdbcLinkedService object itself.
      */
@@ -169,9 +174,9 @@ public class OdbcLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -179,9 +184,9 @@ public class OdbcLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the OdbcLinkedService object itself.
      */
@@ -190,28 +195,36 @@ public class OdbcLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OdbcLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OdbcLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OdbcLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OdbcLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

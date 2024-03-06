@@ -3,6 +3,7 @@
 
 package com.azure.cosmos.models;
 
+import com.azure.cosmos.implementation.Utils;
 import org.testng.annotations.Test;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -11,7 +12,7 @@ public class ClientEncryptionPolicyTest {
 
     @Test(groups = { "unit" })
     public void policyFormatVersionTest() {
-        CosmosContainerProperties containerProperties = new CosmosContainerProperties("{\"id\":\"030ed59b-90cb-4339" +
+        CosmosContainerProperties containerProperties = new CosmosContainerProperties(Utils.parseJson("{\"id\":\"030ed59b-90cb-4339" +
             "-8d3d-775fda8af59a\",\"indexingPolicy\":{\"indexingMode\":\"consistent\",\"automatic\":true," +
             "\"includedPaths\":[{\"path\":\"\\/*\"}],\"excludedPaths\":[{\"path\":\"\\/\\\"_etag\\\"\\/?\"}]}," +
             "\"partitionKey\":{\"paths\":[\"\\/users\"],\"kind\":\"Hash\"}," +
@@ -26,7 +27,7 @@ public class ClientEncryptionPolicyTest {
             "\"_self\":\"dbs\\/A3NIAA==\\/colls\\/A3NIAPtyhlE=\\/\"," +
             "\"_etag\":\"\\\"00000000-0000-0000-4c1a-3bb9032901d7\\\"\",\"_docs\":\"docs\\/\"," +
             "\"_sprocs\":\"sprocs\\/\",\"_triggers\":\"triggers\\/\",\"_udfs\":\"udfs\\/\"," +
-            "\"_conflicts\":\"conflicts\\/\"}\n");
+            "\"_conflicts\":\"conflicts\\/\"}\n"));
 
         //Currently service is not returning policyFormatVersion, so validating V2 policy deserialization
         assertThat(containerProperties.getClientEncryptionPolicy().getPolicyFormatVersion()).isEqualTo(2);

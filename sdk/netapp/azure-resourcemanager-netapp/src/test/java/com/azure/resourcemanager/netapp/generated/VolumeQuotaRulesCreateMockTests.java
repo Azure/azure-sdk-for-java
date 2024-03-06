@@ -33,61 +33,34 @@ public final class VolumeQuotaRulesCreateMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"properties\":{\"provisioningState\":\"Succeeded\",\"quotaSizeInKiBs\":1851749746038265021,\"quotaType\":\"DefaultUserQuota\",\"quotaTarget\":\"hfqpofv\"},\"location\":\"cblembnkbwv\",\"tags\":{\"qihebw\":\"kdi\"},\"id\":\"swbzuwfmdurage\",\"name\":\"izvcjfe\",\"type\":\"isdju\"}";
+        String responseStr
+            = "{\"properties\":{\"provisioningState\":\"Succeeded\",\"quotaSizeInKiBs\":8901688908822636445,\"quotaType\":\"DefaultGroupQuota\",\"quotaTarget\":\"tnpqmemczjk\"},\"location\":\"ykyujxsg\",\"tags\":{\"yejylmbkzudnigrf\":\"rr\",\"wlpxuzzjg\":\"hotj\",\"qotoihiqakydiwfb\":\"refqy\",\"spodaqax\":\"kwpzdqtvh\"},\"id\":\"ipietgbe\",\"name\":\"jfulbmoic\",\"type\":\"dlpnfpubn\"}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        NetAppFilesManager manager =
-            NetAppFilesManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        NetAppFilesManager manager = NetAppFilesManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        VolumeQuotaRule response =
-            manager
-                .volumeQuotaRules()
-                .define("kqscazuawxtzx")
-                .withRegion("sflvgsgzwywakoih")
-                .withExistingVolume("cpopmxel", "wcltyjede", "xm", "f")
-                .withTags(
-                    mapOf(
-                        "zotqyryuzcb",
-                        "mjblmljhlny",
-                        "peujlzqn",
-                        "qqvxmvwfgtayxons",
-                        "nzoibgsxgnx",
-                        "cvsql",
-                        "mpqoxw",
-                        "yqo"))
-                .withQuotaSizeInKiBs(5532317119730945052L)
-                .withQuotaType(Type.INDIVIDUAL_GROUP_QUOTA)
-                .withQuotaTarget("vxcushsphaivmx")
-                .create();
+        VolumeQuotaRule response = manager.volumeQuotaRules().define("cbvopwndyqleallk").withRegion("yzfhotlhi")
+            .withExistingVolume("ycjimryvwgcwwpbm", "gwe", "ydsx", "efoh").withTags(mapOf("vuicp", "ychunsjlpjrtwszh"))
+            .withQuotaSizeInKiBs(571481130330646230L).withQuotaType(Type.DEFAULT_GROUP_QUOTA)
+            .withQuotaTarget("xpvbrdfjm").create();
 
-        Assertions.assertEquals("cblembnkbwv", response.location());
-        Assertions.assertEquals("kdi", response.tags().get("qihebw"));
-        Assertions.assertEquals(1851749746038265021L, response.quotaSizeInKiBs());
-        Assertions.assertEquals(Type.DEFAULT_USER_QUOTA, response.quotaType());
-        Assertions.assertEquals("hfqpofv", response.quotaTarget());
+        Assertions.assertEquals("ykyujxsg", response.location());
+        Assertions.assertEquals("rr", response.tags().get("yejylmbkzudnigrf"));
+        Assertions.assertEquals(8901688908822636445L, response.quotaSizeInKiBs());
+        Assertions.assertEquals(Type.DEFAULT_GROUP_QUOTA, response.quotaType());
+        Assertions.assertEquals("tnpqmemczjk", response.quotaTarget());
     }
 
     // Use "Map.of" if available

@@ -10,7 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** InMageRcm provider specific input for unplanned failover. */
+/**
+ * InMageRcm provider specific input for unplanned failover.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "instanceType")
 @JsonTypeName("InMageRcm")
 @Fluent
@@ -28,13 +30,15 @@ public final class InMageRcmUnplannedFailoverInput extends UnplannedFailoverProv
     @JsonProperty(value = "recoveryPointId")
     private String recoveryPointId;
 
-    /** Creates an instance of InMageRcmUnplannedFailoverInput class. */
+    /**
+     * Creates an instance of InMageRcmUnplannedFailoverInput class.
+     */
     public InMageRcmUnplannedFailoverInput() {
     }
 
     /**
      * Get the performShutdown property: A value indicating whether VM is to be shutdown.
-     *
+     * 
      * @return the performShutdown value.
      */
     public String performShutdown() {
@@ -43,7 +47,7 @@ public final class InMageRcmUnplannedFailoverInput extends UnplannedFailoverProv
 
     /**
      * Set the performShutdown property: A value indicating whether VM is to be shutdown.
-     *
+     * 
      * @param performShutdown the performShutdown value to set.
      * @return the InMageRcmUnplannedFailoverInput object itself.
      */
@@ -55,7 +59,7 @@ public final class InMageRcmUnplannedFailoverInput extends UnplannedFailoverProv
     /**
      * Get the recoveryPointId property: The recovery point id to be passed to failover to a particular recovery point.
      * In case of latest recovery point, null should be passed.
-     *
+     * 
      * @return the recoveryPointId value.
      */
     public String recoveryPointId() {
@@ -65,7 +69,7 @@ public final class InMageRcmUnplannedFailoverInput extends UnplannedFailoverProv
     /**
      * Set the recoveryPointId property: The recovery point id to be passed to failover to a particular recovery point.
      * In case of latest recovery point, null should be passed.
-     *
+     * 
      * @param recoveryPointId the recoveryPointId value to set.
      * @return the InMageRcmUnplannedFailoverInput object itself.
      */
@@ -76,17 +80,15 @@ public final class InMageRcmUnplannedFailoverInput extends UnplannedFailoverProv
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (performShutdown() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property performShutdown in model InMageRcmUnplannedFailoverInput"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property performShutdown in model InMageRcmUnplannedFailoverInput"));
         }
     }
 

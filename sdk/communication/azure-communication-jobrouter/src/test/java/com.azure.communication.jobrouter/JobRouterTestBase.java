@@ -45,7 +45,7 @@ class JobRouterTestBase extends TestProxyTestBase {
     protected String getConnectionString() {
         String connectionString = interceptorManager.isPlaybackMode()
             ? "endpoint=https://REDACTED.int.communication.azure.net;accessKey=secret"
-            : Configuration.getGlobalConfiguration().get("AZURE_TEST_JOBROUTER_CONNECTION_STRING");
+            : Configuration.getGlobalConfiguration().get("COMMUNICATION_LIVETEST_DYNAMIC_CONNECTION_STRING");
         Objects.requireNonNull(connectionString);
         return connectionString;
     }
@@ -60,6 +60,16 @@ class JobRouterTestBase extends TestProxyTestBase {
         return jobRouterAdministrationClient;
     }
 
+    protected JobRouterAdministrationAsyncClient getRouterAdministrationAsyncClient(HttpClient client) {
+        HttpPipeline httpPipeline = buildHttpPipeline(client);
+        CommunicationConnectionString connectionString = new CommunicationConnectionString(getConnectionString());
+        JobRouterAdministrationAsyncClient jobRouterAdministrationAsyncClient = new JobRouterAdministrationClientBuilder()
+            .endpoint(connectionString.getEndpoint())
+            .pipeline(httpPipeline)
+            .buildAsyncClient();
+        return jobRouterAdministrationAsyncClient;
+    }
+
     protected JobRouterClient getRouterClient(HttpClient client) {
         CommunicationConnectionString connectionString = new CommunicationConnectionString(getConnectionString());
 
@@ -69,6 +79,17 @@ class JobRouterTestBase extends TestProxyTestBase {
             .pipeline(httpPipeline)
             .buildClient();
         return jobRouterClient;
+    }
+
+    protected JobRouterAsyncClient getRouterAsyncClient(HttpClient client) {
+        CommunicationConnectionString connectionString = new CommunicationConnectionString(getConnectionString());
+
+        HttpPipeline httpPipeline = buildHttpPipeline(client);
+        JobRouterAsyncClient jobRouterAsyncClient = new JobRouterClientBuilder()
+            .endpoint(connectionString.getEndpoint())
+            .pipeline(httpPipeline)
+            .buildAsyncClient();
+        return jobRouterAsyncClient;
     }
 
     private HttpPipeline buildHttpPipeline(HttpClient httpClient) {

@@ -11,7 +11,9 @@ import com.azure.resourcemanager.communication.models.EmailServicesProvisioningS
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** A class representing an EmailService resource. */
+/**
+ * A class representing an EmailService resource.
+ */
 @Fluent
 public final class EmailServiceResourceInner extends Resource {
     /*
@@ -26,13 +28,15 @@ public final class EmailServiceResourceInner extends Resource {
     @JsonProperty(value = "systemData", access = JsonProperty.Access.WRITE_ONLY)
     private SystemData systemData;
 
-    /** Creates an instance of EmailServiceResourceInner class. */
+    /**
+     * Creates an instance of EmailServiceResourceInner class.
+     */
     public EmailServiceResourceInner() {
     }
 
     /**
      * Get the innerProperties property: The properties of the service.
-     *
+     * 
      * @return the innerProperties value.
      */
     private EmailServiceProperties innerProperties() {
@@ -41,21 +45,25 @@ public final class EmailServiceResourceInner extends Resource {
 
     /**
      * Get the systemData property: Azure Resource Manager metadata containing createdBy and modifiedBy information.
-     *
+     * 
      * @return the systemData value.
      */
     public SystemData systemData() {
         return this.systemData;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EmailServiceResourceInner withLocation(String location) {
         super.withLocation(location);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public EmailServiceResourceInner withTags(Map<String, String> tags) {
         super.withTags(tags);
@@ -64,7 +72,7 @@ public final class EmailServiceResourceInner extends Resource {
 
     /**
      * Get the provisioningState property: Provisioning state of the resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public EmailServicesProvisioningState provisioningState() {
@@ -73,7 +81,7 @@ public final class EmailServiceResourceInner extends Resource {
 
     /**
      * Get the dataLocation property: The location where the email service stores its data at rest.
-     *
+     * 
      * @return the dataLocation value.
      */
     public String dataLocation() {
@@ -82,7 +90,7 @@ public final class EmailServiceResourceInner extends Resource {
 
     /**
      * Set the dataLocation property: The location where the email service stores its data at rest.
-     *
+     * 
      * @param dataLocation the dataLocation value to set.
      * @return the EmailServiceResourceInner object itself.
      */
@@ -96,7 +104,7 @@ public final class EmailServiceResourceInner extends Resource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

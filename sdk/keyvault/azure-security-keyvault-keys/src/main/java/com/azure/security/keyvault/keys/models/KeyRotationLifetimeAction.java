@@ -4,20 +4,44 @@
 package com.azure.security.keyvault.keys.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.security.keyvault.keys.implementation.models.LifetimeActionTrigger;
-import com.azure.security.keyvault.keys.implementation.models.LifetimeActionType;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import com.azure.security.keyvault.keys.implementation.KeyRotationLifetimeActionHelper;
+import com.azure.security.keyvault.keys.implementation.models.LifetimeActionsTrigger;
+import com.azure.security.keyvault.keys.implementation.models.LifetimeActionsType;
+
+import java.io.IOException;
 
 /**
  * Represents an action that will be performed by Key Vault over the lifetime of a key.
  */
 @Fluent
-public final class KeyRotationLifetimeAction {
-    @JsonProperty(value = "trigger")
-    private final LifetimeActionTrigger trigger;
+public final class KeyRotationLifetimeAction implements JsonSerializable<KeyRotationLifetimeAction> {
+    static {
+        KeyRotationLifetimeActionHelper.setAccessor(new KeyRotationLifetimeActionHelper.KeyRotationLifetimeActionAccessor() {
+            @Override
+            public KeyRotationLifetimeAction createLifetimeAction(LifetimeActionsTrigger trigger,
+                LifetimeActionsType actionsType) {
+                return new KeyRotationLifetimeAction(trigger, actionsType);
+            }
 
-    @JsonProperty(value = "action")
-    private final LifetimeActionType actionType;
+            @Override
+            public LifetimeActionsTrigger getTrigger(KeyRotationLifetimeAction lifetimeAction) {
+                return lifetimeAction.trigger;
+            }
+
+            @Override
+            public LifetimeActionsType getActionType(KeyRotationLifetimeAction lifetimeAction) {
+                return lifetimeAction.actionType;
+            }
+        });
+    }
+
+    private final LifetimeActionsTrigger trigger;
+
+    private final LifetimeActionsType actionType;
 
     /**
      * Creates a {@link KeyRotationLifetimeAction}.
@@ -25,8 +49,13 @@ public final class KeyRotationLifetimeAction {
      * @param action The {@link KeyRotationPolicyAction policy action}.
      */
     public KeyRotationLifetimeAction(KeyRotationPolicyAction action) {
-        this.actionType = new LifetimeActionType().setType(action);
-        this.trigger = new LifetimeActionTrigger();
+        this.actionType = new LifetimeActionsType().setType(action);
+        this.trigger = new LifetimeActionsTrigger();
+    }
+
+    private KeyRotationLifetimeAction(LifetimeActionsTrigger trigger, LifetimeActionsType actionsType) {
+        this.trigger = trigger;
+        this.actionType = actionsType;
     }
 
     /**
@@ -88,5 +117,42 @@ public final class KeyRotationLifetimeAction {
         this.trigger.setTimeBeforeExpiry(timeBeforeExpiry);
 
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        return jsonWriter.writeStartObject()
+            .writeJsonField("trigger", trigger)
+            .writeJsonField("action", actionType)
+            .writeEndObject();
+    }
+
+    /**
+     * Reads a JSON stream into a {@link KeyReleasePolicy}.
+     *
+     * @param jsonReader The {@link JsonReader} being read.
+     * @return An instance of {@link KeyReleasePolicy} that the JSON stream represented, may return null.
+     * @throws IOException If a {@link KeyReleasePolicy} fails to be read from the {@code jsonReader}.
+     */
+    public static KeyRotationLifetimeAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            LifetimeActionsTrigger trigger = null;
+            LifetimeActionsType actionType = null;
+
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("trigger".equals(fieldName)) {
+                    trigger = LifetimeActionsTrigger.fromJson(reader);
+                } else if ("action".equals(fieldName)) {
+                    actionType = LifetimeActionsType.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return new KeyRotationLifetimeAction(trigger, actionType);
+        });
     }
 }

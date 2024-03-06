@@ -14,11 +14,9 @@ import org.junit.jupiter.api.Assertions;
 public final class DataFlowDebugCommandRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DataFlowDebugCommandRequest model =
-            BinaryData
-                .fromString(
-                    "{\"sessionId\":\"fcbahhp\",\"command\":\"executeExpressionQuery\",\"commandPayload\":{\"streamName\":\"o\",\"rowLimits\":2134608057,\"columns\":[\"filkmkkholv\"],\"expression\":\"dviauogp\"}}")
-                .toObject(DataFlowDebugCommandRequest.class);
+        DataFlowDebugCommandRequest model = BinaryData.fromString(
+            "{\"sessionId\":\"fcbahhp\",\"command\":\"executeExpressionQuery\",\"commandPayload\":{\"streamName\":\"o\",\"rowLimits\":2134608057,\"columns\":[\"filkmkkholv\"],\"expression\":\"dviauogp\"}}")
+            .toObject(DataFlowDebugCommandRequest.class);
         Assertions.assertEquals("fcbahhp", model.sessionId());
         Assertions.assertEquals(DataFlowDebugCommandType.EXECUTE_EXPRESSION_QUERY, model.command());
         Assertions.assertEquals("o", model.commandPayload().streamName());
@@ -29,16 +27,10 @@ public final class DataFlowDebugCommandRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DataFlowDebugCommandRequest model =
-            new DataFlowDebugCommandRequest()
-                .withSessionId("fcbahhp")
-                .withCommand(DataFlowDebugCommandType.EXECUTE_EXPRESSION_QUERY)
-                .withCommandPayload(
-                    new DataFlowDebugCommandPayload()
-                        .withStreamName("o")
-                        .withRowLimits(2134608057)
-                        .withColumns(Arrays.asList("filkmkkholv"))
-                        .withExpression("dviauogp"));
+        DataFlowDebugCommandRequest model = new DataFlowDebugCommandRequest().withSessionId("fcbahhp")
+            .withCommand(DataFlowDebugCommandType.EXECUTE_EXPRESSION_QUERY)
+            .withCommandPayload(new DataFlowDebugCommandPayload().withStreamName("o").withRowLimits(2134608057)
+                .withColumns(Arrays.asList("filkmkkholv")).withExpression("dviauogp"));
         model = BinaryData.fromObject(model).toObject(DataFlowDebugCommandRequest.class);
         Assertions.assertEquals("fcbahhp", model.sessionId());
         Assertions.assertEquals(DataFlowDebugCommandType.EXECUTE_EXPRESSION_QUERY, model.command());

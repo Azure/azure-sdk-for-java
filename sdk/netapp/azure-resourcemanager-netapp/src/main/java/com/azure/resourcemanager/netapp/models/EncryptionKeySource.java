@@ -13,15 +13,19 @@ import java.util.Collection;
  * 'Microsoft.KeyVault'. Possible values (case-insensitive) are: 'Microsoft.NetApp, Microsoft.KeyVault'.
  */
 public final class EncryptionKeySource extends ExpandableStringEnum<EncryptionKeySource> {
-    /** Static value Microsoft.NetApp for EncryptionKeySource. */
+    /**
+     * Static value Microsoft.NetApp for EncryptionKeySource.
+     */
     public static final EncryptionKeySource MICROSOFT_NET_APP = fromString("Microsoft.NetApp");
 
-    /** Static value Microsoft.KeyVault for EncryptionKeySource. */
+    /**
+     * Static value Microsoft.KeyVault for EncryptionKeySource.
+     */
     public static final EncryptionKeySource MICROSOFT_KEY_VAULT = fromString("Microsoft.KeyVault");
 
     /**
      * Creates a new instance of EncryptionKeySource value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +34,7 @@ public final class EncryptionKeySource extends ExpandableStringEnum<EncryptionKe
 
     /**
      * Creates or finds a EncryptionKeySource from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding EncryptionKeySource.
      */
@@ -41,7 +45,7 @@ public final class EncryptionKeySource extends ExpandableStringEnum<EncryptionKe
 
     /**
      * Gets known EncryptionKeySource values.
-     *
+     * 
      * @return known EncryptionKeySource values.
      */
     public static Collection<EncryptionKeySource> values() {

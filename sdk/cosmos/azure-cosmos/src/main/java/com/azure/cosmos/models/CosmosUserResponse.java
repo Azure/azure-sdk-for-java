@@ -6,6 +6,7 @@ package com.azure.cosmos.models;
 import com.azure.cosmos.implementation.ResourceResponse;
 import com.azure.cosmos.implementation.User;
 import com.azure.cosmos.implementation.apachecommons.lang.StringUtils;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 /**
  * The type Cosmos user response. Contains methods to get properties
@@ -14,11 +15,11 @@ public class CosmosUserResponse extends CosmosResponse<CosmosUserProperties> {
 
     CosmosUserResponse(ResourceResponse<User> response) {
         super(response);
-        String bodyAsString = response.getBodyAsString();
-        if (StringUtils.isEmpty(bodyAsString)) {
+        ObjectNode bodyAsJson = (ObjectNode)response.getBody();
+        if (bodyAsJson == null) {
             super.setProperties(null);
         } else {
-            CosmosUserProperties props = new CosmosUserProperties(bodyAsString);
+            CosmosUserProperties props = new CosmosUserProperties(bodyAsJson);
             super.setProperties(props);
         }
     }

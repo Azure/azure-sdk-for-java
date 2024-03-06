@@ -18,11 +18,9 @@ import org.junit.jupiter.api.Assertions;
 public final class CosmosDbMongoDbApiCollectionDatasetTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        CosmosDbMongoDbApiCollectionDataset model =
-            BinaryData
-                .fromString(
-                    "{\"type\":\"CosmosDbMongoDbApiCollection\",\"typeProperties\":{\"collection\":\"datadwhslxebaj\"},\"description\":\"knmstbdoprwkamp\",\"structure\":\"datawpbldz\",\"schema\":\"dataudrcycm\",\"linkedServiceName\":{\"referenceName\":\"huzymhlhihqk\",\"parameters\":{\"aiildcpud\":\"datakmnbzko\",\"drobujnjgy\":\"datahquxsyjofpgv\",\"njgcp\":\"datauxmqxigidul\",\"ghxhkyqzjsdkpvn\":\"datakgrhnytslgsazuqz\"}},\"parameters\":{\"hflyuvbgtz\":{\"type\":\"Array\",\"defaultValue\":\"dataffxsfybntmveh\"}},\"annotations\":[\"dataweuydyb\",\"dataairvhpqsv\"],\"folder\":{\"name\":\"ogeatrcnqnvn\"},\"\":{\"iznzs\":\"datafcsjvjnk\"}}")
-                .toObject(CosmosDbMongoDbApiCollectionDataset.class);
+        CosmosDbMongoDbApiCollectionDataset model = BinaryData.fromString(
+            "{\"type\":\"CosmosDbMongoDbApiCollection\",\"typeProperties\":{\"collection\":\"datadwhslxebaj\"},\"description\":\"knmstbdoprwkamp\",\"structure\":\"datawpbldz\",\"schema\":\"dataudrcycm\",\"linkedServiceName\":{\"referenceName\":\"huzymhlhihqk\",\"parameters\":{\"aiildcpud\":\"datakmnbzko\",\"drobujnjgy\":\"datahquxsyjofpgv\",\"njgcp\":\"datauxmqxigidul\",\"ghxhkyqzjsdkpvn\":\"datakgrhnytslgsazuqz\"}},\"parameters\":{\"hflyuvbgtz\":{\"type\":\"Array\",\"defaultValue\":\"dataffxsfybntmveh\"}},\"annotations\":[\"dataweuydyb\",\"dataairvhpqsv\"],\"folder\":{\"name\":\"ogeatrcnqnvn\"},\"\":{\"iznzs\":\"datafcsjvjnk\"}}")
+            .toObject(CosmosDbMongoDbApiCollectionDataset.class);
         Assertions.assertEquals("knmstbdoprwkamp", model.description());
         Assertions.assertEquals("huzymhlhihqk", model.linkedServiceName().referenceName());
         Assertions.assertEquals(ParameterType.ARRAY, model.parameters().get("hflyuvbgtz").type());
@@ -31,33 +29,15 @@ public final class CosmosDbMongoDbApiCollectionDatasetTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        CosmosDbMongoDbApiCollectionDataset model =
-            new CosmosDbMongoDbApiCollectionDataset()
-                .withDescription("knmstbdoprwkamp")
-                .withStructure("datawpbldz")
-                .withSchema("dataudrcycm")
-                .withLinkedServiceName(
-                    new LinkedServiceReference()
-                        .withReferenceName("huzymhlhihqk")
-                        .withParameters(
-                            mapOf(
-                                "aiildcpud",
-                                "datakmnbzko",
-                                "drobujnjgy",
-                                "datahquxsyjofpgv",
-                                "njgcp",
-                                "datauxmqxigidul",
-                                "ghxhkyqzjsdkpvn",
-                                "datakgrhnytslgsazuqz")))
-                .withParameters(
-                    mapOf(
-                        "hflyuvbgtz",
-                        new ParameterSpecification()
-                            .withType(ParameterType.ARRAY)
-                            .withDefaultValue("dataffxsfybntmveh")))
-                .withAnnotations(Arrays.asList("dataweuydyb", "dataairvhpqsv"))
-                .withFolder(new DatasetFolder().withName("ogeatrcnqnvn"))
-                .withCollection("datadwhslxebaj");
+        CosmosDbMongoDbApiCollectionDataset model = new CosmosDbMongoDbApiCollectionDataset()
+            .withDescription("knmstbdoprwkamp").withStructure("datawpbldz").withSchema("dataudrcycm")
+            .withLinkedServiceName(new LinkedServiceReference().withReferenceName("huzymhlhihqk")
+                .withParameters(mapOf("aiildcpud", "datakmnbzko", "drobujnjgy", "datahquxsyjofpgv", "njgcp",
+                    "datauxmqxigidul", "ghxhkyqzjsdkpvn", "datakgrhnytslgsazuqz")))
+            .withParameters(mapOf("hflyuvbgtz",
+                new ParameterSpecification().withType(ParameterType.ARRAY).withDefaultValue("dataffxsfybntmveh")))
+            .withAnnotations(Arrays.asList("dataweuydyb", "dataairvhpqsv"))
+            .withFolder(new DatasetFolder().withName("ogeatrcnqnvn")).withCollection("datadwhslxebaj");
         model = BinaryData.fromObject(model).toObject(CosmosDbMongoDbApiCollectionDataset.class);
         Assertions.assertEquals("knmstbdoprwkamp", model.description());
         Assertions.assertEquals("huzymhlhihqk", model.linkedServiceName().referenceName());

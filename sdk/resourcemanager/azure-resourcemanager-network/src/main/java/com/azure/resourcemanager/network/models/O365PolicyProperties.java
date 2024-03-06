@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The Office365 breakout policy. */
+/**
+ * The Office365 breakout policy.
+ */
 @Fluent
 public final class O365PolicyProperties {
     /*
@@ -16,13 +18,15 @@ public final class O365PolicyProperties {
     @JsonProperty(value = "breakOutCategories")
     private O365BreakOutCategoryPolicies breakOutCategories;
 
-    /** Creates an instance of O365PolicyProperties class. */
+    /**
+     * Creates an instance of O365PolicyProperties class.
+     */
     public O365PolicyProperties() {
     }
 
     /**
      * Get the breakOutCategories property: Office365 breakout categories.
-     *
+     * 
      * @return the breakOutCategories value.
      */
     public O365BreakOutCategoryPolicies breakOutCategories() {
@@ -31,7 +35,7 @@ public final class O365PolicyProperties {
 
     /**
      * Set the breakOutCategories property: Office365 breakout categories.
-     *
+     * 
      * @param breakOutCategories the breakOutCategories value to set.
      * @return the O365PolicyProperties object itself.
      */
@@ -42,7 +46,7 @@ public final class O365PolicyProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

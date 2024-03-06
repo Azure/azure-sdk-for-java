@@ -4,19 +4,17 @@
 
 package com.azure.resourcemanager.hybridcontainerservice.implementation;
 
+import com.azure.core.management.SystemData;
 import com.azure.resourcemanager.hybridcontainerservice.fluent.models.ProvisionedClusterUpgradeProfileInner;
-import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusterPoolUpgradeProfile;
 import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusterUpgradeProfile;
-import java.util.Collections;
-import java.util.List;
+import com.azure.resourcemanager.hybridcontainerservice.models.ProvisionedClusterUpgradeProfileProperties;
 
 public final class ProvisionedClusterUpgradeProfileImpl implements ProvisionedClusterUpgradeProfile {
     private ProvisionedClusterUpgradeProfileInner innerObject;
 
     private final com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager serviceManager;
 
-    ProvisionedClusterUpgradeProfileImpl(
-        ProvisionedClusterUpgradeProfileInner innerObject,
+    ProvisionedClusterUpgradeProfileImpl(ProvisionedClusterUpgradeProfileInner innerObject,
         com.azure.resourcemanager.hybridcontainerservice.HybridContainerServiceManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
@@ -34,21 +32,12 @@ public final class ProvisionedClusterUpgradeProfileImpl implements ProvisionedCl
         return this.innerModel().type();
     }
 
-    public String provisioningState() {
-        return this.innerModel().provisioningState();
+    public ProvisionedClusterUpgradeProfileProperties properties() {
+        return this.innerModel().properties();
     }
 
-    public ProvisionedClusterPoolUpgradeProfile controlPlaneProfile() {
-        return this.innerModel().controlPlaneProfile();
-    }
-
-    public List<ProvisionedClusterPoolUpgradeProfile> agentPoolProfiles() {
-        List<ProvisionedClusterPoolUpgradeProfile> inner = this.innerModel().agentPoolProfiles();
-        if (inner != null) {
-            return Collections.unmodifiableList(inner);
-        } else {
-            return Collections.emptyList();
-        }
+    public SystemData systemData() {
+        return this.innerModel().systemData();
     }
 
     public ProvisionedClusterUpgradeProfileInner innerModel() {

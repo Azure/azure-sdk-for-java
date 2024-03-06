@@ -4,10 +4,10 @@
 package com.azure.communication.callautomation.implementation.accesshelpers;
 
 import com.azure.communication.callautomation.implementation.models.CancelAddParticipantResponse;
-import com.azure.communication.callautomation.models.CancelAddParticipantResult;
+import com.azure.communication.callautomation.models.CancelAddParticipantOperationResult;
 
 /**
- * Helper class to access private values of {@link CancelAddParticipantResult} across package boundaries.
+ * Helper class to access private values of {@link CancelAddParticipantOperationResult} across package boundaries.
  */
 public final class CancelAddParticipantResponseConstructorProxy {
     private static CancelAddParticipantResponseConstructorAccessor accessor;
@@ -20,17 +20,17 @@ public final class CancelAddParticipantResponseConstructorProxy {
      */
     public interface CancelAddParticipantResponseConstructorAccessor {
         /**
-         * Creates a new instance of {@link CancelAddParticipantResult} backed by an internal instance of
-         * {@link CancelAddParticipantResult}.
+         * Creates a new instance of {@link CancelAddParticipantOperationResult} backed by an internal instance of
+         * {@link CancelAddParticipantOperationResult}.
          *
          * @param internalResponse The internal response.
-         * @return A new instance of {@link CancelAddParticipantResult}.
+         * @return A new instance of {@link CancelAddParticipantOperationResult}.
          */
-        CancelAddParticipantResult create(CancelAddParticipantResponse internalResponse);
+        CancelAddParticipantOperationResult create(CancelAddParticipantResponse internalResponse);
     }
 
     /**
-     * The method called from {@link CancelAddParticipantResult} to set it's accessor.
+     * The method called from {@link CancelAddParticipantOperationResult} to set it's accessor.
      *
      * @param accessor The accessor.
      */
@@ -39,18 +39,18 @@ public final class CancelAddParticipantResponseConstructorProxy {
     }
 
     /**
-     * Creates a new instance of {@link CancelAddParticipantResult} backed by an internal instance of
-     * {@link CancelAddParticipantResult}.
+     * Creates a new instance of {@link CancelAddParticipantOperationResult} backed by an internal instance of
+     * {@link CancelAddParticipantOperationResult}.
      *
      * @param internalResponse The internal response.
-     * @return A new instance of {@link CancelAddParticipantResult}.
+     * @return A new instance of {@link CancelAddParticipantOperationResult}.
      */
-    public static CancelAddParticipantResult create(CancelAddParticipantResponse internalResponse) {
+    public static CancelAddParticipantOperationResult create(CancelAddParticipantResponse internalResponse) {
         // This looks odd but is necessary, it is possible to engage the access helper before anywhere else in the
         // application accesses BlobDownloadHeaders which triggers the accessor to be configured. So, if the accessor
         // is null this effectively pokes the class to set up the accessor.
         if (accessor == null) {
-            new CancelAddParticipantResult();
+            new CancelAddParticipantOperationResult();
         }
 
         assert accessor != null;

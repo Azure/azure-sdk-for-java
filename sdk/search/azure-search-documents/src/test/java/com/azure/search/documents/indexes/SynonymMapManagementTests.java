@@ -412,7 +412,7 @@ public class SynonymMapManagementTests extends SearchTestBase {
     }
 
     @Test
-    public void createOrUpdateSynonymMapIfNotChangedFailsWhenResourceChangedSync() {
+    public void createOrUpdateSynonymMapIfNotChangedFailsWhenResourceChangedSyncAndAsync() {
         SynonymMap synonymMap = createTestSynonymMap();
 
         SynonymMap original = client.createOrUpdateSynonymMapWithResponse(synonymMap, false, Context.NONE)
@@ -428,30 +428,13 @@ public class SynonymMapManagementTests extends SearchTestBase {
             () -> client.createOrUpdateSynonymMapWithResponse(original, true, Context.NONE));
         assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
 
-        validateETagUpdate(original.getETag(), updated.getETag());
-    }
-
-    @Test
-    public void createOrUpdateSynonymMapIfNotChangedFailsWhenResourceChangedAsync() {
-        SynonymMap synonymMap = createTestSynonymMap();
-
-        Mono<Response<SynonymMap>> createUpdateThenFailUpdateMono =
-            asyncClient.createOrUpdateSynonymMapWithResponse(synonymMap, false)
-                .flatMap(response -> {
-                    SynonymMap original = response.getValue();
-                    synonymMapsToDelete.add(original.getName());
-
-                    return asyncClient.createOrUpdateSynonymMapWithResponse(original.setSynonyms("mutated1,mutated2"),
-                            true)
-                        .doOnNext(update -> validateETagUpdate(original.getETag(), update.getValue().getETag()))
-                        .then(asyncClient.createOrUpdateSynonymMapWithResponse(original, true));
-                });
-
-        StepVerifier.create(createUpdateThenFailUpdateMono)
+        StepVerifier.create(asyncClient.createOrUpdateSynonymMapWithResponse(original, true))
             .verifyErrorSatisfies(throwable -> {
-                HttpResponseException ex = assertInstanceOf(HttpResponseException.class, throwable);
-                assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
+                HttpResponseException exAsync = assertInstanceOf(HttpResponseException.class, throwable);
+                assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, exAsync.getResponse().getStatusCode());
             });
+
+        validateETagUpdate(original.getETag(), updated.getETag());
     }
 
     @Test
@@ -541,7 +524,7 @@ public class SynonymMapManagementTests extends SearchTestBase {
     }
 
     @Test
-    public void deleteSynonymMapIfNotChangedWorksOnlyOnCurrentResourceSync() {
+    public void deleteSynonymMapIfNotChangedWorksOnlyOnCurrentResourceSyncAndAsync() {
         SynonymMap stale = client.createOrUpdateSynonymMapWithResponse(createTestSynonymMap(), true, Context.NONE)
             .getValue();
 
@@ -553,31 +536,17 @@ public class SynonymMapManagementTests extends SearchTestBase {
             () -> client.deleteSynonymMapWithResponse(stale, true, Context.NONE));
         assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
 
+        StepVerifier.create(asyncClient.deleteSynonymMapWithResponse(stale, true))
+            .verifyErrorSatisfies(throwable -> {
+                HttpResponseException exAsync = assertInstanceOf(HttpResponseException.class, throwable);
+                assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, exAsync.getResponse().getStatusCode());
+            });
+
         client.deleteSynonymMapWithResponse(current, true, Context.NONE);
     }
 
     @Test
-    public void deleteSynonymMapIfNotChangedWorksOnlyOnCurrentResourceAsync() {
-        SynonymMap stale = asyncClient.createOrUpdateSynonymMapWithResponse(createTestSynonymMap(), true)
-            .map(Response::getValue).block();
-
-        // Update the resource, the eTag will be changed
-        SynonymMap current = asyncClient.createOrUpdateSynonymMapWithResponse(stale, true)
-            .map(Response::getValue).block();
-
-        StepVerifier.create(asyncClient.deleteSynonymMapWithResponse(stale, true))
-            .verifyErrorSatisfies(throwable -> {
-                HttpResponseException ex = assertInstanceOf(HttpResponseException.class, throwable);
-                assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
-            });
-
-        StepVerifier.create(asyncClient.deleteSynonymMapWithResponse(current, true))
-            .expectNextCount(1)
-            .verifyComplete();
-    }
-
-    @Test
-    public void deleteSynonymMapIfExistsWorksOnlyWhenResourceExistsSync() {
+    public void deleteSynonymMapIfExistsWorksOnlyWhenResourceExistsSyncAndAsync() {
         SynonymMap updated = client.createOrUpdateSynonymMapWithResponse(createTestSynonymMap(), false, Context.NONE)
             .getValue();
 
@@ -587,19 +556,11 @@ public class SynonymMapManagementTests extends SearchTestBase {
         HttpResponseException ex = assertThrows(HttpResponseException.class,
             () -> client.deleteSynonymMapWithResponse(updated, true, Context.NONE));
         assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
-    }
 
-    @Test
-    public void deleteSynonymMapIfExistsWorksOnlyWhenResourceExistsAsync() {
-        Mono<Response<Void>> createDeleteThenFailDeleteMono =
-            asyncClient.createOrUpdateSynonymMapWithResponse(createTestSynonymMap(), false)
-                .flatMap(response -> asyncClient.deleteSynonymMapWithResponse(response.getValue(), true)
-                    .then(asyncClient.deleteSynonymMapWithResponse(response.getValue(), true)));
-
-        StepVerifier.create(createDeleteThenFailDeleteMono)
+        StepVerifier.create(asyncClient.deleteSynonymMapWithResponse(updated, true))
             .verifyErrorSatisfies(throwable -> {
-                HttpResponseException ex = assertInstanceOf(HttpResponseException.class, throwable);
-                assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, ex.getResponse().getStatusCode());
+                HttpResponseException exAsync = assertInstanceOf(HttpResponseException.class, throwable);
+                assertEquals(HttpURLConnection.HTTP_PRECON_FAILED, exAsync.getResponse().getStatusCode());
             });
     }
 

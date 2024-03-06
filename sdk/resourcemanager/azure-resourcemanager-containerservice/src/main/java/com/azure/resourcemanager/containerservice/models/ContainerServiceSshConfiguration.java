@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** SSH configuration for Linux-based VMs running on Azure. */
+/**
+ * SSH configuration for Linux-based VMs running on Azure.
+ */
 @Fluent
 public final class ContainerServiceSshConfiguration {
     /*
@@ -18,14 +20,16 @@ public final class ContainerServiceSshConfiguration {
     @JsonProperty(value = "publicKeys", required = true)
     private List<ContainerServiceSshPublicKey> publicKeys;
 
-    /** Creates an instance of ContainerServiceSshConfiguration class. */
+    /**
+     * Creates an instance of ContainerServiceSshConfiguration class.
+     */
     public ContainerServiceSshConfiguration() {
     }
 
     /**
      * Get the publicKeys property: The list of SSH public keys used to authenticate with Linux-based VMs. A maximum of
      * 1 key may be specified.
-     *
+     * 
      * @return the publicKeys value.
      */
     public List<ContainerServiceSshPublicKey> publicKeys() {
@@ -35,7 +39,7 @@ public final class ContainerServiceSshConfiguration {
     /**
      * Set the publicKeys property: The list of SSH public keys used to authenticate with Linux-based VMs. A maximum of
      * 1 key may be specified.
-     *
+     * 
      * @param publicKeys the publicKeys value to set.
      * @return the ContainerServiceSshConfiguration object itself.
      */
@@ -46,15 +50,13 @@ public final class ContainerServiceSshConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (publicKeys() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property publicKeys in model ContainerServiceSshConfiguration"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property publicKeys in model ContainerServiceSshConfiguration"));
         } else {
             publicKeys().forEach(e -> e.validate());
         }

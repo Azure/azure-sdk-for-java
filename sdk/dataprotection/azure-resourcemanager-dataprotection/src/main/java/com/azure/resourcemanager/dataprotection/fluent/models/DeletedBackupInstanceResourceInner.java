@@ -9,7 +9,9 @@ import com.azure.resourcemanager.dataprotection.models.DeletedBackupInstance;
 import com.azure.resourcemanager.dataprotection.models.DppResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Deleted Backup Instance. */
+/**
+ * Deleted Backup Instance.
+ */
 @Fluent
 public final class DeletedBackupInstanceResourceInner extends DppResource {
     /*
@@ -18,13 +20,15 @@ public final class DeletedBackupInstanceResourceInner extends DppResource {
     @JsonProperty(value = "properties")
     private DeletedBackupInstance properties;
 
-    /** Creates an instance of DeletedBackupInstanceResourceInner class. */
+    /**
+     * Creates an instance of DeletedBackupInstanceResourceInner class.
+     */
     public DeletedBackupInstanceResourceInner() {
     }
 
     /**
      * Get the properties property: DeletedBackupInstanceResource properties.
-     *
+     * 
      * @return the properties value.
      */
     public DeletedBackupInstance properties() {
@@ -33,7 +37,7 @@ public final class DeletedBackupInstanceResourceInner extends DppResource {
 
     /**
      * Set the properties property: DeletedBackupInstanceResource properties.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DeletedBackupInstanceResourceInner object itself.
      */
@@ -44,7 +48,7 @@ public final class DeletedBackupInstanceResourceInner extends DppResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

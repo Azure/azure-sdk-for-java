@@ -17,6 +17,8 @@ import com.azure.search.documents.util.AutocompletePagedResponse;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.parallel.Execution;
+import org.junit.jupiter.api.parallel.ExecutionMode;
 import reactor.test.StepVerifier;
 
 import java.net.HttpURLConnection;
@@ -34,6 +36,7 @@ import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
+@Execution(ExecutionMode.CONCURRENT)
 public class AutocompleteTests extends SearchTestBase {
     private static final String INDEX_NAME = "azsearch-autocomplete-shared-instance";
 

@@ -8,6 +8,8 @@ import com.azure.monitor.opentelemetry.exporter.implementation.SpanDataMapper;
 import com.azure.monitor.opentelemetry.exporter.implementation.logging.OperationLogger;
 import com.azure.monitor.opentelemetry.exporter.implementation.models.TelemetryItem;
 import com.azure.monitor.opentelemetry.exporter.implementation.pipeline.TelemetryItemExporter;
+import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.FeatureStatsbeat;
+import com.azure.monitor.opentelemetry.exporter.implementation.statsbeat.StatsbeatModule;
 import io.opentelemetry.sdk.common.CompletableResultCode;
 import io.opentelemetry.sdk.trace.data.SpanData;
 import io.opentelemetry.sdk.trace.export.SpanExporter;
@@ -30,15 +32,16 @@ final class AzureMonitorTraceExporter implements SpanExporter {
 
     private final TelemetryItemExporter telemetryItemExporter;
     private final SpanDataMapper mapper;
+    private final StatsbeatModule statsbeatModule;
 
     /**
      * Creates an instance of exporter that is configured with given exporter client that sends
      * telemetry events to Application Insights resource identified by the instrumentation key.
      */
-    AzureMonitorTraceExporter(SpanDataMapper mapper, TelemetryItemExporter telemetryItemExporter) {
-
+    AzureMonitorTraceExporter(SpanDataMapper mapper, TelemetryItemExporter telemetryItemExporter, StatsbeatModule statsbeatModule) {
         this.mapper = mapper;
         this.telemetryItemExporter = telemetryItemExporter;
+        this.statsbeatModule = statsbeatModule;
     }
 
     /**
@@ -50,6 +53,8 @@ final class AzureMonitorTraceExporter implements SpanExporter {
 
         for (SpanData span : spans) {
             LOGGER.verbose("exporting span: {}", span);
+            FeatureStatsbeat instrumentationStatsbeat = statsbeatModule.getInstrumentationStatsbeat();
+            instrumentationStatsbeat.addInstrumentation(span);
             try {
                 mapper.map(span, telemetryItems::add);
                 OPERATION_LOGGER.recordSuccess();

@@ -8,7 +8,9 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
 
-/** The results of a run command. */
+/**
+ * The results of a run command.
+ */
 @Immutable
 public final class CommandResultProperties {
     /*
@@ -47,13 +49,15 @@ public final class CommandResultProperties {
     @JsonProperty(value = "reason", access = JsonProperty.Access.WRITE_ONLY)
     private String reason;
 
-    /** Creates an instance of CommandResultProperties class. */
+    /**
+     * Creates an instance of CommandResultProperties class.
+     */
     public CommandResultProperties() {
     }
 
     /**
      * Get the provisioningState property: provisioning State.
-     *
+     * 
      * @return the provisioningState value.
      */
     public String provisioningState() {
@@ -62,7 +66,7 @@ public final class CommandResultProperties {
 
     /**
      * Get the exitCode property: The exit code of the command.
-     *
+     * 
      * @return the exitCode value.
      */
     public Integer exitCode() {
@@ -71,7 +75,7 @@ public final class CommandResultProperties {
 
     /**
      * Get the startedAt property: The time when the command started.
-     *
+     * 
      * @return the startedAt value.
      */
     public OffsetDateTime startedAt() {
@@ -80,7 +84,7 @@ public final class CommandResultProperties {
 
     /**
      * Get the finishedAt property: The time when the command finished.
-     *
+     * 
      * @return the finishedAt value.
      */
     public OffsetDateTime finishedAt() {
@@ -89,7 +93,7 @@ public final class CommandResultProperties {
 
     /**
      * Get the logs property: The command output.
-     *
+     * 
      * @return the logs value.
      */
     public String logs() {
@@ -98,7 +102,7 @@ public final class CommandResultProperties {
 
     /**
      * Get the reason property: An explanation of why provisioningState is set to failed (if so).
-     *
+     * 
      * @return the reason value.
      */
     public String reason() {
@@ -107,7 +111,7 @@ public final class CommandResultProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

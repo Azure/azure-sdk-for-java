@@ -9,7 +9,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
-/** The location of Oracle Cloud Storage dataset. */
+/**
+ * The location of Oracle Cloud Storage dataset.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("OracleCloudStorageLocation")
 @Fluent
@@ -26,14 +28,16 @@ public final class OracleCloudStorageLocation extends DatasetLocation {
     @JsonProperty(value = "version")
     private Object version;
 
-    /** Creates an instance of OracleCloudStorageLocation class. */
+    /**
+     * Creates an instance of OracleCloudStorageLocation class.
+     */
     public OracleCloudStorageLocation() {
     }
 
     /**
      * Get the bucketName property: Specify the bucketName of Oracle Cloud Storage. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the bucketName value.
      */
     public Object bucketName() {
@@ -43,7 +47,7 @@ public final class OracleCloudStorageLocation extends DatasetLocation {
     /**
      * Set the bucketName property: Specify the bucketName of Oracle Cloud Storage. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param bucketName the bucketName value to set.
      * @return the OracleCloudStorageLocation object itself.
      */
@@ -55,7 +59,7 @@ public final class OracleCloudStorageLocation extends DatasetLocation {
     /**
      * Get the version property: Specify the version of Oracle Cloud Storage. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @return the version value.
      */
     public Object version() {
@@ -65,7 +69,7 @@ public final class OracleCloudStorageLocation extends DatasetLocation {
     /**
      * Set the version property: Specify the version of Oracle Cloud Storage. Type: string (or Expression with
      * resultType string).
-     *
+     * 
      * @param version the version value to set.
      * @return the OracleCloudStorageLocation object itself.
      */
@@ -74,14 +78,18 @@ public final class OracleCloudStorageLocation extends DatasetLocation {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OracleCloudStorageLocation withFolderPath(Object folderPath) {
         super.withFolderPath(folderPath);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public OracleCloudStorageLocation withFileName(Object fileName) {
         super.withFileName(fileName);
@@ -90,7 +98,7 @@ public final class OracleCloudStorageLocation extends DatasetLocation {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

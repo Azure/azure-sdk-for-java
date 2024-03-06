@@ -8,20 +8,28 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** The HDInsightActivityDebugInfoOption settings to use. */
+/**
+ * The HDInsightActivityDebugInfoOption settings to use.
+ */
 public final class HDInsightActivityDebugInfoOption extends ExpandableStringEnum<HDInsightActivityDebugInfoOption> {
-    /** Static value None for HDInsightActivityDebugInfoOption. */
+    /**
+     * Static value None for HDInsightActivityDebugInfoOption.
+     */
     public static final HDInsightActivityDebugInfoOption NONE = fromString("None");
 
-    /** Static value Always for HDInsightActivityDebugInfoOption. */
+    /**
+     * Static value Always for HDInsightActivityDebugInfoOption.
+     */
     public static final HDInsightActivityDebugInfoOption ALWAYS = fromString("Always");
 
-    /** Static value Failure for HDInsightActivityDebugInfoOption. */
+    /**
+     * Static value Failure for HDInsightActivityDebugInfoOption.
+     */
     public static final HDInsightActivityDebugInfoOption FAILURE = fromString("Failure");
 
     /**
      * Creates a new instance of HDInsightActivityDebugInfoOption value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -30,7 +38,7 @@ public final class HDInsightActivityDebugInfoOption extends ExpandableStringEnum
 
     /**
      * Creates or finds a HDInsightActivityDebugInfoOption from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding HDInsightActivityDebugInfoOption.
      */
@@ -41,7 +49,7 @@ public final class HDInsightActivityDebugInfoOption extends ExpandableStringEnum
 
     /**
      * Gets known HDInsightActivityDebugInfoOption values.
-     *
+     * 
      * @return known HDInsightActivityDebugInfoOption values.
      */
     public static Collection<HDInsightActivityDebugInfoOption> values() {

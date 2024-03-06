@@ -4,7 +4,6 @@
 package com.azure.core.test;
 
 import com.azure.core.test.utils.TestProxyManager;
-import com.azure.core.util.logging.ClientLogger;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.TestInfo;
 
@@ -12,7 +11,6 @@ import org.junit.jupiter.api.TestInfo;
  * Base class for running live and playback tests using test-proxy
  */
 public abstract class TestProxyTestBase extends TestBase {
-    private static final ClientLogger LOGGER = new ClientLogger(TestProxyTestBase.class);
     static {
         setTestProxyEnabled();
     }

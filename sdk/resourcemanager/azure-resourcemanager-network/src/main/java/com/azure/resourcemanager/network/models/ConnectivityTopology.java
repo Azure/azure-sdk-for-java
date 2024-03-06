@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Connectivity topology type. */
+/**
+ * Connectivity topology type.
+ */
 public final class ConnectivityTopology extends ExpandableStringEnum<ConnectivityTopology> {
-    /** Static value HubAndSpoke for ConnectivityTopology. */
+    /**
+     * Static value HubAndSpoke for ConnectivityTopology.
+     */
     public static final ConnectivityTopology HUB_AND_SPOKE = fromString("HubAndSpoke");
 
-    /** Static value Mesh for ConnectivityTopology. */
+    /**
+     * Static value Mesh for ConnectivityTopology.
+     */
     public static final ConnectivityTopology MESH = fromString("Mesh");
 
     /**
      * Creates a new instance of ConnectivityTopology value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class ConnectivityTopology extends ExpandableStringEnum<Connectivit
 
     /**
      * Creates or finds a ConnectivityTopology from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding ConnectivityTopology.
      */
@@ -38,7 +44,7 @@ public final class ConnectivityTopology extends ExpandableStringEnum<Connectivit
 
     /**
      * Gets known ConnectivityTopology values.
-     *
+     * 
      * @return known ConnectivityTopology values.
      */
     public static Collection<ConnectivityTopology> values() {

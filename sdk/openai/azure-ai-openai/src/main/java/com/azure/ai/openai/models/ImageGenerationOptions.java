@@ -22,14 +22,18 @@ public final class ImageGenerationOptions {
     private String prompt;
 
     /*
-     * The number of images to generate (defaults to 1).
+     * The number of images to generate.
+     * Dall-e-2 models support values between 1 and 10.
+     * Dall-e-3 models only support a value of 1.
      */
     @Generated
     @JsonProperty(value = "n")
     private Integer n;
 
     /*
-     * The desired size of the generated images. Must be one of 256x256, 512x512, or 1024x1024 (defaults to 1024x1024).
+     * The desired dimensions for generated images.
+     * Dall-e-2 models support 256x256, 512x512, or 1024x1024.
+     * Dall-e-3 models support 1024x1024, 1792x1024, or 1024x1792.
      */
     @Generated
     @JsonProperty(value = "size")
@@ -64,7 +68,9 @@ public final class ImageGenerationOptions {
     }
 
     /**
-     * Get the n property: The number of images to generate (defaults to 1).
+     * Get the n property: The number of images to generate.
+     * Dall-e-2 models support values between 1 and 10.
+     * Dall-e-3 models only support a value of 1.
      *
      * @return the n value.
      */
@@ -74,7 +80,9 @@ public final class ImageGenerationOptions {
     }
 
     /**
-     * Set the n property: The number of images to generate (defaults to 1).
+     * Set the n property: The number of images to generate.
+     * Dall-e-2 models support values between 1 and 10.
+     * Dall-e-3 models only support a value of 1.
      *
      * @param n the n value to set.
      * @return the ImageGenerationOptions object itself.
@@ -86,8 +94,9 @@ public final class ImageGenerationOptions {
     }
 
     /**
-     * Get the size property: The desired size of the generated images. Must be one of 256x256, 512x512, or 1024x1024
-     * (defaults to 1024x1024).
+     * Get the size property: The desired dimensions for generated images.
+     * Dall-e-2 models support 256x256, 512x512, or 1024x1024.
+     * Dall-e-3 models support 1024x1024, 1792x1024, or 1024x1792.
      *
      * @return the size value.
      */
@@ -97,8 +106,9 @@ public final class ImageGenerationOptions {
     }
 
     /**
-     * Set the size property: The desired size of the generated images. Must be one of 256x256, 512x512, or 1024x1024
-     * (defaults to 1024x1024).
+     * Set the size property: The desired dimensions for generated images.
+     * Dall-e-2 models support 256x256, 512x512, or 1024x1024.
+     * Dall-e-3 models support 1024x1024, 1792x1024, or 1024x1792.
      *
      * @param size the size value to set.
      * @return the ImageGenerationOptions object itself.
@@ -135,7 +145,6 @@ public final class ImageGenerationOptions {
 
     /*
      * The format in which image generation response items should be presented.
-     * Azure OpenAI only supports URL response items.
      */
     @Generated
     @JsonProperty(value = "response_format")
@@ -143,7 +152,6 @@ public final class ImageGenerationOptions {
 
     /**
      * Get the responseFormat property: The format in which image generation response items should be presented.
-     * Azure OpenAI only supports URL response items.
      *
      * @return the responseFormat value.
      */
@@ -154,7 +162,6 @@ public final class ImageGenerationOptions {
 
     /**
      * Set the responseFormat property: The format in which image generation response items should be presented.
-     * Azure OpenAI only supports URL response items.
      *
      * @param responseFormat the responseFormat value to set.
      * @return the ImageGenerationOptions object itself.
@@ -162,6 +169,105 @@ public final class ImageGenerationOptions {
     @Generated
     public ImageGenerationOptions setResponseFormat(ImageGenerationResponseFormat responseFormat) {
         this.responseFormat = responseFormat;
+        return this;
+    }
+
+    /*
+     * The model name or Azure OpenAI model deployment name to use for image generation. If not specified, dall-e-2
+     * will be
+     * inferred as a default.
+     */
+    @Generated
+    @JsonProperty(value = "model")
+    private String model;
+
+    /*
+     * The desired image generation quality level to use.
+     * Only configurable with dall-e-3 models.
+     */
+    @Generated
+    @JsonProperty(value = "quality")
+    private ImageGenerationQuality quality;
+
+    /*
+     * The desired image generation style to use.
+     * Only configurable with dall-e-3 models.
+     */
+    @Generated
+    @JsonProperty(value = "style")
+    private ImageGenerationStyle style;
+
+    /**
+     * Get the model property: The model name or Azure OpenAI model deployment name to use for image generation. If not
+     * specified, dall-e-2 will be
+     * inferred as a default.
+     *
+     * @return the model value.
+     */
+    @Generated
+    public String getModel() {
+        return this.model;
+    }
+
+    /**
+     * Set the model property: The model name or Azure OpenAI model deployment name to use for image generation. If not
+     * specified, dall-e-2 will be
+     * inferred as a default.
+     *
+     * @param model the model value to set.
+     * @return the ImageGenerationOptions object itself.
+     */
+    @Generated
+    public ImageGenerationOptions setModel(String model) {
+        this.model = model;
+        return this;
+    }
+
+    /**
+     * Get the quality property: The desired image generation quality level to use.
+     * Only configurable with dall-e-3 models.
+     *
+     * @return the quality value.
+     */
+    @Generated
+    public ImageGenerationQuality getQuality() {
+        return this.quality;
+    }
+
+    /**
+     * Set the quality property: The desired image generation quality level to use.
+     * Only configurable with dall-e-3 models.
+     *
+     * @param quality the quality value to set.
+     * @return the ImageGenerationOptions object itself.
+     */
+    @Generated
+    public ImageGenerationOptions setQuality(ImageGenerationQuality quality) {
+        this.quality = quality;
+        return this;
+    }
+
+    /**
+     * Get the style property: The desired image generation style to use.
+     * Only configurable with dall-e-3 models.
+     *
+     * @return the style value.
+     */
+    @Generated
+    public ImageGenerationStyle getStyle() {
+        return this.style;
+    }
+
+    /**
+     * Set the style property: The desired image generation style to use.
+     * Only configurable with dall-e-3 models.
+     *
+     * @param style the style value to set.
+     * @return the ImageGenerationOptions object itself.
+     */
+    @Generated
+    public ImageGenerationOptions setStyle(ImageGenerationStyle style) {
+        this.style = style;
         return this;
     }
 }

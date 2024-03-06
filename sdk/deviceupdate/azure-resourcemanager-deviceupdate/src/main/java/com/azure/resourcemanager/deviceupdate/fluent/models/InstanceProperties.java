@@ -11,7 +11,9 @@ import com.azure.resourcemanager.deviceupdate.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Device Update instance properties. */
+/**
+ * Device Update instance properties.
+ */
 @Fluent
 public final class InstanceProperties {
     /*
@@ -45,8 +47,14 @@ public final class InstanceProperties {
     private DiagnosticStorageProperties diagnosticStorageProperties;
 
     /**
+     * Creates an instance of InstanceProperties class.
+     */
+    public InstanceProperties() {
+    }
+
+    /**
      * Get the provisioningState property: Provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -55,7 +63,7 @@ public final class InstanceProperties {
 
     /**
      * Get the accountName property: Parent Device Update Account name which Instance belongs to.
-     *
+     * 
      * @return the accountName value.
      */
     public String accountName() {
@@ -64,7 +72,7 @@ public final class InstanceProperties {
 
     /**
      * Get the iotHubs property: List of IoT Hubs associated with the account.
-     *
+     * 
      * @return the iotHubs value.
      */
     public List<IotHubSettings> iotHubs() {
@@ -73,7 +81,7 @@ public final class InstanceProperties {
 
     /**
      * Set the iotHubs property: List of IoT Hubs associated with the account.
-     *
+     * 
      * @param iotHubs the iotHubs value to set.
      * @return the InstanceProperties object itself.
      */
@@ -84,7 +92,7 @@ public final class InstanceProperties {
 
     /**
      * Get the enableDiagnostics property: Enables or Disables the diagnostic logs collection.
-     *
+     * 
      * @return the enableDiagnostics value.
      */
     public Boolean enableDiagnostics() {
@@ -93,7 +101,7 @@ public final class InstanceProperties {
 
     /**
      * Set the enableDiagnostics property: Enables or Disables the diagnostic logs collection.
-     *
+     * 
      * @param enableDiagnostics the enableDiagnostics value to set.
      * @return the InstanceProperties object itself.
      */
@@ -104,7 +112,7 @@ public final class InstanceProperties {
 
     /**
      * Get the diagnosticStorageProperties property: Customer-initiated diagnostic log collection storage properties.
-     *
+     * 
      * @return the diagnosticStorageProperties value.
      */
     public DiagnosticStorageProperties diagnosticStorageProperties() {
@@ -113,7 +121,7 @@ public final class InstanceProperties {
 
     /**
      * Set the diagnosticStorageProperties property: Customer-initiated diagnostic log collection storage properties.
-     *
+     * 
      * @param diagnosticStorageProperties the diagnosticStorageProperties value to set.
      * @return the InstanceProperties object itself.
      */
@@ -124,7 +132,7 @@ public final class InstanceProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

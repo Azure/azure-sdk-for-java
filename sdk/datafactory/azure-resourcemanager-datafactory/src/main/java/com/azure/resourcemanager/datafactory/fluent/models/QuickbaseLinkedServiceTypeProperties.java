@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Quickbase linked service type properties. */
+/**
+ * Quickbase linked service type properties.
+ */
 @Fluent
 public final class QuickbaseLinkedServiceTypeProperties {
     /*
@@ -31,13 +33,15 @@ public final class QuickbaseLinkedServiceTypeProperties {
     @JsonProperty(value = "encryptedCredential")
     private String encryptedCredential;
 
-    /** Creates an instance of QuickbaseLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of QuickbaseLinkedServiceTypeProperties class.
+     */
     public QuickbaseLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the url property: The url to connect Quickbase source. Type: string (or Expression with resultType string).
-     *
+     * 
      * @return the url value.
      */
     public Object url() {
@@ -46,7 +50,7 @@ public final class QuickbaseLinkedServiceTypeProperties {
 
     /**
      * Set the url property: The url to connect Quickbase source. Type: string (or Expression with resultType string).
-     *
+     * 
      * @param url the url value to set.
      * @return the QuickbaseLinkedServiceTypeProperties object itself.
      */
@@ -57,7 +61,7 @@ public final class QuickbaseLinkedServiceTypeProperties {
 
     /**
      * Get the userToken property: The user token for the Quickbase source.
-     *
+     * 
      * @return the userToken value.
      */
     public SecretBase userToken() {
@@ -66,7 +70,7 @@ public final class QuickbaseLinkedServiceTypeProperties {
 
     /**
      * Set the userToken property: The user token for the Quickbase source.
-     *
+     * 
      * @param userToken the userToken value to set.
      * @return the QuickbaseLinkedServiceTypeProperties object itself.
      */
@@ -76,9 +80,9 @@ public final class QuickbaseLinkedServiceTypeProperties {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string.
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @return the encryptedCredential value.
      */
     public String encryptedCredential() {
@@ -86,9 +90,9 @@ public final class QuickbaseLinkedServiceTypeProperties {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string.
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string.
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the QuickbaseLinkedServiceTypeProperties object itself.
      */
@@ -99,21 +103,17 @@ public final class QuickbaseLinkedServiceTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (url() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property url in model QuickbaseLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property url in model QuickbaseLinkedServiceTypeProperties"));
         }
         if (userToken() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property userToken in model QuickbaseLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property userToken in model QuickbaseLinkedServiceTypeProperties"));
         } else {
             userToken().validate();
         }

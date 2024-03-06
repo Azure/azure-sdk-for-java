@@ -10,7 +10,9 @@ import com.azure.resourcemanager.servicenetworking.fluent.models.FrontendInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The response of a Frontend list operation. */
+/**
+ * The response of a Frontend list operation.
+ */
 @Fluent
 public final class FrontendListResult {
     /*
@@ -25,13 +27,15 @@ public final class FrontendListResult {
     @JsonProperty(value = "nextLink")
     private String nextLink;
 
-    /** Creates an instance of FrontendListResult class. */
+    /**
+     * Creates an instance of FrontendListResult class.
+     */
     public FrontendListResult() {
     }
 
     /**
      * Get the value property: The Frontend items on this page.
-     *
+     * 
      * @return the value value.
      */
     public List<FrontendInner> value() {
@@ -40,7 +44,7 @@ public final class FrontendListResult {
 
     /**
      * Set the value property: The Frontend items on this page.
-     *
+     * 
      * @param value the value value to set.
      * @return the FrontendListResult object itself.
      */
@@ -51,7 +55,7 @@ public final class FrontendListResult {
 
     /**
      * Get the nextLink property: The link to the next page of items.
-     *
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -60,7 +64,7 @@ public final class FrontendListResult {
 
     /**
      * Set the nextLink property: The link to the next page of items.
-     *
+     * 
      * @param nextLink the nextLink value to set.
      * @return the FrontendListResult object itself.
      */
@@ -71,14 +75,13 @@ public final class FrontendListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (value() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException("Missing required property value in model FrontendListResult"));
+            throw LOGGER.logExceptionAsError(
+                new IllegalArgumentException("Missing required property value in model FrontendListResult"));
         } else {
             value().forEach(e -> e.validate());
         }

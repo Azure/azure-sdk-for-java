@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.SqlRoleAssignmentGetResult
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The relevant Role Assignments. */
+/**
+ * The relevant Role Assignments.
+ */
 @Immutable
 public final class SqlRoleAssignmentListResult {
     /*
@@ -18,13 +20,15 @@ public final class SqlRoleAssignmentListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<SqlRoleAssignmentGetResultsInner> value;
 
-    /** Creates an instance of SqlRoleAssignmentListResult class. */
+    /**
+     * Creates an instance of SqlRoleAssignmentListResult class.
+     */
     public SqlRoleAssignmentListResult() {
     }
 
     /**
      * Get the value property: List of Role Assignments and their properties.
-     *
+     * 
      * @return the value value.
      */
     public List<SqlRoleAssignmentGetResultsInner> value() {
@@ -33,7 +37,7 @@ public final class SqlRoleAssignmentListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

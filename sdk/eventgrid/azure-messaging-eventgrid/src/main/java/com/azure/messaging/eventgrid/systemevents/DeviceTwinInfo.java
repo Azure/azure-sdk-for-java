@@ -5,70 +5,66 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.annotation.Fluent;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
-/** Information about the device twin, which is the cloud representation of application device metadata. */
+/**
+ * Information about the device twin, which is the cloud representation of application device metadata.
+ */
 @Fluent
-public final class DeviceTwinInfo {
+public final class DeviceTwinInfo implements JsonSerializable<DeviceTwinInfo> {
     /*
      * Authentication type used for this device: either SAS, SelfSigned, or CertificateAuthority.
      */
-    @JsonProperty(value = "authenticationType")
     private String authenticationType;
 
     /*
      * Count of cloud to device messages sent to this device.
      */
-    @JsonProperty(value = "cloudToDeviceMessageCount")
     private Float cloudToDeviceMessageCount;
 
     /*
      * Whether the device is connected or disconnected.
      */
-    @JsonProperty(value = "connectionState")
     private String connectionState;
 
     /*
      * The unique identifier of the device twin.
      */
-    @JsonProperty(value = "deviceId")
     private String deviceId;
 
     /*
      * A piece of information that describes the content of the device twin. Each etag is guaranteed to be unique per
      * device twin.
      */
-    @JsonProperty(value = "etag")
     private String etag;
 
     /*
      * The ISO8601 timestamp of the last activity.
      */
-    @JsonProperty(value = "lastActivityTime")
     private String lastActivityTime;
 
     /*
      * Properties JSON element.
      */
-    @JsonProperty(value = "properties")
     private DeviceTwinInfoProperties properties;
 
     /*
      * Whether the device twin is enabled or disabled.
      */
-    @JsonProperty(value = "status")
     private String status;
 
     /*
      * The ISO8601 timestamp of the last device twin status update.
      */
-    @JsonProperty(value = "statusUpdateTime")
     private String statusUpdateTime;
 
     /*
      * An integer that is incremented by one each time the device twin is updated.
      */
-    @JsonProperty(value = "version")
     private Float version;
 
     /*
@@ -76,16 +72,18 @@ public final class DeviceTwinInfo {
      * certificate store. The thumbprint is dynamically generated using the SHA1 algorithm, and does not physically
      * exist in the certificate.
      */
-    @JsonProperty(value = "x509Thumbprint")
     private DeviceTwinInfoX509Thumbprint x509Thumbprint;
 
-    /** Creates an instance of DeviceTwinInfo class. */
-    public DeviceTwinInfo() {}
+    /**
+     * Creates an instance of DeviceTwinInfo class.
+     */
+    public DeviceTwinInfo() {
+    }
 
     /**
      * Get the authenticationType property: Authentication type used for this device: either SAS, SelfSigned, or
      * CertificateAuthority.
-     *
+     * 
      * @return the authenticationType value.
      */
     public String getAuthenticationType() {
@@ -95,7 +93,7 @@ public final class DeviceTwinInfo {
     /**
      * Set the authenticationType property: Authentication type used for this device: either SAS, SelfSigned, or
      * CertificateAuthority.
-     *
+     * 
      * @param authenticationType the authenticationType value to set.
      * @return the DeviceTwinInfo object itself.
      */
@@ -106,7 +104,7 @@ public final class DeviceTwinInfo {
 
     /**
      * Get the cloudToDeviceMessageCount property: Count of cloud to device messages sent to this device.
-     *
+     * 
      * @return the cloudToDeviceMessageCount value.
      */
     public Float getCloudToDeviceMessageCount() {
@@ -115,7 +113,7 @@ public final class DeviceTwinInfo {
 
     /**
      * Set the cloudToDeviceMessageCount property: Count of cloud to device messages sent to this device.
-     *
+     * 
      * @param cloudToDeviceMessageCount the cloudToDeviceMessageCount value to set.
      * @return the DeviceTwinInfo object itself.
      */
@@ -126,7 +124,7 @@ public final class DeviceTwinInfo {
 
     /**
      * Get the connectionState property: Whether the device is connected or disconnected.
-     *
+     * 
      * @return the connectionState value.
      */
     public String getConnectionState() {
@@ -135,7 +133,7 @@ public final class DeviceTwinInfo {
 
     /**
      * Set the connectionState property: Whether the device is connected or disconnected.
-     *
+     * 
      * @param connectionState the connectionState value to set.
      * @return the DeviceTwinInfo object itself.
      */
@@ -146,7 +144,7 @@ public final class DeviceTwinInfo {
 
     /**
      * Get the deviceId property: The unique identifier of the device twin.
-     *
+     * 
      * @return the deviceId value.
      */
     public String getDeviceId() {
@@ -155,7 +153,7 @@ public final class DeviceTwinInfo {
 
     /**
      * Set the deviceId property: The unique identifier of the device twin.
-     *
+     * 
      * @param deviceId the deviceId value to set.
      * @return the DeviceTwinInfo object itself.
      */
@@ -167,7 +165,7 @@ public final class DeviceTwinInfo {
     /**
      * Get the etag property: A piece of information that describes the content of the device twin. Each etag is
      * guaranteed to be unique per device twin.
-     *
+     * 
      * @return the etag value.
      */
     public String getEtag() {
@@ -177,7 +175,7 @@ public final class DeviceTwinInfo {
     /**
      * Set the etag property: A piece of information that describes the content of the device twin. Each etag is
      * guaranteed to be unique per device twin.
-     *
+     * 
      * @param etag the etag value to set.
      * @return the DeviceTwinInfo object itself.
      */
@@ -188,7 +186,7 @@ public final class DeviceTwinInfo {
 
     /**
      * Get the lastActivityTime property: The ISO8601 timestamp of the last activity.
-     *
+     * 
      * @return the lastActivityTime value.
      */
     public String getLastActivityTime() {
@@ -197,7 +195,7 @@ public final class DeviceTwinInfo {
 
     /**
      * Set the lastActivityTime property: The ISO8601 timestamp of the last activity.
-     *
+     * 
      * @param lastActivityTime the lastActivityTime value to set.
      * @return the DeviceTwinInfo object itself.
      */
@@ -208,7 +206,7 @@ public final class DeviceTwinInfo {
 
     /**
      * Get the properties property: Properties JSON element.
-     *
+     * 
      * @return the properties value.
      */
     public DeviceTwinInfoProperties getProperties() {
@@ -217,7 +215,7 @@ public final class DeviceTwinInfo {
 
     /**
      * Set the properties property: Properties JSON element.
-     *
+     * 
      * @param properties the properties value to set.
      * @return the DeviceTwinInfo object itself.
      */
@@ -228,7 +226,7 @@ public final class DeviceTwinInfo {
 
     /**
      * Get the status property: Whether the device twin is enabled or disabled.
-     *
+     * 
      * @return the status value.
      */
     public String getStatus() {
@@ -237,7 +235,7 @@ public final class DeviceTwinInfo {
 
     /**
      * Set the status property: Whether the device twin is enabled or disabled.
-     *
+     * 
      * @param status the status value to set.
      * @return the DeviceTwinInfo object itself.
      */
@@ -248,7 +246,7 @@ public final class DeviceTwinInfo {
 
     /**
      * Get the statusUpdateTime property: The ISO8601 timestamp of the last device twin status update.
-     *
+     * 
      * @return the statusUpdateTime value.
      */
     public String getStatusUpdateTime() {
@@ -257,7 +255,7 @@ public final class DeviceTwinInfo {
 
     /**
      * Set the statusUpdateTime property: The ISO8601 timestamp of the last device twin status update.
-     *
+     * 
      * @param statusUpdateTime the statusUpdateTime value to set.
      * @return the DeviceTwinInfo object itself.
      */
@@ -268,7 +266,7 @@ public final class DeviceTwinInfo {
 
     /**
      * Get the version property: An integer that is incremented by one each time the device twin is updated.
-     *
+     * 
      * @return the version value.
      */
     public Float getVersion() {
@@ -277,7 +275,7 @@ public final class DeviceTwinInfo {
 
     /**
      * Set the version property: An integer that is incremented by one each time the device twin is updated.
-     *
+     * 
      * @param version the version value to set.
      * @return the DeviceTwinInfo object itself.
      */
@@ -287,10 +285,10 @@ public final class DeviceTwinInfo {
     }
 
     /**
-     * Get the x509Thumbprint property: The thumbprint is a unique value for the x509 certificate, commonly used to find
-     * a particular certificate in a certificate store. The thumbprint is dynamically generated using the SHA1
+     * Get the x509Thumbprint property: The thumbprint is a unique value for the x509 certificate, commonly used to
+     * find a particular certificate in a certificate store. The thumbprint is dynamically generated using the SHA1
      * algorithm, and does not physically exist in the certificate.
-     *
+     * 
      * @return the x509Thumbprint value.
      */
     public DeviceTwinInfoX509Thumbprint getX509Thumbprint() {
@@ -298,15 +296,78 @@ public final class DeviceTwinInfo {
     }
 
     /**
-     * Set the x509Thumbprint property: The thumbprint is a unique value for the x509 certificate, commonly used to find
-     * a particular certificate in a certificate store. The thumbprint is dynamically generated using the SHA1
+     * Set the x509Thumbprint property: The thumbprint is a unique value for the x509 certificate, commonly used to
+     * find a particular certificate in a certificate store. The thumbprint is dynamically generated using the SHA1
      * algorithm, and does not physically exist in the certificate.
-     *
+     * 
      * @param x509Thumbprint the x509Thumbprint value to set.
      * @return the DeviceTwinInfo object itself.
      */
     public DeviceTwinInfo setX509Thumbprint(DeviceTwinInfoX509Thumbprint x509Thumbprint) {
         this.x509Thumbprint = x509Thumbprint;
         return this;
+    }
+
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("authenticationType", this.authenticationType);
+        jsonWriter.writeNumberField("cloudToDeviceMessageCount", this.cloudToDeviceMessageCount);
+        jsonWriter.writeStringField("connectionState", this.connectionState);
+        jsonWriter.writeStringField("deviceId", this.deviceId);
+        jsonWriter.writeStringField("etag", this.etag);
+        jsonWriter.writeStringField("lastActivityTime", this.lastActivityTime);
+        jsonWriter.writeJsonField("properties", this.properties);
+        jsonWriter.writeStringField("status", this.status);
+        jsonWriter.writeStringField("statusUpdateTime", this.statusUpdateTime);
+        jsonWriter.writeNumberField("version", this.version);
+        jsonWriter.writeJsonField("x509Thumbprint", this.x509Thumbprint);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of DeviceTwinInfo from the JsonReader.
+     * 
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of DeviceTwinInfo if the JsonReader was pointing to an instance of it, or null if it was
+     * pointing to JSON null.
+     * @throws IOException If an error occurs while reading the DeviceTwinInfo.
+     */
+    public static DeviceTwinInfo fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            DeviceTwinInfo deserializedDeviceTwinInfo = new DeviceTwinInfo();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+
+                if ("authenticationType".equals(fieldName)) {
+                    deserializedDeviceTwinInfo.authenticationType = reader.getString();
+                } else if ("cloudToDeviceMessageCount".equals(fieldName)) {
+                    deserializedDeviceTwinInfo.cloudToDeviceMessageCount = reader.getNullable(JsonReader::getFloat);
+                } else if ("connectionState".equals(fieldName)) {
+                    deserializedDeviceTwinInfo.connectionState = reader.getString();
+                } else if ("deviceId".equals(fieldName)) {
+                    deserializedDeviceTwinInfo.deviceId = reader.getString();
+                } else if ("etag".equals(fieldName)) {
+                    deserializedDeviceTwinInfo.etag = reader.getString();
+                } else if ("lastActivityTime".equals(fieldName)) {
+                    deserializedDeviceTwinInfo.lastActivityTime = reader.getString();
+                } else if ("properties".equals(fieldName)) {
+                    deserializedDeviceTwinInfo.properties = DeviceTwinInfoProperties.fromJson(reader);
+                } else if ("status".equals(fieldName)) {
+                    deserializedDeviceTwinInfo.status = reader.getString();
+                } else if ("statusUpdateTime".equals(fieldName)) {
+                    deserializedDeviceTwinInfo.statusUpdateTime = reader.getString();
+                } else if ("version".equals(fieldName)) {
+                    deserializedDeviceTwinInfo.version = reader.getNullable(JsonReader::getFloat);
+                } else if ("x509Thumbprint".equals(fieldName)) {
+                    deserializedDeviceTwinInfo.x509Thumbprint = DeviceTwinInfoX509Thumbprint.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+
+            return deserializedDeviceTwinInfo;
+        });
     }
 }

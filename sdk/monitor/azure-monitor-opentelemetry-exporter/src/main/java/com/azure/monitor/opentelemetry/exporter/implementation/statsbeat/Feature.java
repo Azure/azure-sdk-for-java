@@ -48,7 +48,7 @@ public enum Feature {
     SDK_2X_BRIDGE_VIA_3X_AGENT(34), // track 2.x bridge usage via 3.x codeless agent
     PROFILER_ENABLED(35),
     BROWSER_SDK_LOADER(36), // track javascript snippet
-    PREVIEW_SAMPLING(37), // track preview sampling feature
+    SAMPLING(37), // track sampling feature
     PREVIEW_CAPTURE_CONTROLLER_SPANS(38), // track captureControllerSpans
     PREVIEW_LIVE_METRICS(39), // track liveMetrics
     PREVIEW_LEGACY_REQUEST_ID_PROPAGATION(40), // track legacyRequestIdPropagation
@@ -67,7 +67,10 @@ public enum Feature {
     PREVIEW_DISK_PERSISTENCE_MAX_SIZE_MB(53), // track diskPersistenceMaxSizeMb
     PREVIEW_DONT_USE_NORMALIZED(54), // track useNormalizedValueForNonNormalizedCpuPercentage
     PREVIEW_CUSTOM_INSTRUMENTATION(55), // track customInstrumentation
-    PREVIEW_ADDITIONAL_PROPAGATORS(56); // track additionalPropagators
+    PREVIEW_ADDITIONAL_PROPAGATORS(56), // track additionalPropagators
+    GRAAL_VM_NATIVE(57),
+    PEKKO_DISABLED(58) // preview instrumentation
+    ;
 
     private static final Map<String, Feature> javaVendorFeatureMap;
 

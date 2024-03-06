@@ -11,23 +11,19 @@ import org.junit.jupiter.api.Assertions;
 public final class AzureFileShareProvisionIlrRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        AzureFileShareProvisionIlrRequest model =
-            BinaryData
-                .fromString(
-                    "{\"objectType\":\"AzureFileShareProvisionILRRequest\",\"recoveryPointId\":\"lbqnbldxeacl\",\"sourceResourceId\":\"chorimkrsr\"}")
-                .toObject(AzureFileShareProvisionIlrRequest.class);
-        Assertions.assertEquals("lbqnbldxeacl", model.recoveryPointId());
-        Assertions.assertEquals("chorimkrsr", model.sourceResourceId());
+        AzureFileShareProvisionIlrRequest model = BinaryData.fromString(
+            "{\"objectType\":\"AzureFileShareProvisionILRRequest\",\"recoveryPointId\":\"wf\",\"sourceResourceId\":\"kwpzdqtvh\"}")
+            .toObject(AzureFileShareProvisionIlrRequest.class);
+        Assertions.assertEquals("wf", model.recoveryPointId());
+        Assertions.assertEquals("kwpzdqtvh", model.sourceResourceId());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        AzureFileShareProvisionIlrRequest model =
-            new AzureFileShareProvisionIlrRequest()
-                .withRecoveryPointId("lbqnbldxeacl")
-                .withSourceResourceId("chorimkrsr");
+        AzureFileShareProvisionIlrRequest model
+            = new AzureFileShareProvisionIlrRequest().withRecoveryPointId("wf").withSourceResourceId("kwpzdqtvh");
         model = BinaryData.fromObject(model).toObject(AzureFileShareProvisionIlrRequest.class);
-        Assertions.assertEquals("lbqnbldxeacl", model.recoveryPointId());
-        Assertions.assertEquals("chorimkrsr", model.sourceResourceId());
+        Assertions.assertEquals("wf", model.recoveryPointId());
+        Assertions.assertEquals("kwpzdqtvh", model.sourceResourceId());
     }
 }

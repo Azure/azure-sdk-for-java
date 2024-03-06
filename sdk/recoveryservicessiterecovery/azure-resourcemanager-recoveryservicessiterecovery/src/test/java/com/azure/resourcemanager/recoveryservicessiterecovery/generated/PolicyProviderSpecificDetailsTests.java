@@ -10,9 +10,8 @@ import com.azure.resourcemanager.recoveryservicessiterecovery.models.PolicyProvi
 public final class PolicyProviderSpecificDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        PolicyProviderSpecificDetails model =
-            BinaryData
-                .fromString("{\"instanceType\":\"PolicyProviderSpecificDetails\"}")
+        PolicyProviderSpecificDetails model
+            = BinaryData.fromString("{\"instanceType\":\"PolicyProviderSpecificDetails\"}")
                 .toObject(PolicyProviderSpecificDetails.class);
     }
 

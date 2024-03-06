@@ -6,24 +6,30 @@ package com.azure.resourcemanager.compute.models;
 
 import com.azure.core.annotation.Fluent;
 
-/** The safety profile of the Gallery Application Version. */
+/**
+ * The safety profile of the Gallery Application Version.
+ */
 @Fluent
 public final class GalleryApplicationVersionSafetyProfile extends GalleryArtifactSafetyProfileBase {
-    /** Creates an instance of GalleryApplicationVersionSafetyProfile class. */
+    /**
+     * Creates an instance of GalleryApplicationVersionSafetyProfile class.
+     */
     public GalleryApplicationVersionSafetyProfile() {
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
-    public GalleryApplicationVersionSafetyProfile withAllowDeletionOfReplicatedLocations(
-        Boolean allowDeletionOfReplicatedLocations) {
+    public GalleryApplicationVersionSafetyProfile
+        withAllowDeletionOfReplicatedLocations(Boolean allowDeletionOfReplicatedLocations) {
         super.withAllowDeletionOfReplicatedLocations(allowDeletionOfReplicatedLocations);
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

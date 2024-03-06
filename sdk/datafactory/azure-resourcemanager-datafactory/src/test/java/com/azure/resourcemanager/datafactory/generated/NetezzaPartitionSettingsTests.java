@@ -10,20 +10,15 @@ import com.azure.resourcemanager.datafactory.models.NetezzaPartitionSettings;
 public final class NetezzaPartitionSettingsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        NetezzaPartitionSettings model =
-            BinaryData
-                .fromString(
-                    "{\"partitionColumnName\":\"datalferjwhonn\",\"partitionUpperBound\":\"datadexnicq\",\"partitionLowerBound\":\"datafqttfqgdoowgqooi\"}")
-                .toObject(NetezzaPartitionSettings.class);
+        NetezzaPartitionSettings model = BinaryData.fromString(
+            "{\"partitionColumnName\":\"datagfnaoehkgpkss\",\"partitionUpperBound\":\"datawkwxdgcfcfkyyrj\",\"partitionLowerBound\":\"datahslrbwwkbyw\"}")
+            .toObject(NetezzaPartitionSettings.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        NetezzaPartitionSettings model =
-            new NetezzaPartitionSettings()
-                .withPartitionColumnName("datalferjwhonn")
-                .withPartitionUpperBound("datadexnicq")
-                .withPartitionLowerBound("datafqttfqgdoowgqooi");
+        NetezzaPartitionSettings model = new NetezzaPartitionSettings().withPartitionColumnName("datagfnaoehkgpkss")
+            .withPartitionUpperBound("datawkwxdgcfcfkyyrj").withPartitionLowerBound("datahslrbwwkbyw");
         model = BinaryData.fromObject(model).toObject(NetezzaPartitionSettings.class);
     }
 }

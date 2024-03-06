@@ -123,7 +123,7 @@ public final class RntbdContextRequest {
 
         private Headers(ByteBuf in) {
 
-            super(RntbdContextRequestHeader.set, RntbdContextRequestHeader.map, in);
+            super(RntbdContextRequestHeader.set, RntbdContextRequestHeader.map, in, RntbdContextRequestHeader.class);
 
             this.clientVersion = this.get(RntbdContextRequestHeader.ClientVersion);
             this.protocolVersion = this.get(RntbdContextRequestHeader.ProtocolVersion);

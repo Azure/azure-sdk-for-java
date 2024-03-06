@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.datafactory.models.SecretBase;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Twilio linked service type properties. */
+/**
+ * Twilio linked service type properties.
+ */
 @Fluent
 public final class TwilioLinkedServiceTypeProperties {
     /*
@@ -24,14 +26,16 @@ public final class TwilioLinkedServiceTypeProperties {
     @JsonProperty(value = "password", required = true)
     private SecretBase password;
 
-    /** Creates an instance of TwilioLinkedServiceTypeProperties class. */
+    /**
+     * Creates an instance of TwilioLinkedServiceTypeProperties class.
+     */
     public TwilioLinkedServiceTypeProperties() {
     }
 
     /**
      * Get the username property: The Account SID of Twilio service. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @return the username value.
      */
     public Object username() {
@@ -41,7 +45,7 @@ public final class TwilioLinkedServiceTypeProperties {
     /**
      * Set the username property: The Account SID of Twilio service. Type: string (or Expression with resultType
      * string).
-     *
+     * 
      * @param username the username value to set.
      * @return the TwilioLinkedServiceTypeProperties object itself.
      */
@@ -52,7 +56,7 @@ public final class TwilioLinkedServiceTypeProperties {
 
     /**
      * Get the password property: The auth token of Twilio service.
-     *
+     * 
      * @return the password value.
      */
     public SecretBase password() {
@@ -61,7 +65,7 @@ public final class TwilioLinkedServiceTypeProperties {
 
     /**
      * Set the password property: The auth token of Twilio service.
-     *
+     * 
      * @param password the password value to set.
      * @return the TwilioLinkedServiceTypeProperties object itself.
      */
@@ -72,21 +76,17 @@ public final class TwilioLinkedServiceTypeProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (username() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property username in model TwilioLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property username in model TwilioLinkedServiceTypeProperties"));
         }
         if (password() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property password in model TwilioLinkedServiceTypeProperties"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property password in model TwilioLinkedServiceTypeProperties"));
         } else {
             password().validate();
         }

@@ -14,24 +14,18 @@ import org.junit.jupiter.api.Assertions;
 public final class IntegrationRuntimeDebugResourceTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        IntegrationRuntimeDebugResource model =
-            BinaryData
-                .fromString(
-                    "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"xbzlmc\",\"\":{\"onqzinkfkbgbzbow\":\"datapcvhdbevwqqxeys\",\"qkjjeokbz\":\"dataeqocljmygvk\"}},\"name\":\"ezrxcczurtleipqx\"}")
-                .toObject(IntegrationRuntimeDebugResource.class);
+        IntegrationRuntimeDebugResource model = BinaryData.fromString(
+            "{\"properties\":{\"type\":\"IntegrationRuntime\",\"description\":\"xbzlmc\",\"\":{\"onqzinkfkbgbzbow\":\"datapcvhdbevwqqxeys\",\"qkjjeokbz\":\"dataeqocljmygvk\"}},\"name\":\"ezrxcczurtleipqx\"}")
+            .toObject(IntegrationRuntimeDebugResource.class);
         Assertions.assertEquals("ezrxcczurtleipqx", model.name());
         Assertions.assertEquals("xbzlmc", model.properties().description());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        IntegrationRuntimeDebugResource model =
-            new IntegrationRuntimeDebugResource()
-                .withName("ezrxcczurtleipqx")
-                .withProperties(
-                    new IntegrationRuntime()
-                        .withDescription("xbzlmc")
-                        .withAdditionalProperties(mapOf("type", "IntegrationRuntime")));
+        IntegrationRuntimeDebugResource model
+            = new IntegrationRuntimeDebugResource().withName("ezrxcczurtleipqx").withProperties(new IntegrationRuntime()
+                .withDescription("xbzlmc").withAdditionalProperties(mapOf("type", "IntegrationRuntime")));
         model = BinaryData.fromObject(model).toObject(IntegrationRuntimeDebugResource.class);
         Assertions.assertEquals("ezrxcczurtleipqx", model.name());
         Assertions.assertEquals("xbzlmc", model.properties().description());

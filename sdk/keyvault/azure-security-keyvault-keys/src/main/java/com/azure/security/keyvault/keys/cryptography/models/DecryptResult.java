@@ -17,7 +17,7 @@ public final class DecryptResult {
     private final byte[] plaintext;
 
     /**
-     * The encrypyion algorithm used for the encryption operation.
+     * The encryption algorithm used for the encryption operation.
      */
     private final EncryptionAlgorithm algorithm;
 

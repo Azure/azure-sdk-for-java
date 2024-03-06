@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Trigger that creates pipeline runs periodically, on schedule. */
+/**
+ * Trigger that creates pipeline runs periodically, on schedule.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("ScheduleTrigger")
 @JsonFlatten
@@ -23,12 +25,15 @@ public class ScheduleTrigger extends MultiplePipelineTrigger {
     @JsonProperty(value = "typeProperties.recurrence", required = true)
     private ScheduleTriggerRecurrence recurrence;
 
-    /** Creates an instance of ScheduleTrigger class. */
-    public ScheduleTrigger() {}
+    /**
+     * Creates an instance of ScheduleTrigger class.
+     */
+    public ScheduleTrigger() {
+    }
 
     /**
      * Get the recurrence property: Recurrence schedule configuration.
-     *
+     * 
      * @return the recurrence value.
      */
     public ScheduleTriggerRecurrence getRecurrence() {
@@ -37,7 +42,7 @@ public class ScheduleTrigger extends MultiplePipelineTrigger {
 
     /**
      * Set the recurrence property: Recurrence schedule configuration.
-     *
+     * 
      * @param recurrence the recurrence value to set.
      * @return the ScheduleTrigger object itself.
      */
@@ -46,21 +51,27 @@ public class ScheduleTrigger extends MultiplePipelineTrigger {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScheduleTrigger setPipelines(List<TriggerPipelineReference> pipelines) {
         super.setPipelines(pipelines);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScheduleTrigger setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public ScheduleTrigger setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

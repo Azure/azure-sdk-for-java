@@ -32,43 +32,30 @@ public final class AssociationsInterfacesListByTrafficControllerMockTests {
         HttpResponse httpResponse = Mockito.mock(HttpResponse.class);
         ArgumentCaptor<HttpRequest> httpRequest = ArgumentCaptor.forClass(HttpRequest.class);
 
-        String responseStr =
-            "{\"value\":[{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"vjxxjnsp\"},\"provisioningState\":\"Accepted\"},\"location\":\"koen\",\"tags\":{\"dng\":\"knvudwtiukb\",\"g\":\"pocipazyxoegu\",\"mrbpizcdrqj\":\"npiucgygevqznty\"},\"id\":\"dpydn\",\"name\":\"yhxdeoejzicwi\",\"type\":\"sjttgzfbish\"}]}";
+        String responseStr
+            = "{\"value\":[{\"properties\":{\"associationType\":\"subnets\",\"subnet\":{\"id\":\"kouknvudwtiu\"},\"provisioningState\":\"Succeeded\"},\"location\":\"ngkpocipazy\",\"tags\":{\"ntypmrbpizcdrqj\":\"gukgjnpiucgygevq\",\"yhxdeoejzicwi\":\"dpydn\",\"bkh\":\"sjttgzfbish\"},\"id\":\"jdeyeamdpha\",\"name\":\"alpbuxwgipwhon\",\"type\":\"wkgshwa\"}]}";
 
         Mockito.when(httpResponse.getStatusCode()).thenReturn(200);
         Mockito.when(httpResponse.getHeaders()).thenReturn(new HttpHeaders());
-        Mockito
-            .when(httpResponse.getBody())
+        Mockito.when(httpResponse.getBody())
             .thenReturn(Flux.just(ByteBuffer.wrap(responseStr.getBytes(StandardCharsets.UTF_8))));
-        Mockito
-            .when(httpResponse.getBodyAsByteArray())
+        Mockito.when(httpResponse.getBodyAsByteArray())
             .thenReturn(Mono.just(responseStr.getBytes(StandardCharsets.UTF_8)));
-        Mockito
-            .when(httpClient.send(httpRequest.capture(), Mockito.any()))
-            .thenReturn(
-                Mono
-                    .defer(
-                        () -> {
-                            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
-                            return Mono.just(httpResponse);
-                        }));
+        Mockito.when(httpClient.send(httpRequest.capture(), Mockito.any())).thenReturn(Mono.defer(() -> {
+            Mockito.when(httpResponse.getRequest()).thenReturn(httpRequest.getValue());
+            return Mono.just(httpResponse);
+        }));
 
-        TrafficControllerManager manager =
-            TrafficControllerManager
-                .configure()
-                .withHttpClient(httpClient)
-                .authenticate(
-                    tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
-                    new AzureProfile("", "", AzureEnvironment.AZURE));
+        TrafficControllerManager manager = TrafficControllerManager.configure().withHttpClient(httpClient).authenticate(
+            tokenRequestContext -> Mono.just(new AccessToken("this_is_a_token", OffsetDateTime.MAX)),
+            new AzureProfile("", "", AzureEnvironment.AZURE));
 
-        PagedIterable<Association> response =
-            manager
-                .associationsInterfaces()
-                .listByTrafficController("zy", "shxmzsbbzoggigrx", com.azure.core.util.Context.NONE);
+        PagedIterable<Association> response = manager.associationsInterfaces().listByTrafficController("gigr",
+            "wburvjxxjnspydpt", com.azure.core.util.Context.NONE);
 
-        Assertions.assertEquals("koen", response.iterator().next().location());
-        Assertions.assertEquals("knvudwtiukb", response.iterator().next().tags().get("dng"));
-        Assertions.assertEquals(AssociationType.SUBNETS, response.iterator().next().associationType());
-        Assertions.assertEquals("vjxxjnsp", response.iterator().next().subnet().id());
+        Assertions.assertEquals("ngkpocipazy", response.iterator().next().location());
+        Assertions.assertEquals("gukgjnpiucgygevq", response.iterator().next().tags().get("ntypmrbpizcdrqj"));
+        Assertions.assertEquals(AssociationType.SUBNETS, response.iterator().next().properties().associationType());
+        Assertions.assertEquals("kouknvudwtiu", response.iterator().next().properties().subnet().id());
     }
 }

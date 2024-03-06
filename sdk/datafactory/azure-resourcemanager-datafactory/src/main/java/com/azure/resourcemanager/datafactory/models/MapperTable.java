@@ -9,7 +9,9 @@ import com.azure.resourcemanager.datafactory.fluent.models.MapperTableProperties
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** CDC table details. */
+/**
+ * CDC table details.
+ */
 @Fluent
 public final class MapperTable {
     /*
@@ -24,13 +26,15 @@ public final class MapperTable {
     @JsonProperty(value = "properties")
     private MapperTableProperties innerProperties;
 
-    /** Creates an instance of MapperTable class. */
+    /**
+     * Creates an instance of MapperTable class.
+     */
     public MapperTable() {
     }
 
     /**
      * Get the name property: Name of the table.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -39,7 +43,7 @@ public final class MapperTable {
 
     /**
      * Set the name property: Name of the table.
-     *
+     * 
      * @param name the name value to set.
      * @return the MapperTable object itself.
      */
@@ -50,7 +54,7 @@ public final class MapperTable {
 
     /**
      * Get the innerProperties property: Table properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private MapperTableProperties innerProperties() {
@@ -59,7 +63,7 @@ public final class MapperTable {
 
     /**
      * Get the schema property: List of columns for the source table.
-     *
+     * 
      * @return the schema value.
      */
     public List<MapperTableSchema> schema() {
@@ -68,7 +72,7 @@ public final class MapperTable {
 
     /**
      * Set the schema property: List of columns for the source table.
-     *
+     * 
      * @param schema the schema value to set.
      * @return the MapperTable object itself.
      */
@@ -82,7 +86,7 @@ public final class MapperTable {
 
     /**
      * Get the dslConnectorProperties property: List of name/value pairs for connection properties.
-     *
+     * 
      * @return the dslConnectorProperties value.
      */
     public List<MapperDslConnectorProperties> dslConnectorProperties() {
@@ -91,7 +95,7 @@ public final class MapperTable {
 
     /**
      * Set the dslConnectorProperties property: List of name/value pairs for connection properties.
-     *
+     * 
      * @param dslConnectorProperties the dslConnectorProperties value to set.
      * @return the MapperTable object itself.
      */
@@ -105,7 +109,7 @@ public final class MapperTable {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

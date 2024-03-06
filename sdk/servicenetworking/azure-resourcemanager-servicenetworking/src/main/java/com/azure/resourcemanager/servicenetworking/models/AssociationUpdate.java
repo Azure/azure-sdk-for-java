@@ -5,12 +5,13 @@
 package com.azure.resourcemanager.servicenetworking.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.resourcemanager.servicenetworking.fluent.models.AssociationUpdateProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.Map;
 
-/** The type used for update operations of the Association. */
+/**
+ * The type used for update operations of the Association.
+ */
 @Fluent
 public final class AssociationUpdate {
     /*
@@ -24,15 +25,17 @@ public final class AssociationUpdate {
      * The updatable properties of the Association.
      */
     @JsonProperty(value = "properties")
-    private AssociationUpdateProperties innerProperties;
+    private AssociationUpdateProperties properties;
 
-    /** Creates an instance of AssociationUpdate class. */
+    /**
+     * Creates an instance of AssociationUpdate class.
+     */
     public AssociationUpdate() {
     }
 
     /**
      * Get the tags property: Resource tags.
-     *
+     * 
      * @return the tags value.
      */
     public Map<String, String> tags() {
@@ -41,7 +44,7 @@ public final class AssociationUpdate {
 
     /**
      * Set the tags property: Resource tags.
-     *
+     * 
      * @param tags the tags value to set.
      * @return the AssociationUpdate object itself.
      */
@@ -51,68 +54,33 @@ public final class AssociationUpdate {
     }
 
     /**
-     * Get the innerProperties property: The updatable properties of the Association.
-     *
-     * @return the innerProperties value.
+     * Get the properties property: The updatable properties of the Association.
+     * 
+     * @return the properties value.
      */
-    private AssociationUpdateProperties innerProperties() {
-        return this.innerProperties;
+    public AssociationUpdateProperties properties() {
+        return this.properties;
     }
 
     /**
-     * Get the associationType property: Association Type.
-     *
-     * @return the associationType value.
-     */
-    public AssociationType associationType() {
-        return this.innerProperties() == null ? null : this.innerProperties().associationType();
-    }
-
-    /**
-     * Set the associationType property: Association Type.
-     *
-     * @param associationType the associationType value to set.
+     * Set the properties property: The updatable properties of the Association.
+     * 
+     * @param properties the properties value to set.
      * @return the AssociationUpdate object itself.
      */
-    public AssociationUpdate withAssociationType(AssociationType associationType) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AssociationUpdateProperties();
-        }
-        this.innerProperties().withAssociationType(associationType);
-        return this;
-    }
-
-    /**
-     * Get the subnet property: Association Subnet.
-     *
-     * @return the subnet value.
-     */
-    public AssociationSubnetUpdate subnet() {
-        return this.innerProperties() == null ? null : this.innerProperties().subnet();
-    }
-
-    /**
-     * Set the subnet property: Association Subnet.
-     *
-     * @param subnet the subnet value to set.
-     * @return the AssociationUpdate object itself.
-     */
-    public AssociationUpdate withSubnet(AssociationSubnetUpdate subnet) {
-        if (this.innerProperties() == null) {
-            this.innerProperties = new AssociationUpdateProperties();
-        }
-        this.innerProperties().withSubnet(subnet);
+    public AssociationUpdate withProperties(AssociationUpdateProperties properties) {
+        this.properties = properties;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
-        if (innerProperties() != null) {
-            innerProperties().validate();
+        if (properties() != null) {
+            properties().validate();
         }
     }
 }

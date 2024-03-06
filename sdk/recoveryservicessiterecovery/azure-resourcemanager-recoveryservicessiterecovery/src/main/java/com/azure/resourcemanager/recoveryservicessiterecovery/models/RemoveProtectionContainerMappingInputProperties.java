@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Unpairing input properties. */
+/**
+ * Unpairing input properties.
+ */
 @Fluent
 public final class RemoveProtectionContainerMappingInputProperties {
     /*
@@ -16,13 +18,15 @@ public final class RemoveProtectionContainerMappingInputProperties {
     @JsonProperty(value = "providerSpecificInput")
     private ReplicationProviderContainerUnmappingInput providerSpecificInput;
 
-    /** Creates an instance of RemoveProtectionContainerMappingInputProperties class. */
+    /**
+     * Creates an instance of RemoveProtectionContainerMappingInputProperties class.
+     */
     public RemoveProtectionContainerMappingInputProperties() {
     }
 
     /**
      * Get the providerSpecificInput property: Provider specific input for unpairing.
-     *
+     * 
      * @return the providerSpecificInput value.
      */
     public ReplicationProviderContainerUnmappingInput providerSpecificInput() {
@@ -31,19 +35,19 @@ public final class RemoveProtectionContainerMappingInputProperties {
 
     /**
      * Set the providerSpecificInput property: Provider specific input for unpairing.
-     *
+     * 
      * @param providerSpecificInput the providerSpecificInput value to set.
      * @return the RemoveProtectionContainerMappingInputProperties object itself.
      */
-    public RemoveProtectionContainerMappingInputProperties withProviderSpecificInput(
-        ReplicationProviderContainerUnmappingInput providerSpecificInput) {
+    public RemoveProtectionContainerMappingInputProperties
+        withProviderSpecificInput(ReplicationProviderContainerUnmappingInput providerSpecificInput) {
         this.providerSpecificInput = providerSpecificInput;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

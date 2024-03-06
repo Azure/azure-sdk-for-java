@@ -10,18 +10,15 @@ import com.azure.resourcemanager.datafactory.models.ExecuteDataFlowActivityTypeP
 public final class ExecuteDataFlowActivityTypePropertiesComputeTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExecuteDataFlowActivityTypePropertiesCompute model =
-            BinaryData
-                .fromString("{\"computeType\":\"datagnxepapm\",\"coreCount\":\"datakxshkyluqxndmtas\"}")
+        ExecuteDataFlowActivityTypePropertiesCompute model
+            = BinaryData.fromString("{\"computeType\":\"dataqujtc\",\"coreCount\":\"datajpkaftkaf\"}")
                 .toObject(ExecuteDataFlowActivityTypePropertiesCompute.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExecuteDataFlowActivityTypePropertiesCompute model =
-            new ExecuteDataFlowActivityTypePropertiesCompute()
-                .withComputeType("datagnxepapm")
-                .withCoreCount("datakxshkyluqxndmtas");
+        ExecuteDataFlowActivityTypePropertiesCompute model = new ExecuteDataFlowActivityTypePropertiesCompute()
+            .withComputeType("dataqujtc").withCoreCount("datajpkaftkaf");
         model = BinaryData.fromObject(model).toObject(ExecuteDataFlowActivityTypePropertiesCompute.class);
     }
 }

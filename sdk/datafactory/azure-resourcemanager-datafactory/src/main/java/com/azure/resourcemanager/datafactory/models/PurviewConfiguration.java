@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Purview configuration. */
+/**
+ * Purview configuration.
+ */
 @Fluent
 public final class PurviewConfiguration {
     /*
@@ -16,13 +18,15 @@ public final class PurviewConfiguration {
     @JsonProperty(value = "purviewResourceId")
     private String purviewResourceId;
 
-    /** Creates an instance of PurviewConfiguration class. */
+    /**
+     * Creates an instance of PurviewConfiguration class.
+     */
     public PurviewConfiguration() {
     }
 
     /**
      * Get the purviewResourceId property: Purview resource id.
-     *
+     * 
      * @return the purviewResourceId value.
      */
     public String purviewResourceId() {
@@ -31,7 +35,7 @@ public final class PurviewConfiguration {
 
     /**
      * Set the purviewResourceId property: Purview resource id.
-     *
+     * 
      * @param purviewResourceId the purviewResourceId value to set.
      * @return the PurviewConfiguration object itself.
      */
@@ -42,7 +46,7 @@ public final class PurviewConfiguration {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

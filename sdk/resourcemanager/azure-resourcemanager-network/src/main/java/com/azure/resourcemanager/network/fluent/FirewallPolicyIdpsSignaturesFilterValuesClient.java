@@ -19,7 +19,7 @@ import reactor.core.publisher.Mono;
 public interface FirewallPolicyIdpsSignaturesFilterValuesClient {
     /**
      * Retrieves the current filter values for the signatures overrides.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters Describes the filter values possibles for a given column.
@@ -27,31 +27,31 @@ public interface FirewallPolicyIdpsSignaturesFilterValuesClient {
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return describes the list of all possible values for a specific filter value along with {@link Response} on
-     *     successful completion of {@link Mono}.
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<SignatureOverridesFilterValuesResponseInner>> listWithResponseAsync(
-        String resourceGroupName, String firewallPolicyName, SignatureOverridesFilterValuesQuery parameters);
+    Mono<Response<SignatureOverridesFilterValuesResponseInner>> listWithResponseAsync(String resourceGroupName,
+        String firewallPolicyName, SignatureOverridesFilterValuesQuery parameters);
 
     /**
      * Retrieves the current filter values for the signatures overrides.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters Describes the filter values possibles for a given column.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return describes the list of all possible values for a specific filter value on successful completion of {@link
-     *     Mono}.
+     * @return describes the list of all possible values for a specific filter value on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<SignatureOverridesFilterValuesResponseInner> listAsync(
-        String resourceGroupName, String firewallPolicyName, SignatureOverridesFilterValuesQuery parameters);
+    Mono<SignatureOverridesFilterValuesResponseInner> listAsync(String resourceGroupName, String firewallPolicyName,
+        SignatureOverridesFilterValuesQuery parameters);
 
     /**
      * Retrieves the current filter values for the signatures overrides.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters Describes the filter values possibles for a given column.
@@ -62,15 +62,12 @@ public interface FirewallPolicyIdpsSignaturesFilterValuesClient {
      * @return describes the list of all possible values for a specific filter value along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<SignatureOverridesFilterValuesResponseInner> listWithResponse(
-        String resourceGroupName,
-        String firewallPolicyName,
-        SignatureOverridesFilterValuesQuery parameters,
-        Context context);
+    Response<SignatureOverridesFilterValuesResponseInner> listWithResponse(String resourceGroupName,
+        String firewallPolicyName, SignatureOverridesFilterValuesQuery parameters, Context context);
 
     /**
      * Retrieves the current filter values for the signatures overrides.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param firewallPolicyName The name of the Firewall Policy.
      * @param parameters Describes the filter values possibles for a given column.
@@ -80,6 +77,6 @@ public interface FirewallPolicyIdpsSignaturesFilterValuesClient {
      * @return describes the list of all possible values for a specific filter value.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    SignatureOverridesFilterValuesResponseInner list(
-        String resourceGroupName, String firewallPolicyName, SignatureOverridesFilterValuesQuery parameters);
+    SignatureOverridesFilterValuesResponseInner list(String resourceGroupName, String firewallPolicyName,
+        SignatureOverridesFilterValuesQuery parameters);
 }

@@ -18,11 +18,13 @@ import java.nio.ByteBuffer;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in RoutesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in RoutesClient.
+ */
 public interface RoutesClient {
     /**
      * Deletes the specified route from a route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
@@ -32,12 +34,12 @@ public interface RoutesClient {
      * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(
-        String resourceGroupName, String routeTableName, String routeName);
+    Mono<Response<Flux<ByteBuffer>>> deleteWithResponseAsync(String resourceGroupName, String routeTableName,
+        String routeName);
 
     /**
      * Deletes the specified route from a route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
@@ -47,12 +49,12 @@ public interface RoutesClient {
      * @return the {@link PollerFlux} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(
-        String resourceGroupName, String routeTableName, String routeName);
+    PollerFlux<PollResult<Void>, Void> beginDeleteAsync(String resourceGroupName, String routeTableName,
+        String routeName);
 
     /**
      * Deletes the specified route from a route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
@@ -66,7 +68,7 @@ public interface RoutesClient {
 
     /**
      * Deletes the specified route from a route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
@@ -77,12 +79,12 @@ public interface RoutesClient {
      * @return the {@link SyncPoller} for polling of long-running operation.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<Void>, Void> beginDelete(
-        String resourceGroupName, String routeTableName, String routeName, Context context);
+    SyncPoller<PollResult<Void>, Void> beginDelete(String resourceGroupName, String routeTableName, String routeName,
+        Context context);
 
     /**
      * Deletes the specified route from a route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
@@ -96,7 +98,7 @@ public interface RoutesClient {
 
     /**
      * Deletes the specified route from a route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
@@ -109,7 +111,7 @@ public interface RoutesClient {
 
     /**
      * Deletes the specified route from a route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
@@ -123,22 +125,22 @@ public interface RoutesClient {
 
     /**
      * Gets the specified route from a route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the specified route from a route table along with {@link Response} on successful completion of {@link
-     *     Mono}.
+     * @return the specified route from a route table along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<RouteInner>> getWithResponseAsync(String resourceGroupName, String routeTableName, String routeName);
 
     /**
      * Gets the specified route from a route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
@@ -152,7 +154,7 @@ public interface RoutesClient {
 
     /**
      * Gets the specified route from a route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
@@ -163,12 +165,12 @@ public interface RoutesClient {
      * @return the specified route from a route table along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<RouteInner> getWithResponse(
-        String resourceGroupName, String routeTableName, String routeName, Context context);
+    Response<RouteInner> getWithResponse(String resourceGroupName, String routeTableName, String routeName,
+        Context context);
 
     /**
      * Gets the specified route from a route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
@@ -182,7 +184,7 @@ public interface RoutesClient {
 
     /**
      * Creates or updates a route in the specified route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
@@ -193,12 +195,12 @@ public interface RoutesClient {
      * @return route resource along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(
-        String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters);
+    Mono<Response<Flux<ByteBuffer>>> createOrUpdateWithResponseAsync(String resourceGroupName, String routeTableName,
+        String routeName, RouteInner routeParameters);
 
     /**
      * Creates or updates a route in the specified route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
@@ -209,12 +211,12 @@ public interface RoutesClient {
      * @return the {@link PollerFlux} for polling of route resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    PollerFlux<PollResult<RouteInner>, RouteInner> beginCreateOrUpdateAsync(
-        String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters);
+    PollerFlux<PollResult<RouteInner>, RouteInner> beginCreateOrUpdateAsync(String resourceGroupName,
+        String routeTableName, String routeName, RouteInner routeParameters);
 
     /**
      * Creates or updates a route in the specified route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
@@ -225,12 +227,12 @@ public interface RoutesClient {
      * @return the {@link SyncPoller} for polling of route resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RouteInner>, RouteInner> beginCreateOrUpdate(
-        String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters);
+    SyncPoller<PollResult<RouteInner>, RouteInner> beginCreateOrUpdate(String resourceGroupName, String routeTableName,
+        String routeName, RouteInner routeParameters);
 
     /**
      * Creates or updates a route in the specified route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
@@ -242,12 +244,12 @@ public interface RoutesClient {
      * @return the {@link SyncPoller} for polling of route resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<RouteInner>, RouteInner> beginCreateOrUpdate(
-        String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters, Context context);
+    SyncPoller<PollResult<RouteInner>, RouteInner> beginCreateOrUpdate(String resourceGroupName, String routeTableName,
+        String routeName, RouteInner routeParameters, Context context);
 
     /**
      * Creates or updates a route in the specified route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
@@ -258,12 +260,12 @@ public interface RoutesClient {
      * @return route resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Mono<RouteInner> createOrUpdateAsync(
-        String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters);
+    Mono<RouteInner> createOrUpdateAsync(String resourceGroupName, String routeTableName, String routeName,
+        RouteInner routeParameters);
 
     /**
      * Creates or updates a route in the specified route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
@@ -274,12 +276,12 @@ public interface RoutesClient {
      * @return route resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RouteInner createOrUpdate(
-        String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters);
+    RouteInner createOrUpdate(String resourceGroupName, String routeTableName, String routeName,
+        RouteInner routeParameters);
 
     /**
      * Creates or updates a route in the specified route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param routeName The name of the route.
@@ -291,12 +293,12 @@ public interface RoutesClient {
      * @return route resource.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    RouteInner createOrUpdate(
-        String resourceGroupName, String routeTableName, String routeName, RouteInner routeParameters, Context context);
+    RouteInner createOrUpdate(String resourceGroupName, String routeTableName, String routeName,
+        RouteInner routeParameters, Context context);
 
     /**
      * Gets all routes in a route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -309,7 +311,7 @@ public interface RoutesClient {
 
     /**
      * Gets all routes in a route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -322,7 +324,7 @@ public interface RoutesClient {
 
     /**
      * Gets all routes in a route table.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param routeTableName The name of the route table.
      * @param context The context to associate with this operation.

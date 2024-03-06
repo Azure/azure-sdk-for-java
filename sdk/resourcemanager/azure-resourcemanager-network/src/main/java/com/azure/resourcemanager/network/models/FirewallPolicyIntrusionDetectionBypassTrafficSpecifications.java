@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Intrusion detection bypass traffic specification. */
+/**
+ * Intrusion detection bypass traffic specification.
+ */
 @Fluent
 public final class FirewallPolicyIntrusionDetectionBypassTrafficSpecifications {
     /*
@@ -59,13 +61,15 @@ public final class FirewallPolicyIntrusionDetectionBypassTrafficSpecifications {
     @JsonProperty(value = "destinationIpGroups")
     private List<String> destinationIpGroups;
 
-    /** Creates an instance of FirewallPolicyIntrusionDetectionBypassTrafficSpecifications class. */
+    /**
+     * Creates an instance of FirewallPolicyIntrusionDetectionBypassTrafficSpecifications class.
+     */
     public FirewallPolicyIntrusionDetectionBypassTrafficSpecifications() {
     }
 
     /**
      * Get the name property: Name of the bypass traffic rule.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -74,7 +78,7 @@ public final class FirewallPolicyIntrusionDetectionBypassTrafficSpecifications {
 
     /**
      * Set the name property: Name of the bypass traffic rule.
-     *
+     * 
      * @param name the name value to set.
      * @return the FirewallPolicyIntrusionDetectionBypassTrafficSpecifications object itself.
      */
@@ -85,7 +89,7 @@ public final class FirewallPolicyIntrusionDetectionBypassTrafficSpecifications {
 
     /**
      * Get the description property: Description of the bypass traffic rule.
-     *
+     * 
      * @return the description value.
      */
     public String description() {
@@ -94,7 +98,7 @@ public final class FirewallPolicyIntrusionDetectionBypassTrafficSpecifications {
 
     /**
      * Set the description property: Description of the bypass traffic rule.
-     *
+     * 
      * @param description the description value to set.
      * @return the FirewallPolicyIntrusionDetectionBypassTrafficSpecifications object itself.
      */
@@ -105,7 +109,7 @@ public final class FirewallPolicyIntrusionDetectionBypassTrafficSpecifications {
 
     /**
      * Get the protocol property: The rule bypass protocol.
-     *
+     * 
      * @return the protocol value.
      */
     public FirewallPolicyIntrusionDetectionProtocol protocol() {
@@ -114,19 +118,19 @@ public final class FirewallPolicyIntrusionDetectionBypassTrafficSpecifications {
 
     /**
      * Set the protocol property: The rule bypass protocol.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the FirewallPolicyIntrusionDetectionBypassTrafficSpecifications object itself.
      */
-    public FirewallPolicyIntrusionDetectionBypassTrafficSpecifications withProtocol(
-        FirewallPolicyIntrusionDetectionProtocol protocol) {
+    public FirewallPolicyIntrusionDetectionBypassTrafficSpecifications
+        withProtocol(FirewallPolicyIntrusionDetectionProtocol protocol) {
         this.protocol = protocol;
         return this;
     }
 
     /**
      * Get the sourceAddresses property: List of source IP addresses or ranges for this rule.
-     *
+     * 
      * @return the sourceAddresses value.
      */
     public List<String> sourceAddresses() {
@@ -135,19 +139,19 @@ public final class FirewallPolicyIntrusionDetectionBypassTrafficSpecifications {
 
     /**
      * Set the sourceAddresses property: List of source IP addresses or ranges for this rule.
-     *
+     * 
      * @param sourceAddresses the sourceAddresses value to set.
      * @return the FirewallPolicyIntrusionDetectionBypassTrafficSpecifications object itself.
      */
-    public FirewallPolicyIntrusionDetectionBypassTrafficSpecifications withSourceAddresses(
-        List<String> sourceAddresses) {
+    public FirewallPolicyIntrusionDetectionBypassTrafficSpecifications
+        withSourceAddresses(List<String> sourceAddresses) {
         this.sourceAddresses = sourceAddresses;
         return this;
     }
 
     /**
      * Get the destinationAddresses property: List of destination IP addresses or ranges for this rule.
-     *
+     * 
      * @return the destinationAddresses value.
      */
     public List<String> destinationAddresses() {
@@ -156,19 +160,19 @@ public final class FirewallPolicyIntrusionDetectionBypassTrafficSpecifications {
 
     /**
      * Set the destinationAddresses property: List of destination IP addresses or ranges for this rule.
-     *
+     * 
      * @param destinationAddresses the destinationAddresses value to set.
      * @return the FirewallPolicyIntrusionDetectionBypassTrafficSpecifications object itself.
      */
-    public FirewallPolicyIntrusionDetectionBypassTrafficSpecifications withDestinationAddresses(
-        List<String> destinationAddresses) {
+    public FirewallPolicyIntrusionDetectionBypassTrafficSpecifications
+        withDestinationAddresses(List<String> destinationAddresses) {
         this.destinationAddresses = destinationAddresses;
         return this;
     }
 
     /**
      * Get the destinationPorts property: List of destination ports or ranges.
-     *
+     * 
      * @return the destinationPorts value.
      */
     public List<String> destinationPorts() {
@@ -177,19 +181,19 @@ public final class FirewallPolicyIntrusionDetectionBypassTrafficSpecifications {
 
     /**
      * Set the destinationPorts property: List of destination ports or ranges.
-     *
+     * 
      * @param destinationPorts the destinationPorts value to set.
      * @return the FirewallPolicyIntrusionDetectionBypassTrafficSpecifications object itself.
      */
-    public FirewallPolicyIntrusionDetectionBypassTrafficSpecifications withDestinationPorts(
-        List<String> destinationPorts) {
+    public FirewallPolicyIntrusionDetectionBypassTrafficSpecifications
+        withDestinationPorts(List<String> destinationPorts) {
         this.destinationPorts = destinationPorts;
         return this;
     }
 
     /**
      * Get the sourceIpGroups property: List of source IpGroups for this rule.
-     *
+     * 
      * @return the sourceIpGroups value.
      */
     public List<String> sourceIpGroups() {
@@ -198,7 +202,7 @@ public final class FirewallPolicyIntrusionDetectionBypassTrafficSpecifications {
 
     /**
      * Set the sourceIpGroups property: List of source IpGroups for this rule.
-     *
+     * 
      * @param sourceIpGroups the sourceIpGroups value to set.
      * @return the FirewallPolicyIntrusionDetectionBypassTrafficSpecifications object itself.
      */
@@ -209,7 +213,7 @@ public final class FirewallPolicyIntrusionDetectionBypassTrafficSpecifications {
 
     /**
      * Get the destinationIpGroups property: List of destination IpGroups for this rule.
-     *
+     * 
      * @return the destinationIpGroups value.
      */
     public List<String> destinationIpGroups() {
@@ -218,19 +222,19 @@ public final class FirewallPolicyIntrusionDetectionBypassTrafficSpecifications {
 
     /**
      * Set the destinationIpGroups property: List of destination IpGroups for this rule.
-     *
+     * 
      * @param destinationIpGroups the destinationIpGroups value to set.
      * @return the FirewallPolicyIntrusionDetectionBypassTrafficSpecifications object itself.
      */
-    public FirewallPolicyIntrusionDetectionBypassTrafficSpecifications withDestinationIpGroups(
-        List<String> destinationIpGroups) {
+    public FirewallPolicyIntrusionDetectionBypassTrafficSpecifications
+        withDestinationIpGroups(List<String> destinationIpGroups) {
         this.destinationIpGroups = destinationIpGroups;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

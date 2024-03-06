@@ -7,11 +7,13 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.resourcemanager.datafactory.fluent.models.ActivityRunsQueryResponseInner;
 import java.util.List;
 
-/** An immutable client-side representation of ActivityRunsQueryResponse. */
+/**
+ * An immutable client-side representation of ActivityRunsQueryResponse.
+ */
 public interface ActivityRunsQueryResponse {
     /**
      * Gets the value property: List of activity runs.
-     *
+     * 
      * @return the value value.
      */
     List<ActivityRun> value();
@@ -19,14 +21,14 @@ public interface ActivityRunsQueryResponse {
     /**
      * Gets the continuationToken property: The continuation token for getting the next page of results, if any
      * remaining results exist, null otherwise.
-     *
+     * 
      * @return the continuationToken value.
      */
     String continuationToken();
 
     /**
      * Gets the inner com.azure.resourcemanager.datafactory.fluent.models.ActivityRunsQueryResponseInner object.
-     *
+     * 
      * @return the inner object.
      */
     ActivityRunsQueryResponseInner innerModel();

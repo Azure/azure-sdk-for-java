@@ -11,11 +11,13 @@ import com.azure.core.http.rest.PagedIterable;
 import com.azure.core.util.Context;
 import com.azure.resourcemanager.network.fluent.models.NetworkInterfaceInner;
 
-/** An instance of this class provides access to all the operations defined in LoadBalancerNetworkInterfacesClient. */
+/**
+ * An instance of this class provides access to all the operations defined in LoadBalancerNetworkInterfacesClient.
+ */
 public interface LoadBalancerNetworkInterfacesClient {
     /**
      * Gets associated load balancer network interfaces.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -28,7 +30,7 @@ public interface LoadBalancerNetworkInterfacesClient {
 
     /**
      * Gets associated load balancer network interfaces.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -41,7 +43,7 @@ public interface LoadBalancerNetworkInterfacesClient {
 
     /**
      * Gets associated load balancer network interfaces.
-     *
+     * 
      * @param resourceGroupName The name of the resource group.
      * @param loadBalancerName The name of the load balancer.
      * @param context The context to associate with this operation.

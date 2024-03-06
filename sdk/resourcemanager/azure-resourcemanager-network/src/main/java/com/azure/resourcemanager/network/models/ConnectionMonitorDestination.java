@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the destination of connection monitor. */
+/**
+ * Describes the destination of connection monitor.
+ */
 @Fluent
 public final class ConnectionMonitorDestination {
     /*
@@ -28,13 +30,15 @@ public final class ConnectionMonitorDestination {
     @JsonProperty(value = "port")
     private Integer port;
 
-    /** Creates an instance of ConnectionMonitorDestination class. */
+    /**
+     * Creates an instance of ConnectionMonitorDestination class.
+     */
     public ConnectionMonitorDestination() {
     }
 
     /**
      * Get the resourceId property: The ID of the resource used as the destination by connection monitor.
-     *
+     * 
      * @return the resourceId value.
      */
     public String resourceId() {
@@ -43,7 +47,7 @@ public final class ConnectionMonitorDestination {
 
     /**
      * Set the resourceId property: The ID of the resource used as the destination by connection monitor.
-     *
+     * 
      * @param resourceId the resourceId value to set.
      * @return the ConnectionMonitorDestination object itself.
      */
@@ -54,7 +58,7 @@ public final class ConnectionMonitorDestination {
 
     /**
      * Get the address property: Address of the connection monitor destination (IP or domain name).
-     *
+     * 
      * @return the address value.
      */
     public String address() {
@@ -63,7 +67,7 @@ public final class ConnectionMonitorDestination {
 
     /**
      * Set the address property: Address of the connection monitor destination (IP or domain name).
-     *
+     * 
      * @param address the address value to set.
      * @return the ConnectionMonitorDestination object itself.
      */
@@ -74,7 +78,7 @@ public final class ConnectionMonitorDestination {
 
     /**
      * Get the port property: The destination port used by connection monitor.
-     *
+     * 
      * @return the port value.
      */
     public Integer port() {
@@ -83,7 +87,7 @@ public final class ConnectionMonitorDestination {
 
     /**
      * Set the port property: The destination port used by connection monitor.
-     *
+     * 
      * @param port the port value to set.
      * @return the ConnectionMonitorDestination object itself.
      */
@@ -94,7 +98,7 @@ public final class ConnectionMonitorDestination {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

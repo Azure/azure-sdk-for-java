@@ -7,7 +7,9 @@ package com.azure.resourcemanager.dataprotection.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Backup Vault Contract for Patch Backup Vault API. */
+/**
+ * Backup Vault Contract for Patch Backup Vault API.
+ */
 @Fluent
 public final class PatchBackupVaultInput {
     /*
@@ -28,13 +30,15 @@ public final class PatchBackupVaultInput {
     @JsonProperty(value = "featureSettings")
     private FeatureSettings featureSettings;
 
-    /** Creates an instance of PatchBackupVaultInput class. */
+    /**
+     * Creates an instance of PatchBackupVaultInput class.
+     */
     public PatchBackupVaultInput() {
     }
 
     /**
      * Get the monitoringSettings property: Monitoring Settings.
-     *
+     * 
      * @return the monitoringSettings value.
      */
     public MonitoringSettings monitoringSettings() {
@@ -43,7 +47,7 @@ public final class PatchBackupVaultInput {
 
     /**
      * Set the monitoringSettings property: Monitoring Settings.
-     *
+     * 
      * @param monitoringSettings the monitoringSettings value to set.
      * @return the PatchBackupVaultInput object itself.
      */
@@ -54,7 +58,7 @@ public final class PatchBackupVaultInput {
 
     /**
      * Get the securitySettings property: Security Settings.
-     *
+     * 
      * @return the securitySettings value.
      */
     public SecuritySettings securitySettings() {
@@ -63,7 +67,7 @@ public final class PatchBackupVaultInput {
 
     /**
      * Set the securitySettings property: Security Settings.
-     *
+     * 
      * @param securitySettings the securitySettings value to set.
      * @return the PatchBackupVaultInput object itself.
      */
@@ -74,7 +78,7 @@ public final class PatchBackupVaultInput {
 
     /**
      * Get the featureSettings property: Feature Settings.
-     *
+     * 
      * @return the featureSettings value.
      */
     public FeatureSettings featureSettings() {
@@ -83,7 +87,7 @@ public final class PatchBackupVaultInput {
 
     /**
      * Set the featureSettings property: Feature Settings.
-     *
+     * 
      * @param featureSettings the featureSettings value to set.
      * @return the PatchBackupVaultInput object itself.
      */
@@ -94,7 +98,7 @@ public final class PatchBackupVaultInput {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

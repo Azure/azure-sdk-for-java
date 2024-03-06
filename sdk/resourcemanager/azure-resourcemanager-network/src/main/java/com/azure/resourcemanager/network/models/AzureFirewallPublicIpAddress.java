@@ -7,7 +7,9 @@ package com.azure.resourcemanager.network.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Public IP Address associated with azure firewall. */
+/**
+ * Public IP Address associated with azure firewall.
+ */
 @Fluent
 public final class AzureFirewallPublicIpAddress {
     /*
@@ -16,13 +18,15 @@ public final class AzureFirewallPublicIpAddress {
     @JsonProperty(value = "address")
     private String address;
 
-    /** Creates an instance of AzureFirewallPublicIpAddress class. */
+    /**
+     * Creates an instance of AzureFirewallPublicIpAddress class.
+     */
     public AzureFirewallPublicIpAddress() {
     }
 
     /**
      * Get the address property: Public IP Address value.
-     *
+     * 
      * @return the address value.
      */
     public String address() {
@@ -31,7 +35,7 @@ public final class AzureFirewallPublicIpAddress {
 
     /**
      * Set the address property: Public IP Address value.
-     *
+     * 
      * @param address the address value to set.
      * @return the AzureFirewallPublicIpAddress object itself.
      */
@@ -42,7 +46,7 @@ public final class AzureFirewallPublicIpAddress {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -13,7 +13,9 @@ import com.azure.resourcemanager.network.models.QosPortRange;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Differentiated Services Code Point configuration properties. */
+/**
+ * Differentiated Services Code Point configuration properties.
+ */
 @Fluent
 public final class DscpConfigurationPropertiesFormat {
     /*
@@ -82,13 +84,15 @@ public final class DscpConfigurationPropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of DscpConfigurationPropertiesFormat class. */
+    /**
+     * Creates an instance of DscpConfigurationPropertiesFormat class.
+     */
     public DscpConfigurationPropertiesFormat() {
     }
 
     /**
      * Get the markings property: List of markings to be used in the configuration.
-     *
+     * 
      * @return the markings value.
      */
     public List<Integer> markings() {
@@ -97,7 +101,7 @@ public final class DscpConfigurationPropertiesFormat {
 
     /**
      * Set the markings property: List of markings to be used in the configuration.
-     *
+     * 
      * @param markings the markings value to set.
      * @return the DscpConfigurationPropertiesFormat object itself.
      */
@@ -108,7 +112,7 @@ public final class DscpConfigurationPropertiesFormat {
 
     /**
      * Get the sourceIpRanges property: Source IP ranges.
-     *
+     * 
      * @return the sourceIpRanges value.
      */
     public List<QosIpRange> sourceIpRanges() {
@@ -117,7 +121,7 @@ public final class DscpConfigurationPropertiesFormat {
 
     /**
      * Set the sourceIpRanges property: Source IP ranges.
-     *
+     * 
      * @param sourceIpRanges the sourceIpRanges value to set.
      * @return the DscpConfigurationPropertiesFormat object itself.
      */
@@ -128,7 +132,7 @@ public final class DscpConfigurationPropertiesFormat {
 
     /**
      * Get the destinationIpRanges property: Destination IP ranges.
-     *
+     * 
      * @return the destinationIpRanges value.
      */
     public List<QosIpRange> destinationIpRanges() {
@@ -137,7 +141,7 @@ public final class DscpConfigurationPropertiesFormat {
 
     /**
      * Set the destinationIpRanges property: Destination IP ranges.
-     *
+     * 
      * @param destinationIpRanges the destinationIpRanges value to set.
      * @return the DscpConfigurationPropertiesFormat object itself.
      */
@@ -148,7 +152,7 @@ public final class DscpConfigurationPropertiesFormat {
 
     /**
      * Get the sourcePortRanges property: Sources port ranges.
-     *
+     * 
      * @return the sourcePortRanges value.
      */
     public List<QosPortRange> sourcePortRanges() {
@@ -157,7 +161,7 @@ public final class DscpConfigurationPropertiesFormat {
 
     /**
      * Set the sourcePortRanges property: Sources port ranges.
-     *
+     * 
      * @param sourcePortRanges the sourcePortRanges value to set.
      * @return the DscpConfigurationPropertiesFormat object itself.
      */
@@ -168,7 +172,7 @@ public final class DscpConfigurationPropertiesFormat {
 
     /**
      * Get the destinationPortRanges property: Destination port ranges.
-     *
+     * 
      * @return the destinationPortRanges value.
      */
     public List<QosPortRange> destinationPortRanges() {
@@ -177,7 +181,7 @@ public final class DscpConfigurationPropertiesFormat {
 
     /**
      * Set the destinationPortRanges property: Destination port ranges.
-     *
+     * 
      * @param destinationPortRanges the destinationPortRanges value to set.
      * @return the DscpConfigurationPropertiesFormat object itself.
      */
@@ -188,7 +192,7 @@ public final class DscpConfigurationPropertiesFormat {
 
     /**
      * Get the protocol property: RNM supported protocol types.
-     *
+     * 
      * @return the protocol value.
      */
     public ProtocolType protocol() {
@@ -197,7 +201,7 @@ public final class DscpConfigurationPropertiesFormat {
 
     /**
      * Set the protocol property: RNM supported protocol types.
-     *
+     * 
      * @param protocol the protocol value to set.
      * @return the DscpConfigurationPropertiesFormat object itself.
      */
@@ -208,7 +212,7 @@ public final class DscpConfigurationPropertiesFormat {
 
     /**
      * Get the qosDefinitionCollection property: QoS object definitions.
-     *
+     * 
      * @return the qosDefinitionCollection value.
      */
     public List<QosDefinition> qosDefinitionCollection() {
@@ -217,7 +221,7 @@ public final class DscpConfigurationPropertiesFormat {
 
     /**
      * Set the qosDefinitionCollection property: QoS object definitions.
-     *
+     * 
      * @param qosDefinitionCollection the qosDefinitionCollection value to set.
      * @return the DscpConfigurationPropertiesFormat object itself.
      */
@@ -228,7 +232,7 @@ public final class DscpConfigurationPropertiesFormat {
 
     /**
      * Get the qosCollectionId property: Qos Collection ID generated by RNM.
-     *
+     * 
      * @return the qosCollectionId value.
      */
     public String qosCollectionId() {
@@ -237,7 +241,7 @@ public final class DscpConfigurationPropertiesFormat {
 
     /**
      * Get the associatedNetworkInterfaces property: Associated Network Interfaces to the DSCP Configuration.
-     *
+     * 
      * @return the associatedNetworkInterfaces value.
      */
     public List<NetworkInterfaceInner> associatedNetworkInterfaces() {
@@ -246,7 +250,7 @@ public final class DscpConfigurationPropertiesFormat {
 
     /**
      * Get the resourceGuid property: The resource GUID property of the DSCP Configuration resource.
-     *
+     * 
      * @return the resourceGuid value.
      */
     public String resourceGuid() {
@@ -255,7 +259,7 @@ public final class DscpConfigurationPropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the DSCP Configuration resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -264,7 +268,7 @@ public final class DscpConfigurationPropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

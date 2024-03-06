@@ -7,7 +7,9 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the metric dimension. */
+/**
+ * Defines the metric dimension.
+ */
 @Fluent
 public final class OperationMetricDimension {
     /*
@@ -28,13 +30,15 @@ public final class OperationMetricDimension {
     @JsonProperty(value = "toBeExportedForShoebox")
     private Boolean toBeExportedForShoebox;
 
-    /** Creates an instance of OperationMetricDimension class. */
+    /**
+     * Creates an instance of OperationMetricDimension class.
+     */
     public OperationMetricDimension() {
     }
 
     /**
      * Get the name property: The name of the dimension for the metric.
-     *
+     * 
      * @return the name value.
      */
     public String name() {
@@ -43,7 +47,7 @@ public final class OperationMetricDimension {
 
     /**
      * Set the name property: The name of the dimension for the metric.
-     *
+     * 
      * @param name the name value to set.
      * @return the OperationMetricDimension object itself.
      */
@@ -54,7 +58,7 @@ public final class OperationMetricDimension {
 
     /**
      * Get the displayName property: The display name of the metric dimension.
-     *
+     * 
      * @return the displayName value.
      */
     public String displayName() {
@@ -63,7 +67,7 @@ public final class OperationMetricDimension {
 
     /**
      * Set the displayName property: The display name of the metric dimension.
-     *
+     * 
      * @param displayName the displayName value to set.
      * @return the OperationMetricDimension object itself.
      */
@@ -74,7 +78,7 @@ public final class OperationMetricDimension {
 
     /**
      * Get the toBeExportedForShoebox property: Whether the dimension should be exported to Azure Monitor.
-     *
+     * 
      * @return the toBeExportedForShoebox value.
      */
     public Boolean toBeExportedForShoebox() {
@@ -83,7 +87,7 @@ public final class OperationMetricDimension {
 
     /**
      * Set the toBeExportedForShoebox property: Whether the dimension should be exported to Azure Monitor.
-     *
+     * 
      * @param toBeExportedForShoebox the toBeExportedForShoebox value to set.
      * @return the OperationMetricDimension object itself.
      */
@@ -94,7 +98,7 @@ public final class OperationMetricDimension {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

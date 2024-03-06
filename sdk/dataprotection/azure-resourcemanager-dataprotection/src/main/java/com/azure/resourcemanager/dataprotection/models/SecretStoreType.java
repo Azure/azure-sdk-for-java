@@ -8,17 +8,23 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Gets or sets the type of secret store. */
+/**
+ * Gets or sets the type of secret store.
+ */
 public final class SecretStoreType extends ExpandableStringEnum<SecretStoreType> {
-    /** Static value Invalid for SecretStoreType. */
+    /**
+     * Static value Invalid for SecretStoreType.
+     */
     public static final SecretStoreType INVALID = fromString("Invalid");
 
-    /** Static value AzureKeyVault for SecretStoreType. */
+    /**
+     * Static value AzureKeyVault for SecretStoreType.
+     */
     public static final SecretStoreType AZURE_KEY_VAULT = fromString("AzureKeyVault");
 
     /**
      * Creates a new instance of SecretStoreType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -27,7 +33,7 @@ public final class SecretStoreType extends ExpandableStringEnum<SecretStoreType>
 
     /**
      * Creates or finds a SecretStoreType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding SecretStoreType.
      */
@@ -38,7 +44,7 @@ public final class SecretStoreType extends ExpandableStringEnum<SecretStoreType>
 
     /**
      * Gets known SecretStoreType values.
-     *
+     * 
      * @return known SecretStoreType values.
      */
     public static Collection<SecretStoreType> values() {

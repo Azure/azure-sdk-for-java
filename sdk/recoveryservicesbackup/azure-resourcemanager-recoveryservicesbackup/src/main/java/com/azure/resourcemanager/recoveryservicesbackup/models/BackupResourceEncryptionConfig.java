@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicesbackup.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** The BackupResourceEncryptionConfig model. */
+/**
+ * The BackupResourceEncryptionConfig model.
+ */
 @Fluent
 public class BackupResourceEncryptionConfig {
     /*
@@ -40,13 +42,15 @@ public class BackupResourceEncryptionConfig {
     @JsonProperty(value = "infrastructureEncryptionState")
     private InfrastructureEncryptionState infrastructureEncryptionState;
 
-    /** Creates an instance of BackupResourceEncryptionConfig class. */
+    /**
+     * Creates an instance of BackupResourceEncryptionConfig class.
+     */
     public BackupResourceEncryptionConfig() {
     }
 
     /**
      * Get the encryptionAtRestType property: Encryption At Rest Type.
-     *
+     * 
      * @return the encryptionAtRestType value.
      */
     public EncryptionAtRestType encryptionAtRestType() {
@@ -55,7 +59,7 @@ public class BackupResourceEncryptionConfig {
 
     /**
      * Set the encryptionAtRestType property: Encryption At Rest Type.
-     *
+     * 
      * @param encryptionAtRestType the encryptionAtRestType value to set.
      * @return the BackupResourceEncryptionConfig object itself.
      */
@@ -66,7 +70,7 @@ public class BackupResourceEncryptionConfig {
 
     /**
      * Get the keyUri property: Key Vault Key URI.
-     *
+     * 
      * @return the keyUri value.
      */
     public String keyUri() {
@@ -75,7 +79,7 @@ public class BackupResourceEncryptionConfig {
 
     /**
      * Set the keyUri property: Key Vault Key URI.
-     *
+     * 
      * @param keyUri the keyUri value to set.
      * @return the BackupResourceEncryptionConfig object itself.
      */
@@ -86,7 +90,7 @@ public class BackupResourceEncryptionConfig {
 
     /**
      * Get the subscriptionId property: Key Vault Subscription Id.
-     *
+     * 
      * @return the subscriptionId value.
      */
     public String subscriptionId() {
@@ -95,7 +99,7 @@ public class BackupResourceEncryptionConfig {
 
     /**
      * Set the subscriptionId property: Key Vault Subscription Id.
-     *
+     * 
      * @param subscriptionId the subscriptionId value to set.
      * @return the BackupResourceEncryptionConfig object itself.
      */
@@ -106,7 +110,7 @@ public class BackupResourceEncryptionConfig {
 
     /**
      * Get the lastUpdateStatus property: The lastUpdateStatus property.
-     *
+     * 
      * @return the lastUpdateStatus value.
      */
     public LastUpdateStatus lastUpdateStatus() {
@@ -115,7 +119,7 @@ public class BackupResourceEncryptionConfig {
 
     /**
      * Set the lastUpdateStatus property: The lastUpdateStatus property.
-     *
+     * 
      * @param lastUpdateStatus the lastUpdateStatus value to set.
      * @return the BackupResourceEncryptionConfig object itself.
      */
@@ -126,7 +130,7 @@ public class BackupResourceEncryptionConfig {
 
     /**
      * Get the infrastructureEncryptionState property: The infrastructureEncryptionState property.
-     *
+     * 
      * @return the infrastructureEncryptionState value.
      */
     public InfrastructureEncryptionState infrastructureEncryptionState() {
@@ -135,19 +139,19 @@ public class BackupResourceEncryptionConfig {
 
     /**
      * Set the infrastructureEncryptionState property: The infrastructureEncryptionState property.
-     *
+     * 
      * @param infrastructureEncryptionState the infrastructureEncryptionState value to set.
      * @return the BackupResourceEncryptionConfig object itself.
      */
-    public BackupResourceEncryptionConfig withInfrastructureEncryptionState(
-        InfrastructureEncryptionState infrastructureEncryptionState) {
+    public BackupResourceEncryptionConfig
+        withInfrastructureEncryptionState(InfrastructureEncryptionState infrastructureEncryptionState) {
         this.infrastructureEncryptionState = infrastructureEncryptionState;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

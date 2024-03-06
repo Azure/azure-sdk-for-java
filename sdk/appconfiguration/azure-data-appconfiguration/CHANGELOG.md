@@ -1,6 +1,6 @@
 # Release History
 
-## 1.6.0-beta.1 (Unreleased)
+## 1.6.0-beta.2 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,37 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.6.0-beta.1 (2024-03-04)
+
+### Features Added
+
+- Added Page ETag support in listing configuration setting, which returns empty body and status code `304 not modified` 
+  if settings in the page and ETag of the page are not changed. If status code `200` returns in the page response, 
+  which means page's settings and ETag have changed. A full page of settings and a new page ETag will be returned in
+  response.
+  Use the new parameter `matchConditions` in the `SettingSelector` to assign the page ETags in the request to service.
+
+
+## 1.5.2 (2024-02-20)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.11` to version `1.14.0`.
+- Upgraded `azure-core` from `1.45.1` to version `1.46.0`.
+
+
+## 1.5.1 (2023-12-04)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Upgraded `azure-core-http-netty` from `1.13.10` to version `1.13.11`.
+- Upgraded `azure-core` from `1.45.0` to version `1.45.1`.
+
 
 ## 1.5.0 (2023-11-08)
 

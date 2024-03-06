@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** AzureKB web result. */
+/**
+ * AzureKB web result.
+ */
 @Fluent
 public final class WebResult {
     /*
@@ -23,13 +25,15 @@ public final class WebResult {
     @JsonProperty(value = "searchResults")
     private List<SearchResult> searchResults;
 
-    /** Creates an instance of WebResult class. */
+    /**
+     * Creates an instance of WebResult class.
+     */
     public WebResult() {
     }
 
     /**
      * Get the replacementKey property: Place holder used in HTML Content replace control with the content.
-     *
+     * 
      * @return the replacementKey value.
      */
     public String replacementKey() {
@@ -38,7 +42,7 @@ public final class WebResult {
 
     /**
      * Set the replacementKey property: Place holder used in HTML Content replace control with the content.
-     *
+     * 
      * @param replacementKey the replacementKey value to set.
      * @return the WebResult object itself.
      */
@@ -49,7 +53,7 @@ public final class WebResult {
 
     /**
      * Get the searchResults property: AzureKB search results.
-     *
+     * 
      * @return the searchResults value.
      */
     public List<SearchResult> searchResults() {
@@ -58,7 +62,7 @@ public final class WebResult {
 
     /**
      * Set the searchResults property: AzureKB search results.
-     *
+     * 
      * @param searchResults the searchResults value to set.
      * @return the WebResult object itself.
      */
@@ -69,7 +73,7 @@ public final class WebResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

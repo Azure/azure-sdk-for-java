@@ -1,6 +1,6 @@
 # Release History
 
-## 2.33.0-beta.1 (Unreleased)
+## 2.37.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,51 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 2.36.0 (2024-02-29)
+
+### Features Added
+
+- Supported `withNetworkInterfacesDeleteOptions(DeleteOptions)` and `withDataDisksDeleteOptions(DeleteOptions)` for `VirtualMachine`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` of GalleryRP to `2023-07-03`.
+
+## 2.35.0 (2024-01-26)
+
+### Features Added
+
+- Supported `WINDOWS_DESKTOP_10_PRO` in `KnownWindowsVirtualMachineImage`.
+- Added `withEncryptionAtHost` in `VirtualMachine`.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-10-02`.
+
+## 2.34.0 (2023-12-22)
+
+### Features Added
+
+- Supported `userData` for `VirtualMachine` in create and update.
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated `api-version` to `2023-09-01`.
+
+## 2.33.0 (2023-11-24)
+
+### Other Changes
+
+#### Dependency Updates
+
+- Updated core dependency from resources.
 
 ## 2.32.0 (2023-10-27)
 

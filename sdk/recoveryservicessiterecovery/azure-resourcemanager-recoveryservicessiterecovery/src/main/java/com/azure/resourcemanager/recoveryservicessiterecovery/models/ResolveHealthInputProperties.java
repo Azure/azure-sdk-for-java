@@ -8,7 +8,9 @@ import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Resolve health input properties. */
+/**
+ * Resolve health input properties.
+ */
 @Fluent
 public final class ResolveHealthInputProperties {
     /*
@@ -17,13 +19,15 @@ public final class ResolveHealthInputProperties {
     @JsonProperty(value = "healthErrors")
     private List<ResolveHealthError> healthErrors;
 
-    /** Creates an instance of ResolveHealthInputProperties class. */
+    /**
+     * Creates an instance of ResolveHealthInputProperties class.
+     */
     public ResolveHealthInputProperties() {
     }
 
     /**
      * Get the healthErrors property: Health errors.
-     *
+     * 
      * @return the healthErrors value.
      */
     public List<ResolveHealthError> healthErrors() {
@@ -32,7 +36,7 @@ public final class ResolveHealthInputProperties {
 
     /**
      * Set the healthErrors property: Health errors.
-     *
+     * 
      * @param healthErrors the healthErrors value to set.
      * @return the ResolveHealthInputProperties object itself.
      */
@@ -43,7 +47,7 @@ public final class ResolveHealthInputProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -5,36 +5,39 @@
 package com.azure.messaging.eventgrid.systemevents;
 
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Type of action on the app service plan. */
+/**
+ * Type of action on the app service plan.
+ */
 public final class AppServicePlanAction extends ExpandableStringEnum<AppServicePlanAction> {
-    /** App Service plan is being updated. */
+    /**
+     * App Service plan is being updated.
+     */
     public static final AppServicePlanAction UPDATED = fromString("Updated");
 
     /**
      * Creates a new instance of AppServicePlanAction value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
-    public AppServicePlanAction() {}
+    public AppServicePlanAction() {
+    }
 
     /**
      * Creates or finds a AppServicePlanAction from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding AppServicePlanAction.
      */
-    @JsonCreator
     public static AppServicePlanAction fromString(String name) {
         return fromString(name, AppServicePlanAction.class);
     }
 
     /**
      * Gets known AppServicePlanAction values.
-     *
+     * 
      * @return known AppServicePlanAction values.
      */
     public static Collection<AppServicePlanAction> values() {

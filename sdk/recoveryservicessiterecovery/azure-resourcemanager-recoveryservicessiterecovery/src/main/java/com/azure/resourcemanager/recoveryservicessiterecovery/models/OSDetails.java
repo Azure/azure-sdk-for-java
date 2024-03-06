@@ -7,7 +7,9 @@ package com.azure.resourcemanager.recoveryservicessiterecovery.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Disk Details. */
+/**
+ * Disk Details.
+ */
 @Fluent
 public final class OSDetails {
     /*
@@ -46,13 +48,15 @@ public final class OSDetails {
     @JsonProperty(value = "oSMinorVersion")
     private String oSMinorVersion;
 
-    /** Creates an instance of OSDetails class. */
+    /**
+     * Creates an instance of OSDetails class.
+     */
     public OSDetails() {
     }
 
     /**
      * Get the osType property: VM Disk details.
-     *
+     * 
      * @return the osType value.
      */
     public String osType() {
@@ -61,7 +65,7 @@ public final class OSDetails {
 
     /**
      * Set the osType property: VM Disk details.
-     *
+     * 
      * @param osType the osType value to set.
      * @return the OSDetails object itself.
      */
@@ -72,7 +76,7 @@ public final class OSDetails {
 
     /**
      * Get the productType property: Product type.
-     *
+     * 
      * @return the productType value.
      */
     public String productType() {
@@ -81,7 +85,7 @@ public final class OSDetails {
 
     /**
      * Set the productType property: Product type.
-     *
+     * 
      * @param productType the productType value to set.
      * @return the OSDetails object itself.
      */
@@ -92,7 +96,7 @@ public final class OSDetails {
 
     /**
      * Get the osEdition property: The OSEdition.
-     *
+     * 
      * @return the osEdition value.
      */
     public String osEdition() {
@@ -101,7 +105,7 @@ public final class OSDetails {
 
     /**
      * Set the osEdition property: The OSEdition.
-     *
+     * 
      * @param osEdition the osEdition value to set.
      * @return the OSDetails object itself.
      */
@@ -112,7 +116,7 @@ public final class OSDetails {
 
     /**
      * Get the oSVersion property: The OS Version.
-     *
+     * 
      * @return the oSVersion value.
      */
     public String oSVersion() {
@@ -121,7 +125,7 @@ public final class OSDetails {
 
     /**
      * Set the oSVersion property: The OS Version.
-     *
+     * 
      * @param oSVersion the oSVersion value to set.
      * @return the OSDetails object itself.
      */
@@ -132,7 +136,7 @@ public final class OSDetails {
 
     /**
      * Get the oSMajorVersion property: The OS Major Version.
-     *
+     * 
      * @return the oSMajorVersion value.
      */
     public String oSMajorVersion() {
@@ -141,7 +145,7 @@ public final class OSDetails {
 
     /**
      * Set the oSMajorVersion property: The OS Major Version.
-     *
+     * 
      * @param oSMajorVersion the oSMajorVersion value to set.
      * @return the OSDetails object itself.
      */
@@ -152,7 +156,7 @@ public final class OSDetails {
 
     /**
      * Get the oSMinorVersion property: The OS Minor Version.
-     *
+     * 
      * @return the oSMinorVersion value.
      */
     public String oSMinorVersion() {
@@ -161,7 +165,7 @@ public final class OSDetails {
 
     /**
      * Set the oSMinorVersion property: The OS Minor Version.
-     *
+     * 
      * @param oSMinorVersion the oSMinorVersion value to set.
      * @return the OSDetails object itself.
      */
@@ -172,7 +176,7 @@ public final class OSDetails {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

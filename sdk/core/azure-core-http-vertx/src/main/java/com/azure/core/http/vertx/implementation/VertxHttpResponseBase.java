@@ -13,6 +13,7 @@ import io.vertx.core.http.HttpClientResponse;
 import reactor.core.publisher.Mono;
 
 import java.nio.charset.Charset;
+import java.util.Map;
 
 abstract class VertxHttpResponseBase extends HttpResponse {
 
@@ -28,11 +29,13 @@ abstract class VertxHttpResponseBase extends HttpResponse {
     @SuppressWarnings("deprecation")
     private HttpHeaders fromVertxHttpHeaders(MultiMap headers) {
         HttpHeaders azureHeaders = new HttpHeaders();
-        headers.names().forEach(name -> azureHeaders.set(name, headers.getAll(name)));
+        for (Map.Entry<String, String> header : headers) {
+            azureHeaders.add(header.getKey(), header.getValue());
+        }
         return azureHeaders;
     }
 
-    protected HttpClientResponse getVertxHttpResponse() {
+    HttpClientResponse getVertxHttpResponse() {
         return this.vertxHttpResponse;
     }
 
@@ -59,8 +62,8 @@ abstract class VertxHttpResponseBase extends HttpResponse {
 
     @Override
     public final Mono<String> getBodyAsString() {
-        return getBodyAsByteArray().map(bytes -> CoreUtils.bomAwareToString(bytes,
-            getHeaderValue(HttpHeaderName.CONTENT_TYPE)));
+        return getBodyAsByteArray()
+            .map(bytes -> CoreUtils.bomAwareToString(bytes, getHeaderValue(HttpHeaderName.CONTENT_TYPE)));
     }
 
     @Override

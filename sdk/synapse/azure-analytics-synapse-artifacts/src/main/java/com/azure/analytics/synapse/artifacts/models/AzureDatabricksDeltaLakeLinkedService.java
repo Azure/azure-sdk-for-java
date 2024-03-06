@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 import java.util.Map;
 
-/** Azure Databricks Delta Lake linked service. */
+/**
+ * Azure Databricks Delta Lake linked service.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("AzureDatabricksDeltaLake")
 @JsonFlatten
@@ -52,13 +54,16 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     @JsonProperty(value = "typeProperties.credential")
     private CredentialReference credential;
 
-    /** Creates an instance of AzureDatabricksDeltaLakeLinkedService class. */
-    public AzureDatabricksDeltaLakeLinkedService() {}
+    /**
+     * Creates an instance of AzureDatabricksDeltaLakeLinkedService class.
+     */
+    public AzureDatabricksDeltaLakeLinkedService() {
+    }
 
     /**
      * Get the domain property: &lt;REGION&gt;.azuredatabricks.net, domain name of your Databricks deployment. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @return the domain value.
      */
     public Object getDomain() {
@@ -68,7 +73,7 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     /**
      * Set the domain property: &lt;REGION&gt;.azuredatabricks.net, domain name of your Databricks deployment. Type:
      * string (or Expression with resultType string).
-     *
+     * 
      * @param domain the domain value to set.
      * @return the AzureDatabricksDeltaLakeLinkedService object itself.
      */
@@ -81,7 +86,7 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
      * Get the accessToken property: Access token for databricks REST API. Refer to
      * https://docs.azuredatabricks.net/api/latest/authentication.html. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @return the accessToken value.
      */
     public SecretBase getAccessToken() {
@@ -92,7 +97,7 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
      * Set the accessToken property: Access token for databricks REST API. Refer to
      * https://docs.azuredatabricks.net/api/latest/authentication.html. Type: string, SecureString or
      * AzureKeyVaultSecretReference.
-     *
+     * 
      * @param accessToken the accessToken value to set.
      * @return the AzureDatabricksDeltaLakeLinkedService object itself.
      */
@@ -102,9 +107,9 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     }
 
     /**
-     * Get the clusterId property: The id of an existing interactive cluster that will be used for all runs of this job.
-     * Type: string (or Expression with resultType string).
-     *
+     * Get the clusterId property: The id of an existing interactive cluster that will be used for all runs of this
+     * job. Type: string (or Expression with resultType string).
+     * 
      * @return the clusterId value.
      */
     public Object getClusterId() {
@@ -112,9 +117,9 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     }
 
     /**
-     * Set the clusterId property: The id of an existing interactive cluster that will be used for all runs of this job.
-     * Type: string (or Expression with resultType string).
-     *
+     * Set the clusterId property: The id of an existing interactive cluster that will be used for all runs of this
+     * job. Type: string (or Expression with resultType string).
+     * 
      * @param clusterId the clusterId value to set.
      * @return the AzureDatabricksDeltaLakeLinkedService object itself.
      */
@@ -124,9 +129,9 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     }
 
     /**
-     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Get the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @return the encryptedCredential value.
      */
     public Object getEncryptedCredential() {
@@ -134,9 +139,9 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
     }
 
     /**
-     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are encrypted
-     * using the integration runtime credential manager. Type: string (or Expression with resultType string).
-     *
+     * Set the encryptedCredential property: The encrypted credential used for authentication. Credentials are
+     * encrypted using the integration runtime credential manager. Type: string (or Expression with resultType string).
+     * 
      * @param encryptedCredential the encryptedCredential value to set.
      * @return the AzureDatabricksDeltaLakeLinkedService object itself.
      */
@@ -147,7 +152,7 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
 
     /**
      * Get the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @return the credential value.
      */
     public CredentialReference getCredential() {
@@ -156,7 +161,7 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
 
     /**
      * Set the credential property: The credential reference containing authentication information.
-     *
+     * 
      * @param credential the credential value to set.
      * @return the AzureDatabricksDeltaLakeLinkedService object itself.
      */
@@ -165,28 +170,36 @@ public class AzureDatabricksDeltaLakeLinkedService extends LinkedService {
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeLinkedService setConnectVia(IntegrationRuntimeReference connectVia) {
         super.setConnectVia(connectVia);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeLinkedService setDescription(String description) {
         super.setDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeLinkedService setParameters(Map<String, ParameterSpecification> parameters) {
         super.setParameters(parameters);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public AzureDatabricksDeltaLakeLinkedService setAnnotations(List<Object> annotations) {
         super.setAnnotations(annotations);

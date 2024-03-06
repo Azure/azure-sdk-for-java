@@ -14,27 +14,18 @@ import java.util.Map;
 public final class BinaryDatasetTypePropertiesTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        BinaryDatasetTypeProperties model =
-            BinaryData
-                .fromString(
-                    "{\"location\":{\"type\":\"DatasetLocation\",\"folderPath\":\"datarblerlprdaqcc\",\"fileName\":\"datacbnygd\",\"\":{\"zlrz\":\"dataxwbpwyykdig\",\"mjqmv\":\"datadasdni\"}},\"compression\":{\"type\":\"datagkiqla\",\"level\":\"dataqtwvcazekdzdz\",\"\":{\"lgf\":\"datajwztsmpchggry\",\"gfrrkdknczgoryw\":\"dataatig\",\"ka\":\"datavojtvmdevdlhqv\"}}}")
-                .toObject(BinaryDatasetTypeProperties.class);
+        BinaryDatasetTypeProperties model = BinaryData.fromString(
+            "{\"location\":{\"type\":\"DatasetLocation\",\"folderPath\":\"datavcmlaexbzbquf\",\"fileName\":\"dataezs\",\"\":{\"ime\":\"dataymldrorhyogzm\",\"m\":\"datatcuuwdhtqqhyhn\",\"wnwngh\":\"datatnsugisno\",\"cjixxf\":\"datajovkeyym\"}},\"compression\":{\"type\":\"datapcrtn\",\"level\":\"datauefxxijtebdveywe\",\"\":{\"wepf\":\"datahlolmc\",\"bv\":\"datasv\",\"l\":\"dataqdljnpe\",\"detawevxehue\":\"datan\"}}}")
+            .toObject(BinaryDatasetTypeProperties.class);
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        BinaryDatasetTypeProperties model =
-            new BinaryDatasetTypeProperties()
-                .withLocation(
-                    new DatasetLocation()
-                        .withFolderPath("datarblerlprdaqcc")
-                        .withFileName("datacbnygd")
-                        .withAdditionalProperties(mapOf("type", "DatasetLocation")))
-                .withCompression(
-                    new DatasetCompression()
-                        .withType("datagkiqla")
-                        .withLevel("dataqtwvcazekdzdz")
-                        .withAdditionalProperties(mapOf()));
+        BinaryDatasetTypeProperties model = new BinaryDatasetTypeProperties()
+            .withLocation(new DatasetLocation().withFolderPath("datavcmlaexbzbquf").withFileName("dataezs")
+                .withAdditionalProperties(mapOf("type", "DatasetLocation")))
+            .withCompression(new DatasetCompression().withType("datapcrtn").withLevel("datauefxxijtebdveywe")
+                .withAdditionalProperties(mapOf()));
         model = BinaryData.fromObject(model).toObject(BinaryDatasetTypeProperties.class);
     }
 

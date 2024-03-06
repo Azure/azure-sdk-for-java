@@ -14,33 +14,22 @@ import org.junit.jupiter.api.Assertions;
 public final class DppIdentityDetailsTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        DppIdentityDetails model =
-            BinaryData
-                .fromString(
-                    "{\"principalId\":\"xmnteiwaop\",\"tenantId\":\"mijcmmxdcufufs\",\"type\":\"ymzidn\",\"userAssignedIdentities\":{\"tbzsgfyccs\":{\"principalId\":\"05992a25-5a3c-489c-8844-8def4acbbb2a\",\"clientId\":\"145a6212-7d83-4f77-b358-8122dde72fd4\"},\"mdwzjeiachboo\":{\"principalId\":\"2ccbb825-1f77-4a8b-8614-e49530bae829\",\"clientId\":\"b3688cbe-fc11-42ed-9c9e-eed92d43f58d\"},\"nrosfqpte\":{\"principalId\":\"bbb7502f-6130-4080-8a33-fa24fd3506c5\",\"clientId\":\"9ca5c0f9-d64c-4b2d-ac40-c88841bb9267\"},\"zvypyqrimzinp\":{\"principalId\":\"ecca0efe-e900-46cd-92ba-1182988af69b\",\"clientId\":\"1ac68a2c-e646-4377-8203-79ca3b2f69f2\"}}}")
-                .toObject(DppIdentityDetails.class);
-        Assertions.assertEquals("ymzidn", model.type());
+        DppIdentityDetails model = BinaryData.fromString(
+            "{\"principalId\":\"c\",\"tenantId\":\"ierhhbcsglummaj\",\"type\":\"aodxo\",\"userAssignedIdentities\":{\"k\":{\"principalId\":\"9ee9357f-5f86-4b09-9a16-2440282261c6\",\"clientId\":\"7e7ed872-25e0-499d-a76b-ad1816b4d61c\"},\"okaj\":{\"principalId\":\"543ba9ae-e5d2-4f58-8097-c9453e823024\",\"clientId\":\"14d1aeb7-3231-4ef5-af26-a2478b765d4a\"},\"pimexgstxgcpodg\":{\"principalId\":\"5c6fe70b-4c7a-4820-b2a7-9ddb65bcd8d7\",\"clientId\":\"22f5ed58-b035-4e9a-8b5f-2bebb70ea26a\"}}}")
+            .toObject(DppIdentityDetails.class);
+        Assertions.assertEquals("aodxo", model.type());
     }
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        DppIdentityDetails model =
-            new DppIdentityDetails()
-                .withType("ymzidn")
-                .withUserAssignedIdentities(
-                    mapOf(
-                        "tbzsgfyccs",
-                        new UserAssignedIdentity(),
-                        "mdwzjeiachboo",
-                        new UserAssignedIdentity(),
-                        "nrosfqpte",
-                        new UserAssignedIdentity(),
-                        "zvypyqrimzinp",
-                        new UserAssignedIdentity()));
+        DppIdentityDetails model = new DppIdentityDetails().withType("aodxo")
+            .withUserAssignedIdentities(mapOf("k", new UserAssignedIdentity(), "okaj", new UserAssignedIdentity(),
+                "pimexgstxgcpodg", new UserAssignedIdentity()));
         model = BinaryData.fromObject(model).toObject(DppIdentityDetails.class);
-        Assertions.assertEquals("ymzidn", model.type());
+        Assertions.assertEquals("aodxo", model.type());
     }
 
+    // Use "Map.of" if available
     @SuppressWarnings("unchecked")
     private static <T> Map<String, T> mapOf(Object... inputs) {
         Map<String, T> map = new HashMap<>();

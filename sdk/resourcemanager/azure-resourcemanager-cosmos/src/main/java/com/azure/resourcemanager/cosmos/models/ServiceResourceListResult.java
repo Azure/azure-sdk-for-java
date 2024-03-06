@@ -9,7 +9,9 @@ import com.azure.resourcemanager.cosmos.fluent.models.ServiceResourceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** The List operation response, that contains the Service Resource and their properties. */
+/**
+ * The List operation response, that contains the Service Resource and their properties.
+ */
 @Immutable
 public final class ServiceResourceListResult {
     /*
@@ -18,13 +20,15 @@ public final class ServiceResourceListResult {
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<ServiceResourceInner> value;
 
-    /** Creates an instance of ServiceResourceListResult class. */
+    /**
+     * Creates an instance of ServiceResourceListResult class.
+     */
     public ServiceResourceListResult() {
     }
 
     /**
      * Get the value property: List of Service Resource and their properties.
-     *
+     * 
      * @return the value value.
      */
     public List<ServiceResourceInner> value() {
@@ -33,7 +37,7 @@ public final class ServiceResourceListResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

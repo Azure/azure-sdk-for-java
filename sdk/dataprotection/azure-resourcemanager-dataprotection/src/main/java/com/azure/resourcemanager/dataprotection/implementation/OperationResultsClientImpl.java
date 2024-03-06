@@ -25,22 +25,28 @@ import com.azure.resourcemanager.dataprotection.fluent.models.OperationJobExtend
 import com.azure.resourcemanager.dataprotection.models.OperationResultsGetResponse;
 import reactor.core.publisher.Mono;
 
-/** An instance of this class provides access to all the operations defined in OperationResultsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in OperationResultsClient.
+ */
 public final class OperationResultsClientImpl implements OperationResultsClient {
-    /** The proxy service used to perform REST calls. */
+    /**
+     * The proxy service used to perform REST calls.
+     */
     private final OperationResultsService service;
 
-    /** The service client containing this operation class. */
+    /**
+     * The service client containing this operation class.
+     */
     private final DataProtectionClientImpl client;
 
     /**
      * Initializes an instance of OperationResultsClientImpl.
-     *
+     * 
      * @param client the instance of the service client containing this operation class.
      */
     OperationResultsClientImpl(DataProtectionClientImpl client) {
-        this.service =
-            RestProxy.create(OperationResultsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
+        this.service
+            = RestProxy.create(OperationResultsService.class, client.getHttpPipeline(), client.getSerializerAdapter());
         this.client = client;
     }
 
@@ -51,26 +57,21 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
     @Host("{$host}")
     @ServiceInterface(name = "DataProtectionClient")
     public interface OperationResultsService {
-        @Headers({"Content-Type: application/json"})
-        @Get(
-            "/subscriptions/{subscriptionId}/providers/Microsoft.DataProtection/locations/{location}/operationResults/{operationId}")
-        @ExpectedResponses({200, 202})
+        @Headers({ "Content-Type: application/json" })
+        @Get("/subscriptions/{subscriptionId}/providers/Microsoft.DataProtection/locations/{location}/operationResults/{operationId}")
+        @ExpectedResponses({ 200, 202 })
         @UnexpectedResponseExceptionType(ManagementException.class)
-        Mono<OperationResultsGetResponse> get(
-            @HostParam("$host") String endpoint,
-            @QueryParam("api-version") String apiVersion,
-            @PathParam("subscriptionId") String subscriptionId,
-            @PathParam("operationId") String operationId,
-            @PathParam("location") String location,
-            @HeaderParam("Accept") String accept,
-            Context context);
+        Mono<OperationResultsGetResponse> get(@HostParam("$host") String endpoint,
+            @QueryParam("api-version") String apiVersion, @PathParam("subscriptionId") String subscriptionId,
+            @PathParam("operationId") String operationId, @PathParam("location") String location,
+            @HeaderParam("Accept") String accept, Context context);
     }
 
     /**
      * Gets the operation status for a resource.
-     *
-     * <p>Gets the operation result for a resource.
-     *
+     * 
+     * Gets the operation result for a resource.
+     * 
      * @param operationId The operationId parameter.
      * @param location The location parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -81,16 +82,12 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
     @ServiceMethod(returns = ReturnType.SINGLE)
     private Mono<OperationResultsGetResponse> getWithResponseAsync(String operationId, String location) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
@@ -100,25 +97,16 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
         }
         final String accept = "application/json";
         return FluxUtil
-            .withContext(
-                context ->
-                    service
-                        .get(
-                            this.client.getEndpoint(),
-                            this.client.getApiVersion(),
-                            this.client.getSubscriptionId(),
-                            operationId,
-                            location,
-                            accept,
-                            context))
+            .withContext(context -> service.get(this.client.getEndpoint(), this.client.getApiVersion(),
+                this.client.getSubscriptionId(), operationId, location, accept, context))
             .contextWrite(context -> context.putAll(FluxUtil.toReactorContext(this.client.getContext()).readOnly()));
     }
 
     /**
      * Gets the operation status for a resource.
-     *
-     * <p>Gets the operation result for a resource.
-     *
+     * 
+     * Gets the operation result for a resource.
+     * 
      * @param operationId The operationId parameter.
      * @param location The location parameter.
      * @param context The context to associate with this operation.
@@ -128,19 +116,15 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
      * @return the operation result for a resource on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    private Mono<OperationResultsGetResponse> getWithResponseAsync(
-        String operationId, String location, Context context) {
+    private Mono<OperationResultsGetResponse> getWithResponseAsync(String operationId, String location,
+        Context context) {
         if (this.client.getEndpoint() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getEndpoint() is required and cannot be null."));
+            return Mono.error(
+                new IllegalArgumentException("Parameter this.client.getEndpoint() is required and cannot be null."));
         }
         if (this.client.getSubscriptionId() == null) {
-            return Mono
-                .error(
-                    new IllegalArgumentException(
-                        "Parameter this.client.getSubscriptionId() is required and cannot be null."));
+            return Mono.error(new IllegalArgumentException(
+                "Parameter this.client.getSubscriptionId() is required and cannot be null."));
         }
         if (operationId == null) {
             return Mono.error(new IllegalArgumentException("Parameter operationId is required and cannot be null."));
@@ -150,22 +134,15 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
         }
         final String accept = "application/json";
         context = this.client.mergeContext(context);
-        return service
-            .get(
-                this.client.getEndpoint(),
-                this.client.getApiVersion(),
-                this.client.getSubscriptionId(),
-                operationId,
-                location,
-                accept,
-                context);
+        return service.get(this.client.getEndpoint(), this.client.getApiVersion(), this.client.getSubscriptionId(),
+            operationId, location, accept, context);
     }
 
     /**
      * Gets the operation status for a resource.
-     *
-     * <p>Gets the operation result for a resource.
-     *
+     * 
+     * Gets the operation result for a resource.
+     * 
      * @param operationId The operationId parameter.
      * @param location The location parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -180,9 +157,9 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
 
     /**
      * Gets the operation status for a resource.
-     *
-     * <p>Gets the operation result for a resource.
-     *
+     * 
+     * Gets the operation result for a resource.
+     * 
      * @param operationId The operationId parameter.
      * @param location The location parameter.
      * @param context The context to associate with this operation.
@@ -198,9 +175,9 @@ public final class OperationResultsClientImpl implements OperationResultsClient 
 
     /**
      * Gets the operation status for a resource.
-     *
-     * <p>Gets the operation result for a resource.
-     *
+     * 
+     * Gets the operation result for a resource.
+     * 
      * @param operationId The operationId parameter.
      * @param location The location parameter.
      * @throws IllegalArgumentException thrown if parameters fail the validation.

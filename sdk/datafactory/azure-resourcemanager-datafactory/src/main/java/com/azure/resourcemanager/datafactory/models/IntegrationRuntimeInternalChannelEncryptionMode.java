@@ -14,18 +14,24 @@ import java.util.Collection;
  */
 public final class IntegrationRuntimeInternalChannelEncryptionMode
     extends ExpandableStringEnum<IntegrationRuntimeInternalChannelEncryptionMode> {
-    /** Static value NotSet for IntegrationRuntimeInternalChannelEncryptionMode. */
+    /**
+     * Static value NotSet for IntegrationRuntimeInternalChannelEncryptionMode.
+     */
     public static final IntegrationRuntimeInternalChannelEncryptionMode NOT_SET = fromString("NotSet");
 
-    /** Static value SslEncrypted for IntegrationRuntimeInternalChannelEncryptionMode. */
+    /**
+     * Static value SslEncrypted for IntegrationRuntimeInternalChannelEncryptionMode.
+     */
     public static final IntegrationRuntimeInternalChannelEncryptionMode SSL_ENCRYPTED = fromString("SslEncrypted");
 
-    /** Static value NotEncrypted for IntegrationRuntimeInternalChannelEncryptionMode. */
+    /**
+     * Static value NotEncrypted for IntegrationRuntimeInternalChannelEncryptionMode.
+     */
     public static final IntegrationRuntimeInternalChannelEncryptionMode NOT_ENCRYPTED = fromString("NotEncrypted");
 
     /**
      * Creates a new instance of IntegrationRuntimeInternalChannelEncryptionMode value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -34,7 +40,7 @@ public final class IntegrationRuntimeInternalChannelEncryptionMode
 
     /**
      * Creates or finds a IntegrationRuntimeInternalChannelEncryptionMode from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding IntegrationRuntimeInternalChannelEncryptionMode.
      */
@@ -45,7 +51,7 @@ public final class IntegrationRuntimeInternalChannelEncryptionMode
 
     /**
      * Gets known IntegrationRuntimeInternalChannelEncryptionMode values.
-     *
+     * 
      * @return known IntegrationRuntimeInternalChannelEncryptionMode values.
      */
     public static Collection<IntegrationRuntimeInternalChannelEncryptionMode> values() {

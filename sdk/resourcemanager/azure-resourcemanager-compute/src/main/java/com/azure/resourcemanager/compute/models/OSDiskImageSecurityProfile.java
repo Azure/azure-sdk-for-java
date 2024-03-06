@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Contains security profile for an OS disk image. */
+/**
+ * Contains security profile for an OS disk image.
+ */
 @Fluent
 public final class OSDiskImageSecurityProfile {
     /*
@@ -22,13 +24,15 @@ public final class OSDiskImageSecurityProfile {
     @JsonProperty(value = "secureVMDiskEncryptionSetId")
     private String secureVMDiskEncryptionSetId;
 
-    /** Creates an instance of OSDiskImageSecurityProfile class. */
+    /**
+     * Creates an instance of OSDiskImageSecurityProfile class.
+     */
     public OSDiskImageSecurityProfile() {
     }
 
     /**
      * Get the confidentialVMEncryptionType property: confidential VM encryption types.
-     *
+     * 
      * @return the confidentialVMEncryptionType value.
      */
     public ConfidentialVMEncryptionType confidentialVMEncryptionType() {
@@ -37,19 +41,19 @@ public final class OSDiskImageSecurityProfile {
 
     /**
      * Set the confidentialVMEncryptionType property: confidential VM encryption types.
-     *
+     * 
      * @param confidentialVMEncryptionType the confidentialVMEncryptionType value to set.
      * @return the OSDiskImageSecurityProfile object itself.
      */
-    public OSDiskImageSecurityProfile withConfidentialVMEncryptionType(
-        ConfidentialVMEncryptionType confidentialVMEncryptionType) {
+    public OSDiskImageSecurityProfile
+        withConfidentialVMEncryptionType(ConfidentialVMEncryptionType confidentialVMEncryptionType) {
         this.confidentialVMEncryptionType = confidentialVMEncryptionType;
         return this;
     }
 
     /**
      * Get the secureVMDiskEncryptionSetId property: secure VM disk encryption set id.
-     *
+     * 
      * @return the secureVMDiskEncryptionSetId value.
      */
     public String secureVMDiskEncryptionSetId() {
@@ -58,7 +62,7 @@ public final class OSDiskImageSecurityProfile {
 
     /**
      * Set the secureVMDiskEncryptionSetId property: secure VM disk encryption set id.
-     *
+     * 
      * @param secureVMDiskEncryptionSetId the secureVMDiskEncryptionSetId value to set.
      * @return the OSDiskImageSecurityProfile object itself.
      */
@@ -69,7 +73,7 @@ public final class OSDiskImageSecurityProfile {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

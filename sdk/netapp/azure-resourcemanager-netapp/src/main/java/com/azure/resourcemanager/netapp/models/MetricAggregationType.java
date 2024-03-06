@@ -8,14 +8,18 @@ import com.azure.core.util.ExpandableStringEnum;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
-/** Defines values for MetricAggregationType. */
+/**
+ * Defines values for MetricAggregationType.
+ */
 public final class MetricAggregationType extends ExpandableStringEnum<MetricAggregationType> {
-    /** Static value Average for MetricAggregationType. */
+    /**
+     * Static value Average for MetricAggregationType.
+     */
     public static final MetricAggregationType AVERAGE = fromString("Average");
 
     /**
      * Creates a new instance of MetricAggregationType value.
-     *
+     * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Deprecated
@@ -24,7 +28,7 @@ public final class MetricAggregationType extends ExpandableStringEnum<MetricAggr
 
     /**
      * Creates or finds a MetricAggregationType from its string representation.
-     *
+     * 
      * @param name a name to look for.
      * @return the corresponding MetricAggregationType.
      */
@@ -35,7 +39,7 @@ public final class MetricAggregationType extends ExpandableStringEnum<MetricAggr
 
     /**
      * Gets known MetricAggregationType values.
-     *
+     * 
      * @return known MetricAggregationType values.
      */
     public static Collection<MetricAggregationType> values() {

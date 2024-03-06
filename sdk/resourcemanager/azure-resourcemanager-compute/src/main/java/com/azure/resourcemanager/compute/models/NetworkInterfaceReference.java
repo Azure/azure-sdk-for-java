@@ -9,7 +9,9 @@ import com.azure.core.management.SubResource;
 import com.azure.resourcemanager.compute.fluent.models.NetworkInterfaceReferenceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a network interface reference. */
+/**
+ * Describes a network interface reference.
+ */
 @Fluent
 public final class NetworkInterfaceReference extends SubResource {
     /*
@@ -18,20 +20,24 @@ public final class NetworkInterfaceReference extends SubResource {
     @JsonProperty(value = "properties")
     private NetworkInterfaceReferenceProperties innerProperties;
 
-    /** Creates an instance of NetworkInterfaceReference class. */
+    /**
+     * Creates an instance of NetworkInterfaceReference class.
+     */
     public NetworkInterfaceReference() {
     }
 
     /**
      * Get the innerProperties property: Describes a network interface reference properties.
-     *
+     * 
      * @return the innerProperties value.
      */
     private NetworkInterfaceReferenceProperties innerProperties() {
         return this.innerProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public NetworkInterfaceReference withId(String id) {
         super.withId(id);
@@ -41,7 +47,7 @@ public final class NetworkInterfaceReference extends SubResource {
     /**
      * Get the primary property: Specifies the primary network interface in case the virtual machine has more than 1
      * network interface.
-     *
+     * 
      * @return the primary value.
      */
     public Boolean primary() {
@@ -51,7 +57,7 @@ public final class NetworkInterfaceReference extends SubResource {
     /**
      * Set the primary property: Specifies the primary network interface in case the virtual machine has more than 1
      * network interface.
-     *
+     * 
      * @param primary the primary value to set.
      * @return the NetworkInterfaceReference object itself.
      */
@@ -65,7 +71,7 @@ public final class NetworkInterfaceReference extends SubResource {
 
     /**
      * Get the deleteOption property: Specify what happens to the network interface when the VM is deleted.
-     *
+     * 
      * @return the deleteOption value.
      */
     public DeleteOptions deleteOption() {
@@ -74,7 +80,7 @@ public final class NetworkInterfaceReference extends SubResource {
 
     /**
      * Set the deleteOption property: Specify what happens to the network interface when the VM is deleted.
-     *
+     * 
      * @param deleteOption the deleteOption value to set.
      * @return the NetworkInterfaceReference object itself.
      */
@@ -88,7 +94,7 @@ public final class NetworkInterfaceReference extends SubResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

@@ -7,11 +7,13 @@ package com.azure.resourcemanager.datafactory.models;
 import com.azure.core.http.rest.Response;
 import com.azure.core.util.Context;
 
-/** Resource collection API of TriggerRuns. */
+/**
+ * Resource collection API of TriggerRuns.
+ */
 public interface TriggerRuns {
     /**
      * Rerun single trigger instance by runId.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
@@ -22,12 +24,12 @@ public interface TriggerRuns {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> rerunWithResponse(
-        String resourceGroupName, String factoryName, String triggerName, String runId, Context context);
+    Response<Void> rerunWithResponse(String resourceGroupName, String factoryName, String triggerName, String runId,
+        Context context);
 
     /**
      * Rerun single trigger instance by runId.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
@@ -40,7 +42,7 @@ public interface TriggerRuns {
 
     /**
      * Cancel a single trigger instance by runId.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
@@ -51,12 +53,12 @@ public interface TriggerRuns {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the {@link Response}.
      */
-    Response<Void> cancelWithResponse(
-        String resourceGroupName, String factoryName, String triggerName, String runId, Context context);
+    Response<Void> cancelWithResponse(String resourceGroupName, String factoryName, String triggerName, String runId,
+        Context context);
 
     /**
      * Cancel a single trigger instance by runId.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param triggerName The trigger name.
@@ -69,7 +71,7 @@ public interface TriggerRuns {
 
     /**
      * Query trigger runs.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param filterParameters Parameters to filter the pipeline run.
@@ -79,12 +81,12 @@ public interface TriggerRuns {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of trigger runs along with {@link Response}.
      */
-    Response<TriggerRunsQueryResponse> queryByFactoryWithResponse(
-        String resourceGroupName, String factoryName, RunFilterParameters filterParameters, Context context);
+    Response<TriggerRunsQueryResponse> queryByFactoryWithResponse(String resourceGroupName, String factoryName,
+        RunFilterParameters filterParameters, Context context);
 
     /**
      * Query trigger runs.
-     *
+     * 
      * @param resourceGroupName The resource group name.
      * @param factoryName The factory name.
      * @param filterParameters Parameters to filter the pipeline run.
@@ -93,6 +95,6 @@ public interface TriggerRuns {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return a list of trigger runs.
      */
-    TriggerRunsQueryResponse queryByFactory(
-        String resourceGroupName, String factoryName, RunFilterParameters filterParameters);
+    TriggerRunsQueryResponse queryByFactory(String resourceGroupName, String factoryName,
+        RunFilterParameters filterParameters);
 }

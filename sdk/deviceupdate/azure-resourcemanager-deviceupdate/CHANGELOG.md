@@ -1,6 +1,6 @@
 # Release History
 
-## 1.0.0-beta.3 (Unreleased)
+## 1.1.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,27 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.0.0 (2023-12-19)
+
+- Azure Resource Manager DeviceUpdate client library for Java. This package contains Microsoft Azure SDK for DeviceUpdate Management SDK. Microsoft Device Update resource provider. Package tag package-2023-07-01. For documentation on how to use this package, please see [Azure Management Libraries for Java](https://aka.ms/azsdk/java/mgmt).
+
+### Features Added
+
+* `models.Encryption` was added
+
+#### `models.Account` was modified
+
+* `encryption()` was added
+* `systemData()` was added
+
+#### `models.Account$Definition` was modified
+
+* `withEncryption(models.Encryption)` was added
+
+#### `models.GroupInformation` was modified
+
+* `systemData()` was added
 
 ## 1.0.0-beta.2 (2022-08-17)
 

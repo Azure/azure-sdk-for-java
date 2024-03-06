@@ -7,7 +7,9 @@ package com.azure.resourcemanager.compute.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** This is the disk image encryption base class. */
+/**
+ * This is the disk image encryption base class.
+ */
 @Fluent
 public class DiskImageEncryption {
     /*
@@ -16,13 +18,15 @@ public class DiskImageEncryption {
     @JsonProperty(value = "diskEncryptionSetId")
     private String diskEncryptionSetId;
 
-    /** Creates an instance of DiskImageEncryption class. */
+    /**
+     * Creates an instance of DiskImageEncryption class.
+     */
     public DiskImageEncryption() {
     }
 
     /**
      * Get the diskEncryptionSetId property: A relative URI containing the resource ID of the disk encryption set.
-     *
+     * 
      * @return the diskEncryptionSetId value.
      */
     public String diskEncryptionSetId() {
@@ -31,7 +35,7 @@ public class DiskImageEncryption {
 
     /**
      * Set the diskEncryptionSetId property: A relative URI containing the resource ID of the disk encryption set.
-     *
+     * 
      * @param diskEncryptionSetId the diskEncryptionSetId value to set.
      * @return the DiskImageEncryption object itself.
      */
@@ -42,7 +46,7 @@ public class DiskImageEncryption {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

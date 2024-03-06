@@ -12,7 +12,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Trigger that runs every time a custom event is received. */
+/**
+ * Trigger that runs every time a custom event is received.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("CustomEventsTrigger")
 @Fluent
@@ -23,34 +25,42 @@ public final class CustomEventsTrigger extends MultiplePipelineTrigger {
     @JsonProperty(value = "typeProperties", required = true)
     private CustomEventsTriggerTypeProperties innerTypeProperties = new CustomEventsTriggerTypeProperties();
 
-    /** Creates an instance of CustomEventsTrigger class. */
+    /**
+     * Creates an instance of CustomEventsTrigger class.
+     */
     public CustomEventsTrigger() {
     }
 
     /**
      * Get the innerTypeProperties property: Custom Events Trigger properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private CustomEventsTriggerTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomEventsTrigger withPipelines(List<TriggerPipelineReference> pipelines) {
         super.withPipelines(pipelines);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomEventsTrigger withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public CustomEventsTrigger withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
@@ -60,7 +70,7 @@ public final class CustomEventsTrigger extends MultiplePipelineTrigger {
     /**
      * Get the subjectBeginsWith property: The event subject must begin with the pattern provided for trigger to fire.
      * At least one of these must be provided: subjectBeginsWith, subjectEndsWith.
-     *
+     * 
      * @return the subjectBeginsWith value.
      */
     public String subjectBeginsWith() {
@@ -70,7 +80,7 @@ public final class CustomEventsTrigger extends MultiplePipelineTrigger {
     /**
      * Set the subjectBeginsWith property: The event subject must begin with the pattern provided for trigger to fire.
      * At least one of these must be provided: subjectBeginsWith, subjectEndsWith.
-     *
+     * 
      * @param subjectBeginsWith the subjectBeginsWith value to set.
      * @return the CustomEventsTrigger object itself.
      */
@@ -85,7 +95,7 @@ public final class CustomEventsTrigger extends MultiplePipelineTrigger {
     /**
      * Get the subjectEndsWith property: The event subject must end with the pattern provided for trigger to fire. At
      * least one of these must be provided: subjectBeginsWith, subjectEndsWith.
-     *
+     * 
      * @return the subjectEndsWith value.
      */
     public String subjectEndsWith() {
@@ -95,7 +105,7 @@ public final class CustomEventsTrigger extends MultiplePipelineTrigger {
     /**
      * Set the subjectEndsWith property: The event subject must end with the pattern provided for trigger to fire. At
      * least one of these must be provided: subjectBeginsWith, subjectEndsWith.
-     *
+     * 
      * @param subjectEndsWith the subjectEndsWith value to set.
      * @return the CustomEventsTrigger object itself.
      */
@@ -109,7 +119,7 @@ public final class CustomEventsTrigger extends MultiplePipelineTrigger {
 
     /**
      * Get the events property: The list of event types that cause this trigger to fire.
-     *
+     * 
      * @return the events value.
      */
     public List<Object> events() {
@@ -118,7 +128,7 @@ public final class CustomEventsTrigger extends MultiplePipelineTrigger {
 
     /**
      * Set the events property: The list of event types that cause this trigger to fire.
-     *
+     * 
      * @param events the events value to set.
      * @return the CustomEventsTrigger object itself.
      */
@@ -132,7 +142,7 @@ public final class CustomEventsTrigger extends MultiplePipelineTrigger {
 
     /**
      * Get the scope property: The ARM resource ID of the Azure Event Grid Topic.
-     *
+     * 
      * @return the scope value.
      */
     public String scope() {
@@ -141,7 +151,7 @@ public final class CustomEventsTrigger extends MultiplePipelineTrigger {
 
     /**
      * Set the scope property: The ARM resource ID of the Azure Event Grid Topic.
-     *
+     * 
      * @param scope the scope value to set.
      * @return the CustomEventsTrigger object itself.
      */
@@ -155,17 +165,15 @@ public final class CustomEventsTrigger extends MultiplePipelineTrigger {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override
     public void validate() {
         super.validate();
         if (innerTypeProperties() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property innerTypeProperties in model CustomEventsTrigger"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property innerTypeProperties in model CustomEventsTrigger"));
         } else {
             innerTypeProperties().validate();
         }

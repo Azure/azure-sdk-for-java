@@ -7,7 +7,9 @@ package com.azure.resourcemanager.healthcareapis.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Common IoT Connector destination properties. */
+/**
+ * Common IoT Connector destination properties.
+ */
 @Immutable
 public class IotDestinationProperties {
     /*
@@ -17,8 +19,14 @@ public class IotDestinationProperties {
     private ProvisioningState provisioningState;
 
     /**
+     * Creates an instance of IotDestinationProperties class.
+     */
+    public IotDestinationProperties() {
+    }
+
+    /**
      * Get the provisioningState property: The provisioning state.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -27,7 +35,7 @@ public class IotDestinationProperties {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

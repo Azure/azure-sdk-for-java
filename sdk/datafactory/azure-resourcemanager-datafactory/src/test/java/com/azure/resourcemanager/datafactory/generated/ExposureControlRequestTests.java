@@ -11,9 +11,8 @@ import org.junit.jupiter.api.Assertions;
 public final class ExposureControlRequestTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ExposureControlRequest model =
-            BinaryData
-                .fromString("{\"featureName\":\"mvxi\",\"featureType\":\"uugidyjrrfby\"}")
+        ExposureControlRequest model
+            = BinaryData.fromString("{\"featureName\":\"mvxi\",\"featureType\":\"uugidyjrrfby\"}")
                 .toObject(ExposureControlRequest.class);
         Assertions.assertEquals("mvxi", model.featureName());
         Assertions.assertEquals("uugidyjrrfby", model.featureType());
@@ -21,8 +20,8 @@ public final class ExposureControlRequestTests {
 
     @org.junit.jupiter.api.Test
     public void testSerialize() throws Exception {
-        ExposureControlRequest model =
-            new ExposureControlRequest().withFeatureName("mvxi").withFeatureType("uugidyjrrfby");
+        ExposureControlRequest model
+            = new ExposureControlRequest().withFeatureName("mvxi").withFeatureType("uugidyjrrfby");
         model = BinaryData.fromObject(model).toObject(ExposureControlRequest.class);
         Assertions.assertEquals("mvxi", model.featureName());
         Assertions.assertEquals("uugidyjrrfby", model.featureType());

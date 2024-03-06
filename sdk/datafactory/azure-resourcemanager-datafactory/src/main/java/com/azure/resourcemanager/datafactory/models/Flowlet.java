@@ -11,7 +11,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import java.util.List;
 
-/** Data flow flowlet. */
+/**
+ * Data flow flowlet.
+ */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("Flowlet")
 @Fluent
@@ -22,34 +24,42 @@ public final class Flowlet extends DataFlow {
     @JsonProperty(value = "typeProperties")
     private FlowletTypeProperties innerTypeProperties;
 
-    /** Creates an instance of Flowlet class. */
+    /**
+     * Creates an instance of Flowlet class.
+     */
     public Flowlet() {
     }
 
     /**
      * Get the innerTypeProperties property: Flowlet type properties.
-     *
+     * 
      * @return the innerTypeProperties value.
      */
     private FlowletTypeProperties innerTypeProperties() {
         return this.innerTypeProperties;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Flowlet withDescription(String description) {
         super.withDescription(description);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Flowlet withAnnotations(List<Object> annotations) {
         super.withAnnotations(annotations);
         return this;
     }
 
-    /** {@inheritDoc} */
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public Flowlet withFolder(DataFlowFolder folder) {
         super.withFolder(folder);
@@ -58,7 +68,7 @@ public final class Flowlet extends DataFlow {
 
     /**
      * Get the sources property: List of sources in Flowlet.
-     *
+     * 
      * @return the sources value.
      */
     public List<DataFlowSource> sources() {
@@ -67,7 +77,7 @@ public final class Flowlet extends DataFlow {
 
     /**
      * Set the sources property: List of sources in Flowlet.
-     *
+     * 
      * @param sources the sources value to set.
      * @return the Flowlet object itself.
      */
@@ -81,7 +91,7 @@ public final class Flowlet extends DataFlow {
 
     /**
      * Get the sinks property: List of sinks in Flowlet.
-     *
+     * 
      * @return the sinks value.
      */
     public List<DataFlowSink> sinks() {
@@ -90,7 +100,7 @@ public final class Flowlet extends DataFlow {
 
     /**
      * Set the sinks property: List of sinks in Flowlet.
-     *
+     * 
      * @param sinks the sinks value to set.
      * @return the Flowlet object itself.
      */
@@ -104,7 +114,7 @@ public final class Flowlet extends DataFlow {
 
     /**
      * Get the transformations property: List of transformations in Flowlet.
-     *
+     * 
      * @return the transformations value.
      */
     public List<Transformation> transformations() {
@@ -113,7 +123,7 @@ public final class Flowlet extends DataFlow {
 
     /**
      * Set the transformations property: List of transformations in Flowlet.
-     *
+     * 
      * @param transformations the transformations value to set.
      * @return the Flowlet object itself.
      */
@@ -127,7 +137,7 @@ public final class Flowlet extends DataFlow {
 
     /**
      * Get the script property: Flowlet script.
-     *
+     * 
      * @return the script value.
      */
     public String script() {
@@ -136,7 +146,7 @@ public final class Flowlet extends DataFlow {
 
     /**
      * Set the script property: Flowlet script.
-     *
+     * 
      * @param script the script value to set.
      * @return the Flowlet object itself.
      */
@@ -150,7 +160,7 @@ public final class Flowlet extends DataFlow {
 
     /**
      * Get the scriptLines property: Flowlet script lines.
-     *
+     * 
      * @return the scriptLines value.
      */
     public List<String> scriptLines() {
@@ -159,7 +169,7 @@ public final class Flowlet extends DataFlow {
 
     /**
      * Set the scriptLines property: Flowlet script lines.
-     *
+     * 
      * @param scriptLines the scriptLines value to set.
      * @return the Flowlet object itself.
      */
@@ -173,7 +183,7 @@ public final class Flowlet extends DataFlow {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     @Override

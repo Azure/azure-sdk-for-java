@@ -9,7 +9,9 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.resourcemanager.network.models.ProvisioningState;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Properties of SSL certificates of application gateway. */
+/**
+ * Properties of SSL certificates of application gateway.
+ */
 @Fluent
 public final class VpnClientRootCertificatePropertiesFormat {
     /*
@@ -24,13 +26,15 @@ public final class VpnClientRootCertificatePropertiesFormat {
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
-    /** Creates an instance of VpnClientRootCertificatePropertiesFormat class. */
+    /**
+     * Creates an instance of VpnClientRootCertificatePropertiesFormat class.
+     */
     public VpnClientRootCertificatePropertiesFormat() {
     }
 
     /**
      * Get the publicCertData property: The certificate public data.
-     *
+     * 
      * @return the publicCertData value.
      */
     public String publicCertData() {
@@ -39,7 +43,7 @@ public final class VpnClientRootCertificatePropertiesFormat {
 
     /**
      * Set the publicCertData property: The certificate public data.
-     *
+     * 
      * @param publicCertData the publicCertData value to set.
      * @return the VpnClientRootCertificatePropertiesFormat object itself.
      */
@@ -50,7 +54,7 @@ public final class VpnClientRootCertificatePropertiesFormat {
 
     /**
      * Get the provisioningState property: The provisioning state of the VPN client root certificate resource.
-     *
+     * 
      * @return the provisioningState value.
      */
     public ProvisioningState provisioningState() {
@@ -59,15 +63,13 @@ public final class VpnClientRootCertificatePropertiesFormat {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
         if (publicCertData() == null) {
-            throw LOGGER
-                .logExceptionAsError(
-                    new IllegalArgumentException(
-                        "Missing required property publicCertData in model VpnClientRootCertificatePropertiesFormat"));
+            throw LOGGER.logExceptionAsError(new IllegalArgumentException(
+                "Missing required property publicCertData in model VpnClientRootCertificatePropertiesFormat"));
         }
     }
 

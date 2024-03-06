@@ -9,20 +9,20 @@ import com.azure.communication.callautomation.models.AnswerCallOptions;
 import com.azure.communication.callautomation.models.AnswerCallResult;
 import com.azure.communication.callautomation.models.CallInvite;
 import com.azure.communication.callautomation.models.CallParticipant;
-import com.azure.communication.callautomation.models.CancelAddParticipantResult;
+import com.azure.communication.callautomation.models.CancelAddParticipantOperationResult;
 import com.azure.communication.callautomation.models.CreateCallResult;
 import com.azure.communication.callautomation.models.CreateGroupCallOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
 import com.azure.communication.callautomation.models.events.AddParticipantSucceeded;
 import com.azure.communication.callautomation.models.events.CallConnected;
 import com.azure.communication.callautomation.models.events.RemoveParticipantSucceeded;
-import com.azure.communication.callautomation.models.events.AddParticipantCancelled;
+import com.azure.communication.callautomation.models.events.CancelAddParticipantSucceeded;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.identity.CommunicationIdentityAsyncClient;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.rest.Response;
-import com.azure.core.test.annotation.DoNotRecord;
+
 import org.junit.jupiter.api.condition.DisabledIfEnvironmentVariable;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.MethodSource;
@@ -38,7 +38,7 @@ import static org.junit.jupiter.api.Assertions.assertNotNull;
 import static org.junit.jupiter.api.Assertions.fail;
 
 public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomatedLiveTestBase {
-    @DoNotRecord(skipInPlayback = true)
+
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
@@ -157,7 +157,6 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
         }
     }
 
-    @DoNotRecord(skipInPlayback = true)
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     @DisabledIfEnvironmentVariable(
@@ -236,15 +235,15 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             Thread.sleep(3000);
 
             // cancel add participant
-            CancelAddParticipantResult cancelAddParticipantResponse = createCallResult
+            CancelAddParticipantOperationResult cancelAddParticipantResponse = createCallResult
                     .getCallConnectionAsync()
-                    .cancelAddParticipant(addParticipantsResultResponse.getValue().getInvitationId())
+                    .cancelAddParticipantOperation(addParticipantsResultResponse.getValue().getInvitationId())
                     .block();
             assertNotNull(cancelAddParticipantResponse);
 
-            // wait for addParticipantSucceed
-            AddParticipantCancelled addParticipantCancelled = waitForEvent(AddParticipantCancelled.class, callerConnectionId, Duration.ofSeconds(10));
-            assertNotNull(addParticipantCancelled);
+            // wait for CancelAddParticipantSucceeded
+            CancelAddParticipantSucceeded cancelAddParticipantSucceeded = waitForEvent(CancelAddParticipantSucceeded.class, callerConnectionId, Duration.ofSeconds(10));
+            assertNotNull(cancelAddParticipantSucceeded);
         } catch (Exception ex) {
             fail("Unexpected exception received", ex);
         } finally {
