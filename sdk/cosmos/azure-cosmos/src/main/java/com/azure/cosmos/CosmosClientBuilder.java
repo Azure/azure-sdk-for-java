@@ -143,6 +143,7 @@ public class CosmosClientBuilder implements
     private CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig;
     private SessionRetryOptions sessionRetryOptions;
     private Supplier<CosmosExcludedRegions> cosmosExcludedRegionsSupplier;
+    private boolean isRegionScopedSessionCapturingEnabled = false;
 
     /**
      * Instantiates a new Cosmos client builder.
@@ -164,6 +165,15 @@ public class CosmosClientBuilder implements
 
     CosmosClientMetadataCachesSnapshot metadataCaches() {
         return this.state;
+    }
+
+    CosmosClientBuilder regionScopedSessionCapturingEnabled(boolean isRegionScopedSessionCapturingEnabled) {
+        this.isRegionScopedSessionCapturingEnabled = isRegionScopedSessionCapturingEnabled;
+        return this;
+    }
+
+    boolean isRegionScopedSessionCapturingEnabled() {
+        return this.isRegionScopedSessionCapturingEnabled;
     }
 
     /**
@@ -1294,6 +1304,16 @@ public class CosmosClientBuilder implements
                 @Override
                 public String getEndpoint(CosmosClientBuilder builder) {
                     return builder.getEndpoint();
+                }
+
+                @Override
+                public void setRegionScopedSessionCapturingEnabled(CosmosClientBuilder builder, boolean isRegionScopedSessionCapturingEnabled) {
+                    builder.regionScopedSessionCapturingEnabled(isRegionScopedSessionCapturingEnabled);
+                }
+
+                @Override
+                public boolean getRegionScopedSessionCapturingEnabled(CosmosClientBuilder builder) {
+                    return builder.isRegionScopedSessionCapturingEnabled();
                 }
             });
     }

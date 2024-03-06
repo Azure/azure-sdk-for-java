@@ -8,6 +8,7 @@ import com.azure.cosmos.ConsistencyLevel;
 import com.azure.cosmos.CosmosException;
 import com.azure.cosmos.DirectConnectionConfig;
 import com.azure.cosmos.GatewayConnectionConfig;
+import com.azure.cosmos.SessionConsistencyTestUtils;
 import com.azure.cosmos.implementation.clienttelemetry.ClientTelemetry;
 import com.azure.cosmos.models.CosmosClientTelemetryConfig;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
@@ -37,11 +38,6 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
     @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateReadSessionOnAsyncReplication(boolean shouldRegionScopedSessionContainerEnabled) throws InterruptedException {
 
-        // this setting is simply to test regression
-        if (shouldRegionScopedSessionContainerEnabled) {
-            System.setProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED", "true");
-        }
-
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
         this.writeClient =
                 (RxDocumentClientImpl) new AsyncDocumentClient.Builder()
@@ -50,6 +46,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(shouldRegionScopedSessionContainerEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -62,6 +59,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(shouldRegionScopedSessionContainerEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -71,17 +69,11 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                                                            null, false).block().getResource();
         Thread.sleep(5000);//WaitForServerReplication
         boolean readLagging = this.validateReadSession(document);
-        System.clearProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED");
         //assertThat(readLagging).isTrue(); //Will fail if batch repl is turned off
     }
 
     @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
     public void validateWriteSessionOnAsyncReplication(boolean shouldRegionScopedSessionContainerEnabled) throws InterruptedException {
-
-        // this setting is simply to test regression
-        if (shouldRegionScopedSessionContainerEnabled) {
-            System.setProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED", "true");
-        }
 
         ConnectionPolicy connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
         this.writeClient =
@@ -91,6 +83,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(shouldRegionScopedSessionContainerEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -103,6 +96,7 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(shouldRegionScopedSessionContainerEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -112,7 +106,6 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
                                                            null, false).block().getResource();
         Thread.sleep(5000);//WaitForServerReplication
         boolean readLagging = this.validateWriteSession(document);
-        System.clearProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED");
         //assertThat(readLagging).isTrue(); //Will fail if batch repl is turned off
     }
 
@@ -137,14 +130,9 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
         // Verify the collection deletion will trigger the session token clean up (even for different client)
         //this.ValidateSessionContainerAfterCollectionDeletion(true, Protocol.TCP);
 
-        if (shouldRegionScopedSessionContainerEnabled) {
-            System.setProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED", "true");
-        }
-
         this.validateSessionContainerAfterCollectionDeletion(true, shouldRegionScopedSessionContainerEnabled);
         this.validateSessionContainerAfterCollectionDeletion(false, shouldRegionScopedSessionContainerEnabled);
 
-        System.clearProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED");
     }
 
     @Test(groups = {"direct"}, timeOut = CONSISTENCY_TEST_TIMEOUT, enabled = false)
@@ -158,14 +146,8 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057
         //this.validateSessionTokenWithPreConditionFailure(false, Protocol.TCP);
 
-        if (shouldRegionScopedSessionContainerEnabled) {
-            System.setProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED", "true");
-        }
-
-        this.validateSessionTokenWithPreConditionFailureBase(false);
-        this.validateSessionTokenWithPreConditionFailureBase(true);
-
-        System.clearProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED");
+        this.validateSessionTokenWithPreConditionFailureBase(false, shouldRegionScopedSessionContainerEnabled);
+        this.validateSessionTokenWithPreConditionFailureBase(true, shouldRegionScopedSessionContainerEnabled);
     }
 
     @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
@@ -173,15 +155,9 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
         //TODO Need to test with TCP protocol
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057
 
-        if (shouldRegionScopedSessionContainerEnabled) {
-            System.setProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED", "true");
-        }
-
         //this.validateSessionTokenWithDocumentNotFoundException(false, Protocol.TCP);
-        this.validateSessionTokenWithDocumentNotFoundExceptionBase(false);
-        this.validateSessionTokenWithDocumentNotFoundExceptionBase(true);
-
-        System.clearProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED");
+        this.validateSessionTokenWithDocumentNotFoundExceptionBase(false, shouldRegionScopedSessionContainerEnabled);
+        this.validateSessionTokenWithDocumentNotFoundExceptionBase(true, shouldRegionScopedSessionContainerEnabled);
     }
 
     @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
@@ -189,15 +165,9 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
         //TODO Need to test with TCP protocol
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057
 
-        if (shouldRegionScopedSessionContainerEnabled) {
-            System.setProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED", "true");
-        }
-
         //this.validateSessionTokenWithExpectedException(false, Protocol.TCP);
-        this.validateSessionTokenWithExpectedExceptionBase(false);
-        this.validateSessionTokenWithExpectedExceptionBase(true);
-
-        System.clearProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED");
+        this.validateSessionTokenWithExpectedExceptionBase(false, shouldRegionScopedSessionContainerEnabled);
+        this.validateSessionTokenWithExpectedExceptionBase(true, shouldRegionScopedSessionContainerEnabled);
     }
 
     @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
@@ -205,14 +175,9 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
         //TODO Need to test with TCP protocol
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057
         //this.validateSessionTokenWithConflictException(false, Protocol.TCP);
-        if (shouldRegionScopedSessionContainerEnabled) {
-            System.setProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED", "true");
-        }
 
-        this.validateSessionTokenWithConflictExceptionBase(false);
-        this.validateSessionTokenWithConflictExceptionBase(true);
-
-        System.clearProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED");
+        this.validateSessionTokenWithConflictExceptionBase(false, shouldRegionScopedSessionContainerEnabled);
+        this.validateSessionTokenWithConflictExceptionBase(true, shouldRegionScopedSessionContainerEnabled);
     }
 
     @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
@@ -220,14 +185,9 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
         //TODO Need to test with TCP protocol
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057
         //this.validateSessionTokenMultiPartitionCollection(false, Protocol.TCP);
-        if (shouldRegionScopedSessionContainerEnabled) {
-            System.setProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED", "true");
-        }
 
-        this.validateSessionTokenMultiPartitionCollectionBase(false);
-        this.validateSessionTokenMultiPartitionCollectionBase(true);
-
-        System.clearProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED");
+        this.validateSessionTokenMultiPartitionCollectionBase(false, shouldRegionScopedSessionContainerEnabled);
+        this.validateSessionTokenMultiPartitionCollectionBase(true, shouldRegionScopedSessionContainerEnabled);
     }
 
     @Test(groups = {"direct"}, dataProvider = "regionScopedSessionContainerConfigs", timeOut = CONSISTENCY_TEST_TIMEOUT)
@@ -236,14 +196,8 @@ public class ConsistencyTests2 extends ConsistencyTestsBase {
         // https://msdata.visualstudio.com/CosmosDB/_workitems/edit/355057
         //this.validateSessionTokenFromCollectionReplaceIsServerToken(false, Protocol.TCP);
 
-        if (shouldRegionScopedSessionContainerEnabled) {
-            System.setProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED", "true");
-        }
-
-        this.validateSessionTokenFromCollectionReplaceIsServerTokenBase(false);
-        this.validateSessionTokenFromCollectionReplaceIsServerTokenBase(true);
-
-        System.clearProperty("COSMOS.IS_REGION_SCOPED_SESSION_TOKEN_CAPTURING_ENABLED");
+        this.validateSessionTokenFromCollectionReplaceIsServerTokenBase(false, shouldRegionScopedSessionContainerEnabled);
+        this.validateSessionTokenFromCollectionReplaceIsServerTokenBase(true, shouldRegionScopedSessionContainerEnabled);
     }
 
     //TODO ReadFeed is broken, will enable the test case once it get fixed

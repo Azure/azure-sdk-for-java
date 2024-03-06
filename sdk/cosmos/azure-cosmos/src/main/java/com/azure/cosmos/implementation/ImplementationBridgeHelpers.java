@@ -146,6 +146,10 @@ public class ImplementationBridgeHelpers {
             ConsistencyLevel getConsistencyLevel(CosmosClientBuilder builder);
 
             String getEndpoint(CosmosClientBuilder builder);
+
+            void setRegionScopedSessionCapturingEnabled(CosmosClientBuilder builder, boolean isRegionScopedSessionCapturingEnabled);
+
+            boolean getRegionScopedSessionCapturingEnabled(CosmosClientBuilder builder);
         }
     }
 

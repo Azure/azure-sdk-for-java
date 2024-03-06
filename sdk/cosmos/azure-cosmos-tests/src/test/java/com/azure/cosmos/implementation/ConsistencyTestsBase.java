@@ -394,6 +394,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(isRegionScopedSessionContainerEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -405,6 +406,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(isRegionScopedSessionContainerEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -523,7 +525,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
 
     }
 
-    void validateSessionTokenWithPreConditionFailureBase(boolean useGateway) throws Exception {
+    void validateSessionTokenWithPreConditionFailureBase(boolean useGateway, boolean isRegionScopedSessionContainerEnabled) throws Exception {
         ConnectionPolicy connectionPolicy;
         if (useGateway) {
             connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
@@ -537,6 +539,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(isRegionScopedSessionContainerEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -548,6 +551,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(isRegionScopedSessionContainerEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -576,7 +580,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         }
     }
 
-    void validateSessionTokenWithDocumentNotFoundExceptionBase(boolean useGateway) throws Exception {
+    void validateSessionTokenWithDocumentNotFoundExceptionBase(boolean useGateway, boolean isRegionScopedSessionCapturingEnabled) throws Exception {
         ConnectionPolicy connectionPolicy;
         if (useGateway) {
             connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
@@ -590,6 +594,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(isRegionScopedSessionCapturingEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -601,6 +606,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(isRegionScopedSessionCapturingEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -624,7 +630,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         }
     }
 
-    void validateSessionTokenWithExpectedExceptionBase(boolean useGateway) throws Exception {
+    void validateSessionTokenWithExpectedExceptionBase(boolean useGateway, boolean isRegionScopedSessionCapturingEnabled) throws Exception {
         ConnectionPolicy connectionPolicy;
         if (useGateway) {
             connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
@@ -638,6 +644,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(isRegionScopedSessionCapturingEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -662,7 +669,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         }
     }
 
-    void validateSessionTokenWithConflictExceptionBase(boolean useGateway) throws Exception {
+    void validateSessionTokenWithConflictExceptionBase(boolean useGateway, boolean isRegionScopedSessionCapturingEnabled) throws Exception {
         ConnectionPolicy connectionPolicy;
         if (useGateway) {
             connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
@@ -676,6 +683,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(isRegionScopedSessionCapturingEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -687,6 +695,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(isRegionScopedSessionCapturingEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -708,7 +717,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         }
     }
 
-    void validateSessionTokenMultiPartitionCollectionBase(boolean useGateway) throws Exception {
+    void validateSessionTokenMultiPartitionCollectionBase(boolean useGateway, boolean isRegionScopedSessionCapturingEnabled) throws Exception {
         ConnectionPolicy connectionPolicy;
         if (useGateway) {
             connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
@@ -722,6 +731,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(isRegionScopedSessionCapturingEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -794,7 +804,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         }
     }
 
-    void validateSessionTokenFromCollectionReplaceIsServerTokenBase(boolean useGateway) {
+    void validateSessionTokenFromCollectionReplaceIsServerTokenBase(boolean useGateway, boolean isRegionScopedSessionCapturingEnabled) {
         ConnectionPolicy connectionPolicy;
         if (useGateway) {
             connectionPolicy = new ConnectionPolicy(GatewayConnectionConfig.getDefaultConfig());
@@ -808,6 +818,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                         .withConnectionPolicy(connectionPolicy)
                         .withConsistencyLevel(ConsistencyLevel.SESSION)
                         .withContentResponseOnWriteEnabled(true)
+                        .withRegionScopedSessionCapturingEnabled(isRegionScopedSessionCapturingEnabled)
                         .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -826,6 +837,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
                     .withConnectionPolicy(connectionPolicy)
                     .withConsistencyLevel(ConsistencyLevel.SESSION)
                     .withContentResponseOnWriteEnabled(true)
+                    .withRegionScopedSessionCapturingEnabled(isRegionScopedSessionCapturingEnabled)
                     .withClientTelemetryConfig(
                             new CosmosClientTelemetryConfig()
                                 .sendClientTelemetryToService(ClientTelemetry.DEFAULT_CLIENT_TELEMETRY_ENABLED))
@@ -985,9 +997,9 @@ public class ConsistencyTestsBase extends TestSuiteBase {
             return true;
         }
 
-        Field fieldCollectionResourceIdToRegionScopedSessionTokens1 = RegionScopedSessionContainer.class.getDeclaredField("collectionResourceIdToRegionScopedSessionTokens");
+        Field fieldCollectionResourceIdToRegionScopedSessionTokens1 = RegionScopedSessionContainer.class.getDeclaredField("collectionResourceIdToPartitionScopedRegionLevelProgress");
         Field fieldCollectionNameToCollectionResourceId1 = RegionScopedSessionContainer.class.getDeclaredField("collectionNameToCollectionResourceId");
-        Field fieldPkRangeIdToRegionLevelProgress = PartitionScopedRegionLevelProgress.class.getDeclaredField("partitionKeyRangeIdToSessionTokens");
+        Field fieldPkRangeIdToRegionLevelProgress = PartitionScopedRegionLevelProgress.class.getDeclaredField("partitionKeyRangeIdToRegionLevelProgress");
 
         fieldCollectionResourceIdToRegionScopedSessionTokens1.setAccessible(true);
         fieldCollectionNameToCollectionResourceId1.setAccessible(true);
@@ -998,7 +1010,7 @@ public class ConsistencyTestsBase extends TestSuiteBase {
         ConcurrentHashMap<String, Long> collectionNameToCollectionResourceId1 = (ConcurrentHashMap<String, Long>) fieldCollectionNameToCollectionResourceId1.get(regionScopedSessionContainer1);
 
 
-        Field fieldCollectionResourceIdToRegionScopedSessionTokens2 = RegionScopedSessionContainer.class.getDeclaredField("collectionResourceIdToRegionScopedSessionTokens");
+        Field fieldCollectionResourceIdToRegionScopedSessionTokens2 = RegionScopedSessionContainer.class.getDeclaredField("collectionResourceIdToPartitionScopedRegionLevelProgress");
         Field fieldCollectionNameToCollectionResourceId2 = RegionScopedSessionContainer.class.getDeclaredField("collectionNameToCollectionResourceId");
         fieldCollectionResourceIdToRegionScopedSessionTokens2.setAccessible(true);
         fieldCollectionNameToCollectionResourceId2.setAccessible(true);

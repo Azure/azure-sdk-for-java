@@ -167,6 +167,7 @@ public final class CosmosAsyncClient implements Closeable {
                                        .withEndToEndOperationLatencyPolicyConfig(endToEndOperationLatencyPolicyConfig)
                                        .withSessionRetryOptions(sessionRetryOptions)
                                        .withContainerProactiveInitConfig(this.proactiveContainerInitConfig)
+                                       .withRegionScopedSessionCapturingEnabled(builder.isRegionScopedSessionCapturingEnabled())
                                        .build();
 
         this.accountConsistencyLevel = this.asyncDocumentClient.getDefaultConsistencyLevelOfAccount();

@@ -226,7 +226,8 @@ public class RxDocumentClientImplTest {
             this.clientCorrelationIdMock,
             this.endToEndOperationLatencyPolicyConfig,
             this.sessionRetryOptionsMock,
-            this.containerProactiveInitConfigMock);
+            this.containerProactiveInitConfigMock,
+            false);
 
         try {
             ReflectionUtils.setCollectionCache(rxDocumentClient, this.collectionCacheMock);

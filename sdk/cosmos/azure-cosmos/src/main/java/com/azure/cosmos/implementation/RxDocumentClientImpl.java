@@ -250,7 +250,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 String clientCorrelationId,
                                 CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
                                 SessionRetryOptions sessionRetryOptions,
-                                CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
+                                CosmosContainerProactiveInitConfig containerProactiveInitConfig,
+                                boolean isRegionScopedSessionCapturingEnabled) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -269,7 +270,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientCorrelationId,
                 cosmosEndToEndOperationLatencyPolicyConfig,
                 sessionRetryOptions,
-                containerProactiveInitConfig);
+                containerProactiveInitConfig,
+                isRegionScopedSessionCapturingEnabled);
+
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -291,7 +294,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 String clientCorrelationId,
                                 CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
                                 SessionRetryOptions sessionRetryOptions,
-                                CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
+                                CosmosContainerProactiveInitConfig containerProactiveInitConfig,
+                                boolean isRegionScopedSessionCapturingEnabled) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -310,7 +314,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientCorrelationId,
                 cosmosEndToEndOperationLatencyPolicyConfig,
                 sessionRetryOptions,
-                containerProactiveInitConfig);
+                containerProactiveInitConfig,
+                isRegionScopedSessionCapturingEnabled);
         this.cosmosAuthorizationTokenResolver = cosmosAuthorizationTokenResolver;
     }
 
@@ -331,7 +336,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                                 String clientCorrelationId,
                                 CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
                                 SessionRetryOptions sessionRetryOptions,
-                                CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
+                                CosmosContainerProactiveInitConfig containerProactiveInitConfig,
+                                boolean isRegionScopedSessionCapturingEnabled) {
         this(
                 serviceEndpoint,
                 masterKeyOrResourceToken,
@@ -349,7 +355,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 clientCorrelationId,
                 cosmosEndToEndOperationLatencyPolicyConfig,
                 sessionRetryOptions,
-                containerProactiveInitConfig);
+                containerProactiveInitConfig,
+                isRegionScopedSessionCapturingEnabled);
 
         if (permissionFeed != null && permissionFeed.size() > 0) {
             this.resourceTokensMap = new HashMap<>();
@@ -409,7 +416,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                          String clientCorrelationId,
                          CosmosEndToEndOperationLatencyPolicyConfig cosmosEndToEndOperationLatencyPolicyConfig,
                          SessionRetryOptions sessionRetryOptions,
-                         CosmosContainerProactiveInitConfig containerProactiveInitConfig) {
+                         CosmosContainerProactiveInitConfig containerProactiveInitConfig,
+                         boolean isRegionScopedSessionCapturingEnabled) {
 
         assert(clientTelemetryConfig != null);
         Boolean clientTelemetryEnabled = ImplementationBridgeHelpers
@@ -508,7 +516,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             this.globalEndpointManager = new GlobalEndpointManager(asDatabaseAccountManagerInternal(), this.connectionPolicy, /**/configs);
 
-            if (Configs.isRegionScopedSessionTokenCapturingEnabled()) {
+            if (isRegionScopedSessionCapturingEnabled || Configs.isRegionScopedSessionTokenCapturingEnabled()) {
                 this.sessionContainer = new RegionScopedSessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing, this.globalEndpointManager);
             } else {
                 this.sessionContainer = new SessionContainer(this.serviceEndpoint.getHost(), disableSessionCapturing);
