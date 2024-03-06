@@ -35,7 +35,20 @@ import static com.azure.monitor.query.implementation.metrics.models.MetricsHelpe
 /**
  * The synchronous client for querying Azure Monitor metrics.
  *
- * <p><strong>Instantiating a synchronous Metrics query Client</strong></p>
+ * <h2>Overview</h2>
+ *
+ * <p>Azure Monitor Metrics is a feature of Azure Monitor that collects numeric data from monitored resources into a
+ * time-series database. Metrics are numerical values that are collected at regular intervals and describe some aspect
+ * of a system at a particular time. The MetricsQueryClient provides synchronous implementations of methods that query
+ * metrics from your Azure services.</p>
+ *
+ * <h2>Getting Started</h2>
+ *
+ * <p>
+ *     Authenticating and building MetricsQueryClient instances are done through {@link MetricsQueryClientBuilder}.
+ *     The following sample shows how to build a new MetricsQueryClient instance.
+ * </p>
+ *
  * <!-- src_embed com.azure.monitor.query.MetricsQueryClient.instantiation -->
  * <pre>
  * MetricsQueryClient metricsQueryClient = new MetricsQueryClientBuilder&#40;&#41;
@@ -43,6 +56,25 @@ import static com.azure.monitor.query.implementation.metrics.models.MetricsHelpe
  *         .buildClient&#40;&#41;;
  * </pre>
  * <!-- end com.azure.monitor.query.MetricsQueryClient.instantiation -->
+ *
+ * <p>
+ *     For more information on building and authenticating, see the {@link MetricsQueryClientBuilder} documentation.
+ * </p>
+ *
+ * <h3>Client Usage</h3>
+ *
+ * <p>
+ *     For more information on using the MetricsQueryClient, see the following method documentation:
+ * </p>
+ *
+ * <ul>
+ *     <li>
+ *         {@link MetricsQueryClient#queryResource(String, List)} - Query metrics for an Azure resource.
+ *     </li>
+ * </ul>
+ *
+ * @see com.azure.monitor.query
+ * @see MetricsQueryClientBuilder
  */
 @ServiceClient(builder = MetricsQueryClientBuilder.class)
 public final class MetricsQueryClient {
