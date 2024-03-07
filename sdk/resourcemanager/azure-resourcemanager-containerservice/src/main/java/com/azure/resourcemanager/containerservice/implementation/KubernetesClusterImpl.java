@@ -448,7 +448,7 @@ public class KubernetesClusterImpl
     @Override
     public KubernetesClusterImpl withFreeSku() {
         this.innerModel().withSku(new ManagedClusterSku().withTier(ManagedClusterSkuTier.FREE).withName(ManagedClusterSkuName.BASE));
-        if (KubernetesSupportPlan.KUBERNETES_OFFICIAL.equals(this.innerModel().supportPlan())) {
+        if (!KubernetesSupportPlan.KUBERNETES_OFFICIAL.equals(this.innerModel().supportPlan())) {
             this.innerModel().withSupportPlan(KubernetesSupportPlan.KUBERNETES_OFFICIAL);
         }
         return this;
@@ -457,7 +457,7 @@ public class KubernetesClusterImpl
     @Override
     public KubernetesClusterImpl withStandardSku() {
         this.innerModel().withSku(new ManagedClusterSku().withTier(ManagedClusterSkuTier.STANDARD).withName(ManagedClusterSkuName.BASE));
-        if (KubernetesSupportPlan.KUBERNETES_OFFICIAL.equals(this.innerModel().supportPlan())) {
+        if (!KubernetesSupportPlan.KUBERNETES_OFFICIAL.equals(this.innerModel().supportPlan())) {
             this.innerModel().withSupportPlan(KubernetesSupportPlan.KUBERNETES_OFFICIAL);
         }
         return this;
