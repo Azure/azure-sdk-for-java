@@ -53,7 +53,7 @@ public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
 
     private void addTestProxyMatchers() {
         interceptorManager.addMatchers(Arrays.asList(
-            new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-ms-hmac-string-to-sign-base64", "x-ms-content-sha256"))));
+            new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-ms-hmac-string-to-sign-base64"))));
 
     }
 
@@ -62,8 +62,7 @@ public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
         interceptorManager.addSanitizers(Arrays.asList(
             new TestProxySanitizer("(?<=/phoneNumbers/)([^/?]+)", "REDACTED", TestProxySanitizerType.URL),
             new TestProxySanitizer("id", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer("phoneNumber", null, "REDACTED", TestProxySanitizerType.BODY_KEY),
-            new TestProxySanitizer("$..phoneNumber", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
+            new TestProxySanitizer("phoneNumber", null, "REDACTED", TestProxySanitizerType.BODY_KEY)));
     }
 
     protected PhoneNumbersClientBuilder getClientBuilderUsingManagedIdentity(HttpClient httpClient) {

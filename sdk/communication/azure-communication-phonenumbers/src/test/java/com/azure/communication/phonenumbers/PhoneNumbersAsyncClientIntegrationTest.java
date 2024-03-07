@@ -445,7 +445,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void searchOperatorInformation(HttpClient httpClient) {
+    public void searchOperatorInformationSucceeds(HttpClient httpClient) {
         List<String> phoneNumbers = new ArrayList<String>();
         phoneNumbers.add(redactIfPlaybackMode(getTestPhoneNumber()));
         StepVerifier.create(
