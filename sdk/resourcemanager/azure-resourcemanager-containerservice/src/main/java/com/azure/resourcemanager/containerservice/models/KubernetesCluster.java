@@ -96,6 +96,9 @@ public interface KubernetesCluster
     /** @return the power state */
     PowerState powerState();
 
+    /** @return the SKU of a Managed Cluster */
+    ManagedClusterSku sku();
+
     /**
      * @return the System Assigned Managed Service Identity specific Active Directory service principal ID
      *     assigned to the Kubernetes cluster.
@@ -171,6 +174,7 @@ public interface KubernetesCluster
             DefinitionStages.WithAgentPool,
             DefinitionStages.WithNetworkProfile,
             DefinitionStages.WithAddOnProfiles,
+            DefinitionStages.WithManagedClusterSku,
             KubernetesCluster.DefinitionStages.WithCreate {
     }
 
@@ -186,6 +190,35 @@ public interface KubernetesCluster
          * The stage of the Kubernetes cluster definition allowing to specify the resource group.
          */
         interface WithGroup extends GroupableResource.DefinitionStages.WithGroup<WithVersion> {
+        }
+
+        /**
+         * The stage of the Kubernetes cluster definition allowing to specify the managed cluster SKU.
+         * LongTermSupport and Premium tier should be enabled/disabled together.
+         * For more information, please see https://aka.ms/aks/lts
+         */
+        interface WithManagedClusterSku {
+
+            /**
+             * Specifies the managed cluster SKU is free.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withFreeSku();
+
+            /**
+             * Specifies the managed cluster SKU is standard.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withStandardSku();
+
+            /**
+             * Specifies the managed cluster SKU is premium.
+             *
+             * @return the next stage of the definition
+             */
+            WithCreate withPremiumSku();
         }
 
         /**
@@ -581,6 +614,7 @@ public interface KubernetesCluster
                 WithLocalAccounts,
                 WithDiskEncryption,
                 WithAgentPoolResourceGroup,
+                WithManagedClusterSku,
                 Resource.DefinitionWithTags<WithCreate> {
         }
     }
@@ -594,6 +628,8 @@ public interface KubernetesCluster
             UpdateStages.WithAutoScalerProfile,
             UpdateStages.WithAAD,
             UpdateStages.WithLocalAccounts,
+            UpdateStages.WithVersion,
+            UpdateStages.WithManagedClusterSku,
             Resource.UpdateWithTags<KubernetesCluster.Update>,
             Appliable<KubernetesCluster> {
     }
@@ -726,6 +762,50 @@ public interface KubernetesCluster
              * @return the next stage
              */
             Update disableLocalAccounts();
+        }
+
+        /**
+         * The stage of the Kubernetes cluster definition allowing to specify the managed cluster SKU.
+         * LongTermSupport and Premium tier should be enabled/disabled together.
+         * For more information, please see https://aka.ms/aks/lts
+         */
+        interface WithManagedClusterSku {
+
+            /**
+             * Specifies the managed cluster SKU is free.
+             *
+             * @return the next stage
+             */
+            Update withFreeSku();
+
+            /**
+             * Specifies the managed cluster SKU is standard.
+             *
+             * @return the next stage
+             */
+            Update withStandardSku();
+
+            /**
+             * Specifies the managed cluster SKU is premium.
+             *
+             * @return the next stage
+             */
+            Update withPremiumSku();
+        }
+
+        /**
+         * The stage of the Kubernetes cluster update allowing to specify orchestration type.
+         */
+        interface WithVersion {
+            /**
+             * Specifies the version for the Kubernetes cluster.
+             * Could retrieve from {@link KubernetesClusters#listOrchestrators(Region, ContainerServiceResourceTypes)}
+             * To prevent version conflicts, specify a higher version than the initial version.
+             *
+             * @param kubernetesVersion the kubernetes version
+             * @return the next stage
+             */
+            Update withVersion(String kubernetesVersion);
         }
     }
 }

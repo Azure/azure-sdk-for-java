@@ -19,8 +19,10 @@ import com.azure.resourcemanager.containerservice.models.Format;
 import com.azure.resourcemanager.containerservice.models.KubeletDiskType;
 import com.azure.resourcemanager.containerservice.models.KubernetesCluster;
 import com.azure.resourcemanager.containerservice.models.KubernetesClusterAgentPool;
+import com.azure.resourcemanager.containerservice.models.KubernetesSupportPlan;
 import com.azure.core.management.Region;
 import com.azure.resourcemanager.containerservice.models.ManagedClusterPropertiesAutoScalerProfile;
+import com.azure.resourcemanager.containerservice.models.ManagedClusterSkuTier;
 import com.azure.resourcemanager.containerservice.models.OSDiskType;
 import com.azure.resourcemanager.containerservice.models.OrchestratorVersionProfile;
 import com.azure.resourcemanager.containerservice.models.ScaleSetEvictionPolicy;
@@ -529,5 +531,70 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
 
         kubernetesCluster.refresh();
         Assertions.assertTrue(kubernetesCluster.agentPools().get(agentPoolName2).isFipsEnabled());
+    }
+
+    @Test
+    public void testUpdateVersionFromDefaultToSpecified() {
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
+            .define(generateRandomResourceName("aks", 15))
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withDefaultVersion()
+            .withRootUsername("testaks")
+            .withSshKey(SSH_KEY)
+            .withSystemAssignedManagedServiceIdentity()
+            .defineAgentPool(generateRandomResourceName("ap", 15))
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .attach()
+            .withDnsPrefix(generateRandomResourceName("dns", 15))
+            .create();
+
+        kubernetesCluster.refresh();
+        Assertions.assertEquals("1.27", kubernetesCluster.version());
+
+        kubernetesCluster.update().withVersion("1.28.5").apply();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals("1.28.5", kubernetesCluster.version());
+    }
+
+    @Test
+    public void testUpdateManagedClusterSkuAndKubernetesSupportPlan() {
+        String aksName = generateRandomResourceName("aks", 15);
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
+            .define(aksName)
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withDefaultVersion()
+            .withRootUsername("testaks")
+            .withSshKey(SSH_KEY)
+            .withSystemAssignedManagedServiceIdentity()
+            .defineAgentPool(generateRandomResourceName("ap", 15))
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .attach()
+            .withDnsPrefix(generateRandomResourceName("dns", 15))
+            .create();
+
+        kubernetesCluster.update().withFreeSku().apply();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals(ManagedClusterSkuTier.FREE, kubernetesCluster.sku().tier());
+        Assertions.assertEquals(KubernetesSupportPlan.KUBERNETES_OFFICIAL, kubernetesCluster.innerModel().supportPlan());
+
+        kubernetesCluster.update().withStandardSku().apply();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals(ManagedClusterSkuTier.STANDARD, kubernetesCluster.sku().tier());
+        Assertions.assertEquals(KubernetesSupportPlan.KUBERNETES_OFFICIAL, kubernetesCluster.innerModel().supportPlan());
+
+        kubernetesCluster.update().withPremiumSku().apply();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals(ManagedClusterSkuTier.PREMIUM, kubernetesCluster.sku().tier());
+        Assertions.assertEquals(KubernetesSupportPlan.AKSLONG_TERM_SUPPORT, kubernetesCluster.innerModel().supportPlan());
     }
 }
