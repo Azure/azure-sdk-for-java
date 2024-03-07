@@ -3,7 +3,6 @@
 
 package com.generic.core.http.models;
 
-import com.generic.core.http.Response;
 import com.generic.core.http.policy.RequestRetryCondition;
 import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
