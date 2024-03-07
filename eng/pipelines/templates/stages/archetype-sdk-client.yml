@@ -82,11 +82,20 @@ extends:
   ${{ else }}:
     template: v1/1ES.Unofficial.PipelineTemplate.yml@1ESPipelineTemplates
   parameters:
+    settings:
+      skipBuildTagsForGitHubPullRequests: true
     sdl:
       sourceAnalysisPool:
         name: $(WINDOWSPOOL)
         image: $(WINDOWSVMIMAGE)
         os: windows
+      sourceRepositoriesToScan:
+        exclude:
+          - repository: azure-sdk-build-tools
+      binskim:
+        # Exclude imported azure-sdk-build-tools gpg/azcopy binaries
+        # See https://dev.azure.com/securitytools/SecurityIntegration/_wiki/wikis/Guardian/1378/Glob-Format
+        analyzeTargetGlob: +:file|**/*.dll;+:file|**/*.exe;-:f|**/tools/gpg/**/*.dll;-:f|**/tools/gpg/**/*.exe;-:f|**/tools/azcopy/**/*.exe;-:f|**/tools/azcopy/**/*.dll
       eslint:
         enabled: false
         justificationForDisabling: 'ESLint injected task has failures because it uses an old version of mkdirp. We should not fail for tools not controlled by the repo. See: https://dev.azure.com/azure-sdk/internal/_build/results?buildId=3499746'
@@ -103,9 +112,6 @@ extends:
         scanFolder: $(Build.SourcesDirectory)/credscan.tsv
         toolVersion: 2.3.12.23
         baselineFiles: $(Build.SourcesDirectory)/eng/java.gdnbaselines
-      sourceRepositoriesToScan:
-        exclude:
-          - repository: azure-sdk-build-tools
 
     stages:
       - stage: Build
