@@ -31,6 +31,14 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.atomic.AtomicIntegerFieldUpdater;
 import java.util.concurrent.atomic.AtomicReferenceFieldUpdater;
 
+import static com.azure.cosmos.implementation.RequestTimeline.EventName.CHANNEL_ACQUISITION_STARTED;
+import static com.azure.cosmos.implementation.RequestTimeline.EventName.COMPLETED;
+import static com.azure.cosmos.implementation.RequestTimeline.EventName.CREATED;
+import static com.azure.cosmos.implementation.RequestTimeline.EventName.DECODE_TIME;
+import static com.azure.cosmos.implementation.RequestTimeline.EventName.PIPELINED;
+import static com.azure.cosmos.implementation.RequestTimeline.EventName.QUEUED;
+import static com.azure.cosmos.implementation.RequestTimeline.EventName.RECEIVED;
+import static com.azure.cosmos.implementation.RequestTimeline.EventName.TRANSIT_TIME;
 import static com.azure.cosmos.implementation.guava25.base.Preconditions.checkNotNull;
 import static com.azure.cosmos.implementation.guava27.Strings.lenientFormat;
 
@@ -309,21 +317,21 @@ public abstract class RntbdRequestRecord extends CompletableFuture<StoreResponse
         Instant timeCompletedOrNow = timeCompleted == null ? now : timeCompleted;
 
         return RequestTimeline.of(
-            new RequestTimeline.Event("created",
+            new RequestTimeline.Event(CREATED,
                 timeCreated, timeQueued == null ? timeCompletedOrNow : timeQueued),
-            new RequestTimeline.Event("queued",
+            new RequestTimeline.Event(QUEUED,
                 timeQueued, timeChannelAcquisitionStarted == null ? timeCompletedOrNow : timeChannelAcquisitionStarted),
-            new RequestTimeline.Event("channelAcquisitionStarted",
+            new RequestTimeline.Event(CHANNEL_ACQUISITION_STARTED,
                 timeChannelAcquisitionStarted, timePipelined == null ? timeCompletedOrNow : timePipelined),
-            new RequestTimeline.Event("pipelined",
+            new RequestTimeline.Event(PIPELINED,
                 timePipelined, timeSent == null ? timeCompletedOrNow : timeSent),
-            new RequestTimeline.Event("transitTime",
+            new RequestTimeline.Event(TRANSIT_TIME,
                 timeSent, timeDecodeStarted == null ? timeCompletedOrNow : timeDecodeStarted),
-            new RequestTimeline.Event("decodeTime",
+            new RequestTimeline.Event(DECODE_TIME,
                 timeDecodeStarted, timeReceived == null ? timeCompletedOrNow : timeReceived),
-            new RequestTimeline.Event("received",
+            new RequestTimeline.Event(RECEIVED,
                 timeReceived, timeCompletedOrNow),
-            new RequestTimeline.Event("completed",
+            new RequestTimeline.Event(COMPLETED,
                 timeCompleted, now));
     }
 

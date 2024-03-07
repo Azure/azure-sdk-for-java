@@ -36,9 +36,9 @@ external_dependency_version_regex = r'(?<=<version>).+?(?=</version>)'
 version_regex_str_with_names_anchored = r'^(?P<major>0|[1-9]\d*)\.(?P<minor>0|[1-9]\d*)\.(?P<patch>0|[1-9]\d*)(?:-(?P<prerelease>(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*)(?:\.(?:0|[1-9]\d*|\d*[a-zA-Z-][0-9a-zA-Z-]*))*))?(?:\+(?P<buildmetadata>[0-9a-zA-Z-]+(?:\.[0-9a-zA-Z-]+)*))?$'
 
 # This is specific to our revision which, if there is one, needs to have the format of beta.X
-prerelease_version_regex_with_name = r'^beta\.(?P<revision>0|[1-9]\d*)$'
+prerelease_version_regex_with_name = r'^hotfix\.(?P<revision>0|[1-9]\d*)$'
 # This is special for track 1, data track, which can be <major>.<minor>.<version>-beta with no ".X"
-prerelease_data_version_regex = r'^beta$'
+prerelease_data_version_regex = r'^hotfix$'
 
 # Allow list prefix remover
 allowlist_exception_identifier_remover_regex = re.compile(r'^(?:.+_)(?=.+:)(.*)$')
