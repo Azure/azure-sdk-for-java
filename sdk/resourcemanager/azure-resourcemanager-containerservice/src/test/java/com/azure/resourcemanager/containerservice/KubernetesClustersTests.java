@@ -558,7 +558,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
     }
 
     @Test
-    public void testUpdateVersionFromDefaultToSpecified() {
+    public void testUpdateKubernetesVersion() {
         resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
         KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
             .define(generateRandomResourceName("aks", 15))
