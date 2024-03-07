@@ -2,10 +2,10 @@
 ### 4.54.0-beta.1 (Unreleased)
 
 #### Bugs Fixed
-* Suppress exceptions when calling diagnostics handlers. 
+* Suppress exceptions when calling diagnostics handlers. - See[39121](https://github.com/Azure/azure-sdk-for-java/pull/39121)
 
 #### Other Changes
-* Only call System.exit in `DiagnosticsProvider` for `Error` scenario. Also add `System.err` for `Error` cases.
+* Only call System.exit in `DiagnosticsProvider` for `Error` scenario. Also add `System.err` for `Error` cases. - See[39121](https://github.com/Azure/azure-sdk-for-java/pull/39121)
 
 ### 4.53.2-hotfix (2024-02-04)
 #### Other Changes
