@@ -1,5 +1,13 @@
 ## Release History
 
+### 4.54.0-beta.1 (Unreleased)
+
+#### Bugs Fixed
+* Suppress exceptions when calling diagnostics handlers. 
+
+#### Other Changes
+* Only call System.exit in `DiagnosticsProvider` for `Error` scenario. Also add `System.err` for `Error` cases.
+
 ### 4.53.1 (2023-12-06)
 
 #### Bugs Fixed
