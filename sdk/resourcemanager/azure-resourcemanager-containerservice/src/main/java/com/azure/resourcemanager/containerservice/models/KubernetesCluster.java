@@ -195,7 +195,7 @@ public interface KubernetesCluster
         /**
          * The stage of the Kubernetes cluster definition allowing to specify the managed cluster SKU.
          * LongTermSupport and Premium tier should be enabled/disabled together.
-         * For more information, please see https://learn.microsoft.com/en-us/azure/aks/long-term-support
+         * For more information, please see https://learn.microsoft.com/azure/aks/long-term-support
          */
         interface WithManagedClusterSku {
 
@@ -767,7 +767,7 @@ public interface KubernetesCluster
         /**
          * The stage of the Kubernetes cluster definition allowing to specify the managed cluster SKU.
          * LongTermSupport and Premium tier should be enabled/disabled together.
-         * For more information, please see https://learn.microsoft.com/en-us/azure/aks/long-term-support
+         * For more information, please see https://learn.microsoft.com/azure/aks/long-term-support
          */
         interface WithManagedClusterSku {
 
