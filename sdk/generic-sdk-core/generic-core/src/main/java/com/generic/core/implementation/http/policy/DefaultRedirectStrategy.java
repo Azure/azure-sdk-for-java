@@ -3,9 +3,9 @@
 
 package com.generic.core.implementation.http.policy;
 
+import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.policy.RedirectStrategy;
 import com.generic.core.implementation.util.CoreUtils;
 import com.generic.core.implementation.util.LoggingKeys;
@@ -83,13 +83,13 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
 
 
     @Override
-    public boolean shouldAttemptRedirect(HttpRequest httpRequest, HttpResponse<?> httpResponse, int tryCount,
+    public boolean shouldAttemptRedirect(HttpRequest httpRequest, Response<?> response, int tryCount,
                                          Set<String> attemptedRedirectUrls) {
-        if (isValidRedirectStatusCode(httpResponse.getStatusCode())
+        if (isValidRedirectStatusCode(response.getStatusCode())
             && isValidRedirectCount(tryCount)
-            && isAllowedRedirectMethod(httpResponse.getRequest().getHttpMethod())) {
+            && isAllowedRedirectMethod(response.getRequest().getHttpMethod())) {
 
-            String redirectUrl = httpResponse.getHeaders().getValue(locationHeader);
+            String redirectUrl = response.getHeaders().getValue(locationHeader);
 
             if (redirectUrl != null && !alreadyAttemptedRedirectUrl(redirectUrl, attemptedRedirectUrls)) {
                 LOGGER.atVerbose()
@@ -109,8 +109,8 @@ public final class DefaultRedirectStrategy implements RedirectStrategy {
     }
 
     @Override
-    public HttpRequest createRedirectRequest(HttpResponse<?> httpResponse) {
-        return httpResponse.getRequest().setUrl(httpResponse.getHeaders().getValue(locationHeader));
+    public HttpRequest createRedirectRequest(Response<?> response) {
+        return response.getRequest().setUrl(response.getHeaders().getValue(locationHeader));
     }
 
     @Override

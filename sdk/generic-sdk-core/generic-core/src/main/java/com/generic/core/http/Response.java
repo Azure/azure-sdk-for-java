@@ -8,12 +8,14 @@ import com.generic.core.http.models.HttpResponse;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Headers;
 
+import java.io.Closeable;
+
 /**
  * REST response with a strongly-typed content specified.
  *
  * @param <T> The deserialized type of the response content, available from {@link #getValue()}.
  */
-public interface Response<T> {
+public interface Response<T> extends Closeable {
     /**
      * Gets the response status code.
      *

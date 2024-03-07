@@ -7,13 +7,12 @@ import com.generic.core.http.Response;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Headers;
 
-import java.io.Closeable;
 import java.io.IOException;
 
 /**
  * The response of an {@link HttpRequest}.
  */
-public class HttpResponse<T> implements Response<T>, Closeable {
+public class HttpResponse<T> implements Response<T> {
     private static final BinaryData EMPTY_BODY = BinaryData.fromBytes(new byte[0]);
 
     private final Headers headers;
@@ -107,6 +106,5 @@ public class HttpResponse<T> implements Response<T>, Closeable {
 
     @Override
     public void close() throws IOException {
-        this.getBody().close();
     }
 }

@@ -91,14 +91,14 @@ public abstract class RestProxyBase {
                                        ObjectSerializer objectSerializer) throws IOException;
 
     @SuppressWarnings({"unchecked"})
-    public Response<?> createResponseIfNecessary(HttpResponse<?> response, Type entityType, Object bodyAsObject) {
+    public Response<?> createResponseIfNecessary(Response<?> response, Type entityType, Object bodyAsObject) {
         final Class<? extends Response<?>> clazz = (Class<? extends Response<?>>) TypeUtil.getRawClass(entityType);
 
         // Inspection of the response type needs to be performed to determine the course of action: either return the
         // Response or rely on reflection to create an appropriate Response subtype.
         if (clazz.equals(Response.class)) {
             // Return the Response.
-            return response.setDecodedBody(bodyAsObject);
+            return ((HttpResponse<?>) response).setDecodedBody(bodyAsObject);
         } else {
             // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response
             // subtype.
@@ -229,47 +229,46 @@ public abstract class RestProxyBase {
      * Creates an HttpResponseException exception using the details provided in http response and its content.
      *
      * @param unexpectedExceptionInformation The exception holding UnexpectedException's details.
-     * @param httpResponse The http response to parse when constructing exception
-     * @param responseContent The response body to use when constructing exception
-     * @param responseDecodedContent The decoded response content to use when constructing exception
+     * @param response The http response to parse when constructing exception
+     * @param responseBody The response body to use when constructing exception
+     * @param responseDecodedBody The decoded response content to use when constructing exception
      *
      * @return The {@link HttpResponseException} created from the provided details.
      */
     public static HttpResponseException instantiateUnexpectedException(UnexpectedExceptionInformation unexpectedExceptionInformation,
-                                                                       HttpResponse<?> httpResponse,
-                                                                       byte[] responseContent,
-                                                                       Object responseDecodedContent) {
+                                                                       Response<?> response, byte[] responseBody,
+                                                                       Object responseDecodedBody) {
         StringBuilder exceptionMessage = new StringBuilder("Status code ")
-            .append(httpResponse.getStatusCode())
+            .append(response.getStatusCode())
             .append(", ");
 
-        final String contentType = httpResponse.getHeaders().getValue(HeaderName.CONTENT_TYPE);
+        final String contentType = response.getHeaders().getValue(HeaderName.CONTENT_TYPE);
 
         if ("application/octet-stream".equalsIgnoreCase(contentType)) {
-            String contentLength = httpResponse.getHeaders().getValue(HeaderName.CONTENT_LENGTH);
+            String contentLength = response.getHeaders().getValue(HeaderName.CONTENT_LENGTH);
 
             exceptionMessage.append("(").append(contentLength).append("-byte body)");
-        } else if (responseContent == null || responseContent.length == 0) {
+        } else if (responseBody == null || responseBody.length == 0) {
             exceptionMessage.append("(empty body)");
         } else {
-            exceptionMessage.append('\"').append(new String(responseContent, StandardCharsets.UTF_8)).append('\"');
+            exceptionMessage.append('\"').append(new String(responseBody, StandardCharsets.UTF_8)).append('\"');
         }
 
-        // If the decoded response content is on of these exception types there was a failure in creating the actual
+        // If the decoded response body is on of these exception types there was a failure in creating the actual
         // exception body type. In this case return an HttpResponseException to maintain the exception having a
-        // reference to the HttpResponse and information about what caused the deserialization failure.
-        if (responseDecodedContent instanceof IOException
-            || responseDecodedContent instanceof MalformedValueException
-            || responseDecodedContent instanceof IllegalStateException) {
+        // reference to the Response and information about what caused the deserialization failure.
+        if (responseDecodedBody instanceof IOException
+            || responseDecodedBody instanceof MalformedValueException
+            || responseDecodedBody instanceof IllegalStateException) {
 
-            return new HttpResponseException(exceptionMessage.toString(), httpResponse, null,
-                (Throwable) responseDecodedContent);
+            return new HttpResponseException(exceptionMessage.toString(), response, null,
+                (Throwable) responseDecodedBody);
         }
 
         HttpExceptionType exceptionType = unexpectedExceptionInformation.getExceptionType();
 
-        return new HttpResponseException(exceptionMessage.toString(), httpResponse, exceptionType,
-            responseDecodedContent);
+        return new HttpResponseException(exceptionMessage.toString(), response, exceptionType,
+            responseDecodedBody);
     }
 
     /**

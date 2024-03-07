@@ -5,7 +5,6 @@ package com.generic.core.implementation.http.rest;
 
 import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.HttpResponse;
 import com.generic.core.implementation.ReflectionUtils;
 import com.generic.core.implementation.ReflectiveInvoker;
 import com.generic.core.models.Headers;
@@ -97,14 +96,14 @@ public final class ResponseConstructorsCache {
      * Invoke the {@link ReflectiveInvoker} to construct and instance of the response class.
      *
      * @param reflectiveInvoker The {@link ReflectiveInvoker} capable of constructing an instance of the response class.
-     * @param httpResponse The HTTP response.
+     * @param response The response.
      * @param bodyAsObject The HTTP response body.
      * @return An instance of the {@link Response} implementation.
      */
-    public Response<?> invoke(ReflectiveInvoker reflectiveInvoker, HttpResponse<?> httpResponse, Object bodyAsObject) {
-        final HttpRequest httpRequest = httpResponse.getRequest();
-        final int responseStatusCode = httpResponse.getStatusCode();
-        final Headers responseHeaders = httpResponse.getHeaders();
+    public Response<?> invoke(ReflectiveInvoker reflectiveInvoker, Response<?> response, Object bodyAsObject) {
+        final HttpRequest httpRequest = response.getRequest();
+        final int responseStatusCode = response.getStatusCode();
+        final Headers responseHeaders = response.getHeaders();
 
         final int paramCount = reflectiveInvoker.getParameterCount();
         switch (paramCount) {

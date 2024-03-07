@@ -4,6 +4,7 @@
 package com.generic.core.implementation.http.rest;
 
 import com.generic.core.http.MockHttpResponse;
+import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
@@ -76,9 +77,9 @@ class ResponseConstructorsCacheBenchMarkTestData {
     private static final Foo FOO = new Foo().setName("foo1");
     private static final byte[] FOO_BYTE_ARRAY = asJsonByteArray(FOO);
     // MOCK RESPONSES
-    private static final HttpResponse<?> VOID_RESPONSE = new MockHttpResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
+    private static final Response<?> VOID_RESPONSE = new MockHttpResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
         RESPONSE_HEADERS, null);
-    private static final HttpResponse<?> FOO_RESPONSE = new MockHttpResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
+    private static final Response<?> FOO_RESPONSE = new MockHttpResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
         RESPONSE_HEADERS, FOO_BYTE_ARRAY);
 
     // ARRAY HOLDING TEST DATA
@@ -112,10 +113,10 @@ class ResponseConstructorsCacheBenchMarkTestData {
 
     static class Input {
         private final Type returnType;
-        private final HttpResponse<?> response;
+        private final Response<?> response;
         private final Object bodyAsObject;
 
-        Input(Class<?> serviceClass, String methodName, HttpResponse<?> response, Object bodyAsObject) {
+        Input(Class<?> serviceClass, String methodName, Response<?> response, Object bodyAsObject) {
             this.returnType = findMethod(serviceClass, methodName).getGenericReturnType();
             this.response = response;
             this.bodyAsObject = bodyAsObject;
@@ -125,7 +126,7 @@ class ResponseConstructorsCacheBenchMarkTestData {
             return this.returnType;
         }
 
-        HttpResponse<?> getResponse() {
+        Response<?> getResponse() {
             return this.response;
         }
 

@@ -12,7 +12,6 @@ import com.generic.core.http.annotation.HttpRequestInformation;
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.http.pipeline.HttpPipelineBuilder;
@@ -83,7 +82,7 @@ public class RestProxyImplTests {
         private volatile boolean lastResponseClosed;
 
         @Override
-        public HttpResponse<?> send(HttpRequest request) {
+        public Response<?> send(HttpRequest request) {
             boolean success = request.getUrl().getPath().equals("/my/url/path");
 
             if (request.getHttpMethod().equals(HttpMethod.POST)) {

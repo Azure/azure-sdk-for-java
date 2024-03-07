@@ -3,9 +3,9 @@
 
 package com.generic.core.http.pipeline;
 
+import com.generic.core.http.Response;
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.HttpResponse;
 import com.generic.core.implementation.http.HttpPipelineCallState;
 
 import java.util.Collections;
@@ -64,9 +64,9 @@ public final class HttpPipeline {
      *
      * @param request THe HTTP request to send.
      *
-     * @return An {@link HttpResponse}.
+     * @return An {@link Response}.
      */
-    public HttpResponse<?> send(HttpRequest request) {
+    public Response<?> send(HttpRequest request) {
         HttpPipelineNextPolicy next = new HttpPipelineNextPolicy(new HttpPipelineCallState(this, request));
 
         return next.process();

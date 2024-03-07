@@ -3,10 +3,10 @@
 
 package com.generic.core.http.okhttp;
 
+import com.generic.core.http.Response;
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
-import com.generic.core.http.models.HttpResponse;
 import com.generic.core.models.Header;
 import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
@@ -123,7 +123,7 @@ public class OkHttpHttpClientTests {
 
         for (int i = 0; i < numRequests; i++) {
             requests.add(() -> {
-                try (HttpResponse<?> response = doRequest(client, "/long")) {
+                try (Response<?> response = doRequest(client, "/long")) {
                     byte[] body = response.getBody().toBytes();
                     TestUtils.assertArraysEqual(LONG_BODY, body);
 
@@ -149,7 +149,7 @@ public class OkHttpHttpClientTests {
         Headers headers = new Headers().set(singleValueHeaderName, singleValueHeaderValue)
             .set(multiValueHeaderName, multiValueHeaderValue);
 
-        HttpResponse<?> response = client.send(
+        Response<?> response = client.send(
             new HttpRequest(HttpMethod.GET, url(server, RETURN_HEADERS_AS_IS_PATH)).setHeaders(headers));
 
         assertEquals(200, response.getStatusCode());
@@ -192,7 +192,7 @@ public class OkHttpHttpClientTests {
         assertArrayEquals(expectedBody, bytes);
     }
 
-    private static HttpResponse<?> doRequest(HttpClient client, String path) {
+    private static Response<?> doRequest(HttpClient client, String path) {
         HttpRequest request = new HttpRequest(HttpMethod.GET, url(server, path));
 
         return client.send(request);

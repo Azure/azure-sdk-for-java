@@ -3,6 +3,7 @@
 
 package com.generic.core.http.client;
 
+import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
@@ -66,10 +67,10 @@ class DefaultHttpClient implements HttpClient {
      * Synchronously send the HttpRequest.
      *
      * @param httpRequest The HTTP request being sent
-     * @return The HttpResponse object
+     * @return The Response object
      */
     @Override
-    public HttpResponse<?> send(HttpRequest httpRequest) {
+    public Response<?> send(HttpRequest httpRequest) {
         if (httpRequest.getHttpMethod() == HttpMethod.PATCH) {
             return sendPatchViaSocket(httpRequest);
         }
@@ -85,9 +86,9 @@ class DefaultHttpClient implements HttpClient {
      * Synchronously sends a PATCH request via a socket client.
      *
      * @param httpRequest The HTTP request being sent
-     * @return The HttpResponse object
+     * @return The Response object
      */
-    private HttpResponse<?> sendPatchViaSocket(HttpRequest httpRequest) {
+    private Response<?> sendPatchViaSocket(HttpRequest httpRequest) {
         try {
             return SocketClient.sendPatchRequest(httpRequest);
         } catch (IOException e) {
@@ -200,7 +201,7 @@ class DefaultHttpClient implements HttpClient {
      * @param connection The HttpURLConnection being sent to
      * @return A HttpResponse object
      */
-    private HttpResponse<?> receiveResponse(HttpRequest httpRequest, HttpURLConnection connection) {
+    private Response<?> receiveResponse(HttpRequest httpRequest, HttpURLConnection connection) {
         try {
             int responseCode = connection.getResponseCode();
             Headers responseHeaders = getResponseHeaders(connection);
@@ -432,7 +433,7 @@ class DefaultHttpClient implements HttpClient {
          * @throws ProtocolException If the protocol is not HTTP or HTTPS
          * @throws IOException If an I/O error occurs
          */
-        public static HttpResponse<?> sendPatchRequest(HttpRequest httpRequest) throws IOException {
+        public static Response<?> sendPatchRequest(HttpRequest httpRequest) throws IOException {
             final URL requestUrl = httpRequest.getUrl();
             final String protocol = requestUrl.getProtocol();
             final String host = requestUrl.getHost();
@@ -461,10 +462,10 @@ class DefaultHttpClient implements HttpClient {
          *
          * @param httpRequest The HTTP Request being sent
          * @param socket An instance of the SocketClient
-         * @return an instance of HttpResponse
+         * @return an instance of Response
          */
         @SuppressWarnings("deprecation")
-        private static HttpResponse<?> doInputOutput(HttpRequest httpRequest, Socket socket) throws IOException {
+        private static Response<?> doInputOutput(HttpRequest httpRequest, Socket socket) throws IOException {
             httpRequest.getHeaders().set(HeaderName.HOST, httpRequest.getUrl().getHost());
             if (!"keep-alive".equalsIgnoreCase(httpRequest.getHeaders().getValue(HeaderName.CONNECTION))) {
                 httpRequest.getHeaders().set(HeaderName.CONNECTION, "close");
@@ -476,7 +477,7 @@ class DefaultHttpClient implements HttpClient {
 
                 buildAndSend(httpRequest, out);
 
-                HttpResponse<?> response = buildResponse(httpRequest, in);
+                Response<?> response = buildResponse(httpRequest, in);
                 Header locationHeader = response.getHeaders().get(HeaderName.LOCATION);
                 String redirectLocation = (locationHeader == null) ? null : locationHeader.getValue();
 
@@ -527,8 +528,7 @@ class DefaultHttpClient implements HttpClient {
          * @return an instance of HttpUrlConnectionResponse
          * @throws IOException If an I/O error occurs
          */
-        private static HttpResponse<?> buildResponse(HttpRequest httpRequest, BufferedReader reader)
-            throws IOException {
+        private static Response<?> buildResponse(HttpRequest httpRequest, BufferedReader reader) throws IOException {
             String statusLine = reader.readLine();
             int dotIndex = statusLine.indexOf('.');
             int statusCode = Integer.parseInt(statusLine.substring(dotIndex + 3, dotIndex + 6));
