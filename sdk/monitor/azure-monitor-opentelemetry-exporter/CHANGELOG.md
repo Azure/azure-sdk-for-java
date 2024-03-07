@@ -1,14 +1,12 @@
 # Release History
 
-## 1.0.0-beta.20 (Unreleased)
+## 1.0.0-beta.20 (2024-03-07)
 
 ### Features Added
-
-### Breaking Changes
+- [Support ingestion sampling](https://github.com/Azure/azure-sdk-for-java/pull/39103)
 
 ### Bugs Fixed
-
-### Other Changes
+- [Avoid warning on sporadic connection failures] (https://github.com/Azure/azure-sdk-for-java/pull/39021)
 
 ## 1.0.0-beta.19 (2024-02-23)
 
