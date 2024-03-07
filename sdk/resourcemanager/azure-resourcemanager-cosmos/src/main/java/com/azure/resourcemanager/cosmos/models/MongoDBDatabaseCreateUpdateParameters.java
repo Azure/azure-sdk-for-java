@@ -40,6 +40,15 @@ public final class MongoDBDatabaseCreateUpdateParameters extends ArmResourceProp
      * {@inheritDoc}
      */
     @Override
+    public MongoDBDatabaseCreateUpdateParameters withIdentity(ManagedServiceIdentity identity) {
+        super.withIdentity(identity);
+        return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
     public MongoDBDatabaseCreateUpdateParameters withLocation(String location) {
         super.withLocation(location);
         return this;

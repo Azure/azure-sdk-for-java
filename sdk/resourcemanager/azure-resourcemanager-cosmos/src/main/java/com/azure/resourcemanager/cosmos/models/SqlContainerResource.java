@@ -77,6 +77,13 @@ public class SqlContainerResource {
     private CreateMode createMode;
 
     /*
+     * The configuration for defining Materialized Views. This must be specified only for creating a Materialized View
+     * container.
+     */
+    @JsonProperty(value = "materializedViewDefinition")
+    private MaterializedViewDefinition materializedViewDefinition;
+
+    /*
      * List of computed properties
      */
     @JsonProperty(value = "computedProperties")
@@ -295,6 +302,28 @@ public class SqlContainerResource {
     }
 
     /**
+     * Get the materializedViewDefinition property: The configuration for defining Materialized Views. This must be
+     * specified only for creating a Materialized View container.
+     * 
+     * @return the materializedViewDefinition value.
+     */
+    public MaterializedViewDefinition materializedViewDefinition() {
+        return this.materializedViewDefinition;
+    }
+
+    /**
+     * Set the materializedViewDefinition property: The configuration for defining Materialized Views. This must be
+     * specified only for creating a Materialized View container.
+     * 
+     * @param materializedViewDefinition the materializedViewDefinition value to set.
+     * @return the SqlContainerResource object itself.
+     */
+    public SqlContainerResource withMaterializedViewDefinition(MaterializedViewDefinition materializedViewDefinition) {
+        this.materializedViewDefinition = materializedViewDefinition;
+        return this;
+    }
+
+    /**
      * Get the computedProperties property: List of computed properties.
      * 
      * @return the computedProperties value.
@@ -341,6 +370,9 @@ public class SqlContainerResource {
         }
         if (restoreParameters() != null) {
             restoreParameters().validate();
+        }
+        if (materializedViewDefinition() != null) {
+            materializedViewDefinition().validate();
         }
         if (computedProperties() != null) {
             computedProperties().forEach(e -> e.validate());

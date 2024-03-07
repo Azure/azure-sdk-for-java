@@ -79,6 +79,12 @@ public final class ClusterResourceProperties {
     private Boolean repairEnabled;
 
     /*
+     * The form of AutoReplicate that is being used by this cluster.
+     */
+    @JsonProperty(value = "autoReplicate")
+    private AutoReplicate autoReplicate;
+
+    /*
      * List of TLS certificates used to authorize clients connecting to the cluster. All connections are TLS encrypted
      * whether clientCertificates is set or not, but if clientCertificates is set, the managed Cassandra cluster will
      * reject all connections not bearing a TLS client certificate that can be validated from one or more of the public
@@ -116,6 +122,12 @@ public final class ClusterResourceProperties {
     private List<SeedNode> seedNodes;
 
     /*
+     * List of the data center names for unmanaged data centers in this cluster to be included in auto-replication.
+     */
+    @JsonProperty(value = "externalDataCenters")
+    private List<String> externalDataCenters;
+
+    /*
      * (Deprecated) Number of hours to wait between taking a backup of the cluster.
      */
     @JsonProperty(value = "hoursBetweenBackups")
@@ -134,10 +146,47 @@ public final class ClusterResourceProperties {
     private Boolean cassandraAuditLoggingEnabled;
 
     /*
+     * Type of the cluster. If set to Production, some operations might not be permitted on cluster.
+     */
+    @JsonProperty(value = "clusterType")
+    private ClusterType clusterType;
+
+    /*
      * Error related to resource provisioning.
      */
     @JsonProperty(value = "provisionError")
     private CassandraError provisionError;
+
+    /*
+     * Extensions to be added or updated on cluster.
+     */
+    @JsonProperty(value = "extensions")
+    private List<String> extensions;
+
+    /*
+     * List of backup schedules that define when you want to back up your data.
+     */
+    @JsonProperty(value = "backupSchedules")
+    private List<BackupSchedule> backupSchedules;
+
+    /*
+     * How the nodes in the cluster react to scheduled events
+     */
+    @JsonProperty(value = "scheduledEventStrategy")
+    private ScheduledEventStrategy scheduledEventStrategy;
+
+    /*
+     * How to connect to the azure services needed for running the cluster
+     */
+    @JsonProperty(value = "azureConnectionMethod")
+    private AzureConnectionType azureConnectionMethod;
+
+    /*
+     * If the Connection Method is Vpn, this is the Id of the private link resource that the datacenters need to
+     * connect to.
+     */
+    @JsonProperty(value = "privateLinkResourceId", access = JsonProperty.Access.WRITE_ONLY)
+    private String privateLinkResourceId;
 
     /**
      * Creates an instance of ClusterResourceProperties class.
@@ -352,6 +401,26 @@ public final class ClusterResourceProperties {
     }
 
     /**
+     * Get the autoReplicate property: The form of AutoReplicate that is being used by this cluster.
+     * 
+     * @return the autoReplicate value.
+     */
+    public AutoReplicate autoReplicate() {
+        return this.autoReplicate;
+    }
+
+    /**
+     * Set the autoReplicate property: The form of AutoReplicate that is being used by this cluster.
+     * 
+     * @param autoReplicate the autoReplicate value to set.
+     * @return the ClusterResourceProperties object itself.
+     */
+    public ClusterResourceProperties withAutoReplicate(AutoReplicate autoReplicate) {
+        this.autoReplicate = autoReplicate;
+        return this;
+    }
+
+    /**
      * Get the clientCertificates property: List of TLS certificates used to authorize clients connecting to the
      * cluster. All connections are TLS encrypted whether clientCertificates is set or not, but if clientCertificates
      * is set, the managed Cassandra cluster will reject all connections not bearing a TLS client certificate that can
@@ -445,6 +514,28 @@ public final class ClusterResourceProperties {
     }
 
     /**
+     * Get the externalDataCenters property: List of the data center names for unmanaged data centers in this cluster
+     * to be included in auto-replication.
+     * 
+     * @return the externalDataCenters value.
+     */
+    public List<String> externalDataCenters() {
+        return this.externalDataCenters;
+    }
+
+    /**
+     * Set the externalDataCenters property: List of the data center names for unmanaged data centers in this cluster
+     * to be included in auto-replication.
+     * 
+     * @param externalDataCenters the externalDataCenters value to set.
+     * @return the ClusterResourceProperties object itself.
+     */
+    public ClusterResourceProperties withExternalDataCenters(List<String> externalDataCenters) {
+        this.externalDataCenters = externalDataCenters;
+        return this;
+    }
+
+    /**
      * Get the hoursBetweenBackups property: (Deprecated) Number of hours to wait between taking a backup of the
      * cluster.
      * 
@@ -507,6 +598,28 @@ public final class ClusterResourceProperties {
     }
 
     /**
+     * Get the clusterType property: Type of the cluster. If set to Production, some operations might not be permitted
+     * on cluster.
+     * 
+     * @return the clusterType value.
+     */
+    public ClusterType clusterType() {
+        return this.clusterType;
+    }
+
+    /**
+     * Set the clusterType property: Type of the cluster. If set to Production, some operations might not be permitted
+     * on cluster.
+     * 
+     * @param clusterType the clusterType value to set.
+     * @return the ClusterResourceProperties object itself.
+     */
+    public ClusterResourceProperties withClusterType(ClusterType clusterType) {
+        this.clusterType = clusterType;
+        return this;
+    }
+
+    /**
      * Get the provisionError property: Error related to resource provisioning.
      * 
      * @return the provisionError value.
@@ -524,6 +637,96 @@ public final class ClusterResourceProperties {
     public ClusterResourceProperties withProvisionError(CassandraError provisionError) {
         this.provisionError = provisionError;
         return this;
+    }
+
+    /**
+     * Get the extensions property: Extensions to be added or updated on cluster.
+     * 
+     * @return the extensions value.
+     */
+    public List<String> extensions() {
+        return this.extensions;
+    }
+
+    /**
+     * Set the extensions property: Extensions to be added or updated on cluster.
+     * 
+     * @param extensions the extensions value to set.
+     * @return the ClusterResourceProperties object itself.
+     */
+    public ClusterResourceProperties withExtensions(List<String> extensions) {
+        this.extensions = extensions;
+        return this;
+    }
+
+    /**
+     * Get the backupSchedules property: List of backup schedules that define when you want to back up your data.
+     * 
+     * @return the backupSchedules value.
+     */
+    public List<BackupSchedule> backupSchedules() {
+        return this.backupSchedules;
+    }
+
+    /**
+     * Set the backupSchedules property: List of backup schedules that define when you want to back up your data.
+     * 
+     * @param backupSchedules the backupSchedules value to set.
+     * @return the ClusterResourceProperties object itself.
+     */
+    public ClusterResourceProperties withBackupSchedules(List<BackupSchedule> backupSchedules) {
+        this.backupSchedules = backupSchedules;
+        return this;
+    }
+
+    /**
+     * Get the scheduledEventStrategy property: How the nodes in the cluster react to scheduled events.
+     * 
+     * @return the scheduledEventStrategy value.
+     */
+    public ScheduledEventStrategy scheduledEventStrategy() {
+        return this.scheduledEventStrategy;
+    }
+
+    /**
+     * Set the scheduledEventStrategy property: How the nodes in the cluster react to scheduled events.
+     * 
+     * @param scheduledEventStrategy the scheduledEventStrategy value to set.
+     * @return the ClusterResourceProperties object itself.
+     */
+    public ClusterResourceProperties withScheduledEventStrategy(ScheduledEventStrategy scheduledEventStrategy) {
+        this.scheduledEventStrategy = scheduledEventStrategy;
+        return this;
+    }
+
+    /**
+     * Get the azureConnectionMethod property: How to connect to the azure services needed for running the cluster.
+     * 
+     * @return the azureConnectionMethod value.
+     */
+    public AzureConnectionType azureConnectionMethod() {
+        return this.azureConnectionMethod;
+    }
+
+    /**
+     * Set the azureConnectionMethod property: How to connect to the azure services needed for running the cluster.
+     * 
+     * @param azureConnectionMethod the azureConnectionMethod value to set.
+     * @return the ClusterResourceProperties object itself.
+     */
+    public ClusterResourceProperties withAzureConnectionMethod(AzureConnectionType azureConnectionMethod) {
+        this.azureConnectionMethod = azureConnectionMethod;
+        return this;
+    }
+
+    /**
+     * Get the privateLinkResourceId property: If the Connection Method is Vpn, this is the Id of the private link
+     * resource that the datacenters need to connect to.
+     * 
+     * @return the privateLinkResourceId value.
+     */
+    public String privateLinkResourceId() {
+        return this.privateLinkResourceId;
     }
 
     /**
@@ -552,6 +755,9 @@ public final class ClusterResourceProperties {
         }
         if (provisionError() != null) {
             provisionError().validate();
+        }
+        if (backupSchedules() != null) {
+            backupSchedules().forEach(e -> e.validate());
         }
     }
 }

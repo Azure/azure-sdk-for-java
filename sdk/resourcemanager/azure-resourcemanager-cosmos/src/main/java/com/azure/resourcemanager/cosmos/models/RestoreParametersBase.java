@@ -27,6 +27,12 @@ public class RestoreParametersBase {
     @JsonProperty(value = "restoreTimestampInUtc")
     private OffsetDateTime restoreTimestampInUtc;
 
+    /*
+     * Specifies whether the restored account will have Time-To-Live disabled upon the successful restore.
+     */
+    @JsonProperty(value = "restoreWithTtlDisabled")
+    private Boolean restoreWithTtlDisabled;
+
     /**
      * Creates an instance of RestoreParametersBase class.
      */
@@ -74,6 +80,28 @@ public class RestoreParametersBase {
      */
     public RestoreParametersBase withRestoreTimestampInUtc(OffsetDateTime restoreTimestampInUtc) {
         this.restoreTimestampInUtc = restoreTimestampInUtc;
+        return this;
+    }
+
+    /**
+     * Get the restoreWithTtlDisabled property: Specifies whether the restored account will have Time-To-Live disabled
+     * upon the successful restore.
+     * 
+     * @return the restoreWithTtlDisabled value.
+     */
+    public Boolean restoreWithTtlDisabled() {
+        return this.restoreWithTtlDisabled;
+    }
+
+    /**
+     * Set the restoreWithTtlDisabled property: Specifies whether the restored account will have Time-To-Live disabled
+     * upon the successful restore.
+     * 
+     * @param restoreWithTtlDisabled the restoreWithTtlDisabled value to set.
+     * @return the RestoreParametersBase object itself.
+     */
+    public RestoreParametersBase withRestoreWithTtlDisabled(Boolean restoreWithTtlDisabled) {
+        this.restoreWithTtlDisabled = restoreWithTtlDisabled;
         return this;
     }
 
