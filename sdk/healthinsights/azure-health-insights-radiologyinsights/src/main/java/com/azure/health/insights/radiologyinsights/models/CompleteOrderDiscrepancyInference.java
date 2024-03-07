@@ -5,18 +5,15 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
- * A complete order discrepancy is shown when one or more body parts and/or measurements that should be in the document
- * (because there is a complete order) are not present.
+ * A complete order discrepancy is shown when one or more body parts and/or measurements that should be in the document (because there is a complete order) are not present.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("completeOrderDiscrepancy")
 @Immutable
 public final class CompleteOrderDiscrepancyInference extends FhirR4Extendible1 {
 
@@ -24,21 +21,18 @@ public final class CompleteOrderDiscrepancyInference extends FhirR4Extendible1 {
      * Order type : CPT ultrasound complete code for abdomen, retroperitoneal, pelvis or breast.
      */
     @Generated
-    @JsonProperty(value = "orderType")
-    private FhirR4CodeableConcept orderType;
+    private final FhirR4CodeableConcept orderType;
 
     /*
      * List of missing body parts required by a complete order : SNOMED CT codes.
      */
     @Generated
-    @JsonProperty(value = "missingBodyParts")
     private List<FhirR4CodeableConcept> missingBodyParts;
 
     /*
      * List of missing body parts that require measurement by a complete order : SNOMED CT codes.
      */
     @Generated
-    @JsonProperty(value = "missingBodyPartMeasurements")
     private List<FhirR4CodeableConcept> missingBodyPartMeasurements;
 
     /**
@@ -47,14 +41,13 @@ public final class CompleteOrderDiscrepancyInference extends FhirR4Extendible1 {
      * @param orderType the orderType value to set.
      */
     @Generated
-    @JsonCreator
-    private CompleteOrderDiscrepancyInference(@JsonProperty(value = "orderType") FhirR4CodeableConcept orderType) {
+    private CompleteOrderDiscrepancyInference(FhirR4CodeableConcept orderType) {
+        setKind(RadiologyInsightsInferenceType.COMPLETE_ORDER_DISCREPANCY);
         this.orderType = orderType;
     }
 
     /**
-     * Get the orderType property: Order type : CPT ultrasound complete code for abdomen, retroperitoneal, pelvis or
-     * breast.
+     * Get the orderType property: Order type : CPT ultrasound complete code for abdomen, retroperitoneal, pelvis or breast.
      *
      * @return the orderType value.
      */
@@ -74,13 +67,72 @@ public final class CompleteOrderDiscrepancyInference extends FhirR4Extendible1 {
     }
 
     /**
-     * Get the missingBodyPartMeasurements property: List of missing body parts that require measurement by a complete
-     * order : SNOMED CT codes.
+     * Get the missingBodyPartMeasurements property: List of missing body parts that require measurement by a complete order : SNOMED CT codes.
      *
      * @return the missingBodyPartMeasurements value.
      */
     @Generated
     public List<FhirR4CodeableConcept> getMissingBodyPartMeasurements() {
         return this.missingBodyPartMeasurements;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", getKind() == null ? null : getKind().toString());
+        jsonWriter.writeArrayField("extension", getExtension(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("orderType", this.orderType);
+        jsonWriter.writeArrayField("missingBodyParts", this.missingBodyParts,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("missingBodyPartMeasurements", this.missingBodyPartMeasurements,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CompleteOrderDiscrepancyInference from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CompleteOrderDiscrepancyInference if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CompleteOrderDiscrepancyInference.
+     */
+    @Generated
+    public static CompleteOrderDiscrepancyInference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.COMPLETE_ORDER_DISCREPANCY;
+            List<FhirR4Extension> extension = null;
+            FhirR4CodeableConcept orderType = null;
+            List<FhirR4CodeableConcept> missingBodyParts = null;
+            List<FhirR4CodeableConcept> missingBodyPartMeasurements = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("kind".equals(fieldName)) {
+                    kind = RadiologyInsightsInferenceType.fromString(reader.getString());
+                } else if ("extension".equals(fieldName)) {
+                    extension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
+                } else if ("orderType".equals(fieldName)) {
+                    orderType = FhirR4CodeableConcept.fromJson(reader);
+                } else if ("missingBodyParts".equals(fieldName)) {
+                    missingBodyParts = reader.readArray(reader1 -> FhirR4CodeableConcept.fromJson(reader1));
+                } else if ("missingBodyPartMeasurements".equals(fieldName)) {
+                    missingBodyPartMeasurements = reader.readArray(reader1 -> FhirR4CodeableConcept.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            CompleteOrderDiscrepancyInference deserializedCompleteOrderDiscrepancyInference
+                = new CompleteOrderDiscrepancyInference(orderType);
+            deserializedCompleteOrderDiscrepancyInference.setKind(kind);
+            deserializedCompleteOrderDiscrepancyInference.setExtension(extension);
+            deserializedCompleteOrderDiscrepancyInference.missingBodyParts = missingBodyParts;
+            deserializedCompleteOrderDiscrepancyInference.missingBodyPartMeasurements = missingBodyPartMeasurements;
+            return deserializedCompleteOrderDiscrepancyInference;
+        });
     }
 }

@@ -5,7 +5,6 @@ package com.azure.communication.messages.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -54,7 +53,6 @@ public final class MessageTemplateStatus extends ExpandableStringEnum<MessageTem
      * @return the corresponding MessageTemplateStatus.
      */
     @Generated
-    @JsonCreator
     public static MessageTemplateStatus fromString(String name) {
         return fromString(name, MessageTemplateStatus.class);
     }

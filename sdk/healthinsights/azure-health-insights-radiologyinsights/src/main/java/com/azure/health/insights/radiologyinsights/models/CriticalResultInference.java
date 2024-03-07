@@ -5,17 +5,15 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.List;
 
 /**
- * Critical results refer to findings of utmost importance that may require timely attention due to their potential
- * impact on patient care.
+ * Critical results refer to findings of utmost importance that may require timely attention due to their potential impact on patient care.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("criticalResult")
 @Immutable
 public final class CriticalResultInference extends FhirR4Extendible1 {
 
@@ -23,8 +21,7 @@ public final class CriticalResultInference extends FhirR4Extendible1 {
      * The complete Critical Result, as outlined below, will be reused for the recommendation.
      */
     @Generated
-    @JsonProperty(value = "result")
-    private CriticalResult result;
+    private final CriticalResult result;
 
     /**
      * Creates an instance of CriticalResultInference class.
@@ -32,8 +29,8 @@ public final class CriticalResultInference extends FhirR4Extendible1 {
      * @param result the result value to set.
      */
     @Generated
-    @JsonCreator
-    private CriticalResultInference(@JsonProperty(value = "result") CriticalResult result) {
+    private CriticalResultInference(CriticalResult result) {
+        setKind(RadiologyInsightsInferenceType.CRITICAL_RESULT);
         this.result = result;
     }
 
@@ -45,5 +42,52 @@ public final class CriticalResultInference extends FhirR4Extendible1 {
     @Generated
     public CriticalResult getResult() {
         return this.result;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", getKind() == null ? null : getKind().toString());
+        jsonWriter.writeArrayField("extension", getExtension(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("result", this.result);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of CriticalResultInference from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of CriticalResultInference if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the CriticalResultInference.
+     */
+    @Generated
+    public static CriticalResultInference fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            RadiologyInsightsInferenceType kind = RadiologyInsightsInferenceType.CRITICAL_RESULT;
+            List<FhirR4Extension> extension = null;
+            CriticalResult result = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("kind".equals(fieldName)) {
+                    kind = RadiologyInsightsInferenceType.fromString(reader.getString());
+                } else if ("extension".equals(fieldName)) {
+                    extension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
+                } else if ("result".equals(fieldName)) {
+                    result = CriticalResult.fromJson(reader);
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            CriticalResultInference deserializedCriticalResultInference = new CriticalResultInference(result);
+            deserializedCriticalResultInference.setKind(kind);
+            deserializedCriticalResultInference.setExtension(extension);
+            return deserializedCriticalResultInference;
+        });
     }
 }

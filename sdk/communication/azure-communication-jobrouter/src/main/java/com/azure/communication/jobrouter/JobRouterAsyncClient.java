@@ -4,10 +4,7 @@
 package com.azure.communication.jobrouter;
 
 import com.azure.communication.jobrouter.implementation.JobRouterClientImpl;
-import com.azure.communication.jobrouter.implementation.accesshelpers.RouterJobConstructorProxy;
-import com.azure.communication.jobrouter.implementation.accesshelpers.RouterWorkerConstructorProxy;
-import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
-import com.azure.communication.jobrouter.implementation.converters.WorkerAdapter;
+import com.azure.communication.jobrouter.implementation.JsonMergePatchHelper;
 import com.azure.communication.jobrouter.implementation.models.CancelJobOptionsInternal;
 import com.azure.communication.jobrouter.implementation.models.CancelJobResultInternal;
 import com.azure.communication.jobrouter.implementation.models.CloseJobOptionsInternal;
@@ -21,13 +18,8 @@ import com.azure.communication.jobrouter.implementation.models.ReclassifyJobResu
 import com.azure.communication.jobrouter.implementation.models.RouterJobInternal;
 import com.azure.communication.jobrouter.implementation.models.RouterWorkerInternal;
 import com.azure.communication.jobrouter.models.AcceptJobOfferResult;
-import com.azure.communication.jobrouter.models.CreateJobOptions;
-import com.azure.communication.jobrouter.models.CreateWorkerOptions;
-import com.azure.communication.jobrouter.models.RouterJob;
 import com.azure.communication.jobrouter.models.RouterJobPositionDetails;
 import com.azure.communication.jobrouter.models.RouterJobStatusSelector;
-import com.azure.communication.jobrouter.models.RouterQueueStatistics;
-import com.azure.communication.jobrouter.models.RouterWorker;
 import com.azure.communication.jobrouter.models.RouterWorkerStateSelector;
 import com.azure.communication.jobrouter.models.UnassignJobOptions;
 import com.azure.communication.jobrouter.models.UnassignJobResult;
@@ -39,6 +31,7 @@ import com.azure.core.exception.ClientAuthenticationException;
 import com.azure.core.exception.HttpResponseException;
 import com.azure.core.exception.ResourceModifiedException;
 import com.azure.core.exception.ResourceNotFoundException;
+import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.PagedResponse;
 import com.azure.core.http.rest.PagedResponseBase;
@@ -46,11 +39,21 @@ import com.azure.core.http.rest.RequestOptions;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.BinaryData;
+import com.azure.core.util.DateTimeRfc1123;
 import com.azure.core.util.FluxUtil;
 import java.time.OffsetDateTime;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
+import com.azure.communication.jobrouter.implementation.accesshelpers.RouterJobConstructorProxy;
+import com.azure.communication.jobrouter.implementation.accesshelpers.RouterWorkerConstructorProxy;
+import com.azure.communication.jobrouter.implementation.converters.JobAdapter;
+import com.azure.communication.jobrouter.implementation.converters.WorkerAdapter;
+import com.azure.communication.jobrouter.models.CreateJobOptions;
+import com.azure.communication.jobrouter.models.CreateWorkerOptions;
+import com.azure.communication.jobrouter.models.RouterJob;
+import com.azure.communication.jobrouter.models.RouterQueueStatistics;
+import com.azure.communication.jobrouter.models.RouterWorker;
 
 /**
  * Initializes a new instance of the asynchronous JobRouterClient type.
@@ -73,34 +76,15 @@ public final class JobRouterAsyncClient {
 
     /**
      * Creates or updates a router job.
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The request should only proceed if an entity matches this string.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>The request should only proceed if the entity was not modified after this time.</td>
-     * </tr>
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this string.</td></tr>
+     *     <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -115,8 +99,8 @@ public final class JobRouterAsyncClient {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -134,7 +118,7 @@ public final class JobRouterAsyncClient {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -144,18 +128,17 @@ public final class JobRouterAsyncClient {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
+     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Optional)
      *     }
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -170,8 +153,8 @@ public final class JobRouterAsyncClient {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -189,7 +172,7 @@ public final class JobRouterAsyncClient {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -199,12 +182,13 @@ public final class JobRouterAsyncClient {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
+     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Optional)
      *     }
      * }
      * }</pre>
@@ -221,8 +205,6 @@ public final class JobRouterAsyncClient {
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> upsertJobWithResponse(String jobId, BinaryData resource, RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertJob' is 'application/merge-patch+json' and
-        // stream-style-serialization is not enabled
         return this.serviceClient.upsertJobWithResponseAsync(jobId, resource, requestOptions);
     }
 
@@ -554,9 +536,7 @@ public final class JobRouterAsyncClient {
 
     /**
      * Retrieves an existing job by Id.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -571,8 +551,8 @@ public final class JobRouterAsyncClient {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -590,7 +570,7 @@ public final class JobRouterAsyncClient {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -600,12 +580,13 @@ public final class JobRouterAsyncClient {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
+     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Optional)
      *     }
      * }
      * }</pre>
@@ -763,67 +744,20 @@ public final class JobRouterAsyncClient {
 
     /**
      * Retrieves list of jobs based on filter parameters.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Number of objects to return per page.</td>
-     * </tr>
-     * <tr>
-     * <td>status</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, filter jobs by status. Allowed values: "all", "pendingClassification", "queued", "assigned",
-     * "completed", "closed", "cancelled", "classificationFailed", "created", "pendingSchedule", "scheduled",
-     * "scheduleFailed", "waitingForActivation", "active".</td>
-     * </tr>
-     * <tr>
-     * <td>queueId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, filter jobs by queue.</td>
-     * </tr>
-     * <tr>
-     * <td>channelId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, filter jobs by channel.</td>
-     * </tr>
-     * <tr>
-     * <td>classificationPolicyId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, filter jobs by classificationPolicy.</td>
-     * </tr>
-     * <tr>
-     * <td>scheduledBefore</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>If specified, filter on jobs that was scheduled before or at given timestamp. Range: (-Inf,
-     * scheduledBefore].</td>
-     * </tr>
-     * <tr>
-     * <td>scheduledAfter</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>If specified, filter on jobs that was scheduled at or after given value. Range: [scheduledAfter, +Inf).</td>
-     * </tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     *     <tr><td>status</td><td>String</td><td>No</td><td>If specified, filter jobs by status. Allowed values: "all", "pendingClassification", "queued", "assigned", "completed", "closed", "cancelled", "classificationFailed", "created", "pendingSchedule", "scheduled", "scheduleFailed", "waitingForActivation", "active".</td></tr>
+     *     <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, filter jobs by queue.</td></tr>
+     *     <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, filter jobs by channel.</td></tr>
+     *     <tr><td>classificationPolicyId</td><td>String</td><td>No</td><td>If specified, filter jobs by classificationPolicy.</td></tr>
+     *     <tr><td>scheduledBefore</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled before or at given timestamp. Range: (-Inf, scheduledBefore].</td></tr>
+     *     <tr><td>scheduledAfter</td><td>OffsetDateTime</td><td>No</td><td>If specified, filter on jobs that was scheduled at or after given value. Range: [scheduledAfter, +Inf).</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -838,8 +772,8 @@ public final class JobRouterAsyncClient {
      *     dispositionCode: String (Optional)
      *     requestedWorkerSelectors (Optional): [
      *          (Optional){
-     *             key: String (Required)
-     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Required)
+     *             key: String (Optional, Required on create)
+     *             labelOperator: String(equal/notEqual/lessThan/lessThanOrEqual/greaterThan/greaterThanOrEqual) (Optional, Required on create)
      *             value: Object (Optional)
      *             expiresAfterSeconds: Double (Optional)
      *             expedite: Boolean (Optional)
@@ -857,7 +791,7 @@ public final class JobRouterAsyncClient {
      *         String (Required): {
      *             assignmentId: String (Required)
      *             workerId: String (Optional)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *             completedAt: OffsetDateTime (Optional)
      *             closedAt: OffsetDateTime (Optional)
      *         }
@@ -867,12 +801,13 @@ public final class JobRouterAsyncClient {
      *     }
      *     notes (Optional): [
      *          (Optional){
-     *             message: String (Required)
+     *             message: String (Optional, Required on create)
      *             addedAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     scheduledAt: OffsetDateTime (Optional)
      *     matchingMode (Optional): {
+     *         kind: String(queueAndMatch/scheduleAndSuspend/suspend) (Optional)
      *     }
      * }
      * }</pre>
@@ -892,9 +827,7 @@ public final class JobRouterAsyncClient {
 
     /**
      * Gets a job's position details.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     jobId: String (Required)
@@ -921,17 +854,13 @@ public final class JobRouterAsyncClient {
 
     /**
      * Unassign a job.
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     suspendMatching: Boolean (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     jobId: String (Required)
@@ -946,8 +875,7 @@ public final class JobRouterAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response payload after a job has been successfully unassigned along with {@link Response} on successful
-     * completion of {@link Mono}.
+     * @return response payload after a job has been successfully unassigned along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -958,9 +886,7 @@ public final class JobRouterAsyncClient {
 
     /**
      * Accepts an offer to work on a job and returns a 409/Conflict if another agent accepted the job already.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     assignmentId: String (Required)
@@ -976,8 +902,7 @@ public final class JobRouterAsyncClient {
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return response containing ids for the worker, job, and assignment from an accepted offer along with
-     * {@link Response} on successful completion of {@link Mono}.
+     * @return response containing ids for the worker, job, and assignment from an accepted offer along with {@link Response} on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -1052,9 +977,7 @@ public final class JobRouterAsyncClient {
 
     /**
      * Retrieves a queue's statistics.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     queueId: String (Required)
@@ -1082,34 +1005,15 @@ public final class JobRouterAsyncClient {
 
     /**
      * Creates or updates a worker.
-     * <p>
-     * <strong>Header Parameters</strong>
-     * </p>
+     * <p><strong>Header Parameters</strong></p>
      * <table border="1">
-     * <caption>Header Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>If-Match</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>The request should only proceed if an entity matches this string.</td>
-     * </tr>
-     * <tr>
-     * <td>If-Unmodified-Since</td>
-     * <td>OffsetDateTime</td>
-     * <td>No</td>
-     * <td>The request should only proceed if the entity was not modified after this time.</td>
-     * </tr>
+     *     <caption>Header Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>If-Match</td><td>String</td><td>No</td><td>The request should only proceed if an entity matches this string.</td></tr>
+     *     <tr><td>If-Unmodified-Since</td><td>OffsetDateTime</td><td>No</td><td>The request should only proceed if the entity was not modified after this time.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addHeader}
-     * <p>
-     * <strong>Request Body Schema</strong>
-     * </p>
+     * <p><strong>Request Body Schema</strong></p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1127,26 +1031,26 @@ public final class JobRouterAsyncClient {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -1154,9 +1058,7 @@ public final class JobRouterAsyncClient {
      *     maxConcurrentOffers: Integer (Optional)
      * }
      * }</pre>
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1174,26 +1076,26 @@ public final class JobRouterAsyncClient {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -1215,8 +1117,6 @@ public final class JobRouterAsyncClient {
     @ServiceMethod(returns = ReturnType.SINGLE)
     Mono<Response<BinaryData>> upsertWorkerWithResponse(String workerId, BinaryData resource,
         RequestOptions requestOptions) {
-        // Convenience API is not generated, as operation 'upsertWorker' is 'application/merge-patch+json' and
-        // stream-style-serialization is not enabled
         return this.serviceClient.upsertWorkerWithResponseAsync(workerId, resource, requestOptions);
     }
 
@@ -1526,9 +1426,7 @@ public final class JobRouterAsyncClient {
 
     /**
      * Retrieves an existing worker by Id.
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1546,26 +1444,26 @@ public final class JobRouterAsyncClient {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -1607,54 +1505,18 @@ public final class JobRouterAsyncClient {
 
     /**
      * Retrieves existing workers.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
+     * <p><strong>Query Parameters</strong></p>
      * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>maxpagesize</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>Number of objects to return per page.</td>
-     * </tr>
-     * <tr>
-     * <td>state</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, select workers by worker state. Allowed values: "active", "draining", "inactive", "all".</td>
-     * </tr>
-     * <tr>
-     * <td>channelId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, select workers who have a channel configuration with this channel.</td>
-     * </tr>
-     * <tr>
-     * <td>queueId</td>
-     * <td>String</td>
-     * <td>No</td>
-     * <td>If specified, select workers who are assigned to this queue.</td>
-     * </tr>
-     * <tr>
-     * <td>hasCapacity</td>
-     * <td>Boolean</td>
-     * <td>No</td>
-     * <td>If set to true, select only workers who have capacity for the channel specified by `channelId` or for any
-     * channel if `channelId` not specified. If set to false, then will return all workers including workers without any
-     * capacity for jobs. Defaults to false.</td>
-     * </tr>
+     *     <caption>Query Parameters</caption>
+     *     <tr><th>Name</th><th>Type</th><th>Required</th><th>Description</th></tr>
+     *     <tr><td>maxpagesize</td><td>Integer</td><td>No</td><td>Number of objects to return per page.</td></tr>
+     *     <tr><td>state</td><td>String</td><td>No</td><td>If specified, select workers by worker state. Allowed values: "active", "draining", "inactive", "all".</td></tr>
+     *     <tr><td>channelId</td><td>String</td><td>No</td><td>If specified, select workers who have a channel configuration with this channel.</td></tr>
+     *     <tr><td>queueId</td><td>String</td><td>No</td><td>If specified, select workers who are assigned to this queue.</td></tr>
+     *     <tr><td>hasCapacity</td><td>Boolean</td><td>No</td><td>If set to true, select only workers who have capacity for the channel specified by `channelId` or for any channel if `channelId` not specified. If set to false, then will return all workers including workers without any capacity for jobs. Defaults to false.</td></tr>
      * </table>
      * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
-     * <strong>Response Body Schema</strong>
-     * </p>
+     * <p><strong>Response Body Schema</strong></p>
      * <pre>{@code
      * {
      *     etag: String (Required)
@@ -1672,26 +1534,26 @@ public final class JobRouterAsyncClient {
      *     }
      *     channels (Optional): [
      *          (Optional){
-     *             channelId: String (Required)
-     *             capacityCostPerJob: int (Required)
+     *             channelId: String (Optional, Required on create)
+     *             capacityCostPerJob: int (Optional, Required on create)
      *             maxNumberOfJobs: Integer (Optional)
      *         }
      *     ]
      *     offers (Optional): [
      *          (Optional){
      *             offerId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
      *             offeredAt: OffsetDateTime (Optional)
      *             expiresAt: OffsetDateTime (Optional)
      *         }
      *     ]
      *     assignedJobs (Optional): [
      *          (Optional){
-     *             assignmentId: String (Required)
-     *             jobId: String (Required)
-     *             capacityCost: int (Required)
-     *             assignedAt: OffsetDateTime (Required)
+     *             assignmentId: String (Optional, Required on create)
+     *             jobId: String (Optional, Required on create)
+     *             capacityCost: int (Optional, Required on create)
+     *             assignedAt: OffsetDateTime (Optional, Required on create)
      *         }
      *     ]
      *     loadRatio: Double (Optional)
@@ -1818,11 +1680,13 @@ public final class JobRouterAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listJobs(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+                ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, RouterJob>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(RouterJob.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -1845,11 +1709,13 @@ public final class JobRouterAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listJobs(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+                ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, RouterJob>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(RouterJob.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -1910,8 +1776,7 @@ public final class JobRouterAsyncClient {
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return response containing ids for the worker, job, and assignment from an accepted offer on successful
-     * completion of {@link Mono}.
+     * @return response containing ids for the worker, job, and assignment from an accepted offer on successful completion of {@link Mono}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
@@ -2040,11 +1905,13 @@ public final class JobRouterAsyncClient {
         }
         PagedFlux<BinaryData> pagedFluxResponse = listWorkers(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+                ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, RouterWorker>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(RouterWorker.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -2067,11 +1934,13 @@ public final class JobRouterAsyncClient {
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listWorkers(requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
+            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null)
+                ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
             return flux.map(pagedResponse -> new PagedResponseBase<Void, RouterWorker>(pagedResponse.getRequest(),
                 pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
+                pagedResponse.getValue()
+                    .stream()
                     .map(protocolMethodData -> protocolMethodData.toObject(RouterWorker.class))
                     .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
@@ -2426,5 +2295,125 @@ public final class JobRouterAsyncClient {
         }
         return declineJobOfferWithResponse(workerId, offerId, requestOptions).flatMap(FluxUtil::toMono)
             .map(protocolMethodData -> protocolMethodData.toObject(DeclineJobOfferResultInternal.class));
+    }
+
+    /**
+     * Creates or updates a router job.
+     *
+     * @param jobId Id of a job.
+     * @param resource The resource instance.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ifUnmodifiedSince The request should only proceed if the entity was not modified after this time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a unit of work to be routed on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RouterJobInternal> upsertJob(String jobId, RouterJobInternal resource, String ifMatch,
+        OffsetDateTime ifUnmodifiedSince) {
+        // Generated convenience method for upsertJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        JsonMergePatchHelper.getRouterJobInternalAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromBytes(BinaryData.fromObject(resource).toBytes());
+        JsonMergePatchHelper.getRouterJobInternalAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertJobWithResponse(jobId, resourceInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(RouterJobInternal.class));
+    }
+
+    /**
+     * Creates or updates a router job.
+     *
+     * @param jobId Id of a job.
+     * @param resource The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return a unit of work to be routed on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RouterJobInternal> upsertJob(String jobId, RouterJobInternal resource) {
+        // Generated convenience method for upsertJobWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getRouterJobInternalAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromBytes(BinaryData.fromObject(resource).toBytes());
+        JsonMergePatchHelper.getRouterJobInternalAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertJobWithResponse(jobId, resourceInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(RouterJobInternal.class));
+    }
+
+    /**
+     * Creates or updates a worker.
+     *
+     * @param workerId Id of a worker.
+     * @param resource The resource instance.
+     * @param ifMatch The request should only proceed if an entity matches this string.
+     * @param ifUnmodifiedSince The request should only proceed if the entity was not modified after this time.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an entity for jobs to be routed to on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RouterWorkerInternal> upsertWorker(String workerId, RouterWorkerInternal resource, String ifMatch,
+        OffsetDateTime ifUnmodifiedSince) {
+        // Generated convenience method for upsertWorkerWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        if (ifMatch != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_MATCH, ifMatch);
+        }
+        if (ifUnmodifiedSince != null) {
+            requestOptions.setHeader(HttpHeaderName.IF_UNMODIFIED_SINCE,
+                String.valueOf(new DateTimeRfc1123(ifUnmodifiedSince)));
+        }
+        JsonMergePatchHelper.getRouterWorkerInternalAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromBytes(BinaryData.fromObject(resource).toBytes());
+        JsonMergePatchHelper.getRouterWorkerInternalAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertWorkerWithResponse(workerId, resourceInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(RouterWorkerInternal.class));
+    }
+
+    /**
+     * Creates or updates a worker.
+     *
+     * @param workerId Id of a worker.
+     * @param resource The resource instance.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws HttpResponseException thrown if the request is rejected by server.
+     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
+     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
+     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return an entity for jobs to be routed to on successful completion of {@link Mono}.
+     */
+    @Generated
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    Mono<RouterWorkerInternal> upsertWorker(String workerId, RouterWorkerInternal resource) {
+        // Generated convenience method for upsertWorkerWithResponse
+        RequestOptions requestOptions = new RequestOptions();
+        JsonMergePatchHelper.getRouterWorkerInternalAccessor().prepareModelForJsonMergePatch(resource, true);
+        BinaryData resourceInBinaryData = BinaryData.fromBytes(BinaryData.fromObject(resource).toBytes());
+        JsonMergePatchHelper.getRouterWorkerInternalAccessor().prepareModelForJsonMergePatch(resource, false);
+        return upsertWorkerWithResponse(workerId, resourceInBinaryData, requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(RouterWorkerInternal.class));
     }
 }

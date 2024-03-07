@@ -5,17 +5,15 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Imaging procedures.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("imagingProcedureRecommendation")
 @Immutable
 public final class ImagingProcedureRecommendation extends ProcedureRecommendation {
 
@@ -23,15 +21,13 @@ public final class ImagingProcedureRecommendation extends ProcedureRecommendatio
      * LOINC codes for the procedure.
      */
     @Generated
-    @JsonProperty(value = "procedureCodes")
     private List<FhirR4CodeableConcept> procedureCodes;
 
     /*
      * Imaging procedures.
      */
     @Generated
-    @JsonProperty(value = "imagingProcedures")
-    private List<ImagingProcedure> imagingProcedures;
+    private final List<ImagingProcedure> imagingProcedures;
 
     /**
      * Creates an instance of ImagingProcedureRecommendation class.
@@ -39,9 +35,8 @@ public final class ImagingProcedureRecommendation extends ProcedureRecommendatio
      * @param imagingProcedures the imagingProcedures value to set.
      */
     @Generated
-    @JsonCreator
-    private ImagingProcedureRecommendation(
-        @JsonProperty(value = "imagingProcedures") List<ImagingProcedure> imagingProcedures) {
+    private ImagingProcedureRecommendation(List<ImagingProcedure> imagingProcedures) {
+        setKind("imagingProcedureRecommendation");
         this.imagingProcedures = imagingProcedures;
     }
 
@@ -63,5 +58,55 @@ public final class ImagingProcedureRecommendation extends ProcedureRecommendatio
     @Generated
     public List<ImagingProcedure> getImagingProcedures() {
         return this.imagingProcedures;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("kind", getKind());
+        jsonWriter.writeArrayField("imagingProcedures", this.imagingProcedures,
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("procedureCodes", this.procedureCodes,
+            (writer, element) -> writer.writeJson(element));
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of ImagingProcedureRecommendation from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of ImagingProcedureRecommendation if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the ImagingProcedureRecommendation.
+     */
+    @Generated
+    public static ImagingProcedureRecommendation fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String kind = "imagingProcedureRecommendation";
+            List<ImagingProcedure> imagingProcedures = null;
+            List<FhirR4CodeableConcept> procedureCodes = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("kind".equals(fieldName)) {
+                    kind = reader.getString();
+                } else if ("imagingProcedures".equals(fieldName)) {
+                    imagingProcedures = reader.readArray(reader1 -> ImagingProcedure.fromJson(reader1));
+                } else if ("procedureCodes".equals(fieldName)) {
+                    procedureCodes = reader.readArray(reader1 -> FhirR4CodeableConcept.fromJson(reader1));
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            ImagingProcedureRecommendation deserializedImagingProcedureRecommendation
+                = new ImagingProcedureRecommendation(imagingProcedures);
+            deserializedImagingProcedureRecommendation.setKind(kind);
+            deserializedImagingProcedureRecommendation.procedureCodes = procedureCodes;
+            return deserializedImagingProcedureRecommendation;
+        });
     }
 }

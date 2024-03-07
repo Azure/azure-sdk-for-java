@@ -5,16 +5,14 @@ package com.azure.communication.messages.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The message template's text value information.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("text")
 @Immutable
 public final class MessageTemplateText extends MessageTemplateValue {
 
@@ -22,8 +20,7 @@ public final class MessageTemplateText extends MessageTemplateValue {
      * The text value.
      */
     @Generated
-    @JsonProperty(value = "text")
-    private String text;
+    private final String text;
 
     /**
      * Creates an instance of MessageTemplateText class.
@@ -32,10 +29,9 @@ public final class MessageTemplateText extends MessageTemplateValue {
      * @param text the text value to set.
      */
     @Generated
-    @JsonCreator
-    public MessageTemplateText(@JsonProperty(value = "name") String refValue,
-        @JsonProperty(value = "text") String text) {
+    public MessageTemplateText(String refValue, String text) {
         super(refValue);
+        setKind(MessageTemplateValueKind.TEXT);
         this.text = text;
     }
 
@@ -47,5 +43,51 @@ public final class MessageTemplateText extends MessageTemplateValue {
     @Generated
     public String getText() {
         return this.text;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getRefValue());
+        jsonWriter.writeStringField("kind", getKind() == null ? null : getKind().toString());
+        jsonWriter.writeStringField("text", this.text);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MessageTemplateText from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MessageTemplateText if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MessageTemplateText.
+     */
+    @Generated
+    public static MessageTemplateText fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String refValue = null;
+            MessageTemplateValueKind kind = MessageTemplateValueKind.TEXT;
+            String text = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    refValue = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    kind = MessageTemplateValueKind.fromString(reader.getString());
+                } else if ("text".equals(fieldName)) {
+                    text = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            MessageTemplateText deserializedMessageTemplateText = new MessageTemplateText(refValue, text);
+            deserializedMessageTemplateText.setKind(kind);
+            return deserializedMessageTemplateText;
+        });
     }
 }

@@ -5,34 +5,35 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonSerializable;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 import java.util.List;
 
 /**
  * Procedure information.
  */
 @Fluent
-public final class FhirR4Extendible {
+public final class FhirR4Extendible implements JsonSerializable<FhirR4Extendible> {
 
     /*
      * Additional Content defined by implementations
      */
     @Generated
-    @JsonProperty(value = "extension")
     private List<FhirR4Extension> extension;
 
     /*
      * Procedure code
      */
     @Generated
-    @JsonProperty(value = "code")
     private FhirR4CodeableConcept code;
 
     /*
      * Procedure description
      */
     @Generated
-    @JsonProperty(value = "description")
     private String description;
 
     /**
@@ -106,5 +107,47 @@ public final class FhirR4Extendible {
     public FhirR4Extendible setDescription(String description) {
         this.description = description;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeArrayField("extension", this.extension, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("code", this.code);
+        jsonWriter.writeStringField("description", this.description);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FhirR4Extendible from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FhirR4Extendible if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IOException If an error occurs while reading the FhirR4Extendible.
+     */
+    @Generated
+    public static FhirR4Extendible fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            FhirR4Extendible deserializedFhirR4Extendible = new FhirR4Extendible();
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("extension".equals(fieldName)) {
+                    List<FhirR4Extension> extension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
+                    deserializedFhirR4Extendible.extension = extension;
+                } else if ("code".equals(fieldName)) {
+                    deserializedFhirR4Extendible.code = FhirR4CodeableConcept.fromJson(reader);
+                } else if ("description".equals(fieldName)) {
+                    deserializedFhirR4Extendible.description = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            return deserializedFhirR4Extendible;
+        });
     }
 }

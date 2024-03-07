@@ -5,16 +5,14 @@ package com.azure.communication.messages.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
 
 /**
  * The message template's quick action value information.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "kind")
-@JsonTypeName("quickAction")
 @Fluent
 public final class MessageTemplateQuickAction extends MessageTemplateValue {
 
@@ -22,14 +20,12 @@ public final class MessageTemplateQuickAction extends MessageTemplateValue {
      * The [Optional] quick action text
      */
     @Generated
-    @JsonProperty(value = "text")
     private String text;
 
     /*
      * The [Optional] quick action payload
      */
     @Generated
-    @JsonProperty(value = "payload")
     private String payload;
 
     /**
@@ -38,9 +34,9 @@ public final class MessageTemplateQuickAction extends MessageTemplateValue {
      * @param refValue the refValue value to set.
      */
     @Generated
-    @JsonCreator
-    public MessageTemplateQuickAction(@JsonProperty(value = "name") String refValue) {
+    public MessageTemplateQuickAction(String refValue) {
         super(refValue);
+        setKind(MessageTemplateValueKind.QUICK_ACTION);
     }
 
     /**
@@ -85,5 +81,58 @@ public final class MessageTemplateQuickAction extends MessageTemplateValue {
     public MessageTemplateQuickAction setPayload(String payload) {
         this.payload = payload;
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("name", getRefValue());
+        jsonWriter.writeStringField("kind", getKind() == null ? null : getKind().toString());
+        jsonWriter.writeStringField("text", this.text);
+        jsonWriter.writeStringField("payload", this.payload);
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of MessageTemplateQuickAction from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of MessageTemplateQuickAction if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the MessageTemplateQuickAction.
+     */
+    @Generated
+    public static MessageTemplateQuickAction fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String refValue = null;
+            MessageTemplateValueKind kind = MessageTemplateValueKind.QUICK_ACTION;
+            String text = null;
+            String payload = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("name".equals(fieldName)) {
+                    refValue = reader.getString();
+                } else if ("kind".equals(fieldName)) {
+                    kind = MessageTemplateValueKind.fromString(reader.getString());
+                } else if ("text".equals(fieldName)) {
+                    text = reader.getString();
+                } else if ("payload".equals(fieldName)) {
+                    payload = reader.getString();
+                } else {
+                    reader.skipChildren();
+                }
+            }
+            MessageTemplateQuickAction deserializedMessageTemplateQuickAction
+                = new MessageTemplateQuickAction(refValue);
+            deserializedMessageTemplateQuickAction.setKind(kind);
+            deserializedMessageTemplateQuickAction.text = text;
+            deserializedMessageTemplateQuickAction.payload = payload;
+            return deserializedMessageTemplateQuickAction;
+        });
     }
 }

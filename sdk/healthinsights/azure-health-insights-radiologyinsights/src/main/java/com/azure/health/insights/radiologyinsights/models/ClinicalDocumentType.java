@@ -5,7 +5,6 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -78,7 +77,6 @@ public final class ClinicalDocumentType extends ExpandableStringEnum<ClinicalDoc
      * @return the corresponding ClinicalDocumentType.
      */
     @Generated
-    @JsonCreator
     public static ClinicalDocumentType fromString(String name) {
         return fromString(name, ClinicalDocumentType.class);
     }

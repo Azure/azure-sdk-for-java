@@ -5,7 +5,6 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -44,7 +43,6 @@ public final class DocumentContentSourceType extends ExpandableStringEnum<Docume
      * @return the corresponding DocumentContentSourceType.
      */
     @Generated
-    @JsonCreator
     public static DocumentContentSourceType fromString(String name) {
         return fromString(name, DocumentContentSourceType.class);
     }

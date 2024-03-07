@@ -5,18 +5,18 @@ package com.azure.health.insights.radiologyinsights.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
-import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.azure.json.JsonReader;
+import com.azure.json.JsonToken;
+import com.azure.json.JsonWriter;
+import java.io.IOException;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Detailed information about conditions, problems or diagnoses
  * Based on [FHIR Condition](https://www.hl7.org/fhir/R4/condition.html).
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "resourceType")
-@JsonTypeName("Condition")
 @Fluent
 public final class FhirR4Condition extends FhirR4DomainResource {
 
@@ -24,147 +24,126 @@ public final class FhirR4Condition extends FhirR4DomainResource {
      * External Ids for this condition
      */
     @Generated
-    @JsonProperty(value = "identifier")
     private List<FhirR4Identifier> identifier;
 
     /*
      * active | recurrence | relapse | inactive | remission | resolved
      */
     @Generated
-    @JsonProperty(value = "clinicalStatus")
     private FhirR4CodeableConcept clinicalStatus;
 
     /*
      * unconfirmed | provisional | differential | confirmed | refuted | entered-in-error
      */
     @Generated
-    @JsonProperty(value = "verificationStatus")
     private FhirR4CodeableConcept verificationStatus;
 
     /*
      * problem-list-item | encounter-diagnosis
      */
     @Generated
-    @JsonProperty(value = "category")
     private List<FhirR4CodeableConcept> category;
 
     /*
      * Subjective severity of condition
      */
     @Generated
-    @JsonProperty(value = "severity")
     private FhirR4CodeableConcept severity;
 
     /*
      * Identification of the condition, problem or diagnosis
      */
     @Generated
-    @JsonProperty(value = "code")
     private FhirR4CodeableConcept code;
 
     /*
      * Anatomical location, if relevant
      */
     @Generated
-    @JsonProperty(value = "bodySite")
     private List<FhirR4CodeableConcept> bodySite;
 
     /*
      * Encounter created as part of
      */
     @Generated
-    @JsonProperty(value = "encounter")
     private FhirR4Reference encounter;
 
     /*
-     * Estimated or actual date, date-time, or age
+     * Estimated or actual date,  date-time, or age
      */
     @Generated
-    @JsonProperty(value = "onsetDateTime")
     private String onsetDateTime;
 
     /*
-     * Estimated or actual date, date-time, or age
+     * Estimated or actual date,  date-time, or age
      */
     @Generated
-    @JsonProperty(value = "onsetAge")
     private FhirR4Quantity onsetAge;
 
     /*
-     * Estimated or actual date, date-time, or age
+     * Estimated or actual date,  date-time, or age
      */
     @Generated
-    @JsonProperty(value = "onsetPeriod")
     private FhirR4Period onsetPeriod;
 
     /*
-     * Estimated or actual date, date-time, or age
+     * Estimated or actual date,  date-time, or age
      */
     @Generated
-    @JsonProperty(value = "onsetRange")
     private FhirR4Range onsetRange;
 
     /*
-     * Estimated or actual date, date-time, or age
+     * Estimated or actual date,  date-time, or age
      */
     @Generated
-    @JsonProperty(value = "onsetString")
     private String onsetString;
 
     /*
      * When in resolution/remission
      */
     @Generated
-    @JsonProperty(value = "abatementDateTime")
     private String abatementDateTime;
 
     /*
      * When in resolution/remission
      */
     @Generated
-    @JsonProperty(value = "abatementAge")
     private FhirR4Quantity abatementAge;
 
     /*
      * When in resolution/remission
      */
     @Generated
-    @JsonProperty(value = "abatementPeriod")
     private FhirR4Period abatementPeriod;
 
     /*
      * When in resolution/remission
      */
     @Generated
-    @JsonProperty(value = "abatementRange")
     private FhirR4Range abatementRange;
 
     /*
      * When in resolution/remission
      */
     @Generated
-    @JsonProperty(value = "abatementString")
     private String abatementString;
 
     /*
      * Date record was first recorded
      */
     @Generated
-    @JsonProperty(value = "recordedDate")
     private String recordedDate;
 
     /*
      * stge/grade, usually assessed formally
      */
     @Generated
-    @JsonProperty(value = "stage")
     private List<FhirR4ConditionStage> stage;
 
     /*
      * Additional information about the Condition
      */
     @Generated
-    @JsonProperty(value = "note")
     private List<FhirR4Annotation> note;
 
     /**
@@ -173,9 +152,9 @@ public final class FhirR4Condition extends FhirR4DomainResource {
      * @param resourceType the resourceType value to set.
      */
     @Generated
-    @JsonCreator
-    public FhirR4Condition(@JsonProperty(value = "resourceType") String resourceType) {
+    public FhirR4Condition(String resourceType) {
         super(resourceType);
+        setResourceType("Condition");
     }
 
     /**
@@ -223,8 +202,7 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     }
 
     /**
-     * Get the verificationStatus property: unconfirmed | provisional | differential | confirmed | refuted |
-     * entered-in-error.
+     * Get the verificationStatus property: unconfirmed | provisional | differential | confirmed | refuted | entered-in-error.
      *
      * @return the verificationStatus value.
      */
@@ -234,8 +212,7 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     }
 
     /**
-     * Set the verificationStatus property: unconfirmed | provisional | differential | confirmed | refuted |
-     * entered-in-error.
+     * Set the verificationStatus property: unconfirmed | provisional | differential | confirmed | refuted | entered-in-error.
      *
      * @param verificationStatus the verificationStatus value to set.
      * @return the FhirR4Condition object itself.
@@ -357,7 +334,7 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     }
 
     /**
-     * Get the onsetDateTime property: Estimated or actual date, date-time, or age.
+     * Get the onsetDateTime property: Estimated or actual date,  date-time, or age.
      *
      * @return the onsetDateTime value.
      */
@@ -367,7 +344,7 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     }
 
     /**
-     * Set the onsetDateTime property: Estimated or actual date, date-time, or age.
+     * Set the onsetDateTime property: Estimated or actual date,  date-time, or age.
      *
      * @param onsetDateTime the onsetDateTime value to set.
      * @return the FhirR4Condition object itself.
@@ -379,7 +356,7 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     }
 
     /**
-     * Get the onsetAge property: Estimated or actual date, date-time, or age.
+     * Get the onsetAge property: Estimated or actual date,  date-time, or age.
      *
      * @return the onsetAge value.
      */
@@ -389,7 +366,7 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     }
 
     /**
-     * Set the onsetAge property: Estimated or actual date, date-time, or age.
+     * Set the onsetAge property: Estimated or actual date,  date-time, or age.
      *
      * @param onsetAge the onsetAge value to set.
      * @return the FhirR4Condition object itself.
@@ -401,7 +378,7 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     }
 
     /**
-     * Get the onsetPeriod property: Estimated or actual date, date-time, or age.
+     * Get the onsetPeriod property: Estimated or actual date,  date-time, or age.
      *
      * @return the onsetPeriod value.
      */
@@ -411,7 +388,7 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     }
 
     /**
-     * Set the onsetPeriod property: Estimated or actual date, date-time, or age.
+     * Set the onsetPeriod property: Estimated or actual date,  date-time, or age.
      *
      * @param onsetPeriod the onsetPeriod value to set.
      * @return the FhirR4Condition object itself.
@@ -423,7 +400,7 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     }
 
     /**
-     * Get the onsetRange property: Estimated or actual date, date-time, or age.
+     * Get the onsetRange property: Estimated or actual date,  date-time, or age.
      *
      * @return the onsetRange value.
      */
@@ -433,7 +410,7 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     }
 
     /**
-     * Set the onsetRange property: Estimated or actual date, date-time, or age.
+     * Set the onsetRange property: Estimated or actual date,  date-time, or age.
      *
      * @param onsetRange the onsetRange value to set.
      * @return the FhirR4Condition object itself.
@@ -445,7 +422,7 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     }
 
     /**
-     * Get the onsetString property: Estimated or actual date, date-time, or age.
+     * Get the onsetString property: Estimated or actual date,  date-time, or age.
      *
      * @return the onsetString value.
      */
@@ -455,7 +432,7 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     }
 
     /**
-     * Set the onsetString property: Estimated or actual date, date-time, or age.
+     * Set the onsetString property: Estimated or actual date,  date-time, or age.
      *
      * @param onsetString the onsetString value to set.
      * @return the FhirR4Condition object itself.
@@ -720,5 +697,203 @@ public final class FhirR4Condition extends FhirR4DomainResource {
     public FhirR4Condition setLanguage(String language) {
         super.setLanguage(language);
         return this;
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Generated
+    @Override
+    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
+        jsonWriter.writeStartObject();
+        jsonWriter.writeStringField("resourceType", getResourceType());
+        jsonWriter.writeStringField("id", getId());
+        jsonWriter.writeJsonField("meta", getMeta());
+        jsonWriter.writeStringField("implicitRules", getImplicitRules());
+        jsonWriter.writeStringField("language", getLanguage());
+        jsonWriter.writeStringField("resourceType", getResourceType());
+        jsonWriter.writeJsonField("text", getText());
+        jsonWriter.writeArrayField("contained", getContained(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("extension", getExtension(), (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("modifierExtension", getModifierExtension(),
+            (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("identifier", this.identifier, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("clinicalStatus", this.clinicalStatus);
+        jsonWriter.writeJsonField("verificationStatus", this.verificationStatus);
+        jsonWriter.writeArrayField("category", this.category, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("severity", this.severity);
+        jsonWriter.writeJsonField("code", this.code);
+        jsonWriter.writeArrayField("bodySite", this.bodySite, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeJsonField("encounter", this.encounter);
+        jsonWriter.writeStringField("onsetDateTime", this.onsetDateTime);
+        jsonWriter.writeJsonField("onsetAge", this.onsetAge);
+        jsonWriter.writeJsonField("onsetPeriod", this.onsetPeriod);
+        jsonWriter.writeJsonField("onsetRange", this.onsetRange);
+        jsonWriter.writeStringField("onsetString", this.onsetString);
+        jsonWriter.writeStringField("abatementDateTime", this.abatementDateTime);
+        jsonWriter.writeJsonField("abatementAge", this.abatementAge);
+        jsonWriter.writeJsonField("abatementPeriod", this.abatementPeriod);
+        jsonWriter.writeJsonField("abatementRange", this.abatementRange);
+        jsonWriter.writeStringField("abatementString", this.abatementString);
+        jsonWriter.writeStringField("recordedDate", this.recordedDate);
+        jsonWriter.writeArrayField("stage", this.stage, (writer, element) -> writer.writeJson(element));
+        jsonWriter.writeArrayField("note", this.note, (writer, element) -> writer.writeJson(element));
+        if (getAdditionalProperties() != null) {
+            for (Map.Entry<String, Object> additionalProperty : getAdditionalProperties().entrySet()) {
+                jsonWriter.writeUntypedField(additionalProperty.getKey(), additionalProperty.getValue());
+            }
+        }
+        return jsonWriter.writeEndObject();
+    }
+
+    /**
+     * Reads an instance of FhirR4Condition from the JsonReader.
+     *
+     * @param jsonReader The JsonReader being read.
+     * @return An instance of FhirR4Condition if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
+     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
+     * @throws IOException If an error occurs while reading the FhirR4Condition.
+     */
+    @Generated
+    public static FhirR4Condition fromJson(JsonReader jsonReader) throws IOException {
+        return jsonReader.readObject(reader -> {
+            String resourceType = null;
+            String id = null;
+            FhirR4Meta meta = null;
+            String implicitRules = null;
+            String language = null;
+            String resourceType = "Condition";
+            FhirR4Narrative text = null;
+            List<FhirR4Resource> contained = null;
+            List<FhirR4Extension> extension = null;
+            List<FhirR4Extension> modifierExtension = null;
+            List<FhirR4Identifier> identifier = null;
+            FhirR4CodeableConcept clinicalStatus = null;
+            FhirR4CodeableConcept verificationStatus = null;
+            List<FhirR4CodeableConcept> category = null;
+            FhirR4CodeableConcept severity = null;
+            FhirR4CodeableConcept code = null;
+            List<FhirR4CodeableConcept> bodySite = null;
+            FhirR4Reference encounter = null;
+            String onsetDateTime = null;
+            FhirR4Quantity onsetAge = null;
+            FhirR4Period onsetPeriod = null;
+            FhirR4Range onsetRange = null;
+            String onsetString = null;
+            String abatementDateTime = null;
+            FhirR4Quantity abatementAge = null;
+            FhirR4Period abatementPeriod = null;
+            FhirR4Range abatementRange = null;
+            String abatementString = null;
+            String recordedDate = null;
+            List<FhirR4ConditionStage> stage = null;
+            List<FhirR4Annotation> note = null;
+            Map<String, Object> additionalProperties = null;
+            while (reader.nextToken() != JsonToken.END_OBJECT) {
+                String fieldName = reader.getFieldName();
+                reader.nextToken();
+                if ("resourceType".equals(fieldName)) {
+                    resourceType = reader.getString();
+                } else if ("id".equals(fieldName)) {
+                    id = reader.getString();
+                } else if ("meta".equals(fieldName)) {
+                    meta = FhirR4Meta.fromJson(reader);
+                } else if ("implicitRules".equals(fieldName)) {
+                    implicitRules = reader.getString();
+                } else if ("language".equals(fieldName)) {
+                    language = reader.getString();
+                } else if ("resourceType".equals(fieldName)) {
+                    resourceType = reader.getString();
+                } else if ("text".equals(fieldName)) {
+                    text = FhirR4Narrative.fromJson(reader);
+                } else if ("contained".equals(fieldName)) {
+                    contained = reader.readArray(reader1 -> FhirR4Resource.fromJson(reader1));
+                } else if ("extension".equals(fieldName)) {
+                    extension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
+                } else if ("modifierExtension".equals(fieldName)) {
+                    modifierExtension = reader.readArray(reader1 -> FhirR4Extension.fromJson(reader1));
+                } else if ("identifier".equals(fieldName)) {
+                    identifier = reader.readArray(reader1 -> FhirR4Identifier.fromJson(reader1));
+                } else if ("clinicalStatus".equals(fieldName)) {
+                    clinicalStatus = FhirR4CodeableConcept.fromJson(reader);
+                } else if ("verificationStatus".equals(fieldName)) {
+                    verificationStatus = FhirR4CodeableConcept.fromJson(reader);
+                } else if ("category".equals(fieldName)) {
+                    category = reader.readArray(reader1 -> FhirR4CodeableConcept.fromJson(reader1));
+                } else if ("severity".equals(fieldName)) {
+                    severity = FhirR4CodeableConcept.fromJson(reader);
+                } else if ("code".equals(fieldName)) {
+                    code = FhirR4CodeableConcept.fromJson(reader);
+                } else if ("bodySite".equals(fieldName)) {
+                    bodySite = reader.readArray(reader1 -> FhirR4CodeableConcept.fromJson(reader1));
+                } else if ("encounter".equals(fieldName)) {
+                    encounter = FhirR4Reference.fromJson(reader);
+                } else if ("onsetDateTime".equals(fieldName)) {
+                    onsetDateTime = reader.getString();
+                } else if ("onsetAge".equals(fieldName)) {
+                    onsetAge = FhirR4Quantity.fromJson(reader);
+                } else if ("onsetPeriod".equals(fieldName)) {
+                    onsetPeriod = FhirR4Period.fromJson(reader);
+                } else if ("onsetRange".equals(fieldName)) {
+                    onsetRange = FhirR4Range.fromJson(reader);
+                } else if ("onsetString".equals(fieldName)) {
+                    onsetString = reader.getString();
+                } else if ("abatementDateTime".equals(fieldName)) {
+                    abatementDateTime = reader.getString();
+                } else if ("abatementAge".equals(fieldName)) {
+                    abatementAge = FhirR4Quantity.fromJson(reader);
+                } else if ("abatementPeriod".equals(fieldName)) {
+                    abatementPeriod = FhirR4Period.fromJson(reader);
+                } else if ("abatementRange".equals(fieldName)) {
+                    abatementRange = FhirR4Range.fromJson(reader);
+                } else if ("abatementString".equals(fieldName)) {
+                    abatementString = reader.getString();
+                } else if ("recordedDate".equals(fieldName)) {
+                    recordedDate = reader.getString();
+                } else if ("stage".equals(fieldName)) {
+                    stage = reader.readArray(reader1 -> FhirR4ConditionStage.fromJson(reader1));
+                } else if ("note".equals(fieldName)) {
+                    note = reader.readArray(reader1 -> FhirR4Annotation.fromJson(reader1));
+                } else {
+                    if (additionalProperties == null) {
+                        additionalProperties = new LinkedHashMap<>();
+                    }
+                    additionalProperties.put(fieldName, reader.readUntyped());
+                }
+            }
+            FhirR4Condition deserializedFhirR4Condition = new FhirR4Condition(resourceType);
+            deserializedFhirR4Condition.setId(id);
+            deserializedFhirR4Condition.setMeta(meta);
+            deserializedFhirR4Condition.setImplicitRules(implicitRules);
+            deserializedFhirR4Condition.setLanguage(language);
+            deserializedFhirR4Condition.setResourceType(resourceType);
+            deserializedFhirR4Condition.setText(text);
+            deserializedFhirR4Condition.setContained(contained);
+            deserializedFhirR4Condition.setExtension(extension);
+            deserializedFhirR4Condition.setModifierExtension(modifierExtension);
+            deserializedFhirR4Condition.identifier = identifier;
+            deserializedFhirR4Condition.clinicalStatus = clinicalStatus;
+            deserializedFhirR4Condition.verificationStatus = verificationStatus;
+            deserializedFhirR4Condition.category = category;
+            deserializedFhirR4Condition.severity = severity;
+            deserializedFhirR4Condition.code = code;
+            deserializedFhirR4Condition.bodySite = bodySite;
+            deserializedFhirR4Condition.encounter = encounter;
+            deserializedFhirR4Condition.onsetDateTime = onsetDateTime;
+            deserializedFhirR4Condition.onsetAge = onsetAge;
+            deserializedFhirR4Condition.onsetPeriod = onsetPeriod;
+            deserializedFhirR4Condition.onsetRange = onsetRange;
+            deserializedFhirR4Condition.onsetString = onsetString;
+            deserializedFhirR4Condition.abatementDateTime = abatementDateTime;
+            deserializedFhirR4Condition.abatementAge = abatementAge;
+            deserializedFhirR4Condition.abatementPeriod = abatementPeriod;
+            deserializedFhirR4Condition.abatementRange = abatementRange;
+            deserializedFhirR4Condition.abatementString = abatementString;
+            deserializedFhirR4Condition.recordedDate = recordedDate;
+            deserializedFhirR4Condition.stage = stage;
+            deserializedFhirR4Condition.note = note;
+            deserializedFhirR4Condition.setAdditionalProperties(additionalProperties);
+            return deserializedFhirR4Condition;
+        });
     }
 }

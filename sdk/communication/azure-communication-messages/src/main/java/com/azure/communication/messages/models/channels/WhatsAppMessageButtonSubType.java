@@ -5,7 +5,6 @@ package com.azure.communication.messages.models.channels;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -42,7 +41,6 @@ public final class WhatsAppMessageButtonSubType extends ExpandableStringEnum<Wha
      * @return the corresponding WhatsAppMessageButtonSubType.
      */
     @Generated
-    @JsonCreator
     public static WhatsAppMessageButtonSubType fromString(String name) {
         return fromString(name, WhatsAppMessageButtonSubType.class);
     }
