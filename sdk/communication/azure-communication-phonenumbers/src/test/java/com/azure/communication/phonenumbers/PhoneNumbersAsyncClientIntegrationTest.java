@@ -334,7 +334,8 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                     offering.getCost().getBillingFrequency();
                     assertNotNull(BillingFrequency.values());
                     assertNotNull(offering.getCost().getCurrencyCode());
-                    assertNotNull(offering.getCost().getAmount());                })
+                    assertNotNull(offering.getCost().getAmount());
+                    })
                 .verifyComplete();
     }
 
@@ -357,7 +358,14 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     }
 
     @ParameterizedTest
-	public void getGeographicAreaCodes(HttpClient httpClient) {
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getGeographicAreaCodes(HttpClient httpClient) {
+        PhoneNumberLocality locality = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+                .listAvailableLocalities("US", null).blockFirst();
+        StepVerifier.create(
+                this.getClientWithConnectionString(httpClient, "listAvailableGeographicAreaCodes")
+                        .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON,
+                                locality.getLocalizedName(), locality.getAdministrativeDivision().getAbbreviatedName())
                         .next())
                 .assertNext((PhoneNumberAreaCode areaCodes) -> {
                     assertNotNull(areaCodes);
