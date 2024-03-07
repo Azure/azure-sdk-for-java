@@ -368,19 +368,23 @@ public final class OpenAIClientImpl {
     /**
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
-     * <p><strong>Response Body Schema</strong></p>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * String
      * }</pre>
      * 
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure OpenAI) to use for this request.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
      * @param audioTranscriptionOptions The configuration information for an audio transcription request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return transcribed text and associated metadata from provided spoken audio data along with {@link Response} on successful completion of {@link Mono}.
+     * @return transcribed text and associated metadata from provided spoken audio data along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAudioTranscriptionAsPlainTextWithResponseAsync(String deploymentOrModelName,
@@ -395,12 +399,15 @@ public final class OpenAIClientImpl {
     /**
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
-     * <p><strong>Response Body Schema</strong></p>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * String
      * }</pre>
      * 
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure OpenAI) to use for this request.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
      * @param audioTranscriptionOptions The configuration information for an audio transcription request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -421,7 +428,9 @@ public final class OpenAIClientImpl {
     /**
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
-     * <p><strong>Response Body Schema</strong></p>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -447,14 +456,16 @@ public final class OpenAIClientImpl {
      * }
      * }</pre>
      * 
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure OpenAI) to use for this request.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
      * @param audioTranscriptionOptions The configuration information for an audio transcription request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return transcribed text and associated metadata from provided spoken audio data along with {@link Response} on successful completion of {@link Mono}.
+     * @return transcribed text and associated metadata from provided spoken audio data along with {@link Response} on
+     * successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAudioTranscriptionAsResponseObjectWithResponseAsync(
@@ -469,7 +480,9 @@ public final class OpenAIClientImpl {
     /**
      * Gets transcribed text and associated metadata from provided spoken audio data. Audio will be transcribed in the
      * written language corresponding to the language it was spoken in.
-     * <p><strong>Response Body Schema</strong></p>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -495,7 +508,8 @@ public final class OpenAIClientImpl {
      * }
      * }</pre>
      * 
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure OpenAI) to use for this request.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
      * @param audioTranscriptionOptions The configuration information for an audio transcription request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -516,19 +530,23 @@ public final class OpenAIClientImpl {
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     * <p><strong>Response Body Schema</strong></p>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * String
      * }</pre>
      * 
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure OpenAI) to use for this request.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
      * @param audioTranslationOptions The configuration information for an audio translation request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return english language transcribed text and associated metadata from provided spoken audio data along with {@link Response} on successful completion of {@link Mono}.
+     * @return english language transcribed text and associated metadata from provided spoken audio data along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAudioTranslationAsPlainTextWithResponseAsync(String deploymentOrModelName,
@@ -542,19 +560,23 @@ public final class OpenAIClientImpl {
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     * <p><strong>Response Body Schema</strong></p>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * String
      * }</pre>
      * 
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure OpenAI) to use for this request.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
      * @param audioTranslationOptions The configuration information for an audio translation request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return english language transcribed text and associated metadata from provided spoken audio data along with {@link Response}.
+     * @return english language transcribed text and associated metadata from provided spoken audio data along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAudioTranslationAsPlainTextWithResponse(String deploymentOrModelName,
@@ -567,7 +589,9 @@ public final class OpenAIClientImpl {
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     * <p><strong>Response Body Schema</strong></p>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -593,14 +617,16 @@ public final class OpenAIClientImpl {
      * }
      * }</pre>
      * 
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure OpenAI) to use for this request.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
      * @param audioTranslationOptions The configuration information for an audio translation request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return english language transcribed text and associated metadata from provided spoken audio data along with {@link Response} on successful completion of {@link Mono}.
+     * @return english language transcribed text and associated metadata from provided spoken audio data along with
+     * {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getAudioTranslationAsResponseObjectWithResponseAsync(String deploymentOrModelName,
@@ -614,7 +640,9 @@ public final class OpenAIClientImpl {
 
     /**
      * Gets English language transcribed text and associated metadata from provided spoken audio data.
-     * <p><strong>Response Body Schema</strong></p>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     text: String (Required)
@@ -640,14 +668,16 @@ public final class OpenAIClientImpl {
      * }
      * }</pre>
      * 
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure OpenAI) to use for this request.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
      * @param audioTranslationOptions The configuration information for an audio translation request.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return english language transcribed text and associated metadata from provided spoken audio data along with {@link Response}.
+     * @return english language transcribed text and associated metadata from provided spoken audio data along with
+     * {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Response<BinaryData> getAudioTranslationAsResponseObjectWithResponse(String deploymentOrModelName,
@@ -663,7 +693,9 @@ public final class OpenAIClientImpl {
      * Gets completions for the provided input prompts.
      * Completions support a wide variety of tasks and generate text that continues from or "completes"
      * provided prompt data.
-     * <p><strong>Request Body Schema</strong></p>
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     prompt (Required): [
@@ -690,7 +722,9 @@ public final class OpenAIClientImpl {
      *     model: String (Optional)
      * }
      * }</pre>
-     * <p><strong>Response Body Schema</strong></p>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -781,7 +815,8 @@ public final class OpenAIClientImpl {
      * }
      * }</pre>
      * 
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure OpenAI) to use for this request.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
      * @param completionsOptions The configuration information for a completions request.
      * Completions support a wide variety of tasks and generate text that continues from or "completes"
      * provided prompt data.
@@ -807,7 +842,9 @@ public final class OpenAIClientImpl {
      * Gets completions for the provided input prompts.
      * Completions support a wide variety of tasks and generate text that continues from or "completes"
      * provided prompt data.
-     * <p><strong>Request Body Schema</strong></p>
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     prompt (Required): [
@@ -834,7 +871,9 @@ public final class OpenAIClientImpl {
      *     model: String (Optional)
      * }
      * }</pre>
-     * <p><strong>Response Body Schema</strong></p>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -925,7 +964,8 @@ public final class OpenAIClientImpl {
      * }
      * }</pre>
      * 
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure OpenAI) to use for this request.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
      * @param completionsOptions The configuration information for a completions request.
      * Completions support a wide variety of tasks and generate text that continues from or "completes"
      * provided prompt data.
@@ -950,12 +990,13 @@ public final class OpenAIClientImpl {
      * Gets chat completions for the provided chat messages.
      * Completions support a wide variety of tasks and generate text that continues from or "completes"
      * provided prompt data.
-     * <p><strong>Request Body Schema</strong></p>
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     messages (Required): [
      *          (Required){
-     *             role: String(system/assistant/user/function/tool) (Optional)
      *         }
      *     ]
      *     functions (Optional): [
@@ -983,7 +1024,6 @@ public final class OpenAIClientImpl {
      *     model: String (Optional)
      *     data_sources (Optional): [
      *          (Optional){
-     *             type: String(azure_search/azure_ml_index/azure_cosmos_db/elasticsearch/pinecone) (Optional)
      *         }
      *     ]
      *     enhancements (Optional): {
@@ -998,17 +1038,17 @@ public final class OpenAIClientImpl {
      *     logprobs: Boolean (Optional)
      *     top_logprobs: Integer (Optional)
      *     response_format (Optional): {
-     *         type: String (Optional)
      *     }
      *     tools (Optional): [
      *          (Optional){
-     *             type: String (Optional)
      *         }
      *     ]
      *     tool_choice: BinaryData (Optional)
      * }
      * }</pre>
-     * <p><strong>Response Body Schema</strong></p>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1020,7 +1060,6 @@ public final class OpenAIClientImpl {
      *                 content: String (Required)
      *                 tool_calls (Optional): [
      *                      (Optional){
-     *                         type: String (Optional)
      *                         id: String (Required)
      *                     }
      *                 ]
@@ -1064,7 +1103,6 @@ public final class OpenAIClientImpl {
      *             index: int (Required)
      *             finish_reason: String(stop/length/content_filter/function_call/tool_calls) (Required)
      *             finish_details (Optional): {
-     *                 type: String (Optional)
      *             }
      *             delta (Optional): (recursive schema, see delta above)
      *             content_filter_results (Optional): {
@@ -1155,7 +1193,8 @@ public final class OpenAIClientImpl {
      * }
      * }</pre>
      * 
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure OpenAI) to use for this request.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
      * @param chatCompletionsOptions The configuration information for a chat completions request.
      * Completions support a wide variety of tasks and generate text that continues from or "completes"
      * provided prompt data.
@@ -1181,12 +1220,13 @@ public final class OpenAIClientImpl {
      * Gets chat completions for the provided chat messages.
      * Completions support a wide variety of tasks and generate text that continues from or "completes"
      * provided prompt data.
-     * <p><strong>Request Body Schema</strong></p>
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     messages (Required): [
      *          (Required){
-     *             role: String(system/assistant/user/function/tool) (Optional)
      *         }
      *     ]
      *     functions (Optional): [
@@ -1214,7 +1254,6 @@ public final class OpenAIClientImpl {
      *     model: String (Optional)
      *     data_sources (Optional): [
      *          (Optional){
-     *             type: String(azure_search/azure_ml_index/azure_cosmos_db/elasticsearch/pinecone) (Optional)
      *         }
      *     ]
      *     enhancements (Optional): {
@@ -1229,17 +1268,17 @@ public final class OpenAIClientImpl {
      *     logprobs: Boolean (Optional)
      *     top_logprobs: Integer (Optional)
      *     response_format (Optional): {
-     *         type: String (Optional)
      *     }
      *     tools (Optional): [
      *          (Optional){
-     *             type: String (Optional)
      *         }
      *     ]
      *     tool_choice: BinaryData (Optional)
      * }
      * }</pre>
-     * <p><strong>Response Body Schema</strong></p>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     id: String (Required)
@@ -1251,7 +1290,6 @@ public final class OpenAIClientImpl {
      *                 content: String (Required)
      *                 tool_calls (Optional): [
      *                      (Optional){
-     *                         type: String (Optional)
      *                         id: String (Required)
      *                     }
      *                 ]
@@ -1295,7 +1333,6 @@ public final class OpenAIClientImpl {
      *             index: int (Required)
      *             finish_reason: String(stop/length/content_filter/function_call/tool_calls) (Required)
      *             finish_details (Optional): {
-     *                 type: String (Optional)
      *             }
      *             delta (Optional): (recursive schema, see delta above)
      *             content_filter_results (Optional): {
@@ -1386,7 +1423,8 @@ public final class OpenAIClientImpl {
      * }
      * }</pre>
      * 
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure OpenAI) to use for this request.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
      * @param chatCompletionsOptions The configuration information for a chat completions request.
      * Completions support a wide variety of tasks and generate text that continues from or "completes"
      * provided prompt data.
@@ -1409,7 +1447,9 @@ public final class OpenAIClientImpl {
 
     /**
      * Creates an image given a prompt.
-     * <p><strong>Request Body Schema</strong></p>
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     model: String (Optional)
@@ -1422,7 +1462,9 @@ public final class OpenAIClientImpl {
      *     user: String (Optional)
      * }
      * }</pre>
-     * <p><strong>Response Body Schema</strong></p>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     created: long (Required)
@@ -1456,14 +1498,16 @@ public final class OpenAIClientImpl {
      * }
      * }</pre>
      * 
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure OpenAI) to use for this request.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
      * @param imageGenerationOptions Represents the request data used to generate images.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return the result of a successful image generation operation along with {@link Response} on successful completion of {@link Mono}.
+     * @return the result of a successful image generation operation along with {@link Response} on successful
+     * completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getImageGenerationsWithResponseAsync(String deploymentOrModelName,
@@ -1476,7 +1520,9 @@ public final class OpenAIClientImpl {
 
     /**
      * Creates an image given a prompt.
-     * <p><strong>Request Body Schema</strong></p>
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     model: String (Optional)
@@ -1489,7 +1535,9 @@ public final class OpenAIClientImpl {
      *     user: String (Optional)
      * }
      * }</pre>
-     * <p><strong>Response Body Schema</strong></p>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     created: long (Required)
@@ -1523,7 +1571,8 @@ public final class OpenAIClientImpl {
      * }
      * }</pre>
      * 
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure OpenAI) to use for this request.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
      * @param imageGenerationOptions Represents the request data used to generate images.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
@@ -1542,7 +1591,9 @@ public final class OpenAIClientImpl {
 
     /**
      * Generates text-to-speech audio from the input text.
-     * <p><strong>Request Body Schema</strong></p>
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     input: String (Required)
@@ -1552,13 +1603,17 @@ public final class OpenAIClientImpl {
      *     model: String (Optional)
      * }
      * }</pre>
-     * <p><strong>Response Body Schema</strong></p>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * BinaryData
      * }</pre>
      * 
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure OpenAI) to use for this request.
-     * @param speechGenerationOptions A representation of the request options that control the behavior of a text-to-speech operation.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
+     * @param speechGenerationOptions A representation of the request options that control the behavior of a
+     * text-to-speech operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1577,7 +1632,9 @@ public final class OpenAIClientImpl {
 
     /**
      * Generates text-to-speech audio from the input text.
-     * <p><strong>Request Body Schema</strong></p>
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     input: String (Required)
@@ -1587,13 +1644,17 @@ public final class OpenAIClientImpl {
      *     model: String (Optional)
      * }
      * }</pre>
-     * <p><strong>Response Body Schema</strong></p>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * BinaryData
      * }</pre>
      * 
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure OpenAI) to use for this request.
-     * @param speechGenerationOptions A representation of the request options that control the behavior of a text-to-speech operation.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
+     * @param speechGenerationOptions A representation of the request options that control the behavior of a
+     * text-to-speech operation.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1611,7 +1672,9 @@ public final class OpenAIClientImpl {
 
     /**
      * Return the embeddings for a given prompt.
-     * <p><strong>Request Body Schema</strong></p>
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     user: String (Optional)
@@ -1622,7 +1685,9 @@ public final class OpenAIClientImpl {
      *     input_type: String (Optional)
      * }
      * }</pre>
-     * <p><strong>Response Body Schema</strong></p>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     data (Required): [
@@ -1640,7 +1705,8 @@ public final class OpenAIClientImpl {
      * }
      * }</pre>
      * 
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure OpenAI) to use for this request.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
      * @param embeddingsOptions The configuration information for an embeddings request.
      * Embeddings measure the relatedness of text strings and are commonly used for search, clustering,
      * recommendations, and other similar scenarios.
@@ -1651,7 +1717,8 @@ public final class OpenAIClientImpl {
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @return representation of the response data from an embeddings request.
      * Embeddings measure the relatedness of text strings and are commonly used for search, clustering,
-     * recommendations, and other similar scenarios along with {@link Response} on successful completion of {@link Mono}.
+     * recommendations, and other similar scenarios along with {@link Response} on successful completion of
+     * {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<BinaryData>> getEmbeddingsWithResponseAsync(String deploymentOrModelName,
@@ -1664,7 +1731,9 @@ public final class OpenAIClientImpl {
 
     /**
      * Return the embeddings for a given prompt.
-     * <p><strong>Request Body Schema</strong></p>
+     * <p>
+     * <strong>Request Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     user: String (Optional)
@@ -1675,7 +1744,9 @@ public final class OpenAIClientImpl {
      *     input_type: String (Optional)
      * }
      * }</pre>
-     * <p><strong>Response Body Schema</strong></p>
+     * <p>
+     * <strong>Response Body Schema</strong>
+     * </p>
      * <pre>{@code
      * {
      *     data (Required): [
@@ -1693,7 +1764,8 @@ public final class OpenAIClientImpl {
      * }
      * }</pre>
      * 
-     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name (when using non-Azure OpenAI) to use for this request.
+     * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
+     * (when using non-Azure OpenAI) to use for this request.
      * @param embeddingsOptions The configuration information for an embeddings request.
      * Embeddings measure the relatedness of text strings and are commonly used for search, clustering,
      * recommendations, and other similar scenarios.

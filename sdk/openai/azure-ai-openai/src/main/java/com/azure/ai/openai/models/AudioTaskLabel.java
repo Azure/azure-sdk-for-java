@@ -5,6 +5,7 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -41,6 +42,7 @@ public final class AudioTaskLabel extends ExpandableStringEnum<AudioTaskLabel> {
      * @return the corresponding AudioTaskLabel.
      */
     @Generated
+    @JsonCreator
     public static AudioTaskLabel fromString(String name) {
         return fromString(name, AudioTaskLabel.class);
     }

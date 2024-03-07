@@ -5,14 +5,16 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A request chat message representing requested output from a configured function.
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "role")
+@JsonTypeName("function")
 @Immutable
 public final class ChatRequestFunctionMessage extends ChatRequestMessage {
 
@@ -20,13 +22,15 @@ public final class ChatRequestFunctionMessage extends ChatRequestMessage {
      * The name of the function that was called to produce output.
      */
     @Generated
-    private final String name;
+    @JsonProperty(value = "name")
+    private String name;
 
     /*
      * The output of the function as requested by the function call.
      */
     @Generated
-    private final String content;
+    @JsonProperty(value = "content")
+    private String content;
 
     /**
      * Creates an instance of ChatRequestFunctionMessage class.
@@ -35,8 +39,9 @@ public final class ChatRequestFunctionMessage extends ChatRequestMessage {
      * @param content the content value to set.
      */
     @Generated
-    public ChatRequestFunctionMessage(String name, String content) {
-        setRole(ChatRole.FUNCTION);
+    @JsonCreator
+    public ChatRequestFunctionMessage(@JsonProperty(value = "name") String name,
+        @JsonProperty(value = "content") String content) {
         this.name = name;
         this.content = content;
     }
@@ -59,52 +64,5 @@ public final class ChatRequestFunctionMessage extends ChatRequestMessage {
     @Generated
     public String getContent() {
         return this.content;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("role", getRole() == null ? null : getRole().toString());
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("content", this.content);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ChatRequestFunctionMessage from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ChatRequestFunctionMessage if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ChatRequestFunctionMessage.
-     */
-    @Generated
-    public static ChatRequestFunctionMessage fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ChatRole role = ChatRole.FUNCTION;
-            String name = null;
-            String content = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("role".equals(fieldName)) {
-                    role = ChatRole.fromString(reader.getString());
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("content".equals(fieldName)) {
-                    content = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            ChatRequestFunctionMessage deserializedChatRequestFunctionMessage
-                = new ChatRequestFunctionMessage(name, content);
-            deserializedChatRequestFunctionMessage.setRole(role);
-            return deserializedChatRequestFunctionMessage;
-        });
     }
 }

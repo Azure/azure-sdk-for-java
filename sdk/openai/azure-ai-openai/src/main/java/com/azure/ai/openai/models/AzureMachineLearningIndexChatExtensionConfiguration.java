@@ -5,15 +5,17 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A specific representation of configurable options for Azure Machine Learning vector index when using it as an Azure
  * OpenAI chat extension.
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeName("azure_ml_index")
 @Immutable
 public final class AzureMachineLearningIndexChatExtensionConfiguration extends AzureChatExtensionConfiguration {
 
@@ -21,7 +23,8 @@ public final class AzureMachineLearningIndexChatExtensionConfiguration extends A
      * The parameters for the Azure Machine Learning vector index chat extension.
      */
     @Generated
-    private final AzureMachineLearningIndexChatExtensionParameters parameters;
+    @JsonProperty(value = "parameters")
+    private AzureMachineLearningIndexChatExtensionParameters parameters;
 
     /**
      * Get the parameters property: The parameters for the Azure Machine Learning vector index chat extension.
@@ -39,53 +42,9 @@ public final class AzureMachineLearningIndexChatExtensionConfiguration extends A
      * @param parameters the parameters value to set.
      */
     @Generated
+    @JsonCreator
     public AzureMachineLearningIndexChatExtensionConfiguration(
-        AzureMachineLearningIndexChatExtensionParameters parameters) {
-        setType(AzureChatExtensionType.AZURE_MACHINE_LEARNING_INDEX);
+        @JsonProperty(value = "parameters") AzureMachineLearningIndexChatExtensionParameters parameters) {
         this.parameters = parameters;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", getType() == null ? null : getType().toString());
-        jsonWriter.writeJsonField("parameters", this.parameters);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AzureMachineLearningIndexChatExtensionConfiguration from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AzureMachineLearningIndexChatExtensionConfiguration if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AzureMachineLearningIndexChatExtensionConfiguration.
-     */
-    @Generated
-    public static AzureMachineLearningIndexChatExtensionConfiguration fromJson(JsonReader jsonReader)
-        throws IOException {
-        return jsonReader.readObject(reader -> {
-            AzureChatExtensionType type = AzureChatExtensionType.AZURE_MACHINE_LEARNING_INDEX;
-            AzureMachineLearningIndexChatExtensionParameters parameters = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    type = AzureChatExtensionType.fromString(reader.getString());
-                } else if ("parameters".equals(fieldName)) {
-                    parameters = AzureMachineLearningIndexChatExtensionParameters.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            AzureMachineLearningIndexChatExtensionConfiguration deserializedAzureMachineLearningIndexChatExtensionConfiguration
-                = new AzureMachineLearningIndexChatExtensionConfiguration(parameters);
-            deserializedAzureMachineLearningIndexChatExtensionConfiguration.setType(type);
-            return deserializedAzureMachineLearningIndexChatExtensionConfiguration;
-        });
     }
 }

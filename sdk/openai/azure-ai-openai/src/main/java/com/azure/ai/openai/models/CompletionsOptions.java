@@ -5,11 +5,8 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 import java.util.Map;
 
@@ -19,18 +16,20 @@ import java.util.Map;
  * provided prompt data.
  */
 @Fluent
-public final class CompletionsOptions implements JsonSerializable<CompletionsOptions> {
+public final class CompletionsOptions {
 
     /*
      * The prompts to generate completions from.
      */
     @Generated
-    private final List<String> prompt;
+    @JsonProperty(value = "prompt")
+    private List<String> prompt;
 
     /*
      * The maximum number of tokens to generate.
      */
     @Generated
+    @JsonProperty(value = "max_tokens")
     private Integer maxTokens;
 
     /*
@@ -41,6 +40,7 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
      * interaction of these two settings is difficult to predict.
      */
     @Generated
+    @JsonProperty(value = "temperature")
     private Double temperature;
 
     /*
@@ -52,6 +52,7 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
      * interaction of these two settings is difficult to predict.
      */
     @Generated
+    @JsonProperty(value = "top_p")
     private Double topP;
 
     /*
@@ -62,6 +63,7 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
      * score varies by model.
      */
     @Generated
+    @JsonProperty(value = "logit_bias")
     private Map<String, Integer> logitBias;
 
     /*
@@ -69,6 +71,7 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
      * or rate-limiting purposes.
      */
     @Generated
+    @JsonProperty(value = "user")
     private String user;
 
     /*
@@ -78,6 +81,7 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
      * Use carefully and ensure reasonable settings for max_tokens and stop.
      */
     @Generated
+    @JsonProperty(value = "n")
     private Integer n;
 
     /*
@@ -85,6 +89,7 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
      * tokens within a completions response.
      */
     @Generated
+    @JsonProperty(value = "logprobs")
     private Integer logprobs;
 
     /*
@@ -92,12 +97,14 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
      * their generated output.
      */
     @Generated
+    @JsonProperty(value = "echo")
     private Boolean echo;
 
     /*
      * A collection of textual sequences that will end completions generation.
      */
     @Generated
+    @JsonProperty(value = "stop")
     private List<String> stop;
 
     /*
@@ -107,6 +114,7 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
      * model's likelihood to output new topics.
      */
     @Generated
+    @JsonProperty(value = "presence_penalty")
     private Double presencePenalty;
 
     /*
@@ -116,6 +124,7 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
      * decrease the likelihood of the model repeating the same statements verbatim.
      */
     @Generated
+    @JsonProperty(value = "frequency_penalty")
     private Double frequencyPenalty;
 
     /*
@@ -127,12 +136,14 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
      * Use carefully and ensure reasonable settings for max_tokens and stop.
      */
     @Generated
+    @JsonProperty(value = "best_of")
     private Integer bestOf;
 
     /*
      * A value indicating whether chat completions should be streamed for this request.
      */
     @Generated
+    @JsonProperty(value = "stream")
     private Boolean stream;
 
     /*
@@ -141,6 +152,7 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
      * resource URI that's connected to.
      */
     @Generated
+    @JsonProperty(value = "model")
     private String model;
 
     /**
@@ -149,7 +161,8 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
      * @param prompt the prompt value to set.
      */
     @Generated
-    public CompletionsOptions(List<String> prompt) {
+    @JsonCreator
+    public CompletionsOptions(@JsonProperty(value = "prompt") List<String> prompt) {
         this.prompt = prompt;
     }
 
@@ -186,7 +199,8 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
     }
 
     /**
-     * Get the temperature property: The sampling temperature to use that controls the apparent creativity of generated completions.
+     * Get the temperature property: The sampling temperature to use that controls the apparent creativity of generated
+     * completions.
      * Higher values will make output more random while lower values will make results more focused
      * and deterministic.
      * It is not recommended to modify temperature and top_p for the same completions request as the
@@ -200,7 +214,8 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
     }
 
     /**
-     * Set the temperature property: The sampling temperature to use that controls the apparent creativity of generated completions.
+     * Set the temperature property: The sampling temperature to use that controls the apparent creativity of generated
+     * completions.
      * Higher values will make output more random while lower values will make results more focused
      * and deterministic.
      * It is not recommended to modify temperature and top_p for the same completions request as the
@@ -216,7 +231,8 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
     }
 
     /**
-     * Get the topP property: An alternative to sampling with temperature called nucleus sampling. This value causes the
+     * Get the topP property: An alternative to sampling with temperature called nucleus sampling. This value causes
+     * the
      * model to consider the results of tokens with the provided probability mass. As an example, a
      * value of 0.15 will cause only the tokens comprising the top 15% of probability mass to be
      * considered.
@@ -231,7 +247,8 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
     }
 
     /**
-     * Set the topP property: An alternative to sampling with temperature called nucleus sampling. This value causes the
+     * Set the topP property: An alternative to sampling with temperature called nucleus sampling. This value causes
+     * the
      * model to consider the results of tokens with the provided probability mass. As an example, a
      * value of 0.15 will cause only the tokens comprising the top 15% of probability mass to be
      * considered.
@@ -248,7 +265,8 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
     }
 
     /**
-     * Get the logitBias property: A map between GPT token IDs and bias scores that influences the probability of specific tokens
+     * Get the logitBias property: A map between GPT token IDs and bias scores that influences the probability of
+     * specific tokens
      * appearing in a completions response. Token IDs are computed via external tokenizer tools, while
      * bias scores reside in the range of -100 to 100 with minimum and maximum values corresponding to
      * a full ban or exclusive selection of a token, respectively. The exact behavior of a given bias
@@ -262,7 +280,8 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
     }
 
     /**
-     * Set the logitBias property: A map between GPT token IDs and bias scores that influences the probability of specific tokens
+     * Set the logitBias property: A map between GPT token IDs and bias scores that influences the probability of
+     * specific tokens
      * appearing in a completions response. Token IDs are computed via external tokenizer tools, while
      * bias scores reside in the range of -100 to 100 with minimum and maximum values corresponding to
      * a full ban or exclusive selection of a token, respectively. The exact behavior of a given bias
@@ -330,7 +349,8 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
     }
 
     /**
-     * Get the logprobs property: A value that controls the emission of log probabilities for the provided number of most likely
+     * Get the logprobs property: A value that controls the emission of log probabilities for the provided number of
+     * most likely
      * tokens within a completions response.
      *
      * @return the logprobs value.
@@ -341,7 +361,8 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
     }
 
     /**
-     * Set the logprobs property: A value that controls the emission of log probabilities for the provided number of most likely
+     * Set the logprobs property: A value that controls the emission of log probabilities for the provided number of
+     * most likely
      * tokens within a completions response.
      *
      * @param logprobs the logprobs value to set.
@@ -354,7 +375,8 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
     }
 
     /**
-     * Get the echo property: A value specifying whether completions responses should include input prompts as prefixes to
+     * Get the echo property: A value specifying whether completions responses should include input prompts as prefixes
+     * to
      * their generated output.
      *
      * @return the echo value.
@@ -365,7 +387,8 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
     }
 
     /**
-     * Set the echo property: A value specifying whether completions responses should include input prompts as prefixes to
+     * Set the echo property: A value specifying whether completions responses should include input prompts as prefixes
+     * to
      * their generated output.
      *
      * @param echo the echo value to set.
@@ -400,7 +423,8 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
     }
 
     /**
-     * Get the presencePenalty property: A value that influences the probability of generated tokens appearing based on their existing
+     * Get the presencePenalty property: A value that influences the probability of generated tokens appearing based on
+     * their existing
      * presence in generated text.
      * Positive values will make tokens less likely to appear when they already exist and increase the
      * model's likelihood to output new topics.
@@ -413,7 +437,8 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
     }
 
     /**
-     * Set the presencePenalty property: A value that influences the probability of generated tokens appearing based on their existing
+     * Set the presencePenalty property: A value that influences the probability of generated tokens appearing based on
+     * their existing
      * presence in generated text.
      * Positive values will make tokens less likely to appear when they already exist and increase the
      * model's likelihood to output new topics.
@@ -428,7 +453,8 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
     }
 
     /**
-     * Get the frequencyPenalty property: A value that influences the probability of generated tokens appearing based on their cumulative
+     * Get the frequencyPenalty property: A value that influences the probability of generated tokens appearing based
+     * on their cumulative
      * frequency in generated text.
      * Positive values will make tokens less likely to appear as their frequency increases and
      * decrease the likelihood of the model repeating the same statements verbatim.
@@ -441,7 +467,8 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
     }
 
     /**
-     * Set the frequencyPenalty property: A value that influences the probability of generated tokens appearing based on their cumulative
+     * Set the frequencyPenalty property: A value that influences the probability of generated tokens appearing based
+     * on their cumulative
      * frequency in generated text.
      * Positive values will make tokens less likely to appear as their frequency increases and
      * decrease the likelihood of the model repeating the same statements verbatim.
@@ -456,7 +483,8 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
     }
 
     /**
-     * Get the bestOf property: A value that controls how many completions will be internally generated prior to response
+     * Get the bestOf property: A value that controls how many completions will be internally generated prior to
+     * response
      * formulation.
      * When used together with n, best_of controls the number of candidate completions and must be
      * greater than n.
@@ -471,7 +499,8 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
     }
 
     /**
-     * Set the bestOf property: A value that controls how many completions will be internally generated prior to response
+     * Set the bestOf property: A value that controls how many completions will be internally generated prior to
+     * response
      * formulation.
      * When used together with n, best_of controls the number of candidate completions and must be
      * greater than n.
@@ -539,6 +568,7 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
      * The suffix that comes after a completion of inserted text
      */
     @Generated
+    @JsonProperty(value = "suffix")
     private String suffix;
 
     /**
@@ -561,117 +591,5 @@ public final class CompletionsOptions implements JsonSerializable<CompletionsOpt
     public CompletionsOptions setSuffix(String suffix) {
         this.suffix = suffix;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("prompt", this.prompt, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeNumberField("max_tokens", this.maxTokens);
-        jsonWriter.writeNumberField("temperature", this.temperature);
-        jsonWriter.writeNumberField("top_p", this.topP);
-        jsonWriter.writeMapField("logit_bias", this.logitBias, (writer, element) -> writer.writeInt(element));
-        jsonWriter.writeStringField("user", this.user);
-        jsonWriter.writeNumberField("n", this.n);
-        jsonWriter.writeNumberField("logprobs", this.logprobs);
-        jsonWriter.writeStringField("suffix", this.suffix);
-        jsonWriter.writeBooleanField("echo", this.echo);
-        jsonWriter.writeArrayField("stop", this.stop, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeNumberField("presence_penalty", this.presencePenalty);
-        jsonWriter.writeNumberField("frequency_penalty", this.frequencyPenalty);
-        jsonWriter.writeNumberField("best_of", this.bestOf);
-        jsonWriter.writeBooleanField("stream", this.stream);
-        jsonWriter.writeStringField("model", this.model);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of CompletionsOptions from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of CompletionsOptions if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the CompletionsOptions.
-     */
-    @Generated
-    public static CompletionsOptions fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            List<String> prompt = null;
-            Integer maxTokens = null;
-            Double temperature = null;
-            Double topP = null;
-            Map<String, Integer> logitBias = null;
-            String user = null;
-            Integer n = null;
-            Integer logprobs = null;
-            String suffix = null;
-            Boolean echo = null;
-            List<String> stop = null;
-            Double presencePenalty = null;
-            Double frequencyPenalty = null;
-            Integer bestOf = null;
-            Boolean stream = null;
-            String model = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("prompt".equals(fieldName)) {
-                    prompt = reader.readArray(reader1 -> reader1.getString());
-                } else if ("max_tokens".equals(fieldName)) {
-                    maxTokens = reader.getNullable(JsonReader::getInt);
-                } else if ("temperature".equals(fieldName)) {
-                    temperature = reader.getNullable(JsonReader::getDouble);
-                } else if ("top_p".equals(fieldName)) {
-                    topP = reader.getNullable(JsonReader::getDouble);
-                } else if ("logit_bias".equals(fieldName)) {
-                    logitBias = reader.readMap(reader1 -> reader1.getInt());
-                } else if ("user".equals(fieldName)) {
-                    user = reader.getString();
-                } else if ("n".equals(fieldName)) {
-                    n = reader.getNullable(JsonReader::getInt);
-                } else if ("logprobs".equals(fieldName)) {
-                    logprobs = reader.getNullable(JsonReader::getInt);
-                } else if ("suffix".equals(fieldName)) {
-                    suffix = reader.getString();
-                } else if ("echo".equals(fieldName)) {
-                    echo = reader.getNullable(JsonReader::getBoolean);
-                } else if ("stop".equals(fieldName)) {
-                    stop = reader.readArray(reader1 -> reader1.getString());
-                } else if ("presence_penalty".equals(fieldName)) {
-                    presencePenalty = reader.getNullable(JsonReader::getDouble);
-                } else if ("frequency_penalty".equals(fieldName)) {
-                    frequencyPenalty = reader.getNullable(JsonReader::getDouble);
-                } else if ("best_of".equals(fieldName)) {
-                    bestOf = reader.getNullable(JsonReader::getInt);
-                } else if ("stream".equals(fieldName)) {
-                    stream = reader.getNullable(JsonReader::getBoolean);
-                } else if ("model".equals(fieldName)) {
-                    model = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            CompletionsOptions deserializedCompletionsOptions = new CompletionsOptions(prompt);
-            deserializedCompletionsOptions.maxTokens = maxTokens;
-            deserializedCompletionsOptions.temperature = temperature;
-            deserializedCompletionsOptions.topP = topP;
-            deserializedCompletionsOptions.logitBias = logitBias;
-            deserializedCompletionsOptions.user = user;
-            deserializedCompletionsOptions.n = n;
-            deserializedCompletionsOptions.logprobs = logprobs;
-            deserializedCompletionsOptions.suffix = suffix;
-            deserializedCompletionsOptions.echo = echo;
-            deserializedCompletionsOptions.stop = stop;
-            deserializedCompletionsOptions.presencePenalty = presencePenalty;
-            deserializedCompletionsOptions.frequencyPenalty = frequencyPenalty;
-            deserializedCompletionsOptions.bestOf = bestOf;
-            deserializedCompletionsOptions.stream = stream;
-            deserializedCompletionsOptions.model = model;
-            return deserializedCompletionsOptions;
-        });
     }
 }

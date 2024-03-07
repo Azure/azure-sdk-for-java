@@ -5,14 +5,16 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The authentication options for Azure OpenAI On Your Data when using an Elasticsearch encoded API key.
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeName("encoded_api_key")
 @Immutable
 public final class OnYourDataEncodedApiKeyAuthenticationOptions extends OnYourDataAuthenticationOptions {
 
@@ -20,7 +22,8 @@ public final class OnYourDataEncodedApiKeyAuthenticationOptions extends OnYourDa
      * The encoded API key to use for authentication.
      */
     @Generated
-    private final String encodedApiKey;
+    @JsonProperty(value = "encoded_api_key")
+    private String encodedApiKey;
 
     /**
      * Creates an instance of OnYourDataEncodedApiKeyAuthenticationOptions class.
@@ -28,8 +31,8 @@ public final class OnYourDataEncodedApiKeyAuthenticationOptions extends OnYourDa
      * @param encodedApiKey the encodedApiKey value to set.
      */
     @Generated
-    public OnYourDataEncodedApiKeyAuthenticationOptions(String encodedApiKey) {
-        setType(OnYourDataAuthenticationType.ENCODED_API_KEY);
+    @JsonCreator
+    public OnYourDataEncodedApiKeyAuthenticationOptions(@JsonProperty(value = "encoded_api_key") String encodedApiKey) {
         this.encodedApiKey = encodedApiKey;
     }
 
@@ -41,48 +44,5 @@ public final class OnYourDataEncodedApiKeyAuthenticationOptions extends OnYourDa
     @Generated
     public String getEncodedApiKey() {
         return this.encodedApiKey;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", getType() == null ? null : getType().toString());
-        jsonWriter.writeStringField("encoded_api_key", this.encodedApiKey);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of OnYourDataEncodedApiKeyAuthenticationOptions from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of OnYourDataEncodedApiKeyAuthenticationOptions if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the OnYourDataEncodedApiKeyAuthenticationOptions.
-     */
-    @Generated
-    public static OnYourDataEncodedApiKeyAuthenticationOptions fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            OnYourDataAuthenticationType type = OnYourDataAuthenticationType.ENCODED_API_KEY;
-            String encodedApiKey = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    type = OnYourDataAuthenticationType.fromString(reader.getString());
-                } else if ("encoded_api_key".equals(fieldName)) {
-                    encodedApiKey = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            OnYourDataEncodedApiKeyAuthenticationOptions deserializedOnYourDataEncodedApiKeyAuthenticationOptions
-                = new OnYourDataEncodedApiKeyAuthenticationOptions(encodedApiKey);
-            deserializedOnYourDataEncodedApiKeyAuthenticationOptions.setType(type);
-            return deserializedOnYourDataEncodedApiKeyAuthenticationOptions;
-        });
     }
 }

@@ -5,6 +5,7 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -38,7 +39,8 @@ public final class AudioTranslationFormat extends ExpandableStringEnum<AudioTran
     public static final AudioTranslationFormat SRT = fromString("srt");
 
     /**
-     * Use a response body that is plain text in Web Video Text Tracks (VTT) format that also includes timing information.
+     * Use a response body that is plain text in Web Video Text Tracks (VTT) format that also includes timing
+     * information.
      */
     @Generated
     public static final AudioTranslationFormat VTT = fromString("vtt");
@@ -60,6 +62,7 @@ public final class AudioTranslationFormat extends ExpandableStringEnum<AudioTran
      * @return the corresponding AudioTranslationFormat.
      */
     @Generated
+    @JsonCreator
     public static AudioTranslationFormat fromString(String name) {
         return fromString(name, AudioTranslationFormat.class);
     }

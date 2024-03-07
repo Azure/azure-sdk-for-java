@@ -5,15 +5,18 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * The details of a a vectorization source, used by Azure OpenAI On Your Data when applying vector search, that is based
+ * The details of a a vectorization source, used by Azure OpenAI On Your Data when applying vector search, that is
+ * based
  * on a search service model ID. Currently only supported by Elasticsearch®.
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeName("model_id")
 @Immutable
 public final class OnYourDataModelIdVectorizationSource extends OnYourDataVectorizationSource {
 
@@ -21,7 +24,8 @@ public final class OnYourDataModelIdVectorizationSource extends OnYourDataVector
      * The embedding model ID build inside the search service. Currently only supported by Elasticsearch®.
      */
     @Generated
-    private final String modelId;
+    @JsonProperty(value = "model_id")
+    private String modelId;
 
     /**
      * Creates an instance of OnYourDataModelIdVectorizationSource class.
@@ -29,61 +33,19 @@ public final class OnYourDataModelIdVectorizationSource extends OnYourDataVector
      * @param modelId the modelId value to set.
      */
     @Generated
-    public OnYourDataModelIdVectorizationSource(String modelId) {
-        setType(OnYourDataVectorizationSourceType.MODEL_ID);
+    @JsonCreator
+    public OnYourDataModelIdVectorizationSource(@JsonProperty(value = "model_id") String modelId) {
         this.modelId = modelId;
     }
 
     /**
-     * Get the modelId property: The embedding model ID build inside the search service. Currently only supported by Elasticsearch®.
+     * Get the modelId property: The embedding model ID build inside the search service. Currently only supported by
+     * Elasticsearch®.
      *
      * @return the modelId value.
      */
     @Generated
     public String getModelId() {
         return this.modelId;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", getType() == null ? null : getType().toString());
-        jsonWriter.writeStringField("model_id", this.modelId);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of OnYourDataModelIdVectorizationSource from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of OnYourDataModelIdVectorizationSource if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the OnYourDataModelIdVectorizationSource.
-     */
-    @Generated
-    public static OnYourDataModelIdVectorizationSource fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            OnYourDataVectorizationSourceType type = OnYourDataVectorizationSourceType.MODEL_ID;
-            String modelId = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    type = OnYourDataVectorizationSourceType.fromString(reader.getString());
-                } else if ("model_id".equals(fieldName)) {
-                    modelId = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            OnYourDataModelIdVectorizationSource deserializedOnYourDataModelIdVectorizationSource
-                = new OnYourDataModelIdVectorizationSource(modelId);
-            deserializedOnYourDataModelIdVectorizationSource.setType(type);
-            return deserializedOnYourDataModelIdVectorizationSource;
-        });
     }
 }

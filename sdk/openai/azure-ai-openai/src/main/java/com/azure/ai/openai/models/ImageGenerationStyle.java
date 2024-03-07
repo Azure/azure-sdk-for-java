@@ -5,16 +5,19 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * An image generation configuration that specifies how the model should incorporate realism and other visual characteristics.
+ * An image generation configuration that specifies how the model should incorporate realism and other visual
+ * characteristics.
  * Only configurable with dall-e-3 models.
  */
 public final class ImageGenerationStyle extends ExpandableStringEnum<ImageGenerationStyle> {
 
     /**
-     * Requests image generation in a natural style with less preference for dramatic and hyper-realistic characteristics.
+     * Requests image generation in a natural style with less preference for dramatic and hyper-realistic
+     * characteristics.
      */
     @Generated
     public static final ImageGenerationStyle NATURAL = fromString("natural");
@@ -43,6 +46,7 @@ public final class ImageGenerationStyle extends ExpandableStringEnum<ImageGenera
      * @return the corresponding ImageGenerationStyle.
      */
     @Generated
+    @JsonCreator
     public static ImageGenerationStyle fromString(String name) {
         return fromString(name, ImageGenerationStyle.class);
     }

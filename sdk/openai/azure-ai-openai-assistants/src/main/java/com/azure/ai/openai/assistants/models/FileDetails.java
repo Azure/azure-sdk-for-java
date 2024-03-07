@@ -17,7 +17,7 @@ public final class FileDetails {
      * The content of the file
      */
     @Generated
-    private final BinaryData content;
+    private BinaryData content;
 
     /*
      * The filename of the file

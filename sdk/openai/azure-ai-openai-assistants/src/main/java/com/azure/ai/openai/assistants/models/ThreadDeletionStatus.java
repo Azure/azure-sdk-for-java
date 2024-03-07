@@ -5,35 +5,35 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The status of a thread deletion operation.
  */
 @Immutable
-public final class ThreadDeletionStatus implements JsonSerializable<ThreadDeletionStatus> {
+public final class ThreadDeletionStatus {
 
     /*
      * The ID of the resource specified for deletion.
      */
     @Generated
-    private final String id;
+    @JsonProperty(value = "id")
+    private String id;
 
     /*
      * A value indicating whether deletion was successful.
      */
     @Generated
-    private final boolean deleted;
+    @JsonProperty(value = "deleted")
+    private boolean deleted;
 
     /*
      * The object type, which is always 'thread.deleted'.
      */
     @Generated
-    private final String object = "thread.deleted";
+    @JsonProperty(value = "object")
+    private String object = "thread.deleted";
 
     /**
      * Creates an instance of ThreadDeletionStatus class.
@@ -42,7 +42,9 @@ public final class ThreadDeletionStatus implements JsonSerializable<ThreadDeleti
      * @param deleted the deleted value to set.
      */
     @Generated
-    private ThreadDeletionStatus(String id, boolean deleted) {
+    @JsonCreator
+    private ThreadDeletionStatus(@JsonProperty(value = "id") String id,
+        @JsonProperty(value = "deleted") boolean deleted) {
         this.id = id;
         this.deleted = deleted;
     }
@@ -75,46 +77,5 @@ public final class ThreadDeletionStatus implements JsonSerializable<ThreadDeleti
     @Generated
     public String getObject() {
         return this.object;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("id", this.id);
-        jsonWriter.writeBooleanField("deleted", this.deleted);
-        jsonWriter.writeStringField("object", this.object);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ThreadDeletionStatus from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ThreadDeletionStatus if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ThreadDeletionStatus.
-     */
-    @Generated
-    public static ThreadDeletionStatus fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String id = null;
-            boolean deleted = false;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("id".equals(fieldName)) {
-                    id = reader.getString();
-                } else if ("deleted".equals(fieldName)) {
-                    deleted = reader.getBoolean();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new ThreadDeletionStatus(id, deleted);
-        });
     }
 }

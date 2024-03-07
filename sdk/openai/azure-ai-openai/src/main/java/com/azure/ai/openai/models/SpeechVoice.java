@@ -5,6 +5,7 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -65,6 +66,7 @@ public final class SpeechVoice extends ExpandableStringEnum<SpeechVoice> {
      * @return the corresponding SpeechVoice.
      */
     @Generated
+    @JsonCreator
     public static SpeechVoice fromString(String name) {
         return fromString(name, SpeechVoice.class);
     }

@@ -5,14 +5,16 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * The authentication options for Azure OpenAI On Your Data when using an API key.
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeName("api_key")
 @Immutable
 public final class OnYourDataApiKeyAuthenticationOptions extends OnYourDataAuthenticationOptions {
 
@@ -20,7 +22,8 @@ public final class OnYourDataApiKeyAuthenticationOptions extends OnYourDataAuthe
      * The API key to use for authentication.
      */
     @Generated
-    private final String key;
+    @JsonProperty(value = "key")
+    private String key;
 
     /**
      * Creates an instance of OnYourDataApiKeyAuthenticationOptions class.
@@ -28,8 +31,8 @@ public final class OnYourDataApiKeyAuthenticationOptions extends OnYourDataAuthe
      * @param key the key value to set.
      */
     @Generated
-    public OnYourDataApiKeyAuthenticationOptions(String key) {
-        setType(OnYourDataAuthenticationType.API_KEY);
+    @JsonCreator
+    public OnYourDataApiKeyAuthenticationOptions(@JsonProperty(value = "key") String key) {
         this.key = key;
     }
 
@@ -41,48 +44,5 @@ public final class OnYourDataApiKeyAuthenticationOptions extends OnYourDataAuthe
     @Generated
     public String getKey() {
         return this.key;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", getType() == null ? null : getType().toString());
-        jsonWriter.writeStringField("key", this.key);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of OnYourDataApiKeyAuthenticationOptions from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of OnYourDataApiKeyAuthenticationOptions if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the OnYourDataApiKeyAuthenticationOptions.
-     */
-    @Generated
-    public static OnYourDataApiKeyAuthenticationOptions fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            OnYourDataAuthenticationType type = OnYourDataAuthenticationType.API_KEY;
-            String key = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    type = OnYourDataAuthenticationType.fromString(reader.getString());
-                } else if ("key".equals(fieldName)) {
-                    key = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            OnYourDataApiKeyAuthenticationOptions deserializedOnYourDataApiKeyAuthenticationOptions
-                = new OnYourDataApiKeyAuthenticationOptions(key);
-            deserializedOnYourDataApiKeyAuthenticationOptions.setType(type);
-            return deserializedOnYourDataApiKeyAuthenticationOptions;
-        });
     }
 }

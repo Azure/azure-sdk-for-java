@@ -5,29 +5,28 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A representation of a single generated image, provided as either base64-encoded data or as a URL from which the image
+ * A representation of a single generated image, provided as either base64-encoded data or as a URL from which the
+ * image
  * may be retrieved.
  */
 @Immutable
-public final class ImageGenerationData implements JsonSerializable<ImageGenerationData> {
+public final class ImageGenerationData {
 
     /*
      * The URL that provides temporary access to download the generated image.
      */
     @Generated
+    @JsonProperty(value = "url")
     private String url;
 
     /*
      * The complete data for an image, represented as a base64-encoded string.
      */
     @Generated
+    @JsonProperty(value = "b64_json")
     private String base64Data;
 
     /*
@@ -35,6 +34,7 @@ public final class ImageGenerationData implements JsonSerializable<ImageGenerati
      * Only provided with dall-3-models and only when revisions were made to the prompt.
      */
     @Generated
+    @JsonProperty(value = "revised_prompt")
     private String revisedPrompt;
 
     /**
@@ -79,6 +79,7 @@ public final class ImageGenerationData implements JsonSerializable<ImageGenerati
      * Information about the content filtering results.
      */
     @Generated
+    @JsonProperty(value = "content_filter_results")
     private ImageGenerationContentFilterResults contentFilterResults;
 
     /*
@@ -90,6 +91,7 @@ public final class ImageGenerationData implements JsonSerializable<ImageGenerati
      * been filtered and its id.
      */
     @Generated
+    @JsonProperty(value = "prompt_filter_results")
     private ImageGenerationPromptFilterResults promptFilterResults;
 
     /**
@@ -103,7 +105,8 @@ public final class ImageGenerationData implements JsonSerializable<ImageGenerati
     }
 
     /**
-     * Get the promptFilterResults property: Information about the content filtering category (hate, sexual, violence, self_harm), if
+     * Get the promptFilterResults property: Information about the content filtering category (hate, sexual, violence,
+     * self_harm), if
      * it has been detected, as well as the severity level (very_low, low, medium, high-scale
      * that determines the intensity and risk level of harmful content) and if it has been
      * filtered or not. Information about jailbreak content and profanity, if it has been detected,
@@ -115,54 +118,5 @@ public final class ImageGenerationData implements JsonSerializable<ImageGenerati
     @Generated
     public ImageGenerationPromptFilterResults getPromptFilterResults() {
         return this.promptFilterResults;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("url", this.url);
-        jsonWriter.writeStringField("b64_json", this.base64Data);
-        jsonWriter.writeJsonField("content_filter_results", this.contentFilterResults);
-        jsonWriter.writeStringField("revised_prompt", this.revisedPrompt);
-        jsonWriter.writeJsonField("prompt_filter_results", this.promptFilterResults);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ImageGenerationData from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ImageGenerationData if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IOException If an error occurs while reading the ImageGenerationData.
-     */
-    @Generated
-    public static ImageGenerationData fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            ImageGenerationData deserializedImageGenerationData = new ImageGenerationData();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("url".equals(fieldName)) {
-                    deserializedImageGenerationData.url = reader.getString();
-                } else if ("b64_json".equals(fieldName)) {
-                    deserializedImageGenerationData.base64Data = reader.getString();
-                } else if ("content_filter_results".equals(fieldName)) {
-                    deserializedImageGenerationData.contentFilterResults
-                        = ImageGenerationContentFilterResults.fromJson(reader);
-                } else if ("revised_prompt".equals(fieldName)) {
-                    deserializedImageGenerationData.revisedPrompt = reader.getString();
-                } else if ("prompt_filter_results".equals(fieldName)) {
-                    deserializedImageGenerationData.promptFilterResults
-                        = ImageGenerationPromptFilterResults.fromJson(reader);
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return deserializedImageGenerationData;
-        });
     }
 }

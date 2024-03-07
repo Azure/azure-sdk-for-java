@@ -5,31 +5,29 @@ package com.azure.ai.openai.assistants.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
  * The detailed information about a code interpreter invocation by the model.
  */
 @Immutable
-public final class RunStepCodeInterpreterToolCallDetails
-    implements JsonSerializable<RunStepCodeInterpreterToolCallDetails> {
+public final class RunStepCodeInterpreterToolCallDetails {
 
     /*
      * The input provided by the model to the code interpreter tool.
      */
     @Generated
-    private final String input;
+    @JsonProperty(value = "input")
+    private String input;
 
     /*
      * The outputs produced by the code interpreter tool back to the model in response to the tool call.
      */
     @Generated
-    private final List<RunStepCodeInterpreterToolCallOutput> outputs;
+    @JsonProperty(value = "outputs")
+    private List<RunStepCodeInterpreterToolCallOutput> outputs;
 
     /**
      * Creates an instance of RunStepCodeInterpreterToolCallDetails class.
@@ -38,7 +36,9 @@ public final class RunStepCodeInterpreterToolCallDetails
      * @param outputs the outputs value to set.
      */
     @Generated
-    private RunStepCodeInterpreterToolCallDetails(String input, List<RunStepCodeInterpreterToolCallOutput> outputs) {
+    @JsonCreator
+    private RunStepCodeInterpreterToolCallDetails(@JsonProperty(value = "input") String input,
+        @JsonProperty(value = "outputs") List<RunStepCodeInterpreterToolCallOutput> outputs) {
         this.input = input;
         this.outputs = outputs;
     }
@@ -54,52 +54,13 @@ public final class RunStepCodeInterpreterToolCallDetails
     }
 
     /**
-     * Get the outputs property: The outputs produced by the code interpreter tool back to the model in response to the tool call.
+     * Get the outputs property: The outputs produced by the code interpreter tool back to the model in response to the
+     * tool call.
      *
      * @return the outputs value.
      */
     @Generated
     public List<RunStepCodeInterpreterToolCallOutput> getOutputs() {
         return this.outputs;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("input", this.input);
-        jsonWriter.writeArrayField("outputs", this.outputs, (writer, element) -> writer.writeJson(element));
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of RunStepCodeInterpreterToolCallDetails from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of RunStepCodeInterpreterToolCallDetails if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the RunStepCodeInterpreterToolCallDetails.
-     */
-    @Generated
-    public static RunStepCodeInterpreterToolCallDetails fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String input = null;
-            List<RunStepCodeInterpreterToolCallOutput> outputs = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("input".equals(fieldName)) {
-                    input = reader.getString();
-                } else if ("outputs".equals(fieldName)) {
-                    outputs = reader.readArray(reader1 -> RunStepCodeInterpreterToolCallOutput.fromJson(reader1));
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            return new RunStepCodeInterpreterToolCallDetails(input, outputs);
-        });
     }
 }

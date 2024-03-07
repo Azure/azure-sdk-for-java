@@ -5,6 +5,7 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.util.ExpandableStringEnum;
+import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
@@ -48,6 +49,7 @@ public final class CompletionsFinishReason extends ExpandableStringEnum<Completi
      * @return the corresponding CompletionsFinishReason.
      */
     @Generated
+    @JsonCreator
     public static CompletionsFinishReason fromString(String name) {
         return fromString(name, CompletionsFinishReason.class);
     }

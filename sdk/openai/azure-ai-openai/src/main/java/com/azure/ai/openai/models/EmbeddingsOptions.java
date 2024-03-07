@@ -5,11 +5,8 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
 /**
@@ -18,13 +15,14 @@ import java.util.List;
  * recommendations, and other similar scenarios.
  */
 @Fluent
-public final class EmbeddingsOptions implements JsonSerializable<EmbeddingsOptions> {
+public final class EmbeddingsOptions {
 
     /*
      * An identifier for the caller or end user of the operation. This may be used for tracking
      * or rate-limiting purposes.
      */
     @Generated
+    @JsonProperty(value = "user")
     private String user;
 
     /*
@@ -33,6 +31,7 @@ public final class EmbeddingsOptions implements JsonSerializable<EmbeddingsOptio
      * resource URI that's connected to.
      */
     @Generated
+    @JsonProperty(value = "model")
     private String model;
 
     /*
@@ -43,7 +42,8 @@ public final class EmbeddingsOptions implements JsonSerializable<EmbeddingsOptio
      * as we have observed inferior results when newlines are present.
      */
     @Generated
-    private final List<String> input;
+    @JsonProperty(value = "input")
+    private List<String> input;
 
     /**
      * Creates an instance of EmbeddingsOptions class.
@@ -51,7 +51,8 @@ public final class EmbeddingsOptions implements JsonSerializable<EmbeddingsOptio
      * @param input the input value to set.
      */
     @Generated
-    public EmbeddingsOptions(List<String> input) {
+    @JsonCreator
+    public EmbeddingsOptions(@JsonProperty(value = "input") List<String> input) {
         this.input = input;
     }
 
@@ -123,6 +124,7 @@ public final class EmbeddingsOptions implements JsonSerializable<EmbeddingsOptio
      * When using Azure OpenAI, specifies the input type to use for embedding search.
      */
     @Generated
+    @JsonProperty(value = "input_type")
     private String inputType;
 
     /**
@@ -145,57 +147,5 @@ public final class EmbeddingsOptions implements JsonSerializable<EmbeddingsOptio
     public EmbeddingsOptions setInputType(String inputType) {
         this.inputType = inputType;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeArrayField("input", this.input, (writer, element) -> writer.writeString(element));
-        jsonWriter.writeStringField("user", this.user);
-        jsonWriter.writeStringField("model", this.model);
-        jsonWriter.writeStringField("input_type", this.inputType);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of EmbeddingsOptions from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of EmbeddingsOptions if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the EmbeddingsOptions.
-     */
-    @Generated
-    public static EmbeddingsOptions fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            List<String> input = null;
-            String user = null;
-            String model = null;
-            String inputType = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("input".equals(fieldName)) {
-                    input = reader.readArray(reader1 -> reader1.getString());
-                } else if ("user".equals(fieldName)) {
-                    user = reader.getString();
-                } else if ("model".equals(fieldName)) {
-                    model = reader.getString();
-                } else if ("input_type".equals(fieldName)) {
-                    inputType = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            EmbeddingsOptions deserializedEmbeddingsOptions = new EmbeddingsOptions(input);
-            deserializedEmbeddingsOptions.user = user;
-            deserializedEmbeddingsOptions.model = model;
-            deserializedEmbeddingsOptions.inputType = inputType;
-            return deserializedEmbeddingsOptions;
-        });
     }
 }

@@ -5,23 +5,21 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Represents the request data used to generate images.
  */
 @Fluent
-public final class ImageGenerationOptions implements JsonSerializable<ImageGenerationOptions> {
+public final class ImageGenerationOptions {
 
     /*
      * A description of the desired images.
      */
     @Generated
-    private final String prompt;
+    @JsonProperty(value = "prompt")
+    private String prompt;
 
     /*
      * The number of images to generate.
@@ -29,6 +27,7 @@ public final class ImageGenerationOptions implements JsonSerializable<ImageGener
      * Dall-e-3 models only support a value of 1.
      */
     @Generated
+    @JsonProperty(value = "n")
     private Integer n;
 
     /*
@@ -37,12 +36,14 @@ public final class ImageGenerationOptions implements JsonSerializable<ImageGener
      * Dall-e-3 models support 1024x1024, 1792x1024, or 1024x1792.
      */
     @Generated
+    @JsonProperty(value = "size")
     private ImageSize size;
 
     /*
      * A unique identifier representing your end-user, which can help to monitor and detect abuse.
      */
     @Generated
+    @JsonProperty(value = "user")
     private String user;
 
     /**
@@ -51,7 +52,8 @@ public final class ImageGenerationOptions implements JsonSerializable<ImageGener
      * @param prompt the prompt value to set.
      */
     @Generated
-    public ImageGenerationOptions(String prompt) {
+    @JsonCreator
+    public ImageGenerationOptions(@JsonProperty(value = "prompt") String prompt) {
         this.prompt = prompt;
     }
 
@@ -118,7 +120,8 @@ public final class ImageGenerationOptions implements JsonSerializable<ImageGener
     }
 
     /**
-     * Get the user property: A unique identifier representing your end-user, which can help to monitor and detect abuse.
+     * Get the user property: A unique identifier representing your end-user, which can help to monitor and detect
+     * abuse.
      *
      * @return the user value.
      */
@@ -128,7 +131,8 @@ public final class ImageGenerationOptions implements JsonSerializable<ImageGener
     }
 
     /**
-     * Set the user property: A unique identifier representing your end-user, which can help to monitor and detect abuse.
+     * Set the user property: A unique identifier representing your end-user, which can help to monitor and detect
+     * abuse.
      *
      * @param user the user value to set.
      * @return the ImageGenerationOptions object itself.
@@ -143,6 +147,7 @@ public final class ImageGenerationOptions implements JsonSerializable<ImageGener
      * The format in which image generation response items should be presented.
      */
     @Generated
+    @JsonProperty(value = "response_format")
     private ImageGenerationResponseFormat responseFormat;
 
     /**
@@ -168,10 +173,12 @@ public final class ImageGenerationOptions implements JsonSerializable<ImageGener
     }
 
     /*
-     * The model name or Azure OpenAI model deployment name to use for image generation. If not specified, dall-e-2 will be
+     * The model name or Azure OpenAI model deployment name to use for image generation. If not specified, dall-e-2
+     * will be
      * inferred as a default.
      */
     @Generated
+    @JsonProperty(value = "model")
     private String model;
 
     /*
@@ -179,6 +186,7 @@ public final class ImageGenerationOptions implements JsonSerializable<ImageGener
      * Only configurable with dall-e-3 models.
      */
     @Generated
+    @JsonProperty(value = "quality")
     private ImageGenerationQuality quality;
 
     /*
@@ -186,10 +194,12 @@ public final class ImageGenerationOptions implements JsonSerializable<ImageGener
      * Only configurable with dall-e-3 models.
      */
     @Generated
+    @JsonProperty(value = "style")
     private ImageGenerationStyle style;
 
     /**
-     * Get the model property: The model name or Azure OpenAI model deployment name to use for image generation. If not specified, dall-e-2 will be
+     * Get the model property: The model name or Azure OpenAI model deployment name to use for image generation. If not
+     * specified, dall-e-2 will be
      * inferred as a default.
      *
      * @return the model value.
@@ -200,7 +210,8 @@ public final class ImageGenerationOptions implements JsonSerializable<ImageGener
     }
 
     /**
-     * Set the model property: The model name or Azure OpenAI model deployment name to use for image generation. If not specified, dall-e-2 will be
+     * Set the model property: The model name or Azure OpenAI model deployment name to use for image generation. If not
+     * specified, dall-e-2 will be
      * inferred as a default.
      *
      * @param model the model value to set.
@@ -258,78 +269,5 @@ public final class ImageGenerationOptions implements JsonSerializable<ImageGener
     public ImageGenerationOptions setStyle(ImageGenerationStyle style) {
         this.style = style;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("prompt", this.prompt);
-        jsonWriter.writeStringField("model", this.model);
-        jsonWriter.writeNumberField("n", this.n);
-        jsonWriter.writeStringField("size", this.size == null ? null : this.size.toString());
-        jsonWriter.writeStringField("response_format",
-            this.responseFormat == null ? null : this.responseFormat.toString());
-        jsonWriter.writeStringField("quality", this.quality == null ? null : this.quality.toString());
-        jsonWriter.writeStringField("style", this.style == null ? null : this.style.toString());
-        jsonWriter.writeStringField("user", this.user);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ImageGenerationOptions from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ImageGenerationOptions if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ImageGenerationOptions.
-     */
-    @Generated
-    public static ImageGenerationOptions fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String prompt = null;
-            String model = null;
-            Integer n = null;
-            ImageSize size = null;
-            ImageGenerationResponseFormat responseFormat = null;
-            ImageGenerationQuality quality = null;
-            ImageGenerationStyle style = null;
-            String user = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("prompt".equals(fieldName)) {
-                    prompt = reader.getString();
-                } else if ("model".equals(fieldName)) {
-                    model = reader.getString();
-                } else if ("n".equals(fieldName)) {
-                    n = reader.getNullable(JsonReader::getInt);
-                } else if ("size".equals(fieldName)) {
-                    size = ImageSize.fromString(reader.getString());
-                } else if ("response_format".equals(fieldName)) {
-                    responseFormat = ImageGenerationResponseFormat.fromString(reader.getString());
-                } else if ("quality".equals(fieldName)) {
-                    quality = ImageGenerationQuality.fromString(reader.getString());
-                } else if ("style".equals(fieldName)) {
-                    style = ImageGenerationStyle.fromString(reader.getString());
-                } else if ("user".equals(fieldName)) {
-                    user = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            ImageGenerationOptions deserializedImageGenerationOptions = new ImageGenerationOptions(prompt);
-            deserializedImageGenerationOptions.model = model;
-            deserializedImageGenerationOptions.n = n;
-            deserializedImageGenerationOptions.size = size;
-            deserializedImageGenerationOptions.responseFormat = responseFormat;
-            deserializedImageGenerationOptions.quality = quality;
-            deserializedImageGenerationOptions.style = style;
-            deserializedImageGenerationOptions.user = user;
-            return deserializedImageGenerationOptions;
-        });
     }
 }

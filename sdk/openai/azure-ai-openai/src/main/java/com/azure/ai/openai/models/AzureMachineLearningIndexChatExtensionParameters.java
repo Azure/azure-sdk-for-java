@@ -5,75 +5,85 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Fluent;
 import com.azure.core.annotation.Generated;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonSerializable;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters for the Azure Machine Learning vector index chat extension. The supported authentication types are AccessToken, SystemAssignedManagedIdentity and UserAssignedManagedIdentity.
+ * Parameters for the Azure Machine Learning vector index chat extension. The supported authentication types are
+ * AccessToken, SystemAssignedManagedIdentity and UserAssignedManagedIdentity.
  */
 @Fluent
-public final class AzureMachineLearningIndexChatExtensionParameters
-    implements JsonSerializable<AzureMachineLearningIndexChatExtensionParameters> {
+public final class AzureMachineLearningIndexChatExtensionParameters {
 
     /*
      * The authentication method to use when accessing the defined data source.
-     * Each data source type supports a specific set of available authentication methods; please see the documentation of
+     * Each data source type supports a specific set of available authentication methods; please see the documentation
+     * of
      * the data source for supported mechanisms.
      * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
      * authentication.
      */
     @Generated
+    @JsonProperty(value = "authentication")
     private OnYourDataAuthenticationOptions authentication;
 
     /*
      * The configured top number of documents to feature for the configured query.
      */
     @Generated
+    @JsonProperty(value = "top_n_documents")
     private Integer topNDocuments;
 
     /*
      * Whether queries should be restricted to use of indexed data.
      */
     @Generated
+    @JsonProperty(value = "in_scope")
     private Boolean inScope;
 
     /*
-     * The configured strictness of the search relevance filtering. The higher of strictness, the higher of the precision but lower recall of the answer.
+     * The configured strictness of the search relevance filtering. The higher of strictness, the higher of the
+     * precision but lower recall of the answer.
      */
     @Generated
+    @JsonProperty(value = "strictness")
     private Integer strictness;
 
     /*
-     * Give the model instructions about how it should behave and any context it should reference when generating a response. You can describe the assistant's personality and tell it how to format responses. There's a 100 token limit for it, and it counts against the overall token limit.
+     * Give the model instructions about how it should behave and any context it should reference when generating a
+     * response. You can describe the assistant's personality and tell it how to format responses. There's a 100 token
+     * limit for it, and it counts against the overall token limit.
      */
     @Generated
+    @JsonProperty(value = "role_information")
     private String roleInformation;
 
     /*
      * The resource ID of the Azure Machine Learning project.
      */
     @Generated
-    private final String projectResourceId;
+    @JsonProperty(value = "project_resource_id")
+    private String projectResourceId;
 
     /*
      * The Azure Machine Learning vector index name.
      */
     @Generated
-    private final String name;
+    @JsonProperty(value = "name")
+    private String name;
 
     /*
      * The version of the Azure Machine Learning vector index.
      */
     @Generated
-    private final String version;
+    @JsonProperty(value = "version")
+    private String version;
 
     /*
      * Search filter. Only supported if the Azure Machine Learning vector index is of type AzureSearch.
      */
     @Generated
+    @JsonProperty(value = "filter")
     private String filter;
 
     /**
@@ -84,7 +94,10 @@ public final class AzureMachineLearningIndexChatExtensionParameters
      * @param version the version value to set.
      */
     @Generated
-    public AzureMachineLearningIndexChatExtensionParameters(String projectResourceId, String name, String version) {
+    @JsonCreator
+    public AzureMachineLearningIndexChatExtensionParameters(
+        @JsonProperty(value = "project_resource_id") String projectResourceId,
+        @JsonProperty(value = "name") String name, @JsonProperty(value = "version") String version) {
         this.projectResourceId = projectResourceId;
         this.name = name;
         this.version = version;
@@ -92,7 +105,8 @@ public final class AzureMachineLearningIndexChatExtensionParameters
 
     /**
      * Get the authentication property: The authentication method to use when accessing the defined data source.
-     * Each data source type supports a specific set of available authentication methods; please see the documentation of
+     * Each data source type supports a specific set of available authentication methods; please see the documentation
+     * of
      * the data source for supported mechanisms.
      * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
      * authentication.
@@ -106,7 +120,8 @@ public final class AzureMachineLearningIndexChatExtensionParameters
 
     /**
      * Set the authentication property: The authentication method to use when accessing the defined data source.
-     * Each data source type supports a specific set of available authentication methods; please see the documentation of
+     * Each data source type supports a specific set of available authentication methods; please see the documentation
+     * of
      * the data source for supported mechanisms.
      * If not otherwise provided, On Your Data will attempt to use System Managed Identity (default credential)
      * authentication.
@@ -166,7 +181,8 @@ public final class AzureMachineLearningIndexChatExtensionParameters
     }
 
     /**
-     * Get the strictness property: The configured strictness of the search relevance filtering. The higher of strictness, the higher of the precision but lower recall of the answer.
+     * Get the strictness property: The configured strictness of the search relevance filtering. The higher of
+     * strictness, the higher of the precision but lower recall of the answer.
      *
      * @return the strictness value.
      */
@@ -176,7 +192,8 @@ public final class AzureMachineLearningIndexChatExtensionParameters
     }
 
     /**
-     * Set the strictness property: The configured strictness of the search relevance filtering. The higher of strictness, the higher of the precision but lower recall of the answer.
+     * Set the strictness property: The configured strictness of the search relevance filtering. The higher of
+     * strictness, the higher of the precision but lower recall of the answer.
      *
      * @param strictness the strictness value to set.
      * @return the AzureMachineLearningIndexChatExtensionParameters object itself.
@@ -188,7 +205,9 @@ public final class AzureMachineLearningIndexChatExtensionParameters
     }
 
     /**
-     * Get the roleInformation property: Give the model instructions about how it should behave and any context it should reference when generating a response. You can describe the assistant's personality and tell it how to format responses. There's a 100 token limit for it, and it counts against the overall token limit.
+     * Get the roleInformation property: Give the model instructions about how it should behave and any context it
+     * should reference when generating a response. You can describe the assistant's personality and tell it how to
+     * format responses. There's a 100 token limit for it, and it counts against the overall token limit.
      *
      * @return the roleInformation value.
      */
@@ -198,7 +217,9 @@ public final class AzureMachineLearningIndexChatExtensionParameters
     }
 
     /**
-     * Set the roleInformation property: Give the model instructions about how it should behave and any context it should reference when generating a response. You can describe the assistant's personality and tell it how to format responses. There's a 100 token limit for it, and it counts against the overall token limit.
+     * Set the roleInformation property: Give the model instructions about how it should behave and any context it
+     * should reference when generating a response. You can describe the assistant's personality and tell it how to
+     * format responses. There's a 100 token limit for it, and it counts against the overall token limit.
      *
      * @param roleInformation the roleInformation value to set.
      * @return the AzureMachineLearningIndexChatExtensionParameters object itself.
@@ -240,7 +261,8 @@ public final class AzureMachineLearningIndexChatExtensionParameters
     }
 
     /**
-     * Get the filter property: Search filter. Only supported if the Azure Machine Learning vector index is of type AzureSearch.
+     * Get the filter property: Search filter. Only supported if the Azure Machine Learning vector index is of type
+     * AzureSearch.
      *
      * @return the filter value.
      */
@@ -250,7 +272,8 @@ public final class AzureMachineLearningIndexChatExtensionParameters
     }
 
     /**
-     * Set the filter property: Search filter. Only supported if the Azure Machine Learning vector index is of type AzureSearch.
+     * Set the filter property: Search filter. Only supported if the Azure Machine Learning vector index is of type
+     * AzureSearch.
      *
      * @param filter the filter value to set.
      * @return the AzureMachineLearningIndexChatExtensionParameters object itself.
@@ -259,81 +282,5 @@ public final class AzureMachineLearningIndexChatExtensionParameters
     public AzureMachineLearningIndexChatExtensionParameters setFilter(String filter) {
         this.filter = filter;
         return this;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("project_resource_id", this.projectResourceId);
-        jsonWriter.writeStringField("name", this.name);
-        jsonWriter.writeStringField("version", this.version);
-        jsonWriter.writeJsonField("authentication", this.authentication);
-        jsonWriter.writeNumberField("top_n_documents", this.topNDocuments);
-        jsonWriter.writeBooleanField("in_scope", this.inScope);
-        jsonWriter.writeNumberField("strictness", this.strictness);
-        jsonWriter.writeStringField("role_information", this.roleInformation);
-        jsonWriter.writeStringField("filter", this.filter);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of AzureMachineLearningIndexChatExtensionParameters from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of AzureMachineLearningIndexChatExtensionParameters if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the AzureMachineLearningIndexChatExtensionParameters.
-     */
-    @Generated
-    public static AzureMachineLearningIndexChatExtensionParameters fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String projectResourceId = null;
-            String name = null;
-            String version = null;
-            OnYourDataAuthenticationOptions authentication = null;
-            Integer topNDocuments = null;
-            Boolean inScope = null;
-            Integer strictness = null;
-            String roleInformation = null;
-            String filter = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("project_resource_id".equals(fieldName)) {
-                    projectResourceId = reader.getString();
-                } else if ("name".equals(fieldName)) {
-                    name = reader.getString();
-                } else if ("version".equals(fieldName)) {
-                    version = reader.getString();
-                } else if ("authentication".equals(fieldName)) {
-                    authentication = OnYourDataAuthenticationOptions.fromJson(reader);
-                } else if ("top_n_documents".equals(fieldName)) {
-                    topNDocuments = reader.getNullable(JsonReader::getInt);
-                } else if ("in_scope".equals(fieldName)) {
-                    inScope = reader.getNullable(JsonReader::getBoolean);
-                } else if ("strictness".equals(fieldName)) {
-                    strictness = reader.getNullable(JsonReader::getInt);
-                } else if ("role_information".equals(fieldName)) {
-                    roleInformation = reader.getString();
-                } else if ("filter".equals(fieldName)) {
-                    filter = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            AzureMachineLearningIndexChatExtensionParameters deserializedAzureMachineLearningIndexChatExtensionParameters
-                = new AzureMachineLearningIndexChatExtensionParameters(projectResourceId, name, version);
-            deserializedAzureMachineLearningIndexChatExtensionParameters.authentication = authentication;
-            deserializedAzureMachineLearningIndexChatExtensionParameters.topNDocuments = topNDocuments;
-            deserializedAzureMachineLearningIndexChatExtensionParameters.inScope = inScope;
-            deserializedAzureMachineLearningIndexChatExtensionParameters.strictness = strictness;
-            deserializedAzureMachineLearningIndexChatExtensionParameters.roleInformation = roleInformation;
-            deserializedAzureMachineLearningIndexChatExtensionParameters.filter = filter;
-            return deserializedAzureMachineLearningIndexChatExtensionParameters;
-        });
     }
 }

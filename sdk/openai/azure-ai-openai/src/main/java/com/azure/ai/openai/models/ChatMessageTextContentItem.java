@@ -5,14 +5,16 @@ package com.azure.ai.openai.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
-import com.azure.json.JsonWriter;
-import java.io.IOException;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
+import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
  * A structured chat content item containing plain text.
  */
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
+@JsonTypeName("text")
 @Immutable
 public final class ChatMessageTextContentItem extends ChatMessageContentItem {
 
@@ -20,7 +22,8 @@ public final class ChatMessageTextContentItem extends ChatMessageContentItem {
      * The content of the message.
      */
     @Generated
-    private final String text;
+    @JsonProperty(value = "text")
+    private String text;
 
     /**
      * Creates an instance of ChatMessageTextContentItem class.
@@ -28,8 +31,8 @@ public final class ChatMessageTextContentItem extends ChatMessageContentItem {
      * @param text the text value to set.
      */
     @Generated
-    public ChatMessageTextContentItem(String text) {
-        setType("text");
+    @JsonCreator
+    public ChatMessageTextContentItem(@JsonProperty(value = "text") String text) {
         this.text = text;
     }
 
@@ -41,47 +44,5 @@ public final class ChatMessageTextContentItem extends ChatMessageContentItem {
     @Generated
     public String getText() {
         return this.text;
-    }
-
-    /**
-     * {@inheritDoc}
-     */
-    @Generated
-    @Override
-    public JsonWriter toJson(JsonWriter jsonWriter) throws IOException {
-        jsonWriter.writeStartObject();
-        jsonWriter.writeStringField("type", getType());
-        jsonWriter.writeStringField("text", this.text);
-        return jsonWriter.writeEndObject();
-    }
-
-    /**
-     * Reads an instance of ChatMessageTextContentItem from the JsonReader.
-     *
-     * @param jsonReader The JsonReader being read.
-     * @return An instance of ChatMessageTextContentItem if the JsonReader was pointing to an instance of it, or null if it was pointing to JSON null.
-     * @throws IllegalStateException If the deserialized JSON object was missing any required properties.
-     * @throws IOException If an error occurs while reading the ChatMessageTextContentItem.
-     */
-    @Generated
-    public static ChatMessageTextContentItem fromJson(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            String type = "text";
-            String text = null;
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-                if ("type".equals(fieldName)) {
-                    type = reader.getString();
-                } else if ("text".equals(fieldName)) {
-                    text = reader.getString();
-                } else {
-                    reader.skipChildren();
-                }
-            }
-            ChatMessageTextContentItem deserializedChatMessageTextContentItem = new ChatMessageTextContentItem(text);
-            deserializedChatMessageTextContentItem.setType(type);
-            return deserializedChatMessageTextContentItem;
-        });
     }
 }
