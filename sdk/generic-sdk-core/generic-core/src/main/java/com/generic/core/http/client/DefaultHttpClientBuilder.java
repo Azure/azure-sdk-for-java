@@ -25,7 +25,10 @@ public class DefaultHttpClientBuilder {
     private Configuration configuration;
     private Duration connectionTimeout;
     private Duration readTimeout;
+    private Integer maximumConnections;
+
     private ProxyOptions proxyOptions;
+    private boolean connectionKeepAlive = true;
 
     /**
      * Creates a new instance of the builder with no set configuration.
@@ -137,6 +140,44 @@ public class DefaultHttpClientBuilder {
     }
 
     /**
+     * Sets the maximum connection pool size used by the HTTP client.
+     * <p>
+     * Modifying the maximum connection pool size may have effects on the performance of an application. Increasing the
+     * maximum connection pool will result in more connections being available for an application but may result in more
+     * contention for network resources. It is recommended to perform performance analysis on different maximum
+     * connection pool sizes to find the right configuration for an application.
+     * <p>
+     * The default maximum connection pool size is determined by the underlying HTTP client. Setting the maximum
+     * connection pool size to null resets the configuration to use the default determined by the HTTP
+     * client.
+     *
+     * @param maximumConnections The maximum connection pool size. Default is 5.
+     * @return The updated DefaultHttpClientBuilder object.
+     * @throws IllegalArgumentException If {@code maximumConnectionPoolSize} is not null and is less than {@code 1}.
+     */
+    public DefaultHttpClientBuilder maximumConnections(Integer maximumConnections) {
+        if (maximumConnections != null && maximumConnections <= 0) {
+            LOGGER.atVerbose()
+                .log(() -> "Invalid maximum connection pool size. Using 5 as the maximum connection pool size.");
+            maximumConnections = 5;
+        }
+
+        this.maximumConnections = maximumConnections;
+        return this;
+    }
+
+    /**
+     * Enable or Disable Keep-Alive support for the outgoing request.
+     * @param connectionKeepAlive True to enable keep-alive support, false to disable it.
+     *  Default is true.
+     * @return The updated DefaultHttpClientBuilder object.
+     */
+    public DefaultHttpClientBuilder connectionKeepAlive(boolean connectionKeepAlive) {
+        this.connectionKeepAlive = connectionKeepAlive;
+        return this;
+    }
+
+    /**
      * Build an {@link HttpClient} with the current configuration. If an {@link HttpClientProvider} was set using
      * {@link DefaultHttpClientBuilder#httpClientProvider} it will be used to create the {@link HttpClient}. Otherwise,
      * a new {@link HttpClient} will be created using the configuration set in this
@@ -169,7 +210,7 @@ public class DefaultHttpClientBuilder {
         }
 
         return new DefaultHttpClient(getTimeout(connectionTimeout, DEFAULT_CONNECT_TIMEOUT),
-            getTimeout(readTimeout, DEFAULT_READ_TIMEOUT), buildProxyOptions);
+            getTimeout(readTimeout, DEFAULT_READ_TIMEOUT), maximumConnections, connectionKeepAlive, buildProxyOptions);
     }
 
     private static class ProxyAuthenticator extends Authenticator {
