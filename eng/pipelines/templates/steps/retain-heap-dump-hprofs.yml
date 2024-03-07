@@ -30,4 +30,5 @@ steps:
     parameters:
       ArtifactPath: '$(Build.ArtifactStagingDirectory)/${{ parameters.OomArtifactName }}-zipped'
       ArtifactName: '${{ parameters.OomArtifactName }}-$(System.StageName)-$(System.JobName)'
+      DisplayName: 'Publish OOM hprofs'
       CustomCondition: eq(variables['HAS_OOM_PROFS'], 'true')

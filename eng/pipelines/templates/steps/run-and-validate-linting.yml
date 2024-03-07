@@ -82,6 +82,7 @@ steps:
     parameters:
       ArtifactPath: '$(Build.ArtifactStagingDirectory)/zipped-linting-reports/'
       ArtifactName: 'linting-reports-$(System.StageName)-$(System.JobName)'
+      DisplayName: 'Publish Linting Reports'
       CustomCondition: or(eq(coalesce(variables['IsLatestNonLtsJdk'], true), true), and(${{ parameters.RunLinting }}, succeeded()))
 
   - pwsh: |

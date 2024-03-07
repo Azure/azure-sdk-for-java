@@ -94,7 +94,7 @@ stages:
                   - '**/*.xml'
                   - '!sdk/**/test-recordings'
                   - '!sdk/**/session-records'
-            
+
             - download: current
               displayName: 'Download Artifact: ${{parameters.ArtifactName}}'
               artifact: ${{parameters.ArtifactName}}-signed

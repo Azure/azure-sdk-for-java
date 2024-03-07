@@ -21,5 +21,6 @@ stages:
 
         - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
           parameters:
+            DisplayName: 'Publish Report Artifacts'
             ArtifactPath: '$(Build.ArtifactStagingDirectory)'
             ArtifactName: 'patchreport'

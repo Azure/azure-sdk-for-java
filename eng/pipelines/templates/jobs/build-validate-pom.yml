@@ -93,5 +93,6 @@ jobs:
 
       - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
         parameters:
+          DisplayName: 'Capture repo state for analysis'
           ArtifactPath: '$(System.DefaultWorkingDirectory)'
           ArtifactName: 'repository'

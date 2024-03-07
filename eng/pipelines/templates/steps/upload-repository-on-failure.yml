@@ -3,6 +3,7 @@ steps:
     parameters:
       ArtifactPath: '$(System.DefaultWorkingDirectory)'
       ArtifactName: 'repository-$(System.JobName)'
+      DisplayName: 'Capture repo state for analysis'
       CustomCondition: or(eq(variables['CaptureRepositoryOnFailure'], 'true'), and(failed(), eq(variables['Build.Reason'],'Schedule')))
 
   - task: PowerShell@2
