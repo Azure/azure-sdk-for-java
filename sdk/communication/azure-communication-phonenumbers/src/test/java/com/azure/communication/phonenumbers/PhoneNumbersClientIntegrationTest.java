@@ -219,6 +219,20 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getGeographicAreaCodesWithoutContext(HttpClient httpClient) {
+        PhoneNumberLocality locality = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+                .listAvailableLocalities("US", null).iterator().next();
+        PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
+                .getClientWithConnectionString(httpClient, "listAvailableGeographicAreaCodes")
+                .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON, locality.getLocalizedName(),
+                        locality.getAdministrativeDivision().getAbbreviatedName());
+        PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
+        assertNotNull(areaCodes);
+        assertNotNull(areaCodes.getAreaCode());
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getGeographicAreaCodes(HttpClient httpClient) {
         PhoneNumberLocality locality = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
                 .listAvailableLocalities("US", null).iterator().next();
@@ -270,7 +284,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     public void getLocalitiesWithoutContext(HttpClient httpClient) {
         PagedIterable<PhoneNumberLocality> localitiesResult = this
                 .getClientWithConnectionString(httpClient, "listAvailableLocalities")
-                .listAvailableLocalities("US", null, Context.NONE);
+                .listAvailableLocalities("US", null);
         PhoneNumberLocality locality = localitiesResult.iterator().next();
         assertNotNull(locality);
     }
@@ -280,7 +294,7 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     public void getLocalities(HttpClient httpClient) {
         PagedIterable<PhoneNumberLocality> localitiesResult = this
                 .getClientWithConnectionString(httpClient, "listAvailableLocalities")
-                .listAvailableLocalities("US", null);
+                .listAvailableLocalities("US", null, Context.NONE);
         PhoneNumberLocality locality = localitiesResult.iterator().next();
         assertNotNull(locality);
     }
@@ -328,7 +342,10 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
         PhoneNumberOffering offering = offeringsResult.iterator().next();
         assertNotNull(offering);
     }
-	@@ -353,11 +252,8 @@ public void getTollFreeAreaCodesWithAAD(HttpClient httpClient) {
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getTollFreeAreaCodesWithAAD(HttpClient httpClient) {
         PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
                 .getClientWithManagedIdentity(httpClient, "listAvailableTollFreeAreaCodes")
                 .listAvailableTollFreeAreaCodes("US");
@@ -340,7 +357,13 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     }
 
     @ParameterizedTest
-	@@ -371,7 +267,6 @@ public void getGeographicAreaCodesWithAAD(HttpClient httpClient) {
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getGeographicAreaCodesWithAAD(HttpClient httpClient) {
+        PhoneNumberLocality locality = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+                .listAvailableLocalities("US", null).iterator().next();
+        PagedIterable<PhoneNumberAreaCode> areaCodesResult = this
+                .getClientWithManagedIdentity(httpClient, "listAvailableGeographicAreaCodes")
+                .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON, locality.getLocalizedName(),
                         locality.getAdministrativeDivision().getAbbreviatedName());
         PhoneNumberAreaCode areaCodes = areaCodesResult.iterator().next();
         assertNotNull(areaCodes);
@@ -348,7 +371,9 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     }
 
     @ParameterizedTest
-	@@ -381,8 +276,6 @@ public void getCountriesWithAAD(HttpClient httpClient) {
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getCountriesWithAAD(HttpClient httpClient) {
+        PagedIterable<PhoneNumberCountry> countriesResult = this
                 .getClientWithManagedIdentity(httpClient, "listAvailableCountries").listAvailableCountries();
         PhoneNumberCountry country = countriesResult.iterator().next();
         assertNotNull(country);
@@ -357,7 +382,26 @@ public class PhoneNumbersClientIntegrationTest extends PhoneNumbersIntegrationTe
     }
 
     @ParameterizedTest
-	@@ -409,7 +302,6 @@ public void getLocalitiesWithAdministrativeDivisionWithAAD(HttpClient httpClient
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getLocalitiesWithAAD(HttpClient httpClient) {
+        PagedIterable<PhoneNumberLocality> localitiesResult = this
+                .getClientWithManagedIdentity(httpClient, "listAvailableLocalities")
+                .listAvailableLocalities("US", null);
+        PhoneNumberLocality locality = localitiesResult.iterator().next();
+        assertNotNull(locality);
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getLocalitiesWithAdministrativeDivisionWithAAD(HttpClient httpClient) {
+        PagedIterable<PhoneNumberLocality> localities = this
+                .getClientWithManagedIdentity(httpClient, "listAvailableLocalities")
+                .listAvailableLocalities("US", null);
+        PhoneNumberLocality localityWithAD = localities.iterator().next();
+
+        PagedIterable<PhoneNumberLocality> localitiesResult = this
+                .getClientWithManagedIdentity(httpClient, "listAvailableLocalities")
+                .listAvailableLocalities("US", localityWithAD.getAdministrativeDivision().getAbbreviatedName());
         PhoneNumberLocality locality = localitiesResult.iterator().next();
         assertNotNull(locality);
         assertEquals(locality.getAdministrativeDivision().getAbbreviatedName(), localityWithAD.getAdministrativeDivision().getAbbreviatedName());

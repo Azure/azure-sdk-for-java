@@ -54,7 +54,6 @@ public class PhoneNumbersIntegrationTestBase extends TestProxyTestBase {
     private void addTestProxyMatchers() {
         interceptorManager.addMatchers(Arrays.asList(
             new CustomMatcher().setHeadersKeyOnlyMatch(Arrays.asList("x-ms-hmac-string-to-sign-base64"))));
-
     }
 
     private void addTestProxySanitizer() {

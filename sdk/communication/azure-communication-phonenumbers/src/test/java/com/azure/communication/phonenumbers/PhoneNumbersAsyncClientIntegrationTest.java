@@ -264,10 +264,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         StepVerifier.create(
                 this.getClientWithManagedIdentity(httpClient, "listAvailableTollFreeAreaCodes")
                         .listAvailableTollFreeAreaCodes("US", PhoneNumberAssignmentType.APPLICATION).next())
-                .assertNext((PhoneNumberAreaCode areaCodes) -> {
-                    assertNotNull(areaCodes.getAreaCode());
-                })
-                .verifyComplete();
+                .expectAccessibleContext();
     }
 
     @ParameterizedTest
@@ -282,6 +279,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                         .next())
                 .assertNext((PhoneNumberAreaCode areaCodes) -> {
                     assertNotNull(areaCodes);
+                    assertNotNull(areaCodes.getAreaCode());
                 })
                 .verifyComplete();
     }
@@ -320,6 +318,7 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                 .assertNext((PhoneNumberLocality localityWithAD) -> {
                     assertNotNull(localityWithAD);
                     assertEquals(localityWithAD.getAdministrativeDivision().getAbbreviatedName(), locality.getAdministrativeDivision().getAbbreviatedName());
+                    assertEquals(localityWithAD.getAdministrativeDivision().getLocalizedName(), locality.getAdministrativeDivision().getLocalizedName());
                 })
                 .verifyComplete();
     }
@@ -332,7 +331,10 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                         .listAvailableOfferings("US", null, null).next())
                 .assertNext((PhoneNumberOffering offering) -> {
                     assertNotNull(offering);
-                })
+                    offering.getCost().getBillingFrequency();
+                    assertNotNull(BillingFrequency.values());
+                    assertNotNull(offering.getCost().getCurrencyCode());
+                    assertNotNull(offering.getCost().getAmount());                })
                 .verifyComplete();
     }
 
@@ -342,7 +344,23 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
         StepVerifier.create(
                 this.getClientWithConnectionString(httpClient, "listAvailableTollFreeAreaCodes")
                         .listAvailableTollFreeAreaCodes("US", PhoneNumberAssignmentType.APPLICATION).next())
+                .expectAccessibleContext();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getTollFreeAreaCodesWrongCountryCode(HttpClient httpClient) {
+        StepVerifier.create(
+                this.getClientWithConnectionString(httpClient, "listAvailableTollFreeAreaCodes")
+                        .listAvailableTollFreeAreaCodes("XX", PhoneNumberAssignmentType.APPLICATION).next())
+                .expectError();
+    }
+
+    @ParameterizedTest
+	public void getGeographicAreaCodes(HttpClient httpClient) {
+                        .next())
                 .assertNext((PhoneNumberAreaCode areaCodes) -> {
+                    assertNotNull(areaCodes);
                     assertNotNull(areaCodes.getAreaCode());
                 })
                 .verifyComplete();
@@ -350,18 +368,13 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
 
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
-    public void getGeographicAreaCodes(HttpClient httpClient) {
-        PhoneNumberLocality locality = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
-                .listAvailableLocalities("US", null).blockFirst();
+    public void getGeographicAreaCodesWronglocality(HttpClient httpClient) {
         StepVerifier.create(
                 this.getClientWithConnectionString(httpClient, "listAvailableGeographicAreaCodes")
                         .listAvailableGeographicAreaCodes("US", PhoneNumberAssignmentType.PERSON,
-                                locality.getLocalizedName(), locality.getAdministrativeDivision().getAbbreviatedName())
+                                "XX", "XX")
                         .next())
-                .assertNext((PhoneNumberAreaCode areaCodes) -> {
-                    assertNotNull(areaCodes);
-                })
-                .verifyComplete();
+                .expectError();
     }
 
     @ParameterizedTest
@@ -391,17 +404,28 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
     @ParameterizedTest
     @MethodSource("com.azure.core.test.TestBase#getHttpClients")
     public void getLocalitiesAdministrativeDivision(HttpClient httpClient) {
-        String localityAdministraiveDivision = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
-                .listAvailableLocalities("US", null).blockFirst().getAdministrativeDivision().getAbbreviatedName();
+        PhoneNumberAdministrativeDivision localityAdministraiveDivision = this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+                .listAvailableLocalities("US", null).blockFirst().getAdministrativeDivision();
         StepVerifier.create(
                 this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
-                        .listAvailableLocalities("US", localityAdministraiveDivision).next())
+                        .listAvailableLocalities("US", localityAdministraiveDivision.getAbbreviatedName()).next())
                 .assertNext((PhoneNumberLocality locality) -> {
                     assertNotNull(locality);
                     assertEquals(locality.getAdministrativeDivision().getAbbreviatedName(),
-                            localityAdministraiveDivision);
+                            localityAdministraiveDivision.getAbbreviatedName());
+                    assertEquals(locality.getAdministrativeDivision().getLocalizedName(),
+                            localityAdministraiveDivision.getLocalizedName());
                 })
                 .verifyComplete();
+    }
+
+    @ParameterizedTest
+    @MethodSource("com.azure.core.test.TestBase#getHttpClients")
+    public void getLocalitiesInvalidAdministrativeDivision(HttpClient httpClient) {
+        StepVerifier.create(
+                this.getClientWithConnectionString(httpClient, "listAvailableLocalities")
+                        .listAvailableLocalities("US", "null").next())
+                .expectError();
     }
 
     @ParameterizedTest
@@ -412,6 +436,10 @@ public class PhoneNumbersAsyncClientIntegrationTest extends PhoneNumbersIntegrat
                         .listAvailableOfferings("US", null, null).next())
                 .assertNext((PhoneNumberOffering offering) -> {
                     assertNotNull(offering);
+                    offering.getCost().getBillingFrequency();
+                    assertNotNull(BillingFrequency.values());
+                    assertNotNull(offering.getCost().getCurrencyCode());
+                    assertNotNull(offering.getCost().getAmount());
                 })
                 .verifyComplete();
     }
