@@ -7,30 +7,32 @@ package com.azure.resourcemanager.search.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes the properties of an existing Shared Private Link Resource managed by the search service. */
+/**
+ * Describes the properties of an existing shared private link resource managed by the Azure AI Search service.
+ */
 @Fluent
 public final class SharedPrivateLinkResourceProperties {
     /*
-     * The resource id of the resource the shared private link resource is for.
+     * The resource ID of the resource the shared private link resource is for.
      */
     @JsonProperty(value = "privateLinkResourceId")
     private String privateLinkResourceId;
 
     /*
-     * The group id from the provider of resource the shared private link resource is for.
+     * The group ID from the provider of resource the shared private link resource is for.
      */
     @JsonProperty(value = "groupId")
     private String groupId;
 
     /*
-     * The request message for requesting approval of the shared private link resource.
+     * The message for requesting approval of the shared private link resource.
      */
     @JsonProperty(value = "requestMessage")
     private String requestMessage;
 
     /*
-     * Optional. Can be used to specify the Azure Resource Manager location of the resource to which a shared private
-     * link is to be created. This is only required for those resources whose DNS configuration are regional (such as
+     * Optional. Can be used to specify the Azure Resource Manager location of the resource for which a shared private
+     * link is being created. This is only required for those resources whose DNS configuration are regional (such as
      * Azure Kubernetes Service).
      */
     @JsonProperty(value = "resourceRegion")
@@ -49,13 +51,15 @@ public final class SharedPrivateLinkResourceProperties {
     @JsonProperty(value = "provisioningState")
     private SharedPrivateLinkResourceProvisioningState provisioningState;
 
-    /** Creates an instance of SharedPrivateLinkResourceProperties class. */
+    /**
+     * Creates an instance of SharedPrivateLinkResourceProperties class.
+     */
     public SharedPrivateLinkResourceProperties() {
     }
 
     /**
-     * Get the privateLinkResourceId property: The resource id of the resource the shared private link resource is for.
-     *
+     * Get the privateLinkResourceId property: The resource ID of the resource the shared private link resource is for.
+     * 
      * @return the privateLinkResourceId value.
      */
     public String privateLinkResourceId() {
@@ -63,8 +67,8 @@ public final class SharedPrivateLinkResourceProperties {
     }
 
     /**
-     * Set the privateLinkResourceId property: The resource id of the resource the shared private link resource is for.
-     *
+     * Set the privateLinkResourceId property: The resource ID of the resource the shared private link resource is for.
+     * 
      * @param privateLinkResourceId the privateLinkResourceId value to set.
      * @return the SharedPrivateLinkResourceProperties object itself.
      */
@@ -74,8 +78,8 @@ public final class SharedPrivateLinkResourceProperties {
     }
 
     /**
-     * Get the groupId property: The group id from the provider of resource the shared private link resource is for.
-     *
+     * Get the groupId property: The group ID from the provider of resource the shared private link resource is for.
+     * 
      * @return the groupId value.
      */
     public String groupId() {
@@ -83,8 +87,8 @@ public final class SharedPrivateLinkResourceProperties {
     }
 
     /**
-     * Set the groupId property: The group id from the provider of resource the shared private link resource is for.
-     *
+     * Set the groupId property: The group ID from the provider of resource the shared private link resource is for.
+     * 
      * @param groupId the groupId value to set.
      * @return the SharedPrivateLinkResourceProperties object itself.
      */
@@ -94,8 +98,8 @@ public final class SharedPrivateLinkResourceProperties {
     }
 
     /**
-     * Get the requestMessage property: The request message for requesting approval of the shared private link resource.
-     *
+     * Get the requestMessage property: The message for requesting approval of the shared private link resource.
+     * 
      * @return the requestMessage value.
      */
     public String requestMessage() {
@@ -103,8 +107,8 @@ public final class SharedPrivateLinkResourceProperties {
     }
 
     /**
-     * Set the requestMessage property: The request message for requesting approval of the shared private link resource.
-     *
+     * Set the requestMessage property: The message for requesting approval of the shared private link resource.
+     * 
      * @param requestMessage the requestMessage value to set.
      * @return the SharedPrivateLinkResourceProperties object itself.
      */
@@ -115,9 +119,9 @@ public final class SharedPrivateLinkResourceProperties {
 
     /**
      * Get the resourceRegion property: Optional. Can be used to specify the Azure Resource Manager location of the
-     * resource to which a shared private link is to be created. This is only required for those resources whose DNS
+     * resource for which a shared private link is being created. This is only required for those resources whose DNS
      * configuration are regional (such as Azure Kubernetes Service).
-     *
+     * 
      * @return the resourceRegion value.
      */
     public String resourceRegion() {
@@ -126,9 +130,9 @@ public final class SharedPrivateLinkResourceProperties {
 
     /**
      * Set the resourceRegion property: Optional. Can be used to specify the Azure Resource Manager location of the
-     * resource to which a shared private link is to be created. This is only required for those resources whose DNS
+     * resource for which a shared private link is being created. This is only required for those resources whose DNS
      * configuration are regional (such as Azure Kubernetes Service).
-     *
+     * 
      * @param resourceRegion the resourceRegion value to set.
      * @return the SharedPrivateLinkResourceProperties object itself.
      */
@@ -138,9 +142,9 @@ public final class SharedPrivateLinkResourceProperties {
     }
 
     /**
-     * Get the status property: Status of the shared private link resource. Valid values are Pending, Approved, Rejected
-     * or Disconnected.
-     *
+     * Get the status property: Status of the shared private link resource. Valid values are Pending, Approved,
+     * Rejected or Disconnected.
+     * 
      * @return the status value.
      */
     public SharedPrivateLinkResourceStatus status() {
@@ -148,9 +152,9 @@ public final class SharedPrivateLinkResourceProperties {
     }
 
     /**
-     * Set the status property: Status of the shared private link resource. Valid values are Pending, Approved, Rejected
-     * or Disconnected.
-     *
+     * Set the status property: Status of the shared private link resource. Valid values are Pending, Approved,
+     * Rejected or Disconnected.
+     * 
      * @param status the status value to set.
      * @return the SharedPrivateLinkResourceProperties object itself.
      */
@@ -162,7 +166,7 @@ public final class SharedPrivateLinkResourceProperties {
     /**
      * Get the provisioningState property: The provisioning state of the shared private link resource. Valid values are
      * Updating, Deleting, Failed, Succeeded or Incomplete.
-     *
+     * 
      * @return the provisioningState value.
      */
     public SharedPrivateLinkResourceProvisioningState provisioningState() {
@@ -172,19 +176,19 @@ public final class SharedPrivateLinkResourceProperties {
     /**
      * Set the provisioningState property: The provisioning state of the shared private link resource. Valid values are
      * Updating, Deleting, Failed, Succeeded or Incomplete.
-     *
+     * 
      * @param provisioningState the provisioningState value to set.
      * @return the SharedPrivateLinkResourceProperties object itself.
      */
-    public SharedPrivateLinkResourceProperties withProvisioningState(
-        SharedPrivateLinkResourceProvisioningState provisioningState) {
+    public SharedPrivateLinkResourceProperties
+        withProvisioningState(SharedPrivateLinkResourceProvisioningState provisioningState) {
         this.provisioningState = provisioningState;
         return this;
     }
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

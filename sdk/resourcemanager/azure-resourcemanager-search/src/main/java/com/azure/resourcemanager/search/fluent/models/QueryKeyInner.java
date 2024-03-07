@@ -7,11 +7,15 @@ package com.azure.resourcemanager.search.fluent.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes an API key for a given search service that has permissions for query operations only. */
+/**
+ * Describes an API key for a given Azure AI Search service that conveys read-only permissions on the docs collection
+ * of an index.
+ */
 @Immutable
 public final class QueryKeyInner {
     /*
-     * The name of the query API key; may be empty.
+     * The name of the query API key. Query names are optional, but assigning a name can help you remember how it's
+     * used.
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
@@ -22,13 +26,16 @@ public final class QueryKeyInner {
     @JsonProperty(value = "key", access = JsonProperty.Access.WRITE_ONLY)
     private String key;
 
-    /** Creates an instance of QueryKeyInner class. */
+    /**
+     * Creates an instance of QueryKeyInner class.
+     */
     public QueryKeyInner() {
     }
 
     /**
-     * Get the name property: The name of the query API key; may be empty.
-     *
+     * Get the name property: The name of the query API key. Query names are optional, but assigning a name can help
+     * you remember how it's used.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -37,7 +44,7 @@ public final class QueryKeyInner {
 
     /**
      * Get the key property: The value of the query API key.
-     *
+     * 
      * @return the key value.
      */
     public String key() {
@@ -46,7 +53,7 @@ public final class QueryKeyInner {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

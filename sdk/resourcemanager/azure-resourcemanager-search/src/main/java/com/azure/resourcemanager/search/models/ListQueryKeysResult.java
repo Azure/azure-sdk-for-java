@@ -9,11 +9,13 @@ import com.azure.resourcemanager.search.fluent.models.QueryKeyInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.util.List;
 
-/** Response containing the query API keys for a given search service. */
+/**
+ * Response containing the query API keys for a given Azure AI Search service.
+ */
 @Immutable
 public final class ListQueryKeysResult {
     /*
-     * The query keys for the search service.
+     * The query keys for the Azure AI Search service.
      */
     @JsonProperty(value = "value", access = JsonProperty.Access.WRITE_ONLY)
     private List<QueryKeyInner> value;
@@ -25,13 +27,15 @@ public final class ListQueryKeysResult {
     @JsonProperty(value = "nextLink", access = JsonProperty.Access.WRITE_ONLY)
     private String nextLink;
 
-    /** Creates an instance of ListQueryKeysResult class. */
+    /**
+     * Creates an instance of ListQueryKeysResult class.
+     */
     public ListQueryKeysResult() {
     }
 
     /**
-     * Get the value property: The query keys for the search service.
-     *
+     * Get the value property: The query keys for the Azure AI Search service.
+     * 
      * @return the value value.
      */
     public List<QueryKeyInner> value() {
@@ -39,9 +43,9 @@ public final class ListQueryKeysResult {
     }
 
     /**
-     * Get the nextLink property: Request URL that can be used to query next page of query keys. Returned when the total
-     * number of requested query keys exceed maximum page size.
-     *
+     * Get the nextLink property: Request URL that can be used to query next page of query keys. Returned when the
+     * total number of requested query keys exceed maximum page size.
+     * 
      * @return the nextLink value.
      */
     public String nextLink() {
@@ -50,7 +54,7 @@ public final class ListQueryKeysResult {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

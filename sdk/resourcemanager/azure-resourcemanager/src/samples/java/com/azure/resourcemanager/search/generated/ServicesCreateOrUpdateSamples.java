@@ -15,258 +15,209 @@ import com.azure.resourcemanager.search.models.IdentityType;
 import com.azure.resourcemanager.search.models.IpRule;
 import com.azure.resourcemanager.search.models.NetworkRuleSet;
 import com.azure.resourcemanager.search.models.PublicNetworkAccess;
+import com.azure.resourcemanager.search.models.SearchBypass;
+import com.azure.resourcemanager.search.models.SearchDisabledDataExfiltrationOption;
 import com.azure.resourcemanager.search.models.SearchEncryptionWithCmk;
 import com.azure.resourcemanager.search.models.SearchSemanticSearch;
 import com.azure.resourcemanager.search.models.Sku;
 import com.azure.resourcemanager.search.models.SkuName;
+import com.azure.resourcemanager.search.models.UserAssignedManagedIdentity;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map;
 
-/** Samples for Services CreateOrUpdate. */
+/**
+ * Samples for Services CreateOrUpdate.
+ */
 public final class ServicesCreateOrUpdateSamples {
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchCreateOrUpdateServiceToAllowAccessFromPrivateEndpoints.json
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/preview/2024-03-01-preview/examples/
+     * SearchCreateOrUpdateServiceToAllowAccessFromPrivateEndpoints.json
      */
     /**
      * Sample code: SearchCreateOrUpdateServiceToAllowAccessFromPrivateEndpoints.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void searchCreateOrUpdateServiceToAllowAccessFromPrivateEndpoints(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .searchServices()
-            .manager()
-            .serviceClient()
-            .getServices()
-            .createOrUpdate(
-                "rg1",
-                "mysearchservice",
-                new SearchServiceInner()
-                    .withLocation("westus")
-                    .withTags(mapOf("app-name", "My e-commerce app"))
-                    .withSku(new Sku().withName(SkuName.STANDARD))
-                    .withReplicaCount(3)
-                    .withPartitionCount(1)
-                    .withHostingMode(HostingMode.DEFAULT)
-                    .withPublicNetworkAccess(PublicNetworkAccess.DISABLED),
-                null,
-                com.azure.core.util.Context.NONE);
+        azure.searchServices().manager().serviceClient().getServices().createOrUpdate("rg1", "mysearchservice",
+            new SearchServiceInner().withLocation("westus").withTags(mapOf("app-name", "My e-commerce app"))
+                .withSku(new Sku().withName(SkuName.STANDARD)).withReplicaCount(3).withPartitionCount(1)
+                .withHostingMode(HostingMode.DEFAULT).withPublicNetworkAccess(PublicNetworkAccess.DISABLED),
+            null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchCreateOrUpdateService.json
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/preview/2024-03-01-preview/examples/
+     * SearchCreateOrUpdateService.json
      */
     /**
      * Sample code: SearchCreateOrUpdateService.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void searchCreateOrUpdateService(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .searchServices()
-            .manager()
-            .serviceClient()
-            .getServices()
-            .createOrUpdate(
-                "rg1",
-                "mysearchservice",
-                new SearchServiceInner()
-                    .withLocation("westus")
-                    .withTags(mapOf("app-name", "My e-commerce app"))
-                    .withSku(new Sku().withName(SkuName.STANDARD))
-                    .withReplicaCount(3)
-                    .withPartitionCount(1)
-                    .withHostingMode(HostingMode.DEFAULT),
-                null,
-                com.azure.core.util.Context.NONE);
+        azure.searchServices().manager().serviceClient().getServices().createOrUpdate("rg1", "mysearchservice",
+            new SearchServiceInner().withLocation("westus").withTags(mapOf("app-name", "My e-commerce app"))
+                .withSku(new Sku().withName(SkuName.STANDARD)).withReplicaCount(3).withPartitionCount(1)
+                .withHostingMode(HostingMode.DEFAULT),
+            null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchCreateOrUpdateServiceAuthOptions.json
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/preview/2024-03-01-preview/examples/
+     * SearchCreateOrUpdateServiceAuthOptions.json
      */
     /**
      * Sample code: SearchCreateOrUpdateServiceAuthOptions.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void searchCreateOrUpdateServiceAuthOptions(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .searchServices()
-            .manager()
-            .serviceClient()
-            .getServices()
-            .createOrUpdate(
-                "rg1",
-                "mysearchservice",
-                new SearchServiceInner()
-                    .withLocation("westus")
-                    .withTags(mapOf("app-name", "My e-commerce app"))
-                    .withSku(new Sku().withName(SkuName.STANDARD))
-                    .withReplicaCount(3)
-                    .withPartitionCount(1)
-                    .withHostingMode(HostingMode.DEFAULT)
-                    .withAuthOptions(
-                        new DataPlaneAuthOptions()
-                            .withAadOrApiKey(
-                                new DataPlaneAadOrApiKeyAuthOption()
-                                    .withAadAuthFailureMode(AadAuthFailureMode.HTTP401WITH_BEARER_CHALLENGE))),
-                null,
-                com.azure.core.util.Context.NONE);
+        azure.searchServices().manager().serviceClient().getServices().createOrUpdate("rg1", "mysearchservice",
+            new SearchServiceInner().withLocation("westus").withTags(mapOf("app-name", "My e-commerce app"))
+                .withSku(new Sku().withName(SkuName.STANDARD)).withReplicaCount(3).withPartitionCount(1)
+                .withHostingMode(HostingMode.DEFAULT)
+                .withAuthOptions(new DataPlaneAuthOptions().withAadOrApiKey(new DataPlaneAadOrApiKeyAuthOption()
+                    .withAadAuthFailureMode(AadAuthFailureMode.HTTP401WITH_BEARER_CHALLENGE))),
+            null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchCreateOrUpdateWithSemanticSearch.json
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/preview/2024-03-01-preview/examples/
+     * SearchCreateOrUpdateWithSemanticSearch.json
      */
     /**
      * Sample code: SearchCreateOrUpdateWithSemanticSearch.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void searchCreateOrUpdateWithSemanticSearch(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .searchServices()
-            .manager()
-            .serviceClient()
-            .getServices()
-            .createOrUpdate(
-                "rg1",
-                "mysearchservice",
-                new SearchServiceInner()
-                    .withLocation("westus")
-                    .withTags(mapOf("app-name", "My e-commerce app"))
-                    .withSku(new Sku().withName(SkuName.STANDARD))
-                    .withReplicaCount(3)
-                    .withPartitionCount(1)
-                    .withHostingMode(HostingMode.DEFAULT)
-                    .withSemanticSearch(SearchSemanticSearch.FREE),
-                null,
-                com.azure.core.util.Context.NONE);
+        azure.searchServices().manager().serviceClient().getServices().createOrUpdate("rg1", "mysearchservice",
+            new SearchServiceInner().withLocation("westus").withTags(mapOf("app-name", "My e-commerce app"))
+                .withSku(new Sku().withName(SkuName.STANDARD)).withReplicaCount(3).withPartitionCount(1)
+                .withHostingMode(HostingMode.DEFAULT).withSemanticSearch(SearchSemanticSearch.FREE),
+            null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchCreateOrUpdateServiceWithIdentity.json
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/preview/2024-03-01-preview/examples/
+     * SearchCreateOrUpdateServiceWithIdentity.json
      */
     /**
      * Sample code: SearchCreateOrUpdateServiceWithIdentity.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void searchCreateOrUpdateServiceWithIdentity(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .searchServices()
-            .manager()
-            .serviceClient()
-            .getServices()
-            .createOrUpdate(
-                "rg1",
-                "mysearchservice",
-                new SearchServiceInner()
-                    .withLocation("westus")
-                    .withTags(mapOf("app-name", "My e-commerce app"))
-                    .withSku(new Sku().withName(SkuName.STANDARD))
-                    .withIdentity(new Identity().withType(IdentityType.SYSTEM_ASSIGNED))
-                    .withReplicaCount(3)
-                    .withPartitionCount(1)
-                    .withHostingMode(HostingMode.DEFAULT),
-                null,
-                com.azure.core.util.Context.NONE);
+        azure.searchServices().manager().serviceClient().getServices().createOrUpdate("rg1", "mysearchservice",
+            new SearchServiceInner().withLocation("westus").withTags(mapOf("app-name", "My e-commerce app"))
+                .withSku(new Sku().withName(SkuName.STANDARD))
+                .withIdentity(new Identity().withType(IdentityType.SYSTEM_ASSIGNED_USER_ASSIGNED)
+                    .withUserAssignedIdentities(mapOf(
+                        "/subscriptions/00000000-0000-0000-0000-000000000000/resourcegroups/rg1/providers/Microsoft.ManagedIdentity/userAssignedIdentities/user-mi",
+                        new UserAssignedManagedIdentity())))
+                .withReplicaCount(3).withPartitionCount(1).withHostingMode(HostingMode.DEFAULT),
+            null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchCreateOrUpdateServiceDisableLocalAuth.json
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/preview/2024-03-01-preview/examples/
+     * SearchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.json
+     */
+    /**
+     * Sample code: SearchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void searchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPsAndBypass(
+        com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices().manager().serviceClient().getServices().createOrUpdate("rg1", "mysearchservice",
+            new SearchServiceInner().withLocation("westus").withTags(mapOf("app-name", "My e-commerce app"))
+                .withSku(new Sku().withName(SkuName.STANDARD)).withReplicaCount(1).withPartitionCount(1)
+                .withHostingMode(HostingMode.DEFAULT)
+                .withNetworkRuleSet(new NetworkRuleSet()
+                    .withIpRules(
+                        Arrays.asList(new IpRule().withValue("123.4.5.6"), new IpRule().withValue("123.4.6.0/18")))
+                    .withBypass(SearchBypass.AZURE_PORTAL)),
+            null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/preview/2024-03-01-preview/examples/
+     * SearchCreateOrUpdateServiceDisableLocalAuth.json
      */
     /**
      * Sample code: SearchCreateOrUpdateServiceDisableLocalAuth.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void searchCreateOrUpdateServiceDisableLocalAuth(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .searchServices()
-            .manager()
-            .serviceClient()
-            .getServices()
-            .createOrUpdate(
-                "rg1",
-                "mysearchservice",
-                new SearchServiceInner()
-                    .withLocation("westus")
-                    .withTags(mapOf("app-name", "My e-commerce app"))
-                    .withSku(new Sku().withName(SkuName.STANDARD))
-                    .withReplicaCount(3)
-                    .withPartitionCount(1)
-                    .withHostingMode(HostingMode.DEFAULT)
-                    .withDisableLocalAuth(true),
-                null,
-                com.azure.core.util.Context.NONE);
+    public static void
+        searchCreateOrUpdateServiceDisableLocalAuth(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices().manager().serviceClient().getServices().createOrUpdate("rg1", "mysearchservice",
+            new SearchServiceInner().withLocation("westus").withTags(mapOf("app-name", "My e-commerce app"))
+                .withSku(new Sku().withName(SkuName.STANDARD)).withReplicaCount(3).withPartitionCount(1)
+                .withHostingMode(HostingMode.DEFAULT).withDisableLocalAuth(true),
+            null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPs.json
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/preview/2024-03-01-preview/examples/
+     * SearchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPs.json
      */
     /**
      * Sample code: SearchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPs.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void searchCreateOrUpdateServiceToAllowAccessFromPublicCustomIPs(
         com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .searchServices()
-            .manager()
-            .serviceClient()
-            .getServices()
-            .createOrUpdate(
-                "rg1",
-                "mysearchservice",
-                new SearchServiceInner()
-                    .withLocation("westus")
-                    .withTags(mapOf("app-name", "My e-commerce app"))
-                    .withSku(new Sku().withName(SkuName.STANDARD))
-                    .withReplicaCount(1)
-                    .withPartitionCount(1)
-                    .withHostingMode(HostingMode.DEFAULT)
-                    .withNetworkRuleSet(
-                        new NetworkRuleSet()
-                            .withIpRules(
-                                Arrays
-                                    .asList(
-                                        new IpRule().withValue("123.4.5.6"), new IpRule().withValue("123.4.6.0/18")))),
-                null,
-                com.azure.core.util.Context.NONE);
+        azure.searchServices().manager().serviceClient().getServices().createOrUpdate("rg1", "mysearchservice",
+            new SearchServiceInner().withLocation("westus").withTags(mapOf("app-name", "My e-commerce app"))
+                .withSku(new Sku().withName(SkuName.STANDARD)).withReplicaCount(1).withPartitionCount(1)
+                .withHostingMode(HostingMode.DEFAULT)
+                .withNetworkRuleSet(new NetworkRuleSet().withIpRules(
+                    Arrays.asList(new IpRule().withValue("123.4.5.6"), new IpRule().withValue("123.4.6.0/18")))),
+            null, com.azure.core.util.Context.NONE);
     }
 
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/SearchCreateOrUpdateServiceWithCmkEnforcement.json
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/preview/2024-03-01-preview/examples/
+     * SearchCreateOrUpdateServiceWithCmkEnforcement.json
      */
     /**
      * Sample code: SearchCreateOrUpdateServiceWithCmkEnforcement.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
-    public static void searchCreateOrUpdateServiceWithCmkEnforcement(
-        com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .searchServices()
-            .manager()
-            .serviceClient()
-            .getServices()
-            .createOrUpdate(
-                "rg1",
-                "mysearchservice",
-                new SearchServiceInner()
-                    .withLocation("westus")
-                    .withTags(mapOf("app-name", "My e-commerce app"))
-                    .withSku(new Sku().withName(SkuName.STANDARD))
-                    .withReplicaCount(3)
-                    .withPartitionCount(1)
-                    .withHostingMode(HostingMode.DEFAULT)
-                    .withEncryptionWithCmk(new EncryptionWithCmk().withEnforcement(SearchEncryptionWithCmk.ENABLED)),
-                null,
-                com.azure.core.util.Context.NONE);
+    public static void
+        searchCreateOrUpdateServiceWithCmkEnforcement(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices().manager().serviceClient().getServices().createOrUpdate("rg1", "mysearchservice",
+            new SearchServiceInner().withLocation("westus").withTags(mapOf("app-name", "My e-commerce app"))
+                .withSku(new Sku().withName(SkuName.STANDARD)).withReplicaCount(3).withPartitionCount(1)
+                .withHostingMode(HostingMode.DEFAULT)
+                .withEncryptionWithCmk(new EncryptionWithCmk().withEnforcement(SearchEncryptionWithCmk.ENABLED)),
+            null, com.azure.core.util.Context.NONE);
+    }
+
+    /*
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/preview/2024-03-01-preview/examples/
+     * SearchCreateOrUpdateServiceWithDataExfiltration.json
+     */
+    /**
+     * Sample code: SearchCreateOrUpdateServiceWithDataExfiltration.
+     * 
+     * @param azure The entry point for accessing resource management APIs in Azure.
+     */
+    public static void
+        searchCreateOrUpdateServiceWithDataExfiltration(com.azure.resourcemanager.AzureResourceManager azure) {
+        azure.searchServices().manager().serviceClient().getServices().createOrUpdate("rg1", "mysearchservice",
+            new SearchServiceInner().withLocation("westus").withTags(mapOf("app-name", "My e-commerce app"))
+                .withSku(new Sku().withName(SkuName.STANDARD)).withReplicaCount(3).withPartitionCount(1)
+                .withHostingMode(HostingMode.DEFAULT).withDisabledDataExfiltrationOptions(
+                    Arrays.asList(SearchDisabledDataExfiltrationOption.ALL)),
+            null, com.azure.core.util.Context.NONE);
     }
 
     // Use "Map.of" if available

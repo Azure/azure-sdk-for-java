@@ -9,23 +9,27 @@ import com.azure.core.management.ProxyResource;
 import com.azure.resourcemanager.search.models.SharedPrivateLinkResourceProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a Shared Private Link Resource managed by the search service. */
+/**
+ * Describes a shared private link resource managed by the Azure AI Search service.
+ */
 @Fluent
 public final class SharedPrivateLinkResourceInner extends ProxyResource {
     /*
-     * Describes the properties of a Shared Private Link Resource managed by the search service.
+     * Describes the properties of a shared private link resource managed by the Azure AI Search service.
      */
     @JsonProperty(value = "properties")
     private SharedPrivateLinkResourceProperties properties;
 
-    /** Creates an instance of SharedPrivateLinkResourceInner class. */
+    /**
+     * Creates an instance of SharedPrivateLinkResourceInner class.
+     */
     public SharedPrivateLinkResourceInner() {
     }
 
     /**
-     * Get the properties property: Describes the properties of a Shared Private Link Resource managed by the search
-     * service.
-     *
+     * Get the properties property: Describes the properties of a shared private link resource managed by the Azure AI
+     * Search service.
+     * 
      * @return the properties value.
      */
     public SharedPrivateLinkResourceProperties properties() {
@@ -33,9 +37,9 @@ public final class SharedPrivateLinkResourceInner extends ProxyResource {
     }
 
     /**
-     * Set the properties property: Describes the properties of a Shared Private Link Resource managed by the search
-     * service.
-     *
+     * Set the properties property: Describes the properties of a shared private link resource managed by the Azure AI
+     * Search service.
+     * 
      * @param properties the properties value to set.
      * @return the SharedPrivateLinkResourceInner object itself.
      */
@@ -46,7 +50,7 @@ public final class SharedPrivateLinkResourceInner extends ProxyResource {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
