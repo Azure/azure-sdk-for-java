@@ -14,7 +14,7 @@ import java.io.IOException;
  * The response of an {@link HttpRequest}.
  */
 public class HttpResponse<T> implements Response<T>, Closeable {
-    protected static final BinaryData EMPTY_BODY = BinaryData.fromBytes(new byte[0]);
+    private static final BinaryData EMPTY_BODY = BinaryData.fromBytes(new byte[0]);
 
     private final Headers headers;
     private final HttpRequest request;
