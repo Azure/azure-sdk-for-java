@@ -582,10 +582,10 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .withDnsPrefix(generateRandomResourceName("dns", 15))
             .create();
 
-        kubernetesCluster.update().withFreeSku().apply();
+        kubernetesCluster.update().withPremiumSku().apply();
         kubernetesCluster.refresh();
-        Assertions.assertEquals(ManagedClusterSkuTier.FREE, kubernetesCluster.sku().tier());
-        Assertions.assertEquals(KubernetesSupportPlan.KUBERNETES_OFFICIAL, kubernetesCluster.innerModel().supportPlan());
+        Assertions.assertEquals(ManagedClusterSkuTier.PREMIUM, kubernetesCluster.sku().tier());
+        Assertions.assertEquals(KubernetesSupportPlan.AKSLONG_TERM_SUPPORT, kubernetesCluster.innerModel().supportPlan());
 
         kubernetesCluster.update().withStandardSku().apply();
         kubernetesCluster.refresh();
@@ -596,5 +596,10 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
         kubernetesCluster.refresh();
         Assertions.assertEquals(ManagedClusterSkuTier.PREMIUM, kubernetesCluster.sku().tier());
         Assertions.assertEquals(KubernetesSupportPlan.AKSLONG_TERM_SUPPORT, kubernetesCluster.innerModel().supportPlan());
+
+        kubernetesCluster.update().withFreeSku().apply();
+        kubernetesCluster.refresh();
+        Assertions.assertEquals(ManagedClusterSkuTier.FREE, kubernetesCluster.sku().tier());
+        Assertions.assertEquals(KubernetesSupportPlan.KUBERNETES_OFFICIAL, kubernetesCluster.innerModel().supportPlan());
     }
 }
