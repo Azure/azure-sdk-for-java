@@ -10,11 +10,9 @@ import com.azure.resourcemanager.storagecache.fluent.models.ResourceUsageInner;
 public final class ResourceUsageInnerTests {
     @org.junit.jupiter.api.Test
     public void testDeserialize() throws Exception {
-        ResourceUsageInner model =
-            BinaryData
-                .fromString(
-                    "{\"limit\":1125977089,\"unit\":\"vcltbgsncgh\",\"currentValue\":630804167,\"name\":{\"value\":\"zhbijhtxfv\",\"localizedValue\":\"bfs\"}}")
-                .toObject(ResourceUsageInner.class);
+        ResourceUsageInner model = BinaryData.fromString(
+            "{\"limit\":1745548413,\"unit\":\"ghkjeszzhbi\",\"currentValue\":1508297714,\"name\":{\"value\":\"vgxbfs\",\"localizedValue\":\"nehmpvecx\"}}")
+            .toObject(ResourceUsageInner.class);
     }
 
     @org.junit.jupiter.api.Test

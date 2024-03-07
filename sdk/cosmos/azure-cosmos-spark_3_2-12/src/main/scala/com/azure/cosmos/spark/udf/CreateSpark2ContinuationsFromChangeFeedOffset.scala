@@ -6,7 +6,7 @@ import com.azure.cosmos.implementation.SparkBridgeImplementationInternal
 import com.azure.cosmos.implementation.SparkBridgeImplementationInternal.rangeToNormalizedRange
 import com.azure.cosmos.implementation.changefeed.common.ChangeFeedState
 import com.azure.cosmos.implementation.query.CompositeContinuationToken
-import com.azure.cosmos.spark.{ChangeFeedOffset, CosmosClientCache, CosmosClientCacheItem, CosmosClientConfiguration, CosmosConfig, CosmosContainerConfig, Loan}
+import com.azure.cosmos.spark.{ChangeFeedOffset, CosmosClientCache, CosmosClientCacheItem, CosmosClientConfiguration, CosmosConfig, CosmosContainerConfig, CosmosReadConfig, Loan}
 import com.azure.cosmos.{CosmosAsyncClient, SparkBridgeInternal}
 import org.apache.spark.sql.SparkSession
 import org.apache.spark.sql.api.java.UDF2
@@ -22,9 +22,10 @@ class CreateSpark2ContinuationsFromChangeFeedOffset extends UDF2[Map[String, Str
   ): Map[Int, Long] = {
 
     val effectiveUserConfig = CosmosConfig.getEffectiveConfig(None, None, userProvidedConfig)
+    val readConfig = CosmosReadConfig.parseCosmosReadConfig(effectiveUserConfig)
     val cosmosClientConfig = CosmosClientConfiguration(
       effectiveUserConfig,
-      useEventualConsistency = false,
+      useEventualConsistency = readConfig.forceEventualConsistency,
       CosmosClientConfiguration.getSparkEnvironmentInfo(SparkSession.getActiveSession))
 
     val cosmosContainerConfig: CosmosContainerConfig =
@@ -67,7 +68,9 @@ class CreateSpark2ContinuationsFromChangeFeedOffset extends UDF2[Map[String, Str
       .getDatabase(databaseName)
       .getContainer(containerName)
 
-    val expectedContainerResourceId = container.read().block().getProperties.getResourceId
+    val expectedContainerResourceId = SparkBridgeInternal
+      .getContainerPropertiesFromCollectionCache(container)
+      .getResourceId
 
     val pkRanges = SparkBridgeInternal
       .getPartitionKeyRanges(container)

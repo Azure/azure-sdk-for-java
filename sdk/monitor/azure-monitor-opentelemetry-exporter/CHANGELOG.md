@@ -1,9 +1,24 @@
 # Release History
 
-## 1.0.0-beta.18 (2024-02-16)
+## 1.0.0-beta.20 (2024-03-07)
+
+### Features Added
+- [Support ingestion sampling](https://github.com/Azure/azure-sdk-for-java/pull/39103)
+
+### Bugs Fixed
+- [Avoid warning on sporadic connection failures] (https://github.com/Azure/azure-sdk-for-java/pull/39021)
+
+## 1.0.0-beta.19 (2024-02-23)
+
+### Bugs Fixed
+- [Always send item count for logs](https://github.com/Azure/azure-sdk-for-java/pull/38930)
+
+## 1.0.0-beta.18 (2024-02-23)
 
 ### Bugs Fixed
 - [Fix min and max values for pre-aggregated metrics](https://github.com/Azure/azure-sdk-for-java/pull/38516)
+- [Fix duplicate exceptions](https://github.com/Azure/azure-sdk-for-java/pull/38687)
+- [Always send item count](https://github.com/Azure/azure-sdk-for-java/pull/38737)
 
 ### Other Changes
 - [Update OpenTelemetry to 2.1.0](https://github.com/Azure/azure-sdk-for-java/pull/38808)

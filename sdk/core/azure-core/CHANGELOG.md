@@ -1,6 +1,6 @@
 # Release History
 
-## 1.47.0-beta.1 (Unreleased)
+## 1.48.0-beta.1 (Unreleased)
 
 ### Features Added
 
@@ -9,6 +9,13 @@
 ### Bugs Fixed
 
 ### Other Changes
+
+## 1.47.0 (2024-03-01)
+
+### Features Added
+
+- Added `CoreUtils.addShutdownHookSafely(Thread)` which is a more generic version of 
+  `CoreUtils.addShutdownHookSafely(ExecutorService, Duration)`. ([#38730](https://github.com/Azure/azure-sdk-for-java/pull/38730))
 
 ## 1.46.0 (2024-02-02)
 

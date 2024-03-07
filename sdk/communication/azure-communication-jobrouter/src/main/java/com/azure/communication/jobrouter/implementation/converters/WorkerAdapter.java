@@ -37,6 +37,7 @@ public class WorkerAdapter {
             .setTags(tags)
             .setAvailableForOffers(createWorkerOptions.isAvailableForOffers())
             .setChannels(createWorkerOptions.getChannels())
-            .setCapacity(createWorkerOptions.getCapacity());
+            .setCapacity(createWorkerOptions.getCapacity())
+            .setMaxConcurrentOffers(createWorkerOptions.getMaxConcurrentOffers());
     }
 }

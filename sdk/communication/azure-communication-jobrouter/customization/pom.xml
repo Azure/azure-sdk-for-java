@@ -5,7 +5,7 @@
   <parent>
     <artifactId>azure-communication-jobrouter</artifactId>
     <groupId>com.azure</groupId>
-    <version>1.1.1</version> <!-- {x-version-update;com.azure:azure-communication-jobrouter;current} -->
+    <version>1.2.0-beta.1</version> <!-- {x-version-update;com.azure:azure-communication-jobrouter;current} -->
   </parent>
   <modelVersion>4.0.0</modelVersion>
 

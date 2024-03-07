@@ -9,10 +9,10 @@ import com.azure.core.http.HttpRequest;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.SerializerEncoding;
+import com.azure.data.tables.implementation.models.MultipartPart;
+import com.azure.data.tables.implementation.models.TableServiceJsonError;
 import com.azure.data.tables.implementation.models.TransactionalBatchChangeSet;
 import com.azure.data.tables.implementation.models.TransactionalBatchSubRequest;
-import com.azure.data.tables.implementation.models.MultipartPart;
-import com.azure.data.tables.implementation.models.TableServiceError;
 import com.azure.data.tables.models.TableTransactionActionResponse;
 
 import java.io.BufferedReader;
@@ -43,7 +43,7 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
             TableTransactionActionResponse response =
                 TableTransactionActionResponseAccessHelper.createTableTransactionActionResponse(statusCode, value);
 
-            headers.forEach(h -> response.getHeaders().set(h.getName(), h.getValue()));
+            headers.setAllHttpHeaders(response.getHeaders());
 
             return response;
         }
@@ -169,7 +169,8 @@ public class TablesMultipartSerializer extends TablesJacksonSerializer {
                     if (responseParams != null) {
                         if (body != null && !body.isEmpty()) {
                             try {
-                                responseParams.setValue(deserialize(body, TableServiceError.class, serializerEncoding));
+                                responseParams.setValue(deserialize(body, TableServiceJsonError.class,
+                                    serializerEncoding));
                             } catch (IOException e) {
                                 logger.logThrowableAsWarning(
                                     new IOException("Unable to deserialize sub-response body.", e));

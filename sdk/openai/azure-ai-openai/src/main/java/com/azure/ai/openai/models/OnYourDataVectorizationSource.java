@@ -19,9 +19,9 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
     defaultImpl = OnYourDataVectorizationSource.class)
 @JsonTypeName("OnYourDataVectorizationSource")
 @JsonSubTypes({
-    @JsonSubTypes.Type(name = "Endpoint", value = OnYourDataEndpointVectorizationSource.class),
-    @JsonSubTypes.Type(name = "DeploymentName", value = OnYourDataDeploymentNameVectorizationSource.class),
-    @JsonSubTypes.Type(name = "ModelId", value = OnYourDataModelIdVectorizationSource.class) })
+    @JsonSubTypes.Type(name = "endpoint", value = OnYourDataEndpointVectorizationSource.class),
+    @JsonSubTypes.Type(name = "deployment_name", value = OnYourDataDeploymentNameVectorizationSource.class),
+    @JsonSubTypes.Type(name = "model_id", value = OnYourDataModelIdVectorizationSource.class) })
 @Immutable
 public class OnYourDataVectorizationSource {
 
