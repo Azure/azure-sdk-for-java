@@ -6,12 +6,12 @@ package com.azure.ai.translation.text;
 import com.azure.ai.translation.text.implementation.TextTranslationClientImpl;
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.ServiceClientBuilder;
-import com.azure.core.client.traits.AzureKeyCredentialTrait;
 import com.azure.core.client.traits.ConfigurationTrait;
 import com.azure.core.client.traits.EndpointTrait;
 import com.azure.core.client.traits.HttpTrait;
+import com.azure.core.client.traits.KeyCredentialTrait;
 import com.azure.core.client.traits.TokenCredentialTrait;
-import com.azure.core.credential.AzureKeyCredential;
+import com.azure.core.credential.KeyCredential;
 import com.azure.core.credential.TokenCredential;
 import com.azure.core.http.HttpClient;
 import com.azure.core.http.HttpHeaderName;
@@ -22,7 +22,7 @@ import com.azure.core.http.HttpPipelinePosition;
 import com.azure.core.http.policy.AddDatePolicy;
 import com.azure.core.http.policy.AddHeadersFromContextPolicy;
 import com.azure.core.http.policy.AddHeadersPolicy;
-import com.azure.core.http.policy.AzureKeyCredentialPolicy;
+import com.azure.core.http.policy.KeyCredentialPolicy;
 import com.azure.core.http.policy.BearerTokenAuthenticationPolicy;
 import com.azure.core.http.policy.HttpLogOptions;
 import com.azure.core.http.policy.HttpLoggingPolicy;
@@ -51,7 +51,7 @@ import java.util.Objects;
 @ServiceClientBuilder(serviceClients = { TextTranslationClient.class, TextTranslationAsyncClient.class })
 public final class TextTranslationClientBuilder implements HttpTrait<TextTranslationClientBuilder>,
     ConfigurationTrait<TextTranslationClientBuilder>, EndpointTrait<TextTranslationClientBuilder>,
-    AzureKeyCredentialTrait<TextTranslationClientBuilder>, TokenCredentialTrait<TextTranslationClientBuilder> {
+    KeyCredentialTrait<TextTranslationClientBuilder>, TokenCredentialTrait<TextTranslationClientBuilder> {
 
     @Generated
     private static final String SDK_NAME = "name";
@@ -65,7 +65,7 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
 
     private String region;
 
-    private AzureKeyCredential credential;
+    private KeyCredential credential;
 
     private TokenCredential tokenCredential;
 
@@ -249,13 +249,13 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
     }
 
     /**
-     * Sets the {@link AzureKeyCredential} used to authorize requests sent to the service.
+     * Sets the {@link KeyCredential} used to authorize requests sent to the service.
      *
-     * @param credential {@link AzureKeyCredential} used to authorize requests sent to the service.
+     * @param credential {@link KeyCredential} used to authorize requests sent to the service.
      * @return The updated {@link TextTranslationClientBuilder} object.
      * @throws NullPointerException If {@code credential} is null.
      */
-    public TextTranslationClientBuilder credential(AzureKeyCredential credential) {
+    public TextTranslationClientBuilder credential(KeyCredential credential) {
         Objects.requireNonNull(credential, "'credential' cannot be null.");
         this.credential = credential;
         return this;
@@ -344,7 +344,7 @@ public final class TextTranslationClientBuilder implements HttpTrait<TextTransla
             policies.add(new BearerTokenAuthenticationPolicy(tokenCredential, DEFAULT_SCOPE));
         }
         if (this.credential != null) {
-            policies.add(new AzureKeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
+            policies.add(new KeyCredentialPolicy(OCP_APIM_SUBSCRIPTION_KEY, credential));
             if (this.region != null) {
                 policies.add(new TranslatorRegionAuthenticationPolicy(this.region));
             }
