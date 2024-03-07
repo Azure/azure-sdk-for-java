@@ -4,22 +4,21 @@
 
 package com.azure.resourcemanager.search.generated;
 
-/** Samples for PrivateEndpointConnections ListByService. */
+/**
+ * Samples for PrivateEndpointConnections ListByService.
+ */
 public final class PrivateEndpointConnectionsListByServiceSamples {
     /*
-     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/stable/2023-11-01/examples/ListPrivateEndpointConnectionsByService.json
+     * x-ms-original-file: specification/search/resource-manager/Microsoft.Search/preview/2024-03-01-preview/examples/
+     * ListPrivateEndpointConnectionsByService.json
      */
     /**
      * Sample code: ListPrivateEndpointConnectionsByService.
-     *
+     * 
      * @param azure The entry point for accessing resource management APIs in Azure.
      */
     public static void listPrivateEndpointConnectionsByService(com.azure.resourcemanager.AzureResourceManager azure) {
-        azure
-            .searchServices()
-            .manager()
-            .serviceClient()
-            .getPrivateEndpointConnections()
-            .listByService("rg1", "mysearchservice", null, com.azure.core.util.Context.NONE);
+        azure.searchServices().manager().serviceClient().getPrivateEndpointConnections().listByService("rg1",
+            "mysearchservice", null, com.azure.core.util.Context.NONE);
     }
 }

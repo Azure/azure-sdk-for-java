@@ -7,7 +7,9 @@ package com.azure.resourcemanager.search.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Defines the SKU of a search service, which determines billing rate and capacity limits. */
+/**
+ * Defines the SKU of a search service, which determines billing rate and capacity limits.
+ */
 @Fluent
 public final class Sku {
     /*
@@ -21,7 +23,9 @@ public final class Sku {
     @JsonProperty(value = "name")
     private SkuName name;
 
-    /** Creates an instance of Sku class. */
+    /**
+     * Creates an instance of Sku class.
+     */
     public Sku() {
     }
 
@@ -32,7 +36,7 @@ public final class Sku {
      * offering with up to 12 partitions and 12 replicas (or up to 3 partitions with more indexes if you also set the
      * hostingMode property to 'highDensity'). 'storage_optimized_l1': Supports 1TB per partition, up to 12 partitions.
      * 'storage_optimized_l2': Supports 2TB per partition, up to 12 partitions.'.
-     *
+     * 
      * @return the name value.
      */
     public SkuName name() {
@@ -46,7 +50,7 @@ public final class Sku {
      * offering with up to 12 partitions and 12 replicas (or up to 3 partitions with more indexes if you also set the
      * hostingMode property to 'highDensity'). 'storage_optimized_l1': Supports 1TB per partition, up to 12 partitions.
      * 'storage_optimized_l2': Supports 2TB per partition, up to 12 partitions.'.
-     *
+     * 
      * @param name the name value to set.
      * @return the Sku object itself.
      */
@@ -57,7 +61,7 @@ public final class Sku {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

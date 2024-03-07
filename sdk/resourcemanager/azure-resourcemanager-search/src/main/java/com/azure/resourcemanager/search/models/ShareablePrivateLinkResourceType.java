@@ -7,30 +7,34 @@ package com.azure.resourcemanager.search.models;
 import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a resource type that has been onboarded to private link service and that's supported by search. */
+/**
+ * Describes an resource type that has been onboarded to private link service, supported by Azure AI Search.
+ */
 @Immutable
 public final class ShareablePrivateLinkResourceType {
     /*
-     * The name of the resource type that has been onboarded to private link service and that's supported by search.
+     * The name of the resource type that has been onboarded to private link service, supported by Azure AI Search.
      */
     @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
-     * Describes the properties of a resource type that has been onboarded to private link service and that's supported
-     * by search.
+     * Describes the properties of a resource type that has been onboarded to private link service, supported by Azure
+     * AI Search.
      */
     @JsonProperty(value = "properties", access = JsonProperty.Access.WRITE_ONLY)
     private ShareablePrivateLinkResourceProperties properties;
 
-    /** Creates an instance of ShareablePrivateLinkResourceType class. */
+    /**
+     * Creates an instance of ShareablePrivateLinkResourceType class.
+     */
     public ShareablePrivateLinkResourceType() {
     }
 
     /**
-     * Get the name property: The name of the resource type that has been onboarded to private link service and that's
-     * supported by search.
-     *
+     * Get the name property: The name of the resource type that has been onboarded to private link service, supported
+     * by Azure AI Search.
+     * 
      * @return the name value.
      */
     public String name() {
@@ -39,8 +43,8 @@ public final class ShareablePrivateLinkResourceType {
 
     /**
      * Get the properties property: Describes the properties of a resource type that has been onboarded to private link
-     * service and that's supported by search.
-     *
+     * service, supported by Azure AI Search.
+     * 
      * @return the properties value.
      */
     public ShareablePrivateLinkResourceProperties properties() {
@@ -49,7 +53,7 @@ public final class ShareablePrivateLinkResourceType {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {
