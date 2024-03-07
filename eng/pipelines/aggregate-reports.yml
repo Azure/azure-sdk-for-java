@@ -166,8 +166,8 @@ stages:
         timeoutInMinutes: 120
 
         pool:
-          name: azsdk-pool-mms-win-2022-1es-pt
-          vmImage: azsdk-pool-mms-win-2022-1espt
+          name: $(WINDOWSPOOL)
+          vmImage: $(WINDOWSVMIMAGE)
           os: windows
 
         steps:

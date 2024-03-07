@@ -37,8 +37,8 @@ stages:
         variables:
           - template: /eng/pipelines/templates/variables/globals.yml
         pool:
-          name: azsdk-pool-mms-ubuntu-2004-1es-pt
-          vmImage: azsdk-pool-mms-ubuntu-2004-1espt
+          name: $(LINUXPOOL)
+          vmImage: $(LINUXVMIMAGE)
           os: linux
         strategy:
           runOnce:
@@ -78,8 +78,8 @@ stages:
             variables:
               - template: /eng/pipelines/templates/variables/globals.yml
             pool:
-              name: azsdk-pool-mms-ubuntu-2004-1es-pt
-              vmImage: azsdk-pool-mms-ubuntu-2004-1espt
+              name: $(LINUXPOOL)
+              vmImage: $(LINUXVMIMAGE)
               os: linux
 
             steps:
@@ -148,8 +148,8 @@ stages:
             variables:
               - template: /eng/pipelines/templates/variables/globals.yml
             pool:
-              name: azsdk-pool-mms-win-2022-1es-pt
-              vmImage: azsdk-pool-mms-win-2022-1espt
+              name: $(WINDOWSPOOL)
+              vmImage: $(WINDOWSVMIMAGE)
               os: windows
             strategy:
               runOnce:
@@ -176,8 +176,8 @@ stages:
               variables:
                 - template: /eng/pipelines/templates/variables/globals.yml
               pool:
-                name: azsdk-pool-mms-win-2022-1es-pt
-                vmImage: azsdk-pool-mms-win-2022-1espt
+                name: $(WINDOWSPOOL)
+                vmImage: $(WINDOWSVMIMAGE)
                 os: windows
               strategy:
                 runOnce:
@@ -249,8 +249,8 @@ stages:
               dependsOn: PublishPackage
 
               pool:
-                name: azsdk-pool-mms-ubuntu-2004-1es-pt
-                vmImage: azsdk-pool-mms-ubuntu-2004-1espt
+                name: $(LINUXPOOL)
+                vmImage: $(LINUXVMIMAGE)
                 os: linux
 
               variables:
@@ -304,8 +304,8 @@ stages:
               variables:
                 - template: /eng/pipelines/templates/variables/globals.yml
               pool:
-                name: azsdk-pool-mms-win-2022-1es-pt
-                vmImage: azsdk-pool-mms-win-2022-1espt
+                name: $(WINDOWSPOOL)
+                vmImage: $(WINDOWSVMIMAGE)
                 os: windows
               strategy:
                 runOnce:
@@ -339,8 +339,8 @@ stages:
               variables:
                 - template: /eng/pipelines/templates/variables/globals.yml
               pool:
-                name: azsdk-pool-mms-win-2022-1es-pt
-                vmImage: azsdk-pool-mms-win-2022-1espt
+                name: $(WINDOWSPOOL)
+                vmImage: $(WINDOWSVMIMAGE)
                 os: windows
               strategy:
                 runOnce:
@@ -391,8 +391,8 @@ stages:
             value: https://pkgs.dev.azure.com/azure-sdk/internal/_packaging/azure-sdk-for-java-pr/maven/v1
 
         pool:
-          name: azsdk-pool-mms-win-2022-1es-pt
-          vmImage: azsdk-pool-mms-win-2022-1espt
+          name: $(WINDOWSPOOL)
+          vmImage: $(WINDOWSVMIMAGE)
           os: windows
         steps:
         - checkout: azure-sdk-build-tools
@@ -442,8 +442,8 @@ stages:
         dependsOn: PublishPackages
         condition: or(eq(variables['SetDevVersion'], 'true'), and(eq(variables['Build.Reason'],'Schedule'), eq(variables['System.TeamProject'], 'internal')))
         pool:
-          name: azsdk-pool-mms-ubuntu-2004-1es-pt
-          vmImage: azsdk-pool-mms-ubuntu-2004-1espt
+          name: $(LINUXPOOL)
+          vmImage: $(LINUXVMIMAGE)
           os: linux
         variables:
           - template: /eng/pipelines/templates/variables/globals.yml

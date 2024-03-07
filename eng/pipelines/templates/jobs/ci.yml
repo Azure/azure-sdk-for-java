@@ -69,8 +69,8 @@ jobs:
       Codeql.SkipTaskAutoInjection: false
 
     pool:
-      name: azsdk-pool-mms-ubuntu-2004-1es-pt
-      vmImage: azsdk-pool-mms-ubuntu-2004-1espt
+      name: $(LINUXPOOL)
+      vmImage: $(LINUXVMIMAGE)
       os: linux
 
     steps:
@@ -220,8 +220,8 @@ jobs:
     condition: and(succeeded(), ne(variables['Skip.Analyze'], 'true'))
 
     pool:
-      name: azsdk-pool-mms-ubuntu-2004-1es-pt
-      vmImage: azsdk-pool-mms-ubuntu-2004-1espt
+      name: $(LINUXPOOL)
+      vmImage: $(LINUXVMIMAGE)
       os: linux
 
     steps:
@@ -355,8 +355,8 @@ jobs:
   - template: /eng/common/pipelines/templates/jobs/archetype-sdk-tests-generate.yml
     parameters:
       JobTemplatePath: /eng/pipelines/templates/jobs/ci.tests.yml
-      OsVmImage: azsdk-pool-mms-ubuntu-2004-1espt
-      Pool: azsdk-pool-mms-ubuntu-2004-1es-pt
+      OsVmImage: $(LINUXVMIMAGE)
+      Pool: $(LINUXPOOL)
       Os: linux
       MatrixConfigs: ${{ parameters.MatrixConfigs }}
       MatrixFilters: ${{ parameters.MatrixFilters }}

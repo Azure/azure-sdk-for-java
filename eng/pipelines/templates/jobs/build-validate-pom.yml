@@ -17,8 +17,8 @@ jobs:
       - template: /eng/pipelines/templates/variables/globals.yml
 
     pool:
-      name: azsdk-pool-mms-ubuntu-2004-1es-pt
-      vmImage: azsdk-pool-mms-ubuntu-2004-1espt
+      name: $(LINUXPOOL)
+      vmImage: $(LINUXVMIMAGE)
       os: linux
 
     strategy:

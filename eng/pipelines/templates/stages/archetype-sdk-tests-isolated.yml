@@ -125,8 +125,8 @@ stages:
               - '!sdk/**/test-recordings/*'
               - '!sdk/**/session-records/*'
             JobTemplatePath: /eng/pipelines/templates/jobs/live.tests.yml
-            OsVmImage: azsdk-pool-mms-ubuntu-2004-1espt
-            Pool: azsdk-pool-mms-ubuntu-2004-1es-pt
+            OsVmImage: $(LINUXVMIMAGE)
+            Pool: $(LINUXPOOL)
             Os: linux
             AdditionalParameters:
               PreSteps:
