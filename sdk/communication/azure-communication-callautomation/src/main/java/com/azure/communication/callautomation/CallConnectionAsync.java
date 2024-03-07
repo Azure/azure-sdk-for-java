@@ -4,7 +4,6 @@
 package com.azure.communication.callautomation;
 
 import com.azure.communication.callautomation.implementation.CallConnectionsImpl;
-import com.azure.communication.callautomation.implementation.CallDialogsImpl;
 import com.azure.communication.callautomation.implementation.CallMediasImpl;
 import com.azure.communication.callautomation.implementation.accesshelpers.AddParticipantResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.CallConnectionPropertiesConstructorProxy;
@@ -12,7 +11,6 @@ import com.azure.communication.callautomation.implementation.accesshelpers.Cance
 import com.azure.communication.callautomation.implementation.accesshelpers.MuteParticipantsResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.RemoveParticipantResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.accesshelpers.TransferCallResponseConstructorProxy;
-import com.azure.communication.callautomation.implementation.accesshelpers.UnmuteParticipantsResponseConstructorProxy;
 import com.azure.communication.callautomation.implementation.converters.CallParticipantConverter;
 import com.azure.communication.callautomation.implementation.converters.CommunicationIdentifierConverter;
 import com.azure.communication.callautomation.implementation.converters.PhoneNumberIdentifierConverter;
@@ -22,7 +20,6 @@ import com.azure.communication.callautomation.implementation.models.CustomCallin
 import com.azure.communication.callautomation.implementation.models.MuteParticipantsRequestInternal;
 import com.azure.communication.callautomation.implementation.models.RemoveParticipantRequestInternal;
 import com.azure.communication.callautomation.implementation.models.TransferToParticipantRequestInternal;
-import com.azure.communication.callautomation.implementation.models.UnmuteParticipantsRequestInternal;
 import com.azure.communication.callautomation.models.AddParticipantOptions;
 import com.azure.communication.callautomation.models.AddParticipantResult;
 import com.azure.communication.callautomation.models.CallConnectionProperties;
@@ -36,8 +33,6 @@ import com.azure.communication.callautomation.models.RemoveParticipantOptions;
 import com.azure.communication.callautomation.models.RemoveParticipantResult;
 import com.azure.communication.callautomation.models.TransferCallResult;
 import com.azure.communication.callautomation.models.TransferCallToParticipantOptions;
-import com.azure.communication.callautomation.models.UnmuteParticipantOptions;
-import com.azure.communication.callautomation.models.UnmuteParticipantResult;
 import com.azure.communication.common.CommunicationIdentifier;
 import com.azure.communication.common.CommunicationUserIdentifier;
 import com.azure.communication.common.MicrosoftTeamsUserIdentifier;
@@ -45,7 +40,6 @@ import com.azure.communication.common.PhoneNumberIdentifier;
 import com.azure.core.annotation.ReturnType;
 import com.azure.core.annotation.ServiceMethod;
 import com.azure.core.exception.HttpResponseException;
-import com.azure.core.http.rest.PagedFlux;
 import com.azure.core.http.rest.Response;
 import com.azure.core.http.rest.SimpleResponse;
 import com.azure.core.util.Context;
@@ -68,19 +62,16 @@ public final class CallConnectionAsync {
     private final String callConnectionId;
     private final CallConnectionsImpl callConnectionInternal;
     private final CallMediasImpl callMediasInternal;
-    private final CallDialogsImpl callDialogsInternal;
     private final CallAutomationEventProcessor eventProcessor;
     private final ClientLogger logger;
 
     CallConnectionAsync(
         String callConnectionId,
         CallConnectionsImpl callConnectionInternal,
-        CallMediasImpl contentsInternal,
-        CallDialogsImpl dialogsInternal, CallAutomationEventProcessor eventProcessor) {
+        CallMediasImpl contentsInternal, CallAutomationEventProcessor eventProcessor) {
         this.callConnectionId = callConnectionId;
         this.callConnectionInternal = callConnectionInternal;
         this.callMediasInternal = contentsInternal;
-        this.callDialogsInternal = dialogsInternal;
         this.eventProcessor = eventProcessor;
         this.logger = new ClientLogger(CallConnectionAsync.class);
     }
@@ -203,36 +194,6 @@ public final class CallConnectionAsync {
                     new SimpleResponse<>(response, CallParticipantConverter.convert(response.getValue())));
         } catch (RuntimeException ex) {
             return monoError(logger, ex);
-        }
-    }
-
-    /**
-     * Get all participants.
-     *
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return Response with result of getting all participants in the call.
-     */
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<CallParticipant> listParticipants() {
-        try {
-            return new PagedFlux<>(
-                () -> withContext(context -> this.callConnectionInternal.getParticipantsSinglePageAsync(
-                    callConnectionId, context)),
-                nextLink -> withContext(context -> this.callConnectionInternal.getParticipantsNextSinglePageAsync(
-                    nextLink, context)))
-                .mapPage(CallParticipantConverter::convert);
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
-        }
-    }
-
-    PagedFlux<CallParticipant> listParticipantsWithContext(Context context) {
-        try {
-            final Context serviceContext = context == null ? Context.NONE : context;
-            return callConnectionInternal.getParticipantsAsync(callConnectionId, serviceContext).mapPage(CallParticipantConverter::convert);
-        } catch (RuntimeException ex) {
-            return new PagedFlux<>(() -> monoError(logger, ex));
         }
     }
 
@@ -468,47 +429,6 @@ public final class CallConnectionAsync {
     }
 
     /**
-     * Unmutes participant in the call.
-     * @param targetParticipant - Participant to be unmuted. Only ACS Users are currently supported.
-     * @return An UnmuteParticipantResult object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<UnmuteParticipantResult> unmuteParticipant(CommunicationIdentifier targetParticipant) {
-        return unmuteParticipantWithResponseInternal(
-            new UnmuteParticipantOptions(targetParticipant),
-            null)
-            .flatMap(FluxUtil::toMono);
-    }
-
-    /**
-     * Unmute participants in the call.
-     * @param unmuteParticipantOptions - Options for the request.
-     * @return a Response containing the UnmuteParticipantResult object.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<UnmuteParticipantResult>> unmuteParticipantWithResponse(UnmuteParticipantOptions unmuteParticipantOptions) {
-        return withContext(context -> unmuteParticipantWithResponseInternal(unmuteParticipantOptions, context));
-    }
-
-    Mono<Response<UnmuteParticipantResult>> unmuteParticipantWithResponseInternal(UnmuteParticipantOptions unmuteParticipantOptions, Context context) {
-        try {
-            context = context == null ? Context.NONE : context;
-            UnmuteParticipantsRequestInternal request = new UnmuteParticipantsRequestInternal()
-                .setTargetParticipants(Collections.singletonList(CommunicationIdentifierConverter.convert(unmuteParticipantOptions.getTargetParticipant())))
-                .setOperationContext(unmuteParticipantOptions.getOperationContext());
-
-            return callConnectionInternal.unmuteWithResponseAsync(
-                    callConnectionId,
-                    request,
-                    UUID.randomUUID(),
-                    OffsetDateTime.now(),
-                    context).map(internalResponse -> new SimpleResponse<>(internalResponse, UnmuteParticipantsResponseConstructorProxy.create(internalResponse.getValue())));
-        } catch (RuntimeException ex) {
-            return monoError(logger, ex);
-        }
-    }
-
-    /**
      * Cancel add participant operation request.
      *
      * @param invitationId invitation ID used to add participant.
@@ -567,16 +487,6 @@ public final class CallConnectionAsync {
     @ServiceMethod(returns = ReturnType.SINGLE)
     public CallMediaAsync getCallMediaAsync() {
         return new CallMediaAsync(callConnectionId, callMediasInternal);
-    }
-
-    /***
-     * Returns an object of CallDialogAsync
-     *
-     * @return a CallDialogAsync.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public CallDialogAsync getCallDialogAsync() {
-        return new CallDialogAsync(callConnectionId, callDialogsInternal);
     }
     //endregion
 }

@@ -16,6 +16,9 @@ public final class CallIntelligenceOptionsInternal {
     @JsonProperty(value = "cognitiveServicesEndpoint")
     private String cognitiveServicesEndpoint;
 
+    /** Creates an instance of CallIntelligenceOptionsInternal class. */
+    public CallIntelligenceOptionsInternal() {}
+
     /**
      * Get the cognitiveServicesEndpoint property: The identifier of the Cognitive Service resource assigned to this
      * call.

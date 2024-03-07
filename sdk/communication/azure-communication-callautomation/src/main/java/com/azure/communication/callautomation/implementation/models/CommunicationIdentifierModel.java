@@ -44,6 +44,15 @@ public final class CommunicationIdentifierModel {
     @JsonProperty(value = "microsoftTeamsUser")
     private MicrosoftTeamsUserIdentifierModel microsoftTeamsUser;
 
+    /*
+     * The Microsoft Teams application.
+     */
+    @JsonProperty(value = "microsoftTeamsApp")
+    private MicrosoftTeamsAppIdentifierModel microsoftTeamsApp;
+
+    /** Creates an instance of CommunicationIdentifierModel class. */
+    public CommunicationIdentifierModel() {}
+
     /**
      * Get the kind property: The identifier kind. Only required in responses.
      *
@@ -141,6 +150,26 @@ public final class CommunicationIdentifierModel {
      */
     public CommunicationIdentifierModel setMicrosoftTeamsUser(MicrosoftTeamsUserIdentifierModel microsoftTeamsUser) {
         this.microsoftTeamsUser = microsoftTeamsUser;
+        return this;
+    }
+
+    /**
+     * Get the microsoftTeamsApp property: The Microsoft Teams application.
+     *
+     * @return the microsoftTeamsApp value.
+     */
+    public MicrosoftTeamsAppIdentifierModel getMicrosoftTeamsApp() {
+        return this.microsoftTeamsApp;
+    }
+
+    /**
+     * Set the microsoftTeamsApp property: The Microsoft Teams application.
+     *
+     * @param microsoftTeamsApp the microsoftTeamsApp value to set.
+     * @return the CommunicationIdentifierModel object itself.
+     */
+    public CommunicationIdentifierModel setMicrosoftTeamsApp(MicrosoftTeamsAppIdentifierModel microsoftTeamsApp) {
+        this.microsoftTeamsApp = microsoftTeamsApp;
         return this;
     }
 }

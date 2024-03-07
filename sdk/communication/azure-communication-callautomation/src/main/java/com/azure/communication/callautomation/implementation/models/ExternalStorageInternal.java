@@ -11,54 +11,57 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 @Fluent
 public final class ExternalStorageInternal {
     /*
-     * Defines the type of external storage
+     * Defines the kind of external storage
      */
-    @JsonProperty(value = "storageType", required = true)
-    private RecordingStorageTypeInternal storageType;
+    @JsonProperty(value = "recordingStorageKind", required = true)
+    private RecordingStorageKind recordingStorageKind;
 
     /*
-     * Defines the blob storage location where the recording will be stored
+     * Defines the Azure Blob storage location where the recording will be stored
      */
-    @JsonProperty(value = "blobStorage")
-    private BlobStorageInternal blobStorage;
+    @JsonProperty(value = "azureBlobStorage")
+    private AzureBlobStorage azureBlobStorage;
+
+    /** Creates an instance of ExternalStorageInternal class. */
+    public ExternalStorageInternal() {}
 
     /**
-     * Get the storageType property: Defines the type of external storage.
+     * Get the recordingStorageKind property: Defines the kind of external storage.
      *
-     * @return the storageType value.
+     * @return the recordingStorageKind value.
      */
-    public RecordingStorageTypeInternal getStorageType() {
-        return this.storageType;
+    public RecordingStorageKind getRecordingStorageKind() {
+        return this.recordingStorageKind;
     }
 
     /**
-     * Set the storageType property: Defines the type of external storage.
+     * Set the recordingStorageKind property: Defines the kind of external storage.
      *
-     * @param storageType the storageType value to set.
+     * @param recordingStorageKind the recordingStorageKind value to set.
      * @return the ExternalStorageInternal object itself.
      */
-    public ExternalStorageInternal setStorageType(RecordingStorageTypeInternal storageType) {
-        this.storageType = storageType;
+    public ExternalStorageInternal setRecordingStorageKind(RecordingStorageKind recordingStorageKind) {
+        this.recordingStorageKind = recordingStorageKind;
         return this;
     }
 
     /**
-     * Get the blobStorage property: Defines the blob storage location where the recording will be stored.
+     * Get the azureBlobStorage property: Defines the Azure Blob storage location where the recording will be stored.
      *
-     * @return the blobStorage value.
+     * @return the azureBlobStorage value.
      */
-    public BlobStorageInternal getBlobStorage() {
-        return this.blobStorage;
+    public AzureBlobStorage getAzureBlobStorage() {
+        return this.azureBlobStorage;
     }
 
     /**
-     * Set the blobStorage property: Defines the blob storage location where the recording will be stored.
+     * Set the azureBlobStorage property: Defines the Azure Blob storage location where the recording will be stored.
      *
-     * @param blobStorage the blobStorage value to set.
+     * @param azureBlobStorage the azureBlobStorage value to set.
      * @return the ExternalStorageInternal object itself.
      */
-    public ExternalStorageInternal setBlobStorage(BlobStorageInternal blobStorage) {
-        this.blobStorage = blobStorage;
+    public ExternalStorageInternal setAzureBlobStorage(AzureBlobStorage azureBlobStorage) {
+        this.azureBlobStorage = azureBlobStorage;
         return this;
     }
 }

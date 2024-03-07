@@ -372,68 +372,11 @@ public class CallMediaAsyncUnitTests {
             .verifyComplete();
     }
 
-    @Test
-    public void startHoldMusicWithResponseTest() {
-
-        callMedia = getMockCallMedia(200);
-        StartHoldMusicOptions options = new StartHoldMusicOptions(
-            new CommunicationUserIdentifier("id"),
-            new TextSource().setText("audio to play"));
-        StepVerifier.create(
-                callMedia.startHoldMusicWithResponse(options))
-            .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
-            .verifyComplete();
-    }
-
-    @Test
-    public void stopHoldMusicWithResponseTest() {
-
-        callMedia = getMockCallMedia(200);
-        StepVerifier.create(
-                callMedia.stopHoldMusicWithResponse(
-                    new CommunicationUserIdentifier("id"),
-                    "operationalContext"
-                ))
-            .consumeNextWith(response -> assertEquals(200, response.getStatusCode()))
-            .verifyComplete();
-    }
-
     private CallMediaAsync getMockCallMedia(int expectedStatusCode) {
         CallConnectionAsync callConnection =
             CallAutomationUnitTestBase.getCallConnectionAsync(new ArrayList<>(
                 Collections.singletonList(new AbstractMap.SimpleEntry<>("", expectedStatusCode)))
             );
         return callConnection.getCallMediaAsync();
-    }
-
-    @Test
-    public void startTranscriptionWithResponse() {
-        callMedia = getMockCallMedia(202);
-        StartTranscriptionOptions options = new StartTranscriptionOptions();
-        options.setOperationContext("operationContext");
-        options.setLocale("en-US");
-        StepVerifier.create(
-                callMedia.startTranscriptionWithResponseAsync(options))
-            .consumeNextWith(response -> assertEquals(202, response.getStatusCode())
-            )
-            .verifyComplete();
-    }
-    @Test
-    public void stopTranscriptionWithResponse() {
-        callMedia = getMockCallMedia(202);
-        StopTranscriptionOptions options = new StopTranscriptionOptions();
-        options.setOperationContext("operationContext");
-        StepVerifier.create(
-                callMedia.stopTranscriptionWithResponseAsync(options)
-            )
-            .consumeNextWith(response -> assertEquals(202, response.getStatusCode()))
-            .verifyComplete();
-    }
-    @Test
-    public void updateTranscriptionWithResponse() {
-        callMedia = getMockCallMedia(202);
-        StepVerifier.create(
-                callMedia.updateTranscription("en-US")
-            ).verifyComplete();
     }
 }

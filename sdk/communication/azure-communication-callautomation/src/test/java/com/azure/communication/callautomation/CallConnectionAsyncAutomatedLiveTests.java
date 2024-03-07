@@ -131,11 +131,6 @@ public class CallConnectionAsyncAutomatedLiveTests extends CallAutomationAutomat
             AddParticipantSucceeded addParticipantSucceeded = waitForEvent(AddParticipantSucceeded.class, callerConnectionId, Duration.ofSeconds(10));
             assertNotNull(addParticipantSucceeded);
 
-            // check participant number in the call
-            List<CallParticipant> listParticipantsResult = createCallResult.getCallConnectionAsync().listParticipants().log().collectList().block();
-            assertNotNull(listParticipantsResult);
-            assertEquals(3, listParticipantsResult.size());
-
             // remove a participant from the call
             RemoveParticipantResult removeParticipantResult = createCallResult.getCallConnectionAsync().removeParticipant(receiver).block();
             assertNotNull(removeParticipantResult);

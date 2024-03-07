@@ -114,18 +114,6 @@ public final class AzureCommunicationCallAutomationServiceImpl {
         return this.callMedias;
     }
 
-    /** The CallDialogsImpl object to access its operations. */
-    private final CallDialogsImpl callDialogs;
-
-    /**
-     * Gets the CallDialogsImpl object to access its operations.
-     *
-     * @return the CallDialogsImpl object.
-     */
-    public CallDialogsImpl getCallDialogs() {
-        return this.callDialogs;
-    }
-
     /** The CallRecordingsImpl object to access its operations. */
     private final CallRecordingsImpl callRecordings;
 
@@ -181,7 +169,6 @@ public final class AzureCommunicationCallAutomationServiceImpl {
         this.apiVersion = apiVersion;
         this.callConnections = new CallConnectionsImpl(this);
         this.callMedias = new CallMediasImpl(this);
-        this.callDialogs = new CallDialogsImpl(this);
         this.callRecordings = new CallRecordingsImpl(this);
         this.service =
                 RestProxy.create(
@@ -261,7 +248,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a call connection.
+     * @return properties of a call connection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CallConnectionPropertiesInternal>> createCallWithResponseAsync(
@@ -299,7 +286,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a call connection.
+     * @return properties of a call connection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CallConnectionPropertiesInternal>> createCallWithResponseAsync(
@@ -335,7 +322,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a call connection.
+     * @return properties of a call connection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallConnectionPropertiesInternal> createCallAsync(
@@ -343,14 +330,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
             UUID repeatabilityRequestID,
             OffsetDateTime repeatabilityFirstSent) {
         return createCallWithResponseAsync(createCallRequest, repeatabilityRequestID, repeatabilityFirstSent)
-                .flatMap(
-                        (Response<CallConnectionPropertiesInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
@@ -369,7 +349,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a call connection.
+     * @return properties of a call connection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallConnectionPropertiesInternal> createCallAsync(
@@ -378,14 +358,35 @@ public final class AzureCommunicationCallAutomationServiceImpl {
             OffsetDateTime repeatabilityFirstSent,
             Context context) {
         return createCallWithResponseAsync(createCallRequest, repeatabilityRequestID, repeatabilityFirstSent, context)
-                .flatMap(
-                        (Response<CallConnectionPropertiesInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
+    }
+
+    /**
+     * Create an outbound call.
+     *
+     * @param createCallRequest The create call request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a call connection along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CallConnectionPropertiesInternal> createCallWithResponse(
+            CreateCallRequestInternal createCallRequest,
+            UUID repeatabilityRequestID,
+            OffsetDateTime repeatabilityFirstSent,
+            Context context) {
+        return createCallWithResponseAsync(createCallRequest, repeatabilityRequestID, repeatabilityFirstSent, context)
+                .block();
     }
 
     /**
@@ -410,39 +411,14 @@ public final class AzureCommunicationCallAutomationServiceImpl {
             CreateCallRequestInternal createCallRequest,
             UUID repeatabilityRequestID,
             OffsetDateTime repeatabilityFirstSent) {
-        return createCallAsync(createCallRequest, repeatabilityRequestID, repeatabilityFirstSent).block();
+        return createCallWithResponse(createCallRequest, repeatabilityRequestID, repeatabilityFirstSent, Context.NONE)
+                .getValue();
     }
 
     /**
-     * Create an outbound call.
+     * Answer a Call.
      *
-     * @param createCallRequest The create call request.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
-     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
-     *     (random) UUID.
-     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
-     *     header must also be specified. The value should be the date and time at which the request was first created,
-     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a call connection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallConnectionPropertiesInternal> createCallWithResponse(
-            CreateCallRequestInternal createCallRequest,
-            UUID repeatabilityRequestID,
-            OffsetDateTime repeatabilityFirstSent,
-            Context context) {
-        return createCallWithResponseAsync(createCallRequest, repeatabilityRequestID, repeatabilityFirstSent, context)
-                .block();
-    }
-
-    /**
-     * Answer a call using the IncomingCallContext from Event Grid.
+     * <p>Answer a call using the IncomingCallContext from Event Grid.
      *
      * @param answerCallRequest The answer call request.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
@@ -456,7 +432,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a call connection.
+     * @return properties of a call connection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CallConnectionPropertiesInternal>> answerCallWithResponseAsync(
@@ -479,7 +455,9 @@ public final class AzureCommunicationCallAutomationServiceImpl {
     }
 
     /**
-     * Answer a call using the IncomingCallContext from Event Grid.
+     * Answer a Call.
+     *
+     * <p>Answer a call using the IncomingCallContext from Event Grid.
      *
      * @param answerCallRequest The answer call request.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
@@ -494,7 +472,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a call connection.
+     * @return properties of a call connection along with {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<CallConnectionPropertiesInternal>> answerCallWithResponseAsync(
@@ -516,7 +494,9 @@ public final class AzureCommunicationCallAutomationServiceImpl {
     }
 
     /**
-     * Answer a call using the IncomingCallContext from Event Grid.
+     * Answer a Call.
+     *
+     * <p>Answer a call using the IncomingCallContext from Event Grid.
      *
      * @param answerCallRequest The answer call request.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
@@ -530,7 +510,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a call connection.
+     * @return properties of a call connection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallConnectionPropertiesInternal> answerCallAsync(
@@ -538,18 +518,13 @@ public final class AzureCommunicationCallAutomationServiceImpl {
             UUID repeatabilityRequestID,
             OffsetDateTime repeatabilityFirstSent) {
         return answerCallWithResponseAsync(answerCallRequest, repeatabilityRequestID, repeatabilityFirstSent)
-                .flatMap(
-                        (Response<CallConnectionPropertiesInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Answer a call using the IncomingCallContext from Event Grid.
+     * Answer a Call.
+     *
+     * <p>Answer a call using the IncomingCallContext from Event Grid.
      *
      * @param answerCallRequest The answer call request.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
@@ -564,7 +539,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a call connection.
+     * @return properties of a call connection on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<CallConnectionPropertiesInternal> answerCallAsync(
@@ -573,18 +548,43 @@ public final class AzureCommunicationCallAutomationServiceImpl {
             OffsetDateTime repeatabilityFirstSent,
             Context context) {
         return answerCallWithResponseAsync(answerCallRequest, repeatabilityRequestID, repeatabilityFirstSent, context)
-                .flatMap(
-                        (Response<CallConnectionPropertiesInternal> res) -> {
-                            if (res.getValue() != null) {
-                                return Mono.just(res.getValue());
-                            } else {
-                                return Mono.empty();
-                            }
-                        });
+                .flatMap(res -> Mono.justOrEmpty(res.getValue()));
     }
 
     /**
-     * Answer a call using the IncomingCallContext from Event Grid.
+     * Answer a Call.
+     *
+     * <p>Answer a call using the IncomingCallContext from Event Grid.
+     *
+     * @param answerCallRequest The answer call request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return properties of a call connection along with {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<CallConnectionPropertiesInternal> answerCallWithResponse(
+            AnswerCallRequestInternal answerCallRequest,
+            UUID repeatabilityRequestID,
+            OffsetDateTime repeatabilityFirstSent,
+            Context context) {
+        return answerCallWithResponseAsync(answerCallRequest, repeatabilityRequestID, repeatabilityFirstSent, context)
+                .block();
+    }
+
+    /**
+     * Answer a Call.
+     *
+     * <p>Answer a call using the IncomingCallContext from Event Grid.
      *
      * @param answerCallRequest The answer call request.
      * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
@@ -605,35 +605,8 @@ public final class AzureCommunicationCallAutomationServiceImpl {
             AnswerCallRequestInternal answerCallRequest,
             UUID repeatabilityRequestID,
             OffsetDateTime repeatabilityFirstSent) {
-        return answerCallAsync(answerCallRequest, repeatabilityRequestID, repeatabilityFirstSent).block();
-    }
-
-    /**
-     * Answer a call using the IncomingCallContext from Event Grid.
-     *
-     * @param answerCallRequest The answer call request.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
-     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
-     *     (random) UUID.
-     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
-     *     header must also be specified. The value should be the date and time at which the request was first created,
-     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return properties of a call connection.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<CallConnectionPropertiesInternal> answerCallWithResponse(
-            AnswerCallRequestInternal answerCallRequest,
-            UUID repeatabilityRequestID,
-            OffsetDateTime repeatabilityFirstSent,
-            Context context) {
-        return answerCallWithResponseAsync(answerCallRequest, repeatabilityRequestID, repeatabilityFirstSent, context)
-                .block();
+        return answerCallWithResponse(answerCallRequest, repeatabilityRequestID, repeatabilityFirstSent, Context.NONE)
+                .getValue();
     }
 
     /**
@@ -651,7 +624,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> redirectCallWithResponseAsync(
@@ -689,7 +662,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> redirectCallWithResponseAsync(
@@ -725,7 +698,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> redirectCallAsync(
@@ -733,7 +706,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
             UUID repeatabilityRequestID,
             OffsetDateTime repeatabilityFirstSent) {
         return redirectCallWithResponseAsync(redirectCallRequest, repeatabilityRequestID, repeatabilityFirstSent)
-                .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -752,7 +725,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> redirectCallAsync(
@@ -762,7 +735,36 @@ public final class AzureCommunicationCallAutomationServiceImpl {
             Context context) {
         return redirectCallWithResponseAsync(
                         redirectCallRequest, repeatabilityRequestID, repeatabilityFirstSent, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Redirect a call.
+     *
+     * @param redirectCallRequest The redirect call request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> redirectCallWithResponse(
+            RedirectCallRequestInternal redirectCallRequest,
+            UUID repeatabilityRequestID,
+            OffsetDateTime repeatabilityFirstSent,
+            Context context) {
+        return redirectCallWithResponseAsync(
+                        redirectCallRequest, repeatabilityRequestID, repeatabilityFirstSent, context)
+                .block();
     }
 
     /**
@@ -786,36 +788,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
             RedirectCallRequestInternal redirectCallRequest,
             UUID repeatabilityRequestID,
             OffsetDateTime repeatabilityFirstSent) {
-        redirectCallAsync(redirectCallRequest, repeatabilityRequestID, repeatabilityFirstSent).block();
-    }
-
-    /**
-     * Redirect a call.
-     *
-     * @param redirectCallRequest The redirect call request.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
-     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
-     *     (random) UUID.
-     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
-     *     header must also be specified. The value should be the date and time at which the request was first created,
-     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> redirectCallWithResponse(
-            RedirectCallRequestInternal redirectCallRequest,
-            UUID repeatabilityRequestID,
-            OffsetDateTime repeatabilityFirstSent,
-            Context context) {
-        return redirectCallWithResponseAsync(
-                        redirectCallRequest, repeatabilityRequestID, repeatabilityFirstSent, context)
-                .block();
+        redirectCallWithResponse(redirectCallRequest, repeatabilityRequestID, repeatabilityFirstSent, Context.NONE);
     }
 
     /**
@@ -833,7 +806,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> rejectCallWithResponseAsync(
@@ -871,7 +844,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return the {@link Response} on successful completion of {@link Mono}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Response<Void>> rejectCallWithResponseAsync(
@@ -907,7 +880,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> rejectCallAsync(
@@ -915,7 +888,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
             UUID repeatabilityRequestID,
             OffsetDateTime repeatabilityFirstSent) {
         return rejectCallWithResponseAsync(rejectCallRequest, repeatabilityRequestID, repeatabilityFirstSent)
-                .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
     }
 
     /**
@@ -934,7 +907,7 @@ public final class AzureCommunicationCallAutomationServiceImpl {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the completion.
+     * @return A {@link Mono} that completes when a successful response is received.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<Void> rejectCallAsync(
@@ -943,7 +916,35 @@ public final class AzureCommunicationCallAutomationServiceImpl {
             OffsetDateTime repeatabilityFirstSent,
             Context context) {
         return rejectCallWithResponseAsync(rejectCallRequest, repeatabilityRequestID, repeatabilityFirstSent, context)
-                .flatMap((Response<Void> res) -> Mono.empty());
+                .flatMap(ignored -> Mono.empty());
+    }
+
+    /**
+     * Reject the call.
+     *
+     * @param rejectCallRequest The reject call request.
+     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
+     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
+     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
+     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
+     *     (random) UUID.
+     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
+     *     header must also be specified. The value should be the date and time at which the request was first created,
+     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
+     * @param context The context to associate with this operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
+     * @return the {@link Response}.
+     */
+    @ServiceMethod(returns = ReturnType.SINGLE)
+    public Response<Void> rejectCallWithResponse(
+            RejectCallRequestInternal rejectCallRequest,
+            UUID repeatabilityRequestID,
+            OffsetDateTime repeatabilityFirstSent,
+            Context context) {
+        return rejectCallWithResponseAsync(rejectCallRequest, repeatabilityRequestID, repeatabilityFirstSent, context)
+                .block();
     }
 
     /**
@@ -967,34 +968,6 @@ public final class AzureCommunicationCallAutomationServiceImpl {
             RejectCallRequestInternal rejectCallRequest,
             UUID repeatabilityRequestID,
             OffsetDateTime repeatabilityFirstSent) {
-        rejectCallAsync(rejectCallRequest, repeatabilityRequestID, repeatabilityFirstSent).block();
-    }
-
-    /**
-     * Reject the call.
-     *
-     * @param rejectCallRequest The reject call request.
-     * @param repeatabilityRequestID If specified, the client directs that the request is repeatable; that is, that the
-     *     client can make the request multiple times with the same Repeatability-Request-Id and get back an appropriate
-     *     response without the server executing the request multiple times. The value of the Repeatability-Request-Id
-     *     is an opaque string representing a client-generated unique identifier for the request. It is a version 4
-     *     (random) UUID.
-     * @param repeatabilityFirstSent If Repeatability-Request-ID header is specified, then Repeatability-First-Sent
-     *     header must also be specified. The value should be the date and time at which the request was first created,
-     *     expressed using the IMF-fixdate form of HTTP-date. Example: Sun, 06 Nov 1994 08:49:37 GMT.
-     * @param context The context to associate with this operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws CommunicationErrorResponseException thrown if the request is rejected by server.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the response.
-     */
-    @ServiceMethod(returns = ReturnType.SINGLE)
-    public Response<Void> rejectCallWithResponse(
-            RejectCallRequestInternal rejectCallRequest,
-            UUID repeatabilityRequestID,
-            OffsetDateTime repeatabilityFirstSent,
-            Context context) {
-        return rejectCallWithResponseAsync(rejectCallRequest, repeatabilityRequestID, repeatabilityFirstSent, context)
-                .block();
+        rejectCallWithResponse(rejectCallRequest, repeatabilityRequestID, repeatabilityFirstSent, Context.NONE);
     }
 }

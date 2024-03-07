@@ -177,16 +177,6 @@ public final class CallRecordingAsync {
                 .collect(Collectors.toList());
             request.setChannelAffinity(channelAffinityInternals);
         }
-        if (options.getExternalStorage() != null) {
-            ExternalStorageInternal externalStorageInternal = new ExternalStorageInternal()
-                .setStorageType(RecordingStorageTypeInternal.fromString(options.getExternalStorage().getStorageType().toString()));
-
-            if (options.getExternalStorage() instanceof BlobStorage) {
-                externalStorageInternal.setBlobStorage(getBlobStorageInternalFromBlobStorage((BlobStorage) options.getExternalStorage()));
-            }
-
-            request.setExternalStorage(externalStorageInternal);
-        }
 
         return request;
     }
