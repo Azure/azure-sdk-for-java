@@ -534,7 +534,7 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
     }
 
     @Test
-    public void testUpdateVersionFromDefaultToSpecified() {
+    public void canCreateClusterWithDefaultVersion() {
         resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
         KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
             .define(generateRandomResourceName("aks", 15))
@@ -554,7 +554,31 @@ public class KubernetesClustersTests extends ContainerServiceManagementTest {
             .create();
 
         kubernetesCluster.refresh();
-        Assertions.assertEquals("1.27", kubernetesCluster.version());
+        Assertions.assertNotNull(kubernetesCluster.version());
+    }
+
+    @Test
+    public void testUpdateVersionFromDefaultToSpecified() {
+        resourceManager.resourceGroups().define(rgName).withRegion(Region.US_EAST).create();
+        KubernetesCluster kubernetesCluster = containerServiceManager.kubernetesClusters()
+            .define(generateRandomResourceName("aks", 15))
+            .withRegion(Region.US_EAST)
+            .withExistingResourceGroup(rgName)
+            .withVersion("1.27.9")
+            .withRootUsername("testaks")
+            .withSshKey(SSH_KEY)
+            .withSystemAssignedManagedServiceIdentity()
+            .defineAgentPool(generateRandomResourceName("ap", 15))
+            .withVirtualMachineSize(ContainerServiceVMSizeTypes.STANDARD_D2_V2)
+            .withAgentPoolVirtualMachineCount(1)
+            .withAgentPoolType(AgentPoolType.VIRTUAL_MACHINE_SCALE_SETS)
+            .withAgentPoolMode(AgentPoolMode.SYSTEM)
+            .attach()
+            .withDnsPrefix(generateRandomResourceName("dns", 15))
+            .create();
+
+        kubernetesCluster.refresh();
+        Assertions.assertEquals("1.27.9", kubernetesCluster.version());
 
         kubernetesCluster.update().withVersion("1.28.5").apply();
         kubernetesCluster.refresh();
