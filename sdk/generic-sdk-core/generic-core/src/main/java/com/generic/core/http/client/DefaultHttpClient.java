@@ -219,7 +219,7 @@ class DefaultHttpClient implements HttpClient {
                 AccessibleByteArrayOutputStream outputStream = getAccessibleByteArrayOutputStream(connection);
 
                 return new HttpResponse<>(httpRequest, responseCode, responseHeaders,
-                    BinaryData.fromByteBuffer(outputStream.toByteBuffer()), true);
+                    BinaryData.fromByteBuffer(outputStream.toByteBuffer()));
             }
         } catch (IOException e) {
             throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
@@ -552,7 +552,7 @@ class DefaultHttpClient implements HttpClient {
 
             BinaryData body = BinaryData.fromByteBuffer(ByteBuffer.wrap(bodyString.toString().getBytes()));
 
-            return new HttpResponse<>(httpRequest, statusCode, headers, body, true);
+            return new HttpResponse<>(httpRequest, statusCode, headers, body);
         }
     }
 }

@@ -61,8 +61,7 @@ public class MockHttpResponse extends HttpResponse<BinaryData> {
      * @param bodyBytes Contents of the response.
      */
     public MockHttpResponse(HttpRequest request, int statusCode, Headers headers, byte[] bodyBytes) {
-        super(request, statusCode, headers, bodyBytes == null ? null : BinaryData.fromBytes(cloneByteArray(bodyBytes)),
-            true);
+        super(request, statusCode, headers, bodyBytes == null ? null : BinaryData.fromBytes(cloneByteArray(bodyBytes)));
     }
 
     /**

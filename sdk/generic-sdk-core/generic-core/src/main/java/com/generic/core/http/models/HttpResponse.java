@@ -39,28 +39,6 @@ public class HttpResponse<T> implements Response<T>, Closeable {
     }
 
     /**
-     * Creates an instance of {@link HttpResponse}.
-     *
-     * @param request The {@link HttpRequest} that resulted in this {@link HttpResponse}.
-     * @param statusCode The response status code.
-     * @param headers The response {@link Headers}.
-     * @param value The response value.
-     * @param isRawResponse Indicates whether the value provided needs to be deserialized.
-     */
-    @SuppressWarnings("unchecked")
-    public HttpResponse(HttpRequest request, int statusCode, Headers headers, BinaryData value, boolean isRawResponse) {
-        this.request = request;
-        this.statusCode = statusCode;
-        this.headers = headers;
-
-        if (isRawResponse) {
-            this.body = value;
-        } else {
-            this.value = (T) value;
-        }
-    }
-
-    /**
      * Get all response {@link Headers}.
      *
      * @return The response {@link Headers}.
