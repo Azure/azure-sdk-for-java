@@ -5,100 +5,36 @@
 package com.azure.data.tables.implementation.models;
 
 import com.azure.core.annotation.Fluent;
-import com.azure.core.util.CoreUtils;
-import com.azure.xml.XmlReader;
-import com.azure.xml.XmlSerializable;
-import com.azure.xml.XmlToken;
-import com.azure.xml.XmlWriter;
-import javax.xml.namespace.QName;
-import javax.xml.stream.XMLStreamException;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
-/**
- * Table Service error.
- */
+/** Table Service error. */
+@JacksonXmlRootElement(localName = "null")
 @Fluent
-public final class TableServiceError implements XmlSerializable<TableServiceError> {
+public final class TableServiceError {
     /*
-     * The error message.
+     * The odata error.
      */
-    private String message;
+    @JsonProperty(value = "odata.error")
+    private TableServiceErrorOdataError odataError;
 
     /**
-     * Creates an instance of TableServiceError class.
+     * Get the odataError property: The odata error.
+     *
+     * @return the odataError value.
      */
-    public TableServiceError() {
+    public TableServiceErrorOdataError getOdataError() {
+        return this.odataError;
     }
 
     /**
-     * Get the message property: The error message.
-     * 
-     * @return the message value.
-     */
-    public String getMessage() {
-        return this.message;
-    }
-
-    /**
-     * Set the message property: The error message.
-     * 
-     * @param message the message value to set.
+     * Set the odataError property: The odata error.
+     *
+     * @param odataError the odataError value to set.
      * @return the TableServiceError object itself.
      */
-    public TableServiceError setMessage(String message) {
-        this.message = message;
+    public TableServiceError setOdataError(TableServiceErrorOdataError odataError) {
+        this.odataError = odataError;
         return this;
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter) throws XMLStreamException {
-        return toXml(xmlWriter, null);
-    }
-
-    @Override
-    public XmlWriter toXml(XmlWriter xmlWriter, String rootElementName) throws XMLStreamException {
-        rootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "TableServiceError" : rootElementName;
-        xmlWriter.writeStartElement(rootElementName);
-        xmlWriter.writeStringElement("Message", this.message);
-        return xmlWriter.writeEndElement();
-    }
-
-    /**
-     * Reads an instance of TableServiceError from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @return An instance of TableServiceError if the XmlReader was pointing to an instance of it, or null if it was
-     * pointing to XML null.
-     * @throws XMLStreamException If an error occurs while reading the TableServiceError.
-     */
-    public static TableServiceError fromXml(XmlReader xmlReader) throws XMLStreamException {
-        return fromXml(xmlReader, null);
-    }
-
-    /**
-     * Reads an instance of TableServiceError from the XmlReader.
-     * 
-     * @param xmlReader The XmlReader being read.
-     * @param rootElementName Optional root element name to override the default defined by the model. Used to support
-     * cases where the model can deserialize from different root element names.
-     * @return An instance of TableServiceError if the XmlReader was pointing to an instance of it, or null if it was
-     * pointing to XML null.
-     * @throws XMLStreamException If an error occurs while reading the TableServiceError.
-     */
-    public static TableServiceError fromXml(XmlReader xmlReader, String rootElementName) throws XMLStreamException {
-        String finalRootElementName = CoreUtils.isNullOrEmpty(rootElementName) ? "TableServiceError" : rootElementName;
-        return xmlReader.readObject(finalRootElementName, reader -> {
-            TableServiceError deserializedTableServiceError = new TableServiceError();
-            while (reader.nextElement() != XmlToken.END_ELEMENT) {
-                QName elementName = reader.getElementName();
-
-                if ("Message".equals(elementName.getLocalPart())) {
-                    deserializedTableServiceError.message = reader.getStringElement();
-                } else {
-                    reader.skipElement();
-                }
-            }
-
-            return deserializedTableServiceError;
-        });
     }
 }

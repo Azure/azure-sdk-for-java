@@ -6,9 +6,7 @@ import com.azure.core.util.logging.ClientLogger;
 import com.azure.core.util.serializer.JacksonAdapter;
 import com.azure.core.util.serializer.SerializerEncoding;
 import com.azure.data.tables.implementation.models.TableEntityQueryResponse;
-import com.azure.json.JsonProviders;
-import com.azure.json.JsonReader;
-import com.azure.json.JsonToken;
+import com.fasterxml.jackson.databind.JsonNode;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -17,17 +15,17 @@ import java.io.OutputStream;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedHashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 /**
  * Serializer for Tables responses.
  */
 public class TablesJacksonSerializer extends JacksonAdapter {
-    private static final ClientLogger LOGGER = new ClientLogger(TablesJacksonSerializer.class);
+    private final ClientLogger logger = new ClientLogger(TablesJacksonSerializer.class);
 
     @Override
     public void serialize(Object object, SerializerEncoding encoding, OutputStream outputStream) throws IOException {
@@ -96,13 +94,9 @@ public class TablesJacksonSerializer extends JacksonAdapter {
     public <U> U deserialize(InputStream inputStream, Type type, SerializerEncoding serializerEncoding)
         throws IOException {
         if (inputStream != null && type == TableEntityQueryResponse.class) {
-            try (JsonReader jsonReader = JsonProviders.createReader(inputStream)) {
-                return deserializeTableEntityQueryResponse(jsonReader);
-            }
+            return deserializeTableEntityQueryResponse(super.serializer().readTree(inputStream));
         } else if (inputStream != null && shouldGetEntityFieldsAsMap(type)) {
-            try (JsonReader jsonReader = JsonProviders.createReader(inputStream)) {
-                return (U) getEntityFieldsAsMap(jsonReader);
-            }
+            return (U) getEntityFieldsAsMap(super.serializer().readTree(inputStream));
         } else {
             return super.deserialize(inputStream, type, serializerEncoding);
         }
@@ -118,160 +112,82 @@ public class TablesJacksonSerializer extends JacksonAdapter {
     }
 
     private static boolean shouldGetEntityFieldsAsMap(Type type) {
-        return type instanceof ParameterizedType && ((ParameterizedType) type).getRawType() == Map.class;
+        return type instanceof ParameterizedType
+            && ((ParameterizedType) type).getRawType() == Map.class;
     }
 
     @SuppressWarnings("unchecked")
-    private static <U> U deserializeTableEntityQueryResponse(JsonReader jsonReader) throws IOException {
-        return (U) jsonReader.readObject(reader -> {
-            TableEntityQueryResponse deserializedTableEntityQueryResponse = new TableEntityQueryResponse();
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
+    private <U> U deserializeTableEntityQueryResponse(JsonNode node) throws IOException {
+        String odataMetadata = null;
+        List<Map<String, Object>> values = new ArrayList<>();
 
-                if ("odata.metadata".equals(fieldName)) {
-                    deserializedTableEntityQueryResponse.setOdataMetadata(reader.getString());
-                } else if ("value".equals(fieldName)) {
-                    deserializedTableEntityQueryResponse.setValue(
-                        reader.readArray(TablesJacksonSerializer::getEntityFieldsAsMap));
-                } else {
-                    // This is not a multiple-entity response.
-                    // TODO (alzimmer): Should this just be ignored instead of an exception?
-                    throw LOGGER.logExceptionAsError(new IllegalStateException("Unexpected response format. "
-                        + "Response containing a 'value' array must not contain other properties."));
-                }
-            }
+        for (Iterator<Map.Entry<String, JsonNode>> it = node.fields(); it.hasNext();) {
+            final Map.Entry<String, JsonNode> entry = it.next();
+            final String fieldName = entry.getKey();
+            final JsonNode childNode = entry.getValue();
 
-            return deserializedTableEntityQueryResponse;
-        });
-    }
-
-    private static Map<String, Object> getEntityFieldsAsMap(JsonReader jsonReader) throws IOException {
-        return jsonReader.readObject(reader -> {
-            Map<String, EntityInformation> rawEntityMap = new LinkedHashMap<>();
-
-            while (reader.nextToken() != JsonToken.END_OBJECT) {
-                String fieldName = reader.getFieldName();
-                reader.nextToken();
-
-                if (!TablesConstants.ODATA_METADATA_KEY.equals(fieldName)) {
-                    rawEntityMap.put(fieldName, getEntityFieldAsObject(fieldName, reader));
-                }
-            }
-
-            return processRawEntityMap(rawEntityMap);
-        });
-    }
-
-    private static Map<String, Object> processRawEntityMap(Map<String, EntityInformation> rawEntityMap)
-        throws IOException {
-        // Convert to the actual entity map with a second processing. Size the map appropriately as the size is
-        // already known.
-        Map<String, Object> entityMap = new LinkedHashMap<>((int) (rawEntityMap.size() / 0.7f));
-
-        // First process any @odata.type fields and their corresponding value fields.
-        List<String> odataTypeKeys = rawEntityMap.keySet().stream()
-            .filter(key -> key.endsWith(TablesConstants.ODATA_TYPE_KEY_SUFFIX))
-            .collect(Collectors.toList());
-
-        for (String odataTypeKey : odataTypeKeys) {
-            EntityInformation keyInformation = rawEntityMap.remove(odataTypeKey);
-
-            // From getEntityFieldAsObject it is known that these fields already have a value.
-            entityMap.put(odataTypeKey, keyInformation.value);
-
-            // Look for the corresponding value field for the @odata.type key.
-            String expectedValueField = odataTypeKey.substring(0,
-                odataTypeKey.length() - TablesConstants.ODATA_TYPE_KEY_SUFFIX.length());
-
-            EntityInformation entityInformation = rawEntityMap.remove(expectedValueField);
-            if (entityInformation != null) {
-                EntityDataModelType type = EntityDataModelType.fromString(String.valueOf(keyInformation.value));
-                Object value;
-                if (type == null) {
-                    LOGGER.warning("'{}' value has unknown OData type {}", expectedValueField,
-                        keyInformation.value);
-                    if (isJsonStruct(entityInformation.entityToken)) {
-                        try (JsonReader structReader = JsonProviders.createReader(entityInformation.rawJson)) {
-                            value = structReader.readUntyped();
-                        }
-                    } else {
-                        value = entityInformation.value;
-                    }
-                } else {
-                    try {
-                        value = type.deserialize(entityInformation.rawJson);
-                    } catch (Exception e) {
-                        throw LOGGER.logExceptionAsError(new IllegalArgumentException(String.format(
-                            "'%s' value is not a valid %s.", expectedValueField, type.getEdmType()), e));
-                    }
-                }
-
-                entityMap.put(expectedValueField, value);
-            }
-        }
-
-        // Process the remaining entity fields without checking for @odata.type
-        for (Map.Entry<String, EntityInformation> entity : rawEntityMap.entrySet()) {
-            Object value;
-            if (isJsonStruct(entity.getValue().entityToken)) {
-                try (JsonReader structReader = JsonProviders.createReader(entity.getValue().rawJson)) {
-                    value = structReader.readUntyped();
+            if (fieldName.equals(TablesConstants.ODATA_METADATA_KEY)) {
+                odataMetadata = childNode.asText();
+            } else if ("value".equals(fieldName) && childNode.isArray()) {
+                // This is a multiple-entity response.
+                for (JsonNode childEntry : childNode) {
+                    values.add(getEntityFieldsAsMap(childEntry));
                 }
             } else {
-                value = entity.getValue().value;
+                // This is not a multiple-entity response.
+                throw logger.logExceptionAsError(new IllegalStateException(
+                    "Unexpected response format. Response containing a 'value' array must not contain other properties."
+                ));
             }
-
-            entityMap.put(entity.getKey(), value);
         }
 
-        return entityMap;
+        return (U) new TableEntityQueryResponse()
+            .setOdataMetadata(odataMetadata)
+            .setValue(values);
     }
 
-    /*
-     * This function converts the entity field into a raw JSON representation that may be converted ahead of time
-     * for a few cases. Other cases are left to a secondary iteration over the map keys to handle any OData type
-     * specifications.
-     */
-    private static EntityInformation getEntityFieldAsObject(String fieldName, JsonReader jsonReader)
-        throws IOException {
-        JsonToken entityToken = jsonReader.currentToken();
+    private Map<String, Object> getEntityFieldsAsMap(JsonNode node) throws IOException {
+        Map<String, Object> result = new HashMap<>();
 
-        // Timestamp is known to be a DateTime, deserialize it as that.
-        if (TablesConstants.TIMESTAMP_KEY.equals(fieldName)) {
-            return new EntityInformation(entityToken, jsonReader.getText(),
-                EntityDataModelType.DATE_TIME.deserialize(jsonReader.getString()));
+        for (Iterator<String> it = node.fieldNames(); it.hasNext();) {
+            String fieldName = it.next();
+
+            if (!fieldName.equals(TablesConstants.ODATA_METADATA_KEY)) {
+                result.put(fieldName, getEntityFieldAsObject(node, fieldName));
+            }
         }
 
-        // Metadata and OData type keys are known to be Strings.
+        return result;
+    }
+
+    private Object getEntityFieldAsObject(JsonNode parentNode, String fieldName) throws IOException {
+        JsonNode valueNode = parentNode.get(fieldName);
+        if (TablesConstants.TIMESTAMP_KEY.equals(fieldName)) {
+            return EntityDataModelType.DATE_TIME.deserialize(valueNode.asText());
+        }
+
         if (TablesConstants.METADATA_KEYS.contains(fieldName)
             || fieldName.endsWith(TablesConstants.ODATA_TYPE_KEY_SUFFIX)) {
-            return new EntityInformation(entityToken, null, jsonReader.getString());
+            return serializer().treeToValue(valueNode, Object.class);
         }
 
-        // Otherwise read the raw JSON value for the current field and let it be handled later.
-        if (isJsonStruct(entityToken)) {
-            // JSON arrays and objects can't both read children and produce an object value.
-            return new EntityInformation(entityToken, jsonReader.readChildren(), null);
-        } else {
-            // All other tokens types can be processed multiple times, get the text and processed value.
-            return new EntityInformation(entityToken, jsonReader.getText(), jsonReader.readUntyped());
+        JsonNode typeNode = parentNode.get(fieldName + TablesConstants.ODATA_TYPE_KEY_SUFFIX);
+        if (typeNode == null) {
+            return serializer().treeToValue(valueNode, Object.class);
         }
-    }
 
-    private static boolean isJsonStruct(JsonToken jsonToken) {
-        return jsonToken == JsonToken.START_OBJECT || jsonToken == JsonToken.START_ARRAY;
-    }
+        String typeString = typeNode.asText();
+        EntityDataModelType type = EntityDataModelType.fromString(typeString);
+        if (type == null) {
+            logger.warning("'{}' value has unknown OData type {}", fieldName, typeString);
+            return serializer().treeToValue(valueNode, Object.class);
+        }
 
-    private static final class EntityInformation {
-        private final JsonToken entityToken;
-        private final String rawJson;
-        private final Object value;
-
-        EntityInformation(JsonToken entityToken, String rawJson, Object value) {
-            this.entityToken = entityToken;
-            this.rawJson = rawJson;
-            this.value = value;
+        try {
+            return type.deserialize(valueNode.asText());
+        } catch (Exception e) {
+            throw logger.logExceptionAsError(new IllegalArgumentException(String.format(
+                "'%s' value is not a valid %s.", fieldName, type.getEdmType()), e));
         }
     }
 }

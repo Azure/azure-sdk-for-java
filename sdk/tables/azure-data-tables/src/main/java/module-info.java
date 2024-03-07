@@ -4,19 +4,17 @@
 module com.azure.data.tables {
     requires transitive com.azure.core;
 
-    requires com.azure.json;
-    requires com.azure.xml;
-
-    requires java.xml;
+    requires com.fasterxml.jackson.dataformat.xml;
 
     // public API surface area
     exports com.azure.data.tables;
     exports com.azure.data.tables.models;
     exports com.azure.data.tables.sas;
 
-    opens com.azure.data.tables to com.azure.core;
-    opens com.azure.data.tables.implementation to com.azure.core;
-    opens com.azure.data.tables.implementation.models to com.azure.core;
-    opens com.azure.data.tables.models to com.azure.core;
-    opens com.azure.data.tables.sas to com.azure.core;
+    // exporting some packages specifically for Jackson
+    opens com.azure.data.tables to com.fasterxml.jackson.databind, com.azure.core;
+    opens com.azure.data.tables.implementation to com.fasterxml.jackson.databind, com.azure.core;
+    opens com.azure.data.tables.implementation.models to com.fasterxml.jackson.databind, com.azure.core;
+    opens com.azure.data.tables.models to com.fasterxml.jackson.databind, com.azure.core;
+    opens com.azure.data.tables.sas to com.fasterxml.jackson.databind, com.azure.core;
 }

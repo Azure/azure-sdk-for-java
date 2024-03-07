@@ -5,7 +5,6 @@ package com.azure.data.tables.implementation;
 
 import com.azure.core.credential.AzureNamedKeyCredential;
 import com.azure.core.http.HttpClient;
-import com.azure.core.http.HttpHeaderName;
 import com.azure.core.http.HttpHeaders;
 import com.azure.core.http.HttpPipeline;
 import com.azure.core.http.HttpPipelineBuilder;
@@ -30,7 +29,7 @@ import com.azure.data.tables.implementation.models.ResponseFormat;
 import com.azure.data.tables.implementation.models.TableProperties;
 import com.azure.data.tables.implementation.models.TableQueryResponse;
 import com.azure.data.tables.implementation.models.TableResponseProperties;
-import com.azure.data.tables.implementation.models.TableServiceJsonErrorException;
+import com.azure.data.tables.implementation.models.TableServiceErrorException;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import reactor.test.StepVerifier;
@@ -44,7 +43,6 @@ import java.util.Map;
 import static com.azure.data.tables.implementation.TablesConstants.PARTITION_KEY;
 import static com.azure.data.tables.implementation.TablesConstants.ROW_KEY;
 import static com.azure.data.tables.implementation.TablesConstants.TABLE_NAME_KEY;
-import static org.junit.jupiter.api.Assertions.assertInstanceOf;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 /**
@@ -80,7 +78,7 @@ public class AzureTableImplTest extends TestProxyTestBase {
 
         // Add Accept header so we don't get back XML.
         // Can be removed when this is fixed. https://github.com/Azure/autorest.modelerfour/issues/324
-        policies.add(new AddHeadersPolicy(new HttpHeaders().set(HttpHeaderName.ACCEPT, "application/json")));
+        policies.add(new AddHeadersPolicy(new HttpHeaders().put("Accept", "application/json")));
 
         HttpClient httpClientToUse;
         if (interceptorManager.isPlaybackMode()) {
@@ -166,7 +164,10 @@ public class AzureTableImplTest extends TestProxyTestBase {
         StepVerifier.create(azureTable.getTables().createWithResponseAsync(tableProperties, requestId,
             ResponseFormat.RETURN_NO_CONTENT, defaultQueryOptions, Context.NONE))
             .expectErrorSatisfies(error -> {
-                TableServiceJsonErrorException exception = assertInstanceOf(TableServiceJsonErrorException.class, error);
+                assertTrue(error instanceof TableServiceErrorException);
+
+                final TableServiceErrorException exception = (TableServiceErrorException) error;
+
                 assertTrue(exception.getMessage().contains(expectedErrorCode));
             })
             .verify(DEFAULT_TIMEOUT);
@@ -197,7 +198,7 @@ public class AzureTableImplTest extends TestProxyTestBase {
 
         // Act & Assert
         StepVerifier.create(azureTable.getTables().deleteWithResponseAsync(tableName, requestId, Context.NONE))
-            .expectError(TableServiceJsonErrorException.class)
+            .expectError(com.azure.data.tables.implementation.models.TableServiceErrorException.class)
             .verify(DEFAULT_TIMEOUT);
     }
 
@@ -327,7 +328,7 @@ public class AzureTableImplTest extends TestProxyTestBase {
             // This scenario is currently broken when using the CosmosDB Table API
             StepVerifier.create(azureTable.getTables().mergeEntityWithResponseAsync(tableName, partitionKeyValue,
                 rowKeyValue, TIMEOUT_IN_MS, requestId, "*", properties, null, Context.NONE))
-                .expectError(TableServiceJsonErrorException.class)
+                .expectError(com.azure.data.tables.implementation.models.TableServiceErrorException.class)
                 .verify(DEFAULT_TIMEOUT);
         } else {
             StepVerifier.create(azureTable.getTables().mergeEntityWithResponseAsync(tableName, partitionKeyValue,
@@ -351,7 +352,7 @@ public class AzureTableImplTest extends TestProxyTestBase {
         // Act & Assert
         StepVerifier.create(azureTable.getTables().mergeEntityWithResponseAsync(tableName, partitionKeyValue,
             rowKeyValue, TIMEOUT_IN_MS, requestId, "*", properties, null, Context.NONE))
-            .expectError(TableServiceJsonErrorException.class)
+            .expectError(com.azure.data.tables.implementation.models.TableServiceErrorException.class)
             .verify(DEFAULT_TIMEOUT);
     }
 
@@ -391,7 +392,7 @@ public class AzureTableImplTest extends TestProxyTestBase {
         // Act & Assert
         StepVerifier.create(azureTable.getTables().updateEntityWithResponseAsync(tableName, partitionKeyValue,
             rowKeyValue, TIMEOUT_IN_MS, requestId, "*", properties, null, Context.NONE))
-            .expectError(TableServiceJsonErrorException.class)
+            .expectError(com.azure.data.tables.implementation.models.TableServiceErrorException.class)
             .verify(DEFAULT_TIMEOUT);
     }
 
@@ -429,7 +430,7 @@ public class AzureTableImplTest extends TestProxyTestBase {
         // Act & Assert
         StepVerifier.create(azureTable.getTables().deleteEntityWithResponseAsync(tableName, partitionKeyValue,
             rowKeyValue, "*", TIMEOUT_IN_MS, requestId, null, Context.NONE))
-            .expectError(TableServiceJsonErrorException.class)
+            .expectError(com.azure.data.tables.implementation.models.TableServiceErrorException.class)
             .verify(DEFAULT_TIMEOUT);
     }
 
