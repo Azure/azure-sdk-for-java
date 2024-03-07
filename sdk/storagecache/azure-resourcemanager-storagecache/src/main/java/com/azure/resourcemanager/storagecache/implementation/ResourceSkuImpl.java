@@ -17,8 +17,8 @@ public final class ResourceSkuImpl implements ResourceSku {
 
     private final com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager;
 
-    ResourceSkuImpl(
-        ResourceSkuInner innerObject, com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
+    ResourceSkuImpl(ResourceSkuInner innerObject,
+        com.azure.resourcemanager.storagecache.StorageCacheManager serviceManager) {
         this.innerObject = innerObject;
         this.serviceManager = serviceManager;
     }

@@ -75,7 +75,7 @@ add the direct dependency to your project as follows.
 <dependency>
     <groupId>com.azure</groupId>
     <artifactId>azure-search-documents</artifactId>
-    <version>11.6.0</version>
+    <version>11.6.2</version>
 </dependency>
 ```
 [//]: # ({x-version-update-end})
@@ -329,8 +329,10 @@ for (SearchResult searchResult : SEARCH_CLIENT.search("luxury")) {
 Define a `Hotel` class.
 
 ```java readme-sample-hotelclass
-public class Hotel {
+public static class Hotel {
+    @SimpleField(isKey = true, isFilterable = true, isSortable = true)
     private String id;
+    @SearchableField(isFilterable = true, isSortable = true)
     private String name;
 
     public String getId() {

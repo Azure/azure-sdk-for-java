@@ -14,11 +14,13 @@ import com.azure.core.util.polling.SyncPoller;
 import com.azure.resourcemanager.playwrighttesting.fluent.models.AccountInner;
 import com.azure.resourcemanager.playwrighttesting.models.AccountUpdate;
 
-/** An instance of this class provides access to all the operations defined in AccountsClient. */
+/**
+ * An instance of this class provides access to all the operations defined in AccountsClient.
+ */
 public interface AccountsClient {
     /**
      * List Account resources by subscription ID.
-     *
+     * 
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      * @return the response of a Account list operation as paginated response with {@link PagedIterable}.
@@ -28,7 +30,7 @@ public interface AccountsClient {
 
     /**
      * List Account resources by subscription ID.
-     *
+     * 
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -40,7 +42,7 @@ public interface AccountsClient {
 
     /**
      * List Account resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws com.azure.core.management.exception.ManagementException thrown if the request is rejected by server.
@@ -52,7 +54,7 @@ public interface AccountsClient {
 
     /**
      * List Account resources by resource group.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param context The context to associate with this operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -65,7 +67,7 @@ public interface AccountsClient {
 
     /**
      * Get a Account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of account.
      * @param context The context to associate with this operation.
@@ -79,7 +81,7 @@ public interface AccountsClient {
 
     /**
      * Get a Account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -92,7 +94,7 @@ public interface AccountsClient {
 
     /**
      * Create a Account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of account.
      * @param resource Resource create parameters.
@@ -102,12 +104,12 @@ public interface AccountsClient {
      * @return the {@link SyncPoller} for polling of an account resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AccountInner>, AccountInner> beginCreateOrUpdate(
-        String resourceGroupName, String name, AccountInner resource);
+    SyncPoller<PollResult<AccountInner>, AccountInner> beginCreateOrUpdate(String resourceGroupName, String name,
+        AccountInner resource);
 
     /**
      * Create a Account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of account.
      * @param resource Resource create parameters.
@@ -118,12 +120,12 @@ public interface AccountsClient {
      * @return the {@link SyncPoller} for polling of an account resource.
      */
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    SyncPoller<PollResult<AccountInner>, AccountInner> beginCreateOrUpdate(
-        String resourceGroupName, String name, AccountInner resource, Context context);
+    SyncPoller<PollResult<AccountInner>, AccountInner> beginCreateOrUpdate(String resourceGroupName, String name,
+        AccountInner resource, Context context);
 
     /**
      * Create a Account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of account.
      * @param resource Resource create parameters.
@@ -137,7 +139,7 @@ public interface AccountsClient {
 
     /**
      * Create a Account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of account.
      * @param resource Resource create parameters.
@@ -152,7 +154,7 @@ public interface AccountsClient {
 
     /**
      * Update a Account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of account.
      * @param properties The resource properties to be updated.
@@ -163,12 +165,12 @@ public interface AccountsClient {
      * @return an account resource along with {@link Response}.
      */
     @ServiceMethod(returns = ReturnType.SINGLE)
-    Response<AccountInner> updateWithResponse(
-        String resourceGroupName, String name, AccountUpdate properties, Context context);
+    Response<AccountInner> updateWithResponse(String resourceGroupName, String name, AccountUpdate properties,
+        Context context);
 
     /**
      * Update a Account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of account.
      * @param properties The resource properties to be updated.
@@ -182,7 +184,7 @@ public interface AccountsClient {
 
     /**
      * Delete a Account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -195,7 +197,7 @@ public interface AccountsClient {
 
     /**
      * Delete a Account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of account.
      * @param context The context to associate with this operation.
@@ -209,7 +211,7 @@ public interface AccountsClient {
 
     /**
      * Delete a Account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of account.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
@@ -221,7 +223,7 @@ public interface AccountsClient {
 
     /**
      * Delete a Account.
-     *
+     * 
      * @param resourceGroupName The name of the resource group. The name is case insensitive.
      * @param name Name of account.
      * @param context The context to associate with this operation.

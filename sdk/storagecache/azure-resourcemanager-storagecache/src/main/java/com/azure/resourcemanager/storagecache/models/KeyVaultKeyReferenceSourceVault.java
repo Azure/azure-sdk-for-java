@@ -7,7 +7,9 @@ package com.azure.resourcemanager.storagecache.models;
 import com.azure.core.annotation.Fluent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-/** Describes a resource Id to source key vault. */
+/**
+ * Describes a resource Id to source key vault.
+ */
 @Fluent
 public final class KeyVaultKeyReferenceSourceVault {
     /*
@@ -16,13 +18,15 @@ public final class KeyVaultKeyReferenceSourceVault {
     @JsonProperty(value = "id")
     private String id;
 
-    /** Creates an instance of KeyVaultKeyReferenceSourceVault class. */
+    /**
+     * Creates an instance of KeyVaultKeyReferenceSourceVault class.
+     */
     public KeyVaultKeyReferenceSourceVault() {
     }
 
     /**
      * Get the id property: Resource Id.
-     *
+     * 
      * @return the id value.
      */
     public String id() {
@@ -31,7 +35,7 @@ public final class KeyVaultKeyReferenceSourceVault {
 
     /**
      * Set the id property: Resource Id.
-     *
+     * 
      * @param id the id value to set.
      * @return the KeyVaultKeyReferenceSourceVault object itself.
      */
@@ -42,7 +46,7 @@ public final class KeyVaultKeyReferenceSourceVault {
 
     /**
      * Validates the instance.
-     *
+     * 
      * @throws IllegalArgumentException thrown if the instance is not valid.
      */
     public void validate() {

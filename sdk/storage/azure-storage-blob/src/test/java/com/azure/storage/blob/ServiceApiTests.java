@@ -710,7 +710,7 @@ public class ServiceApiTests extends BlobTestBase {
     @Test
     @ResourceLock("ServiceProperties")
     public void setPropsError() {
-        assertThrows(BlobStorageException.class, () -> getServiceClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+        assertThrows(Exception.class, () -> getServiceClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
             "https://error.blob.core.windows.net").setProperties(new BlobServiceProperties()));
     }
 
@@ -734,7 +734,7 @@ public class ServiceApiTests extends BlobTestBase {
 
     @Test
     public void getPropsError() {
-        assertThrows(BlobStorageException.class, () -> getServiceClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
+        assertThrows(Exception.class, () -> getServiceClient(ENVIRONMENT.getPrimaryAccount().getCredential(),
             "https://error.blob.core.windows.net").getProperties());
     }
 

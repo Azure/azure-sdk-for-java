@@ -64,7 +64,7 @@ Licensed under the MIT License.
     <dependency>
       <groupId>com.azure</groupId>
       <artifactId>azure-cosmos</artifactId>
-      <version>4.56.0</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
+      <version>4.57.0-beta.1</version> <!-- {x-version-update;com.azure:azure-cosmos;current} -->
     </dependency>
 
     <!-- Added this provided dependency to include necessary annotations used by "reactor-core".
@@ -173,7 +173,24 @@ Licensed under the MIT License.
       <version>1.14.8</version> <!-- {x-version-update;testdep_net.bytebuddy:byte-buddy-agent;external_dependency} -->
       <scope>test</scope>
     </dependency>
-
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>testcontainers</artifactId>
+      <version>1.19.5</version> <!-- {x-version-update;cosmos_org.testcontainers:testcontainers;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.testcontainers</groupId>
+      <artifactId>kafka</artifactId>
+      <version>1.19.5</version> <!-- {x-version-update;cosmos_org.testcontainers:kafka;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.sourcelab</groupId>
+      <artifactId>kafka-connect-client</artifactId>
+      <version>4.0.4</version> <!-- {x-version-update;cosmos_org.sourcelab:kafka-connect-client;external_dependency} -->
+      <scope>test</scope>
+    </dependency>
   </dependencies>
 
   <build>
@@ -193,7 +210,7 @@ Licensed under the MIT License.
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-surefire-plugin</artifactId>
-        <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+        <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
         <configuration>
           <groups>unit</groups>
           <includes>
@@ -218,6 +235,7 @@ Licensed under the MIT License.
                 <include>com.azure:*</include>
                 <include>org.apache.kafka:connect-api:[3.6.0]</include> <!-- {x-include-update;cosmos_org.apache.kafka:connect-api;external_dependency} -->
                 <include>io.confluent:kafka-connect-maven-plugin:[0.12.0]</include> <!-- {x-include-update;cosmos_io.confluent:kafka-connect-maven-plugin;external_dependency} -->
+                <include>org.sourcelab:kafka-connect-client:[4.0.4]</include> <!-- {x-include-update;cosmos_org.sourcelab:kafka-connect-client;external_dependency} -->
               </includes>
             </bannedDependencies>
           </rules>
@@ -429,7 +447,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-surefire-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
+            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-surefire-plugin;external_dependency} -->
             <configuration>
             </configuration>
           </plugin>
@@ -447,7 +465,7 @@ Licensed under the MIT License.
           <plugin>
             <groupId>org.apache.maven.plugins</groupId>
             <artifactId>maven-failsafe-plugin</artifactId>
-            <version>3.1.0</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
+            <version>3.2.5</version> <!-- {x-version-update;org.apache.maven.plugins:maven-failsafe-plugin;external_dependency} -->
             <configuration>
               <suiteXmlFiles>
                 <suiteXmlFile>src/test/resources/kafka-testng.xml</suiteXmlFile>

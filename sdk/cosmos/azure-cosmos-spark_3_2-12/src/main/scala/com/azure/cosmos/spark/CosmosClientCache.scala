@@ -509,6 +509,8 @@ private[spark] object CosmosClientCache extends BasicLoggingTrait {
       logDebug("Returned client to the pool = remaining active clients - Count: " +
         s"$remainingActiveClients, Spark contexts: ${ref.owners.keys.mkString(", ")}")
     }
+
+    override def getRefCount: Long = ref.refCount.get()
   }
 
   private[this] class ApplicationEndListener(val ctx: SparkContext)

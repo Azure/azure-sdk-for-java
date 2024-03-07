@@ -36,7 +36,7 @@ stages:
       PreSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
       TestGoals: 'verify'
-      TestOptions: '$(ProfileFlag) $(AdditionalArgs)'
+      TestOptions: '$(ProfileFlag) $(AdditionalArgs) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
       TestResultsFiles: '**/junitreports/TEST-*.xml'
 
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
@@ -62,8 +62,8 @@ stages:
       TimeoutInMinutes: 90
       PreSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-      TestGoals: 'clean verify'
-      TestOptions: '$(ProfileFlag)'
+      TestGoals: 'verify'
+      TestOptions: '$(ProfileFlag) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'
 
   - template: /eng/pipelines/templates/stages/archetype-sdk-tests.yml
     parameters:
@@ -88,5 +88,5 @@ stages:
       TimeoutInMinutes: 120
       PreSteps:
         - template: /eng/pipelines/templates/steps/install-reporting-tools.yml
-      TestGoals: 'clean verify'
-      TestOptions: '$(ProfileFlag)'
+      TestGoals: 'verify'
+      TestOptions: '$(ProfileFlag) -DskipCompile=true -DskipTestCompile=true -DcreateSourcesJar=false'

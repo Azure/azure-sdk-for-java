@@ -18,8 +18,33 @@ import static com.azure.core.util.polling.PollingUtil.validateTimeout;
 /**
  * Simple implementation of {@link SyncPoller}.
  *
+ * <p>This class provides a simple implementation of the {@link SyncPoller} interface for long-running operations.
+ * It provides synchronous polling with a regular interval.</p>
+ *
+ * <p>Long-running operations are operations such as the creation or deletion of a resource, which take a significant
+ * amount of time to complete. These operations are typically handled asynchronously, with the client initiating the
+ * operation and then polling the service at intervals to determine whether the operation has completed.</p>
+ *
+ * <p><strong>Code Sample: Using a SimpleSyncPoller to poll until the operation is successfully completed</strong></p>
+ *
+ * <!-- src_embed com.azure.core.util.polling.simpleSyncPoller.instantiationAndPoll -->
+ * <pre>
+ * LongRunningOperationStatus operationStatus = syncPoller.poll&#40;&#41;.getStatus&#40;&#41;;
+ * while &#40;operationStatus != LongRunningOperationStatus.SUCCESSFULLY_COMPLETED&#41; &#123;
+ *     System.out.println&#40;&quot;Polling status: &quot; + operationStatus.toString&#40;&#41;&#41;;
+ *     System.out.println&#40;&quot;Polling response: &quot; + operationStatus.toString&#40;&#41;&#41;;
+ *     operationStatus = syncPoller.poll&#40;&#41;.getStatus&#40;&#41;;
+ * &#125;
+ * </pre>
+ * <!-- end com.azure.core.util.polling.simpleSyncPoller.instantiationAndPoll -->
+ *
  * @param <T> The type of poll response value
- * @param <U> The type of the final result of the long-running operation
+ * @param <U> The type of the final result of the long running operation
+ *
+ * @see com.azure.core.util.polling
+ * @see SyncPoller
+ * @see PollResponse
+ * @see LongRunningOperationStatus
  */
 final class SimpleSyncPoller<T, U> implements SyncPoller<T, U> {
     private static final ClientLogger LOGGER = new ClientLogger(SimpleSyncPoller.class);

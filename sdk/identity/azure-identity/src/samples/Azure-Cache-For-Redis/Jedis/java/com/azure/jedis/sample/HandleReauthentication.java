@@ -20,7 +20,7 @@ public class HandleReauthentication {
 
         // Fetch a Microsoft Entra token to be used for authentication. This token will be used as the password.
         // Note: The Scopes parameter will change as the Microsoft Entra authentication support hits public preview and eventually GA's.
-        TokenRequestContext trc = new TokenRequestContext().addScopes("acca5fbb-b7e4-4009-81f1-37e38fd66d78/.default");
+        TokenRequestContext trc = new TokenRequestContext().addScopes("https://redis.azure.com/.default");
         AccessToken accessToken = getAccessToken(defaultAzureCredential, trc);
 
         // SSL connection is required.
