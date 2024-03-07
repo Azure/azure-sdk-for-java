@@ -64,28 +64,6 @@ public class RestProxyImpl extends RestProxyBase {
             request.setBody(RestProxyUtils.validateLength(request));
         }
 
-        if (options == null || options.getResponseBodyDeserializationCallback() == null) {
-            request.setResponseBodyDeserializationCallback((response) -> {
-                Type bodyType = methodParser.getReturnType();
-
-                if (TypeUtil.isTypeOrSubTypeOf(bodyType, Response.class)) {
-                    if (TypeUtil.isTypeOrSubTypeOf(bodyType, Void.class)) {
-                        if (response.getBody().toBytes().length == 0) {
-                            return null;
-                        } else {
-                            return response.getBody();
-                        }
-                    } else {
-                        bodyType = TypeUtil.getRestResponseBodyType(methodParser.getReturnType());
-                    }
-                }
-
-                return handleBodyReturnType(response, methodParser, bodyType);
-            });
-        } else {
-            request.setResponseBodyDeserializationCallback(options.getResponseBodyDeserializationCallback());
-        }
-
         final Response<?> response = send(request);
 
         try {
@@ -129,8 +107,8 @@ public class RestProxyImpl extends RestProxyBase {
                 response, null, null);
         } else {
             // Create an exception response containing the decoded response body.
-            throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode),
-                response, responseBytes, response.getValue());
+            throw instantiateUnexpectedException(methodParser.getUnexpectedException(responseStatusCode), response,
+                responseBytes, decodeByteArray(response.getBody().toBytes(), response, serializer, methodParser));
         }
     }
 
@@ -197,14 +175,7 @@ public class RestProxyImpl extends RestProxyBase {
             // fully copied into memory resulting in lesser overall memory usage.
             result = response.getBody();
         } else {
-            if (methodParser.isResponseBodyIgnored()) {
-                result = null;
-            } else if (methodParser.isResponseEagerlyRead()) {
-                // This triggers the Response's deserialization callback.
-                result = decodeByteArray(response.getBody().toBytes(), response, serializer, methodParser);
-            } else {
-                result = null;
-            }
+            result = decodeByteArray(response.getBody().toBytes(), response, serializer, methodParser);
         }
 
         return result;

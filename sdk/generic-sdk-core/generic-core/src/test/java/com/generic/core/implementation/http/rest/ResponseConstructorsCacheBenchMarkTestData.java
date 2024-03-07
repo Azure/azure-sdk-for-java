@@ -9,7 +9,6 @@ import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
 import com.generic.core.http.models.HttpResponse;
 import com.generic.core.implementation.http.serializer.DefaultJsonSerializer;
-import com.generic.core.implementation.http.serializer.HttpResponseDecodeData;
 import com.generic.core.implementation.util.UrlBuilder;
 import com.generic.core.models.HeaderName;
 import com.generic.core.models.Headers;
@@ -22,8 +21,6 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.Arrays;
 import java.util.Optional;
-
-import static com.generic.core.implementation.http.serializer.HttpResponseBodyDecoder.decodeByteArray;
 
 class ResponseConstructorsCacheBenchMarkTestData {
     // Model type for Http content
@@ -79,19 +76,19 @@ class ResponseConstructorsCacheBenchMarkTestData {
     private static final int RESPONSE_STATUS_CODE = 200;
     private static final Foo FOO = new Foo().setName("foo1");
     private static final byte[] FOO_BYTE_ARRAY = asJsonByteArray(FOO);
-    private static final Type voidType = findMethod(FooService.class, "getVoidResponse").getGenericReturnType();
-    private static final Type fooType = findMethod(FooService.class, "getFooSimpleResponse").getGenericReturnType();
     // MOCK RESPONSES
-    private static final Response<?> VOID_RESPONSE = prepareMockResponse(HTTP_REQUEST.copy(), voidType, null);
-    private static final Response<?> FOO_RESPONSE = prepareMockResponse(HTTP_REQUEST.copy(), fooType, FOO_BYTE_ARRAY);
+    private static final Response<?> VOID_RESPONSE = new MockHttpResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
+        RESPONSE_HEADERS, null);
+    private static final Response<?> FOO_RESPONSE = new MockHttpResponse(HTTP_REQUEST, RESPONSE_STATUS_CODE,
+        RESPONSE_HEADERS, FOO_BYTE_ARRAY);
 
     // ARRAY HOLDING TEST DATA
     private final Input[] inputs;
 
     ResponseConstructorsCacheBenchMarkTestData() {
         this.inputs = new Input[2];
-        this.inputs[0] = new Input(VOID_RESPONSE, voidType, null);
-        this.inputs[1] = new Input(FOO_RESPONSE, fooType, FOO);
+        this.inputs[0] = new Input(FooService.class, "getVoidResponse", VOID_RESPONSE, null);
+        this.inputs[1] = new Input(FooService.class, "getFooSimpleResponse", FOO_RESPONSE, FOO);
     }
 
     Input[] inputs() {
@@ -119,8 +116,8 @@ class ResponseConstructorsCacheBenchMarkTestData {
         private final Response<?> response;
         private final Object bodyAsObject;
 
-        Input(Response<?> response, Type returnType, Object bodyAsObject) {
-            this.returnType = returnType;
+        Input(Class<?> serviceClass, String methodName, Response<?> response, Object bodyAsObject) {
+            this.returnType = findMethod(serviceClass, methodName).getGenericReturnType();
             this.response = response;
             this.bodyAsObject = bodyAsObject;
         }
@@ -148,27 +145,5 @@ class ResponseConstructorsCacheBenchMarkTestData {
         } else {
             throw new RuntimeException("Method with name '" + methodName + "' not found.");
         }
-    }
-
-    private static MockHttpResponse prepareMockResponse(HttpRequest request, Type returnType, byte[] bodyBytes) {
-        request.setResponseBodyDeserializationCallback((response) ->
-            decodeByteArray(response.getBody().toBytes(), response, SERIALIZER, new HttpResponseDecodeData() {
-                @Override
-                public Type getReturnType() {
-                    return returnType;
-                }
-
-                @Override
-                public boolean isExpectedResponseStatusCode(int statusCode) {
-                    return false;
-                }
-
-                @Override
-                public boolean isHeadersEagerlyConverted() {
-                    return false;
-                }
-            }));
-
-        return new MockHttpResponse(request, RESPONSE_STATUS_CODE, RESPONSE_HEADERS, bodyBytes);
     }
 }

@@ -3,7 +3,6 @@
 
 package com.generic.core.http.models;
 
-import com.generic.core.http.Response;
 import com.generic.core.http.annotation.QueryParam;
 import com.generic.core.implementation.http.rest.ErrorOptions;
 import com.generic.core.implementation.http.rest.UrlEscapers;
@@ -15,7 +14,6 @@ import com.generic.core.util.ClientLogger;
 import java.util.EnumSet;
 import java.util.Objects;
 import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * This class contains the options to customize an HTTP request. {@link RequestOptions} can be used to configure the
@@ -124,8 +122,6 @@ public final class RequestOptions {
     };
     private EnumSet<ErrorOptions> errorOptions = DEFAULT;
     private Context context;
-
-    private Function<Response<?>, ?> deserializationCallback;
 
     /**
      * Creates a new instance of {@link RequestOptions}.
@@ -303,30 +299,6 @@ public final class RequestOptions {
      */
     public RequestOptions setContext(Context context) {
         this.context = context;
-
-        return this;
-    }
-
-    /**
-     * Get the {@link Function} that will handle deserialization for the body in the {@link Response} generated for
-     * the {@link HttpRequest request}.
-     *
-     * @return The {@link Function} that will handle the {@link Response} body's deserialization.
-     */
-    public Function<Response<?>, ?> getResponseBodyDeserializationCallback() {
-        return deserializationCallback;
-    }
-
-    /**
-     * Set a {@link Function} that will handle deserialization for the body in the {@link Response} generated for the
-     * {@link HttpRequest request}.
-     *
-     * @param deserializationCallback The {@link Function} that will handle the {@link Response} body's deserialization.
-     *
-     * @return The updated {@link RequestOptions}.
-     */
-    public RequestOptions setResponseBodyDeserializationCallback(Function<Response<?>, ?> deserializationCallback) {
-        this.deserializationCallback = deserializationCallback;
 
         return this;
     }

@@ -8,7 +8,6 @@ import com.generic.core.models.BinaryData;
 import com.generic.core.models.Headers;
 
 import java.io.Closeable;
-import java.util.function.Function;
 
 /**
  * The response of an {@link HttpRequest}.
@@ -16,12 +15,10 @@ import java.util.function.Function;
 public class HttpResponse<T> implements Response<T>, Closeable {
     protected static final BinaryData EMPTY_BODY = BinaryData.fromBytes(new byte[0]);
 
-    private final Function<Response<?>, ?> deserializationCallback;
     private final Headers headers;
     private final HttpRequest request;
     private final int statusCode;
 
-    private boolean isBodyDeserialized = false;
     private BinaryData body;
     private T value;
 
@@ -38,9 +35,6 @@ public class HttpResponse<T> implements Response<T>, Closeable {
         this.statusCode = statusCode;
         this.headers = headers;
         this.value = value;
-        this.deserializationCallback = request == null
-            ? (response -> this.value)
-            : request.getResponseBodyDeserializationCallback();
     }
 
     /**
@@ -63,10 +57,6 @@ public class HttpResponse<T> implements Response<T>, Closeable {
         } else {
             this.value = (T) value;
         }
-
-        this.deserializationCallback = request == null
-            ? (response -> this.value)
-            : request.getResponseBodyDeserializationCallback();
     }
 
     /**
@@ -101,13 +91,7 @@ public class HttpResponse<T> implements Response<T>, Closeable {
      *
      * @return The value of this response.
      */
-    @SuppressWarnings("unchecked")
     public T getValue() {
-        if (!isBodyDeserialized) {
-            value = (T) deserializationCallback.apply(this);
-            isBodyDeserialized = true;
-        }
-
         return value;
     }
 
@@ -128,5 +112,17 @@ public class HttpResponse<T> implements Response<T>, Closeable {
         }
 
         return body;
+    }
+
+    /**
+     * Sets the decoded body of this response as its value.
+     *
+     * @param decodedBody The decoded body.
+     */
+    @SuppressWarnings("unchecked")
+    public HttpResponse<T> setDecodedBody(Object decodedBody) {
+        this.value = (T) decodedBody;
+
+        return this;
     }
 }

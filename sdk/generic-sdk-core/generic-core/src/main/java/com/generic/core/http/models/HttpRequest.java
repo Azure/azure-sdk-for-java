@@ -4,7 +4,6 @@
 package com.generic.core.http.models;
 
 import com.generic.core.annotation.Metadata;
-import com.generic.core.http.Response;
 import com.generic.core.models.BinaryData;
 import com.generic.core.models.Header;
 import com.generic.core.models.HeaderName;
@@ -13,7 +12,6 @@ import com.generic.core.util.ClientLogger;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.function.Function;
 
 import static com.generic.core.annotation.TypeConditions.FLUENT;
 
@@ -32,7 +30,6 @@ public class HttpRequest {
     private BinaryData body;
     private HttpRequestMetadata metadata;
     private ServerSentEventListener serverSentEventListener;
-    private Function<Response<?>, ?> deserializationCallback;
 
     /**
      * Create a new HttpRequest instance.
@@ -233,30 +230,6 @@ public class HttpRequest {
      */
     public HttpRequest setServerSentEventListener(ServerSentEventListener serverSentEventListener) {
         this.serverSentEventListener = serverSentEventListener;
-
-        return this;
-    }
-
-    /**
-     * Get the {@link Function} that will handle deserialization for the body in the {@link Response} generated for
-     * this {@link HttpRequest request}.
-     *
-     * @return The {@link Function} that will handle the {@link Response} body's deserialization.
-     */
-    public Function<Response<?>, ?> getResponseBodyDeserializationCallback() {
-        return deserializationCallback;
-    }
-
-    /**
-     * Set a {@link Function} that will handle deserialization for the body in the {@link Response} generated for this
-     * {@link HttpRequest request}.
-     *
-     * @param deserializationCallback The {@link Function} that will handle the {@link Response} body's deserialization.
-     *
-     * @return The updated {@link HttpRequest}.
-     */
-    public HttpRequest setResponseBodyDeserializationCallback(Function<Response<?>, ?> deserializationCallback) {
-        this.deserializationCallback = deserializationCallback;
 
         return this;
     }

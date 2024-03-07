@@ -7,6 +7,7 @@ import com.generic.core.http.Response;
 import com.generic.core.http.exception.HttpExceptionType;
 import com.generic.core.http.exception.HttpResponseException;
 import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.implementation.ReflectionSerializable;
@@ -97,7 +98,7 @@ public abstract class RestProxyBase {
         // Response or rely on reflection to create an appropriate Response subtype.
         if (clazz.equals(Response.class)) {
             // Return the Response.
-            return response;
+            return ((HttpResponse<?>) response).setDecodedBody(bodyAsObject);
         } else {
             // Otherwise, rely on reflection, for now, to get the best constructor to use to create the Response
             // subtype.
