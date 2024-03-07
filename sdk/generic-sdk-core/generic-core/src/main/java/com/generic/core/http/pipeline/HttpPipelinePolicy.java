@@ -3,8 +3,8 @@
 
 package com.generic.core.http.pipeline;
 
-import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.HttpResponse;
 
 /**
  * A policy within the {@link HttpPipeline}.
@@ -21,5 +21,5 @@ public interface HttpPipelinePolicy {
      *
      * @return A publisher that initiates the request upon subscription and emits a response on completion.
      */
-    Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next);
+    HttpResponse<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next);
 }

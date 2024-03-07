@@ -7,6 +7,7 @@ import com.generic.core.http.Response;
 import com.generic.core.http.annotation.HttpRequestInformation;
 import com.generic.core.http.exception.HttpResponseException;
 import com.generic.core.http.models.HttpMethod;
+import com.generic.core.http.models.HttpResponse;
 import com.generic.core.implementation.TypeUtil;
 import com.generic.core.implementation.util.Base64Url;
 import com.generic.core.implementation.util.DateTimeRfc1123;
@@ -26,39 +27,39 @@ import java.util.Objects;
 import java.util.Set;
 
 /**
- * Decoder to decode the body of a {@link Response}.
+ * Decoder to decode the body of an {@link HttpResponse}.
  */
 public final class HttpResponseBodyDecoder {
     // HttpResponseBodyDecoder is a commonly used class, use a static logger.
     private static final ClientLogger LOGGER = new ClientLogger(HttpResponseBodyDecoder.class);
 
     /**
-     * Decodes the body of an {@link Response} into the type returned by the called API.
+     * Decodes the body of an {@link HttpResponse} into the type returned by the called API.
      *
      * <p>If the response body cannot be decoded, null will be returned.</p>
      *
-     * @param body The response body retrieved from the {@link Response} to decode.
-     * @param response The {@link Response}.
+     * @param body The response body retrieved from the {@link HttpResponse} to decode.
+     * @param httpResponse The {@link HttpResponse}.
      * @param serializer The {@link ObjectSerializer} that performs the decoding.
-     * @param decodeData The API method metadata used during decoding of the {@link Response response}.
+     * @param decodeData The API method metadata used during decoding of the {@link HttpResponse response}.
      *
-     * @return The decoded {@link Response response} body, or {@code null} if the body could not be decoded.
+     * @return The decoded {@link HttpResponse response} body, or {@code null} if the body could not be decoded.
      *
      * @throws HttpResponseException If the body cannot be decoded.
      */
-    public static Object decodeByteArray(byte[] body, Response<?> response, ObjectSerializer serializer,
+    public static Object decodeByteArray(byte[] body, HttpResponse<?> httpResponse, ObjectSerializer serializer,
                                          HttpResponseDecodeData decodeData) {
-        ensureRequestSet(response);
+        ensureRequestSet(httpResponse);
 
         // Check for the HEAD HTTP method first as it's possible for the underlying HttpClient to treat a non-existent
         // response body as an empty byte array.
-        if (response.getRequest().getHttpMethod() == HttpMethod.HEAD) {
+        if (httpResponse.getRequest().getHttpMethod() == HttpMethod.HEAD) {
             // RFC: A response to a HEAD method should not have a body. If so, it must be ignored.
             return null;
-        } else if (isErrorStatus(response.getStatusCode(), decodeData)) {
+        } else if (isErrorStatus(httpResponse.getStatusCode(), decodeData)) {
             try {
                 return deserializeBody(body, decodeData.getUnexpectedException(
-                    response.getStatusCode()).getExceptionBodyClass(), null, serializer);
+                    httpResponse.getStatusCode()).getExceptionBodyClass(), null, serializer);
             } catch (RuntimeException e) {
                 Throwable cause = e.getCause();
 
@@ -84,15 +85,15 @@ public final class HttpResponseBodyDecoder {
                 return null;
             }
 
-            byte[] bodyAsByteArray = body == null ? response.getBody().toBytes() : body;
+            byte[] bodyAsByteArray = body == null ? httpResponse.getBody().toBytes() : body;
 
             try {
                 return deserializeBody(bodyAsByteArray, extractEntityTypeFromReturnType(decodeData),
                     decodeData.getReturnValueWireType(), serializer);
             } catch (MalformedValueException e) {
-                throw new HttpResponseException("HTTP response has a malformed body.", response, null, e);
+                throw new HttpResponseException("HTTP response has a malformed body.", httpResponse, null, e);
             } catch (UncheckedIOException e) {
-                throw new HttpResponseException("Deserialization failed.", response, null, e);
+                throw new HttpResponseException("Deserialization failed.", httpResponse, null, e);
             }
         }
     }
@@ -100,28 +101,28 @@ public final class HttpResponseBodyDecoder {
     /**
      * @return The decoded type used to decode the response body, null if the body is not decodable.
      */
-    public static Type decodedType(final Response<?> response, final HttpResponseDecodeData decodeData) {
-        ensureRequestSet(response);
+    public static Type decodedType(final HttpResponse<?> httpResponse, final HttpResponseDecodeData decodeData) {
+        ensureRequestSet(httpResponse);
 
-        if (response.getRequest().getHttpMethod() == HttpMethod.HEAD) {
+        if (httpResponse.getRequest().getHttpMethod() == HttpMethod.HEAD) {
             // RFC: A response to a HEAD method should not have a body. If so, it must be ignored
             return null;
-        } else if (isErrorStatus(response.getStatusCode(), decodeData)) {
+        } else if (isErrorStatus(httpResponse.getStatusCode(), decodeData)) {
             // For error cases we always try to decode the non-empty response body either to a strongly typed exception
             // model or to Object.
-            return decodeData.getUnexpectedException(response.getStatusCode()).getExceptionBodyClass();
+            return decodeData.getUnexpectedException(httpResponse.getStatusCode()).getExceptionBodyClass();
         } else {
             return decodeData.isReturnTypeDecodable() ? extractEntityTypeFromReturnType(decodeData) : null;
         }
     }
 
     /**
-     * Checks the {@link Response} status code is considered as error.
+     * Checks the {@link HttpResponse response} status code is considered as error.
      *
      * @param statusCode The status code from the response.
      * @param decodeData Metadata about the API response.
      *
-     * @return {@code true} if the {@link Response} status code is considered as error, {@code false}
+     * @return {@code true} if the {@link HttpResponse response} status code is considered as error, {@code false}
      * otherwise.
      */
     static boolean isErrorStatus(int statusCode, HttpResponseDecodeData decodeData) {
@@ -273,13 +274,13 @@ public final class HttpResponseBodyDecoder {
     }
 
     /**
-     * Ensure that the request property and method are set in the {@link Response}.
+     * Ensure that the request property and method are set in the {@link HttpResponse}.
      *
-     * @param response The {@link Response} to validate.
+     * @param httpResponse The {@link HttpResponse response} to validate.
      */
-    private static void ensureRequestSet(Response<?> response) {
-        Objects.requireNonNull(response.getRequest());
-        Objects.requireNonNull(response.getRequest().getHttpMethod());
+    private static void ensureRequestSet(HttpResponse<?> httpResponse) {
+        Objects.requireNonNull(httpResponse.getRequest());
+        Objects.requireNonNull(httpResponse.getRequest().getHttpMethod());
     }
 }
 

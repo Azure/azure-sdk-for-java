@@ -77,7 +77,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     }
 
     @Override
-    public Response<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
+    public HttpResponse<?> process(HttpRequest httpRequest, HttpPipelineNextPolicy next) {
         // No logging will be performed, trigger a no-op.
         if (httpLogDetailLevel == HttpLogOptions.HttpLogDetailLevel.NONE) {
             return next.process();
@@ -88,7 +88,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
         requestLogger.logRequest(logger, httpRequest);
         try {
-            Response<?> response = next.process();
+            HttpResponse<?> response = next.process();
 
             if (response != null) {
                 response = responseLogger.logResponse(logger, response, Duration.ofNanos(System.nanoTime() - startNs));
@@ -174,14 +174,14 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
 
 
     private final class DefaultHttpResponseLogger implements HttpResponseLogger {
-        private void logHeaders(ClientLogger logger, Response<?> response,
+        private void logHeaders(ClientLogger logger, HttpResponse<?> response,
                                 ClientLogger.LoggingEventBuilder logBuilder) {
             if (httpLogDetailLevel.shouldLogHeaders() && logger.canLogAtLevel(ClientLogger.LogLevel.INFORMATIONAL)) {
                 addHeadersToLogMessage(allowedHeaderNames, response.getHeaders(), logBuilder);
             }
         }
 
-        private void logUrl(Response<?> response, Duration duration, ClientLogger.LoggingEventBuilder logBuilder) {
+        private void logUrl(HttpResponse<?> response, Duration duration, ClientLogger.LoggingEventBuilder logBuilder) {
             if (httpLogDetailLevel.shouldLogUrl()) {
                 logBuilder
                     .addKeyValue(LoggingKeys.STATUS_CODE_KEY, response.getStatusCode())
@@ -191,7 +191,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
             }
         }
 
-        private void logContentLength(Response<?> response, ClientLogger.LoggingEventBuilder logBuilder) {
+        private void logContentLength(HttpResponse<?> response, ClientLogger.LoggingEventBuilder logBuilder) {
             String contentLengthString = response.getHeaders().getValue(HeaderName.CONTENT_LENGTH);
 
             if (!CoreUtils.isNullOrEmpty(contentLengthString)) {
@@ -200,7 +200,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
         }
 
         @Override
-        public Response<?> logResponse(ClientLogger logger, Response<?> response, Duration duration) {
+        public HttpResponse<?> logResponse(ClientLogger logger, HttpResponse<?> response, Duration duration) {
             final ClientLogger.LogLevel logLevel = getLogLevel(response);
 
             if (!logger.canLogAtLevel(logLevel)) {
@@ -367,7 +367,7 @@ public class HttpLoggingPolicy implements HttpPipelinePolicy {
     private static final class LoggingHttpResponse<T> extends HttpResponse<T> {
         private final ClientLogger.LoggingEventBuilder logBuilder;
 
-        private LoggingHttpResponse(Response<T> actualResponse, ClientLogger.LoggingEventBuilder logBuilder) {
+        private LoggingHttpResponse(HttpResponse<T> actualResponse, ClientLogger.LoggingEventBuilder logBuilder) {
             super(actualResponse.getRequest(), actualResponse.getStatusCode(), actualResponse.getHeaders(),
                 actualResponse.getValue());
 

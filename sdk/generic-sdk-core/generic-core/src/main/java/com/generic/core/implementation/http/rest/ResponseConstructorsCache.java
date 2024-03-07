@@ -5,8 +5,10 @@ package com.generic.core.implementation.http.rest;
 
 import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.HttpResponse;
 import com.generic.core.implementation.ReflectionUtils;
 import com.generic.core.implementation.ReflectiveInvoker;
+import com.generic.core.models.Headers;
 import com.generic.core.util.ClientLogger;
 
 import java.lang.reflect.Constructor;
@@ -95,22 +97,23 @@ public final class ResponseConstructorsCache {
      * Invoke the {@link ReflectiveInvoker} to construct and instance of the response class.
      *
      * @param reflectiveInvoker The {@link ReflectiveInvoker} capable of constructing an instance of the response class.
-     * @param response The response.
+     * @param httpResponse The HTTP response.
      * @param bodyAsObject The HTTP response body.
      * @return An instance of the {@link Response} implementation.
      */
-    public Response<?> invoke(ReflectiveInvoker reflectiveInvoker, Response<?> response, Object bodyAsObject) {
-        final HttpRequest httpRequest = response.getRequest();
-        final int responseStatusCode = response.getStatusCode();
+    public Response<?> invoke(ReflectiveInvoker reflectiveInvoker, HttpResponse<?> httpResponse, Object bodyAsObject) {
+        final HttpRequest httpRequest = httpResponse.getRequest();
+        final int responseStatusCode = httpResponse.getStatusCode();
+        final Headers responseHeaders = httpResponse.getHeaders();
 
         final int paramCount = reflectiveInvoker.getParameterCount();
         switch (paramCount) {
             case 3:
                 return constructResponse(reflectiveInvoker, THREE_PARAM_ERROR, httpRequest, responseStatusCode,
-                    null);
+                    responseHeaders);
             case 4:
                 return constructResponse(reflectiveInvoker, FOUR_PARAM_ERROR, httpRequest, responseStatusCode,
-                    null, bodyAsObject);
+                    responseHeaders, bodyAsObject);
             default:
                 throw LOGGER.logThrowableAsError(new IllegalStateException(INVALID_PARAM_COUNT));
         }

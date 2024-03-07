@@ -3,10 +3,10 @@
 
 package com.generic.core.http.okhttp;
 
-import com.generic.core.http.Response;
 import com.generic.core.http.client.HttpClient;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.ProxyOptions;
 import com.generic.core.shared.LocalTestServer;
 import com.generic.core.shared.TestConfigurationSource;
@@ -127,7 +127,7 @@ public class OkHttpHttpClientBuilderTests {
                 .proceed(chain.request().newBuilder().addHeader("Cookie", "test=success").build()))
             .build();
         HttpClient client = new OkHttpHttpClientBuilder(existingClient).build();
-        Response<?> response = client.send(new HttpRequest(HttpMethod.GET, cookieValidatorUrl));
+        HttpResponse<?> response = client.send(new HttpRequest(HttpMethod.GET, cookieValidatorUrl));
 
         assertEquals(200, response.getStatusCode());
     }
@@ -151,7 +151,7 @@ public class OkHttpHttpClientBuilderTests {
         HttpClient client = new OkHttpHttpClientBuilder()
             .addNetworkInterceptor(testInterceptor)
             .build();
-        Response<?> response = client.send(new HttpRequest(HttpMethod.GET, cookieValidatorUrl));
+        HttpResponse<?> response = client.send(new HttpRequest(HttpMethod.GET, cookieValidatorUrl));
 
         assertEquals(200, response.getStatusCode());
     }
@@ -178,7 +178,7 @@ public class OkHttpHttpClientBuilderTests {
             .addNetworkInterceptor(badCookieSetter)
             .networkInterceptors(Collections.singletonList(goodCookieSetter))
             .build();
-        Response<?> response = client.send(new HttpRequest(HttpMethod.GET, cookieValidatorUrl));
+        HttpResponse<?> response = client.send(new HttpRequest(HttpMethod.GET, cookieValidatorUrl));
 
         assertEquals(200, response.getStatusCode());
     }
@@ -207,7 +207,7 @@ public class OkHttpHttpClientBuilderTests {
             .addNetworkInterceptor(validatorInterceptor)
             .connectionTimeout(Duration.ofSeconds(3600))
             .build();
-        Response<?> response = client.send(new HttpRequest(HttpMethod.GET, defaultUrl));
+        HttpResponse<?> response = client.send(new HttpRequest(HttpMethod.GET, defaultUrl));
 
         assertEquals(200, response.getStatusCode());
     }
@@ -218,7 +218,7 @@ public class OkHttpHttpClientBuilderTests {
         HttpClient client = new OkHttpHttpClientBuilder()
             .followRedirects(true)
             .build();
-        Response<?> response = client.send(new HttpRequest(HttpMethod.GET, redirectUrl));
+        HttpResponse<?> response = client.send(new HttpRequest(HttpMethod.GET, redirectUrl));
 
         assertEquals(200, response.getStatusCode());
     }
@@ -228,7 +228,7 @@ public class OkHttpHttpClientBuilderTests {
         HttpClient client = new OkHttpHttpClientBuilder()
             .followRedirects(false)
             .build();
-        Response<?> response = client.send(new HttpRequest(HttpMethod.GET, redirectUrl));
+        HttpResponse<?> response = client.send(new HttpRequest(HttpMethod.GET, redirectUrl));
 
         assertEquals(307, response.getStatusCode());
     }
@@ -236,7 +236,7 @@ public class OkHttpHttpClientBuilderTests {
     @Test
     public void buildWithFollowRedirectDefault() {
         HttpClient client = new OkHttpHttpClientBuilder().build();
-        Response<?> response = client.send(new HttpRequest(HttpMethod.GET, redirectUrl));
+        HttpResponse<?> response = client.send(new HttpRequest(HttpMethod.GET, redirectUrl));
 
         assertEquals(307, response.getStatusCode());
     }
@@ -256,7 +256,7 @@ public class OkHttpHttpClientBuilderTests {
             .addNetworkInterceptor(validatorInterceptor)
             .readTimeout(Duration.ofSeconds(3600))
             .build();
-        Response<?> response = client.send(new HttpRequest(HttpMethod.GET, defaultUrl));
+        HttpResponse<?> response = client.send(new HttpRequest(HttpMethod.GET, defaultUrl));
 
         assertEquals(200, response.getStatusCode());
     }
@@ -275,7 +275,7 @@ public class OkHttpHttpClientBuilderTests {
             .addNetworkInterceptor(validatorInterceptor)
             .callTimeout(Duration.ofSeconds(3600))
             .build();
-        Response<?> response = client.send(new HttpRequest(HttpMethod.GET, defaultUrl));
+        HttpResponse<?> response = client.send(new HttpRequest(HttpMethod.GET, defaultUrl));
 
         assertEquals(200, response.getStatusCode());
     }
@@ -305,7 +305,7 @@ public class OkHttpHttpClientBuilderTests {
         HttpClient client = new OkHttpHttpClientBuilder()
             .addNetworkInterceptor(validatorInterceptor)
             .build();
-        Response<?> response = client.send(new HttpRequest(HttpMethod.GET, defaultUrl));
+        HttpResponse<?> response = client.send(new HttpRequest(HttpMethod.GET, defaultUrl));
 
         assertEquals(200, response.getStatusCode());
     }
@@ -319,7 +319,7 @@ public class OkHttpHttpClientBuilderTests {
         HttpClient client = new OkHttpHttpClientBuilder()
             .connectionPool(connectionPool)
             .build();
-        Response<?> response = client.send(new HttpRequest(HttpMethod.GET, defaultUrl));
+        HttpResponse<?> response = client.send(new HttpRequest(HttpMethod.GET, defaultUrl));
 
         assertEquals(200, response.getStatusCode());
         assertEquals(1, connectionPool.connectionCount());

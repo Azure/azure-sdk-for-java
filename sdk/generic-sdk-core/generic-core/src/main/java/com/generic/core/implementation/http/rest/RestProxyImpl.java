@@ -6,6 +6,7 @@ package com.generic.core.implementation.http.rest;
 import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.RequestOptions;
 import com.generic.core.http.pipeline.HttpPipeline;
 import com.generic.core.implementation.TypeUtil;
@@ -44,9 +45,9 @@ public class RestProxyImpl extends RestProxyBase {
      *
      * @param request the HTTP request to send.
      *
-     * @return A {@link Response}.
+     * @return An {@link HttpResponse}.
      */
-    Response<?> send(HttpRequest request) {
+    HttpResponse<?> send(HttpRequest request) {
         return httpPipeline.send(request);
     }
 
@@ -64,13 +65,9 @@ public class RestProxyImpl extends RestProxyBase {
             request.setBody(RestProxyUtils.validateLength(request));
         }
 
-        final Response<?> response = send(request);
+        final HttpResponse<?> response = send(request);
 
-        try {
-            return handleRestReturnType(response, methodParser, methodParser.getReturnType(), options, errorOptions);
-        } catch (IOException e) {
-            throw LOGGER.logThrowableAsError(new UncheckedIOException(e));
-        }
+        return handleRestReturnType(response, methodParser, methodParser.getReturnType(), options, errorOptions);
     }
 
     /**
@@ -80,14 +77,14 @@ public class RestProxyImpl extends RestProxyBase {
      * <p>'disallowed status code' is one of the status code defined in the provided SwaggerMethodParser or is in the int[]
      * of additional allowed status codes.</p>
      *
-     * @param response The Response to check.
+     * @param response The HttpResponse to check.
      * @param methodParser The method parser that contains information about the service interface method that initiated
      * the HTTP request.
      *
      * @return The decodedResponse.
      */
-    private Response<?> ensureExpectedStatus(Response<?> response, SwaggerMethodParser methodParser,
-                                             RequestOptions options, EnumSet<ErrorOptions> errorOptions) {
+    private HttpResponse<?> ensureExpectedStatus(HttpResponse<?> response, SwaggerMethodParser methodParser,
+                                                 RequestOptions options, EnumSet<ErrorOptions> errorOptions) {
         int responseStatusCode = response.getStatusCode();
 
         // If the response was success or configured to not return an error status when the request fails, return it.
@@ -112,7 +109,7 @@ public class RestProxyImpl extends RestProxyBase {
         }
     }
 
-    private Object handleRestResponseReturnType(Response<?> response, SwaggerMethodParser methodParser,
+    private Object handleRestResponseReturnType(HttpResponse<?> response, SwaggerMethodParser methodParser,
                                                 Type entityType) {
         if (TypeUtil.isTypeOrSubTypeOf(entityType, Response.class)) {
             final Type bodyType = TypeUtil.getRestResponseBodyType(entityType);
@@ -142,7 +139,7 @@ public class RestProxyImpl extends RestProxyBase {
         }
     }
 
-    private Object handleBodyReturnType(Response<?> response, SwaggerMethodParser methodParser, Type entityType) {
+    private Object handleBodyReturnType(HttpResponse<?> response, SwaggerMethodParser methodParser, Type entityType) {
         final int responseStatusCode = response.getStatusCode();
         final HttpMethod httpMethod = methodParser.getHttpMethod();
         final Type returnValueWireType = methodParser.getReturnValueWireType();
@@ -184,15 +181,16 @@ public class RestProxyImpl extends RestProxyBase {
     /**
      * Handle the provided HTTP response and return the deserialized value.
      *
-     * @param response The HTTP response to the original HTTP request.
+     * @param httpResponse The HTTP response to the original HTTP request.
      * @param methodParser The SwaggerMethodParser that the request originates from.
      * @param returnType The type of value that will be returned.
      *
      * @return The deserialized result.
      */
-    private Object handleRestReturnType(Response<?> response, SwaggerMethodParser methodParser, Type returnType,
-                                        RequestOptions options, EnumSet<ErrorOptions> errorOptions) throws IOException {
-        final Response<?> expectedResponse = ensureExpectedStatus(response, methodParser, options, errorOptions);
+    private Object handleRestReturnType(HttpResponse<?> httpResponse, SwaggerMethodParser methodParser, Type returnType,
+                                        RequestOptions options, EnumSet<ErrorOptions> errorOptions) {
+        final HttpResponse<?> expectedResponse =
+            ensureExpectedStatus(httpResponse, methodParser, options, errorOptions);
         final Object result;
 
         if (TypeUtil.isTypeOrSubTypeOf(returnType, void.class) || TypeUtil.isTypeOrSubTypeOf(returnType, Void.class)) {
@@ -204,7 +202,7 @@ public class RestProxyImpl extends RestProxyBase {
 
             result = null;
         } else {
-            result = handleRestResponseReturnType(response, methodParser, returnType);
+            result = handleRestResponseReturnType(httpResponse, methodParser, returnType);
         }
 
         return result;

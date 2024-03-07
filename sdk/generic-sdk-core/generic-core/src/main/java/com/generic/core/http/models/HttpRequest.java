@@ -230,7 +230,6 @@ public class HttpRequest {
      */
     public HttpRequest setServerSentEventListener(ServerSentEventListener serverSentEventListener) {
         this.serverSentEventListener = serverSentEventListener;
-
         return this;
     }
 }

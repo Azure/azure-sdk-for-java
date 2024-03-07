@@ -3,7 +3,7 @@
 
 package com.generic.core.http.pipeline;
 
-import com.generic.core.http.Response;
+import com.generic.core.http.models.HttpResponse;
 import com.generic.core.implementation.http.HttpPipelineCallState;
 
 /**
@@ -26,7 +26,7 @@ public class HttpPipelineNextPolicy {
      *
      * @return The response.
      */
-    public Response<?> process() {
+    public HttpResponse<?> process() {
         HttpPipelinePolicy nextPolicy = state.getNextPolicy();
 
         if (nextPolicy == null) {

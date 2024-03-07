@@ -8,6 +8,7 @@ import com.generic.core.models.BinaryData;
 import com.generic.core.models.Headers;
 
 import java.io.Closeable;
+import java.io.IOException;
 
 /**
  * The response of an {@link HttpRequest}.
@@ -124,5 +125,10 @@ public class HttpResponse<T> implements Response<T>, Closeable {
         this.value = (T) decodedBody;
 
         return this;
+    }
+
+    @Override
+    public void close() throws IOException {
+        this.getBody().close();
     }
 }

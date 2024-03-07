@@ -118,7 +118,7 @@ public final class RetryOptions {
      * isn't 501 or 505. And to retry any {@link Exception}.
      *
      * @param shouldRetryCondition The predicate that determines if a retry should be attempted for the given
-     * {@link Response}.
+     * {@link HttpResponse}.
      * @return The updated {@link RetryOptions} object.
      */
     public RetryOptions setShouldRetryCondition(Predicate<RequestRetryCondition> shouldRetryCondition) {

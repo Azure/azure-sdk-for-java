@@ -3,9 +3,9 @@
 
 package com.generic.core.http.client;
 
-import com.generic.core.http.Response;
 import com.generic.core.http.models.HttpMethod;
 import com.generic.core.http.models.HttpRequest;
+import com.generic.core.http.models.HttpResponse;
 import com.generic.core.http.models.ProxyOptions;
 import com.generic.core.shared.LocalTestServer;
 import com.generic.core.shared.TestConfigurationSource;
@@ -73,7 +73,7 @@ public class DefaultHttpClientBuilderTests {
 
             final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
 
-            Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl));
+            HttpResponse<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl));
 
             assertEquals(200, response.getStatusCode());
         } finally {
@@ -102,7 +102,7 @@ public class DefaultHttpClientBuilderTests {
 
             final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
 
-            Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl));
+            HttpResponse<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl));
 
             assertEquals(200, response.getStatusCode());
         } finally {
@@ -129,7 +129,7 @@ public class DefaultHttpClientBuilderTests {
 
             final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
 
-            Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl));
+            HttpResponse<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl));
 
             assertEquals(200, response.getStatusCode());
         } finally {
@@ -187,7 +187,7 @@ public class DefaultHttpClientBuilderTests {
 
             final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
 
-            try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))) {
+            try (HttpResponse<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))) {
                 assertNotNull(response);
             }
         } finally {
@@ -212,7 +212,7 @@ public class DefaultHttpClientBuilderTests {
 
             final String serviceUrl = "http://localhost:80" + SERVICE_ENDPOINT;
 
-            try (Response<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))) {
+            try (HttpResponse<?> response = httpClient.send(new HttpRequest(HttpMethod.GET, serviceUrl))) {
                 assertNotNull(response);
             }
         } finally {
