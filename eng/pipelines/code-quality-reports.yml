@@ -123,7 +123,7 @@ jobs:
         displayName: Move linting report zip to individual directory for artifact upload
         condition: succeededOrFailed()
 
-      - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+      - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
         parameters:
           ArtifactPath: '$(Build.ArtifactStagingDirectory)/zipped-linting-reports'
           ArtifactName: 'linting-reports'

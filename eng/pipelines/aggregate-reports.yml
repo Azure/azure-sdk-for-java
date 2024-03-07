@@ -117,7 +117,7 @@ stages:
           displayName: 'Copy BOM report to artifact staging'
           condition: succeededOrFailed()
 
-        - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+        - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
           parameters:
             ArtifactPath: '$(Build.ArtifactStagingDirectory)'
             ArtifactName: 'reports'

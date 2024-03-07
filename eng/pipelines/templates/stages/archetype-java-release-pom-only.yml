@@ -37,7 +37,7 @@ stages:
                     Artifacts: ${{parameters.Artifacts}}
                     ArtifactDirectory: $(Pipeline.Workspace)/${{parameters.ArtifactName}}
 
-                - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+                - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
                   parameters:
                     ArtifactPath: '$(Pipeline.Workspace)/${{parameters.ArtifactName}}'
                     ArtifactName: '${{parameters.ArtifactName}}-signed'
@@ -119,7 +119,7 @@ stages:
                           Target: EsrpRelease
                           BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
                           JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
-                      - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+                      - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
                         parameters:
                           ArtifactName: ${{parameters.ArtifactName}}-${{artifact.name}}-esrp-$(System.JobAttempt)
                           ArtifactPath: $(Pipeline.Workspace)/EsrpPackages
@@ -135,7 +135,7 @@ stages:
                           Target: JavaDevFeed
                           BuildToolsPath: $(Pipeline.Workspace)/azure-sdk-build-tools
                           JavaRepoRoot: $(Pipeline.Workspace)/azure-sdk-for-java
-                      - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+                      - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
                         parameters:
                           ArtifactName: ${{parameters.ArtifactName}}-${{artifact.name}}-javadevfeed-$(System.JobAttempt)
                           ArtifactPath: $(Pipeline.Workspace)/${{parameters.ArtifactName}}-signed

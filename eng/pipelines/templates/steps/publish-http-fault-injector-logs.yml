@@ -12,7 +12,7 @@ steps:
       Copy-Item -Path "$(Build.SourcesDirectory)/http-fault-injector.log" -Destination "$(Build.SourcesDirectory)/fault.log"
     condition: and(failed(), eq(variables['HAS_HTTP_FAULT_INJECTOR_LOGS'], 'true'))
 
-  - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+  - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
     parameters:
       ArtifactName: "$(System.JobName)-http-fault-injector-logs"
       ArtifactPath: "$(Build.SourcesDirectory)/fault.log"

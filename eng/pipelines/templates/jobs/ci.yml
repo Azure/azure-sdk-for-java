@@ -205,7 +205,7 @@ jobs:
         parameters:
           Artifacts: ${{parameters.ReleaseArtifacts}}
 
-      - template: /eng/common/pipelines/templates/steps/publish-artifact.yml
+      - template: /eng/common/pipelines/templates/steps/publish-1es-artifact.yml
         parameters:
           ArtifactPath: $(Build.ArtifactStagingDirectory)
           ArtifactName: '$(ArtifactName)'
