@@ -145,7 +145,7 @@ public class SessionTokenHelper {
     }
 
     static ISessionToken resolvePartitionLocalSessionToken(RxDocumentServiceRequest request,
-                                                           PartitionKeyBasedBloomFilter pkBasedBloomFilter,
+                                                           PartitionKeyBasedBloomFilter partitionKeyBasedBloomFilter,
                                                            PartitionScopedRegionLevelProgress partitionScopedRegionLevelProgress,
                                                            PartitionKeyInternal partitionKey,
                                                            PartitionKeyDefinition partitionKeyDefinition,
@@ -161,24 +161,34 @@ public class SessionTokenHelper {
             if (partitionScopedRegionLevelProgress.isPartitionKeyRangeIdPresent(partitionKeyRangeId)) {
 
                 if (canUseBloomFilter) {
-                    partitionKeyPossibleRegions =
-                        pkBasedBloomFilter.tryResolveLogicalPartitionPossibleRegions(collectionRid, partitionKey,
+                    partitionKeyPossibleRegions = partitionKeyBasedBloomFilter
+                        .tryGetPossibleRegionsLogicalPartitionResolvedTo(
+                            collectionRid,
+                            partitionKey,
                             partitionKeyDefinition);
 
                     return partitionScopedRegionLevelProgress
-                        .tryResolveSessionToken(partitionKeyPossibleRegions,
-                            partitionKeyRangeId, firstEffectivePreferredReadableRegion, true);
+                        .tryResolveSessionToken(
+                            partitionKeyPossibleRegions,
+                            partitionKeyRangeId,
+                            firstEffectivePreferredReadableRegion,
+                            true);
 
                 }
 
                 return partitionScopedRegionLevelProgress
-                    .tryResolveSessionToken(partitionKeyPossibleRegions,
-                        partitionKeyRangeId, firstEffectivePreferredReadableRegion, false);
+                    .tryResolveSessionToken(
+                        partitionKeyPossibleRegions,
+                        partitionKeyRangeId,
+                        firstEffectivePreferredReadableRegion,
+                        false);
 
             } else {
                 if (canUseBloomFilter) {
-                    partitionKeyPossibleRegions =
-                        pkBasedBloomFilter.tryResolveLogicalPartitionPossibleRegions(collectionRid, partitionKey,
+                    partitionKeyPossibleRegions = partitionKeyBasedBloomFilter
+                        .tryGetPossibleRegionsLogicalPartitionResolvedTo(
+                            collectionRid,
+                            partitionKey,
                             partitionKeyDefinition);
                 }
 
@@ -188,15 +198,18 @@ public class SessionTokenHelper {
                 if (parents != null) {
                     List<String> parentsList = new ArrayList<>(parents);
                     for (int i = parentsList.size() - 1; i >= 0; i--) {
-                        String parentId = parentsList.get(i);
-                        if (partitionScopedRegionLevelProgress.isPartitionKeyRangeIdPresent(parentId)) {
+                        String parentPkRangeId = parentsList.get(i);
+                        if (partitionScopedRegionLevelProgress.isPartitionKeyRangeIdPresent(parentPkRangeId)) {
                             // A partition can have more than 1 parent (merge). In that case, we apply Merge to
                             // generate a token with both parent's max LSNs
                             ISessionToken resolvedSessionTokenForParentPkRangeId = null;
 
                             resolvedSessionTokenForParentPkRangeId = partitionScopedRegionLevelProgress
-                                .tryResolveSessionToken(partitionKeyPossibleRegions,
-                                    parentId, firstEffectivePreferredReadableRegion, canUseBloomFilter);
+                                .tryResolveSessionToken(
+                                    partitionKeyPossibleRegions,
+                                    parentPkRangeId,
+                                    firstEffectivePreferredReadableRegion,
+                                    canUseBloomFilter);
 
 
                             if (resolvedSessionTokenForParentPkRangeId != null) {

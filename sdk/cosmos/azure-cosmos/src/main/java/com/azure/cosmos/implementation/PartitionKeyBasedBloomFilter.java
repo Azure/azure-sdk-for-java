@@ -11,9 +11,7 @@ import com.azure.cosmos.implementation.routing.PartitionKeyInternalHelper;
 import com.azure.cosmos.models.PartitionKeyDefinition;
 
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.concurrent.ConcurrentHashMap;
@@ -70,13 +68,16 @@ public class PartitionKeyBasedBloomFilter {
         // a session token should have been received from a region to consider an EPK
         // to also have been requested from the region
         if (!normalizedRegionRoutedTo.equals(firstPreferredWritableRegion)) {
-            this.pkBasedBloomFilter.put(new PartitionKeyBasedBloomFilterType(effectivePartitionKeyString,
-                normalizedRegionRoutedTo, collectionRid));
+            this.pkBasedBloomFilter.put(
+                new PartitionKeyBasedBloomFilterType(
+                    effectivePartitionKeyString,
+                    normalizedRegionRoutedTo,
+                    collectionRid));
             this.recordedRegions.add(normalizedRegionRoutedTo);
         }
     }
 
-    public Set<String> tryResolveLogicalPartitionPossibleRegions(
+    public Set<String> tryGetPossibleRegionsLogicalPartitionResolvedTo(
         Long collectionRid, PartitionKeyInternal partitionKey, PartitionKeyDefinition partitionKeyDefinition) {
 
         Set<String> regionsPartitionKeyHasProbablySeen = new HashSet<>();

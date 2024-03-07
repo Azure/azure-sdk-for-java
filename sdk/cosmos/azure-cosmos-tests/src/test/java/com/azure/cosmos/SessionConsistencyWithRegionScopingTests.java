@@ -16,6 +16,7 @@ import com.azure.cosmos.implementation.guava25.hash.PrimitiveSink;
 import com.azure.cosmos.models.CosmosContainerProperties;
 import com.azure.cosmos.models.CosmosItemRequestOptions;
 import com.azure.cosmos.models.CosmosItemResponse;
+import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.PartitionKey;
 import com.azure.cosmos.models.SqlParameter;
 import com.azure.cosmos.models.SqlQuerySpec;
@@ -191,6 +192,65 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
     }
 
     @Test(groups = {"multi-region"})
+    public void pointReadAfterPartitionSplitAndPointCreate_CreateFromFirstPreferredRegionReadFromSecondPreferredRegion() throws InterruptedException {
+
+        List<String> preferredRegions = this.readRegionMap.keySet().stream().toList();
+
+        CosmosClientBuilder clientBuilder = new CosmosClientBuilder()
+            .endpoint(TestConfigurations.HOST)
+            .key(TestConfigurations.MASTER_KEY)
+            .preferredRegions(preferredRegions);
+
+        cosmosClientBuilderAccessor.setRegionScopedSessionCapturingEnabled(clientBuilder, true);
+
+        CosmosAsyncClient client = clientBuilder.buildAsyncClient();
+
+        String databaseId = UUID.randomUUID() + "-" + "db";
+        String containerId = UUID.randomUUID() + "-" + "container";
+
+        client.createDatabase(databaseId).block();
+        CosmosAsyncDatabase asyncDatabase = client.getDatabase(databaseId);
+        asyncDatabase.createContainerIfNotExists(new CosmosContainerProperties(containerId, "/mypk")).block();
+        CosmosAsyncContainer asyncContainer = asyncDatabase.getContainer(containerId);
+
+        Thread.sleep(10_000);
+
+        try {
+            TestObject testObjectToBeCreated = TestObject.create();
+
+            String id = testObjectToBeCreated.getId();
+            String pk = testObjectToBeCreated.getMypk();
+
+            asyncContainer.createItem(testObjectToBeCreated).block();
+
+            ThroughputResponse throughputResponse = asyncContainer.replaceThroughput(ThroughputProperties.createManualThroughput(10_100)).block();
+
+            while (true) {
+                assert throughputResponse != null;
+                boolean isReplacePending = asyncContainer.readThroughput().block().isReplacePending();
+                if (!isReplacePending) {
+                    break;
+                }
+                Thread.sleep(10_000);
+                logger.info("Waiting for split to complete...");
+            }
+
+            logger.info("Split complete!");
+            CosmosItemResponse<TestObject> testObjectFromRead = asyncContainer.readItem(id, new PartitionKey(pk), new CosmosItemRequestOptions().setExcludedRegions(ImmutableList.of(preferredRegions.get(0))), TestObject.class).block();
+
+            assertThat(testObjectFromRead).isNotNull();
+            validateTestObjectEquality(testObjectToBeCreated, testObjectFromRead.getItem());
+        } catch (Exception ex) {
+            logger.error("Exception : ", ex);
+        } finally {
+            safeDeleteCollection(asyncContainer);
+            safeDeleteDatabase(asyncDatabase);
+            safeClose(client);
+        }
+    }
+
+
+    @Test(groups = {"multi-region"})
     public void pointReadYourLatestUpsert_UpsertsFromPreferredRegionReadFromPreferredRegion() throws InterruptedException {
         List<String> preferredRegions = this.readRegionMap.keySet().stream().toList();
 
@@ -255,11 +315,9 @@ public class SessionConsistencyWithRegionScopingTests extends TestSuiteBase {
 
             containerWithSinglePartition.createItem(testObjectToBeCreated).block();
 
-            SqlQuerySpec querySpec = new SqlQuerySpec("SELECT * FROM c WHERE c.id = @param1 and c.mypk = @param2");
+            SqlQuerySpec querySpec = new SqlQuerySpec("SELECT * FROM c");
 
-            querySpec.setParameters(ImmutableList.of(new SqlParameter("@param1", id), new SqlParameter("@param2", pk)));
-
-            List<TestObject> testObjectsFromQuery = containerWithSinglePartition.queryItems(querySpec, TestObject.class).collectList().block();
+            List<TestObject> testObjectsFromQuery = containerWithSinglePartition.queryItems(querySpec, new CosmosQueryRequestOptions().setPartitionKey(new PartitionKey(pk)), TestObject.class).collectList().block();
 
             assertThat(testObjectsFromQuery).isNotNull();
             assertThat(testObjectsFromQuery.size()).isEqualTo(1);

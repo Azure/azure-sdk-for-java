@@ -34,6 +34,7 @@ import com.azure.cosmos.implementation.routing.RoutingMapProviderHelper;
 import com.azure.cosmos.models.CosmosQueryRequestOptions;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.fasterxml.jackson.databind.JsonNode;
 import reactor.core.publisher.Flux;
@@ -63,6 +64,7 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
     private final FetchExecutionRangeAccumulator fetchExecutionRangeAccumulator;
     private static final String DEFAULT_PARTITION_RANGE = "00-FF";
     private final Function<JsonNode, T> factoryMethod;
+    private static final ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.CosmosQueryRequestOptionsAccessor queryRequestOptionsAccessor = ImplementationBridgeHelpers.CosmosQueryRequestOptionsHelper.getCosmosQueryRequestOptionsAccessor();
 
     public DefaultDocumentQueryExecutionContext(DiagnosticsClientContext diagnosticsClientContext, IDocumentQueryClient client, ResourceType resourceTypeEnum,
                                                 Class<T> resourceType, SqlQuerySpec query, CosmosQueryRequestOptions cosmosQueryRequestOptions, String resourceLink,
@@ -88,6 +90,10 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
 
     protected PartitionKeyInternal getPartitionKeyInternal() {
         return this.cosmosQueryRequestOptions.getPartitionKey() == null ? null : BridgeInternal.getPartitionKeyInternal(cosmosQueryRequestOptions.getPartitionKey());
+    }
+
+    protected PartitionKeyDefinition getPartitionKeyDefinition() {
+        return queryRequestOptionsAccessor.getPartitionKeyDefinition(this.cosmosQueryRequestOptions);
     }
 
     @Override
@@ -236,7 +242,8 @@ public class DefaultDocumentQueryExecutionContext<T> extends DocumentQueryExecut
         RxDocumentServiceRequest request = this.createDocumentServiceRequest(
                 requestHeaders,
                 this.query,
-                this.getPartitionKeyInternal());
+                this.getPartitionKeyInternal(),
+                this.getPartitionKeyDefinition());
 
         if (!StringUtils.isEmpty(getPartitionKeyRangeIdInternal(cosmosQueryRequestOptions))) {
             request.routeTo(new PartitionKeyRangeIdentity(getPartitionKeyRangeIdInternal(cosmosQueryRequestOptions)));

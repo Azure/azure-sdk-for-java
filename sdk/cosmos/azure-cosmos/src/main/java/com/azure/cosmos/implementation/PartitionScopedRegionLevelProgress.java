@@ -22,7 +22,7 @@ public class PartitionScopedRegionLevelProgress {
 
     private final ConcurrentHashMap<String, ConcurrentHashMap<String, RegionLevelProgress>> partitionKeyRangeIdToRegionLevelProgress;
 
-    private final static String GlobalProgressKey = "global";
+    public final static String GlobalProgressKey = "global";
 
     public PartitionScopedRegionLevelProgress() {
         this.partitionKeyRangeIdToRegionLevelProgress = new ConcurrentHashMap<>();
@@ -60,7 +60,7 @@ public class PartitionScopedRegionLevelProgress {
 
                 VectorSessionToken vectorSessionToken = (VectorSessionToken) parsedSessionToken;
 
-                // store the max progress of the session token for a given physical partition
+                // store the global merged progress of the session token for a given physical partition
                 regionLevelProgressAsVal.merge(GlobalProgressKey, new RegionLevelProgress(Long.MIN_VALUE, Long.MIN_VALUE, vectorSessionToken), (regionLevelProgressExisting, regionLevelProgressNew) -> {
 
                     VectorSessionToken existingVectorSessionToken = regionLevelProgressExisting.vectorSessionToken;
@@ -70,7 +70,6 @@ public class PartitionScopedRegionLevelProgress {
                 });
 
                 // identify whether regionRoutedTo has a regionId mapping in session token
-                // if regionRoutedTo doesn't exist in mappings add global session token
                 UnmodifiableMap<Integer, Long> localLsnByRegion = vectorSessionToken.getLocalLsnByRegion();
                 String normalizedRegionRoutedTo = regionRoutedTo.toLowerCase(Locale.ROOT).trim().replace(" ", "");
 
@@ -88,8 +87,7 @@ public class PartitionScopedRegionLevelProgress {
                         regionLevelProgressAsVal.put(normalizedRegionRoutedTo, new RegionLevelProgress(parsedSessionToken.getLSN(), Long.MIN_VALUE, null));
                     }
 
-                    // store the session token in parsed form if obtained from the firstEffectivePreferredReadableRegion
-                    // possibly overwrite
+                    // store the session token in parsed form if obtained from the firstEffectivePreferredReadableRegion (an overwrite)
                     if (regionRoutedTo.equals(firstEffectivePreferredReadableRegion)) {
                         regionLevelProgressAsVal.put(normalizedRegionRoutedTo, new RegionLevelProgress(parsedSessionToken.getLSN(), localLsn, vectorSessionToken));
                     }

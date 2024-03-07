@@ -64,6 +64,7 @@ import com.azure.cosmos.models.FeedRange;
 import com.azure.cosmos.models.FeedResponse;
 import com.azure.cosmos.models.ModelBridgeInternal;
 import com.azure.cosmos.models.PartitionKey;
+import com.azure.cosmos.models.PartitionKeyDefinition;
 import com.azure.cosmos.models.PriorityLevel;
 import com.azure.cosmos.models.SqlQuerySpec;
 import com.azure.cosmos.util.CosmosPagedFlux;
@@ -284,6 +285,10 @@ public class ImplementationBridgeHelpers {
             Integer getMaxItemCount(CosmosQueryRequestOptions options);
 
             String getRequestContinuation(CosmosQueryRequestOptions options);
+
+            void setPartitionKeyDefinition(CosmosQueryRequestOptions options, PartitionKeyDefinition partitionKeyDefinition);
+
+            PartitionKeyDefinition getPartitionKeyDefinition(CosmosQueryRequestOptions options);
         }
     }
 
