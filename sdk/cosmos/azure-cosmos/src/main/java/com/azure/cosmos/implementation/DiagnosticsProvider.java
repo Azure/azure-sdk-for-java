@@ -93,6 +93,7 @@ public final class DiagnosticsProvider {
     private final CosmosTracer cosmosTracer;
 
     private final CosmosClientTelemetryConfig telemetryConfig;
+    private final boolean shouldSystemExitOnError;
 
 
     public DiagnosticsProvider(
@@ -138,6 +139,7 @@ public final class DiagnosticsProvider {
 
         this.propagatingMono = new PropagatingMono();
         this.propagatingFlux = new PropagatingFlux();
+        this.shouldSystemExitOnError = Configs.shouldDiagnosticsProviderSystemExitOnError();
     }
 
     public boolean isEnabled() {
@@ -246,8 +248,7 @@ public final class DiagnosticsProvider {
         try {
             this.endSpanCore(signal, statusCode, actualItemCount, requestCharge, diagnostics);
         } catch (Throwable error) {
-            LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ", error);
-            System.exit(9901);
+            this.handleErrors(error, 9901);
         }
     }
 
@@ -316,8 +317,7 @@ public final class DiagnosticsProvider {
             }
             end(statusCode, subStatusCode, null, effectiveRequestCharge, effectiveDiagnostics, throwable, context);
         } catch (Throwable error) {
-            LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ", error);
-            System.exit(9905);
+            this.handleErrors(error, 9905);
         }
     }
 
@@ -326,8 +326,7 @@ public final class DiagnosticsProvider {
         try {
             end(200, 0, null, null, null,null, context);
         } catch (Throwable error) {
-            LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ", error);
-            System.exit(9904);
+            this.handleErrors(error, 9904);
         }
     }
 
@@ -341,8 +340,7 @@ public final class DiagnosticsProvider {
         try {
             this.recordPageCore(context, diagnostics, actualItemCount, requestCharge);
         } catch (Throwable error) {
-            LOGGER.error("Unexpected exception in DiagnosticsProvider.recordPage. ", error);
-            System.exit(9902);
+            this.handleErrors(error, 9902);
         }
     }
 
@@ -381,8 +379,7 @@ public final class DiagnosticsProvider {
             this.recordFeedResponseConsumerLatencyCore(
                 context, getCosmosDiagnosticsContextFromTraceContextOrNull(context), feedResponseConsumerLatency);
         } catch (Throwable error) {
-            LOGGER.error("Unexpected exception in DiagnosticsProvider.recordFeedResponseConsumerLatency. ", error);
-            System.exit(9902);
+            this.handleErrors(error, 9903);
         }
     }
 
@@ -434,7 +431,11 @@ public final class DiagnosticsProvider {
         // but there is some risk given that diagnostic handlers are custom code of course
         if (this.diagnosticHandlers != null && this.diagnosticHandlers.size() > 0) {
             for (CosmosDiagnosticsHandler handler: this.diagnosticHandlers) {
-                handler.handleDiagnostics(cosmosCtx, context);
+                try {
+                    handler.handleDiagnostics(cosmosCtx, context);
+                } catch (Exception e) {
+                    LOGGER.error("HandledDiagnostics failed. ", e);
+                }
             }
         }
     }
@@ -1363,6 +1364,39 @@ public final class DiagnosticsProvider {
         }
 
         return prettifiedCallstack;
+    }
+
+    private void handleErrors(Throwable throwable, int systemExitCode) {
+        if (throwable instanceof Error) {
+            handleFatalError((Error) throwable, systemExitCode);
+        } else {
+            LOGGER.error("Unexpected exception in DiagnosticsProvider.endSpan. ",  throwable);
+            throw new RuntimeException(throwable);
+        }
+    }
+
+    private void handleFatalError(Error error, int systemExitCode) {
+        Exception exception = DiagnosticsProviderJvmFatalErrorMapper.getMapper().mapFatalError(error);
+        if (exception != null) {
+            String errorMessage = "Runtime exception mapped from fatal error " + error;
+            throw new RuntimeException(errorMessage, exception);
+        }
+
+        // there is no mapping, handle error
+        if (this.shouldSystemExitOnError) {
+            LOGGER.error("Unexpected error in DiagnosticsProvider.endSpan. Calling System.exit({})...", systemExitCode, error);
+            System.err.println(
+                String.format(
+                    "Unexpected error in DiagnosticsProvider.endSpan. Calling System.exit(%d)... %s",
+                    systemExitCode,
+                    error)
+            );
+
+            System.exit(systemExitCode);
+        } else {
+            // bubble up the error
+            throw error;
+        }
     }
 
     private static final class EnabledNoOpTracer implements Tracer {
