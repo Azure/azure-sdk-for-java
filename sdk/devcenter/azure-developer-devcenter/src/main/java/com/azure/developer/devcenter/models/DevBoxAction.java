@@ -48,7 +48,7 @@ public final class DevBoxAction {
      */
     @Generated
     @JsonProperty(value = "next")
-    private DevBoxNextAction next;
+    private DevBoxNextAction nextAction;
 
     /**
      * Creates an instance of DevBoxAction class.
@@ -105,12 +105,12 @@ public final class DevBoxAction {
     }
 
     /**
-     * Get the next property: Details about the next run of this action.
+     * Get the nextAction property: Details about the next run of this action.
      * 
-     * @return the next value.
+     * @return the nextAction value.
      */
     @Generated
-    public DevBoxNextAction getNext() {
-        return this.next;
+    public DevBoxNextAction getNextAction() {
+        return this.nextAction;
     }
 }

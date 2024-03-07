@@ -6,6 +6,7 @@ package com.azure.developer.devcenter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
+import com.azure.core.models.ResponseError;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import java.time.OffsetDateTime;
@@ -14,12 +15,12 @@ import java.time.OffsetDateTime;
  * The current status of an async operation.
  */
 @Immutable
-public final class OperationStatus {
+public final class DevCenterOperationDetails {
     /*
      * Fully qualified ID for the operation status.
      */
     @Generated
-    @JsonProperty(value = "id")
+    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
 
     /*
@@ -34,7 +35,7 @@ public final class OperationStatus {
      */
     @Generated
     @JsonProperty(value = "status")
-    private OperationStatusValue status;
+    private DevCenterOperationStatus status;
 
     /*
      * The id of the resource.
@@ -76,16 +77,16 @@ public final class OperationStatus {
      */
     @Generated
     @JsonProperty(value = "error")
-    private OperationStatusError error;
+    private ResponseError error;
 
     /**
-     * Creates an instance of OperationStatus class.
+     * Creates an instance of DevCenterOperationDetails class.
      * 
      * @param status the status value to set.
      */
     @Generated
     @JsonCreator
-    private OperationStatus(@JsonProperty(value = "status") OperationStatusValue status) {
+    private DevCenterOperationDetails(@JsonProperty(value = "status") DevCenterOperationStatus status) {
         this.status = status;
     }
 
@@ -115,7 +116,7 @@ public final class OperationStatus {
      * @return the status value.
      */
     @Generated
-    public OperationStatusValue getStatus() {
+    public DevCenterOperationStatus getStatus() {
         return this.status;
     }
 
@@ -175,7 +176,7 @@ public final class OperationStatus {
      * @return the error value.
      */
     @Generated
-    public OperationStatusError getError() {
+    public ResponseError getError() {
         return this.error;
     }
 }

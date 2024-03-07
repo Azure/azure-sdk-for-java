@@ -9,31 +9,31 @@ import com.azure.core.annotation.Immutable;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Storage settings for the Dev Box's disks.
+ * Settings for the operating system disk.
  */
 @Immutable
-public final class StorageProfile {
+public final class OsDisk {
     /*
-     * Settings for the operating system disk.
+     * The size of the OS Disk in gigabytes.
      */
     @Generated
-    @JsonProperty(value = "osDisk")
-    private OSDisk osDisk;
+    @JsonProperty(value = "diskSizeGB", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer diskSizeGb;
 
     /**
-     * Creates an instance of StorageProfile class.
+     * Creates an instance of OsDisk class.
      */
     @Generated
-    private StorageProfile() {
+    private OsDisk() {
     }
 
     /**
-     * Get the osDisk property: Settings for the operating system disk.
+     * Get the diskSizeGb property: The size of the OS Disk in gigabytes.
      * 
-     * @return the osDisk value.
+     * @return the diskSizeGb value.
      */
     @Generated
-    public OSDisk getOsDisk() {
-        return this.osDisk;
+    public Integer getDiskSizeGb() {
+        return this.diskSizeGb;
     }
 }

@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Properties of an environment type.
  */
 @Immutable
-public final class EnvironmentType {
+public final class DevCenterEnvironmentType {
     /*
      * Name of the environment type
      */
@@ -35,10 +35,10 @@ public final class EnvironmentType {
      */
     @Generated
     @JsonProperty(value = "status")
-    private EnvironmentTypeEnableStatus status;
+    private EnvironmentTypeStatus status;
 
     /**
-     * Creates an instance of EnvironmentType class.
+     * Creates an instance of DevCenterEnvironmentType class.
      * 
      * @param name the name value to set.
      * @param deploymentTargetId the deploymentTargetId value to set.
@@ -46,9 +46,9 @@ public final class EnvironmentType {
      */
     @Generated
     @JsonCreator
-    private EnvironmentType(@JsonProperty(value = "name") String name,
+    private DevCenterEnvironmentType(@JsonProperty(value = "name") String name,
         @JsonProperty(value = "deploymentTargetId") String deploymentTargetId,
-        @JsonProperty(value = "status") EnvironmentTypeEnableStatus status) {
+        @JsonProperty(value = "status") EnvironmentTypeStatus status) {
         this.name = name;
         this.deploymentTargetId = deploymentTargetId;
         this.status = status;
@@ -82,7 +82,7 @@ public final class EnvironmentType {
      * @return the status value.
      */
     @Generated
-    public EnvironmentTypeEnableStatus getStatus() {
+    public EnvironmentTypeStatus getStatus() {
         return this.status;
     }
 }

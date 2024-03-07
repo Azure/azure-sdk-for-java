@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Defines values for PoolHealthStatus.
+ * Pool status indicating whether a pool is available to create Dev Boxes.
  */
 public final class PoolHealthStatus extends ExpandableStringEnum<PoolHealthStatus> {
     /**

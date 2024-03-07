@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Defines values for DevBoxActionType.
+ * The type of action which will take place on a Dev Box.
  */
 public final class DevBoxActionType extends ExpandableStringEnum<DevBoxActionType> {
     /**

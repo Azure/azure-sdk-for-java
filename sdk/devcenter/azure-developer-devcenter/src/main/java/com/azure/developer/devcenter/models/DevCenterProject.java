@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Project details.
  */
 @Immutable
-public final class Project {
+public final class DevCenterProject {
     /*
      * Name of the project
      */
@@ -36,10 +36,10 @@ public final class Project {
     private Integer maxDevBoxesPerUser;
 
     /**
-     * Creates an instance of Project class.
+     * Creates an instance of DevCenterProject class.
      */
     @Generated
-    private Project() {
+    private DevCenterProject() {
     }
 
     /**

@@ -49,7 +49,7 @@ public final class DevBox {
      */
     @Generated
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private DevBoxProvisioningState provisioningState;
 
     /*
      * The current action state of the Dev Box. This is state is based on previous
@@ -94,35 +94,35 @@ public final class DevBox {
      */
     @Generated
     @JsonProperty(value = "osType", access = JsonProperty.Access.WRITE_ONLY)
-    private OsType osType;
+    private DevBoxOsType osType;
 
     /*
      * The AAD object id of the user this Dev Box is assigned to.
      */
     @Generated
     @JsonProperty(value = "user", access = JsonProperty.Access.WRITE_ONLY)
-    private String user;
+    private String userId;
 
     /*
      * Information about the Dev Box's hardware resources
      */
     @Generated
     @JsonProperty(value = "hardwareProfile", access = JsonProperty.Access.WRITE_ONLY)
-    private HardwareProfile hardwareProfile;
+    private DevBoxHardwareProfile hardwareProfile;
 
     /*
      * Storage settings for this Dev Box
      */
     @Generated
     @JsonProperty(value = "storageProfile", access = JsonProperty.Access.WRITE_ONLY)
-    private StorageProfile storageProfile;
+    private DevBoxStorageProfile storageProfile;
 
     /*
      * Information about the image used for this Dev Box
      */
     @Generated
     @JsonProperty(value = "imageReference", access = JsonProperty.Access.WRITE_ONLY)
-    private ImageReference imageReference;
+    private DevBoxImageReference imageReference;
 
     /*
      * Creation time of this Dev Box
@@ -136,7 +136,7 @@ public final class DevBox {
      */
     @Generated
     @JsonProperty(value = "localAdministrator")
-    private LocalAdminStatus localAdministrator;
+    private LocalAdministratorStatus localAdministratorStatus;
 
     /**
      * Creates an instance of DevBox class.
@@ -195,7 +195,7 @@ public final class DevBox {
      * @return the provisioningState value.
      */
     @Generated
-    public String getProvisioningState() {
+    public DevBoxProvisioningState getProvisioningState() {
         return this.provisioningState;
     }
 
@@ -258,18 +258,18 @@ public final class DevBox {
      * @return the osType value.
      */
     @Generated
-    public OsType getOsType() {
+    public DevBoxOsType getOsType() {
         return this.osType;
     }
 
     /**
-     * Get the user property: The AAD object id of the user this Dev Box is assigned to.
+     * Get the userId property: The AAD object id of the user this Dev Box is assigned to.
      * 
-     * @return the user value.
+     * @return the userId value.
      */
     @Generated
-    public String getUser() {
-        return this.user;
+    public String getUserId() {
+        return this.userId;
     }
 
     /**
@@ -278,7 +278,7 @@ public final class DevBox {
      * @return the hardwareProfile value.
      */
     @Generated
-    public HardwareProfile getHardwareProfile() {
+    public DevBoxHardwareProfile getHardwareProfile() {
         return this.hardwareProfile;
     }
 
@@ -288,7 +288,7 @@ public final class DevBox {
      * @return the storageProfile value.
      */
     @Generated
-    public StorageProfile getStorageProfile() {
+    public DevBoxStorageProfile getStorageProfile() {
         return this.storageProfile;
     }
 
@@ -298,7 +298,7 @@ public final class DevBox {
      * @return the imageReference value.
      */
     @Generated
-    public ImageReference getImageReference() {
+    public DevBoxImageReference getImageReference() {
         return this.imageReference;
     }
 
@@ -313,24 +313,24 @@ public final class DevBox {
     }
 
     /**
-     * Get the localAdministrator property: Indicates whether the owner of the Dev Box is a local administrator.
+     * Get the localAdministratorStatus property: Indicates whether the owner of the Dev Box is a local administrator.
      * 
-     * @return the localAdministrator value.
+     * @return the localAdministratorStatus value.
      */
     @Generated
-    public LocalAdminStatus getLocalAdministrator() {
-        return this.localAdministrator;
+    public LocalAdministratorStatus getLocalAdministratorStatus() {
+        return this.localAdministratorStatus;
     }
 
     /**
-     * Set the localAdministrator property: Indicates whether the owner of the Dev Box is a local administrator.
+     * Set the localAdministratorStatus property: Indicates whether the owner of the Dev Box is a local administrator.
      * 
-     * @param localAdministrator the localAdministrator value to set.
+     * @param localAdministratorStatus the localAdministratorStatus value to set.
      * @return the DevBox object itself.
      */
     @Generated
-    public DevBox setLocalAdministrator(LocalAdminStatus localAdministrator) {
-        this.localAdministrator = localAdministrator;
+    public DevBox setLocalAdministratorStatus(LocalAdministratorStatus localAdministratorStatus) {
+        this.localAdministratorStatus = localAdministratorStatus;
         return this;
     }
 }

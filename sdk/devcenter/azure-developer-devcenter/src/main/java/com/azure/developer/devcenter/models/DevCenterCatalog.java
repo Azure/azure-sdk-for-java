@@ -6,30 +6,25 @@ package com.azure.developer.devcenter.models;
 
 import com.azure.core.annotation.Generated;
 import com.azure.core.annotation.Immutable;
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * A catalog.
  */
 @Immutable
-public final class Catalog {
+public final class DevCenterCatalog {
     /*
      * Name of the catalog.
      */
     @Generated
-    @JsonProperty(value = "name")
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /**
-     * Creates an instance of Catalog class.
-     * 
-     * @param name the name value to set.
+     * Creates an instance of DevCenterCatalog class.
      */
     @Generated
-    @JsonCreator
-    private Catalog(@JsonProperty(value = "name") String name) {
-        this.name = name;
+    private DevCenterCatalog() {
     }
 
     /**

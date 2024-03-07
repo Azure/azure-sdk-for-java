@@ -10,7 +10,8 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Defines values for HibernateSupport.
+ * Indicates whether hibernate is supported and enabled, disabled, or unsupported by the operating system. Unknown
+ * hibernate support is represented as null.
  */
 public final class HibernateSupport extends ExpandableStringEnum<HibernateSupport> {
     /**

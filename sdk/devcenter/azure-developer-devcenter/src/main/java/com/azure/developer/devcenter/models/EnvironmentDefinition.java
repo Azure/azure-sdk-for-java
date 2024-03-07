@@ -26,7 +26,7 @@ public final class EnvironmentDefinition {
      * Name of the environment definition.
      */
     @Generated
-    @JsonProperty(value = "name")
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
     private String name;
 
     /*
@@ -55,7 +55,7 @@ public final class EnvironmentDefinition {
      */
     @Generated
     @JsonProperty(value = "parametersSchema")
-    private String parametersSchema;
+    private Object parametersSchema;
 
     /*
      * Path to the Environment Definition entrypoint file.
@@ -68,15 +68,13 @@ public final class EnvironmentDefinition {
      * Creates an instance of EnvironmentDefinition class.
      * 
      * @param id the id value to set.
-     * @param name the name value to set.
      * @param catalogName the catalogName value to set.
      */
     @Generated
     @JsonCreator
-    private EnvironmentDefinition(@JsonProperty(value = "id") String id, @JsonProperty(value = "name") String name,
+    private EnvironmentDefinition(@JsonProperty(value = "id") String id,
         @JsonProperty(value = "catalogName") String catalogName) {
         this.id = id;
-        this.name = name;
         this.catalogName = catalogName;
     }
 
@@ -136,7 +134,7 @@ public final class EnvironmentDefinition {
      * @return the parametersSchema value.
      */
     @Generated
-    public String getParametersSchema() {
+    public Object getParametersSchema() {
         return this.parametersSchema;
     }
 

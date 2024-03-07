@@ -20,14 +20,14 @@ public final class DevBoxActionDelayResult {
      */
     @Generated
     @JsonProperty(value = "name")
-    private String name;
+    private String actionName;
 
     /*
      * The result of the delay operation on this action.
      */
     @Generated
     @JsonProperty(value = "result")
-    private DevBoxActionDelayResultStatus result;
+    private DevBoxActionDelayStatus result;
 
     /*
      * The delayed action
@@ -46,25 +46,25 @@ public final class DevBoxActionDelayResult {
     /**
      * Creates an instance of DevBoxActionDelayResult class.
      * 
-     * @param name the name value to set.
+     * @param actionName the actionName value to set.
      * @param result the result value to set.
      */
     @Generated
     @JsonCreator
-    private DevBoxActionDelayResult(@JsonProperty(value = "name") String name,
-        @JsonProperty(value = "result") DevBoxActionDelayResultStatus result) {
-        this.name = name;
+    private DevBoxActionDelayResult(@JsonProperty(value = "name") String actionName,
+        @JsonProperty(value = "result") DevBoxActionDelayStatus result) {
+        this.actionName = actionName;
         this.result = result;
     }
 
     /**
-     * Get the name property: The name of the action.
+     * Get the actionName property: The name of the action.
      * 
-     * @return the name value.
+     * @return the actionName value.
      */
     @Generated
-    public String getName() {
-        return this.name;
+    public String getActionName() {
+        return this.actionName;
     }
 
     /**
@@ -73,7 +73,7 @@ public final class DevBoxActionDelayResult {
      * @return the result value.
      */
     @Generated
-    public DevBoxActionDelayResultStatus getResult() {
+    public DevBoxActionDelayStatus getResult() {
         return this.result;
     }
 

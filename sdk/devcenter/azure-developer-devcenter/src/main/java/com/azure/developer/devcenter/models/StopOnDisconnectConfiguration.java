@@ -20,7 +20,7 @@ public final class StopOnDisconnectConfiguration {
      */
     @Generated
     @JsonProperty(value = "status")
-    private StopOnDisconnectEnableStatus status;
+    private StopOnDisconnectStatus status;
 
     /*
      * The specified time in minutes to wait before stopping a Dev Box once disconnect
@@ -37,7 +37,7 @@ public final class StopOnDisconnectConfiguration {
      */
     @Generated
     @JsonCreator
-    private StopOnDisconnectConfiguration(@JsonProperty(value = "status") StopOnDisconnectEnableStatus status) {
+    private StopOnDisconnectConfiguration(@JsonProperty(value = "status") StopOnDisconnectStatus status) {
         this.status = status;
     }
 
@@ -48,7 +48,7 @@ public final class StopOnDisconnectConfiguration {
      * @return the status value.
      */
     @Generated
-    public StopOnDisconnectEnableStatus getStatus() {
+    public StopOnDisconnectStatus getStatus() {
         return this.status;
     }
 

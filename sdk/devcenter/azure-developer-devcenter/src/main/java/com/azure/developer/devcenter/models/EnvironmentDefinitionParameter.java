@@ -41,7 +41,7 @@ public final class EnvironmentDefinitionParameter {
      */
     @Generated
     @JsonProperty(value = "default")
-    private String defaultProperty;
+    private String defaultValue;
 
     /*
      * A string of one of the basic JSON types (number, integer, array, object,
@@ -49,7 +49,7 @@ public final class EnvironmentDefinitionParameter {
      */
     @Generated
     @JsonProperty(value = "type")
-    private ParameterType type;
+    private EnvironmentDefinitionParameterType parameterType;
 
     /*
      * Whether or not this parameter is read-only. If true, default should have a
@@ -77,15 +77,16 @@ public final class EnvironmentDefinitionParameter {
      * Creates an instance of EnvironmentDefinitionParameter class.
      * 
      * @param id the id value to set.
-     * @param type the type value to set.
+     * @param parameterType the parameterType value to set.
      * @param required the required value to set.
      */
     @Generated
     @JsonCreator
     private EnvironmentDefinitionParameter(@JsonProperty(value = "id") String id,
-        @JsonProperty(value = "type") ParameterType type, @JsonProperty(value = "required") boolean required) {
+        @JsonProperty(value = "type") EnvironmentDefinitionParameterType parameterType,
+        @JsonProperty(value = "required") boolean required) {
         this.id = id;
-        this.type = type;
+        this.parameterType = parameterType;
         this.required = required;
     }
 
@@ -120,24 +121,24 @@ public final class EnvironmentDefinitionParameter {
     }
 
     /**
-     * Get the defaultProperty property: Default value of the parameter.
+     * Get the defaultValue property: Default value of the parameter.
      * 
-     * @return the defaultProperty value.
+     * @return the defaultValue value.
      */
     @Generated
-    public String getDefaultProperty() {
-        return this.defaultProperty;
+    public String getDefaultValue() {
+        return this.defaultValue;
     }
 
     /**
-     * Get the type property: A string of one of the basic JSON types (number, integer, array, object,
+     * Get the parameterType property: A string of one of the basic JSON types (number, integer, array, object,
      * boolean, string).
      * 
-     * @return the type value.
+     * @return the parameterType value.
      */
     @Generated
-    public ParameterType getType() {
-        return this.type;
+    public EnvironmentDefinitionParameterType getParameterType() {
+        return this.parameterType;
     }
 
     /**

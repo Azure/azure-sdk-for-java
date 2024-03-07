@@ -9,18 +9,19 @@ import com.azure.core.annotation.Generated;
 import com.azure.core.models.ResponseError;
 import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import java.util.Map;
 
 /**
  * Properties of an environment.
  */
 @Fluent
-public final class Environment {
+public final class DevCenterEnvironment {
     /*
      * Parameters object for the environment.
      */
     @Generated
     @JsonProperty(value = "parameters")
-    private Object parameters;
+    private Map<String, Object> parameters;
 
     /*
      * Environment name.
@@ -34,21 +35,21 @@ public final class Environment {
      */
     @Generated
     @JsonProperty(value = "environmentType")
-    private String environmentType;
+    private String environmentTypeName;
 
     /*
      * The AAD object id of the owner of this Environment.
      */
     @Generated
     @JsonProperty(value = "user", access = JsonProperty.Access.WRITE_ONLY)
-    private String user;
+    private String userId;
 
     /*
      * The provisioning state of the environment.
      */
     @Generated
     @JsonProperty(value = "provisioningState", access = JsonProperty.Access.WRITE_ONLY)
-    private String provisioningState;
+    private EnvironmentProvisioningState provisioningState;
 
     /*
      * The identifier of the resource group containing the environment's resources.
@@ -79,18 +80,18 @@ public final class Environment {
     private ResponseError error;
 
     /**
-     * Creates an instance of Environment class.
+     * Creates an instance of DevCenterEnvironment class.
      * 
-     * @param environmentType the environmentType value to set.
+     * @param environmentTypeName the environmentTypeName value to set.
      * @param catalogName the catalogName value to set.
      * @param environmentDefinitionName the environmentDefinitionName value to set.
      */
     @Generated
     @JsonCreator
-    public Environment(@JsonProperty(value = "environmentType") String environmentType,
+    public DevCenterEnvironment(@JsonProperty(value = "environmentType") String environmentTypeName,
         @JsonProperty(value = "catalogName") String catalogName,
         @JsonProperty(value = "environmentDefinitionName") String environmentDefinitionName) {
-        this.environmentType = environmentType;
+        this.environmentTypeName = environmentTypeName;
         this.catalogName = catalogName;
         this.environmentDefinitionName = environmentDefinitionName;
     }
@@ -101,7 +102,7 @@ public final class Environment {
      * @return the parameters value.
      */
     @Generated
-    public Object getParameters() {
+    public Map<String, Object> getParameters() {
         return this.parameters;
     }
 
@@ -109,10 +110,10 @@ public final class Environment {
      * Set the parameters property: Parameters object for the environment.
      * 
      * @param parameters the parameters value to set.
-     * @return the Environment object itself.
+     * @return the DevCenterEnvironment object itself.
      */
     @Generated
-    public Environment setParameters(Object parameters) {
+    public DevCenterEnvironment setParameters(Map<String, Object> parameters) {
         this.parameters = parameters;
         return this;
     }
@@ -128,23 +129,23 @@ public final class Environment {
     }
 
     /**
-     * Get the environmentType property: Environment type.
+     * Get the environmentTypeName property: Environment type.
      * 
-     * @return the environmentType value.
+     * @return the environmentTypeName value.
      */
     @Generated
-    public String getEnvironmentType() {
-        return this.environmentType;
+    public String getEnvironmentTypeName() {
+        return this.environmentTypeName;
     }
 
     /**
-     * Get the user property: The AAD object id of the owner of this Environment.
+     * Get the userId property: The AAD object id of the owner of this Environment.
      * 
-     * @return the user value.
+     * @return the userId value.
      */
     @Generated
-    public String getUser() {
-        return this.user;
+    public String getUserId() {
+        return this.userId;
     }
 
     /**
@@ -153,7 +154,7 @@ public final class Environment {
      * @return the provisioningState value.
      */
     @Generated
-    public String getProvisioningState() {
+    public EnvironmentProvisioningState getProvisioningState() {
         return this.provisioningState;
     }
 

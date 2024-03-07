@@ -12,33 +12,33 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * Hardware specifications for the Dev Box.
  */
 @Immutable
-public final class HardwareProfile {
+public final class DevBoxHardwareProfile {
     /*
      * The name of the SKU
      */
     @Generated
     @JsonProperty(value = "skuName", access = JsonProperty.Access.WRITE_ONLY)
-    private String skuName;
+    private SkuName skuName;
 
     /*
      * The number of vCPUs available for the Dev Box.
      */
     @Generated
     @JsonProperty(value = "vCPUs", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer vCPUs;
+    private Integer vCpus;
 
     /*
      * The amount of memory available for the Dev Box.
      */
     @Generated
     @JsonProperty(value = "memoryGB", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer memoryGB;
+    private Integer memoryGb;
 
     /**
-     * Creates an instance of HardwareProfile class.
+     * Creates an instance of DevBoxHardwareProfile class.
      */
     @Generated
-    private HardwareProfile() {
+    private DevBoxHardwareProfile() {
     }
 
     /**
@@ -47,27 +47,27 @@ public final class HardwareProfile {
      * @return the skuName value.
      */
     @Generated
-    public String getSkuName() {
+    public SkuName getSkuName() {
         return this.skuName;
     }
 
     /**
-     * Get the vCPUs property: The number of vCPUs available for the Dev Box.
+     * Get the vCpus property: The number of vCPUs available for the Dev Box.
      * 
-     * @return the vCPUs value.
+     * @return the vCpus value.
      */
     @Generated
-    public Integer getVCPUs() {
-        return this.vCPUs;
+    public Integer getVCpus() {
+        return this.vCpus;
     }
 
     /**
-     * Get the memoryGB property: The amount of memory available for the Dev Box.
+     * Get the memoryGb property: The amount of memory available for the Dev Box.
      * 
-     * @return the memoryGB value.
+     * @return the memoryGb value.
      */
     @Generated
-    public Integer getMemoryGB() {
-        return this.memoryGB;
+    public Integer getMemoryGb() {
+        return this.memoryGb;
     }
 }

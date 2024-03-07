@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Defines values for PowerState.
+ * The power states of a Dev Box.
  */
 public final class PowerState extends ExpandableStringEnum<PowerState> {
     /**

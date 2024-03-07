@@ -10,44 +10,44 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Defines values for OsType.
+ * The operating system type.
  */
-public final class OsType extends ExpandableStringEnum<OsType> {
+public final class DevBoxOsType extends ExpandableStringEnum<DevBoxOsType> {
     /**
      * The Windows operating system.
      */
     @Generated
-    public static final OsType WINDOWS = fromString("Windows");
+    public static final DevBoxOsType WINDOWS = fromString("Windows");
 
     /**
-     * Creates a new instance of OsType value.
+     * Creates a new instance of DevBoxOsType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public OsType() {
+    public DevBoxOsType() {
     }
 
     /**
-     * Creates or finds a OsType from its string representation.
+     * Creates or finds a DevBoxOsType from its string representation.
      * 
      * @param name a name to look for.
-     * @return the corresponding OsType.
+     * @return the corresponding DevBoxOsType.
      */
     @Generated
     @JsonCreator
-    public static OsType fromString(String name) {
-        return fromString(name, OsType.class);
+    public static DevBoxOsType fromString(String name) {
+        return fromString(name, DevBoxOsType.class);
     }
 
     /**
-     * Gets known OsType values.
+     * Gets known DevBoxOsType values.
      * 
-     * @return known OsType values.
+     * @return known DevBoxOsType values.
      */
     @Generated
-    public static Collection<OsType> values() {
-        return values(OsType.class);
+    public static Collection<DevBoxOsType> values() {
+        return values(DevBoxOsType.class);
     }
 }

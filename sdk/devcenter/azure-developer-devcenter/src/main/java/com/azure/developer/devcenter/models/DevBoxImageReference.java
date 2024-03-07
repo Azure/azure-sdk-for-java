@@ -13,7 +13,7 @@ import java.time.OffsetDateTime;
  * Specifies information about the image used.
  */
 @Immutable
-public final class ImageReference {
+public final class DevBoxImageReference {
     /*
      * The name of the image used.
      */
@@ -50,10 +50,10 @@ public final class ImageReference {
     private OffsetDateTime publishedDate;
 
     /**
-     * Creates an instance of ImageReference class.
+     * Creates an instance of DevBoxImageReference class.
      */
     @Generated
-    private ImageReference() {
+    private DevBoxImageReference() {
     }
 
     /**

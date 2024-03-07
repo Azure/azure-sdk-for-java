@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * A pool of Dev Boxes.
  */
 @Immutable
-public final class Pool {
+public final class DevBoxPool {
     /*
      * Pool name
      */
@@ -33,14 +33,14 @@ public final class Pool {
      */
     @Generated
     @JsonProperty(value = "osType")
-    private OsType osType;
+    private DevBoxOsType osType;
 
     /*
      * Hardware settings for the Dev Boxes created in this pool
      */
     @Generated
     @JsonProperty(value = "hardwareProfile")
-    private HardwareProfile hardwareProfile;
+    private DevBoxHardwareProfile hardwareProfile;
 
     /*
      * Indicates whether hibernate is enabled/disabled or unknown.
@@ -54,14 +54,14 @@ public final class Pool {
      */
     @Generated
     @JsonProperty(value = "storageProfile")
-    private StorageProfile storageProfile;
+    private DevBoxStorageProfile storageProfile;
 
     /*
      * Image settings for Dev Boxes create in this pool
      */
     @Generated
     @JsonProperty(value = "imageReference")
-    private ImageReference imageReference;
+    private DevBoxImageReference imageReference;
 
     /*
      * Indicates whether owners of Dev Boxes in this pool are local administrators on
@@ -69,7 +69,7 @@ public final class Pool {
      */
     @Generated
     @JsonProperty(value = "localAdministrator")
-    private LocalAdminStatus localAdministrator;
+    private LocalAdministratorStatus localAdministratorStatus;
 
     /*
      * Stop on disconnect configuration settings for Dev Boxes created in this pool.
@@ -87,14 +87,14 @@ public final class Pool {
     private PoolHealthStatus healthStatus;
 
     /**
-     * Creates an instance of Pool class.
+     * Creates an instance of DevBoxPool class.
      * 
      * @param location the location value to set.
      * @param healthStatus the healthStatus value to set.
      */
     @Generated
     @JsonCreator
-    private Pool(@JsonProperty(value = "location") String location,
+    private DevBoxPool(@JsonProperty(value = "location") String location,
         @JsonProperty(value = "healthStatus") PoolHealthStatus healthStatus) {
         this.location = location;
         this.healthStatus = healthStatus;
@@ -126,7 +126,7 @@ public final class Pool {
      * @return the osType value.
      */
     @Generated
-    public OsType getOsType() {
+    public DevBoxOsType getOsType() {
         return this.osType;
     }
 
@@ -136,7 +136,7 @@ public final class Pool {
      * @return the hardwareProfile value.
      */
     @Generated
-    public HardwareProfile getHardwareProfile() {
+    public DevBoxHardwareProfile getHardwareProfile() {
         return this.hardwareProfile;
     }
 
@@ -156,7 +156,7 @@ public final class Pool {
      * @return the storageProfile value.
      */
     @Generated
-    public StorageProfile getStorageProfile() {
+    public DevBoxStorageProfile getStorageProfile() {
         return this.storageProfile;
     }
 
@@ -166,20 +166,20 @@ public final class Pool {
      * @return the imageReference value.
      */
     @Generated
-    public ImageReference getImageReference() {
+    public DevBoxImageReference getImageReference() {
         return this.imageReference;
     }
 
     /**
-     * Get the localAdministrator property: Indicates whether owners of Dev Boxes in this pool are local administrators
-     * on
+     * Get the localAdministratorStatus property: Indicates whether owners of Dev Boxes in this pool are local
+     * administrators on
      * the Dev Boxes.
      * 
-     * @return the localAdministrator value.
+     * @return the localAdministratorStatus value.
      */
     @Generated
-    public LocalAdminStatus getLocalAdministrator() {
-        return this.localAdministrator;
+    public LocalAdministratorStatus getLocalAdministratorStatus() {
+        return this.localAdministratorStatus;
     }
 
     /**

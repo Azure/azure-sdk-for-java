@@ -21,11 +21,11 @@ import com.azure.core.util.BinaryData;
 import com.azure.core.util.FluxUtil;
 import com.azure.core.util.polling.PollerFlux;
 import com.azure.developer.devcenter.implementation.DeploymentEnvironmentsClientImpl;
-import com.azure.developer.devcenter.models.Catalog;
-import com.azure.developer.devcenter.models.Environment;
+import com.azure.developer.devcenter.models.DevCenterCatalog;
+import com.azure.developer.devcenter.models.DevCenterEnvironment;
+import com.azure.developer.devcenter.models.DevCenterEnvironmentType;
+import com.azure.developer.devcenter.models.DevCenterOperationDetails;
 import com.azure.developer.devcenter.models.EnvironmentDefinition;
-import com.azure.developer.devcenter.models.EnvironmentType;
-import com.azure.developer.devcenter.models.OperationStatus;
 import java.util.stream.Collectors;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -51,34 +51,17 @@ public final class DeploymentEnvironmentsAsyncClient {
     /**
      * Lists the environments for a project.
      * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
      * {
-     *     parameters: Object (Optional)
-     *     name: String (Optional)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
      *     environmentType: String (Required)
      *     user: String (Optional)
-     *     provisioningState: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
      *     resourceGroupId: String (Optional)
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
@@ -114,34 +97,17 @@ public final class DeploymentEnvironmentsAsyncClient {
     /**
      * Lists the environments for a project and user.
      * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
      * {
-     *     parameters: Object (Optional)
-     *     name: String (Optional)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
      *     environmentType: String (Required)
      *     user: String (Optional)
-     *     provisioningState: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
      *     resourceGroupId: String (Optional)
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
@@ -183,11 +149,13 @@ public final class DeploymentEnvironmentsAsyncClient {
      * </p>
      * <pre>{@code
      * {
-     *     parameters: Object (Optional)
-     *     name: String (Optional)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
      *     environmentType: String (Required)
      *     user: String (Optional)
-     *     provisioningState: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
      *     resourceGroupId: String (Optional)
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
@@ -206,10 +174,10 @@ public final class DeploymentEnvironmentsAsyncClient {
      * }
      * }</pre>
      * 
-     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
-     * @param environmentName The name of the environment.
+     * @param environmentName Environment name.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -231,11 +199,13 @@ public final class DeploymentEnvironmentsAsyncClient {
      * </p>
      * <pre>{@code
      * {
-     *     parameters: Object (Optional)
-     *     name: String (Optional)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
      *     environmentType: String (Required)
      *     user: String (Optional)
-     *     provisioningState: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
      *     resourceGroupId: String (Optional)
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
@@ -258,11 +228,13 @@ public final class DeploymentEnvironmentsAsyncClient {
      * </p>
      * <pre>{@code
      * {
-     *     parameters: Object (Optional)
-     *     name: String (Optional)
+     *     parameters (Optional): {
+     *         String: Object (Required)
+     *     }
+     *     name: String (Required)
      *     environmentType: String (Required)
      *     user: String (Optional)
-     *     provisioningState: String (Optional)
+     *     provisioningState: String(Succeeded/Failed/Canceled/Creating/Accepted/Deleting/Updating/Preparing/Running/Syncing/MovingResources/TransientFailure/StorageProvisioningFailed) (Optional)
      *     resourceGroupId: String (Optional)
      *     catalogName: String (Required)
      *     environmentDefinitionName: String (Required)
@@ -308,7 +280,7 @@ public final class DeploymentEnvironmentsAsyncClient {
      * </p>
      * <pre>{@code
      * {
-     *     id: String (Optional)
+     *     id: String (Required)
      *     name: String (Optional)
      *     status: String(Running/Completed/Canceled/Failed) (Required)
      *     resourceId: String (Optional)
@@ -317,8 +289,16 @@ public final class DeploymentEnvironmentsAsyncClient {
      *     percentComplete: Double (Optional)
      *     properties: Object (Optional)
      *     error (Optional): {
-     *         code: String (Optional)
-     *         message: String (Optional)
+     *         code: String (Required)
+     *         message: String (Required)
+     *         target: String (Optional)
+     *         details (Optional): [
+     *             (recursive schema, see above)
+     *         ]
+     *         innererror (Optional): {
+     *             code: String (Optional)
+     *             innererror (Optional): (recursive schema, see innererror above)
+     *         }
      *     }
      * }
      * }</pre>
@@ -344,25 +324,6 @@ public final class DeploymentEnvironmentsAsyncClient {
     /**
      * Lists all of the catalogs available for a project.
      * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
@@ -371,13 +332,13 @@ public final class DeploymentEnvironmentsAsyncClient {
      * }
      * }</pre>
      * 
-     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param projectName Name of the project.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @return results of the catalog list operation as paginated response with {@link PagedFlux}.
+     * @return paged collection of Catalog items as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
@@ -396,8 +357,8 @@ public final class DeploymentEnvironmentsAsyncClient {
      * }
      * }</pre>
      * 
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param catalogName The name of the catalog.
+     * @param projectName Name of the project.
+     * @param catalogName Name of the catalog.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -415,25 +376,6 @@ public final class DeploymentEnvironmentsAsyncClient {
 
     /**
      * Lists all environment definitions available for a project.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -457,7 +399,7 @@ public final class DeploymentEnvironmentsAsyncClient {
      *             ]
      *         }
      *     ]
-     *     parametersSchema: String (Optional)
+     *     parametersSchema: Object (Optional)
      *     templatePath: String (Optional)
      * }
      * }</pre>
@@ -479,25 +421,6 @@ public final class DeploymentEnvironmentsAsyncClient {
     /**
      * Lists all environment definitions available within a catalog.
      * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
-     * <p>
      * <strong>Response Body Schema</strong>
      * </p>
      * <pre>{@code
@@ -520,7 +443,7 @@ public final class DeploymentEnvironmentsAsyncClient {
      *             ]
      *         }
      *     ]
-     *     parametersSchema: String (Optional)
+     *     parametersSchema: Object (Optional)
      *     templatePath: String (Optional)
      * }
      * }</pre>
@@ -566,14 +489,14 @@ public final class DeploymentEnvironmentsAsyncClient {
      *             ]
      *         }
      *     ]
-     *     parametersSchema: String (Optional)
+     *     parametersSchema: Object (Optional)
      *     templatePath: String (Optional)
      * }
      * }</pre>
      * 
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param catalogName The name of the catalog.
-     * @param definitionName The name of the environment definition.
+     * @param projectName Name of the project.
+     * @param catalogName Name of the catalog.
+     * @param definitionName Name of the environment definition.
      * @param requestOptions The options to configure the HTTP request before HTTP client sends it.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -592,25 +515,6 @@ public final class DeploymentEnvironmentsAsyncClient {
 
     /**
      * Lists all environment types configured for a project.
-     * <p>
-     * <strong>Query Parameters</strong>
-     * </p>
-     * <table border="1">
-     * <caption>Query Parameters</caption>
-     * <tr>
-     * <th>Name</th>
-     * <th>Type</th>
-     * <th>Required</th>
-     * <th>Description</th>
-     * </tr>
-     * <tr>
-     * <td>top</td>
-     * <td>Integer</td>
-     * <td>No</td>
-     * <td>The maximum number of resources to return from the operation. Example: 'top=10'.</td>
-     * </tr>
-     * </table>
-     * You can add these to a request with {@link RequestOptions#addQueryParam}
      * <p>
      * <strong>Response Body Schema</strong>
      * </p>
@@ -640,7 +544,6 @@ public final class DeploymentEnvironmentsAsyncClient {
      * Lists the environments for a project.
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param top The maximum number of resources to return from the operation. Example: 'top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -651,88 +554,20 @@ public final class DeploymentEnvironmentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Environment> listAllEnvironments(String projectName, Integer top) {
-        // Generated convenience method for listAllEnvironments
-        RequestOptions requestOptions = new RequestOptions();
-        if (top != null) {
-            requestOptions.addQueryParam("top", String.valueOf(top), false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listAllEnvironments(projectName, requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, Environment>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(Environment.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * Lists the environments for a project.
-     * 
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of the environment list operation as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Environment> listAllEnvironments(String projectName) {
+    public PagedFlux<DevCenterEnvironment> listAllEnvironments(String projectName) {
         // Generated convenience method for listAllEnvironments
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listAllEnvironments(projectName, requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, Environment>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(Environment.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * Lists the environments for a project and user.
-     * 
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
-     * context.
-     * @param top The maximum number of resources to return from the operation. Example: 'top=10'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of the environment list operation as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Environment> listEnvironments(String projectName, String userId, Integer top) {
-        // Generated convenience method for listEnvironments
-        RequestOptions requestOptions = new RequestOptions();
-        if (top != null) {
-            requestOptions.addQueryParam("top", String.valueOf(top), false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listEnvironments(projectName, userId, requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, Environment>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(Environment.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, DevCenterEnvironment>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue().stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(DevCenterEnvironment.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
         });
     }
 
@@ -752,29 +587,30 @@ public final class DeploymentEnvironmentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Environment> listEnvironments(String projectName, String userId) {
+    public PagedFlux<DevCenterEnvironment> listEnvironments(String projectName, String userId) {
         // Generated convenience method for listEnvironments
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listEnvironments(projectName, userId, requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, Environment>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(Environment.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, DevCenterEnvironment>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue().stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(DevCenterEnvironment.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
         });
     }
 
     /**
      * Gets an environment.
      * 
-     * @param projectName The DevCenter Project upon which to execute operations.
+     * @param projectName Name of the project.
      * @param userId The AAD object id of the user. If value is 'me', the identity is taken from the authentication
      * context.
-     * @param environmentName The name of the environment.
+     * @param environmentName Environment name.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -785,11 +621,12 @@ public final class DeploymentEnvironmentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Environment> getEnvironment(String projectName, String userId, String environmentName) {
+    public Mono<DevCenterEnvironment> getEnvironment(String projectName, String userId, String environmentName) {
         // Generated convenience method for getEnvironmentWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getEnvironmentWithResponse(projectName, userId, environmentName, requestOptions)
-            .flatMap(FluxUtil::toMono).map(protocolMethodData -> protocolMethodData.toObject(Environment.class));
+            .flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(DevCenterEnvironment.class));
     }
 
     /**
@@ -810,8 +647,8 @@ public final class DeploymentEnvironmentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<OperationStatus, Environment> beginCreateOrUpdateEnvironment(String projectName, String userId,
-        String environmentName, Environment body) {
+    public PollerFlux<DevCenterOperationDetails, DevCenterEnvironment> beginCreateOrUpdateEnvironment(
+        String projectName, String userId, String environmentName, DevCenterEnvironment body) {
         // Generated convenience method for beginCreateOrUpdateEnvironmentWithModel
         RequestOptions requestOptions = new RequestOptions();
         return serviceClient.beginCreateOrUpdateEnvironmentWithModelAsync(projectName, userId, environmentName,
@@ -835,7 +672,7 @@ public final class DeploymentEnvironmentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.LONG_RUNNING_OPERATION)
-    public PollerFlux<OperationStatus, Void> beginDeleteEnvironment(String projectName, String userId,
+    public PollerFlux<DevCenterOperationDetails, Void> beginDeleteEnvironment(String projectName, String userId,
         String environmentName) {
         // Generated convenience method for beginDeleteEnvironmentWithModel
         RequestOptions requestOptions = new RequestOptions();
@@ -845,59 +682,29 @@ public final class DeploymentEnvironmentsAsyncClient {
     /**
      * Lists all of the catalogs available for a project.
      * 
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param top The maximum number of resources to return from the operation. Example: 'top=10'.
+     * @param projectName Name of the project.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of the catalog list operation as paginated response with {@link PagedFlux}.
+     * @return paged collection of Catalog items as paginated response with {@link PagedFlux}.
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Catalog> listCatalogs(String projectName, Integer top) {
-        // Generated convenience method for listCatalogs
-        RequestOptions requestOptions = new RequestOptions();
-        if (top != null) {
-            requestOptions.addQueryParam("top", String.valueOf(top), false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listCatalogs(projectName, requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, Catalog>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(Catalog.class)).collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * Lists all of the catalogs available for a project.
-     * 
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of the catalog list operation as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<Catalog> listCatalogs(String projectName) {
+    public PagedFlux<DevCenterCatalog> listCatalogs(String projectName) {
         // Generated convenience method for listCatalogs
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listCatalogs(projectName, requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, Catalog>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(), pagedResponse.getValue().stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(Catalog.class)).collect(Collectors.toList()),
+            return flux.map(pagedResponse -> new PagedResponseBase<Void, DevCenterCatalog>(pagedResponse.getRequest(),
+                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                pagedResponse.getValue().stream()
+                    .map(protocolMethodData -> protocolMethodData.toObject(DevCenterCatalog.class))
+                    .collect(Collectors.toList()),
                 pagedResponse.getContinuationToken(), null));
         });
     }
@@ -905,8 +712,8 @@ public final class DeploymentEnvironmentsAsyncClient {
     /**
      * Gets the specified catalog within the project.
      * 
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param catalogName The name of the catalog.
+     * @param projectName Name of the project.
+     * @param catalogName Name of the catalog.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -917,46 +724,11 @@ public final class DeploymentEnvironmentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Catalog> getCatalog(String projectName, String catalogName) {
+    public Mono<DevCenterCatalog> getCatalog(String projectName, String catalogName) {
         // Generated convenience method for getCatalogWithResponse
         RequestOptions requestOptions = new RequestOptions();
         return getCatalogWithResponse(projectName, catalogName, requestOptions).flatMap(FluxUtil::toMono)
-            .map(protocolMethodData -> protocolMethodData.toObject(Catalog.class));
-    }
-
-    /**
-     * Lists all environment definitions available for a project.
-     * 
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param top The maximum number of resources to return from the operation. Example: 'top=10'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of the environment definition list operation as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<EnvironmentDefinition> listEnvironmentDefinitions(String projectName, Integer top) {
-        // Generated convenience method for listEnvironmentDefinitions
-        RequestOptions requestOptions = new RequestOptions();
-        if (top != null) {
-            requestOptions.addQueryParam("top", String.valueOf(top), false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listEnvironmentDefinitions(projectName, requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, EnvironmentDefinition>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue().stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(EnvironmentDefinition.class))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(), null));
-        });
+            .map(protocolMethodData -> protocolMethodData.toObject(DevCenterCatalog.class));
     }
 
     /**
@@ -977,44 +749,6 @@ public final class DeploymentEnvironmentsAsyncClient {
         // Generated convenience method for listEnvironmentDefinitions
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listEnvironmentDefinitions(projectName, requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux
-                .map(pagedResponse -> new PagedResponseBase<Void, EnvironmentDefinition>(pagedResponse.getRequest(),
-                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                    pagedResponse.getValue().stream()
-                        .map(protocolMethodData -> protocolMethodData.toObject(EnvironmentDefinition.class))
-                        .collect(Collectors.toList()),
-                    pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * Lists all environment definitions available within a catalog.
-     * 
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param catalogName The name of the catalog.
-     * @param top The maximum number of resources to return from the operation. Example: 'top=10'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return results of the environment definition list operation as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<EnvironmentDefinition> listEnvironmentDefinitionsByCatalog(String projectName, String catalogName,
-        Integer top) {
-        // Generated convenience method for listEnvironmentDefinitionsByCatalog
-        RequestOptions requestOptions = new RequestOptions();
-        if (top != null) {
-            requestOptions.addQueryParam("top", String.valueOf(top), false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse
-            = listEnvironmentDefinitionsByCatalog(projectName, catalogName, requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
@@ -1065,9 +799,9 @@ public final class DeploymentEnvironmentsAsyncClient {
     /**
      * Get an environment definition from a catalog.
      * 
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @param catalogName The name of the catalog.
-     * @param definitionName The name of the environment definition.
+     * @param projectName Name of the project.
+     * @param catalogName Name of the catalog.
+     * @param definitionName Name of the environment definition.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1091,7 +825,6 @@ public final class DeploymentEnvironmentsAsyncClient {
      * Lists all environment types configured for a project.
      * 
      * @param projectName The DevCenter Project upon which to execute operations.
-     * @param top The maximum number of resources to return from the operation. Example: 'top=10'.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
@@ -1102,52 +835,20 @@ public final class DeploymentEnvironmentsAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<EnvironmentType> listEnvironmentTypes(String projectName, Integer top) {
-        // Generated convenience method for listEnvironmentTypes
-        RequestOptions requestOptions = new RequestOptions();
-        if (top != null) {
-            requestOptions.addQueryParam("top", String.valueOf(top), false);
-        }
-        PagedFlux<BinaryData> pagedFluxResponse = listEnvironmentTypes(projectName, requestOptions);
-        return PagedFlux.create(() -> (continuationToken, pageSize) -> {
-            Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
-                : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, EnvironmentType>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(EnvironmentType.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
-        });
-    }
-
-    /**
-     * Lists all environment types configured for a project.
-     * 
-     * @param projectName The DevCenter Project upon which to execute operations.
-     * @throws IllegalArgumentException thrown if parameters fail the validation.
-     * @throws HttpResponseException thrown if the request is rejected by server.
-     * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
-     * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
-     * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return result of the environment type list operation as paginated response with {@link PagedFlux}.
-     */
-    @Generated
-    @ServiceMethod(returns = ReturnType.COLLECTION)
-    public PagedFlux<EnvironmentType> listEnvironmentTypes(String projectName) {
+    public PagedFlux<DevCenterEnvironmentType> listEnvironmentTypes(String projectName) {
         // Generated convenience method for listEnvironmentTypes
         RequestOptions requestOptions = new RequestOptions();
         PagedFlux<BinaryData> pagedFluxResponse = listEnvironmentTypes(projectName, requestOptions);
         return PagedFlux.create(() -> (continuationToken, pageSize) -> {
             Flux<PagedResponse<BinaryData>> flux = (continuationToken == null) ? pagedFluxResponse.byPage().take(1)
                 : pagedFluxResponse.byPage(continuationToken).take(1);
-            return flux.map(pagedResponse -> new PagedResponseBase<Void, EnvironmentType>(pagedResponse.getRequest(),
-                pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
-                pagedResponse.getValue().stream()
-                    .map(protocolMethodData -> protocolMethodData.toObject(EnvironmentType.class))
-                    .collect(Collectors.toList()),
-                pagedResponse.getContinuationToken(), null));
+            return flux
+                .map(pagedResponse -> new PagedResponseBase<Void, DevCenterEnvironmentType>(pagedResponse.getRequest(),
+                    pagedResponse.getStatusCode(), pagedResponse.getHeaders(),
+                    pagedResponse.getValue().stream()
+                        .map(protocolMethodData -> protocolMethodData.toObject(DevCenterEnvironmentType.class))
+                        .collect(Collectors.toList()),
+                    pagedResponse.getContinuationToken(), null));
         });
     }
 }

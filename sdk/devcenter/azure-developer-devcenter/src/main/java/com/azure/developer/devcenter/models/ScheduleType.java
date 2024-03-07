@@ -10,44 +10,44 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import java.util.Collection;
 
 /**
- * Defines values for ScheduledType.
+ * The supported types for a scheduled task.
  */
-public final class ScheduledType extends ExpandableStringEnum<ScheduledType> {
+public final class ScheduleType extends ExpandableStringEnum<ScheduleType> {
     /**
      * The scheduled task will stop impacted Dev Boxes.
      */
     @Generated
-    public static final ScheduledType STOP_DEV_BOX = fromString("StopDevBox");
+    public static final ScheduleType STOP_DEV_BOX = fromString("StopDevBox");
 
     /**
-     * Creates a new instance of ScheduledType value.
+     * Creates a new instance of ScheduleType value.
      * 
      * @deprecated Use the {@link #fromString(String)} factory method.
      */
     @Generated
     @Deprecated
-    public ScheduledType() {
+    public ScheduleType() {
     }
 
     /**
-     * Creates or finds a ScheduledType from its string representation.
+     * Creates or finds a ScheduleType from its string representation.
      * 
      * @param name a name to look for.
-     * @return the corresponding ScheduledType.
+     * @return the corresponding ScheduleType.
      */
     @Generated
     @JsonCreator
-    public static ScheduledType fromString(String name) {
-        return fromString(name, ScheduledType.class);
+    public static ScheduleType fromString(String name) {
+        return fromString(name, ScheduleType.class);
     }
 
     /**
-     * Gets known ScheduledType values.
+     * Gets known ScheduleType values.
      * 
-     * @return known ScheduledType values.
+     * @return known ScheduleType values.
      */
     @Generated
-    public static Collection<ScheduledType> values() {
-        return values(ScheduledType.class);
+    public static Collection<ScheduleType> values() {
+        return values(ScheduleType.class);
     }
 }

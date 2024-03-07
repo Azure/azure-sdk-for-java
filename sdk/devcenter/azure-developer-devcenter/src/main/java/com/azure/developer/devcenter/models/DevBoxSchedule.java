@@ -13,7 +13,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  * A Schedule to execute action.
  */
 @Immutable
-public final class Schedule {
+public final class DevBoxSchedule {
     /*
      * Display name for the Schedule
      */
@@ -26,14 +26,14 @@ public final class Schedule {
      */
     @Generated
     @JsonProperty(value = "type")
-    private ScheduledType type;
+    private ScheduleType scheduleType;
 
     /*
      * The frequency of this scheduled task.
      */
     @Generated
     @JsonProperty(value = "frequency")
-    private ScheduledFrequency frequency;
+    private ScheduleFrequency scheduleFrequency;
 
     /*
      * The target time to trigger the action. The format is HH:MM.
@@ -50,20 +50,20 @@ public final class Schedule {
     private String timeZone;
 
     /**
-     * Creates an instance of Schedule class.
+     * Creates an instance of DevBoxSchedule class.
      * 
-     * @param type the type value to set.
-     * @param frequency the frequency value to set.
+     * @param scheduleType the scheduleType value to set.
+     * @param scheduleFrequency the scheduleFrequency value to set.
      * @param time the time value to set.
      * @param timeZone the timeZone value to set.
      */
     @Generated
     @JsonCreator
-    private Schedule(@JsonProperty(value = "type") ScheduledType type,
-        @JsonProperty(value = "frequency") ScheduledFrequency frequency, @JsonProperty(value = "time") String time,
-        @JsonProperty(value = "timeZone") String timeZone) {
-        this.type = type;
-        this.frequency = frequency;
+    private DevBoxSchedule(@JsonProperty(value = "type") ScheduleType scheduleType,
+        @JsonProperty(value = "frequency") ScheduleFrequency scheduleFrequency,
+        @JsonProperty(value = "time") String time, @JsonProperty(value = "timeZone") String timeZone) {
+        this.scheduleType = scheduleType;
+        this.scheduleFrequency = scheduleFrequency;
         this.time = time;
         this.timeZone = timeZone;
     }
@@ -79,23 +79,23 @@ public final class Schedule {
     }
 
     /**
-     * Get the type property: Supported type this scheduled task represents.
+     * Get the scheduleType property: Supported type this scheduled task represents.
      * 
-     * @return the type value.
+     * @return the scheduleType value.
      */
     @Generated
-    public ScheduledType getType() {
-        return this.type;
+    public ScheduleType getScheduleType() {
+        return this.scheduleType;
     }
 
     /**
-     * Get the frequency property: The frequency of this scheduled task.
+     * Get the scheduleFrequency property: The frequency of this scheduled task.
      * 
-     * @return the frequency value.
+     * @return the scheduleFrequency value.
      */
     @Generated
-    public ScheduledFrequency getFrequency() {
-        return this.frequency;
+    public ScheduleFrequency getScheduleFrequency() {
+        return this.scheduleFrequency;
     }
 
     /**
