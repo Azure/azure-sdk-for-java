@@ -1,6 +1,6 @@
 ## Release History
 
-### 4.54.0-beta.1 (Unreleased)
+### 4.53.3-hotfix (2024-03-07)
 
 #### Bugs Fixed
 * Suppress exceptions when calling diagnostics handlers. - See[39121](https://github.com/Azure/azure-sdk-for-java/pull/39121)
