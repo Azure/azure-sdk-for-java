@@ -687,6 +687,12 @@ public class ClientSideRequestStatistics {
                 // Error while evaluating system information, do nothing
             }
 
+            long diagnosticsProviderFatalErrorExecutionCount =
+                DiagnosticsProviderJvmFatalErrorMapper.getMapper().getMapperExecutionCount();
+            if (diagnosticsProviderFatalErrorExecutionCount > 0) {
+                generator.writeNumberField("jvmFatalErrorMapperExecutionCount", diagnosticsProviderFatalErrorExecutionCount);
+            }
+
             generator.writeObjectField("clientCfgs", statistics.diagnosticsClientConfig);
             generator.writeEndObject();
         }

@@ -336,7 +336,8 @@ public class JdkHttpClientTests {
         ParallelFlux<byte[]> responses = Flux.range(1, numRequests)
             .parallel()
             .runOn(Schedulers.boundedElastic())
-            .flatMap(ignored -> doRequest(client, "/long").flatMap(HttpResponse::getBodyAsByteArray));
+            .flatMap(ignored -> doRequest(client, "/long"))
+            .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsByteArray, HttpResponse::close));
 
         StepVerifier.create(responses).thenConsumeWhile(response -> {
             TestUtils.assertArraysEqual(LONG_BODY, response);

@@ -159,7 +159,8 @@ public class OkHttpAsyncHttpClientTests {
         ParallelFlux<byte[]> responses = Flux.range(1, numRequests)
             .parallel()
             .runOn(Schedulers.boundedElastic())
-            .flatMap(ignored -> doRequest(client, "/long").flatMap(HttpResponse::getBodyAsByteArray));
+            .flatMap(ignored -> doRequest(client, "/long"))
+            .flatMap(response -> Mono.using(() -> response, HttpResponse::getBodyAsByteArray, HttpResponse::close));
 
         StepVerifier.create(responses).thenConsumeWhile(response -> {
             com.azure.core.test.utils.TestUtils.assertArraysEqual(LONG_BODY, response);

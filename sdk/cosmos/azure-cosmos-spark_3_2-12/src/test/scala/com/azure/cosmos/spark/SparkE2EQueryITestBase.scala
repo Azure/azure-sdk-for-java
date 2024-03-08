@@ -110,16 +110,18 @@ abstract class SparkE2EQueryITestBase
       "spark.cosmos.database" -> cosmosDatabase,
       "spark.cosmos.container" -> cosmosContainer,
     )
-    var clientFromCache = com.azure.cosmos.spark.udf.CosmosAsyncClientCache
+    var clientCacheItem = com.azure.cosmos.spark.udf.CosmosAsyncClientCache
       .getCosmosClientFromCache(cfg)
+    var clientFromCache = clientCacheItem
       .getClient
       .asInstanceOf[CosmosAsyncClient]
     var dbResponse = clientFromCache.getDatabase(cosmosDatabase).read().block()
 
     dbResponse.getProperties.getId shouldEqual cosmosDatabase
 
-    clientFromCache = com.azure.cosmos.spark.udf.CosmosAsyncClientCache
+    clientCacheItem = com.azure.cosmos.spark.udf.CosmosAsyncClientCache
       .getCosmosClientFuncFromCache(cfg)()
+    clientFromCache = clientCacheItem
       .getClient
       .asInstanceOf[CosmosAsyncClient]
     dbResponse = clientFromCache.getDatabase(cosmosDatabase).read().block()
@@ -149,7 +151,7 @@ abstract class SparkE2EQueryITestBase
 
     returnValues.size shouldEqual 1
 
-    clientFromCache.close()
+    clientCacheItem.close()
   }
 
   private def insertDummyValue() : String = {

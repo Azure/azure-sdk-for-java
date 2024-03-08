@@ -665,28 +665,34 @@ public final class OpenAIAsyncClient {
     }
 
     /**
-     * Gets chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
-     * text that continues from or "completes" provided prompt data.
+     * Gets chat completions for the provided chat messages.
+     * Completions support a wide variety of tasks and generate text that continues from or "completes"
+     * provided prompt data.
      *
      * @param deploymentOrModelName Specifies either the model deployment name (when using Azure OpenAI) or model name
      * (when using non-Azure OpenAI) to use for this request.
-     * @param chatCompletionsOptions The configuration information for a chat completions request. Completions support a
-     * wide variety of tasks and generate text that continues from or "completes" provided prompt data.
+     * @param chatCompletionsOptions The configuration information for a chat completions request.
+     * Completions support a wide variety of tasks and generate text that continues from or "completes"
+     * provided prompt data.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws HttpResponseException thrown if the request is rejected by server.
      * @throws ClientAuthenticationException thrown if the request is rejected by server on status code 401.
      * @throws ResourceNotFoundException thrown if the request is rejected by server on status code 404.
      * @throws ResourceModifiedException thrown if the request is rejected by server on status code 409.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return chat completions for the provided chat messages. Completions support a wide variety of tasks and generate
-     * text that continues from or "completes" provided prompt data on successful completion of {@link Mono}.
+     * @return chat completions for the provided chat messages.
+     * Completions support a wide variety of tasks and generate text that continues from or "completes"
+     * provided prompt data on successful completion of {@link Mono}.
      */
+    @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
     public Mono<ChatCompletions> getChatCompletions(String deploymentOrModelName,
         ChatCompletionsOptions chatCompletionsOptions) {
+        // Generated convenience method for getChatCompletionsWithResponse
         RequestOptions requestOptions = new RequestOptions();
-        return getChatCompletionsWithResponse(deploymentOrModelName, chatCompletionsOptions, requestOptions)
-            .flatMap(FluxUtil::toMono);
+        return getChatCompletionsWithResponse(deploymentOrModelName, BinaryData.fromObject(chatCompletionsOptions),
+            requestOptions).flatMap(FluxUtil::toMono)
+            .map(protocolMethodData -> protocolMethodData.toObject(ChatCompletions.class));
     }
 
     /**
@@ -1077,8 +1083,10 @@ public final class OpenAIAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioTranscriptionAsPlainTextWithResponse(String deploymentOrModelName,
+    Mono<Response<BinaryData>> getAudioTranscriptionAsPlainTextWithResponse(String deploymentOrModelName,
         BinaryData audioTranscriptionOptions, RequestOptions requestOptions) {
+        // Protocol API requires serialization of parts with content-disposition and data, as operation
+        // 'getAudioTranscriptionAsPlainText' is 'multipart/form-data'
         return this.serviceClient.getAudioTranscriptionAsPlainTextWithResponseAsync(deploymentOrModelName,
             audioTranscriptionOptions, requestOptions);
     }
@@ -1156,8 +1164,10 @@ public final class OpenAIAsyncClient {
      */
     @Generated
     @ServiceMethod(returns = ReturnType.SINGLE)
-    public Mono<Response<BinaryData>> getAudioTranslationAsPlainTextWithResponse(String deploymentOrModelName,
+    Mono<Response<BinaryData>> getAudioTranslationAsPlainTextWithResponse(String deploymentOrModelName,
         BinaryData audioTranslationOptions, RequestOptions requestOptions) {
+        // Protocol API requires serialization of parts with content-disposition and data, as operation
+        // 'getAudioTranslationAsPlainText' is 'multipart/form-data'
         return this.serviceClient.getAudioTranslationAsPlainTextWithResponseAsync(deploymentOrModelName,
             audioTranslationOptions, requestOptions);
     }
